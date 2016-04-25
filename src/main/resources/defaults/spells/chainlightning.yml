@@ -1,0 +1,99 @@
+chainlightning:
+    icon: diamond_axe:164
+    icon_url: http://textures.minecraft.net/texture/1e5b76818c576079939b5a4b033ddfb5c2364fc9f764e573c59508b811e365
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    category: combat
+    worth: 600
+    earns_sp: 8
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: Delay
+          - class: AreaOfEffect
+            actions:
+            - class: Asynchronous
+              actions:
+              - class: CustomProjectile
+                velocity: 150
+                actions:
+                - class: Repeat
+                  actions:
+                  - class: Electrify
+                  - class: Damage
+                    player_damage: 0.5
+                    entity_damage: 1
+                  - class: Delay
+          - class: Electrify
+          - class: Repeat
+            actions:
+            - class: Damage
+            - class: Delay
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+           location: origin
+        projectile:
+        - class: EffectSingle
+          effectlib:
+             class: LineEffect
+             isZigZag: true
+             zigZags: 2
+             zigZagOffset: 0,0.05,0
+             length: 6
+             particles: 50
+             particle: redstone
+             color: "FFF000"
+             duration: 2000
+        tick:
+        - particle: fireworks_spark
+          particle_count: 2
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+          location: target
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           sound_volume: 0.5
+           location: target
+           particle: fireworks_spark
+           particle_count: 10
+           particle_offset_x: 1
+           particle_offset_y: 1
+           particle_offset_z: 1
+           location: target
+    parameters:
+        tick_size: 5
+        target: other
+        target_self: false
+        target_source: false
+        range: 48
+        velocity: 175
+        radius: 8
+        target_count: 3
+        target_type: Damageable
+        player_damage: 1.5
+        entity_damage: 2
+        delay: 250
+        repeat: 4
+        target_breakables: 1
+        cooldown: 20000
+    costs:
+        mana: 75
+
+chainlightning|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        target_count: 5
+
+chainlightning|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        target_count: 8
+

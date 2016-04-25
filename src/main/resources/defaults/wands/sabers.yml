@@ -1,0 +1,31 @@
+# Lightsabers!
+
+lightsaber_red:
+    inherit: base_lightsaber
+    path: sith
+    icon: gold_sword:4
+    effect_color: 'FF0000'
+    active_spell: push
+    spells:
+        - push
+        - fire
+
+lightsaber_green:
+    inherit: base_lightsaber
+    path: jedi
+    icon: gold_sword:2
+    effect_color: '00FF00'
+    active_spell: push
+    spells:
+        - push
+        - pull
+
+lightsaber_blue:
+    inherit: base_lightsaber
+    path: jedi
+    icon: gold_sword:3
+    effect_color: '0000FF'
+    active_spell: push
+    spells:
+        - push
+        - pull

@@ -1,0 +1,20 @@
+note:
+    hidden: true
+    icon: skull_item
+    category: music
+    show_undoable: false
+    actions:
+      cast:
+      - class: PlaySound
+    effects:
+      cast:
+      -   class: EffectSingle
+          effectlib:
+             class: SmokeEffect
+             particle: note
+             particleCount: 4
+             particleOffsetX: 2
+             particleOffsetY: 0.1
+             particleOffsetZ: 2
+             iterations: 3
+                     

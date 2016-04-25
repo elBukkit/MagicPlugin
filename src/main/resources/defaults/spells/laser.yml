@@ -1,0 +1,103 @@
+laser:
+    icon: diamond_axe:145
+    icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
+    category: demolition
+    worth: 450
+    earns_sp: 8
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    pvp_restricted: true
+    actions:
+        cast:
+        -  class: Line
+           ignore_result: true
+           actions:
+           -  class: Disc
+              actions:
+              -  class: ModifyBlock
+        -  class: Repeat
+           actions:
+           - class: Delay
+           - class: Retarget
+             actions:
+              - class: PlayEffects
+                effect: beam
+                ignore_result: true
+              - class: Line
+                ignore_result: true
+                actions:
+                -  class: Disc
+                   actions:
+                   -  class: ModifyBlock
+              - class: ConeOfEffect
+                actions:
+                -  class: Damage
+    effects:
+        beam:
+        -  class: EffectSingle
+           sound: magic.zap
+           location: origin
+           sound_volume: 0.1
+           color_override: colorHelix
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: redstone
+             particleBase1: drip_lava
+             particleBase2: smoke_normal
+             iterations: 10
+             radius: 0.5
+             grow: 0.2
+             baseInterval: 5
+             length: 16
+             particlesBase: 5
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+    parameters:
+        target: block
+        target_type: Damageable
+        fov: 0.1
+        allow_max_range: true
+        player_damage: 0.5
+        entity_damage: 1
+        target_count: 5
+        range: 32
+        size: 1
+        start_at_target: true
+        increment_data: false
+        check_destructible: true
+        destructible: destructible_mining,transparent
+        transparent: air
+        brush: air
+        radius: 0
+        undo: 15000
+        cooldown: 10000
+        delay: 250
+        repeat: 10
+        undo_speed: 1
+    costs:
+        mana: 120
+
+laser|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        radius: 0.5
+        size: 1
+        destructible: destructible,destructible2,transparent
+        player_damage: 1
+        entity_damage: 2
+        repeat: 11
+
+laser|3:
+    parameters:
+        destructible: destructible,destructible2,destructible3,transparent
+        radius: 0.5
+        size: 2
+        player_damage: 1
+        entity_damage: 3
+        repeat: 12
+

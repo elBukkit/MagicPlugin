@@ -1,0 +1,23 @@
+anvil:
+    icon: diamond_axe:90
+    icon_url: http://textures.minecraft.net/texture/505b8ba793c372d9fb45db20df80c1606b19b7421a9bbcc258ae2a65d65ea7
+    category: utility
+    class: PlaceSpell
+    worth: 100
+    effects:
+        cast:
+        -  class: EffectSingle
+           particle: block_crack
+           location: target
+    parameters:
+        target: other
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 16
+        oty: 4
+        undo: 30000
+        cooldown: 20000
+        brush: anvil
+    costs:
+        mana: 100
+

@@ -1,0 +1,10 @@
+wizardchestplate:
+    icon: chainmail_chestplate
+    indestructible: true
+    locked: true
+    keep: true
+    mana_max_boost: 0.1
+    enchantments:
+      protection_explosions: 2
+      protection_environmental: 1
+

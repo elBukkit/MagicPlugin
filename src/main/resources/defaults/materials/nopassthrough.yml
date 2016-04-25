@@ -1,0 +1,9 @@
+# Blocks that Blink can't pass through
+nopassthrough:
+- bedrock
+- barrier
+- iron_fence
+- iron_block
+- iron_door_block
+- obsidian
+

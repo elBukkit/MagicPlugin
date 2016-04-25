@@ -1,0 +1,10 @@
+wizardhelmet:
+  output: wizardhelmet
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+  row_1: iii
+  row_2: ioi
+  row_3:
+

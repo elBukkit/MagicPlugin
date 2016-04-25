@@ -1,0 +1,37 @@
+convert:
+    icon: diamond_axe:112
+    icon_url: http://textures.minecraft.net/texture/b55a449b825c375ab91571e7e8a67856d212f756824bdfe43178eaea035bc
+    category: engineering
+    tags: noduel
+    cancellable: false
+    worth: 250
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_stone_break
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: block_crack
+             particleCount: 3
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 32
+        check_destructible: false
+        radius: 3
+        replace: true
+        transparent: transparent_to_construction
+        consume: true
+    costs:
+        mana: 100
+

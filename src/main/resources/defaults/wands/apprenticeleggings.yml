@@ -1,0 +1,7 @@
+apprenticeleggings:
+    icon: chainmail_leggings
+    indestructible: false
+    locked: true
+    keep: true
+    mana_max_boost: 0.05
+

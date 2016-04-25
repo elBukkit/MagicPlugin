@@ -1,0 +1,9 @@
+wizardboots:
+    icon: chainmail_boots
+    indestructible: true
+    locked: true
+    keep: true
+    mana_max_boost: 0.1
+    enchantments:
+      protection_fall: 5
+

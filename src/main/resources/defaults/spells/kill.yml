@@ -1,0 +1,94 @@
+kill:
+    icon: diamond_axe:170
+    icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
+    category: master
+    tags: noduel
+    worth: 5000
+    earns_sp: 13
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    actions:
+      cast:
+        - class: Delay
+        - class: PlayEffects
+          effect: launch
+          ignore_result: true
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: magic.electrify
+          sound_volume: 5
+          sound_pitch: -0.25
+          location: origin
+          effectlib:
+             class: AtomEffect
+             particleNucleus: spell_mob
+             colorNucleus: "00FF00"
+             particleOrbital: redstone
+             colorOrbital: "00FF00"
+             iterations: 16
+             radius: 5
+        launch:
+        -  class: EffectSingle
+           custom_sound: magic.zap_big
+           sound_volume: 1
+           location: origin
+        tick:
+        - location: target
+          particle: smoke_large
+          particle_count: 4
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+        projectile:
+        - class: EffectSingle
+          effectlib:
+             class: SphereEffect
+             particle: redstone
+             color: "00FF00"
+             iterations: 100
+             radius: 0.3
+        hit:
+        - class: EffectSingle
+          location: target
+          color: "00FF00"
+          firework: ball_large
+    parameters:
+        target: none
+        target_type: Damageable
+        cooldown: 30000
+        cooldown_mage: 10000
+        target_breakables: 5
+        bypass_backfire: true
+        player_damage: 20
+        entity_damage: 30
+        hitbox_size: 1
+        velocity: 5
+        interval: 250
+        delay: 3000
+    costs:
+        mana: 150
+
+kill|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        cooldown_mage: 8000
+        player_damage: 25
+        entity_damage: 35
+        hitbox_size: 1.5
+        velocity: 7
+        delay: 2000
+
+kill|3:
+    parameters:
+        cooldown_mage: 5000
+        player_damage: 30
+        entity_damage: 40
+        hitbox_size: 2
+        velocity: 10
+        delay: 1500
+

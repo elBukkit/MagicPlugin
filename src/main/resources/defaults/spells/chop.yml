@@ -1,0 +1,46 @@
+chop:
+    icon: diamond_axe:124
+    icon_url: http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f
+    category: elemental
+    tags: noduel,nojail
+    worth: 600
+    earns_sp: 8
+    upgrade_required_path: student
+    upgrade_required_casts: 30
+    actions:
+        cast:
+        - class: Recurse
+          actions:
+          - class: Drop
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_wood_step
+        -  class: EffectTrail
+           particle: block_crack
+           material: log
+    parameters:
+        bypass_undo: true
+        allow_max_range: false
+        range: 32
+        faces: all
+        recursion_depth: 64
+        drop_count: 8
+        destructible: trees
+        cooldown: 5000
+        bypass_undo: true
+    costs:
+        mana: 80
+
+chop|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 30
+    parameters:
+        drop_count: 16
+
+chop|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        drop_count: 32
+

@@ -1,0 +1,67 @@
+shuriken:
+    icon: diamond_axe:194
+    icon_url: http://textures.minecraft.net/texture/c79a5d6fbb1fe7435edbb9e72cb1d02f6e91597eb4b79d818ae583cda21f
+    category: combat
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    worth: 200
+    earns_sp: 12
+    actions:
+        cast:
+        -  class: CustomProjectile
+           actions:
+           -  class: AreaOfEffect
+              actions:
+              - class: Damage
+    effects:
+        tick:
+        -  particle: redstone
+           location: target
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           sound: magic.shimmer_quiet
+           color_override: color
+           effectlib:
+             class: HelixEffect
+             duration: 2000
+             period: 1
+             radius: 0.5
+             strands: 3
+             particles: 10
+             particle: spell_mob
+        hit:
+        -  class: EffectSingle
+           sound: magic.shimmer_big
+           location: target
+           color_override: color
+           effectlib:
+             class: HelixEffect
+             particle: redstone
+             radius: $radius
+             iterations: 1
+    parameters:
+        range: 32
+        target_type: Damageable
+        reflective: building
+        cooldown: 8000
+        velocity: 100
+        gravity: .05
+        damage: 2
+        radius: 3
+        lifetime: 10000
+    costs:
+        mana: 80
+
+shuriken|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        damage: 3
+        radius: 4
+
+shuriken|3:
+    parameters:
+        damage: 4
+        radius: 5
+

@@ -1,0 +1,69 @@
+reflect:
+    icon: diamond_axe:23
+    icon_url: http://textures.minecraft.net/texture/38f77caf858c927df996e277cf6e9fbb9b3cd71aa34e4412da4d6312cc8dfc
+    category: light
+    worth: 100
+    earns_sp: 5
+    upgrade_required_path: student
+    upgrade_required_casts: 25
+    actions:
+        cast:
+        -  class: Disc
+           actions:
+           -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield_boom
+           location: origin
+    parameters:
+        allow_max_range: true
+        range: 3
+        radius: 0
+        axis: z
+        brush: stained_glass
+        orient: true
+        transparent: transparent_to_construction
+        destructible: destructible_replace
+        check_destructible: true
+        brushcolor: true
+        undo: 800
+        cooldown: 3000
+        breakable: 3
+        reflect_chance: 0.25
+        bypass_confusion: true
+        bypass_backfire: true
+    costs:
+        mana: 40
+
+reflect|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+        radius: 1
+        undo: 900
+        reflect_chance: 0.5
+        breakable: 2
+    costs:
+        mana: 50
+
+reflect|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        radius: 1.5
+        undo: 1000
+        reflect_chance: 0.75
+        breakable: 1
+    costs:
+        mana: 55
+
+reflect|4:
+    parameters:
+        radius: 2
+        undo: 1100
+        reflect_chance: 1
+        breakable: 1
+    costs:
+        mana: 60
+

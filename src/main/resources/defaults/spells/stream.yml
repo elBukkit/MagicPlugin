@@ -1,0 +1,68 @@
+stream:
+    icon: diamond_axe:140
+    icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 30
+    category: combat
+    pvp_restricted: true
+    worth: 150
+    earns_sp: 4
+    actions:
+      cast:
+      - class: DisablePhysics
+        ignore_result: true
+      - class: CustomProjectile
+        tick:
+        - class: ModifyBlock
+          ignore_result: true
+        - class: Undo
+          ignore_result: true
+        - class: AreaOfEffect
+          actions:
+          - class: Damage
+          - class: Velocity
+    effects:
+      cast:
+      - class: EffectSingle
+        sound: block_water_ambient
+      projectile:
+       - location: origin
+         effectlib:
+           class: SphereEffect
+           particle: drip_water
+           radius: 1
+           particles: 10
+    parameters:
+      target: none
+      target_type: Damageable
+      radius: 2
+      velocity: 10
+      track_range: 8
+      lifetime: 5000
+      range: 32
+      duration: 10000
+      brush: stationary_water
+      increment_data: true
+      player_damage: 0.25
+      entity_damage: 0.5
+      cooldown: 5000
+      destructible: destructible_replace
+      undo: 50
+      undo_to: 3
+    costs:
+        mana: 30
+
+stream|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 30
+    parameters:
+        player_damage: 0.5
+        entity_damage: 0.75
+        undo_to: 4
+
+stream|3:
+    parameters:
+        player_damage: 0.75
+        entity_damage: 1
+        undo_to: 5
+

@@ -1,0 +1,11 @@
+ledger:
+    icon: paper
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        - class: Command
+    parameters:
+      op: true
+      command: bal
+

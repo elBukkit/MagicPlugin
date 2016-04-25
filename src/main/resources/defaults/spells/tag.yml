@@ -1,0 +1,34 @@
+tag:
+    icon: diamond_axe:29
+    icon_url: http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e
+    category: dark
+    class: SignSpell
+    tags: noduel
+    worth: 20
+    earns_sp: 1
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_fire_extinguish
+        -  class: EffectTrail
+           particle: redstone
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,3,0
+           color_override: color
+           effectlib:
+             class: TextEffect
+             text: $target
+             iterations: 2
+             particle: redstone
+    parameters:
+        target_type: Player
+        allow_max_range: false
+        range: 32
+        cooldown: 30000
+        transparent: transparent_to_construction
+        loud: true
+    costs:
+        mana: 20
+        sign: 1
+

@@ -1,0 +1,22 @@
+invisiblecloak:
+    hidden: true
+    icon: ender_pearl
+    category: utility
+    worth: 100
+    actions:
+      cast:
+      - class: Delay
+      - class: Hat
+    effects:
+      cast:
+      -  class: EffectSingle
+         location: target
+         effectlib:
+           class: SphereEffect
+           iterations: 4
+           particle: smoke_large
+           radius: 3
+    parameters:
+      target: self
+      use_item: true
+

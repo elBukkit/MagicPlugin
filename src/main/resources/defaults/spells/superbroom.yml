@@ -1,0 +1,17 @@
+superbroom:
+  inherit: broom
+  hidden: true
+  parameters:
+    bypass_confusion: true
+    mount_boost: 4
+    mount_boost_ticks: 600
+    mount_health: 20
+    slow_ticks: 1
+    steer_speed: 0
+    slow_steer_speed: 0.05
+    mount_boost_per_jump: 0.5
+    effect_confusion: 0
+    armor_stand_yaw: 180
+    duration: 0
+    cooldown: 0
+

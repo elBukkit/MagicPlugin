@@ -1,0 +1,49 @@
+smite:
+    icon: diamond_axe:40
+    icon_url: http://textures.minecraft.net/texture/a31cc0ffb1e814e1c82301067ea318356befa65dc1a027afbfd498709cad58
+    category: elemental
+    pvp_restricted: true
+    worth: 500
+    actions:
+        cast:
+        - class: Lightning
+          ignore_result: true
+        - class: AreaOfEffect
+          actions:
+          - class: Damage
+          - class: Ignite
+        -  class: Sphere
+           ignore_result: true
+           actions:
+           -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_firework_large_blast
+        -  class: EffectTrail
+           particle: smoke_normal
+           particle_count: 2
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: HelixEffect
+             particle: smoke_normal
+             iterations: 3
+    parameters:
+        target_type: Damageable
+        allow_max_range: true
+        range: 32
+        radius: 3
+        cooldown: 15000
+        effect_only: true
+        damage: 4
+        duration: 5000
+        speed: 0.9
+        falling: true
+        brush: air
+        undo: 10000
+        oty: -2
+        undo_speed: 0.5
+    costs:
+        mana: 100
+

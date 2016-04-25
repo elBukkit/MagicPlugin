@@ -1,0 +1,86 @@
+torture:
+    icon: diamond_axe:172
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
+    category: master
+    worth: 3000
+    earns_sp: 7
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: PotionEffect
+              duration: 1000
+              effect_wither: 1
+          - class: PotionEffect
+          - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.electrify
+           sound_volume: .5
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: spell_mob
+             lengthGrow: 0.001
+             radiusGrow: 0.001
+        projectile:
+        - location: origin
+          effectlib:
+            class: SphereEffect
+            iterations: 15
+            particle: drip_lava
+            radius: 0.3
+        tick:
+        -  location: target
+           particle: spell_mob
+        hit:
+        -  class: EffectSingle
+           sound: entity_irongolem_death
+           sound_volume: 1
+           location: target
+           color: 19070B
+           firework: ball
+        -  class: EffectSingle
+           requires_entity_target: true
+           particle: town_aura
+           location: target
+           effectlib:
+             class: BleedEffect
+             duration: 500
+    costs:
+        mana: 100
+    parameters:
+        velocity: 20
+        gravity: 0.05
+        range: 32
+        target_type: Damageable
+        target_breakables: 3
+        target: other
+        duration: 2000
+        damage: 2
+        effect_slow: 20
+        effect_wither: 1
+        effect_confusion: 5
+        cooldown: 30000
+        hitbox: true
+
+torture|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        duration: 3000
+        effect_wither: 2
+        damage: 3
+
+torture|3:
+    parameters:
+        duration: 4000
+        effect_wither: 3
+        damage: 4
+

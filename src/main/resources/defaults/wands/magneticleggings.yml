@@ -1,0 +1,10 @@
+magneticleggings:
+    icon: iron_leggings
+    indestructible: true
+    locked: true
+    keep: true
+    passive: true
+    mana_regeneration_boost: -0.3
+    cast_spell: grab
+    cast_interval: 5000
+

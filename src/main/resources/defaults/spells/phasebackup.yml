@@ -1,0 +1,55 @@
+phasebackup:
+    icon: diamond_axe:73
+    icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
+    category: staff
+    worth: 1000
+    earns_sp: 2
+    actions:
+        cast:
+        - class: ChangeWorld
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_portal_travel
+           sound_volume: 0.1
+           location: source
+           effectlib:
+             class: WarpEffect
+             particle: portal
+        teleport:
+        -  class: EffectSingle
+           sound: block_portal_travel
+           sound_volume: 0.1
+           location: target
+           effectlib:
+             class: WarpEffect
+             particle: portal
+    parameters:
+        cooldown: 2000
+        target: self
+        vertical_range: 255
+        worlds:
+            world:
+               target: world_backup
+               scale: 1
+               copy: true
+            world_backup:
+               target: world
+               scale: 1
+            world_nether:
+               target: world_nether_backup
+               scale: 8
+               copy: true
+            world_nether_backup:
+               target: world_nether
+               scale: 1
+            world_the_end:
+               target: world_the_end_backup
+               scale: 1
+               copy: true
+            world_the_end_backup:
+               target: world_the_end
+               scale: 1
+    costs:
+        mana: 50
+

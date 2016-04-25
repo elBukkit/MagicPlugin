@@ -1,0 +1,46 @@
+defender:
+    icon: diamond_axe:18
+    icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
+    category: automata
+    class: AnimateSpell
+    worth: 4000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_endermen_scream
+        -  class: EffectTrail
+           particle: block_crack
+    cast:
+        "convert brush stained_glass|1 radius 3 check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 100
+        "none": 1000
+    death_cast:
+        "collapse target self commit true radius 7 check_destructible true destructible $birth,command,redstone_block": 100
+    parameters:
+        bypass_undo: true
+        allow_max_range: false
+        transparent: transparent_to_construction
+        check_destructible: false
+        range: 32
+        cooldown: 5000
+        name: Defender
+        radius: 12
+        yradius: 12
+        birth_range: 6
+        live_range: 6
+        target_min_range: 0
+        target_max_range: 0
+        delay: 1000
+        target_mode: hunt
+        targets: automaton
+        target_min_range: 0
+        target_max_range: 128
+        live_rules: 3,4,5,6,7,8,9
+        birth_rules: 4,5
+        move: 4
+        drop: defenderheart
+        drop_xp: 30
+        restricted: restricted_animate
+        message_type: good
+    costs:
+        xp: 50
+

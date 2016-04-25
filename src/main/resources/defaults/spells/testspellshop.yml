@@ -1,0 +1,15 @@
+testspellshop:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        quiet: true
+        confirm: false
+        auto_close: false
+        auto_upgrade: true
+        upgrade_levels: 15
+        use_sp: true
+

@@ -1,0 +1,95 @@
+arrow:
+    icon: diamond_axe:57
+    icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
+    alias: sniper
+    category: combat
+    worth: 70
+    earns_sp: 8
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
+    actions:
+        cast:
+        - class: Projectile
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_arrow_shoot
+           sound_pitch: 0.2
+           sound_volume: 0.3
+           location: origin
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             lengthGrow: 1
+             particle: smoke_normal
+        hit:
+        -  class: EffectSingle
+           location: origin
+           color: CC9933
+           firework: ball
+           sound: magic.hit
+    parameters:
+      target: none
+      projectile: TippedArrow
+      damage: 0.75
+      speed: 2
+      spread: 6
+      fire: false
+      tick_increase: 1180
+      entity_undo: false
+      undo: 5000
+      range: 50
+      cooldown: 2000
+    costs:
+        mana: 20
+
+arrow|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 30
+    parameters:
+      damage: 0.80
+      speed: 2.5
+      spread: 5
+    costs:
+        mana: 30
+
+arrow|3:
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    parameters:
+      damage: 0.85
+      speed: 3
+      spread: 4
+    costs:
+        mana: 30
+
+arrow|4:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+      damage: 0.9
+      speed: 3.5
+      spread: 3
+    costs:
+        mana: 30
+
+arrow|5:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+      damage: 0.95
+      speed: 4
+      spread: 1
+    costs:
+        mana: 40
+
+arrow|6:
+    parameters:
+      damage: 1
+      speed: 5
+      spread: 0
+    costs:
+        mana: 50
+

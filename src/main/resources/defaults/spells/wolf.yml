@@ -1,0 +1,31 @@
+wolf:
+    icon: diamond_axe:69
+    icon_url: http://textures.minecraft.net/texture/f73d8d925fd45eee331437cc496403f96516a5d35a8e62189990d8beee6a14
+    category: elemental
+    class: WolfSpell
+    pvp_restricted: true
+    worth: 150
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_wolf_howl
+           effectlib:
+             class: DnaEffect
+             particleHelix: drip_lava
+             iterations: 24
+             particleBase1: drip_water
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: AtomEffect
+             iterations: 32
+             particleNucleus: drip_water
+    parameters:
+        target_type: LivingEntity
+        max_wolves: 5
+        allow_max_range: false
+        cooldown: 5000
+        range: 32
+    costs:
+        mana: 50
+

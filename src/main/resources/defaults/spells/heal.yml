@@ -1,0 +1,89 @@
+heal:
+    icon: diamond_axe:45
+    icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
+    category: light
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    worth: 300
+    earns_sp: 2
+    actions:
+        cast:
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: Heal
+    effects:
+        cast:
+        - class: EffectSingle
+          custom_sound: magic.rennervate
+          effectlib:
+            class: ConeEffect
+            iterations: 5
+            lengthGrow: .12
+            particle: heart
+        - class: EffectSingle
+          sound: entity_player_levelup
+          custom_sound: magic.rennervate
+          location: target
+          target_offset: 0,-2,0
+          effectlib:
+            class: WarpEffect
+            duration: $total_duration
+            period: 2
+            particle: heart
+            particles: 7
+            iterations: 40
+            radius: 1
+        cast_self:
+        - class: EffectSingle
+          sound: entity_player_levelup
+          custom_sound: magic.rennervate
+          location: target
+          target_offset: 0,-2,0
+          effectlib:
+            class: WarpEffect
+            duration: $total_duration
+            period: 2
+            particle: heart
+            particles: 7
+            iterations: 40
+            radius: 1
+        cast_finish:
+        -  class: EffectSingle
+           custom_sound: magic.shimmer
+           sound_pitch: 5
+           location: origin
+        -  location: origin
+           effectlib:
+             class: AnimatedBall
+             duration: 200
+             particle: heart
+             size: 3
+    parameters:
+        cancel_on_damage: 0.5
+        delay: 500
+        repeat: 10
+        total_duration: 5000
+        target_type: LivingEntity
+        target: any_entity
+        allow_max_range: false
+        range: 5
+        cooldown: 20000
+        bypass_pvp: true
+        bypass_friendly_fire: true
+        hitbox: true
+        amount: 1
+    costs:
+        mana: 50
+
+heal|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+        range: 32
+        cooldown: 15000
+
+heal|3:
+    parameters:
+        cooldown: 10000
+

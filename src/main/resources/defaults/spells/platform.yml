@@ -1,0 +1,51 @@
+platform:
+    icon: diamond_axe:24
+    icon_url: http://textures.minecraft.net/texture/48e69c5a76182441d98326284e9342c1dac2a786ba47e8226884f65594c3bd3a
+    alias: disc
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    category: utility
+    worth: 150
+    earns_sp: 2
+    actions:
+        cast:
+        -  class: Disc
+           actions:
+           -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        allow_max_range: true
+        range: 8
+        radius: 1
+        transparent: transparent_to_construction
+        destructible: destructible_replace
+        undo: 20000
+        breakable: 2
+        brush: stained_glass
+        brushcolor: true
+        cooldown: 5000
+    costs:
+        mana: 60
+
+platform|2:
+    alias: ""
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        radius: 1.5
+
+platform|3:
+    upgrade_required_path: engineer
+    upgrade_required_casts: 50
+    parameters:
+        radius: 2
+
+platform|4:
+    parameters:
+        brush: ""
+

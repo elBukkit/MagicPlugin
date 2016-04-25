@@ -1,0 +1,8 @@
+superphase:
+    inherit: phase
+    parameters:
+      target: other
+      target_type: LivingEntity
+      cooldown: 500
+      delay: 0
+

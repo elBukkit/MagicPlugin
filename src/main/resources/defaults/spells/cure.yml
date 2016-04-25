@@ -1,0 +1,86 @@
+cure:
+    icon: diamond_axe:44
+    icon_url: http://textures.minecraft.net/texture/1364e3f9597a295108d202d20c2f02539d5ad8377fef53ef622603a7f45b52f
+    upgrade_required_path: student
+    upgrade_required_casts: 20
+    category: light
+    worth: 175
+    earns_sp: 20
+    actions:
+        cast:
+        -  class: PotionEffect
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: magic.shimmer
+          location: target
+          particle_override: particleOrbital
+          effectlib:
+             class: AtomEffect
+             particleNucleus: heart
+             particleOrbital: crit
+             iterations: 5
+        -  class: EffectSingle
+           location: target
+           use_hit_location: false
+           effectlib:
+             class: LoveEffect
+             iterations: 5
+             period: 2
+    parameters:
+        bypass_mage_cooldown: true
+        target_type: LivingEntity
+        target: any_entity
+        allow_max_range: false
+        range: 5
+        bypass_confusion: true
+        cooldown: 20000
+        bypass_pvp: true
+        bypass_friendly_fire: true
+        remove_effects:
+        - confusion
+        - poison
+        - slow
+        - slow_digging
+    costs:
+        mana: 30
+
+cure|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 30
+    parameters:
+        remove_effects:
+        - confusion
+        - weakness
+        - poison
+        - slow
+        - slow_digging
+        - wither
+
+cure|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 30
+    actions:
+        cast:
+        -  class: PotionEffect
+        -  class: ApplyCooldown
+           clear: true
+           duration: 0
+
+cure|4:
+    actions:
+        cast:
+        -  class: PotionEffect
+        -  class: ApplyCooldown
+           clear: true
+           duration: 0
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: Feed
+    parameters:
+        feed: 1
+        cancel_on_damage: 0.5
+        delay: 500
+        repeat: 10
+

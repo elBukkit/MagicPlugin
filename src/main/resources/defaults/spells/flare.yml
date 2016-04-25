@@ -1,0 +1,36 @@
+flare:
+    icon: diamond_axe:148
+    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+    category: light
+    worth: 20
+    earns_sp: 1
+    show_undoable: false
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: Firework
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_firework_launch
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 16
+        ticks_flown: 2
+        expected_lifespan: 1
+        cooldown: 2000
+    costs:
+        mana: 10
+
+flare|2:
+  effects:
+    cast:
+    -  class: EffectRing
+       location: target
+       firework: star
+       radius: 8
+       target_offset: 0,4,0
+       size: 6
+

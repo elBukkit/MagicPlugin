@@ -1,0 +1,26 @@
+absorb:
+    icon: diamond_axe:135
+    icon_url: http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d
+    category: engineering
+    tags: noduel
+    worth: 9999
+    brush_selection: true
+    actions:
+        cast:
+        -  class: AbsorbAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_generic_drink
+        -  class: EffectTrail
+           particle: block_crack
+           reverse: true
+           particle_count: 4
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 64
+        transparent: transparent_to_construction
+    costs:
+        mana: 30
+

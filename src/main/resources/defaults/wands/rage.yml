@@ -1,0 +1,22 @@
+rage:
+    inherit: base_sword
+    icon: diamond_sword
+    effect_color: '11FF11'
+    protection_physical: 0.3
+    path: battle
+    locked: true
+    mana_regeneration: 0
+    mana_max: 200
+    mana: 100
+    mana_per_damage: 5
+    glow: true
+    spells:
+      - missile
+      - arrow
+      - boom
+      - curse
+      - fire
+      - fireball
+      - grenade
+      - push
+

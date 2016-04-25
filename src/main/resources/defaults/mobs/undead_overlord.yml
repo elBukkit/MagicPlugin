@@ -1,0 +1,10 @@
+undead_overlord:
+  type: skeleton
+  skeleton_type: wither
+  item: iron_sword
+  name: Undead Overlord
+  health: 150
+  potion_effects:
+  - type: speed
+    amplifier: 1
+    

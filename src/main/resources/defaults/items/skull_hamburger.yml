@@ -1,0 +1,4 @@
+skull_hamburger:
+  item: "skull_item|http://textures.minecraft.net/texture/cdadf1744433e1c79d1d59d2777d939de159a24cf57e8a61c82bc4fe3777553c"
+  worth: 10
+  name: "&bHamburger"

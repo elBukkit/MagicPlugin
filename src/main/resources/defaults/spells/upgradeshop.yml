@@ -1,0 +1,20 @@
+upgradeshop:
+    icon: gold_axe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm_filler: stained_glass:2
+        confirm: true
+        require_wand: true
+        items:
+        - item: wand|antihunger
+          cost: 2000
+        - item: wand|hotbar2
+          cost: 500
+        - item: wand|hotbar3
+          cost: 1000
+

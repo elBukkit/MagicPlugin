@@ -1,0 +1,133 @@
+nuke:
+    icon: diamond_axe:36
+    icon_url: http://textures.minecraft.net/texture/f27c497b89fdcbf754b59aaadcc7e49c5217f1677bf9f8803c4cca519b3a2
+    category: master
+    worth: 2000
+    earns_sp: 10
+    pvp_restricted: true
+    upgrade_required_path: master
+    upgrade_required_casts: 20
+    actions:
+        cast:
+        - class: Parallel
+          actions:
+          - class: Serial
+            actions:
+            - class: Repeat
+              repeat: 4
+              actions:
+              - class: Delay
+                delay: 1000
+              - class: PlayEffects
+                ignore_result: true
+                effect: burst
+              - class: AreaOfEffect
+                radius: 4
+                actions:
+                - class: Damage
+                - class: Velocity
+                  ignore_result: true
+            - class: Repeat
+              repeat: 4
+              actions:
+              - class: Delay
+                delay: 1000
+              - class: PlayEffects
+                ignore_result: true
+                effect: burst
+              - class: AreaOfEffect
+                radius: 10
+                actions:
+                - class: Damage
+                - class: Velocity
+                  ignore_result: true
+          - class: Serial
+            ignore_result: true
+            actions:
+            - class: Sphere
+              actions:
+              - class: Skip
+                actions:
+                - class: Delay
+              - class: ModifyBlock
+            - class: PlayEffects
+              effect: cloud
+    effects:
+        burst:
+        -  class: EffectSingle
+           location: target
+           sound: entity_generic_explode
+           sound_volume: 2
+           effectlib:
+             class: SphereEffect
+             particle: explosion_huge
+             radius: 6
+             particles: 4
+             iterations: 4
+        cloud:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: FountainEffect
+             particle: explosion_huge
+             strands: 4
+             particlesStrand: 4
+             particlesSpout: 2
+             height: 30
+             heightSpout: 28
+             iterations: 2
+             radius: 8
+             period: 4
+             radiusSpout: 0.1
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             particle: explosion_huge
+             iterations: 30
+             radius: 8
+             particles: 10
+             offset: 0,24,0
+        cast:
+        -  class: EffectSingle
+           sound: entity_generic_explode
+           location: both
+        -  class: EffectTrail
+           particle: explosion_large
+           iterations: 3
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: FountainEffect
+             particle: explosion_huge
+             strands: 4
+             particlesStrand: 4
+             particlesSpout: 2
+             height: 30
+             heightSpout: 28
+             iterations: 20
+             radius: 2
+             radiusSpout: 1
+             period: 10
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 64
+        cooldown: 60000
+        undo: 50000
+        speed: 0.9
+        falling: true
+        falling_probability: 0.2
+        brush: air
+        radius: 8
+        skip: 16
+        delay: 1
+        undo_speed: 2
+    costs:
+        mana: 200
+
+nuke|2:
+  parameters:
+    destructible: destructible,destructible2,destructible3
+    radius: 12
+

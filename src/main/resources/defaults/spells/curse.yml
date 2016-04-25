@@ -1,0 +1,78 @@
+curse:
+    icon: diamond_axe:9
+    icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
+    category: dark
+    worth: 80
+    earns_sp: 6
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: PotionEffect
+          - class: Deactivate
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_irongolem_death
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 210B61
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: redstone
+          color: 380B61
+          location: target
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: 380B61
+           firework: star
+        -  class: EffectSingle
+           location: target
+           requires_entity_target: true
+           effectlib:
+             class: SmokeEffect
+             iterations: 16
+             particle: spell_mob
+             color: 210B61
+        -  class: EffectSingle
+           location: target
+           requires_entity_target: true
+           effectlib:
+             class: SphereEffect
+             iterations: 45
+             period: .1
+             particle: spell_mob
+             color: 210B61
+             radius: 1
+             particles: 20
+    costs:
+        mana: 50
+    parameters:
+        speed: 5
+        range: 16
+        target_type: LivingEntity
+        target_breakables: 1
+        target: other
+        duration: 4000
+        cooldown: 6000
+        hitbox: true
+        effect_slow: 2
+        effect_hunger: 2
+        effect_weakness: 3
+        effect_confusion: 5
+
+curse|2:
+    parameters:
+        range: 32
+        duration: 6000
+        effect_confusion: 2
+        effect_slow: 3
+

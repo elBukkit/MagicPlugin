@@ -1,0 +1,66 @@
+fireball:
+    icon: diamond_axe:153
+    upgrade_required_path: beginner
+    upgrade_required_casts: 15
+    icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
+    category: combat
+    pvp_restricted: true
+    worth: 150
+    earns_sp: 10
+    actions:
+        cast:
+        -  class: Projectile
+    effects:
+        cast:
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: lava
+             lengthGrow: 0.4
+           sound: magic.burn
+           sound_volume: 1
+           sound_pitch: -.25
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 4
+             period: 5
+             particle: lava
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
+    parameters:
+        projectile: LargeFireball
+        fire: false
+        size: 1
+        undo: 4000
+        cooldown: 10000
+        start: 1
+        break_blocks: true
+        undo_speed: 1
+    costs:
+        mana: 40
+
+fireball|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 30
+    parameters:
+        size: 1
+        spread: 4
+
+fireball|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 40
+    parameters:
+        spread: 0
+        speed: 0.8
+
+fireball|4:
+    parameters:
+        fire: true
+

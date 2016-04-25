@@ -1,0 +1,27 @@
+superblob:
+    icon: diamond_axe:94
+    icon_url: http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f
+    category: engineering
+    tags: noduel
+    class: ConstructSpell
+    worth: 4500
+    earns_sp: 2
+    cancellable: false
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_player_levelup
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        allow_max_range: true
+        check_destructible: false
+        range: 32
+        max_dimension: 16
+        target: select
+        type: sphere
+        transparent: transparent_to_construction
+        consume: true
+    costs:
+        mana: 400
+

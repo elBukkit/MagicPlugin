@@ -1,0 +1,15 @@
+flashboots:
+    icon: chainmail_boots
+    indestructible: true
+    locked: true
+    keep: true
+    passive: true
+    mana_regeneration_boost: -0.5
+    potion_effects: speed:10,jump:2
+    glow: true
+    effect_particle: lava
+    effect_particle_count: 4
+    effect_particle_interval: 100
+    effect_particle_min_velocity: 5
+    effect_particle_offset: -1.5
+

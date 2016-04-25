@@ -1,0 +1,7 @@
+#
+# A wand that may only be enchanted 3 times
+#
+starter:
+    inherit: wand
+    max_enchant_count: 3
+

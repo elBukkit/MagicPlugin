@@ -1,0 +1,11 @@
+giveitem:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: GiveItem
+    parameters:
+        item: magichat
+        loud: true
+

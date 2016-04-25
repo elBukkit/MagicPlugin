@@ -1,0 +1,12 @@
+# Some off-by-default crafting options
+# for animal lovers <3
+zombie_leather:
+  enabled: false
+  output: leather
+  output_type: item
+  materials:
+    o: rotten_flesh
+  row_1: ooo
+  row_2: ooo
+  row_3: ooo
+

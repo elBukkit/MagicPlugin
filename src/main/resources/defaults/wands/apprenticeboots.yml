@@ -1,0 +1,7 @@
+apprenticeboots:
+    icon: chainmail_boots
+    indestructible: false
+    locked: true
+    keep: true
+    mana_max_boost: 0.05
+

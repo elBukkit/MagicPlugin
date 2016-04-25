@@ -1,0 +1,11 @@
+broomstick:
+  output: broomstick
+  output_type: wand
+  materials:
+    i: stick
+    o: nether_star
+    w: wheat
+  row_1: " i "
+  row_2: " i "
+  row_3: "wow"
+

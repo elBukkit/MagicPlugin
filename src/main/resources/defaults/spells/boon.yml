@@ -1,0 +1,61 @@
+boon:
+    icon: diamond_axe:11
+    icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c
+    alias: perk
+    category: utility
+    worth: 220
+    earns_sp: 6
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
+    quick_cast: true
+    actions:
+        cast:
+        -  class: PotionEffect
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_experience_orb_pickup
+        -  class: EffectTrail
+           particle: redstone
+           particle_data: 2
+           particle_count: 3
+        -  class: EffectSingle
+           location: target
+           effectLib:
+             class: TraceEffect
+             particle: redstone
+    parameters:
+        target: any_entity
+        range: 32
+        duration: 5000
+        target_type: Player
+        effect_speed: 1
+        bypass_friendly_fire: true
+        bypass_pvp: true
+        cooldown: 20000
+    costs:
+        mana: 50
+
+boon|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    parameters:
+        duration: 10000
+        cooldown: 40000
+
+boon|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        duration: 20000
+        cooldown: 40000
+
+boon|4:
+    parameters:
+        duration: 45000
+        cooldown: 60000
+        effect_speed: 2
+        effect_night_vision: 5
+    costs:
+        mana: 100
+

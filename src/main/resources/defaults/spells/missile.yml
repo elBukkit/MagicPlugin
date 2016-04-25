@@ -1,0 +1,143 @@
+missile:
+    icon: diamond_axe:160
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
+    category: combat
+    worth: 150
+    earns_sp: 7
+    earns_cooldown: 10000
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           color_override: color
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: redstone
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: redstone
+          location: target
+        hit_block:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 0.2
+           particle_offset_y: 1
+           particle_offset_z: 0.2
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: redstone_block
+           particle_count: 30
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 20
+           particle_offset_x: 0.3
+           particle_offset_y: 0.5
+           particle_offset_z: 0.3
+           sound: magic.zap
+           sound_volume: .3
+           particle_data: 0.3
+        headshot:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 15
+           particle_offset_y: 0.2
+           particle_offset_x: 0.2
+           particle_offset_z: 0.2
+           particle_data: 0.1
+           sound: magic.zap
+           sound_volume: .3
+        -  class: EffectSingle
+           sound: entity_slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 50
+            particlesPerIteration: 4
+            iterations: 10
+            particle: block_crack
+            particleCount: 20
+            material: redstone_block
+            size: 0.1
+            yOffset: 0
+    headshot_parameters:
+      player_damage: 4
+      entity_damage: 6
+    parameters:
+        allow_max_range: true
+        velocity: 200
+        range: 24
+        hitbox: true
+        target_type: Damageable
+        player_damage: 2
+        entity_damage: 4
+        target_breakables: 1
+        cooldown: 1000
+        reorient: false
+    costs:
+        mana: 15
+
+missile|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    earns_cooldown: 600000
+    headshot_parameters:
+      player_damage: 5
+      entity_damage: 8
+    parameters:
+        range: 32
+        player_damage: 3
+        entity_damage: 6
+        target_breakables: 2
+    costs:
+        mana: 20
+
+missile|3:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    earns_cooldown: 900000
+    headshot_parameters:
+      player_damage: 6
+      entity_damage: 10
+    parameters:
+        range: 48
+        player_damage: 4
+        entity_damage: 8
+        target_breakables: 3
+    costs:
+        mana: 50
+
+missile|4:
+    headshot_parameters:
+      player_damage: 7
+      entity_damage: 11
+    parameters:
+        range: 64
+        player_damage: 4
+        entity_damage: 10
+        target_breakables: 4
+    costs:
+        mana: 80
+

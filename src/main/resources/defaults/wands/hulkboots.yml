@@ -1,0 +1,15 @@
+hulkboots:
+    icon: diamond_boots
+    indestructible: true
+    locked: true
+    keep: true
+    passive: true
+    mana_regeneration_boost: -0.3
+    glow: true
+    protection_falling: 1
+    cast_spell: fling
+    cast_parameters: min_speed 5 max_speed 5
+    cast_interval: 5000
+    cast_min_velocity: 0.5
+    cast_velocity_direction: 0,1,0
+

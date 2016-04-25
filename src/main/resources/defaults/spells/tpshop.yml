@@ -1,0 +1,14 @@
+tpshop:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        quiet: true
+        confirm_filler: stained_glass:5
+        cast_spells: true
+        spells:
+          randomtp: 1
+          

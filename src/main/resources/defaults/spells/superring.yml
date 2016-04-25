@@ -1,0 +1,29 @@
+superring:
+    icon: diamond_axe:26
+    icon_url: http://textures.minecraft.net/texture/94d8a4b21f84bb65fb9f3a656d4518f0662fcabc44d01c1e435787ca542a9dd
+    category: engineering
+    tags: noduel
+    class: ConstructSpell
+    cancellable: false
+    worth: 4000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_player_levelup
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        allow_max_range: true
+        range: 64
+        max_dimension: 16
+        target: select
+        type: sphere
+        orient_dimension_max: 0
+        orient_dimension_min: 0
+        thickness: 1
+        orient: true
+        transparent: transparent_to_construction
+        consume: true
+    costs:
+        mana: 200
+

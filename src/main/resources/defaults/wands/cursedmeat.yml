@@ -1,0 +1,9 @@
+#
+# Cursed Items
+#
+cursedmeat:
+  icon: rotten_flesh
+  locked: true
+  potion_effects: hunger:20
+
+

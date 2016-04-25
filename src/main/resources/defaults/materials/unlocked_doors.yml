@@ -1,0 +1,9 @@
+# Low-level doors (not iron)
+unlocked_doors:
+- wooden_door
+- spruce_door
+- birch_door
+- jungle_door
+- acacia_door
+- dark_oak_door
+

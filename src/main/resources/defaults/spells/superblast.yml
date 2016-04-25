@@ -1,0 +1,30 @@
+superblast:
+    icon: diamond_axe:111
+    icon_url: http://textures.minecraft.net/texture/eab81081362ed39651bb47e8650dc6bbc3d8a1db56827c186267e546df0743f
+    category: engineering
+    tags: noduel
+    cancellable: false
+    class: ConstructSpell
+    worth: 3000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_generic_explode
+        -  class: EffectTrail
+           particle: explosion_huge
+    parameters:
+        allow_max_range: true
+        range: 32
+        speed: 3
+        falling: false
+        brush: air
+        radius: 5
+        type: sphere
+        transparent: transparent_to_construction
+        check_destructible: false
+        speed: 0.9
+        direction: 0,0.8,0
+        falling: true
+    costs:
+        mana: 100
+

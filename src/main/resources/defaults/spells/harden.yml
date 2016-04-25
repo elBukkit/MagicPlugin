@@ -1,0 +1,40 @@
+harden:
+    icon: diamond_axe:185
+    icon_url: http://textures.minecraft.net/texture/25147d8c6addc07635b183ae1c4459f173bdfde239d949f56ce56d2728911e2
+    category: utility
+    worth: 150
+    earns_sp: 4
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: Recurse
+          actions:
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectTrail
+           particle: block_crack
+           sound: magic.shimmer
+    parameters:
+        allow_max_range: false
+        range: 16
+        size: 2
+        destructible_override: true
+        destructible: destructible,hardenable
+        brush: smooth_brick
+        transparent: transparent_to_construction
+        undo: 4000
+        cooldown: 1000
+        bypass_backfire: true
+        select_self: false
+        replace: true
+    costs:
+        mana: 30
+
+harden|2:
+    parameters:
+        size: 3
+        undo: 6000
+        brush: obsidian
+

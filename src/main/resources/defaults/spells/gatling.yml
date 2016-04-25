@@ -1,0 +1,46 @@
+gatling:
+    icon: diamond_axe:55
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    icon_url: http://textures.minecraft.net/texture/7134aed98232d9946f9dbd738a37e68f36a9a773a863dde206bb9115b993d78
+    category: combat
+    worth: 400
+    earns_sp: 5
+    actions:
+        cast:
+        - class: Delay
+          delay: 1000
+        - class: Repeat
+          actions:
+          - class: Projectile
+          - class: PlayEffects
+            effect: shoot
+            ignore_result: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.electrify
+           sound_pitch: 0.1
+        shoot:
+        -  class: EffectSingle
+           sound: entity_arrow_shoot
+           sound_pitch: 0.3
+           particle: smoke_normal
+    parameters:
+      target: none
+      projectile: TippedArrow
+      speed: 3
+      spread: 12
+      cooldown: 20000
+      damage: 0.1
+      repeat: 20
+      fire: false
+      lifetime: 200
+    costs:
+        mana: 100
+
+gatling|2:
+    parameters:
+      repeat: 15
+      damage: 0.2
+

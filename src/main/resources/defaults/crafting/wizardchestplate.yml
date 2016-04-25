@@ -1,0 +1,10 @@
+wizardchestplate:
+  output: wizardchestplate
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+  row_1: ioi
+  row_2: iii
+  row_3: iii
+

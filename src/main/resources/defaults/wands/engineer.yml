@@ -1,0 +1,56 @@
+#
+# A starter engineering wand
+#
+engineer:
+    inherit: master
+    effect_color: '00FF00'
+    path: engineer
+    icon: wood_hoe:5
+    migrate_icon: gold_axe
+    mana_regeneration: 90
+    mana_max: 400
+    mana: 400
+    organize: true
+    spells:
+      - rollback
+      - alter
+      - blob
+      - bridge
+      - convert
+      - recurse
+      - paint
+      - toss
+      - iterate
+      - repair
+      - tunnel
+      - commit
+      - pillar
+      - place
+      - levitate
+    materials:
+      - erase
+      - map
+      - stone
+      - dirt
+      - sand
+      - gravel
+      - glass
+      - glowstone
+      - stained_clay
+      - stained_glass
+      - stained_glass_pane
+      - soul_sand
+      - grass
+      - wood
+      - log
+      - vine
+      - mycel
+      - quartz_block
+      - leaves
+      - ice
+      - packed_ice
+      - obsidian
+      - redstone_block
+      - schematic|rainbow_blocks
+      - schematic|creeper_rug
+

@@ -1,0 +1,27 @@
+supercube:
+    icon: diamond_axe:100
+    icon_url: http://textures.minecraft.net/texture/b02fa9c938deafc7777eefefc6b614a68423e1c4a899a993f78ef7817517f9
+    category: engineering
+    tags: noduel
+    cancellable: false
+    class: ConstructSpell
+    worth: 5000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_player_levelup
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        allow_max_range: true
+        range: 64
+        max_dimension: 16
+        target: select
+        type: cuboid
+        transparent: transparent_to_construction
+        check_destructible: false
+        orient_dimension_min: 0
+        consume: true
+    costs:
+        mana: 400
+

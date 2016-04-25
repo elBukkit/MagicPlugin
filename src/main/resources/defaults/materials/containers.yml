@@ -1,0 +1,9 @@
+containers:
+- chest
+- furnace
+- brewing_stand
+- dispensers
+- hopper
+- dropper
+- trapped_chest
+

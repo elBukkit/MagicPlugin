@@ -1,0 +1,68 @@
+# Materials that must attach to another material when cloning or replicating
+# These are done in a second pass so they attach properly after whatever they've
+# attached to has copied over.
+# This also prevents server issues when trying to clone items that will not "stick",
+# which results in spawning thousands (or more) of item entities when they break and drop.
+# This should generally include all the things in attachables_double
+attachable:
+- snow
+- long_grass
+- dead_bush
+- yellow_flower
+- red_rose
+- wheat
+- flower_pot
+- brown_mushroom
+- red_mushroom
+- carrot
+- potato
+- crops
+- melon_stem
+- pumpkin_stem
+- sign_post
+- lever
+- bed_block
+- torch
+- redstone_wire
+- rails
+- stone_plate
+- wood_plate
+- redstone_torch_off
+- redstone_torch_on
+- diode_block_on
+- diode_block_off
+- tripwire
+- tripwire_hook
+- wood_button
+- gold_plate
+- iron_plate
+- redstone_comparator_off
+- redstone_comparator_on
+- daylight_detector
+- daylight_detector_inverted
+- activator_rail
+- powered_rail
+- detector_rail
+- carpet
+- portal
+- ender_portal
+- standing_banner
+- sand
+- gravel
+- trap_door
+- iron_trap_door
+- fire
+- cactus
+- iron_door_block
+- wooden_door
+- sugar_cane_block
+- double_plant
+- spruce_door
+- birch_door
+- jungle_door
+- acacia_door
+- dark_oak_door
+- standing_banner
+- cocoa
+- bed_block
+

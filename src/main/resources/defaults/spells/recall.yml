@@ -1,0 +1,114 @@
+recall:
+    icon: diamond_axe:149
+    icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
+    category: utility
+    tags: noduel,nojail
+    worth: 20
+    earns_sp: 5
+    cast_on_no_target: false
+    upgrade_required_path: beginner
+    upgrade_required_casts: 25
+    world_border_restricted: false
+    quick_cast: true
+    actions:
+        cast:
+        -  class: Delay
+        -  class: Recall
+    effects:
+        no_action: []
+        no_target: []
+        cast:
+        -  class: EffectSingle
+           sound: magic.teleport
+           sound_volume: 0.8
+           sound_pitch: 0.3
+           use_wand_location: false
+           color_override: color
+           effectlib:
+            class: WarpEffect
+            duration: $delay
+            period: 1
+            particle: redstone
+            particleOffsetX: 0.9
+            particleOffsetY: 0.1
+            particleOffsetZ: 0.9
+            radius: 1
+            offset: 0,-1,0
+        -  class: EffectSingle
+           use_wand_location: false
+           effectlib:
+            class: WarpEffect
+            duration: $delay
+            period: 2
+            particle: portal
+            particleCount: 10
+            particleOffsetX: 0.9
+            particleOffsetY: 0.1
+            particleOffsetZ: 0.9
+            radius: 1
+            offset: 0,-1,0
+        teleport:
+        -  class: EffectSingle
+           location: both
+           use_wand_location: false
+           color_override: color
+           effectlib:
+             class: WarpEffect
+             particle: redstone
+             particleOffsetX: 0.9
+             particleOffsetY: 0.1
+             particleOffsetZ: 0.9
+             offset: 0,-1,0
+             period: 2
+        -  class: EffectSingle
+           sound: magic.teleport
+           sound_pitch: 1.2
+           location: both
+           use_wand_location: false
+           effectlib:
+             class: WarpEffect
+             period: 1
+             particle: portal
+             particleCount: 10
+             particleOffsetX: 0.9
+             particleOffsetY: 0.1
+             particleOffsetZ: 0.9
+             offset: 0,-1,0
+    parameters:
+        delay: 5000
+        cancel_on_damage: 1
+        allow_spawn: false
+        allow_marker: false
+        allow_death: false
+        allow_wand: true
+        allow_home: true
+        allow_cross_world: true
+        allow_town: true
+        allow_fields: true
+        icon_death: skull_item
+        icon_field: wood_door
+        icon_wand: wood_hoe
+        icon_spawn: wood_door
+        icon_home: bed
+        icon_town: iron_door
+        icon_marker: redstone_torch_on
+        icon_move_marker: redstone_block
+        loud: true
+        cooldown: 15000
+        protection_duration: 5000
+        target: self
+
+recall|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 30
+    parameters:
+        allow_death: true
+
+recall|3:
+    actions:
+      alternate_down:
+      -  class: Recall
+         type: place
+    parameters:
+        allow_marker: true
+

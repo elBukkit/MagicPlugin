@@ -1,0 +1,80 @@
+levitate:
+    icon: diamond_axe:150
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    icon_url: http://textures.minecraft.net/texture/d02585f4a2b47524541d67ae253cf21fde8eea1c21494f61df5f4929a76e0
+    alias: fly
+    category: master
+    tags: noduel
+    class: LevitateSpell
+    worth: 5000
+    show_undoable: false
+    quick_cast: true
+    effects:
+        cast:
+           - class: EffectSingle
+             sound: entity_enderdragon_flap
+             location: origin
+             color_override: color
+             use_wand_location: false
+             use_eye_location: false
+             effectlib:
+                 class: SphereEffect
+                 particle: redstone
+                 radius: 1
+                 offset: 0,-0.5,0
+        deactivate:
+        -  class: EffectSingle
+           sound: entity_enderdragon_flap
+           sound_pitch: 0.2
+        land:
+        -  sound: block_stone_step
+           sound_pitch: 0.7
+        -  class: EffectRing
+           particle: block_crack
+           use_wand_location: false
+           use_eye_location: false
+           period: 4
+           particle_count: 80
+           particle_offset_x: 0.9
+           particle_offset_z: 0.9
+           particle_offset_y: 0.1
+           radius: 4
+    parameters:
+        speed: 0.2
+        cooldown: 30000
+    costs:
+        mana: 50
+    active_costs:
+        mana: 100
+
+levitate|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        speed: 0.5
+        cooldown: 20000
+
+levitate|3:
+    upgrade_required_path: engineer
+    upgrade_required_casts: 50
+    parameters:
+        speed: 0.75
+        cooldown: 10000
+
+levitate|4:
+    upgrade_required_path: engineer
+    upgrade_required_casts: 50
+    parameters:
+        speed: 1
+        cooldown: 5000
+    active_costs:
+        mana: 150
+
+levitate|5:
+    parameters:
+        speed: 2
+        cooldown: 1000
+    active_costs:
+        mana: 150
+

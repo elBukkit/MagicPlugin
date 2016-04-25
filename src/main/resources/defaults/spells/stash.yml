@@ -1,0 +1,29 @@
+stash:
+    icon: diamond_axe:106
+    icon_url: http://textures.minecraft.net/texture/a6cc486c2be1cb9dfcb2e53dd9a3e9a883bfadb27cb956f1896d602b4067
+    category: utility
+    worth: 2000
+    earns_sp: 1
+    show_undoable: false
+    quick_cast: true
+    actions:
+        cast:
+        - class: Inventory
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_enderman_hurt
+           effectlib:
+            class: WarpEffect
+            particle: block_crack
+            material: obsidian
+            duration: 1000
+            particleCount: 10
+            particleOffsetX: 1
+            particleOffsetZ: 1
+            particleOffsetY: 1
+    parameters:
+        target: self
+        type: ender_chest
+        cooldown: 2000
+

@@ -1,0 +1,70 @@
+rollback:
+    icon: diamond_axe:117
+    alias: undo
+    icon_url: http://textures.minecraft.net/texture/9be3ca3c869345a6f2a3be3391615dca1ea1c631d86e3938dbff57f11cbb61
+    category: engineering
+    tags: noduel
+    cancellable: false
+    worth: 9999
+    actions:
+        cast:
+        -  class: Undo
+        alternate_up:
+        -  class: Undo
+           target_caster: true
+        alternate_down:
+        -  class: Undo
+           target_down: true
+    effects:
+        no_target: 
+        -  class: EffectSingle
+           sound: magic.bonk
+           sound_volume: 1
+           effectlib:
+             class: SmokeEffect
+             duration: 1000
+        alternate_up:
+        - class: EffectSingle
+          sound: magic.shimmer
+          sound_volume: 1
+          location: both
+          particle_override: particleNucleus
+          color_override: colorOrbital
+          effectlib:
+               class: AtomEffect
+               particleNucleus: enchantment_table
+               particleOrbital: redstone
+               iterations: 8
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           sound_volume: 1
+           location: both
+        -  class: EffectSingle
+           particle_override: particleBase2
+           color_override: colorHelix
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: redstone
+             particleBase1: drip_lava
+             particleBase2: enchantment_table
+             iterations: 10
+             radius: 0.5
+             grow: 0.2
+             baseInterval: 5
+             length: 16
+             particlesBase: 5
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 64
+        transparent: air
+        bypass_backfire: true
+        loud: true
+        cancel: true
+        admin_permission: Magic.undo_others
+    costs:
+        mana: 100
+

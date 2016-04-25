@@ -1,0 +1,111 @@
+singularity:
+    icon: diamond_axe:190
+    icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
+    category: master
+    pvp_restricted: true
+    worth: 1000
+    earns_sp: 15
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        # Throw a block, and attach actions to block hit
+        # TNT, Projectile and ThrowItem can all work the same way
+        - class: ThrowBlock
+          actions:
+            # This switches the "brush" to erase
+            # Needed since the original brush was obsidian for ThrowBlock
+          - class: Brush
+            ignore_result: true
+            brush: erase
+            actions:
+            # First build a sphere
+            # Actions happen in order, so it stays here until
+            # the sphere finishes building
+            - class: Sphere
+              actions:
+              # Erase the block and spawn a falling block with an
+              # upward velocity
+              - class: ModifyBlock
+                direction: 0,1,0
+            # Once the sphere is complete, we start a Repeat action
+            # This will perform the actions below "repeat" number of
+            # times (see parameters - repeat: 10)
+            #
+            # Note that you can mix parameters in here or in the main
+            # spell parameters. Ones in here will override.
+            # However, you can only override the ones in the base
+            # parameter list with /cast or /wand override
+            # so it's best to use those so you can tweak in-game.
+          - class: Repeat
+            actions:
+            # Delay for a while
+            - class: Delay
+            # Do an AOE
+            - class: AreaOfEffect
+              actions:
+              # Pull (push: -1) entities inward
+              - class: Velocity
+                ignore_result: true
+                push: -1
+                entity_speed: 0.7
+              - class: Damage
+              # Delay a bit more
+            - class: Delay
+              # AOE, push entities outward slightly
+            - class: AreaOfEffect
+              actions:
+              - class: Velocity
+                ignore_result: true
+                push: 1
+                entity_speed: 0.1
+              - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.bonk
+           sound_pitch: 0.2
+           sound_volume: 0.3
+           location: origin
+        hit:
+        -  class: EffectSingle
+           location: origin
+           color: CC9933
+           firework: burst
+           sound: entity_generic_explode
+           sound: magic.hit
+           effectlib:
+             class: SphereEffect
+             iterations: 70
+             period: .1
+             particle: redstone
+             color: 010101
+             radius: 2
+             particles: 20
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 16
+             particle: smoke_normal
+    parameters:
+      target_type: Entity
+      brush: obsidian
+      undo: 15000
+      radius: 5
+      repeat: 10
+      delay: 250
+      damage: 1
+      target_self: true
+      speed: 0.5
+      item_speed: 0.5
+      entity_speed: 0.5
+      falling: true
+      radius: 5
+      destructible: destructible,destructible2,destructible3
+      destructible_override: true
+      cooldown: 30000
+    costs:
+        mana: 50
+

@@ -1,0 +1,4 @@
+skull_pokeball:
+  item: "skull_item|http://textures.minecraft.net/texture/d4422d2362662b3c61fb401aead919425a9a92ad9336d7a220147a14a1e"
+  worth: 10
+  name: "&bPokeball"

@@ -1,0 +1,72 @@
+blob:
+    icon: diamond_axe:128
+    icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
+    category: combat
+    worth: 100
+    earns_sp: 2
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          -  class: Sphere
+             actions:
+             -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield
+        tick:
+        -  location: target
+           particle: block_crack
+        hit:
+        -  location: target
+           effectlib:
+             class: SphereEffect
+             particle: block_crack
+             radius: $radius
+             duration: 2000
+    parameters:
+        velocity: 50
+        target_type: LivingEntity
+        miss_effects: hit
+        miss: actions
+        allow_max_range: true
+        range: 32
+        tick_size: 2
+        radius: 2
+        transparent: transparent_to_construction
+        undo: 2000
+        cooldown: 4000
+        brush: stained_glass
+        brushcolor: true
+        breakable: 3
+        destructible: destructible_replace
+    costs:
+        mana: 50
+
+blob|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        radius: 3
+        undo: 3000
+        cooldown: 5000
+        brush: stained_clay
+
+blob|3:
+    upgrade_required_path: architect
+    upgrade_required_casts: 50
+    parameters:
+        radius: 3
+        undo: 5000
+        cooldown: 8000
+        brush: obsidian
+
+blob|4:
+    parameters:
+        brush: ""
+        undo: 10000
+        cooldown: 8000
+

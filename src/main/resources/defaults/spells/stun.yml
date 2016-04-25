@@ -1,0 +1,64 @@
+stun:
+    icon: diamond_axe:179
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    icon_url: http://textures.minecraft.net/texture/a4b47e6847d71c60d0a6453313435d61f15b1523abd9741de36366deec1f38d6
+    category: combat
+    worth: 80
+    earns_sp: 15
+    actions:
+        cast:
+        - class: Firework
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+            - class: PotionEffect
+            - class: Deactivate
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer_quiet
+           sound_pitch: 0.1
+           sound_volume: 0.5
+           location: origin
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           color_override: color
+           effectlib:
+             class: SmokeEffect
+             iterations: 16
+             particle: spell
+    parameters:
+        target_type: Damageable
+        radius: 4
+        damage: 1
+        target_breakables: 0
+        bypass_backfire: false
+        effect_confusion: 5
+        effect_slow: 1
+        duration: 8000
+        launch: true
+        cooldown: 5000
+        firework: ball
+        power: 0
+        speed: 0.5
+        expected_lifespan: 10
+    costs:
+        mana: 50
+
+stun|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+        damage: 1.5
+        duration: 10000
+        target_breakables: 1
+
+stun|3:
+    parameters:
+        damage: 2
+        duration: 12000
+        target_breakables: 2
+

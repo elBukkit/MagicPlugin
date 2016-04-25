@@ -1,0 +1,22 @@
+bookshop:
+    icon: book
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: false
+        items:
+        - item: book|combat
+        - item: book|master
+        - item: book|utility
+        - item: book|demolition
+        - item: book|dark
+        - item: book|light
+        - item: book|engineering
+        - item: book|elemental
+        - item: book|mining
+        - item: book|electrical
+

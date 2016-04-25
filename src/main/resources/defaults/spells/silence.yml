@@ -1,0 +1,58 @@
+silence:
+    icon: diamond_axe:8
+    icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
+    category: dark
+    worth: 750
+    earns_sp: 10
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: ApplyCooldown
+          - class: Deactivate
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer_big
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 210B61
+             lengthGrow: 0.01
+        tick:
+        - location: target
+          particle: villager_angry
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: 380B61
+           firework: star
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEffect
+             iterations: 16
+             particle: spell_mob
+             color: 210B61
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 45
+             period: .1
+             particle: spell_mob
+             color: 210B61
+             radius: 1
+             particles: 20
+    costs:
+        mana: 80
+    parameters:
+        range: 16
+        cooldown: 20000
+        duration: 5000
+        target_type: LivingEntity
+        target_breakables: 1
+        target: other
+        hitbox: true
+

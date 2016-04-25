@@ -1,0 +1,49 @@
+mine:
+    icon: diamond_axe:123
+    icon_url: http://textures.minecraft.net/texture/c688f9a3b3db226582ae3f49d34aa9077b4d4f8102dd46f21bcb784a68f2c63
+    category: mining
+    tags: noduel,nojail
+    worth: 500
+    earns_sp: 10
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: Recurse
+          actions:
+          - class: Drop
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_item_break
+        -  class: EffectTrail
+           particle: block_crack
+           material: diamond_ore
+    parameters:
+        faces: all
+        allow_max_range: false
+        range: 32
+        recursion_depth: 2
+        destructible: ores
+        cooldown: 10000
+        bypass_undo: true
+    costs:
+        mana: 10
+
+mine|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        recursion_depth: 4
+
+mine|3:
+    upgrade_required_path: engineer
+    upgrade_required_casts: 50
+    parameters:
+        recursion_depth: 8
+
+mine|4:
+    parameters:
+        recursion_depth: 8
+        drop: mining
+

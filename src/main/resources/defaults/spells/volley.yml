@@ -1,0 +1,27 @@
+volley:
+    icon: diamond_axe:31
+    icon_url: http://textures.minecraft.net/texture/c7c963831339c9e82e91cd29bfa36ab616d78555dfbe7e72983e2e254180a2ab
+    category: engineering
+    tags: noduel
+    worth: 300
+    actions:
+        cast:
+        -  class: Multiply
+           actions:
+           -  class: Spread
+              actions:
+              -  class: ThrowBlock
+    effects:
+        hit:
+        -  class: EffectSingle
+           particle: block_crack
+           location: origin
+    parameters:
+      speed: 1.5
+      multiply: 8
+      pitch_max: 5
+      yaw_max: 45
+      consume: true
+    costs:
+        mana: 40
+

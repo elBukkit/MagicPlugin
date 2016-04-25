@@ -1,0 +1,22 @@
+staff:
+  inherit: master
+  hotbar_count: 2
+  active_spell: levitate|4
+  cost_reduction: 2
+  effect_color: 00FFAA
+  protected: true
+  icon: wood_hoe:6
+  migrate_icon: gold_pickaxe
+  spells:
+    - blink|6
+    - cloak
+    - gather
+    - heal
+    - levitate|4
+    - missile|4
+    - pickpocket
+    - lockpick
+    - time
+    - torch|4
+    - fling|4
+    

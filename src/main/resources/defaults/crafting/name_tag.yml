@@ -1,0 +1,12 @@
+name_tag:
+  enabled: false
+  output: name_tag
+  output_type: item
+  materials:
+    d: diamond
+    p: paper
+    s: string
+  row_1: " ps"
+  row_2: "pdp"
+  row_3: " p "
+  

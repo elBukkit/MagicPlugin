@@ -1,0 +1,22 @@
+respawn:
+    hidden: true
+    icon: compass
+    category: utility
+    worth: 50
+    actions:
+        cast:
+        -  class: Command
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_portal_travel
+           location: both
+           effectlib:
+             class: WarpEffect
+             particle: portal
+    parameters:
+        command: spawn
+        op: true
+        target: none
+        cooldown: 30000
+

@@ -1,0 +1,10 @@
+ocarina:
+  output: ocarina
+  output_type: wand
+  materials:
+    s: sugar_cane
+    i: hard_clay
+  row_1: "i i"
+  row_2: "isi"
+  row_3: "i i"
+  

@@ -1,0 +1,11 @@
+# Other default craftable items
+battle:
+  output: battle
+  output_type: wand
+  materials:
+    o: nether_star
+    i: stick
+  row_1: o
+  row_2: o
+  row_3: i
+

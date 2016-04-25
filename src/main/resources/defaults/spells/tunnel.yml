@@ -1,0 +1,21 @@
+tunnel:
+    icon: diamond_axe:110
+    icon_url: http://textures.minecraft.net/texture/c94772c7eca88e1128b71f71f8951233f7ea79dbc80e02bb407acffe175e
+    category: engineering
+    tags: noduel
+    cancellable: false
+    class: TunnelSpell
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_generic_explode
+        -  class: EffectTrail
+           particle: explosion_large
+    parameters:
+        allow_max_range: false
+        range: 32
+        destructible: destructible_mining
+    costs:
+        mana: 30
+

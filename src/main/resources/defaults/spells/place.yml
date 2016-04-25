@@ -1,0 +1,30 @@
+place:
+    icon: diamond_axe:89
+    icon_url: http://textures.minecraft.net/texture/c79136be2c1ed4c89e21bfc7846486c516d9b4d32965edfd5877fafa8aeb6
+    category: engineering
+    tags: noduel
+    worth: 1000
+    earns_sp: 10
+    actions:
+        cast:
+        - class: ChangeContext
+          target_attachment: true
+          actions:
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+        -  class: EffectTrail
+           particle: block_crack
+           particle_count: 10
+    parameters:
+        allow_max_range: false
+        range: 64
+        transparent: transparent_to_construction
+        check_destructible: false
+        consume: true
+    costs:
+        mana: 10
+

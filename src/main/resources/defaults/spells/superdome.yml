@@ -1,0 +1,28 @@
+superdome:
+    icon: diamond_axe:28
+    icon_url: http://textures.minecraft.net/texture/e468c9623ed74bc829f985d46d4646241daa2a682fec5f2343d55cd7a63693d
+    category: engineering
+    tags: noduel
+    class: ConstructSpell
+    cancellable: false
+    worth: 3000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_player_levelup
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        allow_max_range: true
+        range: 64
+        max_dimension: 16
+        thickness: 1
+        target: select
+        type: sphere
+        orient_dimension_min: 0
+        destructible: destructible_replace
+        transparent: transparent_to_construction
+        consume: true
+    costs:
+        mana: 200
+

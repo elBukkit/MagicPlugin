@@ -1,0 +1,27 @@
+night:
+    icon: diamond_axe:85
+    icon_url: http://textures.minecraft.net/texture/15f1fe5d5cc447e215243b4cf0b4eb56331f1b4f40909bb91a2963929ef1c2
+    category: elemental
+    quick_cast: true
+    worth: 800
+    earns_sp: 5
+    actions:
+        cast:
+        -  class: Time
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           effectlib:
+             offset: 0,4,0
+             class: HelixEffect
+             iterations: 2
+             particle: smoke_large
+    parameters:
+        target: none
+        cooldown: 1800000
+        time: night
+        cycle_moon_phase: true
+    costs:
+        mana: 150
+

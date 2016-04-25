@@ -1,0 +1,37 @@
+entangle:
+    icon: diamond_axe:177
+    icon_url: http://textures.minecraft.net/texture/b2545861d5871f75caa3b378ec44655bcb3d6cabe697b27303dbdaa8b5b5
+    category: combat
+    class: ConstructSpell
+    worth: 150
+    earns_sp: 3
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.crack
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        target: other
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 32
+        fov: .1
+        radius: 1
+        type: cuboid
+        brush: birch_fence
+        thickness: 1
+        orient_dimension_max: 0
+        orient_dimension_min: 0
+        orient: false
+        transparent: transparent_to_construction
+        check_destructible: true
+        destructible: destructible_replace
+        undo: 5000
+        breakable: 1
+        cooldown: 8000
+        instant_block_effects: true
+    costs:
+        mana: 70
+

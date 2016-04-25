@@ -1,0 +1,42 @@
+neutron:
+    icon: diamond_axe:52
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
+    category: dark
+    worth: 750
+    actions:
+        cast:
+        -  class: Projectile
+           actions:
+           -  class: AreaOfEffect
+              actions:
+              -  class: Probability
+                 actions:
+                 -  class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_creeper_primed
+        hit:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: HelixEffect
+             particle: flame
+             iterations: 1
+    parameters:
+        target: none
+        target_type: Damageable
+        projectile: Snowball
+        player_damage: 8
+        entity_damage: 15
+        radius: 32
+        cooldown: 10000
+    costs:
+        mana: 150
+
+neutron|2:
+    parameters:
+      probability: 0.75
+

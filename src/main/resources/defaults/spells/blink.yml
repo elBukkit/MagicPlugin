@@ -1,0 +1,105 @@
+blink:
+    icon: diamond_axe:134
+    icon_url: http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2
+    alias: tesseract
+    category: utility
+    tags: nojail
+    worth: 500
+    earns_sp: 2
+    upgrade_required_path: student
+    upgrade_required_casts: 40
+    actions:
+        cast:
+        - class: ChangeContext
+          target_caster: true
+          ignore_result: true
+          actions:
+          - class: FallProtectionAction
+        - class: Delay
+        - class: Teleport
+    effects:
+        teleport:
+        - class: EffectSingle
+          sound: magic.teleport
+          location: target
+        cast:
+         - class: EffectSingle
+           sound: magic.teleport
+           location: origin
+           particle_override: particleNucleus
+           color_override: colorOrbital
+           use_wand_location: false
+           effectlib:
+               class: AtomEffect
+               particleNucleus: dragon_breath
+               particleOrbital: redstone
+               iterations: 8
+               offset: 0,-1,0
+         - class: EffectSingle
+           color_override: color
+           effectlib:
+               class: LineEffect
+               particle: redstone
+    parameters:
+        target: block
+        allow_max_range: true
+        allow_passthrough: false
+        range: 12
+        cooldown: 10000
+        prevent_passthrough: nopassthrough
+        bypass_confusion: true
+        vertical_range: 8
+    costs:
+        mana: 50
+
+blink|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    parameters:
+        range: 16
+    costs:
+        mana: 60
+
+blink|3:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    actions:
+        alternate_up:
+        - class: Ascend
+          vertical_range: 255
+    parameters:
+        range: 24
+        cooldown: 7000
+    costs:
+        mana: 75
+
+blink|4:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 75
+    actions:
+        alternate_down:
+        - class: Descend
+          vertical_range: 255
+    parameters:
+        range: 32
+        cooldown: 5000
+    costs:
+        mana: 150
+
+blink|5:
+  upgrade_required_path: master
+  upgrade_required_casts: 100
+  parameters:
+      allow_passthrough: true
+      passthrough_range: 8
+      range: 48
+  costs:
+      mana: 150
+
+blink|6:
+  parameters:
+      safe: false
+      cooldown: 2000
+  costs:
+      mana: 200
+

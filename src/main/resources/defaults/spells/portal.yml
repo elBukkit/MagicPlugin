@@ -1,0 +1,23 @@
+portal:
+    icon: diamond_axe:71
+    icon_url: http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9
+    category: master
+    tags: noduel
+    class: PortalSpell
+    worth: 300
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_portal_travel
+        -  class: EffectTrail
+           particle: portal
+           particle_count: 8
+    parameters:
+        allow_max_range: false
+        range: 32
+        cooldown: 5000
+        undo: 10000
+        destructible: destructible_replace
+    costs:
+        mana: 20
+

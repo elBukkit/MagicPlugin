@@ -1,0 +1,65 @@
+magicitemshop:
+    icon: ender_portal_frame
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+        - item: wand|ocarina
+          cost: 100
+        - item: hylian_shield
+          cost: 100
+        - item: wand|goggles
+          cost: 4000
+        - item: wand|divinghelmet
+          cost: 1000
+        - item: wand|magichat
+          cost: 5000
+        - item: none
+        - item: none
+        - item: none
+        - item: none
+        - item: wand|wizardhelmet
+          cost: 4000
+        - item: wand|wizardchestplate
+          cost: 4000
+        - item: wand|wizardleggings
+          cost: 4000
+        - item: wand|wizardboots
+          cost: 4000
+        - item: wand|apprenticehelmet
+          cost: 200
+        - item: wand|apprenticechestplate
+          cost: 200
+        - item: wand|apprenticeleggings
+          cost: 200
+        - item: wand|apprenticeboots
+          cost: 200
+        - item: none
+        - item: wand|rabbitboots
+          cost: 1000
+        - item: wand|rocketboots
+          cost: 5000
+        - item: wand|hulkboots
+          cost: 10000
+        - item: wand|flashboots
+          cost: 15000
+        - item: wand|clericchestplate
+          cost: 25000
+        - item: wand|magneticleggings
+          cost: 50000
+        - item: none
+        - item: none
+        - item: wand|invisiblecloak
+          cost: 100000
+        - item: none
+        - item: none
+        - item: none
+        - item: wand|wolfhouse
+          cost: 1000000
+

@@ -1,0 +1,28 @@
+lockpick:
+    icon: diamond_axe:184
+    icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
+    category: staff
+    worth: 500
+    actions:
+       cast:
+       - class: Lock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           location: origin
+        -  class: EffectTrail
+           particle: smoke_normal
+           particle_data: 1
+           particle_count: 5
+    parameters:
+        bypass_build: true
+        type: unlock
+        override: true
+        range: 8
+        check_destructible: true
+        destructible: containers
+        cooldown: 10000
+    costs:
+        mana: 100
+

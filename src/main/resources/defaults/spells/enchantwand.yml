@@ -1,0 +1,12 @@
+enchantwand:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: EnchantWand
+    parameters:
+        levels: 30
+        cooldown: 7200000
+        loud: true
+

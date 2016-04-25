@@ -1,0 +1,31 @@
+superrepair:
+    icon: diamond_axe:104
+    icon_url: http://textures.minecraft.net/texture/2298724dfb9d1599590f4e8c3647c2c5532e8fae48fca12fe32a410bb4437a9
+    category: engineering
+    tags: noduel
+    cancellable: false
+    class: ConstructSpell
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_piston_extend
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        target: select
+        allow_max_range: true
+        max_dimension: 32
+        range: 32
+        type: sphere
+        check_destructible: false
+        indestructible: restricted
+        transparent: transparent_to_construction
+        brush: clone
+        brushmod: erase
+        otworld: ~-_backup
+        obworld: ~_backup
+        brushtarget: true
+    costs:
+        mana: 400
+

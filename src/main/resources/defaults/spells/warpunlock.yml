@@ -1,0 +1,21 @@
+# Use this with /castp <player> warpunlock unlock <warp>
+# This can be done, for example, on region enter using the WGRegionEvents plugin
+warpunlock:
+  earns_sp: 20
+  earns_cooldown: 30000
+  inherit: recall
+  actions:
+      cast:
+      -  class: Recall
+      alternate_down:
+      alternate_up:
+      alternate_sneak:
+  effects:
+    cast:
+    -  class: EffectSingle
+       sound: entity_player_levelup
+       firework: star
+  parameters:
+      cooldown: 5000
+      allow_marker: false
+

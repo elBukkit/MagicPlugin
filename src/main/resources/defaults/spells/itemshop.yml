@@ -1,0 +1,17 @@
+itemshop:
+    icon: carrot
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+        - item: carrot_item@64
+          cost: 100
+        - item: bed
+          cost: 200
+  

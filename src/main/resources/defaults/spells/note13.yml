@@ -1,0 +1,6 @@
+note13:
+    inherit: note
+    icon_url: http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f
+    parameters:
+      sound: flute.13Coctave
+               

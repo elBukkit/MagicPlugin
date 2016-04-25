@@ -1,0 +1,16 @@
+engineershop:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        quiet: true
+        path_end: master
+        auto_upgrade: true
+        use_sp: true
+        confirm_filler: stained_glass:2
+        spells:
+        - rollback
+

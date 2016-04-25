@@ -1,0 +1,35 @@
+alter:
+    icon: diamond_axe:125
+    icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
+    category: engineering
+    tags: noduel
+    cancellable: false
+    class: AlterSpell
+    worth: 1500
+    earns_sp: 12
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_cloth_break
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: redstone
+             speed: 2
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
+        -  class: EffectTrail
+           particle: redstone
+           particle_data: 2
+    parameters:
+        target_type: Entity
+        allow_max_range: false
+        range: 32
+        depth: 0
+        transparent: transparent_to_construction
+        check_destructible: false
+    costs:
+        mana: 10
+

@@ -1,0 +1,27 @@
+cloak:
+    icon: diamond_axe:116
+    icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+    category: master
+    tags: noduel
+    worth: 100
+    earns_sp: 5
+    actions:
+        cast:
+        -  class: PotionEffect
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.vanish
+        -  class: EffectTrail
+           particle: smoke_normal
+        -  class: EffectRing
+           particle: smoke_normal
+           location: target
+    costs:
+        mana: 50
+    parameters:
+        target: any_entity
+        duration: 8000
+        cooldown: 30000
+        effect_invisibility: 5
+    

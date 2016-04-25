@@ -1,0 +1,45 @@
+debugger:
+    icon: watch
+    hidden: true
+    category: staff
+    worth: 50
+    actions:
+        alternate_down:
+        - class: ChangeContext
+          target_caster: true
+          actions:
+          - class: Debugger
+            level: 10
+            check: true
+        alternate_up:
+        - class: AllEntities
+          actions:
+          - class: Debugger
+          - level: 0
+        cast:
+        - class: Debugger
+          level: 1
+          check: true
+        alternate_sneak:
+        - class: Debugger
+          level: 10
+          check: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           sound_volume: 1
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: spell_mob
+             lengthGrow: 0.3
+    parameters:
+        target: other
+        target_type: Entity
+        target_npc: true
+        range: 32
+        messsage_targets: false
+        loud: true
+        cooldown: 1000
+

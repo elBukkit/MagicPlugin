@@ -1,0 +1,31 @@
+repair:
+    icon: diamond_axe:103
+    icon_url: http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4
+    category: engineering
+    tags: noduel
+    cancellable: false
+    class: ConstructSpell
+    worth: 300
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_piston_extend
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 32
+        radius: 4
+        type: sphere
+        check_destructible: false
+        indestructible: restricted
+        transparent: transparent_to_construction
+        brush: clone
+        brushmod: erase
+        otworld: ~-_backup
+        obworld: ~_backup
+        brushtarget: true
+    costs:
+        mana: 200
+

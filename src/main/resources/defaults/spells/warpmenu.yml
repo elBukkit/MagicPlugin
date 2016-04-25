@@ -1,0 +1,14 @@
+# Use this for an NPC Recall menu with no warmup or sp earn.
+warpmenu:
+  earns_sp: 0
+  inherit: recall
+  actions:
+      cast:
+      -  class: Recall
+      alternate_down:
+      alternate_up:
+      alternate_sneak:
+  parameters:
+      cooldown: 500
+      allow_marker: false
+

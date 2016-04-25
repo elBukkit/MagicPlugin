@@ -1,0 +1,67 @@
+counterspell:
+    icon: diamond_axe:119
+    icon_url: http://textures.minecraft.net/texture/36cf36693ac95c88c8dd92e1d5a54c92f593e802b3ae834c6bd87628b1b83
+    category: combat
+    worth: 600
+    earns_sp: 20
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: Undo
+    effects:
+        cast:
+        -  class: EffectVariable
+           brightness:
+             '0.5':
+             - class: EffectSingle
+               sound: magic.shimmer
+               sound_volume: 1
+               location: both
+               particle_override: particleOrbital
+               effectlib:
+                   class: AtomEffect
+                   particleNucleus: smoke_normal
+                   particleOrbital: spell_instant
+                   iterations: 8
+             '5':
+             - class: EffectSingle
+               sound: magic.shimmer
+               sound_volume: 1
+               location: both
+               particle_override: particleOrbital
+               effectlib:
+                   class: AtomEffect
+                   particleNucleus: spell_instant
+                   particleOrbital: spell
+                   iterations: 8
+        -  class: EffectSingle
+           location: target
+           firework: star
+    parameters:
+        hitbox: false
+        transparent: air
+        allow_max_range: false
+        target: other
+        target_type: LivingEntity
+        target_blocks: true
+        target_other_blocks: true
+        target_timeout: 4000
+        target_block_timeout: 10000
+        target_breakables: 3
+        cancel: false
+        range: 50
+        fov: 1
+        bypass_protection: true
+        bypass_confusion: true
+        bypass_backfire: true
+        cooldown: 5000
+        fizzle_chance: 0.3
+    costs:
+        mana: 70
+
+counterspell|2:
+    parameters:
+        fizzle_chance: 0
+        cooldown: 10000
+

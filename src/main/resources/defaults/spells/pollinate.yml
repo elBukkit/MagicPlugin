@@ -1,0 +1,93 @@
+pollinate:
+    icon: diamond_axe:167
+    icon_url: http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb
+    category: engineering
+    tags: noduel
+    worth: 1200
+    earns_sp: 3
+    actions:
+        cast:
+        -  class: Repeat
+           repeat: 8
+           ignore_result: true
+           actions:
+           -  class: Brush
+              actions:
+              -  class: Spread
+                 actions:
+                 -  class: ThrowItem
+        - class: Brush
+          actions:
+          - class: ThrowItem
+            actions:
+            - class: Disc
+              actions:
+              - class: Cover
+                actions:
+                - class: Flower
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           location: source
+        despawn:
+        -  class: EffectSingle
+           sound: entity_generic_splash
+           sound_volume: 0.2
+           location: source
+           effectlib:
+              class: AtomEffect
+              particleNucleus: redstone
+              particleOrbital: drip_water
+              colorNucleus: "0000FF"
+              iterations: 16
+              radius: 4
+    parameters:
+        target: none
+        radius: 3
+        center_probability: 0.9
+        outer_probability: 0.1
+        vertical_range: 8
+        cooldown: 20000
+        age_items: 5940
+        item_speed_min: 0.75
+        item_speed_max: 1.1
+        yaw_max: 30
+        pitch_max: 2
+        uses_brush: false
+        brushes:
+        - yellow_flower
+        - red_rose
+        - red_rose:1
+        - red_rose:2
+        - red_rose:3
+        - red_rose:4
+        - red_rose:5
+        - red_rose:6
+        - red_rose:7
+        - red_rose:8
+        - double_plant
+        - double_plant:1
+        - double_plant:3
+        - double_plant:4
+        - double_plant:5
+        flowers:
+        - yellow_flower
+        - red_rose
+        - red_rose:1
+        - red_rose:2
+        - red_rose:3
+        - red_rose:4
+        - red_rose:5
+        - red_rose:6
+        - red_rose:7
+        - red_rose:8
+        tall_flowers:
+        - double_plant
+        - double_plant:1
+        - double_plant:3
+        - double_plant:4
+        - double_plant:5
+    costs:
+        mana: 100
+

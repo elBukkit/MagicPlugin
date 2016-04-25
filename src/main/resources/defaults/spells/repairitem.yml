@@ -1,0 +1,14 @@
+repairitem:
+  icon: anvil
+  category: npc
+  hidden: true
+  actions:
+      cast:
+      -  class: RepairItem
+  parameters:
+    target_type: Item
+    range: 8
+    cooldown: 10000
+  costs:
+    mana: 200
+

@@ -1,0 +1,28 @@
+warlock:
+  type: zombie
+  villager_profession: butcher
+  item: warlock_wand
+  chestplate: warlock_chestplate
+  leggings: warlock_leggings
+  helmet: chainmail_helmet
+  boots: warlock_boots
+  name: Warlock
+  health: 200
+  default_drops: false
+  cast_interval: 1000
+  cast:
+    missile: 20
+    poison: 30
+    pull: 100
+    curse: 100
+    blob: 20
+    lava: 10
+    shell: 20
+    none: 300
+  drops:
+  - gold_nugget@16
+  - sp:16
+  potion_effects:
+  - type: speed
+    amplifier: 1
+

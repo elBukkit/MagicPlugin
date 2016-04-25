@@ -1,0 +1,83 @@
+disarm:
+    icon: diamond_axe:43
+    icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
+    category: light
+    worth: 200
+    earns_sp: 7
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Disarm
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_endermen_teleport
+           sound: magic.crack
+           sound_pitch: 0.3
+           sound_volume: 0.5
+        tick:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: redstone
+             color: FF0000
+             lengthGrow: 0.05
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: DF0101
+           firework: star
+        backfire:
+        -  class: EffectSingle
+           sound: entity_player_hurt
+        -  class: EffectRing
+           particle: spell_mob
+           color: FF0000
+           location: self
+        fizzle:
+        -  class: EffectSingle
+           sound: entity_generic_explode
+        -  class: EffectRing
+           particle: redstone
+           color: FF0000
+           location: self
+    parameters:
+        target: other
+        velocity: 50
+        tick_size: 2
+        min_slot: 0
+        max_slot: 8
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 30
+        hitbox: true
+        fizzle_chance: 0.4
+        backfire_chance: 0.2
+        keep_in_inventory: true
+        target_breakables: 0
+        cooldown: 10000
+        undo: 5000
+    costs:
+        mana: 60
+
+disarm|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+        fizzle_chance: 0.3
+        backfire_chance: 0.1
+        cooldown: 8000
+        target_breakables: 1
+
+disarm|3:
+    parameters:
+        fizzle_chance: 0
+        backfire_chance: 0
+        cooldown: 6000
+        target_breakables: 2
+

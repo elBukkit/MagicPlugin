@@ -1,0 +1,10 @@
+fillwand:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: FillWand
+    parameters:
+        loud: true
+

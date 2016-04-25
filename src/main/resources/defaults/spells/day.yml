@@ -1,0 +1,44 @@
+day:
+    icon: diamond_axe:84
+    icon_url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
+    category: master
+    worth: 1000
+    earns_sp: 5
+    quick_cast: true
+    actions:
+        cast:
+        -  class: Time
+        -  class: Weather
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           effectlib:
+             offset: 0,4,0
+             class: HelixEffect
+             iterations: 1
+             particle: flame
+        -  class: EffectTrail
+           particle: flame
+           particle_data: 2
+           particle_count: 5
+        alternate:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           effectlib:
+             offset: 0,4,0
+             class: HelixEffect
+             iterations: 1
+             particle: flame
+        -  class: EffectTrail
+           particle: flame
+           particle_data: 2
+           particle_count: 5
+    parameters:
+        target: none
+        cooldown: 1800000
+        time: day
+        weather: clear
+    costs:
+        mana: 50
+

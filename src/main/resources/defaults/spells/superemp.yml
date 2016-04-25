@@ -1,0 +1,31 @@
+superemp:
+    icon: diamond_axe:132
+    icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
+    category: electrical
+    class: ConstructSpell
+    worth: 800
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.electrify
+        -  class: EffectTrail
+           particle: redstone
+           particle_count: 5
+        -  class: EffectRing
+           particle: redstone
+           particle_count: 6
+           location: target
+    parameters:
+        target: select
+        allow_max_range: false
+        range: 32
+        type: sphere
+        check_destructible: true
+        destructible: powerable
+        physics: true
+        cooldown: 5000
+        undo: 3000
+        entity_undo_types: ""
+    costs:
+        mana: 200
+

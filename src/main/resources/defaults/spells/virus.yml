@@ -1,0 +1,60 @@
+virus:
+    icon: diamond_axe:15
+    icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
+    category: automata
+    class: AnimateSpell
+    worth: 10000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_enderdragon_growl
+        -  class: EffectTrail
+           particle: block_crack
+    levels:
+        1: 100
+        3: 40
+        5: 20
+    radius: 10,12,16
+    yradius: 10,12,16
+    birth_range: 12,16,18
+    live_range: 20,24,28
+    move: 8,10,16
+    delay: 3500,3000,2500
+    drop_xp: 200,250,300
+    cast:
+        "boom transparent air,$birth,command,redstone_block range 48": 100,100,100
+        "arrowrain transparent air,$birth,command,redstone_block range 48": 50,70,90
+        "arrow|4 transparent air,$birth,command,redstone_block range 48": 50,90,200
+        "neutron transparent air,$birth,command,redstone_block range 48": 5,10,20
+        "mob transparent air,$birth,command,redstone_block range 48": 5,10,10
+        "lightning transparent air,$birth,command,redstone_block range 48": 50,70,90
+        "none": 100,80,50
+    death_cast:
+        neutron: 100,200,300
+        lightning|3: 100,100,100
+    parameters:
+        allow_max_range: false
+        bypass_undo: true
+        transparent: transparent_to_construction
+        check_destructible: false
+        range: 32
+        cooldown: 120000
+        name: Virus
+        target_max_range: 12
+        target_min_range: 0
+        delay: 3000
+        drop: virusheart
+        restricted: restricted_animate
+        message_type: evil
+        drop_xp: 300
+        concurrent: false
+        targets: any
+        target_mode: hunt
+        concurrent: true
+        birth_rules: 1,2,3
+        diagonal_birth_rules: 0,1
+        live_rules: 1,2,3
+        diagonal_live_rules: 0,1
+    costs:
+        xp: 400
+

@@ -1,0 +1,67 @@
+phase:
+    icon: diamond_axe:72
+    icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
+    category: master
+    tags: noduel,nojail
+    worth: 400
+    earns_sp: 2
+    quick_cast: true
+    actions:
+        cast:
+        - class: Delay
+        - class: PlayEffects
+          effects: phase
+        - class: ChangeWorld
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_portal_travel
+           sound_volume: 0.5
+           sound_pitch: 0.4
+           location: source
+           use_wand_location: false
+           effectlib:
+             class: AnimatedBall
+             particle: portal
+             duration: 5000
+             yOffset: -0.5
+             particleCount: 8
+             particleOffsetX: 0.9
+             particleOffsetY: 2
+             particleOffsetZ: 0.9
+        phase:
+        - class: EffectSingle
+          use_wand_location: false
+          sound: magic.teleport
+          location: source
+          sound_volume: 0.8
+          sound_pitch: 0.8
+          color: FF00FF
+          firework: star
+        teleport:
+        - class: EffectSingle
+          sound: magic.teleport
+          sound_volume: 0.8
+          sound_pitch: 0.8
+          location: target
+          use_wand_location: false
+          color: FF00FF
+          firework: star
+          effectlib:
+             class: AnimatedBall
+             particle: portal
+             duration: 2500
+             yOffset: -0.5
+             particleCount: 8
+             particleOffsetX: 0.9
+             particleOffsetY: 2
+             particleOffsetZ: 0.9
+    parameters:
+        delay: 5000
+        cancel_on_damage: 1
+        cooldown: 15000
+        target: self
+        vertical_range: 255
+    costs:
+        mana: 50
+

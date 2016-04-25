@@ -1,0 +1,21 @@
+trinketshop:
+    inherit: buyshop
+    parameters:
+        items:
+        - skull_present_green
+        - skull_present_red
+        - skull_aquarium
+        - skull_globe
+        - skull_clock
+        - skull_books
+        - skull_mario
+        - skull_luigi
+        - skull_yoshi
+        - skull_pokeball
+        - skull_apple
+        - skull_cake
+        - skull_hamburger
+        - skull_fries
+        - skull_taco
+        - skull_popcorn
+          

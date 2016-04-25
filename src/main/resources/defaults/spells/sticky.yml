@@ -1,0 +1,96 @@
+sticky:
+    icon: diamond_axe:165
+    icon_url: http://textures.minecraft.net/texture/f873525428823bffa57b74bdb1251de6e7c49660b35c995d2bf5d04a1ff34b8f
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    category: combat
+    worth: 300
+    earns_sp: 10
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: PlayEffects
+            effects: explode
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+          - class: Sphere
+            actions:
+            - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+        tick:
+        - particle: redstone
+          color: FF0000
+          location: target
+        projectile:
+        - class: EffectSingle
+          effectlib:
+             class: SphereEffect
+             particle: redstone
+             color: "FFA500"
+             iterations: 20
+             radius: 0.2
+             particles: 10
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+           location: target
+           effectlib:
+             class: SphereEffect
+             particle: redstone
+             color: "FF0000"
+             duration: $attach_duration
+             radius: 0.3
+             particles: 10
+        explode:
+        - location: target
+          particle: explosion_huge
+          sound: entity_generic_explode
+    parameters:
+        target: other
+        hitbox: true
+        allow_max_range: true
+        velocity: 20
+        gravity: 0.05
+        range: 48
+        target_type: Damageable
+        player_damage: 4
+        entity_damage: 8
+        target_breakables: 0
+        cooldown: 10000
+        target_self_timeout: 2000
+        attach_duration: 5000
+        radius: 1.5
+        speed: 1.2
+        destructible: destructible
+        destructible_override: true
+        falling: true
+        direction: 0,0.5,0
+        brush: air
+        undo: 15000
+        physics_blocks: true
+    costs:
+        mana: 80
+
+sticky|2:
+  upgrade_required_path: master
+  upgrade_required_casts: 50
+  parameters:
+      velocity: 25
+      radius: 2
+      player_damage: 6
+      entity_damage: 10
+
+sticky|3:
+  parameters:
+      velocity: 30
+      radius: 2.5
+      player_damage: 8
+      entity_damage: 12
+

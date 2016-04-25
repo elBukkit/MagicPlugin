@@ -1,0 +1,11 @@
+rabbitboots:
+    icon: leather_boots
+    indestructible: false
+    locked: true
+    keep: false
+    passive: true
+    mana_regeneration_boost: -0.1
+    potion_effects: speed:4,jump:4
+    enchantments:
+      protection_fall: 5
+

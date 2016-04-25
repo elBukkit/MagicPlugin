@@ -1,0 +1,10 @@
+quests:
+    icon: compass
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        - class: Command
+    parameters:
+      command: quest
+

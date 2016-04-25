@@ -1,0 +1,12 @@
+repairequipment:
+  icon: anvil
+  category: npc
+  hidden: true
+  actions:
+      cast:
+      -  class: RepairItem
+  parameters:
+    target_type: LivingEntity
+    armor: true
+    held_item: true
+

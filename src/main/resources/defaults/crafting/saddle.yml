@@ -1,0 +1,11 @@
+saddle:
+  enabled: false
+  output: saddle
+  output_type: item
+  materials:
+    d: diamond
+    l: leather
+  row_1: "d  "
+  row_2: "lll"
+  row_3: "l l"
+  

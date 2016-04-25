@@ -1,0 +1,110 @@
+homing:
+    icon: diamond_axe:163
+    icon_url: http://textures.minecraft.net/texture/e3152dba6ee22b6e89e88878acc5a01f5964946b8938e9a1470dfabbeeca
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    category: combat
+    worth: 750
+    earns_sp: 6
+    actions:
+        cast:
+        - class: Message
+          message: lock_on
+          message_target: true
+        - class: CustomProjectile
+          hitbox: true
+          actions:
+          - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           color_override: color
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             lengthGrow: 0.1
+             radiusGrow: 0.05
+             updateLocations: false
+             updateDirections: false
+        -  class: EffectSingle
+           requires_entity_target: true
+           sound: magic.shimmer
+           location: target
+           color_override: color
+           effectlib:
+             class: SphereEffect
+             iterations: 40
+             particle: redstone
+             radius: 0.1
+             particles: 10
+             offset: 0,-0.5,0
+        tick:
+        - particle: end_rod
+          color: FF0000
+          location: target
+        projectile:
+        - class: EffectSingle
+          effectlib:
+             class: SphereEffect
+             particle: redstone
+             color: "FFA500"
+             iterations: 100
+             radius: 0.4
+             particles: 10
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+           location: target
+           color2: FF0000
+           firework: burst
+    parameters:
+        fov: 0.75
+        hitbox: false
+        velocity: 5
+        range: 48
+        hitbox_size: 0.5
+        target_type: Damageable
+        player_damage: 4
+        entity_damage: 6
+        target_breakables: 1
+        cooldown: 10000
+        track_target: true
+        lifetime: 20000
+        target_self_timeout: 2000
+        track_speed: 0.1
+        use_target_location: false
+    costs:
+        mana: 100
+
+homing|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        range: 64
+        player_damage: 6
+        entity_damage: 8
+        track_speed: 0.2
+        velocity: 6
+
+homing|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        range: 64
+        player_damage: 8
+        entity_damage: 10
+        track_speed: 0.3
+        velocity: 7
+
+homing|4:
+    parameters:
+        range: 64
+        player_damage: 10
+        entity_damage: 12
+        track_speed: 0.4
+        velocity: 8
+

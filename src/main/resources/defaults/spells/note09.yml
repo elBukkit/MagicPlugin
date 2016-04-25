@@ -1,0 +1,6 @@
+note09:
+    inherit: note
+    icon_url: http://textures.minecraft.net/texture/def3c2c36a1f9328061af375aaf22f7d1d7921e97e57ea5fb7a99fdcb12540
+    parameters:
+      sound: flute.9G#
+               

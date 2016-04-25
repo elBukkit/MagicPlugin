@@ -1,0 +1,37 @@
+gills:
+    icon: diamond_axe:83
+    icon_url: http://textures.minecraft.net/texture/b47a2ebba3629cd387581f7b4b2bd471bc793f9d3b353862da8e9198e18c3193
+    category: light
+    worth: 100
+    actions:
+        cast:
+        -  class: PotionEffect
+        -  class: Hat
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_water_ambient
+           location: origin
+           use_wand_location: false
+           effectlib:
+             class: SphereEffect
+             iterations: 10
+             period: 4
+             particle: drip_water
+             radius: 0.5
+    parameters:
+        target_type: LivingEntity
+        target: self
+        cooldown: 30000
+        duration: 30000
+        undo: 30000
+        effect_water_breathing: 1
+        enchantments:
+          oxygen: 3
+          water_worker: 1
+          depth_strider: 3
+        brush: stained_glass
+        brushcolor: true
+    costs:
+        mana: 15
+

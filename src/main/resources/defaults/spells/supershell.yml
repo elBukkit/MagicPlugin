@@ -1,0 +1,27 @@
+supershell:
+    icon: diamond_axe:27
+    icon_url: http://textures.minecraft.net/texture/281923adf47a8ca699f6d09593e36d154acc707735eb25fd89d282f1f3bb2078
+    category: engineering
+    tags: noduel
+    class: ConstructSpell
+    cancellable: false
+    worth: 3500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_player_levelup
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        allow_max_range: true
+        range: 64
+        max_dimension: 16
+        thickness: 1
+        target: select
+        type: sphere
+        destructible: destructible_replace
+        transparent: transparent_to_construction
+        consume: true
+    costs:
+        mana: 250
+

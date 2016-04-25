@@ -1,0 +1,31 @@
+force:
+    icon: diamond_axe:151
+    icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
+    category: master
+    tags: noduel
+    class: ForceSpell
+    worth: 1000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_big
+           location: origin
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: spell_mob
+             particleBase1: spell_mob
+             particleBase2: spell_mob
+             iterations: 10
+    parameters:
+        target_type: LivingEntity
+        target_breakables: 1
+        target: other_entity
+        range: 48
+        item_force: 1
+        entity_force: 4
+        bypass_backfire: true
+    costs:
+        mana: 200
+

@@ -1,0 +1,82 @@
+forest:
+    icon: diamond_axe:42
+    icon_url: http://textures.minecraft.net/texture/31d45096a315b2ebe6239cbb16e7348ba8d5f93a9a37592434faeec7a5
+    category: elemental
+    worth: 400
+    actions:
+        cast:
+        - class: Repeat
+          actions:
+          - class: Spread
+            actions:
+            - class: Cover
+              actions:
+              - class: Tree
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_generic_splash
+        -  class: EffectTrail
+           particle: block_crack
+           material: log
+    parameters:
+        allow_max_range: false
+        range: 64
+        radius: 16
+        repeat: 16
+        require_sapling: false
+        cooldown: 30000
+        destructible: destructible,destructible_replace
+        biomes:
+          plains: tree
+          extreme_hills: tree,big_tree,redwood,tall_redwood
+          forest: tree,big_tree,birch,tall_birch
+          taiga: redwood,tall_redwood
+          swampland: tree,brown_mushroom,red_mushroom
+          ice_flats: tree,big_tree,redwood,tall_redwood
+          ice_mountains: tree
+          mushroom_island: brown_mushroom,red_mushroom
+          mushroom_island_shore: brown_mushroom,red_mushroom
+          desert_hills: tree
+          forest_hills: tree
+          taiga_hills: redwood,tall_redwood
+          smaller_extreme_hills: tree
+          jungle: jungle,jungle_bush,small_jungle,cocoa_tree
+          jungle_hills: jungle,jungle_bush,small_jungle,cocoa_tree
+          jungle_edge: tree,big_tree,jungle,jungle_bush,small_jungle,cocoa_tree
+          birch_forest: birch,tall_birch
+          birch_forest_hills: birch,tall_birch
+          roofed_forest: dark_oak,brown_mushroom,red_mushroom
+          taiga_cold: redwood,tall_redwood
+          taiga_cold_hills: redwood,tall_redwood
+          redwood_taiga: redwood,tall_redwood,mega_redwood
+          redwood_taiga_hills: redwood,tall_redwood,mega_redwood
+          extreme_hills_with_trees: tree,big_tree,redwood,tall_redwood
+          savanna: acacia
+          savanna_rock: acacia
+          mesa: tree
+          mesa_rock: tree
+          mesa_clear_rock: tree
+          mutated_plains: tree
+          mutated_desert: tree
+          mutated_forest: tree
+          mutated_taiga: redwood,tall_redwood
+          mutated_swampland: swamp
+          mutated_ice_flats: tree
+          mutated_jungle: jungle,jungle_bush,small_jungle,cocoa_tree
+          mutated_jungle_edge: tree,big_tree,jungle,jungle_bush,small_jungle,cocoa_tree
+          mutated_birch_forest: birch,tall_birch
+          mutated_birch_forest_hills: birch,tall_birch
+          mutated_roofed_forest: dark_oak
+          mutated_taiga_cold: redwood,tall_redwood
+          mutated_redwood_taiga: redwood,tall_redwood
+          mutated_redwood_taiga_hills: redwood,tall_redwood
+          mutated_extreme_hills_with_trees: redwood,tall_redwood
+          mutated_savanna: acacia
+          mutated_savanna_rock: acacia
+          mutated_mesa: tree
+          mutated_mesa_rock: tree
+          mutated_mesa_clear_rock: tree
+    costs:
+        mana: 200
+

@@ -1,0 +1,60 @@
+bubble:
+    icon: diamond_axe:76
+    alias: cushion
+    icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
+    category: utility
+    worth: 100
+    earns_sp: 5
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: DisablePhysics
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_generic_splash
+           location: both
+        tick:
+        -  location: target
+           particle: drip_water
+           particle_count: 4
+           particle_offset_x: 0.5
+           particle_offset_y: 0.5
+           particle_offset_z: 0.5
+        hit:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 10
+             period: .1
+             particle: drip_water
+             radius: 1.8
+             particles: 20
+    parameters:
+        velocity: 250
+        target_type: LivingEntity
+        allow_max_range: true
+        radius: 1
+        range: 25
+        cooldown: 2000
+        undo: 1000
+        duration: 3000
+        destructible: destructible_replace
+        brush: stationary_water
+        hitbox: true
+    costs:
+        mana: 10
+
+bubble|2:
+    parameters:
+        radius: 2
+        range: 40
+        undo: 2000
+

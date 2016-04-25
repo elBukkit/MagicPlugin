@@ -1,0 +1,18 @@
+spawnershop:
+  inherit: buyshop
+  parameters:
+    items:
+    - warlockspawner
+    - darkspiderspawner
+    - megaspiderspawner
+    - none
+    - none
+    - none
+    - none
+    - none
+    - none
+    - spiderspawner
+    - skeletonspawner
+    - zombiespawner
+    - cavespiderspawner
+

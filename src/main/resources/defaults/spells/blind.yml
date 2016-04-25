@@ -1,0 +1,70 @@
+blind:
+    icon: diamond_axe:166
+    icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560
+    category: combat
+    worth: 70
+    earns_sp: 6
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: PotionEffect
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: smoke_normal
+             lengthGrow: 0.01
+        tick:
+        - location: target
+          particle: smoke_normal
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: 2E2E2E
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           use_hit_location: false
+           requires_entity_target: true
+           effectlib:
+             class: SphereEffect
+             iterations: 17
+             period: 4
+             particle: smoke_normal
+             radius: 0.5
+             particles: 20
+        headshot:
+        -  class: EffectSingle
+           location: target
+           color: 2E2E2E
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           use_hit_location: false
+           requires_entity_target: true
+           effectlib:
+             class: SphereEffect
+             iterations: 30
+             period: 4
+             particle: smoke_normal
+             radius: 0.75
+             particles: 30
+    costs:
+        mana: 45
+    headshot_parameters:
+      duration: 5000
+    parameters:
+        velocity: 120
+        range: 32
+        target_type: LivingEntity
+        target_breakables: 0
+        target: other
+        duration: 2000
+        cooldown: 10000
+        effect_blindness: 5
+        hitbox: true
+

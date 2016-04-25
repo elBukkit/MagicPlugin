@@ -1,0 +1,49 @@
+colorshop:
+    icon: ink_sack
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm_filler: stained_glass:9
+        confirm: true
+        require_wand: true
+        items:
+        - item: wand|redeffects
+          cost: 10
+        - item: wand|greeneffects
+          cost: 10
+        - item: wand|blueeffects
+          cost: 10
+        - item: wand|lightblueeffects
+          cost: 10
+        - item: wand|aquaeffects
+          cost: 10
+        - item: wand|whiteeffects
+          cost: 10
+        - item: wand|blackeffects
+          cost: 10
+        - item: wand|purpleeffects
+          cost: 10
+        - item: wand|yelloweffects
+          cost: 10
+        - item: wand|orangeeffects
+          cost: 10
+        - item: wand|pinkeffects
+          cost: 10
+        - item: wand|magentaeffects
+          cost: 10
+        - item: wand|grayeffects
+          cost: 10
+        - item: wand|lightgrayeffects
+          cost: 10
+        - item: wand|browneffects
+          cost: 10
+        - item: wand|darkgreeneffects
+          cost: 10
+        - item: none
+        - item: wand|randomeffects
+          cost: 5
+

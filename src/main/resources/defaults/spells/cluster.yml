@@ -1,0 +1,28 @@
+cluster:
+    icon: diamond_axe:92
+    icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
+    category: demolition
+    pvp_restricted: true
+    worth: 600
+    earns_sp: 8
+    actions:
+        cast:
+        -  class: TNT
+           actions:
+           -  class: TNT
+              count: 4
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_creeper_primed
+    parameters:
+        target: none
+        size: 2
+        fuse: 60
+        fire: false
+        undo: 20000
+        cooldown: 15000
+        undo_speed: 0.2
+    costs:
+        mana: 150
+

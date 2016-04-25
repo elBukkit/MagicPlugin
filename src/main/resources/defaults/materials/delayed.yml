@@ -1,0 +1,4 @@
+# blocks that should otherwise be delayed until the second pass
+delayed:
+- redstone_block
+

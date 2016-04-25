@@ -1,0 +1,16 @@
+#
+# This creates a basic starter wand, and is the default wand given with the "/wand" command.
+# 
+wand:
+    inherit: base_wand
+    icon: wood_hoe:1
+    migrate_icon: wood_hoe
+    effect_color: random
+    path: beginner
+    active_spell: missile
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
+    spells:
+     - missile
+     

@@ -1,0 +1,32 @@
+bomb:
+    icon: diamond_axe:93
+    icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
+    category: demolition
+    pvp_restricted: true
+    worth: 500
+    earns_sp: 8
+    actions:
+        cast:
+        -  class: TNT
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_creeper_primed
+        -  class: EffectRing
+           particle: drip_lava
+           location: target
+           particle_count: 4
+    parameters:
+        target: none
+        size: 1
+        fuse: 60
+        fire: true
+        count: 12
+        py: ~20
+        pdy: -0.75
+        undo: 20000
+        cooldown: 12000
+        undo_speed: 0.2
+    costs:
+        mana: 175
+

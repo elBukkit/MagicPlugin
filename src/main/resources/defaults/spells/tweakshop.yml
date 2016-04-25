@@ -1,0 +1,34 @@
+tweakshop:
+    icon: nether_star
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: false
+        require_wand: true
+        items:
+          - wand|inventorymode
+          - wand|chestmode
+          - wand|cyclemode
+          - none
+          - none
+          - wand|quickcast_enable
+          - wand|quickcast_disable
+          - wand|quickcast_normal
+          - wand|quickcast_manual
+          - wand|mode_drop
+          - wand|mode_rightclick
+          - wand|mode_sword
+          - wand|mode_swap
+          - none
+          - wand|organizer
+          - wand|alphabetizer
+          - none
+          - none
+          - wand|loud
+          - wand|quiet
+          - wand|silent
+

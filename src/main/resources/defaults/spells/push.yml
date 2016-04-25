@@ -1,0 +1,104 @@
+push:
+    icon: diamond_axe:32
+    icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
+    category: elemental
+    worth: 50
+    earns_sp: 3
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
+    actions:
+        cast:
+        - class: VelocityAction
+          y_offset: 1
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: PlayEffects
+            effects: iterate
+          - class: ConeOfEffectAction
+            actions:
+            - class: VelocityAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_fire_extinguish
+           sound_volume: 1
+           sound_pitch: -0.1
+           location: origin
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: spell
+             particleBase1: spell
+             particleBase2: spell
+             iterations: 10
+        iterate:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: spell
+             particleBase1: spell
+             particleBase2: spell
+             iterations: 4
+    parameters:
+        target_type: Entity
+        range: 8
+        fov: 1
+        target_count: 2
+        item_speed: 0.1
+        living_entity_speed: 0.5
+        repeat: 3
+        delay: 250
+        y_offset: 0.75
+        cooldown: 5000
+    costs:
+        mana: 20
+
+push|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 40
+    parameters:
+      range: 10
+      target_count: 4
+      living_entity_speed: 0.6
+
+push|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+      range: 12
+      target_count: 6
+      living_entity_speed: 0.7
+
+push|4:
+    actions:
+        alternate_down:
+        - class: ChangeContext
+          target_caster: true
+          actions:
+          - class: AreaOfEffect
+            radius: 8
+            actions:
+            - class: Velocity
+              push: 1
+    effects:
+        alternate_down:
+        -  class: EffectSingle
+           sound: block_fire_extinguish
+           sound_volume: 1
+           sound_pitch: -0.1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             particle: spell
+    parameters:
+        living_entity_speed: 0.75
+        range: 16
+        target_count: 8
+        repeat: 4
+

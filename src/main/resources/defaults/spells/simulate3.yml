@@ -1,0 +1,25 @@
+simulate3:
+    icon: diamond_axe:13
+    icon_url: http://textures.minecraft.net/texture/7ee091dbd831daca4385f481d3a0c5bf6513e47db9a0926e567e10997cfd6ce2
+    category: electrical
+    class: SimulateSpell
+    worth: 1000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_endermen_ambient
+           sound_pitch: 1.5
+           sound_volume: 0.8
+    costs:
+        mana: 300
+    parameters:
+        range: 32
+        radius: 4
+        yradius: 4
+        live_rules: 3,4,5,6,7,8,9
+        birth_rules: 5
+        allow_max_range: false
+        death_material: air
+        commands: false
+        check_destructible: true
+

@@ -1,0 +1,10 @@
+apprenticechestplate:
+  output: apprenticechestplate
+  output_type: wand
+  materials:
+    o: emerald
+    i: wool
+  row_1: ioi
+  row_2: iii
+  row_3: iii
+

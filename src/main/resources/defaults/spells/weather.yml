@@ -1,0 +1,33 @@
+weather:
+    icon: diamond_axe:59
+    icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
+    category: elemental
+    worth: 500
+    earns_sp: 5
+    actions:
+        cast:
+        -  class: Weather
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: weather_rain
+           effectlib:
+             offset: 0,4,0
+             class: HelixEffect
+             iterations: 1
+             particle: drip_water
+        alternate:
+        -  class: EffectSingle
+           sound: entity_lightning_thunder
+           effectlib:
+             offset: 0,4,0
+             class: HelixEffect
+             iterations: 1
+             particle: drip_water
+    parameters:
+        target: none
+        cooldown: 900000
+        weather: cycle
+    costs:
+        mana: 150
+

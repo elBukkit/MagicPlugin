@@ -1,0 +1,41 @@
+borealis:
+    inherit: master
+    icon: wood_hoe:10
+    migrate_icon: gold_axe
+    quiet: 2
+    effect_color: '00AACC'
+    mode: chest
+    active_spell: levitate
+    cost_reduction: 2
+    cooldown_reduction: 2
+    consume_reduction: 1
+    protected: true
+    spells:
+        - levitate
+        - fling|2
+        - blink|3
+        - missile|4
+        - boon|2
+        - push
+        - heal
+        - pull
+        - day
+        - shell
+        - blob
+        - blast|4
+        - curse
+        - collapse|2
+        - recall
+        - tag
+        - pollinate
+        - torch|2
+        - weather
+        - ghast
+        - repair
+        - superalter
+        - tunnel
+        - familiar
+        - grow
+        - shrink
+        - force
+

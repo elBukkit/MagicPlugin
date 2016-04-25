@@ -1,0 +1,13 @@
+mutant:
+  type: pig_zombie
+  item: iron_sword
+  chestplate: iron_chestplate
+  leggings: iron_leggings
+  helmet: iron_helmet
+  boots: iron_boots
+  name: Mutant
+  health: 50
+  default_drops: false
+  drops:
+  - gold_nugget@5
+  

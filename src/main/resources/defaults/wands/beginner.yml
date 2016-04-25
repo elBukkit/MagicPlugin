@@ -1,0 +1,17 @@
+#
+#
+# Wand templates
+#
+# Can be created with /wand <key> and /wandp <key>
+#
+# Names and descriptions for wands are defined in messages.yml.
+#
+#
+#
+# A beginner wand, this is a leftover from previous configs.
+#
+# It is probably best to use the default "wand" for this now instead!
+#
+beginner:
+    inherit: wand
+

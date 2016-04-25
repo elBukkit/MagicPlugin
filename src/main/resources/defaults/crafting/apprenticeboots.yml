@@ -1,0 +1,10 @@
+apprenticeboots:
+  output: apprenticeboots
+  output_type: wand
+  materials:
+    o: emerald
+    i: wool
+  row_1:
+  row_2: i i
+  row_3: ioi
+

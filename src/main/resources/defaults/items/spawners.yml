@@ -1,0 +1,145 @@
+# Mob spawners     
+warlockspawner:
+  worth: 50000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Warlock Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Zombie
+        SpawnData:
+          id: Zombie
+          CustomName: Warlock
+          IsVillager: 1
+          
+darkspiderspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Dark Spider Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: CaveSpider
+        SpawnData:
+          id: CaveSpider
+          CustomName: Dark Spider
+                       
+megaspiderspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Mega Spider Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Spider
+        SpawnData:
+          id: Spider
+          CustomName: Mega Spider
+                    
+cavespiderspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Cave Spider Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: CaveSpider
+        SpawnData:
+          id: CaveSpider
+             
+spiderspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Spider Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Spider
+        SpawnData:
+          id: Spider
+                
+zombiespawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Zombie Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Zombie
+        SpawnData:
+          id: Zombie
+                  
+skeletonspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Skeleton Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Skeleton
+        SpawnData:
+          id: Skeleton
+          

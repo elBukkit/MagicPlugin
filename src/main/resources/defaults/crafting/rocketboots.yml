@@ -1,0 +1,12 @@
+rocketboots:
+  enabled: false
+  output: rocketboots
+  output_type: wand
+  materials:
+    o: nether_star
+    i: emerald
+    f: firework
+  row_1:
+  row_2: ioi
+  row_3: ifi
+

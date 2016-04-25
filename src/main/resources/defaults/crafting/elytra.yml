@@ -1,0 +1,11 @@
+elytra:
+  enabled: false
+  output: elytra
+  output_type: item
+  materials:
+    n: nether_star
+    i: iron_ingot
+    e: end_rod
+  row_1: " e "
+  row_2: "ini"
+  row_3: "i i"

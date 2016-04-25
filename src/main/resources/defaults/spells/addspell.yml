@@ -1,0 +1,11 @@
+addspell:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: AddSpell
+    parameters:
+        spell: flare
+        loud: true
+

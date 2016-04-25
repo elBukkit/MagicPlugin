@@ -1,0 +1,4 @@
+skull_popcorn:
+  item: "skull_item|http://textures.minecraft.net/texture/7444c78cf6ba309a89e27cbab9338ae2c072bce455df4babbfa8ecd3ae7baf53"
+  worth: 10
+  name: "&bPopcorn"

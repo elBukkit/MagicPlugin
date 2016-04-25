@@ -1,0 +1,14 @@
+crackedbroomstick:
+    mode: cast
+    uses: 10
+    active_spell: broom
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
+    indestructible: false
+    locked: true
+    keep: true
+    effect_color: '220022'
+    indestructible: true
+    spells:
+        - broom
+

@@ -1,0 +1,10 @@
+apprenticehelmet:
+  output: apprenticehelmet
+  output_type: wand
+  materials:
+    o: emerald
+    i: wool
+  row_1: iii
+  row_2: ioi
+  row_3:
+

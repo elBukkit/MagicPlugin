@@ -1,0 +1,10 @@
+wizardboots:
+  output: wizardboots
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+  row_1:
+  row_2: i i
+  row_3: ioi
+

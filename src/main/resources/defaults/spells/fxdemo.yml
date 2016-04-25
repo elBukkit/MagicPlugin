@@ -1,0 +1,464 @@
+fxdemo:
+    icon: diamond_axe:199
+    icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
+    category: staff
+    hidden: true
+    actions:
+      cast:
+      # AnimatedBallEffect
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing: &bAnimatedBall"
+      - class: PlayEffects
+        effects: animatedball
+      - class: Delay
+      # ArcEffect
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing: &bArc"
+      - class: PlayEffects
+        effects: arc
+      - class: Delay
+      # AtomEffect
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing: &bAtom"
+      - class: PlayEffects
+        effects: atom
+      - class: Delay
+      # BigBang
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b BigBang"
+      - class: PlayEffects
+        effects: bigbang
+      - class: Delay
+      # Circle
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Circle"
+      - class: PlayEffects
+        effects: circle
+      - class: Delay
+      # Cloud
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Cloud"
+      - class: PlayEffects
+        effects: cloud
+      - class: Delay
+      # Cone
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Cone"
+      - class: PlayEffects
+        effects: cone
+      - class: Delay
+      # Cube
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Cube"
+      - class: PlayEffects
+        effects: cube
+      - class: Delay
+      # Cylinder
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Cylinder"
+      - class: PlayEffects
+        effects: cylinder
+      - class: Delay
+      # DiscoBall
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b DiscoBall"
+      - class: PlayEffects
+        effects: discoball
+      - class: Delay
+      # Dna
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Dna"
+      - class: PlayEffects
+        effects: dna
+      - class: Delay
+      # Donut
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Donut"
+      - class: PlayEffects
+        effects: donut
+      - class: Delay
+      # Dragon
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Dragon"
+      - class: PlayEffects
+        effects: dragon
+      - class: Delay
+      # Earth
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Earth"
+      - class: PlayEffects
+        effects: earth
+      - class: Delay
+      # Flame
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Flame"
+      - class: PlayEffects
+        effects: flame
+      - class: Delay
+      # Fountain
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Fountain"
+      - class: PlayEffects
+        effects: fountain
+      - class: Delay
+      # Grid
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Grid"
+      - class: PlayEffects
+        effects: grid
+      - class: Delay
+      # Heart
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Heart"
+      - class: PlayEffects
+        effects: heart
+      - class: Delay
+      # Helix
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Helix"
+      - class: PlayEffects
+        effects: helix
+      - class: Delay
+      # Hill
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Hill"
+      - class: PlayEffects
+        effects: hill
+      - class: Delay
+      # Line
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Line"
+      - class: PlayEffects
+        effects: line
+      - class: Delay
+      # Love
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Love"
+      - class: PlayEffects
+        effects: love
+      - class: Delay
+        delay: 1500
+      # Music
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Music"
+      - class: PlayEffects
+        effects: music
+      - class: Delay
+        delay: 1000
+      # Shield
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Shield"
+      - class: PlayEffects
+        effects: shield
+      - class: Delay
+      # Smoke
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Smoke"
+      - class: PlayEffects
+        effects: smoke
+      - class: Delay
+        delay: 1000
+      # Sphere
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Sphere"
+      - class: PlayEffects
+        effects: sphere
+      - class: Delay
+      # Star
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Star"
+      - class: PlayEffects
+        effects: star
+      - class: Delay
+      # Text
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Text"
+      - class: PlayEffects
+        effects: text
+      - class: Delay
+      # Tornado
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Tornado"
+      - class: PlayEffects
+        effects: tornado
+      - class: Delay
+      # Trace
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Trace &7(Look at the caster!)"
+      - class: PlayEffects
+        effects: trace
+      - class: Delay
+      # Vortex
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Vortex"
+      - class: PlayEffects
+        effects: vortex
+      - class: Delay
+      # Warp
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Warp"
+      - class: PlayEffects
+        effects: warp
+      - class: Delay
+      # Wave
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&5Now Playing:&b Wave"
+      - class: PlayEffects
+        effects: wave
+      - class: Delay
+
+      # DONE
+      - class: AreaOfEffect
+        actions:
+        - class: Message
+          message: "&cThat's (nearly) all of 'em!"
+    effects:
+      animatedball:
+      - location: target
+        effectlib:
+          class: AnimatedBall
+          duration: $effect_duration
+      arc:
+      - location: target
+        effectlib:
+          class: Arc
+          duration: $effect_duration
+      atom:
+      - location: target
+        effectlib:
+          class: Atom
+          duration: $effect_duration
+      bigbang:
+      - location: target
+        effectlib:
+          class: BigBang
+          duration: $effect_duration
+      circle:
+      - location: target
+        effectlib:
+          class: Circle
+          duration: $effect_duration
+      cloud:
+      - location: target
+        effectlib:
+          class: Cloud
+          duration: $effect_duration
+      cone:
+      - location: target
+        effectlib:
+          class: Cone
+          duration: $effect_duration
+      cube:
+      - location: target
+        effectlib:
+          class: Cube
+          duration: $effect_duration
+      cylinder:
+      - location: target
+        effectlib:
+          class: Cylinder
+          duration: $effect_duration
+      discoball:
+      - location: target
+        effectlib:
+          class: DiscoBall
+          duration: $effect_duration
+      dna:
+      - location: target
+        effectlib:
+          class: Dna
+          duration: $effect_duration
+      donut:
+      - location: target
+        effectlib:
+          class: Donut
+          duration: $effect_duration
+      dragon:
+      - location: target
+        effectlib:
+          class: Dragon
+          duration: $effect_duration
+      earth:
+      - location: target
+        effectlib:
+          class: Earth
+          duration: $effect_duration
+      flame:
+      - location: target
+        effectlib:
+          class: Flame
+          duration: $effect_duration
+      fountain:
+      - location: target
+        effectlib:
+          class: Fountain
+          duration: $effect_duration
+      grid:
+      - location: target
+        effectlib:
+          class: Grid
+          duration: $effect_duration
+          type: repeating
+      heart:
+      - location: target
+        effectlib:
+          class: Heart
+          duration: $effect_duration
+          type: repeating
+      helix:
+      - location: target
+        effectlib:
+          class: Helix
+          duration: $effect_duration
+      hill:
+      - location: target
+        effectlib:
+          class: Hill
+          duration: $effect_duration
+      line:
+      - location: target
+        effectlib:
+          class: Line
+          duration: $effect_duration
+      love:
+      - location: target
+        effectlib:
+          class: Love
+          duration: $effect_duration
+      music:
+      - location: target
+        effectlib:
+          class: Music
+          duration: $effect_duration
+      shield:
+      - location: target
+        effectlib:
+          class: Shield
+          duration: $effect_duration
+      smoke:
+      - location: target
+        effectlib:
+          class: Smoke
+          duration: $effect_duration
+      sphere:
+      - location: target
+        effectlib:
+          class: Sphere
+          duration: $effect_duration
+      star:
+      - location: target
+        effectlib:
+          class: Star
+          duration: $effect_duration
+      text:
+      - location: target
+        effectlib:
+          class: Text
+          duration: $effect_duration
+          text: Magic!
+      tornado:
+      - location: target
+        effectlib:
+          class: Tornado
+          duration: $effect_duration
+      trace:
+      - location: both
+        effectlib:
+          class: Trace
+          duration: $effect_duration
+      vortex:
+      - location: target
+        effectlib:
+          class: Vortex
+          duration: $effect_duration
+      warp:
+      - location: target
+        effectlib:
+          class: Warp
+          duration: $effect_duration
+      wave:
+      - location: target
+        effectlib:
+          class: Wave
+          duration: $effect_duration
+    parameters:
+      radius: 48
+      range: 16
+      allow_max_range: true
+      target: block
+      oty: 6
+      target_type: Player
+      target_self: true
+      loud: true
+      cooldown: 30000
+      message_target: true
+      bypass_protection: true
+      delay: 6000
+      effect_duration: 5000
+

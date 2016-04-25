@@ -1,0 +1,74 @@
+poison:
+    icon: diamond_axe:180
+    icon_url: http://textures.minecraft.net/texture/f441923eb636b6fbc4cfba5475fd6abae52a41593a63d99bfecdd4d845b91a
+    category: combat
+    worth: 100
+    earns_sp: 7
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: PotionEffect
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+        tick:
+        - location: target
+          particle: slime
+          particle_count: 4
+          particle_offset_x: 0.5
+          particle_offset_z: 0.5
+          particle_offset_y: 0
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: 088A08
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           requires_entity_target: true
+           effectlib:
+             class: WarpEffect
+             particle: slime
+             iterations: 1
+        -  class: EffectSingle
+           location: target
+           requires_entity_target: true
+           effectlib:
+             class: SphereEffect
+             iterations: 60
+             period: .1
+             particle: slime
+             radius: .75
+             particles: 20
+    costs:
+        mana: 50
+    parameters:
+        velocity: 100
+        hitbox: true
+        range: 48
+        deactivate_target_mage: false
+        target_type: LivingEntity
+        target: other
+        target_breakables: 1
+        duration: 2500
+        effect_poison: 1.5
+        cooldown: 7000
+
+poison|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        range: 16
+        duration: 3000
+        effect_poison: 2
+
+poison|3:
+    parameters:
+        range: 24
+        duration: 3500
+        effect_poison: 3
+

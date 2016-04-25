@@ -1,0 +1,42 @@
+webbing:
+    icon: diamond_axe:203
+    hidden: true
+    icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
+    category: combat
+    actions:
+      cast:
+      - class: CustomProjectile
+        actions:
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
+        tick: 
+        - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.whip
+           location: origin
+        hit:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEffect
+             iterations: 30
+        tick:
+             particle: fireworks_spark
+    costs:
+        mana: 100
+    parameters:
+        allow_max_range: false
+        start: 1
+        velocity: 12
+        range: 8
+        radius: 1.5
+        brush: web
+        destructible: web,air
+        transparent: web,air
+        undo: 6000
+        breakable: 2
+        target_breakables: 0
+        cooldown: 5000

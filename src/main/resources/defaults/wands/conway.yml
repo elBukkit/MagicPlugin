@@ -1,0 +1,41 @@
+conway:
+    inherit: architect
+    effect_color: 'FFFFFF'
+    mana_regeneration: 50
+    mana_max: 500
+    effect_particle: portal
+    effect_particle_count: 3
+    icon: sapling:2
+    protection_falling: 1.0
+    protection: 0.8
+    spells:
+        - fly
+        - simulate
+        - glider
+        - pillar
+        - disintegrate
+        - fill
+        - emp
+        - blob
+        - superblob
+        - levitate
+        - undo
+        - commit
+        - simulate3
+        - animate
+    materials:
+        - schematic:life
+        - schematic:glider
+        - schematic:flare_beacon
+        - quartz_block
+        - quartz_block:2
+        - quartz_block:3
+        - obsidian
+        - cobblestone
+        - redstone_block
+
+
+ #
+ # ITEMS
+ #
+

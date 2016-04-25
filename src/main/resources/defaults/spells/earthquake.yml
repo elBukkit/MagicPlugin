@@ -1,0 +1,97 @@
+earthquake:
+    icon: diamond_axe:109
+    icon_url: http://textures.minecraft.net/texture/64764ad7b991afd8886d847f439b3d1753bc2632a7dbc047a9a040aa1ff98
+    category: combat
+    worth: 450
+    earns_sp: 8
+    actions:
+        cast:
+        # First thing it does is AOE Velocity
+        # To throw entities into the air
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+        # Then delay 1/2 second
+        - class: Delay
+          delay: 500
+        # The Parallel action runs its actions in Parallel
+        # Generally actions are run in sequence, so one must
+        # finish completely before moving on to the next
+        # This includes the Delay action - so important for animations
+        - class: Parallel
+          actions:
+          # Repat an AOE effect five times to apply a velocity to
+          # surrounding entities, continously tossing them into the air
+          - class: Repeat
+            repeat: 5
+            actions:
+            - class: Delay
+              delay: 1000
+            - class: AreaOfEffect
+              actions:
+              - class: Damage
+              - class: Velocity
+                speed: 0.2
+          # Create a disc, do this in parallel with the Repeating
+          # AOE above
+          - class: Disc
+            ignore_result: true
+            actions:
+            # The "Skip" action skips the actions below it
+            # every "skip" run (skip: 8 in params)
+            # What this does here is allows Disc to build 8 blocks,
+            # then the Delay runs- then the Delay is skipped 8 more times,
+            # etc- giving the Disc a "radiating outward" effect
+            - class: Skip
+              actions:
+              - class: Delay
+                delay: 500
+            - class: Cover
+              actions:
+              - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: spell_witch
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFF00
+           firework: burst
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,0.5,0
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 4
+             particle: flame
+    parameters:
+        target: other
+        target_type: Damageable
+        allow_max_range: false
+        range: 16
+        speed: 0.5
+        item_speed: 0.2
+        entity_speed: 1.2
+        falling: true
+        brush: air
+        direction: 0,1,0
+        radius: 5
+        destructible: destructible_mining
+        undo: 10000
+        skip: 8
+        target_self: true
+        cooldown: 20000
+        undo_speed: 0.5
+        damage: 1
+    costs:
+        mana: 150
+

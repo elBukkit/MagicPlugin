@@ -1,0 +1,74 @@
+shell:
+    icon: diamond_axe:22
+    icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
+    alias: dome
+    category: combat
+    worth: 150
+    earns_sp: 2
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: CustomProjectile
+           actions:
+           - class: Sphere
+             actions:
+             -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield
+        tick:
+        -  location: target
+           particle: block_crack
+        hit:
+        -  location: target
+           effectlib:
+             class: SphereEffect
+             particle: block_crack
+             radius: $radius
+             duration: 2000
+    parameters:
+        target: other
+        allow_max_range: false
+        velocity: 50
+        target_type: LivingEntity
+        range: 32
+        thickness: 1
+        radius: 3
+        type: sphere
+        transparent: transparent_to_construction
+        destructible: destructible_replace
+        check_destructible: true
+        undo: 4000
+        brush: stained_glass
+        brushcolor: true
+        cooldown: 5000
+        breakable: 4
+        reflect_chance: 0.25
+        miss_effects: hit
+        miss: actions
+    costs:
+        mana: 75
+
+shell|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+        reflect_chance: 0.5
+        undo: 5000
+        cooldown: 6000
+        breakable: 3
+
+shell|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        reflect_chance: 0.75
+        breakable: 2
+
+shell|4:
+    parameters:
+        reflect_chance: 0.9
+        breakable: 1
+

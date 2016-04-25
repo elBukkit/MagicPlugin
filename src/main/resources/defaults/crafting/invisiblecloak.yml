@@ -1,0 +1,12 @@
+invisiblecloak:
+  enabled: false
+  output: invisiblecloak
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+    e: ender_pearl
+  row_1: "iii"
+  row_2: "ioi"
+  row_3: "eoe"
+

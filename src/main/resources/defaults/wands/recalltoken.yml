@@ -1,0 +1,12 @@
+recalltoken:
+    mode: cast
+    active_spell: recall
+    icon: compass
+    indestructible: false
+    locked: true
+    uses: 5
+    keep: true
+    effect_color: 'FF0000'
+    spells:
+        - recall
+

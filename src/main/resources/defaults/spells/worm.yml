@@ -1,0 +1,61 @@
+worm:
+    icon: diamond_axe:16
+    icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
+    category: automata
+    class: AnimateSpell
+    worth: 8000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: slime_attack
+        -  class: EffectTrail
+           particle: block_crack
+    levels:
+        1: 100
+        3: 40
+        5: 10
+    move: 4,5,6
+    radius: 6,8,10
+    yradius: 6,8,10
+    birth_range: 6,8,10
+    live_range: 16,20,28
+    delay: 1800,1500,1200
+    drop_xp: 150,200,250
+    death_cast:
+        "blast target self commit true radius 12 speed -0^2 destructible $birth,command,redstone_block check_destructible true": 100,100,100
+        "blast target self commit true radius 12 speed -0^5 destructible $birth,command,redstone_block check_destructible true": 20,50,200
+    cast:
+        "blob brush stained_glass:15 radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 50,100,200
+        "curse transparent air,$birth,redstone_block,command": 100,100,200
+        "shrink transparent air,$birth,command,redstone_block": 30,50,70
+        "push transparent air,$birth,redstone_block,command": 100,100,100
+        "blob brush stained_glass:15 radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 20,40,80
+        "lava transparent air,$birth,redstone_block,command": 0,10,20
+        "lightning transparent air,$birth,redstone_block,command": 0,10,20
+        "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block,command": 20,40,80
+        "none": 20,10,5
+    parameters:
+        bypass_undo: true
+        allow_max_range: false
+        transparent: transparent_to_construction
+        check_destructible: false
+        range: 32
+        cooldown: 60000
+        name: Worm
+        target_min_range: 3
+        target_max_range: 128
+        delay: 1500
+        target_mode: hunt
+        targets: mage
+        birth_rules: 1,2,3,4,5,6,7
+        diagonal_birth_rules: 0,1,2,3
+        live_rules: 1,2,3,4,5,6,7
+        diagonal_live_rules: 0,1,2,3
+        concurrent: true
+        drop: wormheart
+        move: 4
+        restricted: restricted_animate
+        message_type: evil
+    costs:
+        xp: 250
+

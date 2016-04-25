@@ -1,0 +1,51 @@
+sandblast:
+    icon: diamond_axe:122
+    icon_url: http://textures.minecraft.net/texture/c1dc6e8c5e3da4aed0ca478e195b8fe3a438fd8cb775b9d10fa1ff7d2dcf714
+    category: combat
+    pvp_restricted: true
+    worth: 150
+    earns_sp: 3
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: ChangeContext
+            target_offset: 0,30,0
+            actions:
+            - class: Volume
+              actions:
+              - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_sand_step
+           location: both
+        tick:
+        -  location: target
+           particle: block_crack
+        hit:
+        -  location: target
+           effectlib:
+             class: SphereEffect
+             particle: block_crack
+             radius: $radius
+             duration: 2000
+    parameters:
+        velocity: 20
+        gravity: 0.05
+        allow_max_range: true
+        range: 24
+        brush: sand
+        radius: 1
+        undo: 20000
+        cooldown: 30000
+        destructible: destructible_replace
+    costs:
+        mana: 50
+
+sandblast|2:
+    parameters:
+      radius: 2
+

@@ -1,0 +1,37 @@
+pillar:
+    icon: diamond_axe:88
+    icon_url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
+    category: engineering
+    tags: noduel
+    worth: 1000
+    earns_sp: 10
+    consume: true
+    actions:
+        cast:
+        - class: BlockSearch
+          actions:
+          - class: ModifyBlock
+          - class: PlayEffects
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_stone_break
+           location: origin
+        -  class: EffectTrail
+           particle: block_crack
+           particle_count: 4
+        built:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+    parameters:
+        effects: built
+        allow_max_range: false
+        range: 64
+        transparent: transparent_to_construction
+        direction: up
+        destructible: destructible_replace
+        consume: true
+    costs:
+        mana: 5
+

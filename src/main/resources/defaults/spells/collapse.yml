@@ -1,0 +1,67 @@
+collapse:
+    icon: diamond_axe:114
+    icon_url: http://textures.minecraft.net/texture/1789289cba5bdef5f92dee5165a99d063f8785db78bdc6b41e3c4b099c04ca4
+    category: combat
+    worth: 150
+    earns_sp: 5
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: Sphere
+           actions:
+           -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: spell_witch
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFF00
+           firework: burst
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,0.5,0
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 4
+             particle: flame
+        undo:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           location: target
+           effectlib:
+               class: AtomEffect
+               particleNucleus: smoke_large
+               particleOrbital: redstone
+               iterations: 8
+    parameters:
+        allow_max_range: false
+        range: 16
+        brush: air
+        falling: true
+        radius: 2
+        transparent: transparent_to_construction
+        destructible_override: true
+        undo: 10000
+        cooldown: 8000
+        select_self: false
+        physics_blocks: true
+        undo_speed: 1
+    costs:
+        mana: 50
+
+collapse|2:
+    parameters:
+       destructible: destructible,destructible2,destructible3
+       radius: 3
+

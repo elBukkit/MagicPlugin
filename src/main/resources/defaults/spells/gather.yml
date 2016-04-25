@@ -1,0 +1,43 @@
+gather:
+    icon: diamond_axe:48
+    icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
+    category: master
+    tags: noduel,nojail
+    worth: 15
+    show_undoable: false
+    upgrade_required_path: student
+    upgrade_required_casts: 20
+    actions:
+        cast:
+        -  class: PlayerSelect
+           actions:
+           -  class: Command
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_player_levelup
+        player_selected:
+        -  class: EffectSingle
+           sound: entity_endermen_ambient
+        -  class: EffectTrail
+           particle: portal
+           particle_count: 4
+        -  class: EffectSingle
+           location: both
+           effectlib:
+             class: WarpEffect
+             particle: portal
+    parameters:
+        target: none
+        command: tpa @tn
+        target_self: false
+        cooldown: 30000
+        bypass_friendly_fire: true
+        bypass_pvp: true
+    costs:
+        mana: 50
+
+gather|2:
+    alternate_down_parameters:
+        command: tpahere @tn
+

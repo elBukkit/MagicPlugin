@@ -1,0 +1,24 @@
+fill:
+    icon: diamond_axe:80
+    icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
+    category: engineering
+    tags: noduel
+    class: FillSpell
+    cancellable: false
+    worth: 5000
+    effects:
+        cast:
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        select_self: false
+        allow_max_range: false
+        target: select
+        range: 64
+        max_dimension: 64
+        check_destructible: false
+        transparent: transparent_to_construction
+        consume: true
+    costs:
+        mana: 100
+

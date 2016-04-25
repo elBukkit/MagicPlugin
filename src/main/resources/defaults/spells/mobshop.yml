@@ -1,0 +1,10 @@
+mobshop:
+  inherit: buyshop
+  parameters:
+    items:
+    - philbertegg
+    - mutantegg
+    - witherarcheregg
+    - zombiehorseegg
+    - skelliehorseegg
+      

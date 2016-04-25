@@ -1,0 +1,25 @@
+paste:
+    icon: diamond_axe:169
+    icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
+    category: engineering
+    tags: noduel
+    class: ConstructSpell
+    cancellable: false
+    worth: 850
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_player_levelup
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        allow_max_range: true
+        check_destructible: false
+        use_brush_size: true
+        max_dimension: 256
+        target: block
+        type: cuboid
+        transparent: transparent_to_construction
+    casts:
+        mana: 300
+

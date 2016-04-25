@@ -1,0 +1,16 @@
+conduitshop:
+    icon: gold_axe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        quiet: true
+        path_end: architect
+        auto_upgrade: true
+        use_sp: true
+        confirm_filler: stained_glass:9
+        spells:
+        - backup
+

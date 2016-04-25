@@ -1,0 +1,54 @@
+lightning:
+    icon: diamond_axe:39
+    icon_url: http://textures.minecraft.net/texture/c0d34b6c68eca9dae0f9dabeadeb5f72536fa20ab4ecf669be895baf1c17
+    alias: storm
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    category: elemental
+    pvp_restricted: true
+    worth: 300
+    earns_sp: 2
+    actions:
+        cast:
+        -  class: Spread
+           actions:
+           -  class: Lightning
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_firework_large_blast
+        -  class: EffectTrail
+           particle: smoke_normal
+           particle_count: 2
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: HelixEffect
+             particle: smoke_normal
+             iterations: 3
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 32
+        radius: 8
+        cooldown: 10000
+    costs:
+        mana: 80
+
+lightning|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        radius: 6
+
+lightning|3:
+    actions:
+        cast:
+         - class: Repeat
+           actions:
+           - class: Spread
+             actions:
+             - class: Lightning
+    parameters:
+        repeat: 2
+

@@ -1,0 +1,39 @@
+secure:
+    icon: diamond_axe:183
+    icon_url: http://textures.minecraft.net/texture/e266e2ffa06f553ef326d8c92994c77edde2e521697b5fb4637ed644443e12
+    category: utility
+    upgrade_required_path: master
+    upgrade_required_casts: 10
+    worth: 150
+    earns_sp: 10
+    actions:
+       cast:
+       - class: Lock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           location: origin
+        -  class: EffectTrail
+           particle: smoke_normal
+           particle_data: 1
+           particle_count: 5
+    alternate_up_parameters:
+      type: key
+    alternate_sneak_parameters:
+      type: unlock
+    parameters:
+        range: 8
+        loud: true
+        transparent: air,attachable_wall
+        check_destructible: true
+        destructible: chest,trapped_chest
+        cooldown: 5000
+        key_icon: "skull_item:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992"
+    costs:
+        mana: 100
+
+secure|2:
+    parameters:
+        destructible: containers
+

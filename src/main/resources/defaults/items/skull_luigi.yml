@@ -1,0 +1,4 @@
+skull_luigi:
+  item: "skull_item|http://textures.minecraft.net/texture/44e18fbde3cdb6699cfcccbeaca7857cd9166e9a783b3bccbb2b05d9f11c4ed"
+  worth: 10
+  name: "&bLuigi"

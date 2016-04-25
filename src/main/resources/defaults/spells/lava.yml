@@ -1,0 +1,36 @@
+lava:
+    icon: diamond_axe:139
+    icon_url: http://textures.minecraft.net/texture/a9e073da36aaf2c844da428cd4a19dfde32c8cdc2404eed4a135f6095b17c
+    category: combat
+    pvp_restricted: true
+    worth: 250
+    earns_sp: 5
+    actions:
+      cast:
+      - class: DisablePhysics
+      - class: Line
+        actions:
+        - class: ModifyBlock
+        - class: Delay
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_lava_ambient
+        iterate:
+        -  class: EffectSingle
+           particle: lava
+    parameters:
+        target_type: LivingEntity
+        transparent: transparent_to_construction
+        allow_max_range: true
+        range: 8
+        size: 8
+        brush: stationary_lava
+        increment_data: true
+        undo: 200
+        cooldown: 5000
+        destructible: destructible_replace
+        delay: 1
+    costs:
+        mana: 65
+

@@ -1,0 +1,9 @@
+# Which materials are always considered indestructible.
+# No spell will ever modify a block of this type.
+# (The exception being accidental destruction via explosion or
+# removal of attached block)
+indestructible:
+- bedrock
+- barrier
+- ender_portal_frame
+

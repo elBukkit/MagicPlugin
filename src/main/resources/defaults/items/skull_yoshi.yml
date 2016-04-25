@@ -1,0 +1,4 @@
+skull_yoshi:
+  item: "skull_item|http://textures.minecraft.net/texture/5fc8b863995fb84685c273c859548c75d94f9b82cce41b1efff454fe03cc123"
+  worth: 10
+  name: "&bYoshi"

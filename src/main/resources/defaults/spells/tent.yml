@@ -1,0 +1,28 @@
+tent:
+    icon: diamond_axe:156
+    icon_url: http://textures.minecraft.net/texture/443e10a710998d47d238e291a8ba8f6abf42bc7e419d1d8dcc8c55707ebb19
+    category: master
+    class: ConstructSpell
+    worth: 700
+    earns_sp: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_anvil_use
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        radius: 8
+        type: sphere
+        cooldown: 120000
+        undo: 60000
+        brush: schematic|tent
+        transparent: transparent_to_construction
+        destructible: destructible_replace,destructible
+    costs:
+        mana: 150
+

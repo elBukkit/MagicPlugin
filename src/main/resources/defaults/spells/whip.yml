@@ -1,0 +1,49 @@
+whip:
+    icon: diamond_axe:198
+    icon_url: http://textures.minecraft.net/texture/543a93796b389fc710671b62106068619b7673e7bf48a6c77bc4db921d54
+    category: combat
+    worth: 100
+    earns_sp: 6
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: Velocity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+           location: origin
+        tick:
+        - location: target
+          particle: cloud
+          particle_count: 4
+          particle_offset_x: 0.05
+          particle_offset_y: 0.05
+          particle_offset_z: 0.05
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           sound_volume: .3
+           location: target
+           particle: explosion_large
+    parameters:
+        target: other
+        hitbox: true
+        allow_max_range: true
+        velocity: 8
+        reorient: false
+        range: 48
+        target_type: Damageable
+        player_damage: 3
+        entity_damage: 6
+        target_breakables: 2
+        cooldown: 5000
+        target_self_timeout: 2000
+        velocity: 10
+        track_speed: 0.75
+        track_range: 5
+    costs:
+        mana: 25
+

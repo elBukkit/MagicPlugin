@@ -1,0 +1,74 @@
+wound:
+    icon: diamond_axe:178
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
+    category: combat
+    worth: 100
+    earns_sp: 8
+    actions:
+        cast:
+        -  class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer_crack
+           sound_volume: 1
+           particle: sweep_attack
+        -  class: EffectSingle
+           sound: magic.electrify
+           sound_volume: 5
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: drip_lava
+             lengthGrow: 0.05
+        -  class: EffectSingle
+           location: target
+           color: 8A0829
+           effectlib:
+             class: BleedEffect
+             iterations: 2
+             hurt: false
+           effectlib:
+             class: SphereEffect
+             iterations: 16
+             period: 1
+             particle: drip_lava
+             radius: .5
+             particles: 15
+        no_target:
+        -  class: EffectSingle
+           sound: magic.crack
+           sound_volume: 1
+           particle: sweep_attack
+        -  class: EffectSingle
+           sound: magic.electrify
+           sound_volume: 5
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: drip_lava
+             lengthGrow: 0.05
+    parameters:
+        target_type: Damageable
+        allow_max_range: false
+        range: 5
+        hitbox: false
+        fov: 0.4
+        damage: 6
+        target_breakables: 3
+        cooldown: 5000
+        magic_damage: false
+        instant_block_effects: true
+    costs:
+        mana: 100
+
+wound|2:
+  parameters:
+    damage: 8
+
+wound|3:
+  parameters:
+    damage: 10
+

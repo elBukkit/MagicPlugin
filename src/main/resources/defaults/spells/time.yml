@@ -1,0 +1,31 @@
+time:
+    icon: diamond_axe:86
+    hidden: true
+    icon_url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
+    category: master
+    worth: 400
+    quick_cast: true
+    actions:
+        cast:
+        -  class: Time
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           location: origin
+           effectlib:
+             offset: 0,4,0
+             class: HelixEffect
+             iterations: 2
+             particle: enchantment_table
+    parameters:
+        target: none
+        allow_max_range: false
+        allow_night: true
+        allow_day: true
+        allow_glowstone: false
+        cooldown: 10000
+        time: toggle
+    costs:
+        mana: 40
+

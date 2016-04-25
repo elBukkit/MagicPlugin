@@ -1,0 +1,31 @@
+pickpocket:
+    icon: diamond_axe:107
+    icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
+    hidden: true
+    category: staff
+    worth: 2000
+    show_undoable: false
+    actions:
+        cast:
+        - class: Inventory
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_enderman_hurt
+        -  class: EffectTrail
+           particle: block_crack
+           material: obsidian
+    alternate_sneak_parameters:
+        type: ender_chest
+    parameters:
+        target_type: Player
+        target: other
+        type: inventory
+        range: 32
+        bypass_backfire: true
+        check_protection: true
+        bypass_pvp: true
+        bypass_friendly_fire: true
+    costs:
+        mana: 75
+

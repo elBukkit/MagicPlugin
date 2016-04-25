@@ -1,0 +1,46 @@
+disintegrate:
+    icon: diamond_axe:133
+    icon_url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
+    category: combat
+    worth: 300
+    earns_sp: 10
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: ModifyBlock
+            ignore_result: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_magmacube_jump
+        tick:
+        -  location: target
+           particle: drip_lava
+           particle_data: 1
+        hit:
+        -  location: target
+           effectlib:
+            class: AtomEffect
+            particleNucleus: smoke_large
+            iterations: 20
+            particlesNucleus: 5
+            particlesOrbital: 5
+            orbitals: 2
+            radius: 0.9
+    parameters:
+        velocity: 30
+        range: 5
+        target_type: Damageable
+        allow_max_range: true
+        target: other
+        brush: erase
+        player_damage: 6
+        entity_damage: 15
+        destructible: destructible,destructible2,destructible3
+        undo: 5000
+        cooldown: 1500
+    costs:
+        mana: 50
+

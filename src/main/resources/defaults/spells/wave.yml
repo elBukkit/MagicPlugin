@@ -1,0 +1,78 @@
+wave:
+    icon: diamond_axe:195
+    icon_url: http://textures.minecraft.net/texture/1d7cb6f2a4b2c2059621b7f6f84b5f0bc84c19ce981d054c26cec012ac
+    category: elemental
+    pvp_restricted: true
+    worth: 400
+    earns_sp: 8
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: Line
+           actions:
+           - class: PlayEffects
+             ignore_result: true
+             effects: iterate
+           - class: Volume
+             ignore_result: true
+             actions:
+             - class: Cover
+               actions:
+               - class: ModifyBlock
+           - class: AreaOfEffect
+             actions:
+             - class: Velocity
+               ignore_result: true
+             - class: Damage
+           - class: Delay
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer_quiet
+           sound_volume: 1
+           sound_pitch: 0.2
+           location: origin
+        iterate:
+        -  class: EffectSingle
+           location: origin
+           sound: magic.shimmer_quiet
+           effectlib:
+             class: SmokeEffect
+             iterations: 16
+             particle: smoke_normal
+    parameters:
+        target: block
+        target_type: Entity
+        start_at_target: true
+        x_size: 2
+        y_size: 0
+        z_size: 2
+        size: 8
+        range: 3
+        allow_max_range: true
+        orient: true
+        target_count: 16
+        item_speed: 0.2
+        living_entity_speed: 0.3
+        direction: 0,1,0
+        speed: 0.4
+        cooldown: 10000
+        delay: 250
+        brush: air
+        falling: true
+        undo: 15000
+        damage: 0.5
+        undo_speed: 0.5
+    costs:
+        mana: 150
+
+wave|2:
+    parameters:
+        x_size: 3
+        z_size: 3
+        item_speed: 0.4
+        living_entity_speed: 0.6
+        speed: 0.8
+        destructible: destructible,destructible2,destructible3
+

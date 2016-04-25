@@ -1,0 +1,43 @@
+#
+# A sampling of "pre-levelled up" wands
+#
+student:
+    inherit: beginner
+    icon: wood_hoe:2
+    migrate_icon: wood_hoe
+    effect_color: '00FF00'
+    mana_regeneration: 30
+    protection_falling: 0.5
+    mana_max: 150
+    mana: 150
+    spells:
+      - missile
+      - blink
+      - arrowrain
+      - boom
+      - familiar
+      - fling
+      - fire
+      - frost
+      - grenade
+      - heal
+      - monster
+      - lightning
+      - lava
+      - portal
+      - stream
+      - flamethrower
+      - wither
+      - mine
+      - chop
+      - shell
+      - tag
+      - blob
+      - disarm
+      - entangle
+      - poison
+      - laser
+      - tracking
+      - rocket
+      - shrink
+

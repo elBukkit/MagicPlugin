@@ -1,0 +1,27 @@
+effectshop:
+    icon: ink_sack
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm_filler: stained_glass:9
+        confirm: true
+        require_wand: true
+        items:
+        - item: wand|bubbleeffects
+          cost: 100
+        - item: wand|haloeffects
+          cost: 500
+        - item: wand|rainboweffects
+          cost: 500
+        - item: none
+        - item: none
+        - item: none
+        - item: none
+        - item: none
+        - item: wand|cleareffects
+          cost: 0
+

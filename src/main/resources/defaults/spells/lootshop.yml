@@ -1,0 +1,41 @@
+lootshop:
+    inherit: sellshop
+    parameters:
+        items:
+          - item: spider_eye@4
+            cost: 1
+          - item: string@2
+            cost: 1
+          - item: rotten_flesh@2
+            cost: 1
+          - item: bone@2
+            cost: 1
+          - item: ghast_tear
+            cost: 1
+          - item: blaze_powder
+            cost: 1
+          - item: sulphur
+            cost: 2
+          - item: slime_ball
+            cost: 3
+          - item: ender_pearl
+            cost: 4
+          - item: spider_eye@64
+            cost: 16
+          - item: string@64
+            cost: 32
+          - item: rotten_flesh@64
+            cost: 32
+          - item: bone@64
+            cost: 32
+          - item: ghast_tear@64
+            cost: 64
+          - item: blaze_powder@64
+            cost: 64
+          - item: sulphur@64
+            cost: 128
+          - item: slime_ball@64
+            cost: 192
+          - item: ender_pearl@64
+            cost: 256
+

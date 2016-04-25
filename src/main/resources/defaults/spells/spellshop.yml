@@ -1,0 +1,14 @@
+spellshop:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        quiet: true
+        confirm_filler: stained_glass:5
+        auto_upgrade: true
+        upgrade_levels: 15
+        use_sp: true
+

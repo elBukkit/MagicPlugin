@@ -1,0 +1,37 @@
+farm:
+    icon: diamond_axe:68
+    icon_url: http://textures.minecraft.net/texture/5d6c6eda942f7f5f71c3161c7306f4aed307d82895f9d2b07ab4525718edc5
+    category: elemental
+    class: FamiliarSpell
+    worth: 300
+    entity_types:
+        chicken: 30
+        cow: 100
+        pig: 100
+        mushroom_cow: 15
+        horse: 5
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_sheep_ambient
+           effectlib:
+             class: DnaEffect
+             particleHelix: drip_lava
+             iterations: 24
+             particleBase1: drip_water
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: AtomEffect
+             iterations: 32
+             particleNucleus: drip_water
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 64
+        count: 10
+        cooldown: 45000
+        undo: 30000
+    costs:
+        mana: 50
+

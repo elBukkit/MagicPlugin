@@ -1,0 +1,4 @@
+skull_present_green:
+  item: "skull_item|http://textures.minecraft.net/texture/64abe81e6f4961e0f6bd82f2d4135b6b5fc845739e71cfe3b8943531d921e"
+  worth: 10
+  name: "&bPresent"

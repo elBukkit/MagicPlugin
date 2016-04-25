@@ -1,0 +1,32 @@
+supercollapse:
+    icon: diamond_axe:115
+    icon_url: http://textures.minecraft.net/texture/a4cdbaa4de8eecc6363d760442688762daf588238f83a9da624eaa51e82bbb
+    category: engineering
+    tags: noduel
+    cancellable: false
+    class: ConstructSpell
+    worth: 900
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_generic_explode
+        -  class: EffectSingle
+           sound: entity_generic_explode
+           location: target
+           particle: explosion_huge
+        -  class: EffectTrail
+           particle: explosion_normal
+    parameters:
+        allow_max_range: true
+        range: 32
+        cooldown: 10000
+        max_dimension: 5
+        brush: air
+        falling: true
+        check_destructible: false
+        target: select
+        type: sphere
+        transparent: transparent_to_construction
+    costs:
+        mana: 250
+

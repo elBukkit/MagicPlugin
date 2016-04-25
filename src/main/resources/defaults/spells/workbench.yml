@@ -1,0 +1,20 @@
+workbench:
+    icon: diamond_axe:105
+    icon_url: http://textures.minecraft.net/texture/a5bf87cdeeefecb473472dc7c858ffa2e3ec5bd48c3718df49e2798e4aeff
+    category: engineering
+    tags: noduel
+    worth: 80
+    actions:
+        cast:
+        - class: Inventory  
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_piston_extend
+    parameters:
+        target: none
+        cooldown: 5000
+        type: workbench
+    costs:
+        mana: 30
+

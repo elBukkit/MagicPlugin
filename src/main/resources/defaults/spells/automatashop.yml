@@ -1,0 +1,18 @@
+automatashop:
+    icon: command
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        confirm_filler: stained_glass:14
+        sell: true
+        items:
+          wand|hunterheart: 500
+          wand|wormheart: 1500
+          wand|virusheart: 3000
+          wand|defenderheart: 100
+

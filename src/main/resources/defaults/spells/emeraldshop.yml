@@ -1,0 +1,15 @@
+emeraldshop:
+    icon: emerald
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        use_xp: true
+        confirm_filler: stained_glass:5
+        items:
+          emerald: 500
+

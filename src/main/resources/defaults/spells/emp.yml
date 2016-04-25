@@ -1,0 +1,36 @@
+emp:
+    icon: diamond_axe:131
+    icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
+    category: electrical
+    worth: 150
+    earns_sp: 15
+    actions:
+        cast:
+        -  class: Sphere
+           actions:
+           -  class: PowerBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.electrify
+        -  class: EffectTrail
+           particle: redstone
+           particle_count: 5
+        -  class: EffectRing
+           particle: redstone
+           particle_count: 3
+           location: target
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 8
+        radius: 5
+        cooldown: 5000
+        check_destructible: true
+        destructible: powerable
+        physics: true
+        undo: 200
+        entity_undo_types: ""
+    costs:
+        mana: 45
+

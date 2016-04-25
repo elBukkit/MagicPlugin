@@ -1,0 +1,79 @@
+magichat:
+    icon: diamond_axe:138
+    hidden: true
+    icon_url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369
+    category: utility
+    worth: 100
+    actions:
+      # Aim up and cast, and the hat goes on your head
+      alternate_up:
+      - class: Delay
+        delay: 1
+      - class: Hat
+      cast:
+      # Otherwise, we'll choose one from a random set of actions
+      - class: Random
+        actions:
+        # The "Serial" action just runs a group of actions one after another
+        # This is rarely needed, but in the case of the Random action,
+        # each item in the list is only a single action, so you need Serial
+        # to do more than one.
+        - class: Serial
+          # Optional, used by the Random action.
+          # higher weights have more chance of occuring
+          weight: 100
+          actions:
+          - class: SpawnEntity
+            type: rabbit
+            # This can be used to message the player.
+            # You can put text directly in here, or reference the spell's messages
+            # in messages.yml
+          - class: Message
+            message: cast_bunny
+        - class: Serial
+          weight: 1
+          actions:
+          - class: SpawnEntity
+            type: rabbit
+            rabbit_type: the_killer_bunny
+            # in messages.yml
+          - class: Message
+            message: cast_killer_bunny
+        - class: Serial
+          weight: 20
+          actions:
+          - class: AreaOfEffect
+            radius: 5
+            actions:
+            - class: PotionEffect
+              effect_night_vision: 2
+          - class: Message
+            message: cast_nightvision
+        - class: Serial
+          weight: 20
+          actions:
+          - class: AreaOfEffect
+            radius: 5
+            actions:
+            - class: PotionEffect
+              effect_absorption: 2
+          - class: Message
+            message: cast_absorption
+    effects:
+      cast:
+      -  class: EffectSingle
+         location: target
+         effectlib:
+           class: SphereEffect
+           iterations: 4
+           particle: smoke_large
+    parameters:
+      target_self: true
+      use_item: true
+      reason: custom
+      undo: 31000
+      duration: 30000
+      cooldown: 10000
+      range: 4
+      allow_max_range: true
+

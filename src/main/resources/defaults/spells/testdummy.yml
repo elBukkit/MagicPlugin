@@ -1,0 +1,31 @@
+testdummy:
+    icon: diamond_axe:65
+    icon_url: http://textures.minecraft.net/texture/f6f3e3c8aeff6128b1194ccf7e3eaddcf438e1938471a66ef76a09d4a3a1932
+    category: staff
+    quick_cast: true
+    hidden: true
+    actions:
+      cast:
+      - class: SpawnEntity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_villager_yes
+           effectlib:
+             class: DnaEffect
+             particleHelix: drip_lava
+             iterations: 24
+             particleBase1: drip_water
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: AtomEffect
+             iterations: 32
+             particleNucleus: drip_water
+    parameters:
+        target: block
+        track: false
+        type: villager
+        allow_max_range: true
+        range: 24
+

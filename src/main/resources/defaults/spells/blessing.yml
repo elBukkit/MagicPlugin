@@ -1,0 +1,44 @@
+blessing:
+    icon: diamond_axe:10
+    icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
+    category: master
+    worth: 700
+    earns_sp: 8
+    actions:
+        cast:
+        -  class: Projectile
+           actions:
+           -  class: AreaOfEffect
+              actions:
+              -  class: PotionEffect
+    effects:
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           sound: entity_villager_yes
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
+             particle: heart
+        hit:
+        -  class: EffectSingle
+           sound: entity_villager_yes
+           location: origin
+           effectlib:
+             class: HelixEffect
+             particle: heart
+             iterations: 2
+    parameters:
+        target_type: Player
+        projectile: Snowball
+        effect_heal: 6
+        effect_damage_resistance: 1
+        effect_fire_resistance: 1
+        duration: 5000
+        radius: 8
+        target_self: true
+        cooldown: 30000
+        bypass_friendly_fire: true
+    costs:
+        mana: 200
+

@@ -1,0 +1,28 @@
+cage:
+    icon: diamond_axe:157
+    icon_url: http://textures.minecraft.net/texture/862a3ecb44ccf65458b5413a909cd68bb76cef8d397827eaace2d59635b9943
+    category: master
+    class: ConstructSpell
+    worth: 600
+    earns_sp: 5
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_anvil_use
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        check_destructible: true
+        destructible: destructible_replace,destructible
+        range: 16
+        radius: 8
+        type: sphere
+        cooldown: 30000
+        undo: 10000
+        brush: schematic|cage
+        transparent: transparent_to_construction
+    costs:
+        mana: 50
+

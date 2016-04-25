@@ -1,0 +1,22 @@
+camera:
+    icon: diamond_axe:155
+    icon_url: http://textures.minecraft.net/texture/e49b4f3261328c05350ee4031212d2fc7555f211af91c0f0278a5aaf9cec65
+    hidden: true
+    category: specialty
+    class: CameraSpell
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: smoke
+           sound: entity_tnt_primed
+           location: origin
+    parameters:
+        target_type: LivingEntity
+        target_npc: true
+        cooldown: 5000
+        allow_max_range: false
+        range: 32
+    costs:
+        mana: 5
+

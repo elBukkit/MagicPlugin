@@ -1,0 +1,25 @@
+wandshop:
+    icon: wooden_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+        - item: wand|default
+          cost: 4000
+        - item: wand|student
+          cost: 80000
+        - item: wand|apprentice
+          cost: 135000
+        - item: wand|master
+          cost: 150000
+        - item: wand|architect
+          cost: 330000
+        - item: wand|battle
+          cost: 24000
+

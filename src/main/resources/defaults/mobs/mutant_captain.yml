@@ -1,0 +1,20 @@
+mutant_captain:
+  type: pig_zombie
+  item: iron_sword
+  chestplate: gold_chestplate
+  leggings: gold_leggings
+  helmet: gold_helmet
+  boots: gold_boots
+  name: Mutant Captain
+  health: 100
+  default_drops: false
+  drops:
+  - gold_nugget@10
+  - sp:8
+  potion_effects:
+  - type: speed
+    amplifier: 1
+  attributes:
+    generic_knockback_resistance: 1
+    generic_attack_speed: 5
+    

@@ -1,0 +1,29 @@
+admin:
+    inherit: conduit
+    icon: wood_hoe:6
+    migrate_icon: monster_eggs:2
+    cost_reduction: 2
+    cooldown_reduction: 1
+    protected: true
+    effect_color: '888888'
+    effect_bubbles: true
+    active_spell: levitate
+    spells:
+        - levitate
+        - superbroom
+        - blink|4
+        - missile|4
+        - cloak
+        - time
+        - heal
+        - phase
+        - gather
+        - supergather
+        - regenerate
+        - superregenerate
+        - pickpocket
+        - backup
+        - phasebackup
+        - repair
+        - superrepair
+

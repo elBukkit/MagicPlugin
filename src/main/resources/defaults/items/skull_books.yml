@@ -1,0 +1,4 @@
+skull_books:
+  item: "skull_item|http://textures.minecraft.net/texture/8d1b28f886ca3c8fc4301b785bf38c619ea66b68352a882bf8080e63034e0"
+  worth: 10
+  name: "&bBooks"

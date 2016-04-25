@@ -1,0 +1,74 @@
+boom:
+    icon: diamond_axe:35
+    icon_url: http://textures.minecraft.net/texture/70df3afc6a6035b189f83d2cfc84ff9ffe33750273247d1e41acb5a805f54
+    alias: kaboom
+    category: combat
+    pvp_restricted: true
+    worth: 200
+    earns_sp: 3
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Explosion
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_enderdragon_hurt
+           location: origin
+        -  class: EffectSingle
+           sound: entity_generic_explode
+           sound_pitch: 2
+           location: origin
+        tick:
+        - particle: redstone
+          color: 8A084B
+          location: target
+        - location: target
+          particle: fireworks_spark
+          particle_count: 6
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
+        hit:
+        -  class: EffectSingle
+           custom_sound: magic.shield_boom
+           sound_pitch: 2
+           location: both
+        -  class: EffectSingle
+           location: target
+           color: 8A084B
+           firework: burst
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: 8A084B
+           firework: burst
+           particle: explosion_huge
+    parameters:
+        target: block
+        gravity: .05
+        velocity: 100
+        allow_max_range: false
+        range: 32
+        break_blocks: false
+        size: 2
+        cooldown: 7000
+        undo: 3000
+        undo_speed: 0.5
+        miss_effects: hit
+        miss: actions
+    costs:
+        mana: 50
+
+boom|2:
+    parameters:
+        cooldown: 7000
+        size: 4
+        break_blocks: true
+        undo: 10000
+    costs:
+        mana: 75
+

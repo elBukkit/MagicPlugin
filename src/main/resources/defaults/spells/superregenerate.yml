@@ -1,0 +1,23 @@
+superregenerate:
+    icon: diamond_axe:78
+    icon_url: http://textures.minecraft.net/texture/a98cd720917c3d48a165c0418515e58d52c81f4b5271ff8d23790cca43f9b
+    category: engineering
+    tags: noduel
+    class: RegenerateSpell
+    cancellable: false
+    worth: 1500
+    effects:
+        cast:
+        -  class: EffectTrail
+           particle: block_crack
+           material: dirt
+    parameters:
+        allow_max_range: false
+        target: select
+        range: 64
+        max_dimension: 64
+        expand: true
+        transparent: transparent_to_construction
+    costs:
+        mana: 1000
+

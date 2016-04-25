@@ -1,0 +1,33 @@
+walls:
+    icon: diamond_axe:130
+    icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
+    category: combat
+    worth: 250
+    earns_sp: 5
+    actions:
+        cast:
+        -  class: Cylinder
+           actions:
+           -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 32
+        radius: 5
+        thickness: 1
+        transparent: transparent_to_construction
+        undo: 6000
+        cooldown: 10000
+        brush: stained_clay
+        brushcolor: true
+        breakable: 3
+        destructible: destructible_replace
+    costs:
+        mana: 75
+

@@ -1,0 +1,113 @@
+#
+# Base templates
+# These are used to specify defaults for wands and other magic items.
+#
+base_wand:
+    hidden: true
+    drop: toggle
+    left_click: cast
+    right_click: none
+    swap: cycle_hotbar
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+    effect_bubbles: false
+    attributes:
+      GENERIC_ATTACK_SPEED: 10
+    attribute_slot: mainhand
+  
+base_sword:
+    hidden: true
+    drop: toggle
+    left_click: none
+    right_click: none
+    swap: cycle_hotbar
+    quick_cast: true
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+
+
+base_lightsaber:
+    icon_inactive: wood_hoe:14
+    icon_inactive_delay: 500
+    drop: toggle
+    left_click: none
+    swap: cycle_hotbar
+    quick_cast: true
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
+    protection_physical: 0.5
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+    effect_bubbles: false
+    effects:
+        open:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: flame
+        close:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_normal
+        swing:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: flame
+        hit_entity:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_large
+        hit_block:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_normal
+        hit_blocked:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_normal
+             

@@ -1,0 +1,39 @@
+hat:
+    icon: diamond_axe:136
+    icon_url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369
+    category: utility
+    worth: 80
+    earns_sp: 1
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 40
+    actions:
+        cast:
+        -  class: Hat
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_generic_drink
+        -  class: EffectTrail
+           particle: block_crack
+           reverse: true
+    parameters:
+        target_self: true
+        target: block
+        allow_max_range: false
+        range: 32
+        cooldown: 30000
+        undo: 30000
+        transparent: transparent_to_construction
+    costs:
+        mana: 30
+
+hat|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 40
+    parameers:
+      undo: 60000
+
+hat|3:
+    parameers:
+      undo: 120000
+

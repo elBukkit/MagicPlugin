@@ -1,0 +1,84 @@
+fire:
+    icon: diamond_axe:75
+    icon_url: http://textures.minecraft.net/texture/7dbb7f75e74ad4218d2af7191752b5952144436ce8aa2bb6fb27168e6f28af
+    alias: inferno
+    category: demolition
+    pvp_restricted: true
+    worth: 200
+    earns_sp: 1
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Disc
+            actions:
+            - class: Cover
+              actions:
+              - class: Burn
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.burn
+           sound_volume: 1
+           location: both
+        tick:
+        -  class: EffectSingle
+           location: target
+           particle: lava
+           particle_count: 2
+           particle_offset_x: 0.1
+           particle_offset_y: 0.1
+           particle_offset_z: 0.1
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
+    parameters:
+        velocity: 80
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 48
+        hitbox: true
+        fov: 0.03
+        radius: 0
+        vertical_range: 4
+        undo: 1000
+        cooldown: 3000
+        target_breakables: 0
+        destructible: burnable
+    costs:
+        mana: 35
+
+fire|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    parameters:
+        radius: 1
+        cooldown: 4000
+        undo: 1500
+        target_breakables: 1
+    costs:
+        mana: 50
+
+fire|3:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+        radius: 1
+        undo: 5000
+        target_breakables: 1
+    costs:
+        mana: 60
+
+fire|3:
+    parameters:
+        radius: 2
+        cooldown: 4000
+        undo: 5500
+        target_breakables: 2
+    costs:
+        mana: 70
+

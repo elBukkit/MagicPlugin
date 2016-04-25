@@ -1,0 +1,34 @@
+arrowrain:
+    icon: diamond_axe:54
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    icon_url: http://textures.minecraft.net/texture/7d89462020cc12f63d5117d37b52e642536de7fa774d2d96e80c72e1d4ff6
+    category: combat
+    worth: 100
+    earns_sp: 5
+    actions:
+        cast:
+        -  class: Projectile
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_arrow_shoot
+    parameters:
+        target: none
+        projectile: TippedArrow
+        count: 4
+        fire: false
+        speed: 1
+        spread: 12
+        py: ~4
+        pdy: ~-0.2
+        undo: 15000
+        cooldown: 10000
+    costs:
+        mana: 30
+
+arrowrain|2:
+    parameters:
+       count: 8
+       fire: true
+

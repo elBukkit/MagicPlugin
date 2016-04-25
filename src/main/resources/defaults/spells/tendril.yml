@@ -1,0 +1,39 @@
+tendril:
+    icon: diamond_axe:129
+    icon_url: http://textures.minecraft.net/texture/564e7e4b718a7136188385cae256de87a6cb29c85744c9c123509a4c7cec69d0
+    category: combat
+    worth: 400
+    earns_sp: 5
+    pvp_restricted: true
+    actions:
+        cast:
+        - class: Volume
+          actions:
+          - class: Skip
+            actions:
+            - class: Delay
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield
+        -  class: EffectTrail
+           particle: drip_lava
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 2
+        use_brush_size: true
+        undo: 5000
+        cooldown: 20000
+        brush: schematic|tendril
+        breakable: 3
+        destructible: destructible_replace
+        orient: true
+        skip: 16
+        delay: 50
+        volume_type: yxz
+        center_z: false
+    costs:
+        mana: 100
+

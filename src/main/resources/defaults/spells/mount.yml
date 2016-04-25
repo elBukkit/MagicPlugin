@@ -1,0 +1,32 @@
+mount:
+    icon: diamond_axe:49
+    icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
+    tags: noduel
+    category: master
+    worth: 150
+    earns_sp: 2
+    show_undoable: false
+    actions:
+        cast:
+        - class: Mount
+        alternate_up:
+        - class: Mount
+          eject: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_irongolem_hurt
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 20
+             particle: slime
+    parameters:
+        target_type: Entity
+        allow_max_range: false
+        range: 16
+        bypass_friendly_fire: true
+        cooldown: 2000
+    costs:
+        mana: 60
+
