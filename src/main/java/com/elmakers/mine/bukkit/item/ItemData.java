@@ -65,6 +65,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         if (item == null) {
             throw new Exception("Invalid item configuration: " + key);
         }
+        this.key = key;
         worth = configuration.getDouble("worth", 0);
         creator = configuration.getString("creator");
         creatorId = configuration.getString("creator_id");
