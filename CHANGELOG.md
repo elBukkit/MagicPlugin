@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.2
+
 ## 6.1
 
  - All spell icons are now in the Resource Pack, player skulls are no longer used.
