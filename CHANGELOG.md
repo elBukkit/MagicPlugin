@@ -5,6 +5,7 @@
  - All spell icons are now in the Resource Pack, player skulls are no longer used.
  - The default files are no longer saved to your server. I found this too confusing for people. Check github for the defaults.
  - Updated "trinketshop" with lots more skulls
+ - All decorative player head names prefixed with "skull_"
  - Fix warlock wand appearance
  - Add /mitem add/remove unplaceable command, for making a block unplaceable
  - Add Dark Wizard, Mega Spider and Dark Spider mobs
@@ -17,7 +18,6 @@
  - Add DisguiseAction, Polymorph spell (not on any enchanting paths since it relies on LibsDisguises)
  - Nerfed Blessing
  - Item worth specified in items.yml will be used by shops, using a simple list of items
- - All decorative player head names prefixed with "skull_"
 
 ## 6.0.11
 
