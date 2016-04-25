@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.api.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -11,7 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Set;
 
-public class CheckBlockAction extends BaseSpellAction {
+public class CheckBlockAction extends CompoundAction {
     private Set<Material> allowed;
     
     @Override
@@ -21,31 +22,44 @@ public class CheckBlockAction extends BaseSpellAction {
         allowed = spell.getController().getMaterialSet(parameters.getString("allowed"));
     }
     
-    @SuppressWarnings("deprecation")
-    @Override
-    public SpellResult perform(CastContext context) {
+    protected boolean isAllowed(CastContext context) {
         MaterialBrush brush = context.getBrush();
         Block block = context.getTargetBlock();
         if (block == null) {
-            return SpellResult.STOP;
+            return false;
         }
         if (allowed != null) {
-            if (!allowed.contains(block.getType())) return SpellResult.STOP;
+            if (!allowed.contains(block.getType())) return false;
         } else {
             if (brush != null && brush.isErase()) {
                 if (!context.hasBreakPermission(block)) {
-                    return SpellResult.STOP;
+                    return false;
                 }
             } else {
                 if (!context.hasBuildPermission(block)) {
-                    return SpellResult.STOP;
+                    return false;
                 }
             }
             if (!context.isDestructible(block)) {
-                return SpellResult.STOP;
+                return false;
             }
         }
-        return SpellResult.CAST;
+        return true;
+    }
+    
+    @SuppressWarnings("deprecation")
+    @Override
+    public SpellResult step(CastContext context) {
+        boolean allowed = isAllowed(context);
+        ActionHandler actions = getHandler("actions");
+        if (actions == null || actions.size() == 0) {
+            return allowed ? SpellResult.CAST : SpellResult.STOP;
+        }
+        
+        if (!allowed) {
+            return SpellResult.NO_TARGET;
+        }
+        return startActions();
     }
 
     @Override
