@@ -1369,8 +1369,12 @@ public class MagicController implements MageController {
         String examplesFileName = usingExample ? "examples/" + exampleDefaults + "/" + fileName + ".yml" : null;
         String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
 
-        plugin.saveResource(defaultsFileName, true);
-
+        File savedDefaults = new File(configFolder, defaultsFileName);
+        if (savedDefaults.exists()) {
+            getLogger().info("Deleting defaults file: " + defaultsFileName + ", these have been removed to avoid confusion");
+            savedDefaults.delete();
+        }
+        
         getLogger().info("Loading " + configFile.getName());
         ConfigurationSection overrides = CompatibilityUtils.loadConfiguration(configFile);
         ConfigurationSection config = new MemoryConfiguration();
