@@ -250,6 +250,14 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			String itemString = configuration.saveToString().replace(ChatColor.COLOR_CHAR, '&');
 			player.sendMessage(itemString);
 		}
+		ItemData itemData = api.getController().getItem(item);
+		if (itemData != null) {
+			player.sendMessage(ChatColor.AQUA + "Give with: " + ChatColor.GRAY + "/mgive " + ChatColor.YELLOW + itemData.getKey());
+			double worth = itemData.getWorth();
+			if (worth > 0) {
+				player.sendMessage(ChatColor.AQUA + " Worth " + ChatColor.GREEN + worth);
+			}
+		}
 		return true;
 	}
 
