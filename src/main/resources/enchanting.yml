@@ -2,9 +2,14 @@
 # Modify this file to change the available enchanting paths.
 # New paths can be added, existing paths can be modified.
 #
-# This will change the overall behavior of how wands upgrade when put in an enchanting table.
+# This will change the overall behavior of how wands progress when players
+# spend SP to gain spells (or using the legacy enchanting system).
 #
-# See enchanting.defaults.yml for the defaults, and for more details.
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/enchanting
+#
+# For customization help see: 
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
 #
 
 #
@@ -15,6 +20,10 @@
 # - Wand crafting
 # - Wand enchanting
 # - Block populator
+#
+# Note that enchanting paths can now contain simple lists of spells, rather than probability tables.
+# The following information mostly only applies if you are still using the legacy enchanting system, and not the
+# SP / Spell Shop system.
 #
 # The randomization system works with "levels".
 # When enchanting, these map directly to the number of xp levels a player spends.
@@ -53,3 +62,16 @@
 # Note that the actual values need not add up to 100- and generally do not. This is much easier to tweak, but also generally
 # harder to comprehend when looking at the numbers- I'm thinking about ways to clean that up.
 #
+
+#
+# Examples:
+# Note that a "#" chararacter means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
+# 
+
+# Change broadcast message
+# default:
+#  upgrade_commands:
+#    - broadcast &6@pd &3has graduated to &b$path&3!
+

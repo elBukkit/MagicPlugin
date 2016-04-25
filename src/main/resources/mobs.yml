@@ -1,7 +1,12 @@
 #
 # Modify this file to change, add or disable custom mob types.
 #
-# See mobs.defaults.yml for the default mobs. 
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/mobs
+#
+# For customization help see: 
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
 #
 
 #
@@ -12,5 +17,19 @@
 #       type: <mob type enum/name>
 #       health: 100
 
+#
+# Examples:
+# Note that a "#" chararacter means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
+# 
 
+# Add a disguised mob type (requires LibsDisguises plugin!)
+# cowlock:
+#   type: zombie
+#   name: Cowlock
+#   health: 200
+#   default_drops: false
+#   disguise:
+#     type: cow
 

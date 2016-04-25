@@ -305,6 +305,14 @@
 			</includes>
 			<excludes>
 				<exclude>**/defaults/items/*.yml</exclude>
+				<exclude>**/defaults/config/*.yml</exclude>
+				<exclude>**/defaults/crafting/*.yml</exclude>
+				<exclude>**/defaults/enchanting/*.yml</exclude>
+				<exclude>**/defaults/materials/*.yml</exclude>
+				<exclude>**/defaults/messages/*.yml</exclude>
+				<exclude>**/defaults/mobs/*.yml</exclude>
+				<exclude>**/defaults/spells/*.yml</exclude>
+				<exclude>**/defaults/wands/*.yml</exclude>
 			</excludes>
 		</resource>
 		<resource>
@@ -313,6 +321,14 @@
 			<excludes>
 				<exclude>**/*.yml</exclude>
 				<exclude>**/defaults/items/*.yml</exclude>
+				<exclude>**/defaults/config/*.yml</exclude>
+				<exclude>**/defaults/crafting/*.yml</exclude>
+				<exclude>**/defaults/enchanting/*.yml</exclude>
+				<exclude>**/defaults/materials/*.yml</exclude>
+				<exclude>**/defaults/messages/*.yml</exclude>
+				<exclude>**/defaults/mobs/*.yml</exclude>
+				<exclude>**/defaults/spells/*.yml</exclude>
+				<exclude>**/defaults/wands/*.yml</exclude>
 			</excludes>
 		</resource>
 	</resources>
@@ -340,6 +356,46 @@
 							<target>
 								<concat destfile="${project.build.directory}/classes/defaults/items.defaults.yml" overwrite="yes" fixlastline="yes">
 									<fileset dir="${project.basedir}/src/main/resources/defaults/items">
+										<include name="**/*.yml"></include>
+									</fileset>
+								</concat>
+								<concat destfile="${project.build.directory}/classes/defaults/config.defaults.yml" overwrite="yes" fixlastline="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/config">
+										<include name="**/*.yml"></include>
+									</fileset>
+								</concat>
+								<concat destfile="${project.build.directory}/classes/defaults/crafting.defaults.yml" overwrite="yes" fixlastline="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/crafting">
+										<include name="**/*.yml"></include>
+									</fileset>
+								</concat>
+								<concat destfile="${project.build.directory}/classes/defaults/enchanting.defaults.yml" overwrite="yes" fixlastline="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/enchanting">
+										<include name="**/*.yml"></include>
+									</fileset>
+								</concat>
+								<concat destfile="${project.build.directory}/classes/defaults/materials.defaults.yml" overwrite="yes" fixlastline="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/materials">
+										<include name="**/*.yml"></include>
+									</fileset>
+								</concat>
+								<concat destfile="${project.build.directory}/classes/defaults/messages.defaults.yml" overwrite="yes" fixlastline="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/messages">
+										<include name="**/*.yml"></include>
+									</fileset>
+								</concat>
+								<concat destfile="${project.build.directory}/classes/defaults/mobs.defaults.yml" overwrite="yes" fixlastline="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/mobs">
+										<include name="**/*.yml"></include>
+									</fileset>
+								</concat>
+								<concat destfile="${project.build.directory}/classes/defaults/spells.defaults.yml" overwrite="yes" fixlastline="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/spells">
+										<include name="**/*.yml"></include>
+									</fileset>
+								</concat>
+								<concat destfile="${project.build.directory}/classes/defaults/wands.defaults.yml" overwrite="yes" fixlastline="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/wands">
 										<include name="**/*.yml"></include>
 									</fileset>
 								</concat>

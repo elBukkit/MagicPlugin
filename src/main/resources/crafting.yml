@@ -2,10 +2,28 @@
 # Modify this file to change the available wand crafting recipes.
 # New recipies can be be added, existing recipes can be modified or disabled.
 #
-# See crafting.defaults.yml for more information, and to see the default recipes.
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/crafting
 #
-# If you want to disable any of the default recipes, simply add two lines as follows:
+# For customization help see: 
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
 #
-# beginner:
+
+#
+# Examples:
+# Note that a "#" chararacter means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
+# 
+
+# Disable wand crafting
+# wand:
 #   enabled: false
-#
+
+# Disable broom crafting
+# broomstick:
+#   enabled: false
+
+# Enable crafting ink from coal and bonemean
+# coal_ink:
+#   enabled: true

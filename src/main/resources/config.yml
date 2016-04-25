@@ -2,24 +2,22 @@
 # Modify this file to change the overall behavior of the Magic plugin.
 # only include the options you want to modify.
 #
-# To see all available options, look in the defaults/config.defaults.yml file.
+# To see all available options, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/config
 #
 # Options for sub-components (spells, wand templates, chest populator, etc) are 
 # found in separate files.
 #
+# For customization help see: 
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
 
 #
-# This is the general configuration file for the magic plugin.
+# Examples:
+# Note that a "#" chararacter means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
 # 
-# Wand and Spell configurations are separate, in wands.yml and spells.yml.
-# Localizations are also separate, in messages.yml. 
-#
-# For more information, see: https://github.com/elBukkit/MagicPlugin/blob/master/CONFIGURATION.md
-#
-# More examples can be found at
-# 
-# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/examples
-#
 
 # Load one of the included example configurations instead of the defaults.
 # Current options: potter, safe, survival
@@ -35,38 +33,38 @@
 # Some common fields that you might like to override:
 
 # Give new players a wand when they first join
-#welcome_wand: beginner
+# welcome_wand: beginner
 
 # Whether or not to show any messages (in chat) 
-#show_messages: true
+# show_messages: true
 
 # Whether or not to show messages on every spell cast (in chat)
-#show_cast_messages: false
+# show_cast_messages: false
 
 # Enable/Disable Sound Effects
-#sounds: true
+# sounds: true
 
 # Prevent rapid sending of chat messages from the plugin (in milliseconds)
-#message_throttle: 3000
+# message_throttle: 3000
 
 # Set this to 1 to just turn costs off, or you can use it to scale costs down.
-#cost_reduction: 0.0
+# cost_reduction: 0.0
 
 # How much to reduce costs and cooldowns when using /cast (versus a wand)
-#cast_command_cost_reduction: 1.0
-#cast_command_cooldown_reduction: 0.0
+# cast_command_cost_reduction: 1.0
+# cast_command_cooldown_reduction: 0.0
 
 # Whether wands can be crafted on a crafting table
-#enable_crafting: true
+# enable_crafting: true
 
 # Whether wands can be combined on an anvil
-#enable_combining: true
+# enable_combining: true
 
 # Whether wands can be upgraded on an enchanting table
-#enable_enchanting: true
+# enable_enchanting: true
 
 # Whether or not using a wand on an anvil will organize its inventory
-#enable_organizing: true
+# enable_organizing: true
 
 # Enable/Disable automatic spell upgrades
 # enable_spell_upgrades: true
@@ -80,3 +78,7 @@
 
 # Disable the resource pack
 # default_resource_pack: ""
+
+# Turn on skull-based spell icons (may be needed if you're not using the RP)
+# url_icons_enabled: true
+

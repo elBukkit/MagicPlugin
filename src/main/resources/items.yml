@@ -2,13 +2,14 @@
 # Modify this file to change, add or disable custom item types.
 # These items are not wands and don't have any non-vanilla data attached.
 #
-# See the following page for the current default items:
+# See the following folder for the current builtin items:
 # https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/items
+#
+# For customization help see: 
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
 #
 # You can also specify the worth of items in this file, so that all shops
 # can be balanced by using the same costs as described here.
-#
-# See items.defaults.yml for the default items. 
 #
 # Items defined in here may be given in-game with the /mgive command
 #
@@ -20,48 +21,29 @@
 #   item: <item type, itemkey used if omitted>
 #   worth: currency value per item
 #
+
+# Examples:
+# Note that a "#" chararacter means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
+# 
+
+# Change value of emeralds
+# emerald:
+#  worth: 200
 #
-# Attribute reference:
-#    /**
-#     * Maximum health of an Entity.
-#     */
-#    GENERIC_MAX_HEALTH,
-#    /**
-#     * Range at which an Entity will follow others.
-#     */
-#    GENERIC_FOLLOW_RANGE,  default = 32
-#    /**
-#     * Resistance of an Entity to knockback.
-#     */
-#    GENERIC_KNOCKBACK_RESISTANCE, default = 0
-#    /**
-#     * Movement speed of an Entity.
-#     */
-#    GENERIC_MOVEMENT_SPEED, default = 0.7
-#    /**
-#     * Attack damage of an Entity.
-#     */
-#    GENERIC_ATTACK_DAMAGE, default = 1
-#    /**
-#     * Attack speed of an Entity.
-#     */
-#    GENERIC_ATTACK_SPEED, 4
-#    /**
-#     * Armor bonus of an Entity.
-#     */
-#    GENERIC_ARMOR,
-#    /**
-#     * Luck bonus of an Entity.
-#     */
-#    GENERIC_LUCK,
-#    /**
-#     * Strength with which a horse will jump.
-#     */
-#    HORSE_JUMP_STRENGTH,
-#    /**
-#     * Chance of a zombie to spawn reinforcements.
-#     */
-#    ZOMBIE_SPAWN_REINFORCEMENTS;
 
-
-
+# Add an OP axe
+# dwarven_axe:
+#  worth: 10000.0
+#  item:
+#    ==: org.bukkit.inventory.ItemStack
+#    type: DIAMOND_AXE
+#    meta:
+#      ==: ItemMeta
+#      meta-type: UNSPECIFIC
+#      display-name: Dwarven Axe
+#      enchants:
+#        DURABILITY: 8
+#        DIG_SPEED: 8
+#

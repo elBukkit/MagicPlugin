@@ -2,15 +2,17 @@
 # Modify this file to change the available spells.
 # New spells can be added, existing spells modified or removed (disabled)
 #
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/spells
+#
+# For customization help see: 
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
 
 #
 # This is the Spell configuration file for the Magic plugin.
 #
 # Here you may alter default spell behavior, or add and remove spells.
-#
-# See https://github.com/elBukkit/MagicPlugin/blob/master/SPELLS.md for more information.
-#
-# To see the default spells and configurations, look in defaults/spells.defaults.yml
 # 
 # The name, description, and usage of a spell should be defined in messages.yml as
 #  messages.spells.<spellkey>.name
@@ -32,3 +34,28 @@
 #           <specific spell parameters- TODO: list common ones>
 #
 
+#
+# Examples:
+# Note that a "#" chararacter means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
+# 
+
+# Disable the kill spell completely
+# kill:
+#   enabled: false
+
+# Change the cooldown on the petrify spell to one minute (60 seconds, 60000 ms)
+# petrify:
+#   parameters:
+#      cooldown: 60000
+
+# Change casting cost of blind spell to 100 mana
+# blind:
+#   costs:
+#      mana: 100
+
+# Require kill spell to consume health
+# kill:
+#    costs:
+#       health: 10 
