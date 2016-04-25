@@ -1,0 +1,71 @@
+### Economy Helpers
+
+# These values are used to help create a balanced economy if you plan on selling wands, spells, or upgrades.
+# Currently they are only visible on the Magic website, though I plan to incorporate them into the plugin in the near future.
+# This will probably appear in the form of a "/magic sell <item>" command. This would work just like "/magic give <item>"
+# except it would also give you the "worth" of the item as defined by your economy.
+
+# This may be a simple chat message for balance-based economies (e.g. MSRP: $1,000), or it may
+# give you physical items for an item-based economy. See the "worth_items" section below.
+
+# The following modifiers affect wand pricing.
+# A wand's price is calculated using the sum of the prices of all of its spells as a base.
+# Wand properties  (mana, protection, etc) may also add value.
+# Each of these values is multiplied by the wand property. Keep in mind that most properties naturally scale
+# from 0-1, with some exceptions like mana regeneration and limits. Refer to the maximums set above (e.g. max_mana)
+# for a good idea of how those values are going to scale.
+
+# These numbers may look a little screwy,
+# I was going for a base-2 kind of thing to hopefully make
+# costs fall along even item stack limits. (64)
+
+worth_use_multiplier: 0.125
+worth_mana: 1
+worth_mana_max: 100
+worth_mana_regeneration: 800
+worth_damage_reduction: 10000
+worth_damage_reduction_explosions: 7000
+worth_damage_reduction_falling: 3000
+worth_damage_reduction_fire: 5000
+worth_damage_reduction_physical: 5000
+worth_damage_reduction_projectiles: 6000
+worth_cost_reduction: 100000
+worth_cooldown_reduction: 100000
+
+# A wand may have additional value for each brush it contains
+# Brushes are currently not able to have specific values, though this may be a future addition.
+# Some brushes, like copy and clone, are tremendously more powerful than others, like dirt, and hence
+# should be more valuable.
+worth_brush: 32
+
+# The following are added in if the wand has the specific property at all, they do not scale.
+worth_effect_color: 2
+worth_effect_particle: 4
+worth_effect_sound: 8
+
+# This will be used as a base multiplier for all values. Once spells and wand properties are balanced relative
+# to each other (which will hopefully be the default...) you can use this to scale the overall worth of Magic
+# items relative to the rest of your economy.
+#
+# If you have a default Gringott's install, you may want to change this to "0.01" to make the emeralds
+# match up.
+worth_base: 1
+
+# This is how much Skill Points are worth, relative to virtual currency.
+worth_sp: 1
+
+# If using XP as a currency, how much one XP is worth
+worth_xp: 1
+
+# By default the Magic ecnonomy is balanced towards a typical Vault economy
+# If Vault is not present, Magic falls back to a physical, emerald-based ecnonomy.
+# For balancing purposes, an emerald will be considered worth 100 "vault dollars" by default.
+# This scales all of the prices down when using emeralds.
+#
+# Adjust the "worth" value below to scale an item-based economy up or down. A value of 1 will make
+# emerald costs match configured worth/cost values.
+currency:
+  emerald:
+    worth: 100
+    name: Emerald
+    name_plural: Emeralds

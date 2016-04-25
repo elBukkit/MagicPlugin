@@ -1,0 +1,71 @@
+deposits:
+    icon: emerald
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        sell: true
+        quiet: true
+        confirm: false
+        use_items: false
+        auto_close: false
+        items:
+          - gold_nugget
+          - gold_ingot
+          - gold_block
+          - emerald
+          - emerald_block
+          - none
+          - none
+          - none
+          - none
+          - gold_nugget@64
+          - gold_ingot@64
+          - gold_block@64
+          - emerald@64
+          - emerald_block@64
+
+withdrawals:
+    icon: emerald
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: false
+        use_items: false
+        auto_close: false
+        items:
+          - gold_nugget
+          - gold_ingot
+          - gold_block
+          - emerald
+          - emerald_block
+          - none
+          - none
+          - none
+          - none
+          - gold_nugget@64
+          - gold_ingot@64
+          - gold_block@64
+          - emerald@64
+          - emerald_block@64
+
+ledgershop:
+    icon: paper
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        use_items: false
+        confirm_filler: stained_glass_pane
+        items:
+          wand|ledger: 2
