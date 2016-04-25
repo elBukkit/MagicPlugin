@@ -175,7 +175,7 @@ function getIcon($spell, $url, $iconIndent) {
     
     $spellJson = <<<END
 {
-    "parent" : "item/spells/icon",
+    "parent" : "item/custom/icon",
     "textures": {
         "particle": "items/spells/$spell",
         "texture": "items/spells/$spell"

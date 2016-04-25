@@ -1,5 +1,5 @@
 {
-    "parent" : "item/spells/icon",
+    "parent" : "item/custom/icon",
     "textures": {
         "particle": "items/spells/time",
         "texture": "items/spells/time"
