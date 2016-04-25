@@ -2,6 +2,9 @@
 # Modify this file to change, add or disable custom item types.
 # These items are not wands and don't have any non-vanilla data attached.
 #
+# See the following page for the current default items:
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/items
+#
 # You can also specify the worth of items in this file, so that all shops
 # can be balanced by using the same costs as described here.
 #
@@ -17,6 +20,48 @@
 #   item: <item type, itemkey used if omitted>
 #   worth: currency value per item
 #
+#
+# Attribute reference:
+#    /**
+#     * Maximum health of an Entity.
+#     */
+#    GENERIC_MAX_HEALTH,
+#    /**
+#     * Range at which an Entity will follow others.
+#     */
+#    GENERIC_FOLLOW_RANGE,  default = 32
+#    /**
+#     * Resistance of an Entity to knockback.
+#     */
+#    GENERIC_KNOCKBACK_RESISTANCE, default = 0
+#    /**
+#     * Movement speed of an Entity.
+#     */
+#    GENERIC_MOVEMENT_SPEED, default = 0.7
+#    /**
+#     * Attack damage of an Entity.
+#     */
+#    GENERIC_ATTACK_DAMAGE, default = 1
+#    /**
+#     * Attack speed of an Entity.
+#     */
+#    GENERIC_ATTACK_SPEED, 4
+#    /**
+#     * Armor bonus of an Entity.
+#     */
+#    GENERIC_ARMOR,
+#    /**
+#     * Luck bonus of an Entity.
+#     */
+#    GENERIC_LUCK,
+#    /**
+#     * Strength with which a horse will jump.
+#     */
+#    HORSE_JUMP_STRENGTH,
+#    /**
+#     * Chance of a zombie to spawn reinforcements.
+#     */
+#    ZOMBIE_SPAWN_REINFORCEMENTS;
 
 
 

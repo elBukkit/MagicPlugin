@@ -303,12 +303,16 @@
 			<includes>
 				<include>**/*.yml</include>
 			</includes>
+			<excludes>
+				<exclude>**/defaults/items/*.yml</exclude>
+			</excludes>
 		</resource>
 		<resource>
 			<directory>src/main/resources</directory>
 			<filtering>false</filtering>
 			<excludes>
 				<exclude>**/*.yml</exclude>
+				<exclude>**/defaults/items/*.yml</exclude>
 			</excludes>
 		</resource>
 	</resources>
@@ -321,6 +325,28 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<concat destfile="${project.build.directory}/classes/defaults/items.defaults.yml" force="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/items">
+										<include name="**/*.yml"></include>
+									</fileset>
+								</concat>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
