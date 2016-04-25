@@ -1,0 +1,14 @@
+skull_chocolatebar:
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  creator: NathanWolf
+  worth: 100.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: SKULL_ITEM
+    damage: 3
+    meta:
+      ==: ItemMeta
+      meta-type: SKULL
+      display-name: §bChocolate Bar
+      internal: H4sIAAAAAAAAAD2OwW6CQBiE/zZtQomP0SvJArKVg4c2qGBkKYggXBqEtbLsYiOgyDP1Icupp5k5fF9GBpBhsq06zj8v52PJqQRPJBMUJq69/PI72rTluZbg0SngVUMGLmZ4plAdT5WpqWPlUKgzBb0VmmbirNCoKYM8mn7opS1p8wJSS/u2u9BGBoAHCZ6jjHcUfqkecGoHai6iwavbcIu4N+a4b9gRJ1TY73hzN1G6H/t+zfO70WaxwRN9fUprvzuICG3+HburZy2MlFXIW/k9GfLeWy2rJCacxEFFxO5Gwg9Gwm/NZY5B2G5IRSQI89XUyns3JKdkZFNroScsGbyYMGIlmlOr5tGfz8fn8AffXxVeKQEAAA==
+      skull-owner: MHF_Question
