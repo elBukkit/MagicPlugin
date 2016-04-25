@@ -1,5 +1,5 @@
 {
-    "parent" : "item/custom/icon",
+    "parent" : "item/custom/icon_sparkles",
     "textures": {
         "particle": "items/spells/blind",
         "texture": "items/spells/blind"

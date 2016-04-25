@@ -3,7 +3,8 @@
 "ambientocclusion": false,
 "textures": {
     "particle": "items/custom/hat_wizard",
-    "texture": "items/custom/hat_wizard"
+    "texture": "items/custom/hat_wizard",
+    "glow_flow": "items/custom/sparkles"
 },
 "elements": [ 
 {
@@ -17,6 +18,19 @@
         "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#texture" },
         "west":  { "uv": [ 0, 0, 0, 16 ], "texture": "#texture" },
         "east":  { "uv": [ 0, 0, 0, 16 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "glow",
+    "from": [ -0.125, -0.25, 7.875 ],
+    "to": [ 16.25, 16.125, 9.25 ],
+    "faces": {
+        "down":  { "uv": [ 16, 0, 0, 0 ], "texture": "#glow_flow" },
+        "up":    { "uv": [ 0, 0, 16, 0 ], "texture": "#glow_flow" },
+        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#glow_flow" },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#glow_flow" },
+        "west":  { "uv": [ 0, 0, 0, 16 ], "texture": "#glow_flow" },
+        "east":  { "uv": [ 0, 0, 0, 16 ], "texture": "#glow_flow" }
     }
 }
 ],
