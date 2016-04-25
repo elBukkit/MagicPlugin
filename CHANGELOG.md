@@ -2,6 +2,7 @@
 
 ## 6.1
 
+ - All spell icons are now in the Resource Pack, player skulls are no longer used.
  - Fix warlock wand appearance
  - Add /mitem add/remove unplaceable command, for making a block unplaceable
  - Add Dark Wizard, Mega Spider and Dark Spider mobs
