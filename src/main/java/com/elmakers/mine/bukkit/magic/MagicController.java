@@ -1414,20 +1414,31 @@ public class MagicController implements MageController {
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
+        config = loadConfigFolder(config, configSubFolder, filesReplace);
+
+        return config;
+    }
+    
+    protected ConfigurationSection loadConfigFolder(ConfigurationSection config, File configSubFolder, boolean filesReplace)
+        throws IOException, InvalidConfigurationException {
         if (configSubFolder.exists()) {
             File[] files = configSubFolder.listFiles();
             for (File file : files) {
                 if (file.getName().startsWith(".")) continue;
-                ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
-                getLogger().info("  Loading " + file.getName());
-                if (filesReplace) {
-                    config = ConfigurationUtils.replaceConfigurations(config, fileOverrides);
+                if (file.isDirectory()) {
+                    config = loadConfigFolder(config, file, filesReplace);
                 } else {
-                    config = ConfigurationUtils.addConfigurations(config, fileOverrides);
+                    ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
+                    getLogger().info("  Loading " + file.getName());
+                    if (filesReplace) {
+                        config = ConfigurationUtils.replaceConfigurations(config, fileOverrides);
+                    } else {
+                        config = ConfigurationUtils.addConfigurations(config, fileOverrides);
+                    }
                 }
             }
         }
-
+        
         return config;
     }
 
