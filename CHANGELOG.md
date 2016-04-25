@@ -4,6 +4,7 @@
 
  - All spell icons are now in the Resource Pack, player skulls are no longer used.
  - The default files are no longer saved to your server. I found this too confusing for people. Check github for the defaults.
+ - Updated "trinketshop" with lots more skulls
  - Fix warlock wand appearance
  - Add /mitem add/remove unplaceable command, for making a block unplaceable
  - Add Dark Wizard, Mega Spider and Dark Spider mobs

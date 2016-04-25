@@ -1,7 +1,5 @@
 skull_tea:
-  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
-  creator: NathanWolf
-  worth: 100.0
+  worth: 200.0
   item:
     ==: org.bukkit.inventory.ItemStack
     type: SKULL_ITEM
@@ -9,6 +7,6 @@ skull_tea:
     meta:
       ==: ItemMeta
       meta-type: SKULL
-      display-name: Cup of Tea
+      display-name: §bCup of Tea
       internal: H4sIAAAAAAAAAD2OzU6DQBSFr0YTJH0MtyTTTkFYuDCplpIyCEUoszH8zEjbO60poIUn8jHFjatzTvLly9EBdJhsDh3i6/kkdyg0uGG5EjDx3Zf3sBNNuzsdNbheVXBfOdKyqXQMc5Y/GHO7sAw7r6RRSLOwZEVzk1Ad9NH0Kc7tTjR3oLXi0nZn0egAcKXBbZJjJ+BH0AiFG01LlQzBsY03BIMxx/1trVRNKvfJWvcO4duxbz0se7PNUxMz6tX8GHaFSsj63/H2xRc1BnF04MuQsj3WLPUwi0sSLHzK1Irw1Kf+8DFwFQ5MhT3bl/M/ns38IVMJ+ovnC49rZMtsyhU7sN5z5JY8jq/hF2V65kIlAQAA
       skull-owner: MHF_Question

@@ -2,20 +2,51 @@ trinketshop:
     inherit: buyshop
     parameters:
         items:
+        - skull_ale
+        - skull_apple
+        - skull_aquarium
+        - skull_arrowdown
+        - skull_arrowleft
+        - skull_arrowright
+        - skull_arrowup
+        - skull_bentobox
+        - skull_books
+        - skull_bread
+        - skull_burningcube
+        - skull_cake
+        - skull_carrot
+        - skull_cheese
+        - skull_chocolatebar
+        - skull_clock
+        - skull_cookie
+        - skull_crate
+        - skull_creeperstone
+        - skull_diamondblock
+        - skull_donut
+        - skull_emeraldblock
+        - skull_fries
+        - skull_furnace
+        - skull_globe
+        - skull_goldblock
+        - skull_lantern
+        - skull_lavabucket
+        - skull_lavamonster
+        - skull_lemon
+        - skull_luigi
+        - skull_mario
+        - skull_moneybag
+        - skull_pancakes
+        - skull_pokeball
+        - skull_popcorn
         - skull_present_green
         - skull_present_red
-        - skull_aquarium
-        - skull_globe
-        - skull_clock
-        - skull_books
-        - skull_mario
-        - skull_luigi
-        - skull_yoshi
-        - skull_pokeball
-        - skull_apple
-        - skull_cake
-        - skull_hamburger
-        - skull_fries
+        - skull_soupcan
+        - skull_strawberryjam
+        - skull_sushi
         - skull_taco
-        - skull_popcorn
+        - skull_tea
+        - skull_watermelon
+        - skull_whitecandle
+        - skull_wildboar
+        - skull_yoshi
           

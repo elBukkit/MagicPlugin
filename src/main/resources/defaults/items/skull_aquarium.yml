@@ -1,4 +1,4 @@
 skull_aquarium:
   item: "skull_item|http://textures.minecraft.net/texture/c2847cd5717e5f5a64e1ba9cb481dc9e22c78ca23f8516d553f55412fa113e0"
-  worth: 10
+  worth: 200
   name: "&bAquarium"

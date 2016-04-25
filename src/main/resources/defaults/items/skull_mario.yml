@@ -1,4 +1,4 @@
 skull_mario:
   item: "skull_item|http://textures.minecraft.net/texture/a0c2549a893726988f3428bef799875ba871688ae64eb0cfdc43f7d6e24c6c"
-  worth: 10
+  worth: 200
   name: "&bMario"
