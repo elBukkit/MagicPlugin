@@ -1691,6 +1691,7 @@ spells:
     lootshop:
       name: Loot Shop
       description: Earn money for mob drops
+      title: "Sell Drops ($balance)"
     wandshop:
         name: Wand Shop
         title: "Wands ($balance)"

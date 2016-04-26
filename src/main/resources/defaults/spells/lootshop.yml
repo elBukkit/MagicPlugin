@@ -11,7 +11,16 @@ lootshop:
           - blaze_powder
           - sulphur
           - slime_ball
+          - magma_cream
           - ender_pearl
+          - none
+          - none
+          - none
+          - none
+          - none
+          - none
+          - none
+          - none
           - spider_eye@64
           - string@64
           - rotten_flesh@64
@@ -20,5 +29,6 @@ lootshop:
           - blaze_powder@64
           - sulphur@64
           - slime_ball@64
+          - magma_cream@64
           - ender_pearl@64
 

@@ -22,5 +22,8 @@ sulphur:
 slime_ball:
   worth: 6
   
+magma_cream:
+  worth: 8
+  
 ender_pearl:
   worth: 8
