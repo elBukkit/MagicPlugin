@@ -67,6 +67,7 @@ public class NMSUtils {
     protected static Class<?> class_Entity;
     protected static Class<?> class_EntityCreature;
     protected static Class<?> class_EntityLiving;
+    protected static Class<?> class_EntityHuman;
     protected static Class<?> class_DataWatcher;
     protected static Class<?> class_DamageSource;
     protected static Class<?> class_EntityDamageSource;
@@ -131,6 +132,7 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_getKeysMethod;
     protected static Method class_NBTTagCompound_setMethod;
     protected static Method class_DataWatcher_setMethod;
+    protected static Method class_DataWatcher_getMethod;
     protected static Method class_World_getEntitiesMethod;
     protected static Method class_Entity_setSilentMethod;
     protected static Method class_Entity_setYawPitchMethod;
@@ -250,6 +252,7 @@ public class NMSUtils {
     protected static Field class_EntityArrow_damageField;
     protected static Field class_CraftWorld_environmentField;
     protected static Field class_EntityLiving_potionBubblesField;
+    protected static Field class_EntityHuman_handednessField;
     protected static Field class_MemorySection_mapField;
 
     static
@@ -265,6 +268,7 @@ public class NMSUtils {
         try {
             class_Entity = fixBukkitClass("net.minecraft.server.Entity");
             class_EntityLiving = fixBukkitClass("net.minecraft.server.EntityLiving");
+            class_EntityHuman = fixBukkitClass("net.minecraft.server.EntityHuman");
             class_ItemStack = fixBukkitClass("net.minecraft.server.ItemStack");
             class_DataWatcher = fixBukkitClass("net.minecraft.server.DataWatcher");
             class_DataWatcherObject = fixBukkitClass("net.minecraft.server.DataWatcherObject");
@@ -449,6 +453,9 @@ public class NMSUtils {
             class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("f");
             class_EntityLiving_potionBubblesField.setAccessible(true);
 
+            class_EntityHuman_handednessField = class_EntityHuman.getDeclaredField("bq");
+            class_EntityHuman_handednessField.setAccessible(true);
+            
             class_MemorySection_mapField = MemorySection.class.getDeclaredField("map");
             class_MemorySection_mapField.setAccessible(true);
             
@@ -492,6 +499,7 @@ public class NMSUtils {
                 try {
                     // 1.9
                     class_DataWatcher_setMethod = class_DataWatcher.getMethod("set", class_DataWatcherObject, Object.class);
+                    class_DataWatcher_getMethod = class_DataWatcher.getMethod("get", class_DataWatcherObject);
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);

@@ -372,6 +372,20 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static byte getHandedness(Player player) {
+        if (player == null || class_DataWatcher_getMethod == null) return 0;
+        try {
+            Object playerHandle = getHandle(player);
+            Object dataWatcher = class_Entity_getDataWatcherMethod.invoke(playerHandle);
+            Object handednessField = class_EntityHuman_handednessField.get(null);
+            return (Byte)class_DataWatcher_getMethod.invoke(dataWatcher, handednessField);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        return 0;
+    }
+
     public static List<Entity> getNearbyEntities(Location location, double x, double y, double z) {
         if (location == null) return null;
         Object worldHandle = getHandle(location.getWorld());

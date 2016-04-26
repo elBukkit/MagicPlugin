@@ -74,6 +74,7 @@ import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
+    private enum Handedness { RIGHT, LEFT };
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
     public static double WAND_LOCATION_OFFSET = 0.5;
     public static double WAND_LOCATION_VERTICAL_OFFSET = 0;
@@ -109,6 +110,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean quiet = false;
     private EntityData entityData;
     private long lastTick;
+    private Handedness handedness = Handedness.RIGHT;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<PotionEffectType, Integer>();
     protected float damageReduction = 0;
@@ -521,6 +523,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             this._entity = new WeakReference<Entity>(player);
             this._commandSender = new WeakReference<CommandSender>(player);
             hasEntity = true;
+            handedness = CompatibilityUtils.getHandedness(player) == 1 ? Handedness.RIGHT : Handedness.LEFT;
         } else {
             this._player.clear();
             this._entity.clear();
@@ -1057,9 +1060,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (wandLocation == null) {
             return null;
         }
-        // TODO: Determine handedness of player
+        
+        boolean leftHand = offhandCast;
+        if (handedness == Handedness.LEFT) {
+            leftHand = !leftHand;
+        }
         Location toTheRight = wandLocation.clone();
-        if (offhandCast) {
+        if (leftHand) {
             toTheRight.setYaw(toTheRight.getYaw() - 90);
         } else {
             toTheRight.setYaw(toTheRight.getYaw() + 90);
