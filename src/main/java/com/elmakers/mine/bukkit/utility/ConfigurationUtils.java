@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.utility;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
@@ -761,7 +762,7 @@ public class ConfigurationUtils extends ConfigUtils {
         return effectParticle;
     }
 
-    public static Collection<PrerequisiteSpell> getPrerequisiteSpells(ConfigurationSection node, String key) {
+    public static Collection<PrerequisiteSpell> getPrerequisiteSpells(MageController controller, ConfigurationSection node, String key, String loadContext, boolean removeMissing) {
         if (node == null || key == null) {
             return new ArrayList<PrerequisiteSpell>(0);
         }
@@ -783,15 +784,14 @@ public class ConfigurationUtils extends ConfigUtils {
 
         List<PrerequisiteSpell> requiredSpells = new ArrayList<PrerequisiteSpell>(spells.size());
         for (Object o : spells) {
+            PrerequisiteSpell prerequisiteSpell = null;
             if (o instanceof String) {
-                requiredSpells.add(new PrerequisiteSpell(new SpellKey((String) o), 0));
+                prerequisiteSpell = new PrerequisiteSpell(new SpellKey((String) o), 0);
             } else if (o instanceof ConfigurationSection) {
                 ConfigurationSection section = (ConfigurationSection) o;
                 String spell = section.getString("spell");
                 long progressLevel = section.getLong("progress_level");
-                if (spell != null) {
-                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
-                }
+                prerequisiteSpell = new PrerequisiteSpell(new SpellKey(spell), progressLevel);
             } else if (o instanceof Map) {
                 Map<?, ?> map = (Map<?, ?>) o;
                 String spell = map.get("spell").toString();
@@ -801,7 +801,20 @@ public class ConfigurationUtils extends ConfigUtils {
                     try {
                         progressLevel = Long.parseLong(progressLevelString);
                     } catch (NumberFormatException ignore) { }
-                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
+                    prerequisiteSpell = new PrerequisiteSpell(new SpellKey(spell), progressLevel);
+                }
+            }
+
+            if (prerequisiteSpell != null) {
+                if (controller.getSpellTemplate(prerequisiteSpell.getSpellKey().getKey()) != null) {
+                    requiredSpells.add(prerequisiteSpell);
+                } else {
+                    if (!removeMissing) {
+                        requiredSpells.add(prerequisiteSpell);
+                        controller.getLogger().warning("Unknown or disabled spell requirement " + prerequisiteSpell.getSpellKey().getKey() + " in " + loadContext +", upgrade will be disabled");
+                    } else {
+                        controller.getLogger().warning("Unknown or disabled spell prerequisite " + prerequisiteSpell.getSpellKey().getKey() + " in " + loadContext +", ignoring");
+                    }
                 }
             }
         }

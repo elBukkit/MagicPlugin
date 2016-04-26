@@ -134,22 +134,14 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     protected void load(MageController controller, String key, ConfigurationSection template) {
         // Cache spells, mainly used for spellbooks
-        Collection<PrerequisiteSpell> pathSpells = ConfigurationUtils.getPrerequisiteSpells(template, "spells");
+        Collection<PrerequisiteSpell> pathSpells = ConfigurationUtils.getPrerequisiteSpells(controller, template, "spells", "path " + key, true);
         for (PrerequisiteSpell prereq : pathSpells) {
-            if (controller.getSpellTemplate(prereq.getSpellKey().getKey()) != null) {
-                spells.add(prereq.getSpellKey().getKey());
-            } else {
-                controller.getLogger().warning("Unknown or disabled spell " + prereq.getSpellKey().getKey() + " in enchanting path " + key + ", ignoring");
-            }
+            spells.add(prereq.getSpellKey().getKey());
         }
         allSpells.addAll(spells);
-        Collection<PrerequisiteSpell> pathExtraSpells = ConfigurationUtils.getPrerequisiteSpells(template, "extra_spells");
+        Collection<PrerequisiteSpell> pathExtraSpells = ConfigurationUtils.getPrerequisiteSpells(controller, template, "extra_spells", "path " + key, true);
         for (PrerequisiteSpell prereq : pathExtraSpells) {
-            if (controller.getSpellTemplate(prereq.getSpellKey().getKey()) != null) {
-                extraSpells.add(prereq.getSpellKey().getKey());
-            } else {
-                controller.getLogger().warning("Unknown or disabled spell " + prereq.getSpellKey().getKey() + " in enchanting path " + key + ", ignoring");
-            }
+            extraSpells.add(prereq.getSpellKey().getKey());
         }
         allExtraSpells.addAll(extraSpells);
 
@@ -158,7 +150,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         upgradeKey = template.getString("upgrade");
         upgradeItemKey = template.getString("upgrade_item");
 
-        Collection<PrerequisiteSpell> prerequisiteSpells = ConfigurationUtils.getPrerequisiteSpells(template, "required_spells");
+        Collection<PrerequisiteSpell> prerequisiteSpells = ConfigurationUtils.getPrerequisiteSpells(controller, template, "required_spells", "path " + key, false);
         this.requiredSpells = new ArrayList<PrerequisiteSpell>(pathSpells.size() + prerequisiteSpells.size());
         requiredSpells.addAll(pathSpells);
         requiredSpells.addAll(prerequisiteSpells);

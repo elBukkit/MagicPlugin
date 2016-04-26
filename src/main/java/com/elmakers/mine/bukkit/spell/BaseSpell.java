@@ -755,7 +755,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             requiredUpgradeTags = new HashSet<String>(pathTags);
         }
 
-        requiredSpells = new ArrayList<PrerequisiteSpell>(ConfigurationUtils.getPrerequisiteSpells(node, "required_spells"));
+        requiredSpells = new ArrayList<PrerequisiteSpell>(ConfigurationUtils.getPrerequisiteSpells(controller, node, "required_spells", "spell " + getKey(), true));
 
         List<String> removesSpellKeys = ConfigurationUtils.getStringList(node, "removes_spells");
         if (removesSpellKeys != null) {
