@@ -1,0 +1,15 @@
+spell:
+    brush: Uses Material Brushes
+    undoable: ""
+    not_undoable: "&4Not Undoable"
+    available_path: Available at the $path level
+    required_path: Required to complete the $path level
+    levels_available: "Max Level: &r&5$levels"
+    required_spell: "&cNothing new to learn for now! &4What mystery lies ahead?"
+    #required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
+    prerequisite_spell_level: "&cYou must know &6Level $level $name"
+    prerequisite_spell_progress_level: " &6(Progress $level/$max_level)"
+    level_description: Level $level
+    progress_description: "&6Progress: &b$level&6/&3$max_level"
+    quick_cast: "&2Quick Cast"
+    earns: "&2Earns up to &6$earns &eSP"

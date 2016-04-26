@@ -1,0 +1,133 @@
+wand:
+    default_name: Wand
+    upgrade_default_description: Will upgrade your wand.
+    upgrade_item_description: Will be absorbed by your wand
+    spell_item_description: Will be absorbed by your wand
+    brush_item_description: Will be absorbed by your wand
+    copy_material_name: Copy
+    copy_material_description: Fills with the target material
+    erase_material_name: Erase
+    erase_material_description: Fills with Air
+    clone_material_name: Clone
+    clone_material_description: Copies blocks from a target
+    replicate_material_name: Replicate
+    replicate_material_description: Replicates the clone target
+    clone_material_activated: Clone source selected
+    replicate_material_activated: Replicate source selected
+    erase_modifier_activated: Erase modifier active
+    map_material_name: "Map $id"
+    map_material_name_scaled: "Map $id ($sizex$size)"
+    map_material_description: Creates pixel art from last held map
+    schematic_material_description: Uses $schematic to build.
+    building_material_description: Build with $material
+    upgrade_uses: Adds $count Uses
+    upgrade_uses_singular: Adds $count Use
+    uses_remaining_brief: $count Uses
+    uses_remaining_singular: $count Use
+    uses_remaining: $count Uses Remaining
+    enchantment_level_1: I
+    enchantment_level_2: II
+    enchantment_level_3: III
+    enchantment_level_4: IV
+    enchantment_level_5: V
+    enchantment_level_max: X
+    spell_count: Knows $count Spells
+    material_count: Has $count Materials
+    upgrade_spell_count: Adds $count Spells
+    upgrade_material_count: Adds $count Materials
+    mana_amount: "Mana: $amount"
+    mana_amount_boosted: "Mana: $amount &f(&b$mana&f)"
+    mana_regeneration: "Mana Regeneration: $amount/s"
+    mana_per_damage: "Mana Rage: $amount/HP"
+    mana_regeneration_boosted: "Mana Regeneration: $amount &f(&b$mana&f)&d/s"
+    mana_boost: "Mana Boost: $amount%"
+    mana_regeneration_boost: "Mana Regeneration Boost: $amount%"
+    cost_reduction: Cost Reduction $roman
+    consume_reduction: Manifestation
+    cooldown_reduction: Cooldown Reduction $roman
+    power: Power $roman
+    protection: Protection $roman
+    protection_physical: Physical Protection $roman
+    protection_projectile: Projectile Protection $roman
+    protection_fall: Fall Protection $roman
+    protection_fire: Fire Protection $roman
+    protection_blast: Blast Protection $roman
+    potion_effect: $effect $roman
+    super_powered: Superpowered
+    super_protected: Invulnerability
+    spell_aura: "Aura: &6$spell"
+    costs_description: Costs $description
+    active_costs_description: Costs $description Per Second
+    range_description: "&9Range: &6$range &9meters"
+    owner_description: $name's Wand
+    bound_description: Bound to $name
+    unmodifiable: That wand can not be modified
+    player_unmodifiable: $name's wand can not be modified
+    bound_to_other: That wand is not bound to you
+    bound: That wand is bound to $name
+    spell_added: "The &r&6$name &d&ospell has been added to your $wand"
+    brush_added: "The &r&7$name &d&obrush has been added to your $wand"
+    player_spell_upgraded: "$players's &r&6$name &d&ohas been upgraded to &3$level"
+    spell_upgraded: "&r&6$name &d&ohas been upgraded to &3$level"
+    spell_override_upgraded: "&r&6$name &d&ohas been upgraded"
+    upgraded_property: "&r&dYour $wand has been upgraded to &r&b$name"
+    spell_progression: "&r&6$name &d&ohas progressed to &3$level&d&o/&3$max_level"
+    mana_added: "&r&dYour $wand now has $value mana"
+    hotbar_added: "&r&aYour $wand's hotbar has been upgraded! &r&bPress F while your $wand is active"
+    player_upgraded: $name's wand upgraded
+    player_not_upgraded: $name's wand not upgraded
+    no_item: You are not holding an item
+    player_no_item: $name is not holding an item
+    no_wand: You must be holding a wand
+    player_no_wand: $name is not holding a wand
+    no_item: You must be holding an item
+    player_no_item: $name is not holding an item
+    reorganized: $wand reorganized
+    player_reorganized: $name's wand reorganized
+    alphabetized: $wand alphabetized
+    player_alphabetized: $name's wand alphabetized
+    already_enchanted: That $item is already enchanted
+    enchanted: Your $item has been enchanted
+    player_enchanted: $name's $item has been enchanted
+    unenchanted: Your wand has been unenchanted
+    no_path: "&r&4Your $wand can not be enchanted"
+    max_enchanted: "&r&4Your $wand can not be enchanted any further"
+    player_unenchanted: $name's wand has been unenchanted
+    level_up: "&r&bYour $wand has been upgraded to &r&5$path"
+    duplicated: Your wand has been duplicated
+    player_duplicated: $name's wand has been duplicated
+    restored: Your wands have been restored
+    player_restored: $name's wands have been restored
+    not_restored: You have no missing wands on record
+    player_not_restored: $name's wand has no missing wands on record
+    setbound: Your wand has been bound
+    player_setbound: $name's wand has been bound
+    unbound: Your wand has been unbound
+    player_unbound: $name's wand has been unbound
+    unboundall: All of your bound wands have been forgotten
+    player_unboundall: All of $name's bound wands have been forgotten. Their inventory was not cleared!
+    unlocked: Your wand has been unlocked
+    player_unlocked: $name's wand has been unlocked
+    unknown_template: Unknown wand name $name
+    reconfigured: Wand reconfigured
+    player_reconfigured: $name's wand reconfigured
+    filled: Your $wand now contains all of your spells
+    player_filled: $name's wand filled
+    renamed: Your wand has been renamed
+    player_renamed: $name's wand renamed
+    self_destruct: The ancient artifact crumbles in your hands
+    no_permission: "&r&4You may not use that $wand &r&4here."
+    single_spell: Wand of $spell
+    fully_enchanted: "&cThis $wand is fully enchanted &4(for now)"
+    need_more_levels: "You need at least &r&4$levels &d&olevels to enchant"
+    require_more_levels: "You must enchant at a higher level"
+    randomized_lore: What kind of wand will you get?
+    randomized_name: Wand Box
+    upgrade_name: $name Upgrade
+    inventory_instructions: "&r&bYour $wand now has more than one spell. Use the drop (Q) button to open/close the spell inventory. Use the hotbar buttons to select a spell."
+    page_instructions: "&r&bYour $wand now has more than one page of spells. Click outside the spell inventory to change pages."
+    bound_instructions: "&r&3Your $wand is bound to you, and is undroppable."
+    spell_instructions: "&r&bSwing your $wand to cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."
+    enchant_instructions: "&r&bUpgrade your $wand at an enchanting table to add spells and abilities."
+    brush_instructions: "&r&bMaterial brushes have been added to your $wand. Shift+Right Click to select a brush."
+    sp_instructions: "&r&6You have earned some Skill Points! SP's are displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn fewer SP's, try mixing it up once you have more spells!"

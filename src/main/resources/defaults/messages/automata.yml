@@ -1,0 +1,60 @@
+automata:
+    awaken: "&c&o$name &r&5has awakened"
+    default_name: Automaton
+    level: Level $roman
+    good:
+       prefixes:
+           - Holy
+           - Light
+           - Shiny
+           - Shimmering
+           - Stalwart
+           - Bright
+           - Savior
+           - Blessed
+           - Magic
+           - Enchanted
+           - Enlightened
+           - Magnificent
+           - Magnamous
+           - Brave
+           - Loyal
+       suffixes:
+           - of Holiness
+           - of Honor
+           - of Light
+           - of Lightness
+           - of Protection
+           - of The Sun
+           - of Magic
+           - of The Blessed
+           - of Forgiveness
+           - of Loyalty
+           - of Retribution
+           - of Resilliance
+    evil:
+       prefixes:
+           - Evil
+           - Dark
+           - Slimy
+           - Dreadful
+           - Dread
+           - Cursed
+           - Magic
+           - Enchanted
+           - Harbringer
+           - Nether
+           - Infamous
+           - Nefarious
+           - Distastrous
+       suffixes:
+           - of Darkness
+           - of Evil
+           - of The Night
+           - of Death
+           - of Doom
+           - of The Nether
+           - of Magic
+           - of Destruction
+           - of Desolation
+           - of Infamy

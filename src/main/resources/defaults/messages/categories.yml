@@ -1,0 +1,60 @@
+tags:
+    noduel:
+        name: No Dueling
+        description: Spells that are not allowed in a dueling arena
+    nojail:
+        name: No Jail
+        description: Spells that are not allowed in a jail
+categories:
+    combat:
+        name: Combat Magic
+        description: Basic Attack Spells
+    automata:
+        name: Automata
+        description: Create Life!
+        color: 'FFA500'
+    electrical:
+        name: Electrical
+        description: Mad Science
+        color: '888800'
+    master:
+        name: Master
+        description: All the Really Powerful Stuff
+        color: '00AACC'
+    utility:
+        name: Utility
+        description: Utility and movement spells
+    demolition:
+        name: Demolitions
+        description: Highly destructive magic
+        color: 'FF0000'
+    dark:
+        name: Dark Magic
+        description: Evil Stuff!
+        color: '010101'
+    light:
+        name: Light Magic
+        description: Good Stuff
+        color: 'DDDDDD'
+    engineering:
+        name: Engineering
+        description: Spells for magical building
+        color: '00FFFF'
+    elemental:
+        name: Elemental
+        description: Control Nature
+    mining:
+        name: Mining
+        description: Spells to help you mine
+    skills:
+        name: Heroes Skills
+        descriptions: Skills being used from Heroes
+    staff:
+        name: Staff
+        description: Staff-only spells
+    specialty:
+        name: Specialty
+        description: Spells meant for item or npc use
+    music:
+        name: Music
+        description: Used for playing music

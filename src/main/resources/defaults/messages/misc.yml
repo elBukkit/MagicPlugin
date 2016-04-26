@@ -1,0 +1,84 @@
+general:
+    no_spells: You don't know any spells
+    no_spells_in_category: You don't know any spells in the $category category
+    spell_list_page: You know $count spells [page $page of $pages]
+    spell_list: You know $count spells
+    locked_chest: That chest is locked, you cannot break it.
+    
+books:
+    default:
+        author: NathanWolf
+        title: $category Spell Book
+    all:
+        title: The Master Spell Book
+        
+material:
+    wildcard: " (Any Type)"
+    
+economy:
+    missing: "&cMy shop is closed, sorry!"
+    insufficient: "Costs: &6$cost"
+    deducted: "Deducted: &6$cost"
+    requires: "You must have a $cost"
+    
+worlds:
+    world:
+        name: The Overworld
+    world_nether:
+        name: The Nether
+    world_the_end:
+        name: The End
+        
+sp:
+    name: "&e$amount &6Skill Points"
+    description: Will be absorbed by your wand
+    
+costs:
+    sp_amount: $amount SP
+    xp_amount: $amount XP
+    mana_amount: $amount Mana
+    mana: Mana
+    xp: XP
+    sp: Skill Points
+    hunger: Energy
+    health: Health
+    health_amount: $amount Health
+    hunger_amount: $amount Energy
+    heroes_mana: $amount Mana
+    currency: Dollar
+    currency_plural: Dollars
+    currency_amount: "$$amount"
+    
+cooldown:
+    wait_seconds: another $seconds seconds
+    wait_minutes: another $minutes minutes
+    wait_hours: another $hours hours
+    wait_moment: a moment
+    wait_minute: a minute
+    wait_hour: another hour
+    description_seconds: $seconds seconds
+    description_minutes: $minutes minutes
+    description_hours: $hours hours
+    description_minute: One minute
+    description_hour: One hour
+    description_moment: A Moment
+    description: "&eCooldown: &6$time"
+    mage_description: "&cExhaustion: &6$time"
+    
+duration:
+    lasts_seconds: Lasts for $seconds seconds
+    lasts_minutes: Lasts for $minutes minutes
+    lasts_hours: Lasts for $hours hours
+
+skills:
+    inventory_title: "Skills"
+    inventory_title_heroes: "$class Skills ($page/$pages)"
+    inventory_title_heroes_secondary: "$class-$class2 Skills ($page/$pages)"
+    item_name: "$skill"
+    item_name_unavailable: "&c$skill"
+    item_description: "$description"
+    passive_description: "&1PASSIVE"
+    none: "You have no skills!"
+    none_on_page: "There are no skills on page $page"
+
+

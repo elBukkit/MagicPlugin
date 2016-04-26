@@ -1,0 +1,46 @@
+paths:
+    beginner:
+        name: Beginner
+        description: Just starting out with magic
+    student:
+        name: Student
+        description: Starting to learn the basics
+    apprentice:
+        name: Apprentice
+        description: A good variety of spells
+    master:
+        name: Wizard
+        description: The penultimate wizard
+    engineer:
+        name: Engineer
+        description: Has engineering spells
+    architect:
+        name: Architect
+        description: Has super-powerful engineering spells
+    conduit:
+        name: Conduit
+        description: Can manifest blocks from pure energy
+    battle:
+        name: Warrior
+        description: Low-level combat spells
+    squire:
+        name: Squire
+        description: Mid-level combat spells
+    soldier:
+        name: Soldier
+        description: High-level combat spells
+    knight:
+        name: Knight
+        description: Master-level combat spells
+    broom:
+        name: Broom
+        description: Flying broom upgrades
+    blaster:
+        name: Blaster
+        description: Blaster upgrades
+    jedi:
+        name: Jedi
+        description: Jedi force powers
+    sith:
+        name: Sith
+        description: Sith force powers
