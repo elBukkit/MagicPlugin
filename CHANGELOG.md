@@ -2,6 +2,8 @@
 
 ## 6.2
 
+ - Mine/Chop will no longer make drops out of temporary blocks
+
 ## 6.1
 
  - All spell icons are now in the Resource Pack, player skulls are no longer used.

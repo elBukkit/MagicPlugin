@@ -13,10 +13,7 @@
  - Use Entity tags ("Tags" tag, NBTList, see nms.Entity.P()) for tracking magic mobs
  
  - See if snow that falls on something undoable can undo?
- - Prevent mine/chop from working on temporary blocks
  - lingering potions
-  
- - Update CheckBlock to be a CompoundAction, or optionally send STOP
  
  - Undo bugs with pistons.. yuck. https://youtu.be/S-d-XT2r_vM
  
@@ -42,8 +39,6 @@
 
  - Can still drop your wand by holding while closing your inv
  - Spell organization by path?
-
- - Use hunger for mana.. ?
 
  - Pull/Accio on top of an entity sends it skyrocketing
  - Column's radius doesn't seem to work

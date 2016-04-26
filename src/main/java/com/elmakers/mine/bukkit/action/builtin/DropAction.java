@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,7 +50,11 @@ public class DropAction extends BaseSpellAction {
         if (!context.isDestructible(block)) {
             return SpellResult.NO_TARGET;
         }
-
+        // Don't allow dropping temporary blocks
+        UndoList blockUndoList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(block.getLocation());
+        if (blockUndoList != null && blockUndoList.isScheduled()) {
+            return SpellResult.NO_TARGET;
+        }
         if (dropCount < 0 || drops.size() < dropCount) {
             drops.addAll(block.getDrops());
         } else if (falling) {
