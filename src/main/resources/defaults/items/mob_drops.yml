@@ -1,0 +1,26 @@
+spider_eye:
+  worth: 0.5
+  
+string:
+  worth: 1
+  
+rotten_flesh:
+  worth: 1
+  
+bone:
+  worth: 1
+  
+ghast_tear:
+  worth: 2
+  
+blaze_powder:
+  worth: 2
+  
+sulphur:
+  worth: 4
+  
+slime_ball:
+  worth: 6
+  
+ender_pearl:
+  worth: 8
