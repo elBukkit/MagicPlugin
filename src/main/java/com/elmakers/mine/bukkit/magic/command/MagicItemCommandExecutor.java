@@ -372,6 +372,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
+		ItemStack skullItem;
 		String pageText = pages.get(0);
 		try {
 			String decoded = Base64Coder.decodeString(pageText);
@@ -380,18 +381,37 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				return true;
 			}
 			String url = decoded.replace("\"", "").replace("{textures:{SKIN:{url:", "").replace("}}}", "").trim();
-			ItemStack skullItem = InventoryUtils.getURLSkull(url);
+			skullItem = InventoryUtils.getURLSkull(url);
 			if (skullItem == null) {
 				player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
 				return true;
 			}
-			player.setItemInHand(skullItem);
 		} catch (Exception ex) {
 			player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
 			return true;
 		}
+		if (pages.size() > 1 && skullItem != null) {
+			String secondPageText = pages.get(1);
+			secondPageText = secondPageText.replace(ChatColor.COLOR_CHAR + "0", "");
+			String[] pieces = StringUtils.split(secondPageText, "\n");
+			if (pieces.length > 0) {
+				ItemMeta skullMeta = skullItem.getItemMeta();
+				skullMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', pieces[0]));
+				if (pieces.length > 1) {
+					List<String> lore = new ArrayList<String>();
+					for (int i = 1; i < pieces.length; i++) {
+						lore.add(ChatColor.translateAlternateColorCodes('&', pieces[i]));
+					}
+					skullMeta.setLore(lore);
+				}
+				skullItem.setItemMeta(skullMeta);
+			}
+		}
+		if (skullItem != null) {
+			player.sendMessage(api.getMessages().get("item.skull"));
+			player.setItemInHand(skullItem);
+		}
 
-		player.sendMessage(api.getMessages().get("item.skull"));
 		return true;
 	}
 	

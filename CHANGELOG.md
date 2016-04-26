@@ -9,6 +9,7 @@
  - Add spsellshop, for exchanging SP for money
  - Add "Magic.use.<wand>" permission list, for controlling individual wand permissions.
  - Mine/Chop will no longer make drops out of temporary blocks
+ - Second page of book can be used to set name/lore in /mitem skull command
 
 ## 5.5.5
 
