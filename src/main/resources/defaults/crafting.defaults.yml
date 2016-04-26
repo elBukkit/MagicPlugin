@@ -41,6 +41,16 @@ wand:
   row_2: i
   row_3:
 
+# This is here to disable crafting of other items, even if
+# they aren't craftable.
+wolf:
+  output: gold_hoe
+  disable_default: true
+
+architect:
+  output: gold_axe
+  disable_default: true
+
 # Other default craftable items
 
 battle:
