@@ -2,6 +2,8 @@
 
 ## 6.2
 
+ - Add Magic.commands.cast.parameters permission, in case you really really want to give your players /cast permission.
+
 ## 6.1.1
 
  - Fix broken wand progression when spells have been disabled. (Sorry!)
