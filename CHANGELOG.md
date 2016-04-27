@@ -6,6 +6,7 @@
  - Second page of book can be used to set name/lore in /mitem skull command
  - Spell casts now originate from correct hand for Lefties
  - Fix broken wand progression when spells have been disabled. (Sorry!)
+ - Fix architect/engineer upgrade shops (Also Sorry, bleh)
 
 ## 6.1
 

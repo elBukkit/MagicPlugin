@@ -95,7 +95,7 @@ public class SpellShopAction extends BaseShopAction
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
-        if (wand != null && autoUpgrade) {
+        if (wand != null && autoUpgrade && spells.size() == 0) {
             if (!wand.checkAndUpgrade(false) && !showUpgrades) {
                 return SpellResult.FAIL;
             }
@@ -166,6 +166,8 @@ public class SpellShopAction extends BaseShopAction
             if (!castsSpells && wand.hasSpell(spellKey)) continue;
 
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
+            if (spell == null) continue;
+            
             Double worth = spellValue.getValue();
             if (worth == null) {
                 worth = spell.getWorth();
