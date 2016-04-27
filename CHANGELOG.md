@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 6.2
+## 6.1.1
 
  - Mine/Chop will no longer make drops out of temporary blocks
  - Second page of book can be used to set name/lore in /mitem skull command
