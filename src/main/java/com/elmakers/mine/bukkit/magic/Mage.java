@@ -40,6 +40,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -51,6 +52,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MainHand;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -74,7 +76,6 @@ import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
-    private enum Handedness { RIGHT, LEFT };
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
     public static double WAND_LOCATION_OFFSET = 0.5;
     public static double WAND_LOCATION_VERTICAL_OFFSET = 0;
@@ -110,7 +111,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean quiet = false;
     private EntityData entityData;
     private long lastTick;
-    private Handedness handedness = Handedness.RIGHT;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<PotionEffectType, Integer>();
     protected float damageReduction = 0;
@@ -523,7 +523,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             this._entity = new WeakReference<Entity>(player);
             this._commandSender = new WeakReference<CommandSender>(player);
             hasEntity = true;
-            handedness = CompatibilityUtils.getHandedness(player) == 1 ? Handedness.RIGHT : Handedness.LEFT;
         } else {
             this._player.clear();
             this._entity.clear();
@@ -1062,8 +1061,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         
         boolean leftHand = offhandCast;
-        if (handedness == Handedness.LEFT) {
-            leftHand = !leftHand;
+        Entity entity = getEntity();
+        if (entity instanceof HumanEntity) {
+            HumanEntity human = (HumanEntity)entity;
+            if (human.getMainHand() == MainHand.LEFT) {
+                leftHand = !leftHand;
+            }
         }
         Location toTheRight = wandLocation.clone();
         if (leftHand) {

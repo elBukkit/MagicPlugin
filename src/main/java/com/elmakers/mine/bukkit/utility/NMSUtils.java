@@ -252,7 +252,6 @@ public class NMSUtils {
     protected static Field class_EntityArrow_damageField;
     protected static Field class_CraftWorld_environmentField;
     protected static Field class_EntityLiving_potionBubblesField;
-    protected static Field class_EntityHuman_handednessField;
     protected static Field class_MemorySection_mapField;
 
     static
@@ -452,9 +451,6 @@ public class NMSUtils {
 
             class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("f");
             class_EntityLiving_potionBubblesField.setAccessible(true);
-
-            class_EntityHuman_handednessField = class_EntityHuman.getDeclaredField("bq");
-            class_EntityHuman_handednessField.setAccessible(true);
             
             class_MemorySection_mapField = MemorySection.class.getDeclaredField("map");
             class_MemorySection_mapField.setAccessible(true);
