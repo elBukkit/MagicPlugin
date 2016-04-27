@@ -77,3 +77,6 @@ spells:
     description: We thank you for your service!
   ajshop:
     title: "Inventory"
+    
+spell:
+    required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
