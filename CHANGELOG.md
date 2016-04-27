@@ -7,6 +7,7 @@
  - Spell casts now originate from correct hand for Lefties
  - Fix broken wand progression when spells have been disabled. (Sorry!)
  - Fix architect/engineer upgrade shops (Also Sorry, bleh)
+ - Add "save_default_configs" option to config.yml, is kinda wonky but works
 
 ## 6.1
 

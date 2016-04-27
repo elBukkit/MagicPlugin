@@ -1370,7 +1370,9 @@ public class MagicController implements MageController {
         String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
 
         File savedDefaults = new File(configFolder, defaultsFileName);
-        if (savedDefaults.exists()) {
+        if (saveDefaultConfigs) {
+            plugin.saveResource(defaultsFileName, true);
+        } else if (savedDefaults.exists()) {
             getLogger().info("Deleting defaults file: " + defaultsFileName + ", these have been removed to avoid confusion");
             savedDefaults.delete();
         }
@@ -1458,7 +1460,6 @@ public class MagicController implements MageController {
     }
 
     protected ConfigurationSection loadExamples(ConfigurationSection properties) throws InvalidConfigurationException, IOException {
-
         logVerbosity = properties.getInt("log_verbosity", 0);
         exampleDefaults = properties.getString("example", exampleDefaults);
         addExamples = properties.getStringList("add_examples");
@@ -2200,6 +2201,7 @@ public class MagicController implements MageController {
     public void loadInitialProperties(ConfigurationSection properties) {
         allPvpRestricted = properties.getBoolean("pvp_restricted", allPvpRestricted);
         noPvpRestricted = properties.getBoolean("allow_pvp_restricted", noPvpRestricted);
+        saveDefaultConfigs = properties.getBoolean("save_default_configs", false);
     }
 
 	protected void loadProperties(ConfigurationSection properties)
@@ -4875,8 +4877,6 @@ public class MagicController implements MageController {
     // Synchronization
     private final Object                        saveLock                    = new Object();
 
-
-
     protected static Random                     random                      = new Random();
 
     // Sub-Controllers
@@ -4902,6 +4902,7 @@ public class MagicController implements MageController {
     private boolean                             enableResourcePackCheck     = true;
     private String                              defaultResourcePack         = null;
     private boolean                             checkedResourcePack         = false;
+    private boolean                             saveDefaultConfigs          = false;
 
     private FactionsManager					    factionsManager				= new FactionsManager();
     private LocketteManager                     locketteManager				= new LocketteManager();
