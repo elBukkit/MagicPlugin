@@ -1,12 +1,14 @@
 # CHANGELOG
 
+## 6.2
+
 ## 6.1.1
 
+ - Fix broken wand progression when spells have been disabled. (Sorry!)
+ - Fix architect/engineer upgrade shops (Also Sorry, bleh)
  - Mine/Chop will no longer make drops out of temporary blocks
  - Second page of book can be used to set name/lore in /mitem skull command
  - Spell casts now originate from correct hand for Lefties
- - Fix broken wand progression when spells have been disabled. (Sorry!)
- - Fix architect/engineer upgrade shops (Also Sorry, bleh)
  - Add "save_default_configs" option to config.yml, is kinda wonky but works
 
 ## 6.1
