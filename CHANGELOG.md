@@ -11,6 +11,7 @@
  - Mine/Chop will no longer make drops out of temporary blocks
  - Second page of book can be used to set name/lore in /mitem skull command
  - Add Magic.spawners permission, to allow non-op'd players to place custom mob spawners
+ - Add Magic.commands.cast.parameters permission, in case you really really want to give your players /cast permission.
 
 ## 5.5.5
 

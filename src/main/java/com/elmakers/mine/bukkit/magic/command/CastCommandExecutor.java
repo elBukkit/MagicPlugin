@@ -148,10 +148,14 @@ public class CastCommandExecutor extends MagicTabExecutor {
 		if (castParameters.length < 1) return false;
 
 		String spellName = castParameters[0];
-		String[] parameters = new String[castParameters.length - 1];
-		for (int i = 1; i < castParameters.length; i++)
+		String[] parameters = null;
+		if (sender.hasPermission("Magic.commands.cast.parameters"))
 		{
-			parameters[i - 1] = castParameters[i];
+			parameters = new String[castParameters.length - 1];
+			for (int i = 1; i < castParameters.length; i++)
+			{
+				parameters[i - 1] = castParameters[i];
+			}
 		}
 		api.cast(spellName, parameters, sender, entity);
 		return true;
@@ -180,7 +184,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 			}
 		}
 
-		if (args.length > 1)
+		if (args.length > 1 && sender.hasPermission("Magic.commands.cast.parameters"))
 		{
 			String spellName = args[0];
 			SpellTemplate spell = api.getSpellTemplate(spellName);

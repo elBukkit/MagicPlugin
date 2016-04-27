@@ -425,6 +425,10 @@ permissions:
     description: Player may cast command-line spells on behalf of another player
     type: boolean
     default: op
+  Magic.commands.cast.parameters:
+    description: Player may use command-line parameters in /cast and /castp commands
+    type: boolean
+    default: op
   Magic.commands.wand:
     description: Player may use the /wand commands
     type: boolean
