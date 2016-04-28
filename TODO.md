@@ -1,5 +1,14 @@
 # TODO
 
+ - http://opengameart.org/content/painterly-spell-icons-part-1  ... ?
+ 
+ - http://opengameart.org/content/spell-icon-collection-part-1
+ - http://opengameart.org/content/spell-set
+ - http://opengameart.org/content/modified-and-cliped-magic-skill-item-icons
+ - http://opengameart.org/content/skill-item-and-spell-icons
+ 
+ - Permission to place spawners
+
  - Shops/Items:
    - Add new command, mshop
      - /mshop create [shoptype] [title] : Create a new shop NPC, default type "buyshop" in configs
