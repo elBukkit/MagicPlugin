@@ -68,6 +68,11 @@ beginner:
       1: 100, 5,   1
       2: 0,   50,  40
       3: 0,   10,  90
+    extra_spells:
+      flare: 110,80,60
+      stun: 0,5,15
+      gather: 0,0,5
+      workbench: 50,70,100
     spells:
       missile: 100,90,80
       arrow: 0,20,10
@@ -78,7 +83,6 @@ beginner:
       cure: 1,5,10
       bubble: 10,40,20
       fireball: 0,0,80
-      flare: 110,80,60
       torch: 0,60,50
       push: 0,20,40
       pull: 10,20,40
@@ -86,12 +90,9 @@ beginner:
       recall: 0,5,15
       blind: 0,1,5
       reflect: 0,0,5
-      stun: 0,5,15
       poison: 5,10,20
       fire: 50,70,60
       frost: 80,70,50
-      gather: 0,0,5
-      workbench: 50,70,100
 
 student:
     icon: wood_hoe:2
@@ -142,15 +143,23 @@ student:
       1: 100, 10,  1
       2: 0,   70,  40
       3: 0,   1,   90
+    extra_spells:
+      familiar: 10,30,40
+      monster: 5,20,30
+      tracking: 5,10,30
+      rocket: 0,10,20
+      secure: 0,0,5
+      admission: 20,25,30
+      tag: 1,4,5
+      phase: 0,0,1
+      grow: 1,10,20
     spells:
       blink: 0,0,10
       arrowrain: 10,30,50
       boom: 20,50,60
-      familiar: 10,30,40
       fling: 0,5,70
       grenade: 0,20,70
       heal: 0,1,5
-      monster: 5,20,30
       lightning: 40,50,30
       lava: 5,20,50
       stream: 0,10,30
@@ -161,15 +170,8 @@ student:
       shell: 1,20,30
       blob: 1,20,30
       entangle: 0,0,20
-      tracking: 5,10,30
-      rocket: 0,10,20
       whip: 1,10,20
-      secure: 0,0,5
-      admission: 20,25,30
       curse: 0,0,10
-      tag: 1,4,5
-      phase: 0,0,1
-      grow: 1,10,20
 
 apprentice:
     icon: wood_hoe:3
@@ -221,12 +223,15 @@ apprentice:
       1: 100, 5,   0
       2: 0,   80,  30
       3: 0,   10,  80
-    spells:
+    extra_spells:
       emp: 0,0,10
+      music: 110,80,60
+      disarm: 0,0,2
+      ghast: 0,0,5
+    spells:
       breach: 5,20,30
       disintegrate: 0,10,40
       hat: 110,80,60
-      music: 110,80,60
       sandblast: 20,30,40
       counterspell: 0,1,5
       platform: 0,1,5
@@ -242,11 +247,9 @@ apprentice:
       sticky: 1,5,15
       homing: 1,5,15
       lift: 1,5,10
-      disarm: 0,0,2
       laser: 0,0,10
       wave: 5,20,30
       chainlightning: 5,20,30
-      ghast: 0,0,5
       glide: 0,0,5
 
 master:
@@ -308,6 +311,12 @@ master:
       1: 100, 10,  0
       2: 0,   70,  10
       3: 0,   10,   90
+    extra_spells:
+      mount: 0,1,5
+      cage: 0,0,2
+      silence: 0,0,5
+      tent: 0,0,1
+      tame: 0,0,5
     spells:
       fury: 0,0,1
       blessing: 0,0,1
@@ -315,10 +324,8 @@ master:
       bomb: 0,0,1
       invincible: 0,0,10
       earthquake: 0,0,1
-      mount: 0,1,5
       icbm: 0,0,1
       nuke: 0,0,1
-      cage: 0,0,2
       meteor: 0,0,2
       pollinate: 0,0,10
       kill: 2,10,20
@@ -327,11 +334,8 @@ master:
       singularity: 0,1,5
       tornado: 1,10,15
       tendril: 0,0,5
-      silence: 0,0,5
       force: 5,10,20
-      tent: 0,0,1
       stash: 0,0,5
-      tame: 0,0,5
       railgun: 10,20,30
       levitate: 0,0,10
       shrink: 5,20,30
@@ -421,30 +425,16 @@ engineer:
       5: 0,  1,   10
     materials:
       erase: 0,0,1
-      map: 0,0,1
       stone: 50,70,80
       dirt: 50,50,70
       sand: 20,30,40
+      grass: 5,10,20
       gravel: 20,30,40
       glass: 10,20,30
       glowstone: 5,10,20
       stained_clay: 1,5,15
       stained_glass: 0,5,15
       stained_glass_pane: 0,5,15
-      soul_sand: 5,10,20
-      grass: 5,10,20
-      wood: 5,10,20
-      log: 5,10,20
-      vine: 0,5,10
-      mycel: 0,5,10
-      quartz_block: 0,0,25
-      leaves: 0,5,10
-      ice: 10,20,25
-      packed_ice: 10,20,25
-      obsidian: 0,0,15
-      redstone_block: 0,0,5
-      schematic|rainbow_blocks: 0,2,5
-      schematic|creeper_rug: 0,0,5
 
 architect:
     icon: wood_hoe:5
@@ -517,12 +507,26 @@ architect:
       floodfill: 1,10,20
       tunnel: 5,10,20
     material_count:
-      3:  50, 20, 20
-      4:  1,  10, 30
-      5:  0,  5,  40
-      10:  0,  1,  10
+      7:  50, 20, 20
+      10:  1,  10, 30
+      12:  0,  5,  40
+      15:  0,  1,  10
     materials:
       copy: 0,0,10
+      map: 0,0,1
+      soul_sand: 5,10,20
+      wood: 5,10,20
+      log: 5,10,20
+      vine: 0,5,10
+      mycel: 0,5,10
+      quartz_block: 0,0,25
+      leaves: 0,5,10
+      ice: 10,20,25
+      packed_ice: 10,20,25
+      obsidian: 0,0,15
+      redstone_block: 0,0,5
+      schematic|rainbow_blocks: 0,2,5
+      schematic|creeper_rug: 0,0,5
       wool|0: 80,60,50
       wool|1: 80,60,50
       wool|2: 80,60,50

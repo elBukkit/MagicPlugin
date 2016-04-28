@@ -132,12 +132,6 @@ public class SpellShopAction extends BaseShopAction
                     spellPrices.put(pathSpell, null);
                 }
             }
-            if (showExtra) {
-                Collection<String> extraSpells = currentPath.getExtraSpells();
-                for (String extraSpell : extraSpells) {
-                    spellPrices.put(extraSpell, null);
-                }
-            }
             if (showRequired) {
                 Collection<String> requiredSpells = currentPath.getRequiredSpells();
                 for (String requiredSpell : requiredSpells) {
@@ -258,6 +252,30 @@ public class SpellShopAction extends BaseShopAction
         }
 
         Collections.sort(shopItems);
+        
+        if (spells.size() == 0 && showExtra && !castsSpells) {
+            Collection<String> extraSpells = currentPath.getExtraSpells();
+            List<ShopItem> extraItems = new ArrayList<ShopItem>();
+            for (String spellKey : extraSpells) {
+                if (wand.hasSpell(spellKey)) continue;
+
+                SpellTemplate spell = controller.getSpellTemplate(spellKey);
+                if (spell == null) continue;
+                double worth = spell.getWorth();
+                if (worth <= 0 && !showFree) continue;
+                if (!spell.hasCastPermission(mage.getCommandSender())) continue;
+
+                ItemStack spellItem = controller.createSpellItem(spellKey, castsSpells);
+                ItemMeta meta = spellItem.getItemMeta();
+                List<String> itemLore = meta.getLore();
+                itemLore.add(context.getMessage("extra_spell", "&aNot Required"));
+                meta.setLore(itemLore);
+                spellItem.setItemMeta(meta);
+                extraItems.add(new ShopItem(spellItem, worth));
+            }
+            Collections.sort(extraItems);
+            shopItems.addAll(extraItems);
+        }
         return showItems(context, shopItems);
 	}
 
