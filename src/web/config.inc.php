@@ -7,6 +7,9 @@ $magicRootFolder = dirname(__FILE__) . '/../main/resources';
 // This is mainly used in testing, normally doesn't need to be changed
 $magicDefaultsFolder = $magicRootFolder . '/defaults';
 
+// Resource Pack folder
+$resourcePackFolder = $magicRootFolder . '../resource-pack/';
+
 // Configure InfoBook integration (external plugin)
 $infoBookRootConfig = dirname(__FILE__) . '/../main/resources/examples/InfoBook/config.yml';
 

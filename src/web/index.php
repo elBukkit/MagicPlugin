@@ -476,7 +476,12 @@ function printIcon($iconUrl, $title) {
 					foreach ($spells as $key => $spell) {
                         $name = isset($spell['name']) ? $spell['name'] : "($key)";
 						
-                        if (isset($spell['icon_url']))
+						$iconFile = 'survival/assets/minecraft/textures/items/spells/' . $key . '.png';
+						if (file_exists($resourcePackFolder . $iconFile))
+						{
+							$icon = printIcon('rp/' . $iconFile, $name);
+						}
+                        else if (isset($spell['icon_url']))
                         {
                             $icon = printIcon($spell['icon_url'], $name);
                         }
