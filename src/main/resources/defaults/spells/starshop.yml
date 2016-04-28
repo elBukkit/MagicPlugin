@@ -1,0 +1,13 @@
+starshop:
+    inherit: buyshop
+    parameters:
+        items:
+        - item: wand|blaster
+          cost: 10000
+        - item: wand|lightsaber_red
+          cost: 100000
+        - item: wand|lightsaber_green
+          cost: 100000
+        - item: wand|lightsaber_blue
+          cost: 100000
+          
