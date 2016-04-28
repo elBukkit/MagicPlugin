@@ -1376,4 +1376,14 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return entityType;
     }
+    
+    public static void applyItemData(ItemStack item, Block block) {
+        try {
+            Object entityDataTag = getNode(item, "BlockEntityTag");
+            if (entityDataTag == null) return;
+            NMSUtils.setTileEntityData(block.getLocation(), entityDataTag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

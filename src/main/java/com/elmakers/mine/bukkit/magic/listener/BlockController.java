@@ -134,6 +134,9 @@ public class BlockController implements Listener {
             if (modifiedBlock != null) {
                 com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
             }
+            if (block.getType() == Material.MOB_SPAWNER && event.getItemInHand() != null && event.getItemInHand().getType() == Material.MOB_SPAWNER && player.hasPermission("Magic.spawners")) {
+                CompatibilityUtils.applyItemData(event.getItemInHand(), block);
+            }
         }
     }
 

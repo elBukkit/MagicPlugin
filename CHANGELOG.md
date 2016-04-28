@@ -3,6 +3,8 @@
 ## 6.2
 
  - Add Magic.commands.cast.parameters permission, in case you really really want to give your players /cast permission.
+ - Add Magic.spawners permission, to allow non-op'd players to place custom mob spawners
+ - Converted tweak/upgrade icons to RP-based icons
 
 ## 6.1.1
 
