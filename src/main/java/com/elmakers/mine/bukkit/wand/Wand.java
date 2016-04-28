@@ -413,7 +413,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		icon = materialData;
         if (icon != null) {
 			Short durability = null;
-			if (!indestructible && icon.getMaterial().getMaxDurability() > 0)
+			if (!indestructible && !isUpgrade && icon.getMaterial().getMaxDurability() > 0)
 			{
 				durability = item.getDurability();
 			}
@@ -432,6 +432,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				item.setDurability(durability);
 			}
         }
+		
+		// Make indestructible
+		// The isUpgrade checks here and above are for using custom icons in 1.9, this is a bit hacky.
+		if ((indestructible || Unbreakable || isUpgrade) && !manaMode.useDurability()) {
+			CompatibilityUtils.makeUnbreakable(item);
+		} else {
+			CompatibilityUtils.removeUnbreakable(item);
+		}
+		CompatibilityUtils.hideFlags(item, HIDE_FLAGS);
 	}
 	
 	public void makeUpgrade() {
@@ -1823,14 +1832,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (glow) {
             CompatibilityUtils.addGlow(item);
 		}
-
-        // Make indestructible
-        if ((indestructible || Unbreakable) && !manaMode.useDurability()) {
-            CompatibilityUtils.makeUnbreakable(item);
-        } else {
-            CompatibilityUtils.removeUnbreakable(item);
-        }
-		CompatibilityUtils.hideFlags(item, HIDE_FLAGS);
 	}
 	
 	private void updateName() {

@@ -1,30 +1,30 @@
 chestmode:
-    icon: skull_item:http://textures.minecraft.net/texture/f6d6ac2ee323f6497c6e2663a7e56ed9523567b68d18a17f8f39736b06ac3cd
+    icon: diamond_axe:205
     upgrade: true
     indestructible: false
     mode: chest
 quickcast_enable:
-    icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
+    icon: diamond_axe:206
     upgrade: true
     force: true
     quick_cast: true
 quickcast_disable:
-    icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
+    icon: diamond_axe:207
     upgrade: true
     force: true
     quick_cast: disable
 quickcast_manual:
-    icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
+    icon: diamond_axe:208
     upgrade: true
     force: true
     quick_cast: manual
 quickcast_normal:
-    icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
+    icon: diamond_axe:209
     upgrade: true
     force: true
     quick_cast: normal
 mode_drop:
-    icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
+    icon: diamond_axe:210
     upgrade: true
     force: true
     drop: toggle
@@ -32,7 +32,7 @@ mode_drop:
     left_click: cast
     swap: cycle_hotbar
 mode_rightclick:
-    icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
+    icon: diamond_axe:211
     upgrade: true
     force: true
     drop: cycle_hotbar
@@ -40,7 +40,7 @@ mode_rightclick:
     left_click: cast
     swap: none
 mode_sword:
-    icon: skull_item:http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
+    icon: diamond_axe:212
     upgrade: true
     force: true
     drop: toggle
@@ -49,7 +49,7 @@ mode_sword:
     swap: cycle_hotbar
     quick_cast: true
 mode_swap:
-    icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
+    icon: diamond_axe:213
     upgrade: true
     force: true
     drop: cycle_hotbar
@@ -57,38 +57,38 @@ mode_swap:
     left_click: cast
     swap: toggle
 inventorymode:
-    icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
+    icon: diamond_axe:214
     upgrade: true
     indestructible: false
     mode: inventory
 cyclemode:
-    icon: skull_item:http://textures.minecraft.net/texture/d0347fcef38a2fd59eefafb5e969f8536c7c13783b822a12d02f43a9a21d56
+    icon: diamond_axe:215
     upgrade: true
     indestructible: false
     mode: cycle
 organizer:
-    icon: skull_item:http://textures.minecraft.net/texture/15d64eaee565d25a83a88e187ad492af9a14b4eaa59fa0a43c237690594020
+    icon: diamond_axe:216
     upgrade: true
     indestructible: false
     organize: true
 alphabetizer:
-    icon: skull_item:http://textures.minecraft.net/texture/324d644a9e844c23ac9ae5efe0807d881e8ca5ce193c3268308770aea7774e
+    icon: diamond_axe:217
     upgrade: true
     indestructible: false
     alphabetize: true
     
 loud:
-    icon: skull_item:http://textures.minecraft.net/texture/b8468a85999823db7b326625612451d2ea1c3d76108093318419e1e6690ab
+    icon: diamond_axe:218
     upgrade: true
     indestructible: false
     quiet: -1
 quiet:
-    icon: skull_item:http://textures.minecraft.net/texture/5e1097685f8554b1b0ad72deb5b1732a38a638cec55dd8801ef613bb1a12b57
+    icon: diamond_axe:219
     upgrade: true
     indestructible: false
     quiet: -2
 silent:
-    icon: skull_item:http://textures.minecraft.net/texture/50208aaffe55d5fdf195e9f24ef9ef07113ea1f3d0b65322b57659ffdcda45
+    icon: diamond_axe:220
     upgrade: true
     indestructible: false
     quiet: -3
