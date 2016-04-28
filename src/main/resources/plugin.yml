@@ -903,4 +903,8 @@ permissions:
     description: A player may apply unsafe attributes to an item
     default: true
     type: boolean
+  Magic.spawners:
+    description: A player may place custom mob spawners without being op'd
+    default: op
+    type: boolean
     
