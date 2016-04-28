@@ -8,13 +8,17 @@ if (PHP_SAPI !== 'cli')
 }
 
 if (count($argv) < 2) {
-    die("Usage: rpicons.php <spells.yml>\n");
+    die("Usage: rpicons.php <config.yml> <start>\n");
 }
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $spellConfig =  dirname(__FILE__) . '/' . $argv[1];
+$currentDurability = 1;
+if (count($argv) > 2) {
+    $currentDurability = $argv[2];
+}
 
 if (!file_exists($spellConfig))
 {
@@ -96,14 +100,18 @@ if ($handle) {
                 $parts = explode(':', $currentIcon);
                 if (count($parts) == 2) {
                     $durability = $parts[1];
-                    $newDurability = count($iconMap) + 1;
-                    echo "Skipping $currentSpell, already converted as #$durability, new id#$newDurability\n";
-                    $iconMap[$newDurability] = $currentSpell;
+                    echo "Skipping $currentSpell, already converted as #$durability, new id#$currentDurability\n";
+                    $iconMap[$currentDurability] = $currentSpell;
                     $currentSpell = null;
-                    $outputFile .= $iconIndent . "icon: $iconType:$newDurability\n";
+                    $outputFile .= $iconIndent . "icon: $iconType:$currentDurability\n";
                     $currentSpellConfig = $currentSpellConfigNoIcon;
+                    $currentDurability++;
                     continue;
                 }
+            }
+            if (strpos($currentIcon, ':http') !== FALSE) {
+                $pieces = explode(':', $currentIcon, 2);
+                $currentURL = $pieces[1];
             }
             if ($currentURL != null) {
                 echo "Converting $currentSpell\n";
@@ -124,7 +132,7 @@ if ($handle) {
 }
 
 file_put_contents($spellConfigOut, $outputFile);
-echo "Wrote spells config to $spellConfigOut\n";
+echo "Wrote config to $spellConfigOut\n";
 $outputFile = null;
 $jsonFile = <<<END
 {
@@ -159,6 +167,7 @@ function getIcon($spell, $url, $iconIndent) {
     global $spellsTextureFolder;
     global $spellsFolder;
     global $interpolationType;
+    global $currentDurability;
     $cacheFile = $cacheFolder . '/' . urlencode($url);
     if (!file_exists($cacheFile)) {
         $iconFile = file_get_contents($url);
@@ -183,8 +192,9 @@ function getIcon($spell, $url, $iconIndent) {
 }
 END;
     file_put_contents($spellsFolder . '/' . $spell . '.json', $spellJson);
-    
-    $durability = count($iconMap) + 1;
+
+    $durability = $currentDurability + 1;
+    $currentDurability++;
     $iconMap[$durability] = $spell;
     return $iconIndent . "icon: $iconType:$durability\n";
 }
