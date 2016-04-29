@@ -19,6 +19,20 @@ find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-RP-6-1.zip *
 cd ..
 
+echo "** BUILDING PAINTERLY **"
+
+mkdir painterly
+cd painterly
+mkdir assets
+cd assets
+cp -R ../../../common/assets/* .
+cd ..
+cp -R ../../survival/* .
+cp -R ../../painterly/* .
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-painterly-RP-6-1.zip *
+cd ..
+
 echo "** BUILDING POTTER **"
 
 mkdir potter 
