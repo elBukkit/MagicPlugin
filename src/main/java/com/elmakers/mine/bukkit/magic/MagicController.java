@@ -3908,6 +3908,10 @@ public class MagicController implements MageController {
         if (Wand.isBrush(item)) {
             return "brush:" + Wand.getBrush(item);
         }
+        ItemData mappedItem = getItem(item);
+        if (mappedItem != null) {
+            return mappedItem.getKey();
+        }
         if (item.getType() == Material.SKULL_ITEM) {
             String url = InventoryUtils.getSkullURL(item);
             if (url != null && url.length() > 0) {
