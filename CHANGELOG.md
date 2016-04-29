@@ -6,7 +6,7 @@
  - Add Magic.spawners permission, to allow non-op'd players to place custom mob spawners
  - Converted tweak/upgrade icons to RP-based icons
  - Several spells are now optional, players don't need to acquire them to rank up
- - Add "/mtrait hat" command, for putting spells, wands and hats on an NPC's head
+ - Add "/mtrait hat" command, for putting spells, wands and hats on an NPC's head (See: http://imgur.com/a/FQLnp)
 
 ## 6.1.1
 
