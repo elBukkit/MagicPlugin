@@ -375,7 +375,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     context.showMessage(costString);
                     return;
                 }
-                if (!castsSpells && !requireWand) {
+                if (!castsSpells && !applyToWand) {
                     context.getController().giveItemToPlayer(mage.getPlayer(), InventoryUtils.getCopy(item));
                 }
 
