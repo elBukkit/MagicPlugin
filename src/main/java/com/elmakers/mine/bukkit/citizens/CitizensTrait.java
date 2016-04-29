@@ -1,8 +1,6 @@
 package com.elmakers.mine.bukkit.citizens;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import net.citizensnpcs.api.trait.Trait;
@@ -22,6 +20,7 @@ public abstract class CitizensTrait extends Trait {
     private boolean invisible = false;
     private double cost = 0;
     private ItemStack requireItem = null;
+    private ItemStack hatItem;
     protected MagicAPI api;
 
     protected CitizensTrait(String name) {
@@ -36,6 +35,10 @@ public abstract class CitizensTrait extends Trait {
         if (itemKey != null && itemKey.length() > 0) {
             requireItem = api.createItem(itemKey);
         }
+        String hatKey = data.getString("hat");
+        if (hatKey != null && hatKey.length() > 0) {
+            hatItem = api.createItem(hatKey);
+        }
     }
 
     public void save(DataKey data) {
@@ -44,6 +47,9 @@ public abstract class CitizensTrait extends Trait {
         data.setDouble("cost", cost);
         if (requireItem != null) {
             data.setString("require", api.getItemKey(requireItem));
+        }
+        if (hatItem != null) {
+            data.setString("hat", api.getItemKey(hatItem));
         }
     }
 
@@ -59,10 +65,10 @@ public abstract class CitizensTrait extends Trait {
 
     @Override
     public void onSpawn() {
-        updatePotionEffects();
+        updateEntity();
     }
 
-    protected void updatePotionEffects() {
+    protected void updateEntity() {
         Entity entity = null;
         try {
             entity = npc.getEntity();
@@ -75,6 +81,9 @@ public abstract class CitizensTrait extends Trait {
                 li.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
             } else {
                 li.removePotionEffect(PotionEffectType.INVISIBILITY);
+            }
+            if (hatItem != null) {
+                li.getEquipment().setHelmet(hatItem);
             }
         }
     }
@@ -134,6 +143,9 @@ public abstract class CitizensTrait extends Trait {
         if (requireItem != null) {
             sender.sendMessage(ChatColor.DARK_PURPLE + "Requires: " + ChatColor.GOLD + api.describeItem(requireItem));
         }
+        if (hatItem != null) {
+            sender.sendMessage(ChatColor.DARK_PURPLE + "Wearing Hat: " + ChatColor.GOLD + api.describeItem(hatItem));
+        }
     }
 
     public void configure(CommandSender sender, String key, String value)
@@ -166,7 +178,7 @@ public abstract class CitizensTrait extends Trait {
                 invisible = true;
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Set NPC invisible");
             }
-            updatePotionEffects();
+            updateEntity();
         }
         else if (key.equalsIgnoreCase("cost"))
         {
@@ -202,6 +214,34 @@ public abstract class CitizensTrait extends Trait {
                 try {
                     requireItem = api.createItem(value);
                     sender.sendMessage(ChatColor.DARK_PURPLE + "Set item requirement to " + api.describeItem(requireItem));
+                } catch (Exception ex) {
+                    sender.sendMessage(ChatColor.RED + "Invalid item: " + value);
+                }
+            }
+        }
+        else if (key.equalsIgnoreCase("hat"))
+        {
+            hatItem = api.createItem(value);
+            if (hatItem == null)
+            {
+                sender.sendMessage(ChatColor.DARK_PURPLE + "removed hat");
+                Entity entity = null;
+                try {
+                    entity = npc.getEntity();
+                } catch (Exception ex) {
+
+                }
+                LivingEntity li = entity instanceof LivingEntity ? (LivingEntity)entity : null;
+                if (li != null) {
+                    li.getEquipment().setHelmet(hatItem);
+                }
+            }
+            else
+            {
+                try {
+                    hatItem = api.createItem(value);
+                    sender.sendMessage(ChatColor.DARK_PURPLE + "Set hat to " + api.describeItem(hatItem));
+                    updateEntity();
                 } catch (Exception ex) {
                     sender.sendMessage(ChatColor.RED + "Invalid item: " + value);
                 }

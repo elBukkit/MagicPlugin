@@ -11,6 +11,7 @@ import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -110,6 +111,24 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         {
             options.addAll(Arrays.asList(BaseSpell.COMMON_PARAMETERS));
         }
+        else if (lastParameter.equalsIgnoreCase("hat"))
+        {
+            Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+            for (SpellTemplate spell : spellList) {
+                options.add(spell.getKey());
+            }
+            Collection<String> allWands = api.getWandKeys();
+            for (String wandKey : allWands) {
+                options.add(wandKey);
+            }
+            for (Material material : Material.values()) {
+                options.add(material.name().toLowerCase());
+            }
+            Collection<String> allItems = api.getController().getItemKeys();
+            for (String itemKey : allItems) {
+                options.add(itemKey);
+            }
+        }
         else if (lastParameter.equalsIgnoreCase("cost"))
         {
             options.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
@@ -126,6 +145,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
             options.add("cost");
             options.add("permission");
             options.add("invisible");
+            options.add("hat");
             options.add("command");
 
             Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));

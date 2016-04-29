@@ -6,7 +6,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 
 import java.util.logging.Level;
 
@@ -109,7 +108,6 @@ public class CommandCitizensTrait extends CitizensTrait {
                 op = true;
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Player commands run as OP");
             }
-            updatePotionEffects();
         }
         else if (key.equalsIgnoreCase("console"))
         {
@@ -123,7 +121,6 @@ public class CommandCitizensTrait extends CitizensTrait {
                 console = true;
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Set executor to console");
             }
-            updatePotionEffects();
         }
         else if (value == null || value.isEmpty())
         {
