@@ -13,10 +13,13 @@ Players may obtain or craft wands that can past a variety of configurable spells
   - killme
   - Boosik
   - Dr00bles
-- Lead 3D Artist: Dr00bles
-- Contributing 2D Artists:
+- 3D Artist: Dr00bles
+- 2D Artists:
   - Dr00bles
   - eleazzaar
+- Sound Effects:
+  - Dr00bles
+  - S-Toad (Flute samples for Ocarina)
   
 ## Notes on Spell Icons
 
