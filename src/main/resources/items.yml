@@ -2,6 +2,8 @@
 # Modify this file to change, add or disable custom item types.
 # These items are not wands and don't have any non-vanilla data attached.
 #
+# You can also add individual files to the items/ folder
+#
 # See the following folder for the current builtin items:
 # https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/items
 #

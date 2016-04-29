@@ -2,6 +2,8 @@
 # Modify this file to change the overall behavior of the Magic plugin.
 # only include the options you want to modify.
 #
+# You can also add individual files to the config/ folder
+#
 # To see all available options, look in this folder:
 # https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/config
 #

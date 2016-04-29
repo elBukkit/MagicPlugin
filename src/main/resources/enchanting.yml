@@ -2,6 +2,8 @@
 # Modify this file to change the available enchanting paths.
 # New paths can be added, existing paths can be modified.
 #
+# You can also add individual files to the enchanting/ folder
+#
 # This will change the overall behavior of how wands progress when players
 # spend SP to gain spells (or using the legacy enchanting system).
 #

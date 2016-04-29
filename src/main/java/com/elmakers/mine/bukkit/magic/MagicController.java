@@ -1454,6 +1454,8 @@ public class MagicController implements MageController {
                     }
                 }
             }
+        } else {
+            configSubFolder.mkdir();
         }
         
         return config;

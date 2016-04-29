@@ -1,6 +1,8 @@
 #
 # Modify this file to change, add or disable custom mob types.
 #
+# You can also add individual files to the mobs/ folder
+#
 # To see the current default builtin configs, look in this folder:
 # https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/mobs
 #

@@ -2,6 +2,8 @@
 # Modify this file to change the available default wands.
 # New wands can be added, existing wands modified or removed (disabled)
 #
+# You can also add individual files to the wands/ folder
+#
 # To see the current default builtin configs, look in this folder:
 # https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/wands
 #

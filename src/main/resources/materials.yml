@@ -1,6 +1,8 @@
 #
 # Modify this file to change the behavior of various materials.
 #
+# You can also add individual files to the materials/ folder
+#
 # This controls how magic deals with individual materials in a variety of ways,
 # such as which are indestructible, destructible, transparent, etc.
 #

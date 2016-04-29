@@ -2,6 +2,8 @@
 # Modify this file to change the available wand crafting recipes.
 # New recipies can be be added, existing recipes can be modified or disabled.
 #
+# You can also add individual files to the crafting/ folder
+#
 # To see the current default builtin configs, look in this folder:
 # https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/crafting
 #
