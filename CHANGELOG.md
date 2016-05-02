@@ -9,6 +9,7 @@
  - Add "/mtrait hat" command, for putting spells, wands and hats on an NPC's head (See: http://imgur.com/a/FQLnp)
  - Add support for an "override" entry in spells.yml, for settings that should effect ALL spells
  - Fix compatibility issues with keep-on-death wands and CombatTagPlus kill-on-quit
+ - Offhand casts now show a visibile swing animation
 
 ## 6.1.1
 

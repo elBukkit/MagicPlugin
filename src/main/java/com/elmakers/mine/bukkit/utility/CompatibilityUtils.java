@@ -1386,4 +1386,25 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
     }
+    
+    public static void swingOffhand(Entity entity, int range) {
+        int rangeSquared = range * range;
+        String worldName = entity.getWorld().getName();
+        Location center = entity.getLocation();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(center) > rangeSquared) {
+                continue;
+            }
+            swingOffhand(player, entity);
+        }
+    }
+    
+    public static void swingOffhand(Player sendToPlayer, Entity entity) {
+        try {
+            Object packet = class_PacketPlayOutAnimation_Constructor.newInstance(getHandle(entity), 3);
+            sendPacket(sendToPlayer, packet);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

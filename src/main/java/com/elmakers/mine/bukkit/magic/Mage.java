@@ -80,6 +80,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static double WAND_LOCATION_OFFSET = 0.5;
     public static double WAND_LOCATION_VERTICAL_OFFSET = 0;
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
+    public static int OFFHAND_CAST_RANGE = 32;
     final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<Material>();
     private static String defaultMageName = "Mage";
     private static String SKILL_POINT_KEY = "sp";
@@ -850,6 +851,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     offhandWand.tickMana(player);
                     offhandWand.setMage(this);
                     offhandWand.cast();
+                    CompatibilityUtils.swingOffhand(player, OFFHAND_CAST_RANGE);
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.WARNING, "Error casting from offhand wand", ex);
                 }

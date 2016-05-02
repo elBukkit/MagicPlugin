@@ -106,6 +106,7 @@ public class NMSUtils {
     protected static Class<?> class_PacketPlayOutEntityStatus;
     protected static Class<?> class_PacketPlayOutCustomSoundEffect;
     protected static Class<?> class_PacketPlayOutExperience;
+    protected static Class<?> class_PacketPlayOutAnimation;
     protected static Enum<?> enum_SoundCategory_PLAYERS;
     protected static Class<Enum> class_EnumSoundCategory;
     protected static Class<?> class_EntityFallingBlock;
@@ -214,6 +215,7 @@ public class NMSUtils {
     protected static Constructor class_PacketPlayOutEntityDestroy_Constructor;
     protected static Constructor class_PacketPlayOutCustomSoundEffect_Constructor;
     protected static Constructor class_PacketPlayOutExperience_Constructor;
+    protected static Constructor class_PacketPlayOutAnimation_Constructor;
     protected static Constructor class_ChestLock_Constructor;
     protected static Constructor class_ArmorStand_Constructor;
     protected static Constructor class_AxisAlignedBB_Constructor;
@@ -313,6 +315,7 @@ public class NMSUtils {
             class_PacketPlayOutEntityStatus = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityStatus");
             class_PacketPlayOutCustomSoundEffect = fixBukkitClass("net.minecraft.server.PacketPlayOutCustomSoundEffect");
             class_PacketPlayOutExperience = fixBukkitClass("net.minecraft.server.PacketPlayOutExperience");
+            class_PacketPlayOutAnimation = fixBukkitClass("net.minecraft.server.PacketPlayOutAnimation");
             class_EntityFallingBlock = fixBukkitClass("net.minecraft.server.EntityFallingBlock");
             class_EntityArmorStand = fixBukkitClass("net.minecraft.server.EntityArmorStand");
             class_EntityPlayer = fixBukkitClass("net.minecraft.server.EntityPlayer");
@@ -396,6 +399,7 @@ public class NMSUtils {
             class_PacketPlayOutEntityDestroy_Constructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
             class_PacketPlayOutCustomSoundEffect_Constructor = class_PacketPlayOutCustomSoundEffect.getConstructor(String.class, class_EnumSoundCategory, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
             class_PacketPlayOutExperience_Constructor = class_PacketPlayOutExperience.getConstructor(Float.TYPE, Integer.TYPE, Integer.TYPE);
+            class_PacketPlayOutAnimation_Constructor = class_PacketPlayOutAnimation.getConstructor(class_Entity, Integer.TYPE);
             
             class_CraftWorld_environmentField = class_CraftWorld.getDeclaredField("environment");
             class_CraftWorld_environmentField.setAccessible(true);
