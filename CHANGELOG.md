@@ -7,6 +7,7 @@
  - Converted tweak/upgrade icons to RP-based icons
  - Several spells are now optional, players don't need to acquire them to rank up
  - Add "/mtrait hat" command, for putting spells, wands and hats on an NPC's head (See: http://imgur.com/a/FQLnp)
+ - Add support for an "override" entry in spells.yml, for settings that should effect ALL spells
 
 ## 6.1.1
 
