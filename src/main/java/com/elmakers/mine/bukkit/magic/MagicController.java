@@ -1516,7 +1516,7 @@ public class MagicController implements MageController {
 
         Set<String> spellKeys = config.getKeys(false);
         for (String key : spellKeys) {
-            if (key.equals("default")) continue;
+            if (key.equals("default") || key.equals("override")) continue;
 
             ConfigurationSection spellNode = getSpellConfig(key, config);
             if (spellNode == null || !spellNode.getBoolean("enabled", true)) {
@@ -2022,6 +2022,12 @@ public class MagicController implements MageController {
             baseSpellConfigurations.put(key, spellNode);
         }
 
+        // Apply spell override last
+        ConfigurationSection override = config.getConfigurationSection("override");
+        if (override != null) {
+            spellNode = ConfigurationUtils.addConfigurations(spellNode, override, true);
+        }
+        
         return spellNode;
     }
 
@@ -2037,7 +2043,7 @@ public class MagicController implements MageController {
 		for (Entry<String, ConfigurationSection> entry : spellConfigs.entrySet())
 		{
             String key = entry.getKey();
-            if (key.equals("default")) continue;
+            if (key.equals("default") || key.equals("override")) continue;
 
             ConfigurationSection spellNode = entry.getValue();
             if (spellNode == null) {

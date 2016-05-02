@@ -14,6 +14,7 @@
  - Add Magic.commands.cast.parameters permission, in case you really really want to give your players /cast permission.
  - Add "/mtrait hat" command, for putting spells, wands and hats on an NPC's head
  - Fix compatibility issues with keep-on-death wands and CombatTagPlus kill-on-quit
+ - Add support for an "override" entry in spells.yml, for settings that should effect ALL spells
 
 ## 5.5.5
 
