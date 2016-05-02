@@ -103,6 +103,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private UndoQueue undoQueue = null;
     private LinkedList<Batch> pendingBatches = new LinkedList<Batch>();
     private boolean loading = false;
+    private boolean unloading = false;
     private int debugLevel = 0;
     private boolean quiet = false;
     private EntityData entityData;
@@ -1806,6 +1807,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public boolean isLoading() {
         return loading;
+    }
+
+    public void setUnloading(boolean unloading) {
+        this.unloading = unloading;
+    }
+
+    public boolean isUnloading() {
+        return unloading;
     }
 
     public boolean isValid() {

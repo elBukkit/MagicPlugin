@@ -13,6 +13,7 @@
  - Add Magic.spawners permission, to allow non-op'd players to place custom mob spawners
  - Add Magic.commands.cast.parameters permission, in case you really really want to give your players /cast permission.
  - Add "/mtrait hat" command, for putting spells, wands and hats on an NPC's head
+ - Fix compatibility issues with keep-on-death wands and CombatTagPlus kill-on-quit
 
 ## 5.5.5
 
