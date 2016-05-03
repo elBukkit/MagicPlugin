@@ -423,10 +423,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         updateEquipmentEffects();
     }
     
-    public void tryToOwn(Wand wand) {
-        if (isPlayer() && wand.tryToOwn(getPlayer())) {
-            addBound(wand);
+    @Override
+    public boolean tryToOwn(com.elmakers.mine.bukkit.api.wand.Wand wand) {
+        if (isPlayer() && wand instanceof Wand && ((Wand)wand).tryToOwn(getPlayer())) {
+            addBound((Wand)wand);
+            return true;
         }
+        
+        return false;
     }
     
     protected void addBound(Wand wand) {

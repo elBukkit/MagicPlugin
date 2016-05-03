@@ -380,9 +380,9 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 }
                 if (!castsSpells && !applyToWand) {
                     ItemStack copy = InventoryUtils.getCopy(item);
-                    if (filterBound && com.elmakers.mine.bukkit.wand.Wand.isBound(copy) && controller instanceof MagicController && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                        com.elmakers.mine.bukkit.wand.Wand bindWand = new com.elmakers.mine.bukkit.wand.Wand((MagicController)controller, copy);
-                        ((com.elmakers.mine.bukkit.magic.Mage)mage).tryToOwn(bindWand);
+                    if (filterBound && com.elmakers.mine.bukkit.wand.Wand.isBound(copy)) {
+                        Wand bindWand = controller.getWand(copy);
+                        mage.tryToOwn(bindWand);
                     }
                     context.getController().giveItemToPlayer(mage.getPlayer(), copy);
                 }
