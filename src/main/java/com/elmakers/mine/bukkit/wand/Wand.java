@@ -1071,16 +1071,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         ConfigurationSection stateNode = new MemoryConfiguration();
         saveProperties(stateNode);
-		
-		if (isSoul() && mage != null) {
-			Wand soul = mage.getSoulWand();
-			MemoryConfiguration soulConfiguration = new MemoryConfiguration();
-			
-			// TODO: Config-driven list
-			soulConfiguration.set("spells", stateNode.get("spells"));
-			stateNode.set("spells", null);
-			soul.loadProperties(soulConfiguration);
-		}
 
 		Object wandNode = InventoryUtils.createNode(item, WAND_KEY);
 		if (wandNode == null) {
@@ -2051,8 +2041,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (!isUpgrade) {
             if (owner.length() > 0) {
                 if (bound) {
-                    String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
-                    lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
+					if (soul) {
+						String ownerDescription = getMessage("soulbound_description", "$name").replace("$name", owner);
+						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
+					} else {
+						String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
+						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
+					}
                 } else {
                     String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
                     lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
@@ -4108,17 +4103,35 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				inventoryType == InventoryType.ANVIL) return;
         }
 
-        this.newId();
-
-        if (getMode() != WandMode.INVENTORY) {
-            showActiveIcon(true);
-        }
-
         if (!canUse(player)) {
             mage.sendMessage(getMessage("bound").replace("$name", getOwner()));
             mage.setActiveWand(null);
             return;
         }
+
+		WandTemplate template = getTemplate();
+		Wand soulWand = mage.getSoulWand();
+		if (template != null && template.isSoul() && soulWand != this) {
+			if (!soul) {
+				// Migrate old wands
+				this.add(soulWand);
+				MemoryConfiguration soulConfiguration = new MemoryConfiguration();
+				saveProperties(soulConfiguration);
+				soulWand.loadProperties(soulConfiguration);
+				soul = true;
+				saveState();
+			}
+			soulWand.soul = true;
+			soulWand.item = this.item;
+			soulWand.activate(mage);
+			return;
+		}
+
+		this.newId();
+
+		if (getMode() != WandMode.INVENTORY) {
+			showActiveIcon(true);
+		}
 
         if (this.isUpgrade) {
             controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
@@ -4209,17 +4222,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         checkActiveMaterial();
 
         mage.setActiveWand(this);
-
-		if (isSoul()) {
-			Wand soul = mage.getSoulWand();
-			MemoryConfiguration soulConfiguration = new MemoryConfiguration();
-			soul.saveProperties(soulConfiguration);
-			MemoryConfiguration soulProperties = new MemoryConfiguration();
-			
-			// TODO: Config-driven list
-			soulProperties.set("spells", soulConfiguration.getString("spells"));
-			loadProperties(soulProperties);
-		}
         tick();
         saveItemState();
 

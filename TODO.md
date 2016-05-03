@@ -1,14 +1,16 @@
 # TODO
 
- - http://opengameart.org/content/painterly-spell-icons-part-1  ... ?
+ - Aliases don't work with levels
+ - MagicArenas: Doesn't TP players out on a draw.. ?
+ - Getting hit with aqua erecto says "cast unknown" on you?
+ - Admission+Break door = dupe door (thought this was fixed???)
+ - cancel_on_cast flag (cancel pending spell on cast of another)
  
- - http://opengameart.org/content/spell-icon-collection-part-1
- - http://opengameart.org/content/spell-set
- - http://opengameart.org/content/modified-and-cliped-magic-skill-item-icons
- - http://opengameart.org/content/skill-item-and-spell-icons
- 
- - Permission to place spawners
+ - offhand cast is casting both?
 
+ - Grow/Shrink doesn't work on rabbits?
+ - Put a size cap on slimes with Grow
+ 	
  - Shops/Items:
    - Add new command, mshop
      - /mshop create [shoptype] [title] : Create a new shop NPC, default type "buyshop" in configs

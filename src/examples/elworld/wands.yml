@@ -79,6 +79,8 @@
 #           - <materialname>
 #
 
+wand:
+  soul: true
 
 spraycan:
   hidden: true

@@ -28,6 +28,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     private String migrateTemplate;
     private String migrateIcon;
     private String icon;
+    private boolean soul;
     private Map<String, String> migrateIcons;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
@@ -41,6 +42,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
         migrateTemplate = node.getString("migrate_to");
         migrateIcon = node.getString("migrate_icon");
         icon = node.getString("icon");
+        soul = node.getBoolean("soul", false);
         ConfigurationSection migrateConfig = node.getConfigurationSection("migrate_icons");
         if (migrateConfig != null) {
             migrateIcons = new HashMap<String, String>();
@@ -169,5 +171,10 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
             }
         }
         return currentIcon;
+    }
+    
+    @Override
+    public boolean isSoul() {
+        return soul;
     }
 }
