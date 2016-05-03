@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -42,6 +43,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private String requiredTemplate = null;
     private String requiresCompletedPath = null;
     private String exactPath = null;
+    protected boolean filterBound = false;
     protected int upgradeLevels = 0;
     protected double costScale = 1;
     protected boolean autoClose = true;
@@ -376,7 +378,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     return;
                 }
                 if (!castsSpells && !applyToWand) {
-                    context.getController().giveItemToPlayer(mage.getPlayer(), InventoryUtils.getCopy(item));
+                    ItemStack copy = InventoryUtils.getCopy(item);
+                    if (filterBound && com.elmakers.mine.bukkit.wand.Wand.isBound(copy) && controller instanceof MagicController && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                        com.elmakers.mine.bukkit.wand.Wand bindWand = new com.elmakers.mine.bukkit.wand.Wand((MagicController)controller, copy);
+                        ((com.elmakers.mine.bukkit.magic.Mage)mage).tryToOwn(bindWand);
+                    }
+                    context.getController().giveItemToPlayer(mage.getPlayer(), copy);
                 }
 
                 if (wand != null && autoUpgrade) {
@@ -429,6 +436,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         requireWand = parameters.getBoolean("require_wand", false);
         autoClose = parameters.getBoolean("auto_close", true);
         costScale = parameters.getDouble("scale", 1);
+        filterBound = parameters.getBoolean("filter_bound", false);
         if (!autoClose) {
             showConfirmation = false;
         }
@@ -495,6 +503,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         String costString = context.getMessage("cost_lore", "Costs: $cost");
         for (ShopItem shopItem : items) {
             int currentSlot = itemStacks.size();
+            if (filterBound && shopItem != null) {
+                String template = com.elmakers.mine.bukkit.wand.Wand.getWandTemplate(shopItem.getItem());
+                if (template != null && mage.getBoundWand(template) != null) {
+                    shopItem = null;
+                }
+            }
             if (shopItem == null) {
                 this.showingItems.put(currentSlot, null);
                 itemStacks.add(new ItemStack(Material.AIR));

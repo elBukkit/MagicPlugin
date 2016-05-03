@@ -405,13 +405,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (this.activeWand == activeWand) return;
         this.activeWand = activeWand;
         if (activeWand != null && activeWand.isBound() && activeWand.canUse(getPlayer())) {
-            String template = activeWand.getTemplateKey();
-            if (template != null && !template.isEmpty()) {
-                boundWands.put(template, activeWand);
-            }
+            addBound(activeWand);
         }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
         updateEquipmentEffects();
+    }
+    
+    public void tryToOwn(Wand wand) {
+        if (isPlayer() && wand.tryToOwn(getPlayer())) {
+            addBound(wand);
+        }
+    }
+    
+    protected void addBound(Wand wand) {
+        String template = wand.getTemplateKey();
+        if (template != null && !template.isEmpty()) {
+            boundWands.put(template, wand);
+        }
     }
 
     public long getBlockPlaceTimeout() {
