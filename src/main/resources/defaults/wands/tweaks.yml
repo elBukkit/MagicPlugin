@@ -61,11 +61,14 @@ inventorymode:
     upgrade: true
     indestructible: false
     mode: inventory
+    drop: toggle
+    swap: cycle_hotbar
 cyclemode:
     icon: diamond_axe:215
     upgrade: true
     indestructible: false
     mode: cycle
+    drop: cycle
 organizer:
     icon: diamond_axe:216
     upgrade: true
