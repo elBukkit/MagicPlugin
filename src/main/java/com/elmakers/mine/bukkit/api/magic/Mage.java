@@ -447,4 +447,5 @@ public interface Mage extends CostReducer {
     public void unbindAll();
     public void undoScheduled();
     public EntityData getEntityData();
+    public boolean tryToOwn(Wand wand);
 }
