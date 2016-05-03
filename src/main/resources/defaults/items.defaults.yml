@@ -281,7 +281,7 @@ warlock_wand:
   worth: 2000
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: GOLD_AXE
+    type: WOOD_HOE
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
@@ -294,8 +294,7 @@ wizard_wand:
   worth: 2000
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: WOOD_HOE
-    damage: 4
+    type: GOLD_AXE
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
@@ -308,8 +307,7 @@ madscientist_wand:
   worth: 2000
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: WOOD_HOE
-    damage: 7
+    type: GOLD_HOE
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
@@ -322,8 +320,7 @@ madscientist_helmet:
   worth: 4000
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: WOOD_HOE
-    damage: 17
+    type: ender_portal_frame
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
