@@ -2,6 +2,8 @@
 
 ## 6.2
 
+ - Add "Soul Wand" system (currently work-in-progress)
+ - Fix cyclemode upgrade
  - Add Magic.commands.cast.parameters permission, in case you really really want to give your players /cast permission.
  - Add Magic.spawners permission, to allow non-op'd players to place custom mob spawners
  - Converted tweak/upgrade icons to RP-based icons
