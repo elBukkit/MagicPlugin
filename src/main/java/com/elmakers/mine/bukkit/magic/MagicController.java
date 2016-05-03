@@ -1610,7 +1610,7 @@ public class MagicController implements MageController {
             finalizeIntegration();
         }
         
-        LoadEvent loadEvent = new LoadEvent();
+        LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
 
         loaded = true;
@@ -4724,6 +4724,12 @@ public class MagicController implements MageController {
         return mobSkin;
     }
 
+    public void managePlayerData(boolean external, boolean backupInventories) {
+        savePlayerData = !external;
+        externalPlayerData = external;
+        this.backupInventories = backupInventories;
+    }
+    
     /*
 	 * Private data
 	 */
