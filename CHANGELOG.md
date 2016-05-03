@@ -12,6 +12,7 @@
  - Add support for an "override" entry in spells.yml, for settings that should effect ALL spells
  - Fix compatibility issues with keep-on-death wands and CombatTagPlus kill-on-quit
  - Offhand casts now show a visibile swing animation
+ - Add "filter_bound" parameter to ItemShop, to not show bound items a player already has
 
 ## 6.1.1
 

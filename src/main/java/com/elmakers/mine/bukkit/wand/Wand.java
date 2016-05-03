@@ -689,17 +689,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateLore();
 	}
 	
-	public void tryToOwn(Player player) {
+	public boolean tryToOwn(Player player) {
         if (ownerId == null || ownerId.length() == 0) {
             takeOwnership(player);
+			return true;
         }
+		
+		return false;
 	}
 
     protected void takeOwnership(Player player) {
         takeOwnership(player, controller != null && controller.bindWands(), controller != null && controller.keepWands());
     }
 
-     public void takeOwnership(Player player, boolean setBound, boolean setKeep) {
+	public void takeOwnership(Player player, boolean setBound, boolean setKeep) {
         if (mage != null && (ownerId == null || ownerId.length() == 0) && quietLevel < 2)
         {
             mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
