@@ -320,7 +320,7 @@ madscientist_helmet:
   worth: 4000
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: ender_portal_frame
+    type: ENDER_PORTAL_FRAME
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
