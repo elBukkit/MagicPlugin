@@ -18,4 +18,5 @@ public interface WandTemplate {
     public WandTemplate getMigrateTemplate();
     public String migrateIcon(String icon);
     public boolean isSoul();
+    public boolean isRestorable();
 }
