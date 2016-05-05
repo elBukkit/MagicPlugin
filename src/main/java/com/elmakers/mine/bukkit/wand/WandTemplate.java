@@ -29,6 +29,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     private String migrateIcon;
     private String icon;
     private boolean soul;
+    private boolean restorable;
     private Map<String, String> migrateIcons;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
@@ -41,6 +42,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
         creatorId = node.getString("creator_id");
         migrateTemplate = node.getString("migrate_to");
         migrateIcon = node.getString("migrate_icon");
+        restorable = node.getBoolean("restorable", true);
         icon = node.getString("icon");
         soul = node.getBoolean("soul", false);
         ConfigurationSection migrateConfig = node.getConfigurationSection("migrate_icons");
@@ -176,5 +178,9 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     @Override
     public boolean isSoul() {
         return soul;
+    }
+    
+    public boolean isRestorable() {
+        return restorable;
     }
 }
