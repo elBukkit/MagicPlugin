@@ -180,6 +180,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
         return soul;
     }
     
+    @Override
     public boolean isRestorable() {
         return restorable;
     }
