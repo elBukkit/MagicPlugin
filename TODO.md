@@ -1,6 +1,16 @@
 # TODO
 
  - Aliases don't work with levels
+ 
+ - Weird thing with Finite+Immobulus on PW:
+ 
+ there's person a vs person b
+ person a uses for example stupefy on person b
+ person b will use finite incantatem
+ and right after he used finite, he uses immobulus and the particles are created 
+ like it's suppose to be, around the caster, but the actual effect will hit person a 
+ wherever he stands (while it can only affect you if you are in the ring of the caster)
+ 
  - MagicArenas: Doesn't TP players out on a draw.. ?
  - Getting hit with aqua erecto says "cast unknown" on you?
  - Admission+Break door = dupe door (thought this was fixed???)
