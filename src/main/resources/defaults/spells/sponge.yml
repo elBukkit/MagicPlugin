@@ -8,8 +8,8 @@ sponge:
     actions:
       cast:
       - class: Sphere
-        - actions:
-          class: ModifyBlock
+        actions:
+        - class: ModifyBlock
     effects:
       cast:
       - class: EffectSingle
