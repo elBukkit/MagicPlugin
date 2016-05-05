@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
+import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
@@ -418,9 +419,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
     
     protected void addBound(Wand wand) {
-        String template = wand.getTemplateKey();
-        if (template != null && !template.isEmpty()) {
-            boundWands.put(template, wand);
+        WandTemplate template = wand.getTemplate();
+        if (template != null && template.isRestorable()) {
+            boundWands.put(template.getKey(), wand);
         }
     }
 

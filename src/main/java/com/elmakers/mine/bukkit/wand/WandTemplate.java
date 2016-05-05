@@ -25,6 +25,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     private Set<String> tags;
     private String creator;
     private String creatorId;
+    private boolean restorable;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         this.key = key;
@@ -34,7 +35,8 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
         effects.clear();
         creator = node.getString("creator");
         creatorId = node.getString("creator_id");
-        
+        restorable = node.getBoolean("restorable", true);
+
         if (node.contains("effects")) {
             ConfigurationSection effectsNode = node.getConfigurationSection("effects");
             Collection<String> effectKeys = effectsNode.getKeys(false);
@@ -135,5 +137,10 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     @Override
     public String getCreator() {
         return creator;
+    }
+
+    @Override
+    public boolean isRestorable() {
+        return restorable;
     }
 }
