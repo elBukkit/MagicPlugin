@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -37,8 +38,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -145,6 +149,15 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
     public MagicPlugin()
     {
+        instance = this;
+    }
+
+    /**
+     * A constructor intended for unit testing only.
+     * @deprecated
+     */
+    MagicPlugin(PluginLoader loader, Server server, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, server, description, dataFolder, file);
         instance = this;
     }
 

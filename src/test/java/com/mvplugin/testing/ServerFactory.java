@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.help.HelpMap;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.SimpleServicesManager;
+import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static org.mockito.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.*;
@@ -33,6 +35,7 @@ import static org.powermock.api.mockito.PowerMockito.*;
 public final class ServerFactory {
 
     private static class ServerData {
+        private Logger logger = Logger.getLogger("MockBukkit");
         private List<World> worlds = new ArrayList<World>();
         private List<Player> onlinePlayers = new ArrayList<Player>();
         private boolean allowEnd = true;
@@ -49,6 +52,7 @@ public final class ServerFactory {
 
         private TestingPluginManager pluginManager;
         private BukkitScheduler bukkitScheduler = PowerMockito.mock(BukkitScheduler.class);
+        private Messenger messenger = PowerMockito.mock(Messenger.class);
         private ServicesManager servicesManager = new SimpleServicesManager();
         private HelpMap helpMap = mock(HelpMap.class);
 
@@ -64,7 +68,8 @@ public final class ServerFactory {
 
         when(server.getName()).thenReturn("MockBukkit");
         when(server.getVersion()).thenReturn("0.0.1");
-        when(server.getBukkitVersion()).thenReturn("1.8.7-R0.1-SNAPSHOT");
+        when(server.getBukkitVersion()).thenReturn("1.9.1-R0.1-SNAPSHOT");
+        when(server.getLogger()).thenReturn(data.logger);
         when(server.getOnlinePlayers()).thenAnswer(new Answer<Collection<Player>>() {
             @Override
             public Collection<Player> answer(InvocationOnMock invocationOnMock) throws Throwable {
@@ -179,6 +184,7 @@ public final class ServerFactory {
         when(server.getPluginManager()).thenReturn(data.pluginManager);
         when(server.getScheduler()).thenReturn(data.bukkitScheduler);
         when(server.getServicesManager()).thenReturn(data.servicesManager);
+        when(server.getMessenger()).thenReturn(data.messenger);
         when(server.getWorlds()).thenReturn(data.worlds);
         when(server.createWorld(any(WorldCreator.class))).thenAnswer(new Answer<World>() {
             @Override
