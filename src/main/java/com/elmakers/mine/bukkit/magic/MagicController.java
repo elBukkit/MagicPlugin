@@ -2749,32 +2749,36 @@ public class MagicController implements MageController {
         playerQuit(mage, null);
     }
 
-    protected void mageQuit(Mage mage, MageDataCallback callback) {
+    protected void mageQuit(final Mage mage, final MageDataCallback callback) {
         com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
-        boolean isOpen = wand != null && wand.isInventoryOpen();
+        final boolean isOpen = wand != null && wand.isInventoryOpen();
         mage.deactivate();
         mage.undoScheduled();
-
+        
+        // Delay removal one tick to avoid issues with plugins that kill
+        // players on logout (CombatTagPlus, etc)
+        // Don't delay on shutdown, though.
+        if (initialized && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+            final com.elmakers.mine.bukkit.magic.Mage quitMage = (com.elmakers.mine.bukkit.magic.Mage)mage;
+            quitMage.setUnloading(true);
+            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    // Just in case the player relogged in that one tick..
+                    if (quitMage.isUnloading()) {
+                        finalizeMageQuit(quitMage, callback, isOpen);
+                    }
+                }
+            },1 );
+        } else {
+            finalizeMageQuit(mage, callback, isOpen);
+        }
+    }
+    
+    protected void finalizeMageQuit(final Mage mage, final MageDataCallback callback, final boolean isOpen) {
         // Unregister
         if (!externalPlayerData || !mage.isPlayer()) {
-            // Delay removal one tick to avoid issues with plugins that kill
-            // players on logout (CombatTagPlus, etc)
-            // Don't delay on shutdown, though.
-            if (initialized && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                final com.elmakers.mine.bukkit.magic.Mage quitMage = (com.elmakers.mine.bukkit.magic.Mage)mage;
-                quitMage.setUnloading(true);
-                plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        // Just in case the player relogged in that one tick..
-                        if (quitMage.isUnloading()) {
-                            removeMage(quitMage);
-                        }
-                    }
-                },1 );
-            } else {
-                removeMage(mage);
-            }
+            removeMage(mage);
         }
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
