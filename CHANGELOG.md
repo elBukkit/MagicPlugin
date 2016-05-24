@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.2
+
 ## 6.1.2
 
  - Add "Soul Wand" system (currently work-in-progress)
