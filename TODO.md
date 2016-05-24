@@ -1,5 +1,7 @@
 # TODO
 
+ - Add support for LockettePro
+
  - Aliases don't work with levels
  
  - Weird thing with Finite+Immobulus on PW:
