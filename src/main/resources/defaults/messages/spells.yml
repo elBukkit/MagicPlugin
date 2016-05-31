@@ -85,6 +85,10 @@ spells:
         name: Mount
         description: Mount your target
         cast: You mount $target
+    horse:
+        name: Horse
+        description: Summon and mount a horse
+        cast: Giddyup!
     tame:
         name: Tame
         description: Tame your target

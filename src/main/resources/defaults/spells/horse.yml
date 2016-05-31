@@ -1,0 +1,39 @@
+horse:
+    icon: diamond_axe:49
+    icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
+    category: elemental
+    actions:
+      cast:
+      - class: SpawnEntity
+      - class: Mount
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_villager_yes
+           effectlib:
+             class: DnaEffect
+             particleHelix: drip_lava
+             iterations: 24
+             particleBase1: drip_water
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: AtomEffect
+             iterations: 32
+             particleNucleus: drip_water
+    parameters:
+        target: block
+        set_target: true
+        tamed: true
+        saddle: saddle
+        track: false
+        type: horse
+        allow_max_range: true
+        cooldown: 120000
+        range: 5
+        undo: 60000
+        loot: false
+    costs:
+        mana: 50
+

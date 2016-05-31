@@ -319,6 +319,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 if (parameters.contains("horse_jump_strength")) {
                     horseData.jumpStrength = parameters.getDouble("horse_jump_strength");
                 }
+
+                if (parameters.contains("tamed")) {
+                    horseData.tamed = parameters.getBoolean("tamed");
+                }
                 
                 extraData = horseData;
             }

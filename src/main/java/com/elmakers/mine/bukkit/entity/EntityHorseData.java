@@ -13,6 +13,7 @@ public class EntityHorseData extends EntityExtraData {
     public Integer domestication;
     public Integer maxDomestication;
     public Double jumpStrength;
+    public Boolean tamed;
 
     public EntityHorseData() {
 
@@ -27,6 +28,7 @@ public class EntityHorseData extends EntityExtraData {
         domestication = horse.getDomestication();
         maxDomestication = horse.getMaxDomestication();
         jumpStrength = horse.getJumpStrength();
+        tamed = horse.isTamed();
     }
 
     @Override
@@ -54,6 +56,9 @@ public class EntityHorseData extends EntityExtraData {
         if (jumpStrength != null) {
             horse.setJumpStrength(jumpStrength);
         }
+        if (tamed != null) {
+            horse.setTamed(tamed);
+        }
     }
 
     @Override
@@ -67,6 +72,7 @@ public class EntityHorseData extends EntityExtraData {
         copy.style = style;
         copy.maxDomestication = maxDomestication;
         copy.jumpStrength = jumpStrength;
+        copy.tamed = tamed;
         return copy;
     }
 
