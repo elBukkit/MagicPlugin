@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -74,7 +75,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         String customName = configuration.getString("name");
         if (customName != null) {
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(customName);
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
             item.setItemMeta(meta);
         }
     }
