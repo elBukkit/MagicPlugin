@@ -19,6 +19,7 @@
  - Add disguise support (via LibsDisguises) to magic mobs
  - Add madscientist mob (example of using player disguises)
  - Nerfed Blessing
+ - Added support for color codes in item names
 
 ## 5.5.5
 
