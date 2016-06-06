@@ -2385,7 +2385,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // Track cast counts
         if (result.isSuccess() && trackCasts) {
             spellData.addCast();
-            if (template != null) {
+            if (template != null && template.spellData != null) {
                 template.spellData.addCast();
                 SpellCategory category = template.getCategory();
                 if (category != null) {
