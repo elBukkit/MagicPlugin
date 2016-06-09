@@ -5,6 +5,7 @@
  - Fix CraftBukkit compatibility
  - Fix Heroes integration throwing NPEs
  - Add compatibility for Spigot/MC 1.10
+ - The RP checker will now compute an actual SHA1 for your RP, since 1.10 now verifies it
 
 ## 6.1.2
 

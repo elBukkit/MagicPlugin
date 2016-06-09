@@ -1,6 +1,7 @@
 # TODO
 
  - Add support for LockettePro
+ - Add ModifyPower action
 
  - Aliases don't work with levels
  

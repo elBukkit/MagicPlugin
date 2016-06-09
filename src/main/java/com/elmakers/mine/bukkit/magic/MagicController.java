@@ -121,6 +121,7 @@ import org.bukkit.util.Vector;
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -130,9 +131,12 @@ import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.CodeSource;
+import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -4574,47 +4578,71 @@ public class MagicController implements MageController {
             return;
         }
         sender.sendMessage("Magic checking resource pack for updates: " + ChatColor.GRAY + resourcePackURL);
+        
+        long modifiedTime = 0;
+        String currentSHA = null;
+        final YamlConfiguration rpConfig = new YamlConfiguration();
+        final File rpFile = new File(plugin.getDataFolder(), "data/" + RP_FILE + ".yml");
+        final String rpKey = resourcePackURL.replace(".", "_");
+        if (rpFile.exists()) {
+            try {
+                rpConfig.load(rpFile);
+                ConfigurationSection rpSection = rpConfig.getConfigurationSection(rpKey);
+                if (rpSection != null) {
+                    currentSHA = rpSection.getString("sha1");
+                    modifiedTime = rpSection.getLong("modified");
+                }
+            } catch (Exception ex) {
+            }
+        }
 
         final String finalResourcePack = resourcePackURL;
+        final long modifiedTimestamp = modifiedTime;
+        final String currentHash = currentSHA;
         server.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
             @Override
             public void run() {
                 String response = null;
-                String newResourcePackHash = null;
+                String newResourcePackHash = currentHash;
                 try {
                     HttpURLConnection.setFollowRedirects(false);
-                    HttpURLConnection connection = (HttpURLConnection)new URL(finalResourcePack).openConnection();
+                    URL rpURL = new URL(finalResourcePack);
+                    HttpURLConnection connection = (HttpURLConnection)rpURL.openConnection();
                     connection.setInstanceFollowRedirects(false);
                     connection.setRequestMethod("HEAD");
                     if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
                     {
-                        String newHash = connection.getHeaderField("ETag");
-                        if (newHash != null) {
-                            newHash = newHash.replace("\"", "");
-                        }
-                        if (newHash == null || newHash.isEmpty()) {
-                            response = ChatColor.RED + "Resource pack returned empty ETag in HTTP HEAD";
-                        } else if (resourcePackHash != null && newHash.equals(resourcePackHash)) {
-                            response = ChatColor.GREEN + "Resource pack hash has not changed";
-                        } else {
+                        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+                        final Date modifiedDate = format.parse(connection.getHeaderField("Last-Modified"));
+                        if (modifiedDate.getTime() > modifiedTimestamp) {
+                            server.getScheduler().runTask(plugin, new Runnable() {
+                                @Override
+                                public void run() {
+                                    sender.sendMessage(ChatColor.YELLOW + "Resource pack modified, redownloading (" + modifiedDate.getTime() + " > " + modifiedTimestamp + ")");
+                                }
+                            });
+
+                            MessageDigest digest = MessageDigest.getInstance("SHA1");
+                            BufferedInputStream in = new BufferedInputStream(rpURL.openStream());
+                            final byte data[] = new byte[1024];
+                            int count;
+                            while ((count = in.read(data, 0, 1024)) != -1) {
+                                digest.update(data, 0, count);
+                            }
+                            newResourcePackHash = byteArrayToHexString(digest.digest());
+
                             if (initialLoad) {
-                                response = ChatColor.GREEN + "Resource pack hash set to " + ChatColor.GRAY + newHash;
+                                response = ChatColor.GREEN + "Resource pack hash set to " + ChatColor.GRAY + newResourcePackHash;
                             } else {
                                 response = ChatColor.YELLOW + "Resource pack hash changed, clients will see updates after relogging";
                             }
-
-                            if (newHash.length() != 40) {
-                                response = response + ", " + ChatColor.YELLOW + "Padding resource pack hash to 40 chars";
-                                if (newHash.length() < 40) {
-                                    newHash = newHash + new String(new char[40 - newHash.length()]).replace('\0', '0');
-                                } else {
-                                    newHash = newHash.substring(0, 39);
-                                }
-                            }
-                            if (!CompatibilityUtils.checkResourcePackHash(newHash)) {
-                                response = response + ", " + ChatColor.RED + "Resource pack hash is not valid: " + newHash;
-                            }
-                            newResourcePackHash = newHash;
+                            
+                            ConfigurationSection rpSection = rpConfig.createSection(rpKey);
+                            rpSection.set("sha1", newResourcePackHash);
+                            rpSection.set("modified", modifiedDate.getTime());
+                            rpConfig.save(rpFile);
+                        } else {
+                            response = ChatColor.GREEN + "Resource pack has not changed, using hash " + newResourcePackHash +  " (" + modifiedDate.getTime() + " <= " + modifiedTimestamp + ")";
                         }
                     }
                     else
@@ -4642,6 +4670,14 @@ public class MagicController implements MageController {
                 });
             }
         });
+    }
+
+    private static String byteArrayToHexString(byte[] b) {
+        String result = "";
+        for (int i = 0; i < b.length; i++) {
+            result += Integer.toString((b[i] & 0xFF) + 0x100, 16).substring(1);
+        }
+        return result;
     }
 
     @Override
@@ -4744,6 +4780,7 @@ public class MagicController implements MageController {
     private final String                        MATERIALS_FILE             	= "materials";
     private final String                        MOBS_FILE             	    = "mobs";
     private final String                        ITEMS_FILE             	    = "items";
+    private final String                        RP_FILE             	    = "resourcepack";
     
     private final String						LOST_WANDS_FILE				= "lostwands";
     private final String						SPELLS_DATA_FILE			= "spells";
