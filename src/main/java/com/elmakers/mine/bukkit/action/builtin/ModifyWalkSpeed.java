@@ -29,7 +29,7 @@ public class ModifyWalkSpeed extends BaseSpellAction implements Listener {
          * Stack of speed modifications. Note that this is linked map so it can
          * be used as a stack.
          */
-        private Map<ModifyWalkSpeed, Float> map = new LinkedHashMap<>();
+        private Map<ModifyWalkSpeed, Float> map = new LinkedHashMap<ModifyWalkSpeed, Float>();
     }
 
     /**
