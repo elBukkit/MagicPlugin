@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.3
+
 ## 6.2
 
  - Fix CraftBukkit compatibility
