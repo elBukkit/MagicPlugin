@@ -40,6 +40,7 @@ import java.util.UUID;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class NMSUtils {
     protected static boolean failed = false;
+    protected static boolean legacy = false;
 
     protected static String versionPrefix = "";
 
@@ -189,6 +190,7 @@ public class NMSUtils {
     protected static Method class_ChestLock_getString;
     protected static Method class_ArmorStand_setInvisible;
     protected static Method class_ArmorStand_setGravity;
+    protected static Method class_Entity_setNoGravity;
     protected static Method class_CraftPlayer_getHandleMethod;
     protected static Method class_CraftChunk_getHandleMethod;
     protected static Method class_CraftEntity_getHandleMethod;
@@ -345,7 +347,6 @@ public class NMSUtils {
             class_Entity_getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
             class_Entity_setYawPitchMethod = class_Entity.getDeclaredMethod("setYawPitch", Float.TYPE, Float.TYPE);
             class_Entity_setYawPitchMethod.setAccessible(true);
-            class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
             class_AxisAlignedBB_Constructor = class_AxisAlignedBB.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
             class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
             class_NBTTagCompound_setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
@@ -378,7 +379,6 @@ public class NMSUtils {
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
             class_ArmorStand_setInvisible = class_EntityArmorStand.getDeclaredMethod("setInvisible", Boolean.TYPE);
-            class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
             class_CraftPlayer_getHandleMethod = class_CraftPlayer.getMethod("getHandle");
             class_CraftChunk_getHandleMethod = class_CraftChunk.getMethod("getHandle");
             class_CraftEntity_getHandleMethod = class_CraftEntity.getMethod("getHandle");
@@ -497,6 +497,16 @@ public class NMSUtils {
 
             try {
                 try {
+                    // 1.10
+                    class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("setSilent", Boolean.TYPE);
+                    class_Entity_setNoGravity = class_Entity.getDeclaredMethod("setNoGravity", Boolean.TYPE);
+                } catch (Throwable ignore) {
+                    // 1.9 and earlier
+                    legacy = true;
+                    class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
+                    class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
+                }
+                try {
                     // 1.9
                     class_DataWatcher_setMethod = class_DataWatcher.getMethod("set", class_DataWatcherObject, Object.class);
                     class_DataWatcher_getMethod = class_DataWatcher.getMethod("get", class_DataWatcherObject);
@@ -511,6 +521,7 @@ public class NMSUtils {
                     class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
                 } catch (Throwable ignore) {
                     // 1.8 and lower
+                    legacy = true;
                     class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
@@ -522,20 +533,27 @@ public class NMSUtils {
                 class_EntityArrow_damageField = class_EntityArrow.getDeclaredField("damage");
                 class_EntityArrow_damageField.setAccessible(true);
                 // This is kinda hacky, like fer reals :\
+                // OML, hating it!
                 try {
-                    // 1.8.3
-                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
-                } catch (Throwable ignore3) {
+                    // 1.10
+                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ay");
+                } catch (Throwable ignore4) {
+                    legacy = true;
                     try {
-                        // 1.8
-                        class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ap");
-                    } catch (Throwable ignore2) {
+                        // 1.8.3
+                        class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
+                    } catch (Throwable ignore3) {
                         try {
-                            // 1.7
-                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("at");
-                        } catch (Throwable ignore) {
-                            // Prior
-                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("j");
+                            // 1.8
+                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ap");
+                        } catch (Throwable ignore2) {
+                            try {
+                                // 1.7
+                                class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("at");
+                            } catch (Throwable ignore) {
+                                // Prior
+                                class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("j");
+                            }
                         }
                     }
                 }
@@ -555,6 +573,10 @@ public class NMSUtils {
 
     public static boolean getFailed() {
         return failed;
+    }
+    
+    public static boolean isLegacy() {
+        return legacy;
     }
 
     public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {

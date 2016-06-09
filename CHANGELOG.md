@@ -4,6 +4,7 @@
 
  - Fix CraftBukkit compatibility
  - Fix Heroes integration throwing NPEs
+ - Add compatibility for Spigot/MC 1.10
 
 ## 6.1.2
 

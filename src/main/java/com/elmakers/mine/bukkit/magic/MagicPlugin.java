@@ -156,9 +156,12 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		}
 
         if (NMSUtils.getFailed()) {
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Something went wrong with some Deep Magic, plugin will not load.");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Please make sure you are running a compatible version of " + ChatColor. RED + "Spigot (1.9 or Higher)!");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Magic] Something went wrong with some Deep Magic, plugin will not load.");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Magic] Please make sure you are running a compatible version of " + ChatColor. RED + "Spigot (1.9 or Higher)!");
         } else {
+			if (NMSUtils.isLegacy()) {
+				Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Magic] Using backwards-compatibility layer. It is highly recommended that you update to the latest Spigot version.");
+			}
             initialize();
         }
 	}

@@ -909,7 +909,11 @@ public class CompatibilityUtils extends NMSUtils {
     public static void setGravity(ArmorStand armorStand, boolean gravity) {
         try {
             Object handle = getHandle(armorStand);
-            class_ArmorStand_setGravity.invoke(handle, gravity);
+            if (class_Entity_setNoGravity != null) {
+                class_Entity_setNoGravity.invoke(handle, !gravity);
+            } else {
+                class_ArmorStand_setGravity.invoke(handle, gravity);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
