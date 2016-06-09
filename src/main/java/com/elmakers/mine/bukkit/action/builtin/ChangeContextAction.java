@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
+import org.mozilla.javascript.tools.SourceReader;
 
 public class ChangeContextAction extends CompoundAction {
     private Vector sourceOffset;
@@ -32,6 +33,10 @@ public class ChangeContextAction extends CompoundAction {
     private Vector targetDirection;
     private Vector sourceDirectionOffset;
     private Vector targetDirectionOffset;
+    private float relativeSourceDirectionYawOffset;
+    private float relativeSourceDirectionPitchOffset;
+    private float relativeTargetDirectionYawOffset;
+    private float relativeTargetDirectionPitchOffset;
     private String targetLocation;
     private String sourceLocation;
     private boolean persistTarget;
@@ -57,6 +62,10 @@ public class ChangeContextAction extends CompoundAction {
         targetDirection = ConfigurationUtils.getVector(parameters, "target_direction");
         sourceDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
         targetDirectionOffset = ConfigurationUtils.getVector(parameters, "target_direction_offset");
+        relativeSourceDirectionYawOffset = (float)(parameters.getDouble("source_relative_direction_yaw_offset", 0));
+        relativeSourceDirectionPitchOffset = (float)(parameters.getDouble("source_relative_direction_pitch_offset", 0));
+        relativeTargetDirectionYawOffset = (float)(parameters.getDouble("target_relative_direction_yaw_offset", 0));
+        relativeTargetDirectionPitchOffset = (float)(parameters.getDouble("target_relative_direction_pitch_offset", 0));
         persistTarget = parameters.getBoolean("persist_target", false);
         attachBlock = parameters.getBoolean("target_attachment", false);
         snapTargetToSize = parameters.getInt("target_snap", 0);
@@ -180,6 +189,20 @@ public class ChangeContextAction extends CompoundAction {
         {
             targetLocation = RandomUtils.randomizeLocation(targetLocation, randomTargetOffset);
         }
+        // Given a yaw and pitch, this adjusts the source direction after rotating it.
+        if (relativeSourceDirectionYawOffset != 0  || relativeSourceDirectionPitchOffset != 0)
+        {
+            Vector relativeDirection = sourceLocation.getDirection();
+            relativeDirection = VectorUtils.rotateVector(relativeDirection, relativeSourceDirectionYawOffset, relativeSourceDirectionPitchOffset);
+            sourceLocation.setDirection(relativeDirection);
+        }
+        // Same thing but with a Target's location.
+        if (relativeTargetDirectionYawOffset != 0  || relativeTargetDirectionPitchOffset != 0)
+        {
+            Vector relativeDirection = targetLocation.getDirection();
+            relativeDirection = VectorUtils.rotateVector(relativeDirection, relativeTargetDirectionYawOffset, relativeTargetDirectionPitchOffset);
+            targetLocation.setDirection(relativeDirection);
+        }
         if (targetDirection != null && targetLocation != null)
         {
             targetLocation.setDirection(targetDirection);
@@ -196,7 +219,7 @@ public class ChangeContextAction extends CompoundAction {
         if (sourceDirectionOffset != null)
         {
             sourceLocation.setDirection(direction.add(sourceDirectionOffset));
-        }
+        }      
         if (sourceDirectionSpeed != null)
         {
             sourceLocation = sourceLocation.add(direction.clone().multiply(sourceDirectionSpeed));
