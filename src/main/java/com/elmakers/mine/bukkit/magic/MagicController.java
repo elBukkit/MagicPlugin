@@ -4618,7 +4618,11 @@ public class MagicController implements MageController {
                             server.getScheduler().runTask(plugin, new Runnable() {
                                 @Override
                                 public void run() {
+                                if (modifiedTimestamp <= 0) {
+                                    sender.sendMessage(ChatColor.YELLOW + "Checking resource pack for the first time");
+                                } else {
                                     sender.sendMessage(ChatColor.YELLOW + "Resource pack modified, redownloading (" + modifiedDate.getTime() + " > " + modifiedTimestamp + ")");
+                                }
                                 }
                             });
 
