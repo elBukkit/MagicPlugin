@@ -218,7 +218,7 @@ public class ChangeContextAction extends CompoundAction {
         if (sourceDirectionOffset != null)
         {
             sourceLocation.setDirection(direction.add(sourceDirectionOffset));
-        }      
+        }
         if (sourceDirectionSpeed != null)
         {
             sourceLocation = sourceLocation.add(direction.clone().multiply(sourceDirectionSpeed));
