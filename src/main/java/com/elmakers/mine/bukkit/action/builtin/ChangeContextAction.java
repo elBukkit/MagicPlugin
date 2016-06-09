@@ -14,7 +14,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
-import org.mozilla.javascript.tools.SourceReader;
 
 public class ChangeContextAction extends CompoundAction {
     private Vector sourceOffset;
