@@ -28,7 +28,7 @@ load_default_items: true
 # Set this to true to write default configs out to the defaults folder.
 # You may need to /magic load in game for config.defaults.yml to show up
 # (Chicken+Egg problem, *may* fix in the future)
-save_default_configs: false
+save_default_configs: true
 
 # Whether or not to show any messages (in chat)
 show_messages: true

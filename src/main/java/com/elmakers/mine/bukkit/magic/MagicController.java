@@ -4977,7 +4977,7 @@ public class MagicController implements MageController {
     private boolean                             enableResourcePackCheck     = true;
     private String                              defaultResourcePack         = null;
     private boolean                             checkedResourcePack         = false;
-    private boolean                             saveDefaultConfigs          = false;
+    private boolean                             saveDefaultConfigs          = true;
 
     private FactionsManager					    factionsManager				= new FactionsManager();
     private LocketteManager                     locketteManager				= new LocketteManager();
