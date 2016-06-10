@@ -1,5 +1,7 @@
 # TODO
 
+ - Broomsticks are broken in 1.10
+
  - Add support for LockettePro
  - Add ModifyPower action
 

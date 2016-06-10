@@ -53,6 +53,12 @@ public class HeroesManager {
         else
         {
             plugin.getLogger().warning("Heroes found, but failed to integrate!");
+            if (characters == null) {
+                plugin.getLogger().warning(" CharacterManager is null");
+            }
+            if (skills == null) {
+                plugin.getLogger().warning(" SkillManager is null");
+            }
         }
     }
 
