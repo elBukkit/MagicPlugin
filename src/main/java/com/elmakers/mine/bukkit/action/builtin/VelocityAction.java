@@ -140,7 +140,16 @@ public class VelocityAction extends BaseSpellAction
                 ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude
                 , 11);
 
-        entity.setVelocity(velocity);
+        if(!Double.isFinite(velocity.getX()) ||
+                !Double.isFinite(velocity.getY()) ||
+                !Double.isFinite(velocity.getZ())) {
+            context.getMage().sendDebugMessage(ChatColor.AQUA + "Invalid velocity!" +
+                ChatColor.BLUE + velocity +
+                ChatColor.AQUA + "Context direction: " + ChatColor.DARK_AQUA + context.getDirection() +
+                ChatColor.AQUA + "direction: " + ChatColor.DARK_AQUA + direction);
+        } else {
+            entity.setVelocity(velocity);
+        }
 
         return SpellResult.CAST;
     }
