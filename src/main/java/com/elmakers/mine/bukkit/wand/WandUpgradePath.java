@@ -501,15 +501,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         playEffects(mage, "enchant");
     }
 
-    private void applyUpgradeItem(Wand wand, Mage mage) {
-        if (upgradeItemKey != null && !upgradeItemKey.isEmpty()) {
-            com.elmakers.mine.bukkit.api.wand.Wand upgradeWand = mage.getController().createWand(upgradeItemKey);
-            if (upgradeWand != null) {
-                wand.add(upgradeWand);
-            }
-        }
-    }
-
     @Override
     public void checkMigration(com.elmakers.mine.bukkit.api.wand.Wand wand) {
         if (icon != null && migrateIcon != null && migrateIcon.equals(wand.getIcon()))
