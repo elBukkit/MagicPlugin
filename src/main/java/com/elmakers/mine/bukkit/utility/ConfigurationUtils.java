@@ -182,10 +182,7 @@ public class ConfigurationUtils extends ConfigUtils {
             try
             {
                 Integer value = Integer.parseInt(matName);
-                if (value != null)
-                {
-                    return Material.getMaterial(value);
-                }
+                return Material.getMaterial(value);
             }
             catch(NumberFormatException ex)
             {

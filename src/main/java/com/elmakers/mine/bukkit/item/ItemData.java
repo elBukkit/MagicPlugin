@@ -9,8 +9,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Set;
-
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private String key;
     private ItemStack item;

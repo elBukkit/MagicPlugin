@@ -219,10 +219,7 @@ public class WearAction extends BaseSpellAction
                     itemStack = replacement;
                 }
 			}
-			if (itemStack != null)
-			{
-				NMSUtils.setReplacement(wearItem, itemStack);
-			}
+			NMSUtils.setReplacement(wearItem, itemStack);
 		}
 
         armor[slotNumber] = wearItem;

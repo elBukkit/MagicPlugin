@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.batch.Batch;
-import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -19,7 +18,6 @@ import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;

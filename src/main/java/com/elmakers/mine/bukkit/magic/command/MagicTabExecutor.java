@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.utility.Messages;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class MagicTabExecutor implements TabExecutor {

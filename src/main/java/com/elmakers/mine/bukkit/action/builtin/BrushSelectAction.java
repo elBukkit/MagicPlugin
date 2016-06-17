@@ -123,7 +123,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         if (wand == null) {
             return SpellResult.FAIL;
         }
-        List<String> brushKeys = new ArrayList(wand.getBrushes());
+        List<String> brushKeys = new ArrayList<String>(wand.getBrushes());
         Collections.sort(brushKeys);
         List<ItemStack> brushes = new ArrayList<ItemStack>();
         List<ItemStack> specials = new ArrayList<ItemStack>();

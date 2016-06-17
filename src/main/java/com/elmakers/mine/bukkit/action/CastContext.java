@@ -794,7 +794,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         if (targets == null || targets.isEmpty()) return;
 
         MageController controller = getController();
-        LivingEntity sourceEntity = mage == null ? null : mage.getLivingEntity();
+        LivingEntity sourceEntity = mage.getLivingEntity();
         String playerMessage = getMessage(messageKey);
         if (playerMessage.length() > 0)
         {

@@ -155,7 +155,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             try {
                 facing = hanging.getFacing();
             } catch (Exception ex) {
-                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error reading HangingEntity " + entity + " of type " + (entity == null ? "null" : entity.getType()), ex);
+                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error reading HangingEntity " + entity + " of type " + entity.getType(), ex);
             }
         }
 

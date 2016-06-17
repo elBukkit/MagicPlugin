@@ -13,7 +13,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.api.maps.URLMap;
 
 public class CameraSpell extends TargetingSpell
 {

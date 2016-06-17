@@ -10,7 +10,8 @@ public class DiscAction extends PlaneAction
 				return (double)((y * y) + (z * z)) <= radiusSquared;
 			case Z:
 				return (double)((x * x) + (y * y)) <= radiusSquared;
+			default:
+			    return (double)((x * x) + (z * z)) <= radiusSquared;
 		}
-		return (double)((x * x) + (z * z)) <= radiusSquared;
 	}
 }

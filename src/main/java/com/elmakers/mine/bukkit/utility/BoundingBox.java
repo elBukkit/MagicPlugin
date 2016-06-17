@@ -138,15 +138,8 @@ public class BoundingBox
 
     public Vector getIntersection(Vector p1, Vector p2)
     {
-        Vector currentHit = null;
-        Vector hit = getIntersection(p1.getX() - min.getX(), p2.getX() - min.getX(), p1, p2, 1);
-        if (currentHit != null && hit != null) {
-            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) return currentHit; else return hit;
-        } else if (currentHit == null) {
-            currentHit = hit;
-        }
-
-        hit = getIntersection(p1.getY() - min.getY(), p2.getY() - min.getY(), p1, p2, 2);
+        Vector currentHit = getIntersection(p1.getX() - min.getX(), p2.getX() - min.getX(), p1, p2, 1);
+        Vector hit = getIntersection(p1.getY() - min.getY(), p2.getY() - min.getY(), p1, p2, 2);
         if (currentHit != null && hit != null) {
             if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) return currentHit; else return hit;
         } else if (currentHit == null) {

@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -403,7 +402,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
 			return true;
 		}
-		if (pages.size() > 1 && skullItem != null) {
+		if (pages.size() > 1) {
 			String secondPageText = pages.get(1);
 			secondPageText = secondPageText.replace(ChatColor.COLOR_CHAR + "0", "");
 			String[] pieces = StringUtils.split(secondPageText, "\n");
@@ -420,10 +419,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				skullItem.setItemMeta(skullMeta);
 			}
 		}
-		if (skullItem != null) {
-			player.sendMessage(api.getMessages().get("item.skull"));
-			player.setItemInHand(skullItem);
-		}
+		player.sendMessage(api.getMessages().get("item.skull"));
+		player.setItemInHand(skullItem);
 
 		return true;
 	}

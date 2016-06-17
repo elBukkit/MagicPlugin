@@ -1,11 +1,5 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
-import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

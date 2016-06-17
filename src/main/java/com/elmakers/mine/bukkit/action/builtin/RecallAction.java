@@ -479,10 +479,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
 
 			RecallType recallType = RecallType.valueOf(typeString.toUpperCase());
-			if (recallType == null) {
-				controller.getLogger().warning("Unknown recall type " + typeString);
-				return SpellResult.FAIL;
-			}
 			
 			Waypoint location = getWaypoint(player, recallType, 0, parameters, context);
 			if (tryTeleport(player, location)) {
@@ -695,9 +691,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             List<LostWand> lostWands = mage.getLostWands();
 			if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
 			return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), getIcon(context, parameters, "icon_wand"), true);
+		default:
+		    return null;
 		}
-		
-		return null;
 	}
     
     protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key)
@@ -761,16 +757,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return true;
         }
 
-        Location targetLocation = waypoint == null ? null : waypoint.location;
+        Location targetLocation = waypoint.location;
 		if (targetLocation == null) {
-            if (waypoint != null) {
                 String serverName = waypoint.serverName;
                 String warpName = waypoint.warpName;
                 if (warpName != null && serverName != null) {
                     context.getController().warpPlayerToServer(player, serverName, warpName);
                 }
                 context.sendMessage(waypoint.failMessage);
-            }
 			return false;
 		}
 		if (!allowCrossWorld && !mage.getLocation().getWorld().equals(targetLocation.getWorld())) {

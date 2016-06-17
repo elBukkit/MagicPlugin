@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.item.ItemData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Listener;

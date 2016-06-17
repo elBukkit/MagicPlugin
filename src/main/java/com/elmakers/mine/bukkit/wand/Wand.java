@@ -1007,8 +1007,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
 
             if (itemStack == null) {
-				if (icon != null && icon.getMaterial() != Material.AIR) {
-					String iconName = icon == null ? "Unknown" : icon.getName();
+				if (icon.getMaterial() != Material.AIR) {
+					String iconName = icon.getName();
 					controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getKey() + " with material " + iconName);
 				}
                 return originalItemStack;
@@ -2973,7 +2973,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.autoOrganize && mage != null) {
 			this.organizeInventory(mage);
 			modified = true;
-			if (mage != null) mage.sendMessage(getMessage("reorganized").replace("$wand", getName()));
+			mage.sendMessage(getMessage("reorganized").replace("$wand", getName()));
 		}
 
         if (other.autoAlphabetize) {
@@ -3390,7 +3390,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Location location = mage.getLocation();
 		long now = System.currentTimeMillis();
         Vector mageLocation = location.toVector();
-		if (effectParticle != null && location != null && effectParticleInterval > 0 && effectParticleCount > 0) {
+		if (effectParticle != null && effectParticleInterval > 0 && effectParticleCount > 0) {
             boolean velocityCheck = true;
             if (effectParticleMinVelocity > 0) {
                 if (lastLocation != null && lastLocationTime != 0) {
@@ -3431,7 +3431,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 
-        if (castSpell != null && location != null && castInterval > 0) {
+        if (castSpell != null && castInterval > 0) {
             boolean velocityCheck = true;
             if (castMinVelocity > 0) {
                 if (lastLocation != null && lastLocationTime != 0) {
@@ -3477,7 +3477,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
 		
-		if (effectSound != null && location != null && controller.soundsEnabled() && effectSoundInterval > 0) {
+		if (effectSound != null && controller.soundsEnabled() && effectSoundInterval > 0) {
 			if (lastSoundEffect == 0 || now > lastSoundEffect + effectSoundInterval) {
                 lastSoundEffect = now;
 				mage.getLocation().getWorld().playSound(location, effectSound.getSound(), effectSound.getVolume(), effectSound.getPitch());

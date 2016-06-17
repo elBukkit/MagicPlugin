@@ -555,11 +555,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
             String brushKey = api.getBrush(itemInHand);
             sender.sendMessage(ChatColor.GRAY + "Brush: " + brushKey);
             MaterialAndData brush = new MaterialAndData(brushKey);
-            if (brush != null) {
-                sender.sendMessage(" " + ChatColor.GRAY + brush.getName());
-            } else {
-                sender.sendMessage(ChatColor.RED + " (Unknown Brush)");
-            }
+            sender.sendMessage(" " + ChatColor.GRAY + brush.getName());
         } else if (api.isWand(itemInHand)) {
 			isWand = true;
             Wand wand = api.getWand(itemInHand);

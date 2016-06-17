@@ -12,7 +12,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class TeleportAction extends BaseTeleportAction
 {
@@ -49,7 +48,7 @@ public class TeleportAction extends BaseTeleportAction
 			{
 				return SpellResult.NO_TARGET;
 			}
-			if (firstBlock != null && !context.isPassthrough(firstBlock.getType())) {
+			if (!context.isPassthrough(firstBlock.getType())) {
                 context.retarget(passthroughRange, 0, passthroughRange, 0, false, -1, true, 1);
                 isPassthrough = true;
 				context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting passthrough engaged", 11);
@@ -80,7 +79,7 @@ public class TeleportAction extends BaseTeleportAction
 		Block destination = face;
         int verticalSearchDistance = context.getVerticalSearchDistance();
 
-		if (isPassthrough || destination == null)
+		if (isPassthrough)
 		{
 			destination = target;
 		}
@@ -144,8 +143,6 @@ public class TeleportAction extends BaseTeleportAction
             if (distanceUp >= ledgeSearchDistance) {
                 ledge = null;
             }
-		} else {
-			ledge = null;
 		}
 
 		if (ledge != null && context.isOkToStandOn(ledge.getType()))

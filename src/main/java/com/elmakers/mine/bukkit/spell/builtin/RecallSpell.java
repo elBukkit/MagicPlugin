@@ -129,10 +129,6 @@ public class RecallSpell extends UndoableSpell
 				return SpellResult.TARGET_SELECTED;
 			}
 			RecallType newType = RecallType.valueOf(typeString.toUpperCase());
-			if (newType == null) {
-				controller.getLogger().warning("Unknown recall type " + typeString);
-				return SpellResult.FAIL;
-			}
 			
 			selectedType = newType;
 			Location location = getTargetLocation(player, selectedType, 0);

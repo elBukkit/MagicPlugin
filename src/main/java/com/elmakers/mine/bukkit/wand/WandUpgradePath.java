@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -197,7 +196,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 if (effectsNode.isString(effectKey)) {
                     String referenceKey = effectsNode.getString(effectKey);
                     if (effects.containsKey(referenceKey)) {
-                        effects.put(effectKey, new ArrayList(effects.get(referenceKey)));
+                        effects.put(effectKey, new ArrayList<EffectPlayer>(effects.get(referenceKey)));
                     }
                 } else {
                     effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
@@ -500,15 +499,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     public void enchanted(Mage mage) {
         playEffects(mage, "enchant");
-    }
-
-    private void applyUpgradeItem(Wand wand, Mage mage) {
-        if (upgradeItemKey != null && !upgradeItemKey.isEmpty()) {
-            com.elmakers.mine.bukkit.api.wand.Wand upgradeWand = mage.getController().createWand(upgradeItemKey);
-            if (upgradeWand != null) {
-                wand.add(upgradeWand);
-            }
-        }
     }
 
     @Override

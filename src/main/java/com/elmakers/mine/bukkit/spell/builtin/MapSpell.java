@@ -5,10 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;

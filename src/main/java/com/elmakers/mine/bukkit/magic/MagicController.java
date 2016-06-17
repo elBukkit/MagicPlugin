@@ -77,7 +77,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
-import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
@@ -580,7 +579,6 @@ public class MagicController implements MageController {
         if (location == null) return true;
         if (bypassPvpPermissions) return true;
         if (player != null && player.hasPermission("Magic.bypass_pvp")) return true;
-        if (location == null && player != null) location = player.getLocation();
 
         boolean allowed = true;
         for (PVPManager manager : pvpManagers) {
@@ -2294,10 +2292,6 @@ public class MagicController implements MageController {
             Collection<String> worthItemKeys = currencies.getKeys(true);
             for (String worthItemKey : worthItemKeys) {
                 MaterialAndData material = new MaterialAndData(worthItemKey);
-                if (material == null) {
-                    getLogger().warning("Invalid item in worth_items: " + worthItemKey);
-                    continue;
-                }
                 ConfigurationSection currencyConfig = currencies.getConfigurationSection(worthItemKey);
                 ItemStack worthItemType = material.getItemStack(1);
                 double worthItemAmount = currencyConfig.getDouble("worth");
@@ -2507,8 +2501,8 @@ public class MagicController implements MageController {
         asynchronousSaving = properties.getBoolean("save_player_data_asynchronously", true);
 
         ConfigurationSection mageDataStore = properties.getConfigurationSection("player_data_store");
-        String dataStoreClassName = mageDataStore.getString("class");
         if (mageDataStore != null) {
+            String dataStoreClassName = mageDataStore.getString("class");
             try {
                 Class<?> dataStoreClass = Class.forName(dataStoreClassName);
                 Object dataStore = dataStoreClass.newInstance();

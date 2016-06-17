@@ -5,7 +5,6 @@ import com.elmakers.mine.bukkit.api.maps.URLMap;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -32,8 +31,7 @@ public abstract class MagicMapExecutor extends MagicTabExecutor {
         List<URLMap> maps = api.getController().getMaps().getAll();
         Collections.reverse(maps);
         for (URLMap map : maps) {
-            Short mapId = map.getId();
-            if (map == null || mapId == null) continue;
+            short mapId = map.getId();
             String source = map.getName() + " " + map.getURL() + " " + map.getId();
             Matcher matcher = pattern == null ? null : pattern.matcher(source);
             if (matcher == null || matcher.find() == positive) {
