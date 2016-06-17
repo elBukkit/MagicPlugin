@@ -1244,6 +1244,8 @@ public class CompatibilityUtils extends NMSUtils {
                 case GENERIC_MOVEMENT_SPEED:
                     attributeName = "generic.movementSpeed";
                     break;
+                default:
+                    break;
             }
 
             if (attributeName == null) {
@@ -1301,6 +1303,8 @@ public class CompatibilityUtils extends NMSUtils {
                 case GENERIC_MOVEMENT_SPEED:
                     attributeName = "generic.movementSpeed";
                     attributeUUID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
+                    break;
+                default:
                     break;
             }
             

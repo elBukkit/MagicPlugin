@@ -695,9 +695,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             List<LostWand> lostWands = mage.getLostWands();
 			if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
 			return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), getIcon(context, parameters, "icon_wand"), true);
+		default:
+		    return null;
 		}
-		
-		return null;
 	}
     
     protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key)

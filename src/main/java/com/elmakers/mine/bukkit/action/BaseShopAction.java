@@ -13,7 +13,6 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
-import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;

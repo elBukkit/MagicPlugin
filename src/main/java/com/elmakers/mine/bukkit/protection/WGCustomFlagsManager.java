@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.protection;
 
-import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.mewin.WGCustomFlags.WGCustomFlagsPlugin;

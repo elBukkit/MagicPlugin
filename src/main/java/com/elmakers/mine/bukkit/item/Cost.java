@@ -70,8 +70,9 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 return getCurrency(reducer) == 0;
             case SP:
                 return getSkillPoints(reducer) == 0;
+            default:
+                return getReducedCost(amount, reducer) == 0;
         }
-        return getReducedCost(amount, reducer) == 0;
     }
     
     @Override

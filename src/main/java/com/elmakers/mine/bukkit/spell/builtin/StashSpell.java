@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import com.zachsthings.libcomponents.Depend;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;

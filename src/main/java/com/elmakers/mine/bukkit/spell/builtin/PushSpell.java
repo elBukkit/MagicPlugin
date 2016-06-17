@@ -5,7 +5,6 @@ import java.util.List;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Hanging;

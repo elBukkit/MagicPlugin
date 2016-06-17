@@ -2,38 +2,14 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.block.BlockData;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.block.AutomatonLevel;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.block.UndoList;
-import com.elmakers.mine.bukkit.spell.BlockSpell;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CommandBlock;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 public class SimulateAction extends BaseSpellAction {
 	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST,

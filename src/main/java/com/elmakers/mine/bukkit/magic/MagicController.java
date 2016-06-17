@@ -77,7 +77,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
-import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;

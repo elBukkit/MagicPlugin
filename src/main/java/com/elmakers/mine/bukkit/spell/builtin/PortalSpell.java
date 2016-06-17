@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import java.util.Set;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

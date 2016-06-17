@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.protection;
 
 import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.db.TownyDataSource;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;

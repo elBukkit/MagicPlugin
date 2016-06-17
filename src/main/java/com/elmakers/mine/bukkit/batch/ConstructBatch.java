@@ -27,7 +27,6 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.material.PistonBaseMaterial;
 import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;

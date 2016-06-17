@@ -12,7 +12,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class TeleportAction extends BaseTeleportAction
 {

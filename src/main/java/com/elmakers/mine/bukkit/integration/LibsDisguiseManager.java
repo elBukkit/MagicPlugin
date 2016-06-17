@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.integration;
 
-import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.LibsDisguises;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
@@ -10,8 +9,6 @@ import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
-
-import java.util.UUID;
 
 public class LibsDisguiseManager {
     private final Plugin plugin;

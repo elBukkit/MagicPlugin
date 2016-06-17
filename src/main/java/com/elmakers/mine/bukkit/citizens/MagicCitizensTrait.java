@@ -9,8 +9,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.event.EventHandler;
-
 import java.util.Collection;
 
 public class MagicCitizensTrait extends CitizensTrait {

@@ -61,7 +61,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
                 if (effectsNode.isString(effectKey)) {
                     String referenceKey = effectsNode.getString(effectKey);
                     if (effects.containsKey(referenceKey)) {
-                        effects.put(effectKey, new ArrayList(effects.get(referenceKey)));
+                        effects.put(effectKey, new ArrayList<EffectPlayer>(effects.get(referenceKey)));
                     }
                 }
                 else

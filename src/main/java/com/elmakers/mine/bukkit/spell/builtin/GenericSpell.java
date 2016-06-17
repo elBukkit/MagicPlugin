@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.configuration.ConfigurationSection;

@@ -8,7 +8,6 @@ import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 

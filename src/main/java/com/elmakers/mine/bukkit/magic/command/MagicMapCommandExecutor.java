@@ -1,14 +1,10 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

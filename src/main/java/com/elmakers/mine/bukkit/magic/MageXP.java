@@ -1,8 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
 import java.math.BigDecimal;
-import java.util.List;
-
 import org.bukkit.entity.Player;
 
 // TODO: look at this
