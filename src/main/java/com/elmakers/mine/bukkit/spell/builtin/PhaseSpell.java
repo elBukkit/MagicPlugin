@@ -47,13 +47,11 @@ public class PhaseSpell extends TargetingSpell
 				return SpellResult.INVALID_WORLD;
 			}
 			float scale = (float)parameters.getDouble("scale", 1.0f);
-			if (targetWorld != null) {
                 if (targetWorld.getEnvironment() == World.Environment.THE_END) {
                     targetLocation = targetWorld.getSpawnLocation();
                 } else {
                     targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
                 }
-			}
 		}
 		else
 		if (parameters.contains("worlds"))

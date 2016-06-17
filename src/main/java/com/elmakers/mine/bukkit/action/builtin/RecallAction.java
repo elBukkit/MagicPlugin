@@ -479,10 +479,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
 
 			RecallType recallType = RecallType.valueOf(typeString.toUpperCase());
-			if (recallType == null) {
-				controller.getLogger().warning("Unknown recall type " + typeString);
-				return SpellResult.FAIL;
-			}
 			
 			Waypoint location = getWaypoint(player, recallType, 0, parameters, context);
 			if (tryTeleport(player, location)) {
@@ -761,16 +757,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return true;
         }
 
-        Location targetLocation = waypoint == null ? null : waypoint.location;
+        Location targetLocation = waypoint.location;
 		if (targetLocation == null) {
-            if (waypoint != null) {
                 String serverName = waypoint.serverName;
                 String warpName = waypoint.warpName;
                 if (warpName != null && serverName != null) {
                     context.getController().warpPlayerToServer(player, serverName, warpName);
                 }
                 context.sendMessage(waypoint.failMessage);
-            }
 			return false;
 		}
 		if (!allowCrossWorld && !mage.getLocation().getWorld().equals(targetLocation.getWorld())) {

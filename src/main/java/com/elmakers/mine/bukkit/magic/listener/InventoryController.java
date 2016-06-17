@@ -238,14 +238,9 @@ public class InventoryController implements Listener {
             }
         } else if (activeWand != null) {
             // Check for changes that could have been made to the active wand
-            Integer activeSlot = player.getInventory().getHeldItemSlot();
-            if (activeSlot != null
-                    &&
-                    (
-                        event.getSlot() == activeSlot
-                    ||  (event.getAction() == InventoryAction.HOTBAR_SWAP && event.getHotbarButton() == activeSlot)
-                    )
-                )
+            int activeSlot = player.getInventory().getHeldItemSlot();
+            if (event.getSlot() == activeSlot || 
+                    (event.getAction() == InventoryAction.HOTBAR_SWAP && event.getHotbarButton() == activeSlot))
             {
                 mage.checkWand();
                 activeWand = mage.getActiveWand();

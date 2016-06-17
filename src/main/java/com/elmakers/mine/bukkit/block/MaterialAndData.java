@@ -132,9 +132,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         try {
             if (pieces.length > 0) {
-                if (pieces[0].equals("*")) {
-                    material = null;
-                } else {
+                if (!pieces[0].equals("*")) {
                     // Legacy material id loading
                     try {
                         Integer id = Integer.parseInt(pieces[0]);
@@ -357,7 +355,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 // Tile entity data overrides everything else, and may replace all of this in the future.
                 NMSUtils.setTileEntityData(block.getLocation(), ((BlockTileEntity) extraData).data);
             } else if (blockState != null && (material == Material.STANDING_BANNER || material == Material.WALL_BANNER) && extraData != null && extraData instanceof BlockBanner) {
-                if (blockState != null && blockState instanceof Banner) {
+                if (blockState instanceof Banner) {
                     BlockBanner bannerData = (BlockBanner)extraData;
                     Banner banner = (Banner)blockState;
                     if (bannerData.patterns != null)

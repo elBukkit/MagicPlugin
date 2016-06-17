@@ -208,9 +208,7 @@ public class InventoryUtils extends NMSUtils
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
         if (itemName != null) {
             ItemMeta meta = skull.getItemMeta();
-            if (itemName != null) {
-                meta.setDisplayName(itemName);
-            }
+            meta.setDisplayName(itemName);
             skull.setItemMeta(meta);
         }
 

@@ -72,16 +72,13 @@ public class ShrinkEntityAction extends DamageAction
 			switch (li.getType()) {
 				case CREEPER:
 					data = 4;
-					ownerName = null;
 				break;
 				case ZOMBIE:
 					data = 2;
-					ownerName = null;
 				break;
 				case SKELETON:
 					Skeleton skeleton = (Skeleton)li;
 					data = (byte)(skeleton.getSkeletonType() == SkeletonType.NORMAL ? 0 : 1);
-					ownerName = null;
 				break;
 				default:
 					ownerName = controller.getMobSkin(li.getType());

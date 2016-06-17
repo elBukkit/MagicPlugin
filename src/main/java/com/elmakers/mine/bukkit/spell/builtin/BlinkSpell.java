@@ -86,7 +86,7 @@ public class BlinkSpell extends UndoableSpell
 			{
 				return SpellResult.NO_TARGET;
 			}
-			if (firstBlock != null && firstBlock.getType() != Material.AIR && !isWater(firstBlock.getType()))
+			if (firstBlock.getType() != Material.AIR && !isWater(firstBlock.getType()))
 			{
 				double passthroughRange = mage.getRangeMultiplier() * parameters.getDouble("passthrough_range", DEFAULT_PASSTHROUGH_RANGE);
 				setMaxRange(passthroughRange);
@@ -115,7 +115,7 @@ public class BlinkSpell extends UndoableSpell
 		int distanceUp = 0;
 		int distanceDown = 0;
 
-		if (isPassthrough || destination == null)
+		if (isPassthrough)
 		{
 			destination = target;
 		}
@@ -166,8 +166,6 @@ public class BlinkSpell extends UndoableSpell
 					distanceUp++;
 				}
 			}
-		} else {
-			ledge = null;
 		}
 
 		if (ledge != null && distanceUp < distanceDown && isOkToStandOn(ledge.getType()))

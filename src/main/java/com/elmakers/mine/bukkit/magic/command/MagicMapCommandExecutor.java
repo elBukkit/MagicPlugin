@@ -302,7 +302,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
 
             in.close();
             String cacheData = new String(tempStream.toByteArray(), "UTF-8");
-            if (cacheData == null || cacheData.length() == 0) {
+            if (cacheData.length() == 0) {
                 sender.sendMessage("There were no images founds in the render cache file");
                 return;
             }

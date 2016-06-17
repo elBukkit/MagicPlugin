@@ -789,7 +789,7 @@ public class CompatibilityUtils extends NMSUtils {
                     continue;
                 }
                 EntityType entityType = EntityType.valueOf(upperKey);
-                if (bounds != null && entityType != null)
+                if (entityType != null)
                 {
                     hitboxes.put(entityType, bb);
                 }

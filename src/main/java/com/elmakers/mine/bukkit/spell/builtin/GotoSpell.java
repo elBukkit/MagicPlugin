@@ -132,7 +132,7 @@ public class GotoSpell extends UndoableSpell
 		}
 		
 		String playerName = playerNames.get(playerIndex);
-		if (player != null && playerName.equals(player.getName())) {
+		if (playerName.equals(player.getName())) {
 			playerIndex = (playerIndex + 1) % playerNames.size();
 			playerName = playerNames.get(playerIndex);
 		}
