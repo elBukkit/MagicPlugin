@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import de.slikey.effectlib.util.MathUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -140,9 +141,9 @@ public class VelocityAction extends BaseSpellAction
                 ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude
                 , 11);
 
-        if(!Double.isFinite(velocity.getX()) ||
-                !Double.isFinite(velocity.getY()) ||
-                !Double.isFinite(velocity.getZ())) {
+        if(!MathUtils.isFinite(velocity.getX()) ||
+                !MathUtils.isFinite(velocity.getY()) ||
+                !MathUtils.isFinite(velocity.getZ())) {
             context.getMage().sendDebugMessage(ChatColor.AQUA + "Invalid velocity!" +
                 ChatColor.BLUE + velocity +
                 ChatColor.AQUA + "Context direction: " + ChatColor.DARK_AQUA + context.getDirection() +
