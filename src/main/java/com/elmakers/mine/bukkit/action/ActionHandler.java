@@ -25,6 +25,20 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
     private static final String ACTION_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.action.builtin";
     private static Map<String, Class<?>> actionClasses = new HashMap<String, Class<?>>();
 
+    /**
+     * Registers an action class.
+     *
+     * @param name The name to register the action as.
+     * @param clazz The class to register.
+     */
+    public static void registerActionClass(String name, Class<?> clazz) {
+        if (!BaseSpellAction.class.isAssignableFrom(clazz)) {
+            throw new IllegalArgumentException("Must extend SpellAction");
+        }
+
+        actionClasses.put(name, clazz);
+    }
+
     private List<ActionContext> actions = new ArrayList<ActionContext>();
 
     private boolean undoable = false;
@@ -62,48 +76,50 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         requiresBreakPermission = false;
         ConfigurationSection handlerConfiguration = (spell != null) ? spell.getHandlerParameters(key) : null;
         Collection<ConfigurationSection> actionNodes = ConfigurationUtils.getNodeList(root, key);
-        if (actionNodes != null)
+
+        if (actionNodes == null)
         {
-            for (ConfigurationSection actionConfiguration : actionNodes)
+            return;
+        }
+
+        for (ConfigurationSection actionConfiguration : actionNodes)
+        {
+            if (!actionConfiguration.contains("class"))
             {
-                if (actionConfiguration.contains("class"))
+                continue;
+            }
+
+            String actionClassName = actionConfiguration.getString("class");
+            try
+            {
+                if (!actionClassName.contains("."))
                 {
-                    String actionClassName = actionConfiguration.getString("class");
-                    try
-                    {
-                        if (!actionClassName.contains("."))
-                        {
-                            actionClassName = ACTION_BUILTIN_CLASSPATH + "." + actionClassName;
-                        }
-                        Class<?> genericClass = actionClasses.get(actionClassName);
-                        if (genericClass == null) {
-                            try {
-                                genericClass = Class.forName(actionClassName + "Action");
-                            } catch (Exception ex) {
-                                genericClass = Class.forName(actionClassName);
-                            }
-
-                            if (!BaseSpellAction.class.isAssignableFrom(genericClass)) {
-                                throw new Exception("Must extend SpellAction");
-                            }
-                            actionClasses.put(actionClassName, genericClass);
-                        }
-
-                        @SuppressWarnings("unchecked")
-                        Class<? extends BaseSpellAction> actionClass = (Class<? extends BaseSpellAction>)genericClass;
-                        BaseSpellAction action = actionClass.newInstance();
-                        actionConfiguration.set("class", null);
-                        if (handlerConfiguration != null) {
-                            ConfigurationUtils.addConfigurations(actionConfiguration, handlerConfiguration, false);
-                        }
-                        if (actionConfiguration.getKeys(false).size() == 0) {
-                            actionConfiguration = null;
-                        }
-                        loadAction(action, actionConfiguration);
-                    } catch (Exception ex) {
-                        Bukkit.getLogger().warning("Error loading class " + actionClassName + ": " + ex.getMessage());
-                    }
+                    actionClassName = ACTION_BUILTIN_CLASSPATH + "." + actionClassName;
                 }
+                Class<?> genericClass = actionClasses.get(actionClassName);
+                if (genericClass == null) {
+                    try {
+                        genericClass = Class.forName(actionClassName + "Action");
+                    } catch (Exception ex) {
+                        genericClass = Class.forName(actionClassName);
+                    }
+
+                    registerActionClass(actionClassName, genericClass);
+                }
+
+                @SuppressWarnings("unchecked")
+                Class<? extends BaseSpellAction> actionClass = (Class<? extends BaseSpellAction>)genericClass;
+                BaseSpellAction action = actionClass.newInstance();
+                actionConfiguration.set("class", null);
+                if (handlerConfiguration != null) {
+                    ConfigurationUtils.addConfigurations(actionConfiguration, handlerConfiguration, false);
+                }
+                if (actionConfiguration.getKeys(false).size() == 0) {
+                    actionConfiguration = null;
+                }
+                loadAction(action, actionConfiguration);
+            } catch (Exception ex) {
+                Bukkit.getLogger().warning("Error loading class " + actionClassName + ": " + ex.getMessage());
             }
         }
     }
