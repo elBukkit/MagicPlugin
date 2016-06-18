@@ -76,45 +76,50 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         requiresBreakPermission = false;
         ConfigurationSection handlerConfiguration = (spell != null) ? spell.getHandlerParameters(key) : null;
         Collection<ConfigurationSection> actionNodes = ConfigurationUtils.getNodeList(root, key);
-        if (actionNodes != null)
+
+        if (actionNodes == null)
         {
-            for (ConfigurationSection actionConfiguration : actionNodes)
+            return;
+        }
+
+        for (ConfigurationSection actionConfiguration : actionNodes)
+        {
+            if (!actionConfiguration.contains("class"))
             {
-                if (actionConfiguration.contains("class"))
+                continue;
+            }
+
+            String actionClassName = actionConfiguration.getString("class");
+            try
+            {
+                if (!actionClassName.contains("."))
                 {
-                    String actionClassName = actionConfiguration.getString("class");
-                    try
-                    {
-                        if (!actionClassName.contains("."))
-                        {
-                            actionClassName = ACTION_BUILTIN_CLASSPATH + "." + actionClassName;
-                        }
-                        Class<?> genericClass = actionClasses.get(actionClassName);
-                        if (genericClass == null) {
-                            try {
-                                genericClass = Class.forName(actionClassName + "Action");
-                            } catch (Exception ex) {
-                                genericClass = Class.forName(actionClassName);
-                            }
-
-                            registerActionClass(actionClassName, genericClass);
-                        }
-
-                        @SuppressWarnings("unchecked")
-                        Class<? extends BaseSpellAction> actionClass = (Class<? extends BaseSpellAction>)genericClass;
-                        BaseSpellAction action = actionClass.newInstance();
-                        actionConfiguration.set("class", null);
-                        if (handlerConfiguration != null) {
-                            ConfigurationUtils.addConfigurations(actionConfiguration, handlerConfiguration, false);
-                        }
-                        if (actionConfiguration.getKeys(false).size() == 0) {
-                            actionConfiguration = null;
-                        }
-                        loadAction(action, actionConfiguration);
-                    } catch (Exception ex) {
-                        Bukkit.getLogger().warning("Error loading class " + actionClassName + ": " + ex.getMessage());
-                    }
+                    actionClassName = ACTION_BUILTIN_CLASSPATH + "." + actionClassName;
                 }
+                Class<?> genericClass = actionClasses.get(actionClassName);
+                if (genericClass == null) {
+                    try {
+                        genericClass = Class.forName(actionClassName + "Action");
+                    } catch (Exception ex) {
+                        genericClass = Class.forName(actionClassName);
+                    }
+
+                    registerActionClass(actionClassName, genericClass);
+                }
+
+                @SuppressWarnings("unchecked")
+                Class<? extends BaseSpellAction> actionClass = (Class<? extends BaseSpellAction>)genericClass;
+                BaseSpellAction action = actionClass.newInstance();
+                actionConfiguration.set("class", null);
+                if (handlerConfiguration != null) {
+                    ConfigurationUtils.addConfigurations(actionConfiguration, handlerConfiguration, false);
+                }
+                if (actionConfiguration.getKeys(false).size() == 0) {
+                    actionConfiguration = null;
+                }
+                loadAction(action, actionConfiguration);
+            } catch (Exception ex) {
+                Bukkit.getLogger().warning("Error loading class " + actionClassName + ": " + ex.getMessage());
             }
         }
     }
