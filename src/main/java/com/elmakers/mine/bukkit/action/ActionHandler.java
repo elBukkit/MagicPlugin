@@ -25,6 +25,20 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
     private static final String ACTION_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.action.builtin";
     private static Map<String, Class<?>> actionClasses = new HashMap<String, Class<?>>();
 
+    /**
+     * Registers an action class.
+     *
+     * @param name The name to register the action as.
+     * @param clazz The class to register.
+     */
+    public static void registerActionClass(String name, Class<?> clazz) {
+        if (!BaseSpellAction.class.isAssignableFrom(clazz)) {
+            throw new IllegalArgumentException("Must extend SpellAction");
+        }
+
+        actionClasses.put(name, clazz);
+    }
+
     private List<ActionContext> actions = new ArrayList<ActionContext>();
 
     private boolean undoable = false;
@@ -83,10 +97,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
                                 genericClass = Class.forName(actionClassName);
                             }
 
-                            if (!BaseSpellAction.class.isAssignableFrom(genericClass)) {
-                                throw new Exception("Must extend SpellAction");
-                            }
-                            actionClasses.put(actionClassName, genericClass);
+                            registerActionClass(actionClassName, genericClass);
                         }
 
                         @SuppressWarnings("unchecked")
