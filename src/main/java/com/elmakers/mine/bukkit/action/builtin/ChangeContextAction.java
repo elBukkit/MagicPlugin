@@ -158,6 +158,7 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (relativeSourceOffset != null)
         {
+        	//If persistCaster is true, it makes the vector relative to the caster and not what the sourceLocation may be
             if (persistCaster) {
             	Vector offset = VectorUtils.rotateVector(relativeSourceOffset, context.getMage().getEyeLocation());
                 sourceLocation.add(offset);
