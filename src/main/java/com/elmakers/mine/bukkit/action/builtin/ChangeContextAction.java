@@ -40,6 +40,7 @@ public class ChangeContextAction extends CompoundAction {
     private String sourceLocation;
     private boolean persistTarget;
     private boolean attachBlock;
+    private boolean persistCaster;
     private int snapTargetToSize;
     private int sourcePitchMin;
     private int sourcePitchMax;
@@ -67,6 +68,7 @@ public class ChangeContextAction extends CompoundAction {
         relativeTargetDirectionPitchOffset = (float)(parameters.getDouble("target_relative_direction_pitch_offset", 0));
         persistTarget = parameters.getBoolean("persist_target", false);
         attachBlock = parameters.getBoolean("target_attachment", false);
+        persistCaster = parameters.getBoolean("persist_caster", false);
         snapTargetToSize = parameters.getInt("target_snap", 0);
         targetLocation = parameters.getString("target_location");
         sourceLocation = parameters.getString("source_location");
@@ -156,8 +158,13 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (relativeSourceOffset != null)
         {
-            Vector offset = VectorUtils.rotateVector(relativeSourceOffset, sourceLocation);
-            sourceLocation.add(offset);
+            if (persistCaster) {
+            	Vector offset = VectorUtils.rotateVector(relativeSourceOffset, context.getMage().getEyeLocation());
+                sourceLocation.add(offset);
+            } else {
+            	Vector offset = VectorUtils.rotateVector(relativeSourceOffset, sourceLocation);
+                sourceLocation.add(offset);
+            }
         }
         if (snapTargetToSize > 0 && targetLocation != null)
         {
@@ -177,8 +184,13 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (relativeTargetOffset != null & targetLocation != null)
         {
-            Vector offset = VectorUtils.rotateVector(relativeTargetOffset, targetLocation);
-            targetLocation.add(offset);
+            if (persistCaster) {
+            	Vector offset = VectorUtils.rotateVector(relativeTargetOffset, context.getMage().getEyeLocation());
+                targetLocation.add(offset);
+            } else {
+            	Vector offset = VectorUtils.rotateVector(relativeTargetOffset, targetLocation);
+                targetLocation.add(offset);
+            }
         }
         if (randomSourceOffset != null)
         {
