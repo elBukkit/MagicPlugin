@@ -3350,8 +3350,8 @@ public class MagicController implements MageController {
 
             if (scoreboard1 != null && scoreboard2 != null)
             {
-                Team team1 = scoreboard1.getPlayerTeam(player1);
-                Team team2 = scoreboard2.getPlayerTeam(player2);
+                Team team1 = scoreboard1.getEntryTeam(player1.getName());
+                Team team2 = scoreboard2.getEntryTeam(player2.getName());
                 if (team1 != null && team2 != null && team1.equals(team2))
                 {
                     return false;
