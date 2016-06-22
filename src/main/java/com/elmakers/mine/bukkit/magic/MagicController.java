@@ -4596,7 +4596,7 @@ public class MagicController implements MageController {
         server.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
             @Override
             public void run() {
-                String response = null;
+                String response;
                 String newResourcePackHash = currentHash;
                 try {
                     HttpURLConnection.setFollowRedirects(false);
@@ -4658,9 +4658,8 @@ public class MagicController implements MageController {
                 server.getScheduler().runTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        if (finalResponse != null) {
-                            sender.sendMessage(finalResponse);
-                        }
+                        sender.sendMessage(finalResponse);
+
                         if (finalResourcePackHash != null) {
                             CompatibilityUtils.setResourcePack(server, finalResourcePack, finalResourcePackHash);
                         }
