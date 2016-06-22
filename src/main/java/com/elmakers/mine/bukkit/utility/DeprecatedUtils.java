@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility;
 
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
@@ -79,5 +80,11 @@ public class DeprecatedUtils {
     public static void setData(Block block, byte data) {
         // @deprecated Magic value
         block.setData(data);
+    }
+
+    public static FallingBlock spawnFallingBlock(Location location,
+            Material material, byte data) {
+        // @deprecated Magic value
+        return location.getWorld().spawnFallingBlock(location, material, data);
     }
 }

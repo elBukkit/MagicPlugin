@@ -529,7 +529,7 @@ public class ConstructBatch extends BrushBatch {
                 spell.getCurrentCast().registerReflective(block, backfireChance);
             }
             if (spawnFallingBlocks) {
-                FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+                FallingBlock falling = DeprecatedUtils.spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
                 falling.setDropItem(false);
                 if (fallingBlockSpeed != 0) {
                     Vector direction = this.fallingDirection != null ? this.fallingDirection :
