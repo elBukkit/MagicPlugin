@@ -107,7 +107,7 @@ public class BlockController implements Listener {
 
         if (NMSUtils.isTemporary(itemStack)) {
             event.setCancelled(true);
-            player.setItemInHand(null);
+            player.getInventory().setItemInMainHand(null);
             return;
         }
 

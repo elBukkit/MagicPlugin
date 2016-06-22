@@ -263,7 +263,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 			familiar = (LivingEntity)famEntity;
 			if (familiar instanceof Skeleton) {
 				Skeleton skellie = (Skeleton)familiar;
-				skellie.getEquipment().setItemInHand(new ItemStack(Material.BOW));
+				skellie.getEquipment().setItemInMainHand(new ItemStack(Material.BOW));
 			}
 			if (targetLocation != null && setTarget)
 			{

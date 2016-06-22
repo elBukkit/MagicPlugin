@@ -420,7 +420,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			}
 		}
 		player.sendMessage(api.getMessages().get("item.skull"));
-		player.setItemInHand(skullItem);
+		player.getInventory().setItemInMainHand(skullItem);
 
 		return true;
 	}

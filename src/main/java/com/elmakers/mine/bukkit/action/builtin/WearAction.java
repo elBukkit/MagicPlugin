@@ -127,7 +127,7 @@ public class WearAction extends BaseSpellAction
                 activeWand.deactivate();
             }
             
-            ItemStack itemInHand = player.getItemInHand();
+            ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand == null || itemInHand.getType() == Material.AIR)
             {
                 return SpellResult.FAIL;
@@ -137,9 +137,9 @@ public class WearAction extends BaseSpellAction
             armor[slotNumber] = itemInHand;
             player.getInventory().setArmorContents(armor);
             if (!InventoryUtils.isTemporary(currentItem)) {
-                player.setItemInHand(currentItem);
+                player.getInventory().setItemInMainHand(currentItem);
             } else {
-                player.setItemInHand(new ItemStack(Material.AIR));
+                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
             }
 
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {

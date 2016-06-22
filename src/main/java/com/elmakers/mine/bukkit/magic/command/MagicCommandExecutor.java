@@ -165,7 +165,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             }
 
             Player player = (Player)sender;
-            ItemStack item = player.getItemInHand();
+            ItemStack item = player.getInventory().getItemInMainHand();
             if (item == null || item.getType() == Material.AIR)
             {
                 player.sendMessage("You must be holding an item");

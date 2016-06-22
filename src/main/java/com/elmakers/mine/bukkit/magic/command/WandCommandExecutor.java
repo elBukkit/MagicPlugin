@@ -531,7 +531,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onWandDescribe(CommandSender sender, Player player, boolean details) {
-        ItemStack itemInHand = player.getItemInHand();
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (itemInHand == null) {
             if (sender != player) {
                 sender.sendMessage(api.getMessages().getParameterized("wand.player_no_item", "$name", player.getName()));
@@ -666,7 +666,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	public boolean onWandEnchant(CommandSender sender, Player player)
 	{
 		Mage mage = api.getMage(player);
-		ItemStack heldItem = player.getItemInHand();
+		ItemStack heldItem = player.getInventory().getItemInMainHand();
 		if (heldItem == null || heldItem.getType() == Material.AIR)
 		{
 			mage.sendMessage(api.getMessages().get("wand.no_item"));
@@ -681,7 +681,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
         }
 		
 		Wand wand = api.createWand(heldItem);
-		player.setItemInHand(wand.getItem());
+		player.getInventory().setItemInMainHand(wand.getItem());
 		wand.activate(mage);
 		
 		mage.sendMessage(api.getMessages().getParameterized("wand.enchanted", "$item", MaterialAndData.getMaterialName(heldItem)));
@@ -740,7 +740,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		
 		// Trying to make sure the player is actually holding the active wand
 		// Just in case. This isn't fool-proof though, if they have more than one wand.
-		if (wand == null || !api.isWand(player.getItemInHand())) {
+		if (wand == null || !api.isWand(player.getInventory().getItemInMainHand())) {
 			mage.sendMessage(api.getMessages().get("wand.no_wand"));
 			if (sender != player) {
 				sender.sendMessage(api.getMessages().getParameterized("wand.player_no_wand", "$name", player.getName()));
@@ -750,7 +750,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 		wand.deactivate();
 		wand.unenchant();
-		player.setItemInHand(wand.getItem());
+		player.getInventory().setItemInMainHand(wand.getItem());
 		
 		mage.sendMessage(api.getMessages().get("wand.unenchanted"));
 		if (sender != player) {

@@ -1060,7 +1060,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (mage != null) {
             Player player = mage.getPlayer();
             if (player != null) {
-                ItemStack itemInHand = player.getItemInHand();
+                ItemStack itemInHand = player.getInventory().getItemInMainHand();
                 String itemId = getWandId(itemInHand);
                 if (itemId != null && itemId.equals(id)) {
                     item = itemInHand;
@@ -2127,12 +2127,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public static boolean hasActiveWand(Player player) {
 		if (player == null) return false;
-		ItemStack activeItem =  player.getInventory().getItemInHand();
+		ItemStack activeItem =  player.getInventory().getItemInMainHand();
 		return isWand(activeItem);
 	}
 	
 	public static Wand getActiveWand(MagicController spells, Player player) {
-		ItemStack activeItem =  player.getInventory().getItemInHand();
+		ItemStack activeItem =  player.getInventory().getItemInMainHand();
 		if (isWand(activeItem)) {
 			return new Wand(spells, activeItem);
 		}
@@ -2352,7 +2352,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         // Reset the held item, just in case Bukkit made a copy or something.
-        playerInventory.setItemInHand(this.item);
+        playerInventory.setItemInMainHand(this.item);
 
         // Set hotbar items from remaining list
 		int targetOffset = 0;
