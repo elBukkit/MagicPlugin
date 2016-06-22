@@ -5,6 +5,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
@@ -86,5 +87,10 @@ public class DeprecatedUtils {
             Material material, byte data) {
         // @deprecated Magic value
         return location.getWorld().spawnFallingBlock(location, material, data);
+    }
+
+    public static byte getRawData(BlockState state) {
+        // @deprecated Magic value
+        return state.getRawData();
     }
 }
