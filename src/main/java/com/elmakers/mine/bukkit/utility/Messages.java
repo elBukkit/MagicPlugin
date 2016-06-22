@@ -128,7 +128,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     public String describeCurrency(double amount) {
         VaultController vault = VaultController.getInstance();
         String formatted = vault.format(amount);
-        if (!vault.hasEconomy()) {
+        if (!VaultController.hasEconomy()) {
             formatted =  get("costs.currency_amount").replace("$amount", formatted);
         }
         
@@ -138,7 +138,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     @Override
     public String getCurrency() {
         VaultController vault = VaultController.getInstance();
-        if (vault.hasEconomy()) {
+        if (VaultController.hasEconomy()) {
             return vault.getCurrency();
         }
         
@@ -148,7 +148,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     @Override
     public String getCurrencyPlural() {
         VaultController vault = VaultController.getInstance();
-        if (vault.hasEconomy()) {
+        if (VaultController.hasEconomy()) {
             return vault.getCurrencyPlural();
         }
 
