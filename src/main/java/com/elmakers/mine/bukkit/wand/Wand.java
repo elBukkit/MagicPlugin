@@ -981,7 +981,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, mage, wand, isItem);
     }
 
-    @SuppressWarnings("deprecation")
 	public static ItemStack createSpellItem(SpellTemplate spell, String args, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
 		if (spell == null) return null;
         String iconURL = spell.getIconURL();
@@ -1025,7 +1024,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return createBrushItem(materialKey, controller, this, false);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.magic.MageController controller, Wand wand, boolean isItem) {
 		MaterialBrush brushData = MaterialBrush.parseMaterialKey(materialKey);
 		if (brushData == null) return null;

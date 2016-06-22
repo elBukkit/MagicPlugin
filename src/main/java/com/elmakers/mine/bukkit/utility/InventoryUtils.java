@@ -286,7 +286,6 @@ public class InventoryUtils extends NMSUtils
         return getPlayerSkull(player, null);
     }
 
-    @SuppressWarnings("deprecation")
     public static ItemStack getPlayerSkull(Player player, String itemName)
     {
         return getPlayerSkull(player.getName(), player.getUniqueId(), itemName);

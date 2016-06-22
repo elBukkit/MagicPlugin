@@ -646,7 +646,6 @@ public class SimulateBatch extends SpellBatch {
 		this.targetType = targetType;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void target(TargetMode mode) {
 		targetMode = mode == null ? TargetMode.STABILIZE : mode;
 		switch (targetMode) 

@@ -735,7 +735,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return castingCosts;
     }
 
-    @SuppressWarnings("unchecked")
     protected void loadTemplate(ConfigurationSection node)
     {
         // Get localizations

@@ -77,7 +77,6 @@ public class FlingSpell extends UndoableSpell implements Listener
 		return SpellResult.CAST;
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerDamage(EntityDamageEvent event)
 	{

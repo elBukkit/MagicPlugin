@@ -96,7 +96,6 @@ public class LineAction extends CompoundAction
         actionContext.setTargetLocation(targetLocation);
     }
 
-	@SuppressWarnings("deprecation")
 	@Override
     public SpellResult step(CastContext context)
     {

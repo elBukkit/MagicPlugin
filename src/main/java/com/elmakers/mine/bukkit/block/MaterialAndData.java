@@ -82,7 +82,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.data = data;
     }
 
-    @SuppressWarnings("deprecation")
     public MaterialAndData(ItemStack item) {
         this.material = item.getType();
         this.data = item.getDurability();
@@ -115,7 +114,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         updateFrom(other);
     }
 
-    @SuppressWarnings("deprecation")
     public MaterialAndData(String materialKey) {
         this();
         update(materialKey);
@@ -488,7 +486,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return false;
     }
 
-    @SuppressWarnings("deprecation")
     public ItemStack getItemStack(int amount)
     {
         if (material == null) return null;
@@ -573,7 +570,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return material.getName();
     }
 
-    @SuppressWarnings("deprecation")
     public static String getMaterialName(Block block) {
         MaterialAndData material = new MaterialAndData(block);
         return material.getName();
@@ -583,7 +579,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return getName(null);
     }
     
-    @SuppressWarnings("deprecation")
     public String getBaseName() {
         if (material == null) {
             return null;

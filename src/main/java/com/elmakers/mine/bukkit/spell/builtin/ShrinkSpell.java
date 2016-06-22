@@ -32,7 +32,6 @@ public class ShrinkSpell extends BlockSpell
 	private int             DEFAULT_PLAYER_DAMAGE = 1;
 	private int             DEFAULT_ENTITY_DAMAGE = 100;
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
@@ -183,7 +182,6 @@ public class ShrinkSpell extends BlockSpell
         location.getWorld().dropItemNaturally(location, shrunkenHead);
     }
 	
-	@SuppressWarnings("deprecation")
 	protected void dropHead(Location location, String ownerName, String itemName, byte data) {
         ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)data);
         ItemMeta meta = shrunkenHead.getItemMeta();

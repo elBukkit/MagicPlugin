@@ -433,7 +433,6 @@ public abstract class TargetingSpell extends BaseSpell {
         this.initializeTargeting();
     }
 
-    @SuppressWarnings("unchecked")
     protected void loadTemplate(ConfigurationSection node)
     {
         super.loadTemplate(node);
@@ -468,7 +467,6 @@ public abstract class TargetingSpell extends BaseSpell {
         targetSelf = parameters.getBoolean("target_self", targetSelf);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
@@ -575,7 +573,6 @@ public abstract class TargetingSpell extends BaseSpell {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected String getDisplayMaterialName()
     {
