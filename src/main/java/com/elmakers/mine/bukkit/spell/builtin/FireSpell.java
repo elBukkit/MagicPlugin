@@ -12,9 +12,6 @@ import org.bukkit.configuration.ConfigurationSection;
 @Deprecated
 public class FireSpell extends BlockSpell
 {
-	private final static int		DEFAULT_RADIUS	= 4;
-	private final static int		DEFAULT_ELEMENTAL_DAMAGE = 5;
-	private final static int		DEFAULT_ELEMENTAL_FIRE_TICKS = 200;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 

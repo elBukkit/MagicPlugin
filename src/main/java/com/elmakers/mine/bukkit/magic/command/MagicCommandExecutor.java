@@ -154,7 +154,6 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
             if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell"))
             {
-                boolean showWorth = subCommand.equalsIgnoreCase("sell");
                 return onMagicGive(sender, player, subCommand, args2);
             }
 		}

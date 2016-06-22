@@ -11,11 +11,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
 public class LibsDisguiseManager {
-    private final Plugin plugin;
     private final Plugin disguisePlugin;
 
     public LibsDisguiseManager(Plugin owningPlugin, Plugin disguisePlugin) {
-        this.plugin = owningPlugin;
         this.disguisePlugin = disguisePlugin;
     }
 
