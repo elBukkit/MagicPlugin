@@ -3,7 +3,8 @@ package com.elmakers.mine.bukkit.magic.command;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import org.bukkit.Bukkit;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -46,7 +47,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
 		if (sender instanceof Player) {
 			if (args.length > 1)
 			{
-				player = Bukkit.getPlayer(args[1]);
+				player = DeprecatedUtils.getPlayer(args[1]);
 			}
 			if (player == null)
 			{
@@ -62,7 +63,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
 				return true;
 			}
 			argStart = 2;
-			player = Bukkit.getPlayer(args[1]);
+			player = DeprecatedUtils.getPlayer(args[1]);
 			if (player == null) {
 				sender.sendMessage("Can't find player " + args[1]);
 				return true;
@@ -119,7 +120,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
 			options.addAll(api.getPlayerNames());
 		} else if (args.length == 3) {
 			if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
-                Player player = Bukkit.getPlayer(args[1]);
+                Player player = DeprecatedUtils.getPlayer(args[1]);
                 if (player != null) {
                     Mage mage = api.getMage(player);
                     ConfigurationSection data = mage.getData();

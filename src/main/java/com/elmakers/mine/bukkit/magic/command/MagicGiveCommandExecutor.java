@@ -3,7 +3,8 @@ package com.elmakers.mine.bukkit.magic.command;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import org.bukkit.Bukkit;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -46,7 +47,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             countString = args[2];
         } else {
             playerName = args[0];
-            Player testPlayer = Bukkit.getPlayer(playerName);
+            Player testPlayer = DeprecatedUtils.getPlayer(playerName);
             if (testPlayer == null) {
                 itemName = args[0];
                 countString = args[1];
@@ -67,7 +68,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
 
         Player player = null;
         if (playerName != null) {
-            player = Bukkit.getPlayer(playerName);
+            player = DeprecatedUtils.getPlayer(playerName);
         }
 
         if (player == null) {

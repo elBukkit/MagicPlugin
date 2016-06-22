@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
@@ -124,7 +125,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			if (sender instanceof Player) {
                 if (args.length > 1)
                 {
-                    player = Bukkit.getPlayer(args[1]);
+                    player = DeprecatedUtils.getPlayer(args[1]);
                 }
                 if (player == null)
                 {
@@ -140,7 +141,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                     return true;
                 }
 				argStart = 2;
-				player = Bukkit.getPlayer(args[1]);
+				player = DeprecatedUtils.getPlayer(args[1]);
 				if (player == null) {
 					sender.sendMessage("Can't find player " + args[1]);
 					return true;
@@ -841,7 +842,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 					options.addAll(api.getBrushes());
 				}
 			} else if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
-                Player player = Bukkit.getPlayer(args[1]);
+                Player player = DeprecatedUtils.getPlayer(args[1]);
                 if (player != null) {
                     Mage mage = api.getMage(player);
                     ConfigurationSection data = mage.getData();

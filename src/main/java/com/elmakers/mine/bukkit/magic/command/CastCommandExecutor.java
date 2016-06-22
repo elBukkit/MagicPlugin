@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -114,7 +115,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 return true;
             }
 
-            Player player = Bukkit.getPlayer(playerName);
+            Player player = DeprecatedUtils.getPlayer(playerName);
             if (player == null) {
                 if (sender != null) sender.sendMessage("Can't find player " + playerName);
                 return true;

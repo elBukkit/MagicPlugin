@@ -69,4 +69,10 @@ public class DeprecatedUtils {
         // @deprecated Magic value
         return entityType.getName();
     }
+
+    public static Player getPlayer(String name) {
+        // @deprecated Use {@link #getPlayer(UUID)} as player names are no
+        // longer guaranteed to be unique
+        return Bukkit.getPlayer(name);
+    }
 }

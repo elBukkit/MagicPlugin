@@ -12,6 +12,7 @@ import java.util.TreeMap;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
@@ -19,7 +20,6 @@ import com.elmakers.mine.bukkit.wand.WandAction;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -53,7 +53,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				sender.sendMessage("Usage: /wandp [player] [wand name/command]");
 				return true;
 			}
-			Player player = Bukkit.getPlayer(args[0]);
+			Player player = DeprecatedUtils.getPlayer(args[0]);
 			if (player == null) {
 				sender.sendMessage("Can't find player " + args[0]);
 				return true;
@@ -116,7 +116,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		{
             permissionKey = "wandp";
 			if (args.length > 0) {
-				player = Bukkit.getPlayer(args[0]);
+				player = DeprecatedUtils.getPlayer(args[0]);
 			}
 			if (args.length == 1) {
 				options.addAll(api.getPlayerNames());
