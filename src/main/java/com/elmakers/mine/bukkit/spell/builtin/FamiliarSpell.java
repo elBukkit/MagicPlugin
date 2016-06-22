@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.bukkit.Location;
@@ -267,7 +266,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 			}
 			if (targetLocation != null && setTarget)
 			{
-                CompatibilityUtils.setTarget(familiar, targetLocation);
+                //CompatibilityUtils.setTarget(familiar, targetLocation);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
