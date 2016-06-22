@@ -45,13 +45,13 @@ public class DoorAction extends BaseSpellAction
         switch (actionType)
         {
             case OPEN:
-                targetBlock.setData((byte)(data | 0x4));
+                DeprecatedUtils.setData(targetBlock, (byte)(data | 0x4));
                 break;
             case CLOSE:
-                targetBlock.setData((byte)(data & ~0x4));
+                DeprecatedUtils.setData(targetBlock, (byte)(data & ~0x4));
                 break;
             case TOGGLE:
-                targetBlock.setData((byte)(data ^ 0x4));
+                DeprecatedUtils.setData(targetBlock, (byte)(data ^ 0x4));
                 break;
         }
 		

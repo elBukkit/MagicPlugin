@@ -216,7 +216,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 	public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, byte signDirection) {
 		Block signBlock = signLocation.getBlock();
 		signBlock.setType(Material.SIGN_POST);
-		signBlock.setData(signDirection);
+		DeprecatedUtils.setData(signBlock, signDirection);
 		Sign sign = (Sign)signBlock.getState();
 		sign.setLine(0, ChatColor.BLACK + "" + ChatColor.BOLD + "[Rent]");
 		sign.setLine(1, rent);

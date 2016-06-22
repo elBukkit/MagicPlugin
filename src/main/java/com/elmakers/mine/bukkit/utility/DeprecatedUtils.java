@@ -75,4 +75,9 @@ public class DeprecatedUtils {
         // longer guaranteed to be unique
         return Bukkit.getPlayer(name);
     }
+
+    public static void setData(Block block, byte data) {
+        // @deprecated Magic value
+        block.setData(data);
+    }
 }
