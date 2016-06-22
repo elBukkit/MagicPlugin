@@ -34,6 +34,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
@@ -2306,7 +2307,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (wandMode == WandMode.INVENTORY) {
             PlayerInventory inventory = player.getInventory();
             updateHotbar(inventory);
-            player.updateInventory();
+            DeprecatedUtils.updateInventory(player);
         }
     }
 
@@ -3131,7 +3132,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				mage.playSoundEffect(inventoryCycleSound);
 			}
             updateHotbarStatus();
-			mage.getPlayer().updateInventory();
+			DeprecatedUtils.updateInventory(mage.getPlayer());
 		}
 	}
 
@@ -3192,28 +3193,28 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 ItemStack testItem = inventory.getHelmet();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setHelmet(new ItemStack(Material.AIR));
-                    mage.getPlayer().updateInventory();
+                    DeprecatedUtils.updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getBoots();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setBoots(new ItemStack(Material.AIR));
-                    mage.getPlayer().updateInventory();
+                    DeprecatedUtils.updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getLeggings();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setLeggings(new ItemStack(Material.AIR));
-                    mage.getPlayer().updateInventory();
+                    DeprecatedUtils.updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getChestplate();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setChestplate(new ItemStack(Material.AIR));
-                    mage.getPlayer().updateInventory();
+                    DeprecatedUtils.updateInventory(mage.getPlayer());
                 }
 				// This is kind of a hack :(
 				testItem = inventory.getItemInOffHand();
 				if (isSpell(testItem) || isBrush(testItem)) {
 					inventory.setItemInOffHand(new ItemStack(Material.AIR));
-					mage.getPlayer().updateInventory();
+					DeprecatedUtils.updateInventory(mage.getPlayer());
 				}
             }
         } catch (Throwable ex) {
@@ -4242,7 +4243,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         lastLocationTime = 0;
         lastLocation = null;
         if (forceUpdate) {
-            player.updateInventory();
+            DeprecatedUtils.updateInventory(player);
         }
 
         WandActivatedEvent activatedEvent = new WandActivatedEvent(mage, this);

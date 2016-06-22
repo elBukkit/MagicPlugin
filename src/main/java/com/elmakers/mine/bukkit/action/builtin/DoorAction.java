@@ -4,6 +4,8 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -24,10 +26,10 @@ public class DoorAction extends BaseSpellAction
     public SpellResult perform(CastContext context)
     {
 		Block targetBlock = context.getTargetBlock();
-        byte data = targetBlock.getData();
+        byte data = DeprecatedUtils.getData(targetBlock);
         if ((data & 0x8) != 0) {
             targetBlock = targetBlock.getRelative(BlockFace.DOWN);
-            data = targetBlock.getData();
+            data = DeprecatedUtils.getData(targetBlock);
         }
 
         if (!context.hasBuildPermission(targetBlock))

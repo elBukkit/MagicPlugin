@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.FieldSign;
 import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
@@ -204,7 +206,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		BlockPlaceEvent event = new BlockPlaceEvent(targetBlock,
 				targetBlock.getState(),
 				targetBlock.getRelative(BlockFace.DOWN),
-				new ItemStack(targetBlock.getType(), targetBlock.getData()),
+				new ItemStack(targetBlock.getType(), DeprecatedUtils.getData(targetBlock)),
 				player, true, EquipmentSlot.HAND);
 
 		manager.add(location.getBlock(), player, event);

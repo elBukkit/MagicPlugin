@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class ConstructBatch extends BrushBatch {
 	private final Location center;
@@ -494,7 +495,7 @@ public class ConstructBatch extends BrushBatch {
 
     protected void modifyWith(Block block, MaterialAndData brush) {
         Material previousMaterial = block.getType();
-        byte previousData = block.getData();
+        byte previousData = DeprecatedUtils.getData(block);
 
         if (brush.isValid() && (brush.isDifferent(block) || commit)) {
 			if (consume && !context.isConsumeFree() && brush.getMaterial() != Material.AIR) {

@@ -75,6 +75,7 @@ import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.wand.LostWand;
@@ -2726,7 +2727,7 @@ public class MagicController implements MageController {
 		} else {
 			activeWand.setActiveSpell("");
 		}
-        mage.getPlayer().updateInventory();
+		DeprecatedUtils.updateInventory(mage.getPlayer());
 	}
     
 	@Override
