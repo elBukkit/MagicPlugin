@@ -2,9 +2,9 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.Art;
-import org.bukkit.Bukkit;
 import org.bukkit.map.MapView;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -154,10 +154,10 @@ public class AlterSpell extends BlockSpell
                 }
                 short data = frameItem.getDurability();
                 data++;
-                MapView mapView = Bukkit.getMap(data);
+                MapView mapView = DeprecatedUtils.getMap(data);
                 if (mapView == null) {
                     data = 0;
-                    mapView = Bukkit.getMap(data);
+                    mapView = DeprecatedUtils.getMap(data);
                     if (mapView == null) {
                         return SpellResult.NO_TARGET;
                     }

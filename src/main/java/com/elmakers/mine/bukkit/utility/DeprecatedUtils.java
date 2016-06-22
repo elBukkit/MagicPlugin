@@ -1,10 +1,13 @@
 package com.elmakers.mine.bukkit.utility;
 
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
 
 /**
@@ -55,5 +58,15 @@ public class DeprecatedUtils {
     public static int getTypeId(Block block) {
         // @deprecated Magic value
         return block.getTypeId();
+    }
+
+    public static MapView getMap(short id) {
+        // @deprecated Magic value
+        return Bukkit.getMap(id);
+    }
+
+    public static String getName(EntityType entityType) {
+        // @deprecated Magic value
+        return entityType.getName();
     }
 }
