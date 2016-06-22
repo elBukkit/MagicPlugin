@@ -32,6 +32,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
+import org.bukkit.entity.Villager;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -571,7 +572,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 					{
 						label = label + ChatColor.GRAY + " (Adult)";
 						zombie.setBaby(false);
-						zombie.setVillager(false);
+						zombie.setVillagerProfession(null);
 					}
 					else if (skeleton != null)
 					{
@@ -598,7 +599,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 						showEntityInfo(sender, testEntity, label, formatter);
 						label = entityType.name() + ChatColor.GRAY + " (Villager)";
 						zombie.setBaby(false);
-						zombie.setVillager(true);
+						zombie.setVillagerProfession(Villager.Profession.FARMER);
 						showEntityInfo(sender, testEntity, label, formatter);
 						label = entityType.name() + ChatColor.GRAY + " (Baby Villager)";
 						zombie.setBaby(true);
