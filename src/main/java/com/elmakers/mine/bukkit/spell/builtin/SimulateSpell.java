@@ -94,7 +94,7 @@ public class SimulateSpell extends BlockSpell {
 		Double dlcxValue = ConfigurationUtils.getDouble(parameters, "olcx", null);
 		Double dlcyValue = ConfigurationUtils.getDouble(parameters, "olcy", null);
 		Double dlczValue = ConfigurationUtils.getDouble(parameters, "olcz", null);
-		if (dlcxValue != null || dlczValue != null || dlczValue != null) {
+		if (dlcxValue != null || dlcyValue != null || dlczValue != null) {
 			Location liveChestLocation = targetLocation.clone().add(new Vector(dlcxValue == null ? 0 : dlcxValue, dlcyValue == null ? 0 : 
 				dlcyValue, dlczValue == null ? 0 : dlczValue));
 			Block chestBlock = liveChestLocation.getBlock();
@@ -120,7 +120,7 @@ public class SimulateSpell extends BlockSpell {
 		Double dbcxValue = ConfigurationUtils.getDouble(parameters, "obcx", null);
 		Double dbcyValue = ConfigurationUtils.getDouble(parameters, "obcy", null);
 		Double dbczValue = ConfigurationUtils.getDouble(parameters, "obcz", null);
-		if (dbcxValue != null || dbczValue != null || dbczValue != null) {
+		if (dbcxValue != null || dbcyValue != null || dbczValue != null) {
 			Location birthChestLocation = targetLocation.clone().add(new Vector(dbcxValue == null ? 0 : dbcxValue, dbcyValue == null ? 0 : 
 				dbcyValue, dbczValue == null ? 0 : dbczValue));
 			Block chestBlock = birthChestLocation.getBlock();
