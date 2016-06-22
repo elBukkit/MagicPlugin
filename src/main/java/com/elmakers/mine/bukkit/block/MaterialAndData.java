@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.block;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.apache.commons.lang.StringUtils;
@@ -134,7 +135,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     // Legacy material id loading
                     try {
                         Integer id = Integer.parseInt(pieces[0]);
-                        material = Material.getMaterial(id);
+                        material = DeprecatedUtils.getMaterial(id);
                     } catch (Exception ex) {
                         material = Material.getMaterial(pieces[0].toUpperCase());
                     }

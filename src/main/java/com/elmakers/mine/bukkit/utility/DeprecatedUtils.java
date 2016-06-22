@@ -93,4 +93,9 @@ public class DeprecatedUtils {
         // @deprecated Magic value
         return state.getRawData();
     }
+
+    public static Material getMaterial(int id) {
+        // @deprecated Magic value
+        return Material.getMaterial(id);
+    }
 }
