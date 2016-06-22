@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.WaterMob;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -204,7 +205,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 				targetBlock.getState(),
 				targetBlock.getRelative(BlockFace.DOWN),
 				new ItemStack(targetBlock.getType(), targetBlock.getData()),
-				player, true);
+				player, true, EquipmentSlot.HAND);
 
 		manager.add(location.getBlock(), player, event);
 		return !event.isCancelled();
