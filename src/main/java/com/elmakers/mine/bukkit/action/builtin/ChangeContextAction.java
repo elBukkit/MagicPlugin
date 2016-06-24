@@ -44,6 +44,7 @@ public class ChangeContextAction extends CompoundAction {
     private int snapTargetToSize;
     private int sourcePitchMin;
     private int sourcePitchMax;
+    private boolean orientPitch;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -74,6 +75,8 @@ public class ChangeContextAction extends CompoundAction {
         sourceLocation = parameters.getString("source_location");
         sourcePitchMin = parameters.getInt("source_pitch_min", 90);
         sourcePitchMax = parameters.getInt("source_pitch_max", -90);
+        orientPitch = parameters.getBoolean("orient_pitch", true);
+        
         if (parameters.contains("target_direction_speed"))
         {
             targetDirectionSpeed = parameters.getDouble("target_direction_speed");
@@ -158,14 +161,20 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (relativeSourceOffset != null)
         {
-        	//If persistCaster is true, it makes the vector relative to the caster and not what the sourceLocation may be
-            if (persistCaster) {
-            	Vector offset = VectorUtils.rotateVector(relativeSourceOffset, context.getMage().getEyeLocation());
-                sourceLocation.add(offset);
-            } else {
-            	Vector offset = VectorUtils.rotateVector(relativeSourceOffset, sourceLocation);
-                sourceLocation.add(offset);
-            }
+        	Location relativeSource;
+        	if (persistCaster) {
+        		relativeSource = context.getMage().getEyeLocation();
+        	} else {
+        		relativeSource = sourceLocation;
+        	}
+        	
+        	if (!orientPitch) {
+        		relativeSource.setPitch(0);
+        	}
+        	
+        	//If persistCaster is true, it makes the vector relative to the caster and not what the sourceLocation may 
+        	Vector offset = VectorUtils.rotateVector(relativeSourceOffset, relativeSource);
+            sourceLocation.add(offset);
         }
         if (snapTargetToSize > 0 && targetLocation != null)
         {
@@ -185,13 +194,20 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (relativeTargetOffset != null & targetLocation != null)
         {
-            if (persistCaster) {
-            	Vector offset = VectorUtils.rotateVector(relativeTargetOffset, context.getMage().getEyeLocation());
-                targetLocation.add(offset);
-            } else {
-            	Vector offset = VectorUtils.rotateVector(relativeTargetOffset, targetLocation);
-                targetLocation.add(offset);
-            }
+        	Location relativeTarget;
+        	
+        	if (persistCaster) {
+        		relativeTarget = context.getMage().getEyeLocation();
+        	} else {
+        		relativeTarget = targetLocation;
+        	}
+        	
+        	if (!orientPitch) {
+        		relativeTarget.setPitch(0);
+        	}
+        	
+        	Vector offset = VectorUtils.rotateVector(relativeTargetOffset, relativeTarget);
+            targetLocation.add(offset);
         }
         if (randomSourceOffset != null)
         {
