@@ -17,6 +17,7 @@ public class TeleportAction extends BaseTeleportAction
 {
 	private static int DEFAULT_PASSTHROUGH_RANGE = 4;
     private boolean autoPassthrough = true;
+    private boolean useTargetLocation;
     private int passthroughRange;
     private int ledgeSearchDistance = 2;
 
@@ -27,6 +28,7 @@ public class TeleportAction extends BaseTeleportAction
         Mage mage = context.getMage();
         ledgeSearchDistance = parameters.getInt("ledge_range", 2);
         autoPassthrough = parameters.getBoolean("allow_passthrough", true);
+        useTargetLocation = parameters.getBoolean("use_target_location", false);
         passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
     }
 
@@ -54,8 +56,15 @@ public class TeleportAction extends BaseTeleportAction
 				context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting passthrough engaged", 11);
 			}
 		}
-
-		Block target = context.getTargetBlock();
+		
+		
+		Block target;
+		if (useTargetLocation){
+			target = context.getTargetLocation().getBlock();
+		} else {
+			target = context.getTargetBlock();
+		}
+		
 		Block source = context.getEyeLocation().getBlock();
 		Block face = context.getPreviousBlock();
 
