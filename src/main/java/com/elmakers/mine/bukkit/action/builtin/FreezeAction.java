@@ -23,6 +23,7 @@ public class FreezeAction extends BaseSpellAction
     private Material iceMaterial;
 
 
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);

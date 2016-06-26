@@ -67,6 +67,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return true;
     }
 
+    @Override
     public boolean add(BlockData blockData)
     {
         if (!contain(blockData))
@@ -145,6 +146,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockIdMap.contains(blockData.getId());
     }
 
+    @Override
     public boolean contains(Object arg0)
     {
         if (arg0 instanceof Block) {
@@ -157,6 +159,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockIdMap == null ? false : blockIdMap.contains(arg0);
     }
 
+    @Override
     public boolean containsAll(Collection<?> arg0)
     {
         if (blockIdMap == null)
@@ -172,6 +175,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     // For now, this is here to keep the map up to date, and to pass through to
     // the blockList.
 
+    @Override
     public BoundingBox getArea()
     {
         return area;
@@ -182,16 +186,19 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockList;
     }
 
+    @Override
     public int size()
     {
         return blockList == null ? 0 : blockList.size();
     }
 
+    @Override
     public boolean isEmpty()
     {
         return blockList == null || blockList.isEmpty();
     }
 
+    @Override
     public Iterator<BlockData> iterator()
     {
         if (blockList == null)
@@ -201,6 +208,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockList.iterator();
     }
 
+    @Override
     public boolean remove(Object removeObject)
     {
         // Note that we never shrink the BB!
@@ -215,6 +223,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockList.remove(removeObject);
     }
 
+    @Override
     public boolean removeAll(Collection<?> removeCollection)
     {
         if (blockList == null)
@@ -231,6 +240,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockList.removeAll(removeCollection);
     }
 
+    @Override
     public boolean retainAll(Collection<?> arg0)
     {
         if (blockList == null)
@@ -268,6 +278,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockList.get(index);
     }
 
+    @Override
     public Object[] toArray()
     {
         if (blockList == null)
@@ -277,6 +288,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockList.toArray();
     }
 
+    @Override
     public <T> T[] toArray(T[] arg0)
     {
         if (blockList == null)
@@ -286,6 +298,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockList.toArray(arg0);
     }
 
+    @Override
     public void load(ConfigurationSection node) {
         worldName = node.getString("world");
         List<String> blockData = node.getStringList("blocks");
@@ -298,6 +311,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         }
     }
 
+    @Override
     public void save(ConfigurationSection node) {
         node.set("world", worldName);
         List<String> blockData = new ArrayList<String>();
@@ -309,6 +323,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         }
     }
 
+    @Override
     public String getWorldName() {
         return worldName;
     }

@@ -134,11 +134,13 @@ public class SimulateBatch extends SpellBatch {
 		updatingIndex = 0;
 	}
 
-	public int size() {
+	@Override
+    public int size() {
 		return radius * radius * radius * 8;
 	}
 	
-	public int remaining() {
+	@Override
+    public int remaining() {
 		if (r >= radius) return 0;
 		return (radius - r) *  (radius - r) *  (radius - r) * 8;
 	}

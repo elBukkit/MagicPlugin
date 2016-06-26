@@ -43,6 +43,7 @@ public class EffectVariable extends EffectPlayer {
         }
     }
 
+    @Override
     public void play() {
         playing.clear();
         if (brightnessMap.size() > 0) {

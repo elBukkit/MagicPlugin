@@ -385,7 +385,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateName();
 	}
 	
-	public void unenchant() {
+	@Override
+    public void unenchant() {
 		item = new ItemStack(item.getType(), 1, item.getDurability());
 	}
 	
@@ -444,7 +445,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		CompatibilityUtils.hideFlags(item, HIDE_FLAGS);
 	}
 	
-	public void makeUpgrade() {
+	@Override
+    public void makeUpgrade() {
         if (!isUpgrade) {
             isUpgrade = true;
             String oldName = wandName;
@@ -489,7 +491,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return manaMaxBoost;
     }
 	
-	public int getManaRegeneration() {
+	@Override
+    public int getManaRegeneration() {
 		return manaRegeneration;
 	}
 
@@ -529,7 +532,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return !locked;
 	}
 	
-	public boolean isIndestructible() {
+	@Override
+    public boolean isIndestructible() {
 		return indestructible;
 	}
 
@@ -548,7 +552,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return manaMax > 0 || isHeroes;
 	}
 
-	public float getCooldownReduction() {
+	@Override
+    public float getCooldownReduction() {
 		return controller.getCooldownReduction() + cooldownReduction * controller.getMaxCooldownReduction();
 	}
 
@@ -576,27 +581,33 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return hasInventory;
 	}
 
-	public float getPower() {
+	@Override
+    public float getPower() {
 		return power;
 	}
 	
-	public boolean isSuperProtected() {
+	@Override
+    public boolean isSuperProtected() {
 		return superProtected;
 	}
 	
-	public boolean isSuperPowered() {
+	@Override
+    public boolean isSuperPowered() {
 		return superPowered;
 	}
 	
-	public boolean isCostFree() {
+	@Override
+    public boolean isCostFree() {
 		return costReduction > 1;
 	}
 
-	public boolean isConsumeFree() {
+	@Override
+    public boolean isConsumeFree() {
 		return consumeReduction >= 1;
 	}
 	
-	public boolean isCooldownFree() {
+	@Override
+    public boolean isCooldownFree() {
 		return cooldownReduction > 1;
 	}
 
@@ -624,7 +635,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return damageReductionExplosions;
 	}
 	
-	public String getName() {
+	@Override
+    public String getName() {
 		return wandName;
 	}
 	
@@ -640,6 +652,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return ownerId;
     }
 
+    @Override
     public long getWorth() {
         long worth = 0;
         // TODO: Item properties, brushes, etc
@@ -653,7 +666,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return worth;
     }
 
-	public void setName(String name) {
+	@Override
+    public void setName(String name) {
 		wandName = ChatColor.stripColor(name);
 		updateName();
 	}
@@ -673,6 +687,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return template != null && template.hasTag(tag);
 	}
 
+    @Override
     public com.elmakers.mine.bukkit.api.wand.WandUpgradePath getPath() {
         String pathKey = path;
         if (pathKey == null || pathKey.length() == 0) {
@@ -685,7 +700,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return path != null && path.length() > 0;
     }
 	
-	public void setDescription(String description) {
+	@Override
+    public void setDescription(String description) {
 		this.description = description;
 		updateLore();
 	}
@@ -735,7 +751,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateLore();
 	}
 	
-	public ItemStack getItem() {
+	@Override
+    public ItemStack getItem() {
 		return item;
 	}
 	
@@ -751,7 +768,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return allInventories;
 	}
 	
-	public Set<String> getSpells() {
+	@Override
+    public Set<String> getSpells() {
 		return spells.keySet();
 	}
 
@@ -768,7 +786,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return StringUtils.join(spellNames, ",");
 	}
 
-	public Set<String> getBrushes() {
+	@Override
+    public Set<String> getBrushes() {
 		return brushes.keySet();
 	}
 
@@ -1716,7 +1735,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         checkId();
 	}
 
-	public void describe(CommandSender sender) {
+	@Override
+    public void describe(CommandSender sender) {
 		Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 		if (wandNode == null) {
 			sender.sendMessage("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
@@ -2471,14 +2491,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return true;
     }
 
+    @Override
     public int enchant(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage mage, boolean addSpells) {
         return randomize(totalLevels, true, mage, addSpells);
     }
 
+    @Override
     public int enchant(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage mage) {
         return randomize(totalLevels, true, mage, true);
     }
 
+    @Override
     public int enchant(int totalLevels) {
         return randomize(totalLevels, true, null, true);
     }
@@ -3167,7 +3190,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 	
-	public void closeInventory() {
+	@Override
+    public void closeInventory() {
 		if (!isInventoryOpen()) return;
         controller.disableItemSpawn();
         WandMode mode = getMode();
@@ -3521,7 +3545,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return usesXPBar() || usesXPNumber();
     }
 
-	public void updateMana() {
+	@Override
+    public void updateMana() {
         Player player = mage == null ? null : mage.getPlayer();
         if (player == null) return;
 
@@ -3599,7 +3624,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 	
-	public void deactivate() {
+	@Override
+    public void deactivate() {
 		if (mage == null) return;
 
         // Play deactivate FX
@@ -3626,11 +3652,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateMaxMana(true);
 	}
 	
-	public Spell getActiveSpell() {
+	@Override
+    public Spell getActiveSpell() {
 		if (mage == null || activeSpell == null || activeSpell.length() == 0) return null;
 		return mage.getSpell(activeSpell);
 	}
 
+    @Override
     public SpellTemplate getBaseSpell(String spellName) {
         SpellKey key = new SpellKey(spellName);
         Integer spellLevel = spellLevels.get(key.getBaseKey());
@@ -3643,10 +3671,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return controller.getSpellTemplate(spellKey);
     }
 
+    @Override
     public String getActiveSpellKey() {
         return activeSpell;
     }
 
+    @Override
     public String getActiveBrushKey() {
         return activeMaterial;
     }
@@ -4016,11 +4046,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         this.brushMode = mode;
     }
 	
-	public boolean showCastMessages() {
+	@Override
+    public boolean showCastMessages() {
 		return quietLevel == 0;
 	}
 	
-	public boolean showMessages() {
+	@Override
+    public boolean showMessages() {
 		return quietLevel < 2;
 	}
 
@@ -4328,7 +4360,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return ownerId.equalsIgnoreCase(player.getUniqueId().toString());
 	}
 	
-	public boolean addSpell(String spellName) {
+	@Override
+    public boolean addSpell(String spellName) {
 		if (!isModifiable()) return false;
 
         SpellKey spellKey = new SpellKey(spellName);
@@ -4877,6 +4910,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return controller.getWandTemplate(template);
 	}
 
+    @Override
     public void playEffects(String effects) {
         WandTemplate wandTemplate = getTemplate();
         if (wandTemplate != null && mage != null) {

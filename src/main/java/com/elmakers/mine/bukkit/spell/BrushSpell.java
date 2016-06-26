@@ -122,6 +122,7 @@ public abstract class BrushSpell extends BlockSpell {
         return brushIsErase();
     }
 
+    @Override
     public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush()
     {
         if (brush != null)

@@ -109,6 +109,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         update(materialKey);
     }
 
+    @Override
     public String getKey() {
         String materialKey = null;
         if (mode == BrushMode.ERASE) {
@@ -157,11 +158,13 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return brush.getName(messages);
     }
 
+    @Override
     public String getName() {
         Messages messages = mage != null ? mage.getController().getMessages() : null;
         return getName(messages);
     }
 
+    @Override
     public String getName(Messages messages) {
         String brushKey;
         switch (mode) {
@@ -336,6 +339,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         mode = BrushMode.COPY;
     }
 
+    @Override
     public boolean isReady() {
         if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && materialTarget != null) {
             Block block = materialTarget.getBlock();
@@ -369,6 +373,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return translated;
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public boolean update(final Mage fromMage, final Location target) {
         if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) {
@@ -481,6 +486,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return schematic != null && schematic.isLoaded();
     }
 
+    @Override
     public void prepare() {
         if (cloneSource != null && cloneTarget != null) {
             Block block = cloneTarget.getBlock();

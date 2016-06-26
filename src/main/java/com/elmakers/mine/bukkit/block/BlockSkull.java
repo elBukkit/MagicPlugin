@@ -18,6 +18,7 @@ public class BlockSkull extends BlockExtraData {
         this.rotation = rotation;
     }
 
+    @Override
     public BlockExtraData clone() {
         return new BlockSkull(profile, skullType, rotation);
     }

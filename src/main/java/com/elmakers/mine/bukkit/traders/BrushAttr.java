@@ -61,7 +61,8 @@ public class BrushAttr extends ItemAttribute
 	 * @return
 	 *    true when equal, false instead
 	 */
-	public boolean equals(ItemAttribute other)
+	@Override
+    public boolean equals(ItemAttribute other)
 	{
 		if (other instanceof BrushAttr)
 		{
@@ -75,7 +76,8 @@ public class BrushAttr extends ItemAttribute
 	 * @return
 	 *    true when equal, false instead
 	 */
-	public boolean similar(ItemAttribute other)
+	@Override
+    public boolean similar(ItemAttribute other)
 	{
 		if (other instanceof BrushAttr)
 		{

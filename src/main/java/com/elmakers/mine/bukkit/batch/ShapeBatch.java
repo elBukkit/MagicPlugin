@@ -61,16 +61,19 @@ public class ShapeBatch extends BrushBatch {
 		this.minOrientDimension = minDim;
 	}
 
-	public int size() {
+	@Override
+    public int size() {
 		return radius * radius * radius * 8;
 	}
 	
-	public int remaining() {
+	@Override
+    public int remaining() {
 		if (r >= radius) return 0;
 		return (radius - r) * (radius - r) * (radius - r) * 8;
 	}
 	
-	public int process(int maxBlocks) {
+	@Override
+    public int process(int maxBlocks) {
 		int processedBlocks = 0;
 
         int yBounds = radius;

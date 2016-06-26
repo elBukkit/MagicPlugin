@@ -39,6 +39,7 @@ public class BlockSign extends BlockExtraData {
         }
     }
 
+    @Override
     public BlockExtraData clone() {
         return new BlockSign(lines);
     }

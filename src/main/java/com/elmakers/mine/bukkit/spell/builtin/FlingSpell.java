@@ -77,7 +77,8 @@ public class FlingSpell extends UndoableSpell implements Listener
 		return SpellResult.CAST;
 	}
 
-	@EventHandler
+	@Override
+    @EventHandler
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
 		if (event.getCause() != DamageCause.FALL) return;

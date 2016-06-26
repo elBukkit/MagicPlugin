@@ -55,6 +55,7 @@ public class GenericSpell extends UndoableSpell
         undoDamage = parameters.getBoolean("undo_damage", false);
     }
 
+    @Override
     public boolean isUndoable()
     {
         return super.isUndoable() && (undoMovement || undoVelocity || undoDamage);

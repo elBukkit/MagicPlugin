@@ -37,6 +37,7 @@ public class TileEntitiesAction extends CompoundAction
         currentTile = 0;
     }
 
+    @Override
     public SpellResult start(CastContext context)
     {
         Location sourceLocation = context.getLocation();
@@ -57,6 +58,7 @@ public class TileEntitiesAction extends CompoundAction
         return startActions();
     }
 
+    @Override
     public boolean next(CastContext context) {
         currentTile++;
         return currentTile < tiles.size();

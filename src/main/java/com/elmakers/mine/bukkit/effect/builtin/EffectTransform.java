@@ -19,6 +19,7 @@ public class EffectTransform extends EffectRepeating {
     public EffectTransform() {
     }
 
+    @Override
     public void play() {
         playTime = 0;
         totalSteps = 0;
@@ -59,6 +60,7 @@ public class EffectTransform extends EffectRepeating {
         }
     }
 
+    @Override
     public void iterate() {
         if (positionTransform == null) {
             playEffect();

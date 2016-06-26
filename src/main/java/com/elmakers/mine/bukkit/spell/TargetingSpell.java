@@ -73,6 +73,7 @@ public abstract class TargetingSpell extends BaseSpell {
         targetLocation2 = null;
     }
 
+    @Override
     public String getMessage(String messageKey, String def) {
         String message = super.getMessage(messageKey, def);
 
@@ -434,6 +435,7 @@ public abstract class TargetingSpell extends BaseSpell {
         this.initializeTargeting();
     }
 
+    @Override
     protected void loadTemplate(ConfigurationSection node)
     {
         super.loadTemplate(node);

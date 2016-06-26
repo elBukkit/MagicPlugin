@@ -118,6 +118,7 @@ public class LineAction extends CompoundAction
         return startActions();
 	}
 
+    @Override
     public boolean next(CastContext context) {
         current++;
         Location target = actionContext.getTargetLocation();

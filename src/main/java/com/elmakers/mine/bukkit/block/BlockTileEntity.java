@@ -7,6 +7,7 @@ public class BlockTileEntity extends BlockExtraData {
         this.data = data;
     }
 
+    @Override
     public BlockExtraData clone() {
         return new BlockTileEntity(data);
     }

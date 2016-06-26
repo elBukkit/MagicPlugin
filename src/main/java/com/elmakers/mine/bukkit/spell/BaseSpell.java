@@ -533,6 +533,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+    @Override
     public Location getLocation()
     {
         if (location != null) return location.clone();
@@ -561,6 +562,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return mage.getEyeLocation();
     }
 
+    @Override
     public Vector getDirection()
     {
         if (location == null) {
@@ -672,6 +674,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return getEyeLocation();
     }
 
+    @Override
     public boolean hasBrushOverride()
     {
         return false;
@@ -933,6 +936,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+    @Override
     public boolean cast(String[] extraParameters, Location defaultLocation) {
         ConfigurationSection parameters = null;
         if (extraParameters != null && extraParameters.length > 0) {
@@ -942,11 +946,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return cast(parameters, defaultLocation);
     }
 
+    @Override
     public boolean cast(ConfigurationSection parameters)
     {
         return cast(parameters, null);
     }
 
+    @Override
     public boolean cast(ConfigurationSection extraParameters, Location defaultLocation)
     {
         if (mage.isPlayer() && mage.getPlayer().getGameMode() == GameMode.SPECTATOR) {
@@ -1129,6 +1135,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return Math.min(getCastCount() / requiredCastsPerLevel + 1, maxLevels);
     }
 
+    @Override
     public long getMaxProgressLevel() {
         return maxLevels;
     }
@@ -1137,6 +1144,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return Math.min(Math.max((getCastCount() - 1), 0) / requiredCastsPerLevel + 1, maxLevels);
     }
 
+    @Override
     public boolean canCast(Location location) {
         if (location == null) return true;
         if (!hasCastPermission(mage.getCommandSender())) return false;
@@ -1405,6 +1413,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return true;
     }
 
+    @Override
     public void messageTargets(String messageKey)
     {
         if (messageTargets && currentCast != null)
@@ -1537,6 +1546,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
 
+    @Override
     public String getPermissionNode()
     {
         return "Magic.cast." + spellKey.getBaseKey();
@@ -1580,6 +1590,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      *
      * @param instance The spells instance
      */
+    @Override
     public void initialize(MageController instance)
     {
         this.controller = instance;
@@ -1724,6 +1735,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return alias;
     }
 
+    @Override
     public boolean isQuickCast() {
         return quickCast;
     }

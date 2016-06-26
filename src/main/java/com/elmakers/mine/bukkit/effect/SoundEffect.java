@@ -82,6 +82,7 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
         this.pitch = pitch;
     }
 
+    @Override
     public String toString() {
         if (sound == null) return "";
         return sound.name() + "," + volume + "," + pitch;
@@ -102,10 +103,12 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
         return sound != otherEffect.sound || pitch != otherEffect.pitch || volume != otherEffect.volume;
     }
 
+    @Override
     public int getRange() {
         return range;
     }
 
+    @Override
     public void play(Plugin plugin, Location sourceLocation) {
         if (sourceLocation == null || plugin == null) return;
 
@@ -138,6 +141,7 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
         }
     }
 
+    @Override
     public void play(Plugin plugin, Entity entity) {
         if (entity == null || plugin == null) return;
 

@@ -115,6 +115,7 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
      *            The point to check for
      * @return true if this BB contains p
      */
+    @Override
     public boolean contains(Vector p)
     {
         return p.isInAABB(min, max);
@@ -129,6 +130,7 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
      * @param threshold a threshold range, for a fuzzy check
      * @return true if this BB contains p
      */
+    @Override
     public boolean contains(Vector p, int threshold)
     {
         if (threshold == 0) return contains(p);
@@ -256,6 +258,7 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
      *
      * @return a new BlockVector representing the center of this BB
      */
+    @Override
     public BlockVector getCenter()
     {
         Vector center = new Vector(min.getX(), min.getY(), min.getZ());
@@ -327,6 +330,7 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
      *
      * @return The maximum corner
      */
+    @Override
     public BlockVector getMax()
     {
         return max;
@@ -337,6 +341,7 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
      *
      * @return The minimum corner
      */
+    @Override
     public BlockVector getMin()
     {
         return min;

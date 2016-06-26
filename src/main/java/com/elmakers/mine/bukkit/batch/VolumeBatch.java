@@ -56,6 +56,7 @@ public abstract class VolumeBatch implements Batch {
         }
     }
 
+    @Override
     public void finish() {
         if (!finished) {
             if (worldName != null && minx != null && miny != null && minz != null && maxx !=null && maxy != null && maxz != null) {
@@ -65,6 +66,7 @@ public abstract class VolumeBatch implements Batch {
         }
     }
 
+    @Override
     public boolean isFinished() {
         return finished;
     }

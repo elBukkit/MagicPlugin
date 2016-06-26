@@ -53,7 +53,8 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		return preciousStones != null;
 	}
 
-	public boolean isPVPAllowed(Player player, Location location) {
+	@Override
+    public boolean isPVPAllowed(Player player, Location location) {
 		if (preciousStones == null || location == null)
 			return true;
         List<Field> fields = PreciousStones.API().getFieldsProtectingArea(FieldFlag.PREVENT_PVP, location);
@@ -89,7 +90,8 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		return fieldLocations;
 	}
 
-	public boolean hasBuildPermission(Player player, Block block) {
+	@Override
+    public boolean hasBuildPermission(Player player, Block block) {
 		boolean allowed = true;
 		if (block != null && preciousStones != null)
         {

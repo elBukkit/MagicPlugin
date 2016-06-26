@@ -726,6 +726,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
+    @Override
     public void setHasMoved(boolean moved) {
         this.hasMoved = moved;
     }
@@ -759,6 +760,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return name;
     }
 
+    @Override
     public EntityData clone() {
         try {
             return (EntityData)super.clone();

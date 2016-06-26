@@ -50,6 +50,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         }
     }
 
+    @Override
     public List<String> getAll(String path) {
         if (configuration == null) return new ArrayList<String>();
         return configuration.getStringList(path);
@@ -59,6 +60,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         messageMap.clear();
     }
 
+    @Override
     public String get(String key, String defaultValue) {
         if (messageMap.containsKey(key)) {
             return messageMap.get(key);
@@ -69,18 +71,22 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         return ChatColor.translateAlternateColorCodes('&', defaultValue);
     }
 
+    @Override
     public String get(String key) {
         return get(key, key);
     }
 
+    @Override
     public String getParameterized(String key, String paramName, String paramValue) {
         return get(key, key).replace(paramName, paramValue);
     }
 
+    @Override
     public String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2) {
         return get(key, key).replace(paramName1, paramValue1).replace(paramName2, paramValue2);
     }
 
+    @Override
     public String getRandomized(String key) {
         if (!randomized.containsKey(key)) return null;
         List<String> options = randomized.get(key);
@@ -88,6 +94,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         return options.get(random.nextInt(options.size()));
     }
 
+    @Override
     public String escape(String source) {
         Matcher matcher = PARAMETER_PATTERN.matcher(source);
         String result = source;

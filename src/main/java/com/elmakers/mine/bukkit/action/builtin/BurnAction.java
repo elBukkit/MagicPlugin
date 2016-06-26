@@ -10,7 +10,8 @@ import org.bukkit.block.BlockFace;
 
 public class BurnAction extends BaseSpellAction
 {
-	public SpellResult perform(CastContext context)
+	@Override
+    public SpellResult perform(CastContext context)
 	{
         Block block = context.getTargetBlock();
 		if (block == null || block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)

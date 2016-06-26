@@ -470,6 +470,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         playEffects(effectName, scale, null, getEntity(), null, getTargetEntity());
     }
 
+    @Override
     public void playEffects(String effectName, float scale, Block sourceBlock)
     {
         playEffects(effectName, scale, null, getEntity(), null, getTargetEntity(), sourceBlock);
@@ -553,6 +554,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return baseSpell != null ? baseSpell.findPlaceToStand(target, goUp, verticalSearchDistance) : location;
     }
 
+    @Override
     public Location findPlaceToStand(Location targetLoc, int verticalSearchDistance) {
         return baseSpell != null ? baseSpell.findPlaceToStand(targetLoc, verticalSearchDistance, verticalSearchDistance) : location;
     }

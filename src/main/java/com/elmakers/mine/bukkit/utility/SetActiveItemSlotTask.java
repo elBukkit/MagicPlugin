@@ -12,7 +12,8 @@ public class SetActiveItemSlotTask extends BukkitRunnable {
 		this.itemSlot = slot;
 	}
 
-	public void run() {
+	@Override
+    public void run() {
 		player.getInventory().setHeldItemSlot(itemSlot);
 	}
 }

@@ -373,6 +373,7 @@ public class Target implements Comparable<Target>
         }
     }
 
+    @Override
     public int compareTo(Target other)
     {
         return other.score - this.score;

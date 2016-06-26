@@ -148,7 +148,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         instance = this;
     }
 
-	public void onEnable() 
+	@Override
+    public void onEnable() 
 	{
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		if (controller == null) {
@@ -222,7 +223,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	 * Help commands
 	 */
 
-	public void onDisable() 
+	@Override
+    public void onDisable() 
 	{
         if (controller != null) {
             controller.clear();

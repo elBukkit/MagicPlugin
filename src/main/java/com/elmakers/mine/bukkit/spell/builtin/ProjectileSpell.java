@@ -221,7 +221,8 @@ public class ProjectileSpell extends UndoableSpell
 	protected void scheduleProjectileCheck(final Collection<Projectile> projectiles, final int tickIncrease, 
 			final Collection<PotionEffect> effects, final int radius, final int retries) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				checkProjectiles(projectiles, tickIncrease, effects, radius, retries);
 			}
 		}, 40);

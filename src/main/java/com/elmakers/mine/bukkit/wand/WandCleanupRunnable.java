@@ -42,12 +42,14 @@ public class WandCleanupRunnable extends RunnableJob {
 		lostWands.addAll(api.getLostWands());
 	}
 	
-	public void finish() {
+	@Override
+    public void finish() {
 		super.finish();
 		lostWands.clear();
 	}
 	
-	public void run() {
+	@Override
+    public void run() {
 		if (lostWands.isEmpty()) {
 			finish();
 			return;

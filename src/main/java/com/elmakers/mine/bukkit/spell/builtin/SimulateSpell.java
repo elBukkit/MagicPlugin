@@ -214,7 +214,8 @@ public class SimulateSpell extends BlockSpell {
 		boolean success = true;
 		if (delay > 0) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
-				public void run() {
+				@Override
+                public void run() {
 					mage.addBatch(batch);
 				}
 			}, delay);

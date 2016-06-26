@@ -51,13 +51,15 @@ public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildMa
         wildernessBypass = bypass;
     }
 
-	public boolean hasBuildPermission(Player player, Block block) {
+	@Override
+    public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && towny != null) {
 			return towny.hasBuildPermission(player, block);
 		}
 		return true;
 	}
 
+    @Override
     public boolean hasBreakPermission(Player player, Block block) {
         if (enabled && block != null && towny != null) {
             return towny.hasBreakPermission(player, block);

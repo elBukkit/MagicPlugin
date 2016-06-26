@@ -422,6 +422,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         castsSpells = parameters.getBoolean("cast_spells", false);
     }
 
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         permissionNode = parameters.getString("permission", null);

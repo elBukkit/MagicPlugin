@@ -47,7 +47,8 @@ public class ThrustSpell extends TargetingSpell
             this.spell = spell;
         }
 
-		public void run()
+		@Override
+        public void run()
 		{
             spell.applyForce();
             spell.scheduleForce(this);
@@ -101,7 +102,8 @@ public class ThrustSpell extends TargetingSpell
 		} 
 	}
 
-	public boolean isActive()
+	@Override
+    public boolean isActive()
     {
         return (taskId != null && !mage.isDead() && mage.isOnline());
     }

@@ -27,6 +27,7 @@ public class AddSpellAction extends BaseSpellAction
     private String permissionNode = null;
     protected boolean autoUpgrade = false;
 
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         permissionNode = parameters.getString("permission", null);

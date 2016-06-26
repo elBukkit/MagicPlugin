@@ -18,20 +18,23 @@ public class CommandCitizensTrait extends CitizensTrait {
 		super("command");
 	}
 
-	public void load(DataKey data) {
+	@Override
+    public void load(DataKey data) {
         super.load(data);
         command = data.getString("command", null);
         console = data.getBoolean("console", true);
         op = data.getBoolean("op", false);
 	}
 
-	public void save(DataKey data) {
+	@Override
+    public void save(DataKey data) {
         super.save(data);
         data.setString("command", command);
         data.setBoolean("console", console);;
         data.setBoolean("op", op);
 	}
 
+    @Override
     public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event){
         if (command == null || command.isEmpty()) return false;
 
@@ -67,6 +70,7 @@ public class CommandCitizensTrait extends CitizensTrait {
         return result;
     }
 
+    @Override
     public void describe(CommandSender sender)
     {
         super.describe(sender);
@@ -78,6 +82,7 @@ public class CommandCitizensTrait extends CitizensTrait {
         sender.sendMessage(ChatColor.DARK_PURPLE + "Op Player: " + opDescription);
     }
 
+    @Override
     public void configure(CommandSender sender, String key, String value)
     {
         if (key == null)

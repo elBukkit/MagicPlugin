@@ -127,6 +127,7 @@ public abstract class BlockSpell extends UndoableSpell {
         parameters.addAll(Arrays.asList(BLOCK_PARAMETERS));
     }
 
+    @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey)
     {
         super.getParameterOptions(examples, parameterKey);
@@ -193,10 +194,12 @@ public abstract class BlockSpell extends UndoableSpell {
         }
     }
 
+    @Override
     public boolean requiresBuildPermission() {
         return true;
     }
 
+    @Override
     public boolean requiresBreakPermission() {
         return false;
     }

@@ -77,6 +77,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         return super.equals(other);
     }
 
+    @Override
     public long getId()
     {
         if (location == null) return 0;
@@ -164,6 +165,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         this.location = location;
     }
 
+    @Override
     public void unlink()
     {
         if (priorState != null) {
@@ -233,6 +235,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         }
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public String toString() {
         return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + worldName + "|" + getMaterial().getId() + ":" + getData();
@@ -341,10 +344,12 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         undoList = new WeakReference<UndoList>(list);
     }
 
+    @Override
     public BlockVector getLocation() {
         return location;
     }
 
+    @Override
     public boolean containsAny(Set<Material> materials)
     {
         if (materials.contains(material)) return true;

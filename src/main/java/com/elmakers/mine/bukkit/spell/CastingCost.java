@@ -14,6 +14,7 @@ public class CastingCost extends Cost implements com.elmakers.mine.bukkit.api.sp
         super(controller, key, cost);
     }
     
+    @Override
     public boolean has(Spell spell)
     {
         CastContext context = spell.getCurrentCast();
@@ -22,6 +23,7 @@ public class CastingCost extends Cost implements com.elmakers.mine.bukkit.api.sp
         return has(mage, wand, spell);
     }
 
+    @Override
     public void use(Spell spell)
     {
         CastContext context = spell.getCurrentCast();

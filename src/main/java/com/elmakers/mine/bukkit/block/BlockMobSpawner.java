@@ -7,6 +7,7 @@ public class BlockMobSpawner extends BlockExtraData {
         this.mobName = mobName;
     }
 
+    @Override
     public BlockExtraData clone() {
         return new BlockMobSpawner(mobName);
     }

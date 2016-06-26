@@ -30,6 +30,7 @@ public abstract class UndoableBatch implements Batch {
         undoList.add(entity);
     }
 
+    @Override
     public void finish() {
         if (!finished) {
             finished = true;

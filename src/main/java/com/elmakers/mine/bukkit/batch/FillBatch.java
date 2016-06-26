@@ -64,11 +64,13 @@ public class FillBatch extends BrushBatch {
 		z = p1.getBlockZ();
 	}
 
-	public int size() {
+	@Override
+    public int size() {
 		return absx * absy * absz;
 	}
 	
-	public int remaining() {
+	@Override
+    public int remaining() {
 		return (absx - ix) * (absy - iy) * (absz - iz);
 	}
 	
@@ -80,7 +82,8 @@ public class FillBatch extends BrushBatch {
 		return !(maxVolume > 0 && absx * absy * absz > maxVolume);
 	}
 	
-	@SuppressWarnings("deprecation")
+	@Override
+    @SuppressWarnings("deprecation")
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
 		

@@ -169,6 +169,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         return autoUndo;
     }
 
+    @Override
     public boolean isUndoable()
     {
         return !bypassUndo;

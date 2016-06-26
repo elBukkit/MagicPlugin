@@ -149,6 +149,7 @@ public class AnimateSpell extends SimulateSpell
 
         final String commandBlockName = commandName;
         Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
+            @Override
             public void run() {
                 targetBlock.setType(Material.COMMAND);
                 BlockState commandData = targetBlock.getState();
@@ -162,7 +163,8 @@ public class AnimateSpell extends SimulateSpell
         }, SimulateBatch.POWER_DELAY_TICKS + 1);
 		
 		Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				powerBlock.setType(Material.REDSTONE_BLOCK);
 			}
 		}, SimulateBatch.POWER_DELAY_TICKS + 2);

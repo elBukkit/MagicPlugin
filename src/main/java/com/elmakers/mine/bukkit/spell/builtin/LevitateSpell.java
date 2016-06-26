@@ -150,6 +150,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             Bukkit.getScheduler().cancelTask(taskId);
         }
 
+        @Override
         public void run()
         {
             if (!spell.canCast(spell.getLocation()))
@@ -945,6 +946,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         if (flight) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
+                @Override
                 public void run() {
                     player.setAllowFlight(true);
                     player.setFlying(true);

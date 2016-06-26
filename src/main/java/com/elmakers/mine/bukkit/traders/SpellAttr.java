@@ -45,7 +45,8 @@ public class SpellAttr extends ItemAttribute
 	 * @return
 	 *    true when equal, false instead
 	 */
-	public boolean similar(ItemAttribute other)
+	@Override
+    public boolean similar(ItemAttribute other)
 	{
 		if (other instanceof SpellAttr)
 		{
@@ -59,7 +60,8 @@ public class SpellAttr extends ItemAttribute
 	 * @return
 	 *    true when equal, false instead
 	 */
-	public boolean equals(ItemAttribute other)
+	@Override
+    public boolean equals(ItemAttribute other)
 	{
 		if (other instanceof SpellAttr)
 		{

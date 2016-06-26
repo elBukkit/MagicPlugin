@@ -262,6 +262,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return FireworkEffect.builder().flicker(flicker).withColor(color1).withFade(color2).with(fireworkType).trail(trail).build();
     }
 
+    @Override
     public void setEffect(Effect effect) {
         this.effect = effect;
     }
@@ -274,6 +275,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.particleType = particleType;
     }
 
+    @Override
     public void setParticleOverride(String particleType) {
         if (particleType == null || particleType.isEmpty()) {
             this.particleOverride = null;
@@ -286,6 +288,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             this.particleOverride = null;
         }
     }
+    @Override
     public void setEffectData(int data) {
         this.effectData = data;
     }
@@ -430,6 +433,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.sound.setPitch(pitch);
     }
 
+    @Override
     public void setDelayTicks(int ticks) {
         delayTicks = ticks;
     }
@@ -492,6 +496,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (delayTicks > 0 && plugin != null) {
             final EffectPlayer player = this;
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
                 public void run() {
                     player.startPlay();
                 }
@@ -528,10 +533,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return direction.normalize();
     }
 
+    @Override
     public void setMaterial(com.elmakers.mine.bukkit.api.block.MaterialAndData material) {
         this.material = material == null ? null : new MaterialAndData(material);
     }
 
+    @Override
     public void setMaterial(Block block) {
         if (block == null) {
             this.material =  null;
@@ -540,6 +547,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
+    @Override
     public void setColor(Color color) {
         this.color = color;
     }
@@ -667,6 +675,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return useEyeLocation;
     }
 
+    @Override
     public void setParameterMap(Map<String, String> map) {
         this.parameterMap = map;
     }

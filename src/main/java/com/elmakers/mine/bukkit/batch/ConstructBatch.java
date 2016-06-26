@@ -135,16 +135,19 @@ public class ConstructBatch extends BrushBatch {
 		return !attachables.contains(material) && !attachablesWall.contains(material) && !attachablesDouble.contains(material);
 	}
 
-	public int size() {
+	@Override
+    public int size() {
 		return radius * radius * radius * 8;
 	}
 
-	public int remaining() {
+	@Override
+    public int remaining() {
 		if (r >= radius) return 0;
 		return (radius - r) * (radius - r) * (radius - r) * 8;
 	}
 
-	public int process(int maxBlocks) {
+	@Override
+    public int process(int maxBlocks) {
 		int processedBlocks = 0;
 		if (finishedAttached) {
 			if (delayedBlockIndex >= delayedBlocks.size()) {

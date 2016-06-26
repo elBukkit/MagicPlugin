@@ -2,7 +2,8 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 public class DiscAction extends PlaneAction
 {
-	protected boolean containsPoint(int x, int y, int z)
+	@Override
+    protected boolean containsPoint(int x, int y, int z)
 	{
 		switch (axis)
 		{

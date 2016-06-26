@@ -10,7 +10,8 @@ public class SphereAction extends VolumeAction
 		return 0;
 	}
 
-	protected boolean containsPoint(int x, int y, int z)
+	@Override
+    protected boolean containsPoint(int x, int y, int z)
 	{
 		double distanceSquared = (((double)x * (double)x) + ((double)y * (double)y) + ((double)z * (double)z));
 		if (thickness > 0) {
