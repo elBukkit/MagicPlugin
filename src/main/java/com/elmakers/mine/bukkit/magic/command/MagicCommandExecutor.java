@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
@@ -32,6 +33,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
+import org.bukkit.entity.Villager;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -123,7 +125,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			if (sender instanceof Player) {
                 if (args.length > 1)
                 {
-                    player = Bukkit.getPlayer(args[1]);
+                    player = DeprecatedUtils.getPlayer(args[1]);
                 }
                 if (player == null)
                 {
@@ -139,7 +141,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                     return true;
                 }
 				argStart = 2;
-				player = Bukkit.getPlayer(args[1]);
+				player = DeprecatedUtils.getPlayer(args[1]);
 				if (player == null) {
 					sender.sendMessage("Can't find player " + args[1]);
 					return true;
@@ -152,7 +154,6 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
             if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell"))
             {
-                boolean showWorth = subCommand.equalsIgnoreCase("sell");
                 return onMagicGive(sender, player, subCommand, args2);
             }
 		}
@@ -165,7 +166,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             }
 
             Player player = (Player)sender;
-            ItemStack item = player.getItemInHand();
+            ItemStack item = player.getInventory().getItemInMainHand();
             if (item == null || item.getType() == Material.AIR)
             {
                 player.sendMessage("You must be holding an item");
@@ -571,7 +572,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 					{
 						label = label + ChatColor.GRAY + " (Adult)";
 						zombie.setBaby(false);
-						zombie.setVillager(false);
+						zombie.setVillagerProfession(null);
 					}
 					else if (skeleton != null)
 					{
@@ -598,7 +599,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 						showEntityInfo(sender, testEntity, label, formatter);
 						label = entityType.name() + ChatColor.GRAY + " (Villager)";
 						zombie.setBaby(false);
-						zombie.setVillager(true);
+						zombie.setVillagerProfession(Villager.Profession.FARMER);
 						showEntityInfo(sender, testEntity, label, formatter);
 						label = entityType.name() + ChatColor.GRAY + " (Baby Villager)";
 						zombie.setBaby(true);
@@ -840,7 +841,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 					options.addAll(api.getBrushes());
 				}
 			} else if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
-                Player player = Bukkit.getPlayer(args[1]);
+                Player player = DeprecatedUtils.getPlayer(args[1]);
                 if (player != null) {
                     Mage mage = api.getMage(player);
                     ConfigurationSection data = mage.getData();

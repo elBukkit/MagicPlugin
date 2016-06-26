@@ -136,6 +136,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 if (living != null) {
                     living.setHealth(Math.max(0, living.getHealth() - getReducedCost(amount, reducer)));
                 }
+                break;
             case HUNGER:
                 Player player = mage.getPlayer();
                 if (player != null) {

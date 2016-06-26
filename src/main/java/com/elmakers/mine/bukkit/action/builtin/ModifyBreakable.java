@@ -20,7 +20,6 @@ public class ModifyBreakable extends BaseSpellAction {
         breakable = parameters.getDouble("breakable", 1);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();

@@ -75,6 +75,7 @@ import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.wand.LostWand;
@@ -2726,7 +2727,7 @@ public class MagicController implements MageController {
 		} else {
 			activeWand.setActiveSpell("");
 		}
-        mage.getPlayer().updateInventory();
+		DeprecatedUtils.updateInventory(mage.getPlayer());
 	}
     
 	@Override
@@ -3349,8 +3350,8 @@ public class MagicController implements MageController {
 
             if (scoreboard1 != null && scoreboard2 != null)
             {
-                Team team1 = scoreboard1.getPlayerTeam(player1);
-                Team team2 = scoreboard2.getPlayerTeam(player2);
+                Team team1 = scoreboard1.getEntryTeam(player1.getName());
+                Team team2 = scoreboard2.getEntryTeam(player2.getName());
                 if (team1 != null && team2 != null && team1.equals(team2))
                 {
                     return false;
@@ -4596,7 +4597,7 @@ public class MagicController implements MageController {
         server.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
             @Override
             public void run() {
-                String response = null;
+                String response;
                 String newResourcePackHash = currentHash;
                 try {
                     HttpURLConnection.setFollowRedirects(false);
@@ -4658,9 +4659,8 @@ public class MagicController implements MageController {
                 server.getScheduler().runTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        if (finalResponse != null) {
-                            sender.sendMessage(finalResponse);
-                        }
+                        sender.sendMessage(finalResponse);
+
                         if (finalResourcePackHash != null) {
                             CompatibilityUtils.setResourcePack(server, finalResourcePack, finalResourcePackHash);
                         }

@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
@@ -803,7 +804,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             World world = location.getWorld();
             Entity entity = null;
             try {
-                String mountName = mountType.getName();
+                String mountName = DeprecatedUtils.getName(mountType);
                 if (mountName.indexOf("Entity") != 0) {
                     mountName = "Entity" + mountName;
                 }
@@ -837,11 +838,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
                         }
                         controller.setForceSpawn(false);
                     } else {
-                        mage.sendMessage("Failed to spawn entity of type: " + mountType + " (" + mountType.getName() + ")");
+                        mage.sendMessage("Failed to spawn entity of type: " + mountType + " (" + DeprecatedUtils.getName(mountType) + ")");
                         return;
                     }
                 } else {
-                    mage.sendMessage("Invalid entity type: " + mountType + " (" + mountType.getName() + ")");
+                    mage.sendMessage("Invalid entity type: " + mountType + " (" + DeprecatedUtils.getName(mountType) + ")");
                     return;
                 }
             } catch (Exception ex) {

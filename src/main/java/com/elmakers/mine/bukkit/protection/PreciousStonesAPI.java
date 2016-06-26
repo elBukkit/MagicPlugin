@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.FieldSign;
 import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
@@ -20,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.WaterMob;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -203,8 +206,8 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		BlockPlaceEvent event = new BlockPlaceEvent(targetBlock,
 				targetBlock.getState(),
 				targetBlock.getRelative(BlockFace.DOWN),
-				new ItemStack(targetBlock.getType(), targetBlock.getData()),
-				player, true);
+				new ItemStack(targetBlock.getType(), DeprecatedUtils.getData(targetBlock)),
+				player, true, EquipmentSlot.HAND);
 
 		manager.add(location.getBlock(), player, event);
 		return !event.isCancelled();
@@ -213,7 +216,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 	public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, byte signDirection) {
 		Block signBlock = signLocation.getBlock();
 		signBlock.setType(Material.SIGN_POST);
-		signBlock.setData(signDirection);
+		DeprecatedUtils.setData(signBlock, signDirection);
 		Sign sign = (Sign)signBlock.getState();
 		sign.setLine(0, ChatColor.BLACK + "" + ChatColor.BOLD + "[Rent]");
 		sign.setLine(1, rent);

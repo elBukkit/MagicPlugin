@@ -193,10 +193,10 @@ public class PlayerController implements Listener {
                 activeWand.deactivate();
                 // Clear after inventory restore (potentially with deactivate), since that will put the wand back
                 if (Wand.hasActiveWand(player)) {
-                    String activeId = Wand.getWandId(player.getItemInHand());
+                    String activeId = Wand.getWandId(player.getInventory().getItemInMainHand());
                     if (activeId != null && activeWand.getId().equals(activeId))
                     {
-                        player.setItemInHand(new ItemStack(Material.AIR, 1));
+                        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
                     }
                 }
             } else if (activeWand.isInventoryOpen()) {
@@ -310,7 +310,7 @@ public class PlayerController implements Listener {
             mage.checkLastClick(0);
         } else {
             // Don't allow interacting while holding spells, brushes or upgrades
-            ItemStack itemInHand = player.getItemInHand();
+            ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (Wand.isSpell(itemInHand) || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
                 event.setCancelled(true);
             }
@@ -331,7 +331,7 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         
         // Don't allow interacting while holding spells, brushes or upgrades
-        ItemStack itemInHand = player.getItemInHand();
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (Wand.isSpell(itemInHand) || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
             event.setCancelled(true);
             return;
@@ -589,7 +589,7 @@ public class PlayerController implements Listener {
         if (!mage.hasStoredInventory()) {
             // Hackiness needed because we don't get an equip event for this!
             PlayerInventory inventory = event.getPlayer().getInventory();
-            ItemStack inHand = inventory.getItemInHand();
+            ItemStack inHand = inventory.getItemInMainHand();
             if (isWand && (inHand == null || inHand.getType() == Material.AIR)) {
                 Wand wand = new Wand(controller, pickup);
                 event.setCancelled(true);

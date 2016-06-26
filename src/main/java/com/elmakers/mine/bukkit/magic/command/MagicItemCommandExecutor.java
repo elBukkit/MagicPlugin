@@ -337,7 +337,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		VaultController vault = VaultController.getInstance();
 		int amount = item.getAmount();
 		double totalWorth = worth * amount;
-		if (vault.hasEconomy()) {
+		if (VaultController.hasEconomy()) {
 			worthDescription = vault.format(totalWorth);
 			if (amount > 1) {
 				worthDescription = worthDescription + ChatColor.WHITE + 
@@ -420,7 +420,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			}
 		}
 		player.sendMessage(api.getMessages().get("item.skull"));
-		player.setItemInHand(skullItem);
+		player.getInventory().setItemInMainHand(skullItem);
 
 		return true;
 	}

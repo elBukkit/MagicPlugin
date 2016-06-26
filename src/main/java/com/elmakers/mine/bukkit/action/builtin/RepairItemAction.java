@@ -51,7 +51,7 @@ public class RepairItemAction extends BaseSpellAction
 			}
 			if (heldItem)
 			{
-				ItemStack item = equipment.getItemInHand();
+				ItemStack item = equipment.getItemInMainHand();
 				repaired = repair(context, item) || repaired;
 			}
 			return repaired ? SpellResult.CAST : SpellResult.NO_TARGET;

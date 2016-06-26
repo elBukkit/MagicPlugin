@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -106,7 +107,7 @@ public class BlockController implements Listener {
 
         if (NMSUtils.isTemporary(itemStack)) {
             event.setCancelled(true);
-            player.setItemInHand(null);
+            player.getInventory().setItemInMainHand(null);
             return;
         }
 
@@ -167,17 +168,17 @@ public class BlockController implements Listener {
                 Block upBlock = targetBlock.getRelative(BlockFace.UP);
                 while (doubles.contains(upBlock.getType())) {
                     undoList.add(upBlock);
-                    upBlock.setTypeIdAndData(Material.AIR.ordinal(), (byte) 0, false);
+                    DeprecatedUtils.setTypeIdAndData(upBlock, Material.AIR.ordinal(), (byte) 0, false);
                     upBlock = upBlock.getRelative(BlockFace.UP);
                 }
                 Block downBlock = targetBlock.getRelative(BlockFace.DOWN);
                 while (doubles.contains(downBlock.getType())) {
                     undoList.add(downBlock);
-                    downBlock.setTypeIdAndData(Material.AIR.ordinal(), (byte) 0, false);
+                    DeprecatedUtils.setTypeIdAndData(downBlock, Material.AIR.ordinal(), (byte) 0, false);
                     downBlock = downBlock.getRelative(BlockFace.DOWN);
                 }
             }
-            targetBlock.setTypeIdAndData(Material.AIR.ordinal(), (byte) 0, false);
+            DeprecatedUtils.setTypeIdAndData(targetBlock, Material.AIR.ordinal(), (byte) 0, false);
             event.setCancelled(true);
         }
     }
@@ -254,7 +255,7 @@ public class BlockController implements Listener {
                     blockList.convert(entity, block);
                     if (!blockList.getApplyPhysics()) {
                         FallingBlock falling = (FallingBlock)entity;
-                        block.setTypeIdAndData(falling.getMaterial().getId(), falling.getBlockData(), false);
+                        DeprecatedUtils.setTypeIdAndData(block, DeprecatedUtils.getId(falling.getMaterial()), DeprecatedUtils.getBlockData(falling), false);
                         event.setCancelled(true);
                     }
                 }

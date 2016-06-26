@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -89,7 +90,7 @@ public class GiveItemAction extends BaseSpellAction
         }
 
         mage.giveItem(InventoryUtils.getCopy(item));
-        mage.getPlayer().updateInventory();
+        DeprecatedUtils.updateInventory(mage.getPlayer());
         return SpellResult.CAST;
 	}
 

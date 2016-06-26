@@ -34,6 +34,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
@@ -385,7 +386,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void unenchant() {
-		item = new ItemStack(item.getType(), 1, (short)item.getDurability());
+		item = new ItemStack(item.getType(), 1, item.getDurability());
 	}
 	
 	public void setIcon(Material material, byte data) {
@@ -980,7 +981,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, mage, wand, isItem);
     }
 
-    @SuppressWarnings("deprecation")
 	public static ItemStack createSpellItem(SpellTemplate spell, String args, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
 		if (spell == null) return null;
         String iconURL = spell.getIconURL();
@@ -1024,7 +1024,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return createBrushItem(materialKey, controller, this, false);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.magic.MageController controller, Wand wand, boolean isItem) {
 		MaterialBrush brushData = MaterialBrush.parseMaterialKey(materialKey);
 		if (brushData == null) return null;
@@ -1059,7 +1058,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (mage != null) {
             Player player = mage.getPlayer();
             if (player != null) {
-                ItemStack itemInHand = player.getItemInHand();
+                ItemStack itemInHand = player.getInventory().getItemInMainHand();
                 String itemId = getWandId(itemInHand);
                 if (itemId != null && itemId.equals(id)) {
                     item = itemInHand;
@@ -2126,12 +2125,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public static boolean hasActiveWand(Player player) {
 		if (player == null) return false;
-		ItemStack activeItem =  player.getInventory().getItemInHand();
+		ItemStack activeItem =  player.getInventory().getItemInMainHand();
 		return isWand(activeItem);
 	}
 	
 	public static Wand getActiveWand(MagicController spells, Player player) {
-		ItemStack activeItem =  player.getInventory().getItemInHand();
+		ItemStack activeItem =  player.getInventory().getItemInMainHand();
 		if (isWand(activeItem)) {
 			return new Wand(spells, activeItem);
 		}
@@ -2306,7 +2305,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (wandMode == WandMode.INVENTORY) {
             PlayerInventory inventory = player.getInventory();
             updateHotbar(inventory);
-            player.updateInventory();
+            DeprecatedUtils.updateInventory(player);
         }
     }
 
@@ -2351,7 +2350,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         // Reset the held item, just in case Bukkit made a copy or something.
-        playerInventory.setItemInHand(this.item);
+        playerInventory.setItemInMainHand(this.item);
 
         // Set hotbar items from remaining list
 		int targetOffset = 0;
@@ -3131,7 +3130,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				mage.playSoundEffect(inventoryCycleSound);
 			}
             updateHotbarStatus();
-			mage.getPlayer().updateInventory();
+			DeprecatedUtils.updateInventory(mage.getPlayer());
 		}
 	}
 
@@ -3192,28 +3191,28 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 ItemStack testItem = inventory.getHelmet();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setHelmet(new ItemStack(Material.AIR));
-                    mage.getPlayer().updateInventory();
+                    DeprecatedUtils.updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getBoots();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setBoots(new ItemStack(Material.AIR));
-                    mage.getPlayer().updateInventory();
+                    DeprecatedUtils.updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getLeggings();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setLeggings(new ItemStack(Material.AIR));
-                    mage.getPlayer().updateInventory();
+                    DeprecatedUtils.updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getChestplate();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setChestplate(new ItemStack(Material.AIR));
-                    mage.getPlayer().updateInventory();
+                    DeprecatedUtils.updateInventory(mage.getPlayer());
                 }
 				// This is kind of a hack :(
 				testItem = inventory.getItemInOffHand();
 				if (isSpell(testItem) || isBrush(testItem)) {
 					inventory.setItemInOffHand(new ItemStack(Material.AIR));
-					mage.getPlayer().updateInventory();
+					DeprecatedUtils.updateInventory(mage.getPlayer());
 				}
             }
         } catch (Throwable ex) {
@@ -4242,7 +4241,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         lastLocationTime = 0;
         lastLocation = null;
         if (forceUpdate) {
-            player.updateInventory();
+            DeprecatedUtils.updateInventory(player);
         }
 
         WandActivatedEvent activatedEvent = new WandActivatedEvent(mage, this);

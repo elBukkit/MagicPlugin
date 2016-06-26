@@ -180,7 +180,6 @@ public class ShapeBatch extends BrushBatch {
 		return success;
 	}
 
-	@SuppressWarnings("deprecation")
 	public boolean createBlock(int dx, int dy, int dz)
 	{
 		// Special-case hackiness..

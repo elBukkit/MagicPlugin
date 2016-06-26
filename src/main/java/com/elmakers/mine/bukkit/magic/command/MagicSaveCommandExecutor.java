@@ -5,7 +5,8 @@ import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import org.bukkit.Bukkit;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -36,7 +37,7 @@ public class MagicSaveCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        player = Bukkit.getPlayer(args[0]);
+        player = DeprecatedUtils.getPlayer(args[0]);
         if (player == null) {
             return false;
         }

@@ -126,6 +126,7 @@ public class InventoryUtils extends NMSUtils
         }
 
         try {
+            @SuppressWarnings("unchecked")
             Set<String> keys = (Set<String>)class_NBTTagCompound_getKeysMethod.invoke(tag);
             for (String tagName : keys) {
                 Object metaBase = class_NBTTagCompound_getMethod.invoke(tag, tagName);
@@ -286,7 +287,6 @@ public class InventoryUtils extends NMSUtils
         return getPlayerSkull(player, null);
     }
 
-    @SuppressWarnings("deprecation")
     public static ItemStack getPlayerSkull(Player player, String itemName)
     {
         return getPlayerSkull(player.getName(), player.getUniqueId(), itemName);

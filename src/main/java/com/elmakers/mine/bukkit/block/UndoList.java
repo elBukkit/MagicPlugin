@@ -15,6 +15,7 @@ import java.util.UUID;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -183,7 +184,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
         
         add(testBlock);
-        testBlock.setTypeIdAndData(Material.AIR.getId(), (byte)0, false);
+        DeprecatedUtils.setTypeIdAndData(testBlock, DeprecatedUtils.getId(Material.AIR), (byte)0, false);
         
         return true;
     }
@@ -385,7 +386,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (undo(blockData, applyPhysics)) {
             blockIdMap.remove(blockData.getId());
             if (consumed && currentState.getType() != Material.AIR && owner != null) {
-                owner.giveItem(new ItemStack(currentState.getType(), 1, currentState.getRawData()));
+                owner.giveItem(new ItemStack(currentState.getType(), 1, DeprecatedUtils.getRawData(currentState)));
             }
             return blockData;
         }

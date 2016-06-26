@@ -67,6 +67,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public abstract class BaseSpell implements MageSpell, Cloneable {
     public static int MAX_LORE_LENGTH = 24;
@@ -425,7 +426,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         Material material = downBlock.getType();
         if (material == Material.STEP || material == Material.WOOD_STEP) {
             // Drop down to half-steps
-            isHalfBlock = (downBlock.getData() < 8);
+            isHalfBlock = (DeprecatedUtils.getData(downBlock) < 8);
         } else {
             isHalfBlock = isHalfBlock(material);
         }
@@ -734,7 +735,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return castingCosts;
     }
 
-    @SuppressWarnings("unchecked")
     protected void loadTemplate(ConfigurationSection node)
     {
         // Get localizations

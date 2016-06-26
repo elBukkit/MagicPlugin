@@ -10,7 +10,6 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 @Deprecated
 public class AbsorbSpell extends BrushSpell 
 {   
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{

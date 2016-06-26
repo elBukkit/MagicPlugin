@@ -17,7 +17,6 @@ public class IterateSpell extends BrushSpell
 {
 	private int				DEFAULT_SIZE			= 16;
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{

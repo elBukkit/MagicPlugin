@@ -194,7 +194,6 @@ public class ConfigurationUtils extends ConfigUtils {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     public static MaterialAndData toMaterialAndData(Object o)
     {
         if (o instanceof MaterialAndData) {
@@ -518,7 +517,6 @@ public class ConfigurationUtils extends ConfigUtils {
         return worldOverride;
     }
 
-    @SuppressWarnings("deprecation")
     public static Location overrideLocation(ConfigurationSection node, String basePath, Location location, boolean canCreateWorlds)
     {
         String xName = basePath + "x";

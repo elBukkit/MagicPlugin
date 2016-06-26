@@ -905,7 +905,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Wand checkWand() {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
-        return checkWand(player.getItemInHand());
+        return checkWand(player.getInventory().getItemInMainHand());
     }
 
     // This gets called every second (or so - 20 ticks)
@@ -2289,12 +2289,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player == null) return;
 
         PlayerInventory inventory = player.getInventory();
-        ItemStack inHand = inventory.getItemInHand();
+        ItemStack inHand = inventory.getItemInMainHand();
         if (inHand == null || inHand.getType() == Material.AIR) {
-            inventory.setItemInHand(itemStack);
+            inventory.setItemInMainHand(itemStack);
             // Get the new item reference -
             // it might change when added to an Inventory! :|
-            itemStack = inventory.getItemInHand();
+            itemStack = inventory.getItemInMainHand();
             if (Wand.isWand(itemStack)) {
                 Wand wand = new Wand(controller, itemStack);
                 wand.activate(this);
