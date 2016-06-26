@@ -88,6 +88,13 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
     }
 
     @Override
+    public int hashCode() {
+        return (sound == null ? 0 : sound.hashCode())
+                + 31 * (Float.floatToIntBits(pitch)
+                        + 31 * Float.floatToIntBits(volume));
+    }
+
+    @Override
     public boolean equals(Object other) {
         if (!(other instanceof SoundEffect)) return false;
 
