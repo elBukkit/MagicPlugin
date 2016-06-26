@@ -44,7 +44,7 @@ public class GotoSpell extends UndoableSpell
 
         boolean allowSelection = parameters.getBoolean("allow_selection", false) || mage.isSuperPowered();
 
-		if (targetEntity != null && targetEntity instanceof LivingEntity)
+		if (targetEntity != null)
 		{
 			if (!allowSelection || !targetEntity.isValid() || targetEntity.isDead())
 			{

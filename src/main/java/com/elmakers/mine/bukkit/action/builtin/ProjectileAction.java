@@ -123,7 +123,7 @@ public class ProjectileAction  extends BaseProjectileAction
 		// Spawn projectiles
         LivingEntity shootingEntity = context.getLivingEntity();
         ProjectileSource source = null;
-        if (shootingEntity != null && shootingEntity instanceof ProjectileSource)
+        if (shootingEntity != null)
         {
             source = shootingEntity;
         }
