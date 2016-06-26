@@ -16,9 +16,7 @@ import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ActionHandler implements com.elmakers.mine.bukkit.api.action.ActionHandler, Cloneable
 {
