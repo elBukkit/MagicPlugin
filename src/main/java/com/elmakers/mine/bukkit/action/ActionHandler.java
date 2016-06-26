@@ -22,21 +22,9 @@ import java.util.Map;
 
 public class ActionHandler implements com.elmakers.mine.bukkit.api.action.ActionHandler, Cloneable
 {
-    private static final String ACTION_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.action.builtin";
-    private static Map<String, Class<?>> actionClasses = new HashMap<String, Class<?>>();
-
-    /**
-     * Registers an action class.
-     *
-     * @param name The name to register the action as.
-     * @param clazz The class to register.
-     */
+    @Deprecated
     public static void registerActionClass(String name, Class<?> clazz) {
-        if (!BaseSpellAction.class.isAssignableFrom(clazz)) {
-            throw new IllegalArgumentException("Must extend SpellAction");
-        }
-
-        actionClasses.put(name, clazz);
+        ActionFactory.registerActionClass(name, clazz);
     }
 
     private List<ActionContext> actions = new ArrayList<ActionContext>();
@@ -92,24 +80,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
             String actionClassName = actionConfiguration.getString("class");
             try
             {
-                if (!actionClassName.contains("."))
-                {
-                    actionClassName = ACTION_BUILTIN_CLASSPATH + "." + actionClassName;
-                }
-                Class<?> genericClass = actionClasses.get(actionClassName);
-                if (genericClass == null) {
-                    try {
-                        genericClass = Class.forName(actionClassName + "Action");
-                    } catch (Exception ex) {
-                        genericClass = Class.forName(actionClassName);
-                    }
-
-                    registerActionClass(actionClassName, genericClass);
-                }
-
-                @SuppressWarnings("unchecked")
-                Class<? extends BaseSpellAction> actionClass = (Class<? extends BaseSpellAction>)genericClass;
-                BaseSpellAction action = actionClass.newInstance();
+                BaseSpellAction action = ActionFactory.construct(actionClassName);
                 actionConfiguration.set("class", null);
                 if (handlerConfiguration != null) {
                     ConfigurationUtils.addConfigurations(actionConfiguration, handlerConfiguration, false);
