@@ -88,7 +88,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
                 }
                 loadAction(action, actionConfiguration);
             } catch (Exception ex) {
-                Bukkit.getLogger().warning("Error loading class " + actionClassName + ": " + ex.getMessage());
+                Bukkit.getLogger().warning("Error loading class " + actionClassName + " for spell " + spell.getName() + ": " + ex.getMessage());
             }
         }
     }
