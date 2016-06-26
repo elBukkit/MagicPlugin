@@ -64,7 +64,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         this.currentAction = copy.currentAction;
         for (ActionContext context : copy.actions)
         {
-            actions.add((ActionContext)context.clone());
+            actions.add(context.clone());
         }
     }
 
