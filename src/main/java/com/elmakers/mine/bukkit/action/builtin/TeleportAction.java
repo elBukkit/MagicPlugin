@@ -59,8 +59,9 @@ public class TeleportAction extends BaseTeleportAction
 		
 		
 		Block target;
-		if (useTargetLocation){
-			target = context.getTargetLocation().getBlock();
+		if (useTargetLocation) {
+		        Location location = context.getTargetLocation();
+			target = location == null ? null : location.getBlock();
 		} else {
 			target = context.getTargetBlock();
 		}
