@@ -144,7 +144,7 @@ public class ShrinkEntityAction extends DamageAction
 	
 	@SuppressWarnings("deprecation")
 	protected void dropHead(Location location, String ownerName, String itemName, byte data) {
-        ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)data);
+        ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);
         ItemMeta meta = shrunkenHead.getItemMeta();
         if (itemName != null) {
             meta.setDisplayName(itemName);

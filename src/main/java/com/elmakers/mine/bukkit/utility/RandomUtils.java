@@ -184,7 +184,7 @@ public class RandomUtils {
 
             index++;
             if (nextIndex > currentIndex + 1) {
-                float distance = (float)(1 / (float)(nextIndex - currentIndex));
+                float distance = 1f / (nextIndex - currentIndex);
                 AscendingPair<T> inserted = new AscendingPair<T>(currentIndex + 1, lerp(current.getValue(), next.getValue(), distance));
                 list.add(index, inserted);
             }
