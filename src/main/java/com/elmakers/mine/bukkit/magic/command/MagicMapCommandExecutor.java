@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.magic.command;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -87,7 +89,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             }
             else if (args.length > 2)
             {
-                recipient = Bukkit.getPlayer(args[1]);
+                recipient = DeprecatedUtils.getPlayer(args[1]);
             }
 
             if (recipient == null)

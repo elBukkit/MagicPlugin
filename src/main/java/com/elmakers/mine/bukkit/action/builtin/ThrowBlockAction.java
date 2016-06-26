@@ -9,6 +9,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -85,7 +87,7 @@ public class ThrowBlockAction extends BaseProjectileAction
 		perp.crossProduct(up);
 
         location = context.getEyeLocation();
-        FallingBlock falling = context.getWorld().spawnFallingBlock(location, material, data);
+        FallingBlock falling = DeprecatedUtils.spawnFallingBlock(location, material, data);
         if (falling == null)
         {
             return SpellResult.FAIL;

@@ -61,16 +61,19 @@ public class ShapeBatch extends BrushBatch {
 		this.minOrientDimension = minDim;
 	}
 
-	public int size() {
+	@Override
+    public int size() {
 		return radius * radius * radius * 8;
 	}
 	
-	public int remaining() {
+	@Override
+    public int remaining() {
 		if (r >= radius) return 0;
 		return (radius - r) * (radius - r) * (radius - r) * 8;
 	}
 	
-	public int process(int maxBlocks) {
+	@Override
+    public int process(int maxBlocks) {
 		int processedBlocks = 0;
 
         int yBounds = radius;
@@ -131,9 +134,9 @@ public class ShapeBatch extends BrushBatch {
 		switch(type) {
 			case SPHERE:
 				int maxDistanceSquared = radius * radius;
-				float mx = (float)x - 0.5f;
-				float my = (float)y - 0.5f;
-				float mz = (float)z - 0.5f;
+				float mx = x - 0.5f;
+				float my = y - 0.5f;
+				float mz = z - 0.5f;
 				
 				int distanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 				if (thickness == 0)
@@ -180,7 +183,6 @@ public class ShapeBatch extends BrushBatch {
 		return success;
 	}
 
-	@SuppressWarnings("deprecation")
 	public boolean createBlock(int dx, int dy, int dz)
 	{
 		// Special-case hackiness..

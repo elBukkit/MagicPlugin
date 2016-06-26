@@ -25,10 +25,6 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
     private MaterialAndData blocks[][][];
     private Collection<EntityData> entities;
 
-    // WorldEdit tags
-    private Vector offset;
-    private Vector origin;
-
     public Schematic() {
 
     }
@@ -39,9 +35,6 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
         center = new Vector(Math.floor(size.getBlockX() / 2), 0, Math.floor(size.getBlockZ() / 2));
         blocks = new MaterialAndData[width][height][length];
         entities = new ArrayList<EntityData>();
-
-        this.origin = origin;
-        this.offset = offset;
 
         // Load entities
         for (Object entity : entityData) {

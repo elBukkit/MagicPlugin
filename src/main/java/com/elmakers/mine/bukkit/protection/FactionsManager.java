@@ -81,7 +81,8 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
 		}
 	}
 	
-	public boolean hasBuildPermission(Player player, Block block) {
+	@Override
+    public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && factionsManager != null && factionsCanBuildMethod != null) {
 			
 			// Check for wilderness

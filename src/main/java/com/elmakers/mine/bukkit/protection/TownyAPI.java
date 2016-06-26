@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.protection;
 
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.db.TownyDataSource;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
@@ -90,7 +91,7 @@ public class TownyAPI
             if (controller.wildernessBypass && TownyUniverse.isWilderness(block)) {
                 return true;
             }
-            return PlayerCacheUtil.getCachePermission(player, block.getLocation(), block.getTypeId(), block.getData(), TownyPermission.ActionType.BUILD);
+            return PlayerCacheUtil.getCachePermission(player, block.getLocation(), DeprecatedUtils.getTypeId(block), DeprecatedUtils.getData(block), TownyPermission.ActionType.BUILD);
         }
         return true;
     }
@@ -100,7 +101,7 @@ public class TownyAPI
             if (controller.wildernessBypass && TownyUniverse.isWilderness(block)) {
                 return true;
             }
-            return PlayerCacheUtil.getCachePermission(player, block.getLocation(), block.getTypeId(), block.getData(), TownyPermission.ActionType.DESTROY);
+            return PlayerCacheUtil.getCachePermission(player, block.getLocation(), DeprecatedUtils.getTypeId(block), DeprecatedUtils.getData(block), TownyPermission.ActionType.DESTROY);
         }
         return true;
     }

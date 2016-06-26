@@ -46,7 +46,8 @@ public class LocketteManager implements BlockBuildManager, BlockBreakManager {
 		}
 	}
 	
-	public boolean hasBuildPermission(Player player, Block block) {
+	@Override
+    public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && isOwnerMethod != null && isProtectedMethod != null) {
 			try {
 				// Handle command blocks or console spells

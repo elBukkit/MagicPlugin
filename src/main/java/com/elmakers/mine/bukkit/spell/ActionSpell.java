@@ -44,11 +44,13 @@ public class ActionSpell extends BrushSpell
         return true;
     }
 
+    @Override
     public boolean hasHandlerParameters(String handlerKey)
     {
         return handlerParameters.containsKey(handlerKey);
     }
 
+    @Override
     public ConfigurationSection getHandlerParameters(String handlerKey)
     {
         return handlerParameters.get(handlerKey);

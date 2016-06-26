@@ -70,11 +70,13 @@ public class RegenerateBatch extends SpellBatch {
 		bounds = new BoundingBox(p1.toVector(), p2.toVector());
 	}
 
-	public int size() {
+	@Override
+    public int size() {
 		return (absx * absz) * 16 * 16 * 256;
 	}
 	
-	public int remaining() {
+	@Override
+    public int remaining() {
 		return (absx - ix) * (absz - iz) * 16 * 16 * 256;
 	}
 	
@@ -83,7 +85,8 @@ public class RegenerateBatch extends SpellBatch {
 		return !(maxDimension > 0 && (absx * 16 > maxDimension || absz * 16 > maxDimension));
 	}
 	
-	public int process(int maxBlocks) {
+	@Override
+    public int process(int maxBlocks) {
 		int processedBlocks = 0;
         if (state == RegenerateState.SAVING && expand && !spell.isUndoable())
         {

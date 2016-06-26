@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.block;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.apache.commons.lang.StringUtils;
@@ -82,7 +83,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.data = data;
     }
 
-    @SuppressWarnings("deprecation")
     public MaterialAndData(ItemStack item) {
         this.material = item.getType();
         this.data = item.getDurability();
@@ -115,7 +115,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         updateFrom(other);
     }
 
-    @SuppressWarnings("deprecation")
     public MaterialAndData(String materialKey) {
         this();
         update(materialKey);
@@ -136,7 +135,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     // Legacy material id loading
                     try {
                         Integer id = Integer.parseInt(pieces[0]);
-                        material = Material.getMaterial(id);
+                        material = DeprecatedUtils.getMaterial(id);
                     } catch (Exception ex) {
                         material = Material.getMaterial(pieces[0].toUpperCase());
                     }
@@ -230,6 +229,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return other.getData() == data && other.getMaterial() == material;
     }
 
+    @Override
     public void updateFrom(com.elmakers.mine.bukkit.api.block.MaterialAndData other) {
         material = other.getMaterial();
         data = other.getData();
@@ -244,6 +244,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
     }
 
+    @Override
     public void setMaterial(Material material, short data) {
         setMaterial(material, (Short)data);
     }
@@ -261,10 +262,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.material = Material.getMaterial(id);
     }
 
+    @Override
     public void setMaterial(Material material) {
         setMaterial(material, (byte)0);
     }
 
+    @Override
     public void updateFrom(Block block) {
         updateFrom(block, null);
     }
@@ -320,10 +323,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         isValid = true;
     }
 
+    @Override
     public void modify(Block block) {
         modify(block, false);
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public void modify(Block block, boolean applyPhysics) {
         if (!isValid) return;
@@ -417,6 +422,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return material;
     }
 
+    @Override
     public String getKey() {
         return getKey(data);
     }
@@ -452,11 +458,13 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     // TODO: Should this just be !isDifferent .. ? It's fast right now.
+    @Override
     @SuppressWarnings("deprecation")
     public boolean is(Block block) {
         return material == block.getType() && data == block.getData();
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public boolean isDifferent(Block block) {
         Material blockMaterial = block.getType();
@@ -488,7 +496,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return false;
     }
 
-    @SuppressWarnings("deprecation")
+    @Override
     public ItemStack getItemStack(int amount)
     {
         if (material == null) return null;
@@ -563,6 +571,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return new String[] { materialKey };
     }
 
+    @Override
     public boolean isValid()
     {
         return isValid;
@@ -573,17 +582,17 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return material.getName();
     }
 
-    @SuppressWarnings("deprecation")
     public static String getMaterialName(Block block) {
         MaterialAndData material = new MaterialAndData(block);
         return material.getName();
     }
 
+    @Override
     public String getName() {
         return getName(null);
     }
     
-    @SuppressWarnings("deprecation")
+    @Override
     public String getBaseName() {
         if (material == null) {
             return null;

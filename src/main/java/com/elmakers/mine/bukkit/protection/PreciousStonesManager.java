@@ -42,7 +42,8 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
 		}
 	}
 
-	public boolean isPVPAllowed(Player player, Location location) {
+	@Override
+    public boolean isPVPAllowed(Player player, Location location) {
 		if (!enabled || api == null || location == null)
 		{
 			return true;
@@ -50,7 +51,8 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
 		return api.isPVPAllowed(player, location);
 	}
 
-	public boolean hasBuildPermission(Player player, Block block) {
+	@Override
+    public boolean hasBuildPermission(Player player, Block block) {
 		if (!enabled || block == null || api == null)
         {
 			return true;

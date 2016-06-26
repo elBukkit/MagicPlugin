@@ -12,6 +12,7 @@ import java.util.TreeMap;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
@@ -19,7 +20,6 @@ import com.elmakers.mine.bukkit.wand.WandAction;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -53,7 +53,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				sender.sendMessage("Usage: /wandp [player] [wand name/command]");
 				return true;
 			}
-			Player player = Bukkit.getPlayer(args[0]);
+			Player player = DeprecatedUtils.getPlayer(args[0]);
 			if (player == null) {
 				sender.sendMessage("Can't find player " + args[0]);
 				return true;
@@ -116,7 +116,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		{
             permissionKey = "wandp";
 			if (args.length > 0) {
-				player = Bukkit.getPlayer(args[0]);
+				player = DeprecatedUtils.getPlayer(args[0]);
 			}
 			if (args.length == 1) {
 				options.addAll(api.getPlayerNames());
@@ -531,7 +531,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onWandDescribe(CommandSender sender, Player player, boolean details) {
-        ItemStack itemInHand = player.getItemInHand();
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (itemInHand == null) {
             if (sender != player) {
                 sender.sendMessage(api.getMessages().getParameterized("wand.player_no_item", "$name", player.getName()));
@@ -666,7 +666,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	public boolean onWandEnchant(CommandSender sender, Player player)
 	{
 		Mage mage = api.getMage(player);
-		ItemStack heldItem = player.getItemInHand();
+		ItemStack heldItem = player.getInventory().getItemInMainHand();
 		if (heldItem == null || heldItem.getType() == Material.AIR)
 		{
 			mage.sendMessage(api.getMessages().get("wand.no_item"));
@@ -681,7 +681,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
         }
 		
 		Wand wand = api.createWand(heldItem);
-		player.setItemInHand(wand.getItem());
+		player.getInventory().setItemInMainHand(wand.getItem());
 		wand.activate(mage);
 		
 		mage.sendMessage(api.getMessages().getParameterized("wand.enchanted", "$item", MaterialAndData.getMaterialName(heldItem)));
@@ -740,7 +740,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		
 		// Trying to make sure the player is actually holding the active wand
 		// Just in case. This isn't fool-proof though, if they have more than one wand.
-		if (wand == null || !api.isWand(player.getItemInHand())) {
+		if (wand == null || !api.isWand(player.getInventory().getItemInMainHand())) {
 			mage.sendMessage(api.getMessages().get("wand.no_wand"));
 			if (sender != player) {
 				sender.sendMessage(api.getMessages().getParameterized("wand.player_no_wand", "$name", player.getName()));
@@ -750,7 +750,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 		wand.deactivate();
 		wand.unenchant();
-		player.setItemInHand(wand.getItem());
+		player.getInventory().setItemInMainHand(wand.getItem());
 		
 		mage.sendMessage(api.getMessages().get("wand.unenchanted"));
 		if (sender != player) {

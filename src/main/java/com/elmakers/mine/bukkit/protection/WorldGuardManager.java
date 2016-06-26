@@ -49,12 +49,14 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
         }
     }
 
+    @Override
     public boolean isPVPAllowed(Player player, Location location) {
         if (!enabled || worldGuard == null || location == null)
             return true;
         return worldGuard.isPVPAllowed(player, location);
     }
 
+    @Override
     public boolean hasBuildPermission(Player player, Block block) {
         if (enabled && block != null && worldGuard != null) {
             return worldGuard.hasBuildPermission(player, block);

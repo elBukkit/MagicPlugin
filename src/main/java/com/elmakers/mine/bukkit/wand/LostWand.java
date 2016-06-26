@@ -94,11 +94,13 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	    return id.hashCode();
 	}
 	
-	public String getId() {
+	@Override
+    public String getId() {
 		return id;
 	}
 	
-	public String getOwner() {
+	@Override
+    public String getOwner() {
 		return owner;
 	}
 
@@ -107,6 +109,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
         return ownerId;
     }
 
+    @Override
     public String getName() {
 		return name;
 	}
@@ -123,7 +126,8 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 		this.description =  description;
 	}
 	
-	public Location getLocation() {
+	@Override
+    public Location getLocation() {
 		return location;
 	}
 	

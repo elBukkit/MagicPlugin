@@ -411,7 +411,7 @@ public class WandLevel {
 			}
 			int manaMax = wand.getManaMax();
 			if (manaMaxProbability.size() > 0 && manaMax < path.getMaxMaxMana()) {
-				manaMax = (Integer)(int)(Math.min(path.getMaxMaxMana(), manaMax + RandomUtils.weightedRandom(manaMaxProbability)));
+				manaMax = Math.min(path.getMaxMaxMana(), manaMax + RandomUtils.weightedRandom(manaMaxProbability));
                 if (path.getMatchSpellMana()) {
                     // Make sure the wand has at least enough mana to cast the highest costing spell it has.
                     manaMax = Math.max(maxManaCost, manaMax);

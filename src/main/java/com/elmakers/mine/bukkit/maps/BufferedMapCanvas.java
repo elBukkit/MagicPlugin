@@ -31,18 +31,22 @@ public class BufferedMapCanvas implements MapCanvas {
     private byte[] pixels = new byte[128 * 128];
     private Map<Byte, DyeColor> dyeColors = new HashMap<Byte, DyeColor>();
 
+    @Override
     public MapView getMapView() {
         return null;
     }
 
+    @Override
     public MapCursorCollection getCursors() {
         return emptyCursors;
     }
 
+    @Override
     public void setCursors(MapCursorCollection cursors) {
         // .. Nothing.
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public void setPixel(int x, int y, byte color) {
         if (x < 0 || y < 0 || x > CANVAS_WIDTH || y > CANVAS_HEIGHT) return;
@@ -71,6 +75,7 @@ public class BufferedMapCanvas implements MapCanvas {
         }
     }
 
+    @Override
     public byte getPixel(int x, int y) {
         if (x < 0 || y < 0 || x > CANVAS_WIDTH || y > CANVAS_HEIGHT) return 0;
 
@@ -86,12 +91,14 @@ public class BufferedMapCanvas implements MapCanvas {
         return dyeColors.get(color);
     }
 
+    @Override
     public byte getBasePixel(int x, int y) {
         return 0;
     }
 
     // Shamelessly stolen from CraftMapCanvas.... wish they'd give us
     // an extendible version or just let us create them at least :)
+    @Override
     @SuppressWarnings("deprecation")
     public void drawImage(int x, int y, Image image) {
         byte[] bytes = MapPalette.imageToBytes(image);
@@ -102,6 +109,7 @@ public class BufferedMapCanvas implements MapCanvas {
         }
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public void drawText(int x, int y, MapFont font, String text) {
         int xStart = x;

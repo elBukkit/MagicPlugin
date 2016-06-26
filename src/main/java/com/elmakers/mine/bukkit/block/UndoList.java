@@ -15,6 +15,7 @@ import java.util.UUID;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -115,6 +116,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    @Override
     public void setBatch(Batch batch)
     {
         this.batch = batch;
@@ -136,18 +138,21 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         && 	(runnables == null || runnables.isEmpty()));
     }
 
+    @Override
     public void setScheduleUndo(int ttl)
     {
         timeToLive = ttl;
         updateScheduledUndo();
     }
 
+    @Override
     public void updateScheduledUndo() {
         if (timeToLive > 0) {
             scheduledTime = System.currentTimeMillis() + timeToLive;
         }
     }
 
+    @Override
     public int getScheduledUndo()
     {
         return timeToLive;
@@ -183,7 +188,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
         
         add(testBlock);
-        testBlock.setTypeIdAndData(Material.AIR.getId(), (byte)0, false);
+        DeprecatedUtils.setTypeIdAndData(testBlock, DeprecatedUtils.getId(Material.AIR), (byte)0, false);
         
         return true;
     }
@@ -285,6 +290,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         watching.put(blockData.getId(), blockData);
     }
 
+    @Override
     public void commit()
     {
         unlink();
@@ -385,7 +391,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (undo(blockData, applyPhysics)) {
             blockIdMap.remove(blockData.getId());
             if (consumed && currentState.getType() != Material.AIR && owner != null) {
-                owner.giveItem(new ItemStack(currentState.getType(), 1, currentState.getRawData()));
+                owner.giveItem(new ItemStack(currentState.getType(), 1, DeprecatedUtils.getRawData(currentState)));
             }
             return blockData;
         }
@@ -444,11 +450,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    @Override
     public void undo()
     {
         undo(false);
     }
 
+    @Override
     public void undo(boolean blocking)
     {
         if (spell != null)
@@ -458,6 +466,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         undo(blocking, true);
     }
 
+    @Override
     public void undoScheduled(boolean blocking)
     {
         undo(blocking, false);
@@ -468,6 +477,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    @Override
     public void undoScheduled()
     {
         undo(false, false);
@@ -546,7 +556,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void save(ConfigurationSection node)
     {
         super.save(node);
-        node.set("time_to_live", (Integer)timeToLive);
+        node.set("time_to_live", timeToLive);
         node.set("name", name);
         if (applyPhysics) node.set("apply_physics", true);
         if (consumed) node.set("consumed", true);
@@ -562,6 +572,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
     }
 
+    @Override
     public void add(Entity entity)
     {
         if (entity == null) return;
@@ -577,6 +588,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
     }
 
+    @Override
     public void add(Runnable runnable)
     {
         if (runnable == null) return;
@@ -585,6 +597,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
     }
 
+    @Override
     public EntityData modify(Entity entity)
     {
         EntityData entityData = null;
@@ -652,6 +665,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    @Override
     public void remove(Entity entity)
     {
         if (entities != null && entities.contains(entity)) {
@@ -664,6 +678,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
     }
 
+    @Override
     public void convert(Entity fallingBlock, Block block)
     {
         if (entities != null) {
@@ -673,6 +688,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
     }
 
+    @Override
     public void fall(Entity fallingBlock, Block block)
     {
         if (isScheduled() && fallingBlock instanceof FallingBlock) {
@@ -683,6 +699,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
     }
 
+    @Override
     public void explode(Entity explodingEntity, List<Block> blocks)
     {
         for (Block block : blocks) {
@@ -691,6 +708,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
     }
 
+    @Override
     public void finalizeExplosion(Entity explodingEntity, List<Block> blocks)
     {
         if (entities != null) {
@@ -711,6 +729,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
     }
 
+    @Override
     public void cancelExplosion(Entity explodingEntity)
     {
         // TODO: What is this about?
@@ -719,6 +738,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    @Override
     public boolean bypass()
     {
         return bypass;
@@ -730,16 +750,19 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         this.bypass = bypass;
     }
 
+    @Override
     public long getCreatedTime()
     {
         return this.createdTime;
     }
 
+    @Override
     public long getModifiedTime()
     {
         return this.modifiedTime;
     }
 
+    @Override
     public boolean contains(Location location, int threshold)
     {
         if (location == null || area == null || worldName == null) return false;
@@ -748,6 +771,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return area.contains(location.toVector(), threshold);
     }
 
+    @Override
     public void prune()
     {
         if (blockList == null) return;
@@ -919,10 +943,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return breakable;
     }
 
+    @Override
     public void setUndoBreakable(boolean breakable) {
         this.undoBreakable = breakable;
     }
 
+    @Override
     public void setUndoReflective(boolean reflective) {
         this.undoReflective = reflective;
     }
@@ -1005,6 +1031,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return speed;
     }
 
+    @Override
     public void setUndoSpeed(double speed) {
         this.speed = speed;
     }

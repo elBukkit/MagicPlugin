@@ -90,7 +90,7 @@ public class TorchAction extends BaseSpellAction
 		{
 			BlockFace direction = face.getFace(target);
 			if (direction == null) {
-				direction = direction.SELF;
+				direction = BlockFace.SELF;
 			}
 			switch (direction)
 			{

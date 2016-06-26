@@ -89,7 +89,6 @@ public class LightSource extends NMSUtils {
 	 * @param l
 	 * @param players
 	 */
-	@SuppressWarnings("deprecation")
 	private static void updateChunk (Server server, Location l, Collection<Player> players) {
 		// This needs fixing if we ever want to use it again.
 		/*

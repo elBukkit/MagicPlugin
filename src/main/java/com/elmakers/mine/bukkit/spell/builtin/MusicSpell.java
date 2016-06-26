@@ -31,7 +31,6 @@ public class MusicSpell extends TargetingSpell
 	    Material.RECORD_12
 	};
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{

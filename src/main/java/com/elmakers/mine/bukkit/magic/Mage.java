@@ -174,6 +174,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         costReduction = reduction;
     }
 
+    @Override
     public boolean hasStoredInventory() {
         return activeWand != null && activeWand.hasStoredInventory();
     }
@@ -187,6 +188,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return activeWand != null ? activeWand.getStoredInventory() : null;
     }
 
+    @Override
     public void setLocation(Location location) {
         LivingEntity entity = getLivingEntity();
         if (entity != null && location != null) {
@@ -450,6 +452,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
      *
      * @param message The message to send
      */
+    @Override
     public void castMessage(String message) {
         if (message == null || message.length() == 0 || quiet) return;
 
@@ -487,6 +490,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         soundEffect.play(controller.getPlugin(), getEntity());
     }
 
+    @Override
     public UndoQueue getUndoQueue() {
         if (undoQueue == null) {
             undoQueue = new UndoQueue(this);
@@ -501,6 +505,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return undoQueue.getLast();
     }
 
+    @Override
     public boolean prepareForUndo(com.elmakers.mine.bukkit.api.block.UndoList undoList) {
         if (undoList == null) return false;
         if (undoList.bypass()) return true;
@@ -509,6 +514,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return true;
     }
 
+    @Override
     public boolean registerForUndo(com.elmakers.mine.bukkit.api.block.UndoList undoList) {
         if (!prepareForUndo(undoList)) return false;
 
@@ -905,10 +911,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Wand checkWand() {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
-        return checkWand(player.getItemInHand());
+        return checkWand(player.getInventory().getItemInMainHand());
     }
 
     // This gets called every second (or so - 20 ticks)
+    @Override
     public void tick() {
         if (entityData != null) {
             long now = System.currentTimeMillis();
@@ -1030,6 +1037,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return playerName == null || playerName.length() == 0 ? defaultMageName : playerName;
     }
 
+    @Override
     public String getDisplayName() {
         Entity entity = getEntity();
         if (entity == null) {
@@ -1128,6 +1136,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return cancelPending(null, force);
     }
 
+    @Override
     public int finishPendingUndo() {
         int finished = 0;
         if (pendingBatches.size() > 0) {
@@ -1203,6 +1212,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return getUndoQueue().commit();
     }
 
+    @Override
     public boolean hasCastPermission(Spell spell) {
         return spell.hasCastPermission(getCommandSender());
     }
@@ -1420,10 +1430,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return power * powerMultiplier;
     }
 
+    @Override
     public float getMagePowerBonus() {
         return magePowerBonus;
     }
 
+    @Override
     public void setMagePowerBonus(float magePowerBonus) {
         this.magePowerBonus = magePowerBonus;
     }
@@ -1681,7 +1693,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (expAtLevel > xp) {
                     expAtLevel -= xp;
                     xp = 0;
-                    expProgress = (float)expAtLevel / expToLevel;
+                    expProgress = expAtLevel / expToLevel;
                 } else {
                     expProgress = 0;
                     xp -= expAtLevel;
@@ -1851,6 +1863,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return lastDeathLocation;
     }
 
+    @Override
     public void showHoloText(Location location, String text, int duration) {
         // TODO: Broadcast
         if (!isPlayer()) return;
@@ -1883,11 +1896,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Override
     public void enableFallProtection(int ms, Spell protector)
     {
         enableFallProtection(ms, 1, protector);
     }
 
+    @Override
     public void enableFallProtection(int ms, int count, Spell protector)
     {
         if (ms <= 0 || count <= 0) return;
@@ -1904,6 +1919,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Override
     public void enableFallProtection(int ms)
     {
         enableFallProtection(ms, null);
@@ -1928,6 +1944,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         this.loading = loading;
     }
 
+    @Override
     public boolean isLoading() {
         return loading;
     }
@@ -1940,6 +1957,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return unloading;
     }
 
+    @Override
     public boolean isValid() {
         if (!hasEntity) return true;
         Entity entity = getEntity();
@@ -2269,6 +2287,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         respawnArmor.put(slot, item);
     }
 
+    @Override
     public void giveItem(ItemStack itemStack) {
 
         // Check for wand upgrades if appropriate
@@ -2289,12 +2308,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player == null) return;
 
         PlayerInventory inventory = player.getInventory();
-        ItemStack inHand = inventory.getItemInHand();
+        ItemStack inHand = inventory.getItemInMainHand();
         if (inHand == null || inHand.getType() == Material.AIR) {
-            inventory.setItemInHand(itemStack);
+            inventory.setItemInMainHand(itemStack);
             // Get the new item reference -
             // it might change when added to an Inventory! :|
-            itemStack = inventory.getItemInHand();
+            itemStack = inventory.getItemInMainHand();
             if (Wand.isWand(itemStack)) {
                 Wand wand = new Wand(controller, itemStack);
                 wand.activate(this);

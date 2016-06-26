@@ -61,6 +61,7 @@ public abstract class EffectRepeating extends EffectPlayer implements Runnable {
         }
     }
 
+    @Override
     public void run() {
         taskId = null;
         iterate();

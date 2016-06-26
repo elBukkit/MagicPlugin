@@ -109,6 +109,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         update(materialKey);
     }
 
+    @Override
     public String getKey() {
         String materialKey = null;
         if (mode == BrushMode.ERASE) {
@@ -119,7 +120,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             materialKey = CLONE_MATERIAL_KEY;
         } else if (mode == BrushMode.MAP) {
             materialKey = MAP_MATERIAL_KEY;
-            int mapSize = (int)((float)128 / scale);
+            int mapSize = (int)(128 / scale);
             if (mapSize != DEFAULT_MAP_SIZE)
             {
                 materialKey = materialKey + ":" + mapSize;
@@ -157,11 +158,13 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return brush.getName(messages);
     }
 
+    @Override
     public String getName() {
         Messages messages = mage != null ? mage.getController().getMessages() : null;
         return getName(messages);
     }
 
+    @Override
     public String getName(Messages messages) {
         String brushKey;
         switch (mode) {
@@ -191,7 +194,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             break;
         case MAP:
             brushKey = MAP_MATERIAL_KEY;
-            int mapSize = (int)((float)128 / scale);
+            int mapSize = (int)(128 / scale);
             if (mapSize != DEFAULT_MAP_SIZE)
             {
                 if (messages != null) {
@@ -336,6 +339,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         mode = BrushMode.COPY;
     }
 
+    @Override
     public boolean isReady() {
         if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && materialTarget != null) {
             Block block = materialTarget.getBlock();
@@ -369,6 +373,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return translated;
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public boolean update(final Mage fromMage, final Location target) {
         if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) {
@@ -448,8 +453,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                                 Math.abs((int)(-diff.getBlockY() * scale + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT));
                     }
                 } else {
-                    mapColor = mapCanvas.getDyeColor((int)(
-                        Math.abs((int)(diff.getBlockX() * scale + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH)),
+                    mapColor = mapCanvas.getDyeColor(
+                        Math.abs((int)(diff.getBlockX() * scale + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH),
                         Math.abs((int)(diff.getBlockZ() * scale + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT));
                 }
                 if (mapColor != null) {
@@ -481,6 +486,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return schematic != null && schematic.isLoaded();
     }
 
+    @Override
     public void prepare() {
         if (cloneSource != null && cloneTarget != null) {
             Block block = cloneTarget.getBlock();

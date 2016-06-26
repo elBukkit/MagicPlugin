@@ -131,7 +131,8 @@ public class PhaseSpell extends TargetingSpell
 				Plugin plugin = controller.getPlugin();
 				final PhaseSpell me = this;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					public void run() {
+					@Override
+                    public void run() {
 						me.tryPhase(entity, targetLocation);
 					}
 				}, RETRY_INTERVAL);

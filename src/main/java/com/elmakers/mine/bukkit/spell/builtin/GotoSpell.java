@@ -6,7 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import org.bukkit.Bukkit;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -43,7 +44,7 @@ public class GotoSpell extends UndoableSpell
 
         boolean allowSelection = parameters.getBoolean("allow_selection", false) || mage.isSuperPowered();
 
-		if (targetEntity != null && targetEntity instanceof LivingEntity)
+		if (targetEntity != null)
 		{
 			if (!allowSelection || !targetEntity.isValid() || targetEntity.isDead())
 			{
@@ -138,7 +139,7 @@ public class GotoSpell extends UndoableSpell
 		}
 		playerIndex++;
 		
-		Player targetPlayer = Bukkit.getPlayer(playerName);
+		Player targetPlayer = DeprecatedUtils.getPlayer(playerName);
 		if (targetPlayer == null) return SpellResult.NO_TARGET;
 		
 		selectTarget(targetPlayer);

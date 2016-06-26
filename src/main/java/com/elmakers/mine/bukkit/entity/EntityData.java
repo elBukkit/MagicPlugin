@@ -166,7 +166,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             this.airLevel = li.getRemainingAir();
             this.maxHealth = li.getMaxHealth();
             
-            itemInHand = getItem(li.getEquipment().getItemInHand());
+            itemInHand = getItem(li.getEquipment().getItemInMainHand());
             helmet = getItem(li.getEquipment().getHelmet());
             chestplate = getItem(li.getEquipment().getChestplate());
             leggings = getItem(li.getEquipment().getLeggings());
@@ -710,7 +710,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void copyEquipmentTo(LivingEntity entity) {
         if (itemInHand != null) {
-            entity.getEquipment().setItemInHand(itemInHand.getItemStack(1));
+            entity.getEquipment().setItemInMainHand(itemInHand.getItemStack(1));
         }
         if (helmet != null) {
             entity.getEquipment().setHelmet(helmet.getItemStack(1));
@@ -726,6 +726,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
+    @Override
     public void setHasMoved(boolean moved) {
         this.hasMoved = moved;
     }
@@ -759,6 +760,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return name;
     }
 
+    @Override
     public EntityData clone() {
         try {
             return (EntityData)super.clone();

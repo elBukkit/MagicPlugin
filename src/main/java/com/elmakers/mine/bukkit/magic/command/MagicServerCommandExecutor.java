@@ -1,7 +1,8 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import org.bukkit.Bukkit;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,7 +35,7 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
 
             if (args.length >= 2)
             {
-                player = Bukkit.getPlayer(args[0]);
+                player = DeprecatedUtils.getPlayer(args[0]);
                 server = args[1];
             }
             else
@@ -49,7 +50,7 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
                 return false;
             }
 
-            player = Bukkit.getPlayer(args[0]);
+            player = DeprecatedUtils.getPlayer(args[0]);
             server = args[1];
         }
         api.getController().sendPlayerToServer(player, server);

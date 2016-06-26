@@ -25,6 +25,7 @@ public class RandomAction extends CompoundAction
         mapActions();
     }
 
+    @Override
     public void reset(CastContext context)
     {
         super.reset(context);
@@ -34,6 +35,7 @@ public class RandomAction extends CompoundAction
         }
     }
 
+    @Override
     public SpellResult perform(CastContext context) {
         if (currentAction == null) {
             return SpellResult.FAIL;

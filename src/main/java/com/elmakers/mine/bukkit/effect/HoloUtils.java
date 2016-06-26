@@ -112,8 +112,8 @@ public class HoloUtils extends NMSUtils
         try {
             Method getHorseIdMethod = horse.getClass().getMethod("getId");
             Method getSkullIdMethod = skull.getClass().getMethod("getId");
-            int horseId = (int)(Integer)getHorseIdMethod.invoke(horse);
-            int skullId = (int)(Integer)getSkullIdMethod.invoke(skull);
+            int horseId = (Integer)getHorseIdMethod.invoke(horse);
+            int skullId = (Integer)getSkullIdMethod.invoke(skull);
 
             Constructor<?> packetDestroyEntityConstructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
             Object destroyPacket = packetDestroyEntityConstructor.newInstance(new int[] {horseId, skullId});

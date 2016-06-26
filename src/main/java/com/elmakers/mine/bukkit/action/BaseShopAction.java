@@ -168,7 +168,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (worth > 0) {
             if (isXP) {
                 worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthXP());
-                hasCosts = mage.getExperience() >= (int)(double)worth;
+                hasCosts = mage.getExperience() >= (int)worth;
             } else if (isItems) {
                 worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthItemAmount());
                 int hasAmount = getItemAmount(controller, mage);
@@ -193,7 +193,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         if (isXP) {
             worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthXP());
-            amountString = Integer.toString((int)(double)worth);
+            amountString = Integer.toString((int)worth);
             amountString = messages.get("costs.xp_amount").replace("$amount", amountString);
         }
         else if (isItems)
@@ -221,7 +221,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         double worth = shopItem.getWorth();
         if (isXP) {
             worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthXP());
-            mage.giveExperience((int) (double) worth);
+            mage.giveExperience((int) worth);
         }
         else if (isItems)
         {
@@ -255,7 +255,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         if (isXP) {
             worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthXP());
-            mage.removeExperience((int)(double)worth);
+            mage.removeExperience((int)worth);
         }
         else if (isItems)
         {
@@ -422,6 +422,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         castsSpells = parameters.getBoolean("cast_spells", false);
     }
 
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         permissionNode = parameters.getString("permission", null);
@@ -570,7 +571,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         inventoryTitle = inventoryTitle.replace("$balance", balanceDescription);
 
         int invSize = itemStacks == null ? 0 : itemStacks.size();
-        invSize = (int)Math.ceil((float)invSize / 9.0f) * 9;
+        invSize = (int)Math.ceil(invSize / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         if (itemStacks != null)
         {

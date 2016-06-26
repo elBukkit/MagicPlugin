@@ -17,6 +17,7 @@ public class MultiplyAction extends CompoundAction
     private List<ActionHandler> multiplied = null;
     private int multiply;
 
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         multiply = ConfigurationUtils.getInteger(parameters, "multiply", 2);

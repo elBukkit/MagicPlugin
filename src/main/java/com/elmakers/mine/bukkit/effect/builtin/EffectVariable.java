@@ -43,13 +43,14 @@ public class EffectVariable extends EffectPlayer {
         }
     }
 
+    @Override
     public void play() {
         playing.clear();
         if (brightnessMap.size() > 0) {
             double brightness = 0;
             Color color = getColor1();
             if (color != null) {
-                brightness = (double) color.getRed() / 255.0 + (double) color.getBlue() / 255.0 + (double) color.getGreen() / 255.0;
+                brightness = color.getRed() / 255.0 + color.getBlue() / 255.0 + color.getGreen() / 255.0;
             }
             for (Map.Entry<Double, Collection<EffectPlayer>> entry : brightnessMap.entrySet()) {
                 if (brightness < entry.getKey()) {

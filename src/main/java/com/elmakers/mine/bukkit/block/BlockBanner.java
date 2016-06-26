@@ -18,6 +18,7 @@ public class BlockBanner extends BlockExtraData {
         this(null, color);
     }
 
+    @Override
     public BlockExtraData clone() {
         return new BlockBanner(patterns, baseColor);
     }

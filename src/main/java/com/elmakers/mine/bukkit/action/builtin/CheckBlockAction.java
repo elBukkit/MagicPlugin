@@ -47,7 +47,6 @@ public class CheckBlockAction extends CompoundAction {
         return true;
     }
     
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult step(CastContext context) {
         boolean allowed = isAllowed(context);

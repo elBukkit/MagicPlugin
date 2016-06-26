@@ -27,6 +27,7 @@ public abstract class CitizensTrait extends Trait {
         super(name);
     }
 
+    @Override
     public void load(DataKey data) {
         permissionNode = data.getString("permission", null);
         invisible = data.getBoolean("invisible", false);
@@ -41,6 +42,7 @@ public abstract class CitizensTrait extends Trait {
         }
     }
 
+    @Override
     public void save(DataKey data) {
         data.setString("permission", permissionNode);
         data.setBoolean("invisible", invisible);

@@ -108,10 +108,10 @@ public class EnchantingController implements Listener {
 
 			for (int i = 0; i < offered.length; i++)
             {
-				int level = minLevel + (int)((float)i * levelRange/ (float)offered.length);
+				int level = minLevel + (int)((float)i * levelRange/ offered.length);
                 if (bonusLevels > 0 && bonusLevelMultiplier > 0)
                 {
-                    level += (float)bonusLevels * bonusLevelMultiplier;
+                    level += bonusLevels * bonusLevelMultiplier;
                 }
 				offered[i] = level;
 			}

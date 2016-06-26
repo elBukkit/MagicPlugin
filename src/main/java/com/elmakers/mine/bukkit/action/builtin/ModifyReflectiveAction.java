@@ -20,7 +20,6 @@ public class ModifyReflectiveAction extends BaseSpellAction {
         backfireChance = parameters.getDouble("reflect_chance", 1);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();

@@ -17,7 +17,6 @@ public class IterateSpell extends BrushSpell
 {
 	private int				DEFAULT_SIZE			= 16;
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
@@ -27,7 +26,7 @@ public class IterateSpell extends BrushSpell
 		int size = parameters.getInt("size", DEFAULT_SIZE);
 		boolean reverse = parameters.getBoolean("reverse", false);
         boolean requireBlock = parameters.getBoolean("require_block", false);
-		size = (int)(mage.getConstructionMultiplier() * (float)size);
+		size = (int)(mage.getConstructionMultiplier() * size);
 		
 		boolean reverseTargeting = parameters.getBoolean("transparent_reverse", false);
 		if (reverseTargeting) {
@@ -82,7 +81,7 @@ public class IterateSpell extends BrushSpell
 				if (dr > 0) {
 					// Arbitrary axis rotation would be better, but... math is hard! :P
 					// TODO: Arbitrary axis rotation.
-					double q = (double)dspoke * Math.PI * 2 / spokes;
+					double q = dspoke * Math.PI * 2 / spokes;
 					if (aim.getY() > 0.7) {
 						Vector axis = new Vector(1, 0 ,0);
 						Vector perp = aim.clone().crossProduct(axis).multiply(dr);

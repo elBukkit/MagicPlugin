@@ -16,7 +16,8 @@ public class SuperProtectionAction extends BaseSpellAction
 		duration = parameters.getInt("duration");
 	}
 
-	public SpellResult perform(CastContext context)
+	@Override
+    public SpellResult perform(CastContext context)
 	{
         Mage mage = context.getController().getMage(context.getTargetEntity());
 		mage.enableSuperProtection(duration);

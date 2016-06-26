@@ -136,6 +136,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 if (living != null) {
                     living.setHealth(Math.max(0, living.getHealth() - getReducedCost(amount, reducer)));
                 }
+                break;
             case HUNGER:
                 Player player = mage.getPlayer();
                 if (player != null) {
@@ -191,6 +192,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         return getFullDescription(messages, null);
     }
 
+    @Override
     public String getDescription(Messages messages, CostReducer reducer)
     {
         if (amount == 0) return "";
@@ -217,6 +219,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         return "";
     }
 
+    @Override
     public String getFullDescription(Messages messages, CostReducer reducer)
     {
         if (getAmount(reducer) == 0) return "";

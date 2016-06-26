@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -68,7 +69,7 @@ public class ShrinkEntityAction extends DamageAction
 		}
 		else
 		{
-			itemName = li.getType().getName() + " Head";
+			itemName = DeprecatedUtils.getName(li.getType()) + " Head";
 			switch (li.getType()) {
 				case CREEPER:
 					data = 4;
@@ -143,7 +144,7 @@ public class ShrinkEntityAction extends DamageAction
 	
 	@SuppressWarnings("deprecation")
 	protected void dropHead(Location location, String ownerName, String itemName, byte data) {
-        ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)data);
+        ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);
         ItemMeta meta = shrunkenHead.getItemMeta();
         if (itemName != null) {
             meta.setDisplayName(itemName);

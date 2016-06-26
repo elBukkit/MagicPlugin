@@ -186,7 +186,7 @@ public class EntityController implements Listener {
             {
                 boolean hasWand = activeWand != null;
                 Player player = (Player) damager;
-                ItemStack itemInHand = player.getItemInHand();
+                ItemStack itemInHand = player.getInventory().getItemInMainHand();
                 boolean isMeleeWeapon = controller.isMeleeWeapon(itemInHand);
                 if (isMelee && hasWand && !isMeleeWeapon) {
                     event.setCancelled(true);

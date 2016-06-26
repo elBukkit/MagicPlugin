@@ -55,7 +55,7 @@ public class FlingSpell extends UndoableSpell implements Listener
 		}
 
 		double heightModifier = maxSpeedAtElevation > 0 ? ((double)height / maxSpeedAtElevation) : 1;
-		double magnitude = (minMagnitude + (((double)maxMagnitude - minMagnitude) * heightModifier));
+		double magnitude = (minMagnitude + ((maxMagnitude - minMagnitude) * heightModifier));
 
 		Vector velocity = getDirection();
 		if (mage.getLocation().getBlockY() >= 256)
@@ -77,8 +77,8 @@ public class FlingSpell extends UndoableSpell implements Listener
 		return SpellResult.CAST;
 	}
 
-	@SuppressWarnings("deprecation")
-	@EventHandler
+	@Override
+    @EventHandler
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
 		if (event.getCause() != DamageCause.FALL) return;

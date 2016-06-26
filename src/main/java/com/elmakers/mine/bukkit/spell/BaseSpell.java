@@ -67,6 +67,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public abstract class BaseSpell implements MageSpell, Cloneable {
     public static int MAX_LORE_LENGTH = 24;
@@ -425,7 +426,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         Material material = downBlock.getType();
         if (material == Material.STEP || material == Material.WOOD_STEP) {
             // Drop down to half-steps
-            isHalfBlock = (downBlock.getData() < 8);
+            isHalfBlock = (DeprecatedUtils.getData(downBlock) < 8);
         } else {
             isHalfBlock = isHalfBlock(material);
         }
@@ -532,6 +533,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+    @Override
     public Location getLocation()
     {
         if (location != null) return location.clone();
@@ -560,6 +562,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return mage.getEyeLocation();
     }
 
+    @Override
     public Vector getDirection()
     {
         if (location == null) {
@@ -671,6 +674,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return getEyeLocation();
     }
 
+    @Override
     public boolean hasBrushOverride()
     {
         return false;
@@ -734,7 +738,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return castingCosts;
     }
 
-    @SuppressWarnings("unchecked")
     protected void loadTemplate(ConfigurationSection node)
     {
         // Get localizations
@@ -933,6 +936,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+    @Override
     public boolean cast(String[] extraParameters, Location defaultLocation) {
         ConfigurationSection parameters = null;
         if (extraParameters != null && extraParameters.length > 0) {
@@ -942,11 +946,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return cast(parameters, defaultLocation);
     }
 
+    @Override
     public boolean cast(ConfigurationSection parameters)
     {
         return cast(parameters, null);
     }
 
+    @Override
     public boolean cast(ConfigurationSection extraParameters, Location defaultLocation)
     {
         if (mage.isPlayer() && mage.getPlayer().getGameMode() == GameMode.SPECTATOR) {
@@ -1067,7 +1073,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         color = ConfigurationUtils.getColor(workingParameters, "color", color);
         particle = workingParameters.getString("particle", null);
 
-        double cooldownRemaining = (double)getRemainingCooldown() / 1000.0;
+        double cooldownRemaining = getRemainingCooldown() / 1000.0;
         String timeDescription = "";
         if (cooldownRemaining > 0) {
             if (cooldownRemaining > 60 * 60 ) {
@@ -1129,6 +1135,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return Math.min(getCastCount() / requiredCastsPerLevel + 1, maxLevels);
     }
 
+    @Override
     public long getMaxProgressLevel() {
         return maxLevels;
     }
@@ -1137,6 +1144,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return Math.min(Math.max((getCastCount() - 1), 0) / requiredCastsPerLevel + 1, maxLevels);
     }
 
+    @Override
     public boolean canCast(Location location) {
         if (location == null) return true;
         if (!hasCastPermission(mage.getCommandSender())) return false;
@@ -1364,7 +1372,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     message = getMessage("cast_player", message);
                 } else if (targetEntity instanceof LivingEntity) {
                     message = getMessage("cast_livingentity", message);
-                } else if (targetEntity instanceof Entity) {
+                } else {
                     message = getMessage("cast_entity", message);
                 }
                 if (loud) {
@@ -1405,6 +1413,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return true;
     }
 
+    @Override
     public void messageTargets(String messageKey)
     {
         if (messageTargets && currentCast != null)
@@ -1537,6 +1546,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
 
+    @Override
     public String getPermissionNode()
     {
         return "Magic.cast." + spellKey.getBaseKey();
@@ -1580,6 +1590,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      *
      * @param instance The spells instance
      */
+    @Override
     public void initialize(MageController instance)
     {
         this.controller = instance;
@@ -1724,6 +1735,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return alias;
     }
 
+    @Override
     public boolean isQuickCast() {
         return quickCast;
     }

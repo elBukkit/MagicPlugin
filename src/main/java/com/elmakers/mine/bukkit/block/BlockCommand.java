@@ -13,6 +13,7 @@ public class BlockCommand extends BlockExtraData{
         this.customName = customName;
     }
 
+    @Override
     public BlockExtraData clone() {
         return new BlockCommand(command, customName);
     }

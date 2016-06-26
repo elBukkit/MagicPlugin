@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import org.bukkit.Bukkit;
@@ -72,6 +73,7 @@ public abstract class TargetingSpell extends BaseSpell {
         targetLocation2 = null;
     }
 
+    @Override
     public String getMessage(String messageKey, String def) {
         String message = super.getMessage(messageKey, def);
 
@@ -433,7 +435,7 @@ public abstract class TargetingSpell extends BaseSpell {
         this.initializeTargeting();
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
     protected void loadTemplate(ConfigurationSection node)
     {
         super.loadTemplate(node);
@@ -468,7 +470,6 @@ public abstract class TargetingSpell extends BaseSpell {
         targetSelf = parameters.getBoolean("target_self", targetSelf);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
@@ -558,7 +559,7 @@ public abstract class TargetingSpell extends BaseSpell {
         targetLocation2 = ConfigurationUtils.overrideLocation(parameters, "t2", defaultLocation, controller.canCreateWorlds());
 
         if (parameters.contains("player")) {
-            Player player = controller.getPlugin().getServer().getPlayer(parameters.getString("player"));
+            Player player = DeprecatedUtils.getPlayer(parameters.getString("player"));
             if (player != null) {
                 targetLocation = player.getLocation();
                 targetEntity = player;
@@ -575,7 +576,6 @@ public abstract class TargetingSpell extends BaseSpell {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected String getDisplayMaterialName()
     {

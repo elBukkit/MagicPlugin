@@ -38,7 +38,8 @@ public class GriefPreventionManager implements BlockBuildManager, BlockBreakMana
 		}
 	}
 
-	public boolean hasBuildPermission(Player player, Block block) {
+	@Override
+    public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && api != null) {
 			return api.hasBuildPermission(player, block);
 		}

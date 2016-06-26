@@ -79,7 +79,7 @@ public class DisarmAction extends BaseSpellAction
 		LivingEntity entity = (LivingEntity)target;
 
 		EntityEquipment equipment = entity.getEquipment();
-		ItemStack stack = equipment.getItemInHand();
+		ItemStack stack = equipment.getItemInMainHand();
 
 		if (stack == null || stack.getType() == Material.AIR)
 		{
@@ -132,7 +132,7 @@ public class DisarmAction extends BaseSpellAction
 			targetSlot = validSlots.get(chosen);
 		}
 
-		equipment.setItemInHand(swapItem);
+		equipment.setItemInMainHand(swapItem);
 		if (targetSlot != null && targetInventory != null) {
 			targetInventory.setItem(targetSlot, stack);
 			if (originalSlot != null && targetMage != null) {

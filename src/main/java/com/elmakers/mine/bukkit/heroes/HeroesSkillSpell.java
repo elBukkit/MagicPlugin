@@ -137,6 +137,7 @@ public class HeroesSkillSpell extends BaseSpell {
         return manaCost;
     }
 
+    @Override
     public boolean hasCastPermission(CommandSender sender) {
         return true;
     }

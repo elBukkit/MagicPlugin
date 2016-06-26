@@ -47,7 +47,8 @@ public class ThrustSpell extends TargetingSpell
             this.spell = spell;
         }
 
-		public void run()
+		@Override
+        public void run()
 		{
             spell.applyForce();
             spell.scheduleForce(this);
@@ -101,7 +102,8 @@ public class ThrustSpell extends TargetingSpell
 		} 
 	}
 
-	public boolean isActive()
+	@Override
+    public boolean isActive()
     {
         return (taskId != null && !mage.isDead() && mage.isOnline());
     }
@@ -142,9 +144,9 @@ public class ThrustSpell extends TargetingSpell
 		float timeDeltaSeconds = (System.currentTimeMillis() - lastTick) / 1000.0f;
 		Vector force = new Vector(0, gravity * timeDeltaSeconds, 0);
 
-		float elevateMagnitude = (float)elevateRate * timeDeltaSeconds;
-		float speedMinMagnitude =  (float)minSpeed * timeDeltaSeconds;
-		float speedMaxMagnitude =  (float)maxSpeed * timeDeltaSeconds;
+		float elevateMagnitude = elevateRate * timeDeltaSeconds;
+		float speedMinMagnitude =  minSpeed * timeDeltaSeconds;
+		float speedMaxMagnitude =  maxSpeed * timeDeltaSeconds;
 
 		Location playerLocation = mage.getEntity().getLocation();
 
@@ -202,7 +204,7 @@ public class ThrustSpell extends TargetingSpell
 		if (player == null || !player.isSneaking())
 		{
 			int heightFactor = hoverHeight > maxSpeedAtElevation ? maxSpeedAtElevation : (int)hoverHeight;
-			multiplier *= (float)speedMaxMagnitude * heightFactor / maxSpeedAtElevation;
+			multiplier *= speedMaxMagnitude * heightFactor / maxSpeedAtElevation;
 		}
 		float verticalMultipler =  1.0f - (float)Math.abs(aim.getY());
 		aim.multiply(multiplier * verticalMultipler);

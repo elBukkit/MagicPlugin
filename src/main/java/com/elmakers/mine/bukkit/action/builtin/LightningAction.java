@@ -16,6 +16,7 @@ public class LightningAction extends BaseSpellAction {
         effectOnly = parameters.getBoolean("effect_only", false);
     }
 
+    @Override
     public SpellResult perform(CastContext context)
     {
         Block block = context.getTargetBlock();

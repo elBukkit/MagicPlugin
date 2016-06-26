@@ -14,6 +14,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public abstract class BrushSpell extends BlockSpell {
 
@@ -79,7 +80,7 @@ public abstract class BrushSpell extends BlockSpell {
                     }
 
                     if (bestDyeColor != null) {
-                        brush.setData((short)bestDyeColor.getData());
+                        brush.setData((short) DeprecatedUtils.getData(bestDyeColor));
                     }
                 }
             }
@@ -121,6 +122,7 @@ public abstract class BrushSpell extends BlockSpell {
         return brushIsErase();
     }
 
+    @Override
     public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush()
     {
         if (brush != null)

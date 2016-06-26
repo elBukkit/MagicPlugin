@@ -45,7 +45,7 @@ public class LineAction extends CompoundAction
         reorient = parameters.getBoolean("reorient", false);
 
         Mage mage = context.getMage();
-        size = (int)(mage.getConstructionMultiplier() * (float)this.size);
+        size = (int)(mage.getConstructionMultiplier() * this.size);
     }
 
     @Override
@@ -96,7 +96,6 @@ public class LineAction extends CompoundAction
         actionContext.setTargetLocation(targetLocation);
     }
 
-	@SuppressWarnings("deprecation")
 	@Override
     public SpellResult step(CastContext context)
     {
@@ -119,6 +118,7 @@ public class LineAction extends CompoundAction
         return startActions();
 	}
 
+    @Override
     public boolean next(CastContext context) {
         current++;
         Location target = actionContext.getTargetLocation();

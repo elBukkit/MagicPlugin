@@ -37,6 +37,7 @@ public class EffectRing extends EffectRepeating {
         this.size = size;
     }
 
+    @Override
     public void iterate() {
         Location origin = getOrigin();
         if (origin == null) return;

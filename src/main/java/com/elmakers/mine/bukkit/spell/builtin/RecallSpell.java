@@ -360,7 +360,8 @@ public class RecallSpell extends UndoableSpell
 				Plugin plugin = controller.getPlugin();
 				final RecallSpell me = this;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					public void run() {
+					@Override
+                    public void run() {
 						me.tryTeleport(player, targetLocation);
 					}
 				}, RETRY_INTERVAL);

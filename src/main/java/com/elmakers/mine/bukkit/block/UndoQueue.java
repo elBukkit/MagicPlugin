@@ -71,6 +71,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         size--;
     }
 
+    @Override
     public int undoScheduled()
     {
         int undid = 0;
@@ -87,16 +88,19 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         return undid;
     }
 
+    @Override
     public boolean isEmpty()
     {
          return head == null;
     }
 
+    @Override
     public UndoList getLast()
     {
         return head;
     }
 
+    @Override
     public UndoList getLast(Block target)
     {
         UndoList checkList = head;
@@ -140,11 +144,13 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
      * @param timeout How long ago the UndoList may have been modified
      * @return The UndoList that was undone, or null if none.
      */
+    @Override
     public UndoList undoRecent(int timeout)
     {
         return undoRecent(timeout, null);
     }
 
+    @Override
     public UndoList undoRecent(int timeout, String spellKey)
     {
         UndoList undo = head;
@@ -184,6 +190,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
      * @param timeout How long ago the UndoList may have been modified
      * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
      */
+    @Override
     public UndoList undoRecent(Block block, int timeout)
     {
         UndoList lastActionOnTarget = getLast(block);
@@ -251,6 +258,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         }
     }
 
+    @Override
     public int getSize()
     {
         return size;

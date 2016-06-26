@@ -24,7 +24,7 @@ public class PushSpell extends UndoableSpell
 
 	public void forceAll(Entity sourceEntity, double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance, double damage, int fallProtection)
 	{
-		float maxDistance = (float)maxAllDistance * mage.getRangeMultiplier();
+		float maxDistance = maxAllDistance * mage.getRangeMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
 		
 		List<Entity> entities = getWorld().getEntities();
@@ -152,7 +152,7 @@ public class PushSpell extends UndoableSpell
         Location from = pull ? sourceLocation : targetLocation;
 
         registerVelocity(target);
-		magnitude = (int)((double)magnitude * multiplier);
+		magnitude = (int)(magnitude * multiplier);
 		Vector toVector = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
 		Vector fromVector = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
 		Vector forceVector = fromVector;

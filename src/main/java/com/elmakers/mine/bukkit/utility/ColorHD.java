@@ -43,9 +43,9 @@ public class ColorHD implements Cloneable {
             green = 0;
             blue = 0;
         } else if (hexColor.equals("random")) {
-            red =  (long)(Math.random() * (double)BIT_MASK);
-            green =  (long)(Math.random() * (double)BIT_MASK);
-            blue =  (long)(Math.random() * (double)BIT_MASK);
+            red =  (long)(Math.random() * BIT_MASK);
+            green =  (long)(Math.random() * BIT_MASK);
+            blue =  (long)(Math.random() * BIT_MASK);
         } else if (hexColor.length() > 6 && hexColor.contains(",")) {
             String[] pieces = StringUtils.split(hexColor, ",");
             long r = 0;
@@ -99,9 +99,9 @@ public class ColorHD implements Cloneable {
 
     public ColorHD mixColor(long r, long g, long b, double weight) {
         double totalWeight = weight + 1;
-        double totalRed = ((double)red + ((double)r * weight));
-        double totalGreen = ((double)green + ((double)g * weight));
-        double totalBlue = ((double)blue + ((double)b * weight));
+        double totalRed = (red + (r * weight));
+        double totalGreen = (green + (g * weight));
+        double totalBlue = (blue + (b * weight));
         return new ColorHD(
                 (long)(totalRed / totalWeight),
                 (long)(totalGreen / totalWeight),

@@ -138,7 +138,7 @@ public class ConstructSpell extends BrushSpell
         if (!parameters.contains("radius")) {
             int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
             maxDimension = parameters.getInt("md", maxDimension);
-            maxDimension = (int)(mage.getConstructionMultiplier() * (float)maxDimension);
+            maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
 
             int diameter = radius * 2;
             if (diameter > maxDimension)

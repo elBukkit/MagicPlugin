@@ -21,7 +21,8 @@ public class MagicCitizensTrait extends CitizensTrait {
 		super("magic");
 	}
 
-	public void load(DataKey data) {
+	@Override
+    public void load(DataKey data) {
         super.load(data);
         spellKey = data.getString("spell", null);
         npcCaster = data.getBoolean("caster", false);
@@ -43,7 +44,8 @@ public class MagicCitizensTrait extends CitizensTrait {
         }
 	}
 
-	public void save(DataKey data) {
+	@Override
+    public void save(DataKey data) {
         super.save(data);
         data.setString("spell", spellKey);
         data.setBoolean("caster", npcCaster);
@@ -51,6 +53,7 @@ public class MagicCitizensTrait extends CitizensTrait {
         data.setString("parameters", parameterString);
 	}
 
+    @Override
     public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event){
         if (spellKey == null || spellKey.isEmpty()) return false;
 
@@ -70,6 +73,7 @@ public class MagicCitizensTrait extends CitizensTrait {
         return api.cast(spellKey, config, sender, entity);
     }
 
+    @Override
     public void describe(CommandSender sender)
     {
         super.describe(sender);
@@ -98,6 +102,7 @@ public class MagicCitizensTrait extends CitizensTrait {
         }
     }
 
+    @Override
     public void configure(CommandSender sender, String key, String value)
     {
         if (key == null)

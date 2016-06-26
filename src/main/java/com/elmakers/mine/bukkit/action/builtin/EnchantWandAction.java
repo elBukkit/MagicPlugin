@@ -26,6 +26,7 @@ public class EnchantWandAction extends BaseSpellAction
     private String requiredPath = null;
     private String exactPath = null;
 
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         levels = parameters.getInt("levels", 30);

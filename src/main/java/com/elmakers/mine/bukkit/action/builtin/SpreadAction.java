@@ -57,11 +57,11 @@ public class SpreadAction extends CompoundAction
         {
             targetLocation = targetLocation.clone();
             double weight = RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
-            double xOffset = (double)radius * weight;
-            xOffset = xOffset - (double)radius;
+            double xOffset = radius * weight;
+            xOffset = xOffset - radius;
             weight = RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
-            double zOffset = (double)radius * weight;
-            zOffset = zOffset - (double)radius;
+            double zOffset = radius * weight;
+            zOffset = zOffset - radius;
             targetLocation.setX(targetLocation.getX() + xOffset);
             targetLocation.setZ(targetLocation.getZ() + zOffset);
             actionContext.setTargetLocation(targetLocation);

@@ -543,7 +543,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         options.clear();
         Collections.sort(allWaypoints);
         String inventoryTitle = context.getMessage("title", "Recall");
-        int invSize = (int)Math.ceil((float)allWaypoints.size() / 9.0f) * 9;
+        int invSize = (int)Math.ceil(allWaypoints.size() / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         int index = 0;
         for (Waypoint waypoint : allWaypoints)

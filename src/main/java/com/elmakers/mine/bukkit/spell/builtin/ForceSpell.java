@@ -32,34 +32,31 @@ public class ForceSpell extends TargetingSpell
 		
 		if (targetEntity != null)
 		{
-			if (targetEntity instanceof LivingEntity)
+			Location location = getLocation();
+			World targetWorld = targetEntity.getWorld();
+			if (!targetEntity.isValid() || targetEntity.isDead())
 			{
-				Location location = getLocation();
-				World targetWorld = targetEntity.getWorld();
-				if (!targetEntity.isValid() || targetEntity.isDead())
-				{
+				releaseTarget();
+			}
+			else if (targetWorld == null || location == null || !targetWorld.getName().equals(location.getWorld().getName()))
+			{
+				releaseTarget();
+			}
+			else if (location.distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared())
+			{
+				releaseTarget();
+			}
+
+			// Check for protected Mages
+			if (targetEntity != null && controller.isMage(targetEntity)) {
+				Mage targetMage = controller.getMage(targetEntity);
+				// Check for protected players (admins, generally...)
+				if (isSuperProtected(targetMage)) {
 					releaseTarget();
-				} 
-				else if (targetWorld == null || location == null || !targetWorld.getName().equals(location.getWorld().getName())) 
-				{
-					releaseTarget();
-				} 
-				else if (location.distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared())
-				{
-					releaseTarget();
-				}
-				
-				// Check for protected Mages
-				if (targetEntity != null && controller.isMage(targetEntity)) {
-					Mage targetMage = controller.getMage(targetEntity);
-					// Check for protected players (admins, generally...)
-					if (isSuperProtected(targetMage)) {
-						releaseTarget();
-					}
 				}
 			}
 		}
-		
+
 		if (targetEntity == null) {
 			Target target = getTarget();
 
@@ -97,7 +94,7 @@ public class ForceSpell extends TargetingSpell
 
 	protected void forceEntity(Entity target, double multiplier, int magnitude)
 	{
-		magnitude = (int)((double)magnitude * multiplier);
+		magnitude = (int)(magnitude * multiplier);
 		Vector forceVector = mage.getLocation().getDirection();
 		forceVector.normalize();
 		forceVector.multiply(magnitude);

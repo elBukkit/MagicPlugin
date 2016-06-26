@@ -113,6 +113,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         rendered = false;
     }
 
+    @Override
     public boolean matches(String keyword) {
         if (keyword == null || keyword.length() == 0) return true;
 
@@ -122,14 +123,17 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         return lowerUrl.contains(lowerKeyword) || lowerName.contains(lowerKeyword);
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getURL() {
         return url;
     }
 
+    @Override
     public short getId() {
         return id;
     }
@@ -341,6 +345,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
             final File cacheFolder = controller.getCacheFolder();
 
             Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                @Override
                 public void run() {
                     try {
                         animated = url.endsWith(".gif");

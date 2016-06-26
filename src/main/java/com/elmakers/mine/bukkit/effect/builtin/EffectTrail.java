@@ -56,6 +56,7 @@ public class EffectTrail extends EffectRepeating {
         super.play();
     }
 
+    @Override
     public void iterate() {
         Location origin = getOrigin();
         Location target = getTarget();

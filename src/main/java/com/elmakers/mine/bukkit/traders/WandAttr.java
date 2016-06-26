@@ -89,6 +89,7 @@ public class WandAttr extends ItemAttribute
 	 * @return
 	 *    true when equal, false instead 
      */
+    @Override
     public boolean similar(ItemAttribute other)
 	{
 		if (other instanceof WandAttr)
@@ -103,7 +104,8 @@ public class WandAttr extends ItemAttribute
 	 * @return
 	 *    true when equal, false instead 
 	 */
-	public boolean equals(ItemAttribute other)
+	@Override
+    public boolean equals(ItemAttribute other)
 	{
 		if (other instanceof WandAttr)
 		{

@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.block.AutomatonLevel;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class SimulateBatch extends SpellBatch {
@@ -133,11 +134,13 @@ public class SimulateBatch extends SpellBatch {
 		updatingIndex = 0;
 	}
 
-	public int size() {
+	@Override
+    public int size() {
 		return radius * radius * radius * 8;
 	}
 	
-	public int remaining() {
+	@Override
+    public int remaining() {
 		if (r >= radius) return 0;
 		return (radius - r) *  (radius - r) *  (radius - r) * 8;
 	}
@@ -521,10 +524,10 @@ public class SimulateBatch extends SpellBatch {
 
         if (state == SimulationState.COMMON_RESET_REDSTONE) {
             if (includeCommands && commandTargetBlock != null) {
-                commandTargetBlock.setData((byte)0);
+                DeprecatedUtils.setData(commandTargetBlock, (byte)0);
             }
             if (includeCommands && powerTargetBlock != null) {
-                powerTargetBlock.setData((byte)0);
+                DeprecatedUtils.setData(powerTargetBlock, (byte)0);
             }
             state = SimulationState.COMMAND_UPDATE;
             return processedBlocks;
@@ -646,7 +649,6 @@ public class SimulateBatch extends SpellBatch {
 		this.targetType = targetType;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void target(TargetMode mode) {
 		targetMode = mode == null ? TargetMode.STABILIZE : mode;
 		switch (targetMode) 

@@ -7,6 +7,7 @@ public class EffectSingle extends EffectPlayer {
     public EffectSingle() {
     }
 
+    @Override
     public void play() {
         playEffect();
     }

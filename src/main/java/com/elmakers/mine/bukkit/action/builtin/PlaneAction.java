@@ -25,7 +25,8 @@ public class PlaneAction extends VolumeAction
 		super.prepare(context, parameters);
 	}
 
-	protected boolean calculateSize(CastContext context) {
+	@Override
+    protected boolean calculateSize(CastContext context) {
 		switch (axis)
 		{
 			case X:
@@ -41,7 +42,8 @@ public class PlaneAction extends VolumeAction
 		return super.calculateSize(context);
 	}
 
-	protected boolean containsPoint(int x, int y, int z)
+	@Override
+    protected boolean containsPoint(int x, int y, int z)
 	{
 		return true;
 	}

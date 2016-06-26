@@ -75,6 +75,7 @@ import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.wand.LostWand;
@@ -165,6 +166,7 @@ public class MagicController implements MageController {
         defaultsFolder.mkdirs();
     }
 
+    @Override
     public Mage getRegisteredMage(String mageId) {
         if (!loaded) {
             return null;
@@ -300,7 +302,7 @@ public class MagicController implements MageController {
 
     @Override
     public com.elmakers.mine.bukkit.api.magic.Mage getMage(Player player) {
-        return getMage((Entity) player, player);
+        return getMage(player, player);
     }
 
     @Override
@@ -478,6 +480,7 @@ public class MagicController implements MageController {
 	 * Random utility functions
 	 */
 
+    @Override
     public String getMessagePrefix() {
         return messagePrefix;
     }
@@ -494,6 +497,7 @@ public class MagicController implements MageController {
         return showMessages;
     }
 
+    @Override
     public boolean soundsEnabled() {
         return soundsEnabled;
     }
@@ -518,6 +522,7 @@ public class MagicController implements MageController {
     /*
 	 * Get the log, if you need to debug or log errors.
 	 */
+    @Override
     public Logger getLogger() {
         return plugin.getLogger();
     }
@@ -837,6 +842,7 @@ public class MagicController implements MageController {
         if (essentialsSignsEnabled) {
             final MagicController me = this;
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
                 public void run() {
                     try {
                         Object essentials = me.plugin.getServer().getPluginManager().getPlugin("Essentials");
@@ -1663,6 +1669,7 @@ public class MagicController implements MageController {
         loadSpellData();
 
         Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
             public void run() {
                 // Load lost wands
                 getLogger().info("Loading lost wand data");
@@ -2433,7 +2440,7 @@ public class MagicController implements MageController {
         if (Wand.WAND_SELF_DESTRUCT_KEY.isEmpty()) {
             Wand.WAND_SELF_DESTRUCT_KEY = null;
         }
-        Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", (int)Wand.HIDE_FLAGS);
+        Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", Wand.HIDE_FLAGS);
         Wand.Unbreakable = properties.getBoolean("wand_unbreakable", Wand.Unbreakable);
         Wand.Undroppable = properties.getBoolean("wand_undroppable", Wand.Undroppable);
 
@@ -2608,6 +2615,7 @@ public class MagicController implements MageController {
         return override == null || override;
     }
 
+    @Override
     public boolean hasCastPermission(CommandSender sender, SpellTemplate spell)
     {
         if (sender == null) return true;
@@ -2662,7 +2670,8 @@ public class MagicController implements MageController {
 		return hasPermission((Player) sender, pNode, false);
 	}
 	
-	public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue)
+	@Override
+    public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue)
 	{
 		if (!(sender instanceof Player)) return true;
 		return hasPermission((Player) sender, pNode, defaultValue);
@@ -2726,7 +2735,7 @@ public class MagicController implements MageController {
 		} else {
 			activeWand.setActiveSpell("");
 		}
-        mage.getPlayer().updateInventory();
+		DeprecatedUtils.updateInventory(mage.getPlayer());
 	}
     
 	@Override
@@ -2893,6 +2902,7 @@ public class MagicController implements MageController {
         }, 1);
     }
 
+    @Override
     public boolean isLocked(Block block) {
         return protectLocked && containerMaterials.contains(block.getType()) && CompatibilityUtils.isLocked(block);
     }
@@ -2939,7 +2949,8 @@ public class MagicController implements MageController {
 		return defaultMaterial;
 	}
 	
-	public Collection<com.elmakers.mine.bukkit.api.wand.LostWand> getLostWands() {
+	@Override
+    public Collection<com.elmakers.mine.bukkit.api.wand.LostWand> getLostWands() {
 		return new ArrayList<com.elmakers.mine.bukkit.api.wand.LostWand>(lostWands.values());
 	}
 	
@@ -3037,6 +3048,7 @@ public class MagicController implements MageController {
         return messages;
     }
 
+    @Override
     public MapController getMaps() {
         return maps;
     }
@@ -3071,7 +3083,8 @@ public class MagicController implements MageController {
                 // Hacky double-hit ...
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, 
 					new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							for (Automaton restoreBlock : restored) {
 								restoreBlock.restore(true);
 							}
@@ -3098,6 +3111,7 @@ public class MagicController implements MageController {
 		}
 	}
     
+    @Override
     public Automaton getAutomaton(Block block) {
         String chunkId = getChunkKey(block);
         Map<Long, Automaton> toReload = automata.get(chunkId);
@@ -3349,8 +3363,8 @@ public class MagicController implements MageController {
 
             if (scoreboard1 != null && scoreboard2 != null)
             {
-                Team team1 = scoreboard1.getPlayerTeam(player1);
-                Team team2 = scoreboard2.getPlayerTeam(player2);
+                Team team1 = scoreboard1.getEntryTeam(player1.getName());
+                Team team2 = scoreboard2.getEntryTeam(player2.getName());
                 if (team1 != null && team2 != null && team1.equals(team2))
                 {
                     return false;
@@ -3440,6 +3454,7 @@ public class MagicController implements MageController {
         return new Wand(this, itemStack);
     }
 
+    @Override
     public com.elmakers.mine.bukkit.api.wand.Wand getWand(ConfigurationSection config) {
         return new Wand(this, config);
     }
@@ -3860,14 +3875,17 @@ public class MagicController implements MageController {
         return bookItem;
     }
 
+    @Override
     public MaterialAndData getRedstoneReplacement() {
         return redstoneReplacement;
     }
 
+    @Override
     public boolean isUrlIconsEnabled() {
         return urlIconsEnabled;
     }
 
+    @Override
     public Set<EntityType> getUndoEntityTypes() {
         return undoEntityTypes;
     }
@@ -4052,6 +4070,7 @@ public class MagicController implements MageController {
         return itemStack;
     }
 
+    @Override
     public ItemStack createGenericItem(String key) {
         ConfigurationSection template = getWandTemplateConfiguration(key);
         if (template == null || !template.contains("icon")) {
@@ -4596,7 +4615,7 @@ public class MagicController implements MageController {
         server.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
             @Override
             public void run() {
-                String response = null;
+                String response;
                 String newResourcePackHash = currentHash;
                 try {
                     HttpURLConnection.setFollowRedirects(false);
@@ -4658,9 +4677,8 @@ public class MagicController implements MageController {
                 server.getScheduler().runTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        if (finalResponse != null) {
-                            sender.sendMessage(finalResponse);
-                        }
+                        sender.sendMessage(finalResponse);
+
                         if (finalResourcePackHash != null) {
                             CompatibilityUtils.setResourcePack(server, finalResourcePack, finalResourcePackHash);
                         }
@@ -4758,6 +4776,7 @@ public class MagicController implements MageController {
         return mobSkin;
     }
 
+    @Override
     public void managePlayerData(boolean external, boolean backupInventories) {
         savePlayerData = !external;
         externalPlayerData = external;
