@@ -120,7 +120,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             materialKey = CLONE_MATERIAL_KEY;
         } else if (mode == BrushMode.MAP) {
             materialKey = MAP_MATERIAL_KEY;
-            int mapSize = (int)((float)128 / scale);
+            int mapSize = (int)(128 / scale);
             if (mapSize != DEFAULT_MAP_SIZE)
             {
                 materialKey = materialKey + ":" + mapSize;
@@ -194,7 +194,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             break;
         case MAP:
             brushKey = MAP_MATERIAL_KEY;
-            int mapSize = (int)((float)128 / scale);
+            int mapSize = (int)(128 / scale);
             if (mapSize != DEFAULT_MAP_SIZE)
             {
                 if (messages != null) {

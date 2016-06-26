@@ -288,9 +288,9 @@ public class ConstructBatch extends BrushBatch {
         float mz;
         switch(type) {
 			case SPHERE:
-				mx = (float)x - 0.1f;
-				my = (float)y - 0.1f;
-				mz = (float)z - 0.1f;
+				mx = x - 0.1f;
+				my = y - 0.1f;
+				mz = z - 0.1f;
 
 				distanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 				if (thickness == 0)
@@ -307,8 +307,8 @@ public class ConstructBatch extends BrushBatch {
 				}
 				break;
             case CYLINDER:
-                mx = (float)x - 0.1f;
-                mz = (float)z - 0.1f;
+                mx = x - 0.1f;
+                mz = z - 0.1f;
 
                 distanceSquared = (int)((mx * mx) + (mz * mz));
                 if (thickness == 0)

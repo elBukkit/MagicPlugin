@@ -302,7 +302,7 @@ public class MagicController implements MageController {
 
     @Override
     public com.elmakers.mine.bukkit.api.magic.Mage getMage(Player player) {
-        return getMage((Entity) player, player);
+        return getMage(player, player);
     }
 
     @Override
@@ -2440,7 +2440,7 @@ public class MagicController implements MageController {
         if (Wand.WAND_SELF_DESTRUCT_KEY.isEmpty()) {
             Wand.WAND_SELF_DESTRUCT_KEY = null;
         }
-        Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", (int)Wand.HIDE_FLAGS);
+        Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", Wand.HIDE_FLAGS);
         Wand.Unbreakable = properties.getBoolean("wand_unbreakable", Wand.Unbreakable);
         Wand.Undroppable = properties.getBoolean("wand_undroppable", Wand.Undroppable);
 

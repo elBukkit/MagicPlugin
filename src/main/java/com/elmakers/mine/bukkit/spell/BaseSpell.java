@@ -1073,7 +1073,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         color = ConfigurationUtils.getColor(workingParameters, "color", color);
         particle = workingParameters.getString("particle", null);
 
-        double cooldownRemaining = (double)getRemainingCooldown() / 1000.0;
+        double cooldownRemaining = getRemainingCooldown() / 1000.0;
         String timeDescription = "";
         if (cooldownRemaining > 0) {
             if (cooldownRemaining > 60 * 60 ) {
@@ -1372,7 +1372,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     message = getMessage("cast_player", message);
                 } else if (targetEntity instanceof LivingEntity) {
                     message = getMessage("cast_livingentity", message);
-                } else if (targetEntity instanceof Entity) {
+                } else {
                     message = getMessage("cast_entity", message);
                 }
                 if (loud) {

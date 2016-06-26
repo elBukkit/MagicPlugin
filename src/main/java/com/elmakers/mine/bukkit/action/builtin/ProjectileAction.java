@@ -125,7 +125,7 @@ public class ProjectileAction  extends BaseProjectileAction
         ProjectileSource source = null;
         if (shootingEntity != null && shootingEntity instanceof ProjectileSource)
         {
-            source = (ProjectileSource)shootingEntity;
+            source = shootingEntity;
         }
         for (int i = 0; i < count; i++) {
 			try {

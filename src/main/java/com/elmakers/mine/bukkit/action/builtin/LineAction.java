@@ -45,7 +45,7 @@ public class LineAction extends CompoundAction
         reorient = parameters.getBoolean("reorient", false);
 
         Mage mage = context.getMage();
-        size = (int)(mage.getConstructionMultiplier() * (float)this.size);
+        size = (int)(mage.getConstructionMultiplier() * this.size);
     }
 
     @Override

@@ -556,7 +556,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void save(ConfigurationSection node)
     {
         super.save(node);
-        node.set("time_to_live", (Integer)timeToLive);
+        node.set("time_to_live", timeToLive);
         node.set("name", name);
         if (applyPhysics) node.set("apply_physics", true);
         if (consumed) node.set("consumed", true);

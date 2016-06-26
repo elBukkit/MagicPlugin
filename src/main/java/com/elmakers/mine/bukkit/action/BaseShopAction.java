@@ -571,7 +571,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         inventoryTitle = inventoryTitle.replace("$balance", balanceDescription);
 
         int invSize = itemStacks == null ? 0 : itemStacks.size();
-        invSize = (int)Math.ceil((float)invSize / 9.0f) * 9;
+        invSize = (int)Math.ceil(invSize / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         if (itemStacks != null)
         {

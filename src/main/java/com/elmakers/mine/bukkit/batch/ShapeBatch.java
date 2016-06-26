@@ -134,9 +134,9 @@ public class ShapeBatch extends BrushBatch {
 		switch(type) {
 			case SPHERE:
 				int maxDistanceSquared = radius * radius;
-				float mx = (float)x - 0.5f;
-				float my = (float)y - 0.5f;
-				float mz = (float)z - 0.5f;
+				float mx = x - 0.5f;
+				float my = y - 0.5f;
+				float mz = z - 0.5f;
 				
 				int distanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 				if (thickness == 0)

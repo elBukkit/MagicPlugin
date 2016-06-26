@@ -3573,7 +3573,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
             if (usesMana() && manaMode.useXPBar())
             {
-                playerProgress = Math.max(0, mana / (float) effectiveManaMax);
+                playerProgress = Math.max(0, mana / effectiveManaMax);
             }
             if (controller.isSPEnabled() && spMode.useXPNumber() && hasSpellProgression)
             {
@@ -3802,7 +3802,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                             if (LiveHotbarCooldown && requiredCost != null) {
                                 int mana = requiredCost.getMana();
                                 if (mana <= effectiveManaMax && effectiveManaRegeneration > 0) {
-                                    float remainingMana = (float)mana - this.mana;
+                                    float remainingMana = mana - this.mana;
                                     int targetManaTime = (int)Math.min(Math.ceil(remainingMana / effectiveManaRegeneration), 99);
                                     targetAmount = Math.max(targetManaTime, targetAmount);
                                 }

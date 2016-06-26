@@ -137,7 +137,7 @@ public class SkillsSelector implements GUIAction {
             player.sendMessage(messageTemplate.replace("$page", Integer.toString(page)));
             return;
         }
-        int invSize = (int)Math.ceil((float)skills.size() / 9.0f) * 9;
+        int invSize = (int)Math.ceil(skills.size() / 9.0f) * 9;
         String title = inventoryTitle;
         title = title
                 .replace("$pages", Integer.toString(numPages))
