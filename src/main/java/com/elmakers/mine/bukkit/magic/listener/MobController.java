@@ -31,7 +31,7 @@ public class MobController implements Listener {
         Set<String> mobKeys = configuration.getKeys(false);
         for (String mobKey : mobKeys) {
             ConfigurationSection mobConfiguration = configuration.getConfigurationSection(mobKey);
-            if (!mobConfiguration.getBoolean("enabled", true));
+            if (!mobConfiguration.getBoolean("enabled", true)) continue;
             EntityData mob = new EntityData(controller, mobConfiguration);
             mob.setKey(mobKey);
             mobs.put(mobKey, mob);
