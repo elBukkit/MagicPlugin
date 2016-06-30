@@ -4,9 +4,15 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MaterialPredicate;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
+import com.google.common.base.Splitter;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+
 import de.slikey.effectlib.util.ConfigUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 
@@ -168,7 +174,6 @@ public class ConfigurationUtils extends ConfigUtils {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     public static Material toMaterial(Object o)
     {
         if (o instanceof Material) {
@@ -178,20 +183,22 @@ public class ConfigurationUtils extends ConfigUtils {
             return Material.values()[(Integer)o];
         }
         if (o instanceof String) {
-            String matName = (String)o;
-            try
-            {
-                Integer value = Integer.parseInt(matName);
-                return Material.getMaterial(value);
-            }
-            catch(NumberFormatException ex)
-            {
-
-            }
-            return Material.getMaterial(matName.toUpperCase());
+            return toMaterial((String) o);
         }
 
         return null;
+    }
+
+    private static Material toMaterial(String matName) {
+        try {
+            Integer value = Integer.parseInt(matName);
+            @SuppressWarnings("deprecation")
+            Material mat = Material.getMaterial(value);
+            return mat;
+        } catch(NumberFormatException ignored) {
+        }
+
+        return Material.getMaterial(matName.toUpperCase());
     }
 
     public static MaterialAndData toMaterialAndData(Object o)
@@ -207,24 +214,50 @@ public class ConfigurationUtils extends ConfigUtils {
         return null;
     }
 
+    @Deprecated
+    public static Set<Material> getMaterials(ConfigurationSection node, String key) {
+        return getMaterialMap(node, key).keySet();
+    }
 
-    public static Set<Material> getMaterials(ConfigurationSection node, String key)
+    public static Multimap<Material, MaterialPredicate> getMaterialMap(ConfigurationSection node, String key)
     {
          List<String> materialData = node.getStringList(key);
          if (materialData == null) {
              return null;
          }
 
-         Set<Material> materials = new HashSet<Material>();
+         Multimap<Material, MaterialPredicate> materials = HashMultimap.create();
          for (String matName : materialData)
          {
-             Material material = toMaterial(matName);
+             Entry<Material, MaterialPredicate> material = toMaterialPredicate(matName);
+
              if (material != null) {
-                 materials.add(material);
+                 materials.put(material.getKey(), material.getValue());
              }
          }
 
          return materials;
+    }
+
+    private static Map.Entry<Material, MaterialPredicate> toMaterialPredicate(
+            String matName) {
+        Iterator<String> parts = Splitter.on('|').split(matName).iterator();
+
+        Material material = toMaterial(parts.next());
+        MaterialPredicate predicate = MaterialPredicate.TRUE;
+
+        if(material == null) {
+            return null;
+        } else if (parts.hasNext()) {
+            try {
+                predicate = new MaterialDataValuePredicate(
+                        (short) Integer.parseInt(parts.next()));
+            } catch (NumberFormatException e) {
+                // TODO: Log warning ?
+            }
+        }
+
+        return Maps.immutableEntry(material, predicate);
     }
 
     public static Set<Material> parseMaterials(String csv)

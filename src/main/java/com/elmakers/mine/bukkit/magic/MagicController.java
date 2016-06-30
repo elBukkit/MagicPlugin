@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.magic.MaterialPredicate;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -84,6 +85,10 @@ import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -527,20 +532,47 @@ public class MagicController implements MageController {
         return plugin.getLogger();
     }
 
+    private boolean checkPredicate(Multimap<Material, MaterialPredicate> predicates,
+            Block block) {
+        for(MaterialPredicate predicate : predicates.get(block.getType())) {
+            if(predicate.apply(block.getState())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkPredicate(Multimap<Material, MaterialPredicate> predicates,
+            ItemStack is) {
+        for(MaterialPredicate predicate : predicates.get(is.getType())) {
+            if(predicate.apply(is)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public boolean isIndestructible(Location location) {
         return isIndestructible(location.getBlock());
     }
 
     public boolean isIndestructible(Block block) {
-        return indestructibleMaterials.contains(block.getType());
+        return checkPredicate(indestructibleMaterials, block);
     }
 
     public boolean isDestructible(Block block) {
-        return destructibleMaterials.contains(block.getType());
+        return checkPredicate(destructibleMaterials, block);
     }
 
+    protected boolean isRestricted(Block material) {
+        return checkPredicate(restrictedMaterials, material);
+    }
+
+    @Deprecated
     protected boolean isRestricted(Material material) {
-        return restrictedMaterials.contains(material);
+        return restrictedMaterials.containsKey(material);
     }
 
     public boolean hasBuildPermission(Player player, Location location) {
@@ -2174,49 +2206,50 @@ public class MagicController implements MageController {
     public Set<String> getSpellOverrides(Mage mage, Location location) {
         return worldGuardManager.getSpellOverrides(mage.getPlayer(), location);
     }
-	
-	protected void loadMaterials(ConfigurationSection materialNode)
-	{
-		if (materialNode == null) return;
-		
-		Set<String> keys = materialNode.getKeys(false);
-		for (String key : keys) {
-			materialSets.put(key, ConfigurationUtils.getMaterials(materialNode, key));
-		}
-		if (materialSets.containsKey("building")) {
-			buildingMaterials = materialSets.get("building");
-		}
-		if (materialSets.containsKey("indestructible")) {
-			indestructibleMaterials = materialSets.get("indestructible");
-		}
-		if (materialSets.containsKey("restricted")) {
-			restrictedMaterials = materialSets.get("restricted");
-		}
-		if (materialSets.containsKey("destructible")) {
-			destructibleMaterials = materialSets.get("destructible");
-		}
-        if (materialSets.containsKey("interactible")) {
-            interactibleMaterials = materialSets.get("interactible");
+
+    protected void loadMaterials(ConfigurationSection materialNode) {
+        if (materialNode == null) return;
+
+        Set<String> keys = materialNode.getKeys(false);
+
+        for (String key : keys) {
+            materialMaps.put(key, ConfigurationUtils.getMaterialMap(materialNode, key));
         }
-        if (materialSets.containsKey("containers")) {
-            containerMaterials = materialSets.get("containers");
+
+        if (materialMaps.containsKey("building")) {
+            buildingMaterials = materialMaps.get("building");
         }
-        if (materialSets.containsKey("wearable")) {
-            wearableMaterials = materialSets.get("wearable");
+        if (materialMaps.containsKey("indestructible")) {
+            indestructibleMaterials = materialMaps.get("indestructible");
         }
-        if (materialSets.containsKey("melee")) {
-            meleeMaterials = materialSets.get("melee");
+        if (materialMaps.containsKey("restricted")) {
+            restrictedMaterials = materialMaps.get("restricted");
         }
-        if (materialSets.containsKey("attachable")) {
-            com.elmakers.mine.bukkit.block.UndoList.attachables = materialSets.get("attachable");
+        if (materialMaps.containsKey("destructible")) {
+            destructibleMaterials = materialMaps.get("destructible");
         }
-        if (materialSets.containsKey("attachable_wall")) {
-            com.elmakers.mine.bukkit.block.UndoList.attachablesWall = materialSets.get("attachable_wall");
+        if (materialMaps.containsKey("interactible")) {
+            interactibleMaterials = materialMaps.get("interactible");
         }
-        if (materialSets.containsKey("attachable_double")) {
-            com.elmakers.mine.bukkit.block.UndoList.attachablesDouble = materialSets.get("attachable_double");
+        if (materialMaps.containsKey("containers")) {
+            containerMaterials = materialMaps.get("containers");
         }
-	}
+        if (materialMaps.containsKey("wearable")) {
+            wearableMaterials = materialMaps.get("wearable");
+        }
+        if (materialMaps.containsKey("melee")) {
+            meleeMaterials = materialMaps.get("melee");
+        }
+        if (materialMaps.containsKey("attachable")) {
+            com.elmakers.mine.bukkit.block.UndoList.attachables = materialMaps.get("attachable").keySet();
+        }
+        if (materialMaps.containsKey("attachable_wall")) {
+            com.elmakers.mine.bukkit.block.UndoList.attachablesWall = materialMaps.get("attachable_wall").keySet();
+        }
+        if (materialMaps.containsKey("attachable_double")) {
+            com.elmakers.mine.bukkit.block.UndoList.attachablesDouble = materialMaps.get("attachable_double").keySet();
+        }
+    }
 
     public void loadInitialProperties(ConfigurationSection properties) {
         allPvpRestricted = properties.getBoolean("pvp_restricted", allPvpRestricted);
@@ -2904,7 +2937,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isLocked(Block block) {
-        return protectLocked && containerMaterials.contains(block.getType()) && CompatibilityUtils.isLocked(block);
+        return protectLocked && checkPredicate(containerMaterials, block) && CompatibilityUtils.isLocked(block);
     }
 	
 	protected boolean addLostWandMarker(LostWand lostWand) {
@@ -3188,38 +3221,48 @@ public class MagicController implements MageController {
 		return createWorldsEnabled;
 	}
 
-	@Override
-    public Set<Material> getMaterialSet(String name)
-	{
+    @Override
+    public Multimap<Material, MaterialPredicate> getMaterialMap(String name) {
+        // TODO: use precondition here
         if (name == null || name.isEmpty()) return null;
-        
-        Set<Material> materials = materialSets.get(name);
-        if (materials == null) {
-            String materialString = name;
-            if (name.equals("*")) {
-                materials = new WildcardHashSet<Material>();
-            } else if (name.startsWith("!")) {
-                materialString = materialString.substring(1);
-                materials = new NegatedHashSet<Material>();
+
+        Multimap<Material, MaterialPredicate> materials = materialMaps.get(name);
+
+        if (materials != null) {
+            return materials;
+        }
+
+        String materialString = name;
+
+        if (name.equals("*")) {
+            return new NegatedPredicateMap();
+        } else if (name.startsWith("!")) {
+            materialString = materialString.substring(1);
+            materials = new NegatedPredicateMap();
+        } else {
+            materials = HashMultimap.create();
+        }
+        String[] nameList = StringUtils.split(materialString, ',');
+        for (String matName : nameList)
+        {
+            if (materialMaps.containsKey(matName)) {
+                materials.putAll(materialMaps.get(matName));
             } else {
-                materials = new HashSet<Material>();
-            }
-            String[] nameList = StringUtils.split(materialString, ',');
-            for (String matName : nameList)
-            {
-                if (materialSets.containsKey(matName)) {
-                    materials.addAll(materialSets.get(matName));
-                } else {
-                    Material material = ConfigurationUtils.toMaterial(matName);
-                    if (material != null) {
-                        materials.add(material);
-                    }
+                Material material = ConfigurationUtils.toMaterial(matName);
+                if (material != null) {
+                    materials.put(material, MaterialPredicate.TRUE);
                 }
             }
-            materialSets.put(name, materials);
         }
-		return materials;
-	}
+
+        materialMaps.put(name, materials);
+        return materials;
+    }
+
+    @Override
+    public Set<Material> getMaterialSet(String name) {
+        return getMaterialMap(name).keySet();
+    }
 	
 	@Override
 	public void sendToMages(String message, Location location) {
@@ -3282,20 +3325,35 @@ public class MagicController implements MageController {
 	@Override
 	public Set<Material> getBuildingMaterials()
 	{
-		return buildingMaterials;
+		return buildingMaterials.keySet();
 	}
+
+    @Override
+    public Multimap<Material, MaterialPredicate> getBuildingMaterialMap() {
+        return buildingMaterials;
+    }
 
 	@Override
 	public Set<Material> getDestructibleMaterials()
 	{
-		return destructibleMaterials;
+		return destructibleMaterials.keySet();
 	}
+
+    @Override
+    public Multimap<Material, MaterialPredicate> getDestructibleMaterialMap() {
+        return destructibleMaterials;
+    }
 
 	@Override
 	public Set<Material> getRestrictedMaterials()
 	{
-		return restrictedMaterials;
+		return restrictedMaterials.keySet();
 	}
+
+    @Override
+    public Multimap<Material, MaterialPredicate> getRestrictedMaterialMap() {
+        return restrictedMaterials;
+    }
 	
 	@Override
 	public int getMessageThrottle()
@@ -3312,7 +3370,7 @@ public class MagicController implements MageController {
     @Override
 	public Collection<String> getMaterialSets()
 	{
-		return materialSets.keySet();
+		return materialMaps.keySet();
 	}
 	
 	@Override
@@ -4363,19 +4421,19 @@ public class MagicController implements MageController {
     }
 
     public boolean isContainer(Block block) {
-        return block != null && containerMaterials.contains(block.getType());
+        return block != null && checkPredicate(containerMaterials, block);
     }
 
     public boolean isMeleeWeapon(ItemStack item) {
-        return item != null && meleeMaterials.contains(item.getType());
+        return item != null && checkPredicate(meleeMaterials, item);
     }
 
     public boolean isWearable(ItemStack item) {
-        return item != null && wearableMaterials.contains(item.getType());
+        return item != null && checkPredicate(wearableMaterials, item);
     }
 
     public boolean isInteractable(Block block) {
-        return block != null && interactibleMaterials.contains(block.getType());
+        return block != null && checkPredicate(interactibleMaterials, block);
     }
 
     public boolean isSpellDroppingEnabled() {
@@ -4812,16 +4870,16 @@ public class MagicController implements MageController {
     private boolean 							loadDefaultMobs 			= true;
     private boolean 							loadDefaultItems 			= true;
 
-    private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
-    private Set<Material>                       buildingMaterials               = new HashSet<Material>();
-    private Set<Material>                       indestructibleMaterials         = new HashSet<Material>();
-    private Set<Material>                       restrictedMaterials	 	        = new HashSet<Material>();
-    private Set<Material>                       destructibleMaterials           = new HashSet<Material>();
-    private Set<Material>                       interactibleMaterials           = new HashSet<Material>();
-    private Set<Material>                       containerMaterials              = new HashSet<Material>();
-    private Set<Material>                       wearableMaterials               = new HashSet<Material>();
-    private Set<Material>                       meleeMaterials                  = new HashSet<Material>();
-    private Map<String, Set<Material>>		    materialSets				    = new HashMap<String, Set<Material>>();
+    private MaterialAndData                                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
+    private Multimap<Material,MaterialPredicate>                buildingMaterials               = HashMultimap.create();
+    private Multimap<Material,MaterialPredicate>                indestructibleMaterials         = HashMultimap.create();
+    private Multimap<Material,MaterialPredicate>                restrictedMaterials             = HashMultimap.create();
+    private Multimap<Material,MaterialPredicate>                destructibleMaterials           = HashMultimap.create();
+    private Multimap<Material,MaterialPredicate>                interactibleMaterials           = HashMultimap.create();
+    private Multimap<Material,MaterialPredicate>                containerMaterials              = HashMultimap.create();
+    private Multimap<Material,MaterialPredicate>                wearableMaterials               = HashMultimap.create();
+    private Multimap<Material,MaterialPredicate>                meleeMaterials                  = HashMultimap.create();
+    private Map<String, Multimap<Material,MaterialPredicate>>   materialMaps                    = Maps.newHashMap();
 
     private boolean                             backupInventories               = true;
     private int								    undoTimeWindow				    = 6000;
