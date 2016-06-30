@@ -4,8 +4,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.base.Preconditions;
 
 /**
  * Creates new action instances from a "class" parameter usually obtained from a
@@ -16,8 +19,30 @@ public class ActionFactory {
     private static List<ActionResolver> resolvers = new ArrayList<ActionResolver>();
 
     public static void registerResolver(ActionResolver actionResolver) {
+        registerResolver(actionResolver, false);
+    }
+
+    public static void registerResolver(ActionResolver actionResolver,
+            boolean highPriority) {
+        Preconditions.checkNotNull(actionResolver);
+
         if (!resolvers.contains(actionResolver)) {
-            resolvers.add(actionResolver);
+            if (highPriority) {
+                resolvers.add(0, actionResolver);
+            } else {
+                resolvers.add(actionResolver);
+            }
+        }
+    }
+
+    public static void removeResolver(ActionResolver actionResolver) {
+        Preconditions.checkNotNull(actionResolver);
+        Iterator<ActionResolver> it = resolvers.iterator();
+
+        while (it.hasNext()) {
+            if (it.next().equals(actionResolver)) {
+                it.remove();
+            }
         }
     }
 

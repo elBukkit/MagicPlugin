@@ -43,7 +43,7 @@ public class ActionFactoryTest {
     @Test
     public void testCustomResolver() throws ActionFactoryException {
         final ActionFactoryException e = new ActionFactoryException("");
-        ActionFactory.registerResolver(new ActionResolver() {
+        ActionResolver resolver = new ActionResolver() {
             @Override
             public ActionConstructor resolve(String className,
                     List<String> attempts) {
@@ -55,13 +55,16 @@ public class ActionFactoryTest {
                     }
                 };
             }
-        });
+        };
+        ActionFactory.registerResolver(resolver);
 
         try {
             ActionFactory.construct("non-existing");
         } catch (ActionFactoryException e2) {
             assertEquals(e, e2);
             return;
+        } finally {
+            ActionFactory.removeResolver(resolver);
         }
 
         fail();
