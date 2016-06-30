@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,10 +19,28 @@ import com.google.common.base.Preconditions;
 public class ActionFactory {
     private static List<ActionResolver> resolvers = new ArrayList<ActionResolver>();
 
+    /**
+     * @return An unmodifiable list of action resolvers.
+     */
+    public static List<ActionResolver> getActionResolvers() {
+        return Collections.unmodifiableList(resolvers);
+    }
+
     public static void registerResolver(ActionResolver actionResolver) {
         registerResolver(actionResolver, false);
     }
 
+    /**
+     * Registers an action resolver.
+     *
+     * @param actionResolver
+     *            The action resolver to register.
+     * @param highPriority
+     *            When this is set to true, the resolver is registered such that
+     *            it is used before any of the currently registered resolvers.
+     * @throws NullPointerException
+     *             When actionResolver is null.
+     */
     public static void registerResolver(ActionResolver actionResolver,
             boolean highPriority) {
         Preconditions.checkNotNull(actionResolver);
@@ -35,6 +54,14 @@ public class ActionFactory {
         }
     }
 
+    /**
+     * Unregister a resolver.
+     *
+     * @param actionResolver
+     *            The action resolver to remove.
+     * @throws NullPointerException
+     *             When actionResolver is null.
+     */
     public static void removeResolver(ActionResolver actionResolver) {
         Preconditions.checkNotNull(actionResolver);
         Iterator<ActionResolver> it = resolvers.iterator();
