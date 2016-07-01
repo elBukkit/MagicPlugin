@@ -34,21 +34,9 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
             context.playEffects("undo");
         }
 
-        Set<Material> addToAttachables = controller.getMaterialSet("attachable");
-        if (addToAttachables != null) {
-            attachables.addAll(addToAttachables);
-        }
-        addToAttachables = controller.getMaterialSet("attachable_wall");
-        if (addToAttachables != null) {
-            attachables.addAll(addToAttachables);
-        }
-        addToAttachables = controller.getMaterialSet("attachable_double");
-        if (addToAttachables != null) {
-            attachables.addAll(addToAttachables);
-        }
-        addToAttachables = controller.getMaterialSet("delayed");
-        if (addToAttachables != null) {
-            attachables.addAll(addToAttachables);
+        for(String set : new String[] { "attachable", "attachable_wall",
+                "attachable_double", "delayed"}) {
+            attachables.addAll(controller.getMaterialMap(set).keySet());
         }
 
         // Sort so attachable items don't break

@@ -1,33 +1,26 @@
 package com.elmakers.mine.bukkit.magic;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Set;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.api.magic.MaterialPredicate;
-import com.google.common.collect.ForwardingMultimap;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import com.elmakers.mine.bukkit.block.NegatedHashSet;
 
-public class NegatedPredicateMap
-        extends ForwardingMultimap<Material, MaterialPredicate> {
-    private final Multimap<Material, MaterialPredicate> delegate = HashMultimap
-            .create();
-
+public class NegatedPredicateMap extends SimpleMaterialPredicateMap {
     @Override
-    public Collection<MaterialPredicate> get(Material mat) {
-        Collection<MaterialPredicate> predicates = super.get(mat);
-
-        if (predicates.size() == 0) {
-            return Collections.singletonList(MaterialPredicate.TRUE);
-        }
-
-        return new NegatedPredicateCollection(predicates);
+    public Set<Material> getLegacyMaterials() {
+        return new NegatedHashSet<Material>(super.getLegacyMaterials());
     }
 
     @Override
-    protected Multimap<Material, MaterialPredicate> delegate() {
-        return delegate;
+    public boolean apply(BlockState state) {
+        return !super.apply(state);
+    }
+
+    @Override
+    public boolean apply(ItemStack is) {
+        return !super.apply(is);
     }
 }

@@ -8,10 +8,9 @@ import com.elmakers.mine.bukkit.api.magic.MaterialPredicate;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
+import com.elmakers.mine.bukkit.magic.SimpleMaterialPredicateMap;
 import com.google.common.base.Splitter;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
 import de.slikey.effectlib.util.ConfigUtils;
 import de.slikey.effectlib.util.ParticleEffect;
@@ -216,17 +215,17 @@ public class ConfigurationUtils extends ConfigUtils {
 
     @Deprecated
     public static Set<Material> getMaterials(ConfigurationSection node, String key) {
-        return getMaterialMap(node, key).keySet();
+        return getMaterialMap(node, key).getLegacyMaterials();
     }
 
-    public static Multimap<Material, MaterialPredicate> getMaterialMap(ConfigurationSection node, String key)
+    public static SimpleMaterialPredicateMap getMaterialMap(ConfigurationSection node, String key)
     {
          List<String> materialData = node.getStringList(key);
          if (materialData == null) {
              return null;
          }
 
-         Multimap<Material, MaterialPredicate> materials = HashMultimap.create();
+         SimpleMaterialPredicateMap materials = new SimpleMaterialPredicateMap();
          for (String matName : materialData)
          {
              Entry<Material, MaterialPredicate> material = toMaterialPredicate(matName);

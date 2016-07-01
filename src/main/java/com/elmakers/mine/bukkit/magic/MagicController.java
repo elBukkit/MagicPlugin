@@ -28,8 +28,6 @@ import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.block.NegatedHashSet;
-import com.elmakers.mine.bukkit.block.WildcardHashSet;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -85,7 +83,6 @@ import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
@@ -532,47 +529,25 @@ public class MagicController implements MageController {
         return plugin.getLogger();
     }
 
-    private boolean checkPredicate(Multimap<Material, MaterialPredicate> predicates,
-            Block block) {
-        for(MaterialPredicate predicate : predicates.get(block.getType())) {
-            if(predicate.apply(block.getState())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private boolean checkPredicate(Multimap<Material, MaterialPredicate> predicates,
-            ItemStack is) {
-        for(MaterialPredicate predicate : predicates.get(is.getType())) {
-            if(predicate.apply(is)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public boolean isIndestructible(Location location) {
         return isIndestructible(location.getBlock());
     }
 
     public boolean isIndestructible(Block block) {
-        return checkPredicate(indestructibleMaterials, block);
+        return indestructibleMaterials.apply(block.getState());
     }
 
     public boolean isDestructible(Block block) {
-        return checkPredicate(destructibleMaterials, block);
+        return destructibleMaterials.apply(block.getState());
     }
 
     protected boolean isRestricted(Block material) {
-        return checkPredicate(restrictedMaterials, material);
+        return restrictedMaterials.apply(material.getState());
     }
 
     @Deprecated
     protected boolean isRestricted(Material material) {
-        return restrictedMaterials.containsKey(material);
+        return restrictedMaterials.getLegacyMaterials().contains(material);
     }
 
     public boolean hasBuildPermission(Player player, Location location) {
@@ -2937,7 +2912,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isLocked(Block block) {
-        return protectLocked && checkPredicate(containerMaterials, block) && CompatibilityUtils.isLocked(block);
+        return protectLocked && containerMaterials.apply(block.getState()) && CompatibilityUtils.isLocked(block);
     }
 	
 	protected boolean addLostWandMarker(LostWand lostWand) {
@@ -3226,7 +3201,7 @@ public class MagicController implements MageController {
         // TODO: use precondition here
         if (name == null || name.isEmpty()) return null;
 
-        Multimap<Material, MaterialPredicate> materials = materialMaps.get(name);
+        SimpleMaterialPredicateMap materials = materialMaps.get(name);
 
         if (materials != null) {
             return materials;
@@ -3240,7 +3215,7 @@ public class MagicController implements MageController {
             materialString = materialString.substring(1);
             materials = new NegatedPredicateMap();
         } else {
-            materials = HashMultimap.create();
+            materials = new SimpleMaterialPredicateMap();
         }
         String[] nameList = StringUtils.split(materialString, ',');
         for (String matName : nameList)
@@ -3329,7 +3304,7 @@ public class MagicController implements MageController {
 	}
 
     @Override
-    public Multimap<Material, MaterialPredicate> getBuildingMaterialMap() {
+    public SimpleMaterialPredicateMap getBuildingMaterialMap() {
         return buildingMaterials;
     }
 
@@ -3340,7 +3315,7 @@ public class MagicController implements MageController {
 	}
 
     @Override
-    public Multimap<Material, MaterialPredicate> getDestructibleMaterialMap() {
+    public SimpleMaterialPredicateMap getDestructibleMaterialMap() {
         return destructibleMaterials;
     }
 
@@ -3351,7 +3326,7 @@ public class MagicController implements MageController {
 	}
 
     @Override
-    public Multimap<Material, MaterialPredicate> getRestrictedMaterialMap() {
+    public SimpleMaterialPredicateMap getRestrictedMaterialMap() {
         return restrictedMaterials;
     }
 	
@@ -4421,19 +4396,19 @@ public class MagicController implements MageController {
     }
 
     public boolean isContainer(Block block) {
-        return block != null && checkPredicate(containerMaterials, block);
+        return block != null && containerMaterials.apply(block.getState());
     }
 
     public boolean isMeleeWeapon(ItemStack item) {
-        return item != null && checkPredicate(meleeMaterials, item);
+        return item != null && meleeMaterials.apply(item);
     }
 
     public boolean isWearable(ItemStack item) {
-        return item != null && checkPredicate(wearableMaterials, item);
+        return item != null && wearableMaterials.apply(item);
     }
 
     public boolean isInteractable(Block block) {
-        return block != null && checkPredicate(interactibleMaterials, block);
+        return block != null && interactibleMaterials.apply(block.getState());
     }
 
     public boolean isSpellDroppingEnabled() {
@@ -4870,16 +4845,16 @@ public class MagicController implements MageController {
     private boolean 							loadDefaultMobs 			= true;
     private boolean 							loadDefaultItems 			= true;
 
-    private MaterialAndData                                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
-    private Multimap<Material,MaterialPredicate>                buildingMaterials               = HashMultimap.create();
-    private Multimap<Material,MaterialPredicate>                indestructibleMaterials         = HashMultimap.create();
-    private Multimap<Material,MaterialPredicate>                restrictedMaterials             = HashMultimap.create();
-    private Multimap<Material,MaterialPredicate>                destructibleMaterials           = HashMultimap.create();
-    private Multimap<Material,MaterialPredicate>                interactibleMaterials           = HashMultimap.create();
-    private Multimap<Material,MaterialPredicate>                containerMaterials              = HashMultimap.create();
-    private Multimap<Material,MaterialPredicate>                wearableMaterials               = HashMultimap.create();
-    private Multimap<Material,MaterialPredicate>                meleeMaterials                  = HashMultimap.create();
-    private Map<String, Multimap<Material,MaterialPredicate>>   materialMaps                    = Maps.newHashMap();
+    private MaterialAndData                             redstoneReplacement     = new MaterialAndData(Material.OBSIDIAN);
+    private SimpleMaterialPredicateMap                  buildingMaterials       = new SimpleMaterialPredicateMap();
+    private SimpleMaterialPredicateMap                  indestructibleMaterials = new SimpleMaterialPredicateMap();
+    private SimpleMaterialPredicateMap                  restrictedMaterials     = new SimpleMaterialPredicateMap();
+    private SimpleMaterialPredicateMap                  destructibleMaterials   = new SimpleMaterialPredicateMap();
+    private SimpleMaterialPredicateMap                  interactibleMaterials   = new SimpleMaterialPredicateMap();
+    private SimpleMaterialPredicateMap                  containerMaterials      = new SimpleMaterialPredicateMap();
+    private SimpleMaterialPredicateMap                  wearableMaterials       = new SimpleMaterialPredicateMap();
+    private SimpleMaterialPredicateMap                  meleeMaterials          = new SimpleMaterialPredicateMap();
+    private Map<String, SimpleMaterialPredicateMap>     materialMaps            = Maps.newHashMap();
 
     private boolean                             backupInventories               = true;
     private int								    undoTimeWindow				    = 6000;
