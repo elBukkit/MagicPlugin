@@ -47,6 +47,7 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -63,6 +64,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MaterialPredicateMap;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -234,35 +236,62 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private float								backfireChance			= 0.0f;
 
     private long 								lastMessageSent 			= 0;
-    private Set<Material>						preventPassThroughMaterials = null;
-    private Set<Material>                       passthroughMaterials = null;
-    private Set<Material>						unsafeMaterials = null;
+    private MaterialPredicateMap                preventPassThroughMaterials = null;
+    private MaterialPredicateMap                passthroughMaterials = null;
+    private MaterialPredicateMap                unsafeMaterials = null;
 
+    @Deprecated
     public boolean allowPassThrough(Material mat)
     {
         if (mage != null && mage.isSuperPowered()) {
             return true;
         }
-        if (passthroughMaterials != null && passthroughMaterials.contains(mat)) {
+        if (passthroughMaterials != null && passthroughMaterials.getLegacyMaterials().contains(mat)) {
             return true;
         }
-        return preventPassThroughMaterials == null || !preventPassThroughMaterials.contains(mat);
+        return preventPassThroughMaterials == null || !preventPassThroughMaterials.getLegacyMaterials().contains(mat);
     }
 
+    public boolean allowPassThrough(BlockState mat)
+    {
+        if (mage != null && mage.isSuperPowered()) {
+            return true;
+        }
+        if (passthroughMaterials != null && passthroughMaterials.apply(mat)) {
+            return true;
+        }
+        return preventPassThroughMaterials == null || !preventPassThroughMaterials.apply(mat);
+    }
+
+    @Deprecated
     public boolean isPassthrough(Material mat)
     {
-        return passthroughMaterials != null && passthroughMaterials.contains(mat);
+        return passthroughMaterials != null && passthroughMaterials.getLegacyMaterials().contains(mat);
+    }
+
+    public boolean isPassthrough(BlockState mat)
+    {
+        return passthroughMaterials != null && passthroughMaterials.apply(mat);
     }
 
     /*
      * Ground / location search and test functions
      */
+    @Deprecated
     public boolean isOkToStandIn(Material mat)
     {
         if (isHalfBlock(mat)) {
             return false;
         }
-        return passthroughMaterials.contains(mat) && !unsafeMaterials.contains(mat);
+        return passthroughMaterials.getLegacyMaterials().contains(mat) && !unsafeMaterials.getLegacyMaterials().contains(mat);
+    }
+
+    public boolean isOkToStandIn(BlockState mat)
+    {
+        if (isHalfBlock(mat.getType())) {
+            return false;
+        }
+        return passthroughMaterials.apply(mat) && !unsafeMaterials.apply(mat);
     }
 
     public boolean isWater(Material mat)
@@ -282,12 +311,21 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return (mat == Material.STEP || mat == Material.WOOD_STEP);
     }
 
+    @Deprecated
     public boolean isOkToStandOn(Material mat)
     {
         if (isHalfBlock(mat)) {
             return true;
         }
-        return (mat != Material.AIR && !unsafeMaterials.contains(mat) && !passthroughMaterials.contains(mat));
+        return (mat != Material.AIR && !unsafeMaterials.getLegacyMaterials().contains(mat) && !passthroughMaterials.getLegacyMaterials().contains(mat));
+    }
+
+    public boolean isOkToStandOn(BlockState mat)
+    {
+        if (isHalfBlock(mat.getType())) {
+            return true;
+        }
+        return mat.getType() != Material.AIR && !unsafeMaterials.apply(mat) && !passthroughMaterials.apply(mat);
     }
 
     public boolean isSafeLocation(Block block)
@@ -1506,21 +1544,21 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
 
         if (parameters.contains("prevent_passthrough")) {
-            preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));
+            preventPassThroughMaterials = controller.getMaterialMap(parameters.getString("prevent_passthrough"));
         } else {
-            preventPassThroughMaterials = controller.getMaterialSet("indestructible");
+            preventPassThroughMaterials = controller.getMaterialMap("indestructible");
         }
 
         if (parameters.contains("passthrough")) {
-            passthroughMaterials = controller.getMaterialSet(parameters.getString("passthrough"));
+            passthroughMaterials = controller.getMaterialMap(parameters.getString("passthrough"));
         } else {
-            passthroughMaterials = controller.getMaterialSet("passthrough");
+            passthroughMaterials = controller.getMaterialMap("passthrough");
         }
 
         if (parameters.contains("unsafe")) {
-            unsafeMaterials = controller.getMaterialSet(parameters.getString("unsafe"));
+            unsafeMaterials = controller.getMaterialMap(parameters.getString("unsafe"));
         } else {
-            unsafeMaterials = controller.getMaterialSet("unsafe");
+            unsafeMaterials = controller.getMaterialMap("unsafe");
         }
 
         bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);

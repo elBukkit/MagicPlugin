@@ -4,22 +4,21 @@ import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.magic.MaterialPredicateMap;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Set;
 
 public class CheckBlockAction extends CompoundAction {
-    private Set<Material> allowed;
+    private MaterialPredicateMap allowed;
     
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
     {
         super.initialize(spell, parameters);
-        allowed = spell.getController().getMaterialSet(parameters.getString("allowed"));
+        allowed = spell.getController().getMaterialMap(parameters.getString("allowed"));
     }
     
     protected boolean isAllowed(CastContext context) {
@@ -29,7 +28,7 @@ public class CheckBlockAction extends CompoundAction {
             return false;
         }
         if (allowed != null) {
-            if (!allowed.contains(block.getType())) return false;
+            if (!allowed.apply(block.getState())) return false;
         } else {
             if (brush != null && brush.isErase()) {
                 if (!context.hasBreakPermission(block)) {

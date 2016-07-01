@@ -46,11 +46,11 @@ public class TeleportAction extends BaseTeleportAction
             Block firstBlock = context.getInteractBlock();
 			if (firstBlock == null) return SpellResult.NO_TARGET;
 
-			if (!context.allowPassThrough(firstBlock.getType()))
+			if (!context.allowPassThrough(firstBlock.getState()))
 			{
 				return SpellResult.NO_TARGET;
 			}
-			if (!context.isPassthrough(firstBlock.getType())) {
+			if (!context.isPassthrough(firstBlock.getState())) {
                 context.retarget(passthroughRange, 0, passthroughRange, 0, false, -1, true, 1);
                 isPassthrough = true;
 				context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting passthrough engaged", 11);
@@ -116,9 +116,9 @@ public class TeleportAction extends BaseTeleportAction
 			Block faceOneUp = face.getRelative(BlockFace.UP);
 			Block faceTwoUp = faceOneUp.getRelative(BlockFace.UP);
 			
-			if (!autoPassthrough && (!context.isTransparent(oneUp.getType()) || !context.isTransparent(twoUp.getType())
-                    || !context.isTransparent(face.getType()) || !context.isTransparent(faceOneUp.getType())
-                    || !context.isTransparent(faceTwoUp.getType())))
+			if (!autoPassthrough && (!context.isTransparent(oneUp.getState()) || !context.isTransparent(twoUp.getState())
+                    || !context.isTransparent(face.getState()) || !context.isTransparent(faceOneUp.getState())
+                    || !context.isTransparent(faceTwoUp.getState())))
             {
 				ledge = null;
 			}
@@ -128,17 +128,17 @@ public class TeleportAction extends BaseTeleportAction
 				while
 				(
 						(autoPassthrough ||
-                            (   context.isTransparent(face.getType())
-                            &&  context.isTransparent(faceOneUp.getType())
-                            &&  context.isTransparent(faceTwoUp.getType())
+                            (   context.isTransparent(face.getState())
+                            &&  context.isTransparent(faceOneUp.getState())
+                            &&  context.isTransparent(faceTwoUp.getState())
                             )
                         )
 					&&	distanceUp < ledgeSearchDistance
-					&&	context.isOkToStandIn(inFront.getType())
+					&&	context.isOkToStandIn(inFront.getState())
 					&&	(
-								!context.isOkToStandOn(ledge.getType())
-						||		!context.isOkToStandIn(oneUp.getType())
-						||		!context.isOkToStandIn(twoUp.getType())
+								!context.isOkToStandOn(ledge.getState())
+						||		!context.isOkToStandIn(oneUp.getState())
+						||		!context.isOkToStandIn(twoUp.getState())
 						)
 				) 
 				{
@@ -155,7 +155,7 @@ public class TeleportAction extends BaseTeleportAction
             }
 		}
 
-		if (ledge != null && context.isOkToStandOn(ledge.getType()))
+		if (ledge != null && context.isOkToStandOn(ledge.getState()))
 		{
 			destination = ledge.getRelative(BlockFace.UP);
 			context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting hit ledge at " +
@@ -165,12 +165,12 @@ public class TeleportAction extends BaseTeleportAction
 		}
 
 		Block oneUp = destination.getRelative(BlockFace.UP);
-		if (!context.isOkToStandIn(destination.getType()) || !context.isOkToStandIn(oneUp.getType()))
+		if (!context.isOkToStandIn(destination.getState()) || !context.isOkToStandIn(oneUp.getState()))
 		{
 			context.getMage().sendDebugMessage(ChatColor.RED + "Teleporting entity failed, can't stand in " +
 					ChatColor.DARK_RED + destination.getType() +
 					ChatColor.RED + " or " +
-					ChatColor.DARK_RED + oneUp.getType()
+					ChatColor.DARK_RED + oneUp.getState()
 					, 11);
 			return SpellResult.NO_TARGET;
 		}

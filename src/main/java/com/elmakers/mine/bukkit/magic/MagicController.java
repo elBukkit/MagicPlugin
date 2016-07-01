@@ -84,7 +84,6 @@ import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -95,6 +94,7 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -542,8 +542,13 @@ public class MagicController implements MageController {
     }
 
     protected boolean isRestricted(Block material) {
-        return restrictedMaterials.apply(material.getState());
+        return isRestricted(material.getState());
     }
+
+    protected boolean isRestricted(BlockState state) {
+        return restrictedMaterials.apply(state);
+    }
+
 
     @Deprecated
     protected boolean isRestricted(Material material) {
@@ -3197,7 +3202,7 @@ public class MagicController implements MageController {
 	}
 
     @Override
-    public Multimap<Material, MaterialPredicate> getMaterialMap(String name) {
+    public SimpleMaterialPredicateMap getMaterialMap(String name) {
         // TODO: use precondition here
         if (name == null || name.isEmpty()) return null;
 

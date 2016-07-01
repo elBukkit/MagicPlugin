@@ -23,6 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -565,14 +566,18 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public boolean isOkToStandIn(Material material)
-    {
+    @Deprecated
+    public boolean isOkToStandIn(Material material) {
         return baseSpell != null ? baseSpell.isOkToStandIn(material) : true;
     }
 
     @Override
-    public boolean isWater(Material mat)
-    {
+    public boolean isOkToStandIn(BlockState material) {
+        return baseSpell != null ? baseSpell.isOkToStandIn(material) : true;
+    }
+
+    @Override
+    public boolean isWater(Material mat) {
         return (mat == Material.WATER || mat == Material.STATIONARY_WATER);
     }
 
@@ -583,7 +588,20 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public boolean isOkToStandOn(BlockState state)
+    {
+        return isOkToStandOn(state.getType());
+    }
+
+    @Override
+    @Deprecated
     public boolean allowPassThrough(Material material)
+    {
+        return baseSpell != null ? baseSpell.allowPassThrough(material) : true;
+    }
+
+    @Override
+    public boolean allowPassThrough(BlockState material)
     {
         return baseSpell != null ? baseSpell.allowPassThrough(material) : true;
     }
@@ -674,6 +692,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    @Deprecated
     public boolean isTransparent(Material material)
     {
         if (targetingSpell != null)
@@ -684,6 +703,17 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public boolean isTransparent(BlockState material)
+    {
+        if (targetingSpell != null) {
+            return targetingSpell.isTransparent(material);
+        }
+
+        return material.getType().isTransparent();
+    }
+
+    @Override
+    @Deprecated
     public boolean isPassthrough(Material material)
     {
         if (baseSpell != null)
@@ -692,6 +722,17 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
         return material.isTransparent();
     }
+
+    @Override
+    public boolean isPassthrough(BlockState state)
+    {
+        if (baseSpell != null) {
+            return baseSpell.isPassthrough(state);
+        }
+
+        return state.getType().isTransparent();
+    }
+
 
     @Override
     public boolean isDestructible(Block block)
@@ -1014,6 +1055,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    @Deprecated
     public Set<Material> getMaterialSet(String key) {
         return getController().getMaterialSet(key);
     }
@@ -1071,7 +1113,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public boolean isReflective(Block block) {
         if (block == null) return false;
-        if (targetingSpell != null && targetingSpell.isReflective(block.getType())) {
+        if (targetingSpell != null && targetingSpell.isReflective(block.getState())) {
             return true;
         }
         return com.elmakers.mine.bukkit.block.UndoList.isReflective(block);
@@ -1081,7 +1123,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public Double getReflective(Block block) {
         if (block == null) return null;
 
-        if (targetingSpell != null && targetingSpell.isReflective(block.getType())) {
+        if (targetingSpell != null && targetingSpell.isReflective(block.getState())) {
             return 1.0;
         }
 

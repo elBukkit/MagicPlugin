@@ -36,6 +36,7 @@ import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -1441,10 +1442,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    @Deprecated
     public boolean isRestricted(Material material) {
         Player player = getPlayer();
         if (player != null && player.hasPermission("Magic.bypass_restricted")) return false;
         return controller.isRestricted(material);
+    }
+
+    @Override
+    public boolean isRestricted(BlockState state) {
+        Player player = getPlayer();
+        if (player != null && player.hasPermission("Magic.bypass_restricted")) return false;
+        return controller.isRestricted(state);
     }
 
     @Override

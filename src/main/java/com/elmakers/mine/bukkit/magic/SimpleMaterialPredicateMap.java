@@ -18,6 +18,13 @@ public class SimpleMaterialPredicateMap
     private Multimap<Material, MaterialPredicate> delegate = HashMultimap
             .create();
 
+    public SimpleMaterialPredicateMap() {
+    }
+
+    public SimpleMaterialPredicateMap(MaterialPredicateMap other) {
+        delegate.putAll(((SimpleMaterialPredicateMap) other).delegate);
+    }
+
     @Override
     public Set<Material> getLegacyMaterials() {
         return keySet();

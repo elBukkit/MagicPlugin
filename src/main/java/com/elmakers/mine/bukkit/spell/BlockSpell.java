@@ -2,10 +2,13 @@ package com.elmakers.mine.bukkit.spell;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.magic.MaterialPredicate;
+import com.elmakers.mine.bukkit.api.magic.MaterialPredicateMap;
 import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.magic.SimpleMaterialPredicateMap;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -14,8 +17,8 @@ import org.bukkit.entity.Player;
 
 public abstract class BlockSpell extends UndoableSpell {
 
-    private Set<Material>	indestructible;
-    private Set<Material>	destructible;
+    private SimpleMaterialPredicateMap indestructible;
+    private SimpleMaterialPredicateMap destructible;
     protected boolean 		checkDestructible 		= true;
 
     public final static String[] BLOCK_PARAMETERS = {
@@ -31,7 +34,7 @@ public abstract class BlockSpell extends UndoableSpell {
         if (indestructible == null) {
             return mage.isIndestructible(block);
         }
-        return indestructible.contains(block.getType()) || mage.isIndestructible(block);
+        return indestructible.apply(block.getState()) || mage.isIndestructible(block);
     }
 
     public boolean isDestructible(Block block)
@@ -43,12 +46,12 @@ public abstract class BlockSpell extends UndoableSpell {
         if (destructible == null) {
             return mage.isDestructible(block);
         }
-        return destructible.contains(block.getType());
+        return destructible.apply(block.getState());
     }
 
     @Deprecated
     public Set<Material> getDestructible() {
-        if (destructible != null) return destructible;
+        if (destructible != null) return destructible.getLegacyMaterials();
         return controller.getDestructibleMaterials();
     }
 
@@ -58,31 +61,45 @@ public abstract class BlockSpell extends UndoableSpell {
 
         if (!checkDestructible) return true;
         if (targetBreakables > 0 && currentCast.isBreakable(block)) return true;
-        Set<Material> allDestructible = destructible;
+        MaterialPredicateMap allDestructible = destructible;
         if (allDestructible == null) {
-            allDestructible = controller.getDestructibleMaterials();
+            allDestructible = controller.getDestructibleMaterialMap();
         }
         if (allDestructible == null) {
             return true;
         }
-        if (allDestructible.contains(block.getType())) return true;
+        if (allDestructible.apply(block.getState())) return true;
         com.elmakers.mine.bukkit.api.block.BlockData blockData = UndoList.getBlockData(block.getLocation());
-        if (blockData == null || !blockData.containsAny(allDestructible)) {
+        if (blockData == null || !blockData.containsAny(allDestructible.getLegacyMaterials())) {
             return false;
         }
         return true;
     }
 
+    @Deprecated
     protected void setDestructible(Set<Material> materials) {
+        setDestructible(new SimpleMaterialPredicateMap());
+
+        for(Material material : materials) {
+            addDestructible0(material);
+        }
+    }
+
+    protected void setDestructible(SimpleMaterialPredicateMap materials) {
         checkDestructible = true;
         destructible = materials;
     }
 
     protected void addDestructible(Material material) {
         if (destructible == null) {
-            destructible = new HashSet<Material>(controller.getDestructibleMaterials());
+            destructible = new SimpleMaterialPredicateMap(controller.getDestructibleMaterialMap());
         }
-        destructible.add(material);
+
+        addDestructible0(material);
+    }
+
+    private void addDestructible0(Material material) {
+        destructible.put(material, MaterialPredicate.TRUE);
     }
 
     @Override
@@ -90,25 +107,25 @@ public abstract class BlockSpell extends UndoableSpell {
         super.processParameters(parameters);
         indestructible = null;
         if (parameters.contains("indestructible")) {
-            indestructible = controller.getMaterialSet(parameters.getString("indestructible"));
+            indestructible = (SimpleMaterialPredicateMap) controller.getMaterialMap(parameters.getString("indestructible"));
         }
         if (parameters.contains("id")) {
-            indestructible = controller.getMaterialSet(parameters.getString("id"));
+            indestructible = (SimpleMaterialPredicateMap) controller.getMaterialMap(parameters.getString("id"));
         }
         destructible = null;
         if (parameters.contains("destructible")) {
             // This always needs to be a copy since it can be modified by addDestructible
             // Kind of a hack for Automata.
-            destructible = new HashSet<Material>(controller.getMaterialSet(parameters.getString("destructible")));
+            destructible = new SimpleMaterialPredicateMap(controller.getMaterialMap(parameters.getString("destructible")));
         }
 
         if (parameters.getBoolean("destructible_override", false)) {
             String destructibleKey = controller.getDestructibleMaterials(mage, mage.getLocation());
             if (destructibleKey != null) {
                 if (destructible == null) {
-                    destructible = new HashSet<Material>();
+                    destructible = new SimpleMaterialPredicateMap();
                 }
-                destructible.addAll(controller.getMaterialSet(destructibleKey));
+                destructible.putAll((SimpleMaterialPredicateMap) controller.getMaterialMap(destructibleKey));
             }
         }
         checkDestructible = parameters.getBoolean("check_destructible", true);

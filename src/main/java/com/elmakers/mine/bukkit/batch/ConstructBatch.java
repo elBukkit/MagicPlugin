@@ -84,10 +84,10 @@ public class ConstructBatch extends BrushBatch {
 		this.type = type;
 		this.thickness = thickness;
 		this.spawnFallingBlocks = spawnFallingBlocks;
-		this.attachables = mage.getController().getMaterialSet("attachable");
-		this.attachablesWall = mage.getController().getMaterialSet("attachable_wall");
-		this.attachablesDouble = mage.getController().getMaterialSet("attachable_double");
-		this.delayed = mage.getController().getMaterialSet("delayed");
+		this.attachables = mage.getController().getMaterialMap("attachable").getLegacyMaterials();
+		this.attachablesWall = mage.getController().getMaterialMap("attachable_wall").getLegacyMaterials();
+		this.attachablesDouble = mage.getController().getMaterialMap("attachable_double").getLegacyMaterials();
+		this.delayed = mage.getController().getMaterialMap("delayed").getLegacyMaterials();
         this.orient = orientVector == null ? new Vector(0, 1, 0) : orientVector;
 	}
 

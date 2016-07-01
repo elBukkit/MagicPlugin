@@ -2,9 +2,11 @@ package com.elmakers.mine.bukkit.spell;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MaterialPredicate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.magic.SimpleMaterialPredicateMap;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -14,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -59,9 +62,9 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             allowMaxRange           = false;
     private boolean                             bypassBackfire          = false;
 
-    private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
-    private Set<Material>                       targetableMaterials     = null;
-    private Set<Material>                       reflectiveMaterials     = null;
+    private SimpleMaterialPredicateMap          targetThroughMaterials  = new SimpleMaterialPredicateMap();
+    private SimpleMaterialPredicateMap          targetableMaterials     = null;
+    private SimpleMaterialPredicateMap          reflectiveMaterials     = null;
     private boolean                             reverseTargeting        = false;
     private boolean                             originAtTarget          = false;
 
@@ -105,9 +108,13 @@ public abstract class TargetingSpell extends BaseSpell {
         return message;
     }
 
-    public boolean isReflective(Material mat)
-    {
-        return reflectiveMaterials != null && reflectiveMaterials.contains(mat);
+    @Deprecated
+    public boolean isReflective(Material mat) {
+        return reflectiveMaterials != null && reflectiveMaterials.getLegacyMaterials().contains(mat);
+    }
+
+    public boolean isReflective(BlockState mat) {
+        return reflectiveMaterials != null && reflectiveMaterials.apply(mat);
     }
 
     public boolean isTargetable(CastContext context, Block block) {
@@ -120,22 +127,42 @@ public abstract class TargetingSpell extends BaseSpell {
         return isTargetable(block.getType());
     }
 
+    @Deprecated
     public boolean isTargetable(Material mat)
     {
         if (!allowPassThrough(mat)) {
             return true;
         }
-        boolean targetThrough = targetThroughMaterials.contains(mat);
+
+        boolean targetThrough = targetThroughMaterials.getLegacyMaterials().contains(mat);
         if (reverseTargeting)
         {
             return(targetThrough);
         }
         if (!targetThrough && targetableMaterials != null)
         {
-            return targetableMaterials.contains(mat);
+            return targetableMaterials.getLegacyMaterials().contains(mat);
         }
         return !targetThrough;
     }
+
+    public boolean isTargetable(BlockState mat)
+    {
+        if (!allowPassThrough(mat)) {
+            return true;
+        }
+
+        boolean targetThrough = targetThroughMaterials.apply(mat);
+
+        if (reverseTargeting) {
+            return(targetThrough);
+        } else if (!targetThrough && targetableMaterials != null) {
+            return targetableMaterials.apply(mat);
+        }
+
+        return !targetThrough;
+    }
+
 
     public void setReverseTargeting(boolean reverse)
     {
@@ -378,9 +405,14 @@ public abstract class TargetingSpell extends BaseSpell {
         this.range = range;
     }
 
+    @Deprecated
     public boolean isTransparent(Material material)
     {
-        return targetThroughMaterials.contains(material);
+        return targetThroughMaterials.getLegacyMaterials().contains(material);
+    }
+
+    public boolean isTransparent(BlockState state) {
+        return targetThroughMaterials.apply(state);
     }
 
 
@@ -396,9 +428,9 @@ public abstract class TargetingSpell extends BaseSpell {
     public Block findBlockUnder(Block block)
     {
         int depth = 0;
-        if (targetThroughMaterials.contains(block.getType()))
+        if (targetThroughMaterials.apply(block.getState()))
         {
-            while (depth < verticalSearchDistance && targetThroughMaterials.contains(block.getType()))
+            while (depth < verticalSearchDistance && targetThroughMaterials.apply(block.getState()))
             {
                 depth++;
                 block = block.getRelative(BlockFace.DOWN);
@@ -406,7 +438,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
         else
         {
-            while (depth < verticalSearchDistance && !targetThroughMaterials.contains(block.getType()))
+            while (depth < verticalSearchDistance && !targetThroughMaterials.apply(block.getState()))
             {
                 depth++;
                 block = block.getRelative(BlockFace.UP);
@@ -420,7 +452,7 @@ public abstract class TargetingSpell extends BaseSpell {
     public Block findSpaceAbove(Block block)
     {
         int depth = 0;
-        while (depth < verticalSearchDistance && !targetThroughMaterials.contains(block.getType()))
+        while (depth < verticalSearchDistance && !targetThroughMaterials.apply(block.getState()))
         {
             depth++;
             block = block.getRelative(BlockFace.UP);
@@ -485,32 +517,32 @@ public abstract class TargetingSpell extends BaseSpell {
 
         if (parameters.contains("transparent")) {
             targetThroughMaterials.clear();
-            targetThroughMaterials.addAll(controller.getMaterialSet(parameters.getString("transparent")));
+            targetThroughMaterials.putAll((SimpleMaterialPredicateMap) controller.getMaterialMap(parameters.getString("transparent")));
         } else {
             targetThroughMaterials.clear();
-            targetThroughMaterials.addAll(controller.getMaterialSet("transparent"));
+            targetThroughMaterials.putAll((SimpleMaterialPredicateMap) controller.getMaterialMap("transparent"));
         }
 
         if (parameters.contains("targetable")) {
-            targetableMaterials = new HashSet<Material>();
-            targetableMaterials.addAll(controller.getMaterialSet(parameters.getString("targetable")));
+            targetableMaterials = new SimpleMaterialPredicateMap();
+            targetableMaterials.putAll((SimpleMaterialPredicateMap) controller.getMaterialMap(parameters.getString("targetable")));
         } else {
             targetableMaterials = null;
         }
 
         reflectiveMaterials = null;
         if (parameters.contains("reflective")) {
-            reflectiveMaterials = controller.getMaterialSet(parameters.getString("reflective"));
+            reflectiveMaterials = (SimpleMaterialPredicateMap) controller.getMaterialMap(parameters.getString("reflective"));
         }
 
         if (parameters.getBoolean("reflective_override", true)) {
             String reflectiveKey = controller.getReflectiveMaterials(mage, mage.getLocation());
             if (reflectiveKey != null) {
-                Set<Material> currentReflective = reflectiveMaterials;
-                reflectiveMaterials = controller.getMaterialSet(reflectiveKey);
+                SimpleMaterialPredicateMap currentReflective = reflectiveMaterials;
+                reflectiveMaterials = (SimpleMaterialPredicateMap) controller.getMaterialMap(reflectiveKey);
                 if (currentReflective != null) {
-                    reflectiveMaterials = new HashSet<Material>(reflectiveMaterials);
-                    reflectiveMaterials.addAll(currentReflective);
+                    reflectiveMaterials = new SimpleMaterialPredicateMap(reflectiveMaterials);
+                    reflectiveMaterials.putAll(currentReflective);
                 }
             }
         }
@@ -571,8 +603,8 @@ public abstract class TargetingSpell extends BaseSpell {
         // Special hack that should work well in most casts.
         boolean targetUnderwater = parameters.getBoolean("target_underwater", true);
         if (targetUnderwater && isUnderwater()) {
-            targetThroughMaterials.add(Material.WATER);
-            targetThroughMaterials.add(Material.STATIONARY_WATER);
+            targetThroughMaterials.put(Material.WATER, MaterialPredicate.TRUE);
+            targetThroughMaterials.put(Material.STATIONARY_WATER, MaterialPredicate.TRUE);
         }
     }
 
