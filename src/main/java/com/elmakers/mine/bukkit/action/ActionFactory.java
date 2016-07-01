@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ForwardingList;
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.Maps;
 
 /**
  * Creates new action instances from a "class" parameter usually obtained from a
@@ -105,7 +108,7 @@ public class ActionFactory {
         InternalActionResolver.actionClasses.put(name, constructor);
     }
 
-    interface ActionResolver {
+    public interface ActionResolver {
         /**
          * Attempts to resolve a constructor from a class.
          * @param className The class to resolve.
@@ -115,7 +118,36 @@ public class ActionFactory {
         ActionConstructor resolve(String className, List<String> attempts);
     }
 
-    interface ActionConstructor {
+    /**
+     * A basic implementation of the {@link ActionResolver} interface. Provides
+     * a simple name to resolver mapping.
+     */
+    public class NamedActionResolver
+            extends ForwardingMap<String, ActionConstructor>
+            implements ActionResolver {
+        private final Map<String, ActionConstructor> delegate;
+
+        public NamedActionResolver(Map<String, ActionConstructor> delegate) {
+            this.delegate = delegate;
+        }
+
+        public NamedActionResolver() {
+            this(Maps.<String, ActionConstructor> newHashMap());
+        }
+
+        @Override
+        public ActionConstructor resolve(String className,
+                List<String> attempts) {
+            return get(className);
+        }
+
+        @Override
+        protected Map<String, ActionConstructor> delegate() {
+            return delegate;
+        }
+    }
+
+    public interface ActionConstructor {
         /**
          * Instantiates a new action.
          *
