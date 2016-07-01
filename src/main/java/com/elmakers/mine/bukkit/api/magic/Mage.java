@@ -420,6 +420,7 @@ public interface Mage extends CostReducer {
     public UndoList getLastUndoList();
     public boolean isStealth();
     public boolean isSneaking();
+    public boolean isJumping();
 
     public void tick();
 

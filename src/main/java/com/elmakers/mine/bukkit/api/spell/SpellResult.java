@@ -15,6 +15,7 @@ public enum SpellResult {
     ALTERNATE_UP(true, false, false, true),
     ALTERNATE_DOWN(true, false, false, true),
     ALTERNATE_SNEAK(true, false, false, true),
+    ALTERNATE_JUMPING(true, false, false, true),
 
     FIZZLE(false, true, false),
     BACKFIRE(false, true, false),
