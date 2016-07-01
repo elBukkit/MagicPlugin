@@ -2032,6 +2032,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Player player = getPlayer();
         return (player != null && player.isSneaking());
     }
+    
+    @Override
+    public boolean isJumping() {
+    	Entity player = getEntity();
+    	return (!player.isOnGround());
+    }
 
     @Override
     public ConfigurationSection getData() {

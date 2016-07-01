@@ -71,6 +71,10 @@ public class ActionSpell extends BrushSpell
         {
             alternateParameters = getHandlerParameters("alternate_sneak");
         }
+        else if (mage.isJumping())
+        {
+        	alternateParameters = getHandlerParameters("alternate_jumping");
+        }
         if (alternateParameters != null)
         {
             if (parameters == null)
@@ -95,6 +99,7 @@ public class ActionSpell extends BrushSpell
         ActionHandler downHandler = actions.get("alternate_down");
         ActionHandler upHandler = actions.get("alternate_up");
         ActionHandler sneakHandler = actions.get("alternate_sneak");
+        ActionHandler jumpHandler = actions.get("alternate_jumping");
         workThreshold = parameters.getInt("work_threshold", 500);
         if (downHandler != null && isLookingDown())
         {
@@ -110,6 +115,11 @@ public class ActionSpell extends BrushSpell
         {
             result = SpellResult.ALTERNATE_SNEAK;
             currentHandler = sneakHandler;
+        }
+        else if (jumpHandler != null && mage.isJumping())
+        {
+        	result = SpellResult.ALTERNATE_JUMPING;
+        	currentHandler = jumpHandler;
         }
 
         if (isUndoable())
