@@ -122,7 +122,7 @@ public class ActionFactory {
      * A basic implementation of the {@link ActionResolver} interface. Provides
      * a simple name to resolver mapping.
      */
-    public class NamedActionResolver
+    public static class NamedActionResolver
             extends ForwardingMap<String, ActionConstructor>
             implements ActionResolver {
         private final Map<String, ActionConstructor> delegate;
