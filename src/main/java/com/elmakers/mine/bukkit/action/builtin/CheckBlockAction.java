@@ -14,12 +14,17 @@ import java.util.Set;
 
 public class CheckBlockAction extends CompoundAction {
     private Set<Material> allowed;
+    private boolean returnCosts;
     
+    private SpellResult failSpellResult;
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
     {
         super.initialize(spell, parameters);
         allowed = spell.getController().getMaterialSet(parameters.getString("allowed"));
+        returnCosts = parameters.getBoolean("return_costs", false);
+		
+        failSpellResult = returnCosts ? SpellResult.CANCELLED : SpellResult.NO_TARGET;
     }
     
     protected boolean isAllowed(CastContext context) {
@@ -56,7 +61,7 @@ public class CheckBlockAction extends CompoundAction {
         }
         
         if (!allowed) {
-            return SpellResult.NO_TARGET;
+            return failSpellResult;
         }
         return startActions();
     }
