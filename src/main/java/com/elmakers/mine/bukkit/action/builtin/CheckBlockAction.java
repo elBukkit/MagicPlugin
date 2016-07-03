@@ -24,7 +24,7 @@ public class CheckBlockAction extends CompoundAction {
         allowed = spell.getController().getMaterialSet(parameters.getString("allowed"));
         returnCosts = parameters.getBoolean("return_costs", false);
 		
-		failSpellResult = returnCosts ? SpellResult.CANCELLED : SpellResult.NO_TARGET;
+        failSpellResult = returnCosts ? SpellResult.CANCELLED : SpellResult.NO_TARGET;
     }
     
     protected boolean isAllowed(CastContext context) {
