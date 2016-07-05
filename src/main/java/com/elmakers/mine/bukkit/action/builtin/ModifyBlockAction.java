@@ -35,6 +35,7 @@ public class ModifyBlockAction extends BaseSpellAction {
     private boolean usePhysicsBlocks = false;
     private boolean consumeBlocks = false;
     private boolean consumeVariants = true;
+    private boolean bypassPermission = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -61,6 +62,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         int damage = parameters.getInt("damage", 0);
         fallingBlockFallDamage = (float)parameters.getDouble("fall_damage", damage);
         fallingBlockMaxDamage = parameters.getInt("max_damage", damage);
+        bypassPermission = parameters.getBoolean("bypass_permission", false);
     }
 
     @SuppressWarnings("deprecation")
@@ -73,11 +75,11 @@ public class ModifyBlockAction extends BaseSpellAction {
 
         Block block = context.getTargetBlock();
         if (brush.isErase()) {
-            if (!context.hasBreakPermission(block)) {
+            if (!context.hasBreakPermission(block) & !bypassPermission) {
                 return SpellResult.INSUFFICIENT_PERMISSION;
             }
         } else {
-            if (!context.hasBuildPermission(block)) {
+            if (!context.hasBuildPermission(block) & !bypassPermission) {
                 return SpellResult.INSUFFICIENT_PERMISSION;
             }
         }
