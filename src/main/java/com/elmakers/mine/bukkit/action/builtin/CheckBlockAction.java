@@ -14,12 +14,18 @@ import java.util.Set;
 
 public class CheckBlockAction extends CompoundAction {
     private Set<Material> allowed;
+    private boolean bypassPermission = false;
     
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
     {
         super.initialize(spell, parameters);
         allowed = spell.getController().getMaterialSet(parameters.getString("allowed"));
+    }
+    
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+    	bypassPermission = parameters.getBoolean("bypass_permission",false);
     }
     
     protected boolean isAllowed(CastContext context) {
@@ -32,11 +38,11 @@ public class CheckBlockAction extends CompoundAction {
             if (!allowed.contains(block.getType())) return false;
         } else {
             if (brush != null && brush.isErase()) {
-                if (!context.hasBreakPermission(block)) {
+                if (!context.hasBreakPermission(block) & !bypassPermission) {
                     return false;
                 }
             } else {
-                if (!context.hasBuildPermission(block)) {
+                if (!context.hasBuildPermission(block) & !bypassPermission) {
                     return false;
                 }
             }
