@@ -1,8 +1,6 @@
 package com.elmakers.mine.bukkit.api.spell;
 
 import com.elmakers.mine.bukkit.api.data.SpellData;
-import org.bukkit.configuration.ConfigurationSection;
-
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 

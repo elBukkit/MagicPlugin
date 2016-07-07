@@ -2,8 +2,6 @@ package com.elmakers.mine.bukkit.api.wand;
 
 import org.bukkit.Location;
 
-import java.util.UUID;
-
 /**
  * Represents a Wand that has been "lost", as in spawned as an ItemStack.
  * 
