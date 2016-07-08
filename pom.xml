@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.elmakers.mine.bukkit</groupId>
+	<artifactId>Magic-parent</artifactId>
+	<version>6.3-SNAPSHOT</version>
+
+	<name>Magic-parent</name>
+	<description>Magic maven parent</description>
+
+	<packaging>pom</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.java>1.6</version.java>
+
+		<version.magic.api>6.1-SNAPSHOT</version.magic.api>
+	</properties>
+
+	<modules>
+		<module>MagicAPI</module>
+		<module>Magic</module>
+	</modules>
+
+	<licenses>
+		<license>
+		<name>MIT License</name>
+		<url>LICENSE</url>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>elMakers</name>
+		<url>http://www.elmakers.com/</url>
+	</organization>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.elmakers.com</url>
+	</ciManagement>
+
+	<scm>
+		<connection>scm:git:git://github.com/elBukkit/MagicPlugin.git</connection>
+		<developerConnection>scm:git:git@github.com:elBukkit/MagicPlugin.git</developerConnection>
+		<url>https://github.com/elBukkit/MagicPlugin</url>
+		<tag>master</tag>
+	</scm>
+
+	<mailingLists>
+		<mailingList>
+			<name>Developer Discussion</name>
+			<archive>https://groups.google.com/forum/#!forum/magic-plugin</archive>
+		</mailingList>
+	</mailingLists>
+
+	<distributionManagement>
+		<repository>
+			<id>maven.elmakers.com</id>
+			<url>http://maven.elmakers.com/repository/</url>
+		</repository>
+		<snapshotRepository>
+			<id>maven.elmakers.com</id>
+			<url>http://maven.elmakers.com/repository/</url>
+			</snapshotRepository>
+	</distributionManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
+					<compilerArgument>-Xlint:all,-serial,-fallthrough</compilerArgument>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
