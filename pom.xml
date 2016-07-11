@@ -1,436 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
-	<artifactId>Magic</artifactId>
+
+	<groupId>com.elmakers.mine.bukkit</groupId>
+	<artifactId>Magic-parent</artifactId>
 	<version>6.3-SNAPSHOT</version>
-	<name>Magic Bukkit Plugin</name>
-	<url>http://mine.elmakers.com</url>
-	<dependencyManagement>
-		<dependencies>
-            <dependency>
-                <groupId>org.bukkit</groupId>
-                <artifactId>bukkit</artifactId>
-                <version>1.9-R0.1-SNAPSHOT</version>
-                <scope>provided</scope>
-            </dependency>
-		</dependencies>
-	</dependencyManagement>
+
+	<name>Magic-parent</name>
+	<description>Magic maven parent</description>
+
+	<packaging>pom</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.java>1.6</version.java>
+
+		<version.magic.api>6.1-SNAPSHOT</version.magic.api>
+	</properties>
+
+	<modules>
+		<module>MagicAPI</module>
+		<module>Magic</module>
+	</modules>
+
+	<licenses>
+		<license>
+		<name>MIT License</name>
+		<url>LICENSE</url>
+		</license>
+	</licenses>
 
 	<organization>
 		<name>elMakers</name>
 		<url>http://www.elmakers.com/</url>
 	</organization>
 
-    <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>LICENSE</url>
-        </license>
-    </licenses>
-  
-  	<issueManagement>
-		<system>Jira</system>
-		<url>http://jira.elmakers.com</url>
-	</issueManagement>
-  
-  	<ciManagement>
-    	<system>Jenkins</system>
-    	<url>http://jenkins.elmakers.com</url>
-  	</ciManagement>
-  
-  	<scm>
-    	<connection>scm:git:git://github.com/elBukkit/MagicPlugin.git</connection>
-    	<developerConnection>scm:git:git@github.com:elBukkit/MagicPlugin.git</developerConnection>
-    	<url>https://github.com/elBukkit/MagicPlugin</url>
-    	<tag>master</tag>
-  	</scm>
-  
-  	<mailingLists>
-    	<mailingList>
-      		<name>Developer Discussion</name>
-      		<archive>https://groups.google.com/forum/#!forum/magic-plugin</archive>
-    	</mailingList>
-  	</mailingLists>
-  
-  	<distributionManagement>
-    	<repository>
-      		<id>maven.elmakers.com</id>
-      		<url>http://maven.elmakers.com/repository/</url>
-    	</repository>
-    	<snapshotRepository>
-      		<id>maven.elmakers.com</id>
-      		<url>http://maven.elmakers.com/repository/</url>
-    	</snapshotRepository>
-  	</distributionManagement>
-	
-	<properties>
-		<build.version>3.1</build.version>
-    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    	<api.version>1.3</api.version>
-	</properties>
-	
-	<dependencies>
-		<dependency>
-			<groupId>de.slikey</groupId>
-			<artifactId>EffectLib</artifactId>
-			<version>5.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.elmakers.mine.bukkit</groupId>
-			<artifactId>MagicAPI</artifactId>
-			<version>6.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.milkbowl.vault</groupId>
-			<artifactId>VaultAPI</artifactId>
-			<version>1.5</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava-collections</artifactId>
-			<version>r03</version>
-			<scope>provided</scope>
-		</dependency>
-        <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldguard</artifactId>
-            <version>6.0.0-beta-01</version>
-            <scope>provided</scope>
-        </dependency>
-		<dependency>
-			<groupId>org.dynmap</groupId>
-			<artifactId>dynmap-api</artifactId>
-			<version>0.80</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.dandielo</groupId>
-			<artifactId>dtlTraders</artifactId>
-			<version>3.4-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.dandielo</groupId>
-			<artifactId>dtlCore</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.ess3</groupId>
-			<artifactId>Essentials</artifactId>
-			<version>2.13.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sk89q</groupId>
-			<artifactId>commandbook</artifactId>
-			<version>2.3</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-	        <groupId>org.mcstats.bukkit</groupId>
-	        <artifactId>metrics</artifactId>
-	        <version>R8-SNAPSHOT</version>
-	    </dependency>
-		<dependency>
-			<groupId>net.sacredlabyrinth.Phaed</groupId>
-			<artifactId>PreciousStones</artifactId>
-			<version>10.0.5</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.palmergames</groupId>
-			<artifactId>Towny</artifactId>
-			<version>0.89.2.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>info.nothingspecial</groupId>
-			<artifactId>Splateds_Elementals</artifactId>
-			<version>B.1.6</version>
-			<scope>provided</scope>
-		</dependency>
-        <dependency>
-            <groupId>PvPManager</groupId>
-            <artifactId>PvPManager</artifactId>
-            <version>2.1.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.onarandombox.multiversecore</groupId>
-            <artifactId>Multiverse-Core</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.mewin</groupId>
-            <artifactId>WGCustomFlags</artifactId>
-            <version>1.6.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.citizensnpcs</groupId>
-            <artifactId>citizens</artifactId>
-            <version>2.0.16-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.ryanhamshire</groupId>
-            <artifactId>GriefPrevention</artifactId>
-            <version>11.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.herocraftonline.heroes</groupId>
-            <artifactId>Heroes</artifactId>
-            <version>1.5.5.5-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>fr.neatmonster</groupId>
-            <artifactId>nocheatplus</artifactId>
-            <version>3.12.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.thinkofdeath.minecraft</groupId>
-            <artifactId>BlockPhysics</artifactId>
-            <version>0.4-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-		<dependency>
-			<groupId>au.com.mineauz</groupId>
-			<artifactId>Minigames</artifactId>
-			<version>1.8.0-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>LibsDisguises</groupId>
-			<artifactId>LibsDisguises</artifactId>
-			<version>9.0.3</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>ProtocolLib</groupId>
-			<artifactId>ProtocolLib</artifactId>
-			<version>3.7.0-BETA</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
-	<repositories>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.elmakers.com</url>
+	</ciManagement>
+
+	<scm>
+		<connection>scm:git:git://github.com/elBukkit/MagicPlugin.git</connection>
+		<developerConnection>scm:git:git@github.com:elBukkit/MagicPlugin.git</developerConnection>
+		<url>https://github.com/elBukkit/MagicPlugin</url>
+		<tag>master</tag>
+	</scm>
+
+	<mailingLists>
+		<mailingList>
+			<name>Developer Discussion</name>
+			<archive>https://groups.google.com/forum/#!forum/magic-plugin</archive>
+		</mailingList>
+	</mailingLists>
+
+	<distributionManagement>
 		<repository>
-			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+			<id>maven.elmakers.com</id>
+			<url>http://maven.elmakers.com/repository/</url>
 		</repository>
-        <repository>
-            <id>elMakers</id>
-            <url>http://maven.elmakers.com/repository/</url>
-        </repository>
-        <repository>
-            <id>sk89q</id>
-            <url>http://maven.sk89q.com/repo/</url>
-        </repository>
-        <repository>
-            <id>dynmap</id>
-            <url>http://repo.mikeprimm.com/</url>
-        </repository>
-        <repository>
-            <id>MultiverseCore</id>
-            <url>http://repo.onarandombox.com/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>Essentials</id>
-            <url>http://repo.ess3.net/content/groups/essentials</url>
-        </repository>
-        <repository>
-            <id>Heroes-Snapshots</id>
-            <url>http://nexus.theyeticave.net/content/repositories/pub_snapshots/</url>
-        </repository>
-        <repository>
-            <id>Heroes</id>
-            <url>http://nexus.theyeticave.net/content/repositories/pub_releases/</url>
-        </repository>
-		<repository>
-			<id>md5</id>
-			<url>http://repo.md-5.net/content/groups/public</url>
-		</repository>
+		<snapshotRepository>
+			<id>maven.elmakers.com</id>
+			<url>http://maven.elmakers.com/repository/</url>
+			</snapshotRepository>
+	</distributionManagement>
 
-		<!--
-
-		All of the following repositories seem to be offline.
-		If the elmakers repo ever goes down, you could try re-enabling these, but you may be out of luck.
-
-        <repository>
-            <id>SacredCoding</id>
-            <name>SacredCoding-releases</name>
-            <url>http://repo.sacredlabyrinth.net/artifactory/releases</url>
-        </repository>
-        <repository>
-            <name>Citizens2 repository</name>
-            <id>citizens</id>
-            <url>http://repo.citizensnpcs.co</url>
-        </repository>
-        <repository>
-            <id>dtlTraders</id>
-            <url>http://repo.dandielo.net/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>Plugin Metrics</id>
-            <url>http://repo.mcstats.org/content/repositories/public</url>
-        </repository>
-        <repository>
-            <id>NoCheatPlus</id>
-            <url>http://ncp-repo.yawk.at/</url>
-        </repository>
-
-        -->
-    </repositories>
 	<build>
-	<resources>
-		<resource>
-			<directory>src/main/resources</directory>
-			<filtering>true</filtering>
-			<includes>
-				<include>**/*.yml</include>
-			</includes>
-			<excludes>
-				<exclude>**/defaults/items/*.yml</exclude>
-				<exclude>**/defaults/config/*.yml</exclude>
-				<exclude>**/defaults/crafting/*.yml</exclude>
-				<exclude>**/defaults/enchanting/*.yml</exclude>
-				<exclude>**/defaults/materials/*.yml</exclude>
-				<exclude>**/defaults/messages/*.yml</exclude>
-				<exclude>**/defaults/mobs/*.yml</exclude>
-				<exclude>**/defaults/spells/*.yml</exclude>
-				<exclude>**/defaults/wands/*.yml</exclude>
-			</excludes>
-		</resource>
-		<resource>
-			<directory>src/main/resources</directory>
-			<filtering>false</filtering>
-			<excludes>
-				<exclude>**/*.yml</exclude>
-				<exclude>**/defaults/items/*.yml</exclude>
-				<exclude>**/defaults/config/*.yml</exclude>
-				<exclude>**/defaults/crafting/*.yml</exclude>
-				<exclude>**/defaults/enchanting/*.yml</exclude>
-				<exclude>**/defaults/materials/*.yml</exclude>
-				<exclude>**/defaults/messages/*.yml</exclude>
-				<exclude>**/defaults/mobs/*.yml</exclude>
-				<exclude>**/defaults/spells/*.yml</exclude>
-				<exclude>**/defaults/wands/*.yml</exclude>
-			</excludes>
-		</resource>
-	</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
 					<compilerArgument>-Xlint:all,-serial,-fallthrough</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
 				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<id>default-cli</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<concat destfile="${project.build.directory}/classes/defaults/items.defaults.yml" overwrite="yes" fixlastline="yes">
-									<fileset dir="${project.basedir}/src/main/resources/defaults/items">
-										<include name="**/*.yml"></include>
-									</fileset>
-								</concat>
-								<concat destfile="${project.build.directory}/classes/defaults/config.defaults.yml" overwrite="yes" fixlastline="yes">
-									<fileset dir="${project.basedir}/src/main/resources/defaults/config">
-										<include name="**/*.yml"></include>
-									</fileset>
-								</concat>
-								<concat destfile="${project.build.directory}/classes/defaults/crafting.defaults.yml" overwrite="yes" fixlastline="yes">
-									<fileset dir="${project.basedir}/src/main/resources/defaults/crafting">
-										<include name="**/*.yml"></include>
-									</fileset>
-								</concat>
-								<concat destfile="${project.build.directory}/classes/defaults/enchanting.defaults.yml" overwrite="yes" fixlastline="yes">
-									<fileset dir="${project.basedir}/src/main/resources/defaults/enchanting">
-										<include name="**/*.yml"></include>
-									</fileset>
-								</concat>
-								<concat destfile="${project.build.directory}/classes/defaults/materials.defaults.yml" overwrite="yes" fixlastline="yes">
-									<fileset dir="${project.basedir}/src/main/resources/defaults/materials">
-										<include name="**/*.yml"></include>
-									</fileset>
-								</concat>
-								<concat destfile="${project.build.directory}/classes/defaults/messages.defaults.yml" overwrite="yes" fixlastline="yes">
-									<fileset dir="${project.basedir}/src/main/resources/defaults/messages">
-										<include name="**/*.yml"></include>
-									</fileset>
-								</concat>
-								<concat destfile="${project.build.directory}/classes/defaults/mobs.defaults.yml" overwrite="yes" fixlastline="yes">
-									<fileset dir="${project.basedir}/src/main/resources/defaults/mobs">
-										<include name="**/*.yml"></include>
-									</fileset>
-								</concat>
-								<concat destfile="${project.build.directory}/classes/defaults/spells.defaults.yml" overwrite="yes" fixlastline="yes">
-									<fileset dir="${project.basedir}/src/main/resources/defaults/spells">
-										<include name="**/*.yml"></include>
-									</fileset>
-								</concat>
-								<concat destfile="${project.build.directory}/classes/defaults/wands.defaults.yml" overwrite="yes" fixlastline="yes">
-									<fileset dir="${project.basedir}/src/main/resources/defaults/wands">
-										<include name="**/*.yml"></include>
-									</fileset>
-								</concat>
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.5</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<relocations>
-								<relocation>
-                                    <pattern>org.mcstats</pattern>
-                                    <shadedPattern>com.elmakers.mine.bukkit.plugins.magic.mcstats</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>de.slikey</pattern>
-                                    <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
-                                </relocation>
-							</relocations>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
