@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## 6.3
+## 6.2.1
+
+ - Fix for Broomsticks, though a larger re-work is probably coming
+ - Fix Capture spell
+ - Some fixes to wand migration, won't affect most configs
 
 ## 6.2
 

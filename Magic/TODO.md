@@ -1,21 +1,28 @@
 # TODO
 
- - Broomsticks are broken in 1.10
+## 1.10 Issues
+ - Arrow / Gatling Gun firing backwards (could not reproduce)
+ - Bugs with offhand?
+ - Don't refund item costs when a spell goes through auto-undo
+ 
+ I figured that this will keep things close to the same for most people minus the Toggle button. However when I am in game holding say a torch in my left hand and a wand in the other hand, so long as I hold thew and and I right click, it doesn't place down the torch but kinda treats the offhand item like a wand it will like not let me place it and IF the offhand item is a sword (that has no right click) it will also shoot the last chosen spell on my wand (in my main hand). 
+ 
+ Same thing happens with throwing potions. (I thought it would be cool to have like wand/throwing potion battles) if I hold a potion in the offhand with a wand in the main hand if I click my right click the potion just vanishes from the offhand slot, but when i close my wand it's still there. it doesn't cast a spell though.
 
- - Add support for LockettePro
- - Add ModifyPower action
+# High-Priority
 
  - Aliases don't work with levels
+ - Ability to *only* target teammates (like .. anti-PVP)
+
+# Requests
+
+ - Wand Power based on Strength potion effect
+ - Add ModifyPower action
+ - Add Kingdoms support (It's a premium plugin, sooooooo) 
+ - Add support for LockettePro
  
- - Weird thing with Finite+Immobulus on PW:
- 
- there's person a vs person b
- person a uses for example stupefy on person b
- person b will use finite incantatem
- and right after he used finite, he uses immobulus and the particles are created 
- like it's suppose to be, around the caster, but the actual effect will hit person a 
- wherever he stands (while it can only affect you if you are in the ring of the caster)
- 
+## Older stuff
+
  - MagicArenas: Doesn't TP players out on a draw.. ?
  - Getting hit with aqua erecto says "cast unknown" on you?
  - Admission+Break door = dupe door (thought this was fixed???)
