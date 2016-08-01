@@ -500,18 +500,24 @@ public class NMSUtils {
                     // 1.10
                     class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("setSilent", Boolean.TYPE);
                     class_Entity_setNoGravity = class_Entity.getDeclaredMethod("setNoGravity", Boolean.TYPE);
+                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
                 } catch (Throwable ignore) {
                     // 1.9 and earlier
                     legacy = true;
                     class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
                     class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
+                    try {
+                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
+                    } catch (Throwable ignore2) {
+                        // 1.8 and lower
+                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
+                    }
                 }
                 try {
                     // 1.9
                     class_DataWatcher_setMethod = class_DataWatcher.getMethod("set", class_DataWatcherObject, Object.class);
                     class_DataWatcher_getMethod = class_DataWatcher.getMethod("get", class_DataWatcherObject);
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
-                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                     class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
                     class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
@@ -524,7 +530,6 @@ public class NMSUtils {
                     legacy = true;
                     class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
-                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                     class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
                 }
