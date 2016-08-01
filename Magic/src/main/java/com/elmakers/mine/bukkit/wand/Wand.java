@@ -1632,16 +1632,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
 				parseInventoryStrings(wandSpells, wandMaterials);
 			}
-
-            if (wandConfig.contains("icon_inactive")) {
-                inactiveIcon = new MaterialAndData(wandConfig.getString("icon_inactive"));
-            }
-			if (inactiveIcon != null && (inactiveIcon.getMaterial() == null || inactiveIcon.getMaterial() == Material.AIR))
-			{
-				inactiveIcon = null;
-			}
-            inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
-
+			
 			// Check for migration information in the template config
 			ConfigurationSection templateConfig = null;
 			if (template != null && !template.isEmpty()) {
@@ -1658,6 +1649,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				// Add vanilla attributes
 				InventoryUtils.applyAttributes(item, templateConfig.getConfigurationSection("attributes"), templateConfig.getString("attribute_slot", null));
 			}
+
+            if (wandConfig.contains("icon_inactive")) {
+                String iconKey = wandConfig.getString("icon_inactive");
+                if (wandTemplate != null) {
+                    iconKey = wandTemplate.migrateIcon(iconKey);
+                }
+                if (iconKey != null) {
+                    inactiveIcon = new MaterialAndData(iconKey);
+                }
+            }
+            if (inactiveIcon != null && (inactiveIcon.getMaterial() == null || inactiveIcon.getMaterial() == Material.AIR))
+            {
+                inactiveIcon = null;
+            }
+            inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
 
             if (wandConfig.contains("randomize_icon")) {
                 setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
