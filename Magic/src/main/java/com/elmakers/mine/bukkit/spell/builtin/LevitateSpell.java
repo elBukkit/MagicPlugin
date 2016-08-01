@@ -76,6 +76,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private boolean smallArmorStand = false;
     private boolean useArmorStand = false;
     private boolean armorStandMarker = false;
+    private boolean armorStandGravity = true;
     private boolean useHelmet = false;
     private Material mountItem = null;
     private Vector armorStandArm = null;
@@ -478,6 +479,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         useArmorStand = parameters.getBoolean("armor_stand", false);
         armorStandMarker = parameters.getBoolean("armor_stand_marker", false);
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
+        armorStandGravity = parameters.getBoolean("armor_stand_gravity", true);
         armorStandArm = ConfigurationUtils.getVector(parameters, "armor_stand_arm");
         armorStandHead = ConfigurationUtils.getVector(parameters, "armor_stand_head");
         armorStandBody = ConfigurationUtils.getVector(parameters, "armor_stand_body");
@@ -971,7 +973,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         // WTF, API? Why is noclip related to gravity?
         // Note to self: don't use the API here, it breaks all the things.
-        CompatibilityUtils.setGravity(armorStand, false);
+        if (!armorStandGravity) {
+            CompatibilityUtils.setGravity(armorStand, false);
+        }
         CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
         if (armorStandArm != null) {
             armorStand.setRightArmPose(new EulerAngle(armorStandArm.getX(), armorStandArm.getY(), armorStandArm.getZ()));
