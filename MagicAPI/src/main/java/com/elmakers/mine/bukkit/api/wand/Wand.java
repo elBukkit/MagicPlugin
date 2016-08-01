@@ -42,6 +42,7 @@ public interface Wand extends CostReducer {
     public ItemStack getItem();
     public MaterialAndData getIcon();
     public void setIcon(MaterialAndData icon);
+    public void setInactiveIcon(MaterialAndData icon);
     public void makeUpgrade();
     public Collection<String> getSpells();
     public Collection<String> getBrushes();
