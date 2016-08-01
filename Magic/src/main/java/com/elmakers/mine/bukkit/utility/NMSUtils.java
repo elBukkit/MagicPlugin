@@ -501,11 +501,15 @@ public class NMSUtils {
                     class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("setSilent", Boolean.TYPE);
                     class_Entity_setNoGravity = class_Entity.getDeclaredMethod("setNoGravity", Boolean.TYPE);
                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
+                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("at");
+                    class_Entity_getTypeMethod.setAccessible(true);
                 } catch (Throwable ignore) {
                     // 1.9 and earlier
                     legacy = true;
                     class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
                     class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
+                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
+                    class_Entity_getTypeMethod.setAccessible(true);
                     try {
                         class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
                     } catch (Throwable ignore2) {
@@ -521,8 +525,6 @@ public class NMSUtils {
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                     class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
                     class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
-                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
-                    class_Entity_getTypeMethod.setAccessible(true);
                     class_NBTTagCompound_getKeysMethod = class_NBTTagCompound.getMethod("c");
                     class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
                 } catch (Throwable ignore) {
