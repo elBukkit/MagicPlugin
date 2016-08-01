@@ -184,6 +184,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassConfusion             = false;
     protected boolean bypassWeakness              = false;
     protected boolean bypassPermissions           = false;
+    protected boolean bypassRegionPermission      = false;
     protected boolean castOnNoTarget              = true;
     protected boolean bypassDeactivate            = false;
     protected boolean quiet                       = false;
@@ -1152,9 +1153,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (disguiseRestricted && entity != null && entity instanceof Player && controller.isDisguised(entity)) return false;
         if (glideRestricted && entity != null && entity instanceof LivingEntity && ((LivingEntity)entity).isGliding()) return false;
         if (glideExclusive && entity != null && entity instanceof LivingEntity && !((LivingEntity)entity).isGliding()) return false;
-        Boolean regionPermission = controller.getRegionCastPermission(mage.getPlayer(), this, location);
+        Boolean regionPermission = bypassRegionPermission ? null : controller.getRegionCastPermission(mage.getPlayer(), this, location);
         if (regionPermission != null && regionPermission == true) return true;
-        Boolean personalPermission = controller.getPersonalCastPermission(mage.getPlayer(), this, location);
+        Boolean personalPermission = bypassRegionPermission ? null : controller.getPersonalCastPermission(mage.getPlayer(), this, location);
         if (personalPermission != null && personalPermission == true) return true;
         if (regionPermission != null && regionPermission == false) return false;
         if (requiresBuildPermission() && !hasBuildPermission(location.getBlock())) return false;
@@ -1210,7 +1211,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public boolean hasBuildPermission(Block block) {
         // Cast permissions bypass
-        if (bypassBuildRestriction) return true;
+        if (bypassBuildRestriction || bypassRegionPermission) return true;
         Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
         if (castPermission != null && castPermission == true) return true;
         if (castPermission != null && castPermission == false) return false;
@@ -2517,5 +2518,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public boolean hasHandlerParameters(String handlerKey)
     {
         return false;
+    }
+
+    /**
+     * @return Whether or not this spell can bypass region permissions such as custom world-guard flags.
+     */
+    public boolean isBypassRegionPermission() {
+        return bypassRegionPermission;
+    }
+
+    public void setBypassRegionPermission(boolean bypass) {
+        bypassRegionPermission = bypass;
     }
 }
