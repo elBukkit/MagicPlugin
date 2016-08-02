@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 6.2.2
+
+ - Fix for command-block casting and automata
+
 ## 6.2.1
 
  - Fix for Broomsticks, though a larger re-work is probably coming

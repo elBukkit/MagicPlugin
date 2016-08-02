@@ -2035,8 +2035,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     
     @Override
     public boolean isJumping() {
-    	Entity player = getEntity();
-    	return (!player.isOnGround());
+    	Entity entity = getEntity();
+    	return (entity != null && !entity.isOnGround());
     }
 
     @Override
