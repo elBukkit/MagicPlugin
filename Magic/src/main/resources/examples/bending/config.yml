@@ -26,3 +26,6 @@ wand_location_offset_vertical: -0.5
 
 # Use the bending RP
 default_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-bending-RP-6.zip"
+
+# We haven't yet updated this RP to have item-based icons.
+url_icons_enabled: true
