@@ -51,6 +51,7 @@ public class PlayerController implements Listener {
     private boolean openOnSneakDrop;
     private boolean cancelInteractOnCast = true;
     private boolean allowOffhandCasting = true;
+    private long lastDropWarn = 0;
 
     public PlayerController(MagicController controller) {
         this.controller = controller;
@@ -561,12 +562,11 @@ public class PlayerController implements Listener {
         if (isWand) {
             Wand wand = new Wand(controller, pickup);
             if (!wand.canUse(player)) {
-                mage.sendMessage(messages.get("wand.bound").replace("$name", wand.getOwner()));
+                if (lastDropWarn == 0 || System.currentTimeMillis() - lastDropWarn > 10000) {
+                    mage.sendMessage(messages.get("wand.bound").replace("$name", wand.getOwner()));
+                }
+                lastDropWarn = System.currentTimeMillis();
                 event.setCancelled(true);
-                Item droppedItem = event.getItem();
-                org.bukkit.util.Vector velocity = droppedItem.getVelocity();
-                velocity.setY(velocity.getY() * 2 + 1);
-                droppedItem.setVelocity(velocity);
                 return;
             }
 
