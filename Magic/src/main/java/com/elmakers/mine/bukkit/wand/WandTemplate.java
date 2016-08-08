@@ -5,6 +5,8 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.google.common.collect.ImmutableSet;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -23,6 +25,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<String, Collection<EffectPlayer>>();
     private Collection<EffectPlay> currentEffects = new ArrayList<EffectPlay>();
     private Set<String> tags;
+    private Set<String> categories = ImmutableSet.of();
     private String creator;
     private String creatorId;
     private String migrateTemplate;
@@ -76,6 +79,11 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
             tags = new HashSet<String>(tagList);
         } else {
             tags = null;
+        }
+
+        Collection<String> categoriesList = ConfigurationUtils.getStringList(node, "categories");
+        if (categoriesList != null) {
+            categories = ImmutableSet.copyOf(categoriesList);
         }
     }
 
@@ -154,6 +162,11 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     @Override
     public String getCreator() {
         return creator;
+    }
+
+    @Override
+    public Set<String> getCategories() {
+        return categories;
     }
 
     @Override

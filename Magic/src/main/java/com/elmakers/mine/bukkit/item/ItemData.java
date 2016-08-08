@@ -2,8 +2,14 @@ package com.elmakers.mine.bukkit.item;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.google.common.collect.ImmutableSet;
+
+import java.util.Collection;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +19,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private String key;
     private ItemStack item;
     private double worth;
+    private Set<String> categories = ImmutableSet.of();
     private String creatorId;
     private String creator;
     
@@ -76,6 +83,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
             item.setItemMeta(meta);
         }
+
+        Collection<String> categoriesList = ConfigurationUtils.getStringList(configuration, "categories");
+        if (categoriesList != null) {
+            categories = ImmutableSet.copyOf(categoriesList);
+        }
     }
     
     public ItemData(String key, ItemStack item, double worth) throws Exception {
@@ -97,6 +109,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         return worth;
     }
     
+    @Override
+    public Set<String> getCategories() {
+        return categories;
+    }
+
     @Override
     public ItemStack getItemStack(int amount) {
         ItemStack newItem = InventoryUtils.getCopy(item);
