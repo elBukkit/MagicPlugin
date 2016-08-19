@@ -18,14 +18,14 @@ public interface MageDataStore {
     void initialize(MageController controller, ConfigurationSection configuration);
 
     /**
-     * Save a single Mage
+     * Save a single Mage.
+     *
+     * If the provided callback is non-null, it should be called on completion.
      */
     void save(MageData mage, MageDataCallback callback);
 
     /**
      * Save several Mages in a batch.
-     *
-     * If the provided callback is non-null, it should be called on completion.
      */
     void save(Collection<MageData> mages);
 
