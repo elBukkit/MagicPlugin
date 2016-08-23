@@ -2,6 +2,7 @@
 
 ## 6.2.2
 
+ - Fix broomsticks in 1.9.4
  - Fix for command-block casting and automata
  - Don't apply velocity to bound wands when an authorized player tries to pick one up
    Prevents wands getting lost, and possible issues with velocity going too high.
