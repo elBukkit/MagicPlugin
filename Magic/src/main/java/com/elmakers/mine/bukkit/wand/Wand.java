@@ -12,6 +12,9 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
@@ -36,6 +39,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.google.common.base.Preconditions;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.ArrayUtils;
@@ -119,6 +123,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private Map<String, Integer> spells = new HashMap<String, Integer>();
     private Map<String, Integer> spellLevels = new HashMap<String, Integer>();
     private Map<String, Integer> brushes = new HashMap<String, Integer>();
+
+    /**
+     * Custom properties that 3rd party systems can set on a wand for their
+     * internal use.
+     */
+    private Map<String, String> customProperties = new HashMap<String, String>();
 	
 	private String activeSpell = "";
 	private String activeMaterial = "";
@@ -1110,6 +1120,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			controller.getLogger().warning("Failed to save wand state for wand to : " + item);
             Thread.dumpStack();
 		} else {
+            // Save custom keys
+            if(!customProperties.isEmpty()) {
+                Set<String> customKeys = customProperties.keySet();
+                String[] keys = customKeys.toArray(new String[customKeys.size()]);
+                InventoryUtils.saveTagsToNBT(stateNode, wandNode, keys);
+            }
+
             InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
         }
 
@@ -1367,7 +1384,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             node.set("path", null);
         }
-	}
+
+        // Make sure to put this at the end of saveProperties so it cannot
+        // override anything
+        Set<String> customAdded = new HashSet<String>(customProperties.size());
+        for(Map.Entry<String, String> entry : customProperties.entrySet()) {
+            if(!node.isSet(entry.getKey())) {
+                node.set(entry.getKey(), entry.getValue());
+                customAdded.add(entry.getKey());
+            }
+        }
+
+        if(!customAdded.isEmpty()) {
+            node.set("custom_properties", StringUtils.join(customAdded, ","));
+        }
+    }
 	
 	public void loadProperties(ConfigurationSection wandConfig) {
 		loadProperties(wandConfig, false);
@@ -1748,10 +1779,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			effectParticleInterval = 0;
 		}
 
+        String customKeysStr = wandConfig.getString("custom_properties", "");
+        String[] customKeys = StringUtils.split(customKeysStr, ",");
+        for(String key : customKeys ) {
+            customProperties.put(key, wandConfig.getString(key));
+        }
+
         updateMaxMana(false);
-		checkActiveMaterial();
+        checkActiveMaterial();
         checkId();
-	}
+    }
 
 	@Override
     public void describe(CommandSender sender) {
@@ -5005,5 +5042,38 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		path.upgrade(this, mage);
         return true;
+    }
+
+    /**
+     * Gets a custom property from the wand.
+     *
+     * @param key The key of the property.
+     * @return
+     *     Null if no value with the provided key exists, otherwise the value.
+     */
+    public @Nullable String getCustomProperty(String key) {
+        Preconditions.checkNotNull(key, "key");
+        return customProperties.get(key);
+    }
+
+    /**
+     * Sets a custom property on the wand.
+     *
+     * @param key The key of the property.
+     * @param value
+     *     The associated value. If this is null, the property will be removed.
+     * @throws IllegalStateException In case the wand is not modifiable.
+     */
+    public void setCustomProperty(@Nonnull String key, String value) {
+        Preconditions.checkNotNull(key, "key");
+        Preconditions.checkState(isModifiable(), "Wand is not modifiable");
+
+        if(value == null) {
+            customProperties.remove(key);
+        } else {
+            customProperties.put(key, value);
+        }
+
+        saveItemState();
     }
 }
