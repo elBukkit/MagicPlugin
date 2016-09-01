@@ -93,7 +93,7 @@ public class InventoryUtils extends NMSUtils
         return true;
     }
 
-    public static boolean loadTagsFromNBT(ConfigurationSection tags, Object node, String[] tagNames)
+    public static boolean loadTagsFromNBT(ConfigurationSection tags, Object node, Iterable<String> tagNames)
     {
         if (node == null) {
             Bukkit.getLogger().warning("Trying to load tags from a null node");

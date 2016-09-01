@@ -4217,7 +4217,7 @@ public class MagicController implements MageController {
         {
             ConfigurationSection stateNode = itemSection.createSection("wand");
             Object wandNode = InventoryUtils.getNode(item, Wand.WAND_KEY);
-            InventoryUtils.loadTagsFromNBT(stateNode, wandNode, Wand.ALL_PROPERTY_KEYS);
+            InventoryUtils.loadTagsFromNBT(stateNode, wandNode, Wand.ALL_PROPERTY_KEYS_SET);
         }
         else if(Wand.isSpell(item))
         {

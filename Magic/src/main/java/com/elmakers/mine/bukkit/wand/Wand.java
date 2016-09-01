@@ -1161,9 +1161,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 	}
-	
-	protected void loadState() {
-		if (item == null) return;
+
+    protected void loadState() {
+        if (item == null) return;
 
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null) {
@@ -1171,10 +1171,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         ConfigurationSection stateNode = new MemoryConfiguration();
-        InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
+        InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS_SET);
 
         loadProperties(stateNode);
-	}
+    }
 
     protected String getPotionEffectString() {
         if (potionEffects.size() == 0) return null;
