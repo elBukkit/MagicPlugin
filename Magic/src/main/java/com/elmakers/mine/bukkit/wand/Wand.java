@@ -127,10 +127,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     /**
      * Set of properties that should be stored as NBT tags on a wand.
      */
-    public final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
+    private final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
             PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
-    public final static String[] ALL_PROPERTY_KEYS = ALL_PROPERTY_KEYS_SET.toArray(new String[0]);
-	
+
 	protected ItemStack item;
 	protected MagicController controller;
 	protected Mage mage;
@@ -1167,21 +1166,45 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     protected void loadState() {
         if (item == null) return;
 
+        ConfigurationSection stateNode = itemToConfig(item, new MemoryConfiguration());
+        if(stateNode != null) {
+            loadProperties(stateNode);
+        }
+    }
+
+    public static ConfigurationSection itemToConfig(ItemStack item, ConfigurationSection stateNode) {
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+
         if (wandNode == null) {
-            return;
+            return null;
         }
 
-        ConfigurationSection stateNode = new MemoryConfiguration();
         InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS_SET);
 
         // Do a second pass when there are custom properties
-        String[] propertyKeys = StringUtils.split(stateNode.getString("custom_properties", ""), ",");
+        String[] propertyKeys = customPropertiesFromConfig(stateNode);
         if(propertyKeys.length > 0) {
             InventoryUtils.loadTagsFromNBT(stateNode, wandNode, Arrays.asList(propertyKeys));
         }
 
-        loadProperties(stateNode);
+        return stateNode;
+    }
+
+    public static String[] customPropertiesFromConfig(ConfigurationSection stateNode) {
+        return StringUtils.split(stateNode.getString("custom_properties", ""), ",");
+    }
+
+    public static void configToItem(ConfigurationSection itemSection, ItemStack item) {
+        ConfigurationSection stateNode = itemSection.getConfigurationSection("wand");
+        Object wandNode = InventoryUtils.createNode(item, Wand.WAND_KEY);
+        if (wandNode != null) {
+            String[] propertyKeys = customPropertiesFromConfig(stateNode);
+            if(propertyKeys.length > 0) {
+                InventoryUtils.saveTagsToNBT(stateNode, wandNode, Arrays.asList(propertyKeys));
+            }
+
+            InventoryUtils.saveTagsToNBT(stateNode, wandNode, Wand.ALL_PROPERTY_KEYS_SET);
+        }
     }
 
     protected String getPotionEffectString() {
