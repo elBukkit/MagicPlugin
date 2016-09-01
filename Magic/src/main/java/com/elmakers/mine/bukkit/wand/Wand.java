@@ -125,7 +125,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     /**
      * Set of properties that should be stored as NBT tags on a wand.
      */
-    private final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
+    public final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
             PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
     public final static String[] ALL_PROPERTY_KEYS = ALL_PROPERTY_KEYS_SET.toArray(new String[0]);
 	
@@ -1139,12 +1139,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
             // Save custom keys
             if(!customProperties.isEmpty()) {
-                Set<String> customKeys = customProperties.keySet();
-                String[] keys = customKeys.toArray(new String[customKeys.size()]);
-                InventoryUtils.saveTagsToNBT(stateNode, wandNode, keys);
+                InventoryUtils.saveTagsToNBT(stateNode, wandNode, customProperties.keySet());
             }
 
-            InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
+            InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS_SET);
         }
 
 		if (mage != null) {

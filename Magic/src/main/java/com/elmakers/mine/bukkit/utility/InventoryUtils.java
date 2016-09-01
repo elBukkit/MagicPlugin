@@ -34,12 +34,12 @@ public class InventoryUtils extends NMSUtils
         return saveTagsToNBT(tags, tag, null, false, false);
     }
 
-    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, String[] tagNames)
+    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Iterable<String> tagNames)
     {
         return saveTagsToNBT(tags, node, tagNames, true, true);
     }
     
-    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, String[] tagNames, boolean clean, boolean strings)
+    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Iterable<String> tagNames, boolean clean, boolean strings)
     {
         if (node == null) {
             Bukkit.getLogger().warning("Trying to save tags to a null node");
@@ -51,12 +51,7 @@ public class InventoryUtils extends NMSUtils
         }
         
         if (tagNames == null) {
-            Set<String> keys = tags.getKeys(false);
-            tagNames = new String[keys.size()];
-            int index = 0;
-            for (String key : keys) {
-                tagNames[index++] = key;
-            }
+            tagNames = tags.getKeys(false);
         }
         
         for (String tagName : tagNames)
