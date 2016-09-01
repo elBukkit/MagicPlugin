@@ -40,9 +40,10 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -77,40 +78,56 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 
-	public final static String[] PROPERTY_KEYS = {
-		"active_spell", "active_material",
-        "path",  "template", "passive",
-		"mana", "mana_regeneration", "mana_max", "mana_max_boost", "mana_regeneration_boost",
-        "mana_per_damage",
-		"bound", "soul", "has_uses", "uses", "upgrade", "indestructible", "undroppable",
-		"consume_reduction", "cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color",
-		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval",
-        "effect_particle_min_velocity",
-        "effect_particle_radius", "effect_particle_offset",
-        "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
-        "cast_spell", "cast_parameters", "cast_interval", "cast_min_velocity", "cast_velocity_direction",
-		"hotbar_count", "hotbar",
-		"icon", "icon_inactive", "icon_inactive_delay", "mode", "brush_mode",
-        "keep", "locked", "quiet", "force", "randomize", "rename", "rename_description",
-		"power", "overrides",
-		"protection", "protection_physical", "protection_projectiles", 
-		"protection_falling", "protection_fire", "protection_explosions",
-        "potion_effects",
-		"materials", "spells", "powered", "protected", "heroes",
-        "enchant_count", "max_enchant_count",
-		"quick_cast", "left_click", "right_click", "drop", "swap"
-	};
+    public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
+            "active_spell", "active_material",
+            "path", "template", "passive",
+            "mana", "mana_regeneration", "mana_max", "mana_max_boost",
+            "mana_regeneration_boost",
+            "mana_per_damage",
+            "bound", "soul", "has_uses", "uses", "upgrade", "indestructible",
+            "undroppable",
+            "consume_reduction", "cost_reduction", "cooldown_reduction",
+            "effect_bubbles", "effect_color",
+            "effect_particle", "effect_particle_count", "effect_particle_data",
+            "effect_particle_interval",
+            "effect_particle_min_velocity",
+            "effect_particle_radius", "effect_particle_offset",
+            "effect_sound", "effect_sound_interval", "effect_sound_pitch",
+            "effect_sound_volume",
+            "cast_spell", "cast_parameters", "cast_interval",
+            "cast_min_velocity", "cast_velocity_direction",
+            "hotbar_count", "hotbar",
+            "icon", "icon_inactive", "icon_inactive_delay", "mode",
+            "brush_mode",
+            "keep", "locked", "quiet", "force", "randomize", "rename",
+            "rename_description",
+            "power", "overrides",
+            "protection", "protection_physical", "protection_projectiles",
+            "protection_falling", "protection_fire", "protection_explosions",
+            "potion_effects",
+            "materials", "spells", "powered", "protected", "heroes",
+            "enchant_count", "max_enchant_count",
+            "quick_cast", "left_click", "right_click", "drop", "swap"
+    );
 
-	public final static String[] HIDDEN_PROPERTY_KEYS = {
-		"id", "owner", "owner_id", "name", "description",
-		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "mana_timestamp", "upgrade_template",
-        // For legacy wands
-        "haste",
-        "health_regeneration", "hunger_regeneration",
-		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
-		"mode_cast", "mode_drop"
-    };
-	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
+    private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
+            "id", "owner", "owner_id", "name", "description",
+            "organize", "alphabetize", "fill", "stored", "upgrade_icon",
+            "mana_timestamp", "upgrade_template",
+            // For legacy wands
+            "haste",
+            "health_regeneration", "hunger_regeneration",
+            "xp", "xp_regeneration", "xp_max", "xp_max_boost",
+            "xp_regeneration_boost",
+            "mode_cast", "mode_drop"
+    );
+
+    /**
+     * Set of properties that should be stored as NBT tags on a wand.
+     */
+    private final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
+            PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
+    public final static String[] ALL_PROPERTY_KEYS = ALL_PROPERTY_KEYS_SET.toArray(new String[0]);
 	
 	protected ItemStack item;
 	protected MagicController controller;
