@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.wand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +45,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -113,7 +115,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
             "id", "owner", "owner_id", "name", "description",
             "organize", "alphabetize", "fill", "stored", "upgrade_icon",
-            "mana_timestamp", "upgrade_template",
+            "mana_timestamp", "upgrade_template", "custom_properties",
             // For legacy wands
             "haste",
             "health_regeneration", "hunger_regeneration",
@@ -1172,6 +1174,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         ConfigurationSection stateNode = new MemoryConfiguration();
         InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS_SET);
+
+        // Do a second pass when there are custom properties
+        String[] propertyKeys = StringUtils.split(stateNode.getString("custom_properties", ""), ",");
+        if(propertyKeys.length > 0) {
+            InventoryUtils.loadTagsFromNBT(stateNode, wandNode, Arrays.asList(propertyKeys));
+        }
 
         loadProperties(stateNode);
     }
