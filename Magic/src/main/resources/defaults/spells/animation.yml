@@ -1,0 +1,79 @@
+animation:
+   hidden: true
+   name: Example Animation
+   icon: wood_door
+   actions:
+     cast:
+     - class: Brush
+       brush: schematic:schematic1&erase
+       actions:
+       - class: Volume
+         actions:
+         - class: ModifyBlock
+     - class: Delay
+     - class: Brush
+       brush: schematic:schematic2&erase
+       actions:
+       - class: Volume
+         actions:
+         - class: ModifyBlock
+     - class: Delay
+     - class: Brush
+       brush: schematic:schematic3&erase
+       actions:
+       - class: Volume
+         actions:
+         - class: ModifyBlock
+     - class: Delay
+     - class: Brush
+       brush: schematic:schematic4&erase
+       actions:
+       - class: Volume
+         actions:
+         - class: ModifyBlock
+     - class: Delay
+     - class: Brush
+       brush: schematic:schematic5&erase
+       actions:
+       - class: Volume
+         actions:
+         - class: ModifyBlock
+     - class: Delay
+       delay: 10000
+     - class: Brush
+       brush: schematic:schematic4&erase
+       actions:
+       - class: Volume
+         actions:
+         - class: ModifyBlock
+     - class: Delay
+     - class: Brush
+       brush: schematic:schematic3&erase
+       actions:
+       - class: Volume
+         actions:
+         - class: ModifyBlock
+     - class: Delay
+     - class: Brush
+       brush: schematic:schematic2&erase
+       actions:
+       - class: Volume
+         actions:
+         - class: ModifyBlock
+     - class: Delay
+     - class: Brush
+       brush: schematic:schematic1&erase
+       actions:
+       - class: Volume
+         actions:
+         - class: ModifyBlock
+     - class: Delay
+   parameters:
+     check_destructible: false
+     use_brush_size: true
+     range: 12
+     target: block
+     undo: 2000
+     delay: 1000
+     oty: 1
+     cooldown: 18000
