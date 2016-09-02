@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface WandTemplate {
     public String getKey();
@@ -19,4 +20,5 @@ public interface WandTemplate {
     public String migrateIcon(String icon);
     public boolean isSoul();
     public boolean isRestorable();
+    Set<String> getCategories();
 }

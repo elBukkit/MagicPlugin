@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.wand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +12,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 import java.util.logging.Level;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
@@ -36,9 +40,12 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
-import org.apache.commons.lang.ArrayUtils;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -73,41 +80,56 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 
-	public final static String[] PROPERTY_KEYS = {
-		"active_spell", "active_material",
-        "path",  "template", "passive",
-		"mana", "mana_regeneration", "mana_max", "mana_max_boost", "mana_regeneration_boost",
-        "mana_per_damage",
-		"bound", "soul", "has_uses", "uses", "upgrade", "indestructible", "undroppable",
-		"consume_reduction", "cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color",
-		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval",
-        "effect_particle_min_velocity",
-        "effect_particle_radius", "effect_particle_offset",
-        "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
-        "cast_spell", "cast_parameters", "cast_interval", "cast_min_velocity", "cast_velocity_direction",
-		"hotbar_count", "hotbar",
-		"icon", "icon_inactive", "icon_inactive_delay", "mode", "brush_mode",
-        "keep", "locked", "quiet", "force", "randomize", "rename", "rename_description",
-		"power", "overrides",
-		"protection", "protection_physical", "protection_projectiles", 
-		"protection_falling", "protection_fire", "protection_explosions",
-        "potion_effects",
-		"materials", "spells", "powered", "protected", "heroes",
-        "enchant_count", "max_enchant_count",
-		"quick_cast", "left_click", "right_click", "drop", "swap"
-	};
+    public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
+            "active_spell", "active_material",
+            "path", "template", "passive",
+            "mana", "mana_regeneration", "mana_max", "mana_max_boost",
+            "mana_regeneration_boost",
+            "mana_per_damage",
+            "bound", "soul", "has_uses", "uses", "upgrade", "indestructible",
+            "undroppable",
+            "consume_reduction", "cost_reduction", "cooldown_reduction",
+            "effect_bubbles", "effect_color",
+            "effect_particle", "effect_particle_count", "effect_particle_data",
+            "effect_particle_interval",
+            "effect_particle_min_velocity",
+            "effect_particle_radius", "effect_particle_offset",
+            "effect_sound", "effect_sound_interval", "effect_sound_pitch",
+            "effect_sound_volume",
+            "cast_spell", "cast_parameters", "cast_interval",
+            "cast_min_velocity", "cast_velocity_direction",
+            "hotbar_count", "hotbar",
+            "icon", "icon_inactive", "icon_inactive_delay", "mode",
+            "brush_mode",
+            "keep", "locked", "quiet", "force", "randomize", "rename",
+            "rename_description",
+            "power", "overrides",
+            "protection", "protection_physical", "protection_projectiles",
+            "protection_falling", "protection_fire", "protection_explosions",
+            "potion_effects",
+            "materials", "spells", "powered", "protected", "heroes",
+            "enchant_count", "max_enchant_count",
+            "quick_cast", "left_click", "right_click", "drop", "swap"
+    );
 
-	public final static String[] HIDDEN_PROPERTY_KEYS = {
-		"id", "owner", "owner_id", "name", "description",
-		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "mana_timestamp", "upgrade_template",
-        // For legacy wands
-        "haste",
-        "health_regeneration", "hunger_regeneration",
-		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
-		"mode_cast", "mode_drop"
-    };
-	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
-	
+    private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
+            "id", "owner", "owner_id", "name", "description",
+            "organize", "alphabetize", "fill", "stored", "upgrade_icon",
+            "mana_timestamp", "upgrade_template", "custom_properties",
+            // For legacy wands
+            "haste",
+            "health_regeneration", "hunger_regeneration",
+            "xp", "xp_regeneration", "xp_max", "xp_max_boost",
+            "xp_regeneration_boost",
+            "mode_cast", "mode_drop"
+    );
+
+    /**
+     * Set of properties that should be stored as NBT tags on a wand.
+     */
+    private final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
+            PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
+
 	protected ItemStack item;
 	protected MagicController controller;
 	protected Mage mage;
@@ -119,6 +141,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private Map<String, Integer> spells = new HashMap<String, Integer>();
     private Map<String, Integer> spellLevels = new HashMap<String, Integer>();
     private Map<String, Integer> brushes = new HashMap<String, Integer>();
+
+    /**
+     * Custom properties that 3rd party systems can set on a wand for their
+     * internal use.
+     */
+    private Map<String, String> customProperties = new HashMap<String, String>();
 	
 	private String activeSpell = "";
 	private String activeMaterial = "";
@@ -1110,7 +1138,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			controller.getLogger().warning("Failed to save wand state for wand to : " + item);
             Thread.dumpStack();
 		} else {
-            InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
+            // Save custom keys
+            if(!customProperties.isEmpty()) {
+                InventoryUtils.saveTagsToNBT(stateNode, wandNode, customProperties.keySet());
+            }
+
+            InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS_SET);
         }
 
 		if (mage != null) {
@@ -1129,20 +1162,50 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 	}
-	
-	protected void loadState() {
-		if (item == null) return;
 
+    protected void loadState() {
+        if (item == null) return;
+
+        ConfigurationSection stateNode = itemToConfig(item, new MemoryConfiguration());
+        if(stateNode != null) {
+            loadProperties(stateNode);
+        }
+    }
+
+    public static ConfigurationSection itemToConfig(ItemStack item, ConfigurationSection stateNode) {
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+
         if (wandNode == null) {
-            return;
+            return null;
         }
 
-        ConfigurationSection stateNode = new MemoryConfiguration();
-        InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
+        InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS_SET);
 
-        loadProperties(stateNode);
-	}
+        // Do a second pass when there are custom properties
+        String[] propertyKeys = customPropertiesFromConfig(stateNode);
+        if(propertyKeys.length > 0) {
+            InventoryUtils.loadTagsFromNBT(stateNode, wandNode, Arrays.asList(propertyKeys));
+        }
+
+        return stateNode;
+    }
+
+    public static String[] customPropertiesFromConfig(ConfigurationSection stateNode) {
+        return StringUtils.split(stateNode.getString("custom_properties", ""), ",");
+    }
+
+    public static void configToItem(ConfigurationSection itemSection, ItemStack item) {
+        ConfigurationSection stateNode = itemSection.getConfigurationSection("wand");
+        Object wandNode = InventoryUtils.createNode(item, Wand.WAND_KEY);
+        if (wandNode != null) {
+            String[] propertyKeys = customPropertiesFromConfig(stateNode);
+            if(propertyKeys.length > 0) {
+                InventoryUtils.saveTagsToNBT(stateNode, wandNode, Arrays.asList(propertyKeys));
+            }
+
+            InventoryUtils.saveTagsToNBT(stateNode, wandNode, Wand.ALL_PROPERTY_KEYS_SET);
+        }
+    }
 
     protected String getPotionEffectString() {
         if (potionEffects.size() == 0) return null;
@@ -1367,7 +1430,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             node.set("path", null);
         }
-	}
+
+        // Make sure to put this at the end of saveProperties so it cannot
+        // override anything
+        Set<String> customAdded = new HashSet<String>(customProperties.size());
+        for(Map.Entry<String, String> entry : customProperties.entrySet()) {
+            if(!node.isSet(entry.getKey())) {
+                node.set(entry.getKey(), entry.getValue());
+                customAdded.add(entry.getKey());
+            }
+        }
+
+        if(!customAdded.isEmpty()) {
+            node.set("custom_properties", StringUtils.join(customAdded, ","));
+        }
+    }
 	
 	public void loadProperties(ConfigurationSection wandConfig) {
 		loadProperties(wandConfig, false);
@@ -1748,10 +1825,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			effectParticleInterval = 0;
 		}
 
+        String customKeysStr = wandConfig.getString("custom_properties", "");
+        String[] customKeys = StringUtils.split(customKeysStr, ",");
+        for(String key : customKeys ) {
+            customProperties.put(key, wandConfig.getString(key));
+        }
+
         updateMaxMana(false);
-		checkActiveMaterial();
+        checkActiveMaterial();
         checkId();
-	}
+    }
 
 	@Override
     public void describe(CommandSender sender) {
@@ -5005,5 +5088,38 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		path.upgrade(this, mage);
         return true;
+    }
+
+    /**
+     * Gets a custom property from the wand.
+     *
+     * @param key The key of the property.
+     * @return
+     *     Null if no value with the provided key exists, otherwise the value.
+     */
+    public @Nullable String getCustomProperty(String key) {
+        Preconditions.checkNotNull(key, "key");
+        return customProperties.get(key);
+    }
+
+    /**
+     * Sets a custom property on the wand.
+     *
+     * @param key The key of the property.
+     * @param value
+     *     The associated value. If this is null, the property will be removed.
+     * @throws IllegalStateException In case the wand is not modifiable.
+     */
+    public void setCustomProperty(@Nonnull String key, String value) {
+        Preconditions.checkNotNull(key, "key");
+        Preconditions.checkState(isModifiable(), "Wand is not modifiable");
+
+        if(value == null) {
+            customProperties.remove(key);
+        } else {
+            customProperties.put(key, value);
+        }
+
+        saveItemState();
     }
 }
