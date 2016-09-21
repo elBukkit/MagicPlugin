@@ -46,7 +46,7 @@ public class PvPManagerManager implements PVPManager {
     public boolean isPVPAllowed(Player player, Location location) {
         if (!enabled || manager == null || player == null) return true;
 
-        PvPlayer pvpPlayer = manager.getPlayerHandler().get(player);
+        PvPlayer pvpPlayer = PvPlayer.get(player);
         return pvpPlayer != null && pvpPlayer.hasPvPEnabled();
     }
 }
