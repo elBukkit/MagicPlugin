@@ -942,16 +942,21 @@ public class MagicController implements MageController {
         ncpManager.initialize(plugin);
 
         // Try to link to Heroes:
-        try {
-            Plugin heroesPlugin = plugin.getServer().getPluginManager().getPlugin("Heroes");
-            if (heroesPlugin != null) {
-                heroesManager = new HeroesManager(plugin, heroesPlugin);
-            } else {
-                heroesManager = null;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Plugin heroesPlugin = plugin.getServer().getPluginManager().getPlugin("Heroes");
+                    if (heroesPlugin != null) {
+                        heroesManager = new HeroesManager(plugin, heroesPlugin);
+                    } else {
+                        heroesManager = null;
+                    }
+                } catch (Throwable ex) {
+                    plugin.getLogger().warning(ex.getMessage());
+                }
             }
-        } catch (Throwable ex) {
-            plugin.getLogger().warning(ex.getMessage());
-        }
+        }, 2);
 
         // Try to link to dynmap:
         try {
