@@ -33,6 +33,11 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.util.Vector;
 
+/**
+ * The controller is used for more advanced plugin interaction, and is
+ * used heavily by Spells themselves to interact with the Magic plugin's
+ * internal functionality.
+ */
 public interface MageController {
 
     /**
@@ -89,6 +94,15 @@ public interface MageController {
     public ItemStack createSpellItem(String spellKey);
     public ItemStack createSpellItem(String spellKey, boolean brief);
     public ItemStack createBrushItem(String brushKey);
+
+    /**
+     * Obtains a wand from an item stack. (No copying is done)
+     *
+     * @param item The item to get a wand of.
+     * @return The wand of this item.
+     * @throws IllegalArgumentException If the item is not a wand.
+     * @see #isWand(ItemStack)
+     */
     public Wand getWand(ItemStack item);
     public Wand getWand(ConfigurationSection config);
     public WandTemplate getWandTemplate(String key);
