@@ -84,6 +84,8 @@ import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
+import com.google.common.base.Preconditions;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -3456,6 +3458,7 @@ public class MagicController implements MageController {
 
     @Override
     public com.elmakers.mine.bukkit.api.wand.Wand getWand(ItemStack itemStack) {
+        Preconditions.checkArgument(Wand.isWand(itemStack), "Item stack must be a wand");
         return new Wand(this, itemStack);
     }
 
@@ -3464,11 +3467,10 @@ public class MagicController implements MageController {
         return new Wand(this, config);
     }
 
-	@Override
-	public com.elmakers.mine.bukkit.api.wand.Wand createWand(String wandKey) 
-	{
-		return Wand.createWand(this, wandKey);
-	}
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.Wand createWand(String wandKey) {
+        return Wand.createWand(this, wandKey);
+    }
 
     @Override
     public WandTemplate getWandTemplate(String key) {
