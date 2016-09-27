@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 6.2.3
+
+ - Fixes for PVPManager and Heroes integration
+
 ## 6.2.2
 
  - Fix broomsticks in 1.9.4
