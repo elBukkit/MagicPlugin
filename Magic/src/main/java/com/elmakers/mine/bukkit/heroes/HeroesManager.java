@@ -45,7 +45,7 @@ public class HeroesManager {
         skills = heroes.getSkillManager();
         if (heroes != null && characters != null && skills != null)
         {
-            plugin.getLogger().warning("Heroes found, skills available for wand use");
+            plugin.getLogger().info("Heroes found, skills available for wand use");
         }
         else
         {
