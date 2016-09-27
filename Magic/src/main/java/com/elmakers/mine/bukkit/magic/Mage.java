@@ -687,7 +687,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (boundWandItems != null) {
                 for (ItemStack boundWandItem : boundWandItems.values()) {
                     try {
-                        Wand boundWand = new Wand(controller, boundWandItem);
+                        Wand boundWand = controller.getWand(boundWandItem);
                         boundWands.put(boundWand.getTemplateKey(), boundWand);
                     } catch (Exception ex) {
                         controller.getLogger().log(Level.WARNING, "Failed to load bound wand for " + playerName +": " + boundWandItem, ex);
@@ -851,7 +851,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 activeWand.deactivate();
             }
             if (itemInHand != null && itemId != null && controller.hasWandPermission(player)) {
-                Wand newActiveWand = new Wand(controller, itemInHand);
+                Wand newActiveWand = controller.getWand(itemInHand);
                 newActiveWand.activate(this);
             }
         }
@@ -897,7 +897,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 )
         {
             if (itemInHand != null && itemId != null && controller.hasWandPermission(player)) {
-                offhandWand = new Wand(controller, itemInHand);
+                offhandWand = controller.getWand(itemInHand);
                 if (!offhandWand.canUse(player)) {
                     offhandWand = null;
                 }
@@ -1990,7 +1990,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         ItemStack[] inventory = getInventory().getContents();
         for (ItemStack item : inventory) {
             if (Wand.isWand(item)) {
-                Wand tempWand = new Wand(controller, item);
+                Wand tempWand = controller.getWand(item);
                 String template = tempWand.getTemplateKey();
                 if (template != null) {
                     foundTemplates.add(template);
@@ -2000,7 +2000,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         inventory = player.getEnderChest().getContents();
         for (ItemStack item : inventory) {
             if (Wand.isWand(item)) {
-                Wand tempWand = new Wand(controller, item);
+                Wand tempWand = controller.getWand(item);
                 String template = tempWand.getTemplateKey();
                 if (template != null) {
                     foundTemplates.add(template);
@@ -2321,7 +2321,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // it might change when added to an Inventory! :|
             itemStack = inventory.getItemInMainHand();
             if (Wand.isWand(itemStack)) {
-                Wand wand = new Wand(controller, itemStack);
+                Wand wand = controller.getWand(itemStack);
                 wand.activate(this);
             } else {
                 if (itemStack.getType() == Material.MAP) {
@@ -2345,7 +2345,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             for (int index = 0; index < armor.length; index++) {
                 ItemStack armorItem = armor[index];
                 if (Wand.isWand(armorItem)) {
-                    activeArmor.put(index, new Wand(controller, armorItem));
+                    activeArmor.put(index, controller.getWand(armorItem));
                 }
             }
         }

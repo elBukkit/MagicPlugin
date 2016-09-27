@@ -743,7 +743,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             ItemStack current = inventory.getItem(heldItemSlot);
             inventory.setItem(heldItemSlot, heldItem);
             if (player.getInventory().getHeldItemSlot() == heldItemSlot && Wand.isWand(heldItem)) {
-                Wand wand = new Wand((MagicController)controller, heldItem);
+                Wand wand = ((MagicController)controller).getWand(heldItem);
                 wand.activate(mage);
             }
             if (current != null && current.getType() != Material.AIR) {

@@ -31,7 +31,7 @@ public class WandAttr extends ItemAttribute
 		{
 			return false;
 		}
-        Wand wand = new Wand(TradersController.getController(), itemStack);
+        Wand wand = TradersController.getController().getWand(itemStack);
         YamlConfiguration saveData = new YamlConfiguration();
         wand.saveProperties(saveData);
         wandData = saveData.saveToString();

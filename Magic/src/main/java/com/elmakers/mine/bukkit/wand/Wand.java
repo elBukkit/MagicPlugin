@@ -295,8 +295,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private Inventory storedInventory = null;
     private int storedSlot;
 
-	public Wand(MagicController controller, ItemStack itemStack) {
-		this.controller = controller;
+    /**
+     * @deprecated Use {@link MagicController#getWand(ItemStack)}.
+     */
+    @Deprecated
+    public Wand(MagicController controller, ItemStack itemStack) {
+        this.controller = controller;
         wandName = controller.getMessages().get("wand.default_name");
         hotbars = new ArrayList<Inventory>();
 		setHotbarCount(1);
@@ -2250,10 +2254,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return isWand(activeItem);
 	}
 	
-	public static Wand getActiveWand(MagicController spells, Player player) {
+	public static Wand getActiveWand(MagicController controller, Player player) {
 		ItemStack activeItem =  player.getInventory().getItemInMainHand();
 		if (isWand(activeItem)) {
-			return new Wand(spells, activeItem);
+			return controller.getWand(activeItem);
 		}
 		
 		return null;
@@ -2738,7 +2742,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         Wand wand = null;
         try {
-            wand = new Wand(controller, InventoryUtils.makeReal(itemStack));
+            wand = controller.getWand(InventoryUtils.makeReal(itemStack));
             wand.saveItemState();
             wand.updateName();
         } catch (Exception ex) {
@@ -3479,7 +3483,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 return true;
 			}
 		} else if (isUpgrade(item)) {
-			Wand wand = new Wand(controller, item);
+			Wand wand = controller.getWand(item);
 			return this.add(wand);
 		}
 		if (mage != null && !mage.isAtMaxSkillPoints()) {
@@ -4414,7 +4418,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
 	public com.elmakers.mine.bukkit.api.wand.Wand duplicate() {
 		ItemStack newItem = InventoryUtils.getCopy(item);
-		Wand newWand = new Wand(controller, newItem);
+		Wand newWand = controller.getWand(newItem);
 		newWand.saveItemState();
 		return newWand;
 	}

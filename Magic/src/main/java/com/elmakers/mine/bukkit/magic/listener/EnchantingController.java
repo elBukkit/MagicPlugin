@@ -42,7 +42,7 @@ public class EnchantingController implements Listener {
 
             event.getEnchantsToAdd().clear();
 			int level = event.getExpLevelCost();
-			Wand wand = new Wand(controller, event.getItem());
+			Wand wand = controller.getWand(event.getItem());
 			if (wand.enchant(level, controller.getMage(event.getEnchanter())) <= 0) {
                 event.setCancelled(true);
 			} else {
@@ -74,7 +74,7 @@ public class EnchantingController implements Listener {
                 event.setCancelled(true);
                 return;
             }
-			Wand wandItem = new Wand(controller, event.getItem());
+			Wand wandItem = controller.getWand(event.getItem());
 			if (!wandItem.isModifiable() && wandItem.getPath() == null) {
 				event.setCancelled(true);
 				return;
@@ -140,14 +140,14 @@ public class EnchantingController implements Listener {
 				
 				// Make wands into an enchantable item when placing
 				if (Wand.isWand(cursor)) {
-					Wand wand = new Wand(controller, cursor);
+					Wand wand = controller.getWand(cursor);
 					if (wand.isModifiable()) {
 						wand.makeEnchantable(true);
 					}
 				}
 				// And turn them back when taking out
 				if (Wand.isWand(current)) {
-					Wand wand = new Wand(controller, current);
+					Wand wand = controller.getWand(current);
 					if (wand.isModifiable()) {
 						wand.makeEnchantable(false);
 					}

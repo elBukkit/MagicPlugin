@@ -266,7 +266,7 @@ public class EntityController implements Listener {
             if (Wand.isWand(itemStack)) {
                 keepItem = keepWandsOnDeath;
                 if (!keepItem) {
-                    Wand testWand = new Wand(controller, itemStack);
+                    Wand testWand = controller.getWand(itemStack);
                     keepItem = testWand.keepOnDeath();
                 }
             }
@@ -292,7 +292,7 @@ public class EntityController implements Listener {
             if (Wand.isWand(itemStack)) {
                 keepItem = keepWandsOnDeath;
                 if (!keepItem) {
-                    Wand testWand = new Wand(controller, itemStack);
+                    Wand testWand = controller.getWand(itemStack);
                     keepItem = testWand.keepOnDeath();
                 }
             } else if (InventoryUtils.isKeep(itemStack)) {
@@ -314,7 +314,7 @@ public class EntityController implements Listener {
         Item entity = event.getEntity();
         if (Wand.isWand(event.getEntity().getItemStack()))
         {
-            Wand wand = new Wand(controller, entity.getItemStack());
+            Wand wand = controller.getWand(entity.getItemStack());
             if (wand.isIndestructible()) {
                 event.getEntity().setTicksLived(1);
                 event.setCancelled(true);
@@ -369,7 +369,7 @@ public class EntityController implements Listener {
         }
         if (Wand.isWand(spawnedItem))
         {
-            Wand wand = new Wand(controller, event.getEntity().getItemStack());
+            Wand wand = controller.getWand(event.getEntity().getItemStack());
             if (wand.isIndestructible()) {
                 CompatibilityUtils.setInvulnerable(event.getEntity());
 
@@ -420,7 +420,7 @@ public class EntityController implements Listener {
                 ItemStack itemStack = item.getItemStack();
                 if (Wand.isWand(itemStack))
                 {
-                    Wand wand = new Wand(controller, item.getItemStack());
+                    Wand wand = controller.getWand(item.getItemStack());
                     if (wand.isIndestructible()) {
                         event.setCancelled(true);
                     } else if (event.getDamage() >= itemStack.getDurability()) {

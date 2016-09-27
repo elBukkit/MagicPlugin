@@ -243,7 +243,7 @@ public class PlayerController implements Listener {
         } 
         
         if (!cancelEvent && Wand.Undroppable && Wand.isWand(droppedItem) && !player.hasPermission("Magic.wand.override_drop")) {
-            Wand wand = new Wand(controller, droppedItem);
+            Wand wand = controller.getWand(droppedItem);
             if (wand.isUndroppable() && wand.isBound()) {
                 cancelEvent = true;
             }
@@ -560,7 +560,7 @@ public class PlayerController implements Listener {
         // Remove lost wands from records
         Messages messages = controller.getMessages();
         if (isWand) {
-            Wand wand = new Wand(controller, pickup);
+            Wand wand = controller.getWand(pickup);
             if (!wand.canUse(player)) {
                 if (lastDropWarn == 0 || System.currentTimeMillis() - lastDropWarn > 10000) {
                     mage.sendMessage(messages.get("wand.bound").replace("$name", wand.getOwner()));
@@ -591,7 +591,7 @@ public class PlayerController implements Listener {
             PlayerInventory inventory = event.getPlayer().getInventory();
             ItemStack inHand = inventory.getItemInMainHand();
             if (isWand && (inHand == null || inHand.getType() == Material.AIR)) {
-                Wand wand = new Wand(controller, pickup);
+                Wand wand = controller.getWand(pickup);
                 event.setCancelled(true);
                 event.getItem().remove();
                 inventory.setItem(inventory.getHeldItemSlot(), pickup);

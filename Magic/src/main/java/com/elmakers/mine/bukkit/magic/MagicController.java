@@ -3457,9 +3457,14 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.wand.Wand getWand(ItemStack itemStack) {
-        Preconditions.checkArgument(Wand.isWand(itemStack), "Item stack must be a wand");
-        return new Wand(this, itemStack);
+    public Wand getWand(ItemStack itemStack) {
+        Preconditions.checkArgument(
+                Wand.isWand(itemStack), "Item stack must be a wand");
+        // TODO: consider copying the itemStack here.
+        // Is deprecated in favour of this method.
+        @SuppressWarnings("deprecation")
+        Wand wand = new Wand(this, itemStack);
+        return wand;
     }
 
     @Override
@@ -3910,7 +3915,7 @@ public class MagicController implements MageController {
             if (itemsAreEqual(item, requireItem)) {
                 Wand wand = null;
                 if (Wand.isWand(item) && Wand.isBound(item)) {
-                    wand = new Wand(this, item);
+                    wand = getWand(item);
                     if (!wand.canUse(player)) continue;
                 }
                 if (take) {
@@ -4142,8 +4147,8 @@ public class MagicController implements MageController {
         if (firstIsWand || secondIsWand)
         {
             if (!firstIsWand || !secondIsWand) return false;
-            Wand firstWand = new Wand(this, InventoryUtils.getCopy(first));
-            Wand secondWand = new Wand(this, InventoryUtils.getCopy(second));
+            Wand firstWand = getWand(InventoryUtils.getCopy(first));
+            Wand secondWand = getWand(InventoryUtils.getCopy(second));
             String firstTemplate = firstWand.getTemplateKey();
             String secondTemplate = secondWand.getTemplateKey();
             if (firstTemplate == null || secondTemplate == null) return false;

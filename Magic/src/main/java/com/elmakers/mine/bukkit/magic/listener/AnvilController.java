@@ -60,7 +60,7 @@ public class AnvilController implements Listener {
 				if (!Wand.isWand(current)) return;
 				// Moving from anvil back to inventory
 				if (slotType == SlotType.CRAFTING) {
-					Wand wand = new Wand(controller, current);
+					Wand wand = controller.getWand(current);
 					wand.updateName(true);
 				} else if (slotType == SlotType.RESULT) {
 					// Don't allow combining
@@ -74,7 +74,7 @@ public class AnvilController implements Listener {
 					ItemMeta meta = current.getItemMeta();
 					String newName = meta.getDisplayName();
 
-					Wand wand = new Wand(controller, current);
+					Wand wand = controller.getWand(current);
 					if (!wand.canUse(player)) {
 						event.setCancelled(true);
 						mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));
@@ -87,7 +87,7 @@ public class AnvilController implements Listener {
 					wand.tryToOwn(player);
 				} else {
 					// Moving from inventory to anvil
-					Wand wand = new Wand(controller, current);
+					Wand wand = controller.getWand(current);
 					wand.updateName(false);
 				}
 				return;
@@ -97,12 +97,12 @@ public class AnvilController implements Listener {
 			if (slotType == SlotType.CRAFTING) {
 				// Putting a wand into the anvil's crafting slot
 				if (Wand.isWand(cursor)) {
-					Wand wand = new Wand(controller, cursor);
+					Wand wand = controller.getWand(cursor);
 					wand.updateName(false);
 				} 
 				// Taking a wand out of the anvil's crafting slot
 				if (Wand.isWand(current)) {
-					Wand wand = new Wand(controller, current);
+					Wand wand = controller.getWand(current);
                     if (clearDescriptionOnRename) {
                         wand.setDescription("");
                     }
@@ -126,7 +126,7 @@ public class AnvilController implements Listener {
 				ItemMeta meta = current.getItemMeta();
 				String newName = meta.getDisplayName();
 				
-				Wand wand = new Wand(controller, current);
+				Wand wand = controller.getWand(current);
 				if (!wand.canUse(player)) {
 					event.setCancelled(true);
 					mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));
@@ -146,8 +146,8 @@ public class AnvilController implements Listener {
 				// I guess I need to wait for the long-awaited anvil API?
 				if (Wand.isWand(firstItem) && Wand.isWand(secondItem)) 
 				{
-					Wand firstWand = new Wand(controller, firstItem);
-					Wand secondWand = new Wand(controller, secondItem);
+					Wand firstWand = controller.getWand(firstItem);
+					Wand secondWand = controller.getWand(secondItem);
 					if (!firstWand.isModifiable() || !secondWand.isModifiable()) {
 						mage.sendMessage("One of your wands can not be combined");
 						return;
@@ -175,7 +175,7 @@ public class AnvilController implements Listener {
 					// This seems to work in the debugger, but.. doesn't do anything.
 					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
 				} else if (organizingEnabled && Wand.isWand(firstItem)) {
-					Wand firstWand = new Wand(controller, firstItem);
+					Wand firstWand = controller.getWand(firstItem);
 					// TODO: Can't get the anvil's text from here.
 					anvilInventory.setItem(0,  null);
 					anvilInventory.setItem(1,  null);

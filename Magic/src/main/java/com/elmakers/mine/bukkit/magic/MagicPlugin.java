@@ -315,10 +315,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		controller.removeLostWand(id);
 	}
 
-	@Override
-	public com.elmakers.mine.bukkit.api.wand.Wand getWand(ItemStack itemStack) {
-		return new Wand(controller, itemStack);
-	}
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.Wand getWand(ItemStack itemStack) {
+        return controller.getWand(itemStack);
+    }
 
     @Override
 	public boolean isWand(ItemStack item) {
