@@ -4373,6 +4373,15 @@ public class MagicController implements MageController {
         return block != null && containerMaterials.contains(block.getType());
     }
 
+    /**
+     * Checks if an item is a melee material, as specified by the {@code melee}
+     * list in {@code materials.yml}. This is primarily used to detect if left
+     * clicking an entity should indicate melee damage or a spell being cast.
+     *
+     * @param item
+     *            The item to check.
+     * @return Whether or not this is a melee weapon.
+     */
     public boolean isMeleeWeapon(ItemStack item) {
         return item != null && meleeMaterials.contains(item.getType());
     }
