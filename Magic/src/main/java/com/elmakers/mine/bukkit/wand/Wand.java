@@ -130,9 +130,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
             PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 
-	protected ItemStack item;
-	protected MagicController controller;
-	protected Mage mage;
+    protected @Nonnull ItemStack item;
+    protected final @Nonnull MagicController controller;
+
+    /**
+     * The currently active mage.
+     *
+     * Is only set when the wand is active of when the wand is
+     * used for off-hand casting.
+     */
+    protected @Nullable Mage mage;
 	
 	// Cached state
 	private String id = "";
@@ -300,6 +307,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
      */
     @Deprecated
     public Wand(MagicController controller, ItemStack itemStack) {
+        Preconditions.checkNotNull(controller);
+        Preconditions.checkNotNull(itemStack);
+
         this.controller = controller;
         wandName = controller.getMessages().get("wand.default_name");
         hotbars = new ArrayList<Inventory>();
@@ -760,7 +770,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     protected void takeOwnership(Player player) {
-        takeOwnership(player, controller != null && controller.bindWands(), controller != null && controller.keepWands());
+        takeOwnership(player, controller.bindWands(), controller.keepWands());
     }
 
 	public void takeOwnership(Player player, boolean setBound, boolean setKeep) {
@@ -1132,7 +1142,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
 
-        if (item == null || item.getType() == Material.AIR) return;
+        if (item.getType() == Material.AIR) return;
 
         ConfigurationSection stateNode = new MemoryConfiguration();
         saveProperties(stateNode);
@@ -1155,7 +1165,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (player != null) {
 				// Update the stored item, too- in case we save while the
 				// inventory is open.
-				if (storedInventory != null && item != null) {
+				if (storedInventory != null) {
 					int currentSlot = player.getInventory().getHeldItemSlot();
 					ItemStack storedItem = storedInventory.getItem(currentSlot);
 					String storedId = getWandId(storedItem);
@@ -1168,9 +1178,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     protected void loadState() {
-        if (item == null) return;
-
         ConfigurationSection stateNode = itemToConfig(item, new MemoryConfiguration());
+
         if(stateNode != null) {
             loadProperties(stateNode);
         }
@@ -3956,7 +3965,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void tick() {
-		if (mage == null || item == null) return;
+		if (mage == null) return;
 		
 		Player player = mage.getPlayer();
 		if (player == null) return;
