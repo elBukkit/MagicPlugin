@@ -22,6 +22,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -51,6 +53,7 @@ public class PlayerController implements Listener {
     private boolean openOnSneakDrop;
     private boolean cancelInteractOnCast = true;
     private boolean allowOffhandCasting = true;
+    private boolean allowAttackCasting = true;
     private long lastDropWarn = 0;
 
     public PlayerController(MagicController controller) {
@@ -66,6 +69,7 @@ public class PlayerController implements Listener {
         openOnSneakDrop = properties.getBoolean("open_wand_on_sneak_drop");
         cancelInteractOnCast = properties.getBoolean("cancel_interact_on_cast", true);
         allowOffhandCasting = properties.getBoolean("allow_offhand_casting", true);
+        allowAttackCasting = properties.getBoolean("allow_attack_casting", true);
     }
 
     @EventHandler
@@ -315,6 +319,57 @@ public class PlayerController implements Listener {
             if (Wand.isSpell(itemInHand) || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    // Handle casts by left clicking an entity
+    @EventHandler(priority=EventPriority.LOWEST)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (!controller.isLoaded() || !allowAttackCasting) return;
+
+        // Ignore non-melee events
+        if(event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            return;
+        }
+
+        // Make sure the damager is a player
+        Entity damager = event.getDamager();
+        if(!(damager instanceof Player) || controller.isNPC(damager)) {
+           return;
+        }
+
+        Player player = (Player) damager;
+        Mage apiMage = controller.getMage(player);
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        Wand wand = mage.checkWand();
+        if (wand == null) return;
+
+        Messages messages = controller.getMessages();
+        if (!controller.hasWandPermission(player)) {
+            return;
+        }
+
+        // Check for region or wand-specific permissions
+        if (!controller.hasWandPermission(player, wand)) {
+            wand.deactivate();
+            mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
+            return;
+        }
+
+        if (!mage.checkLastClick(clickCooldown)) {
+            event.setCancelled(true);
+            return;
+        }
+
+        wand.playEffects("swing");
+
+        if (!wand.isUpgrade()) {
+            if (wand.performAction(wand.getLeftClickAction())) {
+                event.setCancelled(true);
+            }
+            return;
         }
     }
 
