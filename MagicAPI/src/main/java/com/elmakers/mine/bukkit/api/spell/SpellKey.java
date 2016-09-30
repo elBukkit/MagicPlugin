@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.api.spell;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Objects;
+
 public class SpellKey {
     private final String key;
     private final String baseKey;
@@ -11,13 +13,10 @@ public class SpellKey {
     public SpellKey(String baseKey, int level) {
         this.baseKey = baseKey;
         this.level = level;
-        if (this.level > 1)
-        {
+        if (this.level > 1) {
             isVariant = true;
             this.key = baseKey + "|" + level;
-        }
-        else
-        {
+        } else {
             isVariant = false;
             this.key = baseKey;
         }
@@ -58,5 +57,12 @@ public class SpellKey {
 
     public boolean isVariant() {
         return isVariant;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .addValue(getKey())
+                .toString();
     }
 }
