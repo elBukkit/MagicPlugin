@@ -14,8 +14,8 @@ public class MageUpdateTask implements Runnable {
 
     @Override
     public void run() {
-        Collection<Mage> mages = controller.getMages();
-        for (Iterator<Mage> iterator = mages.iterator(); iterator.hasNext();) {
+        Collection<? extends Mage> mages = controller.getMutableMages();
+        for (Iterator<? extends Mage> iterator = mages.iterator(); iterator.hasNext();) {
             Mage mage = iterator.next();
 
             if (!mage.isValid())

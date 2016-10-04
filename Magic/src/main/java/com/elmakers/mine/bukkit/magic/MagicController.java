@@ -3288,6 +3288,10 @@ public class MagicController implements MageController {
         return plugin;
     }
 
+    public Collection<? extends Mage> getMutableMages() {
+        return mages.values();
+    }
+
     @Override
     public Collection<Mage> getMages() {
         Collection<? extends Mage> values = mages.values();
