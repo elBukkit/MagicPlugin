@@ -380,9 +380,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				Runnable taskRunnable = CompatibilityUtils.getTaskRunnable(task);
 				if (taskRunnable != null) {
 					Class<? extends Runnable> taskClass = taskRunnable.getClass();
-					if (taskClass != null) {
-						className = taskClass.getName();
-					}
+					className = taskClass.getName();
 				}
 				Integer count = pluginTaskCounts.get(className);
 				if (count == null) count = 0;

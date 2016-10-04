@@ -535,9 +535,6 @@ public abstract class TargetingSpell extends BaseSpell {
             for (String typeKey : typeKeys) {
                 try {
                     EntityType entityType = EntityType.valueOf(typeKey.toUpperCase());
-                    if (entityType == null) {
-                        throw new Exception("Bad entity type");
-                    }
                     targetEntityTypes.add(entityType);
                 } catch (Throwable ex) {
                     controller.getLogger().warning("Unknown entity type in target_types of " + getKey() + ": " + typeKey);

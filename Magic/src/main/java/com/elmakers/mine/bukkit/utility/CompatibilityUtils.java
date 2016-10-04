@@ -765,7 +765,7 @@ public class CompatibilityUtils extends NMSUtils {
             try {
                 double size = config.getDouble(key);
                 EntityType entityType = EntityType.valueOf(key.toUpperCase());
-                if (size > 0 && entityType != null)
+                if (size > 0)
                 {
                     headSizes.put(entityType, size);
                 }
@@ -790,10 +790,7 @@ public class CompatibilityUtils extends NMSUtils {
                     continue;
                 }
                 EntityType entityType = EntityType.valueOf(upperKey);
-                if (entityType != null)
-                {
-                    hitboxes.put(entityType, bb);
-                }
+                hitboxes.put(entityType, bb);
             } catch (Exception ex) {
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type in hitbox definition: " + key, ex);
             }
@@ -880,10 +877,7 @@ public class CompatibilityUtils extends NMSUtils {
         for (String key : keys) {
             try {
                 World.Environment worldType = World.Environment.valueOf(key.toUpperCase());
-                if (worldType != null)
-                {
-                    maxHeights.put(worldType, config.getInt(key));
-                }
+                maxHeights.put(worldType, config.getInt(key));
             } catch (Exception ex) {
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid environment type: " + key, ex);
             }
