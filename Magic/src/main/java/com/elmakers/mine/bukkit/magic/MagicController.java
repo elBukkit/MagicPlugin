@@ -115,6 +115,7 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.projectiles.ProjectileSource;
@@ -3143,6 +3144,15 @@ public class MagicController implements MageController {
     @Override
     public boolean isNPC(Entity entity) {
         return (entity != null && (entity.hasMetadata("NPC") || entity.hasMetadata("shopkeeper")));
+    }
+
+    @Override
+    public boolean isVanished(Entity entity) {
+        if (entity == null) return false;
+        for (MetadataValue meta : entity.getMetadata("vanished")) {
+            return meta.asBoolean();
+        }
+        return false;
     }
 	
 	@Override

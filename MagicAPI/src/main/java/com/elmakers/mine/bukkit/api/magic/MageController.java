@@ -245,6 +245,7 @@ public interface MageController {
      * relies on Entity metadata.
      */
     public boolean isNPC(Entity entity);
+    public boolean isVanished(Entity entity);
 
     /**
      * Damage the Elemental represented by the given Entity.
