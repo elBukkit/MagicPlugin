@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -77,9 +77,8 @@ public class PlayerController implements Listener {
         PlayerInventory inventory = player.getInventory();
         ItemStack next = inventory.getItem(event.getNewSlot());
 
-        Mage apiMage = controller.getMage(player);
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        Mage mage = controller.getMage(player);
+        if (mage == null) return;
 
         // Check for self-destructing and temporary items
         if (Wand.isSelfDestructWand(next)) {
@@ -163,9 +162,8 @@ public class PlayerController implements Listener {
     public void onPlayerDropItem(PlayerDropItemEvent event)
     {
         final Player player = event.getPlayer();
-        Mage apiMage = controller.getRegisteredMage(player);
-        if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        final com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) return;
 
         // Catch lag-related glitches dropping items from GUIs
         if (mage.getActiveGUI() != null) {
@@ -255,9 +253,8 @@ public class PlayerController implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        Mage apiMage = controller.getRegisteredMage(event.getPlayer());
-        if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        Mage mage = controller.getRegisteredMage(event.getPlayer());
+        if (mage == null) return;
         mage.restoreRespawnInventories();
     }
 
@@ -281,9 +278,8 @@ public class PlayerController implements Listener {
     @EventHandler(priority=EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
-        Mage apiMage = controller.getRegisteredMage(player);
-        if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) return;
         Wand wand = mage.checkWand();
 
         // Check for a player placing a wand in an item frame
@@ -338,9 +334,8 @@ public class PlayerController implements Listener {
             return;
         }
 
-        Mage apiMage = controller.getMage(player);
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        Mage mage = controller.getMage(player);
+        if (mage == null) return;
 
         Action action = event.getAction();
         Wand wand = mage.checkWand();
@@ -464,10 +459,7 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage != null) {
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage)
-            {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).onPlayerQuit(event);
-            }
+            mage.onPlayerQuit(event);
             controller.playerQuit(mage);
         }
     }
@@ -517,10 +509,9 @@ public class PlayerController implements Listener {
     public void onPlayerPickupItem(PlayerPickupItemEvent event)
     {
         Player player = event.getPlayer();
-        Mage apiMage = controller.getMage(player);
+        Mage mage = controller.getMage(player);
 
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        if (mage == null) return;
 
         // If a wand's inventory is active, add the item there
         if (mage.hasStoredInventory()) {
@@ -552,10 +543,9 @@ public class PlayerController implements Listener {
         }
         
         Player player = event.getPlayer();
-        Mage apiMage = controller.getMage(player);
+        Mage mage = controller.getMage(player);
 
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        if (mage == null) return;
 
         // Remove lost wands from records
         Messages messages = controller.getMessages();

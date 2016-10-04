@@ -85,6 +85,7 @@ import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -148,7 +149,6 @@ import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -169,7 +169,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public Mage getRegisteredMage(String mageId) {
+    public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(String mageId) {
         if (!loaded) {
             return null;
         }
@@ -177,16 +177,16 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public Mage getMage(String mageId, String mageName) {
+    public com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, String mageName) {
         return getMage(mageId, mageName, null, null);
     }
 
-    public Mage getMage(String mageId, CommandSender commandSender, Entity entity) {
+    public com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, CommandSender commandSender, Entity entity) {
         return getMage(mageId, null, commandSender, entity);
     }
 
-    protected Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
-        Mage apiMage = null;
+    protected com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
+        com.elmakers.mine.bukkit.magic.Mage apiMage = null;
         if (commandSender == null && entity == null) {
             commandSender = Bukkit.getConsoleSender();
         }
@@ -267,19 +267,17 @@ public class MagicController implements MageController {
             apiMage = mage;
         } else {
             apiMage = mages.get(mageId);
-            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
+            com.elmakers.mine.bukkit.magic.Mage mage = apiMage;
 
-                // In case of rapid relog, this mage may have been marked for removal already
-                mage.setUnloading(false);
-                
-                // Re-set mage properties
-                mage.setName(mageName);
-                mage.setCommandSender(commandSender);
-                mage.setEntity(entity);
-                if (commandSender instanceof Player) {
-                    mage.setPlayer((Player) commandSender);
-                }
+            // In case of rapid relog, this mage may have been marked for removal already
+            mage.setUnloading(false);
+
+            // Re-set mage properties
+            mage.setName(mageName);
+            mage.setCommandSender(commandSender);
+            mage.setEntity(entity);
+            if (commandSender instanceof Player) {
+                mage.setPlayer((Player) commandSender);
             }
         }
         if (apiMage == null) {
@@ -303,30 +301,30 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.magic.Mage getMage(Player player) {
+    public com.elmakers.mine.bukkit.magic.Mage getMage(Player player) {
         return getMage(player, player);
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity) {
+    public com.elmakers.mine.bukkit.magic.Mage getMage(Entity entity) {
         CommandSender commandSender = (entity instanceof Player) ? (Player) entity : null;
         return getMage(entity, commandSender);
     }
 
-    public Mage getRegisteredMage(Entity entity) {
+    public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(Entity entity) {
         if (entity == null) return null;
         String id = entity.getUniqueId().toString();
         return mages.get(id);
     }
 
-    protected com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity, CommandSender commandSender) {
+    protected com.elmakers.mine.bukkit.magic.Mage getMage(Entity entity, CommandSender commandSender) {
         if (entity == null) return getMage(commandSender);
         String id = entity.getUniqueId().toString();
         return getMage(id, commandSender, entity);
     }
 
     @Override
-    public Mage getMage(CommandSender commandSender) {
+    public com.elmakers.mine.bukkit.magic.Mage getMage(CommandSender commandSender) {
         String mageId = "COMMAND";
         if (commandSender instanceof ConsoleCommandSender) {
             mageId = "CONSOLE";
@@ -1893,7 +1891,7 @@ public class MagicController implements MageController {
 
     protected void savePlayerData(Collection<MageData> stores) {
         try {
-            for (Entry<String, Mage> mageEntry : mages.entrySet()) {
+            for (Entry<String, ? extends Mage> mageEntry : mages.entrySet()) {
                 Mage mage = mageEntry.getValue();
                 if (!mage.isPlayer() && !saveNonPlayerMages)
                 {
@@ -2768,7 +2766,7 @@ public class MagicController implements MageController {
         final boolean isOpen = wand != null && wand.isInventoryOpen();
         mage.deactivate();
         mage.undoScheduled();
-        
+
         // Delay removal one tick to avoid issues with plugins that kill
         // players on logout (CombatTagPlus, etc)
         // Don't delay on shutdown, though.
@@ -3281,10 +3279,10 @@ public class MagicController implements MageController {
     }
 
     @Override
-	public Collection<Mage> getMages()
-	{
-		return mages.values();
-	}
+    public Collection<Mage> getMages() {
+        Collection<? extends Mage> values = mages.values();
+        return Collections.unmodifiableCollection(values);
+    }
 
 	@Override
 	public Set<Material> getBuildingMaterials()
@@ -4916,7 +4914,7 @@ public class MagicController implements MageController {
     private final Map<String, SpellCategory>    categories              	= new HashMap<String, SpellCategory>();
     private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<String, ConfigurationSection>();
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<String, ConfigurationSection>();
-    private final Map<String, Mage> 		    mages                  		= new ConcurrentHashMap<String, Mage>();
+    private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Set<Mage>		 	            pendingConstruction			= new HashSet<Mage>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<UndoList>();
     private final Map<String, WeakReference<Schematic>> schematics	= new HashMap<String, WeakReference<Schematic>>();
