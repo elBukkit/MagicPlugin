@@ -4654,40 +4654,45 @@ public class MagicController implements MageController {
                     if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
                     {
                         SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-                        final Date modifiedDate = format.parse(connection.getHeaderField("Last-Modified"));
-                        if (modifiedDate.getTime() > modifiedTimestamp) {
-                            server.getScheduler().runTask(plugin, new Runnable() {
-                                @Override
-                                public void run() {
-                                if (modifiedTimestamp <= 0) {
-                                    sender.sendMessage(ChatColor.YELLOW + "Checking resource pack for the first time");
-                                } else {
-                                    sender.sendMessage(ChatColor.YELLOW + "Resource pack modified, redownloading (" + modifiedDate.getTime() + " > " + modifiedTimestamp + ")");
-                                }
-                                }
-                            });
-
-                            MessageDigest digest = MessageDigest.getInstance("SHA1");
-                            BufferedInputStream in = new BufferedInputStream(rpURL.openStream());
-                            final byte data[] = new byte[1024];
-                            int count;
-                            while ((count = in.read(data, 0, 1024)) != -1) {
-                                digest.update(data, 0, count);
-                            }
-                            newResourcePackHash = byteArrayToHexString(digest.digest());
-
-                            if (initialLoad) {
-                                response = ChatColor.GREEN + "Resource pack hash set to " + ChatColor.GRAY + newResourcePackHash;
-                            } else {
-                                response = ChatColor.YELLOW + "Resource pack hash changed, clients will see updates after relogging";
-                            }
-                            
-                            ConfigurationSection rpSection = rpConfig.createSection(rpKey);
-                            rpSection.set("sha1", newResourcePackHash);
-                            rpSection.set("modified", modifiedDate.getTime());
-                            rpConfig.save(rpFile);
+                        String lastModified = connection.getHeaderField("Last-Modified");
+                        if (lastModified == null || lastModified.isEmpty()) {
+                            response = ChatColor.YELLOW + "Server did not return a Last-Modified field";
                         } else {
-                            response = ChatColor.GREEN + "Resource pack has not changed, using hash " + newResourcePackHash +  " (" + modifiedDate.getTime() + " <= " + modifiedTimestamp + ")";
+                            final Date modifiedDate = format.parse(lastModified);
+                            if (modifiedDate.getTime() > modifiedTimestamp) {
+                                server.getScheduler().runTask(plugin, new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (modifiedTimestamp <= 0) {
+                                            sender.sendMessage(ChatColor.YELLOW + "Checking resource pack for the first time");
+                                        } else {
+                                            sender.sendMessage(ChatColor.YELLOW + "Resource pack modified, redownloading (" + modifiedDate.getTime() + " > " + modifiedTimestamp + ")");
+                                        }
+                                    }
+                                });
+
+                                MessageDigest digest = MessageDigest.getInstance("SHA1");
+                                BufferedInputStream in = new BufferedInputStream(rpURL.openStream());
+                                final byte data[] = new byte[1024];
+                                int count;
+                                while ((count = in.read(data, 0, 1024)) != -1) {
+                                    digest.update(data, 0, count);
+                                }
+                                newResourcePackHash = byteArrayToHexString(digest.digest());
+
+                                if (initialLoad) {
+                                    response = ChatColor.GREEN + "Resource pack hash set to " + ChatColor.GRAY + newResourcePackHash;
+                                } else {
+                                    response = ChatColor.YELLOW + "Resource pack hash changed, clients will see updates after relogging";
+                                }
+
+                                ConfigurationSection rpSection = rpConfig.createSection(rpKey);
+                                rpSection.set("sha1", newResourcePackHash);
+                                rpSection.set("modified", modifiedDate.getTime());
+                                rpConfig.save(rpFile);
+                            } else {
+                                response = ChatColor.GREEN + "Resource pack has not changed, using hash " + newResourcePackHash +  " (" + modifiedDate.getTime() + " <= " + modifiedTimestamp + ")";
+                            }
                         }
                     }
                     else
