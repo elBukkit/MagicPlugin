@@ -21,6 +21,7 @@ import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -44,6 +45,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean								targetNPCs				= false;
     private boolean								targetArmorStands		= false;
     private boolean								targetInvisible			= true;
+    private boolean                             targetVanished          = false;
     private boolean								targetUnknown			= true;
     protected Class<?>                          targetEntityType        = null;
     protected Set<EntityType>                   targetEntityTypes       = null;
@@ -303,6 +305,14 @@ public abstract class TargetingSpell extends BaseSpell {
         return targeting.getAllTargetEntities(currentCast, this.getMaxRange());
     }
 
+    private boolean isVanished(Entity entity) {
+        if (entity == null) return false;
+        for (MetadataValue meta : entity.getMetadata("vanished")) {
+            return meta.asBoolean();
+        }
+        return false;
+    }
+
     @Override
     public boolean canTarget(Entity entity) {
         // This is mainly here to ignore pets...
@@ -332,7 +342,8 @@ public abstract class TargetingSpell extends BaseSpell {
         }
         // Ignore invisible entities
         if (!targetInvisible && entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) return false;
-
+        if (!targetVanished && entity instanceof Player && isVanished(entity)) return false;
+        
         if (targetContents != null && entity instanceof ItemFrame)
         {
             ItemFrame itemFrame = (ItemFrame)entity;
@@ -517,6 +528,7 @@ public abstract class TargetingSpell extends BaseSpell {
         targetNPCs = parameters.getBoolean("target_npc", false);
         targetArmorStands = parameters.getBoolean("target_armor_stand", false);
         targetInvisible = parameters.getBoolean("target_invisible", true);
+        targetVanished = parameters.getBoolean("target_vanished", false);
         targetUnknown = parameters.getBoolean("target_unknown", true);
 
         if (parameters.contains("target_type")) {
