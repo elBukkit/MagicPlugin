@@ -691,7 +691,10 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
         this.upgraded(wand, mage);
         if (this.icon != null && this.icon.equals(wand.getIcon())) {
-            wand.setIcon(newPath.getIcon());
+            com.elmakers.mine.bukkit.api.block.MaterialAndData newIcon = newPath.getIcon();
+            if (newIcon != null) {
+                wand.setIcon(newPath.getIcon());
+            }
         }
         wand.setPath(newPath.getKey());
 
