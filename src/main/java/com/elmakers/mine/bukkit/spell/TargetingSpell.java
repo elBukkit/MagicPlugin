@@ -307,6 +307,12 @@ public abstract class TargetingSpell extends BaseSpell {
 
     private boolean isVanished(Entity entity) {
         if (entity == null) return false;
+        if (entity instanceof Player) {
+            Player sourcePlayer = (currentCast != null) ? currentCast.getMage().getPlayer() : null;
+            if (sourcePlayer != null && !sourcePlayer.canSee((Player)entity)) {
+                return true;
+            }
+        }
         for (MetadataValue meta : entity.getMetadata("vanished")) {
             return meta.asBoolean();
         }
