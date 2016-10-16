@@ -437,7 +437,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
         // Create parameter map
         Map<String, String> parameterMap = null;
-        ConfigurationSection workingParameters = spell != null ? spell.getWorkingParameters() : null;
+        ConfigurationSection workingParameters = spell.getWorkingParameters();
         if (workingParameters != null) {
             Collection<String> keys = workingParameters.getKeys(false);
             parameterMap = new HashMap<String, String>();
