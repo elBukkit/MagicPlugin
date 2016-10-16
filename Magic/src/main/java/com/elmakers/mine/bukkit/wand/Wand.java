@@ -4899,7 +4899,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		ItemStack currentItem = inventory.getItem(storedSlot);
 		String currentId = getWandId(currentItem);
 		String storedId = getWandId(storedItem);
-		if (storedId != null && storedId.equals(id) && currentId != id) {
+		if (storedId != null && storedId.equals(id) && !Objects.equal(currentId, id)) {
 			// Hacky special-case to avoid glitching spells out of the inventory
 			// via the offhand slot.
 			if (isSpell(currentItem)) {
