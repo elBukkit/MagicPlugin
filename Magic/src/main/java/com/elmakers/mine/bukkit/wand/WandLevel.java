@@ -275,7 +275,7 @@ public class WandLevel {
 		
 		// Add random wand properties
 		boolean addedProperties = false;
-		Integer propertyCount = propertyCountProbability.size() == 0 ? 0 : RandomUtils.weightedRandom(propertyCountProbability);
+        Integer propertyCount = propertyCountProbability.size() == 0 ? Integer.valueOf(0) : RandomUtils.weightedRandom(propertyCountProbability);
 		ConfigurationSection wandProperties = new MemoryConfiguration();
 		double costReduction = wand.getCostReduction();
 
