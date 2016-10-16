@@ -40,6 +40,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -2982,7 +2983,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         if (other.upgradeIcon != null && (this.icon == null
                || this.icon.getMaterial() != other.upgradeIcon.getMaterial()
-               || this.icon.getData() != other.upgradeIcon.getData())) {
+               || Objects.equal(this.icon.getData(), other.upgradeIcon.getData()))) {
             modified = true;
             this.setIcon(other.upgradeIcon);
         }
