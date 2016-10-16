@@ -15,7 +15,7 @@ public class DeltaPlotter extends Plotter {
 	@Override
 	public int getValue() {
 		int value = plotter.getValue();
-		int delta = value = previousValue;
+		int delta = value - previousValue;
 		previousValue = value;
 		return delta;
 	}	
