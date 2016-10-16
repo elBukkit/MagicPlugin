@@ -368,8 +368,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                         activeArmorStand.setHeadPose(new EulerAngle(pitchAmount * location.getPitch() / 180 * Math.PI, 0, 0));
                     } else if (!useHelmet) {
                         EulerAngle armPose = activeArmorStand.getRightArmPose();
-                        armPose.setY(pitchAmount * location.getPitch() / 180 * Math.PI);
-                        armPose.setZ(rollAmount);
+                        armPose = armPose.setY(pitchAmount * location.getPitch() / 180 * Math.PI);
+                        armPose = armPose.setZ(rollAmount);
                         activeArmorStand.setRightArmPose(armPose);
                     }
                 }
