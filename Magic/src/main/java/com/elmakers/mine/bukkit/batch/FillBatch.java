@@ -38,7 +38,6 @@ public class FillBatch extends BrushBatch {
 	private final BoundingBox bounds;
 	
 	private boolean spawnFallingBlocks = false;
-	private Vector fallingBlockVelocity = null;
 	
 	public FillBatch(BrushSpell spell, Location p1, Location p2, MaterialBrush brush) {
 		super(spell);
@@ -123,9 +122,6 @@ public class FillBatch extends BrushBatch {
 					if (spawnFallingBlocks) {
 						FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
 						falling.setDropItem(false);
-						if (fallingBlockVelocity != null) {
-							falling.setVelocity(fallingBlockVelocity);
-						}
 					}
 				}
 			}

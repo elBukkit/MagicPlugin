@@ -12,7 +12,6 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 @Deprecated
 public class TreeSpell extends TargetingSpell
 {
-	private TreeType defaultTreeType = null;
 	private TreeType lastTreeType = null;
 
 	@Override
@@ -35,9 +34,9 @@ public class TreeSpell extends TargetingSpell
 		}
 
 		Location treeLoc = new Location(getWorld(), target.getX(), target.getY() + 1, target.getZ(), 0, 0);
-		TreeType treeType = defaultTreeType;
+		TreeType treeType;
 		String typeString = parameters.getString("type", "");
-		treeType = parseTreeString(typeString, defaultTreeType);
+		treeType = parseTreeString(typeString, null);
 
 		if (treeType == null)
 		{

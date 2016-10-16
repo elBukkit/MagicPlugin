@@ -147,7 +147,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private GUIAction gui = null;
 
     private Hologram hologram;
-    private Integer hologramTaskId = null;
     private boolean hologramIsVisible = false;
 
     private Map<Integer, ItemStack> respawnInventory;
@@ -1882,9 +1881,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         hologram.show(player);
 
         BukkitScheduler scheduler = Bukkit.getScheduler();
-        if (hologramTaskId != null) {
-            scheduler.cancelTask(hologramTaskId);
-        }
         if (duration > 0) {
             scheduler.scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
                 @Override
