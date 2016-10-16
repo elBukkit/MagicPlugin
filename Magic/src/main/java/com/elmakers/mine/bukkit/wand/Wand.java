@@ -921,29 +921,28 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected int getHotbarSize() {
 		return hotbars.size() * HOTBAR_INVENTORY_SIZE;
 	}
-	
-	protected Inventory getInventory(Integer slot) {
-		Inventory inventory = null;
-		int hotbarSize = getHotbarSize();
-		if (slot >= hotbarSize) {
-			int inventoryIndex = (slot - hotbarSize) / INVENTORY_SIZE;
-			inventory = getInventoryByIndex(inventoryIndex);
-		} else {
-			inventory = hotbars.get(slot / HOTBAR_INVENTORY_SIZE);
-		}
-		
-		return inventory;
-	}
-	
-	protected int getInventorySlot(Integer slot) {
-		int hotbarSize = getHotbarSize();
-		if (slot < hotbarSize) {
-			return slot % HOTBAR_INVENTORY_SIZE;
-		}
-		
-		return ((slot - hotbarSize) % INVENTORY_SIZE);
-	}
-	
+
+    protected Inventory getInventory(int slot) {
+        int hotbarSize = getHotbarSize();
+
+        if (slot < hotbarSize) {
+            return hotbars.get(slot / HOTBAR_INVENTORY_SIZE);
+        }
+
+        int inventoryIndex = (slot - hotbarSize) / INVENTORY_SIZE;
+        return getInventoryByIndex(inventoryIndex);
+    }
+
+    protected int getInventorySlot(int slot) {
+        int hotbarSize = getHotbarSize();
+
+        if (slot < hotbarSize) {
+            return slot % HOTBAR_INVENTORY_SIZE;
+        }
+
+        return ((slot - hotbarSize) % INVENTORY_SIZE);
+    }
+
 	protected void addToInventory(ItemStack itemStack, Integer slot) {
 		if (slot == null) {
 			addToInventory(itemStack);
