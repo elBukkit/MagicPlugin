@@ -235,11 +235,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case SP:
                 return messages.get("costs.sp_amount").replace("$amount", ((Integer)(int)Math.ceil(getSkillPoints(reducer))).toString());
             case MANA:
-                return messages.get("costs.mana_amount").replace("$amount", ((Integer)(int)Math.ceil(getMana(reducer))).toString());
+                return messages.get("costs.mana_amount").replace("$amount", Integer.toString(getMana(reducer)));
             case HEALTH:
-                return messages.get("costs.health_amount").replace("$amount", ((Integer)(int)Math.ceil(getMana(reducer))).toString());
+                return messages.get("costs.health_amount").replace("$amount", Integer.toString(getMana(reducer)));
             case HUNGER:
-                return messages.get("costs.hunger_amount").replace("$amount", ((Integer)(int)Math.ceil(getMana(reducer))).toString());
+                return messages.get("costs.hunger_amount").replace("$amount", Integer.toString(getMana(reducer)));
             case CURRENCY:
                 return messages.get("costs.currency_amount").replace("$amount", ((Integer)(int)Math.ceil(getCurrency(reducer))).toString());
         }
