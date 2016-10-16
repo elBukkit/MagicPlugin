@@ -910,19 +910,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		return displayInventory;
 	}
-	
-	protected Inventory getInventoryByIndex(int inventoryIndex) {
-		while (inventoryIndex >= inventories.size()) {
-			inventories.add(CompatibilityUtils.createInventory(null, INVENTORY_SIZE, "Wand"));
-		}
-		return inventories.get(inventoryIndex);
-	}
+
+    protected @Nonnull Inventory getInventoryByIndex(int inventoryIndex) {
+        // Auto create
+        while (inventoryIndex >= inventories.size()) {
+            inventories.add(CompatibilityUtils.createInventory(null, INVENTORY_SIZE, "Wand"));
+        }
+
+        return inventories.get(inventoryIndex);
+    }
 
 	protected int getHotbarSize() {
 		return hotbars.size() * HOTBAR_INVENTORY_SIZE;
 	}
 
-    protected Inventory getInventory(int slot) {
+    protected @Nonnull Inventory getInventory(int slot) {
         int hotbarSize = getHotbarSize();
 
         if (slot < hotbarSize) {
