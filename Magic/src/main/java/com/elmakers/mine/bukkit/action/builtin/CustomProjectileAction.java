@@ -64,6 +64,7 @@ public class CustomProjectileAction extends CompoundAction
     private double trackCursorRange;
     private double trackSpeed;
     private int targetSelfTimeout;
+    private Boolean targetSelf;
     private boolean breaksBlocks;
     private double targetBreakables;
     private int targetBreakableSize;
@@ -228,6 +229,7 @@ public class CustomProjectileAction extends CompoundAction
         useEyeLocation = parameters.getBoolean("use_eye_location", true);
         useTargetLocation = parameters.getBoolean("use_target_location", true);
         targetSelfTimeout = parameters.getInt("target_self_timeout", 0);
+        targetSelf = parameters.contains("target_self") ? parameters.getBoolean("target_self") : null;
         breaksBlocks = parameters.getBoolean("break_blocks", true);
         targetBreakables = parameters.getDouble("target_breakables", 1);
         targetBreakableSize = parameters.getInt("breakable_size", 1);
@@ -844,6 +846,10 @@ public class CustomProjectileAction extends CompoundAction
             return SpellResult.NO_ACTION;
         }
         actionContext.playEffects(hitEffectKey);
+        if (targetSelf != null)
+        {
+            actionContext.setTargetsCaster(targetSelf);
+        }
         return startActions();
     }
 

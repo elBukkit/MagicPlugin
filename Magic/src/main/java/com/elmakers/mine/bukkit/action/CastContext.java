@@ -56,6 +56,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private SpellResult result = SpellResult.NO_ACTION;
     private SpellResult initialResult = SpellResult.CAST;
     private Vector direction = null;
+    private Boolean targetCaster = null;
 
     private Set<UUID> targetMessagesSent = new HashSet<UUID>();
     private Collection<EffectPlay> currentEffects = new ArrayList<EffectPlay>();
@@ -737,10 +738,18 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public boolean getTargetsCaster() {
+        if (targetCaster != null) {
+            return targetCaster;
+        }
         if (baseSpell != null) {
             return baseSpell.getTargetsCaster();
         }
         return false;
+    }
+
+    @Override
+    public void setTargetsCaster(boolean target) {
+        targetCaster = target;
     }
 
     @Override
@@ -749,13 +758,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             return baseSpell.getConsumeReduction() >= 1;
         }
         return false;
-    }
-
-    @Override
-    public void setTargetsCaster(boolean target) {
-        if (baseSpell != null) {
-            baseSpell.setTargetsCaster(target);
-        }
     }
 
     @Override

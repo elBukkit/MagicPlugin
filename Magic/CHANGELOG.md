@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 6.3
+
+ - Add target_self parameter to ChangeContext and CustomProjectile actions
+
 ## 6.2.3
 
  - Fixes for PVPManager and Heroes integration
