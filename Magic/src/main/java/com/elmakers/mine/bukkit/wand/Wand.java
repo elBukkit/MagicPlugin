@@ -2278,6 +2278,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return item != null && InventoryUtils.hasMeta(item, WAND_KEY) && !isUpgrade(item);
 	}
 
+	public static boolean isWandOrUpgrade(ItemStack item) {
+		return item != null && InventoryUtils.hasMeta(item, WAND_KEY);
+	}
+
 	public static boolean isBound(ItemStack item) {
 		Object wandSection = InventoryUtils.getNode(item, WAND_KEY);
 		if (wandSection == null) return false;
