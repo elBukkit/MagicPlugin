@@ -5,6 +5,7 @@
  - Add target_self parameter to ChangeContext and CustomProjectile actions
  - Minor nerf to wand power affects on construction radii
  - Fix for out-of-control Tornado (and possibly other spells) with increased wand power
+ - EffectLib fix for icon_crack particles crashing clients.
 
 ## 6.2.3
 
