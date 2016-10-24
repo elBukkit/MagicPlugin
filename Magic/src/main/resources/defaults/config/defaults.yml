@@ -468,8 +468,8 @@ redstone_replacement: obsidian
 #
 max_power_damage_multiplier: 2.0
 max_power_construction_multiplier: 3.0
-max_power_radius_multiplier: 2.0
-max_power_radius_multiplier_max: 4.0
+max_power_radius_multiplier: 1.5
+max_power_radius_multiplier_max: 2.0
 max_power_range_multiplier: 2.0
 max_power_range_multiplier_max: 5.0
 max_power: 100.0
