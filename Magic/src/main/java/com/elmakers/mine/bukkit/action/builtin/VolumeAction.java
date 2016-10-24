@@ -55,6 +55,7 @@ public class VolumeAction extends CompoundAction
 	private boolean centerX;
 	private boolean centerZ;
 	private boolean replaceTarget;
+	private boolean appliedMultiplier;
 	
 	private Material replaceMaterial;
 
@@ -72,6 +73,7 @@ public class VolumeAction extends CompoundAction
         xSize = parameters.getDouble("x_size", radius);
         ySize = parameters.getDouble("y_size", radius);
         zSize = parameters.getDouble("z_size", radius);
+		appliedMultiplier = false;
 		centerY = parameters.getBoolean("center_y", true);
 		centerX = parameters.getBoolean("center_x", true);
 		centerZ = parameters.getBoolean("center_z", true);
@@ -112,10 +114,11 @@ public class VolumeAction extends CompoundAction
 			}
 			centerY = false;
 			context.getMage().sendDebugMessage(ChatColor.GREEN + "Brush Size: " + ChatColor.GRAY + xSize + "," + ySize + "," + zSize, 2);
-		} else {
+		} else if (!appliedMultiplier) {
 			xSize = context.getMage().getRadiusMultiplier() * this.xSize;
 			ySize = context.getMage().getRadiusMultiplier() * this.ySize;
 			zSize = context.getMage().getRadiusMultiplier() * this.zSize;
+			appliedMultiplier = true;
 		}
 		if (volumeType == VolumeType.SPIRAL && xSize != zSize) {
 			volumeType = VolumeType.YZX;
