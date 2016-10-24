@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 /**
  * Represents a crafting recipe which will make a wand item.
  */
@@ -149,15 +151,18 @@ public class MagicRecipe {
         return substitue;
     }
 
-    public ItemStack craft() {
+    public @Nullable ItemStack craft() {
         if (outputKey == null) {
             return null;
         }
-        ItemStack item = null;
-        if (outputItemType.equalsIgnoreCase("wand"))
-        {
-            Wand wand = (outputKey != null && !outputKey.isEmpty()) ? controller.createWand(outputKey) : null;
-            item = wand.getItem();
+
+        ItemStack item;
+        if (outputItemType.equalsIgnoreCase("wand")) {
+            if(outputKey != null && !outputKey.isEmpty()) {
+                item = controller.createWand(outputKey).getItem();
+            } else {
+                item = null;
+            }
         }
         else if (outputItemType.equalsIgnoreCase("spell"))
         {
@@ -170,6 +175,10 @@ public class MagicRecipe {
         else if (outputItemType.equalsIgnoreCase("item"))
         {
             item = controller.createItem(outputKey);
+        }
+        else
+        {
+            item = null;
         }
 
         return item;

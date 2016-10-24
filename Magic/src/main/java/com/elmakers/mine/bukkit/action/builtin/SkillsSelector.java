@@ -26,6 +26,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class SkillsSelector implements GUIAction {
     private int page;
     private List<SkillDescription> allSkills = new ArrayList<>();
@@ -76,9 +78,9 @@ public class SkillsSelector implements GUIAction {
         HeroesManager heroes = controller.getHeroes();
         allSkills.clear();
         if (controller.useHeroesSkills() && heroes != null) {
-            String classString = heroes.getClassName(player);
-            String class2String = heroes.getSecondaryClassName(player);
-            String messageKey = class2String != null && !class2String.isEmpty() ? "skills.inventory_title_secondary" : "skills.inventory_title";
+            @Nonnull String classString = heroes.getClassName(player);
+            @Nonnull String class2String = heroes.getSecondaryClassName(player);
+            String messageKey = !class2String.isEmpty() ? "skills.inventory_title_secondary" : "skills.inventory_title";
             inventoryTitle = api.getMessages().get(messageKey, "Skills ($page/$pages)");
             inventoryTitle = inventoryTitle
                     .replace("$class2", class2String)

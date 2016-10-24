@@ -282,7 +282,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         event.setCancelled(true);
         ItemStack item = event.getCurrentItem();
         Mage mage = context.getMage();
-        if (context == null || item == null || !InventoryUtils.hasMeta(item, "shop")) {
+        if (item == null || !InventoryUtils.hasMeta(item, "shop")) {
             if (!autoClose) {
                 mage.deactivateGUI();
             }

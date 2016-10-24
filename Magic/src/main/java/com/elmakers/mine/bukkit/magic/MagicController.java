@@ -457,6 +457,7 @@ public class MagicController implements MageController {
 
     @Override
     public double getWorthItemAmount() {
+        //TODO: Use a precondition here instead of the NPE of (double) null
         return currencyItem == null ? null : currencyItem.getWorth();
     }
 

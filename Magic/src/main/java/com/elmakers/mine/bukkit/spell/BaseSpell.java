@@ -1348,9 +1348,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected void processResult(SpellResult result, ConfigurationSection parameters) {
-        if (mage != null) {
-            mage.onCast(this, result);
-        }
+        mage.onCast(this, result);
 
         // Show messaging
         String resultName = result.name().toLowerCase();

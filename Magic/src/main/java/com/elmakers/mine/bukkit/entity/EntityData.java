@@ -566,9 +566,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 entity = trySpawn(null);
                 if (entity != null) {
                     respawned.put(uuid, new WeakReference<>(entity));
+
+                    // Undo'ing an entity won't drop loot
+                    entity.setMetadata("nodrops", new FixedMetadataValue(MagicPlugin.getAPI().getPlugin(), true));
                 }
-                // Undo'ing an entity won't drop loot
-                entity.setMetadata("nodrops", new FixedMetadataValue(MagicPlugin.getAPI().getPlugin(), true));
             }
             setEntity(entity);
         }

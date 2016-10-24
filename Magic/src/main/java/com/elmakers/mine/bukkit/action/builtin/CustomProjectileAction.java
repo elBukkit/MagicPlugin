@@ -824,7 +824,7 @@ public class CustomProjectileAction extends CompoundAction
         {
             attachedOffset = targetLocation.toVector().subtract(targetEntity.getLocation().toVector());
         }
-        actionContext.playEffects(hitEffectKey);
+        if(actionContext != null) actionContext.playEffects(hitEffectKey);
         return SpellResult.PENDING;
     }
 
