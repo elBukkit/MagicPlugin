@@ -468,28 +468,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			materialData.setMaterial(DefaultWandMaterial);
 		}
 		icon = materialData;
-        if (icon != null) {
-			Short durability = null;
-			if (!indestructible && !isUpgrade && icon.getMaterial().getMaxDurability() > 0)
-			{
-				durability = item.getDurability();
-			}
-			try {
-				if (inactiveIcon == null || (mage != null && getMode() == WandMode.INVENTORY && isInventoryOpen())) {
-					icon.applyToItem(item);
-				} else {
-					inactiveIcon.applyToItem(item);
-				}
-			} catch (Exception ex) {
-				controller.getLogger().log(Level.WARNING, "Unable to apply wand icon", ex);
-				item.setType(DefaultWandMaterial);
-			}
-			if (durability != null)
-			{
-				item.setDurability(durability);
-			}
+
+        Short durability = null;
+        if (!indestructible && !isUpgrade && icon.getMaterial().getMaxDurability() > 0) {
+            durability = item.getDurability();
         }
-		
+
+        try {
+            if (inactiveIcon == null || (mage != null && getMode() == WandMode.INVENTORY && isInventoryOpen())) {
+                icon.applyToItem(item);
+            } else {
+                inactiveIcon.applyToItem(item);
+            }
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.WARNING, "Unable to apply wand icon", ex);
+            item.setType(DefaultWandMaterial);
+        }
+
+        if (durability != null) {
+            item.setDurability(durability);
+        }
+
 		// Make indestructible
 		// The isUpgrade checks here and above are for using custom icons in 1.9, this is a bit hacky.
 		if ((indestructible || Unbreakable || isUpgrade) && !manaMode.useDurability()) {
@@ -2862,7 +2861,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		// Mix colors
 		if (other.effectColor != null) {
-			if (this.effectColor == null || (other.isUpgrade() && other.effectColor != null)) {
+			if (this.effectColor == null || other.isUpgrade()) {
 				this.effectColor = other.effectColor;
 			} else {
 				this.effectColor = this.effectColor.mixColor(other.effectColor, other.effectColorMixWeight);
@@ -4667,24 +4666,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public void setActiveBrush(String materialKey) {
         activateBrush(materialKey);
-        if (materialKey != null && mage != null) {
-            com.elmakers.mine.bukkit.api.block.MaterialBrush brush = mage.getBrush();
-            if (brush != null)
-            {
-                boolean eraseWasActive = brush.isEraseModifierActive();
-                brush.activate(mage.getLocation(), materialKey);
+        if (materialKey == null || mage == null) {
+            return;
+        }
 
-                if (mage != null) {
-                    BrushMode mode = brush.getMode();
-                    if (mode == BrushMode.CLONE) {
-                        mage.sendMessage(getMessage("clone_material_activated"));
-                    } else if (mode == BrushMode.REPLICATE) {
-                        mage.sendMessage(getMessage("replicate_material_activated"));
-                    }
-                    if (!eraseWasActive && brush.isEraseModifierActive()) {
-                        mage.sendMessage(getMessage("erase_modifier_activated"));
-                    }
-                }
+        com.elmakers.mine.bukkit.api.block.MaterialBrush brush = mage.getBrush();
+        if (brush == null) {
+            return;
+        }
+
+        boolean eraseWasActive = brush.isEraseModifierActive();
+        brush.activate(mage.getLocation(), materialKey);
+
+        if (mage != null) {
+            BrushMode mode = brush.getMode();
+            if (mode == BrushMode.CLONE) {
+                mage.sendMessage(getMessage("clone_material_activated"));
+            } else if (mode == BrushMode.REPLICATE) {
+                mage.sendMessage(getMessage("replicate_material_activated"));
+            }
+            if (!eraseWasActive && brush.isEraseModifierActive()) {
+                mage.sendMessage(getMessage("erase_modifier_activated"));
             }
         }
     }

@@ -575,16 +575,14 @@ public class SimulateBatch extends SpellBatch {
 					return processedBlocks;
 				}
 
-				if (powerTargetBlock != null) {
-                    powerTargetBlock.setType(POWER_MATERIAL);
-					if (commandReload) {
-						String automataName = commandName;
-						if (automataName == null || automataName.length() <= 1) {
-							automataName = controller.getMessages().get("automata.default_name");
-						}
-						controller.registerAutomata(powerTargetBlock, automataName, "automata.awaken");
-					}
-				}
+                powerTargetBlock.setType(POWER_MATERIAL);
+                if (commandReload) {
+                    String automataName = commandName;
+                    if (automataName == null || automataName.length() <= 1) {
+                        automataName = controller.getMessages().get("automata.default_name");
+                    }
+                    controller.registerAutomata(powerTargetBlock, automataName, "automata.awaken");
+                }
 			}
 			state = SimulationState.FINISHED;
 			return processedBlocks;

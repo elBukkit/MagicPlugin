@@ -54,7 +54,7 @@ public class MagicRecipe {
 
         if (outputItemType.equalsIgnoreCase("wand"))
         {
-            Wand wand = (outputKey != null && !outputKey.isEmpty()) ? controller.createWand(outputKey) : null;
+            Wand wand = !outputKey.isEmpty() ? controller.createWand(outputKey) : null;
             if (wand != null) {
                 item = wand.getItem();
             } else {

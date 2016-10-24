@@ -8,6 +8,8 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
 
 import de.slikey.effectlib.util.VectorUtils;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -100,7 +102,7 @@ public class ChangeContextAction extends CompoundAction {
     @Override
     public SpellResult step(CastContext context) {
         Entity sourceEntity = context.getEntity();
-        Location sourceLocation = context.getEyeLocation().clone();
+        @Nonnull Location sourceLocation = context.getEyeLocation().clone();
         if (this.sourceLocation != null) {
             Vector newSource = ConfigurationUtils.toVector(this.sourceLocation);
             if (newSource != null) {
@@ -123,10 +125,6 @@ public class ChangeContextAction extends CompoundAction {
             }
         }
         Vector direction = context.getDirection().normalize();
-        if (sourceLocation == null)
-        {
-            return SpellResult.LOCATION_REQUIRED;
-        }
         if (targetCaster)
         {
             targetEntity = sourceEntity;
@@ -269,12 +267,10 @@ public class ChangeContextAction extends CompoundAction {
         {
             context.setTargetLocation(targetLocation);
         }
-        if (sourceLocation != null) {
-            context.getMage().sendDebugMessage(ChatColor.GREEN + " Set new source location to " +
-                    ChatColor.GRAY + sourceLocation.getBlockX() + ChatColor.DARK_GRAY + "," +
-                    ChatColor.GRAY + sourceLocation.getBlockY() + ChatColor.DARK_GRAY + "," +
-                    ChatColor.GRAY + sourceLocation.getBlockZ() + ChatColor.DARK_GRAY, 6);
-        }
+        context.getMage().sendDebugMessage(ChatColor.GREEN + " Set new source location to " +
+                ChatColor.GRAY + sourceLocation.getBlockX() + ChatColor.DARK_GRAY + "," +
+                ChatColor.GRAY + sourceLocation.getBlockY() + ChatColor.DARK_GRAY + "," +
+                ChatColor.GRAY + sourceLocation.getBlockZ() + ChatColor.DARK_GRAY, 6);
         if (targetLocation != null) {
             context.getMage().sendDebugMessage(ChatColor.DARK_GREEN + " Set new target location to " +
                     ChatColor.GRAY + targetLocation.getBlockX() + ChatColor.DARK_GRAY + "," +
