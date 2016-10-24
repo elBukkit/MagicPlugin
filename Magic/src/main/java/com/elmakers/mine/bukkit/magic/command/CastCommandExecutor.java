@@ -164,7 +164,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		Collection<String> options = new HashSet<String>();
+		Collection<String> options = new HashSet<>();
 
         String permissionKey = "cast";
 		if (commandName.contains("castp"))

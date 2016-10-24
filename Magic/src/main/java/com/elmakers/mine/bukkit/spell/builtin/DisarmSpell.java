@@ -64,7 +64,7 @@ public class DisarmSpell extends TargetingSpell
         if (entity instanceof Player && parameters.getBoolean("keep_in_inventory", false)) {
             Player targetPlayer = (Player)entity;
             targetInventory = targetPlayer.getInventory();
-            List<Integer> validSlots = new ArrayList<Integer>();
+            List<Integer> validSlots = new ArrayList<>();
             ItemStack[] contents = targetInventory.getContents();
             int minSlot = parameters.getInt("min_slot", Wand.HOTBAR_SIZE);
             int maxSlot = parameters.getInt("max_slot", contents.length - 1);

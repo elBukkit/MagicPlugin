@@ -65,7 +65,7 @@ public class GotoSpell extends UndoableSpell
 		if (!allowSelection)
 		{
 			Location location = getLocation();
-			List<Target> allTargets = new LinkedList<Target>();
+			List<Target> allTargets = new LinkedList<>();
 			List<Player> players = player.getWorld().getPlayers();
 			for (Player targetPlayer : players) {
 				if (targetPlayer == player) continue;
@@ -124,7 +124,7 @@ public class GotoSpell extends UndoableSpell
 			return SpellResult.CAST;
 		}
 
-		List<String> playerNames = new ArrayList<String>(controller.getPlayerNames());
+		List<String> playerNames = new ArrayList<>(controller.getPlayerNames());
 		if (playerNames.size() == 1) return SpellResult.NO_TARGET;
 		
 		if (playerIndex < 0) playerIndex = playerNames.size() - 1;

@@ -59,7 +59,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     protected boolean enabled = true;
     protected boolean rendered = false;
     protected volatile boolean loading = false;
-    protected Set<String> sentToPlayers = new HashSet<String>();
+    protected Set<String> sentToPlayers = new HashSet<>();
     protected Integer priority;
 
     protected URLMap(MapController controller, String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
@@ -223,12 +223,12 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
 
     protected Collection<BufferedImage> loadImages(ImageInputStream in)
     {
-        List<BufferedImage> images = new ArrayList<BufferedImage>();
+        List<BufferedImage> images = new ArrayList<>();
         try {
             if (animated) {
                 ImageReader reader = ImageIO.getImageReadersBySuffix("GIF").next();
                 reader.setInput(in);
-                frameTimes = new ArrayList<Long>();
+                frameTimes = new ArrayList<>();
                 lastFrameChange = System.currentTimeMillis();
                 loadGIFImages(reader, images);
                 reader.dispose();
@@ -267,7 +267,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
 
         BufferedImage master = null;
         Graphics2D masterGraphics = null;
-        List<String> frameDisposals = new ArrayList<String>();
+        List<String> frameDisposals = new ArrayList<>();
 
         for (int frameIndex = 0;; frameIndex++) {
             BufferedImage image;
@@ -339,7 +339,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         }
         if (frames == null) {
             loading = true;
-            frames = new ArrayList<BufferedImage>();
+            frames = new ArrayList<>();
             final Plugin plugin = controller.getPlugin();
             if (plugin == null) return null;
             final File cacheFolder = controller.getCacheFolder();

@@ -21,31 +21,31 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 public class WandLevel {
     private final WandUpgradePath path;
 
-	private LinkedList<WeightedPair<Integer>> spellCountProbability = new LinkedList<WeightedPair<Integer>>();
-	private LinkedList<WeightedPair<Integer>> materialCountProbability = new LinkedList<WeightedPair<Integer>>();
-	private LinkedList<WeightedPair<String>> spellProbability = new LinkedList<WeightedPair<String>>();
-	private LinkedList<WeightedPair<String>> materialProbability = new LinkedList<WeightedPair<String>>();
-	private LinkedList<WeightedPair<Integer>> useProbability = new LinkedList<WeightedPair<Integer>>();
-	private LinkedList<WeightedPair<Integer>> addUseProbability = new LinkedList<WeightedPair<Integer>>();
+	private LinkedList<WeightedPair<Integer>> spellCountProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Integer>> materialCountProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<String>> spellProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<String>> materialProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Integer>> useProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Integer>> addUseProbability = new LinkedList<>();
 
-	private LinkedList<WeightedPair<Integer>> propertyCountProbability = new LinkedList<WeightedPair<Integer>>();
-	private LinkedList<WeightedPair<Float>> costReductionProbability = new LinkedList<WeightedPair<Float>>();
-	private LinkedList<WeightedPair<Float>> powerProbability = new LinkedList<WeightedPair<Float>>();
-	private LinkedList<WeightedPair<Float>> damageReductionProbability = new LinkedList<WeightedPair<Float>>();
-	private LinkedList<WeightedPair<Float>> damageReductionPhysicalProbability = new LinkedList<WeightedPair<Float>>();
-	private LinkedList<WeightedPair<Float>> damageReductionProjectilesProbability = new LinkedList<WeightedPair<Float>>();
-	private LinkedList<WeightedPair<Float>> damageReductionFallingProbability = new LinkedList<WeightedPair<Float>>();
-	private LinkedList<WeightedPair<Float>> damageReductionFireProbability = new LinkedList<WeightedPair<Float>>();
-	private LinkedList<WeightedPair<Float>> damageReductionExplosionsProbability = new LinkedList<WeightedPair<Float>>();
+	private LinkedList<WeightedPair<Integer>> propertyCountProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Float>> costReductionProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Float>> powerProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Float>> damageReductionProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Float>> damageReductionPhysicalProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Float>> damageReductionProjectilesProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Float>> damageReductionFallingProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Float>> damageReductionFireProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Float>> damageReductionExplosionsProbability = new LinkedList<>();
 	
-	private LinkedList<WeightedPair<Integer>> manaRegenerationProbability = new LinkedList<WeightedPair<Integer>>();
-	private LinkedList<WeightedPair<Integer>> manaMaxProbability = new LinkedList<WeightedPair<Integer>>();
+	private LinkedList<WeightedPair<Integer>> manaRegenerationProbability = new LinkedList<>();
+	private LinkedList<WeightedPair<Integer>> manaMaxProbability = new LinkedList<>();
 
 	protected WandLevel(WandUpgradePath path, MageController controller, ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
         this.path = path;
 
 		// Fetch spell probabilities, and filter out invalid/unknown spells
-        LinkedList<WeightedPair<String>> spells = new LinkedList<WeightedPair<String>>();
+        LinkedList<WeightedPair<String>> spells = new LinkedList<>();
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(spells, template, "spells", levelIndex, nextLevelIndex, distance);
 
         for (WeightedPair<String> spellValue : spells) {
@@ -140,7 +140,7 @@ public class WandLevel {
     }
 
     public LinkedList<WeightedPair<String>> getRemainingSpells(Wand wand) {
-        LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<WeightedPair<String>>();
+        LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<>();
         for (WeightedPair<String> spell : spellProbability) {
             if (spell.getRawThreshold() >= 1 && !wand.hasSpell(spell.getValue())) {
                 remainingSpells.add(spell);
@@ -151,7 +151,7 @@ public class WandLevel {
     }
 
     public LinkedList<WeightedPair<String>> getRemainingMaterials(Wand wand) {
-        LinkedList<WeightedPair<String>> remainingMaterials = new LinkedList<WeightedPair<String>>();
+        LinkedList<WeightedPair<String>> remainingMaterials = new LinkedList<>();
         for (WeightedPair<String> material : materialProbability) {
             String materialKey = material.getValue();
             // Fixup |'s to :'s .... kinda hacky, but I didn't think this through unfortunately. :\
@@ -279,7 +279,7 @@ public class WandLevel {
 		ConfigurationSection wandProperties = new MemoryConfiguration();
 		double costReduction = wand.getCostReduction();
 
-        List<Integer> propertiesAvailable = new ArrayList<Integer>();
+        List<Integer> propertiesAvailable = new ArrayList<>();
 
         double power = wand.getPower();
         double damageReduction = wand.damageReduction;

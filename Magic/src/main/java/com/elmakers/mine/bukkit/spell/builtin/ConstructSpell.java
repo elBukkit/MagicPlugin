@@ -175,7 +175,7 @@ public class ConstructSpell extends BrushSpell
 		}
 
 		if (parameters.getBoolean("replace", false)) {
-			List<com.elmakers.mine.bukkit.api.block.MaterialAndData> replaceMaterials = new ArrayList<com.elmakers.mine.bukkit.api.block.MaterialAndData>();
+			List<com.elmakers.mine.bukkit.api.block.MaterialAndData> replaceMaterials = new ArrayList<>();
             MaterialAndData wildReplace = new MaterialAndData(target);
             if (!parameters.getBoolean("match_data", true)) {
                 wildReplace.setData(null);

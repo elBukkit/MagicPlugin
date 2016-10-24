@@ -95,16 +95,16 @@ public class SimulateBatch extends SpellBatch {
 	private int yRadius;
 	private int updatingIndex;
 	private int powerDelayTicks;
-	private ArrayList<Boolean> liveCounts = new ArrayList<Boolean>();
-	private ArrayList<Boolean> birthCounts = new ArrayList<Boolean>();
-	private ArrayList<Boolean> diagonalLiveCounts = new ArrayList<Boolean>();
-	private ArrayList<Boolean> diagonalBirthCounts = new ArrayList<Boolean>();
+	private ArrayList<Boolean> liveCounts = new ArrayList<>();
+	private ArrayList<Boolean> birthCounts = new ArrayList<>();
+	private ArrayList<Boolean> diagonalLiveCounts = new ArrayList<>();
+	private ArrayList<Boolean> diagonalBirthCounts = new ArrayList<>();
 	private SimulationState state;
 	private Location center;
 
-	private List<Block> deadBlocks = new ArrayList<Block>();
-	private List<Block> bornBlocks = new ArrayList<Block>();
-	private List<Target> potentialCommandBlocks = new LinkedList<Target>();
+	private List<Block> deadBlocks = new ArrayList<>();
+	private List<Block> bornBlocks = new ArrayList<>();
+	private List<Target> potentialCommandBlocks = new LinkedList<>();
 	
 	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
 		super(spell);

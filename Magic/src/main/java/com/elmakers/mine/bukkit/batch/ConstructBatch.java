@@ -44,9 +44,9 @@ public class ConstructBatch extends BrushBatch {
 	private final boolean spawnFallingBlocks;
 	private float fallingBlockSpeed = 0;
     private Vector fallingDirection = null;
-	private final Map<Long, BlockData> attachedBlockMap = new HashMap<Long, BlockData>();
-	private final List<BlockData> attachedBlockList = new ArrayList<BlockData>();
-	private final List<BlockData> delayedBlocks = new ArrayList<BlockData>();
+	private final Map<Long, BlockData> attachedBlockMap = new HashMap<>();
+	private final List<BlockData> attachedBlockList = new ArrayList<>();
+	private final List<BlockData> delayedBlocks = new ArrayList<>();
 	private final Set<Material> attachables;
 	private final Set<Material> attachablesWall;
 	private final Set<Material> attachablesDouble;
@@ -551,14 +551,14 @@ public class ConstructBatch extends BrushBatch {
 
 	public void addCommandMapping(String key, String command) {
 		if (commandMap == null) {
-			commandMap = new HashMap<String, String>();
+			commandMap = new HashMap<>();
 		}
 
 		commandMap.put(key,  command);
 	}
 
     public void setReplace(Collection<MaterialAndData> replace) {
-		this.replace = new HashSet<String>();
+		this.replace = new HashSet<>();
         for (MaterialAndData material : replace) {
             this.replace.add(material.getKey());
         }

@@ -83,7 +83,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
 
         UndoData undoData = mage.getUndoData();
         if (undoData != null) {
-            List<Map<String, Object>> nodeList = new ArrayList<Map<String, Object>>();
+            List<Map<String, Object>> nodeList = new ArrayList<>();
             List<UndoList> undoList = undoData.getBlockList();
             for (UndoList list : undoList) {
                 MemoryConfiguration listNode = new MemoryConfiguration();
@@ -194,7 +194,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
 
         // Load bound wand data
         if (saveFile.contains("wands")) {
-            HashMap<String, ItemStack> boundWands = new HashMap<String, ItemStack>();
+            HashMap<String, ItemStack> boundWands = new HashMap<>();
             ConfigurationSection wands = saveFile.getConfigurationSection("wands");
             Set<String> keys = wands.getKeys(false);
             for (String key : keys) {
@@ -238,7 +238,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         ConfigurationSection spellSection = saveFile.getConfigurationSection("spells");
         if (spellSection != null) {
             Set<String> keys = spellSection.getKeys(false);
-            Map<String, SpellData> spellDataMap = new HashMap<String, SpellData>();
+            Map<String, SpellData> spellDataMap = new HashMap<>();
             for (String key : keys) {
                 ConfigurationSection node = spellSection.getConfigurationSection(key);
                 SpellData spellData = spellDataMap.get(key);
@@ -263,7 +263,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         ConfigurationSection respawnData = saveFile.getConfigurationSection("respawn_inventory");
         if (respawnData != null) {
             Collection<String> keys = respawnData.getKeys(false);
-            Map<Integer, ItemStack> respawnInventory = new HashMap<Integer, ItemStack>();
+            Map<Integer, ItemStack> respawnInventory = new HashMap<>();
             for (String key : keys) {
                 try {
                     int index = Integer.parseInt(key);
@@ -279,7 +279,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         ConfigurationSection respawnArmorData = saveFile.getConfigurationSection("respawn_armor");
         if (respawnArmorData != null) {
             Collection<String> keys = respawnArmorData.getKeys(false);
-            Map<Integer, ItemStack> respawnArmor = new HashMap<Integer, ItemStack>();
+            Map<Integer, ItemStack> respawnArmor = new HashMap<>();
             for (String key : keys) {
                 try {
                     int index = Integer.parseInt(key);

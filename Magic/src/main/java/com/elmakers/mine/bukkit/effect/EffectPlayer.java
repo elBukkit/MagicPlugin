@@ -46,7 +46,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
-    private static Map<String, Class<?>> effectClasses = new HashMap<String, Class<?>>();
+    private static Map<String, Class<?>> effectClasses = new HashMap<>();
     private static EffectLibManager effectLib = null;
     private ConfigurationSection effectLibConfig = null;
     private Collection<EffectPlay> currentEffects = null;
@@ -610,7 +610,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public static Collection<EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key) {
-        List<EffectPlayer> players = new ArrayList<EffectPlayer>();
+        List<EffectPlayer> players = new ArrayList<>();
         Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(root, key);
         if (effectNodes != null)
         {

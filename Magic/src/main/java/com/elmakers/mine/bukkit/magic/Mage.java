@@ -82,13 +82,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static double WAND_LOCATION_VERTICAL_OFFSET = 0;
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     public static int OFFHAND_CAST_RANGE = 32;
-    final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<Material>();
+    final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<>();
     private static String defaultMageName = "Mage";
     private static String SKILL_POINT_KEY = "sp";
 
     protected final String id;
     protected ConfigurationSection data = new MemoryConfiguration();
-    protected Map<String, SpellData> spellData = new HashMap<String, SpellData>();
+    protected Map<String, SpellData> spellData = new HashMap<>();
     protected WeakReference<Player> _player;
     protected WeakReference<Entity> _entity;
     protected WeakReference<CommandSender> _commandSender;
@@ -96,18 +96,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected String playerName;
     protected final MagicController controller;
     protected CommandSender debugger;
-    protected HashMap<String, MageSpell> spells = new HashMap<String, MageSpell>();
+    protected HashMap<String, MageSpell> spells = new HashMap<>();
     private Wand activeWand = null;
     private Wand soulWand = null;
     private Wand offhandWand = null;
     private boolean offhandCast = false;
-    private Map<String, Wand> boundWands = new HashMap<String, Wand>();
-    private final Collection<Listener> quitListeners = new HashSet<Listener>();
-    private final Collection<Listener> deathListeners = new HashSet<Listener>();
-    private final Collection<Listener> damageListeners = new HashSet<Listener>();
-    private final Set<MageSpell> activeSpells = new HashSet<MageSpell>();
+    private Map<String, Wand> boundWands = new HashMap<>();
+    private final Collection<Listener> quitListeners = new HashSet<>();
+    private final Collection<Listener> deathListeners = new HashSet<>();
+    private final Collection<Listener> damageListeners = new HashSet<>();
+    private final Set<MageSpell> activeSpells = new HashSet<>();
     private UndoQueue undoQueue = null;
-    private LinkedList<Batch> pendingBatches = new LinkedList<Batch>();
+    private LinkedList<Batch> pendingBatches = new LinkedList<>();
     private boolean loading = false;
     private boolean unloading = false;
     private int debugLevel = 0;
@@ -115,7 +115,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private EntityData entityData;
     private long lastTick;
 
-    private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<PotionEffectType, Integer>();
+    private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     protected float damageReduction = 0;
     protected float damageReductionPhysical = 0;
     protected float damageReductionProjectiles = 0;
@@ -125,7 +125,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     protected long superProtectionExpiration = 0;
 
-    private Map<Integer, Wand> activeArmor = new HashMap<Integer, Wand>();
+    private Map<Integer, Wand> activeArmor = new HashMap<>();
 
     private Location location;
     private float costReduction = 0;
@@ -163,9 +163,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         this.id = id;
         this.controller = controller;
         this.brush = new MaterialBrush(this, Material.DIRT, (byte) 0);
-        _player = new WeakReference<Player>(null);
-        _entity = new WeakReference<Entity>(null);
-        _commandSender = new WeakReference<CommandSender>(null);
+        _player = new WeakReference<>(null);
+        _entity = new WeakReference<>(null);
+        _commandSender = new WeakReference<>(null);
         hasEntity = false;
     }
 
@@ -253,7 +253,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return;
         }
         // Must allow listeners to remove themselves during the event!
-        List<Listener> active = new ArrayList<Listener>(quitListeners);
+        List<Listener> active = new ArrayList<>(quitListeners);
         for (Listener listener : active) {
             callEvent(listener, event);
         }
@@ -267,7 +267,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!player.hasMetadata("arena")) {
             lastDeathLocation = player.getLocation();
         }
-        List<Listener> active = new ArrayList<Listener>(deathListeners);
+        List<Listener> active = new ArrayList<>(deathListeners);
         for (Listener listener : active) {
             callEvent(listener, event);
         }
@@ -302,7 +302,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         // Send on to any registered spells
-        List<Listener> active = new ArrayList<Listener>(damageListeners);
+        List<Listener> active = new ArrayList<>(damageListeners);
         for (Listener listener : active) {
             callEvent(listener, event);
             if (event.isCancelled()) break;
@@ -541,7 +541,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected void setPlayer(Player player) {
         if (player != null) {
             playerName = player.getName();
-            this._player = new WeakReference<Player>(player);
+            this._player = new WeakReference<>(player);
             this._entity = new WeakReference<Entity>(player);
             this._commandSender = new WeakReference<CommandSender>(player);
             hasEntity = true;
@@ -563,7 +563,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     playerName = customName;
                 }
             }
-            this._entity = new WeakReference<Entity>(entity);
+            this._entity = new WeakReference<>(entity);
             hasEntity = true;
         } else {
             this._entity.clear();
@@ -573,7 +573,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     protected void setCommandSender(CommandSender sender) {
         if (sender != null) {
-            this._commandSender = new WeakReference<CommandSender>(sender);
+            this._commandSender = new WeakReference<>(sender);
 
             if (sender instanceof BlockCommandSender) {
                 BlockCommandSender commandBlock = (BlockCommandSender) sender;
@@ -782,7 +782,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             data.setSpellData(this.spellData.values());
 
             if (boundWands.size() > 0) {
-                Map<String, ItemStack> wandItems = new HashMap<String, ItemStack>();
+                Map<String, ItemStack> wandItems = new HashMap<>();
                 for (Map.Entry<String, Wand> wandEntry : boundWands.entrySet()) {
                     wandItems.put(wandEntry.getKey(), wandEntry.getValue().getItem());
                 }
@@ -955,7 +955,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             // Copy this set since spells may get removed while iterating!
-            List<MageSpell> active = new ArrayList<MageSpell>(activeSpells);
+            List<MageSpell> active = new ArrayList<>(activeSpells);
             for (MageSpell spell : active) {
                 spell.tick();
                 if (!spell.isActive()) {
@@ -968,7 +968,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public int processPendingBatches(int maxBlockUpdates) {
         int updated = 0;
         if (pendingBatches.size() > 0) {
-            List<Batch> processBatches = new ArrayList<Batch>(pendingBatches);
+            List<Batch> processBatches = new ArrayList<>(pendingBatches);
             pendingBatches.clear();
             for (Batch batch : processBatches) {
                 if (updated < maxBlockUpdates) {
@@ -994,7 +994,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected void loadSpells(Map<String, ConfigurationSection> spellConfiguration) {
         if (spellConfiguration == null) return;
 
-        Collection<MageSpell> currentSpells = new ArrayList<MageSpell>(spells.values());
+        Collection<MageSpell> currentSpells = new ArrayList<>(spells.values());
         for (MageSpell spell : currentSpells) {
             String key = spell.getKey();
             if (spellConfiguration.containsKey(key)) {
@@ -1026,7 +1026,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Collection<Batch> getPendingBatches() {
-        Collection<Batch> pending = new ArrayList<Batch>();
+        Collection<Batch> pending = new ArrayList<>();
         pending.addAll(pendingBatches);
         return pending;
     }
@@ -1139,7 +1139,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public int finishPendingUndo() {
         int finished = 0;
         if (pendingBatches.size() > 0) {
-            List<Batch> batches = new ArrayList<Batch>();
+            List<Batch> batches = new ArrayList<>();
             batches.addAll(pendingBatches);
             for (Batch batch : batches) {
                 if (batch instanceof UndoBatch) {
@@ -1158,7 +1158,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Batch cancelPending(String spellKey, boolean force) {
         Batch stoppedPending = null;
         if (pendingBatches.size() > 0) {
-            List<Batch> batches = new ArrayList<Batch>();
+            List<Batch> batches = new ArrayList<>();
             batches.addAll(pendingBatches);
             for (Batch batch : batches) {
                 if (spellKey != null || !force) {
@@ -1288,7 +1288,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void deactivateAllSpells(boolean force, boolean quiet) {
         // Copy this set since spells will get removed while iterating!
-        List<MageSpell> active = new ArrayList<MageSpell>(activeSpells);
+        List<MageSpell> active = new ArrayList<>(activeSpells);
         for (MageSpell spell : active) {
             if (spell.deactivate(force, quiet)) {
                 activeSpells.remove(spell);
@@ -1841,7 +1841,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public List<LostWand> getLostWands() {
         Entity entity = getEntity();
         Collection<LostWand> allWands = controller.getLostWands();
-        List<LostWand> mageWands = new ArrayList<LostWand>();
+        List<LostWand> mageWands = new ArrayList<>();
 
         if (entity == null) {
             return mageWands;
@@ -1982,7 +1982,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (boundWands.size() == 0) return false;
         Player player = getPlayer();
         if (player == null) return false;
-        Set<String> foundTemplates = new HashSet<String>();
+        Set<String> foundTemplates = new HashSet<>();
         ItemStack[] inventory = getInventory().getContents();
         for (ItemStack item : inventory) {
             if (Wand.isWand(item)) {
@@ -2277,14 +2277,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void addToRespawnInventory(int slot, ItemStack item) {
         if (respawnInventory == null) {
-            respawnInventory = new HashMap<Integer, ItemStack>();
+            respawnInventory = new HashMap<>();
         }
         respawnInventory.put(slot, item);
     }
 
     public void addToRespawnArmor(int slot, ItemStack item) {
         if (respawnArmor == null) {
-            respawnArmor = new HashMap<Integer, ItemStack>();
+            respawnArmor = new HashMap<>();
         }
         respawnArmor.put(slot, item);
     }
@@ -2360,7 +2360,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         damageReductionFire = 0;
         damageReductionExplosions = 0;
         
-        List<PotionEffectType> currentEffects = new ArrayList<PotionEffectType>(effectivePotionEffects.keySet());
+        List<PotionEffectType> currentEffects = new ArrayList<>(effectivePotionEffects.keySet());
         LivingEntity entity = getLivingEntity();
         effectivePotionEffects.clear();
         if (activeWand != null && !activeWand.isPassive())

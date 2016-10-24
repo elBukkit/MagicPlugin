@@ -45,7 +45,7 @@ public class CommandAction extends BaseSpellAction {
             "command", "console", "op", "local_echo", "modal", "timeout", "escape_sequence"
     };
 
-    private List<String> commands = new ArrayList<String>();
+    private List<String> commands = new ArrayList<>();
     private boolean asConsole;
     private boolean opPlayer;
     private boolean localEcho;
@@ -91,7 +91,7 @@ public class CommandAction extends BaseSpellAction {
         if (sender == null) {
             return SpellResult.FAIL;
         }
-        Queue<String> conversationCommands = new ArrayDeque<String>(commands.size());
+        Queue<String> conversationCommands = new ArrayDeque<>(commands.size());
         boolean isOp = sender.isOp();
         if (opPlayer && !isOp) {
             sender.setOp(true);

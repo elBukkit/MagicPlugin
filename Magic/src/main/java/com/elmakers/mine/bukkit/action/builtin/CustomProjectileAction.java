@@ -302,7 +302,7 @@ public class CustomProjectileAction extends CompoundAction
         
         // This has to be done here, so that the plan is not shared across parallel instances
         if (planConfiguration != null && !planConfiguration.isEmpty()) {
-            plan = new LinkedList<PlanStep>();
+            plan = new LinkedList<>();
             for (ConfigurationSection planStepConfig : planConfiguration) {
                 plan.add(new PlanStep(planStepConfig));
             }
@@ -903,7 +903,7 @@ public class CustomProjectileAction extends CompoundAction
                 effectLocation.setDirection(velocity);
             }
             if (activeProjectileEffects == null) {
-                activeProjectileEffects = new ArrayList<EffectPlay>();
+                activeProjectileEffects = new ArrayList<>();
             }
             // Hrm- this is ugly, but I don't want the API to depend on EffectLib.
             if (apiEffectPlayer instanceof com.elmakers.mine.bukkit.effect.EffectPlayer)

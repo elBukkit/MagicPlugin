@@ -199,23 +199,23 @@ public class AnimateSpell extends SimulateSpell
 			ConfigurationSection levelTemplate = template.getConfigurationSection("levels");
 			Collection<String> levelKeys = levelTemplate.getKeys(false);
 			
-			List<AscendingPair<Float>> levels = new ArrayList<AscendingPair<Float>>();
+			List<AscendingPair<Float>> levels = new ArrayList<>();
 			
 			for (String levelString : levelKeys) {
 				int level =  Integer.parseInt(levelString);
 				double weight = levelTemplate.getDouble(levelString);
-				levels.add(new AscendingPair<Float>(level, (float)weight));
+				levels.add(new AscendingPair<>(level, (float)weight));
 			}
 			
 			RandomUtils.extrapolateFloatList(levels);
 			
-			levelWeights = new LinkedList<WeightedPair<Integer>>();
+			levelWeights = new LinkedList<>();
 			float threshold = 0;
 			for (AscendingPair<Float> level : levels) {
 				float weight = level.getValue();
 				int levelIndex = (int)level.getIndex();
 				threshold += weight;
-				levelWeights.add(new WeightedPair<Integer>(threshold, weight, levelIndex));
+				levelWeights.add(new WeightedPair<>(threshold, weight, levelIndex));
 			}
 		} else {
 			levelWeights = null;

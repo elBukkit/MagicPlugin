@@ -40,7 +40,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         undoSpeed = parameters.getDouble("undo_speed", 0);
         if (parameters.contains("entity_undo_types"))
         {
-            undoEntityTypes = new HashSet<EntityType>();
+            undoEntityTypes = new HashSet<>();
             Collection<String> typeStrings = ConfigurationUtils.getStringList(parameters, "entity_undo_types");
             for (String typeString : typeStrings)
             {

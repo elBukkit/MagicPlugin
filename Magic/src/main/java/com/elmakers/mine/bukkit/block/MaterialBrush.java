@@ -68,7 +68,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public static String DefaultBrushCustomIcon;
 
     public static final Material DEFAULT_MATERIAL = Material.DIRT;
-    private static final Map<MaterialAndData, MaterialAndData> replacements = new HashMap<MaterialAndData, MaterialAndData>();
+    private static final Map<MaterialAndData, MaterialAndData> replacements = new HashMap<>();
 
     private BrushMode mode = BrushMode.MATERIAL;
     private Location cloneSource = null;
@@ -535,7 +535,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
         if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC)
         {
-            List<Entity> targetData = new ArrayList<Entity>();
+            List<Entity> targetData = new ArrayList<>();
             World targetWorld = cloneTarget.getWorld();
             List<Entity> targetEntities = targetWorld.getEntities();
             for (Entity entity : targetEntities) {
@@ -561,7 +561,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
         if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && cloneSource != null)
         {
-            List<com.elmakers.mine.bukkit.api.entity.EntityData> copyEntities = new ArrayList<com.elmakers.mine.bukkit.api.entity.EntityData>();
+            List<com.elmakers.mine.bukkit.api.entity.EntityData> copyEntities = new ArrayList<>();
 
             World sourceWorld = cloneSource.getWorld();
             List<Entity> entities = sourceWorld.getEntities();
@@ -809,7 +809,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             }
         }
         ItemMeta meta = itemStack.getItemMeta();
-        List<String> lore = new ArrayList<String>();
+        List<String> lore = new ArrayList<>();
         if (extraLore != null) {
             lore.add(ChatColor.LIGHT_PURPLE + extraLore);
         }

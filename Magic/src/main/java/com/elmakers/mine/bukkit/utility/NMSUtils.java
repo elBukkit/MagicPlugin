@@ -1458,7 +1458,7 @@ public class NMSUtils {
         }
 
         // Do it the slow way
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         Set<String> keys = section.getKeys(false);
         for (String key : keys) {
             map.put(key, section.get(key));

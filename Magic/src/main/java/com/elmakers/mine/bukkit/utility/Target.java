@@ -114,7 +114,7 @@ public class Target implements Comparable<Target>
     {
         this.maxDistanceSquared = range * range;
         this.source = sourceLocation;
-        this._entity = new WeakReference<Entity>(entity);
+        this._entity = new WeakReference<>(entity);
         if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
@@ -125,7 +125,7 @@ public class Target implements Comparable<Target>
         this.source = sourceLocation;
         this.useHitbox = hitbox;
         this.hitboxPadding = hitboxPadding;
-        this._entity = new WeakReference<Entity>(entity);
+        this._entity = new WeakReference<>(entity);
         if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
@@ -135,7 +135,7 @@ public class Target implements Comparable<Target>
         this.maxDistanceSquared = range * range;
         this.maxAngle = angle;
         this.source = sourceLocation;
-        this._entity = new WeakReference<Entity>(entity);
+        this._entity = new WeakReference<>(entity);
         if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
@@ -148,7 +148,7 @@ public class Target implements Comparable<Target>
         this.maxDistanceSquared = range * range;
         this.maxAngle = angle;
         this.source = sourceLocation;
-        this._entity = new WeakReference<Entity>(entity);
+        this._entity = new WeakReference<>(entity);
         this.distanceWeight = distanceWeight;
         this.fovWeight = fovWeight;
         this.mageWeight = mageWeight;
@@ -167,7 +167,7 @@ public class Target implements Comparable<Target>
         this.maxDistanceSquared = range * range;
         this.maxAngle = angle;
         this.source = sourceLocation;
-        this._entity = new WeakReference<Entity>(entity);
+        this._entity = new WeakReference<>(entity);
         if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
@@ -178,7 +178,7 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
-        this._entity = new WeakReference<Entity>(entity);
+        this._entity = new WeakReference<>(entity);
         if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
@@ -190,7 +190,7 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
-        this._entity = new WeakReference<Entity>(entity);
+        this._entity = new WeakReference<>(entity);
         if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
@@ -214,7 +214,7 @@ public class Target implements Comparable<Target>
     {
         this.maxDistanceSquared = 0;
         this.source = sourceLocation;
-        this._entity = new WeakReference<Entity>(entity);
+        this._entity = new WeakReference<>(entity);
         if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
     }
 
@@ -222,7 +222,7 @@ public class Target implements Comparable<Target>
     {
         this.maxDistanceSquared = 0;
         this.source = sourceLocation;
-        this._entity = new WeakReference<Entity>(entity);
+        this._entity = new WeakReference<>(entity);
         if (block != null) {
             this.setBlock(block);
         } else if (entity != null) {
@@ -460,7 +460,7 @@ public class Target implements Comparable<Target>
 
     public void setEntity(Entity entity)
     {
-        this._entity = new WeakReference<Entity>(entity);
+        this._entity = new WeakReference<>(entity);
         if (entity != null) {
             this.location = entity.getLocation();
         }

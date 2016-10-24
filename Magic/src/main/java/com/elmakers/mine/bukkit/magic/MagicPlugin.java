@@ -283,7 +283,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	
 	@Override
 	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMagesWithPendingBatches() {
-		Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = new ArrayList<com.elmakers.mine.bukkit.api.magic.Mage>();
+		Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = new ArrayList<>();
 		Collection<com.elmakers.mine.bukkit.api.magic.Mage> internal = controller.getPending();
 		mages.addAll(internal);
 		return mages;
@@ -291,21 +291,21 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
     @Override
     public Collection<UndoList> getPendingUndo() {
-        Collection<UndoList> undo = new ArrayList<UndoList>();
+        Collection<UndoList> undo = new ArrayList<>();
         undo.addAll(controller.getPendingUndo());
         return undo;
     }
 	
 	@Override
 	public Collection<LostWand> getLostWands() {
-		Collection<LostWand> lostWands = new ArrayList<LostWand>();
+		Collection<LostWand> lostWands = new ArrayList<>();
 		lostWands.addAll(controller.getLostWands());
 		return lostWands;
 	}
 	
 	@Override
 	public Collection<Automaton> getAutomata() {
-		Collection<Automaton> automata = new ArrayList<Automaton>();
+		Collection<Automaton> automata = new ArrayList<>();
 		automata.addAll(controller.getAutomata());
 		return automata;
 	}

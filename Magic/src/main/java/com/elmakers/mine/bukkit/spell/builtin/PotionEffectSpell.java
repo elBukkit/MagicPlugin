@@ -22,7 +22,7 @@ public class PotionEffectSpell extends UndoableSpell
             {PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
                     PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
                     PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
-    protected final static Set<PotionEffectType> negativeEffects = new HashSet<PotionEffectType>(Arrays.asList(_negativeEffects));
+    protected final static Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
@@ -33,7 +33,7 @@ public class PotionEffectSpell extends UndoableSpell
 			return SpellResult.NO_TARGET;
 		}
 
-        List<LivingEntity> targetEntities = new ArrayList<LivingEntity>();
+        List<LivingEntity> targetEntities = new ArrayList<>();
 
         Entity targetedEntity = target.getEntity();
         if (target.hasEntity() && targetedEntity instanceof LivingEntity) {

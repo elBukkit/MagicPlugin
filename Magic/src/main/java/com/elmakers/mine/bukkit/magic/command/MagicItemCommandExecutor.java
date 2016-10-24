@@ -78,7 +78,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<String>();
+		List<String> options = new ArrayList<>();
 
 		if (args.length == 1) 
 		{
@@ -267,7 +267,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		}
 		PlayerInventory inventory = player.getInventory();
 		int itemSlot = inventory.getHeldItemSlot();
-		Map<String, MaterialAndData> items = new TreeMap<String, MaterialAndData>();
+		Map<String, MaterialAndData> items = new TreeMap<>();
 		VaultController vault = VaultController.getInstance();
 
 		for (Material material : Material.values()) {
@@ -410,7 +410,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				ItemMeta skullMeta = skullItem.getItemMeta();
 				skullMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', pieces[0]));
 				if (pieces.length > 1) {
-					List<String> lore = new ArrayList<String>();
+					List<String> lore = new ArrayList<>();
 					for (int i = 1; i < pieces.length; i++) {
 						lore.add(ChatColor.translateAlternateColorCodes('&', pieces[i]));
 					}
@@ -781,7 +781,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		ItemMeta itemMeta = item.getItemMeta();
 		List<String> lore = itemMeta.getLore();
 		if (lore == null) {
-			lore = new ArrayList<String>();
+			lore = new ArrayList<>();
 		}
 		lore.add(loreLine);
 		itemMeta.setLore(lore);

@@ -21,7 +21,7 @@ public class MultiplyAction extends CompoundAction
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         multiply = ConfigurationUtils.getInteger(parameters, "multiply", 2);
-        multiplied = new ArrayList<ActionHandler>();
+        multiplied = new ArrayList<>();
 
         ActionHandler base = getHandler("actions");
         if (base != null)
@@ -51,7 +51,7 @@ public class MultiplyAction extends CompoundAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
-        remaining = new ArrayList<ActionHandler>(multiplied);
+        remaining = new ArrayList<>(multiplied);
         for (ActionHandler handler : remaining) {
             handler.reset(context);
         }
@@ -63,7 +63,7 @@ public class MultiplyAction extends CompoundAction
         if (remaining.size() == 0) return result;
 
         int startingWork = context.getWorkAllowed();
-        List<ActionHandler> subActions = new ArrayList<ActionHandler>(remaining);
+        List<ActionHandler> subActions = new ArrayList<>(remaining);
         remaining.clear();
         context.setWorkAllowed(0);
         int splitWork = Math.max(1, startingWork / subActions.size());

@@ -102,7 +102,7 @@ public class RecurseAction extends CompoundAction {
         }
         BlockFace single = getBlockFace(name);
         if (single == null) return null;
-        List<BlockFace> singleSet = new ArrayList<BlockFace>();
+        List<BlockFace> singleSet = new ArrayList<>();
         singleSet.add(single);
         return singleSet;
     }
@@ -116,7 +116,7 @@ public class RecurseAction extends CompoundAction {
         Collection<String> faceList = ConfigurationUtils.getStringList(parameters, key);
         if (faceList == null) return null;
 
-        List<BlockFace> faceSet = new ArrayList<BlockFace>();
+        List<BlockFace> faceSet = new ArrayList<>();
         for (String face : faceList) {
             faceSet.addAll(getDirections(face));
         }
@@ -151,8 +151,8 @@ public class RecurseAction extends CompoundAction {
             directions = cardinalDirections;
         }
         replaceable = null;
-        touched = new HashSet<Long>();
-        stack = new ArrayDeque<StackEntry>();
+        touched = new HashSet<>();
+        stack = new ArrayDeque<>();
     }
 
     @Override
@@ -165,7 +165,7 @@ public class RecurseAction extends CompoundAction {
 
         if (replace) {
             if (replaceable == null) {
-                replaceable = new HashSet<MaterialAndData>();
+                replaceable = new HashSet<>();
             }
             Block targetBlock = context.getTargetBlock();
             replaceable.clear();

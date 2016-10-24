@@ -92,7 +92,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<String>();
+		List<String> options = new ArrayList<>();
         if (!sender.hasPermission("Magic.commands.mtrait")) return options;
 
         String lastParameter = "";

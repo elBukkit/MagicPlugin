@@ -24,8 +24,8 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private static Pattern PARAMETER_PATTERN = Pattern.compile(PARAMETER_PATTERN_STRING);
     private static Random random = new Random();
 
-    private Map<String, String> messageMap = new HashMap<String, String>();
-    private Map<String, List<String>> randomized = new HashMap<String, List<String>>();
+    private Map<String, String> messageMap = new HashMap<>();
+    private Map<String, List<String>> randomized = new HashMap<>();
     private ConfigurationSection configuration = null;
 
     public Messages() {
@@ -52,7 +52,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
 
     @Override
     public List<String> getAll(String path) {
-        if (configuration == null) return new ArrayList<String>();
+        if (configuration == null) return new ArrayList<>();
         return configuration.getStringList(path);
     }
 

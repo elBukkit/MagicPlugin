@@ -19,7 +19,7 @@ public class ParallelAction extends CompoundAction
         ActionHandler actions = getHandler("actions");
         if (actions != null)
         {
-            remaining = new ArrayList<ActionContext>(actions.getActions());
+            remaining = new ArrayList<>(actions.getActions());
             for (ActionContext action : remaining) {
                 action.getAction().reset(context);
             }
@@ -40,7 +40,7 @@ public class ParallelAction extends CompoundAction
 	public SpellResult perform(CastContext context) {
         SpellResult result = SpellResult.NO_ACTION;
         int startingWork = context.getWorkAllowed();
-        List<ActionContext> subActions = new ArrayList<ActionContext>(remaining);
+        List<ActionContext> subActions = new ArrayList<>(remaining);
         remaining.clear();
         context.setWorkAllowed(0);
         int splitWork = Math.max(1, startingWork / subActions.size());

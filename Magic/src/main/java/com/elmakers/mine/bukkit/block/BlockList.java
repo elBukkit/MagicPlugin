@@ -77,12 +77,12 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
         if (blockIdMap == null)
         {
-            blockIdMap = new HashSet<Long>();
+            blockIdMap = new HashSet<>();
         }
 
         if (blockList == null)
         {
-            blockList = new LinkedList<BlockData>();
+            blockList = new LinkedList<>();
         }
 
         blockIdMap.add(blockData.getId());
@@ -260,8 +260,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         this.blockList = null;
         if (blockList != null)
         {
-            this.blockList = new LinkedList<BlockData>(blockList);
-            blockIdMap = new HashSet<Long>();
+            this.blockList = new LinkedList<>(blockList);
+            blockIdMap = new HashSet<>();
             for (BlockData block : blockList)
             {
                 blockIdMap.add(block.getId());
@@ -314,7 +314,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public void save(ConfigurationSection node) {
         node.set("world", worldName);
-        List<String> blockData = new ArrayList<String>();
+        List<String> blockData = new ArrayList<>();
         if (blockList != null) {
             for (BlockData block : blockList) {
                 blockData.add(block.toString());

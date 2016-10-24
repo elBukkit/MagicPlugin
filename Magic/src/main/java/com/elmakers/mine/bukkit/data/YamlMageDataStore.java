@@ -61,7 +61,7 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
 
     @Override
     public Collection<String> getAllIds() {
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         File[] files = playerDataFolder.listFiles();
         for (File file : files) {
             String filename = file.getName();

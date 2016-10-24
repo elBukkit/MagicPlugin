@@ -23,7 +23,7 @@ public class ExplosionController implements Listener {
     private int	maxTNTPerChunk = 0;
     private int autoRollbackDuration = 10000;
     private double autoRollbackSpeed = 2;
-    private Set<EntityType> rollbackExplosions = new HashSet<EntityType>();
+    private Set<EntityType> rollbackExplosions = new HashSet<>();
 
     public ExplosionController(MagicController controller) {
         this.controller = controller;

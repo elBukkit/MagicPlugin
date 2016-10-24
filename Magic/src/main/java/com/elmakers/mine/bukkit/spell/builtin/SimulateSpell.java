@@ -88,8 +88,8 @@ public class SimulateSpell extends BlockSpell {
 
 		// Look for relative-positioned chests that define the rulesets.
 
-		Set<Integer> birthCounts = new HashSet<Integer>();
-		Set<Integer> liveCounts = new HashSet<Integer>();
+		Set<Integer> birthCounts = new HashSet<>();
+		Set<Integer> liveCounts = new HashSet<>();
 		
 		Double dlcxValue = ConfigurationUtils.getDouble(parameters, "olcx", null);
 		Double dlcyValue = ConfigurationUtils.getDouble(parameters, "olcy", null);
@@ -277,14 +277,14 @@ public class SimulateSpell extends BlockSpell {
 		if (template.contains("levels")) {
 			ConfigurationSection levelTemplate = template.getConfigurationSection("levels");
 			Collection<String> levelKeys = levelTemplate.getKeys(false);
-			List<Integer> levels = new ArrayList<Integer>(levelKeys.size());
+			List<Integer> levels = new ArrayList<>(levelKeys.size());
 			for (String levelString : levelKeys) {
 				levels.add(Integer.parseInt(levelString));
 			}
 			
 			if (levels.size() == 0) return;
 			
-			levelMap = new TreeMap<Integer, AutomatonLevel>();	
+			levelMap = new TreeMap<>();	
 			Collections.sort(levels);
 			
 			Integer[] levelsArray = levels.toArray(emptyList);
@@ -292,7 +292,7 @@ public class SimulateSpell extends BlockSpell {
 				levelMap.put(level, new AutomatonLevel(level, levelsArray, template));
 			}
 		} else {
-			levelMap = new TreeMap<Integer, AutomatonLevel>();
+			levelMap = new TreeMap<>();
 			levelMap.put(1, new AutomatonLevel(1, null, template));
 		}
 	}

@@ -40,7 +40,7 @@ public class PrerequisiteSpell {
     }
 
     public static Collection<PrerequisiteSpell> getMissingRequirements(Wand wand, SpellTemplate spell) {
-        Collection<PrerequisiteSpell> missingRequirements = new ArrayList<PrerequisiteSpell>(spell.getPrerequisiteSpells());
+        Collection<PrerequisiteSpell> missingRequirements = new ArrayList<>(spell.getPrerequisiteSpells());
         if (wand == null) {
             return missingRequirements;
         }

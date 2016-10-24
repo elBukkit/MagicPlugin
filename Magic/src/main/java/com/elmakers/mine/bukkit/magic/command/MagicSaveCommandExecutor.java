@@ -62,7 +62,7 @@ public class MagicSaveCommandExecutor extends MagicTabExecutor {
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<String>();
+		List<String> options = new ArrayList<>();
         if (!sender.hasPermission("Magic.commands.msave")) return options;
 
 		if (args.length == 1) {

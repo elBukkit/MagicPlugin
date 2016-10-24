@@ -32,7 +32,7 @@ public class PlayRecordAction extends BaseSpellAction
         if (recordSet == null || recordSet.size() == 0) {
             return SpellResult.FAIL;
         }
-        List<Material> records = new ArrayList<Material>(recordSet);
+        List<Material> records = new ArrayList<>(recordSet);
         Random random = context.getRandom();
         Material record = records.get(random.nextInt(records.size()));
 		location.getWorld().playEffect(location, Effect.RECORD_PLAY, record.getId());

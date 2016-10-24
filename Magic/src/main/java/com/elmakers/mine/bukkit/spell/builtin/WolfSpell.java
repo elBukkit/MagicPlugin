@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.utility.Target;
 public class WolfSpell extends TargetingSpell
 {
 	private static int DEFAULT_MAX_WOLVES = 5;
-	protected List<Wolf> wolves = new ArrayList<Wolf>();
+	protected List<Wolf> wolves = new ArrayList<>();
 
 	public Wolf newWolf(Target target)
 	{
@@ -42,7 +42,7 @@ public class WolfSpell extends TargetingSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
-		ArrayList<Wolf> newWolves = new ArrayList<Wolf>();
+		ArrayList<Wolf> newWolves = new ArrayList<>();
 
 		for (Wolf wolf : wolves)
 		{

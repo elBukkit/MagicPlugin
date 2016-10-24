@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 
 public class WandCleanupRunnable extends RunnableJob {
-	private final LinkedList<LostWand> lostWands = new LinkedList<LostWand>();
+	private final LinkedList<LostWand> lostWands = new LinkedList<>();
 	private final World world;
 	private final MagicAPI api;
 	private final String owner;

@@ -32,7 +32,7 @@ public class AlterSpell extends BlockSpell
 	static final int DEFAULT_RECURSE_DISTANCE = 0;
 	
 	static public List<Integer> parseIntegers(String csvList) {
-		List<Integer> ints = new ArrayList<Integer>();
+		List<Integer> ints = new ArrayList<>();
 
 		String[] intStrings = csvList.split(",");
 		for (String s : intStrings) {

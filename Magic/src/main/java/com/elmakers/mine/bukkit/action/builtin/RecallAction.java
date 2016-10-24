@@ -43,10 +43,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private final static Material DefaultWaypointMaterial = Material.BEACON;
 
     private boolean allowCrossWorld = true;
-    private Map<String, ConfigurationSection> warps = new HashMap<String, ConfigurationSection>();
-    private Map<String, ConfigurationSection> commands = new HashMap<String, ConfigurationSection>();
-    private List<RecallType> enabledTypes = new ArrayList<RecallType>();
-    private Map<Integer, Waypoint> options = new HashMap<Integer, Waypoint>();
+    private Map<String, ConfigurationSection> warps = new HashMap<>();
+    private Map<String, ConfigurationSection> commands = new HashMap<>();
+    private List<RecallType> enabledTypes = new ArrayList<>();
+    private Map<Integer, Waypoint> options = new HashMap<>();
     private CastContext context;
     private ConfigurationSection parameters;
     private int protectionTime;
@@ -287,7 +287,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return SpellResult.PLAYER_REQUIRED;
         }
 
-        Set<String> unlockedWarps = new HashSet<String>();
+        Set<String> unlockedWarps = new HashSet<>();
         ConfigurationSection mageData = mage.getData();
 
         String unlockedString = mageData.getString(unlockKey);
@@ -487,7 +487,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 			return SpellResult.FAIL;
 		}
 
-        List<Waypoint> allWaypoints = new LinkedList<Waypoint>();
+        List<Waypoint> allWaypoints = new LinkedList<>();
         for (RecallType selectedType : enabledTypes) {
             if (selectedType == RecallType.WARP) {
                 for (String warpKey : warps.keySet()) {
@@ -563,7 +563,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             meta.setDisplayName(waypoint.name);
             if (waypoint.description != null && waypoint.description.length() > 0)
             {
-                List<String> lore = new ArrayList<String>();
+                List<String> lore = new ArrayList<>();
                 lore.add(waypoint.description);
                 meta.setLore(lore);
             }
@@ -606,7 +606,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String description = context.getMessage("description_move_marker");
         if (description != null && description.length() > 0)
         {
-            List<String> lore = new ArrayList<String>();
+            List<String> lore = new ArrayList<>();
             lore.add(description);
             meta.setLore(lore);
         }

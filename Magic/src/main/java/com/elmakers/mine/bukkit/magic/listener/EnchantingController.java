@@ -99,7 +99,7 @@ public class EnchantingController implements Listener {
             int maxLevel = path.getMaxLevel();
             int levelRange = maxLevel - minLevel;
 			Set<Integer> levelSet = path.getLevels();
-			ArrayList<Integer> levels = new ArrayList<Integer>();
+			ArrayList<Integer> levels = new ArrayList<>();
 			levels.addAll(levelSet);
 			int[] offered = event.getExpLevelCostsOffered();
 

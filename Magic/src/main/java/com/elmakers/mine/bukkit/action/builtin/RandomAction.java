@@ -51,7 +51,7 @@ public class RandomAction extends CompoundAction
     }
 
     protected void mapActions() {
-        actionProbability = new LinkedList<WeightedPair<ActionContext>>();
+        actionProbability = new LinkedList<>();
         ActionHandler actions = getHandler("actions");
         if (actions != null)
         {
@@ -66,7 +66,7 @@ public class RandomAction extends CompoundAction
                     weight = (float)actionParameters.getDouble("weight", weight);
                 }
                 totalWeight += weight;
-                actionProbability.add(new WeightedPair<ActionContext>(totalWeight, weight, option));
+                actionProbability.add(new WeightedPair<>(totalWeight, weight, option));
             }
         }
     }

@@ -251,7 +251,7 @@ public class EntityController implements Listener {
             }
         }
 
-        List<ItemStack> removeDrops = new ArrayList<ItemStack>();
+        List<ItemStack> removeDrops = new ArrayList<>();
         PlayerInventory inventory = player.getInventory();
         ItemStack[] contents = inventory.getContents();
         for (int index = 0; index < contents.length; index++)

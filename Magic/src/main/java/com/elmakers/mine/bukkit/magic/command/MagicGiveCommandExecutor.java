@@ -106,7 +106,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		Set<String> options = new HashSet<String>();
+		Set<String> options = new HashSet<>();
         if (!sender.hasPermission("Magic.commands.mgive")) return options;
 
 		if (args.length == 1) {

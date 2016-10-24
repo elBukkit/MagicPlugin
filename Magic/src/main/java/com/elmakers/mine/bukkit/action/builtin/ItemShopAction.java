@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class ItemShopAction extends BaseShopAction
 {
-    private List<ShopItem> items = new ArrayList<ShopItem>();
+    private List<ShopItem> items = new ArrayList<>();
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -61,7 +61,7 @@ public class ItemShopAction extends BaseShopAction
                                             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
                                         }
                                         if (lore != null) {
-                                            List<String> translatedLore = new ArrayList<String>();
+                                            List<String> translatedLore = new ArrayList<>();
                                             for (String line : lore) {
                                                 if (line != null) {
                                                     translatedLore.add(ChatColor.translateAlternateColorCodes('&', line));

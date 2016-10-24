@@ -20,8 +20,8 @@ import java.util.Set;
 
 public class MobController implements Listener {
     private MageController controller;
-    private final Map<String, EntityData> mobs = new HashMap<String, EntityData>();
-    private final Map<String, EntityData> mobsByName = new HashMap<String, EntityData>();
+    private final Map<String, EntityData> mobs = new HashMap<>();
+    private final Map<String, EntityData> mobsByName = new HashMap<>();
     
     public MobController(MageController controller) {
         this.controller = controller;

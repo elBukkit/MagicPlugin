@@ -23,7 +23,7 @@ public abstract class CompoundAction extends BaseSpellAction
     protected ConfigurationSection actionConfiguration;
     protected CastContext actionContext;
 
-    protected Map<String, ActionHandler> handlers = new HashMap<String, ActionHandler>();
+    protected Map<String, ActionHandler> handlers = new HashMap<>();
     protected String currentHandler = null;
     protected State state = State.NOT_STARTED;
 
@@ -319,7 +319,7 @@ public abstract class CompoundAction extends BaseSpellAction
         CompoundAction action = (CompoundAction)super.clone();
         if (action != null)
         {
-            action.handlers = new HashMap<String, ActionHandler>();
+            action.handlers = new HashMap<>();
             for (Map.Entry<String, ActionHandler> entry : handlers.entrySet())
             {
                 action.handlers.put(entry.getKey(), (ActionHandler)entry.getValue().clone());

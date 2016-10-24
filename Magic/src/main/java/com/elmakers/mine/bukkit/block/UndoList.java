@@ -52,10 +52,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public static Set<Material>         attachablesWall;
     public static Set<Material>         attachablesDouble;
 
-    protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
-    protected static Map<Long, BlockData> watching = new HashMap<Long, BlockData>();
-    protected static Map<Long, Double> reflective = new HashMap<Long, Double>();
-    protected static Map<Long, Double> breakable = new HashMap<Long, Double>();
+    protected static Map<Long, BlockData> modified = new HashMap<>();
+    protected static Map<Long, BlockData> watching = new HashMap<>();
+    protected static Map<Long, Double> reflective = new HashMap<>();
+    protected static Map<Long, Double> breakable = new HashMap<>();
     protected static BlockComparator blockComparator = new BlockComparator();
 
     protected Map<Long, BlockData>  attached;
@@ -126,7 +126,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void setSpell(Spell spell)
     {
         this.spell = spell;
-        this.context = spell == null ? null : new WeakReference<CastContext>(spell.getCurrentCast());
+        this.context = spell == null ? null : new WeakReference<>(spell.getCurrentCast());
     }
 
     @Override
@@ -246,7 +246,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                 newBlock.setUndoList(this);
                 if (attached == null)
                 {
-                    attached = new HashMap<Long, BlockData>();
+                    attached = new HashMap<>();
                 }
                 attached.put(blockId, newBlock);
                 if (attachablesDouble != null && attachablesDouble.contains(material))
@@ -576,7 +576,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void add(Entity entity)
     {
         if (entity == null) return;
-        if (entities == null) entities = new HashSet<Entity>();
+        if (entities == null) entities = new HashSet<>();
         if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
 
         entities.add(entity);
@@ -592,7 +592,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void add(Runnable runnable)
     {
         if (runnable == null) return;
-        if (runnables == null) runnables = new LinkedList<Runnable>();
+        if (runnables == null) runnables = new LinkedList<>();
         runnables.add(runnable);
         modifiedTime = System.currentTimeMillis();
     }
@@ -609,7 +609,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (entities != null && entities.contains(entity) && !entity.isValid()) {
             entities.remove(entity);
         } else {
-            if (modifiedEntities == null) modifiedEntities = new HashMap<UUID, EntityData>();
+            if (modifiedEntities == null) modifiedEntities = new HashMap<>();
             UUID entityId = entity.getUniqueId();
             entityData = modifiedEntities.get(entityId);
             if (entityData == null) {
@@ -776,7 +776,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         if (blockList == null) return;
 
-        List<BlockData> current = new ArrayList<BlockData>(blockList);
+        List<BlockData> current = new ArrayList<>(blockList);
 
         blockList = null;
         blockIdMap = null;
@@ -955,7 +955,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     @Override
     public Collection<Entity> getAllEntities() {
-        ArrayList<Entity> entities = new ArrayList<Entity>();
+        ArrayList<Entity> entities = new ArrayList<>();
         if (this.entities != null)
         {
             for (Entity entity : this.entities)

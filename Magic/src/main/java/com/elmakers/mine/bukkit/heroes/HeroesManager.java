@@ -31,8 +31,8 @@ public class HeroesManager {
     private Heroes heroes;
     private CharacterManager characters;
     private SkillManager skills;
-    private final static Set<String> emptySkills = new HashSet<String>();
-    private final static List<String> emptySkillList = new ArrayList<String>();
+    private final static Set<String> emptySkills = new HashSet<>();
+    private final static List<String> emptySkillList = new ArrayList<>();
 
     public HeroesManager(Plugin plugin, Plugin heroesPlugin) {
         if (!(heroesPlugin instanceof Heroes))
@@ -73,15 +73,15 @@ public class HeroesManager {
 
         HeroClass heroClass = hero.getHeroClass();
         HeroClass secondClass = hero.getSecondClass();
-        Set<String> primarySkills = new HashSet<String>();
-        Set<String> secondarySkills = new HashSet<String>();
+        Set<String> primarySkills = new HashSet<>();
+        Set<String> secondarySkills = new HashSet<>();
         addSkills(hero, heroClass, primarySkills, showUnuseable, showPassive);
         addSkills(hero, secondClass, secondarySkills, showUnuseable, showPassive);
         secondarySkills.removeAll(primarySkills);
 
         Multimap<Integer, Skill> primaryMap = mapSkillsByLevel(hero, primarySkills);
         Multimap<Integer, Skill> secondaryMap = mapSkillsByLevel(hero, secondarySkills);
-        List<String> skillNames = new ArrayList<String>();
+        List<String> skillNames = new ArrayList<>();
         for (Skill skill : primaryMap.values())
         {
             skillNames.add(skill.getName());
@@ -138,7 +138,7 @@ public class HeroesManager {
         if (skills == null) return emptySkills;
         Hero hero = getHero(player);
         if (hero == null) return emptySkills;
-        Set<String> skillSet = new HashSet<String>();
+        Set<String> skillSet = new HashSet<>();
 
         HeroClass heroClass = hero.getHeroClass();
         HeroClass secondClass = hero.getSecondClass();

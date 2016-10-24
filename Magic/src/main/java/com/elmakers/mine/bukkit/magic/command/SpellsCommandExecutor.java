@@ -25,7 +25,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 	
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String comandName, String[] args) {
-		return new ArrayList<String>();
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 
 	public void listSpellsByCategory(CommandSender sender, String category)
 	{
-		List<SpellTemplate> categorySpells = new ArrayList<SpellTemplate>();
+		List<SpellTemplate> categorySpells = new ArrayList<>();
 		Collection<SpellTemplate> spellVariants = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
 		Player player = sender instanceof Player ? (Player)sender : null;
 		for (SpellTemplate spell : spellVariants)
@@ -76,8 +76,8 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 
 	public void listCategories(Player player)
 	{
-		HashMap<String, Integer> spellCounts = new HashMap<String, Integer>();
-		List<SpellCategory> spellGroups = new ArrayList<SpellCategory>();
+		HashMap<String, Integer> spellCounts = new HashMap<>();
+		List<SpellCategory> spellGroups = new ArrayList<>();
 		Collection<SpellTemplate> spellVariants = api.getSpellTemplates(player == null || player.hasPermission("Magic.bypass_hidden"));
 
 		for (SpellTemplate spell : spellVariants)
@@ -132,7 +132,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 
 		// Kinda hacky internals-reaching
 		Collection<SpellCategory> allCategories = api.getController().getCategories();
-		List<SpellCategory> sortedGroups = new ArrayList<SpellCategory>(allCategories);
+		List<SpellCategory> sortedGroups = new ArrayList<>(allCategories);
 		Collections.sort(sortedGroups);
 
 		int maxLines = -1;

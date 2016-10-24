@@ -108,7 +108,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
 	
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<String>();
+		List<String> options = new ArrayList<>();
 		if (args.length == 1) {
             addIfPermissible(sender, options, "Magic.commands.mage.", "describe");
             addIfPermissible(sender, options, "Magic.commands.mage.", "configure");

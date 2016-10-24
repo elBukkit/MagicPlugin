@@ -34,7 +34,7 @@ import org.bukkit.util.Vector;
 
 public class FamiliarSpell extends UndoableSpell implements Listener
 {
-    private final LinkedList<WeightedPair<String>> entityTypeProbability = new LinkedList<WeightedPair<String>>();
+    private final LinkedList<WeightedPair<String>> entityTypeProbability = new LinkedList<>();
 
 	private final Random rand = new Random();
 	private int spawnCount = 0;
@@ -68,7 +68,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
     {
         if (familiars != null)
         {
-            List<LivingEntity> iterate = new ArrayList<LivingEntity>(familiars);
+            List<LivingEntity> iterate = new ArrayList<>(familiars);
             for (LivingEntity familiar : iterate)
             {
                 if (familiar.getUniqueId() == entity.getUniqueId()) {
@@ -176,7 +176,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 
         boolean spawnBaby = parameters.getBoolean("baby", false);
 
-		List<LivingEntity> newFamiliars = new ArrayList<LivingEntity>();
+		List<LivingEntity> newFamiliars = new ArrayList<>();
 		for (int i = 0; i < famCount; i++)
 		{
             EntityType entityType = famType;
@@ -310,7 +310,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
         if (template.contains("entity_types")) {
             RandomUtils.populateStringProbabilityMap(entityTypeProbability, template.getConfigurationSection("entity_types"), 0, 0, 0);
         } else {
-            entityTypeProbability.add(new WeightedPair<String>(100.0f, "pig"));
+            entityTypeProbability.add(new WeightedPair<>(100.0f, "pig"));
         }
     }
 }

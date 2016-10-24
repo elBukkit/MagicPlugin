@@ -43,13 +43,13 @@ public class AutomatonLevel {
 		}
 
 		if (template.contains("cast")) {
-			tickSpells = new LinkedList<WeightedPair<String>>();
+			tickSpells = new LinkedList<>();
 			RandomUtils.populateStringProbabilityMap(tickSpells, template.getConfigurationSection("cast"), levelIndex, nextLevelIndex, distance);
 		} else {
 			tickSpells = null;
 		}
 		if (template.contains("death_cast")) {
-			deathSpells = new LinkedList<WeightedPair<String>>();
+			deathSpells = new LinkedList<>();
 			RandomUtils.populateStringProbabilityMap(deathSpells, template.getConfigurationSection("death_cast"), levelIndex, nextLevelIndex, distance);
 		} else {
 			deathSpells = null;

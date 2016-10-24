@@ -12,7 +12,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class SpellCategory implements com.elmakers.mine.bukkit.api.spell.SpellCategory {
-    protected List<SpellTemplate> spells = new ArrayList<SpellTemplate>();
+    protected List<SpellTemplate> spells = new ArrayList<>();
     protected final String key;
     protected final String name;
     protected final String description;

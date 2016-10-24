@@ -27,7 +27,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
 
         undoList = blockList;
         this.applyPhysics = blockList.getApplyPhysics();
-        this.attachables = new HashSet<Material>();
+        this.attachables = new HashSet<>();
 
         CastContext context = undoList.getContext();
         if (context != null) {

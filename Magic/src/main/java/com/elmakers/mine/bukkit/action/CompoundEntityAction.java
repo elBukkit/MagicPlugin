@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class CompoundEntityAction extends CompoundAction
 {
-    private List<WeakReference<Entity>> entities = new ArrayList<WeakReference<Entity>>();
+    private List<WeakReference<Entity>> entities = new ArrayList<>();
     private int currentEntity = 0;
 
     public abstract void addEntities(CastContext context, List<WeakReference<Entity>> entities);
@@ -65,7 +65,7 @@ public abstract class CompoundEntityAction extends CompoundAction
     {
         CompoundEntityAction action = (CompoundEntityAction)super.clone();
         if (action != null) {
-            action.entities = new ArrayList<WeakReference<Entity>>(this.entities);
+            action.entities = new ArrayList<>(this.entities);
         }
         return action;
     }

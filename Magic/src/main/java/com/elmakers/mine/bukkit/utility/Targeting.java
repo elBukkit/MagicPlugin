@@ -435,7 +435,7 @@ public class Targeting {
         if (targets != null) {
             return targets;
         }
-        targets = new ArrayList<Target>();
+        targets = new ArrayList<>();
 
         // A fuzzy optimization range-check. A hard range limit is enforced in the final target consolidator
         double rangePadded = (range + hitboxPadding + rangeQueryPadding);
@@ -606,7 +606,7 @@ public class Targeting {
 
         for (int i = 0; i < targetCount && i < candidates.size(); i++) {
             Target target = candidates.get(i);
-            entities.add(new WeakReference<Entity>(target.getEntity()));
+            entities.add(new WeakReference<>(target.getEntity()));
         }
     }
 
@@ -661,7 +661,7 @@ public class Targeting {
             return false;
         }
         if (target != null) {
-            tracked.setMetadata("hit", new FixedMetadataValue(plugin, new WeakReference<Entity>(target)));
+            tracked.setMetadata("hit", new FixedMetadataValue(plugin, new WeakReference<>(target)));
         } else if (!tracked.hasMetadata("hit")) {
             tracked.setMetadata("hit", new FixedMetadataValue(plugin, null));
         }
@@ -671,7 +671,7 @@ public class Targeting {
 
     public void ignoreEntity(Entity entity) {
         if (ignoreEntities == null) {
-            ignoreEntities = new HashSet<UUID>();
+            ignoreEntities = new HashSet<>();
         }
         ignoreEntities.add(entity.getUniqueId());
     }

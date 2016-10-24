@@ -33,8 +33,8 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
 {
     private static int INVENTORY_ROWS = 6;
     private CastContext context;
-    private List<ItemStack> schematics = new ArrayList<ItemStack>();
-    private Map<Material, List<ItemStack>> variants = new HashMap<Material, List<ItemStack>>();
+    private List<ItemStack> schematics = new ArrayList<>();
+    private Map<Material, List<ItemStack>> variants = new HashMap<>();
     private int page;
 
     @Override
@@ -123,10 +123,10 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         if (wand == null) {
             return SpellResult.FAIL;
         }
-        List<String> brushKeys = new ArrayList<String>(wand.getBrushes());
+        List<String> brushKeys = new ArrayList<>(wand.getBrushes());
         Collections.sort(brushKeys);
-        List<ItemStack> brushes = new ArrayList<ItemStack>();
-        List<ItemStack> specials = new ArrayList<ItemStack>();
+        List<ItemStack> brushes = new ArrayList<>();
+        List<ItemStack> specials = new ArrayList<>();
         MaterialAndData previous = null;
         for (String brushKey : brushKeys) {
             ItemStack brushItem = com.elmakers.mine.bukkit.wand.Wand.createBrushItem(brushKey, controller, null, false);
@@ -147,14 +147,14 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     if (variantList == null)
                     {
                         String baseName = material.getBaseName();
-                        variantList = new ArrayList<ItemStack>();
+                        variantList = new ArrayList<>();
                         variantList.add(lastAdded);
                         brushes.remove(brushes.size() - 1);
                         ItemStack category = InventoryUtils.getCopy(lastAdded);
                         ItemMeta meta = category.getItemMeta();
                         String name = context.getMessage("variant_name", "" + ChatColor.AQUA + "$variant");
                         meta.setDisplayName(name.replace("$variant", baseName));
-                        List<String> lore = new ArrayList<String>();
+                        List<String> lore = new ArrayList<>();
                         String description = context.getMessage("variant_description", "Choose a type of $variant");
                         lore.add(description.replace("$variant", baseName));
                         meta.setLore(lore);
@@ -180,7 +180,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             schematicItem = InventoryUtils.getCopy(schematics.get(0));
             ItemMeta meta = schematicItem.getItemMeta();
             meta.setDisplayName(context.getMessage("schematics_name", "" + ChatColor.AQUA + "Schematics"));
-            List<String> lore = new ArrayList<String>();
+            List<String> lore = new ArrayList<>();
             lore.add(context.getMessage("schematics_description", "Choose a schematic"));
             meta.setLore(lore);
             schematicItem.setItemMeta(meta);
@@ -203,7 +203,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         int pageIndex = page - 1;
         int startIndex = pageIndex * inventorySize;
         int maxIndex = (pageIndex + 1) * inventorySize - 1;
-        List<ItemStack> showBrushes = new ArrayList<ItemStack>();
+        List<ItemStack> showBrushes = new ArrayList<>();
         for (int i = startIndex; i <= maxIndex && i < brushes.size(); i++)
         {
             showBrushes.add(brushes.get(i));

@@ -45,6 +45,6 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
 
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 }

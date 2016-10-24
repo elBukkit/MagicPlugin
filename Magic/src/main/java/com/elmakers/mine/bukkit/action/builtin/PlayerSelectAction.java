@@ -73,7 +73,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
-        players = new HashMap<Integer, WeakReference<Player>>();
+        players = new HashMap<>();
         active = false;
     }
 
@@ -110,7 +110,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
         players.clear();
 
         if (allowCrossWorld) {
-            allPlayers = new ArrayList<Player>(controller.getPlugin().getServer().getOnlinePlayers());
+            allPlayers = new ArrayList<>(controller.getPlugin().getServer().getOnlinePlayers());
         } else {
             allPlayers = context.getLocation().getWorld().getPlayers();
         }
@@ -127,7 +127,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
             if (!context.getTargetsCaster() && targetPlayer == player) continue;
             if (targetPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
             if (!context.canTarget(targetPlayer)) continue;
-            players.put(index++, new WeakReference<Player>(targetPlayer));
+            players.put(index++, new WeakReference<>(targetPlayer));
         }
         if (players.size() == 0) return SpellResult.NO_TARGET;
 
@@ -145,7 +145,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
             if (!name.equals(displayName))
             {
                 ItemMeta meta = playerItem.getItemMeta();
-                List<String> lore = new ArrayList<String>();
+                List<String> lore = new ArrayList<>();
                 lore.add(name);
                 meta.setLore(lore);
                 playerItem.setItemMeta(meta);

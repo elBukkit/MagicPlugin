@@ -28,7 +28,7 @@ import java.util.List;
 
 public class SkillsSelector implements GUIAction {
     private int page;
-    private List<SkillDescription> allSkills = new ArrayList<SkillDescription>();
+    private List<SkillDescription> allSkills = new ArrayList<>();
     private final MagicAPI api;
     private final Player player;
     private String inventoryTitle;
@@ -127,7 +127,7 @@ public class SkillsSelector implements GUIAction {
         int startIndex = pageIndex * inventorySize;
         int maxIndex = (pageIndex + 1) * inventorySize - 1;
 
-        List<SkillDescription> skills = new ArrayList<SkillDescription>();
+        List<SkillDescription> skills = new ArrayList<>();
         for (int i = startIndex; i <= maxIndex && i < allSkills.size(); i++) {
             skills.add(allSkills.get(i));
         }

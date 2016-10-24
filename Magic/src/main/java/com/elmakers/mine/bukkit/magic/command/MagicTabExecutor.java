@@ -36,7 +36,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
 	
 		completeCommand = completeCommand.toLowerCase();
 		Collection<String> allOptions = onTabComplete(sender, command.getName(), args);
-		List<String>options = new ArrayList<String>();
+		List<String>options = new ArrayList<>();
 		for (String option : allOptions) {
 			String lowercase = option.toLowerCase();
 			if (lowercase.startsWith(completeCommand)) {

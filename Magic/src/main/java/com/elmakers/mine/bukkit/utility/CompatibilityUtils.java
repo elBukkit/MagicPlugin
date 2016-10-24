@@ -81,9 +81,9 @@ public class CompatibilityUtils extends NMSUtils {
     public static boolean USE_MAGIC_DAMAGE = true;
     public static boolean isDamaging = false;
     public final static int MAX_ENTITY_RANGE = 72;
-    private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<EntityType, BoundingBox>();
-    private final static Map<EntityType, Double> headSizes = new HashMap<EntityType, Double>();
-    private final static Map<World.Environment, Integer> maxHeights = new HashMap<World.Environment, Integer>();
+    private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<>();
+    private final static Map<EntityType, Double> headSizes = new HashMap<>();
+    private final static Map<World.Environment, Integer> maxHeights = new HashMap<>();
     private static double hitboxScale = 1.0;
     private static double hitboxScaleY = 1.0;
     private static double hitboxSneakScaleY = 0.75;
@@ -385,7 +385,7 @@ public class CompatibilityUtils extends NMSUtils {
             // The input entity is only used for equivalency testing, so this "null" should be ok.
             @SuppressWarnings("unchecked")
             List<? extends Object> entityList = (List<? extends Object>)class_World_getEntitiesMethod.invoke(worldHandle, null, bb);
-            List<Entity> bukkitEntityList = new java.util.ArrayList<org.bukkit.entity.Entity>(entityList.size());
+            List<Entity> bukkitEntityList = new java.util.ArrayList<>(entityList.size());
 
             for (Object entity : entityList) {
                 Entity bukkitEntity = (Entity)class_Entity_getBukkitEntityMethod.invoke(entity);
@@ -531,7 +531,7 @@ public class CompatibilityUtils extends NMSUtils {
                 if (potion == null) {
                     potion = (ThrownPotion) location.getWorld().spawnEntity(location, EntityType.SPLASH_POTION);
                     potion.remove();
-                    potionReference = new WeakReference<ThrownPotion>(potion);
+                    potionReference = new WeakReference<>(potion);
                 }
                 potion.teleport(location);
                 potion.setShooter((LivingEntity)source);
@@ -1181,8 +1181,8 @@ public class CompatibilityUtils extends NMSUtils {
 
             byte[] data = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "Data");
 
-            Collection<Object> tileEntityData = new ArrayList<Object>();
-            Collection<Object> entityData = new ArrayList<Object>();
+            Collection<Object> tileEntityData = new ArrayList<>();
+            Collection<Object> entityData = new ArrayList<>();
 
             Object entityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "Entities", NBT_TYPE_COMPOUND);
             Object tileEntityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "TileEntities", NBT_TYPE_COMPOUND);

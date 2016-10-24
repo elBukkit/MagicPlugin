@@ -53,7 +53,7 @@ public class CommandSpell extends TargetingSpell {
         if (parameters.contains("command")) {
             String command = parameters.getString("command");
             if (command != null && command.length() > 0) {
-                commands = new ArrayList<String>();
+                commands = new ArrayList<>();
                 commands.add(command);
             }
         } else {

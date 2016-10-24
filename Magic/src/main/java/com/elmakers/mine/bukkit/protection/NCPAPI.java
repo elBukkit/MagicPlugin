@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class NCPAPI implements Runnable {
-    private Map<UUID, Long> flyExemptions = new HashMap<UUID, Long>();
+    private Map<UUID, Long> flyExemptions = new HashMap<>();
     public static int CHECK_FREQUENCY = 20;
 
     public NCPAPI(Plugin plugin, Plugin ncpPlugin) {
@@ -23,7 +23,7 @@ public class NCPAPI implements Runnable {
 
     @Override
     public void run() {
-        List<UUID> uuids = new ArrayList<UUID>(flyExemptions.keySet());
+        List<UUID> uuids = new ArrayList<>(flyExemptions.keySet());
         long now = System.currentTimeMillis();
         for (UUID uuid : uuids)
         {

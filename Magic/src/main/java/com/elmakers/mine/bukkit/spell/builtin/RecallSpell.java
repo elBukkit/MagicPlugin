@@ -45,11 +45,11 @@ public class RecallSpell extends UndoableSpell
 	private int retryCount = 0;
 	private boolean allowCrossWorld = true;
 	private int selectedIndex = 0;
-	private List<String> warps = new ArrayList<String>();
+	private List<String> warps = new ArrayList<>();
 	
 	private RecallType selectedType = RecallType.MARKER;
 	private int selectedTypeIndex = 0;
-	private List<RecallType> enabledTypes = new ArrayList<RecallType>();
+	private List<RecallType> enabledTypes = new ArrayList<>();
 	
 	private String castMessage;
 	private String failMessage;
@@ -160,7 +160,7 @@ public class RecallSpell extends UndoableSpell
 		else
 		{
 			Location location = getLocation();
-			List<Target> allWaypoints = new LinkedList<Target>();
+			List<Target> allWaypoints = new LinkedList<>();
 			for (RecallType selectedType : enabledTypes) {
 				if (selectedType == RecallType.WARP) {
 					for (int i = 0; i < warps.size(); i++) {

@@ -53,7 +53,7 @@ public class EffectLibManager {
 
     public Effect play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, Map<String, String> parameterMap) {
         if (parameterMap == null) {
-            parameterMap = new HashMap<String, String>();
+            parameterMap = new HashMap<>();
         }
         Entity originEntity = origin == null ? null : origin.getEntity();
         if (originEntity != null && originEntity instanceof Player) {

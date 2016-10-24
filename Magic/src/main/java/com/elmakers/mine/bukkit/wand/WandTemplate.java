@@ -22,8 +22,8 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     private final MageController controller;
     private final String key;
     private final ConfigurationSection configuration;
-    private Map<String, Collection<EffectPlayer>> effects = new HashMap<String, Collection<EffectPlayer>>();
-    private Collection<EffectPlay> currentEffects = new ArrayList<EffectPlay>();
+    private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
+    private Collection<EffectPlay> currentEffects = new ArrayList<>();
     private Set<String> tags;
     private Set<String> categories = ImmutableSet.of();
     private String creator;
@@ -50,7 +50,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
         soul = node.getBoolean("soul", false);
         ConfigurationSection migrateConfig = node.getConfigurationSection("migrate_icons");
         if (migrateConfig != null) {
-            migrateIcons = new HashMap<String, String>();
+            migrateIcons = new HashMap<>();
             Set<String> keys = migrateConfig.getKeys(false);
             for (String migrateKey : keys) {
                 migrateIcons.put(migrateKey, migrateConfig.getString(migrateKey));
@@ -64,7 +64,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
                 if (effectsNode.isString(effectKey)) {
                     String referenceKey = effectsNode.getString(effectKey);
                     if (effects.containsKey(referenceKey)) {
-                        effects.put(effectKey, new ArrayList<EffectPlayer>(effects.get(referenceKey)));
+                        effects.put(effectKey, new ArrayList<>(effects.get(referenceKey)));
                     }
                 }
                 else
@@ -76,7 +76,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
 
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
         if (tagList != null) {
-            tags = new HashSet<String>(tagList);
+            tags = new HashSet<>(tagList);
         } else {
             tags = null;
         }
@@ -101,7 +101,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(String key) {
         Collection<EffectPlayer> effectList = effects.get(key);
         if (effectList == null) {
-            return new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>();
+            return new ArrayList<>();
         }
         return new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effectList);
     }

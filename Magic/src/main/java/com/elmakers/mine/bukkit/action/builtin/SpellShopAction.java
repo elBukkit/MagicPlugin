@@ -39,7 +39,7 @@ public class SpellShopAction extends BaseShopAction
     private boolean showUpgrades = false;
     private boolean allowLocked = false;
     protected boolean requiresCastCounts = false;
-    private Map<String, Double> spells = new HashMap<String, Double>();
+    private Map<String, Double> spells = new HashMap<>();
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -114,7 +114,7 @@ public class SpellShopAction extends BaseShopAction
         }
 
         // Load spells
-        Map<String, Double> spellPrices = new HashMap<String, Double>();
+        Map<String, Double> spellPrices = new HashMap<>();
         if (spells.size() > 0)
         {
             spellPrices.putAll(spells);
@@ -151,7 +151,7 @@ public class SpellShopAction extends BaseShopAction
         }
 
         Messages messages = context.getController().getMessages();
-        List<ShopItem> shopItems = new ArrayList<ShopItem>();
+        List<ShopItem> shopItems = new ArrayList<>();
         for (Map.Entry<String, Double> spellValue : spellPrices.entrySet()) {
             String key = spellValue.getKey();
             key = context.parameterize(key);
@@ -185,7 +185,7 @@ public class SpellShopAction extends BaseShopAction
                         || !missingSpells.isEmpty()) {
                     ItemMeta meta = spellItem.getItemMeta();
                     List<String> itemLore = meta.getLore();
-                    List<String> lore = new ArrayList<String>();
+                    List<String> lore = new ArrayList<>();
                     if (spell.getSpellKey().getLevel() > 1 && itemLore.size() > 0) {
                         lore.add(itemLore.get(0));
                     }
@@ -220,7 +220,7 @@ public class SpellShopAction extends BaseShopAction
                     }
 
                     if (!missingSpells.isEmpty()) {
-                        List<String> spells = new ArrayList<String>(missingSpells.size());
+                        List<String> spells = new ArrayList<>(missingSpells.size());
                         for (PrerequisiteSpell s : missingSpells) {
                             SpellTemplate template = context.getController().getSpellTemplate(s.getSpellKey().getKey());
                             String spellMessage = context.getMessage("prerequisite_spell_level", "&6Level $level $name")
@@ -255,7 +255,7 @@ public class SpellShopAction extends BaseShopAction
         
         if (spells.size() == 0 && showExtra && !castsSpells) {
             Collection<String> extraSpells = currentPath.getExtraSpells();
-            List<ShopItem> extraItems = new ArrayList<ShopItem>();
+            List<ShopItem> extraItems = new ArrayList<>();
             for (String spellKey : extraSpells) {
                 if (wand.hasSpell(spellKey)) continue;
 

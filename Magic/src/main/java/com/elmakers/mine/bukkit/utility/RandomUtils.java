@@ -98,13 +98,13 @@ public class RandomUtils {
     }
 
     public static <T extends Object> void populateProbabilityConstant(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, String value) {
-        probabilityMap.add(new WeightedPair<T>(1.0f, 1.0f, value, valueClass));
+        probabilityMap.add(new WeightedPair<>(1.0f, 1.0f, value, valueClass));
     }
 
     public static <T extends Object> void populateProbabilityList(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, List<String> keys) {
         if (keys != null) {
             for (String key : keys) {
-                probabilityMap.add(new WeightedPair<T>(1.0f, 1.0f, key, valueClass));
+                probabilityMap.add(new WeightedPair<>(1.0f, 1.0f, key, valueClass));
             }
         }
     }
@@ -127,7 +127,7 @@ public class RandomUtils {
                     weight = Float.parseFloat(value);
                 }
                 currentThreshold += weight;
-                probabilityMap.add(new WeightedPair<T>(currentThreshold, weight, key, valueClass));
+                probabilityMap.add(new WeightedPair<>(currentThreshold, weight, key, valueClass));
             }
         }
     }
@@ -137,7 +137,7 @@ public class RandomUtils {
             return base;
         }
         if (base == null) {
-            base = new LinkedList<WeightedPair<T>>();
+            base = new LinkedList<>();
         }
         if (base.size() == 0) {
             base.addAll(inherit);
@@ -147,7 +147,7 @@ public class RandomUtils {
             for (WeightedPair<T> inheritPair : inherit) {
                 float weight = inheritPair.getThreshold();
                 threshold += weight;
-                base.add(new WeightedPair<T>(threshold, inheritPair.getRawThreshold(), inheritPair.getValue()));
+                base.add(new WeightedPair<>(threshold, inheritPair.getRawThreshold(), inheritPair.getValue()));
             }
         }
         return base;
@@ -185,7 +185,7 @@ public class RandomUtils {
             index++;
             if (nextIndex > currentIndex + 1) {
                 float distance = 1f / (nextIndex - currentIndex);
-                AscendingPair<T> inserted = new AscendingPair<T>(currentIndex + 1, lerp(current.getValue(), next.getValue(), distance));
+                AscendingPair<T> inserted = new AscendingPair<>(currentIndex + 1, lerp(current.getValue(), next.getValue(), distance));
                 list.add(index, inserted);
             }
         }

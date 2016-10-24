@@ -114,7 +114,7 @@ public class ProjectileSpell extends UndoableSpell
 		Vector direction = getDirection().normalize();
 
 		// Track projectiles to remove them after some time.
-		List<Projectile> projectiles = new ArrayList<Projectile>();
+		List<Projectile> projectiles = new ArrayList<>();
 		
 		// Spawn projectiles
 		Object nmsWorld = NMSUtils.getHandle(location.getWorld());
@@ -272,7 +272,7 @@ public class ProjectileSpell extends UndoableSpell
 	protected void checkProjectiles(final Collection<Projectile> projectiles, final int tickIncrease, 
 			final Collection<PotionEffect> effects, final int radius, int retries) {
 
-		final Collection<Projectile> remaining = new ArrayList<Projectile>();
+		final Collection<Projectile> remaining = new ArrayList<>();
 		for (Projectile projectile : projectiles) {
 			if (projectile.isDead()) {
 				// Apply potion effects if configured

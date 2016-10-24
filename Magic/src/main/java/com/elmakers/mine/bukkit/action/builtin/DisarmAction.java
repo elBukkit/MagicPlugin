@@ -112,7 +112,7 @@ public class DisarmAction extends BaseSpellAction
 			Player targetPlayer = (Player)entity;
 			targetInventory = targetPlayer.getInventory();
 			originalSlot = targetInventory.getHeldItemSlot();
-			List<Integer> validSlots = new ArrayList<Integer>();
+			List<Integer> validSlots = new ArrayList<>();
 			ItemStack[] contents = targetInventory.getContents();
 
 			for (int i = minSlot; i <= maxSlot; i++) {

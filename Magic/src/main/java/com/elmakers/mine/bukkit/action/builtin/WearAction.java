@@ -44,7 +44,7 @@ public class WearAction extends BaseSpellAction
         super.initialize(spell, parameters);
         if (parameters.contains("enchantments"))
         {
-            enchantments = new HashMap<Enchantment, Integer>();
+            enchantments = new HashMap<>();
             ConfigurationSection enchantConfig = ConfigurationUtils.getConfigurationSection(parameters, "enchantments");
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys)
@@ -198,7 +198,7 @@ public class WearAction extends BaseSpellAction
         {
             meta.setDisplayName(displayName.replace("$hat", materialName).replace("$item", materialName));
         }
-		List<String> lore = new ArrayList<String>();
+		List<String> lore = new ArrayList<>();
         String loreLine = context.getMessage("hat_lore");
         loreLine = context.getMessage("wear_lore", loreLine);
 		lore.add(loreLine);

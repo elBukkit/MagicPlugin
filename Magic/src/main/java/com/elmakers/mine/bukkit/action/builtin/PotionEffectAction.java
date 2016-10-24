@@ -32,7 +32,7 @@ public class PotionEffectAction extends BaseSpellAction
         super.initialize(spell, parameters);
         if (parameters.contains("remove_effects"))
         {
-            removeEffects = new HashSet<PotionEffectType>();
+            removeEffects = new HashSet<>();
             Collection<String> removeEffectKeys = parameters.getStringList("remove_effects");
             for (String removeKey : removeEffectKeys)
             {
@@ -79,7 +79,7 @@ public class PotionEffectAction extends BaseSpellAction
         }
         Collection<PotionEffect> mappedEffects = getMappedPotionEffects(parameters);
         if (!mappedEffects.isEmpty()) {
-            Collection<PotionEffect> newEffects = new ArrayList<PotionEffect>(addEffects.size() + mappedEffects.size());
+            Collection<PotionEffect> newEffects = new ArrayList<>(addEffects.size() + mappedEffects.size());
             newEffects.addAll(addEffects);
             newEffects.addAll(mappedEffects);
             addEffects = newEffects;
@@ -90,7 +90,7 @@ public class PotionEffectAction extends BaseSpellAction
         ConfigurationSection section = parameters.getConfigurationSection("add_effects");
         if (section != null) {
             Collection<String> keys = section.getKeys(false);
-            Collection<PotionEffect> effects = new ArrayList<PotionEffect>(keys.size());
+            Collection<PotionEffect> effects = new ArrayList<>(keys.size());
             int ticks = parameters.getInt("duration", 500) / 50;
             for (String key : keys) {
                 int strength = section.getInt(key, 0);

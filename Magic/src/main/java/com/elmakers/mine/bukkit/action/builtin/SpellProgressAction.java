@@ -74,7 +74,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
             return SpellResult.FAIL;
         }
         Collection<String> spells = wand.getSpells();
-        Collection<ItemStack> upgrades = new ArrayList<ItemStack>();
+        Collection<ItemStack> upgrades = new ArrayList<>();
         Messages messages = context.getController().getMessages();
         for (String spellKey : spells) {
             MageSpell spell = mage.getSpell(spellKey);
@@ -86,7 +86,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     String requiredPathKey = spell.getRequiredUpgradePath();
                     Set<String> requiredPathTags = spell.getRequiredUpgradeTags();
                     ItemMeta meta = spellItem.getItemMeta();
-                    List<String> lore = new ArrayList<String>();
+                    List<String> lore = new ArrayList<>();
 
                     String levelDescription = upgradeSpell.getLevelDescription();
                     if (levelDescription == null || levelDescription.isEmpty()) {

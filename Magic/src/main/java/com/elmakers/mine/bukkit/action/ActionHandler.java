@@ -25,7 +25,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         ActionFactory.registerActionClass(name, clazz);
     }
 
-    private List<ActionContext> actions = new ArrayList<ActionContext>();
+    private List<ActionContext> actions = new ArrayList<>();
 
     private boolean undoable = false;
     private boolean usesBrush = false;

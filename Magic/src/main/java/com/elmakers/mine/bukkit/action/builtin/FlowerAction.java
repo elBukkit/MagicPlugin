@@ -15,8 +15,8 @@ import java.util.Collection;
 import java.util.Random;
 
 public class FlowerAction extends BaseSpellAction {
-    private final ArrayList<MaterialAndData> flowers = new ArrayList<MaterialAndData>();
-    private final ArrayList<MaterialAndData> tallFlowers = new ArrayList<MaterialAndData>();
+    private final ArrayList<MaterialAndData> flowers = new ArrayList<>();
+    private final ArrayList<MaterialAndData> tallFlowers = new ArrayList<>();
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)

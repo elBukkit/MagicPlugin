@@ -14,7 +14,7 @@ import java.util.TreeMap;
 
 public class CountAction extends BaseSpellAction
 {
-	private Map<String, Integer> counts = new TreeMap<String, Integer>();
+	private Map<String, Integer> counts = new TreeMap<>();
 	private int totalCount = 0;
 
 	@Override

@@ -58,8 +58,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private Vector direction = null;
     private Boolean targetCaster = null;
 
-    private Set<UUID> targetMessagesSent = new HashSet<UUID>();
-    private Collection<EffectPlay> currentEffects = new ArrayList<EffectPlay>();
+    private Set<UUID> targetMessagesSent = new HashSet<>();
+    private Collection<EffectPlay> currentEffects = new ArrayList<>();
 
     private Spell spell;
     private BaseSpell baseSpell;
@@ -85,8 +85,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.entity = null;
         this.base = this;
         this.result = SpellResult.NO_ACTION;
-        targetMessagesSent = new HashSet<UUID>();
-        currentEffects = new ArrayList<EffectPlay>();
+        targetMessagesSent = new HashSet<>();
+        currentEffects = new ArrayList<>();
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
@@ -441,7 +441,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         ConfigurationSection workingParameters = spell.getWorkingParameters();
         if (workingParameters != null) {
             Collection<String> keys = workingParameters.getKeys(false);
-            parameterMap = new HashMap<String, String>();
+            parameterMap = new HashMap<>();
             for (String key : keys) {
                 parameterMap.put("$" + key, workingParameters.getString(key));
             }
@@ -783,7 +783,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     {
         if (undoList == null)
         {
-            return new ArrayList<Entity>();
+            return new ArrayList<>();
         }
 
         return undoList.getAllEntities();
@@ -1157,7 +1157,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void addHandler(com.elmakers.mine.bukkit.api.action.ActionHandler handler) {
         if (base.handlers == null) {
-            base.handlers = new ArrayList<ActionHandlerContext>();
+            base.handlers = new ArrayList<>();
         }
         base.handlers.add(new ActionHandlerContext(handler, this));
     }
@@ -1173,7 +1173,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         if (handlers == null) return result;
 
         if (finishedHandlers == null) {
-            finishedHandlers = new ArrayList<ActionHandlerContext>();
+            finishedHandlers = new ArrayList<>();
         }
         int startingWork = getWorkAllowed();
         int splitWork = Math.max(1, startingWork / handlers.size());

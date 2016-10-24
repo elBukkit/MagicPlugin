@@ -35,7 +35,7 @@ import java.util.LinkedList;
 
 public class SpawnEntityAction extends BaseSpellAction
 {
-    private final LinkedList<WeightedPair<String>> entityTypeProbability = new LinkedList<WeightedPair<String>>();
+    private final LinkedList<WeightedPair<String>> entityTypeProbability = new LinkedList<>();
 
     private CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
     private WeakReference<Entity> current = null;
@@ -166,7 +166,7 @@ public class SpawnEntityAction extends BaseSpellAction
 
         if (track)
         {
-            current = new WeakReference<Entity>(spawnedEntity);
+            current = new WeakReference<>(spawnedEntity);
         }
         if (setTarget)
         {
@@ -185,7 +185,7 @@ public class SpawnEntityAction extends BaseSpellAction
         {
             RandomUtils.populateStringProbabilityMap(entityTypeProbability, ConfigurationUtils.getConfigurationSection(parameters, "entity_types"), 0, 0, 0);
         } else {
-            entityTypeProbability.add(new WeightedPair<String>(100.0f, "pig"));
+            entityTypeProbability.add(new WeightedPair<>(100.0f, "pig"));
         }
     }
 

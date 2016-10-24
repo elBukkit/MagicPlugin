@@ -146,9 +146,9 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 	}
     
     protected void onListMobs(CommandSender sender) {
-        Map<String, Integer> mobCounts = new HashMap<String, Integer>();
+        Map<String, Integer> mobCounts = new HashMap<>();
 
-        Collection<Mage> mages = new ArrayList<Mage>(api.getController().getMages());
+        Collection<Mage> mages = new ArrayList<>(api.getController().getMages());
         for (Mage mage : mages) {
             EntityData entityData = mage.getEntityData();
             if (entityData == null) continue;
@@ -174,7 +174,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onClearMobs(CommandSender sender, String mobType, String worldName) {
-        Collection<Mage> mages = new ArrayList<Mage>(api.getController().getMages());
+        Collection<Mage> mages = new ArrayList<>(api.getController().getMages());
         int removed = 0;
         for (Mage mage : mages) {
             EntityData entityData = mage.getEntityData();
@@ -195,7 +195,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<String>();
+		List<String> options = new ArrayList<>();
         if (!sender.hasPermission("Magic.commands.mmob")) return options;
 
 		if (args.length == 1) {

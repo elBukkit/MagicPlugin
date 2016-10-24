@@ -17,13 +17,13 @@ public class WGCustomFlagsManager {
 
     private final WGCustomFlagsPlugin customFlags;
 
-    public static SetFlag<String> ALLOWED_SPELLS = new SetFlag<String>("allowed-spells", RegionGroup.ALL, new StringFlag(null));
-    public static SetFlag<String> BLOCKED_SPELLS = new SetFlag<String>("blocked-spells", RegionGroup.ALL, new StringFlag(null));
-    public static SetFlag<String> ALLOWED_SPELL_CATEGORIES = new SetFlag<String>("allowed-spell-categories", RegionGroup.ALL, new StringFlag(null));
-    public static SetFlag<String> BLOCKED_SPELL_CATEGORIES = new SetFlag<String>("blocked-spell-categories", RegionGroup.ALL, new StringFlag(null));
-    public static SetFlag<String> ALLOWED_WANDS = new SetFlag<String>("allowed-wands", RegionGroup.ALL, new StringFlag(null));
-    public static SetFlag<String> BLOCKED_WANDS = new SetFlag<String>("blocked-wands", RegionGroup.ALL, new StringFlag(null));
-    public static SetFlag<String> SPELL_OVERRIDES = new SetFlag<String>("spell-overrides", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> ALLOWED_SPELLS = new SetFlag<>("allowed-spells", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> BLOCKED_SPELLS = new SetFlag<>("blocked-spells", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> ALLOWED_SPELL_CATEGORIES = new SetFlag<>("allowed-spell-categories", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> BLOCKED_SPELL_CATEGORIES = new SetFlag<>("blocked-spell-categories", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> ALLOWED_WANDS = new SetFlag<>("allowed-wands", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> BLOCKED_WANDS = new SetFlag<>("blocked-wands", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> SPELL_OVERRIDES = new SetFlag<>("spell-overrides", RegionGroup.ALL, new StringFlag(null));
     public static StringFlag DESTRUCTIBLE = new StringFlag("destructible", RegionGroup.ALL);
     public static StringFlag REFLECTIVE = new StringFlag("reflective", RegionGroup.ALL);
 

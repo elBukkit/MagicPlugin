@@ -312,7 +312,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			return true;
 		}
 		if (listCommand.equalsIgnoreCase("schematics")) {
-			List<String> schematics = new ArrayList<String>();
+			List<String> schematics = new ArrayList<>();
 			try {
 				Plugin plugin = (Plugin)api;
 				MagicController controller = (MagicController)api.getController();
@@ -370,13 +370,13 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
 		if (listCommand.equalsIgnoreCase("tasks")) {
 			List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
-			HashMap<String, Integer> pluginCounts = new HashMap<String, Integer>();
-			HashMap<String, HashMap<String, Integer>> taskCounts = new HashMap<String, HashMap<String, Integer>>();
+			HashMap<String, Integer> pluginCounts = new HashMap<>();
+			HashMap<String, HashMap<String, Integer>> taskCounts = new HashMap<>();
 			for (BukkitTask task : tasks)  {
 				String pluginName = task.getOwner().getName();
 				HashMap<String, Integer> pluginTaskCounts = taskCounts.get(pluginName);
 				if (pluginTaskCounts == null) {
-					pluginTaskCounts = new HashMap<String, Integer>();
+					pluginTaskCounts = new HashMap<>();
 					taskCounts.put(pluginName, pluginTaskCounts);
 				}
 				String className = "(Unknown)";
@@ -795,7 +795,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 	
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<String>();
+		List<String> options = new ArrayList<>();
 		if (args.length == 1) {
 			addIfPermissible(sender, options, "Magic.commands.magic.", "clean");
 			addIfPermissible(sender, options, "Magic.commands.magic.", "clearcache");

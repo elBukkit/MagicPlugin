@@ -68,7 +68,7 @@ import org.bukkit.util.Vector;
  *
  */
 public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData, Cloneable {
-    protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<UUID, WeakReference<Entity>>();
+    protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<>();
 
     protected String key;
     protected WeakReference<Entity> entity = null;
@@ -252,14 +252,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isBaby = parameters.getBoolean("baby", false);
         tickInterval = parameters.getLong("cast_interval", 0);
         if (parameters.contains("cast")) {
-            spells = new LinkedList<WeightedPair<String>>();
+            spells = new LinkedList<>();
             RandomUtils.populateStringProbabilityMap(spells, parameters.getConfigurationSection("cast"));
         }
         requiresTarget = parameters.getBoolean("cast_requires_target", true);
 
         Collection<ConfigurationSection> potionEffectList = ConfigurationUtils.getNodeList(parameters, "potion_effects");
         if (potionEffectList != null) {
-            potionEffects = new ArrayList<PotionEffect>();
+            potionEffects = new ArrayList<>();
             for (ConfigurationSection potionEffectSection : potionEffectList) {
                 try {
                     PotionEffectType effectType = PotionEffectType.getByName(potionEffectSection.getString("type").toUpperCase());
@@ -335,7 +335,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     villagerData.riches = parameters.getInt("villager_riches");
                 }
                 if (parameters.contains("villager_trades")) {
-                    villagerData.recipes = new ArrayList<MerchantRecipe>();
+                    villagerData.recipes = new ArrayList<>();
                     Collection<ConfigurationSection> tradeList = ConfigurationUtils.getNodeList(parameters, "villager_trades");
                     for (ConfigurationSection tradeConfiguration : tradeList) {
                         String outputKey = tradeConfiguration.getString("output");
@@ -387,7 +387,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (attributeConfiguration != null) {
             Set<String> keys = attributeConfiguration.getKeys(false);
             if (keys.size() > 0) {
-                attributes = new HashMap<Attribute, Double>();
+                attributes = new HashMap<>();
             }
             for (String attributeKey : keys) {
                 try {
@@ -429,7 +429,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     public void setEntity(Entity entity) {
-        this.entity = entity == null ? null : new WeakReference<Entity>(entity);
+        this.entity = entity == null ? null : new WeakReference<>(entity);
         this.uuid = entity == null ? null : entity.getUniqueId();
     }
 
@@ -565,7 +565,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             } else {
                 entity = trySpawn(null);
                 if (entity != null) {
-                    respawned.put(uuid, new WeakReference<Entity>(entity));
+                    respawned.put(uuid, new WeakReference<>(entity));
                 }
                 // Undo'ing an entity won't drop loot
                 entity.setMetadata("nodrops", new FixedMetadataValue(MagicPlugin.getAPI().getPlugin(), true));

@@ -498,10 +498,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             return SpellResult.PLAYER_REQUIRED;
         }
 
-        this.showingItems = new HashMap<Integer, ShopItem>();
+        this.showingItems = new HashMap<>();
 
         // Load items
-        itemStacks = new ArrayList<ItemStack>();
+        itemStacks = new ArrayList<>();
         String costString = context.getMessage("cost_lore", "Costs: $cost");
         for (ShopItem shopItem : items) {
             int currentSlot = itemStacks.size();
@@ -526,7 +526,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
             List<String> lore = meta.getLore();
             if (lore == null) {
-                lore = new ArrayList<String>();
+                lore = new ArrayList<>();
             }
             String costs = costString.replace("$cost", getItemCost(context, shopItem));
             lore.add(ChatColor.GOLD + costs);

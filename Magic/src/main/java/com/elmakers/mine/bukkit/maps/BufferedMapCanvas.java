@@ -29,7 +29,7 @@ public class BufferedMapCanvas implements MapCanvas {
 
     private static MapCursorCollection emptyCursors = new MapCursorCollection();
     private byte[] pixels = new byte[128 * 128];
-    private Map<Byte, DyeColor> dyeColors = new HashMap<Byte, DyeColor>();
+    private Map<Byte, DyeColor> dyeColors = new HashMap<>();
 
     @Override
     public MapView getMapView() {

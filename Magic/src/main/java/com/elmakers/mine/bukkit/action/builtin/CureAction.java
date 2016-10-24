@@ -19,7 +19,7 @@ public class CureAction extends BaseSpellAction
 			{PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
 					PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
 					PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
-	protected final static Set<PotionEffectType> negativeEffects = new HashSet<PotionEffectType>(Arrays.asList(_negativeEffects));
+	protected final static Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
 	@Override
 	public SpellResult perform(CastContext context)

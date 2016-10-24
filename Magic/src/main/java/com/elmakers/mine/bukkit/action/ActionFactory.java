@@ -19,7 +19,7 @@ import com.google.common.collect.Maps;
  * to play nice with actions that require parameters when constructing.
  */
 public class ActionFactory {
-    private static List<ActionResolver> resolvers = new ArrayList<ActionResolver>();
+    private static List<ActionResolver> resolvers = new ArrayList<>();
 
     /**
      * @return An unmodifiable list of action resolvers.
@@ -163,7 +163,7 @@ public class ActionFactory {
     private static final class InternalActionResolver
             implements ActionResolver {
         private static final String ACTION_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.action.builtin";
-        private static Map<String, ActionConstructor> actionClasses = new HashMap<String, ActionConstructor>();
+        private static Map<String, ActionConstructor> actionClasses = new HashMap<>();
 
         // Paths to search through
         private static final String[] patterns = {
@@ -279,7 +279,7 @@ public class ActionFactory {
      */
     public static BaseSpellAction construct(String actionClassName)
             throws ActionFactoryException {
-        List<String> attempts = new ArrayList<String>();
+        List<String> attempts = new ArrayList<>();
 
         for (ActionResolver resolver : resolvers) {
             ActionConstructor constructor = resolver.resolve(actionClassName,

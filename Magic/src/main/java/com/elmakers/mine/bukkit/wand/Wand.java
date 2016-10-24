@@ -146,15 +146,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private String id = "";
 	private List<Inventory> hotbars;
 	private List<Inventory> inventories;
-    private Map<String, Integer> spells = new HashMap<String, Integer>();
-    private Map<String, Integer> spellLevels = new HashMap<String, Integer>();
-    private Map<String, Integer> brushes = new HashMap<String, Integer>();
+    private Map<String, Integer> spells = new HashMap<>();
+    private Map<String, Integer> spellLevels = new HashMap<>();
+    private Map<String, Integer> brushes = new HashMap<>();
 
     /**
      * Custom properties that 3rd party systems can set on a wand for their
      * internal use.
      */
-    private Map<String, String> customProperties = new HashMap<String, String>();
+    private Map<String, String> customProperties = new HashMap<>();
 	
 	private String activeSpell = "";
 	private String activeMaterial = "";
@@ -246,7 +246,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private String castSpell = null;
     private ConfigurationSection castParameters = null;
 
-    private Map<PotionEffectType, Integer> potionEffects = new HashMap<PotionEffectType, Integer>();
+    private Map<PotionEffectType, Integer> potionEffects = new HashMap<>();
 
     private SoundEffect effectSound = null;
 	private int effectSoundInterval = 0;
@@ -313,13 +313,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         this.controller = controller;
         wandName = controller.getMessages().get("wand.default_name");
-        hotbars = new ArrayList<Inventory>();
+        hotbars = new ArrayList<>();
 		setHotbarCount(1);
 		if (itemStack.getType() == Material.AIR) {
 			itemStack.setType(DefaultWandMaterial);
 		}
 		this.icon = new MaterialAndData(itemStack);
-		inventories = new ArrayList<Inventory>();
+		inventories = new ArrayList<>();
         item = itemStack;
 		loadState();
         updateName();
@@ -817,7 +817,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	protected List<Inventory> getAllInventories() {
-		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + hotbars.size());
+		List<Inventory> allInventories = new ArrayList<>(inventories.size() + hotbars.size());
         allInventories.addAll(hotbars);
 		allInventories.addAll(inventories);
 		return allInventories;
@@ -829,7 +829,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     protected String getSpellString() {
-		Set<String> spellNames = new TreeSet<String>();
+		Set<String> spellNames = new TreeSet<>();
         for (Map.Entry<String, Integer> spellSlot : spells.entrySet()) {
             Integer slot = spellSlot.getValue();
             String spellKey = spellSlot.getKey();
@@ -847,7 +847,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     protected String getMaterialString() {
-		Set<String> materialNames = new TreeSet<String>();
+		Set<String> materialNames = new TreeSet<>();
         for (Map.Entry<String, Integer> brushSlot : brushes.entrySet()) {
             Integer slot = brushSlot.getValue();
             String materialKey = brushSlot.getKey();
@@ -1224,7 +1224,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     protected String getPotionEffectString() {
         if (potionEffects.size() == 0) return null;
-        Collection<String> effectStrings = new ArrayList<String>();
+        Collection<String> effectStrings = new ArrayList<>();
         for (Map.Entry<PotionEffectType, Integer> entry : potionEffects.entrySet()) {
             String effectString = entry.getKey().getName();
             if (entry.getValue() > 0) {
@@ -1353,7 +1353,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("organize", autoOrganize);
         node.set("alphabetize", autoAlphabetize);
         if (castOverrides != null && castOverrides.size() > 0) {
-            Collection<String> parameters = new ArrayList<String>();
+            Collection<String> parameters = new ArrayList<>();
             for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
                 String value = entry.getValue();
                 parameters.add(entry.getKey() + " " + value.replace(",", "\\,"));
@@ -1448,7 +1448,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         // Make sure to put this at the end of saveProperties so it cannot
         // override anything
-        Set<String> customAdded = new HashSet<String>(customProperties.size());
+        Set<String> customAdded = new HashSet<>(customProperties.size());
         for(Map.Entry<String, String> entry : customProperties.entrySet()) {
             if(!node.isSet(entry.getKey())) {
                 node.set(entry.getKey(), entry.getValue());
@@ -1810,7 +1810,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                         split = '|';
                         overrides = overrides.substring(1);
                     }
-                    castOverrides = new HashMap<String, String>();
+                    castOverrides = new HashMap<>();
                     String[] pairs = StringUtils.split(overrides, split);
                     for (String pair : pairs) {
                         String[] keyValue = StringUtils.split(pair, " ");
@@ -1996,7 +1996,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public String getHTMLDescription() {
 		Collection<String> rawLore = getLore();
-		Collection<String> lore = new ArrayList<String>();
+		Collection<String> lore = new ArrayList<>();
 		lore.add("<h2>" + convertToHTML(getActiveWandName()) + "</h2>");
  		for (String line : rawLore) {
 			lore.add(convertToHTML(line));
@@ -2113,7 +2113,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	protected List<String> getLore(int spellCount, int materialCount) 
 	{
-		List<String> lore = new ArrayList<String>();
+		List<String> lore = new ArrayList<>();
 
         if (description.length() > 0) {
             if (description.contains("$path")) {
@@ -2399,7 +2399,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			displayName = getSpellDisplayName(messages, spell, MaterialBrush.parseMaterialKey(activeMaterial));
 		}
         CompatibilityUtils.setDisplayName(itemStack, displayName);
-		List<String> lore = new ArrayList<String>();
+		List<String> lore = new ArrayList<>();
 		addSpellLore(messages, spell, lore, mage, wand);
 		if (isItem) {
 			lore.add(ChatColor.YELLOW + messages.get("wand.spell_item_description"));
@@ -3070,9 +3070,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // Add cast overrides
         if (other.castOverrides != null && other.castOverrides.size() > 0) {
             if (castOverrides == null) {
-                castOverrides = new HashMap<String, String>();
+                castOverrides = new HashMap<>();
             }
-            HashSet<String> upgradedSpells = new HashSet<String>();
+            HashSet<String> upgradedSpells = new HashSet<>();
             for (Map.Entry<String, String> entry : other.castOverrides.entrySet()) {
                 String overrideKey = entry.getKey();
                 String currentValue = castOverrides.get(overrideKey);
@@ -3380,7 +3380,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     @Override
 	public boolean fill(Player player, int maxLevel) {
-        Collection<String> currentSpells = new ArrayList<String>(getSpells());
+        Collection<String> currentSpells = new ArrayList<>(getSpells());
         for (String spellKey : currentSpells) {
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
             if (!spell.hasCastPermission(player))
@@ -3821,7 +3821,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (spell != null) {
             Collection<String> castParameters = null;
             if (castOverrides != null && castOverrides.size() > 0) {
-                castParameters = new ArrayList<String>();
+                castParameters = new ArrayList<>();
                 for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
                     String[] key = StringUtils.split(entry.getKey(), ".");
                     if (key.length == 0) continue;
@@ -4060,7 +4060,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void cycleSpells(int direction) {
 		Set<String> spellsSet = getSpells();
-		ArrayList<String> spells = new ArrayList<String>(spellsSet);
+		ArrayList<String> spells = new ArrayList<>(spellsSet);
 		if (spells.size() == 0) return;
 		if (activeSpell == null) {
 			activeSpell = spells.get(0).split("@")[0];
@@ -4081,7 +4081,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void cycleMaterials(int direction) {
 		Set<String> materialsSet = getBrushes();
-		ArrayList<String> materials = new ArrayList<String>(materialsSet);
+		ArrayList<String> materials = new ArrayList<>(materialsSet);
 		if (materials.size() == 0) return;
 		if (activeMaterial == null) {
 			activeMaterial = materials.get(0).split("@")[0];
@@ -4311,7 +4311,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             HeroesManager heroes = controller.getHeroes();
             if (heroes != null) {
                 Set<String> skills = heroes.getSkills(player);
-                Collection<String> currentSpells = new ArrayList<String>(getSpells());
+                Collection<String> currentSpells = new ArrayList<>(getSpells());
                 for (String spellKey : currentSpells) {
                     if (spellKey.startsWith("heroes*") && !skills.contains(spellKey.substring(7)))
                     {
@@ -4521,7 +4521,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
             }
         }
-        List<SpellKey> spellsToRemove = new ArrayList<SpellKey>(template.getSpellsToRemove().size());
+        List<SpellKey> spellsToRemove = new ArrayList<>(template.getSpellsToRemove().size());
         for (SpellKey key : template.getSpellsToRemove()) {
             if (spellLevels.get(key.getBaseKey()) != null) {
                 spellsToRemove.add(key);
@@ -4800,7 +4800,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public Map<String, String> getOverrides()
     {
-        return castOverrides == null ? new HashMap<String, String>() : new HashMap<String, String>(castOverrides);
+        return castOverrides == null ? new HashMap<String, String>() : new HashMap<>(castOverrides);
     }
 
     @Override
@@ -4809,7 +4809,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (overrides == null) {
             this.castOverrides = null;
         } else {
-            this.castOverrides = new HashMap<String, String>(overrides);
+            this.castOverrides = new HashMap<>(overrides);
         }
     }
 
@@ -4825,7 +4825,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public void setOverride(String key, String value)
     {
         if (castOverrides == null) {
-            castOverrides = new HashMap<String, String>();
+            castOverrides = new HashMap<>();
         }
         if (value == null || value.length() == 0) {
             castOverrides.remove(key);
@@ -4981,11 +4981,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     protected Map<String, Integer> getSpellInventory() {
-        return new HashMap<String, Integer>(spells);
+        return new HashMap<>(spells);
     }
 
     protected Map<String, Integer> getBrushInventory() {
-        return new HashMap<String, Integer>(brushes);
+        return new HashMap<>(brushes);
     }
 
     protected void updateSpellInventory(Map<String, Integer> updateSpells) {

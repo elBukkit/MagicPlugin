@@ -23,7 +23,7 @@ import java.util.logging.Level;
  */
 public class MagicRecipe {
     private String outputKey;
-    private Set<Material> ingredients = new HashSet<Material>();
+    private Set<Material> ingredients = new HashSet<>();
     private Material outputType;
     private Material substitue;
     private String outputItemType;
@@ -79,7 +79,7 @@ public class MagicRecipe {
         if (item != null) {
             outputType = item.getType();
             ShapedRecipe shaped = new ShapedRecipe(item);
-            List<String> rows = new ArrayList<String>();
+            List<String> rows = new ArrayList<>();
             for (int i = 1; i <= 3; i++) {
                 String recipeRow = configuration.getString("row_" + i, "");
                 if (recipeRow.length() > 0) {

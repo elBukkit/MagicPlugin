@@ -73,8 +73,8 @@ public class WandOrganizer {
 
         // Collect favorite spells
 		MagicController master = wand.getMaster();
-		TreeMap<Long, List<String>> favoriteSpells = new TreeMap<Long, List<String>>();
-		Map<String, Collection<String>> groupedSpells = new TreeMap<String, Collection<String>>();
+		TreeMap<Long, List<String>> favoriteSpells = new TreeMap<>();
+		Map<String, Collection<String>> groupedSpells = new TreeMap<>();
 		for (String spellName : spells.keySet()) {
 			Spell mageSpell = mage == null ? null : mage.getSpell(spellName);
 			SpellTemplate spell = mageSpell == null ? master.getSpellTemplate(spellName) : mageSpell;
@@ -83,7 +83,7 @@ public class WandOrganizer {
 				if (castCount > favoriteCastCountThreshold) {
 					List<String> favorites = null;
 					if (!favoriteSpells.containsKey(castCount)) {
-						favorites = new ArrayList<String>();
+						favorites = new ArrayList<>();
 						favoriteSpells.put(castCount, favorites);
 					} else {
 						favorites = favoriteSpells.get(castCount);
@@ -97,14 +97,14 @@ public class WandOrganizer {
                 }
                 Collection<String> spellList = groupedSpells.get(category);
                 if (spellList == null) {
-                    spellList = new TreeSet<String>();
+                    spellList = new TreeSet<>();
                     groupedSpells.put(category, spellList);
                 }
                 spellList.add(spellName);
 			}
 		}
 
-        Map<String, String> materials = new TreeMap<String, String>();
+        Map<String, String> materials = new TreeMap<>();
         if (wand.getBrushMode() == WandMode.INVENTORY)
         {
             for (String materialKey : brushes.keySet()) {
@@ -120,8 +120,8 @@ public class WandOrganizer {
 		currentInventoryCount = 0;
 
 		// Organize favorites
-        Set<String> addedFavorites = new HashSet<String>();
-        List<String> favoriteList = new ArrayList<String>();
+        Set<String> addedFavorites = new HashSet<>();
+        List<String> favoriteList = new ArrayList<>();
 		for (List<String> favorites : favoriteSpells.descendingMap().values()) {
             if (addedFavorites.size() >= favoritePageSize) break;
 			for (String spellName : favorites) {
@@ -177,7 +177,7 @@ public class WandOrganizer {
 
         removeHotbar(spells, brushes);
 
-        Map<String, String> materials = new TreeMap<String, String>();
+        Map<String, String> materials = new TreeMap<>();
         if (wand.getBrushMode() == WandMode.INVENTORY) {
             for (String materialKey : brushes.keySet()) {
                 if (MaterialBrush.isSpecialMaterialKey(materialKey)) {
@@ -188,7 +188,7 @@ public class WandOrganizer {
             }
         }
 
-        Map<String, String> alphabetized = new TreeMap<String, String>();
+        Map<String, String> alphabetized = new TreeMap<>();
         for (String spellKey : spells.keySet()) {
             String name = spellKey;
             SpellTemplate spell = wand.getController().getSpellTemplate(spellKey);

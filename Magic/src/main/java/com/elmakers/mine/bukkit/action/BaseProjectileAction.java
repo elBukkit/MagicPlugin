@@ -114,7 +114,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
 
     protected void track(CastContext context, Entity entity) {
         if (tracking == null) {
-            tracking = new HashSet<Entity>();
+            tracking = new HashSet<>();
         }
         tracking.add(entity);
         context.registerForUndo(entity);

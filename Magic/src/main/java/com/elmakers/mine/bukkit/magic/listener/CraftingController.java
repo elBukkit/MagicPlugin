@@ -32,7 +32,7 @@ import java.util.Set;
 public class CraftingController implements Listener {
 	private final MagicController controller;
 	private boolean craftingEnabled = false;
-    private Map<Material, List<MagicRecipe>> recipes = new HashMap<Material, List<MagicRecipe>>();
+    private Map<Material, List<MagicRecipe>> recipes = new HashMap<>();
     private int recipeCount = 0;
 
 	public CraftingController(MagicController controller) {
@@ -59,7 +59,7 @@ public class CraftingController implements Listener {
             Material outputType = recipe.getOutputType();
             List<MagicRecipe> similar = recipes.get(outputType);
             if (similar == null) {
-                similar = new ArrayList<MagicRecipe>();
+                similar = new ArrayList<>();
                 recipes.put(outputType, similar);
             }
             similar.add(recipe);

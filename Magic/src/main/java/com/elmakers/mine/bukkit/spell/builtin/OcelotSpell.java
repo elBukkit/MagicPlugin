@@ -16,7 +16,7 @@ public class OcelotSpell extends TargetingSpell
 {
 	private static int DEFAULT_MAX_OCELOTS = 30;
 
-	protected List<Ocelot> ocelots = new ArrayList<Ocelot>();
+	protected List<Ocelot> ocelots = new ArrayList<>();
 
 	public Ocelot newOcelot(Target target)
 	{
@@ -44,7 +44,7 @@ public class OcelotSpell extends TargetingSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
-		ArrayList<Ocelot> newocelots = new ArrayList<Ocelot>();
+		ArrayList<Ocelot> newocelots = new ArrayList<>();
 
 		for (Ocelot Ocelot : ocelots)
 		{

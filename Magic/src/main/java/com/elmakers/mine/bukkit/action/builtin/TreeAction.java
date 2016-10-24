@@ -39,7 +39,7 @@ public class TreeAction extends BaseSpellAction
         if (parameters.contains("biomes"))
         {
             ConfigurationSection biomeConfig = ConfigurationUtils.getConfigurationSection(parameters, "biomes");
-            biomeMap = new HashMap<Biome, List<TreeType>>();
+            biomeMap = new HashMap<>();
             Collection<String> biomeKeys = biomeConfig.getKeys(false);
             for (String biomeKey : biomeKeys)
             {
@@ -52,7 +52,7 @@ public class TreeAction extends BaseSpellAction
                             TreeType treeType = TreeType.valueOf(typeKey.toUpperCase());
                             List<TreeType> biomeTypes = biomeMap.get(biome);
                             if (biomeTypes == null) {
-                                biomeTypes = new ArrayList<TreeType>();
+                                biomeTypes = new ArrayList<>();
                                 biomeMap.put(biome, biomeTypes);
                             }
                             biomeTypes.add(treeType);

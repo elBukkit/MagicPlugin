@@ -34,7 +34,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
         size = new Vector(width, height, length);
         center = new Vector(Math.floor(size.getBlockX() / 2), 0, Math.floor(size.getBlockZ() / 2));
         blocks = new MaterialAndData[width][height][length];
-        entities = new ArrayList<EntityData>();
+        entities = new ArrayList<>();
 
         // Load entities
         for (Object entity : entityData) {
@@ -73,7 +73,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
         }
 
         // Map tile entity data
-        Map<BlockVector, Object> tileEntityMap = new HashMap<BlockVector, Object>();
+        Map<BlockVector, Object> tileEntityMap = new HashMap<>();
         for (Object tileEntity : tileEntityData)
         {
             try {
@@ -170,7 +170,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
 
     @Override
     public Collection<EntityData> getEntities(Location center) {
-        List<EntityData> translated = new ArrayList<EntityData>();
+        List<EntityData> translated = new ArrayList<>();
         for (EntityData data : entities) {
             EntityData relative = data == null ? null : data.getRelativeTo(center);
             if (relative != null) {

@@ -64,7 +64,7 @@ public class BlockRecurse
 
     public void addReplaceable(MaterialAndData material) {
         if (replaceable == null) {
-            replaceable = new HashSet<MaterialAndData>();
+            replaceable = new HashSet<>();
         }
         replaceable.add(material);
     }

@@ -13,12 +13,12 @@ import java.util.logging.Level;
 
 public class ActionSpell extends BrushSpell
 {
-    private Map<String, ActionHandler> actions = new HashMap<String, ActionHandler>();
+    private Map<String, ActionHandler> actions = new HashMap<>();
     private boolean undoable = false;
     private boolean requiresBuildPermission = false;
     private boolean requiresBreakPermission = false;
     private ActionHandler currentHandler = null;
-    private Map<String, ConfigurationSection> handlerParameters = new HashMap<String, ConfigurationSection>();
+    private Map<String, ConfigurationSection> handlerParameters = new HashMap<>();
     private int workThreshold = 500;
 
     @Override

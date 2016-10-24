@@ -94,27 +94,27 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         "pworld", "tworld", "otworld", "t2world"
     };
 
-    protected final static Set<String> worldParameterMap = new HashSet<String>(Arrays.asList(WORLD_PARAMETERS));
+    protected final static Set<String> worldParameterMap = new HashSet<>(Arrays.asList(WORLD_PARAMETERS));
 
     public final static String[] VECTOR_PARAMETERS = {
         "px", "py", "pz", "pdx", "pdy", "pdz", "tx", "ty", "tz", "otx", "oty", "otz", "t2x", "t2y", "t2z",
         "otdx", "otdy", "otdz"
     };
 
-    protected final static Set<String> vectorParameterMap = new HashSet<String>(Arrays.asList(VECTOR_PARAMETERS));
+    protected final static Set<String> vectorParameterMap = new HashSet<>(Arrays.asList(VECTOR_PARAMETERS));
 
     public final static String[] BOOLEAN_PARAMETERS = {
         "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_protection",
         "bypass_build", "bypass_break", "bypass_pvp", "target_npc", "ignore_blocks", "target_self"
     };
 
-    protected final static Set<String> booleanParameterMap = new HashSet<String>(Arrays.asList(BOOLEAN_PARAMETERS));
+    protected final static Set<String> booleanParameterMap = new HashSet<>(Arrays.asList(BOOLEAN_PARAMETERS));
 
     public final static String[] PERCENTAGE_PARAMETERS = {
         "fizzle_chance", "backfire_chance", "cooldown_reduction"
     };
 
-    protected final static Set<String> percentageParameterMap = new HashSet<String>(Arrays.asList(PERCENTAGE_PARAMETERS));
+    protected final static Set<String> percentageParameterMap = new HashSet<>(Arrays.asList(PERCENTAGE_PARAMETERS));
 
     public final static String[] COMMON_PARAMETERS = (String[])
         ArrayUtils.addAll(
@@ -214,7 +214,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     private long                                requiredCastsPerLevel   = 0;
     private long                                maxLevels               = 0;
-    private Map<String, EquationTransform>      progressLevelEquations  = new HashMap<String, EquationTransform>();
+    private Map<String, EquationTransform>      progressLevelEquations  = new HashMap<>();
 
     private float                               cooldownReduction       = 0;
     private float                               costReduction           = 0;
@@ -229,7 +229,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private long                                lastActiveCost          = 0;
     private float                               activeCostScale         = 1;
 
-    private Map<String, Collection<EffectPlayer>>     effects				= new HashMap<String, Collection<EffectPlayer>>();
+    private Map<String, Collection<EffectPlayer>>     effects				= new HashMap<>();
 
     private float								fizzleChance			= 0.0f;
     private float								backfireChance			= 0.0f;
@@ -623,7 +623,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters, Integer duration)
     {
-        List<PotionEffect> effects = new ArrayList<PotionEffect>();
+        List<PotionEffect> effects = new ArrayList<>();
         PotionEffectType[] effectTypes = PotionEffectType.values();
         for (PotionEffectType effectType : effectTypes) {
             // Why is there a null entry in this list? Maybe a 1.7 bug?
@@ -729,7 +729,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (node == null) {
             return null;
         }
-        List<CastingCost> castingCosts = new ArrayList<CastingCost>();
+        List<CastingCost> castingCosts = new ArrayList<>();
         Set<String> costKeys = node.getKeys(false);
         for (String key : costKeys)
         {
@@ -761,19 +761,19 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (pathTags == null || pathTags.isEmpty()) {
             requiredUpgradeTags = null;
         } else {
-            requiredUpgradeTags = new HashSet<String>(pathTags);
+            requiredUpgradeTags = new HashSet<>(pathTags);
         }
 
-        requiredSpells = new ArrayList<PrerequisiteSpell>(ConfigurationUtils.getPrerequisiteSpells(controller, node, "required_spells", "spell " + getKey(), true));
+        requiredSpells = new ArrayList<>(ConfigurationUtils.getPrerequisiteSpells(controller, node, "required_spells", "spell " + getKey(), true));
 
         List<String> removesSpellKeys = ConfigurationUtils.getStringList(node, "removes_spells");
         if (removesSpellKeys != null) {
-            removesSpells = new ArrayList<SpellKey>(removesSpellKeys.size());
+            removesSpells = new ArrayList<>(removesSpellKeys.size());
             for (String key : removesSpellKeys) {
                 removesSpells.add(new SpellKey(key));
             }
         } else {
-            removesSpells = new ArrayList<SpellKey>(0);
+            removesSpells = new ArrayList<>(0);
         }
 
         // Inheritance, currently only used to look up messages, and only goes one level deep
@@ -831,7 +831,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         category = controller.getCategory(node.getString("category"));
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
         if (tagList != null) {
-            tags = new HashSet<String>(tagList);
+            tags = new HashSet<>(tagList);
         } else {
             tags = null;
         }
@@ -866,7 +866,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             progressLevelParameters = progressLevels.getConfigurationSection("parameters");
             if (progressLevelParameters != null) {
                 Set<String> keys = progressLevelParameters.getKeys(true);
-                progressLevelEquations = new HashMap<String, EquationTransform>(keys.size());
+                progressLevelEquations = new HashMap<>(keys.size());
                 for (String key : keys) {
                     if (progressLevelParameters.isString(key)) {
                         String value = progressLevelParameters.getString(key, "");
@@ -903,7 +903,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 if (effectsNode.isString(effectKey)) {
                     String referenceKey = effectsNode.getString(effectKey);
                     if (effects.containsKey(referenceKey)) {
-                        effects.put(effectKey, new ArrayList<EffectPlayer>(effects.get(referenceKey)));
+                        effects.put(effectKey, new ArrayList<>(effects.get(referenceKey)));
                     }
                 }
                 else
@@ -1831,7 +1831,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(String key) {
         Collection<EffectPlayer> effectList = effects.get(key);
         if (effectList == null) {
-            return new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>();
+            return new ArrayList<>();
         }
         return new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effectList);
     }
@@ -1839,7 +1839,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public Collection<CastingCost> getCosts() {
         if (costs == null) return null;
-        List<CastingCost> copy = new ArrayList<CastingCost>();
+        List<CastingCost> copy = new ArrayList<>();
         copy.addAll(costs);
         return copy;
     }
@@ -1847,7 +1847,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public Collection<CastingCost> getActiveCosts() {
         if (activeCosts == null) return null;
-        List<CastingCost> copy = new ArrayList<CastingCost>();
+        List<CastingCost> copy = new ArrayList<>();
         copy.addAll(activeCosts);
         return copy;
     }

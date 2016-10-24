@@ -669,7 +669,7 @@ public class MagicController implements MageController {
 
     @Override
     public Collection<String> getBrushKeys() {
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         Material[] materials = Material.values();
         for (Material material : materials) {
             // Only show blocks
@@ -693,7 +693,7 @@ public class MagicController implements MageController {
     }
 
     public Collection<String> getSchematicNames() {
-        Collection<String> schematicNames = new ArrayList<String>();
+        Collection<String> schematicNames = new ArrayList<>();
 
         // Load internal schematics.. this may be a bit expensive.
         try {
@@ -1088,7 +1088,7 @@ public class MagicController implements MageController {
         int remainingWork = workPerUpdate;
         if (pendingConstruction.isEmpty()) return;
 
-        List<Mage> pending = new ArrayList<Mage>(pendingConstruction);
+        List<Mage> pending = new ArrayList<>(pendingConstruction);
         while (remainingWork > 0 && !pending.isEmpty()) {
             int workPerMage = Math.max(10, remainingWork / pending.size());
             for (Iterator<Mage> iterator = pending.iterator(); iterator.hasNext();) {
@@ -1538,7 +1538,7 @@ public class MagicController implements MageController {
     }
 
     protected Map<String, ConfigurationSection> loadAndMapSpells() throws InvalidConfigurationException, IOException {
-        Map<String, ConfigurationSection> spellConfigs = new HashMap<String, ConfigurationSection>();
+        Map<String, ConfigurationSection> spellConfigs = new HashMap<>();
         ConfigurationSection config = loadConfigFile(SPELLS_FILE, loadDefaultSpells, disableDefaultSpells);
         if (config == null) return spellConfigs;
 
@@ -1774,7 +1774,7 @@ public class MagicController implements MageController {
                 Set<String> chunkIds = toggleBlockData.getKeys(false);
                 for (String chunkId : chunkIds) {
                     ConfigurationSection chunkNode = toggleBlockData.getConfigurationSection(chunkId);
-                    Map<Long, Automaton> restoreChunk = new HashMap<Long, Automaton>();
+                    Map<Long, Automaton> restoreChunk = new HashMap<>();
                     automata.put(chunkId, restoreChunk);
                     Set<String> blockIds = chunkNode.getKeys(false);
                     for (String blockId : blockIds) {
@@ -1833,7 +1833,7 @@ public class MagicController implements MageController {
 
             Set<String> chunkWands = lostWandChunks.get(chunkKey);
             if (chunkWands == null) {
-                chunkWands = new HashSet<String>();
+                chunkWands = new HashSet<>();
                 lostWandChunks.put(chunkKey, chunkWands);
             }
             chunkWands.add(lostWand.getId());
@@ -1923,8 +1923,8 @@ public class MagicController implements MageController {
         if (!initialized) return;
         maps.save(asynchronous);
 
-        final List<YamlDataFile> saveData = new ArrayList<YamlDataFile>();
-        final List<MageData> saveMages = new ArrayList<MageData>();
+        final List<YamlDataFile> saveData = new ArrayList<>();
+        final List<MageData> saveMages = new ArrayList<>();
         if (savePlayerData && mageDataStore != null) {
             savePlayerData(saveMages);
         }
@@ -2422,7 +2422,7 @@ public class MagicController implements MageController {
         undoEntityTypes.clear();
         if (properties.contains("entity_undo_types"))
         {
-            undoEntityTypes = new HashSet<EntityType>();
+            undoEntityTypes = new HashSet<>();
             Collection<String> typeStrings = ConfigurationUtils.getStringList(properties, "entity_undo_types");
             for (String typeString : typeStrings)
             {
@@ -2961,7 +2961,7 @@ public class MagicController implements MageController {
 	}
 	
 	public Collection<Automaton> getAutomata() {
-		Collection<Automaton> all = new ArrayList<Automaton>();
+		Collection<Automaton> all = new ArrayList<>();
 		for (Map<Long, Automaton> chunkList : automata.values()) {
 			all.addAll(chunkList.values());
 		}
@@ -3067,8 +3067,8 @@ public class MagicController implements MageController {
 		String chunkKey = getChunkKey(chunk);
 		Map<Long, Automaton> chunkData = automata.get(chunkKey);
 		if (chunkData != null) {
-			final List<Automaton> restored = new ArrayList<Automaton>();
-			Collection<Long> blockKeys = new ArrayList<Long>(chunkData.keySet());
+			final List<Automaton> restored = new ArrayList<>();
+			Collection<Long> blockKeys = new ArrayList<>(chunkData.keySet());
 			long timeThreshold = System.currentTimeMillis() - toggleCooldown;
 			for (Long blockKey : blockKeys) {
 				Automaton toggleBlock = chunkData.get(blockKey);
@@ -3212,12 +3212,12 @@ public class MagicController implements MageController {
         if (materials == null) {
             String materialString = name;
             if (name.equals("*")) {
-                materials = new WildcardHashSet<Material>();
+                materials = new WildcardHashSet<>();
             } else if (name.startsWith("!")) {
                 materialString = materialString.substring(1);
-                materials = new NegatedHashSet<Material>();
+                materials = new NegatedHashSet<>();
             } else {
-                materials = new HashSet<Material>();
+                materials = new HashSet<>();
             }
             String[] nameList = StringUtils.split(materialString, ',');
             for (String matName : nameList)
@@ -3248,7 +3248,7 @@ public class MagicController implements MageController {
 
 		Map<Long, Automaton> toReload = automata.get(chunkId);
 		if (toReload == null) {
-			toReload = new HashMap<Long, Automaton>();
+			toReload = new HashMap<>();
 			automata.put(chunkId, toReload);
 		}
 		Automaton data = new Automaton(block, name, message);
@@ -3337,7 +3337,7 @@ public class MagicController implements MageController {
 	@Override
 	public Collection<String> getPlayerNames() 
 	{
-		List<String> playerNames = new ArrayList<String>();
+		List<String> playerNames = new ArrayList<>();
         Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
         for (Player player : players) {
             if (isNPC(player)) continue;
@@ -3528,7 +3528,7 @@ public class MagicController implements MageController {
         wandTemplates.clear();
 
         Set<String> wandKeys = properties.getKeys(false);
-        Map<String, ConfigurationSection> templateConfigurations = new HashMap<String, ConfigurationSection>();
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         for (String key : wandKeys)
         {
             loadWandTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
@@ -3614,7 +3614,7 @@ public class MagicController implements MageController {
 	@Override
 	public Collection<com.elmakers.mine.bukkit.api.spell.SpellCategory> getCategories()
 	{
-		List<com.elmakers.mine.bukkit.api.spell.SpellCategory> allCategories = new ArrayList<com.elmakers.mine.bukkit.api.spell.SpellCategory>();
+		List<com.elmakers.mine.bukkit.api.spell.SpellCategory> allCategories = new ArrayList<>();
 		allCategories.addAll(categories.values());
 		return allCategories;
 	}
@@ -3628,7 +3628,7 @@ public class MagicController implements MageController {
     @Override
     public Collection<SpellTemplate> getSpellTemplates(boolean showHidden)
     {
-        List<SpellTemplate> allSpells = new ArrayList<SpellTemplate>();
+        List<SpellTemplate> allSpells = new ArrayList<>();
         for (SpellTemplate spell : spells.values())
         {
             if (showHidden || !spell.isHidden())
@@ -3724,7 +3724,7 @@ public class MagicController implements MageController {
     }
 
     public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellCategory category, int count) {
-        Map<String, List<SpellTemplate>> categories = new HashMap<String, List<SpellTemplate>>();
+        Map<String, List<SpellTemplate>> categories = new HashMap<>();
         Collection<SpellTemplate> spellVariants = spells.values();
         String categoryKey = category == null ? null : category.getKey();
         for (SpellTemplate spell : spellVariants)
@@ -3738,14 +3738,14 @@ public class MagicController implements MageController {
             {
                 List<SpellTemplate> categorySpells = categories.get(spellCategoryKey);
                 if (categorySpells == null) {
-                    categorySpells = new ArrayList<SpellTemplate>();
+                    categorySpells = new ArrayList<>();
                     categories.put(spellCategoryKey, categorySpells);
                 }
                 categorySpells.add(spell);
             }
         }
 
-        List<String> categoryKeys = new ArrayList<String>(categories.keySet());
+        List<String> categoryKeys = new ArrayList<>(categories.keySet());
         Collections.sort(categoryKeys);
 
         // Hrm? So much Copy+paste! :(
@@ -3760,7 +3760,7 @@ public class MagicController implements MageController {
             title = messages.get("books.all.title");
         }
         book.setTitle(title);
-        List<String> pages = new ArrayList<String>();
+        List<String> pages = new ArrayList<>();
 
         Set<String> paths = WandUpgradePath.getPathKeys();
 
@@ -3774,7 +3774,7 @@ public class MagicController implements MageController {
             List<SpellTemplate> categorySpells = categories.get(key);
             Collections.sort(categorySpells);
             for (SpellTemplate spell : categorySpells) {
-                List<String> lines = new ArrayList<String>();
+                List<String> lines = new ArrayList<>();
                 lines.add("" + ChatColor.GOLD + ChatColor.BOLD + spell.getName());
                 lines.add("" + ChatColor.RESET);
 
@@ -4035,7 +4035,7 @@ public class MagicController implements MageController {
                 String spDescription = messages.get("sp.description");
                 if (spDescription.length() > 0)
                 {
-                    List<String> lore = new ArrayList<String>();
+                    List<String> lore = new ArrayList<>();
                     lore.add(ChatColor.translateAlternateColorCodes('&', spDescription));
                     meta.setLore(lore);
                 }
@@ -4110,7 +4110,7 @@ public class MagicController implements MageController {
                 meta.setDisplayName(name);
             }
         }
-        List<String> lore = new ArrayList<String>();
+        List<String> lore = new ArrayList<>();
         if (template.contains("description")) {
             lore.add(template.getString("description"));
         } else {
@@ -4845,15 +4845,15 @@ public class MagicController implements MageController {
     private boolean 							loadDefaultItems 			= true;
 
     private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
-    private Set<Material>                       buildingMaterials               = new HashSet<Material>();
-    private Set<Material>                       indestructibleMaterials         = new HashSet<Material>();
-    private Set<Material>                       restrictedMaterials	 	        = new HashSet<Material>();
-    private Set<Material>                       destructibleMaterials           = new HashSet<Material>();
-    private Set<Material>                       interactibleMaterials           = new HashSet<Material>();
-    private Set<Material>                       containerMaterials              = new HashSet<Material>();
-    private Set<Material>                       wearableMaterials               = new HashSet<Material>();
-    private Set<Material>                       meleeMaterials                  = new HashSet<Material>();
-    private Map<String, Set<Material>>		    materialSets				    = new HashMap<String, Set<Material>>();
+    private Set<Material>                       buildingMaterials               = new HashSet<>();
+    private Set<Material>                       indestructibleMaterials         = new HashSet<>();
+    private Set<Material>                       restrictedMaterials	 	        = new HashSet<>();
+    private Set<Material>                       destructibleMaterials           = new HashSet<>();
+    private Set<Material>                       interactibleMaterials           = new HashSet<>();
+    private Set<Material>                       containerMaterials              = new HashSet<>();
+    private Set<Material>                       wearableMaterials               = new HashSet<>();
+    private Set<Material>                       meleeMaterials                  = new HashSet<>();
+    private Map<String, Set<Material>>		    materialSets				    = new HashMap<>();
 
     private boolean                             backupInventories               = true;
     private int								    undoTimeWindow				    = 6000;
@@ -4925,17 +4925,17 @@ public class MagicController implements MageController {
     private boolean                             asynchronousSaving              = true;
     private WarpController						warpController					= null;
 
-    private final Map<String, WandTemplate>     wandTemplates               = new HashMap<String, WandTemplate>();
-    private final Map<String, SpellTemplate>    spells              		= new HashMap<String, SpellTemplate>();
-    private final Map<String, SpellTemplate>    spellAliases                = new HashMap<String, SpellTemplate>();
-    private final Map<String, SpellData>        templateDataMap             = new HashMap<String, SpellData>();
-    private final Map<String, SpellCategory>    categories              	= new HashMap<String, SpellCategory>();
-    private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<String, ConfigurationSection>();
-    private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<String, ConfigurationSection>();
+    private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();
+    private final Map<String, SpellTemplate>    spells              		= new HashMap<>();
+    private final Map<String, SpellTemplate>    spellAliases                = new HashMap<>();
+    private final Map<String, SpellData>        templateDataMap             = new HashMap<>();
+    private final Map<String, SpellCategory>    categories              	= new HashMap<>();
+    private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<>();
+    private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<>();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
-    private final Set<Mage>		 	            pendingConstruction			= new HashSet<Mage>();
-    private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<UndoList>();
-    private final Map<String, WeakReference<Schematic>> schematics	= new HashMap<String, WeakReference<Schematic>>();
+    private final Set<Mage>		 	            pendingConstruction			= new HashSet<>();
+    private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<>();
+    private final Map<String, WeakReference<Schematic>> schematics	= new HashMap<>();
 
     private MageDataStore                       mageDataStore               = null;
 
@@ -4975,13 +4975,13 @@ public class MagicController implements MageController {
     private String								extraSchematicFilePath		= null;
     private Mailer								mailer						= null;
     private Material							defaultMaterial				= Material.DIRT;
-    private Set<EntityType>                     undoEntityTypes             = new HashSet<EntityType>();
+    private Set<EntityType>                     undoEntityTypes             = new HashSet<>();
 
     private PhysicsHandler						physicsHandler				= null;
 
-    private Map<String, Map<Long, Automaton>> 	automata			    	= new HashMap<String, Map<Long, Automaton>>();
-    private Map<String, LostWand>				lostWands					= new HashMap<String, LostWand>();
-    private Map<String, Set<String>>		 	lostWandChunks				= new HashMap<String, Set<String>>();
+    private Map<String, Map<Long, Automaton>> 	automata			    	= new HashMap<>();
+    private Map<String, LostWand>				lostWands					= new HashMap<>();
+    private Map<String, Set<String>>		 	lostWandChunks				= new HashMap<>();
 
     private int								    metricsLevel				= 5;
     private Metrics							    metrics						= null;
@@ -5042,7 +5042,7 @@ public class MagicController implements MageController {
     private boolean                             useBlockPhysics             = true;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
 
-    private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<BlockBreakManager>();
-    private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<BlockBuildManager>();
-    private List<PVPManager>                    pvpManagers                 = new ArrayList<PVPManager>();
+    private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
+    private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();
+    private List<PVPManager>                    pvpManagers                 = new ArrayList<>();
 }

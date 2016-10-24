@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrushAction extends CompoundAction {
-    private List<MaterialBrush> brushes = new ArrayList<MaterialBrush>();
+    private List<MaterialBrush> brushes = new ArrayList<>();
     private boolean sample = false;
 
     @Override

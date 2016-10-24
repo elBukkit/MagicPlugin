@@ -341,7 +341,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             undoList = null;
             return;
         }
-        undoList = new WeakReference<UndoList>(list);
+        undoList = new WeakReference<>(list);
     }
 
     @Override

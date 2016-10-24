@@ -69,7 +69,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		if (manager == null) return null;
 		Collection<Field> fields = manager.getAllPlayerFields(player.getName());
 		if (fields == null) return null;
-		Map<String, Location> fieldLocations = new HashMap<String, Location>();
+		Map<String, Location> fieldLocations = new HashMap<>();
 		for (Field field : fields) {
 			String fieldName = field.getName();
 			String fieldType = field.getSettings().getTitle();

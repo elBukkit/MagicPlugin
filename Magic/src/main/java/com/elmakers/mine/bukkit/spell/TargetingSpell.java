@@ -60,7 +60,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             allowMaxRange           = false;
     private boolean                             bypassBackfire          = false;
 
-    private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
+    private Set<Material>                       targetThroughMaterials  = new HashSet<>();
     private Set<Material>                       targetableMaterials     = null;
     private Set<Material>                       reflectiveMaterials     = null;
     private boolean                             reverseTargeting        = false;
@@ -494,7 +494,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         if (parameters.contains("targetable")) {
-            targetableMaterials = new HashSet<Material>();
+            targetableMaterials = new HashSet<>();
             targetableMaterials.addAll(controller.getMaterialSet(parameters.getString("targetable")));
         } else {
             targetableMaterials = null;
@@ -511,7 +511,7 @@ public abstract class TargetingSpell extends BaseSpell {
                 Set<Material> currentReflective = reflectiveMaterials;
                 reflectiveMaterials = controller.getMaterialSet(reflectiveKey);
                 if (currentReflective != null) {
-                    reflectiveMaterials = new HashSet<Material>(reflectiveMaterials);
+                    reflectiveMaterials = new HashSet<>(reflectiveMaterials);
                     reflectiveMaterials.addAll(currentReflective);
                 }
             }
@@ -533,7 +533,7 @@ public abstract class TargetingSpell extends BaseSpell {
             }
         } else if (parameters.contains("target_types")) {
             targetEntityType = null;
-            targetEntityTypes = new HashSet<EntityType>();
+            targetEntityTypes = new HashSet<>();
             Collection<String> typeKeys = ConfigurationUtils.getStringList(parameters, "target_types");
             for (String typeKey : typeKeys) {
                 try {

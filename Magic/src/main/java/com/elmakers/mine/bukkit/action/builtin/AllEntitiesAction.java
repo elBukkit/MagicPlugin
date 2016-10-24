@@ -76,7 +76,7 @@ public class AllEntitiesAction extends CompoundEntityAction
 			if (targetAllWorlds) {
 				worlds = Bukkit.getWorlds();
 			} else {
-				worlds = new ArrayList<World>();
+				worlds = new ArrayList<>();
 				worlds.add(sourceLocation.getWorld());
 			}
 			for (World world : worlds)
@@ -86,7 +86,7 @@ public class AllEntitiesAction extends CompoundEntityAction
 				{
 					if (spell.canTarget(entity) && (context.getTargetsCaster() || entity != sourceEntity))
 					{
-                        entities.add(new WeakReference<Entity>(entity));
+                        entities.add(new WeakReference<>(entity));
 					}
 				}
 			}

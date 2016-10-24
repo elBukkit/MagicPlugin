@@ -43,7 +43,7 @@ public class DropSpell extends BlockSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-        Collection<ItemStack> drops = new ArrayList<ItemStack>();
+        Collection<ItemStack> drops = new ArrayList<>();
 		int maxRecursion = parameters.getInt("recursion_depth", DEFAULT_MAX_RECURSION);
 		dropCount = parameters.getInt("drop_count", -1);
 		falling = parameters.getBoolean("falling", true);

@@ -118,7 +118,7 @@ public class ProjectileAction  extends BaseProjectileAction
         }
 
 		// Track projectiles to remove them after some time.
-		List<Projectile> projectiles = new ArrayList<Projectile>();
+		List<Projectile> projectiles = new ArrayList<>();
 		
 		// Spawn projectiles
         LivingEntity shootingEntity = context.getLivingEntity();

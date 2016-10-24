@@ -215,7 +215,7 @@ public class ConfigurationUtils extends ConfigUtils {
              return null;
          }
 
-         Set<Material> materials = new HashSet<Material>();
+         Set<Material> materials = new HashSet<>();
          for (String matName : materialData)
          {
              Material material = toMaterial(matName);
@@ -230,7 +230,7 @@ public class ConfigurationUtils extends ConfigUtils {
     public static Set<Material> parseMaterials(String csv)
     {
          String[] nameList = StringUtils.split(csv, ',');
-         Set<Material> materials = new HashSet<Material>();
+         Set<Material> materials = new HashSet<>();
 
          for (String matName : nameList)
          {
@@ -268,7 +268,7 @@ public class ConfigurationUtils extends ConfigUtils {
     {
         if (configuration == null || configuration.isEmpty()) return configuration;
         
-        Map<String, Object> replaced = new HashMap<String, Object>();
+        Map<String, Object> replaced = new HashMap<>();
         for (Map.Entry<String, Object> entry : configuration.entrySet())
         {
             Object entryValue = entry.getValue();
@@ -312,7 +312,7 @@ public class ConfigurationUtils extends ConfigUtils {
     {
         if (configurations == null || configurations.size() == 0) return configurations;
         
-        List<Object> replaced = new ArrayList<Object>();
+        List<Object> replaced = new ArrayList<>();
         for (Object value : configurations)
         {
             Object replacement = replaceParameters(value, parameters);
@@ -627,7 +627,7 @@ public class ConfigurationUtils extends ConfigUtils {
         } else if (o instanceof String) {
             return new ArrayList<Object>(Arrays.asList(StringUtils.split((String) o, ',')));
         } else {
-            List<Object> single = new ArrayList<Object>();
+            List<Object> single = new ArrayList<>();
             single.add(o);
             return single;
         }
@@ -645,7 +645,7 @@ public class ConfigurationUtils extends ConfigUtils {
             return null;
         }
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         for (Object o : raw) {
             if (o == null) {
@@ -672,9 +672,9 @@ public class ConfigurationUtils extends ConfigUtils {
          List<Object> raw = getList(section, path);
 
          if (raw == null) {
-             return new ArrayList<Integer>();
+             return new ArrayList<>();
          }
-         List<Integer> list = new ArrayList<Integer>();
+         List<Integer> list = new ArrayList<>();
 
          for (Object o : raw) {
              Integer i = castInt(o);
@@ -731,7 +731,7 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     static public String getParameters(ConfigurationSection parameters) {
-        Collection<String> parameterStrings = new ArrayList<String>();
+        Collection<String> parameterStrings = new ArrayList<>();
         Map<String, Object> map = NMSUtils.getMap(parameters);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             parameterStrings.add(entry.getKey());
@@ -759,7 +759,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static Collection<PrerequisiteSpell> getPrerequisiteSpells(MageController controller, ConfigurationSection node, String key, String loadContext, boolean removeMissing) {
         if (node == null || key == null) {
-            return new ArrayList<PrerequisiteSpell>(0);
+            return new ArrayList<>(0);
         }
 
         Collection<?> spells = null;
@@ -774,10 +774,10 @@ public class ConfigurationUtils extends ConfigUtils {
             spells = node.getList(key);
         }
         if (spells == null) {
-            spells = new ArrayList<Object>(0);
+            spells = new ArrayList<>(0);
         }
 
-        List<PrerequisiteSpell> requiredSpells = new ArrayList<PrerequisiteSpell>(spells.size());
+        List<PrerequisiteSpell> requiredSpells = new ArrayList<>(spells.size());
         for (Object o : spells) {
             PrerequisiteSpell prerequisiteSpell = null;
             if (o instanceof String) {

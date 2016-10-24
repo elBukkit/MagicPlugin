@@ -13,8 +13,8 @@ import java.util.TreeMap;
 
 public class EffectVariable extends EffectPlayer {
 
-    private Map<Double, Collection<EffectPlayer>> brightnessMap = new TreeMap<Double, Collection<EffectPlayer>>();
-    private Collection<EffectPlayer> playing = new ArrayList<EffectPlayer>();
+    private Map<Double, Collection<EffectPlayer>> brightnessMap = new TreeMap<>();
+    private Collection<EffectPlayer> playing = new ArrayList<>();
 
     public EffectVariable() {
 

@@ -26,8 +26,8 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     private boolean disabled = false;
     private BukkitTask saveTask = null;
 
-    private HashMap<String, URLMap> keyMap = new HashMap<String, URLMap>();
-    private HashMap<Short, URLMap> idMap = new HashMap<Short, URLMap>();
+    private HashMap<String, URLMap> keyMap = new HashMap<>();
+    private HashMap<Short, URLMap> idMap = new HashMap<>();
 
     public MapController(Plugin plugin, File configFile, File cache) {
         this.plugin = plugin;
@@ -124,7 +124,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         final List<URLMap> saveMaps;
 
         public SaveRunnable(Collection<URLMap> maps) {
-            saveMaps = new ArrayList<URLMap>(maps);
+            saveMaps = new ArrayList<>(maps);
         }
 
         @Override

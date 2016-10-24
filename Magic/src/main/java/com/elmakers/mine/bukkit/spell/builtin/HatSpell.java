@@ -42,7 +42,7 @@ public class HatSpell extends TargetingSpell
 		ItemStack itemStack = player.getInventory().getHelmet();
 		ItemMeta meta = hatItem.getItemMeta();
 		meta.setDisplayName(getMessage("hat_name").replace("$material", material.getName()));
-		List<String> lore = new ArrayList<String>();
+		List<String> lore = new ArrayList<>();
 		lore.add(getMessage("hat_lore"));
 		meta.setLore(lore);
 		hatItem.setItemMeta(meta);

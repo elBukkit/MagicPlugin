@@ -36,7 +36,7 @@ public class DropAction extends BaseSpellAction {
         super.prepare(context, parameters);
         dropCount = parameters.getInt("drop_count", -1);
         falling = parameters.getBoolean("falling", true);
-        drops = new ArrayList<ItemStack>();
+        drops = new ArrayList<>();
     }
 
     @SuppressWarnings("deprecation")

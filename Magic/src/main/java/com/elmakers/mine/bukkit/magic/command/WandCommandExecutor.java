@@ -107,7 +107,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<String>();
+		List<String> options = new ArrayList<>();
 		
 		Player player = (sender instanceof Player) ? (Player)sender : null;
 
@@ -186,7 +186,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 					String spellKey = pieces[0];
 					SpellTemplate spell = api.getController().getSpellTemplate(spellKey);
 					if (spell != null) {
-						List<String> spellOptions = new ArrayList<String>();
+						List<String> spellOptions = new ArrayList<>();
 						spell.getParameters(spellOptions);
 						for (String option : spellOptions) {
 							options.add(spellKey + "." + option);
@@ -508,7 +508,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 	public boolean onWandList(CommandSender sender) {
 		Collection<WandTemplate> templates = api.getController().getWandTemplates();
-		Map<String, ConfigurationSection> nameMap = new TreeMap<String, ConfigurationSection>();
+		Map<String, ConfigurationSection> nameMap = new TreeMap<>();
 		for (WandTemplate template : templates)
 		{
 			nameMap.put(template.getKey(), template.getConfiguration());
@@ -877,7 +877,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 		Mage mage = api.getMage(player);
 		Wand wand = mage.getActiveWand();
-		Map<String, Object> node = new HashMap<String, Object>();
+		Map<String, Object> node = new HashMap<>();
 		String value = "";
 		for (int i = 1; i < parameters.length; i++) {
 			if (i != 1) value = value + " ";

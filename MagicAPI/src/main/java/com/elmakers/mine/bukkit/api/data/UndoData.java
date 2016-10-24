@@ -15,7 +15,7 @@ public class UndoData {
     private final List<UndoList> blockList;
 
     public UndoData() {
-        this.blockList = new ArrayList<UndoList>();
+        this.blockList = new ArrayList<>();
     }
 
     public List<UndoList> getBlockList() {

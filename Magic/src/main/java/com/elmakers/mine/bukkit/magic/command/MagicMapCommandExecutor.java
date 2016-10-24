@@ -394,7 +394,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<String>();
+		List<String> options = new ArrayList<>();
         if (!sender.hasPermission("Magic.commands.mmap")) return options;
 
 		if (args.length == 1) {

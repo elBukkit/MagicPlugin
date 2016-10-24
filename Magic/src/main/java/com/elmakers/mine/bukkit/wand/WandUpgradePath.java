@@ -38,21 +38,21 @@ import java.util.TreeMap;
  * Upgrading is generally done by spending XP on an enchanting table.
  */
 public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUpgradePath {
-    private static Map<String, WandUpgradePath> paths = new HashMap<String, WandUpgradePath>();
+    private static Map<String, WandUpgradePath> paths = new HashMap<>();
 
     private TreeMap<Integer, WandLevel> levelMap = null;
-    private Map<String, Collection<EffectPlayer>> effects = new HashMap<String, Collection<EffectPlayer>>();
+    private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private List<String> upgradeCommands;
     private int[] levels = null;
     private final String key;
     private final WandUpgradePath parent;
-    private final Set<String> spells = new HashSet<String>();
-    private final Set<String> extraSpells = new HashSet<String>();
-    private Collection<PrerequisiteSpell> requiredSpells = new HashSet<PrerequisiteSpell>();
-    private Set<String> requiredSpellKeys = new HashSet<String>();
-    private final Set<String> allSpells = new HashSet<String>();
-    private final Set<String> allExtraSpells = new HashSet<String>();
-    private final Set<String> allRequiredSpells = new HashSet<String>();
+    private final Set<String> spells = new HashSet<>();
+    private final Set<String> extraSpells = new HashSet<>();
+    private Collection<PrerequisiteSpell> requiredSpells = new HashSet<>();
+    private Set<String> requiredSpellKeys = new HashSet<>();
+    private final Set<String> allSpells = new HashSet<>();
+    private final Set<String> allExtraSpells = new HashSet<>();
+    private final Set<String> allRequiredSpells = new HashSet<>();
     private String upgradeKey;
     private String upgradeItemKey;
     private String name;
@@ -102,7 +102,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.maxLevel = inherit.maxLevel;
         this.matchSpellMana = inherit.matchSpellMana;
         this.earnsSP = inherit.earnsSP;
-        this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
+        this.levelMap = new TreeMap<>(inherit.levelMap);
         this.icon = inherit.icon;
         this.migrateIcon = inherit.migrateIcon;
         effects.putAll(inherit.effects);
@@ -112,14 +112,14 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         if (inherit.tags != null && !inherit.tags.isEmpty())
         {
-            this.tags = new HashSet<String>(inherit.tags);
+            this.tags = new HashSet<>(inherit.tags);
         }
 
         load(controller, key, template);
 
         if ((this.upgradeCommands == null || this.upgradeCommands.size() == 0) && inherit.upgradeCommands != null)
         {
-            this.upgradeCommands = new ArrayList<String>();
+            this.upgradeCommands = new ArrayList<>();
             this.upgradeCommands.addAll(inherit.upgradeCommands);
         }
     }
@@ -150,11 +150,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         upgradeItemKey = template.getString("upgrade_item");
 
         Collection<PrerequisiteSpell> prerequisiteSpells = ConfigurationUtils.getPrerequisiteSpells(controller, template, "required_spells", "path " + key, false);
-        this.requiredSpells = new ArrayList<PrerequisiteSpell>(pathSpells.size() + prerequisiteSpells.size());
+        this.requiredSpells = new ArrayList<>(pathSpells.size() + prerequisiteSpells.size());
         requiredSpells.addAll(pathSpells);
         requiredSpells.addAll(prerequisiteSpells);
 
-        requiredSpellKeys = new HashSet<String>(prerequisiteSpells.size());
+        requiredSpellKeys = new HashSet<>(prerequisiteSpells.size());
         for (PrerequisiteSpell prereq : prerequisiteSpells) {
             requiredSpellKeys.add(prereq.getSpellKey().getKey());
             allRequiredSpells.add(prereq.getSpellKey().getKey());
@@ -196,7 +196,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 if (effectsNode.isString(effectKey)) {
                     String referenceKey = effectsNode.getString(effectKey);
                     if (effects.containsKey(referenceKey)) {
-                        effects.put(effectKey, new ArrayList<EffectPlayer>(effects.get(referenceKey)));
+                        effects.put(effectKey, new ArrayList<>(effects.get(referenceKey)));
                     }
                 } else {
                     effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
@@ -224,7 +224,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         Collection<String> tagList = ConfigurationUtils.getStringList(template, "tags");
         if (tagList != null && !tagList.isEmpty()) {
             if (tags == null) {
-                tags = new HashSet<String>(tagList);
+                tags = new HashSet<>(tagList);
             } else {
                 tags.addAll(tagList);
             }
@@ -232,7 +232,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         // Parse defined levels
         if (levelMap == null) {
-            levelMap = new TreeMap<Integer, WandLevel>();
+            levelMap = new TreeMap<>();
         }
         if (template.contains("levels")) {
             String[] levelStrings = StringUtils.split(template.getString("levels"), ",");
@@ -350,7 +350,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     public Set<Integer> getLevels() {
         if (levelMap == null) return null;
-        Set<Integer> filteredLevels = new HashSet<Integer>();
+        Set<Integer> filteredLevels = new HashSet<>();
         for (Integer level :  levelMap.keySet()) {
             if (level >= minLevel && level <= maxLevel) {
                 filteredLevels.add(level);
@@ -435,28 +435,28 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     public Set<String> getMissingTags(Collection<String> tagSet) {
         Set<String> tags = getTags();
         if (tags != null) {
-            Set<String> s = new HashSet<String>(tagSet);
+            Set<String> s = new HashSet<>(tagSet);
             s.removeAll(tags);
             tags = s;
         } else {
-            tags = new HashSet<String>(tagSet);
+            tags = new HashSet<>(tagSet);
         }
         return tags;
     }
 
     @Override
     public Collection<String> getSpells() {
-        return new ArrayList<String>(allSpells);
+        return new ArrayList<>(allSpells);
     }
 
     @Override
     public Collection<String> getExtraSpells() {
-        return new ArrayList<String>(allExtraSpells);
+        return new ArrayList<>(allExtraSpells);
     }
 
     @Override
     public Collection<String> getRequiredSpells() {
-        return new ArrayList<String>(allRequiredSpells);
+        return new ArrayList<>(allRequiredSpells);
     }
 
     @Override

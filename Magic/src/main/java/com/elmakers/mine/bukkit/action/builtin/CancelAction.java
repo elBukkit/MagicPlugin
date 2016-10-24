@@ -27,7 +27,7 @@ public class CancelAction extends BaseSpellAction
         } else if (parameters.contains("spell")) {
             String targetSpellKey = parameters.getString("spell", null);
             if (targetSpellKey != null && !targetSpellKey.isEmpty()) {
-                spellKeys = new ArrayList<String>();
+                spellKeys = new ArrayList<>();
                 spellKeys.add(targetSpellKey);
             }
         }

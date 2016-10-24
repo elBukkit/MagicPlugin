@@ -33,7 +33,7 @@ public class TileEntitiesAction extends CompoundAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
-        tiles = new ArrayList<BlockState>();
+        tiles = new ArrayList<>();
         currentTile = 0;
     }
 
@@ -77,7 +77,7 @@ public class TileEntitiesAction extends CompoundAction
         if (targetAllWorlds) {
             worlds = Bukkit.getWorlds();
         } else {
-            worlds = new ArrayList<World>();
+            worlds = new ArrayList<>();
             worlds.add(sourceLocation.getWorld());
         }
         for (World world : worlds)
