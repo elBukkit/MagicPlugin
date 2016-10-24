@@ -32,6 +32,8 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
+import com.google.common.base.Objects;
+
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -2226,9 +2228,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return ChatColor.GRAY + "none";
         }
         String text = flag ? "true" : "false";
-        if (greenState != null && flag == greenState) {
+        if (greenState != null && Objects.equal(flag, greenState)) {
             return (dark ? ChatColor.DARK_GREEN : ChatColor.GREEN) + text;
-        } else if (redState != null && flag == redState) {
+        } else if (redState != null && Objects.equal(flag, redState)) {
             return (dark ? ChatColor.DARK_RED : ChatColor.RED) + text;
         }
         return ChatColor.GRAY + text;
