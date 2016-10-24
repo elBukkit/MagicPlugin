@@ -85,7 +85,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 			if (player != null && !spell.hasCastPermission(player)) continue;
 			if (spell.getCategory() == null) continue;
 			
-			Integer spellCount = spellCounts.get(spell.getCategory());
+			Integer spellCount = spellCounts.get(spell.getCategory().getKey());
 			if (spellCount == null || spellCount == 0)
 			{
 				spellCounts.put(spell.getCategory().getKey(), 1);
@@ -105,7 +105,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		Collections.sort(spellGroups);
 		for (SpellCategory group : spellGroups)
 		{
-			player.sendMessage(group.getName() + " [" + spellCounts.get(group) + "]");
+			player.sendMessage(group.getName() + " [" + spellCounts.get(group.getKey()) + "]");
 		}
 	}
 
