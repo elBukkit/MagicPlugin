@@ -42,6 +42,7 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.security.CodeSource;
@@ -320,17 +321,19 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				CodeSource src = MagicAPI.class.getProtectionDomain().getCodeSource();
 				if (src != null) {
 					URL jar = src.getLocation();
-					ZipInputStream zip = new ZipInputStream(jar.openStream());
-					while(true) {
-						ZipEntry e = zip.getNextEntry();
-						if (e == null)
-							break;
-						String name = e.getName();
-						if (name.startsWith("schematics/")) {
-							schematics.add(name.replace("schematics/", ""));
-						}
-					}
-				}
+                    try(InputStream is = jar.openStream();
+                            ZipInputStream zip = new ZipInputStream(is)) {
+                        while(true) {
+                            ZipEntry e = zip.getNextEntry();
+                            if (e == null)
+                                break;
+                            String name = e.getName();
+                            if (name.startsWith("schematics/")) {
+                                schematics.add(name.replace("schematics/", ""));
+                            }
+                        }
+                    }
+                }
 
 				// Check extra path first
 				File configFolder = plugin.getDataFolder();
