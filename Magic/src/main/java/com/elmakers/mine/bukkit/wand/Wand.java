@@ -2987,7 +2987,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         if (other.upgradeIcon != null && (this.icon == null
                || this.icon.getMaterial() != other.upgradeIcon.getMaterial()
-               || Objects.equal(this.icon.getData(), other.upgradeIcon.getData()))) {
+               || !Objects.equal(this.icon.getData(), other.upgradeIcon.getData()))) {
             modified = true;
             this.setIcon(other.upgradeIcon);
         }
@@ -2996,7 +2996,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				&& other.inactiveIcon.getMaterial() != Material.AIR && other.inactiveIcon.getMaterial() != null &&
                 (this.inactiveIcon == null
                         || this.inactiveIcon.getMaterial() != other.inactiveIcon.getMaterial()
-                        || this.inactiveIcon.getData() != other.inactiveIcon.getData()
+                        || !Objects.equal(this.inactiveIcon.getData(), other.inactiveIcon.getData())
                 ))
         {
             this.inactiveIcon = other.inactiveIcon;
