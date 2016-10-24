@@ -378,15 +378,16 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                                     conn.setConnectTimeout(30000);
                                     conn.setReadTimeout(30000);
                                     conn.setInstanceFollowRedirects(true);
-                                    InputStream in = conn.getInputStream();
-                                    OutputStream out = new FileOutputStream(cacheFile);
-                                    byte[] buffer = new byte[10 * 1024];
-                                    int len;
-                                    while ((len = in.read(buffer)) != -1) {
-                                        out.write(buffer, 0, len);
+                                    try(InputStream in = conn.getInputStream();
+                                            OutputStream out = new FileOutputStream(cacheFile)) {
+                                        byte[] buffer = new byte[10 * 1024];
+                                        int len;
+
+                                        while ((len = in.read(buffer)) != -1) {
+                                            out.write(buffer, 0, len);
+                                        }
                                     }
-                                    out.close();
-                                    in.close();
+
                                     images = loadImages(ImageIO.createImageInputStream(cacheFile));
                                 }
                             } else {

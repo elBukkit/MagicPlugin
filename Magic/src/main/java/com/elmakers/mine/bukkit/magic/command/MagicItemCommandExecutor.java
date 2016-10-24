@@ -298,8 +298,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		}
 		
 		File file = new File(api.getPlugin().getDataFolder(), parameters[0] + ".csv");
-		try {
-			FileWriter output = new FileWriter(file);
+		try (FileWriter output = new FileWriter(file)) {
 			output.append("Name,Key,Cost\n");
 			
 			for (MaterialAndData material : items.values()) {
@@ -307,9 +306,6 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				String worthString = worth == null ? "" : worth.toString();
 				output.append(material.getName() + "," + material.getKey() + "," + worthString + "\n");
 			}
-			
-			output.flush();
-			output.close();
 		} catch (Exception ex) {
 			player.sendMessage(ChatColor.RED + "Error exporting data: " + ex.getMessage());
 			ex.printStackTrace();
