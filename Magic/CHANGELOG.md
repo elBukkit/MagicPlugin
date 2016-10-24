@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 6.3
+## 6.2.4
 
  - Add target_self parameter to ChangeContext and CustomProjectile actions
  - Minor nerf to wand power affects on construction radii
