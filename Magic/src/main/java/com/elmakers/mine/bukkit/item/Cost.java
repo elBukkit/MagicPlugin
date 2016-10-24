@@ -233,7 +233,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case XP:
                 return messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
             case SP:
-                return messages.get("costs.sp_amount").replace("$amount", ((Integer)(int)Math.ceil(getSkillPoints(reducer))).toString());
+                return messages.get("costs.sp_amount").replace("$amount", Integer.toString(getSkillPoints(reducer)));
             case MANA:
                 return messages.get("costs.mana_amount").replace("$amount", Integer.toString(getMana(reducer)));
             case HEALTH:
