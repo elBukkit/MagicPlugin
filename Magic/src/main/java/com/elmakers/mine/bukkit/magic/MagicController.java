@@ -701,15 +701,16 @@ public class MagicController implements MageController {
             CodeSource codeSource = MagicTabExecutor.class.getProtectionDomain().getCodeSource();
             if (codeSource != null) {
                 URL jar = codeSource.getLocation();
-                ZipInputStream zip = new ZipInputStream(jar.openStream());
-                ZipEntry entry = zip.getNextEntry();
-                while (entry != null) {
-                    String name = entry.getName();
-                    if (name.startsWith("schematics/") && name.endsWith(".schematic")) {
-                        String schematicName = name.replace(".schematic", "").replace("schematics/", "");
-                        schematicNames.add(schematicName);
+                try(ZipInputStream zip = new ZipInputStream(jar.openStream())) {
+                    ZipEntry entry = zip.getNextEntry();
+                    while (entry != null) {
+                        String name = entry.getName();
+                        if (name.startsWith("schematics/") && name.endsWith(".schematic")) {
+                            String schematicName = name.replace(".schematic", "").replace("schematics/", "");
+                            schematicNames.add(schematicName);
+                        }
+                        entry = zip.getNextEntry();
                     }
-                    entry = zip.getNextEntry();
                 }
             }
         } catch (Exception ex) {
@@ -4672,11 +4673,12 @@ public class MagicController implements MageController {
                                 });
 
                                 MessageDigest digest = MessageDigest.getInstance("SHA1");
-                                BufferedInputStream in = new BufferedInputStream(rpURL.openStream());
-                                final byte data[] = new byte[1024];
-                                int count;
-                                while ((count = in.read(data, 0, 1024)) != -1) {
-                                    digest.update(data, 0, count);
+                                try(BufferedInputStream in = new BufferedInputStream(rpURL.openStream())) {
+                                    final byte data[] = new byte[1024];
+                                    int count;
+                                    while ((count = in.read(data, 0, 1024)) != -1) {
+                                        digest.update(data, 0, count);
+                                    }
                                 }
                                 newResourcePackHash = byteArrayToHexString(digest.digest());
 
