@@ -190,7 +190,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 			String spellName = args[0];
 			SpellTemplate spell = api.getSpellTemplate(spellName);
 			if (spell != null) {
-				if (args.length % 2 == 0 || args.length < 2) {
+				if (args.length % 2 == 0) {
 					spell.getParameters(options);
 				} else {
 					spell.getParameterOptions(options, args[args.length - 2]);

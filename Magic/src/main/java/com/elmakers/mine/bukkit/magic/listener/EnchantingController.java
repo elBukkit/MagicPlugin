@@ -1,8 +1,5 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
@@ -98,9 +95,6 @@ public class EnchantingController implements Listener {
             int minLevel = path.getMinLevel();
             int maxLevel = path.getMaxLevel();
             int levelRange = maxLevel - minLevel;
-			Set<Integer> levelSet = path.getLevels();
-			ArrayList<Integer> levels = new ArrayList<>();
-			levels.addAll(levelSet);
 			int[] offered = event.getExpLevelCostsOffered();
 
             float bonusLevelMultiplier = path.getBonusLevelMultiplier();

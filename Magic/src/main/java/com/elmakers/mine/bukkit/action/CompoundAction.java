@@ -203,9 +203,11 @@ public abstract class CompoundAction extends BaseSpellAction
 
     public void addAction(SpellAction action, ConfigurationSection parameters) {
         ActionHandler actions = addHandler(null, "actions");
+
         if (actions == null) {
-            actions = new ActionHandler();
+            return;
         }
+
         actions.loadAction(action, parameters);
     }
 

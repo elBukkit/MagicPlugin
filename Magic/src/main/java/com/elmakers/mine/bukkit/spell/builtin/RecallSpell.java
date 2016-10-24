@@ -141,16 +141,12 @@ public class RecallSpell extends UndoableSpell
 		
 		if (isLookingDown() && allowMarker)
 		{
-			if (allowMarker) {
-				if (placeMarker(getLocation().getBlock())) {
-					registerForUndo();
-					return SpellResult.CAST;
-				}
-				
-				return SpellResult.FAIL;
-			}
-			reverseDirection = true;
-			cycleTarget(reverseDirection);
+            if (placeMarker(getLocation().getBlock())) {
+                registerForUndo();
+                return SpellResult.CAST;
+            }
+
+            return SpellResult.FAIL;
 		}
 		else if (isLookingUp())
 		{
