@@ -99,6 +99,9 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                         InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
                     }
                     WandUpgradePath currentPath = wand.getPath();
+                    if (requiredPathKey != null && currentPath == null) {
+                        continue;
+                    }
                     if (!upgradeSpell.getName().equals(spell.getName())) {
                         lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", spell.getName()));
                     }
