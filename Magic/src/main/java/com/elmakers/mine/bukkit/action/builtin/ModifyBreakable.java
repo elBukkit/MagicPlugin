@@ -26,6 +26,9 @@ public class ModifyBreakable extends BaseSpellAction {
     @Override
     public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();
+        if (breakable <= 0) {
+            return SpellResult.FAIL;
+        }
         if (!targetAir && block.getType() == Material.AIR) {
             return SpellResult.NO_TARGET;
         }
