@@ -14,19 +14,19 @@ import java.util.Collection;
 
 public class ModifyBreakable extends BaseSpellAction {
     private double breakable = 1;
-    private boolean skipAir = true;
+    private boolean targetAir = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         breakable = parameters.getDouble("breakable", 1);
-        skipAir = parameters.getBoolean("skip_air", true);
+        targetAir = parameters.getBoolean("target_air", false);
     }
 
     @Override
     public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();
-        if (skipAir && block.getType() == Material.AIR) {
+        if (!targetAir && block.getType() == Material.AIR) {
             return SpellResult.NO_TARGET;
         }
         if (!context.hasBreakPermission(block)) {
