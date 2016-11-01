@@ -2,6 +2,8 @@
 
 ## 6.3
 
+ - Fix the ModifyBreakable action making air blocks targetable (mainly affects Frost)
+
 ## 6.2.4
 
  - Add target_self parameter to ChangeContext and CustomProjectile actions

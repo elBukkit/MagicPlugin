@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -13,16 +14,21 @@ import java.util.Collection;
 
 public class ModifyBreakable extends BaseSpellAction {
     private double breakable = 1;
+    private boolean skipAir = true;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         breakable = parameters.getDouble("breakable", 1);
+        skipAir = parameters.getBoolean("skip_air", true);
     }
 
     @Override
     public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();
+        if (skipAir && block.getType() == Material.AIR) {
+            return SpellResult.NO_TARGET;
+        }
         if (!context.hasBreakPermission(block)) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
