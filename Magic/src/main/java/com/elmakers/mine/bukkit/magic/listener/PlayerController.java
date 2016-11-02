@@ -22,6 +22,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -313,6 +315,46 @@ public class PlayerController implements Listener {
             }
         }
     }
+    
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerAnimate(PlayerAnimationEvent event)
+    {
+        Player player = event.getPlayer();
+        if (player.getGameMode() != GameMode.ADVENTURE || event.getAnimationType() != PlayerAnimationType.ARM_SWING)
+        {
+            return;
+        }
+
+        Mage mage = controller.getMage(player);
+        if (mage == null) return;
+
+        Wand wand = mage.checkWand();
+        if (wand == null) return;
+        
+        Messages messages = controller.getMessages();
+        if (!controller.hasWandPermission(player))
+        {
+            return;
+        }
+        
+        // Check for region or wand-specific permissions
+        if (!controller.hasWandPermission(player, wand))
+        {
+            wand.deactivate();
+            mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
+            return;
+        }
+        
+        if (!mage.checkLastClick(clickCooldown)) {
+            return;
+        }
+
+        if (wand.isUpgrade()) return;
+
+        wand.playEffects("swing");
+
+        wand.performAction(wand.getLeftClickAction());
+    }
 
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event)
@@ -326,6 +368,12 @@ public class PlayerController implements Listener {
         // controller.getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()));
 
         Player player = event.getPlayer();
+        Action action = event.getAction();
+        boolean isSwing = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
+        
+        // GM2 left-click interaction is handled by the animation event, for now.
+        // Might make sense to move all left-click handling there eventually?
+        if (player.getGameMode() == GameMode.ADVENTURE && isSwing) return;
         
         // Don't allow interacting while holding spells, brushes or upgrades
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
@@ -337,7 +385,6 @@ public class PlayerController implements Listener {
         Mage mage = controller.getMage(player);
         if (mage == null) return;
 
-        Action action = event.getAction();
         Wand wand = mage.checkWand();
         boolean handleRightClick = (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
         if (action == Action.RIGHT_CLICK_BLOCK) {
@@ -415,9 +462,7 @@ public class PlayerController implements Listener {
             event.setCancelled(true);
             return;
         }
-
-        boolean isSwing = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
-
+        
         if (isSwing) {
             wand.playEffects("swing");
         }

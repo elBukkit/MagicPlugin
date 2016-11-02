@@ -3,6 +3,7 @@
 ## 6.3
 
  - Fix the ModifyBreakable action making air blocks targetable (mainly affects Frost)
+ - Add support for casting while in GM2 (Adventure mode)
 
 ## 6.2.4
 
