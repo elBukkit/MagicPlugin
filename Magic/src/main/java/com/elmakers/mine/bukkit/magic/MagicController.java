@@ -3472,9 +3472,6 @@ public class MagicController implements MageController {
 
     @Override
     public Wand getWand(ItemStack itemStack) {
-        Preconditions.checkArgument(Wand.isWandOrUpgrade(itemStack), "Item stack must be a wand");
-        // TODO: consider copying the itemStack here.
-        // Is deprecated in favour of this method.
         @SuppressWarnings("deprecation")
         Wand wand = new Wand(this, itemStack);
         return wand;
