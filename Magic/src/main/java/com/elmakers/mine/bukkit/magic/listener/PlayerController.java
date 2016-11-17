@@ -185,7 +185,13 @@ public class PlayerController implements Listener {
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
                 @Override
                 public void run() {
+                    // Hoping this is a temporary work-around to a 1.11 bug
+                    activeWand.getItem().setAmount(1);
+                    
                     activeWand.performAction(activeWand.getDropAction());
+                    
+                    // Hoping this is a temporary work-around to a 1.11 bug
+                    activeWand.getItem().setAmount(1);
                 }
             });
             cancelEvent = true;
