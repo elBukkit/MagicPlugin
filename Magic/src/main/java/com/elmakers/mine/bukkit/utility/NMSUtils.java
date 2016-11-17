@@ -173,7 +173,6 @@ public class NMSUtils {
     protected static Method class_CraftBanner_getBaseColorMethod;
     protected static Method class_CraftBanner_setBaseColorMethod;
     protected static Method class_NBTCompressedStreamTools_loadFileMethod;
-    protected static Method class_ItemStack_createStackMethod;
     protected static Method class_CraftItemStack_asBukkitCopyMethod;
     protected static Method class_CraftItemStack_copyMethod;
     protected static Method class_CraftItemStack_mirrorMethod;
@@ -201,6 +200,8 @@ public class NMSUtils {
     protected static Method class_MinecraftServer_getResourcePackMethod;
     protected static Method class_MinecraftServer_getResourcePackHashMethod;
     protected static Method class_MinecraftServer_setResourcePackMethod;
+    
+    protected static Method class_ItemStack_createStackMethod;
 
     protected static Constructor class_NBTTagString_consructor;
     protected static Constructor class_CraftInventoryCustom_constructor;
@@ -221,6 +222,8 @@ public class NMSUtils {
     protected static Constructor class_ChestLock_Constructor;
     protected static Constructor class_ArmorStand_Constructor;
     protected static Constructor class_AxisAlignedBB_Constructor;
+
+    protected static Constructor class_ItemStack_consructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -365,7 +368,6 @@ public class NMSUtils {
             class_CraftItemStack_copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
             class_CraftItemStack_asBukkitCopyMethod = class_CraftItemStack.getMethod("asBukkitCopy", class_ItemStack);
             class_CraftItemStack_mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", class_ItemStack);
-            class_ItemStack_createStackMethod = class_ItemStack.getMethod("createStack", class_NBTTagCompound);
             class_NBTTagCompound_hasKeyMethod = class_NBTTagCompound.getMethod("hasKey", String.class);
             class_NBTTagCompound_getMethod = class_NBTTagCompound.getMethod("get", String.class);
             class_NBTTagCompound_getCompoundMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
@@ -425,8 +427,6 @@ public class NMSUtils {
             class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("e");
             class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("f");
             class_EntityPlayer_playerConnectionField = class_EntityPlayer.getDeclaredField("playerConnection");
-            class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("g");
-            class_PlayerConnection_floatCountField.setAccessible(true);
 
             class_Firework_ticksFlownField = class_EntityFirework.getDeclaredField("ticksFlown");
             class_Firework_ticksFlownField.setAccessible(true);
@@ -452,9 +452,6 @@ public class NMSUtils {
             class_Chunk_doneField.setAccessible(true);
             class_CraftItemStack_getHandleField = class_CraftItemStack.getDeclaredField("handle");
             class_CraftItemStack_getHandleField.setAccessible(true);
-
-            class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("f");
-            class_EntityLiving_potionBubblesField.setAccessible(true);
             
             class_MemorySection_mapField = MemorySection.class.getDeclaredField("map");
             class_MemorySection_mapField.setAccessible(true);
@@ -497,13 +494,51 @@ public class NMSUtils {
 
             try {
                 try {
-                    // 1.10
+                    // 1.11
+                    class_ItemStack_consructor = class_ItemStack.getConstructor(class_NBTTagCompound);
+
+                    class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("g");
+                    class_EntityLiving_potionBubblesField.setAccessible(true);
+                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
+                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.10");
+                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("getLock");
+                } catch (Throwable ignore) {
+                    // 1.10 and earlier
+                    legacy = true;
+                    class_ItemStack_createStackMethod = class_ItemStack.getMethod("createStack", class_NBTTagCompound);
+                    class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("f");
+                    class_EntityLiving_potionBubblesField.setAccessible(true);
+                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
+                    
+                    try {
+                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
+                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
+                    } catch (Throwable ignore2) {
+                        try {
+                            // 1.9.4
+                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
+                        } catch (Throwable ignore3) {
+                            // 1.9.2
+                            try {
+                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
+                            } catch (Throwable ignore4) {
+                                // 1.8 and lower
+                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
+                            }
+                        }
+                    }
+                }
+                try {
+                    // 1.10 and 1.11
                     class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("setSilent", Boolean.TYPE);
                     class_Entity_setNoGravity = class_Entity.getDeclaredMethod("setNoGravity", Boolean.TYPE);
-                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
-                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
                     class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("at");
                     class_Entity_getTypeMethod.setAccessible(true);
+                    class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("C");
+                    if (class_PlayerConnection_floatCountField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
+                    class_PlayerConnection_floatCountField.setAccessible(true);
                 } catch (Throwable ignore) {
                     // 1.9 and earlier
                     legacy = true;
@@ -511,26 +546,14 @@ public class NMSUtils {
                     class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
                     class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
                     class_Entity_getTypeMethod.setAccessible(true);
-                    try {
-                        // 1.9.4
-                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
-                    } catch (Throwable ignore2) {
-                        // 1.9.2
-                        try {
-                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
-                        } catch (Exception ex) {
-                            // 1.8 and lower
-                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
-                        }
-                    }
+                    class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("g");
+                    class_PlayerConnection_floatCountField.setAccessible(true);
                 }
                 try {
-                    // 1.9
+                    // 1.9 and up
                     class_DataWatcher_setMethod = class_DataWatcher.getMethod("set", class_DataWatcherObject, Object.class);
                     class_DataWatcher_getMethod = class_DataWatcher.getMethod("get", class_DataWatcherObject);
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
-                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
                     class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
                     class_NBTTagCompound_getKeysMethod = class_NBTTagCompound.getMethod("c");
                     class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
@@ -548,25 +571,31 @@ public class NMSUtils {
                 class_EntityArrow_damageField.setAccessible(true);
                 // This is kinda hacky, like fer reals :\
                 // OML, hating it!
+                // Still hating it.
                 try {
-                    // 1.10
-                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ay");
-                } catch (Throwable ignore4) {
-                    legacy = true;
+                    // 1.11
+                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ax");
+                } catch (Throwable ignore5) {
                     try {
-                        // 1.8.3
-                        class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
-                    } catch (Throwable ignore3) {
+                        // 1.10
+                        class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ay"); // ayyyyy lmao
+                    } catch (Throwable ignore4) {
+                        legacy = true;
                         try {
-                            // 1.8
-                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ap");
-                        } catch (Throwable ignore2) {
+                            // 1.8.3
+                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
+                        } catch (Throwable ignore3) {
                             try {
-                                // 1.7
-                                class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("at");
-                            } catch (Throwable ignore) {
-                                // Prior
-                                class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("j");
+                                // 1.8
+                                class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ap");
+                            } catch (Throwable ignore2) {
+                                try {
+                                    // 1.7
+                                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("at");
+                                } catch (Throwable ignore) {
+                                    // Prior
+                                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("j");
+                                }
                             }
                         }
                     }
@@ -1295,7 +1324,12 @@ public class NMSUtils {
         if (itemTag == null) return null;
         ItemStack item = null;
         try {
-            Object nmsStack = class_ItemStack_createStackMethod.invoke(null, itemTag);
+            Object nmsStack = null;
+            if (class_ItemStack_consructor != null) {
+                nmsStack = class_ItemStack_consructor.newInstance(itemTag);
+            } else {
+                nmsStack = class_ItemStack_createStackMethod.invoke(null, itemTag);
+            }
             item = (ItemStack)class_CraftItemStack_mirrorMethod.invoke(null, nmsStack);
         } catch (Exception ex) {
             ex.printStackTrace();
