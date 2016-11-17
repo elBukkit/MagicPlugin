@@ -81,7 +81,6 @@ broom:
         stash_item: true
         mount_baby: true
         mount_type: Horse
-        mount_variant: undead_horse
         armor_stand: true
         armor_stand_helmet: false
         armor_stand_yaw: -0.5

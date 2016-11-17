@@ -20,6 +20,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.entity.HorseJumpEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
@@ -190,7 +191,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         @EventHandler
         public void onHorseJump(HorseJumpEvent event)
         {
-            Entity horse = event.getEntity();
+            Entity horse = ((EntityEvent)event).getEntity();
             if (horse.hasMetadata("broom"))
             {
                 Entity passenger = horse.getPassenger();
@@ -809,6 +810,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
             try {
                 String mountName = DeprecatedUtils.getName(mountType);
                 if (mountName.indexOf("Entity") != 0) {
+                    // TODO: Look into spawning the entity via API calls.
+                    // I think the only reason we jump through all of these hoops is to be able to modify the entity before
+                    // spawning, such as making it invisible. There must be a better way.
+                    mountName = mountName.substring(0, 1).toUpperCase() + mountName.substring(1);
                     mountName = "Entity" + mountName;
                 }
                 Class<?> mountClass = NMSUtils.getBukkitClass("net.minecraft.server." + mountName);
@@ -861,7 +866,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     horse.setOwner(player);
                     horse.setAdult();
                     horse.setStyle(mountHorseStyle);
-                    horse.setVariant(mountHorseVariant);
+                    //horse.setVariant(mountHorseVariant);
                     horse.setColor(mountHorseColor);
                     horse.getInventory().setSaddle(new ItemStack(Material.SADDLE, 1));
                     if (mountItem != null) {
