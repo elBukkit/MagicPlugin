@@ -180,18 +180,12 @@ public class PlayerController implements Listener {
         String droppedId = Wand.getWandId(droppedItem);
         boolean droppedWand = droppedId != null && activeWand != null && activeWand.getId().equals(droppedId);
         if (droppedWand && activeWand.isUndroppable()) {
-            activeWand.checkItem(droppedItem);
             // Postpone cycling until after this event unwinds
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
                 @Override
                 public void run() {
-                    // Hoping this is a temporary work-around to a 1.11 bug
-                    activeWand.getItem().setAmount(1);
-                    
+                    activeWand.checkItem(droppedItem);
                     activeWand.performAction(activeWand.getDropAction());
-                    
-                    // Hoping this is a temporary work-around to a 1.11 bug
-                    activeWand.getItem().setAmount(1);
                 }
             });
             cancelEvent = true;
