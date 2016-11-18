@@ -173,12 +173,10 @@ brush_glow: false
 brush_item_glow: true
 
 # Set this to have the hotbar show what spells are castable
-# Disabled for 1.11, unless I can find a work-around
-live_hotbar: false
+live_hotbar: true
 
 # Set this to use item amounts as a cooldown countdown timer
-# Disabled for 1.11, unless I can find a work-around
-live_hotbar_cooldown: false
+live_hotbar_cooldown: true
 
 # Turn this off if you want to use Command actions that do damage
 # Magic will normally block this, preventing melee damage from wands and

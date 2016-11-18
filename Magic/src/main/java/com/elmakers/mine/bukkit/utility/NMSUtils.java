@@ -239,7 +239,6 @@ public class NMSUtils {
     protected static Field class_CraftMetaSkull_profile;
     protected static Field class_GameProfile_properties;
     protected static Field class_GameProfileProperty_value;
-    protected static Field class_ItemStack_count;
     protected static Field class_EntityTNTPrimed_source;
     protected static Field class_NBTTagList_list;
     protected static Field class_AxisAlignedBB_minXField;
@@ -436,8 +435,6 @@ public class NMSUtils {
 
             class_NBTTagString_consructor = class_NBTTagString.getConstructor(String.class);
             class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
-            class_ItemStack_count = class_ItemStack.getDeclaredField("count");
-            class_ItemStack_count.setAccessible(true);
 
             class_NBTTagList_list = class_NBTTagList.getDeclaredField("list");
             class_NBTTagList_list.setAccessible(true);

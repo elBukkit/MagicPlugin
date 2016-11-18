@@ -3915,15 +3915,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 if (spellKey != null) {
                     Spell spell = mage.getSpell(spellKey);
                     if (spell != null) {
+						int targetAmount = 1;
                         long remainingCooldown = spell.getRemainingCooldown();
                         CastingCost requiredCost = spell.getRequiredCost();
-                        if (spell.canCast(location) && remainingCooldown == 0 && requiredCost == null) {
-                            if (spellItem.getAmount() != 1) {
-                                InventoryUtils.setCount(spellItem, 1);
-                            }
-                        } else {
-                            int targetAmount = LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 0;
-                            if (LiveHotbarCooldown && requiredCost != null) {
+						boolean canCast = spell.canCast(location);
+                        if (canCast && remainingCooldown == 0 && requiredCost == null) {
+							targetAmount = 1;
+                        } else if (!canCast) {
+							targetAmount = 99;
+						} else {
+                            targetAmount = LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
+							if (LiveHotbarCooldown && requiredCost != null) {
                                 int mana = requiredCost.getMana();
                                 if (mana <= effectiveManaMax && effectiveManaRegeneration > 0) {
                                     float remainingMana = mana - this.mana;
@@ -3931,11 +3933,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                                     targetAmount = Math.max(targetManaTime, targetAmount);
                                 }
                             }
-                            targetAmount = -targetAmount;
-                            if (spellItem.getAmount() != targetAmount) {
-                                InventoryUtils.setCount(spellItem, targetAmount);
-                            }
                         }
+						if (targetAmount == 0) targetAmount = 1;
+						if (spellItem.getAmount() != targetAmount) {
+							spellItem.setAmount(targetAmount);
+						}
                     }
                 }
             }

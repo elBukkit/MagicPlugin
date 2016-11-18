@@ -3,9 +3,6 @@
 ## 6.3
 
  - Add support for 1.11
-   - Known Issues:
-   - "Active hotbar" disabled, the red 0 bug/exploit seems to have been fixed
-   
  - Fix the ModifyBreakable action making air blocks targetable (mainly affects Frost)
  - Add support for casting while in GM2 (Adventure mode)
  - Fix broken /wand enchant command
