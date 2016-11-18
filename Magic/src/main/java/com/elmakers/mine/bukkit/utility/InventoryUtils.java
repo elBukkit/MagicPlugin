@@ -413,4 +413,17 @@ public class InventoryUtils extends NMSUtils
             }
         }
     }
+    
+    public static boolean isEmpty(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getType() == Material.AIR) return true;
+        if (class_ItemStack_isEmptyMethod == null) return false;
+        try {
+            Object handle = getHandle(itemStack);
+            if (handle == null) return false;
+           return (Boolean)class_ItemStack_isEmptyMethod.invoke(handle);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

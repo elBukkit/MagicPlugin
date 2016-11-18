@@ -200,7 +200,8 @@ public class NMSUtils {
     protected static Method class_MinecraftServer_getResourcePackMethod;
     protected static Method class_MinecraftServer_getResourcePackHashMethod;
     protected static Method class_MinecraftServer_setResourcePackMethod;
-    
+
+    protected static Method class_ItemStack_isEmptyMethod;
     protected static Method class_ItemStack_createStackMethod;
 
     protected static Constructor class_NBTTagString_consructor;
@@ -503,6 +504,7 @@ public class NMSUtils {
                     if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.10");
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                     class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("getLock");
+                    class_ItemStack_isEmptyMethod = class_ItemStack.getMethod("isEmpty");
                 } catch (Throwable ignore) {
                     // 1.10 and earlier
                     legacy = true;
@@ -870,11 +872,12 @@ public class NMSUtils {
     }
 
     public static boolean hasMeta(ItemStack stack, String tag) {
+        if (InventoryUtils.isEmpty(stack)) return false;
         return getNode(stack, tag) != null;
     }
 
     public static Object getNode(ItemStack stack, String tag) {
-        if (stack == null) return null;
+        if (InventoryUtils.isEmpty(stack)) return null;
         Object meta = null;
         try {
             Object craft = getHandle(stack);
@@ -923,7 +926,7 @@ public class NMSUtils {
     }
 
     public static Object createNode(ItemStack stack, String tag) {
-        if (stack == null) return null;
+        if (InventoryUtils.isEmpty(stack)) return null;
         Object outputObject = getNode(stack, tag);
         if (outputObject == null) {
             try {
@@ -1048,7 +1051,7 @@ public class NMSUtils {
     }
 
     public static void removeMeta(ItemStack stack, String tag) {
-        if (stack == null) return;
+        if (InventoryUtils.isEmpty(stack)) return;
 
         try {
             Object craft = getHandle(stack);
@@ -1075,7 +1078,7 @@ public class NMSUtils {
     }
 
     public static boolean setMetaNode(ItemStack stack, String tag, Object child) {
-        if (stack == null) return false;
+        if (InventoryUtils.isEmpty(stack)) return false;
         try {
             Object craft = getHandle(stack);
             if (craft == null) return false;
@@ -1095,7 +1098,7 @@ public class NMSUtils {
     }
 
     public static String getMeta(ItemStack stack, String tag) {
-        if (stack == null) return null;
+        if (InventoryUtils.isEmpty(stack)) return null;
         String meta = null;
         try {
             Object craft = getHandle(stack);
@@ -1110,7 +1113,7 @@ public class NMSUtils {
     }
 
     public static void setMeta(ItemStack stack, String tag, String value) {
-        if (stack == null) return;
+        if (InventoryUtils.isEmpty(stack)) return;
         try {
             Object craft = getHandle(stack);
             if (craft == null) return;
@@ -1123,7 +1126,7 @@ public class NMSUtils {
     }
 
     public static void addGlow(ItemStack stack) {
-        if (stack == null) return;
+        if (InventoryUtils.isEmpty(stack)) return;
 
         try {
             Object craft = getHandle(stack);
@@ -1142,7 +1145,7 @@ public class NMSUtils {
     }
 
     public static void removeGlow(ItemStack stack) {
-        if (stack == null) return;
+        if (InventoryUtils.isEmpty(stack)) return;
 
         Collection<Enchantment> enchants = stack.getEnchantments().keySet();
         for (Enchantment enchant : enchants) {
@@ -1166,7 +1169,7 @@ public class NMSUtils {
     }
 
     public static boolean isUnbreakable(ItemStack stack) {
-        if (stack == null) return false;
+        if (InventoryUtils.isEmpty(stack)) return false;
         Boolean unbreakableFlag = null;
         try {
             Object craft = getHandle(stack);
@@ -1182,7 +1185,7 @@ public class NMSUtils {
     }
 
     public static void makeUnbreakable(ItemStack stack) {
-        if (stack == null) return;
+        if (InventoryUtils.isEmpty(stack)) return;
 
         try {
             Object craft = getHandle(stack);
@@ -1207,7 +1210,7 @@ public class NMSUtils {
     }
 
     public static void hideFlags(ItemStack stack, byte flags) {
-        if (stack == null) return;
+        if (InventoryUtils.isEmpty(stack)) return;
 
         try {
             Object craft = getHandle(stack);

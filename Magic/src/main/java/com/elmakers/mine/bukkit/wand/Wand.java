@@ -2298,7 +2298,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	public static Integer getSP(ItemStack item) {
-		if (item == null) return null;
+		if (InventoryUtils.isEmpty(item)) return null;
 		String spNode = InventoryUtils.getMeta(item, "sp");
 		if (spNode == null) return null;
 		Integer sp = null;
@@ -2312,7 +2312,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public static boolean isSingleUse(ItemStack item) {
-        if (item == null) return false;
+		if (InventoryUtils.isEmpty(item)) return false;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 
         if (wandNode == null) return false;
@@ -2323,7 +2323,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     public static boolean isUpgrade(ItemStack item) {
-        if (item == null) return false;
+		if (InventoryUtils.isEmpty(item)) return false;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 
         if (wandNode == null) return false;
@@ -2345,12 +2345,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public static String getWandTemplate(ItemStack item) {
+		if (InventoryUtils.isEmpty(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null) return null;
         return InventoryUtils.getMeta(wandNode, "template");
     }
 
     public static String getWandId(ItemStack item) {
+		if (InventoryUtils.isEmpty(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null || isUpgrade(item)) return null;
         if (isSingleUse(item)) return getWandTemplate(item);
@@ -2358,18 +2360,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	public static String getSpell(ItemStack item) {
+		if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
         return InventoryUtils.getMeta(spellNode, "key");
 	}
 
     public static String getSpellArgs(ItemStack item) {
+		if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
         return InventoryUtils.getMeta(spellNode, "args");
     }
 
     public static String getBrush(ItemStack item) {
+		if (InventoryUtils.isEmpty(item)) return null;
         Object brushNode = InventoryUtils.getNode(item, "brush");
         if (brushNode == null) return null;
         return InventoryUtils.getMeta(brushNode, "key");
