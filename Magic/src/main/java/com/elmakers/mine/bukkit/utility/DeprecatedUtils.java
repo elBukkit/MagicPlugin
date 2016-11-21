@@ -41,10 +41,9 @@ public class DeprecatedUtils {
         return block.getData();
     }
 
-    public static byte getData(DyeColor color) {
-        // @deprecated The name is misleading. It would imply
-        // {@link Material#INK_SACK} but uses {@link Material#WOOL}
-        return color.getData();
+    public static byte getWoolData(DyeColor color) {
+        // @deprecated Magic value
+        return color.getWoolData();
     }
 
     public static int getId(Material material) {

@@ -80,7 +80,7 @@ public abstract class BrushSpell extends BlockSpell {
                     }
 
                     if (bestDyeColor != null) {
-                        brush.setData((short) DeprecatedUtils.getData(bestDyeColor));
+                        brush.setData((short) DeprecatedUtils.getWoolData(bestDyeColor));
                     }
                 }
             }
