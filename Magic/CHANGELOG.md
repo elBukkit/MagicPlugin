@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 6.3.1
+
+ - Fix spells that create colored blocks (Blob, Reflect, etc)
+
 ## 6.3
 
  - Add support for 1.11
