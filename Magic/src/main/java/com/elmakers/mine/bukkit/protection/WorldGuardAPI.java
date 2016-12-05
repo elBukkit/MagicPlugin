@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
+import java.util.logging.Level;
 
 public class WorldGuardAPI {
 	private WorldGuardPlugin worldGuard = null;
@@ -30,15 +31,10 @@ public class WorldGuardAPI {
         if (plugin instanceof WorldGuardPlugin) {
             worldGuard = (WorldGuardPlugin)plugin;
             try {
-                Plugin customFlagsPlugin = plugin.getServer().getPluginManager().getPlugin("WGCustomFlags");
-                if (customFlagsPlugin != null) {
-                    customFlags = new WGCustomFlagsManager(customFlagsPlugin);
-                }
+                owningPlugin.getLogger().info("Pre-check for WorldGuard custom flag registration");
+                customFlags = new WGCustomFlagsManager(owningPlugin, worldGuard);
             } catch (Throwable ex) {
-            }
-
-            if (customFlags != null) {
-                owningPlugin.getLogger().info("WGCustomFlags found, added custom flags");
+                owningPlugin.getLogger().log(Level.WARNING, "Error setting up custom flags, please make sure you are on WG 6.2 or above", ex);
             }
         }
 	}

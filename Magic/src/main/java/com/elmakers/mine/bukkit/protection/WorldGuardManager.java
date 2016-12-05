@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
+import java.util.logging.Level;
 
 public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBuildManager {
     private boolean enabled = false;
@@ -23,29 +24,32 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
     }
 
     public void initialize(Plugin plugin) {
-        worldGuard = null;
         if (enabled) {
-            try {
-                Plugin wgPlugin = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-                if (wgPlugin != null) {
-                    String[] versionPieces = StringUtils.split(wgPlugin.getDescription().getVersion(), '.');
-                    int version = Integer.parseInt(versionPieces[0]);
-                    if (version >= 6) {
-                        worldGuard = new WorldGuardAPI(wgPlugin, plugin);
-                    } else {
-                        plugin.getLogger().warning("Only WorldGuard 6 and above are supported- please update! (WG version: " + wgPlugin.getDescription().getVersion() + ")");
-                    }
-                }
-            } catch (Throwable ex) {
-            }
-
             if (worldGuard == null) {
                 plugin.getLogger().info("WorldGuard not found, region protection and pvp checks will not be used.");
             } else {
                 plugin.getLogger().info("WorldGuard found, will respect build permissions for construction spells");
             }
         } else {
+            worldGuard = null;
             plugin.getLogger().info("WorldGuard integration disabled, region protection and pvp checks will not be used.");
+        }
+    } 
+    
+    public void initializeFlags(Plugin plugin) {
+        try {
+            Plugin wgPlugin = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
+            if (wgPlugin != null) {
+                String[] versionPieces = StringUtils.split(wgPlugin.getDescription().getVersion(), '.');
+                int version = Integer.parseInt(versionPieces[0]);
+                if (version >= 6) {
+                    worldGuard = new WorldGuardAPI(wgPlugin, plugin);
+                } else {
+                    plugin.getLogger().warning("Only WorldGuard 6 and above are supported- please update! (WG version: " + wgPlugin.getDescription().getVersion() + ")");
+                }
+            }
+        } catch (Throwable ex) {
+            plugin.getLogger().log(Level.WARNING, "Error setting up custom WorldGuard flags", ex);
         }
     }
 

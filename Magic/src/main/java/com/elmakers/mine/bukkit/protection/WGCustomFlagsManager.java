@@ -2,20 +2,21 @@ package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.mewin.WGCustomFlags.WGCustomFlagsPlugin;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.association.RegionAssociable;
 import com.sk89q.worldguard.protection.flags.RegionGroup;
 import com.sk89q.worldguard.protection.flags.SetFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;
 
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
 
 public class WGCustomFlagsManager {
 
-    private final WGCustomFlagsPlugin customFlags;
+    private final WorldGuardPlugin customFlags;
 
     public static SetFlag<String> ALLOWED_SPELLS = new SetFlag<>("allowed-spells", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> BLOCKED_SPELLS = new SetFlag<>("blocked-spells", RegionGroup.ALL, new StringFlag(null));
@@ -27,17 +28,19 @@ public class WGCustomFlagsManager {
     public static StringFlag DESTRUCTIBLE = new StringFlag("destructible", RegionGroup.ALL);
     public static StringFlag REFLECTIVE = new StringFlag("reflective", RegionGroup.ALL);
 
-    public WGCustomFlagsManager(Plugin wgCustomFlags) {
-        customFlags = (WGCustomFlagsPlugin)wgCustomFlags;
-        customFlags.addCustomFlag(ALLOWED_SPELLS);
-        customFlags.addCustomFlag(BLOCKED_SPELLS);
-        customFlags.addCustomFlag(ALLOWED_SPELL_CATEGORIES);
-        customFlags.addCustomFlag(BLOCKED_SPELL_CATEGORIES);
-        customFlags.addCustomFlag(ALLOWED_WANDS);
-        customFlags.addCustomFlag(BLOCKED_WANDS);
-        customFlags.addCustomFlag(SPELL_OVERRIDES);
-        customFlags.addCustomFlag(DESTRUCTIBLE);
-        customFlags.addCustomFlag(REFLECTIVE);
+    public WGCustomFlagsManager(Plugin callingPlugin, Plugin wgCustomFlags) {
+        customFlags = (WorldGuardPlugin)wgCustomFlags;
+        FlagRegistry registry = customFlags.getFlagRegistry();
+        registry.register(ALLOWED_SPELLS);
+        registry.register(BLOCKED_SPELLS);
+        registry.register(ALLOWED_SPELL_CATEGORIES);
+        registry.register(BLOCKED_SPELL_CATEGORIES);
+        registry.register(ALLOWED_WANDS);
+        registry.register(BLOCKED_WANDS);
+        registry.register(SPELL_OVERRIDES);
+        registry.register(DESTRUCTIBLE);
+        registry.register(REFLECTIVE);
+        callingPlugin.getLogger().info("Registered custom WorldGuard flags: allowed-spells, blocked-spells, allowed-spell-categories, blocked-spell-categories, allowed-wands, blocked-wands, spell-overrides, destructible, reflective");
     }
 
     public String getDestructible(RegionAssociable source, ApplicableRegionSet checkSet)

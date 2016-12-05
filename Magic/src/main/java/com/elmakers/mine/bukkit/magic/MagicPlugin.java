@@ -148,6 +148,15 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         instance = this;
     }
 
+    @Override
+	public void onLoad()
+	{
+		if (controller == null) {
+			controller = new MagicController(this);
+		}
+		controller.initializeWorldGuardFlags();
+	}
+    
 	@Override
     public void onEnable() 
 	{

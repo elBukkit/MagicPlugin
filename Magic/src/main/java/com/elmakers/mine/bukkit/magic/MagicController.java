@@ -4814,6 +4814,10 @@ public class MagicController implements MageController {
         this.backupInventories = backupInventories;
     }
     
+    public void initializeWorldGuardFlags() {
+        worldGuardManager.initializeFlags(plugin);
+    }
+    
     /*
 	 * Private data
 	 */
