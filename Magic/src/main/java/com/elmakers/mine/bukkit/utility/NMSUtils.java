@@ -65,6 +65,7 @@ public class NMSUtils {
     protected static Class<?> class_CraftBlockState;
     protected static Class<?> class_CraftLivingEntity;
     protected static Class<?> class_CraftWorld;
+    protected static Class<?> class_Consumer;
     protected static Class<?> class_Entity;
     protected static Class<?> class_EntityCreature;
     protected static Class<?> class_EntityLiving;
@@ -179,6 +180,7 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_hasKeyMethod;
     protected static Method class_CraftWorld_getTileEntityAtMethod;
     protected static Method class_CraftWorld_spawnMethod;
+    protected static boolean class_CraftWorld_spawnMethod_isLegacy;
     protected static Method class_Entity_setLocationMethod;
     protected static Method class_Entity_getIdMethod;
     protected static Method class_Entity_getDataWatcherMethod;
@@ -346,7 +348,6 @@ public class NMSUtils {
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
             class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
-            class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
             class_Entity_getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
             class_Entity_setYawPitchMethod = class_Entity.getDeclaredMethod("setYawPitch", Float.TYPE, Float.TYPE);
             class_Entity_setYawPitchMethod.setAccessible(true);
@@ -491,6 +492,15 @@ public class NMSUtils {
             class_ArmorStand_Constructor = class_EntityArmorStand.getConstructor(class_World);
 
             try {
+                try {
+                    // 1.11.?
+                    class_Consumer = fixBukkitClass("org.bukkit.util.Consumer");
+                    class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, class_Consumer, CreatureSpawnEvent.SpawnReason.class);
+                    class_CraftWorld_spawnMethod_isLegacy = false;
+                } catch (Throwable ignore) {
+                    class_CraftWorld_spawnMethod_isLegacy = true;
+                    class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
+                }
                 try {
                     // 1.11
                     class_ItemStack_consructor = class_ItemStack.getConstructor(class_NBTTagCompound);

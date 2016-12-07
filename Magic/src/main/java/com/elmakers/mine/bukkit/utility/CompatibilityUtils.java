@@ -1068,7 +1068,11 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             World world = target.getWorld();
             try {
-                entity = (Entity)class_CraftWorld_spawnMethod.invoke(world, target, entityType.getEntityClass(), spawnReason);
+                if (!class_CraftWorld_spawnMethod_isLegacy) {
+                    entity = (Entity)class_CraftWorld_spawnMethod.invoke(world, target, entityType.getEntityClass(), null, spawnReason);
+                } else {
+                    entity = (Entity)class_CraftWorld_spawnMethod.invoke(world, target, entityType.getEntityClass(), spawnReason);
+                }
             } catch (Exception ex) {
                 entity = target.getWorld().spawnEntity(target, entityType);
             }

@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## 6.4
+## 6.3.2
+
+ - Fix compatibility with recent version of 1.11, which have changed the CraftWorld.spawn method signature.
 
 ## 6.3.1
 
