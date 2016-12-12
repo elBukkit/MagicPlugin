@@ -23,7 +23,13 @@ public class EntityZombieData extends EntityExtraData {
         Zombie zombie = (Zombie)entity;
 
         zombie.setBaby(isBaby);
-        zombie.setVillagerProfession(profession);
+        
+        // No longer supported in 1.11 :(
+        try {
+            zombie.setVillagerProfession(profession);
+        } catch (Exception ex) {
+            
+        }
     }
 
     @Override
