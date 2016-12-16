@@ -127,6 +127,16 @@
 			<artifactId>Multiverse-Core</artifactId>
 			<version>2.5</version>
 			<scope>provided</scope>
+			<!--
+				Multiverse has a transitive dependency on craftbukkit 1.3 via
+				"Logging". Do not remove this exclusion or builds might break.
+			-->
+			<exclusions>
+				<exclusion>
+					<groupId>org.bukkit</groupId>
+					<artifactId>craftbukkit</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.citizensnpcs</groupId>
