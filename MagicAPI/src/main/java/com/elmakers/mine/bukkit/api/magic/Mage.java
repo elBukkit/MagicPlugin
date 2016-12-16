@@ -263,6 +263,11 @@ public interface Mage extends CostReducer {
     public Wand getBoundWand(String template);
 
     /**
+     * @return An immutable list of bound wands.
+     */
+    public List<? extends Wand> getBoundWands();
+
+    /**
      * Force a re-check of the current active wand vs the item the player is holding.
      *
      * This may activate or deactivate a wand, or both.

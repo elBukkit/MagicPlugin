@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
@@ -2561,6 +2562,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     
     public void setEntityData(EntityData entityData) {
         this.entityData = entityData;
+    }
+
+    @Override
+    public List<Wand> getBoundWands() {
+        return ImmutableList.copyOf(boundWands.values());
     }
 }
 
