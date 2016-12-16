@@ -3,10 +3,8 @@ package com.elmakers.mine.bukkit.api.wand;
 import java.util.Collection;
 import java.util.Map;
 
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,8 +12,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
 /**
  * Represents a Wand that a Mage may use to cast a Spell.
@@ -111,8 +113,8 @@ public interface Wand extends CostReducer {
     public MageController getController();
     public boolean showCastMessages();
     public boolean showMessages();
-    public String getTemplateKey();
-    public WandTemplate getTemplate();
+    public @Nullable String getTemplateKey();
+    public @Nullable WandTemplate getTemplate();
     public boolean isIndestructible();
     public void playEffects(String key);
     public boolean cast();

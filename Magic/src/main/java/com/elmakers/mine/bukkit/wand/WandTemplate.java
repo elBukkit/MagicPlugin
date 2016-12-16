@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
     private final MageController controller;
     private final String key;
@@ -25,7 +27,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private Collection<EffectPlay> currentEffects = new ArrayList<>();
     private Set<String> tags;
-    private Set<String> categories = ImmutableSet.of();
+    private @Nonnull Set<String> categories = ImmutableSet.of();
     private String creator;
     private String creatorId;
     private String migrateTemplate;
