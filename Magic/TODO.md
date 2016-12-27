@@ -1,5 +1,11 @@
 # TODO
 
+## Reported Issues
+
+ - Magic mob spawners not working (mutant just makes a zombie) - DynamoASM
+ - Cycle mode not working - LordDWT
+ - Broken in latest Spigot? (could not reproduce) - BlueYoshi68
+
 ## 1.10 Issues
  - Arrow / Gatling Gun firing backwards (could not reproduce)
  - Bugs with offhand?
@@ -16,6 +22,8 @@
 
 # Requests
 
+ - Add some sort of integration with Partec plugin
+   https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/
  - Wand Power based on Strength potion effect
  - Add ModifyPower action
  - Add Kingdoms support (It's a premium plugin, sooooooo) 
