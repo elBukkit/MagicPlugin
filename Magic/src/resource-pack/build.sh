@@ -16,7 +16,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../survival/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-RP-6-1.zip *
+zip -r -X ../Magic-RP-6-2.zip *
 cd ..
 
 echo "** BUILDING PAINTERLY **"
@@ -30,7 +30,7 @@ cd ..
 cp -R ../../survival/* .
 cp -R ../../painterly/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-painterly-RP-6-1.zip *
+zip -r -X ../Magic-painterly-RP-6-2.zip *
 cd ..
 
 echo "** BUILDING POTTER **"
