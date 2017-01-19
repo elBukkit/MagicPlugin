@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
@@ -942,6 +943,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 activeWand.tick();
             } else if (virtualExperience) {
                 resetSentExperience();
+            }
+            
+            if (Wand.LiveHotbarSkills && (activeWand == null || !activeWand.isInventoryOpen())) {
+                updateHotbarStatus();
             }
 
             // Avoid getting kicked for large jump effects
@@ -2567,6 +2572,46 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public List<Wand> getBoundWands() {
         return ImmutableList.copyOf(boundWands.values());
+    }
+
+    public void updateHotbarStatus() {
+        Player player = getPlayer();
+        if (player != null) {
+            Location location = getLocation();
+            for (int i = 0; i < Wand.HOTBAR_SIZE; i++) {
+                ItemStack spellItem = player.getInventory().getItem(i);
+                String spellKey = Wand.getSpell(spellItem);
+                if (spellKey != null) {
+                    Spell spell = getSpell(spellKey);
+                    if (spell != null) {
+                        Wand wand = getActiveWand();
+                        int targetAmount = 1;
+                        long remainingCooldown = spell.getRemainingCooldown();
+                        CastingCost requiredCost = spell.getRequiredCost();
+                        boolean canCast = spell.canCast(location);
+                        if (canCast && remainingCooldown == 0 && requiredCost == null) {
+                            targetAmount = 1;
+                        } else if (!canCast) {
+                            targetAmount = 99;
+                        } else {
+                            targetAmount = Wand.LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
+                            if (Wand.LiveHotbarCooldown && requiredCost != null && wand != null) {
+                                int mana = requiredCost.getMana();
+                                if (mana <= wand.getEffectiveManaMax() && wand.getEffectiveManaRegeneration() > 0) {
+                                    float remainingMana = mana - wand.getMana();
+                                    int targetManaTime = (int)Math.min(Math.ceil(remainingMana / wand.getEffectiveManaRegeneration()), 99);
+                                    targetAmount = Math.max(targetManaTime, targetAmount);
+                                }
+                            }
+                        }
+                        if (targetAmount == 0) targetAmount = 1;
+                        if (spellItem.getAmount() != targetAmount) {
+                            spellItem.setAmount(targetAmount);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

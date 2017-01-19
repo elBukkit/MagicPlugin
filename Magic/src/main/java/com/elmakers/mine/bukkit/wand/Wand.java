@@ -288,6 +288,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static boolean BrushGlow = false;
     public static boolean BrushItemGlow = true;
     public static boolean LiveHotbar = true;
+	public static boolean LiveHotbarSkills = false;
     public static boolean LiveHotbarCooldown = true;
     public static boolean Unbreakable = false;
 	public static boolean Undroppable = true;
@@ -3908,39 +3909,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     protected void updateHotbarStatus() {
         Player player = mage == null ? null : mage.getPlayer();
         if (player != null && LiveHotbar && getMode() == WandMode.INVENTORY && isInventoryOpen()) {
-            Location location = mage.getLocation();
-            for (int i = 0; i < HOTBAR_SIZE; i++) {
-                ItemStack spellItem = player.getInventory().getItem(i);
-                String spellKey = getSpell(spellItem);
-                if (spellKey != null) {
-                    Spell spell = mage.getSpell(spellKey);
-                    if (spell != null) {
-						int targetAmount = 1;
-                        long remainingCooldown = spell.getRemainingCooldown();
-                        CastingCost requiredCost = spell.getRequiredCost();
-						boolean canCast = spell.canCast(location);
-                        if (canCast && remainingCooldown == 0 && requiredCost == null) {
-							targetAmount = 1;
-                        } else if (!canCast) {
-							targetAmount = 99;
-						} else {
-                            targetAmount = LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
-							if (LiveHotbarCooldown && requiredCost != null) {
-                                int mana = requiredCost.getMana();
-                                if (mana <= effectiveManaMax && effectiveManaRegeneration > 0) {
-                                    float remainingMana = mana - this.mana;
-                                    int targetManaTime = (int)Math.min(Math.ceil(remainingMana / effectiveManaRegeneration), 99);
-                                    targetAmount = Math.max(targetManaTime, targetAmount);
-                                }
-                            }
-                        }
-						if (targetAmount == 0) targetAmount = 1;
-						if (spellItem.getAmount() != targetAmount) {
-							spellItem.setAmount(targetAmount);
-						}
-                    }
-                }
-            }
+            mage.updateHotbarStatus();
         }
     }
 	
@@ -5150,4 +5119,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         saveItemState();
     }
+    
+    public int getEffectiveManaMax() {
+		return effectiveManaMax;
+	}
+	
+	public int getEffectiveManaRegeneration() {
+		return effectiveManaRegeneration;
+	}
 }
