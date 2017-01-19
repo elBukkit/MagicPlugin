@@ -3,6 +3,7 @@
 ## 6.4
 
  - Add ModifyMana action
+ - Fix/Improve PVPManager integration (don't target players with PVP disabled)
 
 ## 6.3.3
 
