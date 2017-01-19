@@ -4,6 +4,7 @@
 
  - Add ModifyMana action
  - Fix/Improve PVPManager integration (don't target players with PVP disabled)
+ - Added "example: skulls" option to easily re-enable skull-based icons
 
 ## 6.3.3
 

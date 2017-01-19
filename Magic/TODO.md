@@ -2,8 +2,7 @@
 
 ## Reported Issues
 
- - Magic spawn eggs not working at all - DynamoASM
- - PVPManager integration is broken
+ - Magic spawn eggs not working at all - DynamoASM (Spigot issue.. maybe can't fix)
 
 ## 1.10 Issues
 

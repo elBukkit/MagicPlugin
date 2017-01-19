@@ -19,6 +19,31 @@ find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-RP-6-2.zip *
 cd ..
 
+echo "** BUILDING SURVIVAL-Skulls **"
+
+mkdir survival-skulls
+cd survival-skulls
+mkdir assets
+cd assets
+cp -R ../../../common/assets/* .
+cp -R ../../../skulls/assets/* .
+cd ..
+cp -R ../../survival/* .
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-skulls-RP-6-2.zip *
+cd ..
+
+
+echo "** BUILDING SKULLS **"
+
+mkdir skulls
+cd skulls
+mkdir assets
+cp -R ../../skulls/* .
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../flat-skulls.zip *
+cd ..
+
 echo "** BUILDING PAINTERLY **"
 
 mkdir painterly
