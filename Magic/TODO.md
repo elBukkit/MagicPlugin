@@ -2,11 +2,11 @@
 
 ## Reported Issues
 
- - Magic mob spawners not working (mutant just makes a zombie) - DynamoASM
- - Cycle mode not working - LordDWT
- - Broken in latest Spigot? (could not reproduce) - BlueYoshi68
+ - Magic spawn eggs not working at all - DynamoASM
+ - PVPManager integration is broken
 
 ## 1.10 Issues
+
  - Arrow / Gatling Gun firing backwards (could not reproduce)
  - Bugs with offhand?
  - Don't refund item costs when a spell goes through auto-undo
@@ -22,6 +22,7 @@
 
 # Requests
 
+ - Add "ModifyMana" action
  - Add some sort of integration with Partec plugin
    https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/
  - Wand Power based on Strength potion effect

@@ -2,8 +2,13 @@
 
 ## 6.4
 
+ - Add ModifyMana action
+
+## 6.3.3
+
  - Add work-around for broken zombie villagers in 1.11. 
    Not sure I can really fix this while keeping backwards compatibility :(
+ - Update resource pack, fix Ocarina sounds
 
 ## 6.3.2
 
