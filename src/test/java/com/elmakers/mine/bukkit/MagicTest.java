@@ -5,10 +5,10 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtilsMocker;
 import com.mvplugin.testing.FileLocations;
 import com.mvplugin.testing.ServerFactory;
-import com.mvplugin.testing.TestingServer;
+import de.slikey.effectlib.util.ParticleEffect;
+import org.bukkit.craftbukkit.v1_9_R1.TestingServer;
 import de.slikey.effectlib.util.ReflectionUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.junit.After;
@@ -25,25 +25,32 @@ import static org.junit.Assert.assertSame;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({NMSUtils.class, ReflectionUtils.PackageType.class, ReflectionUtils.class})
+@PrepareForTest({NMSUtils.class, ReflectionUtils.PackageType.class, ReflectionUtils.class, Bukkit.class,
+        ParticleEffect.class, ParticleEffect.ParticlePacket.class})
 @SuppressStaticInitializationFor({"com.elmakers.mine.bukkit.utility.NMSUtils",
-        "de.slikey.effectlib.util.ReflectionUtils", "de.slikey.effectlib.util.ReflectionUtils.PackageType"})
+        "de.slikey.effectlib.util.ReflectionUtils", "de.slikey.effectlib.util.ReflectionUtils.PackageType",
+        "de.slikey.effectlib.util.ParticleEffect", "de.slikey.effectlib.util.ParticleEffect.ParticlePacket"})
 public class MagicTest {
 
-    private Server server = null;
+    private TestingServer server = null;
     protected MagicPlugin plugin;
 
     @Before
     public void initialSetup() throws Exception {
         FileLocations.setupDirectories();
+        recreateServer();
+
         PowerMockito.mockStatic(NMSUtils.class);
         NMSUtilsMocker.initializeNMSUtilsMocking();
         PowerMockito.mockStatic(ReflectionUtils.class);
         PowerMockito.mockStatic(ReflectionUtils.PackageType.class); // TODO this is statically initializing the class
+        PowerMockito.mockStatic(ParticleEffect.class);
+        PowerMockito.mockStatic(ParticleEffect.ParticlePacket.class);
         // before the following line has a change to work or something...
-        when(ReflectionUtils.PackageType.getServerVersion()).thenReturn("1_9_R1");
+        when(ReflectionUtils.PackageType.getServerVersion()).thenReturn("v1_10_R1");
 
-        reloadServer();
+        loadPlugins(server, new PluginDescriptionFile("Magic", "Test", MagicPlugin.class.getName()));
+        plugin = (MagicPlugin) server.getPluginManager().getPlugin("Magic");
         extraSetup();
     }
 
@@ -55,7 +62,7 @@ public class MagicTest {
     @After
     public void cleanupDirectories() throws Exception {
         extraCleanup();
-        FileLocations.cleanupDirectories();
+        //FileLocations.cleanupDirectories();
     }
 
     /**
@@ -65,15 +72,14 @@ public class MagicTest {
 
 
 
-    public void reloadServer() throws Exception {
+    public void recreateServer() throws Exception {
         if (server != null) {
             server.shutdown();
         }
-        server = prepareBukkit(new PluginDescriptionFile("Magic", "Test", MagicPlugin.class.getName()));
-        plugin = (MagicPlugin) server.getPluginManager().getPlugin("Magic");
+        server = prepareBukkit();
     }
 
-    private static Server prepareBukkit(PluginDescriptionFile... plugins) throws Exception {
+    private static TestingServer prepareBukkit() throws Exception {
         final TestingServer testingServer = ServerFactory.createTestingServer();
         System.out.println("Testing server created");
 
@@ -82,14 +88,18 @@ public class MagicTest {
         field.set(null, testingServer);
         assertSame(testingServer, Bukkit.getServer());
 
-        for (PluginDescriptionFile pluginInfo : plugins) {
-            testingServer.getPluginManager().loadPlugin(pluginInfo);
-        }
-        testingServer.loadDefaultWorlds();
-        for (Plugin plugin : testingServer.getPluginManager().getPlugins()) {
-            testingServer.getPluginManager().enablePlugin(plugin);
-        }
 
         return testingServer;
+    }
+
+    private static void loadPlugins(TestingServer server, PluginDescriptionFile... plugins) {
+        for (PluginDescriptionFile pluginInfo : plugins) {
+            server.getPluginManager().loadPlugin(pluginInfo);
+        }
+        server.loadDefaultWorlds();
+        for (Plugin plugin : server.getPluginManager().getPlugins()) {
+            server.getPluginManager().enablePlugin(plugin);
+        }
+
     }
 }

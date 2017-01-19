@@ -13,8 +13,11 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.craftbukkit.v1_9_R1.TestingServer;
 import org.bukkit.entity.Player;
 import org.bukkit.help.HelpMap;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.SimpleServicesManager;
 import org.bukkit.plugin.messaging.Messenger;
@@ -288,6 +291,8 @@ public final class ServerFactory {
         when(server.getMotd()).thenReturn("Hello, world");
         when(server.getShutdownMessage()).thenReturn("Server shutting down...");
         when(server._INVALID_getOnlinePlayers()).thenReturn(data.onlinePlayers.toArray(new Player[data.onlinePlayers.size()]));
+
+        ConfigurationSerialization.registerClass(ItemMeta.class, "ItemMeta");
 
         return server;
     }
