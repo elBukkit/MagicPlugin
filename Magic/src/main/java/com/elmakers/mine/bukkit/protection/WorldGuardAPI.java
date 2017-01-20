@@ -33,8 +33,10 @@ public class WorldGuardAPI {
             try {
                 owningPlugin.getLogger().info("Pre-check for WorldGuard custom flag registration");
                 customFlags = new WGCustomFlagsManager(owningPlugin, worldGuard);
+            } catch (NoSuchMethodError incompatible) {
+                owningPlugin.getLogger().log(Level.WARNING, "Failed to set up custom flags, please make sure you are on WorldGuard 6.2 or above");
             } catch (Throwable ex) {
-                owningPlugin.getLogger().log(Level.WARNING, "Error setting up custom flags, please make sure you are on WG 6.2 or above", ex);
+                owningPlugin.getLogger().log(Level.WARNING, "Unexpected error setting up custom flags, please make sure you are on WorldGuard 6.2 or above", ex);
             }
         }
 	}
