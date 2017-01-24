@@ -179,20 +179,21 @@ public class SpellShopAction extends BaseShopAction
                 long castCount = mageSpell != null ? Math.min(mageSpell.getCastCount(), requiredCastCount) : 0;
                 Collection<PrerequisiteSpell> missingSpells = PrerequisiteSpell.getMissingRequirements(wand, spell);
 
+                ItemMeta meta = spellItem.getItemMeta();
+                List<String> itemLore = meta.getLore();
+                List<String> lore = new ArrayList<>();
+                if (spell.getSpellKey().getLevel() > 1 && itemLore.size() > 0) {
+                    lore.add(itemLore.get(0));
+                }
+                String upgradeDescription = spell.getUpgradeDescription();
+                if (showUpgrades && upgradeDescription != null && !upgradeDescription.isEmpty()) {
+                    InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
+                }
+
                 if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
                         || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)
                         || (requiredPathTags != null && !currentPath.hasAllTags(requiredPathTags))
                         || !missingSpells.isEmpty()) {
-                    ItemMeta meta = spellItem.getItemMeta();
-                    List<String> itemLore = meta.getLore();
-                    List<String> lore = new ArrayList<>();
-                    if (spell.getSpellKey().getLevel() > 1 && itemLore.size() > 0) {
-                        lore.add(itemLore.get(0));
-                    }
-                    String upgradeDescription = spell.getUpgradeDescription();
-                    if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
-                        InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
-                    }
 
                     if (mageSpell != null && !spell.getName().equals(mageSpell.getName())) {
                         lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", mageSpell.getName()));
@@ -238,13 +239,14 @@ public class SpellShopAction extends BaseShopAction
                         InventoryUtils.wrapText(ChatColor.GOLD.toString(), message, BaseSpell.MAX_LORE_LENGTH, lore);
                     }
 
-                    for (int i = (spell.getSpellKey().getLevel() > 1 ? 1 : 0); i < itemLore.size(); i++) {
-                        lore.add(itemLore.get(i));
-                    }
-                    meta.setLore(lore);
-                    spellItem.setItemMeta(meta);
                     if (message != null) InventoryUtils.setMeta(spellItem, "unpurchasable", message);
                 }
+
+                for (int i = (spell.getSpellKey().getLevel() > 1 ? 1 : 0); i < itemLore.size(); i++) {
+                    lore.add(itemLore.get(i));
+                }
+                meta.setLore(lore);
+                spellItem.setItemMeta(meta);
             }
             
             shopItems.add(new ShopItem(spellItem, worth));
