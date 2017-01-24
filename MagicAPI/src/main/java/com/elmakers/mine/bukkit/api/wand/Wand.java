@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -56,6 +57,7 @@ public interface Wand extends CostReducer {
     public Spell getSpell(String key, Mage mage);
     public SpellTemplate getSpellTemplate(String key);
     public boolean hasSpell(String key);
+    public boolean hasSpell(SpellKey spellKey);
     public boolean hasBrush(String key);
     public boolean isLocked();
     public boolean canUse(Player player);
