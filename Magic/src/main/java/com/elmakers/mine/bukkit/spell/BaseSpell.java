@@ -765,7 +765,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             requiredUpgradeTags = new HashSet<>(pathTags);
         }
 
-        requiredSpells = new ArrayList<>(ConfigurationUtils.getPrerequisiteSpells(controller, node, "required_spells", "spell " + getKey(), true));
+        requiredSpells = new ArrayList<>();
 
         List<String> removesSpellKeys = ConfigurationUtils.getStringList(node, "removes_spells");
         if (removesSpellKeys != null) {
@@ -913,6 +913,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 }
             }
         }
+    }
+    
+    public void loadPrerequisites(ConfigurationSection node)
+    {
+        requiredSpells.addAll(ConfigurationUtils.getPrerequisiteSpells(controller, node, "required_spells", "spell " + getKey(), true));
     }
 
     protected void preCast()
@@ -1701,6 +1706,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             spell = this.getClass().newInstance();
             spell.initialize(controller);
             spell.loadTemplate(spellKey.getKey(), configuration);
+            spell.loadPrerequisites(configuration);
             spell.template = this;
         } catch (Throwable ex) {
             controller.getLogger().log(Level.WARNING, "Error creating spell " + spellKey.getKey(), ex);

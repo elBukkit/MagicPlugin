@@ -2107,6 +2107,14 @@ public class MagicController implements MageController {
 
 			addSpell(newSpell);
 		}
+
+		// Second pass to fulfill requirements, which needs all spells loaded
+        for (Entry<String, ConfigurationSection> entry : spellConfigs.entrySet()) {
+            SpellTemplate template = getSpellTemplate(entry.getKey());
+            if (template != null) {
+                template.loadPrerequisites(entry.getValue());
+            }
+        }
 		
 		// Update registered mages so their spells are current
 		for (Mage mage : mages.values()) {

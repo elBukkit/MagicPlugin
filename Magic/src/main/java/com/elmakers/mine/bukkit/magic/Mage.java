@@ -1021,6 +1021,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     this.spellData.put(key, spell.getSpellData());
                 } else {
                     spell.loadTemplate(key, template);
+                    spell.loadPrerequisites(template);
                 }
             } else {
                 spells.remove(key);
