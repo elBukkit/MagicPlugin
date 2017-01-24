@@ -604,7 +604,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         // Then check for spell requirements to advance
         for (PrerequisiteSpell prereq : requiredSpells) {
-            if (!wand.hasSpell(prereq.getSpellKey().getKey())) {
+            if (!wand.hasSpell(prereq.getSpellKey())) {
                 SpellTemplate spell = wand.getController().getSpellTemplate(prereq.getSpellKey().getKey());
                 if (spell == null) {
                     wand.getController().getLogger().warning("Invalid spell required for upgrade: " + prereq.getSpellKey().getKey());
