@@ -790,7 +790,7 @@ public class ConfigurationUtils extends ConfigUtils {
             } else if (o instanceof Map) {
                 Map<?, ?> map = (Map<?, ?>) o;
                 String spell = map.get("spell").toString();
-                String progressLevelString = map.get("progress_level").toString();
+                String progressLevelString = map.containsKey("progress_level") ? map.get("progress_level").toString() : "0";
                 if (spell != null && StringUtils.isNumeric(progressLevelString)) {
                     long progressLevel = 0;
                     try {
