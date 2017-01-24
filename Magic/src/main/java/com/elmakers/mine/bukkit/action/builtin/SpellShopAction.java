@@ -223,9 +223,8 @@ public class SpellShopAction extends BaseShopAction
                         List<String> spells = new ArrayList<>(missingSpells.size());
                         for (PrerequisiteSpell s : missingSpells) {
                             SpellTemplate template = context.getController().getSpellTemplate(s.getSpellKey().getKey());
-                            String spellMessage = context.getMessage("prerequisite_spell_level", "&6Level $level $name")
-                                    .replace("$name", template.getName())
-                                    .replace("$level", Integer.toString(s.getSpellKey().getLevel()));
+                            String spellMessage = context.getMessage("prerequisite_spell_level", "&6$name")
+                                    .replace("$name", template.getName());
                             if (s.getProgressLevel() > 1) {
                                 spellMessage += context.getMessage("prerequisite_spell_progress_level", " (Progress $level/$max_level)")
                                         .replace("$level", Long.toString(s.getProgressLevel()))
