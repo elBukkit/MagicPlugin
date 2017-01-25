@@ -190,6 +190,8 @@ public class SpellShopAction extends BaseShopAction
                     InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
                 }
 
+                String unpurchasableMessage = null;
+
                 if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
                         || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)
                         || (requiredPathTags != null && !currentPath.hasAllTags(requiredPathTags))
@@ -199,25 +201,24 @@ public class SpellShopAction extends BaseShopAction
                         lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", mageSpell.getName()));
                     }
 
-                    String message = null;
                     if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)) {
                         requiredPathKey = currentPath.translatePath(requiredPathKey);
                         com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
                         if (upgradePath != null) {
-                            message = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
-                            InventoryUtils.wrapText(message, BaseSpell.MAX_LORE_LENGTH, lore);
+                            unpurchasableMessage = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
+                            InventoryUtils.wrapText(unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
                         }
                     } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                         Set<String> tags = currentPath.getMissingTags(requiredPathTags);
-                        message = context.getMessage("tags_requirement", "&r&cRequires: &6$tags").replace("$tags", messages.formatList("tags", tags, "name"));
-                        InventoryUtils.wrapText(message, BaseSpell.MAX_LORE_LENGTH, lore);
+                        unpurchasableMessage = context.getMessage("tags_requirement", "&r&cRequires: &6$tags").replace("$tags", messages.formatList("tags", tags, "name"));
+                        InventoryUtils.wrapText(unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
                     }
 
                     if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
-                        message = ChatColor.RED + context.getMessage("cast_requirement", "&r&cCasts: &6$current&f/&e$required")
+                        unpurchasableMessage = ChatColor.RED + context.getMessage("cast_requirement", "&r&cCasts: &6$current&f/&e$required")
                                 .replace("$current", Long.toString(castCount))
                                 .replace("$required", Long.toString(requiredCastCount));
-                        lore.add(message);
+                        lore.add(unpurchasableMessage);
                     }
 
                     if (!missingSpells.isEmpty()) {
@@ -234,12 +235,10 @@ public class SpellShopAction extends BaseShopAction
                             }
                             spells.add(spellMessage);
                         }
-                        message = ChatColor.RED + context.getMessage("required_spells", "&r&cRequires: $spells")
+                        unpurchasableMessage = ChatColor.RED + context.getMessage("required_spells", "&r&cRequires: $spells")
                                 .replace("$spells", StringUtils.join(spells, ", "));
-                        InventoryUtils.wrapText(ChatColor.GOLD.toString(), message, BaseSpell.MAX_LORE_LENGTH, lore);
+                        InventoryUtils.wrapText(ChatColor.GOLD.toString(), unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
                     }
-
-                    if (message != null) InventoryUtils.setMeta(spellItem, "unpurchasable", message);
                 }
 
                 for (int i = (spell.getSpellKey().getLevel() > 1 ? 1 : 0); i < itemLore.size(); i++) {
@@ -247,6 +246,8 @@ public class SpellShopAction extends BaseShopAction
                 }
                 meta.setLore(lore);
                 spellItem.setItemMeta(meta);
+
+                if (unpurchasableMessage != null) InventoryUtils.setMeta(spellItem, "unpurchasable", unpurchasableMessage);
             }
             
             shopItems.add(new ShopItem(spellItem, worth));
