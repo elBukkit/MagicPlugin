@@ -4,6 +4,7 @@
 
  - Magic spawn eggs not working at all - DynamoASM (Spigot issue.. maybe can't fix)
  - You can put a wand in a chest if you click on the chest while your wand is open
+ - If someone dies, doesn't respawn, then the server restarts- they lose their wand (player data saving issue?)
 
 ## 1.10 Issues
 

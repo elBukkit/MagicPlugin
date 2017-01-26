@@ -152,7 +152,7 @@ public class SkillsSelector implements GUIAction {
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
                 CompatibilityUtils.setDisplayName(skillItem, nameTemplate.replace("$skill", skill.heroesSkill));
-                skillItem.setAmount(99);
+                //skillItem.setAmount(99);
             }
             displayInventory.addItem(skillItem);
         }
