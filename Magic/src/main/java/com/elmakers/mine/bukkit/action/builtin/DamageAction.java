@@ -21,9 +21,9 @@ import java.util.Collection;
 
 public class DamageAction extends BaseSpellAction
 {
-    private double entityDamage;
-    private double playerDamage;
-    private double elementalDamage;
+    protected double entityDamage;
+    protected double playerDamage;
+    protected double elementalDamage;
     private boolean magicDamage;
 	private boolean magicEntityDamage;
 	private Double percentage;
