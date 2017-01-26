@@ -57,7 +57,7 @@ tornado:
         living_entity_speed: 0.2
         push: -1
         y_offset: 1
-        velocity: 5
+        velocity: 3
         cooldown: 10000
         lifetime: 3000
         interval: 4
