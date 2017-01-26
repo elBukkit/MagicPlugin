@@ -32,7 +32,7 @@ public class VelocityAction extends BaseSpellAction
     private double maxSpeed;
     private int maxSpeedAtElevation;
     private double pushDirection;
-    private int yOffset;
+    private double yOffset;
     private int exemptionDuration;
     private double maxMagnitude;
     private double maxLength;
@@ -49,7 +49,7 @@ public class VelocityAction extends BaseSpellAction
         minSpeed = parameters.getDouble("min_speed", 0);
         maxSpeed = parameters.getDouble("max_speed", 0);
         pushDirection = parameters.getDouble("push", 0);
-        yOffset = parameters.getInt("y_offset", 0);
+        yOffset = parameters.getDouble("y_offset", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
         exemptionDuration = parameters.getInt("exemption_duration", (int)(maxSpeed * 2000));
         maxMagnitude = parameters.getDouble("max_magnitude", 0);
