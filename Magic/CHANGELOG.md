@@ -3,6 +3,7 @@
 ## 6.4
 
  - Combined the survival, bending, stars and potter RPs into a single RP
+ - Update/fix light saber appearances, add sound effects, add all colors to survival configs
 
 ## 6.3.4
 

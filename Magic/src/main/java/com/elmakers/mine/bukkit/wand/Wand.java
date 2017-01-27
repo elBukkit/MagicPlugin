@@ -3252,7 +3252,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			openInventoryPage = inventoryCount == 0 ? 0 : (openInventoryPage + inventoryCount + direction) % inventoryCount;
 			updateInventory();
 			if (mage != null && inventories.size() > 1) {
-                if (inventoryCycleSound != null) {
+                if (!playEffects("cycle") && inventoryCycleSound != null) {
                     mage.playSoundEffect(inventoryCycleSound);
                 }
 				mage.getPlayer().updateInventory();
@@ -3274,7 +3274,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			int hotbarCount = hotbars.size();
 			currentHotbar = hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount;
 			updateHotbar();
-			if (inventoryCycleSound != null) {
+			if (!playEffects("cycle") && inventoryCycleSound != null) {
 				mage.playSoundEffect(inventoryCycleSound);
 			}
             updateHotbarStatus();
@@ -3293,21 +3293,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		WandMode wandMode = getMode();
 		if (wandMode == WandMode.CHEST) {
 			inventoryIsOpen = true;
-            if (inventoryOpenSound != null) {
+            if (!playEffects("open") && inventoryOpenSound != null) {
                 mage.playSoundEffect(inventoryOpenSound);
             }
-            playEffects("open");
             updateInventory();
 			mage.getPlayer().openInventory(getDisplayInventory());
 		} else if (wandMode == WandMode.INVENTORY) {
 			if (hasStoredInventory()) return;
             if (storeInventory()) {
 				inventoryIsOpen = true;
-                if (inventoryOpenSound != null) {
-                    mage.playSoundEffect(inventoryOpenSound);
-                }
                 showActiveIcon(true);
-                playEffects("open");
+                if (!playEffects("open") && inventoryOpenSound != null) {
+					mage.playSoundEffect(inventoryOpenSound);
+				}
 				updateInventory();
                 updateHotbarStatus();
 				mage.getPlayer().updateInventory();
@@ -3324,10 +3322,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             saveInventory();
             inventoryIsOpen = false;
             if (mage != null) {
-                if (inventoryCloseSound != null) {
+                if (!playEffects("close") && inventoryCloseSound != null) {
                     mage.playSoundEffect(inventoryCloseSound);
                 }
-                playEffects("close");
                 if (mode == WandMode.INVENTORY) {
                     restoreInventory();
                     showActiveIcon(false);
@@ -5009,11 +5006,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     @Override
-    public void playEffects(String effects) {
+    public boolean playEffects(String effects) {
         WandTemplate wandTemplate = getTemplate();
         if (wandTemplate != null && mage != null) {
-            wandTemplate.playEffects(mage, effects);
+            return wandTemplate.playEffects(mage, effects);
         }
+        return false;
     }
 	
 	public WandAction getDropAction() {

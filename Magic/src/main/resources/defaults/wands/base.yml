@@ -51,7 +51,7 @@ base_lightsaber:
     effects:
         open:
         -  class: EffectSingle
-           sound: magic.ignite
+           sound: magic.saberon
            sound_volume: 1
            location: origin
            effectlib:
@@ -61,7 +61,7 @@ base_lightsaber:
              particle: flame
         close:
         -  class: EffectSingle
-           sound: magic.zap
+           sound: magic.saberoff
            sound_volume: 1
            location: origin
            effectlib:

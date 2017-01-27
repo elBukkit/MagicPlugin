@@ -118,7 +118,7 @@ public interface Wand extends CostReducer {
     public @Nullable String getTemplateKey();
     public @Nullable WandTemplate getTemplate();
     public boolean isIndestructible();
-    public void playEffects(String key);
+    public boolean playEffects(String key);
     public boolean cast();
     public boolean isBound();
     public boolean isSoul();

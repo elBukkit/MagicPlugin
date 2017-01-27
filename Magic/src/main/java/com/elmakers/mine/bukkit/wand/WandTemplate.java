@@ -109,46 +109,48 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     }
 
     @Override
-    public void playEffects(Mage mage, String key)
+    public boolean playEffects(Mage mage, String key)
     {
-        playEffects(mage, key, 1.0f);
+        return playEffects(mage, key, 1.0f);
     }
 
     @Override
-    public void playEffects(Mage mage, String effectName, float scale)
+    public boolean playEffects(Mage mage, String effectName, float scale)
     {
+        Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects(effectName);
+        if (effects.isEmpty()) return false;
+        
         currentEffects.clear();
         Location wandLocation = null;
         Location location = mage.getLocation();
         Location eyeLocation = mage.getEyeLocation();
-        Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects(effectName);
-        if (effects.size() > 0)
+        
+        Entity sourceEntity = mage.getEntity();
+        for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects)
         {
-            Entity sourceEntity = mage.getEntity();
-            for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects)
-            {
-                // Track effect plays for cancelling
-                player.setEffectPlayList(currentEffects);
+            // Track effect plays for cancelling
+            player.setEffectPlayList(currentEffects);
 
-                // Set scale
-                player.setScale(scale);
+            // Set scale
+            player.setScale(scale);
 
-                // Set material and color
-                player.setColor(mage.getEffectColor());
-                String overrideParticle = mage.getEffectParticleName();
-                player.setParticleOverride(overrideParticle);
+            // Set material and color
+            player.setColor(mage.getEffectColor());
+            String overrideParticle = mage.getEffectParticleName();
+            player.setParticleOverride(overrideParticle);
 
-                Location source = player.shouldUseEyeLocation() ? eyeLocation : location;
-                if (player.shouldUseWandLocation()) {
-                    if (wandLocation == null) {
-                        wandLocation = mage.getWandLocation();
-                    }
-                    location = wandLocation;
+            Location source = player.shouldUseEyeLocation() ? eyeLocation : location;
+            if (player.shouldUseWandLocation()) {
+                if (wandLocation == null) {
+                    wandLocation = mage.getWandLocation();
                 }
-
-                player.start(source, sourceEntity, null, null, null);
+                location = wandLocation;
             }
+
+            player.start(source, sourceEntity, null, null, null);
         }
+        
+        return true;
     }
 
     @Override

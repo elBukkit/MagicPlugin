@@ -917,5 +917,25 @@
             "flute/24b"
         ],
         "category": "player"
+    },
+    "magic.saberon": {
+      "category":"player",
+      "sounds":[
+          {"weight":3,"pitch":1,"volume":1,"stream":false,"name":"magic/saberon"},
+          {"pitch":0.7,"volume":0.9,"stream":false,"name":"magic/saberon"},
+          {"pitch":0.8,"volume":1,"stream":false,"name":"magic/saberon"},
+          {"pitch":1.2,"volume":0.8,"stream":false,"name":"magic/saberon"},
+          {"pitch":1.3,"volume":1,"stream":false,"name":"magic/saberon"}
+      ]
+    },
+    "magic.saberoff": {
+      "category":"player",
+      "sounds":[
+          {"weight":3,"pitch":1,"volume":1,"stream":false,"name":"magic/saberoff"},
+          {"pitch":0.7,"volume":0.9,"stream":false,"name":"magic/saberoff"},
+          {"pitch":0.8,"volume":1,"stream":false,"name":"magic/saberoff"},
+          {"pitch":1.2,"volume":0.8,"stream":false,"name":"magic/saberoff"},
+          {"pitch":1.3,"volume":1,"stream":false,"name":"magic/saberoff"}
+      ]
     }
 }

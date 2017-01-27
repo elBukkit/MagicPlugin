@@ -14,8 +14,8 @@ public interface WandTemplate {
     public boolean hasTag(String tag);
     public String getCreatorId();
     public String getCreator();
-    public void playEffects(Mage mage, String key);
-    public void playEffects(Mage mage, String key, float scale);
+    public boolean playEffects(Mage mage, String key);
+    public boolean playEffects(Mage mage, String key, float scale);
     public WandTemplate getMigrateTemplate();
     public String migrateIcon(String icon);
     public boolean isSoul();
