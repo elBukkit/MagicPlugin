@@ -43,11 +43,30 @@ try {
     }
 
 	$general = parseConfigFile('config', true);
+	if (!isset($general['load_default_spells'])) $general['load_default_spells'] = true;
+	if (!isset($general['disable_default_spells'])) $general['disable_default_spells'] = false;
+	if (!isset($general['load_default_wands'])) $general['load_default_wands'] = true;
+	if (!isset($general['load_default_crafting'])) $general['load_default_crafting'] = true;
+	if (!isset($general['load_default_enchanting'])) $general['load_default_enchanting'] = true;
 	$allSpells = parseConfigFile('spells', $general['load_default_spells'], $general['disable_default_spells']);
 	$wands = parseConfigFile('wands', $general['load_default_wands']);
 	$crafting = parseConfigFile('crafting', $general['load_default_crafting']);
 	$enchantingConfig = parseConfigFile('enchanting', $general['load_default_enchanting']);
 	$messages = parseConfigFile('messages', true);
+	
+	// Load resource pack textures
+	$spellJson = json_decode(file_get_contents('rp/default/assets/minecraft/models/item/diamond_axe.json'), true);
+	$spellJson = $spellJson['overrides'];
+	$spellIcons = array();
+	$diamondUses = 1562;
+	foreach ($spellJson as $spellPredicate) {
+		$durability = round($spellPredicate['predicate']['damage'] * $diamondUses);
+		$texture = str_replace('item/', '', $spellPredicate['model']);
+		array_push($spellIcons,
+			array('texture' => $texture, 'durability' => $durability)
+		);
+	}
+	
 } catch (Exception $ex) {
 	die($ex->getMessage());
 }
@@ -175,7 +194,7 @@ if (isset($general['currency'])) {
 }
 
 // Look up category naming info
-$categories = $messages['categories'];
+$categories = isset($messages['categories']) ? $messages['categories'] : array();
 
 $worthBase = isset($general['worth_base']) ? $general['worth_base'] : 1;
 
@@ -366,6 +385,7 @@ function printIcon($iconUrl, $title) {
 				<li><a href="#upgrades">Upgrades</a></li>
 				<li id="booksTab"><a href="#books">Books</a></li>
                 <li><a href="#textures">Textures</a></li>
+				<li><a href="#icons">Icons</a></li>
 			</ul>
 			<div id="overview">
 			  <div class="scrollingTab">
@@ -642,23 +662,41 @@ function printIcon($iconUrl, $title) {
 			  	Select a book to read.
 			  </div>
 			</div>
-            <div id="textures">
+            <div id="icons">
                 <div class="scrollingTab">
                     <div>
                         <div class="title">
-                            You can use any player skin for spell icons, here are <?= count($textures) ?> that have been made or chosen specifically for Magic.
+                            There are <?= count($spellIcons) ?> spell icons available in the Magic RP, each is a variant of the diamond axe item.
                         </div>
-                        <ul id="textureList">
+                        <ul id="iconList">
                             <?php
-                            foreach ($textures as $texture) {
+                            foreach ($spellIcons as $spellIcon) {
+								if ($spellIcon['durability'] == 0) continue;
                                 $icon = printIcon($texture, $texture);
-                                echo '<li class="ui-widget-content">' . $icon . '<span class="textureURL">' . $texture . '</span></li>';
+                                echo '<li class="ui-widget-content"><img src="rp/default/assets/minecraft/textures/items/' . $spellIcon['texture'] . '.png"><span class="iconItem">diamond_axe:' . $spellIcon['durability'] . '</span></li>';
                             }
                             ?>
                         </ul>
                     </div>
                 </div>
             </div>
+			<div id="textures">
+				<div class="scrollingTab">
+					<div>
+						<div class="title">
+							Legacy configs use player skulls for icons, here are <?= count($textures) ?> that have been made or chosen specifically for Magic.
+						</div>
+						<ul id="textureList">
+							<?php
+							foreach ($textures as $texture) {
+								$icon = printIcon($texture, $texture);
+								echo '<li class="ui-widget-content">' . $icon . '<span class="textureURL">' . $texture . '</span></li>';
+							}
+							?>
+						</ul>
+					</div>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
