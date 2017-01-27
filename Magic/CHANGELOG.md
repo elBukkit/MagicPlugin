@@ -6,6 +6,8 @@
  - Fix/Improve PVPManager integration (don't target players with PVP disabled)
  - Added "example: skulls" option to easily re-enable skull-based icons
  - Add live_hotbar_skills option to allow skills to have a cooldown timer
+ - Reduce Tornado velocity to avoid server-side velocity checks
+ - Add disabled_icon option to spells, to show a different icon when they are not castable
 
 ## 6.3.3
 

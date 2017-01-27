@@ -166,6 +166,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private Collection<PrerequisiteSpell> requiredSpells;
     private List<SpellKey> removesSpells;
     private MaterialAndData icon = new MaterialAndData(Material.AIR);
+    private MaterialAndData disabledIcon = null;
     private String iconURL = null;
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
@@ -821,6 +822,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Load basic properties
         icon = ConfigurationUtils.getMaterialAndData(node, "icon", icon);
+        disabledIcon = ConfigurationUtils.getMaterialAndData(node, "disabled_icon", null);
         iconURL = node.getString("icon_url");
         color = ConfigurationUtils.getColor(node, "color", null);
         worth = node.getDouble("worth", 0);
@@ -1753,6 +1755,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public final com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon()
     {
         return icon;
+    }
+
+    @Override
+    public final com.elmakers.mine.bukkit.api.block.MaterialAndData getDisabledIcon()
+    {
+        return disabledIcon;
     }
 
     @Override

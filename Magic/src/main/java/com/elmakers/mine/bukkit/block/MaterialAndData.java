@@ -524,6 +524,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return stack;
     }
 
+    @Override
     public ItemStack applyToItem(ItemStack stack)
     {
         stack.setType(material);

@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.action.TeleportTask;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.data.BrushData;
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.SpellData;
@@ -2595,6 +2596,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         } else if (!canCast) {
                             targetAmount = 99;
                         } else {
+                            canCast = false;
                             targetAmount = Wand.LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
                             if (Wand.LiveHotbarCooldown && requiredCost != null && wand != null) {
                                 int mana = requiredCost.getMana();
@@ -2602,12 +2604,28 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                     float remainingMana = mana - wand.getMana();
                                     int targetManaTime = (int)Math.min(Math.ceil(remainingMana / wand.getEffectiveManaRegeneration()), 99);
                                     targetAmount = Math.max(targetManaTime, targetAmount);
+                                } else {
+                                    targetAmount = 99;
                                 }
                             }
                         }
                         if (targetAmount == 0) targetAmount = 1;
                         if (spellItem.getAmount() != targetAmount) {
                             spellItem.setAmount(targetAmount);
+                        }
+
+                        MaterialAndData disabledIcon = spell.getDisabledIcon();
+                        MaterialAndData spellIcon = spell.getIcon();
+                        if (disabledIcon != null && spellIcon != null) {
+                            if (!canCast) {
+                                if (disabledIcon.getMaterial() != spellItem.getType() || disabledIcon.getData() != spellItem.getDurability()) {
+                                    disabledIcon.applyToItem(spellItem);
+                                }
+                            } else {
+                                if (spellIcon.getMaterial() != spellItem.getType() || spellIcon.getData() != spellItem.getDurability()) {
+                                    spellIcon.applyToItem(spellItem);
+                                }
+                            }
                         }
                     }
                 }

@@ -59,4 +59,5 @@ public interface MaterialAndData {
     public void setCommandLine(String commandLine);
     public void setCustomName(String customName);
     public void setRawData(Object data);
+    public ItemStack applyToItem(ItemStack stack);
 }

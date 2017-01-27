@@ -26,6 +26,10 @@
 # broomstick:
 #   enabled: false
 
-# Enable crafting ink from coal and bonemean
+# Enable crafting ink from coal and bonemeal
 # coal_ink:
+#   enabled: true
+
+# Enable crafting leather from zombie flesh
+# zombie_leather:
 #   enabled: true
