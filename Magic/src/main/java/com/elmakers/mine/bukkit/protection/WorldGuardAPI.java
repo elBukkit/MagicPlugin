@@ -21,7 +21,7 @@ import java.util.logging.Level;
 
 public class WorldGuardAPI {
 	private WorldGuardPlugin worldGuard = null;
-    private WGCustomFlagsManager customFlags = null;
+    private WorldGuardFlagsManager customFlags = null;
 
 	public boolean isEnabled() {
 		return worldGuard != null;
@@ -32,7 +32,7 @@ public class WorldGuardAPI {
             worldGuard = (WorldGuardPlugin)plugin;
             try {
                 owningPlugin.getLogger().info("Pre-check for WorldGuard custom flag registration");
-                customFlags = new WGCustomFlagsManager(owningPlugin, worldGuard);
+                customFlags = new WorldGuardFlagsManager(owningPlugin, worldGuard);
             } catch (NoSuchMethodError incompatible) {
                 owningPlugin.getLogger().log(Level.WARNING, "Failed to set up custom flags, please make sure you are on WorldGuard 6.2 or above");
             } catch (Throwable ex) {
