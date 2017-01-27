@@ -31,7 +31,6 @@ base_sword:
     undroppable: true
     indestructible: true
 
-
 base_lightsaber:
     icon_inactive: wood_hoe:14
     icon_inactive_delay: 500

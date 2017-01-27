@@ -2,9 +2,9 @@
 # Lightsabers, which are represented as wands
 #
 
-lightsaber_base:
-    icon_inactive: monster_eggs
-    icon_inactive_delay: 2000
+base_lightsaber:
+    icon_inactive: wood_hoe:14
+    icon_inactive_delay: 500
     drop: toggle
     left_click: none
     swap: cycle_hotbar
@@ -80,11 +80,12 @@ lightsaber_base:
              iterations: 1
              radius: 0.3
              particle: smoke_normal
-    
+             
 lightsaber_red:
-    inherit: lightsaber_base
+    inherit: base_lightsaber
     path: acolyte
-    icon: diamond_sword
+    migrate_icon: diamond_sword
+    icon: gold_sword:4
     effect_color: 'FF0000'
     active_spell: push
     spells:
@@ -92,9 +93,10 @@ lightsaber_red:
         - fire
 
 lightsaber_green:
-    inherit: lightsaber_base
+    inherit: base_lightsaber
     path: youngling
-    icon: wood_sword
+    migrate_icon: wood_sword
+    icon: gold_sword:2
     effect_color: '00FF00'
     active_spell: push
     spells:
@@ -102,9 +104,10 @@ lightsaber_green:
         - pull
 
 lightsaber_blue:
-    inherit: lightsaber_base
+    inherit: base_lightsaber
     path: youngling
-    icon: stone_sword
+    migrate_icon: stone_sword
+    icon: gold_sword:3
     effect_color: '0000FF'
     active_spell: push
     spells:
@@ -112,9 +115,10 @@ lightsaber_blue:
         - pull
 
 lightsaber_purple:
-    inherit: lightsaber_base
+    inherit: base_lightsaber
     path: youngling
-    icon: iron_sword
+    migrate_icon: iron_sword
+    icon: gold_sword:5
     effect_color: 'FFFF00'
     active_spell: push
     spells:
@@ -122,9 +126,10 @@ lightsaber_purple:
         - pull
 
 lightsaber_orange:
-    inherit: lightsaber_base
+    inherit: base_lightsaber
     path: youngling
-    icon: gold_sword
+    migrate_icon: gold_sword
+    icon: gold_sword:4
     effect_color: 'FF00FF'
     active_spell: push
     spells:
@@ -132,8 +137,9 @@ lightsaber_orange:
         - pull
 
 lightsaber_hilt:
-    inherit: lightsaber_base
-    icon: monster_eggs
+    inherit: base_lightsaber
+    migrate_icon: monster_eggs
+    icon: wood_hoe:14
     effect_color: '00FF00'
     active_spell: push
     spells:
@@ -143,7 +149,8 @@ lightsaber_hilt:
 
 wolf:
     path: jedi_master
-    icon: gold_hoe
+    migrate_icon: gold_hoe
+    icon: wood_hoe:7
     keep: true
     bound: true
     undroppable: true

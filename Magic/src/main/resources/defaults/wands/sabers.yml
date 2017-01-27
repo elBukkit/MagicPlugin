@@ -29,3 +29,23 @@ lightsaber_blue:
     spells:
         - push
         - pull
+        
+lightsaber_orange:
+    inherit: base_lightsaber
+    path: jedi
+    icon: gold_sword:4
+    effect_color: '0000FF'
+    active_spell: push
+    spells:
+        - push
+        - pull
+        
+lightsaber_purple:
+    inherit: base_lightsaber
+    path: jedi
+    icon: gold_sword:5
+    effect_color: '0000FF'
+    active_spell: push
+    spells:
+        - push
+        - pull
