@@ -2,6 +2,7 @@
 
 ## 6.4
 
+ - Combined the survival, bending, stars and potter RPs into a single RP
 
 ## 6.3.4
 

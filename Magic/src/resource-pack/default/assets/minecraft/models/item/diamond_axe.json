@@ -229,6 +229,7 @@
     {"predicate": {"damaged": 0, "damage": 0.142765685019}, "model": "item/upgrades/hotbar3"},
     {"predicate": {"damaged": 0, "damage": 0.143405889885}, "model": "item/upgrades/undroppable"},
     {"predicate": {"damaged": 0, "damage": 0.14404609475}, "model": "item/upgrades/antihunger"},
+    {"predicate": {"damaged": 0, "damage": 0.144686299615877}, "model": "item/spells/feather"},
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/diamond_axe"}
   ]
 }

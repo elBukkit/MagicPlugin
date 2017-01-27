@@ -4,7 +4,8 @@
 
 airbending:
     path: airbending
-    icon: gold_axe
+    migrate_icon: gold_axe
+    icon: wood_hoe:19
     mana_max: 50
     mana: 50
     mana_regeneration: 5
@@ -24,7 +25,8 @@ airbending:
 
 waterbending:
     path: waterbending
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:20
     mana_max: 50
     mana: 50
     mana_regeneration: 5
@@ -42,7 +44,8 @@ waterbending:
 
 earthbending:
     path: earthbending
-    icon: gold_hoe
+    migrate_icon: gold_hoe
+    icon: wood_hoe:21
     mana_max: 50
     mana: 50
     mana_regeneration: 5
@@ -63,7 +66,8 @@ earthbending:
 
 firebending:
     path: firebending
-    icon: gold_pickaxe
+    migrate_icon: gold_pickaxe
+    icon: wood_hoe:22
     mana_max: 50
     mana: 50
     mana_regeneration: 5
@@ -81,7 +85,10 @@ firebending:
         - fireball
 
 avatar:
+    migrate_icon: gold_pickaxe
     path: avatar
+    icon: wood_hoe:23
+    migrate_icon: wood_hoe
     protection: 0.9
     protection_fire: 0.9
     protection_falling: 1
@@ -120,7 +127,8 @@ avatar:
 
 wolf:
     path: avatar
-    icon: gold_hoe
+    icon: wood_hoe:7
+    migrate_icon: gold_hoe
     keep: true
     bound: true
     fill: true
