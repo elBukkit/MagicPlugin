@@ -34,12 +34,17 @@ function parseConfigFile($name, $loadDefaults, $disableDefaults = false) {
 }
 
 // Load and parse Magic configuration files
+$path = 'default';
+$texturePath = 'default';
 try {
     global $magicRootFolder;
     // Look for path override
     if (isset($_REQUEST['example'])) {
         $path = $_REQUEST['example'];
         $magicRootFolder = "$magicRootFolder/examples/$path";
+        
+        // special-case hackiness to show painterly icons
+        if ($path === 'painterly') $texturePath = 'painterly';
     }
 
 	$general = parseConfigFile('config', true);
@@ -673,7 +678,7 @@ function printIcon($iconUrl, $title) {
                             foreach ($spellIcons as $spellIcon) {
 								if ($spellIcon['durability'] == 0) continue;
                                 $icon = printIcon($texture, $texture);
-                                echo '<li class="ui-widget-content"><img src="rp/default/assets/minecraft/textures/items/' . $spellIcon['texture'] . '.png"><span class="iconItem">diamond_axe:' . $spellIcon['durability'] . '</span></li>';
+                                echo '<li class="ui-widget-content"><img src="rp/' . $texturePath . '/assets/minecraft/textures/items/' . $spellIcon['texture'] . '.png"> <span class="iconItem">diamond_axe:' . $spellIcon['durability'] . '</span><span class="iconName">(' . $spellIcon['texture'] . ')</span></li>';
                             }
                             ?>
                         </ul>
