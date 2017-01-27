@@ -14,7 +14,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
 
-public class WorldGuardFlagsManager {
+public class WorldGuardFlagsManager implements WorldGuardFlags {
 
     private final WorldGuardPlugin customFlags;
 

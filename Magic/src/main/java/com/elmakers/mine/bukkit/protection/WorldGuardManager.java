@@ -29,6 +29,7 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
                 plugin.getLogger().info("WorldGuard not found, region protection and pvp checks will not be used.");
             } else {
                 plugin.getLogger().info("WorldGuard found, will respect build permissions for construction spells");
+                worldGuard.checkFlagSupport();
             }
         } else {
             worldGuard = null;

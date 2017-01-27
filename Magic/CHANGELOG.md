@@ -8,6 +8,7 @@
  - Add live_hotbar_skills option to allow skills to have a cooldown timer
  - Reduce Tornado velocity to avoid server-side velocity checks
  - Add disabled_icon option to spells, to show a different icon when they are not castable
+ - Restore compatibility with WGCustomFlags plugin as a fallback
 
 ## 6.3.3
 
