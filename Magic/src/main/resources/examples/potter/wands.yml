@@ -2,27 +2,19 @@
 # Add some Harry Potter themed wand templates
 #
 
-default:
-    icon: wood_hoe
-    path: year1
-    bound: true
-    keep: true
-    undroppable: true
-    quiet: 1
-    mana_max: 50
-    mana: 50
-    mana_regeneration: 6
-    effect_color: '888888'
-    effect_bubbles: false
-
-wandbox:
-    icon: wood_hoe,gold_axe,gold_pickaxe
+wand:
+    icon: wood_hoe:24,wood_hoe:25,wood_hoe:26
+    migrate_icons:
+      wood_hoe: wood_hoe:24
+      gold_axe: wood_hoe:25
+      gold_pickaxe: wood_hoe:26
     randomize_icon: wood_step
     active_spell: flagrate
     path: year1
     bound: true
     keep: true
     undroppable: true
+    indestructible: true
     quiet: 1
     mana_max: 50
     mana: 50
@@ -33,8 +25,10 @@ wandbox:
      - flagrate
 
 elder:
-    icon: iron_hoe
+    migrate_icon: iron_hoe
+    icon: wood_hoe:27
     undroppable: true
+    indestructible: true
     path: graduate
     bound: true
     keep: true
@@ -69,8 +63,10 @@ elder:
       - finiteincantatem
 
 wolf:
-    icon: gold_hoe
+    icon: wood_hoe:7
+    migrate_icon: gold_hoe
     undroppable: true
+    indestructible: true
     path: graduate
     keep: true
     bound: true
@@ -105,8 +101,10 @@ wolf:
       - reductomaxima
 
 unspeakable:
-    icon: wood_hoe
+    icon: wood_hoe:24
+    migrate_icon: wood_hoe
     undroppable: true
+    indestructible: true
     path: graduate
     bound: true
     keep: true
@@ -129,8 +127,10 @@ unspeakable:
     overrides: patronus.type sheep, patronus.variant blue
 
 slytherinwand:
-    icon: gold_axe
+    migrate_icon: gold_axe
+    icon: wood_hoe:25
     undroppable: true
+    indestructible: true
     path: graduate
     bound: true
     keep: true
@@ -163,7 +163,8 @@ crudwand:
 
 video:
     active_spell: superfly
-    icon: gold_axe
+    icon: wood_hoe:25
+    migrate_icon: gold_axe
     indestructible: true
     bound: true
     locked: true
@@ -336,7 +337,8 @@ minister:
     bound: true
     path: broom
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:29
     indestructible: true
     locked: true
     effect_color: '00AAFF'
@@ -349,7 +351,8 @@ unspeakabroom:
     path: broom
     bound: true
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:29
     indestructible: true
     locked: true
     effect_color: '00FFFF'
@@ -362,7 +365,8 @@ headmaster:
     path: broom
     bound: true
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:29
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
@@ -375,7 +379,8 @@ firebolt:
     path: broom
     bound: true
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:29
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
@@ -386,7 +391,8 @@ firebolt:
 crudfirebolt:
     mode: cast
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:29
     indestructible: false
     locked: true
     effect_color: 'FF00FF'
@@ -400,7 +406,8 @@ nimbus:
     path: broom
     bound: true
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
     indestructible: true
     locked: true
     effect_color: '880088'
@@ -411,7 +418,8 @@ nimbus:
 crudnimbus:
     mode: cast
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
     indestructible: false
     locked: true
     effect_color: '880088'
@@ -425,7 +433,8 @@ comet290:
     path: broom
     bound: true
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
@@ -438,7 +447,8 @@ cleansweep1:
     path: broom
     bound: true
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
     indestructible: false
     locked: true
     effect_color: 'FFFF00'
@@ -451,7 +461,8 @@ bluebottle:
     path: broom
     bound: true
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
     indestructible: false
     locked: true
     effect_color: '0000FF'
@@ -463,7 +474,8 @@ crudbroom:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
     indestructible: false
     locked: true
     uses: 10
@@ -885,20 +897,23 @@ silent:
     icon: nether_star
     quiet: -3
 
-wood_hoe_upgrade:
+skinny_upgrade:
+    name: Skinny Wand Appearance
     upgrade: true
-    icon: wood_hoe
-    upgrade_icon: wood_hoe
+    icon: wood_hoe:24
+    upgrade_icon: wood_hoe:24
 
-gold_pickaxe_upgrade:
+brown_upgrade:
+    name: Brown Wand Appearance
     upgrade: true
-    icon: gold_pickaxe
-    upgrade_icon: gold_pickaxe
+    icon: wood_hoe:26
+    upgrade_icon: wood_hoe:26
 
-gold_axe_upgrade:
+black_upgrade:
+    name: Black Wand Appearance
     upgrade: true
-    icon: gold_axe
-    upgrade_icon: gold_axe
+    icon: wood_hoe:25
+    upgrade_icon: wood_hoe:25
 
 hotbar2:
     upgrade: true

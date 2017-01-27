@@ -1,8 +1,8 @@
 {
-"__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta",
+"__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta, used with permission in NathanWolf's Magic plugin",
 "ambientocclusion": false,
 "textures": {
-    "texture": "items/broom"
+    "texture": "items/custom/broom2"
 },
 "elements": [ 
 {
@@ -533,36 +533,46 @@
     }
 }
 ],
-"display": {
-    "thirdperson": {
-        "rotation": [ -180, 90, 0 ],
-        "translation": [ 0, 1.5, 1.9 ],
-        "scale": [ 2.5, 2.5, 2.5 ]
-    },
-    "head": {
-        "rotation": [ -180, 90, 0 ],
-        "translation": [ 0, 6.6, 0.9 ],
-        "scale": [ 4, 4, 4 ]
-    },
-    "ground": {
-        "rotation": [ 0, 0, 0 ],
-        "translation": [ 0, -15, 0 ],
-        "scale": [ 4, 4, 4 ]
-    },
-    "fixed": {
-        "rotation": [ 0, 0, 0 ],
-        "translation": [ 0, 0, -0.5 ],
-        "scale": [ 2.5, 2.5, 2.5 ]
-    },
-    "firstperson": {
-        "rotation": [ -1, 44, 91 ],
-        "translation": [ 0, 1.2, 0.9 ],
-        "scale": [ 4, 4, 4 ]
-    },
-    "gui": {
-        "rotation": [ -3, 135, 43 ],
-        "translation": [ 0, 0, 0 ],
-        "scale": [ 2, 2, 2 ]
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ 90, 90, 0 ],
+            "translation": [ 0, -6.43, 1 ],
+            "scale": [ 2.5, 2.5, 2.5 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 90, -90, 0 ],
+            "translation": [ 0, -6.43, 1 ],
+            "scale": [ 2.5, 2.5, 2.5 ]
+        },
+        "head": {
+            "rotation": [ 0, 90, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 4, 4, 4 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, -4, 0 ],
+            "scale": [ 2, 2, 2 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, -0.5 ],
+            "scale": [ 1.15, 1.15, 1.15 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 90, 75 ],
+            "translation": [ 0, 2, 2 ],
+            "scale": [ 1.7, 1.7, 1.7 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, -90, -75 ],
+            "translation": [ 0, 2, 2 ],
+            "scale": [ 1.7, 1.7, 1.7 ]
+        },
+        "gui": {
+            "rotation": [ 26, 16, 41 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1.2, 1.2, 1.2 ]
+        }
     }
-}
 }
