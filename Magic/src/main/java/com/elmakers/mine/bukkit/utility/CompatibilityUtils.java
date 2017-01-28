@@ -989,6 +989,7 @@ public class CompatibilityUtils extends NMSUtils {
                 nmsProjectile = constructor.newInstance(nmsWorld);
             } catch (Exception ex) {
                 nmsProjectile = null;
+                Bukkit.getLogger().log(Level.WARNING, "Error spawning projectile", ex);
             }
 
             if (nmsProjectile == null) {
