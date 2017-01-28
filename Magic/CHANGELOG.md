@@ -4,6 +4,7 @@
 
  - Combined the survival, bending, stars and potter RPs into a single RP
  - Update/fix light saber appearances, add sound effects, add all colors to survival configs
+ - The (optional) zombie flesh -> leather recipe now requires 4 zombie flesh instead of 9
 
 ## 6.3.4
 

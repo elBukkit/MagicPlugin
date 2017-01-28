@@ -6,7 +6,7 @@ zombie_leather:
   output_type: item
   materials:
     o: rotten_flesh
-  row_1: ooo
-  row_2: ooo
-  row_3: ooo
+  row_1: oo
+  row_2: oo
+  row_3: 
 
