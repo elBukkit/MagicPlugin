@@ -21,10 +21,10 @@ import java.util.List;
 
 public class AreaOfEffectAction extends CompoundEntityAction
 {
-    private int radius;
-    private int yRadius;
-    private int targetCount;
-    private boolean targetSource;
+    protected int radius;
+    protected int yRadius;
+    protected int targetCount;
+    protected boolean targetSource;
 
     @Override
     public void reset(CastContext context) {
