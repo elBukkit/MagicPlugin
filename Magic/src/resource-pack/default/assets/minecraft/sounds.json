@@ -9,10 +9,10 @@
     "category": "player"
   },
   "magic.sonic": {
-      "sounds": [
-          "magic/sonic"
-      ],
-      "category": "player"
+    "sounds": [
+      "magic/sonic"
+    ],
+    "category": "player"
   },
   "magic.crack": {
     "sounds": [
@@ -775,208 +775,257 @@
     "category": "player"
   },
   "flute.1C": {
-        "sounds": [
-            "flute/1cmid"
-        ],
-        "category": "player"
-    },
-    "flute.2C#": {
-        "sounds": [
-            "flute/2c#"
-        ],
-        "category": "player"
-    },
-    "flute.3D": {
-        "sounds": [
-            "flute/3d"
-        ],
-        "category": "player"
-    },
-    "flute.4D#": {
-        "sounds": [
-            "flute/4d#"
-        ],
-        "category": "player"
-    },
-    "flute.5E": {
-        "sounds": [
-            "flute/5e"
-        ],
-        "category": "player"
-    },
-    "flute.6F": {
-        "sounds": [
-            "flute/6F"
-        ],
-        "category": "player"
-    },
-    "flute.7F#": {
-        "sounds": [
-            "flute/7f#"
-        ],
-        "category": "player"
-    },
-    "flute.8G": {
-        "sounds": [
-            "flute/8G"
-        ],
-        "category": "player"
-    },
-    "flute.9G#": {
-        "sounds": [
-            "flute/9g#"
-        ],
-        "category": "player"
-    },
-    "flute.10A": {
-        "sounds": [
-            "flute/10a"
-        ],
-        "category": "player"
-    },
-    "flute.11A#": {
-        "sounds": [
-            "flute/11a#"
-        ],
-        "category": "player"
-    },
-    "flute.12B": {
-        "sounds": [
-            "flute/12b"
-        ],
-        "category": "player"
-    },
-    "flute.13Coctave": {
-        "sounds": [
-            "flute/13coctave"
-        ],
-        "category": "player"
-    },
-    "flute.14C#": {
-        "sounds": [
-            "flute/14c#"
-        ],
-        "category": "player"
-    },
-    "flute.15D": {
-        "sounds": [
-            "flute/15d"
-        ],
-        "category": "player"
-    },
-    "flute.16D#": {
-        "sounds": [
-            "flute/16d#"
-        ],
-        "category": "player"
-    },
-    "flute.17E": {
-        "sounds": [
-            "flute/17e"
-        ],
-        "category": "player"
-    },
-    "flute.18F": {
-        "sounds": [
-            "flute/18f"
-        ],
-        "category": "player"
-    },
-    "flute.19F#": {
-        "sounds": [
-            "flute/19f#"
-        ],
-        "category": "player"
-    },
-    "flute.20G": {
-        "sounds": [
-            "flute/20g"
-        ],
-        "category": "player"
-    },
-    "flute.21G#": {
-        "sounds": [
-            "flute/21g#"
-        ],
-        "category": "player"
-    },
-    "flute.22A": {
-        "sounds": [
-            "flute/22a"
-        ],
-        "category": "player"
-    },
-    "flute.23A#": {
-        "sounds": [
-            "flute/23a#"
-        ],
-        "category": "player"
-    },
-    "flute.24B": {
-        "sounds": [
-            "flute/24b"
-        ],
-        "category": "player"
-    },
-    "magic.saberon": {
-      "category":"player",
-      "sounds":[
-          {"weight":3,"pitch":1,"volume":1.3,"stream":false,"name":"saber/saberon"},
-          {"pitch":0.7,"volume":1.4,"stream":false,"name":"saber/saberon"},
-          {"pitch":0.8,"volume":1.2,"stream":false,"name":"saber/saberon"},
-          {"pitch":1.1,"volume":1.3,"stream":false,"name":"saber/saberon"}
-      ]
-    },
-    "magic.saberoff": {
-      "category":"player",
-      "sounds":[
-          {"weight":3,"pitch":1,"volume":1,"stream":false,"name":"saber/saberoff"},
-          {"pitch":0.7,"volume":0.9,"stream":false,"name":"saber/saberoff"},
-          {"pitch":0.8,"volume":1,"stream":false,"name":"saber/saberoff"},
-          {"pitch":1.2,"volume":0.8,"stream":false,"name":"saber/saberoff"},
-          {"pitch":1.3,"volume":1,"stream":false,"name":"saber/saberoff"}
-      ]
-    },
-	"magic.saberhum": {
-	    "category": "player",
-	    "sounds": ["saber/saberhum"]
-	},
-	"magic.saberhit": {
-	    "category": "player",
-	    "sounds": [
-	      {
-	        "weight": 3,
-	        "pitch": 1,
-	        "volume": 1,
-	        "stream": false,
-	        "name": "saber/saberhit"
-	      },
-	      {
-	        "pitch": 0.7,
-	        "volume": 0.9,
-	        "stream": false,
-	        "name": "saber/saberhit"
-	      },
-	      {
-	        "pitch": 0.8,
-	        "volume": 1,
-	        "stream": false,
-	        "name": "saber/saberhit"
-	      },
-	      {
-	        "pitch": 1.2,
-	        "volume": 0.8,
-	        "stream": false,
-	        "name": "saber/saberhit"
-	      },
-	      {
-	        "pitch": 1.3,
-	        "volume": 1,
-	        "stream": false,
-	        "name": "saber/saberhit"
-	      }
-	    ]
-  	},
+    "sounds": [
+      "flute/1cmid"
+    ],
+    "category": "player"
+  },
+  "flute.2C#": {
+    "sounds": [
+      "flute/2c#"
+    ],
+    "category": "player"
+  },
+  "flute.3D": {
+    "sounds": [
+      "flute/3d"
+    ],
+    "category": "player"
+  },
+  "flute.4D#": {
+    "sounds": [
+      "flute/4d#"
+    ],
+    "category": "player"
+  },
+  "flute.5E": {
+    "sounds": [
+      "flute/5e"
+    ],
+    "category": "player"
+  },
+  "flute.6F": {
+    "sounds": [
+      "flute/6F"
+    ],
+    "category": "player"
+  },
+  "flute.7F#": {
+    "sounds": [
+      "flute/7f#"
+    ],
+    "category": "player"
+  },
+  "flute.8G": {
+    "sounds": [
+      "flute/8G"
+    ],
+    "category": "player"
+  },
+  "flute.9G#": {
+    "sounds": [
+      "flute/9g#"
+    ],
+    "category": "player"
+  },
+  "flute.10A": {
+    "sounds": [
+      "flute/10a"
+    ],
+    "category": "player"
+  },
+  "flute.11A#": {
+    "sounds": [
+      "flute/11a#"
+    ],
+    "category": "player"
+  },
+  "flute.12B": {
+    "sounds": [
+      "flute/12b"
+    ],
+    "category": "player"
+  },
+  "flute.13Coctave": {
+    "sounds": [
+      "flute/13coctave"
+    ],
+    "category": "player"
+  },
+  "flute.14C#": {
+    "sounds": [
+      "flute/14c#"
+    ],
+    "category": "player"
+  },
+  "flute.15D": {
+    "sounds": [
+      "flute/15d"
+    ],
+    "category": "player"
+  },
+  "flute.16D#": {
+    "sounds": [
+      "flute/16d#"
+    ],
+    "category": "player"
+  },
+  "flute.17E": {
+    "sounds": [
+      "flute/17e"
+    ],
+    "category": "player"
+  },
+  "flute.18F": {
+    "sounds": [
+      "flute/18f"
+    ],
+    "category": "player"
+  },
+  "flute.19F#": {
+    "sounds": [
+      "flute/19f#"
+    ],
+    "category": "player"
+  },
+  "flute.20G": {
+    "sounds": [
+      "flute/20g"
+    ],
+    "category": "player"
+  },
+  "flute.21G#": {
+    "sounds": [
+      "flute/21g#"
+    ],
+    "category": "player"
+  },
+  "flute.22A": {
+    "sounds": [
+      "flute/22a"
+    ],
+    "category": "player"
+  },
+  "flute.23A#": {
+    "sounds": [
+      "flute/23a#"
+    ],
+    "category": "player"
+  },
+  "flute.24B": {
+    "sounds": [
+      "flute/24b"
+    ],
+    "category": "player"
+  },
+  "magic.saberon": {
+    "category": "player",
+    "sounds": [
+      {
+        "weight": 3,
+        "pitch": 1,
+        "volume": 1.3,
+        "stream": false,
+        "name": "saber/saberon"
+      },
+      {
+        "pitch": 0.7,
+        "volume": 1.4,
+        "stream": false,
+        "name": "saber/saberon"
+      },
+      {
+        "pitch": 0.8,
+        "volume": 1.2,
+        "stream": false,
+        "name": "saber/saberon"
+      },
+      {
+        "pitch": 1.1,
+        "volume": 1.3,
+        "stream": false,
+        "name": "saber/saberon"
+      }
+    ]
+  },
+  "magic.saberoff": {
+    "category": "player",
+    "sounds": [
+      {
+        "weight": 3,
+        "pitch": 1,
+        "volume": 1,
+        "stream": false,
+        "name": "saber/saberoff"
+      },
+      {
+        "pitch": 0.7,
+        "volume": 0.9,
+        "stream": false,
+        "name": "saber/saberoff"
+      },
+      {
+        "pitch": 0.8,
+        "volume": 1,
+        "stream": false,
+        "name": "saber/saberoff"
+      },
+      {
+        "pitch": 1.2,
+        "volume": 0.8,
+        "stream": false,
+        "name": "saber/saberoff"
+      },
+      {
+        "pitch": 1.3,
+        "volume": 1,
+        "stream": false,
+        "name": "saber/saberoff"
+      }
+    ]
+  },
+  "magic.saberhum": {
+    "category": "player",
+    "sounds": [
+      "saber/saberhum"
+    ]
+  },
+  "magic.saberhit": {
+    "category": "player",
+    "sounds": [
+      {
+        "weight": 3,
+        "pitch": 1,
+        "volume": 1,
+        "stream": false,
+        "name": "saber/saberhit"
+      },
+      {
+        "pitch": 0.7,
+        "volume": 0.9,
+        "stream": false,
+        "name": "saber/saberhit"
+      },
+      {
+        "pitch": 0.8,
+        "volume": 1,
+        "stream": false,
+        "name": "saber/saberhit"
+      },
+      {
+        "pitch": 1.2,
+        "volume": 0.8,
+        "stream": false,
+        "name": "saber/saberhit"
+      },
+      {
+        "pitch": 1.3,
+        "volume": 1,
+        "stream": false,
+        "name": "saber/saberhit"
+      }
+    ]
+  },
   "magic.saberswing": {
     "category": "player",
     "sounds": [
