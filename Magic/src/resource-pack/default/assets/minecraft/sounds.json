@@ -921,21 +921,73 @@
     "magic.saberon": {
       "category":"player",
       "sounds":[
-          {"weight":3,"pitch":1,"volume":1,"stream":false,"name":"magic/saberon"},
-          {"pitch":0.7,"volume":0.9,"stream":false,"name":"magic/saberon"},
-          {"pitch":0.8,"volume":1,"stream":false,"name":"magic/saberon"},
-          {"pitch":1.2,"volume":0.8,"stream":false,"name":"magic/saberon"},
-          {"pitch":1.3,"volume":1,"stream":false,"name":"magic/saberon"}
+          {"weight":3,"pitch":1,"volume":1.3,"stream":false,"name":"saber/saberon"},
+          {"pitch":0.7,"volume":1.4,"stream":false,"name":"saber/saberon"},
+          {"pitch":0.8,"volume":1.2,"stream":false,"name":"saber/saberon"},
+          {"pitch":1.1,"volume":1.3,"stream":false,"name":"saber/saberon"}
       ]
     },
     "magic.saberoff": {
       "category":"player",
       "sounds":[
-          {"weight":3,"pitch":1,"volume":1,"stream":false,"name":"magic/saberoff"},
-          {"pitch":0.7,"volume":0.9,"stream":false,"name":"magic/saberoff"},
-          {"pitch":0.8,"volume":1,"stream":false,"name":"magic/saberoff"},
-          {"pitch":1.2,"volume":0.8,"stream":false,"name":"magic/saberoff"},
-          {"pitch":1.3,"volume":1,"stream":false,"name":"magic/saberoff"}
+          {"weight":3,"pitch":1,"volume":1,"stream":false,"name":"saber/saberoff"},
+          {"pitch":0.7,"volume":0.9,"stream":false,"name":"saber/saberoff"},
+          {"pitch":0.8,"volume":1,"stream":false,"name":"saber/saberoff"},
+          {"pitch":1.2,"volume":0.8,"stream":false,"name":"saber/saberoff"},
+          {"pitch":1.3,"volume":1,"stream":false,"name":"saber/saberoff"}
       ]
-    }
+    },
+	"magic.saberhum": {
+	    "category": "player",
+	    "sounds": ["saber/saberhum"]
+	},
+	"magic.saberhit": {
+	    "category": "player",
+	    "sounds": [
+	      {
+	        "weight": 3,
+	        "pitch": 1,
+	        "volume": 1,
+	        "stream": false,
+	        "name": "saber/saberhit"
+	      },
+	      {
+	        "pitch": 0.7,
+	        "volume": 0.9,
+	        "stream": false,
+	        "name": "saber/saberhit"
+	      },
+	      {
+	        "pitch": 0.8,
+	        "volume": 1,
+	        "stream": false,
+	        "name": "saber/saberhit"
+	      },
+	      {
+	        "pitch": 1.2,
+	        "volume": 0.8,
+	        "stream": false,
+	        "name": "saber/saberhit"
+	      },
+	      {
+	        "pitch": 1.3,
+	        "volume": 1,
+	        "stream": false,
+	        "name": "saber/saberhit"
+	      }
+	    ]
+  	},
+  "magic.saberswing": {
+    "category": "player",
+    "sounds": [
+      "saber/saberswing1",
+      "saber/saberswing2",
+      "saber/saberswing3",
+      "saber/saberswing4",
+      "saber/saberswing5",
+      "saber/saberswing6",
+      "saber/saberswing7",
+      "saber/saberswing8"
+    ]
+  }
 }
