@@ -1,0 +1,25 @@
+{
+    "parent": "item/saber/lightsaber_purple",
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ 0, 0, 90 ],
+            "translation": [ -12, -1, 1 ],
+            "scale": [ 2.2, 2.2, 2.2 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 0, 90 ],
+            "translation": [ -5, 4, 0.56 ],
+            "scale": [ 1.5, 1.5, 1.5 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 0, 0, 90 ],
+            "translation": [ -12, -1, 1 ],
+            "scale": [ 2.2, 2.2, 2.2 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 0, 90 ],
+            "translation": [ -5, 4, 0.56 ],
+            "scale": [ 1.5, 1.5, 1.5 ]
+        }
+    }
+}

@@ -18,6 +18,7 @@
 
 # High-Priority
 
+ - Make sure that Reflect actually blocks even when it doesn't reflect, at least for magic missile
  - Aliases don't work with levels
  - Ability to *only* target teammates (like .. anti-PVP)
 

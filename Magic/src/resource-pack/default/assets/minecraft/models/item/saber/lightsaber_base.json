@@ -430,5 +430,13 @@
             "translation": [ 0, 0, 0 ],
             "scale": [ 1.2, 1.2, 1.2 ]
         }
-    }
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "blocking": 1
+            },
+            "model": "item/saber/lightsaber_blue_blocking"
+        }
+    ]
 }
