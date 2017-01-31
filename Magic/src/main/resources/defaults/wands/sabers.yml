@@ -8,7 +8,6 @@ lightsaber_green:
     path: youngling
     icon: shield:2
     effect_color: '00FF00'
-    active_spell: push
     spells:
         - push
         - pull
@@ -18,7 +17,6 @@ lightsaber_blue:
     path: youngling
     icon: shield:3
     effect_color: '0000FF'
-    active_spell: push
     spells:
         - push
         - pull
@@ -28,7 +26,6 @@ lightsaber_red:
     path: acolyte
     icon: shield:4
     effect_color: 'FF0000'
-    active_spell: push
     spells:
         - push
         - fire
@@ -38,7 +35,6 @@ lightsaber_orange:
     path: youngling
     icon: shield:5
     effect_color: 'FF00FF'
-    active_spell: push
     spells:
         - push
         - pull
@@ -48,7 +44,6 @@ lightsaber_purple:
     path: youngling
     icon: shield:6
     effect_color: 'FFFF00'
-    active_spell: push
     spells:
         - push
         - pull
