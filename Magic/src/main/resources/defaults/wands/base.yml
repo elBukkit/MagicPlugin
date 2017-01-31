@@ -49,6 +49,9 @@ base_lightsaber:
     undroppable: true
     indestructible: true
     effect_bubbles: false
+    active_effects: true
+    effect_sound: magic.saberhum
+    effect_sound_interval: 700
     attributes:
       GENERIC_ATTACK_DAMAGE: 3
     effects:
@@ -78,7 +81,7 @@ base_lightsaber:
              particle: redstone
         swing:
         -  class: EffectSingle
-           sound: magic.ignite
+           sound: magic.saberswing
            sound_volume: 1
            location: origin
            color_override: color
@@ -90,7 +93,7 @@ base_lightsaber:
              particle: redstone
         hit_entity:
         -  class: EffectSingle
-           sound: magic.ignite
+           sound: magic.saberhit
            sound_volume: 1
            location: origin
            color_override: color
@@ -102,7 +105,7 @@ base_lightsaber:
              particle: redstone
         hit_block:
         -  class: EffectSingle
-           sound: magic.ignite
+           sound: magic.saberhit
            sound_volume: 1
            location: origin
            color_override: color
@@ -114,7 +117,7 @@ base_lightsaber:
              particle: redstone
         hit_blocked:
         -  class: EffectSingle
-           sound: magic.ignite
+           sound: magic.saberhit
            sound_volume: 1
            location: origin
            color_override: color

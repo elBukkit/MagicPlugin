@@ -987,7 +987,12 @@
   "magic.saberhum": {
     "category": "player",
     "sounds": [
-      "saber/saberhum"
+      {
+        "pitch": 1,
+        "volume": 20,
+        "stream": false,
+        "name": "saber/saberhum"
+      }
     ]
   },
   "magic.saberhit": {
