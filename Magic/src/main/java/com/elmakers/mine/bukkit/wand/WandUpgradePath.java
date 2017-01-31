@@ -304,6 +304,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         WandUpgradePath path = paths.get(key);
         if (path == null) {
             ConfigurationSection parameters = configuration.getConfigurationSection(key);
+            if (parameters == null) return null;
             if (!parameters.getBoolean("enabled", true)) {
                 return null;
             }
