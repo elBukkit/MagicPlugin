@@ -38,9 +38,23 @@ paths:
     blaster:
         name: Blaster
         description: Blaster upgrades
-    jedi:
-        name: Jedi
-        description: Jedi force powers
+    youngling:
+        name: Youngling
+    padawan:
+        name: Padawan
+    knight:
+        name: Jedi Knight
+    jedi_master:
+        name: Jedi Master
+    acolyte:
+        name: Acolyte
+    apprentice:
+        name: Sith Apprentice
     sith:
         name: Sith
-        description: Sith force powers
+    marauder:
+        name: Sith Marauder
+    sith_master:
+        name: Sith Master
+    sith_lord:
+        name: Sith Lord

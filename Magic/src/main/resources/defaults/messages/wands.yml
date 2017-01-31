@@ -319,11 +319,20 @@ wands:
       description: Right-click and use the hotbar buttons to play music
       spell_count: Has $count Notes
     lightsaber_red:
-        name: Lighsaber (Red)
+        name: Lighsaber
         description: Chosen weapon of the Sith
     lightsaber_green:
-        name: Lighsaber (Green)
+        name: Lighsaber
         description: Chosen weapon of the Jedi
     lightsaber_blue:
-        name: Lighsaber (Blue)
+        name: Lighsaber
         description: Chosen weapon of the Jedi
+    lightsaber_orange:
+        name: Lighsaber
+        description: Chosen weapon of the Jedi
+    lightsaber_purple:
+        name: Lighsaber
+        description: Chosen weapon of the Jedi
+    lightsaber_hilt:
+        name: Lighsaber Hilt
+        description: Used to construct a Lightsaber
