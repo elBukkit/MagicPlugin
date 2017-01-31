@@ -815,6 +815,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon() {
 		return icon;
 	}
+
+	@Override
+	public com.elmakers.mine.bukkit.api.block.MaterialAndData getInactiveIcon() {
+		return inactiveIcon;
+	}
 	
 	protected List<Inventory> getAllInventories() {
 		List<Inventory> allInventories = new ArrayList<>(inventories.size() + hotbars.size());

@@ -44,6 +44,7 @@ public interface Wand extends CostReducer {
     public void alphabetizeInventory();
     public ItemStack getItem();
     public MaterialAndData getIcon();
+    public MaterialAndData getInactiveIcon();
     public void setIcon(MaterialAndData icon);
     public void setInactiveIcon(MaterialAndData icon);
     public void makeUpgrade();
