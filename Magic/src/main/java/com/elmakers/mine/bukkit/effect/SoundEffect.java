@@ -84,8 +84,11 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
 
     @Override
     public String toString() {
-        if (sound == null) return "";
-        return sound.name() + "," + volume + "," + pitch;
+        String soundName = sound == null ? customSound : sound.name();
+        if (soundName == null) {
+            return "";
+        }
+        return soundName + "," + volume + "," + pitch;
     }
 
     @Override
