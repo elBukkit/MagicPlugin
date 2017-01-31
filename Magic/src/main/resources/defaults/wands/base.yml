@@ -36,6 +36,7 @@ base_lightsaber:
     icon_inactive_delay: 500
     drop: toggle
     left_click: none
+    right_click: none
     swap: cycle_hotbar
     quick_cast: true
     mana_max: 50
@@ -48,65 +49,79 @@ base_lightsaber:
     undroppable: true
     indestructible: true
     effect_bubbles: false
+    attributes:
+      GENERIC_ATTACK_DAMAGE: 3
     effects:
         open:
         -  class: EffectSingle
            sound: magic.saberon
            sound_volume: 1
            location: origin
+           color_override: color
+           use_wand_location: true
            effectlib:
              class: HelixEffect
              iterations: 1
              radius: 0.3
-             particle: flame
+             particle: redstone
         close:
         -  class: EffectSingle
            sound: magic.saberoff
            sound_volume: 1
            location: origin
+           color_override: color
+           use_wand_location: true
            effectlib:
              class: HelixEffect
              iterations: 1
              radius: 0.3
-             particle: smoke_normal
+             particle: redstone
         swing:
         -  class: EffectSingle
            sound: magic.ignite
            sound_volume: 1
            location: origin
+           color_override: color
+           use_wand_location: true
            effectlib:
              class: HelixEffect
              iterations: 1
              radius: 0.3
-             particle: flame
+             particle: redstone
         hit_entity:
         -  class: EffectSingle
            sound: magic.ignite
            sound_volume: 1
            location: origin
+           color_override: color
+           use_wand_location: true
            effectlib:
              class: HelixEffect
              iterations: 1
              radius: 0.3
-             particle: smoke_large
+             particle: redstone
         hit_block:
         -  class: EffectSingle
            sound: magic.ignite
            sound_volume: 1
            location: origin
+           color_override: color
+           use_wand_location: true
            effectlib:
              class: HelixEffect
              iterations: 1
              radius: 0.3
-             particle: smoke_normal
+             particle: redstone
         hit_blocked:
         -  class: EffectSingle
            sound: magic.ignite
            sound_volume: 1
            location: origin
+           color_override: color
+           use_wand_location: true
            effectlib:
              class: HelixEffect
              iterations: 1
              radius: 0.3
-             particle: smoke_normal
+             particle: redstone
              

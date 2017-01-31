@@ -1,19 +1,12 @@
 # Lightsabers!
 
-lightsaber_red:
-    inherit: base_lightsaber
-    path: sith
-    icon: gold_sword:4
-    effect_color: 'FF0000'
-    active_spell: push
-    spells:
-        - push
-        - fire
+lightsaber_hilt:
+    icon: wood_hoe:14
 
 lightsaber_green:
     inherit: base_lightsaber
-    path: jedi
-    icon: gold_sword:2
+    path: youngling
+    icon: shield:2
     effect_color: '00FF00'
     active_spell: push
     spells:
@@ -22,19 +15,29 @@ lightsaber_green:
 
 lightsaber_blue:
     inherit: base_lightsaber
-    path: jedi
-    icon: gold_sword:3
+    path: youngling
+    icon: shield:3
     effect_color: '0000FF'
     active_spell: push
     spells:
         - push
         - pull
         
+lightsaber_red:
+    inherit: base_lightsaber
+    path: acolyte
+    icon: shield:4
+    effect_color: 'FF0000'
+    active_spell: push
+    spells:
+        - push
+        - fire
+        
 lightsaber_orange:
     inherit: base_lightsaber
-    path: jedi
-    icon: gold_sword:4
-    effect_color: '0000FF'
+    path: youngling
+    icon: shield:5
+    effect_color: 'FF00FF'
     active_spell: push
     spells:
         - push
@@ -42,9 +45,9 @@ lightsaber_orange:
         
 lightsaber_purple:
     inherit: base_lightsaber
-    path: jedi
-    icon: gold_sword:5
-    effect_color: '0000FF'
+    path: youngling
+    icon: shield:6
+    effect_color: 'FFFF00'
     active_spell: push
     spells:
         - push
