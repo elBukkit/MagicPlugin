@@ -121,9 +121,6 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
         if (effects.isEmpty()) return false;
         
         currentEffects.clear();
-        Location wandLocation = null;
-        Location location = mage.getLocation();
-        Location eyeLocation = mage.getEyeLocation();
         
         Entity sourceEntity = mage.getEntity();
         for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects)
@@ -139,12 +136,14 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
             String overrideParticle = mage.getEffectParticleName();
             player.setParticleOverride(overrideParticle);
 
-            Location source = player.shouldUseEyeLocation() ? eyeLocation : location;
+            Location source = null;
             if (player.shouldUseWandLocation()) {
-                if (wandLocation == null) {
-                    wandLocation = mage.getWandLocation();
-                }
-                location = wandLocation;
+                source = mage.getWandLocation();
+            } else if (player.shouldUseEyeLocation()) {
+                source = mage.getEyeLocation();
+            }
+            if (source == null) {
+                source = mage.getLocation();
             }
 
             player.start(source, sourceEntity, null, null, null);
