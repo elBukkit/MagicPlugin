@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,6 +16,8 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.action.CastContext;
+import com.elmakers.mine.bukkit.api.batch.Batch;
+import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
@@ -172,6 +175,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private List<CastingCost> activeCosts = null;
 
     protected double cancelOnDamage             = 0;
+    protected boolean cancelOnCastOther         = false;
     protected boolean pvpRestricted           	= false;
     protected boolean disguiseRestricted        = false;
     protected boolean worldBorderRestricted     = true;
@@ -976,6 +980,21 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 mage.sendDebugMessage(ChatColor.BLUE + "Cast " + ChatColor.GOLD + getName() + " " + ChatColor.GREEN + ConfigurationUtils.getParameters(extraParameters));
             }
         }
+        // Check for cancel-on-cast-other spells
+        for (Iterator<Batch> iterator = mage.getPendingBatches().iterator(); iterator.hasNext();) {
+            Batch batch = iterator.next();
+            if (!(batch instanceof SpellBatch)) continue;
+            SpellBatch spellBatch = (SpellBatch)batch;
+            Spell spell = spellBatch.getSpell();
+            if (spell.cancelOnCastOther()) {
+                if (!spell.cancel()) {
+                    spell.sendMessage(spell.getMessage("cancel"));
+                }
+                batch.finish();
+                iterator.remove();
+            }
+        }
+        
         this.reset();
 
         Location location = mage.getLocation();
@@ -1514,6 +1533,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         cooldownReduction = (float)parameters.getDouble("cooldown_reduction", 0);
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
+        cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
 
         if (parameters.contains("prevent_passthrough")) {
             preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));
@@ -2522,6 +2542,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public double cancelOnDamage() {
         return cancelOnDamage;
+    }
+
+    @Override
+    public boolean cancelOnCastOther() {
+        return cancelOnCastOther;
     }
 
     @Override

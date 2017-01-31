@@ -64,6 +64,7 @@ public interface Spell extends SpellTemplate {
     public ConfigurationSection getWorkingParameters();
     public void finish(CastContext context);
     public double cancelOnDamage();
+    public boolean cancelOnCastOther();
     public String getMessage(String messageKey);
     public boolean hasHandlerParameters(String handlerKey);
     public ConfigurationSection getHandlerParameters(String handlerKey);
