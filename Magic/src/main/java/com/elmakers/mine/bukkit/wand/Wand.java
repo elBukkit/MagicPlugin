@@ -3635,8 +3635,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (playEffects && effectSound != null && controller.soundsEnabled() && effectSoundInterval > 0) {
 			if (lastSoundEffect == 0 || now > lastSoundEffect + effectSoundInterval) {
                 lastSoundEffect = now;
-				mage.getLocation().getWorld().playSound(location, effectSound.getSound(), effectSound.getVolume(), effectSound.getPitch());
-			}
+                effectSound.play(controller.getPlugin(), mage.getPlayer());
+            }
 		}
 
         lastLocation = mageLocation;
