@@ -54,6 +54,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     protected boolean sell = false;
     protected boolean isItems = false;
     protected boolean showConfirmation = true;
+    protected boolean showActiveIcons = false;
     protected MaterialAndData confirmFillMaterial;
     protected CastContext context;
     private Map<Integer, ShopItem> showingItems;
@@ -383,6 +384,14 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                         Wand bindWand = controller.getWand(copy);
                         mage.tryToOwn(bindWand);
                     }
+                    if (showActiveIcons && controller.getAPI().isWand(copy))
+                    {
+                        Wand newWand = controller.getWand(item);
+                        com.elmakers.mine.bukkit.api.block.MaterialAndData inactiveIcon = newWand.getInactiveIcon();
+                        if (inactiveIcon != null) {
+                            inactiveIcon.applyToItem(copy);
+                        }
+                    }
                     context.getController().giveItemToPlayer(mage.getPlayer(), copy);
                 }
             }
@@ -420,6 +429,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     public void initialize(Spell spell, ConfigurationSection parameters) {
         super.initialize(spell, parameters);
         castsSpells = parameters.getBoolean("cast_spells", false);
+        showActiveIcons = parameters.getBoolean("show_active_icons", false);
     }
 
     @Override

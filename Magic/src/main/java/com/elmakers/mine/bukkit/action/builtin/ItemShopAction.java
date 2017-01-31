@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import de.slikey.effectlib.util.ConfigUtils;
 import org.apache.commons.lang.StringUtils;
@@ -104,6 +105,12 @@ public class ItemShopAction extends BaseShopAction
         }
         ItemStack item = controller.createItem(itemKey, castsSpells);
         if (item == null) return null;
+        
+        if (showActiveIcons && controller.getAPI().isWand(item))
+        {
+            Wand wand = controller.getWand(item);
+            wand.getIcon().applyToItem(item);
+        }
         item.setAmount(amount);
         if (worth < 0) {
             Double defaultWorth = controller.getWorth(item);
