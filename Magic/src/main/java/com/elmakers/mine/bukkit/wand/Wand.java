@@ -23,7 +23,6 @@ import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
@@ -101,6 +100,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             "cast_min_velocity", "cast_velocity_direction",
             "hotbar_count", "hotbar",
             "icon", "icon_inactive", "icon_inactive_delay", "mode",
+			"active_effects",
             "brush_mode",
             "keep", "locked", "quiet", "force", "randomize", "rename",
             "rename_description",
@@ -238,6 +238,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private double effectParticleRadius = 0.2;
     private double effectParticleOffset = 0.3;
 	private boolean effectBubbles = false;
+	private boolean activeEffectsOnly = false;
 	private EffectRing effectPlayer = null;
 
     private int castInterval = 0;
@@ -1323,6 +1324,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("effect_particle_radius", effectParticleRadius);
         node.set("effect_particle_offset", effectParticleOffset);
 		node.set("effect_sound_interval", effectSoundInterval);
+		node.set("active_effects", activeEffectsOnly);
 
         node.set("cast_interval", castInterval);
         node.set("cast_min_velocity", castMinVelocity);
@@ -1370,7 +1372,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (effectSound != null) {
 			node.set("effect_sound", effectSound.toString());
 		} else {
-			node.set("effectSound", null);
+			node.set("effect_sound", null);
 		}
 		if (effectParticle != null) {
 			node.set("effect_particle", effectParticle.name());
@@ -1619,6 +1621,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (wandConfig.contains("effect_sound")) {
                 effectSound = ConfigurationUtils.toSoundEffect(wandConfig.getString("effect_sound"));
 			}
+			activeEffectsOnly = wandConfig.getBoolean("active_effects", activeEffectsOnly);
 			effectParticleData = (float)wandConfig.getDouble("effect_particle_data", effectParticleData);
 			effectParticleCount = wandConfig.getInt("effect_particle_count", effectParticleCount);
             effectParticleRadius = wandConfig.getDouble("effect_particle_radius", effectParticleRadius);
@@ -2944,6 +2947,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             modified = modified | (effectParticleMinVelocity < other.effectParticleOffset);
             effectParticleMinVelocity = Math.max(effectParticleMinVelocity, other.effectParticleMinVelocity);
 		}
+		activeEffectsOnly = activeEffectsOnly && other.activeEffectsOnly;
 
         if (other.castSpell != null && (other.isUpgrade || castSpell == null || !castSpell.equals(other.castSpell))) {
             modified = true;
@@ -3257,7 +3261,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			openInventoryPage = inventoryCount == 0 ? 0 : (openInventoryPage + inventoryCount + direction) % inventoryCount;
 			updateInventory();
 			if (mage != null && inventories.size() > 1) {
-                if (!playEffects("cycle") && inventoryCycleSound != null) {
+                if (!playPassiveEffects("cycle") && inventoryCycleSound != null) {
                     mage.playSoundEffect(inventoryCycleSound);
                 }
 				mage.getPlayer().updateInventory();
@@ -3279,7 +3283,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			int hotbarCount = hotbars.size();
 			currentHotbar = hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount;
 			updateHotbar();
-			if (!playEffects("cycle") && inventoryCycleSound != null) {
+			if (!playPassiveEffects("cycle") && inventoryCycleSound != null) {
 				mage.playSoundEffect(inventoryCycleSound);
 			}
             updateHotbarStatus();
@@ -3298,7 +3302,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		WandMode wandMode = getMode();
 		if (wandMode == WandMode.CHEST) {
 			inventoryIsOpen = true;
-            if (!playEffects("open") && inventoryOpenSound != null) {
+            if (!playPassiveEffects("open") && inventoryOpenSound != null) {
                 mage.playSoundEffect(inventoryOpenSound);
             }
             updateInventory();
@@ -3308,7 +3312,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (storeInventory()) {
 				inventoryIsOpen = true;
                 showActiveIcon(true);
-                if (!playEffects("open") && inventoryOpenSound != null) {
+                if (!playPassiveEffects("open") && inventoryOpenSound != null) {
 					mage.playSoundEffect(inventoryOpenSound);
 				}
 				updateInventory();
@@ -3327,7 +3331,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             saveInventory();
             inventoryIsOpen = false;
             if (mage != null) {
-                if (!playEffects("close") && inventoryCloseSound != null) {
+                if (!playPassiveEffects("close") && inventoryCloseSound != null) {
                     mage.playSoundEffect(inventoryCloseSound);
                 }
                 if (mode == WandMode.INVENTORY) {
@@ -3540,7 +3544,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Location location = mage.getLocation();
 		long now = System.currentTimeMillis();
         Vector mageLocation = location.toVector();
-		if (effectParticle != null && effectParticleInterval > 0 && effectParticleCount > 0) {
+		boolean playEffects = !activeEffectsOnly || inventoryIsOpen;
+		if (playEffects && effectParticle != null && effectParticleInterval > 0 && effectParticleCount > 0) {
             boolean velocityCheck = true;
             if (effectParticleMinVelocity > 0) {
                 if (lastLocation != null && lastLocationTime != 0) {
@@ -3627,7 +3632,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
 		
-		if (effectSound != null && controller.soundsEnabled() && effectSoundInterval > 0) {
+		if (playEffects && effectSound != null && controller.soundsEnabled() && effectSoundInterval > 0) {
 			if (lastSoundEffect == 0 || now > lastSoundEffect + effectSoundInterval) {
                 lastSoundEffect = now;
 				mage.getLocation().getWorld().playSound(location, effectSound.getSound(), effectSound.getVolume(), effectSound.getPitch());
@@ -3756,7 +3761,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (mage == null) return;
 
         // Play deactivate FX
-        playEffects("deactivate");
+		playPassiveEffects("deactivate");
 
         Mage mage = this.mage;
         Player player = mage.getPlayer();
@@ -4362,7 +4367,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         updateLore();
 
         // Play activate FX
-        playEffects("activate");
+		playPassiveEffects("activate");
 
         lastSoundEffect = 0;
         lastParticleEffect = 0;
@@ -5010,13 +5015,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return controller.getWandTemplate(template);
 	}
 
+	public boolean playPassiveEffects(String effects) {
+		WandTemplate wandTemplate = getTemplate();
+		if (wandTemplate != null && mage != null) {
+			return wandTemplate.playEffects(mage, effects);
+		}
+		return false;
+	}
+
     @Override
     public boolean playEffects(String effects) {
-        WandTemplate wandTemplate = getTemplate();
-        if (wandTemplate != null && mage != null) {
-            return wandTemplate.playEffects(mage, effects);
-        }
-        return false;
+		if (activeEffectsOnly && !inventoryIsOpen) {
+			 return false;
+		}
+		return playPassiveEffects(effects);
     }
 	
 	public WandAction getDropAction() {
