@@ -1,13 +1,19 @@
 starshop:
+    icon: wood_hoe:14
     inherit: buyshop
     parameters:
+        show_active_icons: true
         items:
         - item: wand|blaster
+          cost: 1000
+        - item: lightsaber_blue
           cost: 10000
-        - item: wand|lightsaber_red
-          cost: 100000
-        - item: wand|lightsaber_green
-          cost: 100000
-        - item: wand|lightsaber_blue
-          cost: 100000
+        - item: lightsaber_green
+          cost: 10000
+        - item: lightsaber_purple
+          cost: 10000
+        - item: lightsaber_orange
+          cost: 10000
+        - item: lightsaber_red
+          cost: 15000
           
