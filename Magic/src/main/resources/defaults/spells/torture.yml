@@ -60,7 +60,7 @@ torture:
         gravity: 0.05
         range: 32
         target_type: Damageable
-        target_breakables: 3
+        target_breakables: 1
         target: other
         duration: 2000
         damage: 2
@@ -77,10 +77,12 @@ torture|2:
         duration: 3000
         effect_wither: 2
         damage: 3
+        target_breakables: 2
 
 torture|3:
     parameters:
         duration: 4000
         effect_wither: 3
         damage: 4
+        target_breakables: 3
 

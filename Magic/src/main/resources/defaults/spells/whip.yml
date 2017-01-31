@@ -38,7 +38,7 @@ whip:
         target_type: Damageable
         player_damage: 3
         entity_damage: 6
-        target_breakables: 2
+        target_breakables: 1
         cooldown: 5000
         target_self_timeout: 2000
         velocity: 10

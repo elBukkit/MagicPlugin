@@ -110,7 +110,7 @@ missile|2:
         range: 32
         player_damage: 3
         entity_damage: 6
-        target_breakables: 2
+        target_breakables: 1
     costs:
         mana: 20
 
@@ -125,7 +125,7 @@ missile|3:
         range: 48
         player_damage: 4
         entity_damage: 8
-        target_breakables: 3
+        target_breakables: 2
     costs:
         mana: 50
 
@@ -137,7 +137,7 @@ missile|4:
         range: 64
         player_damage: 4
         entity_damage: 10
-        target_breakables: 4
+        target_breakables: 3
     costs:
         mana: 80
 

@@ -87,7 +87,7 @@ meteor:
         y_offset: 1
         player_damage: 3
         entity_damage: 3
-        target_breakables: 2
+        target_breakables: 1
         range: 64
         allow_max_range: true
         hitbox: true

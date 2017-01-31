@@ -57,7 +57,7 @@ wound:
         hitbox: false
         fov: 0.4
         damage: 6
-        target_breakables: 3
+        target_breakables: 1
         cooldown: 5000
         magic_damage: false
         instant_block_effects: true
@@ -65,10 +65,14 @@ wound:
         mana: 100
 
 wound|2:
+  upgrade_required_path: master
+  upgrade_required_casts: 50
   parameters:
     damage: 8
+    target_breakables: 2
 
 wound|3:
   parameters:
     damage: 10
+    target_breakables: 3
 

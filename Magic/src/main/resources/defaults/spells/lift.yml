@@ -60,7 +60,7 @@ lift:
         range: 15
         check_destructible: true
         undo: 5000
-        target_breakables: 2
+        target_breakables: 1
         bypass_backfire: false
         cooldown: 1000
         offset: 0,5,0
