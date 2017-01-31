@@ -4,27 +4,28 @@
 
  - Magic spawn eggs not working at all - DynamoASM (Spigot issue.. maybe can't fix)
  - You can put a wand in a chest if you click on the chest while your wand is open
- - If someone dies, doesn't respawn, then the server restarts- they lose their wand (player data saving issue?)
 
 ## 1.10 Issues
 
- - Arrow / Gatling Gun firing backwards (could not reproduce)
- - Bugs with offhand?
  - Don't refund item costs when a spell goes through auto-undo
  
- I figured that this will keep things close to the same for most people minus the Toggle button. However when I am in game holding say a torch in my left hand and a wand in the other hand, so long as I hold thew and and I right click, it doesn't place down the torch but kinda treats the offhand item like a wand it will like not let me place it and IF the offhand item is a sword (that has no right click) it will also shoot the last chosen spell on my wand (in my main hand). 
+ However when I am in game holding say a torch in my left hand and a wand in the other hand, 
+ so long as I hold thew and and I right click, it doesn't place down the torch but kinda treats the 
+ offhand item like a wand it will like not let me place it and IF the offhand item is a 
+ sword (that has no right click) it will also shoot the last chosen spell on my wand (in my main hand). 
  
- Same thing happens with throwing potions. (I thought it would be cool to have like wand/throwing potion battles) if I hold a potion in the offhand with a wand in the main hand if I click my right click the potion just vanishes from the offhand slot, but when i close my wand it's still there. it doesn't cast a spell though.
+ Same thing happens with throwing potions. (I thought it would be cool to have like wand/throwing potion battles) 
+ if I hold a potion in the offhand with a wand in the main hand if I click my right click 
+ the potion just vanishes from the offhand slot, but when i close my wand it's still there. 
+ it doesn't cast a spell though.
 
 # High-Priority
 
- - Make sure that Reflect actually blocks even when it doesn't reflect, at least for magic missile
  - Aliases don't work with levels
  - Ability to *only* target teammates (like .. anti-PVP)
 
 # Requests
 
- - Add "ModifyMana" action
  - Add some sort of integration with Partec plugin
    https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/
  - Wand Power based on Strength potion effect
