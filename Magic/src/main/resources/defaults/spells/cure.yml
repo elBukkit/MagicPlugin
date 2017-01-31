@@ -81,6 +81,7 @@ cure|4:
     parameters:
         feed: 1
         cancel_on_damage: 0.5
+        cancel_on_cast_other: true
         delay: 500
         repeat: 10
 

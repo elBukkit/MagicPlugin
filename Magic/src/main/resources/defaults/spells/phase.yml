@@ -59,6 +59,7 @@ phase:
     parameters:
         delay: 5000
         cancel_on_damage: 1
+        cancel_on_cast_other: true
         cooldown: 15000
         target: self
         vertical_range: 255

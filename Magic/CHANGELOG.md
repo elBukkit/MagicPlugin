@@ -2,6 +2,7 @@
 
 ## 6.4
 
+ - Recall, Cure, Heal, Phase all now cancel if you cast another spell during their warmup period.
  - Combined the survival, bending, stars and potter RPs into a single RP
  - Update/fix light saber appearances, add sound effects, add all colors to survival configs
  - The (optional) zombie flesh -> leather recipe now requires 4 zombie flesh instead of 9

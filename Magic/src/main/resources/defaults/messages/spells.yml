@@ -358,6 +358,7 @@ spells:
         name: Phase
         description: Phase to another dimension
         usage: Has a 5-second warmup.
+        cancel: Recall interrupted!
         cast: ""
         teleport: You phase to $world_name
         teleport_failed: Can't phase to $world_name from here
@@ -943,6 +944,7 @@ spells:
         cast: You teleport back to safety
     recall:
         name: Recall
+        cancel: Recall interrupted!
         description: Teleport to different locations.
         usage: Has a 5-second warmup. Grants 5 seconds of protection on teleportation.
         teleport: ""

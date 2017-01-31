@@ -61,6 +61,7 @@ heal:
              size: 3
     parameters:
         cancel_on_damage: 0.5
+        cancel_on_cast_other: true
         delay: 500
         repeat: 10
         total_duration: 5000
