@@ -397,3 +397,6 @@ enchantwand:
 
 spellshop:
     enabled: true
+    
+sabershop:
+    enabled: true
