@@ -43,6 +43,9 @@ base_lightsaber:
     mana: 50
     mana_regeneration: 5
     protection_physical: 0.5
+    block_reflect_chance: 0.5
+    block_chance: 1
+    block_fov: 0.5
     quiet: 1
     bound: true
     keep: true
@@ -116,6 +119,30 @@ base_lightsaber:
              radius: 0.3
              particle: redstone
         hit_blocked:
+        -  class: EffectSingle
+           sound: magic.saberhit
+           sound_volume: 1
+           location: origin
+           color_override: color
+           use_wand_location: true
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: redstone
+        spell_blocked:
+        -  class: EffectSingle
+           sound: magic.saberhit
+           sound_volume: 1
+           location: origin
+           color_override: color
+           use_wand_location: true
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: redstone
+        spell_reflected:
         -  class: EffectSingle
            sound: magic.saberhit
            sound_volume: 1

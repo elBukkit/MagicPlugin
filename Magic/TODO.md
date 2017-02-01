@@ -1,5 +1,10 @@
 # TODO
 
+## Sabers
+
+ - Paths being able to upgrade blocking/reflect power
+ - Blocking applying a global spell CD
+
 ## Reported Issues
 
  - Magic spawn eggs not working at all - DynamoASM (Spigot issue.. maybe can't fix)

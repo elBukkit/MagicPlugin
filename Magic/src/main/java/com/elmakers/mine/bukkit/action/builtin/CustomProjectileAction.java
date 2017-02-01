@@ -5,9 +5,11 @@ import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import de.slikey.effectlib.math.VectorTransform;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -23,6 +25,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -726,20 +729,7 @@ public class CustomProjectileAction extends CompoundAction
         else if (targetingResult == Targeting.TargetingResult.BLOCK) {
             return hitBlock(block);
         } else if (targetingResult == Targeting.TargetingResult.ENTITY) {
-            entityHitCount++;
-            Entity hitEntity = target.getEntity();
-            if (hitEntity != null && entityHitLimit > 1) {
-                targeting.ignoreEntity(hitEntity);
-            }
-            if (hitEntity != null) {
-                actionContext.playEffects("hit_entity");
-
-                if (hasActions("headshot") && CompatibilityUtils.isHeadshot(hitEntity, targetLocation)) {
-                    actionContext.getMage().sendDebugMessage(ChatColor.GOLD + "   Projectile headshot", 3);
-                    return headshot();
-                }
-            }
-            return hit();
+            return hitEntity(target);
         }
 
         if (hasTickActions) {
@@ -748,35 +738,41 @@ public class CustomProjectileAction extends CompoundAction
 
 		return SpellResult.PENDING;
 	}
+	
+	protected void reflect(Vector normal, double offset) {
+        trackEntity = reflectTrackEntity;
+        reorient = reflectReorient;
+        if (reflectResetDistanceTraveled) distanceTravelled = 0;
+        if (reflectTrackCursorRange >= 0) trackCursorRange = reflectTrackCursorRange;
+        if (reflectTargetCaster) actionContext.setTargetsCaster(true);
+
+        // Calculate angle of reflection
+        if (normal != null) {
+            velocity.multiply(-1);
+            velocity = velocity.subtract(normal.multiply(2 * velocity.dot(normal))).normalize();
+            velocity.multiply(-1);
+        }
+
+        // Offset position slightly to avoid hitting again
+        actionContext.setTargetLocation(actionContext.getTargetLocation().add(velocity.clone().multiply(offset)));
+        // actionContext.setTargetLocation(targetLocation.add(normal.normalize().multiply(2)));
+
+        actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected: " + ChatColor.LIGHT_PURPLE + 
+                " with normal vector of " + ChatColor.LIGHT_PURPLE + normal, 4);
+
+        actionContext.playEffects("reflect");
+        reflectCount++;
+    }
 
     protected SpellResult hitBlock(Block block) {
         boolean continueProjectile = false;
         if ((reflectLimit < 0 || reflectCount < reflectLimit) && !bypassBackfire && actionContext.isReflective(block)) {
             double reflective = actionContext.getReflective(block);
             if (reflective >= 1 || actionContext.getRandom().nextDouble() < reflective) {
-                trackEntity = reflectTrackEntity;
-                reorient = reflectReorient;
-                if (reflectResetDistanceTraveled) distanceTravelled = 0;
-                if (reflectTrackCursorRange >= 0) trackCursorRange = reflectTrackCursorRange;
-                if (reflectTargetCaster) actionContext.setTargetsCaster(true);
-
-                // Calculate angle of reflection
                 Location targetLocation = actionContext.getTargetLocation();
                 Vector normal = CompatibilityUtils.getNormal(block, targetLocation);
-                velocity.multiply(-1);
-                velocity = velocity.subtract(normal.multiply(2 * velocity.dot(normal))).normalize();
-                velocity.multiply(-1);
-
-                // Offset position slightly to avoid hitting again
-                actionContext.setTargetLocation(targetLocation.add(velocity.clone().multiply(0.05)));
-                // actionContext.setTargetLocation(targetLocation.add(normal.normalize().multiply(2)));
-
-                actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected: " + ChatColor.LIGHT_PURPLE + " at "
-                        + ChatColor.GRAY + block + ChatColor.AQUA + " with normal vector of " + ChatColor.LIGHT_PURPLE + normal, 4);
-
-                actionContext.playEffects("reflect");
+                reflect(normal, 0.05);
                 continueProjectile = true;
-                reflectCount++;
             }
         }
         if (targetBreakables > 0 && breaksBlocks && actionContext.isBreakable(block)) {
@@ -792,6 +788,41 @@ public class CustomProjectileAction extends CompoundAction
             blockHitCount++;
         }
         return continueProjectile ? SpellResult.PENDING : hit();
+    }
+    
+    protected SpellResult hitEntity(Target target) {
+        Entity hitEntity = target.getEntity();
+        Location targetLocation = actionContext.getTargetLocation();
+        if (hitEntity instanceof Player) {
+            Player hitPlayer = (Player)hitEntity;
+            Mage targetMage = actionContext.getController().getMage(hitPlayer);
+            Wand activeWand = targetMage.getActiveWand();
+            if (activeWand != null && hitPlayer.isBlocking()) {
+                double angle = velocity.angle(hitPlayer.getEyeLocation().getDirection().multiply(-1));
+                if ((reflectLimit < 0 || reflectCount < reflectLimit) && !bypassBackfire && activeWand.isReflected(angle)) {
+                    velocity = hitPlayer.getEyeLocation().getDirection().normalize().multiply(velocity.length());
+                    reflect(null, 0.5);
+                    return SpellResult.PENDING;
+                }
+                if (activeWand.isBlocked(angle)) {
+                    return miss();
+                }
+            }
+        }
+        
+        entityHitCount++;
+        if (hitEntity != null && entityHitLimit > 1) {
+            targeting.ignoreEntity(hitEntity);
+        }
+        if (hitEntity != null) {
+            actionContext.playEffects("hit_entity");
+
+            if (hasActions("headshot") && CompatibilityUtils.isHeadshot(hitEntity, targetLocation)) {
+                actionContext.getMage().sendDebugMessage(ChatColor.GOLD + "   Projectile headshot", 3);
+                return headshot();
+            }
+        }
+        return hit();
     }
 
     protected SpellResult finishAttach() {

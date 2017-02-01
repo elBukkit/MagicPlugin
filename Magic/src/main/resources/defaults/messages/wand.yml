@@ -42,6 +42,8 @@ wand:
     mana_regeneration_boosted: "Mana Regeneration: $amount &f(&b$mana&f)&d/s"
     mana_boost: "Mana Boost: $amount%"
     mana_regeneration_boost: "Mana Regeneration Boost: $amount%"
+    block_chance: Blocking $roman
+    reflect_chance: Reflective $roman
     cost_reduction: Cost Reduction $roman
     consume_reduction: Manifestation
     cooldown_reduction: Cooldown Reduction $roman

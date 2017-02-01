@@ -110,7 +110,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             "potion_effects",
             "materials", "spells", "powered", "protected", "heroes",
             "enchant_count", "max_enchant_count",
-            "quick_cast", "left_click", "right_click", "drop", "swap"
+            "quick_cast", "left_click", "right_click", "drop", "swap",
+			"block_fov", "block_chance", "block_reflect_chance"
     );
 
     private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
@@ -205,6 +206,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     protected float damageReductionFire = 0;
     protected float damageReductionExplosions = 0;
     private float power = 0;
+	
+	private float blockFOV = 0;
+	private float blockChance = 0;
+	private float blockReflectChance = 0;
 
     private int maxEnchantCount = 0;
     private int enchantCount = 0;
@@ -1325,6 +1330,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("effect_particle_offset", effectParticleOffset);
 		node.set("effect_sound_interval", effectSoundInterval);
 		node.set("active_effects", activeEffectsOnly);
+		
+		node.set("block_fov", blockFOV);
+		node.set("block_chance", blockChance);
+		node.set("block_reflect_chance", blockReflectChance);
 
         node.set("cast_interval", castInterval);
         node.set("cast_min_velocity", castMinVelocity);
@@ -1543,7 +1552,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		damageReductionFire = safe ? Math.max(_damageReductionFire, damageReductionFire) : _damageReductionFire;
 		float _damageReductionExplosions = (float)wandConfig.getDouble("protection_explosions", damageReductionExplosions);
 		damageReductionExplosions = safe ? Math.max(_damageReductionExplosions, damageReductionExplosions) : _damageReductionExplosions;
-		
+
+		float _blockChance = (float)wandConfig.getDouble("block_chance", blockChance);
+		blockChance = safe ? Math.max(_blockChance, blockChance) : _blockChance;
+		float _blockReflectChance = (float)wandConfig.getDouble("block_reflect_chance", blockReflectChance);
+		blockReflectChance = safe ? Math.max(_blockReflectChance, blockReflectChance) : _blockReflectChance;
+		float _blockFOV = (float)wandConfig.getDouble("block_fov", blockFOV);
+		blockFOV = safe ? Math.max(_blockFOV, blockFOV) : _blockFOV;
+
 		int _manaRegeneration = wandConfig.getInt("mana_regeneration", wandConfig.getInt("xp_regeneration", manaRegeneration));
 		manaRegeneration = safe ? Math.max(_manaRegeneration, manaRegeneration) : _manaRegeneration;
 		int _manaMax = wandConfig.getInt("mana_max", wandConfig.getInt("xp_max", manaMax));
@@ -2041,12 +2057,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (superPowered) {
             lore.add(ChatColor.DARK_AQUA + getMessage("super_powered"));
         }
-        if (manaMaxBoost != 0) {
-            lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_boost", manaMaxBoost));
+        if (blockReflectChance > 0) {
+			lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.reflect_chance", blockReflectChance));
+		} else if (blockChance != 0) {
+			lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.block_chance", blockChance));
         }
         if (manaRegenerationBoost != 0) {
             lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_regeneration_boost", manaRegenerationBoost));
         }
+        
         if (castSpell != null) {
             SpellTemplate spell = controller.getSpellTemplate(castSpell);
             if (spell != null)
@@ -2856,8 +2875,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_blast", damageReductionExplosions)); }
         if (other.manaRegenerationBoost > manaRegenerationBoost) { manaRegenerationBoost = other.manaRegenerationBoost; modified = true; if (manaRegenerationBoost > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_regeneration_boost", manaRegenerationBoost)); }
         if (other.manaMaxBoost > manaMaxBoost) { manaMaxBoost = other.manaMaxBoost; modified = true; if (manaMaxBoost > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_boost", manaMaxBoost)); }
+		if (other.blockReflectChance > blockReflectChance) { blockReflectChance = other.blockReflectChance; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.reflect_chance", blockReflectChance)); }
+		if (other.blockChance > blockChance) { blockChance = other.blockChance; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.block_chance", blockChance)); }
+		if (other.blockFOV > blockFOV) { blockFOV = other.blockFOV; modified = true; }
 
-        boolean needsInventoryUpdate = false;
+		boolean needsInventoryUpdate = false;
 		if (other.hotbars.size() > hotbars.size()) {
 			int newCount = Math.max(1, other.hotbars.size());
 			if (newCount != hotbars.size()) {
@@ -2914,14 +2936,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
 
-		modified = modified | (!keep && other.keep);
-		modified = modified | (!bound && other.bound);
-		modified = modified | (!effectBubbles && other.effectBubbles);
-        modified = modified | (!undroppable && other.undroppable);
-        modified = modified | (!indestructible && other.indestructible);
-        modified = modified | (!superPowered && other.superPowered);
-        modified = modified | (!superProtected && other.superProtected);
-        modified = modified | (!glow && other.glow);
+		modified = modified || (!keep && other.keep);
+		modified = modified || (!bound && other.bound);
+		modified = modified || (!effectBubbles && other.effectBubbles);
+        modified = modified || (!undroppable && other.undroppable);
+        modified = modified || (!indestructible && other.indestructible);
+        modified = modified || (!superPowered && other.superPowered);
+        modified = modified || (!superProtected && other.superProtected);
+        modified = modified || (!glow && other.glow);
+		modified = modified || (!activeEffectsOnly && other.activeEffectsOnly);
 
 		keep = keep || other.keep;
 		bound = bound || other.bound;
@@ -2947,7 +2970,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             modified = modified | (effectParticleMinVelocity < other.effectParticleOffset);
             effectParticleMinVelocity = Math.max(effectParticleMinVelocity, other.effectParticleMinVelocity);
 		}
-		activeEffectsOnly = activeEffectsOnly && other.activeEffectsOnly;
+		activeEffectsOnly = activeEffectsOnly || other.activeEffectsOnly;
 
         if (other.castSpell != null && (other.isUpgrade || castSpell == null || !castSpell.equals(other.castSpell))) {
             modified = true;
@@ -5141,5 +5164,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public int getEffectiveManaRegeneration() {
 		return effectiveManaRegeneration;
+	}
+	
+	@Override
+	public boolean isBlocked(double angle) {
+		if (blockChance == 0) return false;
+		if (blockFOV > 0 && angle > blockFOV) return false;
+		boolean isBlocked = Math.random() <= blockChance;
+		if (isBlocked) {
+			playEffects("spell_blocked");
+		}
+		return isBlocked;
+	}
+	
+	@Override
+	public boolean isReflected(double angle) {
+		if (blockReflectChance == 0) return false;
+		if (blockFOV > 0 && angle > blockFOV) return false;
+		boolean isReflected = Math.random() <= blockReflectChance;
+		if (isReflected) {
+			playEffects("spell_reflected");
+		}
+		return isReflected;
 	}
 }

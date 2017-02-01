@@ -133,6 +133,8 @@ public interface Wand extends CostReducer {
     public boolean hasTag(String tag);
     public void bind();
     public void unbind();
+    public boolean isReflected(double angle);
+    public boolean isBlocked(double angle);
 
     /**
      * Save this Wand to a Configuartion Section.
