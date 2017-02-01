@@ -274,7 +274,12 @@ public class InventoryUtils extends NMSUtils
 
     public static ItemStack getPlayerSkull(String playerName, UUID uuid, String itemName)
     {
-        return getURLSkull("http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png", playerName, uuid, itemName);
+        return getURLSkull(getPlayerSkullURL(playerName), playerName, uuid, itemName);
+    }
+    
+    public static String getPlayerSkullURL(String playerName)
+    {
+        return "http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png";
     }
 
     public static ItemStack getPlayerSkull(Player player)

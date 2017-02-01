@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -36,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class RecallAction extends BaseTeleportAction implements GUIAction
@@ -52,6 +54,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private int protectionTime;
     private String markerKey = "recall_marker";
     private String unlockKey = "recall_warps";
+    private String friendKey = "recall_friends";
 
     private class UndoMarkerMove implements Runnable
     {
@@ -81,7 +84,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         WAND,
         MARKER,
         TOWN,
-        FIELDS
+        FIELDS,
+        FRIENDS
     }
 
     private static MaterialAndData defaultMaterial = new MaterialAndData(DefaultWaypointMaterial);
@@ -268,6 +272,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         this.context = context;
         this.markerKey = parameters.getString("marker_key", "recall_marker");
         this.unlockKey = parameters.getString("unlock_key", "recall_warps");
+        this.friendKey = parameters.getString("friend_key", "recall_friends");
         this.protectionTime = parameters.getInt("protection_duration", 0);
 
         allowCrossWorld = parameters.getBoolean("allow_cross_world", true);
@@ -294,6 +299,13 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         if (unlockedString != null && !unlockedString.isEmpty())
         {
             unlockedWarps.addAll(Arrays.asList(StringUtils.split(unlockedString, ",")));
+        }
+        
+        Set<String> friends = new HashSet<>();
+        String friendString = mageData.getString(friendKey);
+        if (friendString != null && !friendString.isEmpty())
+        {
+            friends.addAll(Arrays.asList(StringUtils.split(friendString, ",")));
         }
 
         ConfigurationSection warpConfig = null;
@@ -367,11 +379,67 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return locked ? SpellResult.DEACTIVATE : SpellResult.NO_ACTION;
         }
 
+        if (parameters.contains("addfriend"))
+        {
+            String friendName = parameters.getString("addfriend");
+            if (friendName == null || friendName.isEmpty())
+            {
+                return SpellResult.NO_ACTION;
+            }
+            
+            Player online = DeprecatedUtils.getPlayer(friendName);
+            if (online == null)
+            {
+                return SpellResult.FAIL;
+            }
+            
+            String uuid = online.getUniqueId().toString();
+            if (friends.contains(uuid))
+            {
+                return SpellResult.NO_ACTION;
+            }
+
+            friends.add(uuid);
+            friendString = StringUtils.join(friends, ",");
+            mageData.set(friendKey, friendString);
+            
+            String message = context.getMessage("add_friend").replace("$name", online.getDisplayName());
+            context.sendMessage(message);
+
+            return SpellResult.CAST;
+        }
+
+        if (parameters.contains("removefriend"))
+        {
+            String friendName = parameters.getString("removefriend");
+            Player online = DeprecatedUtils.getPlayer(friendName);
+            if (online == null)
+            {
+                return SpellResult.FAIL;
+            }
+
+            String uuid = online.getUniqueId().toString();
+            if (!friends.contains(uuid))
+            {
+                return SpellResult.NO_ACTION;
+            }
+            
+            friends.remove(uuid);
+
+            friendString = StringUtils.join(friends, ",");
+            mageData.set(friendKey, friendString);
+            
+            String message = context.getMessage("remove_friend").replace("$name", online.getDisplayName());
+            context.sendMessage(message);
+
+            return SpellResult.DEACTIVATE;
+        }
+
         Location playerLocation = mage.getLocation();
 		for (RecallType testType : RecallType.values())
         {
 			// Special-case for warps
-			if (testType == RecallType.WARP)
+            if (testType == RecallType.WARP)
             {
 				if (warpConfig != null)
                 {
@@ -489,7 +557,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         List<Waypoint> allWaypoints = new LinkedList<>();
         for (RecallType selectedType : enabledTypes) {
-            if (selectedType == RecallType.WARP) {
+            if (selectedType == RecallType.FRIENDS) {
+                for (String friendId : friends) {
+                    Waypoint targetLocation = getFriend(friendId);
+                    if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
+                        allWaypoints.add(targetLocation);
+                    }
+                }
+            } else if (selectedType == RecallType.WARP) {
                 for (String warpKey : warps.keySet()) {
                     Waypoint targetLocation = getWarp(warpKey);
                     if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
@@ -549,7 +624,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         for (Waypoint waypoint : allWaypoints)
         {
             ItemStack waypointItem;
-            if (controller.isUrlIconsEnabled() && waypoint.iconURL != null && !waypoint.iconURL.isEmpty()) {
+            if (waypoint.iconURL != null && !waypoint.iconURL.isEmpty()) {
                 waypointItem = InventoryUtils.getURLSkull(waypoint.iconURL);
             } else {
                 waypointItem = waypoint.icon.getItemStack(1);
@@ -617,6 +692,20 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         displayInventory.setItem(4, markerItem);
         context.getMage().activateGUI(this, displayInventory);
+    }
+
+    protected Waypoint getFriend(String uuid)
+    {
+        Player onlinePlayer = Bukkit.getPlayer(UUID.fromString(uuid));
+        if (onlinePlayer == null) return null;
+
+        String playerName = onlinePlayer.getDisplayName();
+        String castMessage = context.getMessage("cast_friend").replace("$name", playerName);
+        String failMessage = context.getMessage("no_target_friend").replace("$name", playerName);
+        String title = context.getMessage("title_friend").replace("$name", playerName);
+        String iconURL = InventoryUtils.getPlayerSkullURL(onlinePlayer.getName());
+
+        return new Waypoint(RecallType.WARP, onlinePlayer.getLocation(), title, castMessage, failMessage, "", null, iconURL);
     }
 
     protected Waypoint getWarp(String warpKey)

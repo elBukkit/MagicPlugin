@@ -6,7 +6,6 @@
 
 ## Reported Issues
 
- - Magic spawn eggs not working at all - DynamoASM (Spigot issue.. maybe can't fix)
  - You can put a wand in a chest if you click on the chest while your wand is open
 
 ## 1.10 Issues

@@ -960,6 +960,7 @@ spells:
         cast_warp: Warping you to $name
         cast_town: Warping you to your home town
         cast_field: Warping you to a protected area
+        cast_friend: Warping you to $name
         no_target_death: No recorded death location
         no_target_wand: No recorded lost wands
         no_target_home: No home set
@@ -968,12 +969,14 @@ spells:
         no_target_spawn: Can't recall to spawn
         no_target_town: You're not in a town
         no_target_fields: You have no fields
+        no_target_friend: Invalid friend $name
         title_move_marker: Move Marker to Here
         description_move_marker: Replaces your current marker
         title_marker: Marker
         description_marker: Aim down to move your marker
         title_death: Last Death
         description_death: Your last death location
+        title_friend: $name
         title_warp: $name
         title_spawn: Spawn
         description_spawn: The current world's spawn location
@@ -988,6 +991,8 @@ spells:
         title: Choose Destination
         move_marker_title: Move Marker
         unlock_warp: "&bYou have unlocked &5$name &bas a &6Recall &bdestination!"
+        add_friend: "&bYou have added &5$name &bas a &6Recall &bdestination!"
+        remove_friend: "&cYou have removed &5$name &cas a &6Recall &cdestination!"
     recall|2:
         upgrade_description: "&r&b&bull; &6Unlock last death location"
     recall|3:
