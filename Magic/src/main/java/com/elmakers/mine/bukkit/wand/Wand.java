@@ -111,7 +111,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             "materials", "spells", "powered", "protected", "heroes",
             "enchant_count", "max_enchant_count",
             "quick_cast", "left_click", "right_click", "drop", "swap",
-			"block_fov", "block_chance", "block_reflect_chance"
+			"block_fov", "block_chance", "block_reflect_chance", "block_global_cooldown"
     );
 
     private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
@@ -210,6 +210,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private float blockFOV = 0;
 	private float blockChance = 0;
 	private float blockReflectChance = 0;
+    private int blockGlobalCooldown = 0;
 
     private int maxEnchantCount = 0;
     private int enchantCount = 0;
@@ -1334,6 +1335,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("block_fov", blockFOV);
 		node.set("block_chance", blockChance);
 		node.set("block_reflect_chance", blockReflectChance);
+        node.set("block_global_cooldown", blockGlobalCooldown);
 
         node.set("cast_interval", castInterval);
         node.set("cast_min_velocity", castMinVelocity);
@@ -1559,6 +1561,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		blockReflectChance = safe ? Math.max(_blockReflectChance, blockReflectChance) : _blockReflectChance;
 		float _blockFOV = (float)wandConfig.getDouble("block_fov", blockFOV);
 		blockFOV = safe ? Math.max(_blockFOV, blockFOV) : _blockFOV;
+        int _blockGlobalCooldown = wandConfig.getInt("block_global_cooldown", blockGlobalCooldown);
+        blockGlobalCooldown = safe ? Math.min(_blockGlobalCooldown, blockGlobalCooldown) : _blockGlobalCooldown;
 
 		int _manaRegeneration = wandConfig.getInt("mana_regeneration", wandConfig.getInt("xp_regeneration", manaRegeneration));
 		manaRegeneration = safe ? Math.max(_manaRegeneration, manaRegeneration) : _manaRegeneration;
@@ -2878,6 +2882,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.blockReflectChance > blockReflectChance) { blockReflectChance = other.blockReflectChance; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.reflect_chance", blockReflectChance)); }
 		if (other.blockChance > blockChance) { blockChance = other.blockChance; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.block_chance", blockChance)); }
 		if (other.blockFOV > blockFOV) { blockFOV = other.blockFOV; modified = true; }
+        if (other.blockGlobalCooldown < blockGlobalCooldown) { blockGlobalCooldown = other.blockGlobalCooldown; modified = true; }
 
 		boolean needsInventoryUpdate = false;
 		if (other.hotbars.size() > hotbars.size()) {
@@ -3984,6 +3989,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (tickMana(player)) {
 			updateMana();
 		}
+		
+		if (player.isBlocking() && blockGlobalCooldown > 0) {
+            mage.setRemainingCooldown(blockGlobalCooldown);
+        }
 
         // Update hotbar glow
         updateHotbarStatus();

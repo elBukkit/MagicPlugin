@@ -3,7 +3,6 @@
 ## Sabers
 
  - Paths being able to upgrade blocking/reflect power
- - Blocking applying a global spell CD
 
 ## Reported Issues
 
