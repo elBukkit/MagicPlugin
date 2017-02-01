@@ -57,7 +57,7 @@ base_lightsaber:
     effect_sound: magic.saberhum
     effect_sound_interval: 700
     attributes:
-      GENERIC_ATTACK_DAMAGE: 3
+      GENERIC_ATTACK_DAMAGE: 10
     effects:
         open:
         -  class: EffectSingle
