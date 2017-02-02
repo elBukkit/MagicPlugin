@@ -49,4 +49,7 @@ destructible:
 - ice
 - packed_ice
 - glowstone
+- grass_path
+- frosted_ice
+- magma
 

@@ -32,6 +32,7 @@ base_sword:
     indestructible: true
 
 base_lightsaber:
+    hidde: true
     icon_inactive: wood_hoe:14
     icon_inactive_delay: 500
     drop: toggle
