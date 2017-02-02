@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.4
+
 ## 6.3.5
 
  - Spells now show when they are disabled with a "no" icon
