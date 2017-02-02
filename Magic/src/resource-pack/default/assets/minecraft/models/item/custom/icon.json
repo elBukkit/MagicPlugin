@@ -1,10 +1,6 @@
 {
 "__comment": "Designed by Droobledore - with BDcraft Cubik PRO 0.96 Beta. Used with permission in NathanWolf's Magic plugin.",
 "ambientocclusion": false,
-"textures": {
-    "particle": "items/custom/hat_wizard",
-    "texture": "items/custom/hat_wizard"
-},
 "elements": [ 
 {
     "__comment": "Icon",
