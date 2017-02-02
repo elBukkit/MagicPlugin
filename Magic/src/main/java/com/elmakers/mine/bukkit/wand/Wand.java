@@ -111,7 +111,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             "materials", "spells", "powered", "protected", "heroes",
             "enchant_count", "max_enchant_count",
             "quick_cast", "left_click", "right_click", "drop", "swap",
-			"block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown"
+			"block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown"
     );
 
     private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
@@ -211,6 +211,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private float blockChance = 0;
 	private float blockReflectChance = 0;
     private int blockMageCooldown = 0;
+    private int blockCooldown = 0;
 
     private int maxEnchantCount = 0;
     private int enchantCount = 0;
@@ -1336,6 +1337,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("block_chance", blockChance);
 		node.set("block_reflect_chance", blockReflectChance);
         node.set("block_mage_cooldown", blockMageCooldown);
+        node.set("block_cooldown", blockCooldown);
 
         node.set("cast_interval", castInterval);
         node.set("cast_min_velocity", castMinVelocity);
@@ -1563,6 +1565,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		blockFOV = safe ? Math.max(_blockFOV, blockFOV) : _blockFOV;
         int _blockGlobalCooldown = wandConfig.getInt("block_mage_cooldown", blockMageCooldown);
         blockMageCooldown = safe ? Math.min(_blockGlobalCooldown, blockMageCooldown) : _blockGlobalCooldown;
+        int _blockCooldown = wandConfig.getInt("block_cooldown", blockCooldown);
+        blockCooldown = safe ? Math.min(_blockCooldown, blockCooldown) : _blockCooldown;
 
 		int _manaRegeneration = wandConfig.getInt("mana_regeneration", wandConfig.getInt("xp_regeneration", manaRegeneration));
 		manaRegeneration = safe ? Math.max(_manaRegeneration, manaRegeneration) : _manaRegeneration;
@@ -2883,6 +2887,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.blockChance > blockChance) { blockChance = other.blockChance; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.block_chance", blockChance)); }
 		if (other.blockFOV > blockFOV) { blockFOV = other.blockFOV; modified = true; }
         if (other.blockMageCooldown < blockMageCooldown) { blockMageCooldown = other.blockMageCooldown; modified = true; }
+        if (other.blockCooldown < blockCooldown) { blockCooldown = other.blockCooldown; modified = true; }
 
 		boolean needsInventoryUpdate = false;
 		if (other.hotbars.size() > hotbars.size()) {
@@ -5177,22 +5182,30 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	@Override
 	public boolean isBlocked(double angle) {
+        if (mage == null) return false;
 		if (blockChance == 0) return false;
 		if (blockFOV > 0 && angle > blockFOV) return false;
+        long lastBlock = mage.getLastBlockTime();
+        if (blockCooldown > 0 && lastBlock > 0 && lastBlock + blockCooldown > System.currentTimeMillis()) return false;
 		boolean isBlocked = Math.random() <= blockChance;
 		if (isBlocked) {
 			playEffects("spell_blocked");
+            mage.setLastBlockTime(System.currentTimeMillis());
 		}
 		return isBlocked;
 	}
 	
 	@Override
 	public boolean isReflected(double angle) {
+        if (mage == null) return false;
 		if (blockReflectChance == 0) return false;
 		if (blockFOV > 0 && angle > blockFOV) return false;
+        long lastBlock = mage.getLastBlockTime();
+        if (blockCooldown > 0 && lastBlock > 0 && lastBlock + blockCooldown > System.currentTimeMillis()) return false;
 		boolean isReflected = Math.random() <= blockReflectChance;
 		if (isReflected) {
 			playEffects("spell_reflected");
+            if (mage != null) mage.setLastBlockTime(System.currentTimeMillis());
 		}
 		return isReflected;
 	}

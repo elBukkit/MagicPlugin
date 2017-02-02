@@ -119,6 +119,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean quiet = false;
     private EntityData entityData;
     private long lastTick;
+    private long lastBlockTime;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     protected float damageReduction = 0;
@@ -2632,6 +2633,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
+    }
+    
+    @Override
+    public long getLastBlockTime() {
+        return lastBlockTime;
+    }
+    
+    public void setLastBlockTime(long ms) {
+        lastBlockTime = ms;
     }
 }
 

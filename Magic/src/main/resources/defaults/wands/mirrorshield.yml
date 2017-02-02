@@ -8,4 +8,5 @@ mirrorshield:
     block_chance: 1
     block_fov: 0.5
     block_mage_cooldown: 3000
+    block_cooldown: 5000
     
