@@ -23,7 +23,9 @@
  it doesn't cast a spell though.
 
 # High-Priority
-
+ 
+ - Broomstick 3rd person alignment is off (maybe just redo broomsticks)
+ - Broomstick enchanting is broken (via enchanting table)
  - Aliases don't work with levels
  - Ability to *only* target teammates (like .. anti-PVP)
 

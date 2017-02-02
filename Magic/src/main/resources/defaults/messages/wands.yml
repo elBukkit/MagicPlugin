@@ -336,3 +336,6 @@ wands:
     lightsaber_hilt:
         name: Lighsaber Hilt
         description: Used to construct a Lightsaber
+    mirrorshield:
+        name: Mirror Shield
+        description: Can block and reflect spells
