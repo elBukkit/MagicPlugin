@@ -1165,6 +1165,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return finished;
     }
 
+    @Override
     public Batch cancelPending(String spellKey, boolean force) {
         Batch stoppedPending = null;
         if (pendingBatches.size() > 0) {

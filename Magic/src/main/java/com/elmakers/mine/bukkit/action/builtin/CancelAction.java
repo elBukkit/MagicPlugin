@@ -17,11 +17,13 @@ public class CancelAction extends BaseSpellAction
 {
 	private String undoListName;
     private Collection<String> spellKeys;
+    private boolean force;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        force = parameters.getBoolean("force", false);
         if (parameters.contains("spells")) {
             spellKeys = ConfigurationUtils.getStringList(parameters, "spells");
         } else if (parameters.contains("spell")) {
@@ -45,14 +47,14 @@ public class CancelAction extends BaseSpellAction
         SpellResult result = SpellResult.NO_TARGET;
         Mage targetMage = controller.getMage(targetEntity);
         if (spellKeys == null) {
-            Batch batch = targetMage.cancelPending(true);
+            Batch batch = targetMage.cancelPending(force);
             if (batch != null) {
                 result = SpellResult.CAST;
                 undoListName = batch.getName();
             }
         } else {
             for (String spellKey : spellKeys) {
-                Batch batch = targetMage.cancelPending(spellKey);
+                Batch batch = targetMage.cancelPending(spellKey, force);
                 if (batch != null) {
                     result = SpellResult.CAST;
                     undoListName = batch.getName();
