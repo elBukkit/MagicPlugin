@@ -295,9 +295,6 @@ enchant_block: enchantment_table
 # Control whether wands regenerate mana while they are not being held
 regenerate_while_inactive: true
 
-# A cooldown value in milliseconds between clicks. Mainly used to prevent Bukkit/MC double-event bugs.
-click_cooldown: 150
-
 # Auto-save interval in milliseconds (default is one hour, 0 to disable)
 auto_save: 3600000
 

@@ -45,7 +45,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerController implements Listener {
     private final MagicController controller;
-    private int clickCooldown = 150;
     private boolean enableCreativeModeEjecting = true;
     private MaterialAndData enchantBlockMaterial;
     private String enchantClickSpell = "spellshop";
@@ -60,7 +59,6 @@ public class PlayerController implements Listener {
     }
 
     public void loadProperties(ConfigurationSection properties) {
-        clickCooldown = properties.getInt("click_cooldown", 0);
         enableCreativeModeEjecting = properties.getBoolean("enable_creative_mode_ejecting", false);
         enchantBlockMaterial = new MaterialAndData(properties.getString("enchant_block", "enchantment_table"));
         enchantClickSpell = properties.getString("enchant_click");
@@ -344,10 +342,6 @@ public class PlayerController implements Listener {
             mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
             return;
         }
-        
-        if (!mage.checkLastClick(clickCooldown)) {
-            return;
-        }
 
         if (wand.isUpgrade()) return;
 
@@ -381,12 +375,20 @@ public class PlayerController implements Listener {
             event.setCancelled(true);
             return;
         }
+        
+        boolean handleRightClick = (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
+        if (handleRightClick) {
+            ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
+            if (Wand.isSpell(itemInOffhand) || Wand.isBrush(itemInOffhand) || Wand.isUpgrade(itemInOffhand)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
 
         Mage mage = controller.getMage(player);
         if (mage == null) return;
 
         Wand wand = mage.checkWand();
-        boolean handleRightClick = (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
         if (action == Action.RIGHT_CLICK_BLOCK) {
             Material material = event.getClickedBlock().getType();
             handleRightClick = !controller.isInteractable(event.getClickedBlock());
@@ -456,11 +458,6 @@ public class PlayerController implements Listener {
                 event.setCancelled(true);
                 return;
             }
-        }
-
-        if (!mage.checkLastClick(clickCooldown)) {
-            event.setCancelled(true);
-            return;
         }
         
         if (isSwing) {

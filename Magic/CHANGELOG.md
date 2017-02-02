@@ -3,7 +3,8 @@
 ## 6.4
 
  - Spells now show when they are disabled with a "no" icon
- - Add Mirror Shield, a craftable shield (nether star + shield) that can reflect spells
+ - Add Mirror Shield, a craftable shield (nether star + shield) that can reflect spells (WIP)
+ - Fix weird offhand item behavior while holding a wand
  - Recall, Cure, Heal, Phase all now cancel if you cast another spell during their warmup period.
  - Combined the survival, bending, stars and potter RPs into a single RP
  - Update/fix light saber appearances, add sound effects, add all colors to survival configs
