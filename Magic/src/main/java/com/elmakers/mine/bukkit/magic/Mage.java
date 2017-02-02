@@ -2616,7 +2616,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
                         MaterialAndData disabledIcon = spell.getDisabledIcon();
                         MaterialAndData spellIcon = spell.getIcon();
-                        if (disabledIcon != null && spellIcon != null) {
+                        if (disabledIcon != null && spellIcon != null && !controller.isUrlIconsEnabled()) {
                             if (!canCast) {
                                 if (disabledIcon.getMaterial() != spellItem.getType() || disabledIcon.getData() != spellItem.getDurability()) {
                                     disabledIcon.applyToItem(spellItem);
