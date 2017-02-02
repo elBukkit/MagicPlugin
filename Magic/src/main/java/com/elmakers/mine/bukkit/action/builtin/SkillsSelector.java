@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -152,7 +153,10 @@ public class SkillsSelector implements GUIAction {
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
                 CompatibilityUtils.setDisplayName(skillItem, nameTemplate.replace("$skill", skill.heroesSkill));
-                //skillItem.setAmount(99);
+                MaterialAndData disabledIcon = skill.spell.getDisabledIcon();
+                if (disabledIcon != null) {
+                    disabledIcon.applyToItem(skillItem);
+                }
             }
             displayInventory.addItem(skillItem);
         }
