@@ -45,6 +45,7 @@ try {
         
         // special-case hackiness to show painterly icons
         if ($path === 'painterly') $texturePath = 'painterly';
+		else if ($path === 'potter') $texturePath = 'potter';
     }
 
 	$general = parseConfigFile('config', true);
