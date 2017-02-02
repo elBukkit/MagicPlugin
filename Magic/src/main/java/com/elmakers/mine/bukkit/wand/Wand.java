@@ -5209,4 +5209,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		return isReflected;
 	}
+	
+	public boolean canCast() {
+		return (activeSpell != null && !activeSpell.isEmpty());
+	}
 }
