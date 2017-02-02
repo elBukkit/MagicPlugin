@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon",
+    "textures": {
+        "particle": "items/spells/vanish",
+        "texture": "items/spells/vanish"
+    }
+}

@@ -47,3 +47,13 @@ cp -R ../../painterly/* .
 find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-painterly-RP-6-3.zip *
 cd ..
+
+echo "** BUILDING POTTER **"
+
+mkdir potter 
+cd potter
+cp -R ../../default/* .
+cp -R ../../potter/* .
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-potter-RP-6-3.zip *
+cd ..

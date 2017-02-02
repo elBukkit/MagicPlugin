@@ -232,6 +232,8 @@
     {"predicate": {"damaged": 0, "damage": 0.144686299615877}, "model": "item/spells/feather"},
     {"predicate": {"damaged": 0, "damage": 0.145326504481434}, "model": "item/spells/purpleblast"},
     {"predicate": {"damaged": 0, "damage": 0.145966709346991}, "model": "item/spells/light"},
+    {"predicate": {"damaged": 0, "damage": 0.146606914212548}, "model": "item/spells/spider"},
+    {"predicate": {"damaged": 0, "damage": 0.147247119078105}, "model": "item/spells/vanish"},
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/diamond_axe"}
   ]
 }
