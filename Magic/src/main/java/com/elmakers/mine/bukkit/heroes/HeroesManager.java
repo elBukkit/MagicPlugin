@@ -158,6 +158,8 @@ public class HeroesManager {
         config.set("icon", SkillConfigManager.getRaw(skill, "icon", controller.getDefaultSkillIcon()));
         String iconURL = SkillConfigManager.getRaw(skill, "icon_url", null);
         config.set("icon_url", SkillConfigManager.getRaw(skill, "icon-url", iconURL));
+        String iconDisabled = SkillConfigManager.getRaw(skill, "icon_disabled", null);
+        config.set("icon_disabled", SkillConfigManager.getRaw(skill, "icon-disabled", iconDisabled));
         String nameTemplate = controller.getMessages().get("skills.item_name", "$skill");
         config.set("name", nameTemplate.replace("$skill", skill.getName()));
         config.set("category", "skills");

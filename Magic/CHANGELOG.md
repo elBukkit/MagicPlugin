@@ -2,6 +2,7 @@
 
 ## 6.4
 
+ - Spells now show when they are disabled with a "no" icon
  - Add Mirror Shield, a craftable shield (nether star + shield) that can reflect spells
  - Recall, Cure, Heal, Phase all now cancel if you cast another spell during their warmup period.
  - Combined the survival, bending, stars and potter RPs into a single RP
@@ -16,7 +17,7 @@
  - Added "example: skulls" option to easily re-enable skull-based icons
  - Add live_hotbar_skills option to allow skills to have a cooldown timer
  - Reduce Tornado velocity to avoid server-side velocity checks
- - Add disabled_icon option to spells, to show a different icon when they are not castable
+ - Add icon_disabled_icon option to spells, to show a different icon when they are not castable
  - Restore compatibility with WGCustomFlags plugin as a fallback
 
 ## 6.3.3

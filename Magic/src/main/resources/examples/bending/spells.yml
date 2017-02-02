@@ -62,6 +62,7 @@ airblast:
 airbomb:
     icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
     icon: diamond_axe:32
+    icon_disabled: diamond_hoe:32
     category: airbending
     worth: 50
     actions:
@@ -108,6 +109,7 @@ fling:
 airshield:
     icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
     icon: diamond_axe:22
+    icon_disabled: diamond_hoe:22
     category: airbending
     worth: 200
     actions:
@@ -143,6 +145,7 @@ airshield:
 enhancedspeed:
     icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c
     icon: diamond_axe:11
+    icon_disabled: diamond_hoe:11
     category: airbending
     worth: 60
     actions:
@@ -171,6 +174,7 @@ enhancedspeed:
 airscooter:
     icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
     icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
     category: airbending
     class: LevitateSpell
     worth: 200
@@ -224,6 +228,7 @@ airscooter:
 
 breathofwind:
     icon: diamond_axe:32
+    icon_disabled: diamond_hoe:32
     icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
     category: airbending
     worth: 150
@@ -289,6 +294,7 @@ waterjet:
 waterwhip:
   category: waterbending
   icon: diamond_axe:140
+    icon_disabled: diamond_hoe:140
   icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
   worth: 150
   actions:
@@ -325,6 +331,7 @@ waterwhip:
 iceshield:
     icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
     icon: diamond_axe:22
+    icon_disabled: diamond_hoe:22
     category: waterbending
     worth: 200
     actions:
@@ -421,6 +428,7 @@ toss:
 earthblock:
     icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
     icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
     category: earthbending
     worth: 150
     pvp_restricted: true
@@ -503,6 +511,7 @@ earthline:
   category: earthbending
   icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
   icon: diamond_axe:142
+    icon_disabled: diamond_hoe:142
   worth: 150
   actions:
       cast:

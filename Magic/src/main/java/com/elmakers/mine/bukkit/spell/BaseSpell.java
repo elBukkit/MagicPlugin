@@ -826,7 +826,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Load basic properties
         icon = ConfigurationUtils.getMaterialAndData(node, "icon", icon);
-        disabledIcon = ConfigurationUtils.getMaterialAndData(node, "disabled_icon", null);
+        disabledIcon = ConfigurationUtils.getMaterialAndData(node, "icon_disabled", null);
         iconURL = node.getString("icon_url");
         color = ConfigurationUtils.getColor(node, "color", null);
         worth = node.getDouble("worth", 0);

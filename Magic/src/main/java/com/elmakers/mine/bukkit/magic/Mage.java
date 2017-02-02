@@ -2612,9 +2612,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                             }
                         }
                         if (targetAmount == 0) targetAmount = 1;
-                        if (spellItem.getAmount() != targetAmount) {
-                            spellItem.setAmount(targetAmount);
-                        }
+                        boolean setAmount = false;
 
                         MaterialAndData disabledIcon = spell.getDisabledIcon();
                         MaterialAndData spellIcon = spell.getIcon();
@@ -2623,11 +2621,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                 if (disabledIcon.getMaterial() != spellItem.getType() || disabledIcon.getData() != spellItem.getDurability()) {
                                     disabledIcon.applyToItem(spellItem);
                                 }
+                                if (targetAmount == 99) {
+                                    if (spellItem.getAmount() != 1) {
+                                        spellItem.setAmount(1);
+                                    }
+                                    setAmount = true;
+                                }
                             } else {
                                 if (spellIcon.getMaterial() != spellItem.getType() || spellIcon.getData() != spellItem.getDurability()) {
                                     spellIcon.applyToItem(spellItem);
                                 }
                             }
+                        }
+
+                        if (!setAmount && spellItem.getAmount() != targetAmount) {
+                            spellItem.setAmount(targetAmount);
                         }
                     }
                 }

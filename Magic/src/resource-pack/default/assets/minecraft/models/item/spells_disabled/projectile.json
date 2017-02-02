@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon_disabled",
+    "textures": {
+        "particle": "items/spells/projectile",
+        "texture": "items/spells/projectile"
+    }
+}

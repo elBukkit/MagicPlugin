@@ -1,5 +1,6 @@
 icbm:
     icon: diamond_axe:51
+    icon_disabled: diamond_hoe:51
     icon_url: http://textures.minecraft.net/texture/9c2e9d8395cacd9922869c15373cf7cb16da0a5ce5f3c632b19ceb3929c9a11
     category: demolition
     pvp_restricted: true

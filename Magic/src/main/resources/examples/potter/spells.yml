@@ -23,6 +23,7 @@ alohomora:
 colloportus:
     icon_url: http://textures.minecraft.net/texture/dea4155d3f45e95c71b441d1a233586dd2efd99e0d85a286e41dea2a5231ab7
     icon: diamond_axe:183
+    icon_disabled: diamond_hoe:183
     category: staff
     class: ConstructSpell
     worth: 50
@@ -50,6 +51,7 @@ colloportus:
 aparecium:
     icon_url: http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9
     icon: diamond_axe:71
+    icon_disabled: diamond_hoe:71
     category: charms
     class: ConstructSpell
     worth: 15
@@ -87,6 +89,7 @@ apparate:
 araniaexumai:
     icon_url: http://textures.minecraft.net/texture/67764b015a5e734dda05422c497d29b3f8edfbfe94472e665b277cda648
     icon: diamond_axe:179
+    icon_disabled: diamond_hoe:179
     category: creatures
     pvp_restricted: true
     cast_on_no_target: true
@@ -136,6 +139,7 @@ arrow|4:
 snowball:
     icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
     icon: diamond_axe:59
+    icon_disabled: diamond_hoe:59
     category: charms
     pvp_restricted: true
     worth: 5
@@ -209,6 +213,7 @@ ascendio|2:
 arresto:
     icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
     icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
     category: charms
     worth: 20
     pvp_restricted: false
@@ -250,6 +255,7 @@ avadakedavra:
 
 avadamaxima:
     icon: diamond_axe:170
+    icon_disabled: diamond_hoe:170
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: staff
     pvp_restricted: true
@@ -303,6 +309,7 @@ avadamaxima:
 avis:
     icon_url: http://textures.minecraft.net/texture/8dd5ea25877fc4f2973e9ae746e77326b9b9dd735ca811cba3bdfb4e47108970
     icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
     category: creatures
     class: FamiliarSpell
     worth: 20
@@ -409,6 +416,7 @@ confundusmaxima:
     name: Confundus Maxima
     description: Silences a target for a Long Period!
     icon: diamond_axe:8
+    icon_disabled: diamond_hoe:8
     hidden: true
     category: dada
     pvp_restricted: true
@@ -461,6 +469,7 @@ conjunctivitis|2:
 obscuro:
     icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
     icon: diamond_axe:190
+    icon_disabled: diamond_hoe:190
     category: dada
     pvp_restricted: true
     cast_on_no_target: true
@@ -510,6 +519,7 @@ crucio:
 dementor:
     icon_url: http://textures.minecraft.net/texture/c8471a90c7b0d6ba70ddf0ea8daf2f8ee999a1efe95f2198d8352e42bd43d1
     icon: diamond_axe:175
+    icon_disabled: diamond_hoe:175
     category: specialty
     hidden: true
     pvp_restricted: true
@@ -550,6 +560,7 @@ dementor:
 
 deletrius:
     icon: diamond_axe:118
+    icon_disabled: diamond_hoe:118
     category: staff
     class: CommitSpell
     worth: 150
@@ -577,6 +588,7 @@ deprimo|3:
 
 deprimomaxima:
     icon: diamond_axe:114
+    icon_disabled: diamond_hoe:114
     icon_url: http://textures.minecraft.net/texture/1789289cba5bdef5f92dee5165a99d063f8785db78bdc6b41e3c4b099c04ca4
     category: staff
     class: ConstructSpell
@@ -617,6 +629,7 @@ deprimomaxima:
 diffindo:
     icon_url: http://textures.minecraft.net/texture/5aacdf52fae9b3c03bf0ab4b705a44ceddb9a9df57bda0b863d0b7bc84c27e
     icon: diamond_axe:133
+    icon_disabled: diamond_hoe:133
     category: transfiguration
     class: ConstructSpell
     cast_on_no_target: true
@@ -690,6 +703,7 @@ spongify:
 
 spongifymaxima:
     icon: diamond_axe:173
+    icon_disabled: diamond_hoe:173
     icon_url: http://textures.minecraft.net/texture/fced4114232f1aff90c5fbb3535e89c546858b14bae3fea7ecc896b2bd51
     category: transfiguration
     class: RecurseSpell
@@ -722,6 +736,7 @@ erecto:
 evanesco:
     icon_url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
     icon: diamond_axe:133
+    icon_disabled: diamond_hoe:133
     category: transfiguration
     worth: 30
     actions:
@@ -801,6 +816,7 @@ episkey|3:
 floo:
     hidden: true
     icon: diamond_axe:22
+    icon_disabled: diamond_hoe:22
     category: specialty
     worth: 30
     actions:
@@ -826,6 +842,7 @@ floo:
 fiendfyre:
     icon_url: http://textures.minecraft.net/texture/a9e073da36aaf2c844da428cd4a19dfde32c8cdc2404eed4a135f6095b17c
     icon: diamond_axe:139
+    icon_disabled: diamond_hoe:139
     category: dark
     class: IterateSpell
     pvp_restricted: true
@@ -877,6 +894,7 @@ finiteincantatem|4:
 flagrate:
     icon_url: http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e
     icon: diamond_axe:29
+    icon_disabled: diamond_hoe:29
     category: charms
     worth: 20
     earns_sp: 1
@@ -905,6 +923,7 @@ flagrate:
 rictusempra:
     icon_url: http://textures.minecraft.net/texture/5374b64589d779ac4bf7293ba44dba5630a649a02877a39f4c05e94911ff96a
     icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
     category: dada
     pvp_restricted: true
     cast_on_no_target: true
@@ -966,6 +985,7 @@ ventus:
 
 flipendo:
     icon: diamond_axe:32
+    icon_disabled: diamond_hoe:32
     icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
     category: dada
     pvp_restricted: true
@@ -1048,6 +1068,7 @@ flight:
 fourpoint:
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
     icon: diamond_axe:189
+    icon_disabled: diamond_hoe:189
     category: elective
     class: OrientSpell
     worth: 20
@@ -1121,6 +1142,7 @@ glacius|3:
 immobulus:
     icon_url: http://textures.minecraft.net/texture/6120acda66c3d37a2952a7622a4a7c7b5a4f5626ecc90179976c1915f30b39f
     icon: diamond_axe:175
+    icon_disabled: diamond_hoe:175
     category: dada
     pvp_restricted: true
     cast_on_no_target: true
@@ -1184,6 +1206,7 @@ locomotomortus:
     icon_url: http://textures.minecraft.net/texture/2e67b7afcdb3bfe70cb33d1e384f11f8dc81f3dc9677cc64cb51ba0eb8f3f
     alias: locomoto
     icon: diamond_axe:175
+    icon_disabled: diamond_hoe:175
     category: dada
     pvp_restricted: true
     cast_on_no_target: true
@@ -1238,6 +1261,7 @@ imperio:
 impervius:
     icon_url: http://textures.minecraft.net/texture/5aacdf52fae9b3c03bf0ab4b705a44ceddb9a9df57bda0b863d0b7bc84c27e
     icon: diamond_axe:186
+    icon_disabled: diamond_hoe:186
     category: transfiguration
     class: ConstructSpell
     worth: 30
@@ -1273,6 +1297,7 @@ incendio|3:
 lacarnum:
     icon_url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
     icon: diamond_axe:153
+    icon_disabled: diamond_hoe:153
     category: charms
     pvp_restricted: true
     worth: 35
@@ -1323,6 +1348,7 @@ legilimens:
 levicorpus:
     icon_url: http://textures.minecraft.net/texture/3f6c497d587c1398ae29cb648a9707fbe974a651cf88c6a2296442db4f6fa5c
     icon: diamond_axe:227
+    icon_disabled: diamond_hoe:227
     category: charms
     class: GenericSpell
     cast_on_no_target: true
@@ -1415,6 +1441,7 @@ levicorpus|3:
 
 lumos:
     icon: diamond_axe:228
+    icon_disabled: diamond_hoe:228
     category: charms
     icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
     worth: 10
@@ -1464,6 +1491,7 @@ lumos|3:
 lumossolem:
     icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
     icon: diamond_axe:228
+    icon_disabled: diamond_hoe:228
     category: charms
     class: TossSpell
     worth: 20
@@ -1492,6 +1520,7 @@ lumossolem:
 morsmordre:
     icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
     icon: diamond_axe:52
+    icon_disabled: diamond_hoe:52
     category: dark
     worth: 20
     actions:
@@ -1533,6 +1562,7 @@ periculum:
 periculux:
     icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
     icon: diamond_axe:191
+    icon_disabled: diamond_hoe:191
     category: charms
     show_undoable: false
     actions:
@@ -1584,6 +1614,7 @@ petrificustotalus:
 webbing:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     icon: diamond_axe:203
+    icon_disabled: diamond_hoe:203
     category: specialty
     hidden: true
     class: ConstructSpell
@@ -1633,6 +1664,7 @@ webbing:
 piertotum:
     icon_url: http://textures.minecraft.net/texture/b47685bb689895deea831ce92bc339d1b1d63b7782f98f252abc09447fbcf8f
     icon: diamond_axe:53
+    icon_disabled: diamond_hoe:53
     category: master
     class: FamiliarSpell
     worth: 250
@@ -1693,6 +1725,7 @@ protego|3:
 
 protegomaxima:
     icon: diamond_axe:22
+    icon_disabled: diamond_hoe:22
     category: dada
     class: ConstructSpell
     worth: 100
@@ -1751,6 +1784,7 @@ reducto|2:
 reductomaxima:
     icon_url: http://textures.minecraft.net/texture/4a458a62561a9e6ab960b9bdccaddbf039429c836dfacdd39ff7c7085c9e9b9
     icon: diamond_axe:108
+    icon_disabled: diamond_hoe:108
     category: staff
     class: ConstructSpell
     hidden: true
@@ -1790,6 +1824,7 @@ reductomaxima:
 
 salviohexia:
     icon: diamond_axe:101
+    icon_disabled: diamond_hoe:101
     category: staff
     hidden: true
     class: ConstructSpell
@@ -1823,6 +1858,7 @@ reparifarge:
 
 reparo:
     icon: diamond_axe:103
+    icon_disabled: diamond_hoe:103
     category: staff
     hidden: true
     class: ConstructSpell
@@ -1853,6 +1889,7 @@ reparo:
 
 reparomaxima:
     icon: diamond_axe:103
+    icon_disabled: diamond_hoe:103
     category: staff
     class: ConstructSpell
     hidden: true
@@ -1886,6 +1923,7 @@ sectumsempra:
 silencio:
     icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     icon: diamond_axe:8
+    icon_disabled: diamond_hoe:8
     category: staff
     hidden: true
     worth: 500
@@ -1924,6 +1962,7 @@ silencio:
 silenciomaxima:
     icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     icon: diamond_axe:8
+    icon_disabled: diamond_hoe:8
     category: staff
     hidden: true
     worth: 500
@@ -1962,6 +2001,7 @@ silenciomaxima:
 silenciototalus:
     icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     icon: diamond_axe:8
+    icon_disabled: diamond_hoe:8
     category: staff
     hidden: true
     worth: 500
@@ -1997,6 +2037,7 @@ silenciototalus:
 amplify:
     icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     icon: diamond_axe:8
+    icon_disabled: diamond_hoe:8
     category: staff
     hidden: true
     worth: 500
@@ -2024,6 +2065,7 @@ amplify:
 
 expulsion:
     icon: diamond_axe:170
+    icon_disabled: diamond_hoe:170
     category: staff
     hidden: true
     worth: 500
@@ -2076,6 +2118,7 @@ stupefy|3:
 vermillious:
     icon_url: http://textures.minecraft.net/texture/73b6fd4699e7c8c4ce3024b7882b38ff47f1a249fb8be67992707ec2b8d59c
     icon: diamond_axe:159
+    icon_disabled: diamond_hoe:159
     category: charms
     pvp_restricted: true
     worth: 40
@@ -2163,6 +2206,7 @@ vermillious|3:
 colorvaria:
     icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
     icon: diamond_axe:125
+    icon_disabled: diamond_hoe:125
     category: transfiguration
     class: AlterSpell
     worth: 8
@@ -2194,6 +2238,7 @@ meteo:
 nox:
     icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
     icon: diamond_axe:166
+    icon_disabled: diamond_hoe:166
     category: charms
     cast_on_no_target: true
     worth: 20
@@ -2227,6 +2272,7 @@ noxmaxima:
 vulnera:
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
     icon: diamond_axe:44
+    icon_disabled: diamond_hoe:44
     category: charms
     cast_on_no_target: true
     worth: 50
@@ -2273,6 +2319,7 @@ vulnera:
 ferula:
     icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
     icon: diamond_axe:46
+    icon_disabled: diamond_hoe:46
     category: charms
     cast_on_no_target: true
     worth: 50
@@ -2322,6 +2369,7 @@ phase:
     hidden: true
     enabled: true
     icon: diamond_axe:72
+    icon_disabled: diamond_hoe:72
     category: staff
     class: PhaseSpell
     worth: 10
@@ -2349,6 +2397,7 @@ phase:
 revelio:
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     icon: diamond_axe:72
+    icon_disabled: diamond_hoe:72
     category: staff
     worth: 20
     cast_on_no_target: true
@@ -2380,6 +2429,7 @@ revelio:
 deluminate:
     hidden: true
     icon: diamond_axe:85
+    icon_disabled: diamond_hoe:85
     category: specialty
     class: ConstructSpell
     worth: 100
@@ -2408,6 +2458,7 @@ deluminate:
 pulsus:
     icon_url: http://textures.minecraft.net/texture/2418aee9b8d2702b5d75cfeabf19edf4b4bb83832fda7324c27781beb1e212f
     icon: diamond_axe:192
+    icon_disabled: diamond_hoe:192
     category: dada
     pvp_restricted: true
     cast_on_no_target: true
@@ -2442,6 +2493,7 @@ pulsus:
 confringo:
     icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
     icon: diamond_axe:153
+    icon_disabled: diamond_hoe:153
     category: dark
     pvp_restricted: true
     worth: 35
@@ -2500,6 +2552,7 @@ firestorm:
     icon_url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
     description: Incinerate your target!
     icon: diamond_axe:144
+    icon_disabled: diamond_hoe:144
     category: dark
     worth: 35
     pvp_restricted: true
@@ -2546,6 +2599,7 @@ firestorm:
 tripudio:
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
     icon: diamond_axe:11
+    icon_disabled: diamond_hoe:11
     worth: 10
     actions:
         cast:
@@ -2578,6 +2632,7 @@ tripudio:
 volo:
     icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c
     icon: diamond_axe:11
+    icon_disabled: diamond_hoe:11
     category: light
     worth: 10
     actions:
@@ -2611,6 +2666,7 @@ volo:
 fiantoduri:
     icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
     icon: diamond_axe:11
+    icon_disabled: diamond_hoe:11
     category: light
     worth: 10
     actions:
@@ -2650,6 +2706,7 @@ fiantoduri:
 bombtastic:
     icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     icon: diamond_axe:93
+    icon_disabled: diamond_hoe:93
     category: specialty
     pvp_restricted: true
     hidden: true
@@ -2686,6 +2743,7 @@ bombtastic:
 dungbomb:
     icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     icon: diamond_axe:93
+    icon_disabled: diamond_hoe:93
     category: specialty
     pvp_restricted: true
     hidden: true
@@ -2916,6 +2974,7 @@ brushselect:
 patronus:
     icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
     icon: diamond_axe:131
+    icon_disabled: diamond_hoe:131
     category: charms
     worth: 200
     actions:

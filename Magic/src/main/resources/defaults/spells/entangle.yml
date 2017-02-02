@@ -1,5 +1,6 @@
 entangle:
     icon: diamond_axe:177
+    icon_disabled: diamond_hoe:177
     icon_url: http://textures.minecraft.net/texture/b2545861d5871f75caa3b378ec44655bcb3d6cabe697b27303dbdaa8b5b5
     category: combat
     class: ConstructSpell

@@ -1,5 +1,6 @@
 chop:
     icon: diamond_axe:124
+    icon_disabled: diamond_hoe:124
     icon_url: http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f
     category: elemental
     tags: noduel,nojail

@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon_disabled",
+    "textures": {
+        "particle": "items/spells/worm",
+        "texture": "items/spells/worm"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon_disabled",
+    "textures": {
+        "particle": "items/spells/supercylinder",
+        "texture": "items/spells/supercylinder"
+    }
+}
