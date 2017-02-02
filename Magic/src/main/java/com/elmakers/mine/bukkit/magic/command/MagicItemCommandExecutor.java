@@ -601,6 +601,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			player.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
 			return true;
 		}
+		if (enchantment == null) {
+			player.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
+			return true;
+		}
 		int level = 0;
 		try {
 			level = Integer.parseInt(enchantValue);
@@ -646,6 +650,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			try {
 				enchantment = Enchantment.getByName(enchantName.toUpperCase());
 			} catch (Exception ex) {
+				player.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
+				return true;
+			}
+			if (enchantment == null) {
 				player.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
 				return true;
 			}
