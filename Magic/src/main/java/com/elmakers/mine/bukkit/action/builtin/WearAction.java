@@ -59,12 +59,12 @@ public class WearAction extends BaseSpellAction
         }
     }
 
-	private class WeearUndoAction implements Runnable
+	private class WearUndoAction implements Runnable
 	{
 		private final Mage mage;
         private final int slotNumber;
 
-		public WeearUndoAction(Mage mage, int slotNumber) {
+		public WearUndoAction(Mage mage, int slotNumber) {
 			this.mage = mage;
             this.slotNumber = slotNumber;
 		}
@@ -236,7 +236,7 @@ public class WearAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-        context.registerForUndo(new WeearUndoAction(mage, slotNumber));
+        context.registerForUndo(new WearUndoAction(mage, slotNumber));
 
         if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
