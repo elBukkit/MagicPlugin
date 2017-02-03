@@ -3,9 +3,6 @@
 ## Broomsticks
 
  - Max flight duration, with some way of notifying the player. Maybe dizziness?
- - Can't fly when dizzy
- - Crash mechanics
- - Max height above ground
  - Speed/brake mechanics of some kind
 
 ## Sabers

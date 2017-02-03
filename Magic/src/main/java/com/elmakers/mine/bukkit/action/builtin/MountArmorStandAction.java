@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -42,6 +43,8 @@ public class MountArmorStandAction extends BaseSpellAction
     private double liftoffThrust = 0;
     private double crashDistance = 0;
     private int liftoffDuration = 0;
+    private int maxHeightAboveGround;
+    private int maxHeight;
     private CreatureSpawnEvent.SpawnReason armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
     private Collection<PotionEffect> crashEffects;
 
@@ -88,6 +91,8 @@ public class MountArmorStandAction extends BaseSpellAction
         liftoffDuration = parameters.getInt("liftoff_duration", 0);
         crashDistance = parameters.getDouble("crash_distance", 0);
         mountWand = parameters.getBoolean("mount_wand", false);
+        maxHeight = parameters.getInt("max_height", 0);
+        maxHeightAboveGround = parameters.getInt("max_height_above_ground", 0);
 
         if (parameters.contains("armor_stand_reason")) {
             String reasonText = parameters.getString("armor_stand_reason").toUpperCase();
@@ -157,6 +162,25 @@ public class MountArmorStandAction extends BaseSpellAction
     }
     
     protected void applyThrust(CastContext context) {
+        Location currentLocation = context.getTargetEntity().getLocation();
+        boolean grounded = false;
+        if (maxHeight > 0 && currentLocation.getY() >= maxHeight) {
+            grounded = true;
+        } else if (maxHeightAboveGround > 0) {
+            Block block = currentLocation.getBlock();
+            int height = 0;
+            while (height < maxHeightAboveGround && context.isPassthrough(block.getType()))
+            {
+                block = block.getRelative(BlockFace.DOWN);
+                height++;
+            }
+            if (context.isPassthrough(block.getType())) {
+                grounded = true;
+            }
+        }
+        if (grounded) {
+            direction.setY(0).normalize();
+        }
         if (speed > 0) {
             armorStand.setVelocity(direction.normalize().multiply(speed));
         }
@@ -311,12 +335,16 @@ public class MountArmorStandAction extends BaseSpellAction
         parameters.add("liftoff_thrust");
         parameters.add("crash_distance");
         parameters.add("mount_wand");
+        parameters.add("max_height");
+        parameters.add("max_height_above_ground");
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
     {
-        if (parameterKey.equals("crash_distance")) {
+        if (parameterKey.equals("crash_distance")
+                || parameterKey.equals("max_height")
+                || parameterKey.equals("max_height_above_ground")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("armor_stand_invisible") 
                 || parameterKey.equals("armor_stand_marker") 
