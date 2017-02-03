@@ -2598,16 +2598,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         } else if (!canCast) {
                             targetAmount = 99;
                         } else {
-                            canCast = false;
+                            canCast = remainingCooldown == 0;
                             targetAmount = Wand.LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
                             if (Wand.LiveHotbarCooldown && requiredCost != null && wand != null) {
                                 int mana = requiredCost.getMana();
-                                if (mana <= wand.getEffectiveManaMax() && wand.getEffectiveManaRegeneration() > 0) {
-                                    float remainingMana = mana - wand.getMana();
-                                    int targetManaTime = (int)Math.min(Math.ceil(remainingMana / wand.getEffectiveManaRegeneration()), 99);
-                                    targetAmount = Math.max(targetManaTime, targetAmount);
-                                } else {
-                                    targetAmount = 99;
+                                if (mana > 0) {
+                                    if (mana <= wand.getEffectiveManaMax() && wand.getEffectiveManaRegeneration() > 0) {
+                                        float remainingMana = mana - wand.getMana();
+                                        canCast = canCast && remainingMana <= 0;
+                                        int targetManaTime = (int)Math.min(Math.ceil(remainingMana / wand.getEffectiveManaRegeneration()), 99);
+                                        targetAmount = Math.max(targetManaTime, targetAmount);
+                                    } else {
+                                        targetAmount = 99;
+                                        canCast = false;
+                                    }
                                 }
                             }
                         }
