@@ -291,8 +291,8 @@ wands:
     broomstick:
         name: Broomstick
         description: You can fly!
-        enchant_instructions: "&r&bEnchant your $wand to increase its speed and handling"
-        spell_instructions: "&r&bUse your broom to fly through the air. Spacebar will speed up, shift slows down and lands."
+        enchant_instructions: ""
+        spell_instructions: "&r&bUse your broom to fly through the air. Dive to speed up, and don't fly too long!"
     blaster:
         name: Blaster
         description: Pew-pew!

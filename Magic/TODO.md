@@ -2,7 +2,6 @@
 
 ## Broomsticks
 
- - Max flight duration, with some way of notifying the player. Maybe dizziness?
  - Speed/brake mechanics of some kind
 
 ## Sabers

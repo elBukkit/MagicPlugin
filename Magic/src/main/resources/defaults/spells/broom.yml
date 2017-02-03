@@ -79,7 +79,12 @@ broom:
         liftoff_duration: 600
         liftoff_thrust: 1
         steer_speed: 0.05
+        duration: 60000
+        duration_warning: 10000
+        cooldown: 15000
         crash_distance: 0.9
         crash_effects:
-          confusion: 120,2
+          confusion: 120,3
+        warning_effects:
+          confusion: 5
 

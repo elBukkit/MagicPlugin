@@ -42,11 +42,14 @@ public class MountArmorStandAction extends BaseSpellAction
     private double startSpeed = 0;
     private double liftoffThrust = 0;
     private double crashDistance = 0;
+    private int duration = 0;
+    private int durationWarning = 0;
     private int liftoffDuration = 0;
     private int maxHeightAboveGround;
     private int maxHeight;
     private CreatureSpawnEvent.SpawnReason armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
     private Collection<PotionEffect> crashEffects;
+    private Collection<PotionEffect> warningEffects;
 
     private ItemStack item;
     private int slotNumber;
@@ -55,12 +58,15 @@ public class MountArmorStandAction extends BaseSpellAction
     private Vector direction;
     private double speed;
     private boolean mounted;
+    private boolean warningEffectsApplied;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
         super.initialize(spell, parameters);
         
         crashEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("crash_effects"));
+        durationWarning = parameters.getInt("duration_warning", 0);
+        warningEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("warning_effects"), durationWarning);
     }
 
     @Override
@@ -73,6 +79,7 @@ public class MountArmorStandAction extends BaseSpellAction
             armorStand.remove();
         }
         armorStand = null;
+        warningEffectsApplied = false;
     }
     
     @Override
@@ -93,6 +100,8 @@ public class MountArmorStandAction extends BaseSpellAction
         mountWand = parameters.getBoolean("mount_wand", false);
         maxHeight = parameters.getInt("max_height", 0);
         maxHeightAboveGround = parameters.getInt("max_height_above_ground", 0);
+        duration = parameters.getInt("duration", 0);
+        durationWarning = parameters.getInt("duration_warning", 0);
 
         if (parameters.contains("armor_stand_reason")) {
             String reasonText = parameters.getString("armor_stand_reason").toUpperCase();
@@ -128,6 +137,10 @@ public class MountArmorStandAction extends BaseSpellAction
                 return SpellResult.CAST;
             }
         }
+        if (!context.isPassthrough(target.getLocation().getBlock().getType())) {
+            crash(context);
+            return SpellResult.CAST;
+        }
         
         adjustHeading(context);
         if (System.currentTimeMillis() > liftoffTime + liftoffDuration) {
@@ -162,6 +175,18 @@ public class MountArmorStandAction extends BaseSpellAction
     }
     
     protected void applyThrust(CastContext context) {
+        if (duration > 0) {
+            long flightTime = System.currentTimeMillis() - liftoffTime;
+            Entity targetEntity = context.getTargetEntity();
+            if (!warningEffectsApplied && warningEffects != null && targetEntity instanceof LivingEntity && durationWarning > 0 && flightTime > duration - durationWarning) {
+                CompatibilityUtils.applyPotionEffects((LivingEntity)targetEntity, warningEffects);
+                warningEffectsApplied = true;
+            }
+
+            if (flightTime > duration) {
+                return;
+            }
+        }
         Location currentLocation = context.getTargetEntity().getLocation();
         boolean grounded = false;
         if (maxHeight > 0 && currentLocation.getY() >= maxHeight) {
@@ -273,6 +298,12 @@ public class MountArmorStandAction extends BaseSpellAction
             armorStand.remove();
             armorStand = null;
         }
+        Entity targetEntity = context.getTargetEntity();
+        if (warningEffectsApplied && warningEffects != null && targetEntity != null && targetEntity instanceof LivingEntity) {
+            for (PotionEffect effect : warningEffects) {
+                ((LivingEntity)targetEntity).removePotionEffect(effect.getType());
+            }
+        }
         Player player = context.getMage().getPlayer();
         if (player == null || item == null) return;
         
@@ -299,6 +330,7 @@ public class MountArmorStandAction extends BaseSpellAction
         if (crashEffects != null && targetEntity != null && crashEffects.size() > 0 && targetEntity instanceof LivingEntity) {
             CompatibilityUtils.applyPotionEffects((LivingEntity)targetEntity, crashEffects);
         }
+        warningEffectsApplied = false;
     }
 
     protected boolean checkForCrash(CastContext context, Location source, Vector threshold)
@@ -337,6 +369,8 @@ public class MountArmorStandAction extends BaseSpellAction
         parameters.add("mount_wand");
         parameters.add("max_height");
         parameters.add("max_height_above_ground");
+        parameters.add("duration");
+        parameters.add("duration_warning");
     }
 
     @Override
@@ -358,7 +392,9 @@ public class MountArmorStandAction extends BaseSpellAction
                 || parameterKey.equals("armor_stand_yaw")
                 || parameterKey.equals("liftoff_thrust")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_VECTOR_COMPONENTS));
-        } else if (parameterKey.equals("liftoff_duration")) {
+        } else if (parameterKey.equals("liftoff_duration")
+                || parameterKey.equals("duration")
+                || parameterKey.equals("duration_warning")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
         } else if (parameterKey.equals("armor_stand_reason")) {
             for (CreatureSpawnEvent.SpawnReason reason : CreatureSpawnEvent.SpawnReason.values()) {
