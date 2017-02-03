@@ -1,9 +1,5 @@
 # TODO
 
-## Broomsticks
-
- - Speed/brake mechanics of some kind
-
 ## Sabers
 
  - Paths being able to upgrade blocking/reflect power

@@ -40,6 +40,10 @@ public class MountArmorStandAction extends BaseSpellAction
     private double armorStandYaw = 0;
     private double moveDistance = 0;
     private double startSpeed = 0;
+    private double minSpeed = 0;
+    private double maxSpeed = 0;
+    private double maxAcceleration = 0;
+    private double maxDeceleration = 0;
     private double liftoffThrust = 0;
     private double crashDistance = 0;
     private int duration = 0;
@@ -94,6 +98,10 @@ public class MountArmorStandAction extends BaseSpellAction
         armorStandYaw = ConfigurationUtils.getDouble(parameters, "armor_stand_yaw", 0.0);
         moveDistance = parameters.getDouble("steer_speed", 0);
         startSpeed = parameters.getDouble("start_speed", 0);
+        minSpeed = parameters.getDouble("min_speed", 0);
+        maxSpeed = parameters.getDouble("max_speed", 0);
+        maxAcceleration = parameters.getDouble("max_acceleration", 0);
+        maxDeceleration = parameters.getDouble("max_deceleration", 0);
         liftoffThrust = parameters.getDouble("liftoff_thrust", 0);
         liftoffDuration = parameters.getInt("liftoff_duration", 0);
         crashDistance = parameters.getDouble("crash_distance", 0);
@@ -127,6 +135,14 @@ public class MountArmorStandAction extends BaseSpellAction
         if (mount == null || mount != armorStand)
         {
             return SpellResult.CAST;
+        }
+        if (!armorStand.isValid())
+        {
+            // This seems to happen occasionally... guess we'll work around it for now.
+            armorStand.remove();
+            if (!mountNewArmorStand(context)) {
+                return SpellResult.FAIL;
+            }
         }
         
         if (crashDistance > 0)
@@ -187,7 +203,22 @@ public class MountArmorStandAction extends BaseSpellAction
                 return;
             }
         }
+
         Location currentLocation = context.getTargetEntity().getLocation();
+        Vector direction = currentLocation.getDirection();
+        
+        // Adjust speed
+        if (direction.getY() < 0 && maxAcceleration > 0) {
+            speed = speed - direction.getY() * maxAcceleration;
+            if (maxSpeed > 0 && speed > maxSpeed) {
+                speed = maxSpeed;
+            }
+        } else if (direction.getY() > 0 && maxDeceleration > 0) {
+            speed = speed - direction.getY() * maxDeceleration;
+            speed = Math.max(minSpeed, speed);
+        }
+        
+        // Check for max height
         boolean grounded = false;
         if (maxHeight > 0 && currentLocation.getY() >= maxHeight) {
             grounded = true;
@@ -206,6 +237,8 @@ public class MountArmorStandAction extends BaseSpellAction
         if (grounded) {
             direction.setY(0).normalize();
         }
+        
+        // Apply thrust
         if (speed > 0) {
             armorStand.setVelocity(direction.normalize().multiply(speed));
         }
@@ -247,6 +280,27 @@ public class MountArmorStandAction extends BaseSpellAction
             slotNumber = player.getInventory().getHeldItemSlot();
         }
 
+        direction = entity.getLocation().getDirection();
+        if (!mountNewArmorStand(context)) {
+            return SpellResult.FAIL;
+        }
+        if (mountWand) {
+            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        }
+        
+        liftoffTime = System.currentTimeMillis();
+        mounted = true;
+        speed = startSpeed;
+        if (liftoffThrust > 0) {
+            armorStand.setVelocity(new Vector(0, liftoffThrust, 0));
+        }
+        
+        return SpellResult.PENDING;
+	}
+	
+	protected boolean mountNewArmorStand(CastContext context) {
+        Mage mage = context.getMage();
+        Entity entity = context.getTargetEntity();
         armorStand = CompatibilityUtils.spawnArmorStand(mage.getLocation());
 
         if (armorStandInvisible) {
@@ -270,26 +324,19 @@ public class MountArmorStandAction extends BaseSpellAction
             CompatibilityUtils.addToWorld(entity.getWorld(), armorStand, armorStandSpawnReason);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return SpellResult.FAIL;
+            return false;
         }
         controller.setForceSpawn(false);
-        
+
         if (mountWand) {
-            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
             armorStand.setHelmet(item);
         }
+        entity.eject();
         armorStand.setPassenger(entity);
-        speed = startSpeed;
-        direction = entity.getLocation().getDirection();
-        if (liftoffThrust > 0) {
-            armorStand.setVelocity(new Vector(0, liftoffThrust, 0));
-        }
-        liftoffTime = System.currentTimeMillis();
         adjustHeading(context);
-        mounted = true;
         
-        return SpellResult.PENDING;
-	}
+        return true;
+    }
 	
 	@Override
     public void finish(CastContext context) {
@@ -371,6 +418,10 @@ public class MountArmorStandAction extends BaseSpellAction
         parameters.add("max_height_above_ground");
         parameters.add("duration");
         parameters.add("duration_warning");
+        parameters.add("min_speed");
+        parameters.add("max_speed");
+        parameters.add("max_acceleration");
+        parameters.add("max_deceleration");
     }
 
     @Override
@@ -390,6 +441,10 @@ public class MountArmorStandAction extends BaseSpellAction
                 || parameterKey.equals("speed")
                 || parameterKey.equals("armor_stand_pitch")
                 || parameterKey.equals("armor_stand_yaw")
+                || parameterKey.equals("min_speed")
+                || parameterKey.equals("max_speed")
+                || parameterKey.equals("max_acceleration")
+                || parameterKey.equals("max_deceleration")
                 || parameterKey.equals("liftoff_thrust")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_VECTOR_COMPONENTS));
         } else if (parameterKey.equals("liftoff_duration")

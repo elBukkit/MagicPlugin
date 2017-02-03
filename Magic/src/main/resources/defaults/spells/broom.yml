@@ -75,6 +75,10 @@ broom:
         target: self
         mount_wand: true
         start_speed: 0.4
+        min_speed: 0.1
+        max_speed: 1
+        max_acceleration: 0.01
+        max_deceleration: 0.002
         bypass_confusion: false
         liftoff_duration: 600
         liftoff_thrust: 1
