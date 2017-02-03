@@ -1,15 +1,13 @@
-broom:
+broom_legacy:
     icon: diamond_axe:168
     icon_disabled: diamond_hoe:168
     hidden: true
     icon_url: http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6
     category: specialty
+    class: LevitateSpell
     worth: 600
+    show_undoable: false
     quick_cast: true
-    actions:
-        cast:
-        - class: MountArmorStand
-        - class: FallProtection
     effects:
         cast:
         -  class: EffectSingle
@@ -72,14 +70,43 @@ broom:
            particle_offset_z: 0.9
            particle_offset_y: 0.1
     parameters:
-        target: self
-        mount_wand: true
-        start_speed: 0.4
-        bypass_confusion: false
-        liftoff_duration: 600
-        liftoff_thrust: 1
-        steer_speed: 0.05
+        thrust: 0.4
+        auto_deactivate: 4
+        auto_deactivate_ticks: 10
+        slow: 0.2
+        start_delay: 20
         crash_distance: 0.9
-        crash_effects:
-          confusion: 120,2
+        effect_confusion: 120,2
+        bypass_confusion: false
+        bypass_deactivate: false
+        stash_item: true
+        mount_baby: true
+        mount_type: Horse
+        armor_stand: true
+        armor_stand_helmet: false
+        armor_stand_yaw: -0.5
+        armor_stand_pitch: 0.3
+        armor_stand_arm: 0,0,-0.62
+        armor_stand_marker: true
+        armor_stand_small: false
+        mount_invisible: true
+        mount_boost_ticks: 100
+        mount_reason: mount
+        power_mount_boost_ticks: 500
+        mount_health: 2
+        power_mount_health: 10
+        mount_boost: 0.3
+        mount_boost_minimum: 0.5
+        power_mount_boost: 1
+        slow_ticks: 2
+        power_slow_ticks: 10
+        steer_speed: 0.05
+        power_steer_speed: 0.3
+        slow_steer_speed: 2
+        mount_boost_from_jump: true
+        sound: magic.flying
+        effect_sound_interval: 120
+        effect_sound_volume: 15
+        duration: 60000
+        cooldown: 10000
 

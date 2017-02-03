@@ -21,6 +21,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -817,4 +819,43 @@ public class ConfigurationUtils extends ConfigUtils {
         return requiredSpells;
     }
 
+    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig)
+    {
+        return getPotionEffects(effectConfig, null);
+    }
+    
+    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig, Integer duration)
+    {
+        if (effectConfig == null) return null;
+        List<PotionEffect> effects = new ArrayList<>();
+        Set<String> keys = effectConfig.getKeys(false);
+        if (keys.isEmpty()) return null;
+        
+        for (String key : keys) {
+            String value = effectConfig.getString(key);
+            try {
+                PotionEffectType effectType = PotionEffectType.getByName(key.toUpperCase());
+
+                int ticks = 10;
+                int power = 1;
+                if (value.contains(",")) {
+                    String[] pieces = value.split(",");
+                    ticks = (int)Float.parseFloat(pieces[0]);
+                    power = (int)Float.parseFloat(pieces[1]);
+                } else {
+                    power = (int)Float.parseFloat(value);
+                    if (duration != null) {
+                        ticks = duration / 50;
+                    }
+                }
+
+                PotionEffect effect = new PotionEffect(effectType, ticks, power, true);
+                effects.add(effect);
+
+            } catch (Exception ex) {
+                Bukkit.getLogger().warning("Error parsing potion effect for " + key + ": " + value);
+            }
+        }
+        return effects;
+    }
 }

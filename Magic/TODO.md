@@ -1,5 +1,13 @@
 # TODO
 
+## Broomsticks
+
+ - Max flight duration, with some way of notifying the player. Maybe dizziness?
+ - Can't fly when dizzy
+ - Crash mechanics
+ - Max height above ground
+ - Speed/brake mechanics of some kind
+
 ## Sabers
 
  - Paths being able to upgrade blocking/reflect power
@@ -24,8 +32,6 @@
 
 # High-Priority
  
- - Broomstick 3rd person alignment is off (maybe just redo broomsticks)
- - Broomstick enchanting is broken (via enchanting table)
  - Aliases don't work with levels
  - Ability to *only* target teammates (like .. anti-PVP)
 
