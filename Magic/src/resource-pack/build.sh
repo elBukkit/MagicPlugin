@@ -12,7 +12,7 @@ mkdir default
 cd default
 cp -R ../../default/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-RP-6-3.zip *
+zip -r -X ../Magic-RP-6-4.zip *
 cd ..
 
 echo "** BUILDING DEFAULT-Skulls **"
@@ -25,7 +25,7 @@ cp -R ../../../skulls/assets/* .
 cd ..
 cp -R ../../default/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-skulls-RP-6-3.zip *
+zip -r -X ../Magic-skulls-RP-6-4.zip *
 cd ..
 
 echo "** BUILDING SKULLS **"
@@ -45,7 +45,7 @@ cd painterly
 cp -R ../../default/* .
 cp -R ../../painterly/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-painterly-RP-6-3.zip *
+zip -r -X ../Magic-painterly-RP-6-4.zip *
 cd ..
 
 echo "** BUILDING POTTER **"
@@ -55,5 +55,5 @@ cd potter
 cp -R ../../default/* .
 cp -R ../../potter/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-potter-RP-6-3.zip *
+zip -r -X ../Magic-potter-RP-6-4.zip *
 cd ..
