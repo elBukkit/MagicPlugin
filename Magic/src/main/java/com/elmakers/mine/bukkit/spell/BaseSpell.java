@@ -200,6 +200,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean showUndoable              = true;
     protected boolean cancellable               = true;
     protected boolean quickCast                 = false;
+    protected boolean cancelEffects = false;
     protected int                               verticalSearchDistance  = 8;
 
     private boolean backfired                   = false;
@@ -856,6 +857,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         hidden = node.getBoolean("hidden", false);
         showUndoable = node.getBoolean("show_undoable", true);
         cancellable = node.getBoolean("cancellable", true);
+        cancelEffects = node.getBoolean("cancel_effects", false);
 
         progressLevels = node.getConfigurationSection("progress_levels");
         if (progressLevels != null) {
@@ -2429,6 +2431,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // Clear cooldown on miss
         if (result.shouldRefundCooldown(castOnNoTarget)) {
             clearCooldown();
+        }
+        
+        if (cancelEffects) {
+            context.cancelEffects();
         }
 
         // Track cast counts
