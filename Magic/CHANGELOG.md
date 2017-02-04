@@ -3,6 +3,7 @@
 ## 6.4
 
  - Complete overhaul of Broomstick mechanics
+ - Update Air Scooter as well, add to default configs
 
 ## 6.3.5
 

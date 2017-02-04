@@ -30,34 +30,6 @@ broom:
            effectlib:
              class: SmokeEffect
              iterations: 12
-        area:
-        -  class: EffectSingle
-           sound: entity_enderdragon_flap
-           sound_volume: 1.1
-           effectlib:
-             class: TraceEffect
-             iterations: 30
-             particle: spell
-        -  class: EffectSingle
-           particle: spell
-           effectlib:
-             class: ShieldEffect
-             iterations: 30
-             particle: spell
-        boost:
-        -  class: EffectSingle
-           sound: entity_enderdragon_flap
-           sound_volume: 1.1
-           effectlib:
-             class: TraceEffect
-             iterations: 30
-             particle: spell
-        -  class: EffectSingle
-           particle: spell
-           effectlib:
-             class: ShieldEffect
-             iterations: 30
-             particle: spell
         land:
         -  sound: block_stone_step
            sound_pitch: 0.7

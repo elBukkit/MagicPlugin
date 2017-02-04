@@ -103,9 +103,6 @@ spells:
   sandspout:
     name: Sand Spout
     description: Bury your target in a whirlwind of sand
-  airscooter:
-    name: Air Scooter
-    description: Travel in style on a cushion of air
   breathofwind:
     name: Breath of Wind
     description: Exhale a powerful gust of wind to damage and push your opponents

@@ -1443,3 +1443,6 @@ spells:
       name: 24 Note B
     trinketshop:
       title: "Trinkets ($balance)"
+    airscooter:
+      name: Air Scooter
+      description: Travel in style on a cushion of air

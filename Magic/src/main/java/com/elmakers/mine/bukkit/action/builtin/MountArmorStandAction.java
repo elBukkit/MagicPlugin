@@ -51,6 +51,7 @@ public class MountArmorStandAction extends BaseSpellAction
     private int liftoffDuration = 0;
     private int maxHeightAboveGround;
     private int maxHeight;
+    private double pitchOffset = 0;
     private CreatureSpawnEvent.SpawnReason armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
     private Collection<PotionEffect> crashEffects;
     private Collection<PotionEffect> warningEffects;
@@ -110,6 +111,7 @@ public class MountArmorStandAction extends BaseSpellAction
         maxHeightAboveGround = parameters.getInt("max_height_above_ground", 0);
         duration = parameters.getInt("duration", 0);
         durationWarning = parameters.getInt("duration_warning", 0);
+        pitchOffset = parameters.getDouble("pitch_offset", 0);
 
         if (parameters.contains("armor_stand_reason")) {
             String reasonText = parameters.getString("armor_stand_reason").toUpperCase();
@@ -178,7 +180,7 @@ public class MountArmorStandAction extends BaseSpellAction
                 direction = targetDirection;
             } else {
                 targetDirection = targetDirection.subtract(direction).normalize().multiply(moveDistance);
-                direction.add(targetDirection);
+                direction.add(targetDirection).normalize();
             }
         }
         
@@ -203,9 +205,6 @@ public class MountArmorStandAction extends BaseSpellAction
                 return;
             }
         }
-
-        Location currentLocation = context.getTargetEntity().getLocation();
-        Vector direction = currentLocation.getDirection();
         
         // Adjust speed
         if (direction.getY() < 0 && maxAcceleration > 0) {
@@ -217,11 +216,17 @@ public class MountArmorStandAction extends BaseSpellAction
             speed = speed - direction.getY() * maxDeceleration;
             speed = Math.max(minSpeed, speed);
         }
+
+        // Apply pitch offset
+        if (pitchOffset != 0) {
+            direction.setY(direction.getY() + pitchOffset).normalize();
+        }
         
         // Check for max height
-        boolean grounded = false;
+        double blocksAbove = 0;
+        Location currentLocation = context.getTargetEntity().getLocation();
         if (maxHeight > 0 && currentLocation.getY() >= maxHeight) {
-            grounded = true;
+            blocksAbove = currentLocation.getY() - maxHeight + 1;
         } else if (maxHeightAboveGround > 0) {
             Block block = currentLocation.getBlock();
             int height = 0;
@@ -231,16 +236,16 @@ public class MountArmorStandAction extends BaseSpellAction
                 height++;
             }
             if (context.isPassthrough(block.getType())) {
-                grounded = true;
+                blocksAbove = height + 1;
             }
         }
-        if (grounded) {
-            direction.setY(0).normalize();
+        if (blocksAbove > 0 && direction.getY() > 0) {
+            direction.setY(-blocksAbove / 5).normalize();
         }
         
         // Apply thrust
         if (speed > 0) {
-            armorStand.setVelocity(direction.normalize().multiply(speed));
+            armorStand.setVelocity(direction.multiply(speed));
         }
     }
     
@@ -418,10 +423,12 @@ public class MountArmorStandAction extends BaseSpellAction
         parameters.add("max_height_above_ground");
         parameters.add("duration");
         parameters.add("duration_warning");
+        parameters.add("start_speed");
         parameters.add("min_speed");
         parameters.add("max_speed");
         parameters.add("max_acceleration");
         parameters.add("max_deceleration");
+        parameters.add("pitch_offset");
     }
 
     @Override
@@ -438,13 +445,14 @@ public class MountArmorStandAction extends BaseSpellAction
                 || parameterKey.equals("mount_wand")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else if (parameterKey.equals("steer_speed")
-                || parameterKey.equals("speed")
+                || parameterKey.equals("start_speed")
                 || parameterKey.equals("armor_stand_pitch")
                 || parameterKey.equals("armor_stand_yaw")
                 || parameterKey.equals("min_speed")
                 || parameterKey.equals("max_speed")
                 || parameterKey.equals("max_acceleration")
                 || parameterKey.equals("max_deceleration")
+                || parameterKey.equals("pitch_offset")
                 || parameterKey.equals("liftoff_thrust")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_VECTOR_COMPONENTS));
         } else if (parameterKey.equals("liftoff_duration")
