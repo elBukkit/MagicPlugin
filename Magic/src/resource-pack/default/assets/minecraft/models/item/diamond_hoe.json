@@ -234,6 +234,7 @@
     {"predicate": {"damaged": 0, "damage": 0.145966709346991}, "model": "item/spells_disabled/light"},
     {"predicate": {"damaged": 0, "damage": 0.146606914212548}, "model": "item/spells_disabled/spider"},
     {"predicate": {"damaged": 0, "damage": 0.147247119078105}, "model": "item/spells_disabled/vanish"},
+    {"predicate": {"damaged": 0, "damage": 0.147887323943662}, "model": "item/spells_disabled/trash"},
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/diamond_axe"}
   ]
 }

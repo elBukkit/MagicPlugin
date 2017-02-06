@@ -20,6 +20,7 @@ import java.util.Collection;
 public class InventoryAction extends BaseSpellAction
 {
     private InventoryType inventoryType;
+	private String title;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -31,6 +32,7 @@ public class InventoryAction extends BaseSpellAction
 		} else if (inventoryTypeString.equals("INVENTORY")) {
 			inventoryTypeString = "CRAFTING";
 		}
+		title = parameters.getString("title");
         try {
 			inventoryType = InventoryType.valueOf(inventoryTypeString);
 		} catch (Exception ex) {
@@ -71,7 +73,9 @@ public class InventoryAction extends BaseSpellAction
 			showPlayer.openWorkbench(null, true);
 		} else {
 			// Probably wont' work very well, but sure why not.
-			Inventory inventory = Bukkit.createInventory(showPlayer, inventoryType);
+			Inventory inventory = title != null && !title.isEmpty() ?
+					Bukkit.createInventory(showPlayer, inventoryType, title)
+					: Bukkit.createInventory(showPlayer, inventoryType);
 			showPlayer.openInventory(inventory);
 		} 
 
