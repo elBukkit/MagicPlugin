@@ -455,4 +455,6 @@ public interface Mage extends CostReducer {
     public void undoScheduled();
     public EntityData getEntityData();
     public boolean tryToOwn(Wand wand);
+    public boolean isReflected(double angle);
+    public boolean isBlocked(double angle);
 }

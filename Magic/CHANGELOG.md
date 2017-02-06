@@ -5,6 +5,8 @@
  - Complete overhaul of Broomstick mechanics
  - Update Air Scooter as well, add to default configs
  - Add craftable Emerald Sword, just for fun
+ - Fixes to Mirror Shield
+ - Miscellaneous fixes to wands put in chests, interacting with doors
 
 ## 6.3.5
 

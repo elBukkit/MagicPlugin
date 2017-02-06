@@ -889,6 +889,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return false;
     }
 
+    public Wand checkOffhandWand() {
+        Player player = getPlayer();
+        if (player == null) {
+            return null;
+        }
+        return checkOffhandWand(player.getInventory().getItemInOffHand());
+    }
+
     public Wand checkOffhandWand(ItemStack itemInHand) {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
@@ -909,6 +917,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
+        if (offhandWand != null) {
+            offhandWand.setMage(this);
+        }
         return offhandWand;
     }
 
@@ -2655,6 +2666,30 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     
     public void setLastBlockTime(long ms) {
         lastBlockTime = ms;
+    }
+
+    @Override
+    public boolean isReflected(double angle) {
+        if (activeWand != null && activeWand.isReflected(angle)) {
+            return true;
+        }
+        Wand offhandWand = checkOffhandWand();
+        if (offhandWand != null && offhandWand.isReflected(angle)) {
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean isBlocked(double angle) {
+        if (activeWand != null && activeWand.isBlocked(angle)) {
+            return true;
+        }
+        Wand offhandWand = checkOffhandWand();
+        if (offhandWand != null && offhandWand.isBlocked(angle)) {
+            return true;
+        }
+        return false;
     }
 }
 
