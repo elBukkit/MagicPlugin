@@ -1,5 +1,12 @@
 # TODO
 
+# High-Priority
+ 
+ - Check offhand wand for reflect/block .. also did we re-break interact with cooldown?
+ - Coal ink recipe not working?
+ - Aliases don't work with levels
+ - Ability to *only* target teammates (like .. anti-PVP)
+
 ## Broomstick / Scooter
 
  - Some way to level up?
@@ -20,11 +27,6 @@
  - Interacting with a door seems to cast a spell sometimes? (Spigot bug? Been here forever? Click cooldown meant to bypass it?)
  - Enchanting sound effects broken?
  - Don't refund item costs when a spell goes through auto-undo
-
-# High-Priority
- 
- - Aliases don't work with levels
- - Ability to *only* target teammates (like .. anti-PVP)
 
 # Requests
 
