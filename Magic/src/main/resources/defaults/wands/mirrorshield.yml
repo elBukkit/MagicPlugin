@@ -4,6 +4,9 @@ mirrorshield:
     mode: none
     bound: true
     keep: true
+    right_click: none
+    left_clicK: none
+    drop: none
     block_reflect_chance: 0.75
     block_chance: 1
     block_fov: 0.5
