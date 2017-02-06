@@ -245,7 +245,9 @@ public class InventoryController implements Listener {
                 mage.checkWand();
                 activeWand = mage.getActiveWand();
             }
-        } else if (clickedWand && Wand.Undroppable && !player.hasPermission("Magic.wand.override_drop") && isChest && !isContainerSlot) {
+        } 
+            
+        if (clickedWand && Wand.Undroppable && !player.hasPermission("Magic.wand.override_drop") && isChest && !isContainerSlot) {
             Wand wand = controller.getWand(clickedItem);
             if (wand.isUndroppable()) {
                 event.setCancelled(true);

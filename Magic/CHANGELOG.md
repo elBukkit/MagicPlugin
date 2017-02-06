@@ -4,6 +4,7 @@
 
  - Complete overhaul of Broomstick mechanics
  - Update Air Scooter as well, add to default configs
+ - Add craftable Emerald Sword, just for fun
 
 ## 6.3.5
 

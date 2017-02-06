@@ -1,26 +1,25 @@
 # TODO
 
+## Broomstick / Scooter
+
+ - Some way to level up?
+ - Need repeating SFX back:
+   - Repeating effectlib effect? (Can't play custom sounds?)
+   - Repeating EffectPlayer (does it even work that way? cancellable?)
+   - Mount action compound, Skip + PlayEffects (may work but feels a little hacky)
+
 ## Sabers
 
  - Paths being able to upgrade blocking/reflect power
 
 ## Reported Issues
 
- - You can put a wand in a chest if you click on the chest while your wand is open
 
 ## 1.10 Issues
 
+ - Interacting with a door seems to cast a spell sometimes? (Spigot bug? Been here forever? Click cooldown meant to bypass it?)
+ - Enchanting sound effects broken?
  - Don't refund item costs when a spell goes through auto-undo
- 
- However when I am in game holding say a torch in my left hand and a wand in the other hand, 
- so long as I hold thew and and I right click, it doesn't place down the torch but kinda treats the 
- offhand item like a wand it will like not let me place it and IF the offhand item is a 
- sword (that has no right click) it will also shoot the last chosen spell on my wand (in my main hand). 
- 
- Same thing happens with throwing potions. (I thought it would be cool to have like wand/throwing potion battles) 
- if I hold a potion in the offhand with a wand in the main hand if I click my right click 
- the potion just vanishes from the offhand slot, but when i close my wand it's still there. 
- it doesn't cast a spell though.
 
 # High-Priority
  
