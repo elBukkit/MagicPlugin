@@ -10,7 +10,7 @@
         {"predicate": {"damaged": 0, "damage": 0.12121212121212}, "model": "item/saber/lightsaber_red"},
         {"predicate": {"damaged": 0, "damage": 0.15151515151515152}, "model": "item/saber/lightsaber_orange"},
         {"predicate": {"damaged": 0, "damage": 0.18181818181818182}, "model": "item/saber/lightsaber_purple"},
-        {"predicate": {"damaged": 0, "damage": 0.21212121212121213}, "model": "item/golden_sword"},
+        {"predicate": {"damaged": 0, "damage": 0.21212121212121213}, "model": "item/custom/emerald_sword"},
         {"predicate": {"damaged": 0, "damage": 0.24242424242424243}, "model": "item/golden_sword"},
         {"predicate": {"damaged": 0, "damage": 0.2727272727272727}, "model": "item/golden_sword"},
         {"predicate": {"damaged": 0, "damage": 0.30303030303030304}, "model": "item/golden_sword"},
