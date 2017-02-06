@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.block;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 /**
  * A utility interface for presenting a Material in its entirety, including Material variants.
@@ -60,4 +61,5 @@ public interface MaterialAndData {
     public void setCustomName(String customName);
     public void setRawData(Object data);
     public ItemStack applyToItem(ItemStack stack);
+    public MaterialData getMaterialData();
 }

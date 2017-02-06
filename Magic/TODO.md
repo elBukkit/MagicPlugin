@@ -2,8 +2,6 @@
 
 # High-Priority
  
- - Check offhand wand for reflect/block .. also did we re-break interact with cooldown?
- - Coal ink recipe not working?
  - Aliases don't work with levels
  - Ability to *only* target teammates (like .. anti-PVP)
 

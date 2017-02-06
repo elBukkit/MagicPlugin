@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.material.MaterialData;
 
 import java.util.Set;
 
@@ -721,5 +722,13 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public String toString() {
         return (isValid() ? material + (data != 0 ? "@" + data : "") : "invalid");
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public MaterialData getMaterialData() {
+        byte dataByte = data == null ? 0 : (byte)(short)data;
+        
+        return new MaterialData(material, dataByte);
     }
 }

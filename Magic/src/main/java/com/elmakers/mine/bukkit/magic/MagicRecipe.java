@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ import javax.annotation.Nullable;
  */
 public class MagicRecipe {
     private String outputKey;
-    private Set<Material> ingredients = new HashSet<>();
     private Material outputType;
     private Material substitue;
     private String outputItemType;
@@ -96,8 +96,7 @@ public class MagicRecipe {
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
                     MaterialAndData mat = new MaterialAndData(materialKey);
-                    ingredients.add(mat.getMaterial());
-                    Material material = mat.getMaterial();
+                    MaterialData material = mat.getMaterialData();
                     if (material == null) {
                         outputType = null;
                         controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);
@@ -141,10 +140,6 @@ public class MagicRecipe {
 
     public Material getOutputType() {
         return outputType;
-    }
-
-    public Set<Material> getIngredients() {
-        return ingredients;
     }
 
     public Material getSubstitute() {
