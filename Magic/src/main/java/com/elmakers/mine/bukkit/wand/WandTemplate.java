@@ -25,7 +25,6 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     private final String key;
     private final ConfigurationSection configuration;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
-    private Collection<EffectPlay> currentEffects = new ArrayList<>();
     private Set<String> tags;
     private @Nonnull Set<String> categories = ImmutableSet.of();
     private String creator;
@@ -120,14 +119,9 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
         Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects(effectName);
         if (effects.isEmpty()) return false;
         
-        currentEffects.clear();
-        
         Entity sourceEntity = mage.getEntity();
         for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects)
         {
-            // Track effect plays for cancelling
-            player.setEffectPlayList(currentEffects);
-
             // Set scale
             player.setScale(scale);
 

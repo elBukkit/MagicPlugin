@@ -2,7 +2,9 @@
 
 ## 6.4
 
- - Complete overhaul of Broomstick mechanics
+ - Some fixes to disabled spell icons getting stuck on
+ - Fix crafting recipes with material variants, like the coal -> ink recipe
+ - Complete overhaul of Broomstick mechanics (Still kind of WIP)
  - Update Air Scooter as well, add to default configs
  - Add craftable Emerald Sword, just for fun
  - Fixes to Mirror Shield
