@@ -71,7 +71,6 @@ import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
-import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -882,24 +881,6 @@ public class MagicController implements MageController {
             }, 5);
         }
 
-        // Check for dtlTraders
-        tradersController = null;
-        try {
-            Plugin tradersPlugin = plugin.getServer().getPluginManager().getPlugin("dtlTraders");
-            if (tradersPlugin != null) {
-                tradersController = new TradersController();
-                tradersController.initialize(this, tradersPlugin);
-                getLogger().info("dtlTraders found, integrating for selling Wands, Spells, Brushes and Upgrades");
-            }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            tradersController = null;
-        }
-
-        if (tradersController == null) {
-            getLogger().info("dtlTraders not found, will not integrate.");
-        }
-
         // Try to link to CommandBook
         hasCommandBook = false;
         try {
@@ -1154,12 +1135,6 @@ public class MagicController implements MageController {
                         @Override
                         public int getValue() {
                             return controller.citizens != null ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("Traders") {
-                        @Override
-                        public int getValue() {
-                            return controller.tradersController != null ? 1 : 0;
                         }
                     });
                     integrationGraph.addPlotter(new Metrics.Plotter("CommandBook") {
@@ -5023,7 +4998,6 @@ public class MagicController implements MageController {
     private AnvilController					    anvil						= null;
     private Messages                            messages                    = null;
     private MapController                       maps                        = null;
-    private TradersController					tradersController			= null;
     private DynmapController					dynmap						= null;
     private ElementalsController				elementals					= null;
     private CitizensController                  citizens					= null;
