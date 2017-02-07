@@ -2968,6 +2968,9 @@ enchantwand:
 spellshop:
     enabled: true
 
+colorshop:
+    enabled: true
+
 brushselect:
   enabled: true
 
