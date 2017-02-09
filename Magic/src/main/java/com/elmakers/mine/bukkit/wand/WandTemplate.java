@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.collect.ImmutableSet;
 
@@ -20,10 +21,9 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
+public class WandTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
     private final MageController controller;
     private final String key;
-    private final ConfigurationSection configuration;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private Set<String> tags;
     private @Nonnull Set<String> categories = ImmutableSet.of();
@@ -38,7 +38,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         this.key = key;
-        this.configuration = node;
+        this.load(node);
         this.controller = controller;
 
         effects.clear();
@@ -91,11 +91,6 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     @Override
     public String getKey() {
         return key;
-    }
-
-    @Override
-    public ConfigurationSection getConfiguration() {
-        return configuration;
     }
 
     @Override
