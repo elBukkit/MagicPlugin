@@ -1058,4 +1058,34 @@ addmana:
     parameters:
         mana: 100
 
-
+quafflepower:
+    icon: wood_hoe:18
+    actions:
+        cast:
+        - class: ArmorStandProjectile
+          actions:
+          - class: GiveItem
+          miss:
+          - class: DropItem
+    effects:
+        projectile:
+        -   class: EffectSingle
+            effectlib:
+                class: SphereEffect
+                particle: fireworks_spark
+                particles: 4
+                radius: 0.2
+                duration: 30000
+    parameters:
+      velocity: 10
+      item: quaffle
+      helmet_item: quaffleitem
+      armor_stand_invisible: true
+      armor_stand_marker: true
+      orient_right_arm: true
+      gravity: 0.05
+      drag: 0.01
+      reflective: "!air"
+      location_offset: 0,-1.5,0
+      lifetime: 30000
+      target_self_timeout: 5000

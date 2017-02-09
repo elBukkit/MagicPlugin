@@ -130,3 +130,16 @@ spraycan:
     - emerald_block
     - redstone_block
     - obsidian
+
+quaffle:
+  icon: wood_hoe:18
+  indestructible: true
+  uses: 1
+  name: Quaffle
+  left_click: cast
+  right_click: none
+  drop: cast
+  swap: none
+  mode: cast
+  spells:
+  - quafflepower
