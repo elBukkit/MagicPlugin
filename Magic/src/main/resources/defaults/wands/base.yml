@@ -57,7 +57,7 @@ base_lightsaber:
     effect_bubbles: false
     active_effects: true
     effect_sound: magic.saberhum
-    effect_sound_interval: 700
+    effect_sound_interval: 225
     attributes:
       GENERIC_ATTACK_DAMAGE: 10
     effects:
