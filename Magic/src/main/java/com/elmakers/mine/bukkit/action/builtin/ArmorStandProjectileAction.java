@@ -1,13 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import de.slikey.effectlib.math.VectorTransform;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import de.slikey.effectlib.math.VectorTransform;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
@@ -72,23 +72,25 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         adjustHeadPitch = parameters.getBoolean("orient_head", false);
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
-        MaterialAndData itemType = ConfigurationUtils.getMaterialAndData(parameters, "right_arm_item");
+        
+        MageController controller = context.getController();
+        ItemData itemType = controller.getItem(parameters.getString("right_arm_item"));
         if (itemType != null) {
             rightArmItem = itemType.getItemStack(1);
         }
-        itemType = ConfigurationUtils.getMaterialAndData(parameters, "helmet_item");
+        itemType = controller.getItem(parameters.getString("helmet_item"));
         if (itemType != null) {
             helmetItem = itemType.getItemStack(1);
         }
-        itemType = ConfigurationUtils.getMaterialAndData(parameters, "chestplate_item");
+        itemType = controller.getItem(parameters.getString("chestplate_item"));
         if (itemType != null) {
             chestplateItem = itemType.getItemStack(1);
         }
-        itemType = ConfigurationUtils.getMaterialAndData(parameters, "leggings_item");
+        itemType = controller.getItem(parameters.getString("leggings_item"));
         if (itemType != null) {
             leggingsItem = itemType.getItemStack(1);
         }
-        itemType = ConfigurationUtils.getMaterialAndData(parameters, "boots_item");
+        itemType = controller.getItem(parameters.getString("boots_item"));
         if (itemType != null) {
             bootsItem = itemType.getItemStack(1);
         }
