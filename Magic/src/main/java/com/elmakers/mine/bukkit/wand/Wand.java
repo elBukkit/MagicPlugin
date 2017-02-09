@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ColorHD;
@@ -68,7 +69,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
+public class Wand extends BaseMagicProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int PLAYER_INVENTORY_SIZE = 36;
 	public final static int HOTBAR_SIZE = 9;
@@ -150,12 +151,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private Map<String, Integer> spells = new HashMap<>();
     private Map<String, Integer> spellLevels = new HashMap<>();
     private Map<String, Integer> brushes = new HashMap<>();
-
-    /**
-     * Custom properties that 3rd party systems can set on a wand for their
-     * internal use.
-     */
-    private Map<String, String> customProperties = new HashMap<>();
 	
 	private String activeSpell = "";
 	private String activeMaterial = "";
@@ -330,9 +325,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		this.icon = new MaterialAndData(itemStack);
 		inventories = new ArrayList<>();
         item = itemStack;
-		loadState();
+		load(itemToConfig(item, new MemoryConfiguration()));
+		loadProperties();
         updateName();
         updateLore();
+	}
+	
+	@Override
+	public void load(ConfigurationSection configuration) {
+		if (configuration != null) {
+			setTemplate(configuration.getString("template"));
+		}
+		super.load(configuration);
 	}
 
 	protected void setHotbarCount(int count) {
@@ -351,7 +355,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public Wand(MagicController controller, ConfigurationSection config) {
         this(controller, DefaultWandMaterial, (short)0);
-        loadProperties(config);
+		load(config);
+        loadProperties();
         updateName();
         updateLore();
         saveItemState();
@@ -390,23 +395,25 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			template = migrateTemplate;
 			templateName = migrateTemplate.getKey();
 		}
-		ConfigurationSection wandConfig = template.getConfiguration();
+		
+		setTemplate(templateName);
+		ConfigurationSection templateConfig = template.getConfiguration();
 
-		if (wandConfig == null) {
+		if (templateConfig == null) {
 			throw new UnknownWandException(templateName);
 		}
 
 		// Default to template names, override with localizations
-		wandName = wandConfig.getString("name", wandName);
+		wandName = templateConfig.getString("name", wandName);
 		wandName = controller.getMessages().get("wands." + templateName + ".name", wandName);
-		wandDescription = wandConfig.getString("description", wandDescription);
+		wandDescription = templateConfig.getString("description", wandDescription);
 		wandDescription = controller.getMessages().get("wands." + templateName + ".description", wandDescription);
 
 		// Load all properties
-		loadProperties(wandConfig);
+		loadProperties();
 
 		// Add vanilla enchantments
-		InventoryUtils.applyEnchantments(item, wandConfig.getConfigurationSection("enchantments"));
+		InventoryUtils.applyEnchantments(item, templateConfig.getConfigurationSection("enchantments"));
 
 		// Enchant, if an enchanting level was provided
 		if (level > 0) {
@@ -425,7 +432,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             randomize();
         }
 
-        setTemplate(templateName);
 		suspendSave = false;
 		saveItemState();
 	}
@@ -440,6 +446,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
     public void unenchant() {
 		item = new ItemStack(item.getType(), 1, item.getDurability());
+		clear();
 	}
 	
 	public void setIcon(Material material, byte data) {
@@ -459,6 +466,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			inactiveIcon = new MaterialAndData(materialData);
 		}
+
+		String inactiveIconKey = null;
+		if (inactiveIcon != null && inactiveIcon.getMaterial() != null && inactiveIcon.getMaterial() != Material.AIR) {
+			inactiveIconKey = inactiveIcon.getKey();
+			if (inactiveIconKey != null && inactiveIconKey.isEmpty()) {
+				inactiveIconKey = null;
+			}
+		}
+		setProperty("inactive_icon", inactiveIconKey);
 		updateIcon();
 	}
 	
@@ -506,6 +522,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			CompatibilityUtils.removeUnbreakable(item);
 		}
 		CompatibilityUtils.hideFlags(item, HIDE_FLAGS);
+
+		String iconKey = null;
+		if (icon != null && icon.getMaterial() != null && icon.getMaterial() != Material.AIR) {
+			iconKey = icon.getKey();
+			if (iconKey != null && iconKey.isEmpty()) {
+				iconKey = null;
+			}
+		}
+		setProperty("icon", iconKey);
 	}
 	
 	@Override
@@ -513,13 +538,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (!isUpgrade) {
             isUpgrade = true;
             String oldName = wandName;
-            wandName = controller.getMessages().get("wand.upgrade_name");
-            wandName = wandName.replace("$name", oldName);
-            description = controller.getMessages().get("wand.upgrade_default_description");
+			String newName = controller.getMessages().get("wand.upgrade_name");
+			newName = newName.replace("$name", oldName);
+            String newDescription = controller.getMessages().get("wand.upgrade_default_description");
             if (template != null && template.length() > 0) {
-                description = controller.getMessages().get("wands." + template + ".upgrade_description", description);
+				newDescription = controller.getMessages().get("wands." + template + ".upgrade_description", description);
             }
             setIcon(DefaultUpgradeMaterial, (byte) 0);
+			setProperty("upgrade", true);
+			setName(newName);
+			setDescription(newDescription);
             saveItemState();
             updateName(true);
             updateLore();
@@ -532,6 +560,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             id = null;
         }
+        setProperty("id", id);
     }
 
     public void checkId() {
@@ -567,11 +596,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public void setMana(float mana) {
         this.mana = Math.max(0, mana);
+		setProperty("mana", this.mana);
     }
 
     @Override
     public void setManaMax(int manaMax) {
         this.manaMax = Math.max(0, manaMax);
+		setProperty("mana_max", this.manaMax);
     }
 
 	@Override
@@ -588,6 +619,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
 		mana = Math.max(0,  mana - amount);
+		setProperty("mana", this.mana);
 		updateMana();
 	}
 	
@@ -638,6 +670,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void setCooldownReduction(float reduction) {
 		cooldownReduction = reduction;
+		setProperty("cooldown_reduction", cooldownReduction);
 	}
 	
 	public boolean getHasInventory() {
@@ -732,11 +765,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
     public void setName(String name) {
 		wandName = ChatColor.stripColor(name);
+		setProperty("name", wandName);
 		updateName();
 	}
 	
 	public void setTemplate(String templateName) {
 		this.template = templateName;
+		setParent(controller.getWandTemplate(templateName));
+		setProperty("template", template);
 	}
 
     @Override
@@ -766,6 +802,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
     public void setDescription(String description) {
 		this.description = description;
+		setProperty("description", description);
 		updateLore();
 	}
 	
@@ -805,11 +842,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
         owner = ChatColor.stripColor(player.getDisplayName());
         ownerId = player.getUniqueId().toString();
+		setProperty("owner", owner);
+		setProperty("owner_id", ownerId);
 		if (setBound) {
 			bound = true;
+			setProperty("bound", bound);
 		}
 		if (setKeep) {
 			keep = true;
+			setProperty("keep", keep);
 		}
 		updateLore();
 	}
@@ -1159,20 +1200,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         if (item.getType() == Material.AIR) return;
 
-        ConfigurationSection stateNode = new MemoryConfiguration();
-        saveProperties(stateNode);
-
 		Object wandNode = InventoryUtils.createNode(item, WAND_KEY);
 		if (wandNode == null) {
 			controller.getLogger().warning("Failed to save wand state for wand to : " + item);
             Thread.dumpStack();
 		} else {
-            // Save custom keys
-            if(!customProperties.isEmpty()) {
-                InventoryUtils.saveTagsToNBT(stateNode, wandNode, customProperties.keySet());
-            }
-
-            InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS_SET);
+            InventoryUtils.saveTagsToNBT(getConfiguration(), wandNode);
         }
 
 		if (mage != null) {
@@ -1192,14 +1225,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 
-    protected void loadState() {
-        ConfigurationSection stateNode = itemToConfig(item, new MemoryConfiguration());
-
-        if(stateNode != null) {
-            loadProperties(stateNode);
-        }
-    }
-
     public static ConfigurationSection itemToConfig(ItemStack item, ConfigurationSection stateNode) {
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 
@@ -1207,31 +1232,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return null;
         }
 
-        InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS_SET);
-
-        // Do a second pass when there are custom properties
-        String[] propertyKeys = customPropertiesFromConfig(stateNode);
-        if(propertyKeys.length > 0) {
-            InventoryUtils.loadTagsFromNBT(stateNode, wandNode, Arrays.asList(propertyKeys));
-        }
+        InventoryUtils.loadAllTagsFromNBT(stateNode, wandNode);
 
         return stateNode;
-    }
-
-    public static String[] customPropertiesFromConfig(ConfigurationSection stateNode) {
-        return StringUtils.split(stateNode.getString("custom_properties", ""), ",");
     }
 
     public static void configToItem(ConfigurationSection itemSection, ItemStack item) {
         ConfigurationSection stateNode = itemSection.getConfigurationSection("wand");
         Object wandNode = InventoryUtils.createNode(item, Wand.WAND_KEY);
         if (wandNode != null) {
-            String[] propertyKeys = customPropertiesFromConfig(stateNode);
-            if(propertyKeys.length > 0) {
-                InventoryUtils.saveTagsToNBT(stateNode, wandNode, Arrays.asList(propertyKeys));
-            }
-
-            InventoryUtils.saveTagsToNBT(stateNode, wandNode, Wand.ALL_PROPERTY_KEYS_SET);
+            InventoryUtils.saveTagsToNBT(stateNode, wandNode);
         }
     }
 
@@ -1250,7 +1260,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     @Override
     public void save(ConfigurationSection node, boolean filtered) {
-        saveProperties(node);
+		ConfigurationUtils.addConfigurations(node, getConfiguration());
 
         // Filter out some fields
         if (filtered) {
@@ -1419,26 +1429,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             node.set("brush_mode", null);
         }
-		if (icon != null && icon.getMaterial() != null && icon.getMaterial() != Material.AIR) {
-			String iconKey = icon.getKey();
-			if (iconKey != null && iconKey.length() > 0) {
-				node.set("icon", iconKey);
-			} else {
-				node.set("icon", null);
-			}
-		} else {
-			node.set("icon", null);
-		}
-        if (inactiveIcon != null && inactiveIcon.getMaterial() != null && inactiveIcon.getMaterial() != Material.AIR) {
-            String iconKey = inactiveIcon.getKey();
-            if (iconKey != null && iconKey.length() > 0) {
-                node.set("icon_inactive", iconKey);
-            } else {
-                node.set("icon_inactive", null);
-            }
-        } else {
-            node.set("icon_inactive", null);
-        }
         node.set("icon_inactive_delay", inactiveIconDelay);
         if (upgradeIcon != null) {
             String iconKey = upgradeIcon.getKey();
@@ -1465,24 +1455,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             node.set("path", null);
         }
-
-        // Make sure to put this at the end of saveProperties so it cannot
-        // override anything
-        Set<String> customAdded = new HashSet<>(customProperties.size());
-        for(Map.Entry<String, String> entry : customProperties.entrySet()) {
-            if(!node.isSet(entry.getKey())) {
-                node.set(entry.getKey(), entry.getValue());
-                customAdded.add(entry.getKey());
-            }
-        }
-
-        if(!customAdded.isEmpty()) {
-            node.set("custom_properties", StringUtils.join(customAdded, ","));
-        }
     }
 	
-	public void loadProperties(ConfigurationSection wandConfig) {
-		loadProperties(wandConfig, false);
+	public void loadProperties() {
+		loadProperties(getEffectiveConfiguration(), false);
 	}
 	
 	public void setEffectColor(String hexColor) {
@@ -1497,10 +1473,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		effectColor = new ColorHD(hexColor);
 	}
-
-    public static void addPotionEffects(Map<PotionEffectType, Integer> effects, ItemStack item) {
-        addPotionEffects(effects, getWandString(item, "potion_effects"));
-    }
 
     protected static void addPotionEffects(Map<PotionEffectType, Integer> effects, String effectsString) {
         if (effectsString == null || effectsString.isEmpty()) {
@@ -1871,12 +1843,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (effectParticle == null) {
 			effectParticleInterval = 0;
 		}
-
-        String customKeysStr = wandConfig.getString("custom_properties", "");
-        String[] customKeys = StringUtils.split(customKeysStr, ",");
-        for(String key : customKeys ) {
-            customProperties.put(key, wandConfig.getString(key));
-        }
 
         updateMaxMana(false);
         checkActiveMaterial();
@@ -3772,6 +3738,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		bound = false;
 		owner = null;
+		setProperty("bound", false);
+		setProperty("owner", null);
+		setProperty("owner_id", null);
 		saveState();
 	}
 	
@@ -3782,6 +3751,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Mage holdingMage = mage;
 		deactivate();
 		bound = true;
+		setProperty("bound", true);
 		saveState();
 		
 		if (holdingMage != null) {
@@ -4202,6 +4172,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public void setPath(String path) {
         this.path = path;
+		setProperty("path", path);
     }
 
 	/*
@@ -4283,6 +4254,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
 		WandTemplate template = getTemplate();
+		// TODO: Handle migrating wands to new system
+		/*
 		Wand soulWand = mage.getSoulWand();
 		if (template != null && template.isSoul() && soulWand != this) {
 			if (!soul) {
@@ -4299,6 +4272,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			soulWand.activate(mage);
 			return;
 		}
+		*/
 
 		this.newId();
 
@@ -4430,7 +4404,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		// Force inventory re-load
 		saveItemState();
-		loadState();
+		loadProperties();
 		updateInventory();
     }
 
@@ -4445,7 +4419,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		// Force inventory re-load
 		saveItemState();
-		loadState();
+		loadProperties();
 		updateInventory();
     }
 
@@ -4460,7 +4434,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
 	public boolean configure(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
-		loadProperties(ConfigurationUtils.toConfigurationSection(convertedProperties), false);
+		configure(ConfigurationUtils.toConfigurationSection(convertedProperties));
         saveItemState();
         updateName();
         updateLore();
@@ -4470,7 +4444,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
 	public boolean upgrade(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
-		loadProperties(ConfigurationUtils.toConfigurationSection(convertedProperties), true);
+		upgrade(ConfigurationUtils.toConfigurationSection(convertedProperties));
         saveItemState();
         updateName();
         updateLore();
@@ -5137,39 +5111,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		path.upgrade(this, mage);
         return true;
-    }
-
-    /**
-     * Gets a custom property from the wand.
-     *
-     * @param key The key of the property.
-     * @return
-     *     Null if no value with the provided key exists, otherwise the value.
-     */
-    public @Nullable String getCustomProperty(String key) {
-        Preconditions.checkNotNull(key, "key");
-        return customProperties.get(key);
-    }
-
-    /**
-     * Sets a custom property on the wand.
-     *
-     * @param key The key of the property.
-     * @param value
-     *     The associated value. If this is null, the property will be removed.
-     * @throws IllegalStateException In case the wand is not modifiable.
-     */
-    public void setCustomProperty(@Nonnull String key, String value) {
-        Preconditions.checkNotNull(key, "key");
-        Preconditions.checkState(isModifiable(), "Wand is not modifiable");
-
-        if(value == null) {
-            customProperties.remove(key);
-        } else {
-            customProperties.put(key, value);
-        }
-
-        saveItemState();
     }
     
     public int getEffectiveManaMax() {

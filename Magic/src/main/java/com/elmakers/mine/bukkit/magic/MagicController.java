@@ -3472,6 +3472,7 @@ public class MagicController implements MageController {
 
     @Override
     public WandTemplate getWandTemplate(String key) {
+        if (key == null || key.isEmpty()) return null;
         return wandTemplates.get(key);
     }
     

@@ -34,9 +34,9 @@ public class InventoryUtils extends NMSUtils
         return saveTagsToNBT(tags, tag, null, false, false);
     }
 
-    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Iterable<String> tagNames)
+    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node)
     {
-        return saveTagsToNBT(tags, node, tagNames, true, true);
+        return saveTagsToNBT(tags, node, null, true, true);
     }
     
     public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Iterable<String> tagNames, boolean clean, boolean strings)
