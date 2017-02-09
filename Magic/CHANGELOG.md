@@ -9,6 +9,7 @@
  - Add craftable Emerald Sword, just for fun
  - Fixes to Mirror Shield
  - Miscellaneous fixes to wands put in chests, interacting with doors
+ - Fix saved wands not working correctly until after reload
 
 ## 6.3.5
 

@@ -1273,16 +1273,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         // Change some CSV to lists
         if (node.contains("spells")) {
-            node.set("spells", StringUtils.split(node.getString("spells"), ","));
+            node.set("spells", Arrays.asList(StringUtils.split(node.getString("spells"), ",")));
         }
         if (node.contains("materials")) {
-            node.set("materials", StringUtils.split(node.getString("materials"), ","));
+            node.set("materials", Arrays.asList(StringUtils.split(node.getString("materials"), ",")));
         }
         if (node.contains("overrides")) {
-            node.set("overrides", StringUtils.split(node.getString("overrides"), ","));
+            node.set("overrides", Arrays.asList(StringUtils.split(node.getString("overrides"), ",")));
         }
         if (node.contains("potion_effects")) {
-            node.set("potion_effects", StringUtils.split(node.getString("potion_effects"), ","));
+            node.set("potion_effects", Arrays.asList(StringUtils.split(node.getString("potion_effects"), ",")));
         }
     }
 
