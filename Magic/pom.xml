@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
-			<version>1.5</version>
+			<version>1.6</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -217,6 +217,10 @@
 		<repository>
 			<id>md5</id>
 			<url>http://repo.md-5.net/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>Heroes</id>
+			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
 
 		<!--
