@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 6.5
+
+ - Fix SuperBroom, riding the Wolf Staff
+ - Fix One-Way Ticket to Boomstown spell
+ - Add DropItem action, for dropping items on the ground via a spell
+
 ## 6.4
 
  - Some fixes to disabled spell icons getting stuck on
