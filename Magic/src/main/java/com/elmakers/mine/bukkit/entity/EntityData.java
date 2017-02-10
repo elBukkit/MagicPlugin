@@ -289,14 +289,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         try {
             if (type == EntityType.HORSE) {
                 EntityHorseData horseData = new EntityHorseData();
-                if (parameters.contains("horse_variant")) {
-                    try {
-                        String variantString = parameters.getString("horse_variant");
-                        horseData.variant = Horse.Variant.valueOf(variantString.toUpperCase());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
     
                 if (parameters.contains("horse_color")) {
                     try {
