@@ -6,7 +6,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class EntityHorseData extends EntityExtraData {
     public Horse.Color color;
-    public Horse.Variant variant;
     public Horse.Style style;
     public ItemStack saddle;
     public ItemStack armor;
@@ -21,7 +20,6 @@ public class EntityHorseData extends EntityExtraData {
 
     public EntityHorseData(Horse horse) {
         color = horse.getColor();
-        variant = horse.getVariant();
         style = horse.getStyle();
         saddle = horse.getInventory().getSaddle();
         armor = horse.getInventory().getArmor();
@@ -40,9 +38,6 @@ public class EntityHorseData extends EntityExtraData {
         horse.getInventory().setArmor(armor);
         if (color != null) {
             horse.setColor(color);
-        }
-        if (variant != null) {
-            horse.setVariant(variant);
         }
         if (style != null) {
             horse.setStyle(style);
@@ -67,7 +62,6 @@ public class EntityHorseData extends EntityExtraData {
         copy.saddle = saddle == null ? null : saddle.clone();
         copy.armor = armor == null ? null : armor.clone();
         copy.color = color;
-        copy.variant = variant;
         copy.domestication = domestication;
         copy.style = style;
         copy.maxDomestication = maxDomestication;
