@@ -8,6 +8,7 @@ boomstown:
      cast:
        - class: ChangeContext
          source_at_target: true
+         source_is_target: true
          requires_entity_target: true
          actions:
          - class: Firework
