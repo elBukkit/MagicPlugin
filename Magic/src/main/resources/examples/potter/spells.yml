@@ -235,8 +235,8 @@ arresto:
            effect: step_sound
            period: 2
     parameters:
-        min_speed: 0
-        max_speed: 0
+        target: self
+        speed: 0
         cooldown: 3000
         duration: 20000
     costs:
