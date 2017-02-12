@@ -468,7 +468,9 @@ public class PlayerController implements Listener {
             }
         }
 
-        if (!lastClickCooldown && isSwing) {
+        ItemStack offhandItem = player.getInventory().getItemInOffHand();
+        boolean checkCooldown = isSwing || offhandItem == null || offhandItem.getType() == Material.AIR;
+        if (!lastClickCooldown && checkCooldown) {
             event.setCancelled(true);
             return;
         }
