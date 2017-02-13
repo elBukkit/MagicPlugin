@@ -1178,7 +1178,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 	@Override
 	public void saveState() {
-		saveInventory();
 		saveItemState();
 	}
 
@@ -1297,6 +1296,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             node.set("potion_effects", Arrays.asList(StringUtils.split(node.getString("potion_effects"), ",")));
         }
     }
+
+    public void updateBrushes() {
+		setProperty("materials", getMaterialString());
+	}
+
+	public void updateSpells() {
+		setProperty("spells", getSpellString());
+	}
 
 	public void saveProperties(ConfigurationSection node) {
 		node.set("id", id);
@@ -3330,6 +3337,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         WandMode mode = getMode();
         try {
             saveInventory();
+            updateSpells();
             inventoryIsOpen = false;
             if (mage != null) {
                 if (!playPassiveEffects("close") && inventoryCloseSound != null) {
@@ -4484,9 +4492,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             return false;
         }
 
-        if (isInventoryOpen()) {
-			saveInventory();
-		}
+		saveInventory();
         SpellTemplate template = controller.getSpellTemplate(spellName);
         if (template == null) {
             controller.getLogger().warning("Tried to add unknown spell to wand: " + spellName);
@@ -4558,6 +4564,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		addToInventory(spellItem, inventorySlot);
 		updateInventory();
 		updateHasInventory();
+		updateSpells();
         saveItemState();
 		updateLore();
 
@@ -4623,9 +4630,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (!isModifiable()) return false;
 		if (hasBrush(materialKey)) return false;
 
-        if (isInventoryOpen()) {
-            saveInventory();
-        }
+		saveInventory();
 		
 		ItemStack itemStack = createBrushIcon(materialKey);
 		if (itemStack == null) return false;
@@ -4641,6 +4646,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			updateInventory();
 		}
 		updateHasInventory();
+		updateBrushes();
         saveItemState();
 		updateLore();
 
@@ -4718,9 +4724,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public boolean removeBrush(String materialKey) {
 		if (!isModifiable() || materialKey == null) return false;
 		
-		if (isInventoryOpen()) {
-			saveInventory();
-		}
+		saveInventory();
 		if (materialKey.equals(activeMaterial)) {
 			activeMaterial = null;
 		}
@@ -4747,6 +4751,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 		updateActiveMaterial();
 		updateInventory();
+		updateBrushes();
         saveItemState();
 		updateName();
 		updateLore();
@@ -4757,9 +4762,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public boolean removeSpell(String spellName) {
 		if (!isModifiable()) return false;
 		
-		if (isInventoryOpen()) {
-			saveInventory();
-		}
+		saveInventory();
 		if (spellName.equals(activeSpell)) {
 			activeSpell = null;
 		}
@@ -4788,6 +4791,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
         updateInventory();
 		updateHasInventory();
+		updateSpells();
         saveItemState();
         updateName();
         updateLore();
