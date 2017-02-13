@@ -130,7 +130,10 @@ public class InventoryUtils extends NMSUtils
                         ConfigurationSection newSection = tags.createSection(tagName);
                         loadAllTagsFromNBT(newSection, metaBase);
                     } else {
-                        tags.set(tagName, metaBase.toString());
+                        String meta = getMeta(tag, tagName);
+                        if (meta != null && meta.length() > 0) {
+                            ConfigurationUtils.set(tags, tagName, meta);
+                        }
                     }
                 }
             }
