@@ -425,8 +425,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			randomize(level, false, null, true);
 			locked = wasLocked;
 		}
-		setDescription(wandDescription);
-		setName(wandName);
 
         // Don't randomize now if set to randomize later
         // Otherwise, do this here so the description updates
@@ -3439,7 +3437,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         if (description.contains("$")) {
             String newDescription = controller.getMessages().escape(description);
             if (!newDescription.equals(description)) {
-                description = newDescription;
+                setDescription(newDescription);
                 modified = true;
                 updateLore();
                 updateName();
@@ -3946,7 +3944,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 					effectiveManaRegeneration = heroes.getManaRegen(player);
 					manaMax = effectiveManaMax;
 					manaRegeneration = effectiveManaRegeneration;
-					mana = heroes.getMana(player);
+					setMana(heroes.getMana(player));
 					updated = true;
 				}
 			}
@@ -3956,7 +3954,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				if (effectiveManaMax == 0 && manaMax > 0) {
 					effectiveManaMax = manaMax;
 				}
-				mana = Math.min(effectiveManaMax, mana + (float) effectiveManaRegeneration * (float)delta / 1000);
+				setMana(Math.min(effectiveManaMax, mana + (float) effectiveManaRegeneration * (float)delta / 1000));
 				updated = true;
 			}
 			lastManaRegeneration = now;
@@ -4445,6 +4443,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public boolean configure(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
 		configure(ConfigurationUtils.toConfigurationSection(convertedProperties));
+		loadProperties();
         saveItemState();
         updateName();
         updateLore();
@@ -4455,6 +4454,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public boolean upgrade(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
 		upgrade(ConfigurationUtils.toConfigurationSection(convertedProperties));
+		loadProperties();
         saveItemState();
         updateName();
         updateLore();
@@ -4813,6 +4813,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         } else {
             this.castOverrides = new HashMap<>(overrides);
         }
+		updateOverrides();
     }
 
     @Override
@@ -4820,6 +4821,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     {
         if (castOverrides != null) {
             castOverrides.remove(key);
+			updateOverrides();
         }
     }
 
@@ -4834,7 +4836,21 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         } else {
             castOverrides.put(key, value);
         }
+		updateOverrides();
     }
+
+    protected void updateOverrides() {
+		if (castOverrides != null && castOverrides.size() > 0) {
+			Collection<String> parameters = new ArrayList<>();
+			for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
+				String value = entry.getValue();
+				parameters.add(entry.getKey() + " " + value.replace(",", "\\,"));
+			}
+			setProperty("overrides", StringUtils.join(parameters, ","));
+		} else {
+			setProperty("overrides", null);
+		}
+	}
 
     public boolean hasStoredInventory() {
         return storedInventory != null;
