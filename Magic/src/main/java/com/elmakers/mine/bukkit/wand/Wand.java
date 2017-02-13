@@ -367,8 +367,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	protected Wand(MagicController controller, String templateName) throws UnknownWandException {
 		this(controller);
 		suspendSave = true;
-		String wandName = controller.getMessages().get("wand.default_name");
-		String wandDescription = "";
 
 		// Default to "default" wand
 		if (templateName == null || templateName.length() == 0)
@@ -404,12 +402,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (templateConfig == null) {
 			throw new UnknownWandException(templateName);
 		}
-
-		// Default to template names, override with localizations
-		wandName = templateConfig.getString("name", wandName);
-		wandName = controller.getMessages().get("wands." + templateName + ".name", wandName);
-		wandDescription = templateConfig.getString("description", wandDescription);
-		wandDescription = controller.getMessages().get("wands." + templateName + ".description", wandDescription);
 
 		// Load all properties
 		loadProperties();
@@ -1695,8 +1687,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 			owner = wandConfig.getString("owner", owner);
             ownerId = wandConfig.getString("owner_id", ownerId);
-			wandName = wandConfig.getString("name", wandName);			
-			description = wandConfig.getString("description", description);
 			template = wandConfig.getString("template", template);
             upgradeTemplate = wandConfig.getString("upgrade_template", upgradeTemplate);
             path = wandConfig.getString("path", path);
@@ -1736,13 +1726,26 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
 				parseInventoryStrings(wandSpells, wandMaterials);
 			}
+
+            // Default to template names, override with localizations and finally with wand data
+            wandName = controller.getMessages().get("wand.default_name");
+            description = "";
 			
 			// Check for migration information in the template config
 			ConfigurationSection templateConfig = null;
 			if (template != null && !template.isEmpty()) {
 				templateConfig = controller.getWandTemplateConfiguration(template);
+				if (templateConfig != null) {
+                    wandName = templateConfig.getString("name", wandName);
+                    description = templateConfig.getString("description", description);
+                }
+                wandName = controller.getMessages().get("wands." + template + ".name", wandName);
+                description = controller.getMessages().get("wands." + template + ".description", description);
 			}
-			String migrateTemplate = templateConfig == null ? null : templateConfig.getString("migrate_to");
+            wandName = wandConfig.getString("name", wandName);
+            description = wandConfig.getString("description", description);
+
+            String migrateTemplate = templateConfig == null ? null : templateConfig.getString("migrate_to");
 			if (migrateTemplate != null) {
 				template = migrateTemplate;
 				templateConfig = controller.getWandTemplateConfiguration(template);
