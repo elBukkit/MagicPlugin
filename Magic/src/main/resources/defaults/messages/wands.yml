@@ -27,7 +27,7 @@ wands:
         inventory_instructions: "&r&bUse the drop (Q) button to open/close the spell inventory."
     battle:
         name: Master Sword
-        description: $path Magic Wword
+        description: $path Magic Sword
         spell_instructions: "&r&bUse the hotbar buttons to cast spells. Spells require mana, shown in the XP bar."
         inventory_instructions: "&r&bUse the drop (Q) button to open/close the spell inventory."
     engineer:
