@@ -5,6 +5,9 @@
  - Fix SuperBroom, riding the Wolf Staff
  - Fix One-Way Ticket to Boomstown spell
  - Add DropItem action, for dropping items on the ground via a spell
+ - Fix Map Brush
+ - Some more fixes, hopefully, for dual-weilding and right-click behavior
+ - Fix bypass_pvp permission, when trying to target a player in a no-pvp zone
 
 ## 6.4
 
