@@ -325,7 +325,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		this.icon = new MaterialAndData(itemStack);
 		inventories = new ArrayList<>();
         item = itemStack;
-		load(itemToConfig(item, new MemoryConfiguration()));
+        if (isWand(item)) {
+			load(itemToConfig(item, new MemoryConfiguration()));
+		}
 		loadProperties();
         updateName();
         updateLore();
