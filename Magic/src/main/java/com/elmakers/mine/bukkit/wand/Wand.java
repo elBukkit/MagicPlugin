@@ -128,7 +128,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     );
 
     /**
-     * Set of properties that should be stored as NBT tags on a wand.
+     * Set of properties that are used internally.
+	 *
+	 * Neither this list nor HIDDEN_PROPERTY_KEYS are really used anymore, but I'm keeping them
+	 * here in case we have some use for them in the future.
+	 *
+	 * Wands now load and retain any wand.* tags on their items.
      */
     private final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
             PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
@@ -451,8 +456,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
 	protected void updateIcon() {
-        if (icon != null) {
-            setProperty("icon", icon.getKey());
+        if (icon != null && icon.getMaterial() != null && icon.getMaterial() != Material.AIR) {
+			String iconKey = icon.getKey();
+			if (iconKey != null && iconKey.isEmpty()) {
+				iconKey = null;
+			}
+			setProperty("icon", iconKey);
         }
     }
 
@@ -522,14 +531,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			CompatibilityUtils.removeUnbreakable(item);
 		}
 		CompatibilityUtils.hideFlags(item, HIDE_FLAGS);
-
-		String iconKey = null;
-		if (icon != null && icon.getMaterial() != null && icon.getMaterial() != Material.AIR) {
-			iconKey = icon.getKey();
-			if (iconKey != null && iconKey.isEmpty()) {
-				iconKey = null;
-			}
-		}
 	}
 	
 	@Override
