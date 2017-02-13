@@ -3958,6 +3958,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				updated = true;
 			}
 			lastManaRegeneration = now;
+			setProperty("mana_timestamp", lastManaRegeneration);
 		}
 		
 		return updated;
