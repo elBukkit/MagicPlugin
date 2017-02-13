@@ -23,7 +23,7 @@ public class BaseMagicProperties implements MagicProperties {
             effectiveConfiguration = ConfigurationUtils.cloneConfiguration(configuration);
             if (parent != null) {
                 ConfigurationSection parentConfiguration = parent.getEffectiveConfiguration();
-                ConfigurationUtils.addConfigurations(effectiveConfiguration, parentConfiguration);
+                ConfigurationUtils.addConfigurations(effectiveConfiguration, parentConfiguration, false);
             }
             dirty = false;
         }
