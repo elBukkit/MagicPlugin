@@ -443,11 +443,18 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	public void setIcon(Material material, byte data) {
 		setIcon(material == null ? null : new MaterialAndData(material, data));
+        updateIcon();
 	}
 
-	public void updateIcon() {
+	public void updateItemIcon() {
 		setIcon(icon);
 	}
+
+	protected void updateIcon() {
+        if (icon != null) {
+            setProperty("icon", icon.getKey());
+        }
+    }
 
     @Override
     public void setInactiveIcon(com.elmakers.mine.bukkit.api.block.MaterialAndData materialData) {
@@ -467,7 +474,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			}
 		}
 		setProperty("inactive_icon", inactiveIconKey);
-		updateIcon();
+		updateItemIcon();
 	}
 	
 	@Override
@@ -477,6 +484,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		} else {
 			setIcon(new MaterialAndData(materialData));
 		}
+		updateIcon();
 	}
 	
 	public void setIcon(MaterialAndData materialData) {
@@ -522,7 +530,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				iconKey = null;
 			}
 		}
-		setProperty("icon", iconKey);
 	}
 	
 	@Override
@@ -1182,7 +1189,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 String itemId = getWandId(itemInHand);
                 if (itemId != null && itemId.equals(id)) {
                     item = itemInHand;
-					updateIcon();
+					updateItemIcon();
                     updateName();
                     updateLore();
                 }
@@ -3013,6 +3020,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                || !Objects.equal(this.icon.getData(), other.upgradeIcon.getData()))) {
             modified = true;
             this.setIcon(other.upgradeIcon);
+			updateIcon();
         }
 
         if (other.isUpgrade && other.inactiveIcon != null
@@ -3455,9 +3463,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                     Random r = new Random();
                     String[] keys = StringUtils.split(iconKey, ',');
                     iconKey = keys[r.nextInt(keys.length)];
+					setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
+					updateIcon();
+					modified = true;
                 }
-                setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
-                modified = true;
             }
         }
 
@@ -4225,7 +4234,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        updateIcon();
+                        updateItemIcon();
 						// Needed because if the inventory has opened the item reference may be stale (?)
 						if (mage != null) {
 							Player player = mage.getPlayer();
