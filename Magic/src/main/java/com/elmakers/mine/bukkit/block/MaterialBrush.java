@@ -459,7 +459,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 }
                 if (mapColor != null) {
                     this.material = mapMaterialBase;
-                    this.data = (short)mapColor.getData();
+                    this.data = (short)mapColor.getWoolData();
                     isValid = true;
                 }
             }
