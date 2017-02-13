@@ -78,6 +78,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
+	private static int WAND_VERSION = 1;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 
@@ -124,7 +125,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             "health_regeneration", "hunger_regeneration",
             "xp", "xp_regeneration", "xp_max", "xp_max_boost",
             "xp_regeneration_boost",
-            "mode_cast", "mode_drop"
+            "mode_cast", "mode_drop", "version"
     );
 
     /**
@@ -331,11 +332,37 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		inventories = new ArrayList<>();
         item = itemStack;
         if (isWand(item)) {
-			load(itemToConfig(item, new MemoryConfiguration()));
+        	ConfigurationSection wandConfig = itemToConfig(item, new MemoryConfiguration());
+
+			int version = wandConfig.getInt("version", 0);
+			if (version < WAND_VERSION) {
+				migrate(version, wandConfig);
+			}
+
+			load(wandConfig);
 		}
 		loadProperties();
         updateName();
         updateLore();
+	}
+
+	protected void migrate(int version, ConfigurationSection wandConfig) {
+    	// First migration, clean out wand data that matches template
+		if (version == 0) {
+			ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(wandConfig.getString("template"));
+			if (templateConfig != null) {
+				Set<String> keys = templateConfig.getKeys(false);
+				for (String key : keys) {
+					Object templateData = templateConfig.get(key);
+					Object wandData = wandConfig.get(key);
+					if (wandData != null && wandData.equals(templateData)) {
+						wandConfig.set(key, null);
+					}
+				}
+			}
+		}
+
+    	wandConfig.set("version", WAND_VERSION);
 	}
 	
 	@Override
