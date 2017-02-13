@@ -814,11 +814,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return false;
 	}
 
-    protected void takeOwnership(Player player) {
-        takeOwnership(player, controller.bindWands(), controller.keepWands());
-    }
-
-	public void takeOwnership(Player player, boolean setBound, boolean setKeep) {
+	public void takeOwnership(Player player) {
         if (mage != null && (ownerId == null || ownerId.length() == 0) && quietLevel < 2)
         {
             mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
@@ -843,14 +839,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         ownerId = player.getUniqueId().toString();
 		setProperty("owner", owner);
 		setProperty("owner_id", ownerId);
-		if (setBound) {
-			bound = true;
-			setProperty("bound", bound);
-		}
-		if (setKeep) {
-			keep = true;
-			setProperty("keep", keep);
-		}
 		updateLore();
 	}
 	

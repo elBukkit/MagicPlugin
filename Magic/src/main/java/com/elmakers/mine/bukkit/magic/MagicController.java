@@ -511,14 +511,6 @@ public class MagicController implements MageController {
         return maxFillLevel;
     }
 
-    public boolean bindWands() {
-        return bindingEnabled;
-    }
-
-    public boolean keepWands() {
-        return keepingEnabled;
-    }
-
     /*
 	 * Get the log, if you need to debug or log errors.
 	 */
@@ -1209,18 +1201,6 @@ public class MagicController implements MageController {
                         @Override
                         public int getValue() {
                             return controller.anvil.isOrganizingEnabled() ? 1 : 0;
-                        }
-                    });
-                    featuresGraph.addPlotter(new Metrics.Plotter("Anvil Binding") {
-                        @Override
-                        public int getValue() {
-                            return controller.bindingEnabled ? 1 : 0;
-                        }
-                    });
-                    featuresGraph.addPlotter(new Metrics.Plotter("Anvil Keeping") {
-                        @Override
-                        public int getValue() {
-                            return controller.keepingEnabled ? 1 : 0;
                         }
                     });
                 }
@@ -2330,8 +2310,6 @@ public class MagicController implements MageController {
         castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
 		autoUndo = properties.getInt("auto_undo", autoUndo);
         spellDroppingEnabled = properties.getBoolean("allow_spell_dropping", spellDroppingEnabled);
-		bindingEnabled = properties.getBoolean("enable_binding", bindingEnabled);
-		keepingEnabled = properties.getBoolean("enable_keeping", keepingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
         citizensEnabled = properties.getBoolean("enable_citizens", citizensEnabled);
 		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
@@ -4860,9 +4838,7 @@ public class MagicController implements MageController {
     private boolean                             soundsEnabled                   = true;
     private String								welcomeWand					    = "";
     private int								    messageThrottle				    = 0;
-    private boolean							    bindingEnabled					= false;
     private boolean							    spellDroppingEnabled			= false;
-    private boolean							    keepingEnabled					= false;
     private boolean                             fillingEnabled                  = false;
     private int                                 maxFillLevel                    = 0;
     private boolean							    essentialsSignsEnabled			= false;

@@ -651,7 +651,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         gaveWelcomeWand = true;
                         wand = Wand.createWand(controller, welcomeWand);
                         if (wand != null) {
-                            wand.takeOwnership(player, false, false);
+                            wand.takeOwnership(player);
                             giveItem(wand.getItem());
                             controller.getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
                         } else {
