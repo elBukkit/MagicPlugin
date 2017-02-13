@@ -70,6 +70,11 @@ recall:
         command: mserver hub
         op: true
     warps:
+      bean:
+        name: Chicago
+        description: Leave this world
+        server: chicago
+        icon: iron_nugget
       falcon:
         name: Milennium Falcon
         description: Testing cross-server warps
