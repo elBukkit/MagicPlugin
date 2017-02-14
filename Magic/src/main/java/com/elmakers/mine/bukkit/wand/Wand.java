@@ -2781,6 +2781,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         if (levels > 0) {
             enchantCount++;
+            setProperty("enchant_count", enchantCount);
         }
 
         saveItemState();
