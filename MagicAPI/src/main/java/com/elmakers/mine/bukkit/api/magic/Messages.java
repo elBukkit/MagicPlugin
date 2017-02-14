@@ -18,4 +18,7 @@ public interface Messages {
     public String getCurrency();
     public String getCurrencyPlural();
     public String formatList(String basePath, Collection<String> nodes, String nameKey);
+    public String getLevelString(String templateName, float amount);
+    public String getLevelString(String templateName, float amount, float max);
+    public String getPercentageString(String templateName, float amount);
 }
