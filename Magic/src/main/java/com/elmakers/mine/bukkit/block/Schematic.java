@@ -38,7 +38,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
 
         // Load entities
         for (Object entity : entityData) {
-            String type = NMSUtils.getMeta(entity, "id");
+            String type = NMSUtils.getMetaString(entity, "id");
             Vector position = NMSUtils.getPosition(entity, "Pos");
             if (position == null) continue;
             position = position.subtract(origin).subtract(center);
@@ -47,7 +47,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
 
             // Only doing paintings and item frames for now.
             if (type.equals("Painting")) {
-                String motive = NMSUtils.getMeta(entity, "Motive");
+                String motive = NMSUtils.getMetaString(entity, "Motive");
                 motive = motive.toLowerCase();
                 Art art = Art.ALBAN;
                 for (Art test : Art.values()) {
@@ -115,11 +115,11 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
                         if (tileEntity != null) {
                             try {
                                 if (material == Material.COMMAND) {
-                                    String customName = NMSUtils.getMeta(tileEntity, "CustomName");
+                                    String customName = NMSUtils.getMetaString(tileEntity, "CustomName");
                                     if (!customName.isEmpty()) {
                                         block.setCustomName(customName);
                                     }
-                                    block.setCommandLine(NMSUtils.getMeta(tileEntity, "Command"));
+                                    block.setCommandLine(NMSUtils.getMetaString(tileEntity, "Command"));
                                 } else {
                                     block.setRawData(tileEntity);
                                 }

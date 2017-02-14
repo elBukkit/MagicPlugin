@@ -1933,7 +1933,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 		
 		for (String key : PROPERTY_KEYS) {
-			String value = InventoryUtils.getMeta(wandNode, key);
+			String value = InventoryUtils.getMetaString(wandNode, key);
 			if (value != null && value.length() > 0) {
 				sender.sendMessage(key + ": " + value);
 			}
@@ -2350,7 +2350,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		Object wandSection = InventoryUtils.getNode(item, WAND_KEY);
 		if (wandSection == null) return false;
 		
-		String boundValue = InventoryUtils.getMeta(wandSection, "bound");
+		String boundValue = InventoryUtils.getMetaString(wandSection, "bound");
 		return boundValue != null && boundValue.equalsIgnoreCase("true");
 	}
 
@@ -2364,7 +2364,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 	public static Integer getSP(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
-		String spNode = InventoryUtils.getMeta(item, "sp");
+		String spNode = InventoryUtils.getMetaString(item, "sp");
 		if (spNode == null) return null;
 		Integer sp = null;
 		try {
@@ -2381,8 +2381,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 
         if (wandNode == null) return false;
-        String useCount = InventoryUtils.getMeta(wandNode, "uses");
-        String wandId = InventoryUtils.getMeta(wandNode, "id");
+        String useCount = InventoryUtils.getMetaString(wandNode, "uses");
+        String wandId = InventoryUtils.getMetaString(wandNode, "id");
 
         return useCount != null && useCount.equals("1") && (wandId == null || wandId.isEmpty());
     }
@@ -2392,7 +2392,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 
         if (wandNode == null) return false;
-        String upgradeData = InventoryUtils.getMeta(wandNode, "upgrade");
+        String upgradeData = InventoryUtils.getMetaString(wandNode, "upgrade");
 
         return upgradeData != null && upgradeData.equals("true");
     }
@@ -2413,7 +2413,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (InventoryUtils.isEmpty(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null) return null;
-        return InventoryUtils.getMeta(wandNode, "template");
+        return InventoryUtils.getMetaString(wandNode, "template");
     }
 
     public static String getWandId(ItemStack item) {
@@ -2421,28 +2421,28 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null || isUpgrade(item)) return null;
         if (isSingleUse(item)) return getWandTemplate(item);
-        return InventoryUtils.getMeta(wandNode, "id");
+        return InventoryUtils.getMetaString(wandNode, "id");
     }
 
 	public static String getSpell(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
-        return InventoryUtils.getMeta(spellNode, "key");
+        return InventoryUtils.getMetaString(spellNode, "key");
 	}
 
     public static String getSpellArgs(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
-        return InventoryUtils.getMeta(spellNode, "args");
+        return InventoryUtils.getMetaString(spellNode, "args");
     }
 
     public static String getBrush(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
         Object brushNode = InventoryUtils.getNode(item, "brush");
         if (brushNode == null) return null;
-        return InventoryUtils.getMeta(brushNode, "key");
+        return InventoryUtils.getMetaString(brushNode, "key");
     }
 
 	protected void updateInventoryName(ItemStack item, boolean activeName) {
@@ -4089,7 +4089,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         try {
             Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
             if (wandNode != null) {
-                String value = InventoryUtils.getMeta(wandNode, key);
+                String value = InventoryUtils.getMetaString(wandNode, key);
                 if (value != null && !value.isEmpty()) {
                     return Float.parseFloat(value);
                 }
@@ -4104,7 +4104,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         try {
             Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
             if (wandNode != null) {
-                return InventoryUtils.getMeta(wandNode, key);
+                return InventoryUtils.getMetaString(wandNode, key);
             }
         } catch (Exception ex) {
 

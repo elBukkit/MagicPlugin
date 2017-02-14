@@ -290,7 +290,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             return;
         }
 
-        int slotIndex = Integer.parseInt(InventoryUtils.getMeta(item, "shop"));
+        int slotIndex = Integer.parseInt(InventoryUtils.getMetaString(item, "shop"));
         MageController controller = context.getController();
         Wand wand = mage.getActiveWand();
 
@@ -298,7 +298,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (shopItem == null) {
             return;
         }
-        String unpurchasableMessage = InventoryUtils.getMeta(shopItem.getItem(), "unpurchasable");
+        String unpurchasableMessage = InventoryUtils.getMetaString(shopItem.getItem(), "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
             mage.deactivateGUI();

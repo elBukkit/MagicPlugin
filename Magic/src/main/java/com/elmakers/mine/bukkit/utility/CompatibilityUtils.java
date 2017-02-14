@@ -1259,7 +1259,7 @@ public class CompatibilityUtils extends NMSUtils {
             int size = (Integer)class_NBTTagList_sizeMethod.invoke(attributesNode);
             for (int i = 0; i < size; i++) {
                 Object candidate = class_NBTTagList_getMethod.invoke(attributesNode, i);
-                String key = getMeta(candidate, "AttributeName");
+                String key = getMetaString(candidate, "AttributeName");
                 if (key.equals(attributeName)) {
                     if (size == 1) {
                         removeMeta(tag, "AttributeModifiers");
@@ -1318,7 +1318,7 @@ public class CompatibilityUtils extends NMSUtils {
                 int size = (Integer)class_NBTTagList_sizeMethod.invoke(attributesNode);
                 for (int i = 0; i < size; i++) {
                     Object candidate = class_NBTTagList_getMethod.invoke(attributesNode, i);
-                    String key = getMeta(candidate, "AttributeName");
+                    String key = getMetaString(candidate, "AttributeName");
                     if (key.equals(attributeName)) {
                         attributeNode = candidate;
                         break;
