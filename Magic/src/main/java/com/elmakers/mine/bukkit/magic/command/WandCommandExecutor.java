@@ -513,11 +513,12 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		{
 			nameMap.put(template.getKey(), template.getConfiguration());
 		}
-		for (ConfigurationSection templateConfig : nameMap.values())
+		for (Map.Entry<String, ConfigurationSection> templateEntry : nameMap.entrySet())
 		{
+			ConfigurationSection templateConfig = templateEntry.getValue();
 			if (templateConfig.getBoolean("hidden", false)) continue;
 			
-			String key = templateConfig.getString("key");
+			String key = templateEntry.getKey();
 			String name = api.getMessages().get("wands." + key + ".name", api.getMessages().get("wand.default_name"));
 			String description = api.getMessages().get("wands." + key + ".description", "");
 			description = ChatColor.YELLOW + description; 

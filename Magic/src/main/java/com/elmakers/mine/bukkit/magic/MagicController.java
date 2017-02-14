@@ -3499,7 +3499,6 @@ public class MagicController implements MageController {
 
     @Override
     public void loadWandTemplate(String key, ConfigurationSection wandNode) {
-        wandNode.set("key", key);
         if (wandNode.getBoolean("enabled", true)) {
             wandTemplates.put(key, new com.elmakers.mine.bukkit.wand.WandTemplate(this, key, wandNode));
         }
