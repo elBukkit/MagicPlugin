@@ -128,6 +128,7 @@ age_dropped_items: 0
 # This controls the root NBT tag used to store wand data on items.
 #
 wand_key: "wand"
+wand_upgrade_key: "wand_upgrade"
 
 #
 # Wand destruction key

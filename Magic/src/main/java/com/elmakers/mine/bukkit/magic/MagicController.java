@@ -2405,6 +2405,7 @@ public class MagicController implements MageController {
         Wand.BrushGlow = properties.getBoolean("brush_glow", Wand.BrushGlow);
         Wand.BrushItemGlow = properties.getBoolean("brush_item_glow", Wand.BrushItemGlow);
         Wand.WAND_KEY = properties.getString("wand_key", "wand");
+        Wand.UPGRADE_KEY = properties.getString("wand_upgrade_key", "wand");
         Wand.WAND_SELF_DESTRUCT_KEY = properties.getString("wand_self_destruct_key", "");
         if (Wand.WAND_SELF_DESTRUCT_KEY.isEmpty()) {
             Wand.WAND_SELF_DESTRUCT_KEY = null;
@@ -4114,8 +4115,8 @@ public class MagicController implements MageController {
         if (first == null || second == null) return false;
         if (first.getType() != second.getType() || first.getDurability() != second.getDurability()) return false;
 
-        boolean firstIsWand = Wand.isWand(first);
-        boolean secondIsWand = Wand.isWand(second);
+        boolean firstIsWand = Wand.isWandOrUpgrade(first);
+        boolean secondIsWand = Wand.isWandOrUpgrade(second);
         if (firstIsWand || secondIsWand)
         {
             if (!firstIsWand || !secondIsWand) return false;
@@ -4193,7 +4194,7 @@ public class MagicController implements MageController {
     {
         ConfigurationSection itemSection = root.createSection(key);
         itemSection.set("item", item);
-        if (Wand.isWand(item))
+        if (Wand.isWandOrUpgrade(item))
         {
             ConfigurationSection stateNode = itemSection.createSection("wand");
             Wand.itemToConfig(item, stateNode);

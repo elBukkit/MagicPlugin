@@ -305,7 +305,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
 	public static SoundEffect noActionSound = null;
-    public static String WAND_KEY = "wand";
+	public static String WAND_KEY = "wand";
+	public static String UPGRADE_KEY = "wand_upgrade";
     public static String WAND_SELF_DESTRUCT_KEY = null;
     public static byte HIDE_FLAGS = 60;
 	public static String brushSelectSpell = "";
@@ -331,16 +332,26 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		this.icon = new MaterialAndData(itemStack);
 		inventories = new ArrayList<>();
         item = itemStack;
-        if (isWand(item)) {
+        boolean isWand = isWand(item);
+        boolean isUpgradeItem = isUpgrade(item);
+        if (isWand || isUpgradeItem) {
         	ConfigurationSection wandConfig = itemToConfig(item, new MemoryConfiguration());
 
 			int version = wandConfig.getInt("version", 0);
+			boolean needsSave = false;
 			if (version < WAND_VERSION) {
 				migrate(version, wandConfig);
+				needsSave = true;
 			}
 
 			load(wandConfig);
-			if (version < WAND_VERSION) {
+
+			// Migrate old upgrade items
+			if (isUpgrade && !isUpgradeItem) {
+				needsSave = true;
+				InventoryUtils.removeMeta(item, WAND_KEY);
+			}
+			if (needsSave) {
 				saveItemState();
 			}
 		}
@@ -1241,7 +1252,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         if (item.getType() == Material.AIR) return;
 
-		Object wandNode = InventoryUtils.createNode(item, WAND_KEY);
+		Object wandNode = InventoryUtils.createNode(item, isUpgrade ? UPGRADE_KEY : WAND_KEY);
 		if (wandNode == null) {
 			controller.getLogger().warning("Failed to save wand state for wand to : " + item);
             Thread.dumpStack();
@@ -1270,7 +1281,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 
         if (wandNode == null) {
-            return null;
+			wandNode = InventoryUtils.getNode(item, UPGRADE_KEY);
+			if (wandNode == null) {
+				return null;
+			}
         }
 
         InventoryUtils.loadAllTagsFromNBT(stateNode, wandNode);
@@ -2339,11 +2353,15 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
 	public static boolean isWand(ItemStack item) {
-        return item != null && InventoryUtils.hasMeta(item, WAND_KEY) && !isUpgrade(item);
+        return item != null && InventoryUtils.hasMeta(item, WAND_KEY);
 	}
 
 	public static boolean isWandOrUpgrade(ItemStack item) {
-		return item != null && InventoryUtils.hasMeta(item, WAND_KEY);
+		return isWand(item) || isUpgrade(item);
+	}
+
+	public static boolean isSpecial(ItemStack item) {
+		return isWand(item) || isUpgrade(item) || isSpell(item) || isBrush(item) || isSP(item);
 	}
 
 	public static boolean isBound(ItemStack item) {
@@ -2388,14 +2406,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     }
 
     public static boolean isUpgrade(ItemStack item) {
-		if (InventoryUtils.isEmpty(item)) return false;
-        Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
-
-        if (wandNode == null) return false;
-        String upgradeData = InventoryUtils.getMetaString(wandNode, "upgrade");
-
-        return upgradeData != null && upgradeData.equals("true");
-    }
+    	return item != null && InventoryUtils.hasMeta(item, UPGRADE_KEY);
+	}
 
 	public static boolean isSpell(ItemStack item) {
         return item != null && InventoryUtils.hasMeta(item, "spell");
@@ -2409,9 +2421,17 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         return item != null && InventoryUtils.hasMeta(item, "brush");
 	}
 
-    public static String getWandTemplate(ItemStack item) {
+	protected static Object getWandOrUpgradeNode(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
-        Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+		Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+		if (wandNode == null) {
+			wandNode = InventoryUtils.getNode(item, UPGRADE_KEY);
+		}
+		return wandNode;
+	}
+
+    public static String getWandTemplate(ItemStack item) {
+        Object wandNode = getWandOrUpgradeNode(item);
         if (wandNode == null) return null;
         return InventoryUtils.getMetaString(wandNode, "template");
     }

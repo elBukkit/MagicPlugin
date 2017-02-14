@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 7.0
+
+ - Wands now reference templates, rather than copy all of the configuration to item data. Wands should auto-migrate
+ - Wand upgrade item format changed, existing upgrades should migrate
+
 ## 6.5
 
  - Fix SuperBroom, riding the Wolf Staff
