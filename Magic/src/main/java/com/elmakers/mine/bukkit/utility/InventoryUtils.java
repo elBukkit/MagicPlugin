@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -39,7 +40,7 @@ public class InventoryUtils extends NMSUtils
         return saveTagsToNBT(tags, node, null, true, true);
     }
     
-    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Iterable<String> tagNames, boolean clean, boolean strings)
+    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames, boolean clean, boolean strings)
     {
         if (node == null) {
             Bukkit.getLogger().warning("Trying to save tags to a null node");
@@ -53,9 +54,19 @@ public class InventoryUtils extends NMSUtils
         if (tagNames == null) {
             tagNames = tags.getKeys(false);
         }
+
+        // Remove tags that were not included
+        Set<String> currentTags = getTagKeys(node);
+        if (currentTags != null && !tagNames.containsAll(currentTags)) {
+            // Need to copy this, getKeys returns a live list and bad things can happen.
+            currentTags = new HashSet<>(currentTags);
+        } else {
+            currentTags = null;
+        }
         
         for (String tagName : tagNames)
         {
+            if (currentTags != null) currentTags.remove(tagName);
             String value = tags.getString(tagName);
            
             // This is kinda hacky, but makes for generally cleaner data.
@@ -90,6 +101,13 @@ public class InventoryUtils extends NMSUtils
             }
         }
 
+        // Finish removing any remaining properties
+        if (currentTags != null) {
+            for (String currentTag : currentTags) {
+                removeMeta(node, currentTag);
+            }
+        }
+
         return true;
     }
 
@@ -114,15 +132,26 @@ public class InventoryUtils extends NMSUtils
         return true;
     }
 
-    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
-    {
+    @SuppressWarnings("unchecked")
+    public static Set<String> getTagKeys(Object tag) {
         if (tag == null || class_NBTTagCompound_getKeysMethod == null) {
-            return false;
+            return null;
         }
 
         try {
-            @SuppressWarnings("unchecked")
-            Set<String> keys = (Set<String>)class_NBTTagCompound_getKeysMethod.invoke(tag);
+            return (Set<String>) class_NBTTagCompound_getKeysMethod.invoke(tag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
+    {
+        try {
+            Set<String> keys = getTagKeys(tag);
+            if (keys == null) return false;
+
             for (String tagName : keys) {
                 Object metaBase = class_NBTTagCompound_getMethod.invoke(tag, tagName);
                 if (metaBase != null) {
