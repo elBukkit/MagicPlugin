@@ -1521,6 +1521,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			return;
 		}
 		effectColor = new ColorHD(hexColor);
+        if (hexColor.equals("random")) {
+            setProperty("effect_color", effectColor.toString());
+        }
 	}
 
     protected static void addPotionEffects(Map<PotionEffectType, Integer> effects, String effectsString) {
@@ -3916,6 +3919,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 use();
 				if (spellColor != null && this.effectColor != null) {
 					this.effectColor = this.effectColor.mixColor(spellColor, effectColorSpellMixWeight);
+                    setProperty("effect_color", effectColor.toString());
 					// Note that we don't save this change.
 					// The hope is that the wand will get saved at some point later
 					// And we don't want to trigger NBT writes every spell cast.

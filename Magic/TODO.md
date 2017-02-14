@@ -1,5 +1,9 @@
 # TODO
 
+# 7.0
+
+ - Need to refactor Wand.add, test upgrade items
+
 # High-Priority
  
  - Aliases don't work with levels
