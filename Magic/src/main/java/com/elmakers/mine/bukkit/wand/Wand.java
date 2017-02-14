@@ -340,6 +340,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			}
 
 			load(wandConfig);
+			if (version < WAND_VERSION) {
+				saveItemState();
+			}
 		}
 		loadProperties();
         updateName();
@@ -355,7 +358,31 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				for (String key : keys) {
 					Object templateData = templateConfig.get(key);
 					Object wandData = wandConfig.get(key);
-					if (wandData != null && wandData.equals(templateData)) {
+					if (wandData == null) continue;
+					String templateString = templateData.toString();
+					String wandString = wandData.toString();
+					if (templateData instanceof List) {
+						templateString = templateString.substring(1, templateString.length() - 1);
+						templateString = templateString.replace(", ", ",");
+						templateData = templateString;
+					}
+					if (wandString.equalsIgnoreCase(templateString)) {
+						wandConfig.set(key, null);
+						continue;
+					}
+
+					try {
+						double numericValue = Double.parseDouble(wandString);
+						double numericTemplate = Double.parseDouble(templateString);
+
+						if (numericValue == numericTemplate) {
+							wandConfig.set(key, null);
+							continue;
+						}
+					} catch (NumberFormatException ex) {
+
+					}
+					if (wandData.equals(templateData)) {
 						wandConfig.set(key, null);
 					}
 				}
