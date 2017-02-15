@@ -10,6 +10,7 @@ import com.google.common.base.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -25,6 +26,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 
@@ -107,6 +109,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 BannerMeta banner = (BannerMeta)meta;
                 extraData = new BlockBanner(banner.getPatterns(), banner.getBaseColor());
             }
+        } else if (this.material == Material.LEATHER_BOOTS || this.material == Material.LEATHER_CHESTPLATE
+                || this.material == Material.LEATHER_HELMET || this.material == Material.LEATHER_LEGGINGS) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null && meta instanceof LeatherArmorMeta) {
+                extraData = new LeatherArmorData(((LeatherArmorMeta)meta).getColor());
+            }
         }
     }
 
@@ -131,6 +139,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         String[] pieces = splitMaterialKey(materialKey);
         Short data = 0;
         Material material = null;
+        BlockExtraData extraData = null;
 
         try {
             if (pieces.length > 0) {
@@ -195,6 +204,28 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         extraData = new BlockBanner(color);
                     }
                     return;
+                }  else if (material == Material.LEATHER_BOOTS || material == Material.LEATHER_CHESTPLATE
+                        || material == Material.LEATHER_HELMET || material == Material.LEATHER_LEGGINGS) {
+                    StringUtils.split(pieces[1], ',');
+                    for (String piece : pieces) {
+                        if (piece.startsWith("#")) {
+                            try {
+                                Color color = Color.fromRGB(Integer.parseInt(piece.substring(1), 16));
+                                org.bukkit.Bukkit.getLogger().info("Stored: " + color);
+                                extraData = new LeatherArmorData(color);
+                                org.bukkit.Bukkit.getLogger().info("   " + extraData);
+
+                            } catch (Exception ex) {
+                                extraData = null;
+                            }
+                        } else {
+                            try {
+                                data = Short.parseShort(pieces[1]);
+                            } catch (Exception ex) {
+                                data = 0;
+                            }
+                        }
+                    }
                 } else {
                     try {
                         data = Short.parseShort(pieces[1]);
@@ -212,6 +243,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             isValid = false;
         } else {
             setMaterial(material, data);
+        }
+        if (isValid) {
+            this.extraData = extraData;
         }
     }
 
@@ -447,6 +481,18 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
             else if ((material == Material.STANDING_BANNER || material == Material.WALL_BANNER || material == Material.BANNER) && extraData != null && extraData instanceof BlockBanner) {
                 materialKey += ":" + ((BlockBanner)extraData).baseColor.ordinal();
+            } else if (this.material == Material.LEATHER_BOOTS || this.material == Material.LEATHER_CHESTPLATE
+                    || this.material == Material.LEATHER_HELMET || this.material == Material.LEATHER_LEGGINGS) {
+                if (data != 0)
+                    materialKey += ":" + data;
+                if (extraData != null && extraData instanceof LeatherArmorData) {
+                    Color color = ((LeatherArmorData)extraData).getColor();
+                    if (data != 0) {
+                        materialKey += ",#" + Integer.toHexString(color.asRGB());
+                    } else {
+                        materialKey += ":#" + Integer.toHexString(color.asRGB());
+                    }
+                }
             }
             else if (data != 0) {
                 materialKey += ":" + data;
@@ -561,7 +607,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
                 stack.setItemMeta(meta);
             }
-        } 
+        } else if (this.material == Material.LEATHER_BOOTS || this.material == Material.LEATHER_CHESTPLATE
+                || this.material == Material.LEATHER_HELMET || this.material == Material.LEATHER_LEGGINGS) {
+            ItemMeta meta = stack.getItemMeta();
+            if (extraData != null && extraData instanceof LeatherArmorData && meta != null && meta instanceof LeatherArmorMeta) {
+                ((LeatherArmorMeta)meta).setColor(((LeatherArmorData)extraData).getColor());
+                stack.setItemMeta(meta);
+            }
+        }
         return stack;
     }
 

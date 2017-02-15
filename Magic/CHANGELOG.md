@@ -6,6 +6,9 @@
  - Wand upgrade item format changed, existing upgrades should migrate
  - Broomsticks improve with use
  - Fix sound effects when interacting with an enchant table
+ - Some tweaks to the laser spell
+ - Really fix bypass_pvp permission
+ - Add support for dyed leather armor wands, change apprentice gear to blue armor
 
 ## 6.4.1
 

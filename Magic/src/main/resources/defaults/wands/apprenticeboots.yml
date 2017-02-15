@@ -1,5 +1,5 @@
 apprenticeboots:
-    icon: chainmail_boots
+    icon: leather_boots:#00AAFF
     indestructible: false
     locked: true
     keep: true

@@ -1,5 +1,5 @@
 apprenticechestplate:
-    icon: chainmail_chestplate
+    icon: leather_chestplate:#00AAFF
     indestructible: false
     locked: true
     keep: true

@@ -1,5 +1,5 @@
 apprenticeleggings:
-    icon: chainmail_leggings
+    icon: leather_leggings:#00AAFF
     indestructible: false
     locked: true
     keep: true
