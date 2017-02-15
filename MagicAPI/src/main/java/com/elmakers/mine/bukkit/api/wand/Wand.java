@@ -41,8 +41,9 @@ public interface Wand extends CostReducer, MagicProperties {
     public void closeInventory();
     public void activate(Mage mage);
     public void deactivate();
-    public void organizeInventory(Mage mage);
-    public void alphabetizeInventory();
+    public boolean organizeInventory(Mage mage);
+    public boolean alphabetizeInventory();
+    public boolean organizeInventory();
     public ItemStack getItem();
     public MaterialAndData getIcon();
     public MaterialAndData getInactiveIcon();
