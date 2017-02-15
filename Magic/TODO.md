@@ -1,13 +1,15 @@
 # TODO
 
-# High-Priority
+## High-Priority
  
  - Can you not get optional spells once you reach the end of wand progression?
  - Undo a Push spell doesn't bring killed mobs back to life
  - Laser isn't doing entity damage?
+ 
+## Not so High-Priority
+ 
  - Clean up uses of String.split, unnecessary regex expense
- - Aliases don't work with levels
- - Ability to *only* target teammates (like .. anti-PVP)
+ - Aliases don't work with levels - Don't refund item costs when a spell goes through auto-undo
 
 ## Broomstick / Scooter
 
@@ -23,15 +25,9 @@
 
 ## Reported Issues
 
+### Requests
 
-## 1.10 Issues
-
- - Interacting with a door seems to cast a spell sometimes? (Spigot bug? Been here forever? Click cooldown meant to bypass it?)
- - Enchanting sound effects broken?
- - Don't refund item costs when a spell goes through auto-undo
-
-# Requests
-
+ - Ability to *only* target teammates (like .. anti-PVP)
  - Add some sort of integration with Partec plugin
    https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/
  - Wand Power based on Strength potion effect

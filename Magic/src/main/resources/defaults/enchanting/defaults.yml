@@ -12,7 +12,7 @@ default:
   effects:
       enchant:
       -  class: EffectSingle
-         sound: level_up
+         sound: entity_player_levelup
          effectlib:
            class: SphereEffect
            iterations: 5
@@ -21,7 +21,7 @@ default:
            radius: 3
       upgrade:
       -  class: EffectSingle
-         sound: level_up
+         sound: entity_player_levelup
       -  class: EffectRing
          firework: star
          radius: 4

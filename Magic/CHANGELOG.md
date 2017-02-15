@@ -5,6 +5,7 @@
  - Wands now reference templates, rather than copy all of the configuration to item data. Wands should auto-migrate
  - Wand upgrade item format changed, existing upgrades should migrate
  - Broomsticks improve with use
+ - Fix sound effects when interacting with an enchant table
 
 ## 6.4.1
 
