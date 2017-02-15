@@ -3,7 +3,6 @@
 ## High-Priority
  
  - Can you not get optional spells once you reach the end of wand progression?
- - Laser isn't doing entity damage?
  
 ## Not so High-Priority
  

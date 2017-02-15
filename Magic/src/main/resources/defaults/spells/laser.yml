@@ -61,6 +61,8 @@ laser:
         target: block
         target_type: Damageable
         fov: 0.1
+        close_range: 4
+        close_fov: 0.4
         allow_max_range: true
         player_damage: 0.5
         entity_damage: 1
