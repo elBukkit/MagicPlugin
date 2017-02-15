@@ -3932,27 +3932,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             return;
         }
 
-		WandTemplate template = getTemplate();
-		// TODO: Handle migrating wands to new system
-		/*
-		Wand soulWand = mage.getSoulWand();
-		if (template != null && template.isSoul() && soulWand != this) {
-			if (!soul) {
-				// Migrate old wands
-				this.add(soulWand);
-				MemoryConfiguration soulConfiguration = new MemoryConfiguration();
-				saveProperties(soulConfiguration);
-				soulWand.loadProperties(soulConfiguration);
-				soul = true;
-				saveState();
-			}
-			soulWand.soul = true;
-			soulWand.item = this.item;
-			soulWand.activate(mage);
-			return;
-		}
-		*/
-
 		this.checkId();
 
 		if (getMode() != WandMode.INVENTORY) {
