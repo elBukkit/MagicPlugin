@@ -2,7 +2,15 @@
 
 # 7.0
 
- - Need to refactor Wand.add, test upgrade items
+ - Finish upgrade() re-work, handle spells and overrides.
+ - Need to remove complex properties from template configs, like attributes, effects. 
+ - Refactor WandLevel to call Wand.upgrade()
+
+# Shared
+
+ - A way to edit upgrades would be great, none of the /wand commands work on them.
+ - Fix links in config files to defaults
+ - Fix saber progression (paths need upgrade: properties?)
 
 # High-Priority
  

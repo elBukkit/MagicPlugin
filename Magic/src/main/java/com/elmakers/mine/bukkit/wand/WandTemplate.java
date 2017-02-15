@@ -22,7 +22,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 public class WandTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
-    private final MageController controller;
     private final String key;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private Set<String> tags;
@@ -37,9 +36,8 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     private Map<String, String> migrateIcons;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
+        super(controller);
         this.key = key;
-        this.load(node);
-        this.controller = controller;
 
         effects.clear();
         creator = node.getString("creator");
@@ -49,6 +47,18 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         restorable = node.getBoolean("restorable", true);
         icon = node.getString("icon");
         soul = node.getBoolean("soul", false);
+
+        // Remove some properties that should not transfer to wands
+        node.set("creator", null);
+        node.set("creator_id", null);
+        node.set("migrate_to", null);
+        node.set("migrate_icon", null);
+        node.set("restorable", null);
+        node.set("hidden", null);
+        node.set("enabled", null);
+        node.set("inherit", null);
+        this.load(node);
+
         ConfigurationSection migrateConfig = node.getConfigurationSection("migrate_icons");
         if (migrateConfig != null) {
             migrateIcons = new HashMap<>();

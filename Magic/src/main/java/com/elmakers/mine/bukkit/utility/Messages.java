@@ -181,4 +181,49 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         }
         return buffer.toString();
     }
+
+    @Override
+    public String getLevelString(String templateName, float amount)
+    {
+        return getLevelString(templateName, amount, 1);
+    }
+
+    @Override
+    public  String getLevelString(String templateName, float amount, float max)
+    {
+        String templateString = get(templateName, "");
+        if (templateString.contains("$roman")) {
+            if (max != 1) {
+                amount = amount / max;
+            }
+            templateString = templateString.replace("$roman", getRomanString(amount));
+        }
+        return templateString.replace("$amount", Integer.toString((int) amount));
+    }
+
+    @Override
+    public String getPercentageString(String templateName, float amount)
+    {
+        String templateString = get(templateName, "");
+        return templateString.replace("$amount", Integer.toString((int)(amount * 100)));
+    }
+
+    private String getRomanString(float amount) {
+        String roman = "";
+
+        if (amount > 1) {
+            roman = get("wand.enchantment_level_max");
+        } else if (amount > 0.8) {
+            roman = get("wand.enchantment_level_5");
+        } else if (amount > 0.6) {
+            roman = get("wand.enchantment_level_4");
+        } else if (amount > 0.4) {
+            roman = get("wand.enchantment_level_3");
+        } else if (amount > 0.2) {
+            roman = get("wand.enchantment_level_2");
+        } else {
+            roman = get("wand.enchantment_level_1");
+        }
+        return roman;
+    }
 }

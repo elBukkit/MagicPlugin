@@ -35,6 +35,7 @@ wand:
     material_count: Has $count Materials
     upgrade_spell_count: Adds $count Spells
     upgrade_material_count: Adds $count Materials
+    mana_max: "Mana: $amount"
     mana_amount: "Mana: $amount"
     mana_amount_boosted: "Mana: $amount &f(&b$mana&f)"
     mana_regeneration: "Mana Regeneration: $amount/s"
@@ -76,7 +77,8 @@ wand:
     upgraded_property: "&r&dYour $wand has been upgraded to &r&b$name"
     spell_progression: "&r&6$name &d&ohas progressed to &3$level&d&o/&3$max_level"
     mana_added: "&r&dYour $wand now has $value mana"
-    hotbar_added: "&r&aYour $wand's hotbar has been upgraded! &r&bPress F while your $wand is active"
+    hotbar_count: "$amount hotbars"
+    hotbar_count_usage: "&ePress F while your $wand is active to cycle hotbars"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
     no_item: You are not holding an item
