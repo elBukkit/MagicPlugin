@@ -2159,6 +2159,23 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             return lore;
         }
 
+		if (!isUpgrade) {
+			if (owner.length() > 0) {
+				if (bound) {
+					if (soul) {
+						String ownerDescription = getMessage("soulbound_description", "$name").replace("$name", owner);
+						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
+					} else {
+						String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
+						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
+					}
+				} else {
+					String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
+					lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
+				}
+			}
+		}
+
 		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
         Messages messages = controller.getMessages();
 
@@ -2173,22 +2190,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
         {
             lore.add(getBrushDisplayName(messages, MaterialBrush.parseMaterialKey(activeMaterial)));
-        }
-        if (!isUpgrade) {
-            if (owner.length() > 0) {
-                if (bound) {
-					if (soul) {
-						String ownerDescription = getMessage("soulbound_description", "$name").replace("$name", owner);
-						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
-					} else {
-						String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
-						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
-					}
-                } else {
-                    String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
-                    lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
-                }
-            }
         }
 
         if (spellCount > 0) {
