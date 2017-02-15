@@ -1510,10 +1510,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
     }
 	
-	public void loadProperties() {
-		loadProperties(getEffectiveConfiguration(), false);
-	}
-	
 	public void setEffectColor(String hexColor) {
         // Annoying config conversion issue :\
         if (hexColor.contains(".")) {
@@ -1529,59 +1525,42 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             setProperty("effect_color", effectColor.toString());
         }
 	}
+
+	public void loadProperties() {
+		loadProperties(getEffectiveConfiguration());
+	}
 	
-	public void loadProperties(ConfigurationSection wandConfig, boolean safe) {
+	public void loadProperties(ConfigurationSection wandConfig) {
 		locked = wandConfig.getBoolean("locked", locked);
-		float _consumeReduction = (float)wandConfig.getDouble("consume_reduction", consumeReduction);
-		consumeReduction = safe ? Math.max(_consumeReduction, consumeReduction) : _consumeReduction;
-		float _costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
-		costReduction = safe ? Math.max(_costReduction, costReduction) : _costReduction;
-		float _cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction", cooldownReduction);
-		cooldownReduction = safe ? Math.max(_cooldownReduction, cooldownReduction) : _cooldownReduction;
-		float _power = (float)wandConfig.getDouble("power", power);
-		power = safe ? Math.max(_power, power) : _power;
-		float _damageReduction = (float)wandConfig.getDouble("protection", damageReduction);
-		damageReduction = safe ? Math.max(_damageReduction, damageReduction) : _damageReduction;
-		float _damageReductionPhysical = (float)wandConfig.getDouble("protection_physical", damageReductionPhysical);
-		damageReductionPhysical = safe ? Math.max(_damageReductionPhysical, damageReductionPhysical) : _damageReductionPhysical;
-		float _damageReductionProjectiles = (float)wandConfig.getDouble("protection_projectiles", damageReductionProjectiles);
-		damageReductionProjectiles = safe ? Math.max(_damageReductionProjectiles, damageReductionPhysical) : _damageReductionProjectiles;
-		float _damageReductionFalling = (float)wandConfig.getDouble("protection_falling", damageReductionFalling);
-		damageReductionFalling = safe ? Math.max(_damageReductionFalling, damageReductionFalling) : _damageReductionFalling;
-		float _damageReductionFire = (float)wandConfig.getDouble("protection_fire", damageReductionFire);
-		damageReductionFire = safe ? Math.max(_damageReductionFire, damageReductionFire) : _damageReductionFire;
-		float _damageReductionExplosions = (float)wandConfig.getDouble("protection_explosions", damageReductionExplosions);
-		damageReductionExplosions = safe ? Math.max(_damageReductionExplosions, damageReductionExplosions) : _damageReductionExplosions;
+		consumeReduction = (float)wandConfig.getDouble("consume_reduction");
+		costReduction = (float)wandConfig.getDouble("cost_reduction");
+		cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction");
+		power =  (float)wandConfig.getDouble("power");
+		damageReduction = (float)wandConfig.getDouble("protection");
+		damageReductionPhysical = (float)wandConfig.getDouble("protection_physical");
+		damageReductionProjectiles = (float)wandConfig.getDouble("protection_projectiles");
+		damageReductionFalling = (float)wandConfig.getDouble("protection_falling");
+		damageReductionFire = (float)wandConfig.getDouble("protection_fire");
+		damageReductionExplosions =  (float)wandConfig.getDouble("protection_explosions");
 
-		float _blockChance = (float)wandConfig.getDouble("block_chance", blockChance);
-		blockChance = safe ? Math.max(_blockChance, blockChance) : _blockChance;
-		float _blockReflectChance = (float)wandConfig.getDouble("block_reflect_chance", blockReflectChance);
-		blockReflectChance = safe ? Math.max(_blockReflectChance, blockReflectChance) : _blockReflectChance;
-		float _blockFOV = (float)wandConfig.getDouble("block_fov", blockFOV);
-		blockFOV = safe ? Math.max(_blockFOV, blockFOV) : _blockFOV;
-        int _blockGlobalCooldown = wandConfig.getInt("block_mage_cooldown", blockMageCooldown);
-        blockMageCooldown = safe ? Math.min(_blockGlobalCooldown, blockMageCooldown) : _blockGlobalCooldown;
-        int _blockCooldown = wandConfig.getInt("block_cooldown", blockCooldown);
-        blockCooldown = safe ? Math.min(_blockCooldown, blockCooldown) : _blockCooldown;
+		blockChance = (float)wandConfig.getDouble("block_chance");
+		blockReflectChance = (float)wandConfig.getDouble("block_reflect_chance");
+		blockFOV = (float)wandConfig.getDouble("block_fov");
+        blockMageCooldown = wandConfig.getInt("block_mage_cooldown");
+        blockCooldown = wandConfig.getInt("block_cooldown");
 
-		int _manaRegeneration = wandConfig.getInt("mana_regeneration", wandConfig.getInt("xp_regeneration", manaRegeneration));
-		manaRegeneration = safe ? Math.max(_manaRegeneration, manaRegeneration) : _manaRegeneration;
-		int _manaMax = wandConfig.getInt("mana_max", wandConfig.getInt("xp_max", manaMax));
-		manaMax = safe ? Math.max(_manaMax, manaMax) : _manaMax;
-		int _mana = wandConfig.getInt("mana", wandConfig.getInt("xp", (int) mana));
-		mana = safe ? Math.max(_mana, mana) : _mana;
-        float _manaMaxBoost = (float)wandConfig.getDouble("mana_max_boost", wandConfig.getDouble("xp_max_boost", manaMaxBoost));
-        manaMaxBoost = safe ? Math.max(_manaMaxBoost, manaMaxBoost) : _manaMaxBoost;
-        float _manaRegenerationBoost = (float)wandConfig.getDouble("mana_regeneration_boost", wandConfig.getDouble("xp_regeneration_boost", manaRegenerationBoost));
-        manaRegenerationBoost = safe ? Math.max(_manaRegenerationBoost, manaRegenerationBoost) : _manaRegenerationBoost;
-        int _uses = wandConfig.getInt("uses", uses);
-        uses = safe ? Math.max(_uses, uses) : _uses;
-        String tempId = wandConfig.getString("id", id);
-        isSingleUse = (tempId == null || tempId.isEmpty()) && uses == 1;
-        hasUses = wandConfig.getBoolean("has_uses", hasUses) || uses > 0;
+		manaRegeneration = wandConfig.getInt("mana_regeneration", wandConfig.getInt("xp_regeneration"));
+		manaMax = wandConfig.getInt("mana_max", wandConfig.getInt("xp_max"));
+		mana = wandConfig.getInt("mana", wandConfig.getInt("xp"));
+        manaMaxBoost = (float)wandConfig.getDouble("mana_max_boost", wandConfig.getDouble("xp_max_boost"));
+        manaRegenerationBoost = (float)wandConfig.getDouble("mana_regeneration_boost", wandConfig.getDouble("xp_regeneration_boost"));
+        manaPerDamage = (float)wandConfig.getDouble("mana_per_damage");
 
-        float _manaPerDamage = (float)wandConfig.getDouble("mana_per_damage", manaPerDamage);
-        manaPerDamage = safe ? Math.max(_manaPerDamage, manaPerDamage) : _manaPerDamage;
+        // Check for single-use wands
+		uses = wandConfig.getInt("uses");
+		String tempId = wandConfig.getString("id", id);
+		isSingleUse = (tempId == null || tempId.isEmpty()) && uses == 1;
+		hasUses = wandConfig.getBoolean("has_uses", hasUses) || uses > 0;
 
         // Convert some legacy properties to potion effects
         float healthRegeneration = (float)wandConfig.getDouble("health_regeneration", 0);
@@ -1604,265 +1583,262 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             lastManaRegeneration = System.currentTimeMillis();
         }
 
-		if (wandConfig.contains("effect_color") && !safe) {
+		if (wandConfig.contains("effect_color")) {
 			setEffectColor(wandConfig.getString("effect_color"));
 		}
-		
-		// Don't change any of this stuff in safe mode
-		if (!safe) {
-			id = wandConfig.getString("id", id);
-            isUpgrade = wandConfig.getBoolean("upgrade", isUpgrade);
-            quietLevel = wandConfig.getInt("quiet", quietLevel);
-			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
-			keep = wandConfig.getBoolean("keep", keep);
-            passive = wandConfig.getBoolean("passive", passive);
-            indestructible = wandConfig.getBoolean("indestructible", indestructible);
-            superPowered = wandConfig.getBoolean("powered", superPowered);
-            superProtected = wandConfig.getBoolean("protected", superProtected);
-            glow = wandConfig.getBoolean("glow", glow);
-            undroppable = wandConfig.getBoolean("undroppable", undroppable);
-            isHeroes = wandConfig.getBoolean("heroes", isHeroes);
-			bound = wandConfig.getBoolean("bound", bound);
-            soul = wandConfig.getBoolean("soul", soul);
-            forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
-            autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
-            autoAlphabetize = wandConfig.getBoolean("alphabetize", autoAlphabetize);
-			autoFill = wandConfig.getBoolean("fill", autoFill);
-            randomize = wandConfig.getBoolean("randomize", randomize);
-            rename = wandConfig.getBoolean("rename", rename);
-            renameDescription = wandConfig.getBoolean("rename_description", renameDescription);
-            enchantCount = wandConfig.getInt("enchant_count", enchantCount);
-            maxEnchantCount = wandConfig.getInt("max_enchant_count", maxEnchantCount);
 
-            if (wandConfig.contains("effect_particle")) {
-                effectParticle = ConfigurationUtils.toParticleEffect(wandConfig.getString("effect_particle"));
-				effectParticleData = 0;
-			}
-			if (wandConfig.contains("effect_sound")) {
-                effectSound = ConfigurationUtils.toSoundEffect(wandConfig.getString("effect_sound"));
-			}
-			activeEffectsOnly = wandConfig.getBoolean("active_effects", activeEffectsOnly);
-			effectParticleData = (float)wandConfig.getDouble("effect_particle_data", effectParticleData);
-			effectParticleCount = wandConfig.getInt("effect_particle_count", effectParticleCount);
-            effectParticleRadius = wandConfig.getDouble("effect_particle_radius", effectParticleRadius);
-            effectParticleOffset = wandConfig.getDouble("effect_particle_offset", effectParticleOffset);
-			effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
-            effectParticleMinVelocity = wandConfig.getDouble("effect_particle_min_velocity", effectParticleMinVelocity);
-			effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
+		id = wandConfig.getString("id", id);
+		isUpgrade = wandConfig.getBoolean("upgrade", isUpgrade);
+		quietLevel = wandConfig.getInt("quiet", quietLevel);
+		effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
+		keep = wandConfig.getBoolean("keep", keep);
+		passive = wandConfig.getBoolean("passive", passive);
+		indestructible = wandConfig.getBoolean("indestructible", indestructible);
+		superPowered = wandConfig.getBoolean("powered", superPowered);
+		superProtected = wandConfig.getBoolean("protected", superProtected);
+		glow = wandConfig.getBoolean("glow", glow);
+		undroppable = wandConfig.getBoolean("undroppable", undroppable);
+		isHeroes = wandConfig.getBoolean("heroes", isHeroes);
+		bound = wandConfig.getBoolean("bound", bound);
+		soul = wandConfig.getBoolean("soul", soul);
+		forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
+		autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
+		autoAlphabetize = wandConfig.getBoolean("alphabetize", autoAlphabetize);
+		autoFill = wandConfig.getBoolean("fill", autoFill);
+		randomize = wandConfig.getBoolean("randomize", randomize);
+		rename = wandConfig.getBoolean("rename", rename);
+		renameDescription = wandConfig.getBoolean("rename_description", renameDescription);
+		enchantCount = wandConfig.getInt("enchant_count", enchantCount);
+		maxEnchantCount = wandConfig.getInt("max_enchant_count", maxEnchantCount);
 
-            castInterval = wandConfig.getInt("cast_interval", castInterval);
-            castMinVelocity = wandConfig.getDouble("cast_min_velocity", castMinVelocity);
-            castVelocityDirection = ConfigurationUtils.getVector(wandConfig, "cast_velocity_direction", castVelocityDirection);
-            castSpell = wandConfig.getString("cast_spell", castSpell);
-            String castParameterString = wandConfig.getString("cast_parameters", null);
-            if (castParameterString != null && !castParameterString.isEmpty()) {
-                castParameters = new MemoryConfiguration();
-                ConfigurationUtils.addParameters(StringUtils.split(castParameterString, " "), castParameters);
-            }
-
-            boolean needsInventoryUpdate = false;
-            if (wandConfig.contains("mode")) {
-                WandMode newMode = parseWandMode(wandConfig.getString("mode"), mode);
-                if (newMode != mode) {
-                    setMode(newMode);
-                    needsInventoryUpdate = true;
-                }
-            }
-
-            if (wandConfig.contains("brush_mode")) {
-                setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
-            }
-            String quickCastType = wandConfig.getString("quick_cast", wandConfig.getString("mode_cast"));
-            if (quickCastType != null) {
-                if (quickCastType.equalsIgnoreCase("true")) {
-                    quickCast = true;
-                    // This is to turn the redundant spell lore off
-                    quickCastDisabled = true;
-                    manualQuickCastDisabled = false;
-                } else if (quickCastType.equalsIgnoreCase("manual")) {
-                    quickCast = false;
-                    quickCastDisabled = true;
-                    manualQuickCastDisabled = false;
-                } else if (quickCastType.equalsIgnoreCase("disable")) {
-                    quickCast = false;
-                    quickCastDisabled = true;
-                    manualQuickCastDisabled = true;
-                } else {
-                    quickCast = false;
-                    quickCastDisabled = false;
-                    manualQuickCastDisabled = false;
-                }
-            }
-			
-			// Backwards compatibility
-			if (wandConfig.getBoolean("mode_drop", false)) {
-				dropAction = WandAction.TOGGLE;
-				swapAction = WandAction.CYCLE_HOTBAR;
-				rightClickAction = WandAction.NONE;
-			} else if (mode == WandMode.CAST) {
-				leftClickAction = WandAction.CAST;
-				rightClickAction = WandAction.CAST;
-				swapAction = WandAction.NONE;
-				dropAction = WandAction.NONE;
-			}
-			leftClickAction = parseWandAction(wandConfig.getString("left_click"), leftClickAction);
-			rightClickAction = parseWandAction(wandConfig.getString("right_click"), rightClickAction);
-			dropAction = parseWandAction(wandConfig.getString("drop"), dropAction);
-			swapAction = parseWandAction(wandConfig.getString("swap"), swapAction);
-
-			owner = wandConfig.getString("owner", owner);
-            ownerId = wandConfig.getString("owner_id", ownerId);
-			template = wandConfig.getString("template", template);
-            upgradeTemplate = wandConfig.getString("upgrade_template", upgradeTemplate);
-            path = wandConfig.getString("path", path);
-
-			activeSpell = wandConfig.getString("active_spell", activeSpell);
-			activeMaterial = wandConfig.getString("active_material", activeMaterial);
-
-            String wandMaterials = "";
-            String wandSpells = "";
-            if (wandConfig.contains("hotbar_count")) {
-                int newCount = Math.max(1, wandConfig.getInt("hotbar_count"));
-                if ((!safe && newCount != hotbars.size()) || newCount > hotbars.size()) {
-                    if (isInventoryOpen()) {
-                        closeInventory();
-                    }
-                    needsInventoryUpdate = true;
-                    setHotbarCount(newCount);
-                }
-            }
-
-            if (wandConfig.contains("hotbar")) {
-                int hotbar = wandConfig.getInt("hotbar");
-                currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
-            }
-
-            // Default to template names, override with localizations and finally with wand data
-            wandName = controller.getMessages().get("wand.default_name");
-            description = "";
-			
-			// Check for migration information in the template config
-			ConfigurationSection templateConfig = null;
-			if (template != null && !template.isEmpty()) {
-				templateConfig = controller.getWandTemplateConfiguration(template);
-				if (templateConfig != null) {
-                    wandName = templateConfig.getString("name", wandName);
-                    description = templateConfig.getString("description", description);
-                }
-                wandName = controller.getMessages().get("wands." + template + ".name", wandName);
-                description = controller.getMessages().get("wands." + template + ".description", description);
-			}
-            wandName = wandConfig.getString("name", wandName);
-            description = wandConfig.getString("description", description);
-
-			WandTemplate wandTemplate = getTemplate();
-			WandTemplate migrateTemplate = wandTemplate == null ? null : wandTemplate.getMigrateTemplate();
-			if (migrateTemplate != null) {
-				template = migrateTemplate.getKey();
-				templateConfig = migrateTemplate.getConfiguration();
-				wandTemplate = migrateTemplate;
-			}
-			
-			if (wandTemplate != null) {
-				// Add vanilla attributes
-				InventoryUtils.applyAttributes(item, wandTemplate.getAttributes(), wandTemplate.getAttributeSlot());
-			}
-
-            if (wandConfig.contains("icon_inactive")) {
-                String iconKey = wandConfig.getString("icon_inactive");
-                if (wandTemplate != null) {
-                    iconKey = wandTemplate.migrateIcon(iconKey);
-                }
-                if (iconKey != null) {
-                    inactiveIcon = new MaterialAndData(iconKey);
-                }
-            }
-            if (inactiveIcon != null && (inactiveIcon.getMaterial() == null || inactiveIcon.getMaterial() == Material.AIR))
-            {
-                inactiveIcon = null;
-            }
-            inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
-
-            if (wandConfig.contains("randomize_icon")) {
-                setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
-                randomize = true;
-            } else if (!randomize && wandConfig.contains("icon")) {
-                String iconKey = wandConfig.getString("icon");
-				if (wandTemplate != null) {
-					iconKey = wandTemplate.migrateIcon(iconKey);
-				}
-                if (iconKey.contains(",")) {
-                    Random r = new Random();
-                    String[] keys = StringUtils.split(iconKey, ',');
-                    iconKey = keys[r.nextInt(keys.length)];
-                }
-                // Port old custom wand icons
-                if (templateConfig != null && iconKey.contains("i.imgur.com")) {
-                    iconKey = templateConfig.getString("icon");
-                }
-                setIcon(new MaterialAndData(iconKey));
-			} else if (isUpgrade) {
-                setIcon(new MaterialAndData(DefaultUpgradeMaterial));
-            }
-
-            if (wandConfig.contains("upgrade_icon")) {
-                upgradeIcon = new MaterialAndData(wandConfig.getString("upgrade_icon"));
-            }
-
-			// Check for path-based migration, may update icons
-			com.elmakers.mine.bukkit.api.wand.WandUpgradePath upgradePath = getPath();
-			if (upgradePath != null) {
-				hasSpellProgression = upgradePath.getSpells().size() > 0
-						|| upgradePath.getExtraSpells().size() > 0
-						|| upgradePath.getRequiredSpells().size() > 0;
-				upgradePath.checkMigration(this);
-			} else {
-				hasSpellProgression = false;
-			}
-
-			// Load spells
-			if (needsInventoryUpdate) {
-				// Force a re-parse of materials and spells
-				wandSpells = getSpellString();
-				wandMaterials = getMaterialString();
-			}
-
-			wandMaterials = wandConfig.getString("materials", wandMaterials);
-			wandSpells = wandConfig.getString("spells", wandSpells);
-
-			if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
-				wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
-				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
-				parseInventoryStrings(wandSpells, wandMaterials);
-			}
-
-            if (wandConfig.contains("overrides")) {
-                castOverrides = null;
-                String overrides = wandConfig.getString("overrides", null);
-                if (overrides != null && !overrides.isEmpty()) {
-                    // Support YML-List-As-String format
-                    overrides = overrides.replaceAll("[\\]\\[]", "");
-
-                    castOverrides = new HashMap<>();
-                    String[] pairs = StringUtils.split(overrides, ',');
-                    for (String pair : pairs) {
-						// Unescape commas
-						pair = pair.replace("\\|", ",");
-                        String[] keyValue = StringUtils.split(pair, " ");
-                        if (keyValue.length > 0) {
-                            String value = keyValue.length > 1 ? keyValue[1] : "";
-                            castOverrides.put(keyValue[0], value);
-                        }
-                    }
-                }
-            }
-
-            if (wandConfig.contains("potion_effects")) {
-                potionEffects.clear();
-                addPotionEffects(potionEffects, wandConfig.getString("potion_effects", null));
-            }
+		if (wandConfig.contains("effect_particle")) {
+			effectParticle = ConfigurationUtils.toParticleEffect(wandConfig.getString("effect_particle"));
+			effectParticleData = 0;
 		}
-		
+		if (wandConfig.contains("effect_sound")) {
+			effectSound = ConfigurationUtils.toSoundEffect(wandConfig.getString("effect_sound"));
+		}
+		activeEffectsOnly = wandConfig.getBoolean("active_effects", activeEffectsOnly);
+		effectParticleData = (float)wandConfig.getDouble("effect_particle_data", effectParticleData);
+		effectParticleCount = wandConfig.getInt("effect_particle_count", effectParticleCount);
+		effectParticleRadius = wandConfig.getDouble("effect_particle_radius", effectParticleRadius);
+		effectParticleOffset = wandConfig.getDouble("effect_particle_offset", effectParticleOffset);
+		effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
+		effectParticleMinVelocity = wandConfig.getDouble("effect_particle_min_velocity", effectParticleMinVelocity);
+		effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
+
+		castInterval = wandConfig.getInt("cast_interval", castInterval);
+		castMinVelocity = wandConfig.getDouble("cast_min_velocity", castMinVelocity);
+		castVelocityDirection = ConfigurationUtils.getVector(wandConfig, "cast_velocity_direction", castVelocityDirection);
+		castSpell = wandConfig.getString("cast_spell", castSpell);
+		String castParameterString = wandConfig.getString("cast_parameters", null);
+		if (castParameterString != null && !castParameterString.isEmpty()) {
+			castParameters = new MemoryConfiguration();
+			ConfigurationUtils.addParameters(StringUtils.split(castParameterString, " "), castParameters);
+		}
+
+		boolean needsInventoryUpdate = false;
+		if (wandConfig.contains("mode")) {
+			WandMode newMode = parseWandMode(wandConfig.getString("mode"), mode);
+			if (newMode != mode) {
+				setMode(newMode);
+				needsInventoryUpdate = true;
+			}
+		}
+
+		if (wandConfig.contains("brush_mode")) {
+			setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
+		}
+		String quickCastType = wandConfig.getString("quick_cast", wandConfig.getString("mode_cast"));
+		if (quickCastType != null) {
+			if (quickCastType.equalsIgnoreCase("true")) {
+				quickCast = true;
+				// This is to turn the redundant spell lore off
+				quickCastDisabled = true;
+				manualQuickCastDisabled = false;
+			} else if (quickCastType.equalsIgnoreCase("manual")) {
+				quickCast = false;
+				quickCastDisabled = true;
+				manualQuickCastDisabled = false;
+			} else if (quickCastType.equalsIgnoreCase("disable")) {
+				quickCast = false;
+				quickCastDisabled = true;
+				manualQuickCastDisabled = true;
+			} else {
+				quickCast = false;
+				quickCastDisabled = false;
+				manualQuickCastDisabled = false;
+			}
+		}
+
+		// Backwards compatibility
+		if (wandConfig.getBoolean("mode_drop", false)) {
+			dropAction = WandAction.TOGGLE;
+			swapAction = WandAction.CYCLE_HOTBAR;
+			rightClickAction = WandAction.NONE;
+		} else if (mode == WandMode.CAST) {
+			leftClickAction = WandAction.CAST;
+			rightClickAction = WandAction.CAST;
+			swapAction = WandAction.NONE;
+			dropAction = WandAction.NONE;
+		}
+		leftClickAction = parseWandAction(wandConfig.getString("left_click"), leftClickAction);
+		rightClickAction = parseWandAction(wandConfig.getString("right_click"), rightClickAction);
+		dropAction = parseWandAction(wandConfig.getString("drop"), dropAction);
+		swapAction = parseWandAction(wandConfig.getString("swap"), swapAction);
+
+		owner = wandConfig.getString("owner", owner);
+		ownerId = wandConfig.getString("owner_id", ownerId);
+		template = wandConfig.getString("template", template);
+		upgradeTemplate = wandConfig.getString("upgrade_template", upgradeTemplate);
+		path = wandConfig.getString("path", path);
+
+		activeSpell = wandConfig.getString("active_spell", activeSpell);
+		activeMaterial = wandConfig.getString("active_material", activeMaterial);
+
+		String wandMaterials = "";
+		String wandSpells = "";
+		if (wandConfig.contains("hotbar_count")) {
+			int newCount = Math.max(1, wandConfig.getInt("hotbar_count"));
+			if (newCount != hotbars.size() || newCount > hotbars.size()) {
+				if (isInventoryOpen()) {
+					closeInventory();
+				}
+				needsInventoryUpdate = true;
+				setHotbarCount(newCount);
+			}
+		}
+
+		if (wandConfig.contains("hotbar")) {
+			int hotbar = wandConfig.getInt("hotbar");
+			currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
+		}
+
+		// Default to template names, override with localizations and finally with wand data
+		wandName = controller.getMessages().get("wand.default_name");
+		description = "";
+
+		// Check for migration information in the template config
+		ConfigurationSection templateConfig = null;
+		if (template != null && !template.isEmpty()) {
+			templateConfig = controller.getWandTemplateConfiguration(template);
+			if (templateConfig != null) {
+				wandName = templateConfig.getString("name", wandName);
+				description = templateConfig.getString("description", description);
+			}
+			wandName = controller.getMessages().get("wands." + template + ".name", wandName);
+			description = controller.getMessages().get("wands." + template + ".description", description);
+		}
+		wandName = wandConfig.getString("name", wandName);
+		description = wandConfig.getString("description", description);
+
+		WandTemplate wandTemplate = getTemplate();
+		WandTemplate migrateTemplate = wandTemplate == null ? null : wandTemplate.getMigrateTemplate();
+		if (migrateTemplate != null) {
+			template = migrateTemplate.getKey();
+			templateConfig = migrateTemplate.getConfiguration();
+			wandTemplate = migrateTemplate;
+		}
+
+		if (wandTemplate != null) {
+			// Add vanilla attributes
+			InventoryUtils.applyAttributes(item, wandTemplate.getAttributes(), wandTemplate.getAttributeSlot());
+		}
+
+		if (wandConfig.contains("icon_inactive")) {
+			String iconKey = wandConfig.getString("icon_inactive");
+			if (wandTemplate != null) {
+				iconKey = wandTemplate.migrateIcon(iconKey);
+			}
+			if (iconKey != null) {
+				inactiveIcon = new MaterialAndData(iconKey);
+			}
+		}
+		if (inactiveIcon != null && (inactiveIcon.getMaterial() == null || inactiveIcon.getMaterial() == Material.AIR))
+		{
+			inactiveIcon = null;
+		}
+		inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
+
+		if (wandConfig.contains("randomize_icon")) {
+			setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
+			randomize = true;
+		} else if (!randomize && wandConfig.contains("icon")) {
+			String iconKey = wandConfig.getString("icon");
+			if (wandTemplate != null) {
+				iconKey = wandTemplate.migrateIcon(iconKey);
+			}
+			if (iconKey.contains(",")) {
+				Random r = new Random();
+				String[] keys = StringUtils.split(iconKey, ',');
+				iconKey = keys[r.nextInt(keys.length)];
+			}
+			// Port old custom wand icons
+			if (templateConfig != null && iconKey.contains("i.imgur.com")) {
+				iconKey = templateConfig.getString("icon");
+			}
+			setIcon(new MaterialAndData(iconKey));
+		} else if (isUpgrade) {
+			setIcon(new MaterialAndData(DefaultUpgradeMaterial));
+		}
+
+		if (wandConfig.contains("upgrade_icon")) {
+			upgradeIcon = new MaterialAndData(wandConfig.getString("upgrade_icon"));
+		}
+
+		// Check for path-based migration, may update icons
+		com.elmakers.mine.bukkit.api.wand.WandUpgradePath upgradePath = getPath();
+		if (upgradePath != null) {
+			hasSpellProgression = upgradePath.getSpells().size() > 0
+					|| upgradePath.getExtraSpells().size() > 0
+					|| upgradePath.getRequiredSpells().size() > 0;
+			upgradePath.checkMigration(this);
+		} else {
+			hasSpellProgression = false;
+		}
+
+		// Load spells
+		if (needsInventoryUpdate) {
+			// Force a re-parse of materials and spells
+			wandSpells = getSpellString();
+			wandMaterials = getMaterialString();
+		}
+
+		wandMaterials = wandConfig.getString("materials", wandMaterials);
+		wandSpells = wandConfig.getString("spells", wandSpells);
+
+		if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
+			wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
+			wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
+			parseInventoryStrings(wandSpells, wandMaterials);
+		}
+
+		if (wandConfig.contains("overrides")) {
+			castOverrides = null;
+			String overrides = wandConfig.getString("overrides", null);
+			if (overrides != null && !overrides.isEmpty()) {
+				// Support YML-List-As-String format
+				overrides = overrides.replaceAll("[\\]\\[]", "");
+
+				castOverrides = new HashMap<>();
+				String[] pairs = StringUtils.split(overrides, ',');
+				for (String pair : pairs) {
+					// Unescape commas
+					pair = pair.replace("\\|", ",");
+					String[] keyValue = StringUtils.split(pair, " ");
+					if (keyValue.length > 0) {
+						String value = keyValue.length > 1 ? keyValue[1] : "";
+						castOverrides.put(keyValue[0], value);
+					}
+				}
+			}
+		}
+
+		if (wandConfig.contains("potion_effects")) {
+			potionEffects.clear();
+			addPotionEffects(potionEffects, wandConfig.getString("potion_effects", null));
+		}
+
 		// Some cleanup and sanity checks. In theory we don't need to store any non-zero value (as it is with the traders)
 		// so try to keep defaults as 0/0.0/false.
 		if (effectSound == null) {
