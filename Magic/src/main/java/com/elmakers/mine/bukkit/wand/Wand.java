@@ -1110,7 +1110,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 }
                 if (activeSpell == null || activeSpell.length() == 0)
                 {
-                    activeSpell = spellKey.getKey();
+                    setActiveSpell(spellKey.getKey());
                 }
             }
             ItemStack itemStack = createSpellItem(spell, "", controller, getActiveMage(), this, false);
@@ -2971,7 +2971,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				// Sanity check, so it'll switch to inventory next time
 				updateHasInventory();
 				if (spells.size() > 0) {
-					activeSpell = spells.iterator().next();
+					setActiveSpell(spells.iterator().next());
 				}
 			}
 			updateName();
@@ -3772,7 +3772,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		ArrayList<String> spells = new ArrayList<>(spellsSet);
 		if (spells.size() == 0) return;
 		if (activeSpell == null) {
-			activeSpell = spells.get(0).split("@")[0];
+			setActiveSpell(spells.get(0).split("@")[0]);
 			return;
 		}
 		
@@ -3793,7 +3793,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		ArrayList<String> materials = new ArrayList<>(materialsSet);
 		if (materials.size() == 0) return;
 		if (activeMaterial == null) {
-			activeMaterial = materials.get(0).split("@")[0];
+			setActiveBrush(materials.get(0).split("@")[0]);
 			return;
 		}
 		
@@ -4234,7 +4234,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             if (activeSpell != null && !activeSpell.isEmpty()) {
                 SpellKey currentKey = new SpellKey(activeSpell);
                 if (currentKey.getBaseKey().equals(spellKey.getBaseKey())) {
-                    activeSpell = spellKey.getKey();
+                    setActiveSpell(spellKey.getKey());
                 }
             }
         }
@@ -4272,7 +4272,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             }
         }
         if (activeSpell == null || activeSpell.isEmpty()) {
-            activeSpell = spellKey.getKey();
+			setActiveSpell(spellKey.getKey());
         }
 
         spellLevels.put(spellKey.getBaseKey(), level);
@@ -4471,6 +4471,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 	public void activateBrush(String materialKey) {
 		this.activeMaterial = materialKey;
+		setProperty("active_material", this.activeMaterial);
         saveState();
 		updateName();
 		updateActiveMaterial();
@@ -4487,6 +4488,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
         spellKey = new SpellKey(spellKey.getBaseKey(), spellLevels.get(activeSpell));
 		this.activeSpell = spellKey.getKey();
+		setProperty("active_spell", this.activeSpell);
         saveState();
 		updateName();
 	}
@@ -4535,7 +4537,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		
 		saveInventory();
 		if (spellName.equals(activeSpell)) {
-			activeSpell = null;
+			setActiveSpell(null);
 		}
         spells.remove(spellName);
         SpellKey spellKey = new SpellKey(spellName);
@@ -4552,7 +4554,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 						found = true;
 						inventory.setItem(index, null);
 					} else if (activeSpell == null) {
-						activeSpell = getSpell(itemStack);
+						setActiveSpell(getSpell(itemStack));
 					}
 					if (found && activeSpell != null) {
 						break;
