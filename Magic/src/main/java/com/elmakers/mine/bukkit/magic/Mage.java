@@ -103,7 +103,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected CommandSender debugger;
     protected HashMap<String, MageSpell> spells = new HashMap<>();
     private Wand activeWand = null;
-    private Wand soulWand = null;
     private Wand offhandWand = null;
     private boolean offhandCast = false;
     private Map<String, Wand> boundWands = new HashMap<>();
@@ -651,7 +650,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         gaveWelcomeWand = true;
                         wand = Wand.createWand(controller, welcomeWand);
                         if (wand != null) {
-                            wand.takeOwnership(player, false, false);
+                            wand.takeOwnership(player);
                             giveItem(wand.getItem());
                             controller.getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
                         } else {
@@ -700,10 +699,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
             this.data = data.getExtraData();
-            com.elmakers.mine.bukkit.api.wand.Wand apiWand = data.getSoulWand();
-            if (apiWand instanceof Wand) {
-                this.soulWand = (Wand)apiWand;
-            }
 
             cooldownExpiration = data.getCooldownExpiration();
             fallProtectionCount = data.getFallProtectionCount();
@@ -794,7 +789,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
                 data.setBoundWands(wandItems);
             }
-            data.setSoulWand(soulWand);
             data.setRespawnArmor(respawnArmor);
             data.setRespawnInventory(respawnInventory);
             data.setOpenWand(false);
@@ -875,7 +869,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 offhandCast = true;
                 try {
                     offhandWand.tickMana(player);
-                    offhandWand.setMage(this);
+                    offhandWand.setActiveMage(this);
                     offhandWand.cast();
                     CompatibilityUtils.swingOffhand(player, OFFHAND_CAST_RANGE);
                 } catch (Exception ex) {
@@ -918,7 +912,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         if (offhandWand != null) {
-            offhandWand.setMage(this);
+            offhandWand.setActiveMage(this);
         }
         return offhandWand;
     }
@@ -1631,10 +1625,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Wand getSoulWand() {
-        if (soulWand == null) {
-            soulWand = new Wand(controller);
-        }
-        return soulWand;
+        return null;
     }
 
     @Override

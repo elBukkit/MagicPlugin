@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.wand;
 
-import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.collect.ImmutableSet;
 
@@ -20,10 +20,8 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
-    private final MageController controller;
+public class WandTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
     private final String key;
-    private final ConfigurationSection configuration;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private Set<String> tags;
     private @Nonnull Set<String> categories = ImmutableSet.of();
@@ -35,11 +33,12 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     private boolean soul;
     private boolean restorable;
     private Map<String, String> migrateIcons;
+    private ConfigurationSection attributes;
+    private String attributeSlot;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
+        super(controller);
         this.key = key;
-        this.configuration = node;
-        this.controller = controller;
 
         effects.clear();
         creator = node.getString("creator");
@@ -49,6 +48,22 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
         restorable = node.getBoolean("restorable", true);
         icon = node.getString("icon");
         soul = node.getBoolean("soul", false);
+        attributes = node.getConfigurationSection("attributes");
+        attributeSlot = node.getString("attribute_slot");
+
+        // Remove some properties that should not transfer to wands
+        node.set("attributes", null);
+        node.set("attribute_slot", null);
+        node.set("creator", null);
+        node.set("creator_id", null);
+        node.set("migrate_to", null);
+        node.set("migrate_icon", null);
+        node.set("restorable", null);
+        node.set("hidden", null);
+        node.set("enabled", null);
+        node.set("inherit", null);
+        this.load(node);
+
         ConfigurationSection migrateConfig = node.getConfigurationSection("migrate_icons");
         if (migrateConfig != null) {
             migrateIcons = new HashMap<>();
@@ -56,6 +71,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
             for (String migrateKey : keys) {
                 migrateIcons.put(migrateKey, migrateConfig.getString(migrateKey));
             }
+            node.set("migrate_icons", null);
         }
         
         if (node.contains("effects")) {
@@ -73,17 +89,20 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
                     effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
                 }
             }
+            node.set("effects", null);
         }
 
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
         if (tagList != null) {
             tags = new HashSet<>(tagList);
+            node.set("tags", null);
         } else {
             tags = null;
         }
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(node, "categories");
         if (categoriesList != null) {
+            node.set("categories", null);
             categories = ImmutableSet.copyOf(categoriesList);
         }
     }
@@ -91,11 +110,6 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     @Override
     public String getKey() {
         return key;
-    }
-
-    @Override
-    public ConfigurationSection getConfiguration() {
-        return configuration;
     }
 
     @Override
@@ -193,5 +207,15 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     @Override
     public boolean isRestorable() {
         return restorable;
+    }
+
+    @Override
+    public ConfigurationSection getAttributes() {
+        return attributes;
+    }
+
+    @Override
+    public String getAttributeSlot() {
+        return attributeSlot;
     }
 }

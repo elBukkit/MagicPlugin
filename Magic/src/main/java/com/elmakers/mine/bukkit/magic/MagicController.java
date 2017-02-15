@@ -71,7 +71,6 @@ import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
-import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -512,14 +511,6 @@ public class MagicController implements MageController {
         return maxFillLevel;
     }
 
-    public boolean bindWands() {
-        return bindingEnabled;
-    }
-
-    public boolean keepWands() {
-        return keepingEnabled;
-    }
-
     /*
 	 * Get the log, if you need to debug or log errors.
 	 */
@@ -882,24 +873,6 @@ public class MagicController implements MageController {
             }, 5);
         }
 
-        // Check for dtlTraders
-        tradersController = null;
-        try {
-            Plugin tradersPlugin = plugin.getServer().getPluginManager().getPlugin("dtlTraders");
-            if (tradersPlugin != null) {
-                tradersController = new TradersController();
-                tradersController.initialize(this, tradersPlugin);
-                getLogger().info("dtlTraders found, integrating for selling Wands, Spells, Brushes and Upgrades");
-            }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            tradersController = null;
-        }
-
-        if (tradersController == null) {
-            getLogger().info("dtlTraders not found, will not integrate.");
-        }
-
         // Try to link to CommandBook
         hasCommandBook = false;
         try {
@@ -1156,12 +1129,6 @@ public class MagicController implements MageController {
                             return controller.citizens != null ? 1 : 0;
                         }
                     });
-                    integrationGraph.addPlotter(new Metrics.Plotter("Traders") {
-                        @Override
-                        public int getValue() {
-                            return controller.tradersController != null ? 1 : 0;
-                        }
-                    });
                     integrationGraph.addPlotter(new Metrics.Plotter("CommandBook") {
                         @Override
                         public int getValue() {
@@ -1234,18 +1201,6 @@ public class MagicController implements MageController {
                         @Override
                         public int getValue() {
                             return controller.anvil.isOrganizingEnabled() ? 1 : 0;
-                        }
-                    });
-                    featuresGraph.addPlotter(new Metrics.Plotter("Anvil Binding") {
-                        @Override
-                        public int getValue() {
-                            return controller.bindingEnabled ? 1 : 0;
-                        }
-                    });
-                    featuresGraph.addPlotter(new Metrics.Plotter("Anvil Keeping") {
-                        @Override
-                        public int getValue() {
-                            return controller.keepingEnabled ? 1 : 0;
                         }
                     });
                 }
@@ -2355,8 +2310,6 @@ public class MagicController implements MageController {
         castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
 		autoUndo = properties.getInt("auto_undo", autoUndo);
         spellDroppingEnabled = properties.getBoolean("allow_spell_dropping", spellDroppingEnabled);
-		bindingEnabled = properties.getBoolean("enable_binding", bindingEnabled);
-		keepingEnabled = properties.getBoolean("enable_keeping", keepingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
         citizensEnabled = properties.getBoolean("enable_citizens", citizensEnabled);
 		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
@@ -2452,6 +2405,7 @@ public class MagicController implements MageController {
         Wand.BrushGlow = properties.getBoolean("brush_glow", Wand.BrushGlow);
         Wand.BrushItemGlow = properties.getBoolean("brush_item_glow", Wand.BrushItemGlow);
         Wand.WAND_KEY = properties.getString("wand_key", "wand");
+        Wand.UPGRADE_KEY = properties.getString("wand_upgrade_key", "wand");
         Wand.WAND_SELF_DESTRUCT_KEY = properties.getString("wand_self_destruct_key", "");
         if (Wand.WAND_SELF_DESTRUCT_KEY.isEmpty()) {
             Wand.WAND_SELF_DESTRUCT_KEY = null;
@@ -3497,6 +3451,7 @@ public class MagicController implements MageController {
 
     @Override
     public WandTemplate getWandTemplate(String key) {
+        if (key == null || key.isEmpty()) return null;
         return wandTemplates.get(key);
     }
     
@@ -3544,7 +3499,6 @@ public class MagicController implements MageController {
 
     @Override
     public void loadWandTemplate(String key, ConfigurationSection wandNode) {
-        wandNode.set("key", key);
         if (wandNode.getBoolean("enabled", true)) {
             wandTemplates.put(key, new com.elmakers.mine.bukkit.wand.WandTemplate(this, key, wandNode));
         }
@@ -4160,8 +4114,8 @@ public class MagicController implements MageController {
         if (first == null || second == null) return false;
         if (first.getType() != second.getType() || first.getDurability() != second.getDurability()) return false;
 
-        boolean firstIsWand = Wand.isWand(first);
-        boolean secondIsWand = Wand.isWand(second);
+        boolean firstIsWand = Wand.isWandOrUpgrade(first);
+        boolean secondIsWand = Wand.isWandOrUpgrade(second);
         if (firstIsWand || secondIsWand)
         {
             if (!firstIsWand || !secondIsWand) return false;
@@ -4239,7 +4193,7 @@ public class MagicController implements MageController {
     {
         ConfigurationSection itemSection = root.createSection(key);
         itemSection.set("item", item);
-        if (Wand.isWand(item))
+        if (Wand.isWandOrUpgrade(item))
         {
             ConfigurationSection stateNode = itemSection.createSection("wand");
             Wand.itemToConfig(item, stateNode);
@@ -4884,9 +4838,7 @@ public class MagicController implements MageController {
     private boolean                             soundsEnabled                   = true;
     private String								welcomeWand					    = "";
     private int								    messageThrottle				    = 0;
-    private boolean							    bindingEnabled					= false;
     private boolean							    spellDroppingEnabled			= false;
-    private boolean							    keepingEnabled					= false;
     private boolean                             fillingEnabled                  = false;
     private int                                 maxFillLevel                    = 0;
     private boolean							    essentialsSignsEnabled			= false;
@@ -5023,7 +4975,6 @@ public class MagicController implements MageController {
     private AnvilController					    anvil						= null;
     private Messages                            messages                    = null;
     private MapController                       maps                        = null;
-    private TradersController					tradersController			= null;
     private DynmapController					dynmap						= null;
     private ElementalsController				elementals					= null;
     private CitizensController                  citizens					= null;

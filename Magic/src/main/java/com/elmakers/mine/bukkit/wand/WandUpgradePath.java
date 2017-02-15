@@ -581,7 +581,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         int spellCount = maxLevel.getSpellCount();
         LinkedList<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(wand);
 
-        Mage mage = wand.getActivePlayer();
+        Mage mage = wand.getActiveMage();
         if (mage != null && mage.getDebugLevel() > 0) {
             mage.sendDebugMessage("Spells remaining: " + remainingSpells.size() + ", max per enchant: " + spellCount);
         }

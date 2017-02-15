@@ -356,12 +356,14 @@ public class MountArmorStandAction extends BaseSpellAction
                 ((LivingEntity)targetEntity).removePotionEffect(effect.getType());
             }
         }
-        Player player = context.getMage().getPlayer();
+        Mage mage = context.getMage();
+        Player player = mage.getPlayer();
         if (player == null || item == null) return;
         
         ItemStack currentItem = player.getInventory().getItemInMainHand();
-        if (currentItem == null) {
+        if (currentItem == null || currentItem.getType() == Material.AIR) {
             player.getInventory().setItemInMainHand(item);
+            mage.checkWand();
         } else {
             currentItem = player.getInventory().getItem(slotNumber);
             if (currentItem != null) {

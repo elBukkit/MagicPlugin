@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
-import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -2454,6 +2453,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
             // Reward SP
             Wand wand = context.getWand();
+            Wand activeWand = mage.getActiveWand();
+            if (activeWand.getId() != null && wand.getId() != null && activeWand.getId().equals(wand.getId())) {
+                wand = activeWand;
+            }
             WandUpgradePath path = wand == null ? null : wand.getPath();
             if (earns > 0 && wand != null && path != null && path.earnsSP() && controller.isSPEnabled() && controller.isSPEarnEnabled() && !mage.isAtMaxSkillPoints()) {
                 long now = System.currentTimeMillis();
@@ -2495,17 +2498,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                                 }
                             }
                             wand.addSpell(upgrade.getKey());
-                            Messages messages = controller.getMessages();
-                            String levelDescription = upgrade.getLevelDescription();
-                            if (levelDescription == null || levelDescription.isEmpty()) {
-                                levelDescription = upgrade.getName();
-                            }
                             playEffects("upgrade");
-                            mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
-                            mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
-
-                            SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
-                            Bukkit.getPluginManager().callEvent(upgradeEvent);
 
                             if (controller.isPathUpgradingEnabled()) {
                                 wand.checkAndUpgrade(true);

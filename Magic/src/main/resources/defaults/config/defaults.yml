@@ -128,6 +128,7 @@ age_dropped_items: 0
 # This controls the root NBT tag used to store wand data on items.
 #
 wand_key: "wand"
+wand_upgrade_key: "wand_upgrade"
 
 #
 # Wand destruction key
@@ -222,12 +223,6 @@ fill_wands: false
 # 0 means put the max level of each spell on the wand,
 # 1 would be only the level 1 versions
 fill_wand_level: 0
-
-# If true, wands will automatically bind to their owners
-enable_binding: true
-
-# If true, wands will automatically be set to keep when owned
-enable_keeping: true
 
 # Players keep their wands when they die
 keep_wands_on_death: false

@@ -14,10 +14,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -31,15 +37,15 @@ public class InventoryUtils extends NMSUtils
         Object tag = getTag(handle);
         if (tag == null) return false;
         
-        return saveTagsToNBT(tags, tag, null, false, false);
+        return saveTagsToNBT(tags, tag, null);
     }
 
-    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Iterable<String> tagNames)
+    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node)
     {
-        return saveTagsToNBT(tags, node, tagNames, true, true);
+        return saveTagsToNBT(tags, node, null);
     }
     
-    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Iterable<String> tagNames, boolean clean, boolean strings)
+    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames)
     {
         if (node == null) {
             Bukkit.getLogger().warning("Trying to save tags to a null node");
@@ -53,84 +59,94 @@ public class InventoryUtils extends NMSUtils
         if (tagNames == null) {
             tagNames = tags.getKeys(false);
         }
+
+        // Remove tags that were not included
+        Set<String> currentTags = getTagKeys(node);
+        if (currentTags != null && !tagNames.containsAll(currentTags)) {
+            // Need to copy this, getKeys returns a live list and bad things can happen.
+            currentTags = new HashSet<>(currentTags);
+        } else {
+            currentTags = null;
+        }
         
         for (String tagName : tagNames)
         {
-            String value = tags.getString(tagName);
-           
-            // This is kinda hacky, but makes for generally cleaner data.
-            if (clean && (value == null || value.length() == 0 || value.equals("0") || value.equals("0.0") || value.equals("false"))) {
-                removeMeta(node, tagName);
-            } else if (strings) {
-                setMeta(node, tagName, value);
-            } else if (tags.isBoolean(tagName)) {
-                setMetaBoolean(node, tagName, tags.getBoolean(tagName));
-            } else if (tags.isDouble(tagName)) {
-                setMetaDouble(node, tagName, tags.getDouble(tagName));
-            } else if (tags.isInt(tagName)) {
-                setMetaInt(node, tagName, tags.getInt(tagName));
-            } else if (tags.isConfigurationSection(tagName)) {
+            if (currentTags != null) currentTags.remove(tagName);
+            Object value = tags.get(tagName);
+            if (value instanceof Boolean) {
+                setMetaBoolean(node, tagName, (Boolean)value);
+            } else if (value instanceof Double) {
+                setMetaDouble(node, tagName, (Double)value);
+            } else if (value instanceof Float) {
+                setMetaDouble(node, tagName, (Float)value);
+            } else if (value instanceof Integer) {
+                setMetaInt(node, tagName, (Integer)value);
+            } else if (value instanceof Long) {
+                setMetaLong(node, tagName, (Long)value);
+            } else if (value instanceof ConfigurationSection) {
                 Object newNode = createNode(node, tagName);
-                saveTagsToNBT(tags.getConfigurationSection(tagName), newNode, null, clean, strings);
-            } else if (tags.isList(tagName)) {
+                saveTagsToNBT((ConfigurationSection)value, newNode, null);
+            } else if (value instanceof List) {
                 Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(tags, tagName);
                 try {
                     Object listMeta = class_NBTTagList.newInstance();
                     for (ConfigurationSection nodeConfig : nodeList) {
                         Object newNode = class_NBTTagCompound.newInstance();
-                        saveTagsToNBT(nodeConfig, newNode, null, clean, strings);
+                        saveTagsToNBT(nodeConfig, newNode, null);
                         class_NBTTagList_addMethod.invoke(listMeta, newNode);
                     }
                     class_NBTTagCompound_setMethod.invoke(node, tagName, listMeta);
                 } catch (Exception ex) {
                     
                 }
-            } else if (tags.isString(tagName)) {
-                setMeta(node, tagName, tags.getString(tagName));
+            } else if (value instanceof String) {
+                setMeta(node, tagName, (String)value);
+            }
+        }
+
+        // Finish removing any remaining properties
+        if (currentTags != null) {
+            for (String currentTag : currentTags) {
+                removeMeta(node, currentTag);
             }
         }
 
         return true;
     }
 
-    public static boolean loadTagsFromNBT(ConfigurationSection tags, Object node, Iterable<String> tagNames)
-    {
-        if (node == null) {
-            Bukkit.getLogger().warning("Trying to load tags from a null node");
-            return false;
-        }
-        if (!class_NBTTagCompound.isAssignableFrom(node.getClass())) {
-            Bukkit.getLogger().warning("Trying to load tags from a non-CompoundTag");
-            return false;
-        }
-        for (String tagName : tagNames)
-        {
-            String meta = getMeta(node, tagName);
-            if (meta != null && meta.length() > 0) {
-                ConfigurationUtils.set(tags, tagName, meta);
-            }
+    @SuppressWarnings("unchecked")
+    public static Set<String> getTagKeys(Object tag) {
+        if (tag == null || class_NBTTagCompound_getKeysMethod == null) {
+            return null;
         }
 
-        return true;
+        try {
+            return (Set<String>) class_NBTTagCompound_getKeysMethod.invoke(tag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public static boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
     {
-        if (tag == null || class_NBTTagCompound_getKeysMethod == null) {
-            return false;
-        }
-
         try {
-            @SuppressWarnings("unchecked")
-            Set<String> keys = (Set<String>)class_NBTTagCompound_getKeysMethod.invoke(tag);
+            Set<String> keys = getTagKeys(tag);
+            if (keys == null) return false;
+
             for (String tagName : keys) {
                 Object metaBase = class_NBTTagCompound_getMethod.invoke(tag, tagName);
                 if (metaBase != null) {
                     if (class_NBTTagCompound.isAssignableFrom(metaBase.getClass())) {
                         ConfigurationSection newSection = tags.createSection(tagName);
                         loadAllTagsFromNBT(newSection, metaBase);
+                    } else if (class_NBTTagString.isAssignableFrom(metaBase.getClass())) {
+                        // Special conversion case here... not sure if this is still a good idea
+                        // But there would be downstream effects.
+                        // TODO: Look closer.
+                        ConfigurationUtils.set(tags, tagName, class_NBTTagString_dataField.get(metaBase));
                     } else {
-                        tags.set(tagName, metaBase.toString());
+                        tags.set(tagName, getTagValue(metaBase));
                     }
                 }
             }
@@ -140,6 +156,50 @@ public class InventoryUtils extends NMSUtils
         }
 
         return true;
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
+        if (tag == null) return null;
+        Object value = null;
+        if (class_NBTTagDouble.isAssignableFrom(tag.getClass())) {
+            value = class_NBTTagDouble_dataField.get(tag);
+        } else if (class_NBTTagInt.isAssignableFrom(tag.getClass())) {
+            value = class_NBTTagInt_dataField.get(tag);
+        } else if (class_NBTTagLong.isAssignableFrom(tag.getClass())) {
+            value = class_NBTTagLong_dataField.get(tag);
+        } else if (class_NBTTagFloat.isAssignableFrom(tag.getClass())) {
+            value = class_NBTTagFloat_dataField.get(tag);
+        } else if (class_NBTTagShort.isAssignableFrom(tag.getClass())) {
+            value = class_NBTTagShort_dataField.get(tag);
+        } else if (class_NBTTagByte.isAssignableFrom(tag.getClass())) {
+            value = class_NBTTagByte_dataField.get(tag);
+        } else if (class_NBTTagList.isAssignableFrom(tag.getClass())) {
+            List items = (List)class_NBTTagList_list.get(tag);
+            List<Object> converted = new ArrayList<Object>();
+            for (Object baseTag : items) {
+                Object convertedBase = getTagValue(baseTag);
+                if (convertedBase != null) {
+                    converted.add(convertedBase);
+                }
+            }
+            value = converted;
+        } else if (class_NBTTagString.isAssignableFrom(tag.getClass())) {
+            value = class_NBTTagString_dataField.get(tag);
+        } else if (class_NBTTagCompound.isAssignableFrom(tag.getClass())) {
+            Map<String, Object> compoundMap = new HashMap<>();
+            Set<String> keys = getTagKeys(tag);
+            for (String key : keys) {
+                Object baseTag = class_NBTTagCompound_getMethod.invoke(tag, key);
+                Object convertedBase = getTagValue(baseTag);
+                if (convertedBase != null) {
+                    compoundMap.put(key, convertedBase);
+                }
+            }
+            value = compoundMap;
+        }
+
+        return value;
     }
 
     public static boolean loadAllTagsFromNBT(ConfigurationSection tags, ItemStack item)

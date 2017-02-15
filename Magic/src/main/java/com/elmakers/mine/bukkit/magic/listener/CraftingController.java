@@ -100,7 +100,7 @@ public class CraftingController implements Listener {
         // Check for wands glitched into the crafting inventor
         for (int i = 0; i < 9 && i < contents.length; i++) {
             ItemStack item = contents[i];
-            if (Wand.isUpgrade(item) || Wand.isWand(item) || Wand.isBrush(item) || Wand.isSpell(item)) {
+            if (Wand.isSpecial(item)) {
                 inventory.setResult(new ItemStack(Material.AIR));
                 return;
             }
@@ -146,7 +146,7 @@ public class CraftingController implements Listener {
 		// Check for wand clicks to prevent grinding them to dust, or whatever.
 		if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
 			ItemStack cursor = event.getCursor();
-			if (Wand.isWand(cursor) || Wand.isBrush(cursor) || Wand.isSpell(cursor) || Wand.isUpgrade(cursor)) {
+			if (Wand.isSpecial(cursor)) {
 				event.setCancelled(true);
 				return;
 			}

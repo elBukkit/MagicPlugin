@@ -2,15 +2,16 @@ package com.elmakers.mine.bukkit.wand;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -108,15 +109,6 @@ public class WandLevel {
         this.manaMaxProbability = manaMaxProbability.isEmpty() ? other.manaMaxProbability : manaMaxProbability;
     }
 
-    protected void sendAddMessage(Mage mage,  Wand wand, String messageKey, String nameParam) {
-        if (mage == null) return;
-
-        String message = mage.getController().getMessages().get(messageKey)
-            .replace("$name", nameParam)
-            .replace("$wand", wand.getName());
-        mage.sendMessage(message);
-    }
-
     public int getSpellCount() {
         int count = 0;
         for (WeightedPair<Integer> spellCount : spellCountProbability) {
@@ -167,37 +159,20 @@ public class WandLevel {
 	
 	public boolean randomizeWand(Mage mage, Wand wand, boolean additive, boolean hasUpgrade, boolean addSpells) {
 		// Add random spells to the wand
+        Mage activeMage = wand.getActiveMage();
         if (mage == null) {
-            mage = wand.getActivePlayer();
+            mage = activeMage;
         }
-        Messages messages = wand.getController().getMessages();
+        wand.setActiveMage(mage);
 		boolean addedSpells = false;
         LinkedList<WeightedPair<String>> remainingSpells = getRemainingSpells(wand);
 
         if (addSpells) {
-            SpellTemplate firstSpell = null;
             if (remainingSpells.size() > 0) {
                 Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
                 for (int i = 0; spellCount != null && i < spellCount; i++) {
                     String spellKey = RandomUtils.weightedRandom(remainingSpells);
-                    SpellTemplate currentSpell = wand.getBaseSpell(spellKey);
                     if (wand.addSpell(spellKey)) {
-                        SpellTemplate spell = wand.getMaster().getSpellTemplate(spellKey);
-                        if (mage != null && spell != null) {
-                            if (currentSpell != null) {
-                                String levelDescription = spell.getLevelDescription();
-                                if (levelDescription == null || levelDescription.isEmpty()) {
-                                    levelDescription = spell.getName();
-                                }
-                                mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
-                                mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
-                            } else {
-                                mage.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
-                            }
-                        }
-                        if (firstSpell == null) {
-                            firstSpell = spell;
-                        }
                         addedSpells = true;
                     }
                 }
@@ -245,17 +220,6 @@ public class WandLevel {
 					if (retries-- > 0) i--;
 				} else {
 					addedMaterials = true;
-                    if (mage != null)
-                    {
-                        String materialName = MaterialBrush.getMaterialName(messages,materialKey);
-                        if (materialName == null)
-                        {
-                            mage.getController().getLogger().warning("Invalid material in enchanting configs: " + materialKey);
-                            materialName = materialKey;
-                        }
-
-                        mage.sendMessage(messages.get("wand.brush_added").replace("$wand", wand.getName()).replace("$name", materialName));
-                    }
 				}
 			}
 		}
@@ -270,13 +234,14 @@ public class WandLevel {
                 mage.sendDebugMessage("Spells in list: " + spellProbability.size());
                 mage.sendDebugMessage("Added brushes: " +  addedMaterials + ", needed: " + needsMaterials);
             }
+            wand.setActiveMage(activeMage);
             return false;
         }
 		
 		// Add random wand properties
 		boolean addedProperties = false;
         Integer propertyCount = propertyCountProbability.size() == 0 ? Integer.valueOf(0) : RandomUtils.weightedRandom(propertyCountProbability);
-		ConfigurationSection wandProperties = new MemoryConfiguration();
+		Map<String, Object> wandProperties = new HashMap<String, Object>();
 		double costReduction = wand.getCostReduction();
 
         List<Integer> propertiesAvailable = new ArrayList<>();
@@ -328,64 +293,56 @@ public class WandLevel {
 				if (costReductionProbability.size() > 0 && costReduction < path.getMaxCostReduction()) {
 					addedProperties = true;
 					costReduction = Math.min(path.getMaxCostReduction(), costReduction + RandomUtils.weightedRandom(costReductionProbability));
-					wandProperties.set("cost_reduction", costReduction);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.cost_reduction", (float)costReduction));
+					wandProperties.put("cost_reduction", costReduction);
 				}
 				break;
 			case 1:
 				if (powerProbability.size() > 0 && power < path.getMaxPower()) {
 					addedProperties = true;
                     power = Math.min(path.getMaxPower(), power + RandomUtils.weightedRandom(powerProbability));
-					wandProperties.set("power", power);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.power", (float)power));
+					wandProperties.put("power", power);
 				}
 				break;
 			case 2:
 				if (damageReductionProbability.size() > 0 && damageReduction < path.getMaxDamageReduction()) {
 					addedProperties = true;
                     damageReduction = Math.min(path.getMaxDamageReduction(), damageReduction + RandomUtils.weightedRandom(damageReductionProbability));
-					wandProperties.set("protection", damageReduction);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection", (float)damageReduction));
+					wandProperties.put("protection", damageReduction);
 				}
 				break;
 			case 3:
 				if (damageReductionPhysicalProbability.size() > 0 && damageReductionPhysical < path.getMaxDamageReductionPhysical()) {
 					addedProperties = true;
                     damageReductionPhysical = Math.min(path.getMaxDamageReductionPhysical(), damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability));
-					wandProperties.set("protection_physical", damageReductionPhysical);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_physical", (float)damageReductionPhysical));
+					wandProperties.put("protection_physical", damageReductionPhysical);
                 }
 				break;
 			case 4:
 				if (damageReductionProjectilesProbability.size() > 0 && damageReductionProjectiles < path.getMaxDamageReductionProjectiles()) {
 					addedProperties = true;
                     damageReductionProjectiles = Math.min(path.getMaxDamageReductionProjectiles(), damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability));
-					wandProperties.set("protection_projectiles", damageReductionProjectiles);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_projectile", (float)damageReductionProjectiles));
+					wandProperties.put("protection_projectiles", damageReductionProjectiles);
 				}
 				break;
 			case 5:
 				if (damageReductionFallingProbability.size() > 0 && damageReductionFalling < path.getMaxDamageReductionFalling()) {
 					addedProperties = true;
                     damageReductionFalling = Math.min(path.getMaxDamageReductionFalling(), damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability));
-					wandProperties.set("protection_falling", damageReductionFalling);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_fall", (float)damageReductionFalling));
+					wandProperties.put("protection_falling", damageReductionFalling);
 				}
 				break;
 			case 6:
 				if (damageReductionFireProbability.size() > 0 && damageReductionFire < path.getMaxDamageReductionFire()) {
 					addedProperties = true;
                     damageReductionFire = Math.min(path.getMaxDamageReductionFire(), damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability));
-					wandProperties.set("protection_fire", damageReductionFire);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_fire", (float)damageReductionFire));
+					wandProperties.put("protection_fire", damageReductionFire);
 				}
 				break;
 			case 7:
 				if (damageReductionExplosionsProbability.size() > 0 && damageReductionExplosions < path.getMaxDamageReductionExplosions()) {
 					addedProperties = true;
                     damageReductionExplosions = Math.min(path.getMaxDamageReductionExplosions(), damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability));
-					wandProperties.set("protection_explosions", damageReductionExplosions);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_blast", (float)damageReductionExplosions));
+					wandProperties.put("protection_explosions", damageReductionExplosions);
 				}
 				break;
 			}
@@ -395,19 +352,15 @@ public class WandLevel {
 
 		if (costReduction >= 1) {
 			// Cost-Free wands don't need mana.
-			wandProperties.set("mana_regeneration", 0);
-			wandProperties.set("mana_max", 0);
-			wandProperties.set("mana", 0);
+			wandProperties.put("mana_regeneration", 0);
+			wandProperties.put("mana_max", 0);
+			wandProperties.put("mana", 0);
 		} else {
 			int manaRegeneration = wand.getManaRegeneration();
 			if (manaRegenerationProbability.size() > 0 && manaRegeneration < path.getMaxManaRegeneration()) {
                 addedProperties = true;
                 manaRegeneration = Math.min(path.getMaxManaRegeneration(), manaRegeneration + RandomUtils.weightedRandom(manaRegenerationProbability));
-                wandProperties.set("mana_regeneration", manaRegeneration);
-
-                String updateString = messages.get("wand.mana_regeneration");
-                updateString = updateString.replace("$amount", Integer.toString(manaRegeneration));
-                sendAddMessage(mage, wand, "wand.upgraded_property", updateString);
+                wandProperties.put("mana_regeneration", manaRegeneration);
 			}
 			int manaMax = wand.getManaMax();
 			if (manaMaxProbability.size() > 0 && manaMax < path.getMaxMaxMana()) {
@@ -416,16 +369,12 @@ public class WandLevel {
                     // Make sure the wand has at least enough mana to cast the highest costing spell it has.
                     manaMax = Math.max(maxManaCost, manaMax);
                 }
-				wandProperties.set("mana_max", manaMax);
+				wandProperties.put("mana_max", manaMax);
                 addedProperties = true;
-
-                String updateString = messages.get("wand.mana_amount");
-                updateString = updateString.replace("$amount", Integer.toString(manaMax));
-                sendAddMessage(mage, wand, "wand.upgraded_property", updateString);
 			}
 			
 			// Refill the wand's mana, why not
-			wandProperties.set("mana", manaMax);
+			wandProperties.put("mana", manaMax);
 		}
 		
 		// Add or set uses to the wand
@@ -433,15 +382,16 @@ public class WandLevel {
 			// Only add uses to a wand if it already has some.
 			int wandUses = wand.getRemainingUses();
 			if (wandUses > 0 && wandUses < path.getMaxUses() && addUseProbability.size() > 0) {
-				wandProperties.set("uses", Math.min(path.getMaxUses(), wandUses + RandomUtils.weightedRandom(addUseProbability)));
+				wandProperties.put("uses", Math.min(path.getMaxUses(), wandUses + RandomUtils.weightedRandom(addUseProbability)));
 				addedProperties = true;
 			}
 		} else if (useProbability.size() > 0) {
-			wandProperties.set("uses", Math.min(path.getMaxUses(), RandomUtils.weightedRandom(useProbability)));
+			wandProperties.put("uses", Math.min(path.getMaxUses(), RandomUtils.weightedRandom(useProbability)));
 		}
 
         // Set properties.
-		wand.loadProperties(wandProperties);
+        wand.upgrade(wandProperties);
+        wand.setActiveMage(activeMage);
 		return addedMaterials || addedSpells || addedProperties;
 	}
 

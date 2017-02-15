@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -32,6 +31,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ColorHD;
@@ -68,15 +68,15 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
+public class Wand extends BaseMagicProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int PLAYER_INVENTORY_SIZE = 36;
 	public final static int HOTBAR_SIZE = 9;
 	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
-	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
+	private static int WAND_VERSION = 1;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 
@@ -123,17 +123,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             "health_regeneration", "hunger_regeneration",
             "xp", "xp_regeneration", "xp_max", "xp_max_boost",
             "xp_regeneration_boost",
-            "mode_cast", "mode_drop"
+            "mode_cast", "mode_drop", "version"
     );
 
     /**
-     * Set of properties that should be stored as NBT tags on a wand.
+     * Set of properties that are used internally.
+	 *
+	 * Neither this list nor HIDDEN_PROPERTY_KEYS are really used anymore, but I'm keeping them
+	 * here in case we have some use for them in the future.
+	 *
+	 * Wands now load and retain any wand.* tags on their items.
      */
     private final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
             PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 
     protected @Nonnull ItemStack item;
-    protected final @Nonnull MagicController controller;
 
     /**
      * The currently active mage.
@@ -150,12 +154,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private Map<String, Integer> spells = new HashMap<>();
     private Map<String, Integer> spellLevels = new HashMap<>();
     private Map<String, Integer> brushes = new HashMap<>();
-
-    /**
-     * Custom properties that 3rd party systems can set on a wand for their
-     * internal use.
-     */
-    private Map<String, String> customProperties = new HashMap<>();
 	
 	private String activeSpell = "";
 	private String activeMaterial = "";
@@ -236,7 +234,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	private ColorHD effectColor = null;
 	private float effectColorSpellMixWeight = DEFAULT_SPELL_COLOR_MIX_WEIGHT;
-	private float effectColorMixWeight = DEFAULT_WAND_COLOR_MIX_WEIGHT;	
 	private ParticleEffect effectParticle = null;
 	private float effectParticleData = 0;
 	private int effectParticleCount = 0;
@@ -283,9 +280,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private Inventory displayInventory = null;
 	private int currentHotbar = 0;
 	
-	// Kinda of a hacky initialization optimization :\
-	private boolean suspendSave = false;
-	
     public static WandManaMode manaMode = WandManaMode.BAR;
     public static WandManaMode spMode = WandManaMode.NUMBER;
     public static boolean regenWhileInactive = true;
@@ -304,7 +298,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
 	public static SoundEffect noActionSound = null;
-    public static String WAND_KEY = "wand";
+	public static String WAND_KEY = "wand";
+	public static String UPGRADE_KEY = "wand_upgrade";
     public static String WAND_SELF_DESTRUCT_KEY = null;
     public static byte HIDE_FLAGS = 60;
 	public static String brushSelectSpell = "";
@@ -312,63 +307,73 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private Inventory storedInventory = null;
     private int storedSlot;
 
+    public Wand(MagicController controller) {
+		super(controller);
+
+		hotbars = new ArrayList<>();
+		setHotbarCount(1);
+		inventories = new ArrayList<>();
+	}
+
     /**
      * @deprecated Use {@link MagicController#getWand(ItemStack)}.
      */
     @Deprecated
     public Wand(MagicController controller, ItemStack itemStack) {
-        Preconditions.checkNotNull(controller);
+    	this(controller);
         Preconditions.checkNotNull(itemStack);
 
-        this.controller = controller;
-        wandName = controller.getMessages().get("wand.default_name");
-        hotbars = new ArrayList<>();
-		setHotbarCount(1);
 		if (itemStack.getType() == Material.AIR) {
 			itemStack.setType(DefaultWandMaterial);
 		}
 		this.icon = new MaterialAndData(itemStack);
-		inventories = new ArrayList<>();
-        item = itemStack;
-		loadState();
+		item = itemStack;
+        boolean needsSave = false;
+        boolean isWand = isWand(item);
+        boolean isUpgradeItem = isUpgrade(item);
+        if (isWand || isUpgradeItem) {
+        	ConfigurationSection wandConfig = itemToConfig(item, new MemoryConfiguration());
+
+			int version = wandConfig.getInt("version", 0);
+			if (version < WAND_VERSION) {
+				migrate(version, wandConfig);
+				needsSave = true;
+			}
+
+			load(wandConfig);
+		}
+		loadProperties();
+
+        // Migrate old upgrade items
+        if ((isUpgrade || isUpgradeItem) && isWand) {
+            needsSave = true;
+            InventoryUtils.removeMeta(item, WAND_KEY);
+        }
+        if (needsSave) {
+            saveState();
+        }
         updateName();
         updateLore();
 	}
 
-	protected void setHotbarCount(int count) {
-		hotbars.clear();
-		while (hotbars.size() < count) {
-			hotbars.add(CompatibilityUtils.createInventory(null, HOTBAR_INVENTORY_SIZE, "Wand"));
-		}
-		while (hotbars.size() > count) {
-			hotbars.remove(0);
-		}
-	}
-	
-	public Wand(MagicController controller) {
-		this(controller, DefaultWandMaterial, (short) 0);
+	public Wand(MagicController controller, ConfigurationSection config) {
+		this(controller, DefaultWandMaterial, (short)0);
+		load(config);
+		loadProperties();
+		updateName();
+		updateLore();
+		saveState();
 	}
 
-    public Wand(MagicController controller, ConfigurationSection config) {
-        this(controller, DefaultWandMaterial, (short)0);
-        loadProperties(config);
-        updateName();
-        updateLore();
-        saveItemState();
-    }
-	
 	protected Wand(MagicController controller, String templateName) throws UnknownWandException {
 		this(controller);
-		suspendSave = true;
-		String wandName = controller.getMessages().get("wand.default_name");
-		String wandDescription = "";
 
 		// Default to "default" wand
 		if (templateName == null || templateName.length() == 0)
 		{
 			templateName = DEFAULT_WAND_TEMPLATE;
 		}
-		
+
 		// Check for randomized/pre-enchanted wands
 		int level = 0;
 		if (templateName.contains("(")) {
@@ -390,23 +395,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			template = migrateTemplate;
 			templateName = migrateTemplate.getKey();
 		}
-		ConfigurationSection wandConfig = template.getConfiguration();
 
-		if (wandConfig == null) {
+		setTemplate(templateName);
+		setProperty("version", WAND_VERSION);
+		ConfigurationSection templateConfig = template.getConfiguration();
+
+		if (templateConfig == null) {
 			throw new UnknownWandException(templateName);
 		}
 
-		// Default to template names, override with localizations
-		wandName = wandConfig.getString("name", wandName);
-		wandName = controller.getMessages().get("wands." + templateName + ".name", wandName);
-		wandDescription = wandConfig.getString("description", wandDescription);
-		wandDescription = controller.getMessages().get("wands." + templateName + ".description", wandDescription);
-
 		// Load all properties
-		loadProperties(wandConfig);
+		loadProperties();
 
 		// Add vanilla enchantments
-		InventoryUtils.applyEnchantments(item, wandConfig.getConfigurationSection("enchantments"));
+		InventoryUtils.applyEnchantments(item, templateConfig.getConfigurationSection("enchantments"));
 
 		// Enchant, if an enchanting level was provided
 		if (level > 0) {
@@ -416,39 +418,110 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			randomize(level, false, null, true);
 			locked = wasLocked;
 		}
-		setDescription(wandDescription);
-		setName(wandName);
 
-        // Don't randomize now if set to randomize later
-        // Otherwise, do this here so the description updates
-        if (!randomize) {
-            randomize();
-        }
+		// Don't randomize now if set to randomize later
+		// Otherwise, do this here so the description updates
+		if (!randomize) {
+			randomize();
+		}
 
-        setTemplate(templateName);
-		suspendSave = false;
-		saveItemState();
+		updateName();
+		updateLore();
+		saveState();
 	}
-	
+
 	public Wand(MagicController controller, Material icon, short iconData) {
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
 		this(controller, InventoryUtils.makeReal(new ItemStack(icon, 1, iconData)));
-        saveItemState();
+		saveState();
 		updateName();
+	}
+
+	protected void migrate(int version, ConfigurationSection wandConfig) {
+    	// First migration, clean out wand data that matches template
+		if (version == 0) {
+			ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(wandConfig.getString("template"));
+			if (templateConfig != null) {
+				Set<String> keys = templateConfig.getKeys(false);
+				for (String key : keys) {
+					Object templateData = templateConfig.get(key);
+					Object wandData = wandConfig.get(key);
+					if (wandData == null) continue;
+					String templateString = templateData.toString();
+					String wandString = wandData.toString();
+					if (templateData instanceof List) {
+						templateString = templateString.substring(1, templateString.length() - 1);
+						templateString = templateString.replace(", ", ",");
+						templateData = templateString;
+					}
+					if (wandString.equalsIgnoreCase(templateString)) {
+						wandConfig.set(key, null);
+						continue;
+					}
+
+					try {
+						double numericValue = Double.parseDouble(wandString);
+						double numericTemplate = Double.parseDouble(templateString);
+
+						if (numericValue == numericTemplate) {
+							wandConfig.set(key, null);
+							continue;
+						}
+					} catch (NumberFormatException ex) {
+
+					}
+					if (wandData.equals(templateData)) {
+						wandConfig.set(key, null);
+					}
+				}
+			}
+		}
+
+    	wandConfig.set("version", WAND_VERSION);
+	}
+	
+	@Override
+	public void load(ConfigurationSection configuration) {
+		if (configuration != null) {
+			setTemplate(configuration.getString("template"));
+		}
+		super.load(configuration);
+	}
+
+	protected void setHotbarCount(int count) {
+		hotbars.clear();
+		while (hotbars.size() < count) {
+			hotbars.add(CompatibilityUtils.createInventory(null, HOTBAR_INVENTORY_SIZE, "Wand"));
+		}
+		while (hotbars.size() > count) {
+			hotbars.remove(0);
+		}
 	}
 	
 	@Override
     public void unenchant() {
 		item = new ItemStack(item.getType(), 1, item.getDurability());
+		clear();
 	}
 	
 	public void setIcon(Material material, byte data) {
 		setIcon(material == null ? null : new MaterialAndData(material, data));
+        updateIcon();
 	}
 
-	public void updateIcon() {
+	public void updateItemIcon() {
 		setIcon(icon);
 	}
+
+	protected void updateIcon() {
+        if (icon != null && icon.getMaterial() != null && icon.getMaterial() != Material.AIR) {
+			String iconKey = icon.getKey();
+			if (iconKey != null && iconKey.isEmpty()) {
+				iconKey = null;
+			}
+			setProperty("icon", iconKey);
+        }
+    }
 
     @Override
     public void setInactiveIcon(com.elmakers.mine.bukkit.api.block.MaterialAndData materialData) {
@@ -459,7 +532,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			inactiveIcon = new MaterialAndData(materialData);
 		}
-		updateIcon();
+
+		String inactiveIconKey = null;
+		if (inactiveIcon != null && inactiveIcon.getMaterial() != null && inactiveIcon.getMaterial() != Material.AIR) {
+			inactiveIconKey = inactiveIcon.getKey();
+			if (inactiveIconKey != null && inactiveIconKey.isEmpty()) {
+				inactiveIconKey = null;
+			}
+		}
+		setProperty("inactive_icon", inactiveIconKey);
+		updateItemIcon();
 	}
 	
 	@Override
@@ -469,6 +551,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			setIcon(new MaterialAndData(materialData));
 		}
+		updateIcon();
 	}
 	
 	public void setIcon(MaterialAndData materialData) {
@@ -477,6 +560,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			materialData.setMaterial(DefaultWandMaterial);
 		}
 		icon = materialData;
+		if (item == null) {
+			item = InventoryUtils.makeReal(this.icon.getItemStack(1));
+		}
 
         Short durability = null;
         if (!indestructible && !isUpgrade && icon.getMaterial().getMaxDurability() > 0) {
@@ -513,14 +599,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (!isUpgrade) {
             isUpgrade = true;
             String oldName = wandName;
-            wandName = controller.getMessages().get("wand.upgrade_name");
-            wandName = wandName.replace("$name", oldName);
-            description = controller.getMessages().get("wand.upgrade_default_description");
+			String newName = controller.getMessages().get("wand.upgrade_name");
+			newName = newName.replace("$name", oldName);
+            String newDescription = controller.getMessages().get("wand.upgrade_default_description");
             if (template != null && template.length() > 0) {
-                description = controller.getMessages().get("wands." + template + ".upgrade_description", description);
+				newDescription = controller.getMessages().get("wands." + template + ".upgrade_description", description);
             }
             setIcon(DefaultUpgradeMaterial, (byte) 0);
-            saveItemState();
+			setName(newName);
+			setDescription(newDescription);
+			InventoryUtils.removeMeta(item, WAND_KEY);
+            saveState();
             updateName(true);
             updateLore();
         }
@@ -532,12 +621,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             id = null;
         }
+        setProperty("id", id);
     }
 
     public void checkId() {
         if ((id == null || id.length() == 0) && !this.isUpgrade) {
             newId();
-            saveItemState();
         }
     }
 
@@ -567,11 +656,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public void setMana(float mana) {
         this.mana = Math.max(0, mana);
+		setProperty("mana", this.mana);
     }
 
     @Override
     public void setManaMax(int manaMax) {
         this.manaMax = Math.max(0, manaMax);
+		setProperty("mana_max", this.manaMax);
     }
 
 	@Override
@@ -588,6 +679,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
 		mana = Math.max(0,  mana - amount);
+		setProperty("mana", this.mana);
 		updateMana();
 	}
 	
@@ -638,6 +730,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void setCooldownReduction(float reduction) {
 		cooldownReduction = reduction;
+		setProperty("cooldown_reduction", cooldownReduction);
 	}
 	
 	public boolean getHasInventory() {
@@ -732,11 +825,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
     public void setName(String name) {
 		wandName = ChatColor.stripColor(name);
+		setProperty("name", wandName);
 		updateName();
 	}
 	
 	public void setTemplate(String templateName) {
 		this.template = templateName;
+		setParent(controller.getWandTemplate(templateName));
+		setProperty("template", template);
 	}
 
     @Override
@@ -766,6 +862,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
     public void setDescription(String description) {
 		this.description = description;
+		setProperty("description", description);
 		updateLore();
 	}
 	
@@ -778,11 +875,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return false;
 	}
 
-    protected void takeOwnership(Player player) {
-        takeOwnership(player, controller.bindWands(), controller.keepWands());
-    }
-
-	public void takeOwnership(Player player, boolean setBound, boolean setKeep) {
+	public void takeOwnership(Player player) {
         if (mage != null && (ownerId == null || ownerId.length() == 0) && quietLevel < 2)
         {
             mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
@@ -805,12 +898,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
         owner = ChatColor.stripColor(player.getDisplayName());
         ownerId = player.getUniqueId().toString();
-		if (setBound) {
-			bound = true;
-		}
-		if (setKeep) {
-			keep = true;
-		}
+		setProperty("owner", owner);
+		setProperty("owner_id", ownerId);
 		updateLore();
 	}
 	
@@ -1020,10 +1109,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
                 if (activeSpell == null || activeSpell.length() == 0)
                 {
-                    activeSpell = spellKey.getKey();
+					activeSpell = spellKey.getKey();
                 }
             }
-            ItemStack itemStack = createSpellItem(spell, "", controller, getActivePlayer(), this, false);
+            ItemStack itemStack = createSpellItem(spell, "", controller, getActiveMage(), this, false);
 			if (itemStack != null)
             {
 				addToInventory(itemStack, slot);
@@ -1056,12 +1145,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     protected ItemStack createSpellIcon(SpellTemplate spell) {
-        return createSpellItem(spell, "", controller, getActivePlayer(), this, false);
+        return createSpellItem(spell, "", controller, getActiveMage(), this, false);
     }
 
     public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem) {
         String[] split = spellKey.split(" ", 2);
-        return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, wand == null ? null : wand.getActivePlayer(), wand, isItem);
+        return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, wand == null ? null : wand.getActiveMage(), wand, isItem);
     }
 
     public static ItemStack createSpellItem(String spellKey, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
@@ -1135,13 +1224,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	@Override
 	public void saveState() {
-		saveInventory();
-		saveItemState();
-	}
-
-    public void saveItemState() {
-		if (suspendSave) return;
-
         // Make sure we're on the current item instance
         if (mage != null) {
             Player player = mage.getPlayer();
@@ -1150,29 +1232,26 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 String itemId = getWandId(itemInHand);
                 if (itemId != null && itemId.equals(id)) {
                     item = itemInHand;
-					updateIcon();
+					updateItemIcon();
                     updateName();
                     updateLore();
                 }
             }
         }
 
-        if (item.getType() == Material.AIR) return;
+        if (item == null || item.getType() == Material.AIR) return;
 
-        ConfigurationSection stateNode = new MemoryConfiguration();
-        saveProperties(stateNode);
+        // Check for upgrades that still have wand data
+		if (isUpgrade && isWand(item)) {
+			InventoryUtils.removeMeta(item, WAND_KEY);
+		}
 
-		Object wandNode = InventoryUtils.createNode(item, WAND_KEY);
+		Object wandNode = InventoryUtils.createNode(item, isUpgrade ? UPGRADE_KEY : WAND_KEY);
 		if (wandNode == null) {
 			controller.getLogger().warning("Failed to save wand state for wand to : " + item);
             Thread.dumpStack();
 		} else {
-            // Save custom keys
-            if(!customProperties.isEmpty()) {
-                InventoryUtils.saveTagsToNBT(stateNode, wandNode, customProperties.keySet());
-            }
-
-            InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS_SET);
+            InventoryUtils.saveTagsToNBT(getConfiguration(), wandNode);
         }
 
 		if (mage != null) {
@@ -1192,65 +1271,36 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 
-    protected void loadState() {
-        ConfigurationSection stateNode = itemToConfig(item, new MemoryConfiguration());
-
-        if(stateNode != null) {
-            loadProperties(stateNode);
-        }
-    }
-
     public static ConfigurationSection itemToConfig(ItemStack item, ConfigurationSection stateNode) {
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 
         if (wandNode == null) {
-            return null;
+			wandNode = InventoryUtils.getNode(item, UPGRADE_KEY);
+			if (wandNode == null) {
+				return null;
+			}
         }
 
-        InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS_SET);
-
-        // Do a second pass when there are custom properties
-        String[] propertyKeys = customPropertiesFromConfig(stateNode);
-        if(propertyKeys.length > 0) {
-            InventoryUtils.loadTagsFromNBT(stateNode, wandNode, Arrays.asList(propertyKeys));
-        }
+        InventoryUtils.loadAllTagsFromNBT(stateNode, wandNode);
 
         return stateNode;
-    }
-
-    public static String[] customPropertiesFromConfig(ConfigurationSection stateNode) {
-        return StringUtils.split(stateNode.getString("custom_properties", ""), ",");
     }
 
     public static void configToItem(ConfigurationSection itemSection, ItemStack item) {
         ConfigurationSection stateNode = itemSection.getConfigurationSection("wand");
         Object wandNode = InventoryUtils.createNode(item, Wand.WAND_KEY);
         if (wandNode != null) {
-            String[] propertyKeys = customPropertiesFromConfig(stateNode);
-            if(propertyKeys.length > 0) {
-                InventoryUtils.saveTagsToNBT(stateNode, wandNode, Arrays.asList(propertyKeys));
-            }
-
-            InventoryUtils.saveTagsToNBT(stateNode, wandNode, Wand.ALL_PROPERTY_KEYS_SET);
+            InventoryUtils.saveTagsToNBT(stateNode, wandNode);
         }
     }
 
     protected String getPotionEffectString() {
-        if (potionEffects.size() == 0) return null;
-        Collection<String> effectStrings = new ArrayList<>();
-        for (Map.Entry<PotionEffectType, Integer> entry : potionEffects.entrySet()) {
-            String effectString = entry.getKey().getName();
-            if (entry.getValue() > 0) {
-                effectString += ":" + entry.getValue();
-            }
-            effectStrings.add(effectString);
-        }
-        return StringUtils.join(effectStrings, ",");
+        return getPotionEffectString(potionEffects);
     }
 
     @Override
     public void save(ConfigurationSection node, boolean filtered) {
-        saveProperties(node);
+		ConfigurationUtils.addConfigurations(node, getConfiguration());
 
         // Filter out some fields
         if (filtered) {
@@ -1258,233 +1308,41 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             node.set("owner_id", null);
             node.set("owner", null);
             node.set("template", null);
+            node.set("mana_timestamp", null);
 
-            // This is super hacky, copyied from InventoryUtils.saveTagsToNBT
-            // But it generally reproduces what you'd have to do in the config
-            // to recreate this wand, sooooo
-            Collection<String> keys = node.getKeys(false);
-            for (String key : keys) {
-                String value = node.getString(key);
-                if (value == null || value.length() == 0 || value.equals("0") || value.equals("0.0") || value.equals("false")) {
-                    node.set(key, null);
-                }
-            }
+            // Inherit from template if present
+			if (template != null && !template.isEmpty()) {
+				node.set("inherit", template);
+			}
+        }
+
+        if (isUpgrade) {
+            node.set("upgrade", true);
         }
 
         // Change some CSV to lists
-        if (node.contains("spells")) {
+        if (node.contains("spells") && node.isString("spells")) {
             node.set("spells", Arrays.asList(StringUtils.split(node.getString("spells"), ",")));
         }
-        if (node.contains("materials")) {
+        if (node.contains("materials") && node.isString("materials")) {
             node.set("materials", Arrays.asList(StringUtils.split(node.getString("materials"), ",")));
         }
-        if (node.contains("overrides")) {
+        if (node.contains("overrides") && node.isString("overrides")) {
             node.set("overrides", Arrays.asList(StringUtils.split(node.getString("overrides"), ",")));
         }
-        if (node.contains("potion_effects")) {
+        if (node.contains("potion_effects") && node.isString("potion_effects")) {
             node.set("potion_effects", Arrays.asList(StringUtils.split(node.getString("potion_effects"), ",")));
         }
     }
 
-	public void saveProperties(ConfigurationSection node) {
-		node.set("id", id);
-		node.set("materials", getMaterialString());
-		node.set("spells", getSpellString());
-        node.set("potion_effects", getPotionEffectString());
-		node.set("hotbar_count", hotbars.size());
-		node.set("hotbar", currentHotbar);
-		node.set("active_spell", activeSpell);
-		node.set("active_material", activeMaterial);
-		node.set("name", wandName);
-		node.set("description", description);
-		node.set("owner", owner);
-        node.set("owner_id", ownerId);
-
-		node.set("cost_reduction", costReduction);
-		node.set("consume_reduction", consumeReduction);
-		node.set("cooldown_reduction", cooldownReduction);
-		node.set("power", power);
-        node.set("enchant_count", enchantCount);
-        node.set("max_enchant_count", maxEnchantCount);
-		node.set("protection", damageReduction);
-		node.set("protection_physical", damageReductionPhysical);
-		node.set("protection_projectiles", damageReductionProjectiles);
-		node.set("protection_falling", damageReductionFalling);
-		node.set("protection_fire", damageReductionFire);
-		node.set("protection_explosions", damageReductionExplosions);
-		node.set("mana", mana);
-		node.set("mana_regeneration", manaRegeneration);
-		node.set("mana_max", manaMax);
-        node.set("mana_max_boost", manaMaxBoost);
-        node.set("mana_regeneration_boost", manaRegenerationBoost);
-        node.set("mana_timestamp", lastManaRegeneration);
-        node.set("mana_per_damage", manaPerDamage);
-		node.set("uses", uses);
-        node.set("has_uses", hasUses);
-		node.set("locked", locked);
-		node.set("effect_color", effectColor == null ? "none" : effectColor.toString());
-		node.set("effect_bubbles", effectBubbles);
-		node.set("effect_particle_data", Float.toString(effectParticleData));
-		node.set("effect_particle_count", effectParticleCount);
-        node.set("effect_particle_min_velocity", effectParticleMinVelocity);
-		node.set("effect_particle_interval", effectParticleInterval);
-        node.set("effect_particle_radius", effectParticleRadius);
-        node.set("effect_particle_offset", effectParticleOffset);
-		node.set("effect_sound_interval", effectSoundInterval);
-		node.set("active_effects", activeEffectsOnly);
-		
-		node.set("block_fov", blockFOV);
-		node.set("block_chance", blockChance);
-		node.set("block_reflect_chance", blockReflectChance);
-        node.set("block_mage_cooldown", blockMageCooldown);
-        node.set("block_cooldown", blockCooldown);
-
-        node.set("cast_interval", castInterval);
-        node.set("cast_min_velocity", castMinVelocity);
-        String directionString = null;
-        if (castVelocityDirection != null) {
-            directionString = ConfigurationUtils.fromVector(castVelocityDirection);
-        }
-        node.set("cast_velocity_direction", directionString);
-        node.set("cast_spell", castSpell);
-        String castParameterString = null;
-        if (castParameters != null) {
-            castParameterString = ConfigurationUtils.getParameters(castParameters);
-        }
-        node.set("cast_parameters", castParameterString);
-
-		node.set("quiet", quietLevel);
-        node.set("passive", passive);
-		node.set("keep", keep);
-        node.set("randomize", randomize);
-        node.set("rename", rename);
-        node.set("rename_description", renameDescription);
-		node.set("bound", bound);
-        node.set("soul", soul);
-        node.set("force", forceUpgrade);
-		node.set("indestructible", indestructible);
-        node.set("protected", superProtected);
-        node.set("powered", superPowered);
-        node.set("glow", glow);
-        node.set("undroppable", undroppable);
-        node.set("heroes", isHeroes);
-		node.set("fill", autoFill);
-		node.set("upgrade", isUpgrade);
-		node.set("organize", autoOrganize);
-        node.set("alphabetize", autoAlphabetize);
-        if (castOverrides != null && castOverrides.size() > 0) {
-            Collection<String> parameters = new ArrayList<>();
-            for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
-                String value = entry.getValue();
-                parameters.add(entry.getKey() + " " + value.replace(",", "\\,"));
-            }
-            node.set("overrides", StringUtils.join(parameters, ","));
-        } else {
-            node.set("overrides", null);
-        }
-		if (effectSound != null) {
-			node.set("effect_sound", effectSound.toString());
-		} else {
-			node.set("effect_sound", null);
-		}
-		if (effectParticle != null) {
-			node.set("effect_particle", effectParticle.name());
-		} else {
-			node.set("effect_particle", null);
-		}
-		if (mode != null) {
-			node.set("mode", mode.name());
-		} else {
-			node.set("mode", null);
-		}
-		
-		node.set("left_click", leftClickAction.name());
-		node.set("right_click", rightClickAction.name());
-		node.set("drop", dropAction.name());
-		node.set("swap", swapAction.name());
-		
-        if (quickCast) {
-            node.set("quick_cast", "true");
-        } else if (quickCastDisabled) {
-            if (manualQuickCastDisabled) {
-                node.set("quick_cast", "disable");
-            } else {
-                node.set("quick_cast", "manual");
-            }
-        } else {
-            node.set("quick_cast", null);
-        }
-        if (brushMode != null) {
-            node.set("brush_mode", brushMode.name());
-        } else {
-            node.set("brush_mode", null);
-        }
-		if (icon != null && icon.getMaterial() != null && icon.getMaterial() != Material.AIR) {
-			String iconKey = icon.getKey();
-			if (iconKey != null && iconKey.length() > 0) {
-				node.set("icon", iconKey);
-			} else {
-				node.set("icon", null);
-			}
-		} else {
-			node.set("icon", null);
-		}
-        if (inactiveIcon != null && inactiveIcon.getMaterial() != null && inactiveIcon.getMaterial() != Material.AIR) {
-            String iconKey = inactiveIcon.getKey();
-            if (iconKey != null && iconKey.length() > 0) {
-                node.set("icon_inactive", iconKey);
-            } else {
-                node.set("icon_inactive", null);
-            }
-        } else {
-            node.set("icon_inactive", null);
-        }
-        node.set("icon_inactive_delay", inactiveIconDelay);
-        if (upgradeIcon != null) {
-            String iconKey = upgradeIcon.getKey();
-            if (iconKey != null && iconKey.length() > 0) {
-                node.set("upgrade_icon", iconKey);
-            } else {
-                node.set("upgrade_icon", null);
-            }
-        } else {
-            node.set("upgrade_icon", null);
-        }
-        if (upgradeTemplate != null && upgradeTemplate.length() > 0) {
-            node.set("upgrade_template", upgradeTemplate);
-        } else {
-            node.set("upgrade_template", null);
-        }
-		if (template != null && template.length() > 0) {
-			node.set("template", template);
-		} else {
-			node.set("template", null);
-		}
-        if (path != null && path.length() > 0) {
-            node.set("path", path);
-        } else {
-            node.set("path", null);
-        }
-
-        // Make sure to put this at the end of saveProperties so it cannot
-        // override anything
-        Set<String> customAdded = new HashSet<>(customProperties.size());
-        for(Map.Entry<String, String> entry : customProperties.entrySet()) {
-            if(!node.isSet(entry.getKey())) {
-                node.set(entry.getKey(), entry.getValue());
-                customAdded.add(entry.getKey());
-            }
-        }
-
-        if(!customAdded.isEmpty()) {
-            node.set("custom_properties", StringUtils.join(customAdded, ","));
-        }
-    }
-	
-	public void loadProperties(ConfigurationSection wandConfig) {
-		loadProperties(wandConfig, false);
+    public void updateBrushes() {
+		setProperty("materials", getMaterialString());
 	}
-	
+
+	public void updateSpells() {
+		setProperty("spells", getSpellString());
+	}
+
 	public void setEffectColor(String hexColor) {
         // Annoying config conversion issue :\
         if (hexColor.contains(".")) {
@@ -1496,96 +1354,46 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			return;
 		}
 		effectColor = new ColorHD(hexColor);
+        if (hexColor.equals("random")) {
+            setProperty("effect_color", effectColor.toString());
+        }
 	}
 
-    public static void addPotionEffects(Map<PotionEffectType, Integer> effects, ItemStack item) {
-        addPotionEffects(effects, getWandString(item, "potion_effects"));
-    }
-
-    protected static void addPotionEffects(Map<PotionEffectType, Integer> effects, String effectsString) {
-        if (effectsString == null || effectsString.isEmpty()) {
-            return;
-        }
-        effectsString = effectsString.replaceAll("[\\]\\[]", "");
-        String[] effectStrings = StringUtils.split(effectsString, ",");
-        for (String effectString : effectStrings) {
-            try {
-                effectString = effectString.trim();
-                PotionEffectType type;
-                int power = 0;
-                if (effectString.contains(":")) {
-                    String[] pieces = effectString.split(":");
-                    type = PotionEffectType.getByName(pieces[0].toUpperCase());
-                    power = Integer.parseInt(pieces[1]);
-                } else {
-                    type = PotionEffectType.getByName(effectString.toUpperCase());
-                }
-                if (type == null) {
-                    throw new Exception("Invalid potion effect");
-                }
-
-                Integer existing = effects.get(type);
-                if (existing == null || existing < power) {
-                    effects.put(type, power);
-                }
-            } catch (Exception ex) {
-                Bukkit.getLogger().log(Level.WARNING, "Invalid potion effect: " + effectString);
-            }
-        }
-    }
+	public void loadProperties() {
+		loadProperties(getEffectiveConfiguration());
+	}
 	
-	public void loadProperties(ConfigurationSection wandConfig, boolean safe) {
+	public void loadProperties(ConfigurationSection wandConfig) {
 		locked = wandConfig.getBoolean("locked", locked);
-		float _consumeReduction = (float)wandConfig.getDouble("consume_reduction", consumeReduction);
-		consumeReduction = safe ? Math.max(_consumeReduction, consumeReduction) : _consumeReduction;
-		float _costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
-		costReduction = safe ? Math.max(_costReduction, costReduction) : _costReduction;
-		float _cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction", cooldownReduction);
-		cooldownReduction = safe ? Math.max(_cooldownReduction, cooldownReduction) : _cooldownReduction;
-		float _power = (float)wandConfig.getDouble("power", power);
-		power = safe ? Math.max(_power, power) : _power;
-		float _damageReduction = (float)wandConfig.getDouble("protection", damageReduction);
-		damageReduction = safe ? Math.max(_damageReduction, damageReduction) : _damageReduction;
-		float _damageReductionPhysical = (float)wandConfig.getDouble("protection_physical", damageReductionPhysical);
-		damageReductionPhysical = safe ? Math.max(_damageReductionPhysical, damageReductionPhysical) : _damageReductionPhysical;
-		float _damageReductionProjectiles = (float)wandConfig.getDouble("protection_projectiles", damageReductionProjectiles);
-		damageReductionProjectiles = safe ? Math.max(_damageReductionProjectiles, damageReductionPhysical) : _damageReductionProjectiles;
-		float _damageReductionFalling = (float)wandConfig.getDouble("protection_falling", damageReductionFalling);
-		damageReductionFalling = safe ? Math.max(_damageReductionFalling, damageReductionFalling) : _damageReductionFalling;
-		float _damageReductionFire = (float)wandConfig.getDouble("protection_fire", damageReductionFire);
-		damageReductionFire = safe ? Math.max(_damageReductionFire, damageReductionFire) : _damageReductionFire;
-		float _damageReductionExplosions = (float)wandConfig.getDouble("protection_explosions", damageReductionExplosions);
-		damageReductionExplosions = safe ? Math.max(_damageReductionExplosions, damageReductionExplosions) : _damageReductionExplosions;
+		consumeReduction = (float)wandConfig.getDouble("consume_reduction");
+		costReduction = (float)wandConfig.getDouble("cost_reduction");
+		cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction");
+		power =  (float)wandConfig.getDouble("power");
+		damageReduction = (float)wandConfig.getDouble("protection");
+		damageReductionPhysical = (float)wandConfig.getDouble("protection_physical");
+		damageReductionProjectiles = (float)wandConfig.getDouble("protection_projectiles");
+		damageReductionFalling = (float)wandConfig.getDouble("protection_falling");
+		damageReductionFire = (float)wandConfig.getDouble("protection_fire");
+		damageReductionExplosions =  (float)wandConfig.getDouble("protection_explosions");
 
-		float _blockChance = (float)wandConfig.getDouble("block_chance", blockChance);
-		blockChance = safe ? Math.max(_blockChance, blockChance) : _blockChance;
-		float _blockReflectChance = (float)wandConfig.getDouble("block_reflect_chance", blockReflectChance);
-		blockReflectChance = safe ? Math.max(_blockReflectChance, blockReflectChance) : _blockReflectChance;
-		float _blockFOV = (float)wandConfig.getDouble("block_fov", blockFOV);
-		blockFOV = safe ? Math.max(_blockFOV, blockFOV) : _blockFOV;
-        int _blockGlobalCooldown = wandConfig.getInt("block_mage_cooldown", blockMageCooldown);
-        blockMageCooldown = safe ? Math.min(_blockGlobalCooldown, blockMageCooldown) : _blockGlobalCooldown;
-        int _blockCooldown = wandConfig.getInt("block_cooldown", blockCooldown);
-        blockCooldown = safe ? Math.min(_blockCooldown, blockCooldown) : _blockCooldown;
+		blockChance = (float)wandConfig.getDouble("block_chance");
+		blockReflectChance = (float)wandConfig.getDouble("block_reflect_chance");
+		blockFOV = (float)wandConfig.getDouble("block_fov");
+        blockMageCooldown = wandConfig.getInt("block_mage_cooldown");
+        blockCooldown = wandConfig.getInt("block_cooldown");
 
-		int _manaRegeneration = wandConfig.getInt("mana_regeneration", wandConfig.getInt("xp_regeneration", manaRegeneration));
-		manaRegeneration = safe ? Math.max(_manaRegeneration, manaRegeneration) : _manaRegeneration;
-		int _manaMax = wandConfig.getInt("mana_max", wandConfig.getInt("xp_max", manaMax));
-		manaMax = safe ? Math.max(_manaMax, manaMax) : _manaMax;
-		int _mana = wandConfig.getInt("mana", wandConfig.getInt("xp", (int) mana));
-		mana = safe ? Math.max(_mana, mana) : _mana;
-        float _manaMaxBoost = (float)wandConfig.getDouble("mana_max_boost", wandConfig.getDouble("xp_max_boost", manaMaxBoost));
-        manaMaxBoost = safe ? Math.max(_manaMaxBoost, manaMaxBoost) : _manaMaxBoost;
-        float _manaRegenerationBoost = (float)wandConfig.getDouble("mana_regeneration_boost", wandConfig.getDouble("xp_regeneration_boost", manaRegenerationBoost));
-        manaRegenerationBoost = safe ? Math.max(_manaRegenerationBoost, manaRegenerationBoost) : _manaRegenerationBoost;
-        int _uses = wandConfig.getInt("uses", uses);
-        uses = safe ? Math.max(_uses, uses) : _uses;
-        String tempId = wandConfig.getString("id", id);
-        isSingleUse = (tempId == null || tempId.isEmpty()) && uses == 1;
-        hasUses = wandConfig.getBoolean("has_uses", hasUses) || uses > 0;
+		manaRegeneration = wandConfig.getInt("mana_regeneration", wandConfig.getInt("xp_regeneration"));
+		manaMax = wandConfig.getInt("mana_max", wandConfig.getInt("xp_max"));
+		mana = wandConfig.getInt("mana", wandConfig.getInt("xp"));
+        manaMaxBoost = (float)wandConfig.getDouble("mana_max_boost", wandConfig.getDouble("xp_max_boost"));
+        manaRegenerationBoost = (float)wandConfig.getDouble("mana_regeneration_boost", wandConfig.getDouble("xp_regeneration_boost"));
+        manaPerDamage = (float)wandConfig.getDouble("mana_per_damage");
 
-        float _manaPerDamage = (float)wandConfig.getDouble("mana_per_damage", manaPerDamage);
-        manaPerDamage = safe ? Math.max(_manaPerDamage, manaPerDamage) : _manaPerDamage;
+        // Check for single-use wands
+		uses = wandConfig.getInt("uses");
+		String tempId = wandConfig.getString("id", id);
+		isSingleUse = (tempId == null || tempId.isEmpty()) && uses == 1;
+		hasUses = wandConfig.getBoolean("has_uses", hasUses) || uses > 0;
 
         // Convert some legacy properties to potion effects
         float healthRegeneration = (float)wandConfig.getDouble("health_regeneration", 0);
@@ -1608,258 +1416,262 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             lastManaRegeneration = System.currentTimeMillis();
         }
 
-		if (wandConfig.contains("effect_color") && !safe) {
+		if (wandConfig.contains("effect_color")) {
 			setEffectColor(wandConfig.getString("effect_color"));
 		}
-		
-		// Don't change any of this stuff in safe mode
-		if (!safe) {
-			id = wandConfig.getString("id", id);
-            isUpgrade = wandConfig.getBoolean("upgrade", isUpgrade);
-            quietLevel = wandConfig.getInt("quiet", quietLevel);
-			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
-			keep = wandConfig.getBoolean("keep", keep);
-            passive = wandConfig.getBoolean("passive", passive);
-            indestructible = wandConfig.getBoolean("indestructible", indestructible);
-            superPowered = wandConfig.getBoolean("powered", superPowered);
-            superProtected = wandConfig.getBoolean("protected", superProtected);
-            glow = wandConfig.getBoolean("glow", glow);
-            undroppable = wandConfig.getBoolean("undroppable", undroppable);
-            isHeroes = wandConfig.getBoolean("heroes", isHeroes);
-			bound = wandConfig.getBoolean("bound", bound);
-            soul = wandConfig.getBoolean("soul", soul);
-            forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
-            autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
-            autoAlphabetize = wandConfig.getBoolean("alphabetize", autoAlphabetize);
-			autoFill = wandConfig.getBoolean("fill", autoFill);
-            randomize = wandConfig.getBoolean("randomize", randomize);
-            rename = wandConfig.getBoolean("rename", rename);
-            renameDescription = wandConfig.getBoolean("rename_description", renameDescription);
-            enchantCount = wandConfig.getInt("enchant_count", enchantCount);
-            maxEnchantCount = wandConfig.getInt("max_enchant_count", maxEnchantCount);
 
-            if (wandConfig.contains("effect_particle")) {
-                effectParticle = ConfigurationUtils.toParticleEffect(wandConfig.getString("effect_particle"));
-				effectParticleData = 0;
-			}
-			if (wandConfig.contains("effect_sound")) {
-                effectSound = ConfigurationUtils.toSoundEffect(wandConfig.getString("effect_sound"));
-			}
-			activeEffectsOnly = wandConfig.getBoolean("active_effects", activeEffectsOnly);
-			effectParticleData = (float)wandConfig.getDouble("effect_particle_data", effectParticleData);
-			effectParticleCount = wandConfig.getInt("effect_particle_count", effectParticleCount);
-            effectParticleRadius = wandConfig.getDouble("effect_particle_radius", effectParticleRadius);
-            effectParticleOffset = wandConfig.getDouble("effect_particle_offset", effectParticleOffset);
-			effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
-            effectParticleMinVelocity = wandConfig.getDouble("effect_particle_min_velocity", effectParticleMinVelocity);
-			effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
+		id = wandConfig.getString("id", id);
+		isUpgrade = wandConfig.getBoolean("upgrade", isUpgrade);
+		quietLevel = wandConfig.getInt("quiet", quietLevel);
+		effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
+		keep = wandConfig.getBoolean("keep", keep);
+		passive = wandConfig.getBoolean("passive", passive);
+		indestructible = wandConfig.getBoolean("indestructible", indestructible);
+		superPowered = wandConfig.getBoolean("powered", superPowered);
+		superProtected = wandConfig.getBoolean("protected", superProtected);
+		glow = wandConfig.getBoolean("glow", glow);
+		undroppable = wandConfig.getBoolean("undroppable", undroppable);
+		isHeroes = wandConfig.getBoolean("heroes", isHeroes);
+		bound = wandConfig.getBoolean("bound", bound);
+		soul = wandConfig.getBoolean("soul", soul);
+		forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
+		autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
+		autoAlphabetize = wandConfig.getBoolean("alphabetize", autoAlphabetize);
+		autoFill = wandConfig.getBoolean("fill", autoFill);
+		randomize = wandConfig.getBoolean("randomize", randomize);
+		rename = wandConfig.getBoolean("rename", rename);
+		renameDescription = wandConfig.getBoolean("rename_description", renameDescription);
+		enchantCount = wandConfig.getInt("enchant_count", enchantCount);
+		maxEnchantCount = wandConfig.getInt("max_enchant_count", maxEnchantCount);
 
-            castInterval = wandConfig.getInt("cast_interval", castInterval);
-            castMinVelocity = wandConfig.getDouble("cast_min_velocity", castMinVelocity);
-            castVelocityDirection = ConfigurationUtils.getVector(wandConfig, "cast_velocity_direction", castVelocityDirection);
-            castSpell = wandConfig.getString("cast_spell", castSpell);
-            String castParameterString = wandConfig.getString("cast_parameters", null);
-            if (castParameterString != null && !castParameterString.isEmpty()) {
-                castParameters = new MemoryConfiguration();
-                ConfigurationUtils.addParameters(StringUtils.split(castParameterString, " "), castParameters);
-            }
-
-            boolean needsInventoryUpdate = false;
-            if (wandConfig.contains("mode")) {
-                WandMode newMode = parseWandMode(wandConfig.getString("mode"), mode);
-                if (newMode != mode) {
-                    setMode(newMode);
-                    needsInventoryUpdate = true;
-                }
-            }
-
-            if (wandConfig.contains("brush_mode")) {
-                setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
-            }
-            String quickCastType = wandConfig.getString("quick_cast", wandConfig.getString("mode_cast"));
-            if (quickCastType != null) {
-                if (quickCastType.equalsIgnoreCase("true")) {
-                    quickCast = true;
-                    // This is to turn the redundant spell lore off
-                    quickCastDisabled = true;
-                    manualQuickCastDisabled = false;
-                } else if (quickCastType.equalsIgnoreCase("manual")) {
-                    quickCast = false;
-                    quickCastDisabled = true;
-                    manualQuickCastDisabled = false;
-                } else if (quickCastType.equalsIgnoreCase("disable")) {
-                    quickCast = false;
-                    quickCastDisabled = true;
-                    manualQuickCastDisabled = true;
-                } else {
-                    quickCast = false;
-                    quickCastDisabled = false;
-                    manualQuickCastDisabled = false;
-                }
-            }
-			
-			// Backwards compatibility
-			if (wandConfig.getBoolean("mode_drop", false)) {
-				dropAction = WandAction.TOGGLE;
-				swapAction = WandAction.CYCLE_HOTBAR;
-				rightClickAction = WandAction.NONE;
-			} else if (mode == WandMode.CAST) {
-				leftClickAction = WandAction.CAST;
-				rightClickAction = WandAction.CAST;
-				swapAction = WandAction.NONE;
-				dropAction = WandAction.NONE;
-			}
-			leftClickAction = parseWandAction(wandConfig.getString("left_click"), leftClickAction);
-			rightClickAction = parseWandAction(wandConfig.getString("right_click"), rightClickAction);
-			dropAction = parseWandAction(wandConfig.getString("drop"), dropAction);
-			swapAction = parseWandAction(wandConfig.getString("swap"), swapAction);
-
-			owner = wandConfig.getString("owner", owner);
-            ownerId = wandConfig.getString("owner_id", ownerId);
-			wandName = wandConfig.getString("name", wandName);			
-			description = wandConfig.getString("description", description);
-			template = wandConfig.getString("template", template);
-            upgradeTemplate = wandConfig.getString("upgrade_template", upgradeTemplate);
-            path = wandConfig.getString("path", path);
-
-			activeSpell = wandConfig.getString("active_spell", activeSpell);
-			activeMaterial = wandConfig.getString("active_material", activeMaterial);
-
-            String wandMaterials = "";
-            String wandSpells = "";
-            if (wandConfig.contains("hotbar_count")) {
-                int newCount = Math.max(1, wandConfig.getInt("hotbar_count"));
-                if ((!safe && newCount != hotbars.size()) || newCount > hotbars.size()) {
-                    if (isInventoryOpen()) {
-                        closeInventory();
-                    }
-                    needsInventoryUpdate = true;
-                    setHotbarCount(newCount);
-                }
-            }
-
-            if (wandConfig.contains("hotbar")) {
-                int hotbar = wandConfig.getInt("hotbar");
-                currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
-            }
-
-            if (needsInventoryUpdate) {
-                // Force a re-parse of materials and spells
-                wandSpells = getSpellString();
-                wandMaterials = getMaterialString();
-            }
-
-			wandMaterials = wandConfig.getString("materials", wandMaterials);
-			wandSpells = wandConfig.getString("spells", wandSpells);
-
-			if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
-				wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
-				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
-				parseInventoryStrings(wandSpells, wandMaterials);
-			}
-			
-			// Check for migration information in the template config
-			ConfigurationSection templateConfig = null;
-			if (template != null && !template.isEmpty()) {
-				templateConfig = controller.getWandTemplateConfiguration(template);
-			}
-			String migrateTemplate = templateConfig == null ? null : templateConfig.getString("migrate_to");
-			if (migrateTemplate != null) {
-				template = migrateTemplate;
-				templateConfig = controller.getWandTemplateConfiguration(template);
-			}
-            WandTemplate wandTemplate = getTemplate();
-			
-			if (templateConfig != null) {
-				// Add vanilla attributes
-				InventoryUtils.applyAttributes(item, templateConfig.getConfigurationSection("attributes"), templateConfig.getString("attribute_slot", null));
-			}
-
-            if (wandConfig.contains("icon_inactive")) {
-                String iconKey = wandConfig.getString("icon_inactive");
-                if (wandTemplate != null) {
-                    iconKey = wandTemplate.migrateIcon(iconKey);
-                }
-                if (iconKey != null) {
-                    inactiveIcon = new MaterialAndData(iconKey);
-                }
-            }
-            if (inactiveIcon != null && (inactiveIcon.getMaterial() == null || inactiveIcon.getMaterial() == Material.AIR))
-            {
-                inactiveIcon = null;
-            }
-            inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
-
-            if (wandConfig.contains("randomize_icon")) {
-                setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
-                randomize = true;
-            } else if (!randomize && wandConfig.contains("icon")) {
-                String iconKey = wandConfig.getString("icon");
-				if (wandTemplate != null) {
-					iconKey = wandTemplate.migrateIcon(iconKey);
-				}
-                if (iconKey.contains(",")) {
-                    Random r = new Random();
-                    String[] keys = StringUtils.split(iconKey, ',');
-                    iconKey = keys[r.nextInt(keys.length)];
-                }
-                // Port old custom wand icons
-                if (templateConfig != null && iconKey.contains("i.imgur.com")) {
-                    iconKey = templateConfig.getString("icon");
-                }
-                setIcon(new MaterialAndData(iconKey));
-			} else if (isUpgrade) {
-                setIcon(new MaterialAndData(DefaultUpgradeMaterial));
-            }
-
-            if (wandConfig.contains("upgrade_icon")) {
-                upgradeIcon = new MaterialAndData(wandConfig.getString("upgrade_icon"));
-            }
-
-			// Check for path-based migration, may update icons
-			com.elmakers.mine.bukkit.api.wand.WandUpgradePath upgradePath = getPath();
-			if (upgradePath != null) {
-				hasSpellProgression = upgradePath.getSpells().size() > 0
-						|| upgradePath.getExtraSpells().size() > 0
-						|| upgradePath.getRequiredSpells().size() > 0;
-				upgradePath.checkMigration(this);
-			} else {
-				hasSpellProgression = false;
-			}
-
-            if (wandConfig.contains("overrides")) {
-                castOverrides = null;
-                String overrides = wandConfig.getString("overrides", null);
-                if (overrides != null && !overrides.isEmpty()) {
-                    // Support YML-List-As-String format
-                    overrides = overrides.replaceAll("[\\]\\[]", "");
-                    // Unescape commas
-                    overrides = overrides.replace("\\,", ",");
-
-                    char split = ',';
-                    // Check for | delimited format
-                    if (overrides.charAt(0) == '|') {
-                        split = '|';
-                        overrides = overrides.substring(1);
-                    }
-                    castOverrides = new HashMap<>();
-                    String[] pairs = StringUtils.split(overrides, split);
-                    for (String pair : pairs) {
-                        String[] keyValue = StringUtils.split(pair, " ");
-                        if (keyValue.length > 0) {
-                            String value = keyValue.length > 1 ? keyValue[1] : "";
-                            castOverrides.put(keyValue[0], value);
-                        }
-                    }
-                }
-            }
-
-            if (wandConfig.contains("potion_effects")) {
-                potionEffects.clear();
-                addPotionEffects(potionEffects, wandConfig.getString("potion_effects", null));
-            }
+		if (wandConfig.contains("effect_particle")) {
+			effectParticle = ConfigurationUtils.toParticleEffect(wandConfig.getString("effect_particle"));
+			effectParticleData = 0;
 		}
-		
+		if (wandConfig.contains("effect_sound")) {
+			effectSound = ConfigurationUtils.toSoundEffect(wandConfig.getString("effect_sound"));
+		}
+		activeEffectsOnly = wandConfig.getBoolean("active_effects", activeEffectsOnly);
+		effectParticleData = (float)wandConfig.getDouble("effect_particle_data", effectParticleData);
+		effectParticleCount = wandConfig.getInt("effect_particle_count", effectParticleCount);
+		effectParticleRadius = wandConfig.getDouble("effect_particle_radius", effectParticleRadius);
+		effectParticleOffset = wandConfig.getDouble("effect_particle_offset", effectParticleOffset);
+		effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
+		effectParticleMinVelocity = wandConfig.getDouble("effect_particle_min_velocity", effectParticleMinVelocity);
+		effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
+
+		castInterval = wandConfig.getInt("cast_interval", castInterval);
+		castMinVelocity = wandConfig.getDouble("cast_min_velocity", castMinVelocity);
+		castVelocityDirection = ConfigurationUtils.getVector(wandConfig, "cast_velocity_direction", castVelocityDirection);
+		castSpell = wandConfig.getString("cast_spell", castSpell);
+		String castParameterString = wandConfig.getString("cast_parameters", null);
+		if (castParameterString != null && !castParameterString.isEmpty()) {
+			castParameters = new MemoryConfiguration();
+			ConfigurationUtils.addParameters(StringUtils.split(castParameterString, " "), castParameters);
+		}
+
+		boolean needsInventoryUpdate = false;
+		if (wandConfig.contains("mode")) {
+			WandMode newMode = parseWandMode(wandConfig.getString("mode"), mode);
+			if (newMode != mode) {
+				setMode(newMode);
+				needsInventoryUpdate = true;
+			}
+		}
+
+		if (wandConfig.contains("brush_mode")) {
+			setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
+		}
+		String quickCastType = wandConfig.getString("quick_cast", wandConfig.getString("mode_cast"));
+		if (quickCastType != null) {
+			if (quickCastType.equalsIgnoreCase("true")) {
+				quickCast = true;
+				// This is to turn the redundant spell lore off
+				quickCastDisabled = true;
+				manualQuickCastDisabled = false;
+			} else if (quickCastType.equalsIgnoreCase("manual")) {
+				quickCast = false;
+				quickCastDisabled = true;
+				manualQuickCastDisabled = false;
+			} else if (quickCastType.equalsIgnoreCase("disable")) {
+				quickCast = false;
+				quickCastDisabled = true;
+				manualQuickCastDisabled = true;
+			} else {
+				quickCast = false;
+				quickCastDisabled = false;
+				manualQuickCastDisabled = false;
+			}
+		}
+
+		// Backwards compatibility
+		if (wandConfig.getBoolean("mode_drop", false)) {
+			dropAction = WandAction.TOGGLE;
+			swapAction = WandAction.CYCLE_HOTBAR;
+			rightClickAction = WandAction.NONE;
+		} else if (mode == WandMode.CAST) {
+			leftClickAction = WandAction.CAST;
+			rightClickAction = WandAction.CAST;
+			swapAction = WandAction.NONE;
+			dropAction = WandAction.NONE;
+		}
+		leftClickAction = parseWandAction(wandConfig.getString("left_click"), leftClickAction);
+		rightClickAction = parseWandAction(wandConfig.getString("right_click"), rightClickAction);
+		dropAction = parseWandAction(wandConfig.getString("drop"), dropAction);
+		swapAction = parseWandAction(wandConfig.getString("swap"), swapAction);
+
+		owner = wandConfig.getString("owner", owner);
+		ownerId = wandConfig.getString("owner_id", ownerId);
+		template = wandConfig.getString("template", template);
+		upgradeTemplate = wandConfig.getString("upgrade_template", upgradeTemplate);
+		path = wandConfig.getString("path", path);
+
+		activeSpell = wandConfig.getString("active_spell", activeSpell);
+		activeMaterial = wandConfig.getString("active_material", activeMaterial);
+
+		String wandMaterials = "";
+		String wandSpells = "";
+		if (wandConfig.contains("hotbar_count")) {
+			int newCount = Math.max(1, wandConfig.getInt("hotbar_count"));
+			if (newCount != hotbars.size() || newCount > hotbars.size()) {
+				if (isInventoryOpen()) {
+					closeInventory();
+				}
+				needsInventoryUpdate = true;
+				setHotbarCount(newCount);
+			}
+		}
+
+		if (wandConfig.contains("hotbar")) {
+			int hotbar = wandConfig.getInt("hotbar");
+			currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
+		}
+
+		// Default to template names, override with localizations and finally with wand data
+		wandName = controller.getMessages().get("wand.default_name");
+		description = "";
+
+		// Check for migration information in the template config
+		ConfigurationSection templateConfig = null;
+		if (template != null && !template.isEmpty()) {
+			templateConfig = controller.getWandTemplateConfiguration(template);
+			if (templateConfig != null) {
+				wandName = templateConfig.getString("name", wandName);
+				description = templateConfig.getString("description", description);
+			}
+			wandName = controller.getMessages().get("wands." + template + ".name", wandName);
+			description = controller.getMessages().get("wands." + template + ".description", description);
+		}
+		wandName = wandConfig.getString("name", wandName);
+		description = wandConfig.getString("description", description);
+
+		WandTemplate wandTemplate = getTemplate();
+		WandTemplate migrateTemplate = wandTemplate == null ? null : wandTemplate.getMigrateTemplate();
+		if (migrateTemplate != null) {
+			template = migrateTemplate.getKey();
+			templateConfig = migrateTemplate.getConfiguration();
+			wandTemplate = migrateTemplate;
+		}
+
+		if (wandTemplate != null) {
+			// Add vanilla attributes
+			InventoryUtils.applyAttributes(item, wandTemplate.getAttributes(), wandTemplate.getAttributeSlot());
+		}
+
+		if (wandConfig.contains("icon_inactive")) {
+			String iconKey = wandConfig.getString("icon_inactive");
+			if (wandTemplate != null) {
+				iconKey = wandTemplate.migrateIcon(iconKey);
+			}
+			if (iconKey != null) {
+				inactiveIcon = new MaterialAndData(iconKey);
+			}
+		}
+		if (inactiveIcon != null && (inactiveIcon.getMaterial() == null || inactiveIcon.getMaterial() == Material.AIR))
+		{
+			inactiveIcon = null;
+		}
+		inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
+
+		if (wandConfig.contains("randomize_icon")) {
+			setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
+			randomize = true;
+		} else if (!randomize && wandConfig.contains("icon")) {
+			String iconKey = wandConfig.getString("icon");
+			if (wandTemplate != null) {
+				iconKey = wandTemplate.migrateIcon(iconKey);
+			}
+			if (iconKey.contains(",")) {
+				Random r = new Random();
+				String[] keys = StringUtils.split(iconKey, ',');
+				iconKey = keys[r.nextInt(keys.length)];
+			}
+			// Port old custom wand icons
+			if (templateConfig != null && iconKey.contains("i.imgur.com")) {
+				iconKey = templateConfig.getString("icon");
+			}
+			setIcon(new MaterialAndData(iconKey));
+		} else if (isUpgrade) {
+			setIcon(new MaterialAndData(DefaultUpgradeMaterial));
+		}
+
+		if (wandConfig.contains("upgrade_icon")) {
+			upgradeIcon = new MaterialAndData(wandConfig.getString("upgrade_icon"));
+		}
+
+		// Check for path-based migration, may update icons
+		com.elmakers.mine.bukkit.api.wand.WandUpgradePath upgradePath = getPath();
+		if (upgradePath != null) {
+			hasSpellProgression = upgradePath.getSpells().size() > 0
+					|| upgradePath.getExtraSpells().size() > 0
+					|| upgradePath.getRequiredSpells().size() > 0;
+			upgradePath.checkMigration(this);
+		} else {
+			hasSpellProgression = false;
+		}
+
+		// Load spells
+		if (needsInventoryUpdate) {
+			// Force a re-parse of materials and spells
+			wandSpells = getSpellString();
+			wandMaterials = getMaterialString();
+		}
+
+		wandMaterials = wandConfig.getString("materials", wandMaterials);
+		wandSpells = wandConfig.getString("spells", wandSpells);
+
+		if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
+			wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
+			wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
+			parseInventoryStrings(wandSpells, wandMaterials);
+		}
+
+		if (wandConfig.contains("overrides")) {
+			castOverrides = null;
+			String overrides = wandConfig.getString("overrides", null);
+			if (overrides != null && !overrides.isEmpty()) {
+				// Support YML-List-As-String format
+				overrides = overrides.replaceAll("[\\]\\[]", "");
+
+				castOverrides = new HashMap<>();
+				String[] pairs = StringUtils.split(overrides, ',');
+				for (String pair : pairs) {
+					// Unescape commas
+					pair = pair.replace("\\|", ",");
+					String[] keyValue = StringUtils.split(pair, " ");
+					if (keyValue.length > 0) {
+						String value = keyValue.length > 1 ? keyValue[1] : "";
+						castOverrides.put(keyValue[0], value);
+					}
+				}
+			}
+		}
+
+		if (wandConfig.contains("potion_effects")) {
+			potionEffects.clear();
+			addPotionEffects(potionEffects, wandConfig.getString("potion_effects", null));
+		}
+
 		// Some cleanup and sanity checks. In theory we don't need to store any non-zero value (as it is with the traders)
 		// so try to keep defaults as 0/0.0/false.
 		if (effectSound == null) {
@@ -1872,26 +1684,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			effectParticleInterval = 0;
 		}
 
-        String customKeysStr = wandConfig.getString("custom_properties", "");
-        String[] customKeys = StringUtils.split(customKeysStr, ",");
-        for(String key : customKeys ) {
-            customProperties.put(key, wandConfig.getString(key));
-        }
-
         updateMaxMana(false);
         checkActiveMaterial();
-        checkId();
     }
 
 	@Override
     public void describe(CommandSender sender) {
 		Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+		boolean isUpgrade = false;
+		if (wandNode == null) {
+            isUpgrade = true;
+            wandNode = InventoryUtils.getNode(item, UPGRADE_KEY);
+        }
 		if (wandNode == null) {
 			sender.sendMessage("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
             return;
 		}
 		ChatColor wandColor = isModifiable() ? ChatColor.AQUA : ChatColor.RED;
 		sender.sendMessage(wandColor + wandName);
+        if (isUpgrade) {
+            sender.sendMessage(ChatColor.YELLOW + "(Upgrade)");
+        }
 		if (description.length() > 0) {
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
 		} else {
@@ -1904,11 +1717,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		for (String key : PROPERTY_KEYS) {
-			String value = InventoryUtils.getMeta(wandNode, key);
+			String value = InventoryUtils.getMetaString(wandNode, key);
 			if (value != null && value.length() > 0) {
 				sender.sendMessage(key + ": " + value);
 			}
 		}
+
+		ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(template);
+        if (templateConfig != null) {
+            sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration:");
+            for (String key : PROPERTY_KEYS) {
+                String value = templateConfig.getString(key);
+                if (value != null && value.length() > 0) {
+                    sender.sendMessage(key + ": " + value);
+                }
+            }
+        }
 	}
 
     private static String getBrushDisplayName(Messages messages, MaterialBrush brush) {
@@ -1945,8 +1769,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         // Add active spell to description
         Messages messages = controller.getMessages();
-        boolean showSpell = isModifiable() && hasPath();
-        if (spell != null && !quickCast && (spells.size() > 1 || showSpell)) {
+        boolean showSpell = isModifiable() && hasSpellProgression();
+        showSpell = !quickCast && (spells.size() > 1 || showSpell);
+        if (spell != null && showSpell) {
             name = getSpellDisplayName(messages, spell, brush) + " (" + name + ChatColor.WHITE + ")";
         }
 
@@ -2082,11 +1907,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
         for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
-            String effectName = effect.getKey().getName();
-            String effectFirst = effectName.substring(0, 1);
-            effectName = effectName.substring(1).toLowerCase().replace("_", " ");
-            effectName = effectFirst + effectName;
-            lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.potion_effect", effect.getValue(), 5).replace("$effect", effectName));
+            lore.add(ChatColor.AQUA + describePotionEffect(effect.getKey(), effect.getValue()));
         }
 		if (consumeReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.consume_reduction", consumeReduction));
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction));
@@ -2106,45 +1927,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public static String getLevelString(Messages messages, String templateName, float amount)
 	{
-		return getLevelString(messages, templateName, amount, 1);
+		return messages.getLevelString(templateName, amount);
 	}
 	
 	public static String getLevelString(Messages messages, String templateName, float amount, float max)
 	{
-		String templateString = messages.get(templateName);
-		if (templateString.contains("$roman")) {
-            if (max != 1) {
-                amount = amount / max;
-            }
-			templateString = templateString.replace("$roman", getRomanString(messages, amount));
-		}
-		return templateString.replace("$amount", Integer.toString((int) amount));
+		return messages.getLevelString(templateName, amount, max);
 	}
 
     public static String getPercentageString(Messages messages, String templateName, float amount)
     {
-        String templateString = messages.get(templateName);
-        return templateString.replace("$amount", Integer.toString((int)(amount * 100)));
+        return messages.getPercentageString(templateName, amount);
     }
-
-	private static String getRomanString(Messages messages, float amount) {
-		String roman = "";
-
-		if (amount > 1) {
-			roman = messages.get("wand.enchantment_level_max");
-		} else if (amount > 0.8) {
-			roman = messages.get("wand.enchantment_level_5");
-		} else if (amount > 0.6) {
-			roman = messages.get("wand.enchantment_level_4");
-		} else if (amount > 0.4) {
-			roman = messages.get("wand.enchantment_level_3");
-		} else if (amount > 0.2) {
-			roman = messages.get("wand.enchantment_level_2");
-		} else {
-			 roman = messages.get("wand.enchantment_level_1");
-		}
-		return roman;
-	}
 	
 	protected List<String> getLore(int spellCount, int materialCount) 
 	{
@@ -2175,45 +1969,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return lore;
         }
 
-		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
-        Messages messages = controller.getMessages();
-
-        // This is here specifically for a wand that only has
-        // one spell now, but may get more later. Since you
-        // can't open the inventory in this state, you can not
-        // otherwise see the spell lore.
-		if (spell != null && spellCount == 1 && !hasInventory && !isUpgrade && hasPath() && !spell.isHidden())
-        {
-            addSpellLore(messages, spell, lore, getActivePlayer(), this);
-		}
-		// This is here mostly for broomsticks..
-		else if (spell != null && spellCount == 1 && !isUpgrade && hasPath())
-		{
-			String cooldownDescription = spell.getCooldownDescription();
-			if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
-				lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
-			}
-			long effectiveDuration = spell.getDuration();
-			if (effectiveDuration > 0) {
-				long seconds = effectiveDuration / 1000;
-				if (seconds > 60 * 60 ) {
-					long hours = seconds / (60 * 60);
-					lore.add(ChatColor.GRAY + messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
-				} else if (seconds > 60) {
-					long minutes = seconds / 60;
-					lore.add(ChatColor.GRAY + messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
-				} else {
-					lore.add(ChatColor.GRAY + messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
-				}
-			}
-		}
-        if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
-        {
-            lore.add(getBrushDisplayName(messages, MaterialBrush.parseMaterialKey(activeMaterial)));
-        }
-        if (!isUpgrade) {
-            if (owner.length() > 0) {
-                if (bound) {
+		if (!isUpgrade) {
+			if (owner.length() > 0) {
+				if (bound) {
 					if (soul) {
 						String ownerDescription = getMessage("soulbound_description", "$name").replace("$name", owner);
 						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
@@ -2221,11 +1979,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 						String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
 						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
 					}
-                } else {
-                    String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
-                    lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
-                }
-            }
+				} else {
+					String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
+					lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
+				}
+			}
+		}
+
+		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
+        Messages messages = controller.getMessages();
+
+        // This is here specifically for a wand that only has
+        // one spell now, but may get more later. Since you
+        // can't open the inventory in this state, you can not
+        // otherwise see the spell lore.
+		if (spell != null && spellCount == 1 && !hasInventory && !isUpgrade)
+        {
+            addSpellLore(messages, spell, lore, getActiveMage(), this);
+		}
+        if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
+        {
+            lore.add(getBrushDisplayName(messages, MaterialBrush.parseMaterialKey(activeMaterial)));
         }
 
         if (spellCount > 0) {
@@ -2269,7 +2043,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public void save() {
-        saveItemState();
+        saveState();
         updateName();
         updateLore();
     }
@@ -2310,18 +2084,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	public static boolean isWand(ItemStack item) {
-        return item != null && InventoryUtils.hasMeta(item, WAND_KEY) && !isUpgrade(item);
+        return item != null && InventoryUtils.hasMeta(item, WAND_KEY);
 	}
 
 	public static boolean isWandOrUpgrade(ItemStack item) {
-		return item != null && InventoryUtils.hasMeta(item, WAND_KEY);
+		return isWand(item) || isUpgrade(item);
+	}
+
+	public static boolean isSpecial(ItemStack item) {
+		return isWand(item) || isUpgrade(item) || isSpell(item) || isBrush(item) || isSP(item);
 	}
 
 	public static boolean isBound(ItemStack item) {
 		Object wandSection = InventoryUtils.getNode(item, WAND_KEY);
 		if (wandSection == null) return false;
 		
-		String boundValue = InventoryUtils.getMeta(wandSection, "bound");
+		String boundValue = InventoryUtils.getMetaString(wandSection, "bound");
 		return boundValue != null && boundValue.equalsIgnoreCase("true");
 	}
 
@@ -2335,7 +2113,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public static Integer getSP(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
-		String spNode = InventoryUtils.getMeta(item, "sp");
+		String spNode = InventoryUtils.getMetaString(item, "sp");
 		if (spNode == null) return null;
 		Integer sp = null;
 		try {
@@ -2352,21 +2130,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 
         if (wandNode == null) return false;
-        String useCount = InventoryUtils.getMeta(wandNode, "uses");
-        String wandId = InventoryUtils.getMeta(wandNode, "id");
+        String useCount = InventoryUtils.getMetaString(wandNode, "uses");
+        String wandId = InventoryUtils.getMetaString(wandNode, "id");
 
         return useCount != null && useCount.equals("1") && (wandId == null || wandId.isEmpty());
     }
 
     public static boolean isUpgrade(ItemStack item) {
-		if (InventoryUtils.isEmpty(item)) return false;
-        Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
-
-        if (wandNode == null) return false;
-        String upgradeData = InventoryUtils.getMeta(wandNode, "upgrade");
-
-        return upgradeData != null && upgradeData.equals("true");
-    }
+    	return item != null && InventoryUtils.hasMeta(item, UPGRADE_KEY);
+	}
 
 	public static boolean isSpell(ItemStack item) {
         return item != null && InventoryUtils.hasMeta(item, "spell");
@@ -2380,11 +2152,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return item != null && InventoryUtils.hasMeta(item, "brush");
 	}
 
-    public static String getWandTemplate(ItemStack item) {
+	protected static Object getWandOrUpgradeNode(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
-        Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+		Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+		if (wandNode == null) {
+			wandNode = InventoryUtils.getNode(item, UPGRADE_KEY);
+		}
+		return wandNode;
+	}
+
+    public static String getWandTemplate(ItemStack item) {
+        Object wandNode = getWandOrUpgradeNode(item);
         if (wandNode == null) return null;
-        return InventoryUtils.getMeta(wandNode, "template");
+        return InventoryUtils.getMetaString(wandNode, "template");
     }
 
     public static String getWandId(ItemStack item) {
@@ -2392,35 +2172,35 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null || isUpgrade(item)) return null;
         if (isSingleUse(item)) return getWandTemplate(item);
-        return InventoryUtils.getMeta(wandNode, "id");
+        return InventoryUtils.getMetaString(wandNode, "id");
     }
 
 	public static String getSpell(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
-        return InventoryUtils.getMeta(spellNode, "key");
+        return InventoryUtils.getMetaString(spellNode, "key");
 	}
 
     public static String getSpellArgs(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
-        return InventoryUtils.getMeta(spellNode, "args");
+        return InventoryUtils.getMetaString(spellNode, "args");
     }
 
     public static String getBrush(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
         Object brushNode = InventoryUtils.getNode(item, "brush");
         if (brushNode == null) return null;
-        return InventoryUtils.getMeta(brushNode, "key");
+        return InventoryUtils.getMetaString(brushNode, "key");
     }
 
 	protected void updateInventoryName(ItemStack item, boolean activeName) {
 		if (isSpell(item)) {
 			Spell spell = mage.getSpell(getSpell(item));
 			if (spell != null) {
-				updateSpellItem(controller.getMessages(), item, spell, "", getActivePlayer(), activeName ? this : null, activeMaterial, false);
+				updateSpellItem(controller.getMessages(), item, spell, "", getActiveMage(), activeName ? this : null, activeMaterial, false);
 			}
 		} else if (isBrush(item)) {
 			updateBrushItem(controller.getMessages(), item, getBrush(item), activeName ? this : null);
@@ -2428,7 +2208,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, Wand wand, String activeMaterial, boolean isItem) {
-        updateSpellItem(messages, itemStack, spell, args, wand == null ? null : wand.getActivePlayer(), wand, activeMaterial, isItem);
+        updateSpellItem(messages, itemStack, spell, args, wand == null ? null : wand.getActiveMage(), wand, activeMaterial, isItem);
     }
 
     public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, String activeMaterial, boolean isItem) {
@@ -2755,9 +2535,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         if (levels > 0) {
             enchantCount++;
+            setProperty("enchant_count", enchantCount);
         }
 
-        saveItemState();
+        saveState();
         updateName();
         updateLore();
         return levels;
@@ -2798,19 +2579,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         Wand wand = null;
         try {
             wand = controller.getWand(InventoryUtils.makeReal(itemStack));
-            wand.saveItemState();
+            wand.saveState();
             wand.updateName();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return wand;
     }
-	
-	protected void sendAddMessage(com.elmakers.mine.bukkit.api.magic.Mage mage, String messageKey, String nameParam) {
-		if (mage == null) return;
-		String message = getMessage(messageKey).replace("$name", nameParam).replace("$wand", getName());
-		mage.sendMessage(message);
-	}
 
     public boolean add(Wand other) {
         return add(other, this.mage);
@@ -2843,10 +2618,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return false;
         }
 
+		ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(other.getTemplateKey());
+
 		// Check for forced upgrades
 		if (other.isForcedUpgrade()) {
-			String template = other.getTemplateKey();
-			ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(template);
 			if (templateConfig == null) {
 				return false;
 			}
@@ -2857,10 +2632,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			templateConfig.set("upgrade", null);
 			templateConfig.set("icon", templateConfig.getString("upgrade_icon"));
 			templateConfig.set("indestructible", null);
-			templateConfig.set("key", null);
 
-			this.loadProperties(templateConfig, false);
-			this.saveItemState();
+			configure(templateConfig);
+			loadProperties();
+			saveState();
 			return true;
 		}
 
@@ -2869,313 +2644,34 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			return false;
 		}
 
-		boolean modified = false;
+		ConfigurationSection upgradeConfig = other.getEffectiveConfiguration();
+		upgradeConfig.set("id", null);
+		upgradeConfig.set("indestructible", null);
+		upgradeConfig.set("upgrade", null);
+		upgradeConfig.set("icon", upgradeIcon == null ? null : upgradeIcon.getKey());
+		upgradeConfig.set("template", upgradeTemplate);
 
-        Messages messages = controller.getMessages();
-		if (other.costReduction > costReduction) { costReduction = other.costReduction; modified = true; if (costReduction > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.cost_reduction", costReduction)); }
-		if (other.consumeReduction > consumeReduction) { consumeReduction = other.consumeReduction; modified = true; if (consumeReduction > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.consume_reduction", consumeReduction)); }
-		if (other.power > power) { power = other.power; modified = true; if (power > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.power", power)); }
-		if (other.damageReduction > damageReduction) { damageReduction = other.damageReduction; modified = true; if (damageReduction > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection", damageReduction)); }
-		if (other.damageReductionPhysical > damageReductionPhysical) { damageReductionPhysical = other.damageReductionPhysical; modified = true; if (damageReductionPhysical > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_physical", damageReductionPhysical)); }
-		if (other.damageReductionProjectiles > damageReductionProjectiles) { damageReductionProjectiles = other.damageReductionProjectiles; modified = true; if (damageReductionProjectiles > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_projectile", damageReductionProjectiles)); }
-		if (other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_fall", damageReductionFalling)); }
-		if (other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; if (damageReductionFire > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_fire", damageReductionFire)); }
-		if (other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_blast", damageReductionExplosions)); }
-        if (other.manaRegenerationBoost > manaRegenerationBoost) { manaRegenerationBoost = other.manaRegenerationBoost; modified = true; if (manaRegenerationBoost > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_regeneration_boost", manaRegenerationBoost)); }
-        if (other.manaMaxBoost > manaMaxBoost) { manaMaxBoost = other.manaMaxBoost; modified = true; if (manaMaxBoost > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_boost", manaMaxBoost)); }
-		if (other.blockReflectChance > blockReflectChance) { blockReflectChance = other.blockReflectChance; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.reflect_chance", blockReflectChance)); }
-		if (other.blockChance > blockChance) { blockChance = other.blockChance; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.block_chance", blockChance)); }
-		if (other.blockFOV > blockFOV) { blockFOV = other.blockFOV; modified = true; }
-        if (other.blockMageCooldown < blockMageCooldown) { blockMageCooldown = other.blockMageCooldown; modified = true; }
-        if (other.blockCooldown < blockCooldown) { blockCooldown = other.blockCooldown; modified = true; }
-
-		boolean needsInventoryUpdate = false;
-		if (other.hotbars.size() > hotbars.size()) {
-			int newCount = Math.max(1, other.hotbars.size());
-			if (newCount != hotbars.size()) {
-				if (isInventoryOpen()) {
-					closeInventory();
-				}
-                setHotbarCount(newCount);
-                needsInventoryUpdate = true;
-				modified = true;
-                if (getMode() == WandMode.INVENTORY) {
-					sendAddMessage(mage, "hotbar_added", Integer.toString(newCount));
-                }
-			}
-		}
-
-		// Mix colors
-		if (other.effectColor != null) {
-			if (this.effectColor == null || other.isUpgrade()) {
-				this.effectColor = other.effectColor;
-			} else {
-				this.effectColor = this.effectColor.mixColor(other.effectColor, other.effectColorMixWeight);
-			}
-			modified = true;
-		}
-
-        if (other.rename && other.template != null && other.template.length() > 0) {
-            ConfigurationSection template = controller.getWandTemplateConfiguration(other.template);
-
-            wandName = messages.get("wands." + other.template + ".name", wandName);
-            wandName = template.getString("name", wandName);
-            updateName();
-        }
-
-        if (other.renameDescription && other.template != null && other.template.length() > 0) {
-            ConfigurationSection template = controller.getWandTemplateConfiguration(other.template);
-
-            description = messages.get("wands." + other.template + ".description", description);
-            description = template.getString("description", description);
-            updateLore();
-        }
-
-        // Kind of a hacky way to allow for quiet level overries
-        if (other.quietLevel < 0) {
-            int quiet = -other.quietLevel - 1;
-            modified = quietLevel != quiet;
-            quietLevel = quiet;
-        }
-
-        for (Map.Entry<PotionEffectType, Integer> otherEffects : other.potionEffects.entrySet()) {
-            Integer current = potionEffects.get(otherEffects.getKey());
-            if (current == null || current < otherEffects.getValue()) {
-                potionEffects.put(otherEffects.getKey(), otherEffects.getValue());
-                modified = true;
-            }
-        }
-
-		modified = modified || (!keep && other.keep);
-		modified = modified || (!bound && other.bound);
-		modified = modified || (!effectBubbles && other.effectBubbles);
-        modified = modified || (!undroppable && other.undroppable);
-        modified = modified || (!indestructible && other.indestructible);
-        modified = modified || (!superPowered && other.superPowered);
-        modified = modified || (!superProtected && other.superProtected);
-        modified = modified || (!glow && other.glow);
-		modified = modified || (!activeEffectsOnly && other.activeEffectsOnly);
-
-		keep = keep || other.keep;
-		bound = bound || other.bound;
-        indestructible = indestructible || other.indestructible;
-        superPowered = superPowered || other.superPowered;
-        superProtected = superProtected || other.superProtected;
-        glow = glow || other.glow;
-        undroppable = undroppable || other.undroppable;
-        effectBubbles = effectBubbles || other.effectBubbles;
-		if (other.effectParticle != null && (other.isUpgrade || effectParticle == null)) {
-			modified = modified | (effectParticle != other.effectParticle);
-			effectParticle = other.effectParticle;
-			modified = modified | (effectParticleData != other.effectParticleData);
-			effectParticleData = other.effectParticleData;
-			modified = modified | (effectParticleCount != other.effectParticleCount);
-			effectParticleCount = other.effectParticleCount;
-			modified = modified | (effectParticleInterval != other.effectParticleInterval);
-			effectParticleInterval = other.effectParticleInterval;
-            modified = modified | (effectParticleRadius != other.effectParticleRadius);
-            effectParticleRadius = other.effectParticleRadius;
-            modified = modified | (effectParticleOffset != other.effectParticleOffset);
-            effectParticleOffset = other.effectParticleOffset;
-            modified = modified | (effectParticleMinVelocity < other.effectParticleOffset);
-            effectParticleMinVelocity = Math.max(effectParticleMinVelocity, other.effectParticleMinVelocity);
-		}
-		activeEffectsOnly = activeEffectsOnly || other.activeEffectsOnly;
-
-        if (other.castSpell != null && (other.isUpgrade || castSpell == null || !castSpell.equals(other.castSpell))) {
-            modified = true;
-            castSpell = other.castSpell;
-            castParameters = ConfigurationUtils.addConfigurations(castParameters, other.castParameters);
-            castInterval = other.castInterval;
-            castVelocityDirection = other.castVelocityDirection;
-            castMinVelocity = other.castMinVelocity;
-        }
-		
-		if (other.effectSound != null && (other.isUpgrade || effectSound == null)) {
-			modified = modified | (effectSound == null || !effectSound.equals(other.effectSound));
-            effectSound = other.effectSound;
-			modified = modified | (effectSoundInterval != other.effectSoundInterval);
-			effectSoundInterval = other.effectSoundInterval;
-		}
-		
-		if ((template == null || template.length() == 0) && (other.template != null && other.template.length() > 0)) {
-			modified = true;
-			template = other.template;
-		}
-
-        if (other.isUpgrade && other.upgradeTemplate != null && (this.template == null || !this.template.equals(other.template))) {
-            this.template = other.upgradeTemplate;
-            modified = true;
-        }
-		
-		if (other.isUpgrade && other.mode != null) {
-            if (mode != other.mode) {
-                if (isInventoryOpen()) {
-                    closeInventory();
-                }
-                needsInventoryUpdate = true;
-                modified = true;
-                setMode(other.mode);
-            }
-		}
-
-        if (needsInventoryUpdate) {
-            String wandSpells = getSpellString();
-            String wandMaterials = getMaterialString();
-            if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
-                parseInventoryStrings(wandSpells, wandMaterials);
-            }
-        }
-
-        if (other.isUpgrade && other.brushMode != null) {
-            modified = modified | (brushMode != other.brushMode);
-            setBrushMode(other.brushMode);
-        }
-
-        if (other.upgradeIcon != null && (this.icon == null
-               || this.icon.getMaterial() != other.upgradeIcon.getMaterial()
-               || !Objects.equal(this.icon.getData(), other.upgradeIcon.getData()))) {
-            modified = true;
-            this.setIcon(other.upgradeIcon);
-        }
-
-        if (other.isUpgrade && other.inactiveIcon != null
-				&& other.inactiveIcon.getMaterial() != Material.AIR && other.inactiveIcon.getMaterial() != null &&
-                (this.inactiveIcon == null
-                        || this.inactiveIcon.getMaterial() != other.inactiveIcon.getMaterial()
-                        || !Objects.equal(this.inactiveIcon.getData(), other.inactiveIcon.getData())
-                ))
-        {
-            this.inactiveIcon = other.inactiveIcon;
-            inactiveIcon.applyToItem(item);
-            modified = true;
-        }
-		
-		// Don't need mana if cost-free
-		if (isCostFree()) {
-			manaRegeneration = 0;
-			manaMax = 0;
-			mana = 0;
+		Messages messages = controller.getMessages();
+		if (other.rename && templateConfig != null) {
+			String newName = messages.get("wands." + other.template + ".name");
+			newName = templateConfig.getString("name", newName);
+			upgradeConfig.set("name", newName);
 		} else {
-			if (other.manaRegeneration > manaRegeneration) { manaRegeneration = other.manaRegeneration; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration())); }
-            if (other.manaPerDamage > manaPerDamage) { manaPerDamage = other.manaPerDamage; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration())); }
-			if (other.manaMax > manaMax) { manaMax = other.manaMax; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_amount", manaMax, controller.getMaxMana())); }
-			if (other.mana > mana) {
-                float previousMana = mana;
-                mana = Math.min(manaMax, other.mana);
-                if (mana > previousMana) {
-                    if (mage != null)
-                    {
-                        String message = getMessage("mana_added").replace("$value", Integer.toString((int) mana)).replace("$wand", getName());
-                        mage.sendMessage(message);
-                    }
-                    modified = true;
-                }
-            }
-		}
-		
-		// Add spells
-		Set<String> spells = other.getSpells();
-		for (String spellKey : spells) {
-            SpellTemplate currentSpell = getBaseSpell(spellKey);
-			if (addSpell(spellKey)) {
-				modified = true;
-				String spellName = spellKey;
-				SpellTemplate spell = controller.getSpellTemplate(spellKey);
-				if (spell != null) spellName = spell.getName();
-
-                if (mage != null) {
-                    if (currentSpell != null) {
-                        String levelDescription = spell.getLevelDescription();
-                        if (levelDescription == null || levelDescription.isEmpty()) {
-                            levelDescription = spellName;
-                        }
-                        mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription).replace("$wand", getName()));
-                        mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
-
-						SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, spell);
-						Bukkit.getPluginManager().callEvent(upgradeEvent);
-                    } else {
-                        mage.sendMessage(messages.get("wand.spell_added").replace("$name", spellName).replace("$wand", getName()));
-
-						AddSpellEvent addEvent = new AddSpellEvent(mage, this, spell);
-						Bukkit.getPluginManager().callEvent(addEvent);
-                    }
-                }
-			}
+			upgradeConfig.set("name", null);
 		}
 
-		// Add materials
-		Set<String> materials = other.getBrushes();
-		for (String materialKey : materials) {
-			if (addBrush(materialKey)) {
-				modified = true;
-				if (mage != null) mage.sendMessage(messages.get("wand.brush_added").replace("$wand", getName()).replace("$name", MaterialBrush.getMaterialName(messages, materialKey)));
-			}
+		if (other.renameDescription && templateConfig != null) {
+			String newDescription = messages.get("wands." + other.template + ".description");
+			newDescription = templateConfig.getString("description", newDescription);
+			upgradeConfig.set("description", newDescription);
+		} else {
+			upgradeConfig.set("description", null);
 		}
-
-        // Add cast overrides
-        if (other.castOverrides != null && other.castOverrides.size() > 0) {
-            if (castOverrides == null) {
-                castOverrides = new HashMap<>();
-            }
-            HashSet<String> upgradedSpells = new HashSet<>();
-            for (Map.Entry<String, String> entry : other.castOverrides.entrySet()) {
-                String overrideKey = entry.getKey();
-                String currentValue = castOverrides.get(overrideKey);
-                String value = entry.getValue();
-                if (currentValue != null) {
-                    try {
-                        double currentDouble = Double.parseDouble(currentValue);
-                        double newDouble = Double.parseDouble(value);
-                        if (newDouble < currentDouble) {
-                            value = currentValue;
-                        }
-                    } catch (Exception ex) {
-                    }
-                }
-
-                boolean addOverride = currentValue == null || !value.equals(currentValue);
-                modified = modified || addOverride;
-                if (addOverride && mage != null && overrideKey.contains(".")) {
-                    String[] pieces = StringUtils.split(overrideKey, '.');
-                    String spellKey = pieces[0];
-                    String spellName = spellKey;
-                    if (!upgradedSpells.contains(spellKey)) {
-                        SpellTemplate spell = controller.getSpellTemplate(spellKey);
-                        if (spell != null) spellName = spell.getName();
-                        mage.sendMessage(messages.get("wand.spell_override_upgraded").replace("$name", spellName));
-                        upgradedSpells.add(spellKey);
-                    }
-                }
-                castOverrides.put(entry.getKey(), entry.getValue());
-            }
-        }
-		
-		Player player = (mage == null) ? null : mage.getPlayer();
-		if (other.autoFill && player != null) {
-			this.fill(player, controller.getMaxWandFillLevel());
-			modified = true;
-			if (mage != null) mage.sendMessage(getMessage("filled").replace("$wand", getName()));
+		boolean modified = upgrade(upgradeConfig);
+		if (modified) {
+			loadProperties();
+			saveState();
 		}
-		
-		if (other.autoOrganize && mage != null) {
-			this.organizeInventory(mage);
-			modified = true;
-			mage.sendMessage(getMessage("reorganized").replace("$wand", getName()));
-		}
-
-        if (other.autoAlphabetize) {
-            this.alphabetizeInventory();
-            modified = true;
-            if (mage != null) mage.sendMessage(getMessage("alphabetized").replace("$wand", getName()));
-        }
-
-		saveItemState();
-		updateName();
-		updateMaxMana(false);
-		updateLore();
-
 		return modified;
 	}
 
@@ -3265,7 +2761,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				// Sanity check, so it'll switch to inventory next time
 				updateHasInventory();
 				if (spells.size() > 0) {
-					activeSpell = spells.iterator().next();
+					setActiveSpell(spells.iterator().next());
 				}
 			}
 			updateName();
@@ -3280,7 +2776,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void updateHasInventory() {
 		int inventorySize = getSpells().size() + getBrushes().size();
-		hasInventory = inventorySize > 1 || (inventorySize == 1 && hasPath());
+		hasInventory = inventorySize > 1 || (inventorySize == 1 && hasSpellProgression);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -3362,6 +2858,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         WandMode mode = getMode();
         try {
             saveInventory();
+            updateSpells();
             inventoryIsOpen = false;
             if (mage != null) {
                 if (!playPassiveEffects("close") && inventoryCloseSound != null) {
@@ -3434,6 +2931,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
 		Collection<SpellTemplate> allSpells = controller.getPlugin().getSpellTemplates();
+
+        // Hack to prevent messaging
+        Mage mage = this.mage;
+        this.mage = null;
 		for (SpellTemplate spell : allSpells)
 		{
             String key = spell.getKey();
@@ -3450,23 +2951,23 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				addSpell(key);
 			}
 		}
-		
+		this.mage = mage;
+
+		setProperty("fill", null);
 		autoFill = false;
-		saveItemState();
+		saveState();
 		
 		return true;
 	}
 
     protected void randomize() {
-        boolean modified = randomize;
-        randomize = false;
         if (description.contains("$")) {
             String newDescription = controller.getMessages().escape(description);
             if (!newDescription.equals(description)) {
-                description = newDescription;
-                modified = true;
+                setDescription(newDescription);
                 updateLore();
                 updateName();
+				setProperty("randomize", false);
             }
         }
 
@@ -3478,14 +2979,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     Random r = new Random();
                     String[] keys = StringUtils.split(iconKey, ',');
                     iconKey = keys[r.nextInt(keys.length)];
+					setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
+					updateIcon();
+					setProperty("randomize", false);
                 }
-                setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
-                modified = true;
             }
-        }
-
-        if (modified) {
-            saveItemState();
         }
     }
 	
@@ -3504,41 +3002,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		if (isModifiable() && isSpell(item) && !isSkill(item)) {
 			String spellKey = getSpell(item);
-            SpellTemplate currentSpell = getBaseSpell(spellKey);
 			Set<String> spells = getSpells();
 			if (!spells.contains(spellKey) && addSpell(spellKey)) {
-				SpellTemplate spell = controller.getSpellTemplate(spellKey);
-				if (spell != null) {
-                    if (mage != null) {
-                        if (currentSpell != null) {
-                            String levelDescription = spell.getLevelDescription();
-                            if (levelDescription == null || levelDescription.isEmpty()) {
-                                levelDescription = spell.getName();
-                            }
-                            mage.sendMessage(getMessage("spell_upgraded").replace("$wand", getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
-                            mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
-
-							SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, spell);
-							Bukkit.getPluginManager().callEvent(upgradeEvent);
-                        } else {
-                            mage.sendMessage(getMessage("spell_added").replace("$wand", getName()).replace("$name", spell.getName()));
-                            activeSpell = spell.getKey();
-
-							AddSpellEvent addEvent = new AddSpellEvent(mage, this, spell);
-							Bukkit.getPluginManager().callEvent(addEvent);
-                        }
-                    }
-                    return true;
-				}
+                return true;
 			}
 		} else if (isModifiable() && isBrush(item)) {
 			String materialKey = getBrush(item);
 			Set<String> materials = getBrushes();
 			if (!materials.contains(materialKey) && addBrush(materialKey)) {
-                if (mage != null) {
-                    Messages messages = controller.getMessages();
-                    mage.sendMessage(messages.get("wand.brush_added").replace("$wand", getName()).replace("$name", MaterialBrush.getMaterialName(messages, materialKey)));
-                }
                 return true;
 			}
 		} else if (isUpgrade(item)) {
@@ -3772,6 +3243,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		bound = false;
 		owner = null;
+		setProperty("bound", false);
+		setProperty("owner", null);
+		setProperty("owner_id", null);
 		saveState();
 	}
 	
@@ -3782,6 +3256,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Mage holdingMage = mage;
 		deactivate();
 		bound = true;
+		setProperty("bound", true);
 		saveState();
 		
 		if (holdingMage != null) {
@@ -3811,7 +3286,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (usesXPNumber() || usesXPBar()) {
 			mage.resetSentExperience();
 		}
-        saveItemState();
+        saveState();
 		mage.setActiveWand(null);
 		this.mage = null;
 		updateMaxMana(true);
@@ -3825,7 +3300,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     @Override
     public SpellTemplate getBaseSpell(String spellName) {
-        SpellKey key = new SpellKey(spellName);
+        return getBaseSpell(new SpellKey(spellName));
+    }
+
+    public SpellTemplate getBaseSpell(SpellKey key) {
         Integer spellLevel = spellLevels.get(key.getBaseKey());
         if (spellLevel == null) return null;
 
@@ -3882,6 +3360,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 use();
 				if (spellColor != null && this.effectColor != null) {
 					this.effectColor = this.effectColor.mixColor(spellColor, effectColorSpellMixWeight);
+                    setProperty("effect_color", effectColor.toString());
 					// Note that we don't save this change.
 					// The hope is that the wand will get saved at some point later
 					// And we don't want to trigger NBT writes every spell cast.
@@ -3925,7 +3404,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     }
                     player.updateInventory();
                 } else {
-                    saveItemState();
+                    saveState();
                     updateName();
                     updateLore();
                 }
@@ -3966,7 +3445,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					effectiveManaRegeneration = heroes.getManaRegen(player);
 					manaMax = effectiveManaMax;
 					manaRegeneration = effectiveManaRegeneration;
-					mana = heroes.getMana(player);
+					setMana(heroes.getMana(player));
 					updated = true;
 				}
 			}
@@ -3976,10 +3455,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				if (effectiveManaMax == 0 && manaMax > 0) {
 					effectiveManaMax = manaMax;
 				}
-				mana = Math.min(effectiveManaMax, mana + (float) effectiveManaRegeneration * (float)delta / 1000);
+				setMana(Math.min(effectiveManaMax, mana + (float) effectiveManaRegeneration * (float)delta / 1000));
 				updated = true;
 			}
 			lastManaRegeneration = now;
+			setProperty("mana_timestamp", lastManaRegeneration);
 		}
 		
 		return updated;
@@ -4050,7 +3530,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         try {
             Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
             if (wandNode != null) {
-                String value = InventoryUtils.getMeta(wandNode, key);
+                String value = InventoryUtils.getMetaString(wandNode, key);
                 if (value != null && !value.isEmpty()) {
                     return Float.parseFloat(value);
                 }
@@ -4065,7 +3545,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         try {
             Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
             if (wandNode != null) {
-                return InventoryUtils.getMeta(wandNode, key);
+                return InventoryUtils.getMetaString(wandNode, key);
             }
         } catch (Exception ex) {
 
@@ -4082,7 +3562,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		ArrayList<String> spells = new ArrayList<>(spellsSet);
 		if (spells.size() == 0) return;
 		if (activeSpell == null) {
-			activeSpell = spells.get(0).split("@")[0];
+			setActiveSpell(spells.get(0).split("@")[0]);
 			return;
 		}
 		
@@ -4103,7 +3583,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		ArrayList<String> materials = new ArrayList<>(materialsSet);
 		if (materials.size() == 0) return;
 		if (activeMaterial == null) {
-			activeMaterial = materials.get(0).split("@")[0];
+			setActiveBrush(materials.get(0).split("@")[0]);
 			return;
 		}
 		
@@ -4119,8 +3599,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		setActiveBrush(materials.get(materialIndex).split("@")[0]);
 	}
 
-	public Mage getActivePlayer() {
+	public Mage getActiveMage() {
 		return mage;
+	}
+
+	public void setActiveMage(com.elmakers.mine.bukkit.api.magic.Mage mage) {
+    	if (mage instanceof Mage) {
+			this.mage = (Mage)mage;
+		}
 	}
 	
 	public Color getEffectColor() {
@@ -4202,6 +3688,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public void setPath(String path) {
         this.path = path;
+		setProperty("path", path);
     }
 
 	/*
@@ -4243,7 +3730,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        updateIcon();
+                        updateItemIcon();
 						// Needed because if the inventory has opened the item reference may be stale (?)
 						if (mage != null) {
 							Player player = mage.getPlayer();
@@ -4260,10 +3747,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             inactiveIcon.applyToItem(this.item);
         }
     }
-	
-	public void setMage(Mage mage) {
-		this.mage = mage;
-	}
 
     public void activate(Mage mage) {
         if (mage == null) return;
@@ -4282,25 +3765,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return;
         }
 
-		WandTemplate template = getTemplate();
-		Wand soulWand = mage.getSoulWand();
-		if (template != null && template.isSoul() && soulWand != this) {
-			if (!soul) {
-				// Migrate old wands
-				this.add(soulWand);
-				MemoryConfiguration soulConfiguration = new MemoryConfiguration();
-				saveProperties(soulConfiguration);
-				soulWand.loadProperties(soulConfiguration);
-				soul = true;
-				saveState();
-			}
-			soulWand.soul = true;
-			soulWand.item = this.item;
-			soulWand.activate(mage);
-			return;
-		}
-
-		this.newId();
+		this.checkId();
 
 		if (getMode() != WandMode.INVENTORY) {
 			showActiveIcon(true);
@@ -4396,7 +3861,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         mage.setActiveWand(this);
         tick();
-        saveItemState();
+        saveState();
 
 		updateMaxMana(false);
         updateActiveMaterial();
@@ -4419,49 +3884,50 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         Bukkit.getPluginManager().callEvent(activatedEvent);
     }
 
+    @Override
+	public boolean organizeInventory() {
+    	if (mage != null) {
+    		return organizeInventory(mage);
+		}
+		return false;
+	}
+
 	@Override
-	public void organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
+	public boolean organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
         WandOrganizer organizer = new WandOrganizer(this, mage);
         organizer.organize();
         openInventoryPage = 0;
 		currentHotbar = 0;
         autoOrganize = false;
         autoAlphabetize = false;
-
-		// Force inventory re-load
-		saveItemState();
-		loadState();
-		updateInventory();
+        return true;
     }
 
     @Override
-    public void alphabetizeInventory() {
+    public boolean alphabetizeInventory() {
         WandOrganizer organizer = new WandOrganizer(this);
         organizer.alphabetize();
         openInventoryPage = 0;
 		currentHotbar = 0;
         autoOrganize = false;
         autoAlphabetize = false;
-
-		// Force inventory re-load
-		saveItemState();
-		loadState();
-		updateInventory();
+        return true;
     }
 
 	@Override
 	public com.elmakers.mine.bukkit.api.wand.Wand duplicate() {
 		ItemStack newItem = InventoryUtils.getCopy(item);
 		Wand newWand = controller.getWand(newItem);
-		newWand.saveItemState();
+		newWand.saveState();
 		return newWand;
 	}
 
 	@Override
 	public boolean configure(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
-		loadProperties(ConfigurationUtils.toConfigurationSection(convertedProperties), false);
-        saveItemState();
+		configure(ConfigurationUtils.toConfigurationSection(convertedProperties));
+		loadProperties();
+        saveState();
         updateName();
         updateLore();
 		return true;
@@ -4470,8 +3936,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
 	public boolean upgrade(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
-		loadProperties(ConfigurationUtils.toConfigurationSection(convertedProperties), true);
-        saveItemState();
+		upgrade(ConfigurationUtils.toConfigurationSection(convertedProperties));
+		loadProperties();
+        saveState();
         updateName();
         updateLore();
 		return true;
@@ -4485,6 +3952,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public void unlock() {
         locked = false;
+        setProperty("locked", false);
     }
 
     public boolean isPassive() {
@@ -4508,9 +3976,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return false;
         }
 
-        if (isInventoryOpen()) {
-			saveInventory();
-		}
+		saveInventory();
         SpellTemplate template = controller.getSpellTemplate(spellName);
         if (template == null) {
             controller.getLogger().warning("Tried to add unknown spell to wand: " + spellName);
@@ -4532,14 +3998,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // Special handling for spell upgrades and spells to remove
         Integer inventorySlot = null;
         Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
-        if (currentLevel != null) {
-            if (activeSpell != null && !activeSpell.isEmpty()) {
-                SpellKey currentKey = new SpellKey(activeSpell);
-                if (currentKey.getBaseKey().equals(spellKey.getBaseKey())) {
-                    activeSpell = spellKey.getKey();
-                }
-            }
-        }
+        SpellTemplate currentSpell = getBaseSpell(spellKey);
         List<SpellKey> spellsToRemove = new ArrayList<>(template.getSpellsToRemove().size());
         for (SpellKey key : template.getSpellsToRemove()) {
             if (spellLevels.get(key.getBaseKey()) != null) {
@@ -4573,43 +4032,91 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
             }
         }
-        if (activeSpell == null || activeSpell.isEmpty()) {
-            activeSpell = spellKey.getKey();
-        }
 
         spellLevels.put(spellKey.getBaseKey(), level);
         spells.put(template.getKey(), inventorySlot);
+
+		if (currentLevel != null) {
+			if (activeSpell != null && !activeSpell.isEmpty()) {
+				SpellKey currentKey = new SpellKey(activeSpell);
+				if (currentKey.getBaseKey().equals(spellKey.getBaseKey())) {
+					setActiveSpell(spellKey.getKey());
+				}
+			}
+		}
+		if (activeSpell == null || activeSpell.isEmpty()) {
+			setActiveSpell(spellKey.getKey());
+		}
+
 		addToInventory(spellItem, inventorySlot);
 		updateInventory();
 		updateHasInventory();
-        saveItemState();
+		updateSpells();
+        saveState();
 		updateLore();
 
-        if (mage != null && spells.size() != spellCount)
+        if (mage != null)
         {
-            if (spellCount == 0)
-            {
-                String message = getMessage("spell_instructions", "").replace("$wand", getName());
-                mage.sendMessage(message.replace("$spell", template.getName()));
+            if (currentSpell != null) {
+                String levelDescription = template.getLevelDescription();
+                if (levelDescription == null || levelDescription.isEmpty()) {
+                    levelDescription = template.getName();
+                }
+                sendLevelMessage("spell_upgraded", currentSpell.getName(), levelDescription);
+
+                mage.sendMessage(template.getUpgradeDescription().replace("$name", currentSpell.getName()));
+
+                SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, template);
+                Bukkit.getPluginManager().callEvent(upgradeEvent);
+            } else {
+                sendAddMessage("spell_added", template.getName());
+
+                AddSpellEvent addEvent = new AddSpellEvent(mage, this, template);
+                Bukkit.getPluginManager().callEvent(addEvent);
             }
-            else
-            if (spellCount == 1)
-            {
-                mage.sendMessage(getMessage("inventory_instructions", "").replace("$wand", getName()));
-            }
-            if (inventoryCount == 1 && inventories.size() > 1)
-            {
-                mage.sendMessage(getMessage("page_instructions", "").replace("$wand", getName()));
+
+            if (spells.size() != spellCount) {
+                if (spellCount == 0)
+                {
+                    String message = getMessage("spell_instructions", "").replace("$wand", getName());
+                    mage.sendMessage(message.replace("$spell", template.getName()));
+                }
+                else
+                if (spellCount == 1)
+                {
+                    mage.sendMessage(getMessage("inventory_instructions", "").replace("$wand", getName()));
+                }
+                if (inventoryCount == 1 && inventories.size() > 1)
+                {
+                    mage.sendMessage(getMessage("page_instructions", "").replace("$wand", getName()));
+                }
             }
         }
 		
 		return true;
 	}
 
-    public String getMessage(String key) {
-        return getMessage(key, "");
+	@Override
+	protected void sendAddMessage(String messageKey, String nameParam) {
+		if (mage == null || nameParam == null || nameParam.isEmpty()) return;
+		String message = getMessage(messageKey).replace("$name", nameParam).replace("$wand", getName());
+		mage.sendMessage(message);
+	}
+
+    protected void sendLevelMessage(String messageKey, String nameParam, String level) {
+        if (mage == null || nameParam == null || nameParam.isEmpty()) return;
+        String message = getMessage(messageKey).replace("$name", nameParam).replace("$wand", getName()).replace("$level", level);
+        mage.sendMessage(message);
     }
 
+	@Override
+	protected void sendMessage(String messageKey) {
+		if (mage == null || messageKey == null || messageKey.isEmpty()) return;
+		String message = getMessage(messageKey).replace("$wand", getName());
+		mage.sendMessage(message);
+	}
+
+	@Override
     public String getMessage(String key, String defaultValue) {
         String message = controller.getMessages().get("wand." + key, defaultValue);
         if (template != null && !template.isEmpty()) {
@@ -4617,6 +4124,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
         return message;
     }
+
+
+	@Override
+	protected void sendDebug(String debugMessage) {
+		if (mage != null) {
+			mage.sendDebugMessage(debugMessage);
+		}
+	}
 
 	@Override
 	public boolean add(com.elmakers.mine.bukkit.api.wand.Wand other) {
@@ -4647,9 +4162,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (!isModifiable()) return false;
 		if (hasBrush(materialKey)) return false;
 
-        if (isInventoryOpen()) {
-            saveInventory();
-        }
+		saveInventory();
 		
 		ItemStack itemStack = createBrushIcon(materialKey);
 		if (itemStack == null) return false;
@@ -4665,11 +4178,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			updateInventory();
 		}
 		updateHasInventory();
-        saveItemState();
+		updateBrushes();
+        saveState();
 		updateLore();
 
         if (mage != null)
         {
+			Messages messages = controller.getMessages();
+			String materialName = MaterialBrush.getMaterialName(messages, materialKey);
+			if (materialName == null)
+			{
+				mage.getController().getLogger().warning("Invalid material: " + materialKey);
+				materialName = materialKey;
+			}
+
+			sendAddMessage("brush_added", materialName);
+
             if (brushCount == 0)
             {
                 mage.sendMessage(getMessage("brush_instructions").replace("$wand", getName()));
@@ -4718,7 +4242,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public void activateBrush(String materialKey) {
 		this.activeMaterial = materialKey;
-        saveItemState();
+		setProperty("active_material", this.activeMaterial);
+        saveState();
 		updateName();
 		updateActiveMaterial();
         updateHotbar();
@@ -4734,7 +4259,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
         spellKey = new SpellKey(spellKey.getBaseKey(), spellLevels.get(activeSpell));
 		this.activeSpell = spellKey.getKey();
-        saveItemState();
+		setProperty("active_spell", this.activeSpell);
+        saveState();
 		updateName();
 	}
 
@@ -4742,9 +4268,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean removeBrush(String materialKey) {
 		if (!isModifiable() || materialKey == null) return false;
 		
-		if (isInventoryOpen()) {
-			saveInventory();
-		}
+		saveInventory();
 		if (materialKey.equals(activeMaterial)) {
 			activeMaterial = null;
 		}
@@ -4771,7 +4295,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		updateActiveMaterial();
 		updateInventory();
-        saveItemState();
+		updateBrushes();
+        saveState();
 		updateName();
 		updateLore();
 		return found;
@@ -4781,11 +4306,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean removeSpell(String spellName) {
 		if (!isModifiable()) return false;
 		
-		if (isInventoryOpen()) {
-			saveInventory();
-		}
+		saveInventory();
 		if (spellName.equals(activeSpell)) {
-			activeSpell = null;
+			setActiveSpell(null);
 		}
         spells.remove(spellName);
         SpellKey spellKey = new SpellKey(spellName);
@@ -4802,7 +4325,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 						found = true;
 						inventory.setItem(index, null);
 					} else if (activeSpell == null) {
-						activeSpell = getSpell(itemStack);
+						setActiveSpell(getSpell(itemStack));
 					}
 					if (found && activeSpell != null) {
 						break;
@@ -4812,7 +4335,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
         updateInventory();
 		updateHasInventory();
-        saveItemState();
+		updateSpells();
+        saveState();
         updateName();
         updateLore();
 
@@ -4833,6 +4357,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             this.castOverrides = new HashMap<>(overrides);
         }
+		updateOverrides();
     }
 
     @Override
@@ -4840,6 +4365,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     {
         if (castOverrides != null) {
             castOverrides.remove(key);
+			updateOverrides();
         }
     }
 
@@ -4854,7 +4380,43 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             castOverrides.put(key, value);
         }
+		updateOverrides();
     }
+
+	@Override
+	public boolean addOverride(String key, String value)
+	{
+		if (castOverrides == null) {
+			castOverrides = new HashMap<>();
+		}
+		boolean modified = false;
+		if (value == null || value.length() == 0) {
+			modified = castOverrides.containsKey(key);
+			castOverrides.remove(key);
+		} else {
+			String current = castOverrides.get(key);
+			modified = current == null || !current.equals(value);
+			castOverrides.put(key, value);
+		}
+		if (modified) {
+			updateOverrides();
+		}
+
+		return modified;
+	}
+
+    protected void updateOverrides() {
+		if (castOverrides != null && castOverrides.size() > 0) {
+			Collection<String> parameters = new ArrayList<>();
+			for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
+				String value = entry.getValue();
+				parameters.add(entry.getKey() + " " + value.replace(",", "\\|"));
+			}
+			setProperty("overrides", StringUtils.join(parameters, ","));
+		} else {
+			setProperty("overrides", null);
+		}
+	}
 
     public boolean hasStoredInventory() {
         return storedInventory != null;
@@ -4939,7 +4501,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			inventory.setItem(i, storedInventory.getItem(i));
 		}
         storedInventory = null;
-        saveItemState();
+        saveState();
 
         inventory.setHeldItemSlot(storedSlot);
 
@@ -5137,39 +4699,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		path.upgrade(this, mage);
         return true;
-    }
-
-    /**
-     * Gets a custom property from the wand.
-     *
-     * @param key The key of the property.
-     * @return
-     *     Null if no value with the provided key exists, otherwise the value.
-     */
-    public @Nullable String getCustomProperty(String key) {
-        Preconditions.checkNotNull(key, "key");
-        return customProperties.get(key);
-    }
-
-    /**
-     * Sets a custom property on the wand.
-     *
-     * @param key The key of the property.
-     * @param value
-     *     The associated value. If this is null, the property will be removed.
-     * @throws IllegalStateException In case the wand is not modifiable.
-     */
-    public void setCustomProperty(@Nonnull String key, String value) {
-        Preconditions.checkNotNull(key, "key");
-        Preconditions.checkState(isModifiable(), "Wand is not modifiable");
-
-        if(value == null) {
-            customProperties.remove(key);
-        } else {
-            customProperties.put(key, value);
-        }
-
-        saveItemState();
     }
     
     public int getEffectiveManaMax() {

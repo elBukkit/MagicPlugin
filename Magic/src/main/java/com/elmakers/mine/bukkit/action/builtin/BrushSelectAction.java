@@ -66,7 +66,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             }
 
             ItemStack item = event.getCurrentItem();
-            String set = InventoryUtils.getMeta(item, "brush_set", null);
+            String set = InventoryUtils.getMetaString(item, "brush_set", null);
             if (set != null) {
                 if (set.equals("schematics")) {
                     String inventoryTitle = context.getMessage("schematics_title", "Schematics");

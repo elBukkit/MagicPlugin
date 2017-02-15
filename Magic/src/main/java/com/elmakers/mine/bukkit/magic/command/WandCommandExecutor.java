@@ -513,11 +513,12 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		{
 			nameMap.put(template.getKey(), template.getConfiguration());
 		}
-		for (ConfigurationSection templateConfig : nameMap.values())
+		for (Map.Entry<String, ConfigurationSection> templateEntry : nameMap.entrySet())
 		{
+			ConfigurationSection templateConfig = templateEntry.getValue();
 			if (templateConfig.getBoolean("hidden", false)) continue;
 			
-			String key = templateConfig.getString("key");
+			String key = templateEntry.getKey();
 			String name = api.getMessages().get("wands." + key + ".name", api.getMessages().get("wand.default_name"));
 			String description = api.getMessages().get("wands." + key + ".description", "");
 			description = ChatColor.YELLOW + description; 
@@ -556,7 +557,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.GRAY + "Brush: " + brushKey);
             MaterialAndData brush = new MaterialAndData(brushKey);
             sender.sendMessage(" " + ChatColor.GRAY + brush.getName());
-        } else if (api.isWand(itemInHand)) {
+        } else if (api.isWand(itemInHand) || api.isUpgrade(itemInHand)) {
 			isWand = true;
             Wand wand = api.getWand(itemInHand);
             wand.describe(sender);
@@ -599,12 +600,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	public boolean onWandOrganize(CommandSender sender, Player player)
 	{
 		// Allow reorganizing modifiable wands
-		if (!checkWand(sender, player, true)) {
+		Wand wand = checkWand(sender, player, true);
+		if (wand == null) {
 			return true;
 		}
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
 		wand.organizeInventory(mage);
+		wand.saveState();
 		mage.sendMessage(api.getMessages().get("wand.reorganized").replace("$wand", wand.getName()));
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_reorganized", "$name", player.getName()).replace("$wand", wand.getName()));
@@ -615,12 +617,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
     public boolean onWandAlphabetize(CommandSender sender, Player player)
     {
-        if (!checkWand(sender, player, true)) {
+		Wand wand = checkWand(sender, player, true);
+        if (wand == null) {
             return true;
         }
         Mage mage = api.getMage(player);
-        Wand wand = mage.getActiveWand();
         wand.alphabetizeInventory();
+        wand.saveState();
         mage.sendMessage(api.getMessages().get("wand.alphabetized").replace("$wand", wand.getName()));
         if (sender != player) {
             sender.sendMessage(api.getMessages().getParameterized("wand.player_alphabetized", "$name", player.getName()).replace("$wand", wand.getName()));
@@ -631,11 +634,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
     public boolean onWandEnchant(CommandSender sender, Player player, String levelString)
     {
-        if (!checkWand(sender, player)) {
+		Wand wand = checkWand(sender, player);
+        if (wand == null) {
             return false;
         }
         Mage mage = api.getMage(player);
-        Wand wand = mage.getActiveWand();
 
         int xpLevels = 0;
         boolean useXp = levelString.equalsIgnoreCase("xp");
@@ -652,6 +655,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
         if (levels > 0 && useXp) {
             mage.setLevel(Math.max(0, mage.getLevel() - levels));
         }
+        wand.saveState();
 
         if (sender != player) {
             if (levels > 0) {
@@ -698,11 +702,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 	public boolean onWandBind(CommandSender sender, Player player)
 	{
-		if (!checkWand(sender, player)) {
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
 			return true;
 		}
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
 
 		wand.bind();
 
@@ -715,11 +719,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 	public boolean onWandUnbind(CommandSender sender, Player player)
 	{
-		if (!checkWand(sender, player)) {
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
 			return true;
 		}
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
 
 		wand.unbind();
 
@@ -732,22 +736,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	
 	public boolean onWandUnenchant(CommandSender sender, Player player)
 	{
-		if (!checkWand(sender, player)) {
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
 			return true;
 		}
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
-		
-		// Trying to make sure the player is actually holding the active wand
-		// Just in case. This isn't fool-proof though, if they have more than one wand.
-		if (wand == null || !api.isWand(player.getInventory().getItemInMainHand())) {
-			mage.sendMessage(api.getMessages().get("wand.no_wand"));
-			if (sender != player) {
-				sender.sendMessage(api.getMessages().getParameterized("wand.player_no_wand", "$name", player.getName()));
-			}
-			return false;
-		}
-
 		wand.deactivate();
 		wand.unenchant();
 		player.getInventory().setItemInMainHand(wand.getItem());
@@ -761,11 +754,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 	public boolean onWandDuplicate(CommandSender sender, Player player)
 	{
-		if (!checkWand(sender, player, false, false)) {
+		Wand wand = checkWand(sender, player, false, false);
+		if (wand == null) {
 			return true;
 		}
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
 		Wand newWand = wand.duplicate();
 		
 		api.giveItemToPlayer(player, newWand.getItem());
@@ -797,13 +790,14 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
     public boolean onWandUnlock(CommandSender sender, Player player)
     {
-        if (!checkWand(sender, player, true, true, false)) {
+    	Wand wand = checkWand(sender, player, true, true, false);
+        if (wand == null) {
             return true;
         }
         Mage mage = api.getMage(player);
-        Wand wand = mage.getActiveWand();
 
         wand.unlock();
+        wand.saveState();
         mage.sendMessage(api.getMessages().get("wand.unlocked"));
         if (sender != player) {
             sender.sendMessage(api.getMessages().getParameterized("wand.player_unlocked", "$name", player.getName()));
@@ -813,13 +807,12 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
     public boolean onWandOverride(CommandSender sender, Player player, String[] parameters)
     {
-        if (!checkWand(sender, player, true, true, false))
+		Wand wand = checkWand(sender, player, true, true, false);
+        if (wand == null)
         {
             return true;
         }
 
-        Mage mage = api.getMage(player);
-        Wand wand = mage.getActiveWand();
         if (parameters.length == 0)
         {
             Map<String, String> overrides = wand.getOverrides();
@@ -838,7 +831,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (!checkWand(sender, player))
+		wand = checkWand(sender, player);
+		if (wand == null)
         {
             return true;
         }
@@ -846,6 +840,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
         if (parameters.length == 1)
         {
             wand.removeOverride(parameters[0]);
+			wand.saveState();
             sender.sendMessage(ChatColor.DARK_AQUA  + "Removed override " + parameters[0]);
             return true;
         }
@@ -857,6 +852,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
         }
 
         wand.setOverride(parameters[0], value);
+		wand.saveState();
         sender.sendMessage(ChatColor.DARK_AQUA  + "Added override " + ChatColor.AQUA + parameters[0]
                 + ChatColor.WHITE + " = " + ChatColor.DARK_AQUA + parameters[1]);
 
@@ -871,12 +867,12 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
-		if (!checkWand(sender, player)) {
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
 			return true;
 		}
 
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
 		Map<String, Object> node = new HashMap<>();
 		String value = "";
 		for (int i = 1; i < parameters.length; i++) {
@@ -898,33 +894,39 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 	
-	protected boolean checkWand(CommandSender sender, Player player)
+	protected Wand checkWand(CommandSender sender, Player player)
 	{
 		return checkWand(sender, player, false, false);
 	}
 	
-	protected boolean checkWand(CommandSender sender, Player player, boolean skipModifiable)
+	protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable)
 	{
 		return checkWand(sender, player, skipModifiable, false);
 	}
 	
-	protected boolean checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound)
+	protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound)
 	{
 		return checkWand(sender, player, skipModifiable, skipBound, false);
 	}
 	
-	protected boolean checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet)
+	protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet)
 	{
 		Mage mage = api.getMage(player);
-		if (mage == null) return false;
+		if (mage == null) return  null;
 		Wand wand = mage.getActiveWand();
+		if (wand == null) {
+			ItemStack item = player.getInventory().getItemInMainHand();
+			if (api.isUpgrade(item)) {
+				wand = api.getWand(item);
+			}
+		}
 		
 		if (wand == null) {
 			if (!quiet) mage.sendMessage(api.getMessages().get("wand.no_wand"));
 			if (sender != player) {
 				sender.sendMessage(api.getMessages().getParameterized("wand.player_no_wand", "$name", player.getName()));
 			}
-			return false;
+			return null;
 		}
         boolean bypassLocked = (sender instanceof Player) && api.hasPermission(sender, "Magic.wand.override_locked");
 		if (!skipModifiable && wand.isLocked() && !bypassLocked) {
@@ -932,17 +934,17 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			if (sender != player) {
 				sender.sendMessage(api.getMessages().getParameterized("wand.player_unmodifiable", "$name", player.getName()));
 			}
-			return false;
+			return null;
 		}
 		if (!skipBound && !wand.canUse(mage.getPlayer()) ) {
 			if (!quiet) mage.sendMessage(api.getMessages().get("wand.bound_to_other"));
 			if (sender != player) {
 				sender.sendMessage(api.getMessages().getParameterized("wand.player_unmodifiable", "$name", player.getName()));
 			}
-			return false;
+			return null;
 		}
 		
-		return true;
+		return wand;
 	}
 
 	public boolean onWandCombine(CommandSender sender, Player player, String[] parameters)
@@ -951,14 +953,14 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			sender.sendMessage("Use: /wand combine <wandname>");
 			return false;
 		}
-		
-		if (!checkWand(sender, player)) {
+
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
 			return true;
 		}
 
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
-		
+
 		String wandName = parameters[0];
 		Wand newWand = api.createWand(wandName);
 		if (newWand == null) {
@@ -981,13 +983,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 	public boolean onWandFill(CommandSender sender, Player player, int maxLevel)
 	{
-		if (!checkWand(sender, player)) {
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
 			return true;
 		}
 		
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
-		
+
 		wand.fill(player, maxLevel);
 		mage.sendMessage(api.getMessages().get("wand.filled").replace("$wand", wand.getName()));
 		if (sender != player) {
@@ -1041,12 +1043,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
-		if (!checkWand(sender, player)) {
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
 			return true;
 		}
 
-		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
 		MageController controller = api.getController();
 		String template = parameters[0];
 		
@@ -1091,13 +1092,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			sender.sendMessage("Use: /wand add <spell|material> [material:data]");
 			return true;
 		}
-		
-		if (!checkWand(sender, player)) {
+
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
 			return true;
 		}
 
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
         Messages messages = api.getMessages();
 
 		String spellName = parameters[0];
@@ -1115,7 +1116,6 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 			if (wand.addBrush(materialKey)) {
 				wand.setActiveBrush(materialKey);
-                mage.sendMessage(messages.get("wand.brush_added").replace("$wand", wand.getName()).replace("$name", MaterialBrush.getMaterialName(messages, materialKey)));
 				if (sender != player) {
 					sender.sendMessage("Added material '" + materialKey + "' to " + player.getName() + "'s wand");
 				}
@@ -1127,6 +1127,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				}
 			}
 
+			wand.saveState();
 			return true;
 		}
 		Spell spell = mage.getSpell(spellName);
@@ -1144,12 +1145,10 @@ public class WandCommandExecutor extends MagicTabExecutor {
                 if (levelDescription == null || levelDescription.isEmpty()) {
                     levelDescription = spell.getName();
                 }
-                mage.sendMessage(api.getMessages().get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                 if (sender != player) {
                     sender.sendMessage(api.getMessages().get("wand.player_spell_upgraded").replace("$player", player.getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                 }
             } else {
-                mage.sendMessage(messages.get("wand.spell_added").replace("$name", spellName).replace("$wand", wand.getName()));
                 if (sender != player) {
                     sender.sendMessage("Added '" + spell.getName() + "' to " + player.getName() + "'s wand");
                 }
@@ -1161,7 +1160,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				sender.sendMessage(player.getName() + "'s wand already has " + spell.getName());
 			}
 		}
-
+		wand.saveState();
 		return true;
 	}
 
@@ -1172,12 +1171,12 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
-		if (!checkWand(sender, player)) {
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
 			return true;
 		}
 
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
 
 		String spellName = parameters[0];	
 		if (spellName.equals("material")) {
@@ -1192,6 +1191,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				if (sender != player) {
 					sender.sendMessage("Removed material '" + materialKey + "' from " + player.getName() + "'s wand");
 				}
+				wand.saveState();
 			} else {
 				if (sender != player) {
 					sender.sendMessage(player.getName() + "'s wand does not have material " + materialKey);
@@ -1210,6 +1210,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			if (sender != player) {
 				sender.sendMessage("Removed '" + spellName + "' from " + player.getName() + "'s wand");
 			}
+			wand.saveState();
 		} else {
 			if (sender != player) {
 				sender.sendMessage(player.getName() + "'s wand does not have " + spellName);
@@ -1226,14 +1227,15 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
-		if (!checkWand(sender, player)) {
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
 			return true;
 		}
 		
 		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
-		
+
 		wand.setName(StringUtils.join(parameters, " "));
+		wand.saveState();
 		mage.sendMessage(api.getMessages().get("wand.renamed"));
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_renamed", "$name", player.getName()));

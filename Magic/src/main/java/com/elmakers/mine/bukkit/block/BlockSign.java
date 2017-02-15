@@ -20,7 +20,7 @@ public class BlockSign extends BlockExtraData {
     
     public BlockSign(Object tag) {
         for (int i = 0; i < 4; ++i) {
-            String line = InventoryUtils.getMeta(tag, "Text" + (i + 1));
+            String line = InventoryUtils.getMetaString(tag, "Text" + (i + 1));
             if (line != null && !line.startsWith("{")) {
                 try {
                     if (gson == null) {

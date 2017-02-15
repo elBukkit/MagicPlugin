@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -97,26 +96,10 @@ public class AddSpellAction extends BaseSpellAction
             }
         }
 
-        SpellTemplate currentSpell = wand.getBaseSpell(spellKey);
         if (!wand.addSpell(spellKey)) {
             return SpellResult.NO_TARGET;
         }
         wand.setActiveSpell(spellKey);
-
-        Messages messages = context.getController().getMessages();
-        SpellTemplate spell = context.getController().getSpellTemplate(spellKey);
-        if (spell != null) {
-            if (currentSpell != null) {
-                String levelDescription = spell.getLevelDescription();
-                if (levelDescription == null || levelDescription.isEmpty()) {
-                    levelDescription = spell.getName();
-                }
-                context.showMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
-                context.showMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
-            } else {
-                context.showMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
-            }
-        }
 
         if (autoUpgrade) {
             com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();

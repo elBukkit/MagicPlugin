@@ -111,7 +111,7 @@ public class BlockController implements Listener {
             return;
         }
 
-        if (NMSUtils.isUnplaceable(itemStack) || Wand.isWand(itemStack) || Wand.isSpell(itemStack) || Wand.isBrush(itemStack) || Wand.isSP(itemStack)) {
+        if (NMSUtils.isUnplaceable(itemStack) || Wand.isSpecial(itemStack)) {
             event.setCancelled(true);
             return;
         }
@@ -125,7 +125,7 @@ public class BlockController implements Listener {
             event.setCancelled(true);
         }
 
-        if (Wand.isWand(itemStack) || Wand.isBrush(itemStack) || Wand.isSpell(itemStack) || Wand.isUpgrade(itemStack)) {
+        if (Wand.isSpecial(itemStack)) {
             event.setCancelled(true);
         }
 

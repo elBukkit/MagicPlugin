@@ -58,6 +58,11 @@ public class NMSUtils {
     protected static Class<?> class_NBTTagCompound;
     protected static Class<?> class_NBTTagList;
     protected static Class<?> class_NBTTagByte;
+    protected static Class<?> class_NBTTagDouble;
+    protected static Class<?> class_NBTTagFloat;
+    protected static Class<?> class_NBTTagInt;
+    protected static Class<?> class_NBTTagLong;
+    protected static Class<?> class_NBTTagShort;
     protected static Class<?> class_NBTTagString;
     protected static Class<?> class_CraftTask;
     protected static Class<?> class_CraftInventoryCustom;
@@ -262,6 +267,13 @@ public class NMSUtils {
     protected static Field class_CraftWorld_environmentField;
     protected static Field class_EntityLiving_potionBubblesField;
     protected static Field class_MemorySection_mapField;
+    protected static Field class_NBTTagByte_dataField;
+    protected static Field class_NBTTagDouble_dataField;
+    protected static Field class_NBTTagFloat_dataField;
+    protected static Field class_NBTTagInt_dataField;
+    protected static Field class_NBTTagLong_dataField;
+    protected static Field class_NBTTagShort_dataField;
+    protected static Field class_NBTTagString_dataField;
 
     static
     {
@@ -285,6 +297,11 @@ public class NMSUtils {
             class_NBTTagList = fixBukkitClass("net.minecraft.server.NBTTagList");
             class_NBTTagString = fixBukkitClass("net.minecraft.server.NBTTagString");
             class_NBTTagByte = fixBukkitClass("net.minecraft.server.NBTTagByte");
+            class_NBTTagDouble = fixBukkitClass("net.minecraft.server.NBTTagDouble");
+            class_NBTTagFloat = fixBukkitClass("net.minecraft.server.NBTTagFloat");
+            class_NBTTagInt = fixBukkitClass("net.minecraft.server.NBTTagInt");
+            class_NBTTagLong = fixBukkitClass("net.minecraft.server.NBTTagLong");
+            class_NBTTagShort = fixBukkitClass("net.minecraft.server.NBTTagShort");
             class_CraftWorld = fixBukkitClass("org.bukkit.craftbukkit.CraftWorld");
             class_CraftInventoryCustom = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftInventoryCustom");
             class_CraftItemStack = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftItemStack");
@@ -439,6 +456,20 @@ public class NMSUtils {
 
             class_NBTTagList_list = class_NBTTagList.getDeclaredField("list");
             class_NBTTagList_list.setAccessible(true);
+            class_NBTTagByte_dataField = class_NBTTagByte.getDeclaredField("data");
+            class_NBTTagByte_dataField.setAccessible(true);
+            class_NBTTagDouble_dataField = class_NBTTagDouble.getDeclaredField("data");
+            class_NBTTagDouble_dataField.setAccessible(true);
+            class_NBTTagFloat_dataField = class_NBTTagFloat.getDeclaredField("data");
+            class_NBTTagFloat_dataField.setAccessible(true);
+            class_NBTTagInt_dataField = class_NBTTagInt.getDeclaredField("data");
+            class_NBTTagInt_dataField.setAccessible(true);
+            class_NBTTagLong_dataField = class_NBTTagLong.getDeclaredField("data");
+            class_NBTTagLong_dataField.setAccessible(true);
+            class_NBTTagShort_dataField = class_NBTTagShort.getDeclaredField("data");
+            class_NBTTagShort_dataField.setAccessible(true);
+            class_NBTTagString_dataField = class_NBTTagString.getDeclaredField("data");
+            class_NBTTagString_dataField.setAccessible(true);
 
             class_EntityFallingBlock_hurtEntitiesField = class_EntityFallingBlock.getDeclaredField("hurtEntities");
             class_EntityFallingBlock_hurtEntitiesField.setAccessible(true);
@@ -873,8 +904,8 @@ public class NMSUtils {
         return stack;
     }
 
-    public static String getMeta(ItemStack stack, String tag, String defaultValue) {
-        String result = getMeta(stack, tag);
+    public static String getMetaString(ItemStack stack, String tag, String defaultValue) {
+        String result = getMetaString(stack, tag);
         return result == null ? defaultValue : result;
     }
 
@@ -950,9 +981,20 @@ public class NMSUtils {
         return outputObject;
     }
 
-    public static String getMeta(Object node, String tag, String defaultValue) {
-        String meta = getMeta(node, tag);
+    public static String getMetaString(Object node, String tag, String defaultValue) {
+        String meta = getMetaString(node, tag);
         return meta == null || meta.length() == 0 ? defaultValue : meta;
+    }
+
+    public static String getMetaString(Object node, String tag) {
+        if (node == null || !class_NBTTagCompound.isInstance(node)) return null;
+        String meta = null;
+        try {
+            meta = (String)class_NBTTagCompound_getStringMethod.invoke(node, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return meta;
     }
 
     public static String getMeta(Object node, String tag) {
@@ -1104,7 +1146,7 @@ public class NMSUtils {
         return true;
     }
 
-    public static String getMeta(ItemStack stack, String tag) {
+    public static String getMetaString(ItemStack stack, String tag) {
         if (InventoryUtils.isEmpty(stack)) return null;
         String meta = null;
         try {
@@ -1276,7 +1318,7 @@ public class NMSUtils {
     }
 
     public static String getTemporaryMessage(ItemStack itemStack) {
-        return getMeta(itemStack, "temporary");
+        return getMetaString(itemStack, "temporary");
     }
 
     public static void setReplacement(ItemStack itemStack, ItemStack replacement) {
@@ -1286,7 +1328,7 @@ public class NMSUtils {
     }
 
     public static ItemStack getReplacement(ItemStack itemStack) {
-        String serialized = getMeta(itemStack, "replacement");
+        String serialized = getMetaString(itemStack, "replacement");
         if (serialized == null || serialized.isEmpty()) {
             return null;
         }
