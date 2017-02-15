@@ -2,8 +2,7 @@ package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
-import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -254,93 +254,66 @@ public class BaseMagicProperties implements MagicProperties {
         return modified;
     }
 
-    public boolean upgradeOverrides(Object value) {
-        if (!(value instanceof String)) return false;
-        boolean modified = false;
-        /*
-        if (other.castOverrides != null && other.castOverrides.size() > 0) {
-            if (castOverrides == null) {
-                castOverrides = new HashMap<>();
-            }
-            HashSet<String> upgradedSpells = new HashSet<>();
-            for (Map.Entry<String, String> entry : other.castOverrides.entrySet()) {
-                String overrideKey = entry.getKey();
-                String currentValue = castOverrides.get(overrideKey);
-                String value = entry.getValue();
-                if (currentValue != null) {
-                    try {
-                        double currentDouble = Double.parseDouble(currentValue);
-                        double newDouble = Double.parseDouble(value);
-                        if (newDouble < currentDouble) {
-                            value = currentValue;
-                        }
-                    } catch (Exception ex) {
-                    }
-                }
+    public boolean addOverride(String key, String value) {
+        return false;
+    }
 
-                boolean addOverride = currentValue == null || !value.equals(currentValue);
-                modified = modified || addOverride;
-                if (addOverride && mage != null && overrideKey.contains(".")) {
-                    String[] pieces = StringUtils.split(overrideKey, '.');
-                    String spellKey = pieces[0];
-                    String spellName = spellKey;
-                    if (!upgradedSpells.contains(spellKey)) {
-                        SpellTemplate spell = controller.getSpellTemplate(spellKey);
-                        if (spell != null) spellName = spell.getName();
-                        mage.sendMessage(messages.get("wand.spell_override_upgraded").replace("$name", spellName));
-                        upgradedSpells.add(spellKey);
+    public boolean upgradeOverrides(Object value) {
+        boolean modified = false;
+
+        @SuppressWarnings("unchecked")
+        Collection<String> overrides = value instanceof String ?
+                Arrays.asList(StringUtils.split((String)value, ","))
+                : (List<String>)value;
+
+        Set<String> upgradedSpells = new HashSet<>();
+        for (String override : overrides) {
+            override = override.replace("\\|", ",");
+            String[] pairs = StringUtils.split(override, ' ');
+            if (pairs.length > 1) {
+                if (addOverride(pairs[0], pairs[1])) {
+                    sendDebug("Added override: " + pairs[0] + " " + pairs[1]);
+                    String[] pieces = StringUtils.split(pairs[0], '.');
+                    if (pieces.length > 1 && !upgradedSpells.contains(pieces[0])) {
+                        upgradedSpells.add(pieces[0]);
+                        SpellTemplate spell = controller.getSpellTemplate(pieces[0]);
+                        if (spell != null) {
+                            sendAddMessage("spell_override_upgraded", spell.getName());
+                        }
                     }
+                    modified = true;
                 }
-                castOverrides.put(entry.getKey(), entry.getValue());
             }
         }
-        */
+
         return modified;
+    }
+
+    public boolean addSpell(String spellKey) {
+        return false;
     }
 
     public boolean upgradeSpells(Object value) {
         if (!(value instanceof String)) return false;
         boolean modified = false;
-        /*
-        Set<String> spells = other.getSpells();
+
+        @SuppressWarnings("unchecked")
+        Collection<String> spells = value instanceof String ?
+                Arrays.asList(StringUtils.split((String)value))
+                : (List<String>)value;
         for (String spellKey : spells) {
-            SpellTemplate currentSpell = getBaseSpell(spellKey);
+            spellKey = spellKey.split("@")[0].trim();
             if (addSpell(spellKey)) {
                 modified = true;
-                String spellName = spellKey;
-                SpellTemplate spell = controller.getSpellTemplate(spellKey);
-                if (spell != null) spellName = spell.getName();
-
-                if (mage != null) {
-                    if (currentSpell != null) {
-                        String levelDescription = spell.getLevelDescription();
-                        if (levelDescription == null || levelDescription.isEmpty()) {
-                            levelDescription = spellName;
-                        }
-                        mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription).replace("$wand", getName()));
-                        mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
-
-                        SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, spell);
-                        Bukkit.getPluginManager().callEvent(upgradeEvent);
-                    } else {
-                        mage.sendMessage(messages.get("wand.spell_added").replace("$name", spellName).replace("$wand", getName()));
-
-                        AddSpellEvent addEvent = new AddSpellEvent(mage, this, spell);
-                        Bukkit.getPluginManager().callEvent(addEvent);
-                    }
-                }
+                sendDebug("Added spell: " + spellKey);
             }
         }
-        */
         return modified;
     }
 
     public boolean upgrade(ConfigurationSection configuration) {
 
         boolean modified = false;
-        boolean needsInventoryUpdate = false;
-
-        Messages messages = controller.getMessages();
         Set<String> keys = configuration.getKeys(false);
         for (String key : keys) {
             Object value = configuration.get(key);

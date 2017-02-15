@@ -4625,7 +4625,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			castOverrides.remove(key);
 		} else {
 			String current = castOverrides.get(key);
-			modified = current.equals(value);
+			modified = current == null || current.equals(value);
 			castOverrides.put(key, value);
 		}
 		if (modified) {
