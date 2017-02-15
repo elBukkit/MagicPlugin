@@ -7,7 +7,7 @@
 # such as which are indestructible, destructible, transparent, etc.
 #
 # To see the current default builtin configs, look in this folder:
-# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/materials
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/materials
 #
 # For customization help see: 
 # https://github.com/elBukkit/MagicPlugin/wiki/Customization
