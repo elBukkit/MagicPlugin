@@ -62,6 +62,7 @@ spells:
         crash: CRASH!
         fail: Not enough room to take off!
         cursed: You are too stunned to fly!
+        upgrade_description: "&r&b&bull; &6Increased duration, speed and handling"
     superbroom:
         name: SuperBroom
         description: Powers magic flying wands
