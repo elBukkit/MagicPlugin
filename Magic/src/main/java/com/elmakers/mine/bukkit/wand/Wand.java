@@ -1110,7 +1110,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 }
                 if (activeSpell == null || activeSpell.length() == 0)
                 {
-                    setActiveSpell(spellKey.getKey());
+					activeSpell = spellKey.getKey();
                 }
             }
             ItemStack itemStack = createSpellItem(spell, "", controller, getActiveMage(), this, false);
@@ -1240,7 +1240,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             }
         }
 
-        if (item.getType() == Material.AIR) return;
+        if (item == null || item.getType() == Material.AIR) return;
 
         // Check for upgrades that still have wand data
 		if (isUpgrade && isWand(item)) {
@@ -3996,7 +3996,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 		*/
 
-		this.newId();
+		this.checkId();
 
 		if (getMode() != WandMode.INVENTORY) {
 			showActiveIcon(true);
