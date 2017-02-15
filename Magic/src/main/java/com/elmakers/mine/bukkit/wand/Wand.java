@@ -3225,10 +3225,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			String materialKey = getBrush(item);
 			Set<String> materials = getBrushes();
 			if (!materials.contains(materialKey) && addBrush(materialKey)) {
-                if (mage != null) {
-                    Messages messages = controller.getMessages();
-                    mage.sendMessage(messages.get("wand.brush_added").replace("$wand", getName()).replace("$name", MaterialBrush.getMaterialName(messages, materialKey)));
-                }
                 return true;
 			}
 		} else if (isUpgrade(item)) {
@@ -4391,6 +4387,16 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         if (mage != null)
         {
+			Messages messages = controller.getMessages();
+			String materialName = MaterialBrush.getMaterialName(messages, materialKey);
+			if (materialName == null)
+			{
+				mage.getController().getLogger().warning("Invalid material: " + materialKey);
+				materialName = materialKey;
+			}
+
+			sendAddMessage("brush_added", materialName);
+
             if (brushCount == 0)
             {
                 mage.sendMessage(getMessage("brush_instructions").replace("$wand", getName()));

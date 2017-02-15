@@ -247,7 +247,6 @@ public class BaseMagicProperties implements MagicProperties {
             materialKey = materialKey.split("@")[0].trim();
             if (addBrush(materialKey)) {
                 modified = true;
-                sendAddMessage("brush_added", MaterialBrush.getMaterialName(controller.getMessages(), materialKey));
                 sendDebug("Added brush: " + materialKey);
             }
         }

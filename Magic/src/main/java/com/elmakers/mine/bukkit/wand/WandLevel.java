@@ -247,17 +247,6 @@ public class WandLevel {
 					if (retries-- > 0) i--;
 				} else {
 					addedMaterials = true;
-                    if (mage != null)
-                    {
-                        String materialName = MaterialBrush.getMaterialName(messages,materialKey);
-                        if (materialName == null)
-                        {
-                            mage.getController().getLogger().warning("Invalid material in enchanting configs: " + materialKey);
-                            materialName = materialKey;
-                        }
-
-                        mage.sendMessage(messages.get("wand.brush_added").replace("$wand", wand.getName()).replace("$name", materialName));
-                    }
 				}
 			}
 		}

@@ -1116,7 +1116,6 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 			if (wand.addBrush(materialKey)) {
 				wand.setActiveBrush(materialKey);
-                mage.sendMessage(messages.get("wand.brush_added").replace("$wand", wand.getName()).replace("$name", MaterialBrush.getMaterialName(messages, materialKey)));
 				if (sender != player) {
 					sender.sendMessage("Added material '" + materialKey + "' to " + player.getName() + "'s wand");
 				}
