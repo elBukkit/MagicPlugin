@@ -1895,6 +1895,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		} else if (blockChance != 0) {
 			lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.block_chance", blockChance));
         }
+		if (manaMaxBoost != 0) {
+			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_boost", manaMaxBoost));
+		}
         if (manaRegenerationBoost != 0) {
             lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_regeneration_boost", manaRegenerationBoost));
         }
