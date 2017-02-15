@@ -345,8 +345,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		loadProperties();
 
         // Migrate old upgrade items
-        if (isUpgrade && !isUpgradeItem && isWand) {
-            org.bukkit.Bukkit.getLogger().info("Migrating an upgrade item");
+        if ((isUpgrade || isUpgradeItem) && isWand) {
             needsSave = true;
             InventoryUtils.removeMeta(item, WAND_KEY);
         }
@@ -1242,6 +1241,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
         if (item.getType() == Material.AIR) return;
+
+        // Check for upgrades that still have wand data
+		if (isUpgrade && isWand(item)) {
+			InventoryUtils.removeMeta(item, WAND_KEY);
+		}
 
 		Object wandNode = InventoryUtils.createNode(item, isUpgrade ? UPGRADE_KEY : WAND_KEY);
 		if (wandNode == null) {
