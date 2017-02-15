@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.5
+
 ## 6.4.1
 
  - Fix SuperBroom, riding the Wolf Staff
