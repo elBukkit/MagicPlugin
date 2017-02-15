@@ -47,7 +47,7 @@ paths:
     jedi_master:
         name: Jedi Master
     acolyte:
-        name: Acolyte
+        name: Sith Acolyte
     sith_apprentice:
         name: Sith Apprentice
     sith:

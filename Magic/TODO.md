@@ -9,8 +9,6 @@
 # Shared
 
  - A way to edit upgrades would be great, none of the /wand commands work on them.
- - Fix links in config files to defaults
- - Fix saber progression (paths need upgrade: properties?)
 
 # High-Priority
  
