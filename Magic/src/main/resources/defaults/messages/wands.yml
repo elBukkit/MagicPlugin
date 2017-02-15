@@ -339,3 +339,6 @@ wands:
     mirrorshield:
         name: Mirror Shield
         description: Can block and reflect spells
+    empty:
+        name: Empty
+        description: For creating in-game items from scratch
