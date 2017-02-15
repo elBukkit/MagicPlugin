@@ -163,6 +163,7 @@ public class WandLevel {
         if (mage == null) {
             mage = activeMage;
         }
+        wand.setActiveMage(mage);
         Messages messages = wand.getController().getMessages();
 		boolean addedSpells = false;
         LinkedList<WeightedPair<String>> remainingSpells = getRemainingSpells(wand);
