@@ -1958,8 +1958,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         // Add active spell to description
         Messages messages = controller.getMessages();
-        boolean showSpell = isModifiable() && hasPath();
-        if (spell != null && !quickCast && (spells.size() > 1 || showSpell)) {
+        boolean showSpell = isModifiable() && hasSpellProgression();
+        showSpell = !quickCast && (spells.size() > 1 || showSpell);
+        if (spell != null && showSpell) {
             name = getSpellDisplayName(messages, spell, brush) + " (" + name + ChatColor.WHITE + ")";
         }
 
@@ -2164,30 +2165,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         // one spell now, but may get more later. Since you
         // can't open the inventory in this state, you can not
         // otherwise see the spell lore.
-		if (spell != null && spellCount == 1 && !hasInventory && !isUpgrade && hasPath() && !spell.isHidden())
+		if (spell != null && spellCount == 1 && !hasInventory && !isUpgrade)
         {
             addSpellLore(messages, spell, lore, getActiveMage(), this);
-		}
-		// This is here mostly for broomsticks..
-		else if (spell != null && spellCount == 1 && !isUpgrade && hasPath())
-		{
-			String cooldownDescription = spell.getCooldownDescription();
-			if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
-				lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
-			}
-			long effectiveDuration = spell.getDuration();
-			if (effectiveDuration > 0) {
-				long seconds = effectiveDuration / 1000;
-				if (seconds > 60 * 60 ) {
-					long hours = seconds / (60 * 60);
-					lore.add(ChatColor.GRAY + messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
-				} else if (seconds > 60) {
-					long minutes = seconds / 60;
-					lore.add(ChatColor.GRAY + messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
-				} else {
-					lore.add(ChatColor.GRAY + messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
-				}
-			}
 		}
         if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
         {
@@ -2988,7 +2968,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	public void updateHasInventory() {
 		int inventorySize = getSpells().size() + getBrushes().size();
-		hasInventory = inventorySize > 1 || (inventorySize == 1 && hasPath());
+		hasInventory = inventorySize > 1 || (inventorySize == 1 && hasSpellProgression());
 	}
 	
 	@SuppressWarnings("deprecation")

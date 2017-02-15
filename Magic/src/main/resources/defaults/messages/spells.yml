@@ -56,7 +56,6 @@ spells:
         upgrade_description: "&r&b&bull; &6Now confuses as well"
     broom:
         name: Broom
-        description: Powers magic brooms
         cast: Your broom springs to life!
         deactivate: Your broom quiets down.
         crash: CRASH!
