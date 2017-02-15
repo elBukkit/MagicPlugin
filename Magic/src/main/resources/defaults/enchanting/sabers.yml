@@ -6,6 +6,8 @@ blaster:
 
 youngling:
     inherit: default
+    upgrade: padawan
+    follows: beginner
     max_mana: 200
     max_mana_regeneration: 20
     mana_regeneration:
@@ -21,6 +23,8 @@ youngling:
 
 padawan:
     inherit: youngling
+    upgrade: jedi_knight
+    follows: student
     max_mana: 200
     max_mana_regeneration: 20
     mana_regeneration:
@@ -33,8 +37,10 @@ padawan:
       boon: 80
       harden: 20
 
-knight:
+jedi_knight:
     inherit: padawan
+    upgrade: jedi_master
+    follows: apprentice
     max_mana: 200
     max_mana_regeneration: 20
     mana_regeneration:
@@ -48,7 +54,8 @@ knight:
       lift: 20
 
 jedi_master:
-    inherit: knight
+    inherit: jedi_knight
+    follows: master
     max_mana: 200
     max_mana_regeneration: 20
     mana_regeneration:
@@ -63,6 +70,8 @@ jedi_master:
 
 acolyte:
     inherit: default
+    upgrade: sith_apprentice
+    follows: beginner
     max_mana: 500
     max_mana_regeneration: 50
     mana_regeneration:
@@ -78,6 +87,8 @@ acolyte:
 
 sith_apprentice:
     inherit: acolyte
+    upgrade: sith
+    follows: student
     max_mana: 500
     max_mana_regeneration: 50
     mana_regeneration:
@@ -92,6 +103,8 @@ sith_apprentice:
 
 sith:
     inherit: sith_apprentice
+    upgrade: marauder
+    follows: apprentice
     max_mana: 500
     max_mana_regeneration: 50
     mana_regeneration:
@@ -106,6 +119,8 @@ sith:
 
 marauder:
     inherit: sith
+    upgrade: sith_master
+    follows: apprentice
     max_mana: 500
     max_mana_regeneration: 50
     mana_regeneration:
@@ -119,7 +134,8 @@ marauder:
       lava: 1
 
 sith_master:
-    inherit: sith
+    inherit: marauder
+    follows: master
     max_mana: 500
     max_mana_regeneration: 50
     mana_regeneration:
