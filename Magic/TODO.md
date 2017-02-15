@@ -1,17 +1,14 @@
 # TODO
 
-# Shared
-
- - Undo a Push spell doesn't bring killed mobs back to life
- - Laser isn't doing entity damage?
-
 # 7.0
 
- - Finish upgrade() re-work, handle spells and overrides.
  - Need to remove complex properties from template configs, like attributes, effects. 
 
 # High-Priority
  
+ - Can you not get optional spells once you reach the end of wand progression?
+ - Undo a Push spell doesn't bring killed mobs back to life
+ - Laser isn't doing entity damage?
  - Clean up uses of String.split, unnecessary regex expense
  - Aliases don't work with levels
  - Ability to *only* target teammates (like .. anti-PVP)

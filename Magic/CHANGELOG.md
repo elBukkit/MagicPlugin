@@ -1,19 +1,20 @@
 # CHANGELOG
 
-## 7.0
+## 6.5
 
  - Wands now reference templates, rather than copy all of the configuration to item data. Wands should auto-migrate
  - Wand upgrade item format changed, existing upgrades should migrate
  - Broomsticks improve with use
 
-## 6.5
+## 6.4.1
 
- - Fix SuperBroom, riding the Wolf Staff
- - Fix One-Way Ticket to Boomstown spell
- - Add DropItem action, for dropping items on the ground via a spell
- - Fix Map Brush
- - Some more fixes, hopefully, for dual-weilding and right-click behavior
- - Fix bypass_pvp permission, when trying to target a player in a no-pvp zone
+- Fix SuperBroom, riding the Wolf Staff
+- Fix One-Way Ticket to Boomstown spell
+- Add DropItem action, for dropping items on the ground via a spell
+- Fix Map Brush
+- Some more fixes, hopefully, for dual-weilding and right-click behavior
+- Fix bypass_pvp permission, when trying to target a player in a no-pvp zone
+- Fix lightsaber progression
 
 ## 6.4
 
