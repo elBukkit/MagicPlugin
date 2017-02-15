@@ -4230,14 +4230,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         Integer inventorySlot = null;
         Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
         SpellTemplate currentSpell = getBaseSpell(spellKey);
-        if (currentLevel != null) {
-            if (activeSpell != null && !activeSpell.isEmpty()) {
-                SpellKey currentKey = new SpellKey(activeSpell);
-                if (currentKey.getBaseKey().equals(spellKey.getBaseKey())) {
-                    setActiveSpell(spellKey.getKey());
-                }
-            }
-        }
         List<SpellKey> spellsToRemove = new ArrayList<>(template.getSpellsToRemove().size());
         for (SpellKey key : template.getSpellsToRemove()) {
             if (spellLevels.get(key.getBaseKey()) != null) {
@@ -4271,12 +4263,22 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 }
             }
         }
-        if (activeSpell == null || activeSpell.isEmpty()) {
-			setActiveSpell(spellKey.getKey());
-        }
 
         spellLevels.put(spellKey.getBaseKey(), level);
         spells.put(template.getKey(), inventorySlot);
+
+		if (currentLevel != null) {
+			if (activeSpell != null && !activeSpell.isEmpty()) {
+				SpellKey currentKey = new SpellKey(activeSpell);
+				if (currentKey.getBaseKey().equals(spellKey.getBaseKey())) {
+					setActiveSpell(spellKey.getKey());
+				}
+			}
+		}
+		if (activeSpell == null || activeSpell.isEmpty()) {
+			setActiveSpell(spellKey.getKey());
+		}
+
 		addToInventory(spellItem, inventorySlot);
 		updateInventory();
 		updateHasInventory();
