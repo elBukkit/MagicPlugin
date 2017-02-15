@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 6.5
+## 6.4.1
 
  - Fix SuperBroom, riding the Wolf Staff
  - Fix One-Way Ticket to Boomstown spell
@@ -8,6 +8,7 @@
  - Fix Map Brush
  - Some more fixes, hopefully, for dual-weilding and right-click behavior
  - Fix bypass_pvp permission, when trying to target a player in a no-pvp zone
+ - Fix lightsaber progression
 
 ## 6.4
 
