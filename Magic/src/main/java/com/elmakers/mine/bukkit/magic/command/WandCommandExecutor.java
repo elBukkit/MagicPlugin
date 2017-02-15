@@ -557,7 +557,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.GRAY + "Brush: " + brushKey);
             MaterialAndData brush = new MaterialAndData(brushKey);
             sender.sendMessage(" " + ChatColor.GRAY + brush.getName());
-        } else if (api.isWand(itemInHand)) {
+        } else if (api.isWand(itemInHand) || api.isUpgrade(itemInHand)) {
 			isWand = true;
             Wand wand = api.getWand(itemInHand);
             wand.describe(sender);

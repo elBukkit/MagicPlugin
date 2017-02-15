@@ -1884,12 +1884,20 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	@Override
     public void describe(CommandSender sender) {
 		Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+		boolean isUpgrade = false;
+		if (wandNode == null) {
+            isUpgrade = true;
+            wandNode = InventoryUtils.getNode(item, UPGRADE_KEY);
+        }
 		if (wandNode == null) {
 			sender.sendMessage("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
             return;
 		}
 		ChatColor wandColor = isModifiable() ? ChatColor.AQUA : ChatColor.RED;
 		sender.sendMessage(wandColor + wandName);
+        if (isUpgrade) {
+            sender.sendMessage(ChatColor.YELLOW + "(Upgrade)");
+        }
 		if (description.length() > 0) {
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
 		} else {
