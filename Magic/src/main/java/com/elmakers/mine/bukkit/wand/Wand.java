@@ -1770,16 +1770,17 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             wandName = wandConfig.getString("name", wandName);
             description = wandConfig.getString("description", description);
 
-            String migrateTemplate = templateConfig == null ? null : templateConfig.getString("migrate_to");
+			WandTemplate wandTemplate = getTemplate();
+			WandTemplate migrateTemplate = wandTemplate == null ? null : wandTemplate.getMigrateTemplate();
 			if (migrateTemplate != null) {
-				template = migrateTemplate;
-				templateConfig = controller.getWandTemplateConfiguration(template);
+				template = migrateTemplate.getKey();
+				templateConfig = migrateTemplate.getConfiguration();
+				wandTemplate = migrateTemplate;
 			}
-            WandTemplate wandTemplate = getTemplate();
 			
-			if (templateConfig != null) {
+			if (wandTemplate != null) {
 				// Add vanilla attributes
-				InventoryUtils.applyAttributes(item, templateConfig.getConfigurationSection("attributes"), templateConfig.getString("attribute_slot", null));
+				InventoryUtils.applyAttributes(item, wandTemplate.getAttributes(), wandTemplate.getAttributeSlot());
 			}
 
             if (wandConfig.contains("icon_inactive")) {
@@ -2806,10 +2807,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             return false;
         }
 
+		ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(other.getTemplateKey());
+
 		// Check for forced upgrades
 		if (other.isForcedUpgrade()) {
-			String template = other.getTemplateKey();
-			ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(template);
 			if (templateConfig == null) {
 				return false;
 			}
@@ -2840,21 +2841,17 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		upgradeConfig.set("template", upgradeTemplate);
 
 		Messages messages = controller.getMessages();
-		if (other.rename && other.template != null && other.template.length() > 0) {
-			ConfigurationSection template = controller.getWandTemplateConfiguration(other.template);
-
+		if (other.rename && templateConfig != null) {
 			String newName = messages.get("wands." + other.template + ".name");
-			newName = template.getString("name", wandName);
+			newName = templateConfig.getString("name", newName);
 			upgradeConfig.set("name", newName);
 		} else {
 			upgradeConfig.set("name", null);
 		}
 
-		if (other.renameDescription && other.template != null && other.template.length() > 0) {
-			ConfigurationSection template = controller.getWandTemplateConfiguration(other.template);
-
+		if (other.renameDescription && templateConfig != null) {
 			String newDescription = messages.get("wands." + other.template + ".description");
-			newDescription = template.getString("description", newDescription);
+			newDescription = templateConfig.getString("description", newDescription);
 			upgradeConfig.set("description", newDescription);
 		} else {
 			upgradeConfig.set("description", null);

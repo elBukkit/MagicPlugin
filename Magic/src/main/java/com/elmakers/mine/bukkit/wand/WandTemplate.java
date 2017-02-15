@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.wand;
 
-import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -34,6 +33,8 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     private boolean soul;
     private boolean restorable;
     private Map<String, String> migrateIcons;
+    private ConfigurationSection attributes;
+    private String attributeSlot;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         super(controller);
@@ -47,8 +48,12 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         restorable = node.getBoolean("restorable", true);
         icon = node.getString("icon");
         soul = node.getBoolean("soul", false);
+        attributes = node.getConfigurationSection("attributes");
+        attributeSlot = node.getString("attribute_slot");
 
         // Remove some properties that should not transfer to wands
+        node.set("attributes", null);
+        node.set("attribute_slot", null);
         node.set("creator", null);
         node.set("creator_id", null);
         node.set("migrate_to", null);
@@ -66,6 +71,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             for (String migrateKey : keys) {
                 migrateIcons.put(migrateKey, migrateConfig.getString(migrateKey));
             }
+            node.set("migrate_icons", null);
         }
         
         if (node.contains("effects")) {
@@ -83,17 +89,20 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
                     effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
                 }
             }
+            node.set("effects", null);
         }
 
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
         if (tagList != null) {
             tags = new HashSet<>(tagList);
+            node.set("tags", null);
         } else {
             tags = null;
         }
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(node, "categories");
         if (categoriesList != null) {
+            node.set("categories", null);
             categories = ImmutableSet.copyOf(categoriesList);
         }
     }
@@ -198,5 +207,15 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     @Override
     public boolean isRestorable() {
         return restorable;
+    }
+
+    @Override
+    public ConfigurationSection getAttributes() {
+        return attributes;
+    }
+
+    @Override
+    public String getAttributeSlot() {
+        return attributeSlot;
     }
 }

@@ -21,4 +21,6 @@ public interface WandTemplate extends MagicProperties {
     public boolean isSoul();
     public boolean isRestorable();
     Set<String> getCategories();
+    ConfigurationSection getAttributes();
+    String getAttributeSlot();
 }
