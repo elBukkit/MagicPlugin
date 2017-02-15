@@ -12,7 +12,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -110,15 +109,6 @@ public class WandLevel {
         this.manaMaxProbability = manaMaxProbability.isEmpty() ? other.manaMaxProbability : manaMaxProbability;
     }
 
-    protected void sendAddMessage(Mage mage,  Wand wand, String messageKey, String nameParam) {
-        if (mage == null) return;
-
-        String message = mage.getController().getMessages().get(messageKey)
-            .replace("$name", nameParam)
-            .replace("$wand", wand.getName());
-        mage.sendMessage(message);
-    }
-
     public int getSpellCount() {
         int count = 0;
         for (WeightedPair<Integer> spellCount : spellCountProbability) {
@@ -169,8 +159,9 @@ public class WandLevel {
 	
 	public boolean randomizeWand(Mage mage, Wand wand, boolean additive, boolean hasUpgrade, boolean addSpells) {
 		// Add random spells to the wand
+        Mage activeMage = wand.getActiveMage();
         if (mage == null) {
-            mage = wand.getActivePlayer();
+            mage = activeMage;
         }
         Messages messages = wand.getController().getMessages();
 		boolean addedSpells = false;
@@ -185,6 +176,7 @@ public class WandLevel {
                     SpellTemplate currentSpell = wand.getBaseSpell(spellKey);
                     if (wand.addSpell(spellKey)) {
                         SpellTemplate spell = wand.getMaster().getSpellTemplate(spellKey);
+                        // TODO: Can we move this messaging to addSpell?
                         if (mage != null && spell != null) {
                             if (currentSpell != null) {
                                 String levelDescription = spell.getLevelDescription();
@@ -261,6 +253,7 @@ public class WandLevel {
                 mage.sendDebugMessage("Spells in list: " + spellProbability.size());
                 mage.sendDebugMessage("Added brushes: " +  addedMaterials + ", needed: " + needsMaterials);
             }
+            wand.setActiveMage(activeMage);
             return false;
         }
 		
@@ -417,6 +410,7 @@ public class WandLevel {
 
         // Set properties.
         wand.upgrade(wandProperties);
+        wand.setActiveMage(activeMage);
 		return addedMaterials || addedSpells || addedProperties;
 	}
 

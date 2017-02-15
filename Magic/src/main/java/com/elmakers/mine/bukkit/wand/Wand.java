@@ -1113,7 +1113,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                     activeSpell = spellKey.getKey();
                 }
             }
-            ItemStack itemStack = createSpellItem(spell, "", controller, getActivePlayer(), this, false);
+            ItemStack itemStack = createSpellItem(spell, "", controller, getActiveMage(), this, false);
 			if (itemStack != null)
             {
 				addToInventory(itemStack, slot);
@@ -1146,12 +1146,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
     protected ItemStack createSpellIcon(SpellTemplate spell) {
-        return createSpellItem(spell, "", controller, getActivePlayer(), this, false);
+        return createSpellItem(spell, "", controller, getActiveMage(), this, false);
     }
 
     public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem) {
         String[] split = spellKey.split(" ", 2);
-        return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, wand == null ? null : wand.getActivePlayer(), wand, isItem);
+        return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, wand == null ? null : wand.getActiveMage(), wand, isItem);
     }
 
     public static ItemStack createSpellItem(String spellKey, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
@@ -2151,7 +2151,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         // otherwise see the spell lore.
 		if (spell != null && spellCount == 1 && !hasInventory && !isUpgrade && hasPath() && !spell.isHidden())
         {
-            addSpellLore(messages, spell, lore, getActivePlayer(), this);
+            addSpellLore(messages, spell, lore, getActiveMage(), this);
 		}
 		// This is here mostly for broomsticks..
 		else if (spell != null && spellCount == 1 && !isUpgrade && hasPath())
@@ -2393,7 +2393,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (isSpell(item)) {
 			Spell spell = mage.getSpell(getSpell(item));
 			if (spell != null) {
-				updateSpellItem(controller.getMessages(), item, spell, "", getActivePlayer(), activeName ? this : null, activeMaterial, false);
+				updateSpellItem(controller.getMessages(), item, spell, "", getActiveMage(), activeName ? this : null, activeMaterial, false);
 			}
 		} else if (isBrush(item)) {
 			updateBrushItem(controller.getMessages(), item, getBrush(item), activeName ? this : null);
@@ -2401,7 +2401,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
     public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, Wand wand, String activeMaterial, boolean isItem) {
-        updateSpellItem(messages, itemStack, spell, args, wand == null ? null : wand.getActivePlayer(), wand, activeMaterial, isItem);
+        updateSpellItem(messages, itemStack, spell, args, wand == null ? null : wand.getActiveMage(), wand, activeMaterial, isItem);
     }
 
     public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, String activeMaterial, boolean isItem) {
@@ -3811,8 +3811,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		setActiveBrush(materials.get(materialIndex).split("@")[0]);
 	}
 
-	public Mage getActivePlayer() {
+	public Mage getActiveMage() {
 		return mage;
+	}
+
+	public void setActiveMage(com.elmakers.mine.bukkit.api.magic.Mage mage) {
+    	if (mage instanceof Mage) {
+			this.mage = (Mage)mage;
+		}
 	}
 	
 	public Color getEffectColor() {
@@ -3953,10 +3959,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             inactiveIcon.applyToItem(this.item);
         }
     }
-	
-	public void setMage(Mage mage) {
-		this.mage = mage;
-	}
 
     public void activate(Mage mage) {
         if (mage == null) return;

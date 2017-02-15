@@ -869,7 +869,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 offhandCast = true;
                 try {
                     offhandWand.tickMana(player);
-                    offhandWand.setMage(this);
+                    offhandWand.setActiveMage(this);
                     offhandWand.cast();
                     CompatibilityUtils.swingOffhand(player, OFFHAND_CAST_RANGE);
                 } catch (Exception ex) {
@@ -912,7 +912,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         if (offhandWand != null) {
-            offhandWand.setMage(this);
+            offhandWand.setActiveMage(this);
         }
         return offhandWand;
     }
