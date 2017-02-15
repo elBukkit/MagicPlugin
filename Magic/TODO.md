@@ -6,10 +6,6 @@
  - Need to remove complex properties from template configs, like attributes, effects. 
  - Refactor WandLevel to call Wand.upgrade()
 
-# Shared
-
- - A way to edit upgrades would be great, none of the /wand commands work on them.
-
 # High-Priority
  
  - Aliases don't work with levels

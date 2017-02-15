@@ -3140,7 +3140,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				addSpell(key);
 			}
 		}
-		
+
+		setProperty("fill", null);
 		autoFill = false;
 		saveState();
 		
@@ -4182,6 +4183,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     @Override
     public void unlock() {
         locked = false;
+        setProperty("locked", false);
     }
 
     public boolean isPassive() {
