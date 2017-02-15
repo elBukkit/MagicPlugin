@@ -1436,7 +1436,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             Collection<String> parameters = new ArrayList<>();
             for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
                 String value = entry.getValue();
-                parameters.add(entry.getKey() + " " + value.replace(",", "\\,"));
+                parameters.add(entry.getKey() + " " + value.replace(",", "\\|"));
             }
             node.set("overrides", StringUtils.join(parameters, ","));
         } else {
@@ -1837,18 +1837,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 if (overrides != null && !overrides.isEmpty()) {
                     // Support YML-List-As-String format
                     overrides = overrides.replaceAll("[\\]\\[]", "");
-                    // Unescape commas
-                    overrides = overrides.replace("\\,", ",");
 
-                    char split = ',';
-                    // Check for | delimited format
-                    if (overrides.charAt(0) == '|') {
-                        split = '|';
-                        overrides = overrides.substring(1);
-                    }
                     castOverrides = new HashMap<>();
-                    String[] pairs = StringUtils.split(overrides, split);
+                    String[] pairs = StringUtils.split(overrides, ',');
                     for (String pair : pairs) {
+						// Unescape commas
+						pair = pair.replace("\\|", ",");
                         String[] keyValue = StringUtils.split(pair, " ");
                         if (keyValue.length > 0) {
                             String value = keyValue.length > 1 ? keyValue[1] : "";
@@ -4616,12 +4610,34 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		updateOverrides();
     }
 
+	@Override
+	public boolean addOverride(String key, String value)
+	{
+		if (castOverrides == null) {
+			castOverrides = new HashMap<>();
+		}
+		boolean modified = false;
+		if (value == null || value.length() == 0) {
+			modified = castOverrides.containsKey(key);
+			castOverrides.remove(key);
+		} else {
+			String current = castOverrides.get(key);
+			modified = current.equals(value);
+			castOverrides.put(key, value);
+		}
+		if (modified) {
+			updateOverrides();
+		}
+
+		return modified;
+	}
+
     protected void updateOverrides() {
 		if (castOverrides != null && castOverrides.size() > 0) {
 			Collection<String> parameters = new ArrayList<>();
 			for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
 				String value = entry.getValue();
-				parameters.add(entry.getKey() + " " + value.replace(",", "\\,"));
+				parameters.add(entry.getKey() + " " + value.replace(",", "\\|"));
 			}
 			setProperty("overrides", StringUtils.join(parameters, ","));
 		} else {
