@@ -211,10 +211,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         if (piece.startsWith("#")) {
                             try {
                                 Color color = Color.fromRGB(Integer.parseInt(piece.substring(1), 16));
-                                org.bukkit.Bukkit.getLogger().info("Stored: " + color);
                                 extraData = new LeatherArmorData(color);
-                                org.bukkit.Bukkit.getLogger().info("   " + extraData);
-
                             } catch (Exception ex) {
                                 extraData = null;
                             }
