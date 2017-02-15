@@ -1737,21 +1737,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
             }
 
-            if (needsInventoryUpdate) {
-                // Force a re-parse of materials and spells
-                wandSpells = getSpellString();
-                wandMaterials = getMaterialString();
-            }
-
-			wandMaterials = wandConfig.getString("materials", wandMaterials);
-			wandSpells = wandConfig.getString("spells", wandSpells);
-
-			if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
-				wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
-				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
-				parseInventoryStrings(wandSpells, wandMaterials);
-			}
-
             // Default to template names, override with localizations and finally with wand data
             wandName = controller.getMessages().get("wand.default_name");
             description = "";
@@ -1833,6 +1818,22 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				upgradePath.checkMigration(this);
 			} else {
 				hasSpellProgression = false;
+			}
+
+			// Load spells
+			if (needsInventoryUpdate) {
+				// Force a re-parse of materials and spells
+				wandSpells = getSpellString();
+				wandMaterials = getMaterialString();
+			}
+
+			wandMaterials = wandConfig.getString("materials", wandMaterials);
+			wandSpells = wandConfig.getString("spells", wandSpells);
+
+			if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
+				wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
+				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
+				parseInventoryStrings(wandSpells, wandMaterials);
 			}
 
             if (wandConfig.contains("overrides")) {
@@ -2966,7 +2967,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	public void updateHasInventory() {
 		int inventorySize = getSpells().size() + getBrushes().size();
-		hasInventory = inventorySize > 1 || (inventorySize == 1 && hasSpellProgression());
+		hasInventory = inventorySize > 1 || (inventorySize == 1 && hasSpellProgression);
 	}
 	
 	@SuppressWarnings("deprecation")
