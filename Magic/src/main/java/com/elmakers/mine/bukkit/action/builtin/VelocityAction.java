@@ -38,6 +38,7 @@ public class VelocityAction extends BaseSpellAction
     private double maxLength;
     private boolean additive;
     private Vector direction;
+    private boolean registerDamaged;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -55,6 +56,7 @@ public class VelocityAction extends BaseSpellAction
         maxMagnitude = parameters.getDouble("max_magnitude", 0);
         maxLength = maxMagnitude * maxMagnitude;
         additive = parameters.getBoolean("additive", false);
+        registerDamaged = parameters.getBoolean("damaged", true);
     }
 
     @Override
@@ -129,6 +131,9 @@ public class VelocityAction extends BaseSpellAction
             magnitude = maxMagnitude;
         }
 
+        if (registerDamaged) {
+            context.registerDamaged(entity);
+        }
         context.registerVelocity(entity);
         context.registerMoved(entity);
 
