@@ -2,7 +2,6 @@
 
 # High-Priority
  
- - When saving a wand, only save wand properties, but inherit from the original template
  - Can you not get optional spells once you reach the end of wand progression?
  - Undo a Push spell doesn't bring killed mobs back to life
  - Laser isn't doing entity damage?

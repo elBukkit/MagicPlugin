@@ -1300,7 +1300,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
     @Override
     public void save(ConfigurationSection node, boolean filtered) {
-		ConfigurationUtils.addConfigurations(node, getEffectiveConfiguration());
+		ConfigurationUtils.addConfigurations(node, getConfiguration());
 
         // Filter out some fields
         if (filtered) {
@@ -1310,16 +1310,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             node.set("template", null);
             node.set("mana_timestamp", null);
 
-            // This is super hacky, copied from InventoryUtils.saveTagsToNBT
-            // But it generally reproduces what you'd have to do in the config
-            // to recreate this wand, sooooo
-            Collection<String> keys = node.getKeys(false);
-            for (String key : keys) {
-                String value = node.getString(key);
-                if (value == null || value.length() == 0 || value.equals("0") || value.equals("0.0") || value.equals("false")) {
-                    node.set(key, null);
-                }
-            }
+            // Inherit from template if present
+			if (template != null && !template.isEmpty()) {
+				node.set("inherit", template);
+			}
         }
 
         if (isUpgrade) {
