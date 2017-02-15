@@ -320,19 +320,19 @@ wands:
       spell_count: Has $count Notes
     lightsaber_red:
         name: Lighsaber
-        description: Chosen weapon of the Sith
+        description: Weapon of a $path
     lightsaber_green:
         name: Lighsaber
-        description: Chosen weapon of the Jedi
+        description: Weapon of a $path
     lightsaber_blue:
         name: Lighsaber
-        description: Chosen weapon of the Jedi
+        description: Weapon of a $path
     lightsaber_orange:
         name: Lighsaber
-        description: Chosen weapon of the Jedi
+        description: Weapon of a $path
     lightsaber_purple:
         name: Lighsaber
-        description: Chosen weapon of the Jedi
+        description: Weapon of a $path
     lightsaber_hilt:
         name: Lighsaber Hilt
         description: Used to construct a Lightsaber

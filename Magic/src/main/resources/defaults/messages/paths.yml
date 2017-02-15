@@ -42,7 +42,7 @@ paths:
         name: Youngling
     padawan:
         name: Padawan
-    knight:
+    jedi_knight:
         name: Jedi Knight
     jedi_master:
         name: Jedi Master
