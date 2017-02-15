@@ -320,7 +320,6 @@ public class WandLevel {
 					addedProperties = true;
 					costReduction = Math.min(path.getMaxCostReduction(), costReduction + RandomUtils.weightedRandom(costReductionProbability));
 					wandProperties.put("cost_reduction", costReduction);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.cost_reduction", (float)costReduction));
 				}
 				break;
 			case 1:
@@ -328,7 +327,6 @@ public class WandLevel {
 					addedProperties = true;
                     power = Math.min(path.getMaxPower(), power + RandomUtils.weightedRandom(powerProbability));
 					wandProperties.put("power", power);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.power", (float)power));
 				}
 				break;
 			case 2:
@@ -336,7 +334,6 @@ public class WandLevel {
 					addedProperties = true;
                     damageReduction = Math.min(path.getMaxDamageReduction(), damageReduction + RandomUtils.weightedRandom(damageReductionProbability));
 					wandProperties.put("protection", damageReduction);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection", (float)damageReduction));
 				}
 				break;
 			case 3:
@@ -344,7 +341,6 @@ public class WandLevel {
 					addedProperties = true;
                     damageReductionPhysical = Math.min(path.getMaxDamageReductionPhysical(), damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability));
 					wandProperties.put("protection_physical", damageReductionPhysical);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_physical", (float)damageReductionPhysical));
                 }
 				break;
 			case 4:
@@ -352,7 +348,6 @@ public class WandLevel {
 					addedProperties = true;
                     damageReductionProjectiles = Math.min(path.getMaxDamageReductionProjectiles(), damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability));
 					wandProperties.put("protection_projectiles", damageReductionProjectiles);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_projectile", (float)damageReductionProjectiles));
 				}
 				break;
 			case 5:
@@ -360,7 +355,6 @@ public class WandLevel {
 					addedProperties = true;
                     damageReductionFalling = Math.min(path.getMaxDamageReductionFalling(), damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability));
 					wandProperties.put("protection_falling", damageReductionFalling);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_fall", (float)damageReductionFalling));
 				}
 				break;
 			case 6:
@@ -368,7 +362,6 @@ public class WandLevel {
 					addedProperties = true;
                     damageReductionFire = Math.min(path.getMaxDamageReductionFire(), damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability));
 					wandProperties.put("protection_fire", damageReductionFire);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_fire", (float)damageReductionFire));
 				}
 				break;
 			case 7:
@@ -376,7 +369,6 @@ public class WandLevel {
 					addedProperties = true;
                     damageReductionExplosions = Math.min(path.getMaxDamageReductionExplosions(), damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability));
 					wandProperties.put("protection_explosions", damageReductionExplosions);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_blast", (float)damageReductionExplosions));
 				}
 				break;
 			}
@@ -395,10 +387,6 @@ public class WandLevel {
                 addedProperties = true;
                 manaRegeneration = Math.min(path.getMaxManaRegeneration(), manaRegeneration + RandomUtils.weightedRandom(manaRegenerationProbability));
                 wandProperties.put("mana_regeneration", manaRegeneration);
-
-                String updateString = messages.get("wand.mana_regeneration");
-                updateString = updateString.replace("$amount", Integer.toString(manaRegeneration));
-                sendAddMessage(mage, wand, "wand.upgraded_property", updateString);
 			}
 			int manaMax = wand.getManaMax();
 			if (manaMaxProbability.size() > 0 && manaMax < path.getMaxMaxMana()) {
@@ -409,10 +397,6 @@ public class WandLevel {
                 }
 				wandProperties.put("mana_max", manaMax);
                 addedProperties = true;
-
-                String updateString = messages.get("wand.mana_amount");
-                updateString = updateString.replace("$amount", Integer.toString(manaMax));
-                sendAddMessage(mage, wand, "wand.upgraded_property", updateString);
 			}
 			
 			// Refill the wand's mana, why not

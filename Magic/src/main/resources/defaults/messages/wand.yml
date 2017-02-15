@@ -52,9 +52,9 @@ wand:
     protection: Protection $roman
     protection_physical: Physical Protection $roman
     protection_projectile: Projectile Protection $roman
-    protection_fall: Fall Protection $roman
+    protection_falling: Fall Protection $roman
     protection_fire: Fire Protection $roman
-    protection_blast: Blast Protection $roman
+    protection_explosions: Blast Protection $roman
     potion_effect: $effect $roman
     super_powered: Superpowered
     super_protected: Invulnerability
