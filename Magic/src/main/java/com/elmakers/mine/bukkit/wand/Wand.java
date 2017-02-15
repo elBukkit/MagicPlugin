@@ -606,7 +606,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				newDescription = controller.getMessages().get("wands." + template + ".upgrade_description", description);
             }
             setIcon(DefaultUpgradeMaterial, (byte) 0);
-			setProperty("upgrade", true);
 			setName(newName);
 			setDescription(newDescription);
 			InventoryUtils.removeMeta(item, WAND_KEY);
@@ -1321,6 +1320,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                     node.set(key, null);
                 }
             }
+        }
+
+        if (isUpgrade) {
+            node.set("upgrade", true);
         }
 
         // Change some CSV to lists
