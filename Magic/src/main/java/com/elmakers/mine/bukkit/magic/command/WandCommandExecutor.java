@@ -1145,12 +1145,10 @@ public class WandCommandExecutor extends MagicTabExecutor {
                 if (levelDescription == null || levelDescription.isEmpty()) {
                     levelDescription = spell.getName();
                 }
-                mage.sendMessage(api.getMessages().get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                 if (sender != player) {
                     sender.sendMessage(api.getMessages().get("wand.player_spell_upgraded").replace("$player", player.getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                 }
             } else {
-                mage.sendMessage(messages.get("wand.spell_added").replace("$name", spellName).replace("$wand", wand.getName()));
                 if (sender != player) {
                     sender.sendMessage("Added '" + spell.getName() + "' to " + player.getName() + "'s wand");
                 }

@@ -164,35 +164,15 @@ public class WandLevel {
             mage = activeMage;
         }
         wand.setActiveMage(mage);
-        Messages messages = wand.getController().getMessages();
 		boolean addedSpells = false;
         LinkedList<WeightedPair<String>> remainingSpells = getRemainingSpells(wand);
 
         if (addSpells) {
-            SpellTemplate firstSpell = null;
             if (remainingSpells.size() > 0) {
                 Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
                 for (int i = 0; spellCount != null && i < spellCount; i++) {
                     String spellKey = RandomUtils.weightedRandom(remainingSpells);
-                    SpellTemplate currentSpell = wand.getBaseSpell(spellKey);
                     if (wand.addSpell(spellKey)) {
-                        SpellTemplate spell = wand.getMaster().getSpellTemplate(spellKey);
-                        // TODO: Can we move this messaging to addSpell?
-                        if (mage != null && spell != null) {
-                            if (currentSpell != null) {
-                                String levelDescription = spell.getLevelDescription();
-                                if (levelDescription == null || levelDescription.isEmpty()) {
-                                    levelDescription = spell.getName();
-                                }
-                                mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
-                                mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
-                            } else {
-                                mage.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
-                            }
-                        }
-                        if (firstSpell == null) {
-                            firstSpell = spell;
-                        }
                         addedSpells = true;
                     }
                 }

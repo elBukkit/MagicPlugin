@@ -3128,6 +3128,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
 		Collection<SpellTemplate> allSpells = controller.getPlugin().getSpellTemplates();
+
+        // Hack to prevent messaging
+        Mage mage = this.mage;
+        this.mage = null;
 		for (SpellTemplate spell : allSpells)
 		{
             String key = spell.getKey();
@@ -3144,6 +3148,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				addSpell(key);
 			}
 		}
+		this.mage = mage;
 
 		setProperty("fill", null);
 		autoFill = false;
@@ -3194,32 +3199,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 		if (isModifiable() && isSpell(item) && !isSkill(item)) {
 			String spellKey = getSpell(item);
-            SpellTemplate currentSpell = getBaseSpell(spellKey);
 			Set<String> spells = getSpells();
 			if (!spells.contains(spellKey) && addSpell(spellKey)) {
-				SpellTemplate spell = controller.getSpellTemplate(spellKey);
-				if (spell != null) {
-                    if (mage != null) {
-                        if (currentSpell != null) {
-                            String levelDescription = spell.getLevelDescription();
-                            if (levelDescription == null || levelDescription.isEmpty()) {
-                                levelDescription = spell.getName();
-                            }
-                            mage.sendMessage(getMessage("spell_upgraded").replace("$wand", getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
-                            mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
-
-							SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, spell);
-							Bukkit.getPluginManager().callEvent(upgradeEvent);
-                        } else {
-                            mage.sendMessage(getMessage("spell_added").replace("$wand", getName()).replace("$name", spell.getName()));
-                            activeSpell = spell.getKey();
-
-							AddSpellEvent addEvent = new AddSpellEvent(mage, this, spell);
-							Bukkit.getPluginManager().callEvent(addEvent);
-                        }
-                    }
-                    return true;
-				}
+                return true;
 			}
 		} else if (isModifiable() && isBrush(item)) {
 			String materialKey = getBrush(item);
@@ -3515,7 +3497,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
     @Override
     public SpellTemplate getBaseSpell(String spellName) {
-        SpellKey key = new SpellKey(spellName);
+        return getBaseSpell(new SpellKey(spellName));
+    }
+
+    public SpellTemplate getBaseSpell(SpellKey key) {
         Integer spellLevel = spellLevels.get(key.getBaseKey());
         if (spellLevel == null) return null;
 
@@ -4231,6 +4216,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         // Special handling for spell upgrades and spells to remove
         Integer inventorySlot = null;
         Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
+        SpellTemplate currentSpell = getBaseSpell(spellKey);
         if (currentLevel != null) {
             if (activeSpell != null && !activeSpell.isEmpty()) {
                 SpellKey currentKey = new SpellKey(activeSpell);
@@ -4285,21 +4271,41 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         saveState();
 		updateLore();
 
-        if (mage != null && spells.size() != spellCount)
+        if (mage != null)
         {
-            if (spellCount == 0)
-            {
-                String message = getMessage("spell_instructions", "").replace("$wand", getName());
-                mage.sendMessage(message.replace("$spell", template.getName()));
+            if (currentSpell != null) {
+                String levelDescription = template.getLevelDescription();
+                if (levelDescription == null || levelDescription.isEmpty()) {
+                    levelDescription = template.getName();
+                }
+                sendLevelMessage("spell_upgraded", currentSpell.getName(), levelDescription);
+
+                mage.sendMessage(template.getUpgradeDescription().replace("$name", currentSpell.getName()));
+
+                SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, template);
+                Bukkit.getPluginManager().callEvent(upgradeEvent);
+            } else {
+                sendAddMessage("spell_added", template.getName());
+
+                AddSpellEvent addEvent = new AddSpellEvent(mage, this, template);
+                Bukkit.getPluginManager().callEvent(addEvent);
             }
-            else
-            if (spellCount == 1)
-            {
-                mage.sendMessage(getMessage("inventory_instructions", "").replace("$wand", getName()));
-            }
-            if (inventoryCount == 1 && inventories.size() > 1)
-            {
-                mage.sendMessage(getMessage("page_instructions", "").replace("$wand", getName()));
+
+            if (spells.size() != spellCount) {
+                if (spellCount == 0)
+                {
+                    String message = getMessage("spell_instructions", "").replace("$wand", getName());
+                    mage.sendMessage(message.replace("$spell", template.getName()));
+                }
+                else
+                if (spellCount == 1)
+                {
+                    mage.sendMessage(getMessage("inventory_instructions", "").replace("$wand", getName()));
+                }
+                if (inventoryCount == 1 && inventories.size() > 1)
+                {
+                    mage.sendMessage(getMessage("page_instructions", "").replace("$wand", getName()));
+                }
             }
         }
 		
@@ -4313,6 +4319,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		mage.sendMessage(message);
 	}
 
+    protected void sendLevelMessage(String messageKey, String nameParam, String level) {
+        if (mage == null || nameParam == null || nameParam.isEmpty()) return;
+        String message = getMessage(messageKey).replace("$name", nameParam).replace("$wand", getName()).replace("$level", level);
+        mage.sendMessage(message);
+    }
 
 	@Override
 	protected void sendMessage(String messageKey) {
