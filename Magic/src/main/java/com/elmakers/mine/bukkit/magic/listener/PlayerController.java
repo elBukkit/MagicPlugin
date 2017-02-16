@@ -467,7 +467,7 @@ public class PlayerController implements Listener {
             }
         }
 
-        if (mage.checkLastClick(clickCooldown)) {
+        if (!mage.checkLastClick(clickCooldown)) {
             if (isSwing && wand.getLeftClickAction() != WandAction.NONE) {
                 event.setCancelled(true);
             }
