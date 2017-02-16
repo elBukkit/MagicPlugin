@@ -195,10 +195,13 @@ public class PlayerController implements Listener {
             cancelEvent = true;
         } else if (activeWand != null) {
             if (droppedWand) {
+                ItemStack remainingItem = player.getInventory().getItemInMainHand();
                 activeWand.deactivate();
+                ItemStack restoredItem = player.getInventory().getItemInMainHand();
+
                 // Clear after inventory restore (potentially with deactivate), since that will put the wand back
-                if (Wand.hasActiveWand(player)) {
-                    String activeId = Wand.getWandId(player.getInventory().getItemInMainHand());
+                if (Wand.hasActiveWand(player) && remainingItem.getType() == Material.AIR && restoredItem.getType() != Material.AIR) {
+                    String activeId = Wand.getWandId(restoredItem);
                     if (activeId != null && activeWand.getId().equals(activeId))
                     {
                         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
