@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
@@ -22,12 +21,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-public class BaseMagicProperties implements MagicProperties {
+public class BaseMagicProperties {
 
     protected final @Nonnull MagicController controller;
     private ConfigurationSection configuration = new MemoryConfiguration();
     private ConfigurationSection effectiveConfiguration = new MemoryConfiguration();
-    private MagicProperties parent;
+    private BaseMagicProperties parent;
     private boolean dirty = false;
 
     protected BaseMagicProperties(MageController controller) {
@@ -36,7 +35,6 @@ public class BaseMagicProperties implements MagicProperties {
         this.controller = (MagicController)controller;
     }
     
-    @Override
     public void setProperty(String key, Object value) {
         configuration.set(key, value);
         dirty = true;
@@ -58,25 +56,21 @@ public class BaseMagicProperties implements MagicProperties {
         dirty = true;
     }
 
-    @Override
     public Object getProperty(String key) {
         rebuildEffectiveConfiguration();
         return effectiveConfiguration.get(key);
     }
 
-    @Override
     public ConfigurationSection getConfiguration() {
         return configuration;
     }
 
-    @Override
     public ConfigurationSection getEffectiveConfiguration() {
         rebuildEffectiveConfiguration();
         return effectiveConfiguration;
     }
 
-    @Override
-    public void setParent(MagicProperties properties) {
+    public void setParent(BaseMagicProperties properties) {
         this.parent = properties;
         dirty = true;
     }

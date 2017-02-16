@@ -839,7 +839,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	public void setTemplate(String templateName) {
 		this.template = templateName;
-		setParent(controller.getWandTemplate(templateName));
+		// TODO: Fix this ugliness.
+		setParent((com.elmakers.mine.bukkit.wand.WandTemplate)controller.getWandTemplate(templateName));
 		setProperty("template", template);
 	}
 
