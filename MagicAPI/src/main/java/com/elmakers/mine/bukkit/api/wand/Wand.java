@@ -39,7 +39,6 @@ public interface Wand extends CostReducer, MagicProperties {
     public String getId();
     public long getWorth();
     public void closeInventory();
-    public void activate(Mage mage);
     public void deactivate();
     public boolean organizeInventory(Mage mage);
     public boolean alphabetizeInventory();
@@ -161,4 +160,13 @@ public interface Wand extends CostReducer, MagicProperties {
      * @return false if the player is blocked based on a path requirement
      */
     public boolean checkAndUpgrade(boolean quiet);
+
+    /**
+     * This method is deprecated, use Mage.checkWand instead. Wands should only ever be active
+     * while held.
+     *
+     * @param mage
+     */
+    @Deprecated
+    public void activate(Mage mage);
 }
