@@ -370,11 +370,11 @@ public class PlayerController implements Listener {
 
         Player player = event.getPlayer();
         Action action = event.getAction();
-        boolean isSwing = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
+        boolean isLeftClick = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
         
         // GM2 left-click interaction is handled by the animation event, for now.
         // Might make sense to move all left-click handling there eventually?
-        if (player.getGameMode() == GameMode.ADVENTURE && isSwing) return;
+        if (player.getGameMode() == GameMode.ADVENTURE && isLeftClick) return;
         
         // Don't allow interacting while holding spells, brushes or upgrades
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
@@ -383,8 +383,8 @@ public class PlayerController implements Listener {
             return;
         }
         
-        boolean handleRightClick = (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
-        if (handleRightClick) {
+        boolean isRightClick = (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
+        if (isRightClick) {
             ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
             if (Wand.isSpell(itemInOffhand) || Wand.isBrush(itemInOffhand) || Wand.isUpgrade(itemInOffhand)) {
                 event.setCancelled(true);
@@ -398,7 +398,7 @@ public class PlayerController implements Listener {
         Wand wand = mage.checkWand();
         if (action == Action.RIGHT_CLICK_BLOCK) {
             Material material = event.getClickedBlock().getType();
-            handleRightClick = !controller.isInteractable(event.getClickedBlock());
+            isRightClick = !controller.isInteractable(event.getClickedBlock());
 
             // This is to prevent Essentials signs from giving you an item in your wand inventory.
             if (wand != null && (material== Material.SIGN_POST || material == Material.WALL_SIGN)) {
@@ -407,7 +407,7 @@ public class PlayerController implements Listener {
         }
         
         // Check for offhand casting
-        if (handleRightClick)
+        if (isRightClick)
         {
             if (allowOffhandCasting && mage.offhandCast()) {
                 if (cancelInteractOnCast) {
@@ -418,7 +418,7 @@ public class PlayerController implements Listener {
         }
 
         // Check for wearing via right-click
-        if (itemInHand != null && handleRightClick && controller.isWearable(itemInHand))
+        if (itemInHand != null && isRightClick && controller.isWearable(itemInHand))
         {
             if (wand != null)
             {
@@ -466,20 +466,20 @@ public class PlayerController implements Listener {
         }
 
         if (!mage.checkLastClick(clickCooldown)) {
-            if (isSwing && wand.getLeftClickAction() != WandAction.NONE) {
+            if (isLeftClick && wand.getLeftClickAction() != WandAction.NONE) {
                 event.setCancelled(true);
             }
-            if (handleRightClick && wand.getRightClickAction() != WandAction.NONE) {
+            if (isRightClick && wand.getRightClickAction() != WandAction.NONE) {
                 event.setCancelled(true);
             }
             return;
         }
         
-        if (isSwing) {
+        if (isLeftClick) {
             wand.playEffects("swing");
         }
 
-        if (isSwing && !wand.isUpgrade())
+        if (isLeftClick && !wand.isUpgrade())
         {
             if (wand.performAction(wand.getLeftClickAction()) && cancelInteractOnCast) {
                 event.setCancelled(true);
@@ -487,7 +487,7 @@ public class PlayerController implements Listener {
             return;
         }
 
-        if (handleRightClick && wand.performAction(wand.getRightClickAction()))
+        if (isRightClick && wand.performAction(wand.getRightClickAction()))
         {
             event.setCancelled(true);
         }
