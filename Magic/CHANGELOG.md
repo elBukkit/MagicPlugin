@@ -9,6 +9,7 @@
  - Some tweaks to the laser spell
  - Really fix bypass_pvp permission
  - Add support for dyed leather armor wands, change apprentice gear to blue armor
+ - Offhand wands are now truly "active", including lightsabers. Blocking with an offhand saber now works.
 
 ## 6.4.1
 

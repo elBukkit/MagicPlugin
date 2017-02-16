@@ -1221,22 +1221,35 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 	}
 
+	protected boolean findItem() {
+		if (mage != null) {
+			Player player = mage.getPlayer();
+			if (player != null) {
+				ItemStack itemInHand = player.getInventory().getItemInMainHand();
+				String itemId = getWandId(itemInHand);
+				if (itemId != null && itemId.equals(id) && itemInHand != item) {
+					item = itemInHand;
+					return true;
+				}
+				itemInHand = player.getInventory().getItemInOffHand();
+				itemId = getWandId(itemInHand);
+				if (itemId != null && itemId.equals(id) && itemInHand != item) {
+					item = itemInHand;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void saveState() {
         // Make sure we're on the current item instance
-        if (mage != null) {
-            Player player = mage.getPlayer();
-            if (player != null) {
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
-                String itemId = getWandId(itemInHand);
-                if (itemId != null && itemId.equals(id)) {
-                    item = itemInHand;
-					updateItemIcon();
-                    updateName();
-                    updateLore();
-                }
-            }
-        }
+		if (findItem()) {
+			updateItemIcon();
+			updateName();
+			updateLore();
+		}
 
         if (item == null || item.getType() == Material.AIR) return;
 
@@ -3513,6 +3526,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 effectiveBoost += armorWand.getManaMaxBoost();
                 effectiveRegenBoost += armorWand.getManaRegenerationBoost();
             }
+            Wand offhandWand = mage.getOffhandWand();
+            if (offhandWand != null && !offhandWand.isPassive()) {
+				effectiveBoost += offhandWand.getManaMaxBoost();
+				effectiveRegenBoost += offhandWand.getManaRegenerationBoost();
+			}
         }
         effectiveManaMax = manaMax;
         if (effectiveBoost != 0) {
@@ -3727,25 +3745,29 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        updateItemIcon();
-						// Needed because if the inventory has opened the item reference may be stale (?)
-						if (mage != null) {
-							Player player = mage.getPlayer();
-							if (player != null) {
-								player.getInventory().setItem(storedSlot, item);
-							}
-						}
+						findItem();
+						icon.applyToItem(item);
                     }
                 }, inactiveIconDelay * 20 / 1000);
             } else {
+				findItem();
                 icon.applyToItem(item);
             }
         } else {
+			findItem();
             inactiveIcon.applyToItem(this.item);
         }
     }
 
-    public boolean activate(Mage mage) {
+	public boolean activate(Mage mage) {
+    	return activate(mage, false);
+	}
+
+	public boolean activateOffhand(Mage mage) {
+		return activate(mage, true);
+	}
+
+    public boolean activate(Mage mage, boolean offhand) {
         if (mage == null) return false;
         Player player = mage.getPlayer();
         if (player != null) {
@@ -3763,8 +3785,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 		this.checkId();
 
-		if (getMode() != WandMode.INVENTORY) {
+		if (getMode() != WandMode.INVENTORY || offhand) {
 			showActiveIcon(true);
+			playPassiveEffects("open");
 		}
 
         if (this.isUpgrade) {
@@ -4731,9 +4754,5 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             if (mage != null) mage.setLastBlockTime(System.currentTimeMillis());
 		}
 		return isReflected;
-	}
-	
-	public boolean canCast() {
-		return (activeSpell != null && !activeSpell.isEmpty());
 	}
 }

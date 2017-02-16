@@ -158,6 +158,9 @@ public class PlayerController implements Listener {
         Wand activeWand = (Wand)apiWand;
         if (activeWand.performAction(activeWand.getSwapAction())) {
             event.setCancelled(true);
+        } else {
+            mage.checkWand(event.getMainHandItem());
+            mage.checkOffhandWand(event.getOffHandItem());
         }
     }
 

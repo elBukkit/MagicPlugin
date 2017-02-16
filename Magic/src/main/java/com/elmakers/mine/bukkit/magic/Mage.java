@@ -34,6 +34,7 @@ import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.wand.WandAction;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
@@ -424,6 +425,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (wand == activeWand) {
             setActiveWand(null);
         }
+        if (wand == offhandWand) {
+            setOffhandWand(null);
+        }
     }
 
     private void setActiveWand(Wand activeWand) {
@@ -438,6 +442,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if (activeWand != null) {
             WandActivatedEvent activatedEvent = new WandActivatedEvent(this, activeWand);
+            Bukkit.getPluginManager().callEvent(activatedEvent);
+        }
+    }
+
+    private void setOffhandWand(Wand offhandWand) {
+        // Avoid deactivating a wand by mistake, and avoid infinite recursion on null!
+        if (this.offhandWand == offhandWand) return;
+        this.offhandWand = offhandWand;
+        if (offhandWand != null && offhandWand.isBound() && offhandWand.canUse(getPlayer())) {
+            addBound(offhandWand);
+        }
+        blockPlaceTimeout = System.currentTimeMillis() + 200;
+        updateEquipmentEffects();
+
+        if (offhandWand != null) {
+            WandActivatedEvent activatedEvent = new WandActivatedEvent(this, offhandWand);
             Bukkit.getPluginManager().callEvent(activatedEvent);
         }
     }
@@ -877,8 +897,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         
         ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
         if (Wand.isWand(itemInOffhand)) {
-            Wand offhandWand = checkOffhandWand(itemInOffhand);
-            if (offhandWand != null && offhandWand.canCast()) {
+            if (offhandWand != null && offhandWand.getLeftClickAction() == WandAction.CAST ||  offhandWand.getRightClickAction() == WandAction.CAST) {
                 offhandCast = true;
                 try {
                     offhandWand.tickMana(player);
@@ -912,20 +931,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         String activeId = offhandWand != null ? offhandWand.getId() : null;
 
         if ((itemId != null && activeId == null)
-                || (activeId != null && itemId == null)
-                || (itemId != null && activeId != null && !itemId.equals(activeId))
-                )
+        || (activeId != null && itemId == null)
+        || (itemId != null && activeId != null && !itemId.equals(activeId))
+        )
         {
+            if (offhandWand != null) {
+                offhandWand.deactivate();
+            }
             if (itemInHand != null && itemId != null && controller.hasWandPermission(player)) {
-                offhandWand = controller.getWand(itemInHand);
-                if (!offhandWand.canUse(player)) {
-                    offhandWand = null;
+                Wand newActiveWand = controller.getWand(itemInHand);
+                if (newActiveWand.activateOffhand(this)) {
+                    setOffhandWand(newActiveWand);
+                } else {
+                    setOffhandWand(null);
                 }
             }
-        }
-
-        if (offhandWand != null) {
-            offhandWand.setActiveMage(this);
         }
         return offhandWand;
     }
@@ -934,6 +954,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Wand checkWand() {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
+        checkOffhandWand();
         return checkWand(player.getInventory().getItemInMainHand());
     }
 
@@ -1647,6 +1668,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return offhandWand;
         }
         return activeWand;
+    }
+
+    public Wand getOffhandWand() {
+        return offhandWand;
     }
 
     @Override
@@ -2399,6 +2424,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             damageReductionExplosions += activeWand.getDamageReductionExplosions();
             effectivePotionEffects.putAll(activeWand.getPotionEffects());
         }
+        // Don't add these together so things stay balanced!
+        if (offhandWand != null && !offhandWand.isPassive())
+        {
+            damageReduction = Math.max(damageReduction, offhandWand.getDamageReduction());
+            damageReductionPhysical += Math.max(damageReductionPhysical, offhandWand.getDamageReductionPhysical());
+            damageReductionProjectiles += Math.max(damageReductionProjectiles, offhandWand.getDamageReductionProjectiles());
+            damageReductionFalling += Math.max(damageReductionFalling, offhandWand.getDamageReductionFalling());
+            damageReductionFire += Math.max(damageReductionFire, offhandWand.getDamageReductionFire());
+            damageReductionExplosions += Math.max(damageReductionExplosions, offhandWand.getDamageReductionExplosions());
+            effectivePotionEffects.putAll(offhandWand.getPotionEffects());
+        }
         for (Wand armorWand : activeArmor.values())
         {
             if (armorWand != null) {
@@ -2676,7 +2712,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (activeWand != null && activeWand.isReflected(angle)) {
             return true;
         }
-        Wand offhandWand = checkOffhandWand();
         if (offhandWand != null && offhandWand.isReflected(angle)) {
             return true;
         }
@@ -2688,7 +2723,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (activeWand != null && activeWand.isBlocked(angle)) {
             return true;
         }
-        Wand offhandWand = checkOffhandWand();
         if (offhandWand != null && offhandWand.isBlocked(angle)) {
             return true;
         }
