@@ -38,6 +38,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         super(controller);
+        this.load(node);
         this.key = key;
 
         effects.clear();
@@ -52,17 +53,16 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         attributeSlot = node.getString("attribute_slot");
 
         // Remove some properties that should not transfer to wands
-        node.set("attributes", null);
-        node.set("attribute_slot", null);
-        node.set("creator", null);
-        node.set("creator_id", null);
-        node.set("migrate_to", null);
-        node.set("migrate_icon", null);
-        node.set("restorable", null);
-        node.set("hidden", null);
-        node.set("enabled", null);
-        node.set("inherit", null);
-        this.load(node);
+        setProperty("attributes", null);
+        setProperty("attribute_slot", null);
+        setProperty("creator", null);
+        setProperty("creator_id", null);
+        setProperty("migrate_to", null);
+        setProperty("migrate_icon", null);
+        setProperty("restorable", null);
+        setProperty("hidden", null);
+        setProperty("enabled", null);
+        setProperty("inherit", null);
 
         ConfigurationSection migrateConfig = node.getConfigurationSection("migrate_icons");
         if (migrateConfig != null) {
