@@ -663,8 +663,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
     @Override
     public void setMana(float mana) {
-        this.mana = Math.max(0, mana);
-		setProperty("mana", this.mana);
+    	if (isCostFree()) {
+			setProperty("mana", null);
+		} else {
+			this.mana = Math.max(0, mana);
+			setProperty("mana", this.mana);
+		}
     }
 
     @Override
@@ -686,8 +690,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 heroes.removeMana(mage.getPlayer(), (int)Math.ceil(amount));
             }
         }
-		mana = Math.max(0,  mana - amount);
-		setProperty("mana", this.mana);
+		setMana(mana - amount);
 		updateMana();
 	}
 	
@@ -3350,7 +3353,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             effectiveManaMax = manaMax;
         }
         if (manaPerDamage > 0 && effectiveManaMax > 0 && mana < effectiveManaMax) {
-            mana = Math.min(effectiveManaMax, mana + (float)damage * manaPerDamage);
+            setMana(Math.min(effectiveManaMax, mana + (float)damage * manaPerDamage));
             updateMana();
         }
     }
