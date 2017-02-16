@@ -1889,7 +1889,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return getLore(getSpells().size(), getBrushes().size());
 	}
 	
-	protected void addPropertyLore(List<String> lore)
+	protected void addPropertyLore(List<String> lore, boolean isSingleSpell)
 	{
 		if (usesMana()) {
             if (effectiveManaMax != manaMax) {
@@ -1935,9 +1935,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
             lore.add(ChatColor.AQUA + describePotionEffect(effect.getKey(), effect.getValue()));
         }
-		if (consumeReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.consume_reduction", consumeReduction));
-		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction));
-		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction));
+		if (consumeReduction > 0 && !isSingleSpell) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.consume_reduction", consumeReduction));
+		if (costReduction > 0 && !isSingleSpell) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction));
+		if (cooldownReduction > 0 && !isSingleSpell) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction));
 		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.power", power));
         if (superProtected) {
             lore.add(ChatColor.DARK_AQUA + getMessage("super_protected"));
@@ -2019,7 +2019,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         // one spell now, but may get more later. Since you
         // can't open the inventory in this state, you can not
         // otherwise see the spell lore.
-		if (spell != null && spellCount == 1 && !hasInventory && !isUpgrade)
+		boolean isSingleSpell = spell != null && spellCount == 1 && !hasInventory && !isUpgrade;
+		if (isSingleSpell)
         {
             addSpellLore(messages, spell, lore, getActiveMage(), this);
 		}
@@ -2053,7 +2054,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
 			}
 		}
-		addPropertyLore(lore);
+		addPropertyLore(lore, isSingleSpell);
 		if (isUpgrade) {
 			lore.add(ChatColor.YELLOW + getMessage("upgrade_item_description"));
 		}

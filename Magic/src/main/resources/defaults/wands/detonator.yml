@@ -5,6 +5,7 @@ detonator:
   right_click: cast
   left_click: none
   locked: true
+  cost_reduction: 2
   spells:
   - grenade
 
