@@ -915,6 +915,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return false;
     }
 
+    public boolean setOffhandActive(boolean active) {
+        boolean wasActive = active;
+        this.offhandCast = active;
+        return wasActive;
+    }
+
     public Wand checkOffhandWand() {
         Player player = getPlayer();
         if (player == null) {
@@ -1449,12 +1455,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Color getEffectColor() {
+        if (offhandCast && offhandWand != null) {
+            return offhandWand.getEffectColor();
+        }
         if (activeWand == null) return null;
         return activeWand.getEffectColor();
     }
 
     @Override
     public String getEffectParticleName() {
+        if (offhandCast && offhandWand != null) {
+            ParticleEffect particle = offhandWand.getEffectParticle();
+            return particle == null ? null : particle.name();
+        }
         if (activeWand == null) return null;
         ParticleEffect particle = activeWand.getEffectParticle();
         return particle == null ? null : particle.name();
