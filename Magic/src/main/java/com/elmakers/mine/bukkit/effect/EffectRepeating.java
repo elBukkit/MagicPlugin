@@ -53,6 +53,12 @@ public abstract class EffectRepeating extends EffectPlayer implements Runnable {
         run();
     }
 
+    @Override
+    public void cancel() {
+        stop();
+        super.cancel();
+    }
+
     public void stop() {
         iteration = iterations;
         if (taskId != null) {
