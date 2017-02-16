@@ -644,7 +644,7 @@ public class PlayerController implements Listener {
                 event.setCancelled(true);
                 event.getItem().remove();
                 inventory.setItem(inventory.getHeldItemSlot(), pickup);
-                wand.activate(mage);
+                mage.checkWand();
             }
         }
     }

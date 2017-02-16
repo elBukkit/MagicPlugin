@@ -18,7 +18,6 @@ import javax.annotation.Nullable;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
-import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -3290,7 +3289,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			mage.resetSentExperience();
 		}
         saveState();
-		mage.setActiveWand(null);
+		mage.deactivateWand(this);
 		this.mage = null;
 		updateMaxMana(true);
 	}
@@ -3710,13 +3709,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     }
 
 	@Override
+	@Deprecated
 	public void activate(com.elmakers.mine.bukkit.api.magic.Mage mage) {
-		Player player = mage.getPlayer();
-		if (!Wand.hasActiveWand(player)) {
-			controller.getLogger().warning("Wand activated without holding a wand!");
-			return;
-		}
-		
 		if (mage instanceof Mage) {
 			activate((Mage)mage);
 		}
@@ -3751,21 +3745,20 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
     }
 
-    public void activate(Mage mage) {
-        if (mage == null) return;
+    public boolean activate(Mage mage) {
+        if (mage == null) return false;
         Player player = mage.getPlayer();
         if (player != null) {
-			if (!controller.hasWandPermission(player, this)) return;
+			if (!controller.hasWandPermission(player, this)) return false;
 			InventoryView openInventory = player.getOpenInventory();
 			InventoryType inventoryType = openInventory.getType();
 			if (inventoryType == InventoryType.ENCHANTING ||
-				inventoryType == InventoryType.ANVIL) return;
+				inventoryType == InventoryType.ANVIL) return false;
         }
 
         if (!canUse(player)) {
             mage.sendMessage(getMessage("bound").replace("$name", getOwner()));
-            mage.setActiveWand(null);
-            return;
+            return false;
         }
 
 		this.checkId();
@@ -3776,13 +3769,13 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         if (this.isUpgrade) {
             controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
-            return;
+            return false;
         }
 
         WandPreActivateEvent preActivateEvent = new WandPreActivateEvent(mage, this);
         Bukkit.getPluginManager().callEvent(preActivateEvent);
         if (preActivateEvent.isCancelled()) {
-            return;
+            return false;
         }
 
         // Update held item, it may have been copied since this wand was created.
@@ -3862,7 +3855,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         checkActiveMaterial();
 
-        mage.setActiveWand(this);
         tick();
         saveState();
 
@@ -3883,8 +3875,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             DeprecatedUtils.updateInventory(player);
         }
 
-        WandActivatedEvent activatedEvent = new WandActivatedEvent(mage, this);
-        Bukkit.getPluginManager().callEvent(activatedEvent);
+        return true;
     }
 
     @Override

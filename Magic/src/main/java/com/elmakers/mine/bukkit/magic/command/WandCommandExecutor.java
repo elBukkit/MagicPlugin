@@ -686,8 +686,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		
 		Wand wand = api.createWand(heldItem);
 		player.getInventory().setItemInMainHand(wand.getItem());
-		wand.activate(mage);
-		
+		mage.checkWand();
+
 		mage.sendMessage(api.getMessages().getParameterized("wand.enchanted", "$item", MaterialAndData.getMaterialName(heldItem)));
 				
 		if (sender != player) {
@@ -886,7 +886,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		} else {
 			wand.configure(node);
 		}
-		wand.activate(mage);
+		mage.checkWand();
 		mage.sendMessage(api.getMessages().get("wand.reconfigured"));
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_reconfigured", "$name", player.getName()));
@@ -969,7 +969,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 		wand.deactivate();
 		boolean result = wand.add(newWand);
-		wand.activate(mage);
+		mage.checkWand();
 		
 		if (sender != player) {
 			if (result) {

@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
+import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
@@ -419,7 +420,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    public void setActiveWand(Wand activeWand) {
+    public void deactivateWand(Wand wand) {
+        if (wand == activeWand) {
+            setActiveWand(null);
+        }
+    }
+
+    private void setActiveWand(Wand activeWand) {
         // Avoid deactivating a wand by mistake, and avoid infinite recursion on null!
         if (this.activeWand == activeWand) return;
         this.activeWand = activeWand;
@@ -428,6 +435,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
         updateEquipmentEffects();
+
+        if (activeWand != null) {
+            WandActivatedEvent activatedEvent = new WandActivatedEvent(this, activeWand);
+            Bukkit.getPluginManager().callEvent(activatedEvent);
+        }
     }
     
     @Override
@@ -643,12 +655,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
                 if (activeWand == null) {
                     String welcomeWand = controller.getWelcomeWand();
-                    Wand wand = Wand.getActiveWand(controller, player);
-                    if (wand != null) {
-                        wand.activate(this);
-                    } else if (!gaveWelcomeWand && welcomeWand.length() > 0) {
+                    if (!gaveWelcomeWand && welcomeWand.length() > 0) {
                         gaveWelcomeWand = true;
-                        wand = Wand.createWand(controller, welcomeWand);
+                        Wand wand = Wand.createWand(controller, welcomeWand);
                         if (wand != null) {
                             wand.takeOwnership(player);
                             giveItem(wand.getItem());
@@ -851,7 +860,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             if (itemInHand != null && itemId != null && controller.hasWandPermission(player)) {
                 Wand newActiveWand = controller.getWand(itemInHand);
-                newActiveWand.activate(this);
+                if (newActiveWand.activate(this)) {
+                    setActiveWand(newActiveWand);
+                } else {
+                    setActiveWand(null);
+                }
             }
         }
 
@@ -2331,8 +2344,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // it might change when added to an Inventory! :|
             itemStack = inventory.getItemInMainHand();
             if (Wand.isWand(itemStack)) {
-                Wand wand = controller.getWand(itemStack);
-                wand.activate(this);
+                checkWand();
             } else {
                 if (itemStack.getType() == Material.MAP) {
                     setLastHeldMapId(itemStack.getDurability());
