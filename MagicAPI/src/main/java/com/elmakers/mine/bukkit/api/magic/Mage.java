@@ -246,6 +246,7 @@ public interface Mage extends CostReducer {
      * @return The Mage's active Wand.
      */
     public Wand getActiveWand();
+    public Wand getOffhandWand();
     public GUIAction getActiveGUI();
 
     /**
