@@ -3554,33 +3554,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			updateLore();
 		}
     }
-
-    public static Float getWandFloat(ItemStack item, String key) {
-        try {
-            Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
-            if (wandNode != null) {
-                String value = InventoryUtils.getMetaString(wandNode, key);
-                if (value != null && !value.isEmpty()) {
-                    return Float.parseFloat(value);
-                }
-            }
-        } catch (Exception ex) {
-
-        }
-        return null;
-    }
-
-    public static String getWandString(ItemStack item, String key) {
-        try {
-            Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
-            if (wandNode != null) {
-                return InventoryUtils.getMetaString(wandNode, key);
-            }
-        } catch (Exception ex) {
-
-        }
-        return null;
-    }
 	
 	public MagicController getMaster() {
 		return controller;
