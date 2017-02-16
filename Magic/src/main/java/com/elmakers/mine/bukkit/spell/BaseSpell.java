@@ -1416,7 +1416,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     message = getMessage("fail");
                 }
 
-                sendMessage(getMessage(resultName, message));
+                if (result.isFailure()) {
+                    sendMessage(getMessage(resultName, message));
+                } else {
+                    castMessage(getMessage(resultName, message));
+                }
             }
         }
 
