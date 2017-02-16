@@ -3785,11 +3785,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 		this.checkId();
 
-		if (getMode() != WandMode.INVENTORY || offhand) {
-			showActiveIcon(true);
-			playPassiveEffects("open");
-		}
-
         if (this.isUpgrade) {
             controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
             return false;
@@ -3801,8 +3796,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             return false;
         }
 
-        // Update held item, it may have been copied since this wand was created.
         this.mage = mage;
+
+		// Since these wands can't be opened we will just show them as open when held
+		if (getMode() != WandMode.INVENTORY || offhand) {
+			showActiveIcon(true);
+			playPassiveEffects("open");
+		}
+
         boolean forceUpdate = false;
 
         // Check for an empty wand and auto-fill

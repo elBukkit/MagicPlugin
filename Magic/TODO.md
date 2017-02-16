@@ -2,6 +2,7 @@
 
 ## High-Priority
  
+ - New broom needs to cancel when flying into a region- maybe a general spell option
  - Can you not get optional spells once you reach the end of wand progression?
  
 ## Not so High-Priority
