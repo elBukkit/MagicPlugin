@@ -277,7 +277,7 @@ public class MountArmorStandAction extends BaseSpellAction
                 activeWand.deactivate();
             }
 
-            item = player.getInventory().getItemInMainHand();
+            item = activeWand.getItem();
             if (item == null || item.getType() == Material.AIR)
             {
                 return SpellResult.FAIL;

@@ -500,7 +500,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	@Override
     public void unenchant() {
-		item = new ItemStack(item.getType(), 1, item.getDurability());
+		InventoryUtils.removeMeta(item, WAND_KEY);
+		InventoryUtils.removeMeta(item, UPGRADE_KEY);
+		InventoryUtils.removeMeta(item, "spell");
+		InventoryUtils.removeMeta(item, "skill");
+		InventoryUtils.removeMeta(item, "brush");
 		clear();
 	}
 	
@@ -616,7 +620,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
     public void newId() {
-        if (!this.isUpgrade && !this.isSingleUse) {
+    	if (this.isSingleUse) {
+			id = template;
+    		return;
+		}
+    	if (!this.isUpgrade) {
             id = UUID.randomUUID().toString();
         } else {
             id = null;
@@ -632,7 +640,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
     @Override
     public String getId() {
-        return isSingleUse ? template : id;
+        return id;
     }
 
     public float getManaRegenerationBoost() {
@@ -1404,9 +1412,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         // Check for single-use wands
 		uses = wandConfig.getInt("uses");
-		String tempId = wandConfig.getString("id", id);
-		isSingleUse = (tempId == null || tempId.isEmpty()) && uses == 1;
-		hasUses = wandConfig.getBoolean("has_uses", hasUses) || uses > 0;
+		hasUses = uses > 0;
 
         // Convert some legacy properties to potion effects
         float healthRegeneration = (float)wandConfig.getDouble("health_regeneration", 0);
@@ -1571,6 +1577,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			if (templateConfig != null) {
 				wandName = templateConfig.getString("name", wandName);
 				description = templateConfig.getString("description", description);
+
+				int templateUses = templateConfig.getInt("uses");
+				isSingleUse = templateUses == 1;
+				hasUses = hasUses || templateUses > 0;
 			}
 			wandName = controller.getMessages().get("wands." + template + ".name", wandName);
 			description = controller.getMessages().get("wands." + template + ".description", description);
@@ -2141,17 +2151,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return sp;
 	}
 
-    public static boolean isSingleUse(ItemStack item) {
-		if (InventoryUtils.isEmpty(item)) return false;
-        Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
-
-        if (wandNode == null) return false;
-        String useCount = InventoryUtils.getMetaString(wandNode, "uses");
-        String wandId = InventoryUtils.getMetaString(wandNode, "id");
-
-        return useCount != null && useCount.equals("1") && (wandId == null || wandId.isEmpty());
-    }
-
     public static boolean isUpgrade(ItemStack item) {
     	return item != null && InventoryUtils.hasMeta(item, UPGRADE_KEY);
 	}
@@ -2186,9 +2185,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     public static String getWandId(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
-        if (wandNode == null || isUpgrade(item)) return null;
-        if (isSingleUse(item)) return getWandTemplate(item);
-        return InventoryUtils.getMetaString(wandNode, "id");
+        if (wandNode == null) return null;
+        String id = InventoryUtils.getMetaString(wandNode, "id");
+        if (id == null || id.isEmpty()) {
+			id = InventoryUtils.getMetaString(wandNode, "template");
+		}
+        return id;
     }
 
 	public static String getSpell(ItemStack item) {
@@ -3393,10 +3395,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	@SuppressWarnings("deprecation")
 	protected void use() {
-		if (mage == null) return;
 		if (hasUses) {
+			findItem();
             ItemStack item = getItem();
-            if (item.getAmount() > 1)
+			if (item.getAmount() > 1)
             {
                 item.setAmount(item.getAmount() - 1);
             }
@@ -3406,29 +3408,28 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 {
                     uses--;
                 }
-                if (uses <= 0) {
-                    Player player = mage.getPlayer();
+                if (uses <= 0 && mage != null) {
+					// If the wand is not currently active it will be destroyed on next activate
+					Player player = mage.getPlayer();
 
-                    deactivate();
+					deactivate();
 
-                    PlayerInventory playerInventory = player.getInventory();
-                    item = isInOffhand ? playerInventory.getItemInOffHand() : playerInventory.getItemInMainHand();
-                    if (item.getAmount() > 1) {
-                        item.setAmount(item.getAmount() - 1);
-                    } else {
-                    	if (isInOffhand) {
+					PlayerInventory playerInventory = player.getInventory();
+					if (item.getAmount() > 1) {
+						item.setAmount(item.getAmount() - 1);
+					} else {
+						if (isInOffhand) {
 							playerInventory.setItemInOffHand(new ItemStack(Material.AIR, 1));
 						} else {
-							playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
+							playerInventory.setItemInMainHand(new ItemStack(Material.AIR, 1));
 						}
-                    }
-                    player.updateInventory();
-                } else {
-					setProperty("uses", uses);
-                    saveState();
-                    updateName();
-                    updateLore();
+					}
+					player.updateInventory();
                 }
+				setProperty("uses", uses);
+				saveState();
+				updateName();
+				updateLore();
             }
 		}
 	}
@@ -3776,13 +3777,22 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     public boolean activate(Mage mage, boolean offhand) {
         if (mage == null) return false;
         Player player = mage.getPlayer();
-        if (player != null) {
-			if (!controller.hasWandPermission(player, this)) return false;
-			InventoryView openInventory = player.getOpenInventory();
-			InventoryType inventoryType = openInventory.getType();
-			if (inventoryType == InventoryType.ENCHANTING ||
-				inventoryType == InventoryType.ANVIL) return false;
-        }
+        if (player == null) return false;
+
+		if (!controller.hasWandPermission(player, this)) return false;
+		InventoryView openInventory = player.getOpenInventory();
+		InventoryType inventoryType = openInventory.getType();
+		if (inventoryType == InventoryType.ENCHANTING ||
+			inventoryType == InventoryType.ANVIL) return false;
+
+		if (hasUses && uses <= 0) {
+			if (offhand) {
+				player.getInventory().setItemInOffHand(new ItemStack(Material.AIR, 1));
+			} else {
+				player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
+			}
+			return false;
+		}
 
         if (!canUse(player)) {
             mage.sendMessage(getMessage("bound").replace("$name", getOwner()));

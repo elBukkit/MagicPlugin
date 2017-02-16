@@ -12,7 +12,6 @@
 
 ## Broomstick / Scooter
 
- - Some way to level up?
  - Need repeating SFX back:
    - Repeating effectlib effect? (Can't play custom sounds?)
    - Repeating EffectPlayer (does it even work that way? cancellable?)

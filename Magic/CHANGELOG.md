@@ -10,16 +10,7 @@
  - Really fix bypass_pvp permission
  - Add support for dyed leather armor wands, change apprentice gear to blue armor
  - Offhand wands are now truly "active", including lightsabers. Blocking with an offhand saber now works.
-
-## 6.4.1
-
-- Fix SuperBroom, riding the Wolf Staff
-- Fix One-Way Ticket to Boomstown spell
-- Add DropItem action, for dropping items on the ground via a spell
-- Fix Map Brush
-- Some more fixes, hopefully, for dual-weilding and right-click behavior
-- Fix bypass_pvp permission, when trying to target a player in a no-pvp zone
-- Fix lightsaber progression
+ - Some fixes for limited and single-use items.
 
 ## 6.4.1
 
