@@ -3420,6 +3420,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                     }
                     player.updateInventory();
                 } else {
+					setProperty("uses", uses);
                     saveState();
                     updateName();
                     updateLore();
