@@ -10,13 +10,6 @@
  - Clean up uses of String.split, unnecessary regex expense
  - Aliases don't work with levels - Don't refund item costs when a spell goes through auto-undo
 
-## Broomstick / Scooter
-
- - Need repeating SFX back:
-   - Repeating effectlib effect? (Can't play custom sounds?)
-   - Repeating EffectPlayer (does it even work that way? cancellable?)
-   - Mount action compound, Skip + PlayEffects (may work but feels a little hacky)
-
 ## Sabers
 
  - Paths being able to upgrade blocking/reflect power

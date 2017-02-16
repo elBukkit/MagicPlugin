@@ -11,6 +11,7 @@
  - Add support for dyed leather armor wands, change apprentice gear to blue armor
  - Offhand wands are now truly "active", including lightsabers. Blocking with an offhand saber now works.
  - Some fixes for limited and single-use items.
+ - Add flying sound effects back to broomsticks
 
 ## 6.4.1
 

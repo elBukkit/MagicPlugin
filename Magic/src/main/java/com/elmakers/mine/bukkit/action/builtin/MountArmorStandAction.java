@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -56,6 +57,13 @@ public class MountArmorStandAction extends BaseSpellAction
     private Collection<PotionEffect> crashEffects;
     private Collection<PotionEffect> warningEffects;
 
+    private SoundEffect sound = null;
+    private int soundInterval = 1000;
+    private float soundMaxVolume = 1;
+    private float soundMinVolume = 1;
+    private float soundMaxPitch = 1;
+    private float soundMinPitch = 1;
+
     private ItemStack item;
     private int slotNumber;
     private long liftoffTime;
@@ -64,6 +72,7 @@ public class MountArmorStandAction extends BaseSpellAction
     private double speed;
     private boolean mounted;
     private boolean warningEffectsApplied;
+    private long nextSoundPlay;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -85,6 +94,7 @@ public class MountArmorStandAction extends BaseSpellAction
         }
         armorStand = null;
         warningEffectsApplied = false;
+        nextSoundPlay = 0;
     }
     
     @Override
@@ -112,6 +122,21 @@ public class MountArmorStandAction extends BaseSpellAction
         duration = parameters.getInt("duration", 0);
         durationWarning = parameters.getInt("duration_warning", 0);
         pitchOffset = parameters.getDouble("pitch_offset", 0);
+
+        sound = null;
+        String soundKey = parameters.getString("sound");
+        if (soundKey != null && !soundKey.isEmpty()) {
+            sound = new SoundEffect(soundKey);
+        }
+        soundInterval =  parameters.getInt("sound_interval", 1000);
+        soundMaxVolume = (float)parameters.getDouble("sound_volume", 1);
+        soundMaxPitch = (float)parameters.getDouble("sound_pitch", 1);
+        soundMinVolume = (float)parameters.getDouble("sound_volume", 1);
+        soundMinPitch = (float)parameters.getDouble("sound_pitch", 1);
+        soundMaxVolume = (float)parameters.getDouble("sound_max_volume", soundMaxVolume);
+        soundMaxPitch = (float)parameters.getDouble("sound_max_pitch", soundMaxPitch);
+        soundMinVolume = (float)parameters.getDouble("sound_min_volume", soundMinVolume);
+        soundMinPitch = (float)parameters.getDouble("sound_min_pitch", soundMinPitch);
 
         if (parameters.contains("armor_stand_reason")) {
             String reasonText = parameters.getString("armor_stand_reason").toUpperCase();
@@ -147,6 +172,17 @@ public class MountArmorStandAction extends BaseSpellAction
             }
         }
         
+        // Play sound effects
+        if (sound != null && nextSoundPlay < System.currentTimeMillis()) {
+            nextSoundPlay = System.currentTimeMillis() + soundInterval;
+
+            double speedRatio = minSpeed >= maxSpeed ? 1 : (speed - minSpeed) / (maxSpeed - minSpeed);
+            sound.setPitch((float)((soundMaxPitch - soundMinPitch) * speedRatio));
+            sound.setVolume((float)((soundMaxVolume - soundMinVolume) * speedRatio));
+            sound.play(context.getPlugin(), target);
+        }
+
+        // Check for crashing
         if (crashDistance > 0)
         {
             Vector threshold = direction.clone().multiply(crashDistance);
@@ -298,6 +334,9 @@ public class MountArmorStandAction extends BaseSpellAction
         speed = startSpeed;
         if (liftoffThrust > 0) {
             armorStand.setVelocity(new Vector(0, liftoffThrust, 0));
+        }
+        if (sound != null) {
+            nextSoundPlay = System.currentTimeMillis();
         }
         
         return SpellResult.PENDING;
