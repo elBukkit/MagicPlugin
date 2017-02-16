@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
+import com.elmakers.mine.bukkit.wand.WandAction;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -394,8 +395,6 @@ public class PlayerController implements Listener {
         Mage mage = controller.getMage(player);
         if (mage == null) return;
 
-        boolean lastClickCooldown = mage.checkLastClick(clickCooldown);
-
         Wand wand = mage.checkWand();
         if (action == Action.RIGHT_CLICK_BLOCK) {
             Material material = event.getClickedBlock().getType();
@@ -468,10 +467,13 @@ public class PlayerController implements Listener {
             }
         }
 
-        ItemStack offhandItem = player.getInventory().getItemInOffHand();
-        boolean checkCooldown = isSwing || offhandItem == null || offhandItem.getType() == Material.AIR;
-        if (!lastClickCooldown && checkCooldown) {
-            event.setCancelled(true);
+        if (mage.checkLastClick(clickCooldown)) {
+            if (isSwing && wand.getLeftClickAction() != WandAction.NONE) {
+                event.setCancelled(true);
+            }
+            if (handleRightClick && wand.getRightClickAction() != WandAction.NONE) {
+                event.setCancelled(true);
+            }
             return;
         }
         
