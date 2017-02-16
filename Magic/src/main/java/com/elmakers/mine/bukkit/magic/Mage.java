@@ -863,7 +863,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         sendMessage(controller.getMessages().get(key, key));
     }
 
-    public Wand checkWand(ItemStack itemInHand) {
+    private Wand checkWand(ItemStack itemInHand) {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
 
@@ -921,7 +921,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return wasActive;
     }
 
-    public Wand checkOffhandWand() {
+    private Wand checkOffhandWand() {
         Player player = getPlayer();
         if (player == null) {
             return null;
@@ -929,7 +929,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return checkOffhandWand(player.getInventory().getItemInOffHand());
     }
 
-    public Wand checkOffhandWand(ItemStack itemInHand) {
+    private Wand checkOffhandWand(ItemStack itemInHand) {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
 
@@ -956,6 +956,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return offhandWand;
     }
 
+    public void checkWandNextTick() {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
+            @Override public void run() {
+                checkWand();
+            }
+        });
+    }
+
     @Override
     public Wand checkWand() {
         Player player = getPlayer();
@@ -964,7 +972,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return checkWand(player.getInventory().getItemInMainHand());
     }
 
-    // This gets called every second (or so - 20 ticks)
     @Override
     public void tick() {
         if (entityData != null) {

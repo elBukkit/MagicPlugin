@@ -115,9 +115,10 @@ public class PlayerController implements Listener {
         }
 
         // Check for active Wand
+        boolean isWand = Wand.isWand(next);
         if (activeWand != null && activeWand.isInventoryOpen()) {
             // If the wand inventory is open, we're going to let them select a spell or material
-            if (!Wand.isWand(next)) {
+            if (!isWand) {
                 controller.onPlayerActivateIcon(mage, activeWand, next);
 
                 // Make sure we have the current wand item in the player's inventory so the
@@ -131,9 +132,9 @@ public class PlayerController implements Listener {
             }
 
             event.setCancelled(true);
-        } else {
+        } else if (isWand || activeWand != null) {
             // Check to see if we've switched to/from a wand
-            mage.checkWand(next);
+            mage.checkWandNextTick();
         }
 
         // Check for map selection if no wand is active
@@ -158,9 +159,8 @@ public class PlayerController implements Listener {
         Wand activeWand = (Wand)apiWand;
         if (activeWand.performAction(activeWand.getSwapAction())) {
             event.setCancelled(true);
-        } else {
-            mage.checkWand(event.getMainHandItem());
-            mage.checkOffhandWand(event.getOffHandItem());
+        } else if (activeWand != null || Wand.isWand(event.getMainHandItem()) || Wand.isWand(event.getOffHandItem())){
+            mage.checkWandNextTick();
         }
     }
 
@@ -634,19 +634,10 @@ public class PlayerController implements Listener {
             event.getItem().remove();
             event.setCancelled(true);
             return;
-        } 
-        
-        if (!mage.hasStoredInventory()) {
-            // Hackiness needed because we don't get an equip event for this!
-            PlayerInventory inventory = event.getPlayer().getInventory();
-            ItemStack inHand = inventory.getItemInMainHand();
-            if (isWand && (inHand == null || inHand.getType() == Material.AIR)) {
-                Wand wand = controller.getWand(pickup);
-                event.setCancelled(true);
-                event.getItem().remove();
-                inventory.setItem(inventory.getHeldItemSlot(), pickup);
-                mage.checkWand();
-            }
+        }
+
+        if (!mage.hasStoredInventory() && isWand) {
+            mage.checkWandNextTick();
         }
     }
 }
