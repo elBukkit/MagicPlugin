@@ -418,9 +418,7 @@ public class PlayerController implements Listener {
         }
 
         // Check for wearing via right-click
-        if (itemInHand != null
-                && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)
-                && controller.isWearable(itemInHand))
+        if (itemInHand != null && handleRightClick && controller.isWearable(itemInHand))
         {
             if (wand != null)
             {
