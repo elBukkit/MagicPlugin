@@ -181,6 +181,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     private boolean quickCast = false;
     private boolean quickCastDisabled = false;
     private boolean manualQuickCastDisabled = false;
+    private boolean isInOffhand = false;
 	
 	private WandAction leftClickAction = WandAction.CAST;
 	private WandAction rightClickAction = WandAction.TOGGLE;
@@ -3797,11 +3798,19 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
         this.mage = mage;
+        this.isInOffhand = offhand;
 
 		// Since these wands can't be opened we will just show them as open when held
+		// We have to delay this 1 tick so it happens after the Mage has accepted the Wand
 		if (getMode() != WandMode.INVENTORY || offhand) {
-			showActiveIcon(true);
-			playPassiveEffects("open");
+			Plugin plugin = controller.getPlugin();
+			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				@Override
+				public void run() {
+					showActiveIcon(true);
+					playPassiveEffects("open");
+				}
+			}, 1);
 		}
 
         boolean forceUpdate = false;
@@ -4635,7 +4644,16 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public boolean playPassiveEffects(String effects) {
 		WandTemplate wandTemplate = getTemplate();
 		if (wandTemplate != null && mage != null) {
-			return wandTemplate.playEffects(mage, effects);
+			boolean offhandActive = mage.setOffhandActive(isInOffhand);
+			boolean result = false;
+			try {
+				result = wandTemplate.playEffects(mage, effects);
+			} catch (Exception ex) {
+				result = false;
+				controller.getLogger().log(Level.WARNING, "Error playing effects " + effects + " from wand " + template, ex);
+			}
+			mage.setOffhandActive(offhandActive);
+			return result;
 		}
 		return false;
 	}
