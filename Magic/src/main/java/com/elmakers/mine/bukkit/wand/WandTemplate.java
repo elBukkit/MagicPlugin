@@ -71,7 +71,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             for (String migrateKey : keys) {
                 migrateIcons.put(migrateKey, migrateConfig.getString(migrateKey));
             }
-            node.set("migrate_icons", null);
+            setProperty("migrate_icons", null);
         }
         
         if (node.contains("effects")) {
@@ -89,20 +89,20 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
                     effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
                 }
             }
-            node.set("effects", null);
+            setProperty("effects", null);
         }
 
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
         if (tagList != null) {
             tags = new HashSet<>(tagList);
-            node.set("tags", null);
+            setProperty("tags", null);
         } else {
             tags = null;
         }
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(node, "categories");
         if (categoriesList != null) {
-            node.set("categories", null);
+            setProperty("categories", null);
             categories = ImmutableSet.copyOf(categoriesList);
         }
     }
