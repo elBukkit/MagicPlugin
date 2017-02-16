@@ -1,0 +1,11 @@
+detonator:
+  icon: tnt
+  uses: 1
+  mode: cast
+  right_click: cast
+  left_click: none
+  locked: true
+  spells:
+  - grenade
+
+

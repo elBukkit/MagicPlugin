@@ -342,3 +342,5 @@ wands:
     empty:
         name: Empty
         description: For creating in-game items from scratch
+    detonator:
+        name: Thermal Detonator

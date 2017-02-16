@@ -4,6 +4,8 @@ starshop:
     parameters:
         show_active_icons: true
         items:
+        - item: detonator
+          cost: 100
         - item: wand|blaster
           cost: 1000
         - item: lightsaber_blue
