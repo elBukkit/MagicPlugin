@@ -2045,7 +2045,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
 		int remaining = getRemainingUses();
-		if (remaining > 0) {
+		if (!isSingleUse && remaining > 0) {
 			if (isUpgrade) {
 				String message = (remaining == 1) ? getMessage("upgrade_uses_singular") : getMessage("upgrade_uses");
 				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
