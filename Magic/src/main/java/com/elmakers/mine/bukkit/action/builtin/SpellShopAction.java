@@ -150,136 +150,141 @@ public class SpellShopAction extends BaseShopAction
             }
         }
 
-        Messages messages = context.getController().getMessages();
         List<ShopItem> shopItems = new ArrayList<>();
         for (Map.Entry<String, Double> spellValue : spellPrices.entrySet()) {
-            String key = spellValue.getKey();
-            key = context.parameterize(key);
-            String spellKey = key.split(" ", 2)[0];
-
-            if (!castsSpells && wand.hasSpell(spellKey)) continue;
-
-            SpellTemplate spell = controller.getSpellTemplate(spellKey);
-            if (spell == null) continue;
-            
-            Double worth = spellValue.getValue();
-            if (worth == null) {
-                worth = spell.getWorth();
+            ShopItem shopItem = createShopItem(spellValue.getKey(), spellValue.getValue(), context);
+            if (shopItem != null) {
+                shopItems.add(shopItem);
             }
-            if (worth <= 0 && !showFree) continue;
-            if (!spell.hasCastPermission(mage.getCommandSender())) continue;
-
-            ItemStack spellItem = controller.createSpellItem(key, castsSpells);
-            if (!castsSpells)
-            {
-                Spell mageSpell = wand != null ? wand.getSpell(spellKey) : null;
-                String requiredPathKey = mageSpell != null ? mageSpell.getRequiredUpgradePath() : null;
-                Set<String> requiredPathTags = mageSpell != null ? mageSpell.getRequiredUpgradeTags() : null;
-                long requiredCastCount = mageSpell != null ? mageSpell.getRequiredUpgradeCasts() : 0;
-                long castCount = mageSpell != null ? Math.min(mageSpell.getCastCount(), requiredCastCount) : 0;
-                Collection<PrerequisiteSpell> missingSpells = PrerequisiteSpell.getMissingRequirements(wand, spell);
-
-                ItemMeta meta = spellItem.getItemMeta();
-                List<String> itemLore = meta.getLore();
-                List<String> lore = new ArrayList<>();
-                if (spell.getSpellKey().getLevel() > 1 && itemLore.size() > 0) {
-                    lore.add(itemLore.get(0));
-                }
-                String upgradeDescription = spell.getUpgradeDescription();
-                if (showUpgrades && upgradeDescription != null && !upgradeDescription.isEmpty()) {
-                    InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
-                }
-
-                String unpurchasableMessage = null;
-
-                if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
-                        || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)
-                        || (requiredPathTags != null && !currentPath.hasAllTags(requiredPathTags))
-                        || !missingSpells.isEmpty()) {
-
-                    if (mageSpell != null && !spell.getName().equals(mageSpell.getName())) {
-                        lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", mageSpell.getName()));
-                    }
-
-                    if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)) {
-                        requiredPathKey = currentPath.translatePath(requiredPathKey);
-                        com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
-                        if (upgradePath != null) {
-                            unpurchasableMessage = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
-                            InventoryUtils.wrapText(unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
-                        }
-                    } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
-                        Set<String> tags = currentPath.getMissingTags(requiredPathTags);
-                        unpurchasableMessage = context.getMessage("tags_requirement", "&r&cRequires: &6$tags").replace("$tags", messages.formatList("tags", tags, "name"));
-                        InventoryUtils.wrapText(unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
-                    }
-
-                    if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
-                        unpurchasableMessage = ChatColor.RED + context.getMessage("cast_requirement", "&r&cCasts: &6$current&f/&e$required")
-                                .replace("$current", Long.toString(castCount))
-                                .replace("$required", Long.toString(requiredCastCount));
-                        lore.add(unpurchasableMessage);
-                    }
-
-                    if (!missingSpells.isEmpty()) {
-                        List<String> spells = new ArrayList<>(missingSpells.size());
-                        for (PrerequisiteSpell s : missingSpells) {
-                            SpellTemplate template = context.getController().getSpellTemplate(s.getSpellKey().getKey());
-                            String spellMessage = context.getMessage("prerequisite_spell_level", "&6$name")
-                                    .replace("$name", template.getName());
-                            if (s.getProgressLevel() > 1) {
-                                spellMessage += context.getMessage("prerequisite_spell_progress_level", " (Progress $level/$max_level)")
-                                        .replace("$level", Long.toString(s.getProgressLevel()))
-                                        // This max level should never return 0 here but just in case we'll make the min 1.
-                                        .replace("$max_level", Long.toString(Math.max(1, template.getMaxProgressLevel())));
-                            }
-                            spells.add(spellMessage);
-                        }
-                        unpurchasableMessage = ChatColor.RED + context.getMessage("required_spells", "&r&cRequires: $spells")
-                                .replace("$spells", StringUtils.join(spells, ", "));
-                        InventoryUtils.wrapText(ChatColor.GOLD.toString(), unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
-                    }
-                }
-
-                for (int i = (spell.getSpellKey().getLevel() > 1 ? 1 : 0); i < itemLore.size(); i++) {
-                    lore.add(itemLore.get(i));
-                }
-                meta.setLore(lore);
-                spellItem.setItemMeta(meta);
-
-                if (unpurchasableMessage != null) InventoryUtils.setMeta(spellItem, "unpurchasable", unpurchasableMessage);
-            }
-            
-            shopItems.add(new ShopItem(spellItem, worth));
         }
 
         Collections.sort(shopItems);
-        
-        if (spells.size() == 0 && showExtra && !castsSpells) {
+
+        if (spells.size() == 0 && showExtra && !castsSpells && currentPath != null) {
             Collection<String> extraSpells = currentPath.getExtraSpells();
             List<ShopItem> extraItems = new ArrayList<>();
             for (String spellKey : extraSpells) {
-                if (wand.hasSpell(spellKey)) continue;
-
-                SpellTemplate spell = controller.getSpellTemplate(spellKey);
-                if (spell == null) continue;
-                double worth = spell.getWorth();
-                if (worth <= 0 && !showFree) continue;
-                if (!spell.hasCastPermission(mage.getCommandSender())) continue;
-
-                ItemStack spellItem = controller.createSpellItem(spellKey, castsSpells);
-                ItemMeta meta = spellItem.getItemMeta();
-                List<String> itemLore = meta.getLore();
-                itemLore.add(context.getMessage("extra_spell", "&aNot Required"));
-                meta.setLore(itemLore);
-                spellItem.setItemMeta(meta);
-                extraItems.add(new ShopItem(spellItem, worth));
+                ShopItem shopItem = createShopItem(spellKey, null, context);
+                if (shopItem != null) {
+                    ItemStack spellItem = shopItem.getItem();
+                    ItemMeta meta = spellItem.getItemMeta();
+                    List<String> itemLore = meta.getLore();
+                    itemLore.add(context.getMessage("extra_spell", "&aNot Required"));
+                    meta.setLore(itemLore);
+                    spellItem.setItemMeta(meta);
+                    extraItems.add(shopItem);
+                }
             }
             Collections.sort(extraItems);
             shopItems.addAll(extraItems);
         }
+
         return showItems(context, shopItems);
 	}
+
+    private ShopItem createShopItem(String key, Double worth, CastContext context) {
+        Mage mage = context.getMage();
+        Wand wand = mage.getActiveWand();
+        MageController controller = context.getController();
+        WandUpgradePath currentPath = wand == null ? null : wand.getPath();
+
+        key = context.parameterize(key);
+        String spellKey = key.split(" ", 2)[0];
+
+        if (!castsSpells && wand.hasSpell(spellKey)) return null;
+
+        SpellTemplate spell = controller.getSpellTemplate(spellKey);
+        if (spell == null) return null;
+
+        if (worth == null) {
+            worth = spell.getWorth();
+        }
+        if (worth <= 0 && !showFree) return null;
+        if (!spell.hasCastPermission(mage.getCommandSender())) return null;
+
+        ItemStack spellItem = controller.createSpellItem(key, castsSpells);
+        if (!castsSpells)
+        {
+            Spell mageSpell = wand != null ? wand.getSpell(spellKey) : null;
+            String requiredPathKey = mageSpell != null ? mageSpell.getRequiredUpgradePath() : null;
+            Set<String> requiredPathTags = mageSpell != null ? mageSpell.getRequiredUpgradeTags() : null;
+            long requiredCastCount = mageSpell != null ? mageSpell.getRequiredUpgradeCasts() : 0;
+            long castCount = mageSpell != null ? Math.min(mageSpell.getCastCount(), requiredCastCount) : 0;
+            Collection<PrerequisiteSpell> missingSpells = PrerequisiteSpell.getMissingRequirements(wand, spell);
+
+            ItemMeta meta = spellItem.getItemMeta();
+            List<String> itemLore = meta.getLore();
+            List<String> lore = new ArrayList<>();
+            if (spell.getSpellKey().getLevel() > 1 && itemLore.size() > 0) {
+                lore.add(itemLore.get(0));
+            }
+            String upgradeDescription = spell.getUpgradeDescription();
+            if (showUpgrades && upgradeDescription != null && !upgradeDescription.isEmpty()) {
+                InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
+            }
+
+            String unpurchasableMessage = null;
+
+            if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
+                    || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)
+                    || (requiredPathTags != null && !currentPath.hasAllTags(requiredPathTags))
+                    || !missingSpells.isEmpty()) {
+
+                if (mageSpell != null && !spell.getName().equals(mageSpell.getName())) {
+                    lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", mageSpell.getName()));
+                }
+
+                if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)) {
+                    requiredPathKey = currentPath.translatePath(requiredPathKey);
+                    com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
+                    if (upgradePath != null) {
+                        unpurchasableMessage = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
+                        InventoryUtils.wrapText(unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
+                    }
+                } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
+                    Set<String> tags = currentPath.getMissingTags(requiredPathTags);
+                    unpurchasableMessage = context.getMessage("tags_requirement", "&r&cRequires: &6$tags").replace("$tags", controller.getMessages().formatList("tags", tags, "name"));
+                    InventoryUtils.wrapText(unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
+                }
+
+                if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
+                    unpurchasableMessage = ChatColor.RED + context.getMessage("cast_requirement", "&r&cCasts: &6$current&f/&e$required")
+                            .replace("$current", Long.toString(castCount))
+                            .replace("$required", Long.toString(requiredCastCount));
+                    lore.add(unpurchasableMessage);
+                }
+
+                if (!missingSpells.isEmpty()) {
+                    List<String> spells = new ArrayList<>(missingSpells.size());
+                    for (PrerequisiteSpell s : missingSpells) {
+                        SpellTemplate template = context.getController().getSpellTemplate(s.getSpellKey().getKey());
+                        String spellMessage = context.getMessage("prerequisite_spell_level", "&6$name")
+                                .replace("$name", template.getName());
+                        if (s.getProgressLevel() > 1) {
+                            spellMessage += context.getMessage("prerequisite_spell_progress_level", " (Progress $level/$max_level)")
+                                    .replace("$level", Long.toString(s.getProgressLevel()))
+                                    // This max level should never return 0 here but just in case we'll make the min 1.
+                                    .replace("$max_level", Long.toString(Math.max(1, template.getMaxProgressLevel())));
+                        }
+                        spells.add(spellMessage);
+                    }
+                    unpurchasableMessage = ChatColor.RED + context.getMessage("required_spells", "&r&cRequires: $spells")
+                            .replace("$spells", StringUtils.join(spells, ", "));
+                    InventoryUtils.wrapText(ChatColor.GOLD.toString(), unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
+                }
+            }
+
+            for (int i = (spell.getSpellKey().getLevel() > 1 ? 1 : 0); i < itemLore.size(); i++) {
+                lore.add(itemLore.get(i));
+            }
+            meta.setLore(lore);
+            spellItem.setItemMeta(meta);
+
+            if (unpurchasableMessage != null) InventoryUtils.setMeta(spellItem, "unpurchasable", unpurchasableMessage);
+        }
+
+        return new ShopItem(spellItem, worth);
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
