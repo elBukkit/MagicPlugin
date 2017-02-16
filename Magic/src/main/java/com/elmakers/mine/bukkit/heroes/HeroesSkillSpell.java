@@ -69,7 +69,7 @@ public class HeroesSkillSpell extends BaseSpell {
     }
 
     @Override
-    public void addLore(Messages messages, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand apiWand, List<String> lore) {
+    public void addLore(Messages messages, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand, List<String> lore) {
         if (mage == null || !mage.isPlayer()) return;
         Hero hero = heroes.getHero(mage.getPlayer());
         if (hero == null) return;
@@ -98,7 +98,7 @@ public class HeroesSkillSpell extends BaseSpell {
         int cooldown = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN, 0, true);
         if (cooldown > 0)
         {
-            String cooldownDescription = getCooldownDescription(messages, cooldown);
+            String cooldownDescription = getCooldownDescription(messages, cooldown, wand);
             if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
                 lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
             }
