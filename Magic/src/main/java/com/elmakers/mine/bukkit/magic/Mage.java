@@ -398,9 +398,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 double cancelOnDamage = spell.cancelOnDamage();
                 if (cancelOnDamage > 0 && cancelOnDamage < damage)
                 {
-                    if (!spell.cancel()) {
-                        spell.sendMessage(spell.getMessage("cancel"));
-                    }
+                    spell.cancel();
                     batch.finish();
                     iterator.remove();
                 }
@@ -1249,10 +1247,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         Spell spell = spellBatch.getSpell();
                         if (spell != null)
                         {
-                            if (!spell.cancel())
-                            {
-                                spell.sendMessage(spell.getMessage("cancel"));
-                            }
+                            spell.cancel();
                         }
                     }
 

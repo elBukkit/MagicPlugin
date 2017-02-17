@@ -64,6 +64,7 @@ broom:
           confusion: 120,3
         warning_effects:
           confusion: 5
+        cancel_on_no_permission: true
         sound: magic.flying
         sound_interval: 500
         sound_max_volume: 4

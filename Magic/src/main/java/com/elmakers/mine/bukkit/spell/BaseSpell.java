@@ -175,6 +175,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected double cancelOnDamage             = 0;
     protected boolean cancelOnCastOther         = false;
+    protected boolean cancelOnNoPermission      = false;
     protected boolean pvpRestricted           	= false;
     protected boolean disguiseRestricted        = false;
     protected boolean worldBorderRestricted     = true;
@@ -988,9 +989,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             SpellBatch spellBatch = (SpellBatch)batch;
             Spell spell = spellBatch.getSpell();
             if (spell.cancelOnCastOther()) {
-                if (!spell.cancel()) {
-                    spell.sendMessage(spell.getMessage("cancel"));
-                }
+                spell.cancel();
                 batch.finish();
                 iterator.remove();
             }
@@ -1542,6 +1541,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
         cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
+        cancelOnNoPermission = parameters.getBoolean("cancel_on_no_permission", false);
 
         if (parameters.contains("prevent_passthrough")) {
             preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));
@@ -2073,9 +2073,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public boolean cancel()
     {
         boolean cancelled = onCancel();
-        if (cancelled) {
-            sendMessage(getMessage("cancel"));
-        }
+        sendMessage(getMessage("cancel"));
         if (currentCast != null) {
             currentCast.cancelEffects();
         }
@@ -2572,6 +2570,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean cancelOnCastOther() {
         return cancelOnCastOther;
+    }
+
+    @Override
+    public boolean cancelOnNoPermission() {
+        return cancelOnNoPermission;
     }
 
     @Override

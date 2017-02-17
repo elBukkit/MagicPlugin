@@ -12,6 +12,7 @@
  - Offhand wands are now truly "active", including lightsabers. Blocking with an offhand saber now works.
  - Some fixes for limited and single-use items.
  - Add flying sound effects back to broomsticks
+ - Add cancel_on_no_permission parameter, brooms will deactivate when entering an area where they are not allowed
 
 ## 6.4.1
 
