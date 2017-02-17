@@ -1,5 +1,14 @@
 # TODO
 
+## 7.0
+
+ - Separate out spells/brushes from the spell/brush inventory .. can't decide if we need this but I keep coming back to it
+ - Refactor MageProperties to be contained rather than inherited?
+ - Mage needs MageProperties. Maybe per-path? Per "class"? Not really sure yet.
+ - Wand templates will specify properties that come from the Mage versus item data. 
+ - Handle migration for the above.
+ - How to handle /wand commands used for Mage properties- just transfer to mage, probably?
+
 ## High-Priority
   
 ## Not so High-Priority
