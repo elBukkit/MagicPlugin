@@ -87,7 +87,7 @@ public class EnchantingController implements Listener {
 				return;
 			}
 			wandItem.makeEnchantable(true);
-            WandUpgradePath path = (WandUpgradePath)wandItem.getPath();
+            WandUpgradePath path = wandItem.getPath();
             if (path == null) {
                 event.setCancelled(true);
                 return;
