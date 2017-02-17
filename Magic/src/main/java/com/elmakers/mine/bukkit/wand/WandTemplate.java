@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableSet;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import javax.annotation.Nonnull;
 
 public class WandTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
     private final String key;
+    private static ConfigurationSection defaults = null;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private Set<String> tags;
     private @Nonnull Set<String> categories = ImmutableSet.of();
@@ -38,6 +40,19 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         super(controller);
+
+        // These map to the default values for some non-null, non-zero properties in Wand.
+        // This is here to make sure these properties get removed on migration.
+        if (defaults == null) {
+            defaults = new MemoryConfiguration();
+            defaults.set("effect_particle_radius", 0.2);
+            defaults.set("effect_particle_offset", 0.3);
+            defaults.set("swap", "none");
+            defaults.set("drop", "cycle_hotbar");
+            defaults.set("right_click", "toggle");
+            defaults.set("left_click", "cast");
+        }
+        ConfigurationUtils.addConfigurations(node, defaults, false);
         this.load(node);
         this.key = key;
 

@@ -75,7 +75,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
-	private static int WAND_VERSION = 1;
+	private static int WAND_VERSION = 2;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 
@@ -441,7 +441,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 	protected void migrate(int version, ConfigurationSection wandConfig) {
     	// First migration, clean out wand data that matches template
-		if (version == 0) {
+		// We've done this twice now, the second time to handle removing hard-coded defaults that
+		// were not present in the template configs.
+		if (version <= 1) {
 			ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(wandConfig.getString("template"));
 			if (templateConfig != null) {
 			    // This is an unfortunate special case for wands waiting to be randomized
