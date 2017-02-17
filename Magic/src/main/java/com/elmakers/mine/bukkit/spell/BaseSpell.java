@@ -2073,7 +2073,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public boolean cancel()
     {
         boolean cancelled = onCancel();
-        sendMessage(getMessage("cancel"));
+        // This needs re-work, it is currently called on right click.. but probably shouldn't be.
+        // Need to re-think how to handle stateful spells, cancelling selection, etc.
+        if (cancelled) {
+            sendMessage(getMessage("cancel"));
+        }
         if (currentCast != null) {
             currentCast.cancelEffects();
         }
