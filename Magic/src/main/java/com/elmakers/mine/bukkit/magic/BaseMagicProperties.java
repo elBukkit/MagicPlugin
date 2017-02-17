@@ -130,7 +130,7 @@ public class BaseMagicProperties {
                 PotionEffectType type;
                 int power = 0;
                 if (effectString.contains(":")) {
-                    String[] pieces = effectString.split(":");
+                    String[] pieces = StringUtils.split(effectString, ':');
                     type = PotionEffectType.getByName(pieces[0].toUpperCase());
                     power = Integer.parseInt(pieces[1]);
                 } else {
@@ -238,7 +238,7 @@ public class BaseMagicProperties {
                   Arrays.asList(StringUtils.split((String)value))
                 : (List<String>)value;
         for (String materialKey : materials) {
-            materialKey = materialKey.split("@")[0].trim();
+            materialKey = StringUtils.split(materialKey, '@')[0].trim();
             if (addBrush(materialKey)) {
                 modified = true;
                 sendDebug("Added brush: " + materialKey);
@@ -296,7 +296,7 @@ public class BaseMagicProperties {
                 Arrays.asList(StringUtils.split((String)value))
                 : (List<String>)value;
         for (String spellKey : spells) {
-            spellKey = spellKey.split("@")[0].trim();
+            spellKey = StringUtils.split(spellKey,'@')[0].trim();
             if (addSpell(spellKey)) {
                 modified = true;
                 sendDebug("Added spell: " + spellKey);

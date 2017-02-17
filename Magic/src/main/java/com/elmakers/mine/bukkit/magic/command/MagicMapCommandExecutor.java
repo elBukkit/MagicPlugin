@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -309,10 +310,10 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
                 return;
             }
 
-            String[] renderConfigs = cacheData.split("#");
+            String[] renderConfigs = StringUtils.split(cacheData, '#');
             for (int i = 0; i < renderConfigs.length; i++) {
                 String renderConfig = renderConfigs[i];
-                String[] renderPieces = renderConfig.split("@");
+                String[] renderPieces = StringUtils.split(renderConfig, '@');
                 short id = Short.parseShort(renderPieces[0]);
                 String filename = renderPieces[1];
                 if (maps.hasMap(id)) {

@@ -17,6 +17,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -366,7 +367,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     String spellKey = controller.getSpell(item);
                     String spellArgs = controller.getSpellArgs(item);
                     spell = mage.getSpell(spellKey);
-                    if (spell != null && (spellArgs != null ? !spell.cast(spellArgs.split(" ")) : !spell.cast())) {
+                    if (spell != null && (spellArgs != null ? !spell.cast(StringUtils.split(spellArgs, ' ')) : !spell.cast())) {
                         context.showMessage("cast_fail", "Sorry, please try again!");
                         mage.deactivateGUI();
                         return;

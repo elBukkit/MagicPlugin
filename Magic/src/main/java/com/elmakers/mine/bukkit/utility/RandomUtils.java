@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
@@ -119,7 +120,7 @@ public class RandomUtils {
                 String value = nodeMap.getString(key);
                 key = key.replace("^", ".");
 
-                String[] pieces = value.split(",");
+                String[] pieces = StringUtils.split(value, ',');
                 float weight = 0;
                 if (pieces != null && pieces.length > 1) {
                     weight = lerp(pieces, levelIndex, nextLevelIndex, distance);
@@ -156,7 +157,7 @@ public class RandomUtils {
     public static String getEntry(String csvList, int index)
     {
         if (csvList == null) return null;
-        String[] pieces = csvList.split(",");
+        String[] pieces = StringUtils.split(csvList, ',');
         if (pieces == null || pieces.length <= 1) return csvList;
         if (index < 0 || index >= pieces.length) return null;
         return pieces[index];

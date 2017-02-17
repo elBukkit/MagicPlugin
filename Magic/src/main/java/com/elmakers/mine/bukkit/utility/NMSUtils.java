@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -280,7 +281,7 @@ public class NMSUtils {
         // Find classes Bukkit hides from us. :-D
         // Much thanks to @DPOHVAR for sharing the PowerNBT code that powers the reflection approach.
         String className = Bukkit.getServer().getClass().getName();
-        String[] packages = className.split("\\.");
+        String[] packages = StringUtils.split(className, '.');
         if (packages.length == 5) {
             versionPrefix = packages[3] + ".";
         }

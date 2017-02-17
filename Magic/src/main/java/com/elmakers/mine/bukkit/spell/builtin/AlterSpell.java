@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.map.MapView;
 import org.bukkit.DyeColor;
@@ -34,7 +35,7 @@ public class AlterSpell extends BlockSpell
 	static public List<Integer> parseIntegers(String csvList) {
 		List<Integer> ints = new ArrayList<>();
 
-		String[] intStrings = csvList.split(",");
+		String[] intStrings = StringUtils.split(csvList, ',');
 		for (String s : intStrings) {
 			try {
 				int thisInt = Integer.parseInt(s.trim());

@@ -55,37 +55,37 @@ public class AutomatonLevel {
 			deathSpells = null;
 		}
 		if (template.contains("delay")) {
-			delay = (int)RandomUtils.lerp(template.getString("delay").split(","), levelIndex, nextLevelIndex, distance);
+			delay = (int)RandomUtils.lerp(StringUtils.split(template.getString("delay"), ','), levelIndex, nextLevelIndex, distance);
 		} else {
 			delay = null;
 		}
 		if (template.contains("move")) {
-			moveRange = (int)RandomUtils.lerp(template.getString("move").split(","), levelIndex, nextLevelIndex, distance);
+			moveRange = (int)RandomUtils.lerp(StringUtils.split(template.getString("move"), ','), levelIndex, nextLevelIndex, distance);
 		} else {
 			moveRange = null;
 		}
 		if (template.contains("drop_xp")) {
-			dropXp = (int)RandomUtils.lerp(template.getString("drop_xp").split(","), levelIndex, nextLevelIndex, distance);
+			dropXp = (int)RandomUtils.lerp(StringUtils.split(template.getString("drop_xp"), ','), levelIndex, nextLevelIndex, distance);
 		} else {
 			dropXp = null;
 		}
 		if (template.contains("birth_range")) {
-			birthRange = (int)RandomUtils.lerp(template.getString("birth_range").split(","), levelIndex, nextLevelIndex, distance);
+			birthRange = (int)RandomUtils.lerp(StringUtils.split(template.getString("birth_range"), ','), levelIndex, nextLevelIndex, distance);
 		} else {
 			birthRange = null;
 		}
 		if (template.contains("live_range")) {
-			liveRange = (int)RandomUtils.lerp(template.getString("live_range").split(","), levelIndex, nextLevelIndex, distance);
+			liveRange = (int)RandomUtils.lerp(StringUtils.split(template.getString("live_range"), ','), levelIndex, nextLevelIndex, distance);
 		} else {
 			liveRange = null;
 		}
 		if (template.contains("radius")) {
-			radius = (int)RandomUtils.lerp(template.getString("radius").split(","), levelIndex, nextLevelIndex, distance);
+			radius = (int)RandomUtils.lerp(StringUtils.split(template.getString("radius"),','), levelIndex, nextLevelIndex, distance);
 		} else {
 			radius = null;
 		}
 		if (template.contains("yradius")) {
-			yRadius = (int)RandomUtils.lerp(template.getString("yradius").split(","), levelIndex, nextLevelIndex, distance);
+			yRadius = (int)RandomUtils.lerp(StringUtils.split(template.getString("yradius"), ','), levelIndex, nextLevelIndex, distance);
 		} else {
 			yRadius = null;
 		}

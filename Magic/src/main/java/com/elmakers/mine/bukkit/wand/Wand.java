@@ -1134,7 +1134,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		String[] materialNames = StringUtils.split(materialString, ',');
         WandMode brushMode = getBrushMode();
 		for (String materialName : materialNames) {
-			String[] pieces = materialName.split("@");
+			String[] pieces = StringUtils.split(materialName, '@');
 			Integer slot = parseSlot(pieces);
 			String materialKey = pieces[0].trim();
             brushes.put(materialKey, slot);
@@ -3567,20 +3567,20 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		ArrayList<String> spells = new ArrayList<>(spellsSet);
 		if (spells.size() == 0) return;
 		if (activeSpell == null) {
-			setActiveSpell(spells.get(0).split("@")[0]);
+			setActiveSpell(StringUtils.split(spells.get(0),'@')[0]);
 			return;
 		}
 		
 		int spellIndex = 0;
 		for (int i = 0; i < spells.size(); i++) {
-			if (spells.get(i).split("@")[0].equals(activeSpell)) {
+			if (StringUtils.split(spells.get(i), '@')[0].equals(activeSpell)) {
 				spellIndex = i;
 				break;
 			}
 		}
 		
 		spellIndex = (spellIndex + direction) % spells.size();
-		setActiveSpell(spells.get(spellIndex).split("@")[0]);
+		setActiveSpell(StringUtils.split(spells.get(spellIndex), '@')[0]);
 	}
 	
 	public void cycleMaterials(int direction) {
@@ -3588,20 +3588,20 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		ArrayList<String> materials = new ArrayList<>(materialsSet);
 		if (materials.size() == 0) return;
 		if (activeMaterial == null) {
-			setActiveBrush(materials.get(0).split("@")[0]);
+			setActiveBrush(StringUtils.split(materials.get(0), '@')[0]);
 			return;
 		}
 		
 		int materialIndex = 0;
 		for (int i = 0; i < materials.size(); i++) {
-			if (materials.get(i).split("@")[0].equals(activeMaterial)) {
+			if (StringUtils.split(materials.get(i),'@')[0].equals(activeMaterial)) {
 				materialIndex = i;
 				break;
 			}
 		}
 		
 		materialIndex = (materialIndex + direction) % materials.size();
-		setActiveBrush(materials.get(materialIndex).split("@")[0]);
+		setActiveBrush(StringUtils.split(materials.get(materialIndex), '@')[0]);
 	}
 
 	public Mage getActiveMage() {

@@ -644,7 +644,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 int power = 1;
                 try {
                     if (value.contains(",")) {
-                        String[] pieces = value.split(",");
+                        String[] pieces = StringUtils.split(value, ',');
                         ticks = (int)Float.parseFloat(pieces[0]);
                         power = (int)Float.parseFloat(pieces[1]);
                     } else {
