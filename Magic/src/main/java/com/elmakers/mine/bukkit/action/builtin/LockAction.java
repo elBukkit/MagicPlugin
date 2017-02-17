@@ -134,7 +134,7 @@ public class LockAction extends BaseSpellAction
             meta.setDisplayName(keyName);
             if (!keyDescription.isEmpty()) {
                 List<String> lore = new ArrayList<>();
-                String[] lines = StringUtils.split(keyDescription, "\n");
+                String[] lines = StringUtils.split(keyDescription, '\n');
                 for (String line : lines) {
                     lore.add(line);
                 }

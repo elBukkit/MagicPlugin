@@ -123,7 +123,7 @@ public class BaseMagicProperties {
             return;
         }
         effectsString = effectsString.replaceAll("[\\]\\[]", "");
-        String[] effectStrings = StringUtils.split(effectsString, ",");
+        String[] effectStrings = StringUtils.split(effectsString, ',');
         for (String effectString : effectStrings) {
             try {
                 effectString = effectString.trim();
@@ -257,7 +257,7 @@ public class BaseMagicProperties {
 
         @SuppressWarnings("unchecked")
         Collection<String> overrides = value instanceof String ?
-                Arrays.asList(StringUtils.split((String)value, ","))
+                Arrays.asList(StringUtils.split((String)value, ','))
                 : (List<String>)value;
 
         Set<String> upgradedSpells = new HashSet<>();

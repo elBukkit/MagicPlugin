@@ -298,14 +298,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String unlockedString = mageData.getString(unlockKey);
         if (unlockedString != null && !unlockedString.isEmpty())
         {
-            unlockedWarps.addAll(Arrays.asList(StringUtils.split(unlockedString, ",")));
+            unlockedWarps.addAll(Arrays.asList(StringUtils.split(unlockedString, ',')));
         }
         
         Set<String> friends = new HashSet<>();
         String friendString = mageData.getString(friendKey);
         if (friendString != null && !friendString.isEmpty())
         {
-            friends.addAll(Arrays.asList(StringUtils.split(friendString, ",")));
+            friends.addAll(Arrays.asList(StringUtils.split(friendString, ',')));
         }
 
         ConfigurationSection warpConfig = null;

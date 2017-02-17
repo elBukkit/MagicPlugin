@@ -1090,10 +1090,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 		// Support YML-List-As-String format
 		spellString = spellString.replaceAll("[\\]\\[]", "");
-		String[] spellNames = StringUtils.split(spellString, ",");
+		String[] spellNames = StringUtils.split(spellString, ',');
 		for (String spellName : spellNames)
         {
-			String[] pieces = spellName.split("@");
+			String[] pieces = StringUtils.split(spellName, '@');
 			Integer slot = parseSlot(pieces);
 
             // Handle aliases and upgrades smoothly
@@ -1131,7 +1131,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             }
 		}
 		materialString = materialString.replaceAll("[\\]\\[]", "");
-		String[] materialNames = StringUtils.split(materialString, ",");
+		String[] materialNames = StringUtils.split(materialString, ',');
         WandMode brushMode = getBrushMode();
 		for (String materialName : materialNames) {
 			String[] pieces = materialName.split("@");
@@ -1347,16 +1347,16 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         // Change some CSV to lists
         if (node.contains("spells") && node.isString("spells")) {
-            node.set("spells", Arrays.asList(StringUtils.split(node.getString("spells"), ",")));
+            node.set("spells", Arrays.asList(StringUtils.split(node.getString("spells"), ',')));
         }
         if (node.contains("materials") && node.isString("materials")) {
-            node.set("materials", Arrays.asList(StringUtils.split(node.getString("materials"), ",")));
+            node.set("materials", Arrays.asList(StringUtils.split(node.getString("materials"), ',')));
         }
         if (node.contains("overrides") && node.isString("overrides")) {
-            node.set("overrides", Arrays.asList(StringUtils.split(node.getString("overrides"), ",")));
+            node.set("overrides", Arrays.asList(StringUtils.split(node.getString("overrides"), ',')));
         }
         if (node.contains("potion_effects") && node.isString("potion_effects")) {
-            node.set("potion_effects", Arrays.asList(StringUtils.split(node.getString("potion_effects"), ",")));
+            node.set("potion_effects", Arrays.asList(StringUtils.split(node.getString("potion_effects"), ',')));
         }
     }
 
@@ -1490,7 +1490,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		String castParameterString = wandConfig.getString("cast_parameters", null);
 		if (castParameterString != null && !castParameterString.isEmpty()) {
 			castParameters = new MemoryConfiguration();
-			ConfigurationUtils.addParameters(StringUtils.split(castParameterString, " "), castParameters);
+			ConfigurationUtils.addParameters(StringUtils.split(castParameterString, ' '), castParameters);
 		}
 
 		boolean needsInventoryUpdate = false;
@@ -1685,7 +1685,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				for (String pair : pairs) {
 					// Unescape commas
 					pair = pair.replace("\\|", ",");
-					String[] keyValue = StringUtils.split(pair, " ");
+					String[] keyValue = StringUtils.split(pair, ' ');
 					if (keyValue.length > 0) {
 						String value = keyValue.length > 1 ? keyValue[1] : "";
 						castOverrides.put(keyValue[0], value);
@@ -3369,7 +3369,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             if (castOverrides != null && castOverrides.size() > 0) {
                 castParameters = new ArrayList<>();
                 for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
-                    String[] key = StringUtils.split(entry.getKey(), ".");
+                    String[] key = StringUtils.split(entry.getKey(), '.');
                     if (key.length == 0) continue;
                     if (key.length == 2 && !key[0].equals("default") && !key[0].equals(spell.getSpellKey().getBaseKey()) && !key[0].equals(spell.getSpellKey().getKey())) {
                         continue;

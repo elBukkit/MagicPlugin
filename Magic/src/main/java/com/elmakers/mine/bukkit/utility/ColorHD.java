@@ -47,7 +47,7 @@ public class ColorHD implements Cloneable {
             green =  (long)(Math.random() * BIT_MASK);
             blue =  (long)(Math.random() * BIT_MASK);
         } else if (hexColor.length() > 6 && hexColor.contains(",")) {
-            String[] pieces = StringUtils.split(hexColor, ",");
+            String[] pieces = StringUtils.split(hexColor, ',');
             long r = 0;
             long g = 0;
             long b = 0;

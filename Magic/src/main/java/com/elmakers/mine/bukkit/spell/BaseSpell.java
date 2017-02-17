@@ -1010,7 +1010,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     if (pieces.length < 2) continue;
 
                     String fullKey = pieces[0];
-                    String[] key = StringUtils.split(fullKey, ".");
+                    String[] key = StringUtils.split(fullKey, '.');
                     if (key.length == 0) continue;
                     if (key.length == 2 && !key[0].equals("default") && !key[0].equals(spellKey.getBaseKey()) && !key[0].equals(spellKey.getKey())) {
                         continue;

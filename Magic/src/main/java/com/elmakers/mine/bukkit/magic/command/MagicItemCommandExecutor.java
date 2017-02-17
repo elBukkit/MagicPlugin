@@ -401,7 +401,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		if (pages.size() > 1) {
 			String secondPageText = pages.get(1);
 			secondPageText = secondPageText.replace(ChatColor.COLOR_CHAR + "0", "");
-			String[] pieces = StringUtils.split(secondPageText, "\n");
+			String[] pieces = StringUtils.split(secondPageText, '\n');
 			if (pieces.length > 0) {
 				ItemMeta skullMeta = skullItem.getItemMeta();
 				skullMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', pieces[0]));

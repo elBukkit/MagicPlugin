@@ -47,7 +47,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
             // Look for Entity-based Mages
             Mage mage = null;
             if (playerName.contains(",")) {
-                String[] idPieces = StringUtils.split(playerName, ",");
+                String[] idPieces = StringUtils.split(playerName, ',');
                 if (idPieces.length == 4 || idPieces.length == 2) {
                     try {
                         String worldName = idPieces[0];
@@ -79,7 +79,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
             }
             else if (playerName.contains(":")) {
                 // Look for custom id/name Mages
-                String[] pieces = StringUtils.split(playerName, ":");
+                String[] pieces = StringUtils.split(playerName, ':');
                 String mageId = pieces[0];
                 String mageName = (pieces.length > 0) ? pieces[1] : mageId;
 

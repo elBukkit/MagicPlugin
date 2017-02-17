@@ -617,9 +617,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     public static String[] splitMaterialKey(String materialKey) {
         if (materialKey.contains("|")) {
-            return StringUtils.split(materialKey, "|");
+            return StringUtils.split(materialKey, '|');
         } else if (materialKey.contains(":")) {
-            return StringUtils.split(materialKey, ":");
+            return StringUtils.split(materialKey, ':');
         }
 
         return new String[] { materialKey };

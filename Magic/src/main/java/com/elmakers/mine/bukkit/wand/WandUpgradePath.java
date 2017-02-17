@@ -235,7 +235,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             levelMap = new TreeMap<>();
         }
         if (template.contains("levels")) {
-            String[] levelStrings = StringUtils.split(template.getString("levels"), ",");
+            String[] levelStrings = StringUtils.split(template.getString("levels"), ',');
             levels = new int[levelStrings.length];
             for (int i = 0; i < levels.length; i++) {
                 levels[i] = Integer.parseInt(levelStrings[i]);

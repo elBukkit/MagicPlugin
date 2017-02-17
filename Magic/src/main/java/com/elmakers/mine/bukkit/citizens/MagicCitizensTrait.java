@@ -30,7 +30,7 @@ public class MagicCitizensTrait extends CitizensTrait {
         parameters = new YamlConfiguration();
         if (parameterString != null && !parameterString.isEmpty()) {
             if (!parameterString.contains(":")) {
-                String[] simple = StringUtils.split(parameterString, " ");
+                String[] simple = StringUtils.split(parameterString, ' ');
                 if (simple.length > 0) {
                     ConfigurationUtils.addParameters(simple, parameters);
                 }
@@ -130,7 +130,7 @@ public class MagicCitizensTrait extends CitizensTrait {
             }
             else
             {
-                String[] params = StringUtils.split(value, " ");
+                String[] params = StringUtils.split(value, ' ');
                 parameters = new YamlConfiguration();
                 ConfigurationUtils.addParameters(params, parameters);
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Set parameters to: ");
