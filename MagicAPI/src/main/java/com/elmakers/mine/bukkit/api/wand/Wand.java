@@ -161,6 +161,37 @@ public interface Wand extends CostReducer {
     public boolean checkAndUpgrade(boolean quiet);
 
     /**
+     * See if this wand is ready for an upgrade.
+     *
+     * @param quiet if false, will send messages to a player informing them why they are blocked
+     * @return false if the wand is blocked from upgrading for some reason
+     */
+    public boolean checkUpgrade(boolean quiet);
+
+    /**
+     * Check to see if this wand has an upgrade on its current path
+     *
+     * @return true if this wand has a path with an upgrade
+     */
+    public boolean hasUpgrade();
+
+    /**
+     * See if this wand can progress. This means the wand can still acquire more spells on its current
+     * path, or can otherwise be upgraded in some way via enchanting or the spell menu.
+     *
+     * @return true if the wand can progress
+     */
+    public boolean canProgress();
+
+    /**
+     * Trigger an upgrade to the next path.
+     *
+     * @param quiet if false, will send messages to the player about their upgrade
+     * @return true if the upgrade was successful.
+     */
+    public boolean upgrade(boolean quiet);
+
+    /**
      * This method is deprecated, use Mage.checkWand instead. Wands should only ever be active
      * while held.
      *

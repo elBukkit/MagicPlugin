@@ -859,7 +859,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
     @Override
-    public com.elmakers.mine.bukkit.api.wand.WandUpgradePath getPath() {
+    public WandUpgradePath getPath() {
         String pathKey = path;
         if (pathKey == null || pathKey.length() == 0) {
             pathKey = controller.getDefaultWandPath();
@@ -2475,15 +2475,15 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
         if (maxEnchantCount > 0 && enchantCount >= maxEnchantCount) {
-            if (enchanter != null) {
+            if (enchanter != null && addSpells) {
                 enchanter.sendMessage(getMessage("max_enchanted").replace("$wand", getName()));
             }
             return 0;
         }
 
-        WandUpgradePath path = (WandUpgradePath)getPath();
+        WandUpgradePath path = getPath();
 		if (path == null) {
-            if (enchanter != null) {
+            if (enchanter != null && addSpells) {
                 enchanter.sendMessage(getMessage("no_path").replace("$wand", getName()));
             }
             return 0;
@@ -2491,7 +2491,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         int minLevel = path.getMinLevel();
         if (totalLevels < minLevel) {
-            if (enchanter != null) {
+            if (enchanter != null && addSpells) {
                 String levelMessage = getMessage("need_more_levels");
                 levelMessage = levelMessage.replace("$levels", Integer.toString(minLevel));
                 enchanter.sendMessage(levelMessage);
@@ -2514,12 +2514,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 // Check for level up
                 WandUpgradePath nextPath = path.getUpgrade();
                 if (nextPath != null) {
-                    if (path.checkUpgradeRequirements(this, enchanter)) {
+                    if (path.checkUpgradeRequirements(this, addSpells ? enchanter : null)) {
                         path.upgrade(this, enchanter);
                     }
                     break;
                 } else {
-                    enchanter.sendMessage(getMessage("fully_enchanted").replace("$wand", getName()));
+                	if (enchanter != null && addSpells) {
+						enchanter.sendMessage(getMessage("fully_enchanted").replace("$wand", getName()));
+					}
                     break;
                 }
             }
@@ -2545,11 +2547,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                     enchanter.sendMessage(message);
                 }
             } else if (hasUpgrade) {
-                if (path.checkUpgradeRequirements(this, enchanter)) {
+                if (path.checkUpgradeRequirements(this, addSpells ? enchanter : null)) {
                     path.upgrade(this, enchanter);
                     levels += addLevels;
                 }
-            } else if (enchanter != null) {
+            } else if (enchanter != null && addSpells) {
                 enchanter.sendMessage(getMessage("fully_enchanted").replace("$wand", getName()));
             }
 			addLevels = Math.min(totalLevels, maxLevel);
@@ -4718,9 +4720,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
     @Override
     public boolean checkAndUpgrade(boolean quiet) {
-        com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
-        com.elmakers.mine.bukkit.api.wand.WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
-		if (nextPath == null || path.canEnchant(this)) {
+		WandUpgradePath path = getPath();
+		WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
+		if (nextPath == null) {
+			return true;
+		}
+		if (canProgress()) {
 			return true;
 		}
 		if (!path.checkUpgradeRequirements(this, quiet ? null : mage)) {
@@ -4729,6 +4734,32 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		path.upgrade(this, mage);
         return true;
     }
+
+	@Override
+	public boolean canProgress() {
+		WandUpgradePath path = getPath();
+		return (path != null && path.canEnchant(this));
+	}
+
+	@Override
+	public boolean hasUpgrade() {
+		WandUpgradePath path = getPath();
+		return path != null && path.hasUpgrade();
+	}
+
+    @Override
+	public boolean checkUpgrade(boolean quiet) {
+		WandUpgradePath path = getPath();
+		return path == null || !path.hasUpgrade() ? false : path.checkUpgradeRequirements(this, quiet ? null : mage);
+	}
+
+	@Override
+	public boolean upgrade(boolean quiet) {
+		WandUpgradePath path = getPath();
+		if (path == null) return false;
+		path.upgrade(this, quiet ? null : mage);
+		return true;
+	}
     
     public int getEffectiveManaMax() {
 		return effectiveManaMax;
