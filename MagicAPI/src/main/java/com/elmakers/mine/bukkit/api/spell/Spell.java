@@ -69,4 +69,5 @@ public interface Spell extends SpellTemplate {
     public boolean hasHandlerParameters(String handlerKey);
     public ConfigurationSection getHandlerParameters(String handlerKey);
     public long getProgressLevel();
+    public boolean cancelOnNoPermission();
 }
