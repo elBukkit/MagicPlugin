@@ -51,6 +51,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             defaults.set("drop", "cycle_hotbar");
             defaults.set("right_click", "toggle");
             defaults.set("left_click", "cast");
+            defaults.set("hotbar_count", 1);
         }
         ConfigurationUtils.addConfigurations(node, defaults, false);
         this.load(node);

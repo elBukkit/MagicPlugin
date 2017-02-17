@@ -116,13 +116,13 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
             "id", "owner", "owner_id", "name", "description",
             "organize", "alphabetize", "fill", "stored", "upgrade_icon",
-            "mana_timestamp", "upgrade_template", "custom_properties",
+            "mana_timestamp", "upgrade_template", "custom_properties", "version",
             // For legacy wands
             "haste",
             "health_regeneration", "hunger_regeneration",
             "xp", "xp_regeneration", "xp_max", "xp_max_boost",
             "xp_regeneration_boost",
-            "mode_cast", "mode_drop", "version"
+            "mode_cast", "mode_drop", "randomize"
     );
 
     /**
@@ -452,6 +452,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 if (randomizeIcon != null && currentIcon != null && randomizeIcon.equals(currentIcon)) {
                     wandConfig.set("icon", null);
                 }
+                // This was a potentially leftover property from randomized wands we can ditch
+				wandConfig.set("randomize", null);
 				Set<String> keys = templateConfig.getKeys(false);
 				for (String key : keys) {
 					Object templateData = templateConfig.get(key);
