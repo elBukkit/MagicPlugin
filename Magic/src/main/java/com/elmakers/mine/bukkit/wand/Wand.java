@@ -444,6 +444,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (version == 0) {
 			ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(wandConfig.getString("template"));
 			if (templateConfig != null) {
+			    // This is an unfortunate special case for wands waiting to be randomized
+                String randomizeIcon = templateConfig.getString("randomize_icon");
+                String currentIcon = wandConfig.getString("icon");
+                if (randomizeIcon != null && currentIcon != null && randomizeIcon.equals(currentIcon)) {
+                    wandConfig.set("icon", null);
+                }
 				Set<String> keys = templateConfig.getKeys(false);
 				for (String key : keys) {
 					Object templateData = templateConfig.get(key);
