@@ -346,7 +346,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void removePotionEffect(LivingEntity entity) {
-        if (entity == null || class_DataWatcher_setMethod == null) return;
+        if (entity == null || class_DataWatcher_setMethod == null || class_EntityLiving_potionBubblesField == null) return;
         try {
             Object entityHandle = getHandle(entity);
             Object dataWatcher = class_Entity_getDataWatcherMethod.invoke(entityHandle);
@@ -358,7 +358,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void addPotionEffect(LivingEntity entity, int color) {
-        if (entity == null || class_DataWatcher_setMethod == null) return;
+        if (entity == null || class_DataWatcher_setMethod == null || class_EntityLiving_potionBubblesField == null) return;
         // Hacky safety check
         if (color == 0) {
             color = 0x010101;
@@ -509,6 +509,11 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             if (target == null || target.isDead()) return;
 
+            if (class_EntityLiving_damageEntityMethod == null || class_DamageSource_MagicField == null || class_DamageSource_getMagicSourceMethod == null) {
+                damage(target, amount, source);
+                return;
+            }
+
             // Special-case for witches .. witches are immune to magic damage :\
             // And endermen are immune to indirect damage .. or something.
             // Might need to config-drive this, or just go back to defaulting to normal damage
@@ -540,7 +545,9 @@ public class CompatibilityUtils extends NMSUtils {
 
                 // This is a bit of hack that lets us damage the ender dragon, who is a weird and annoying collection
                 // of various non-living entity pieces.
-                class_EntityDamageSource_setThornsMethod.invoke(damageSource);
+                if (class_EntityDamageSource_setThornsMethod != null) {
+                    class_EntityDamageSource_setThornsMethod.invoke(damageSource);
+                }
 
                 class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
             } else {
@@ -799,6 +806,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean setLock(Block block, String lockName)
     {
+        if (class_TileEntityContainer_setLock == null) return false;
         Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
@@ -815,6 +823,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean clearLock(Block block)
     {
+        if (class_TileEntityContainer_setLock == null) return false;
         Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
@@ -830,6 +839,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean isLocked(Block block)
     {
+        if (class_TileEntityContainer_getLock == null || class_ChestLock_isEmpty == null) return false;
         Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
@@ -845,6 +855,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static String getLock(Block block)
     {
+        if (class_TileEntityContainer_getLock == null || class_ChestLock_getString == null) return null;
         Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return null;
         if (!class_TileEntityContainer.isInstance(tileEntity)) return null;
@@ -902,6 +913,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void setGravity(ArmorStand armorStand, boolean gravity) {
+        if (class_Entity_setNoGravity == null && class_ArmorStand_setGravity == null) return;
         try {
             Object handle = getHandle(armorStand);
             if (class_Entity_setNoGravity != null) {
@@ -915,6 +927,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void setDisabledSlots(ArmorStand armorStand, int disabledSlots) {
+        if (class_EntityArmorStand_disabledSlotsField == null) return;
         try {
             Object handle = getHandle(armorStand);
             class_EntityArmorStand_disabledSlotsField.set(handle, disabledSlots);
@@ -942,6 +955,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void addFlightExemption(Player player, int ticks) {
+        if (class_PlayerConnection_floatCountField == null) return;
         try {
             Object handle = getHandle(player);
             Object connection = class_EntityPlayer_playerConnectionField.get(handle);
@@ -1043,6 +1057,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void setDamage(Projectile projectile, double damage) {
+        if (class_EntityArrow_damageField == null) return;
         try {
             Object handle = getHandle(projectile);
             class_EntityArrow_damageField.set(handle, damage);
@@ -1052,6 +1067,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void decreaseLifespan(Projectile projectile, int ticks) {
+        if (class_EntityArrow_lifeField == null) return;
         try {
             Object handle = getHandle(projectile);
             int currentLife = (Integer) class_EntityArrow_lifeField.get(handle);
@@ -1065,6 +1081,9 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static Entity spawnEntity(Location target, EntityType entityType, CreatureSpawnEvent.SpawnReason spawnReason)
     {
+        if (class_CraftWorld_spawnMethod == null) {
+            return target.getWorld().spawnEntity(target, entityType);
+        }
         Entity entity = null;
         try {
             World world = target.getWorld();
@@ -1144,7 +1163,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean loadSchematic(InputStream input, Schematic schematic) {
-        if (input == null || schematic == null) return false;
+        if (input == null || schematic == null || class_NBTCompressedStreamTools_loadFileMethod == null) return false;
 
         try {
             Object nbtData = class_NBTCompressedStreamTools_loadFileMethod.invoke(null, input);

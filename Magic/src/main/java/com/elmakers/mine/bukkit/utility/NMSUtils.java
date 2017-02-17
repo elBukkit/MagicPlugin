@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * Contains some raw methods for doing some simple NMS utilities.
@@ -141,7 +142,6 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_getKeysMethod;
     protected static Method class_NBTTagCompound_setMethod;
     protected static Method class_DataWatcher_setMethod;
-    protected static Method class_DataWatcher_getMethod;
     protected static Method class_World_getEntitiesMethod;
     protected static Method class_Entity_setSilentMethod;
     protected static Method class_Entity_setYawPitchMethod;
@@ -358,14 +358,7 @@ public class NMSUtils {
             class_EntityArrow = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
             class_CraftArrow = NMSUtils.getBukkitClass("org.bukkit.craftbukkit.entity.CraftArrow");
 
-            class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
-            class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
-            class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
-            class_NBTTagList_sizeMethod = class_NBTTagList.getMethod("size");
-            class_NBTTagList_removeMethod = class_NBTTagList.getMethod("remove", Integer.TYPE);
-            class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
-            class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
             class_Entity_getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
             class_Entity_setYawPitchMethod = class_Entity.getDeclaredMethod("setYawPitch", Float.TYPE, Float.TYPE);
             class_Entity_setYawPitchMethod.setAccessible(true);
@@ -387,15 +380,7 @@ public class NMSUtils {
             class_CraftItemStack_copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
             class_CraftItemStack_asBukkitCopyMethod = class_CraftItemStack.getMethod("asBukkitCopy", class_ItemStack);
             class_CraftItemStack_mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", class_ItemStack);
-            class_NBTTagCompound_hasKeyMethod = class_NBTTagCompound.getMethod("hasKey", String.class);
-            class_NBTTagCompound_getMethod = class_NBTTagCompound.getMethod("get", String.class);
-            class_NBTTagCompound_getCompoundMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
-            class_EntityLiving_damageEntityMethod = class_EntityLiving.getMethod("damageEntity", class_DamageSource, Float.TYPE);
-            class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
             class_World_addEntityMethod = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
-            class_NBTCompressedStreamTools_loadFileMethod = class_NBTCompressedStreamTools.getMethod("a", InputStream.class);
-            class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
-            class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
             class_Entity_setLocationMethod = class_Entity.getMethod("setLocation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
@@ -436,7 +421,6 @@ public class NMSUtils {
             class_WorldServer_entitiesByUUIDField.setAccessible(true);
             class_ItemStack_tagField = class_ItemStack.getDeclaredField("tag");
             class_ItemStack_tagField.setAccessible(true);
-            class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
             class_EntityTNTPrimed_source = class_EntityTNTPrimed.getDeclaredField("source");
             class_EntityTNTPrimed_source.setAccessible(true);
             class_AxisAlignedBB_minXField = class_AxisAlignedBB.getField("a");
@@ -471,6 +455,16 @@ public class NMSUtils {
             class_NBTTagShort_dataField.setAccessible(true);
             class_NBTTagString_dataField = class_NBTTagString.getDeclaredField("data");
             class_NBTTagString_dataField.setAccessible(true);
+            class_NBTTagCompound_getKeysMethod = class_NBTTagCompound.getMethod("c");
+            class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
+            class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
+            class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
+            class_NBTTagList_sizeMethod = class_NBTTagList.getMethod("size");
+            class_NBTTagList_removeMethod = class_NBTTagList.getMethod("remove", Integer.TYPE);
+            class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
+            class_NBTTagCompound_hasKeyMethod = class_NBTTagCompound.getMethod("hasKey", String.class);
+            class_NBTTagCompound_getMethod = class_NBTTagCompound.getMethod("get", String.class);
+            class_NBTTagCompound_getCompoundMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
 
             class_EntityFallingBlock_hurtEntitiesField = class_EntityFallingBlock.getDeclaredField("hurtEntities");
             class_EntityFallingBlock_hurtEntitiesField.setAccessible(true);
@@ -489,8 +483,6 @@ public class NMSUtils {
             
             class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
             class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
-            class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
-            class_ChestLock_getString = class_ChestLock.getMethod("b");
             class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
             class_GameProfile = getClass("com.mojang.authlib.GameProfile");
             class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
@@ -523,6 +515,34 @@ public class NMSUtils {
             class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
             class_ArmorStand_Constructor = class_EntityArmorStand.getConstructor(class_World);
 
+            // Particularly volatile methods that we can live without
+            try {
+                class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
+                class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
+                class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, handling of tile entities may not work well", ex);
+                class_TileEntity_loadMethod = null;
+                class_TileEntity_updateMethod = null;
+            }
+
+            try {
+                class_NBTCompressedStreamTools_loadFileMethod = class_NBTCompressedStreamTools.getMethod("a", InputStream.class);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, schematics will not load", ex);
+            }
+
+            try {
+                class_EntityLiving_damageEntityMethod = class_EntityLiving.getMethod("damageEntity", class_DamageSource, Float.TYPE);
+                class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
+                class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, magic damage will not work, using normal damage instead", ex);
+                class_EntityLiving_damageEntityMethod = null;
+                class_DamageSource_getMagicSourceMethod = null;
+                class_DamageSource_MagicField = null;
+            }
+
             try {
                 try {
                     // 1.11.?
@@ -533,26 +553,38 @@ public class NMSUtils {
                     class_CraftWorld_spawnMethod_isLegacy = true;
                     class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
                 }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering custom spawn method, spawn reasons will not work", ex);
+                class_CraftWorld_spawnMethod = null;
+                class_Consumer = null;
+            }
+
+            try {
                 try {
                     // 1.11
-                    class_ItemStack_consructor = class_ItemStack.getConstructor(class_NBTTagCompound);
-
+                    class_DataWatcher_setMethod = class_DataWatcher.getMethod("set", class_DataWatcherObject, Object.class);
                     class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("g");
-                    class_EntityLiving_potionBubblesField.setAccessible(true);
-                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
-                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.10");
-                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("getLock");
-                    class_ItemStack_isEmptyMethod = class_ItemStack.getMethod("isEmpty");
                 } catch (Throwable ignore) {
                     // 1.10 and earlier
                     legacy = true;
-                    class_ItemStack_createStackMethod = class_ItemStack.getMethod("createStack", class_NBTTagCompound);
                     class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("f");
-                    class_EntityLiving_potionBubblesField.setAccessible(true);
-                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
-                    
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, potion bubble effects will not work", ex);
+                class_EntityLiving_potionBubblesField = null;
+            }
+            if (class_EntityLiving_potionBubblesField != null) {
+                class_EntityLiving_potionBubblesField.setAccessible(true);
+            }
+
+            try {
+                try {
+                    // 1.11
+                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
+                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.10");
+                } catch (Throwable ignore) {
+                    // 1.10 and earlier
+                    legacy = true;
                     try {
                         class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
                         if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
@@ -571,48 +603,57 @@ public class NMSUtils {
                         }
                     }
                 }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, armor stand slots cannot be locked", ex);
+                class_EntityArmorStand_disabledSlotsField = null;
+            }
+            if (class_EntityArmorStand_disabledSlotsField != null) {
+                class_EntityArmorStand_disabledSlotsField.setAccessible(true);
+            }
+
+            try {
+                try {
+                    try {
+                        // 1.11
+                        class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
+                        class_ChestLock_getString = class_ChestLock.getMethod("b");
+                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                        class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("getLock");
+                    } catch (Throwable ignore) {
+                        // 1.10 and earlier
+                        legacy = true;
+                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                        class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
+                    }
+                } catch (Throwable ignore2) {
+                    // 1.8 and lower
+                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, chest locking and unlocking will not work", ex);
+                class_TileEntityContainer_setLock = null;
+                class_TileEntityContainer_getLock = null;
+            }
+
+            try {
                 try {
                     // 1.10 and 1.11
-                    class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("setSilent", Boolean.TYPE);
-                    class_Entity_setNoGravity = class_Entity.getDeclaredMethod("setNoGravity", Boolean.TYPE);
-                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("at");
-                    class_Entity_getTypeMethod.setAccessible(true);
                     class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("C");
                     if (class_PlayerConnection_floatCountField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
                     class_PlayerConnection_floatCountField.setAccessible(true);
                 } catch (Throwable ignore) {
                     // 1.9 and earlier
                     legacy = true;
-                    class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
-                    class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
-                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
-                    class_Entity_getTypeMethod.setAccessible(true);
                     class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("g");
                     class_PlayerConnection_floatCountField.setAccessible(true);
                 }
-                try {
-                    // 1.9 and up
-                    class_DataWatcher_setMethod = class_DataWatcher.getMethod("set", class_DataWatcherObject, Object.class);
-                    class_DataWatcher_getMethod = class_DataWatcher.getMethod("get", class_DataWatcherObject);
-                    class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
-                    class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
-                    class_NBTTagCompound_getKeysMethod = class_NBTTagCompound.getMethod("c");
-                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
-                } catch (Throwable ignore) {
-                    // 1.8 and lower
-                    legacy = true;
-                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
-                    class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
-                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
-                }
-                
-                class_EntityArmorStand_disabledSlotsField.setAccessible(true);
-                class_EntityArrow_damageField = class_EntityArrow.getDeclaredField("damage");
-                class_EntityArrow_damageField.setAccessible(true);
-                // This is kinda hacky, like fer reals :\
-                // OML, hating it!
-                // Still hating it.
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, player flight exemption will not work", ex);
+                class_PlayerConnection_floatCountField = null;
+            }
+
+            try {
                 try {
                     // 1.11
                     class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ax");
@@ -642,16 +683,118 @@ public class NMSUtils {
                     }
                 }
             } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, setting arrow lifespan will not work", ex);
                 class_EntityArrow_lifeField = null;
             }
             if (class_EntityArrow_lifeField != null)
             {
                 class_EntityArrow_lifeField.setAccessible(true);
             }
+
+            try {
+                try {
+                    // 1.9 and up
+                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
+                } catch (Throwable ignore) {
+                    // 1.8 and lower
+                    legacy = true;
+                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, thorn damage override to hurt ender dragon will not work", ex);
+                class_EntityDamageSource_setThornsMethod = null;
+            }
+
+            try {
+                try {
+                    // 1.10 and 1.11
+                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("at");
+                } catch (Throwable ignore) {
+                    // 1.9 and earlier
+                    legacy = true;
+                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
+                }
+                class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, saving entities to spawn eggs will not work", ex);
+                class_Entity_getTypeMethod = null;
+                class_Entity_saveMethod = null;
+            }
+            if (class_Entity_getTypeMethod != null) {
+                class_Entity_getTypeMethod.setAccessible(true);
+            }
+
+            try {
+                try {
+                    // 1.11
+                    class_ItemStack_consructor = class_ItemStack.getConstructor(class_NBTTagCompound);
+                } catch (Throwable ignore) {
+                    // 1.10 and earlier
+                    legacy = true;
+                    class_ItemStack_createStackMethod = class_ItemStack.getMethod("createStack", class_NBTTagCompound);
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, restoring inventories from schematics will not work", ex);
+                class_ItemStack_createStackMethod = null;
+            }
+
+            try {
+                class_EntityArrow_damageField = class_EntityArrow.getDeclaredField("damage");
+                class_EntityArrow_damageField.setAccessible(true);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, setting arrow damage will not work", ex);
+                class_EntityArrow_damageField = null;
+            }
+
+            try {
+                try {
+                    // 1.10 and 1.11
+                    class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("setSilent", Boolean.TYPE);
+                } catch (Throwable ignore) {
+                    // 1.9 and earlier
+                    legacy = true;
+                    class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, silent entities will not work", ex);
+                class_Entity_setSilentMethod = null;
+            }
+
+            try {
+                try {
+                    // 1.10 and 1.11
+                    class_Entity_setNoGravity = class_Entity.getDeclaredMethod("setNoGravity", Boolean.TYPE);
+                } catch (Throwable ignore) {
+                    // 1.9 and earlier
+                    legacy = true;
+                    class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, hacky no-gravity armor stands won't work", ex);
+                class_Entity_setNoGravity = null;
+                class_ArmorStand_setGravity = null;
+            }
+
+            // Things we really need that may be volatile
+            try {
+                // 1.11
+                class_ItemStack_isEmptyMethod = class_ItemStack.getMethod("isEmpty");
+            } catch (Throwable ignore) {
+                // 1.10 and earlier
+                legacy = true;
+            }
+            try {
+                // 1.9 and up
+                class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
+            } catch (Throwable ignore) {
+                // 1.8 and lower
+                legacy = true;
+                class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
+            }
         }
         catch (Throwable ex) {
             failed = true;
-            ex.printStackTrace();
+            Bukkit.getLogger().log(Level.SEVERE, "An unexpected error occurred initializing Magic", ex);
         }
     }
 
@@ -1413,6 +1556,7 @@ public class NMSUtils {
     }
 
     public static Object getTileEntityData(Location location) {
+        if (class_CraftWorld_getTileEntityAtMethod == null || class_TileEntity_saveMethod == null) return null;
         Object data = null;
         try {
             World world = location.getWorld();
@@ -1428,6 +1572,7 @@ public class NMSUtils {
     }
 
     public static Object getTileEntity(Location location) {
+        if (class_CraftWorld_getTileEntityAtMethod == null) return null;
         Object tileEntity = null;
         try {
             World world = location.getWorld();
@@ -1439,6 +1584,7 @@ public class NMSUtils {
     }
 
     public static void clearItems(Location location) {
+        if (class_TileEntity_loadMethod == null || class_TileEntity_updateMethod == null || class_CraftWorld_getTileEntityAtMethod == null) return;
         if (location == null) return;
         try {
             World world = location.getWorld();
@@ -1462,6 +1608,8 @@ public class NMSUtils {
     }
 
     public static void setTileEntityData(Location location, Object data) {
+        if (class_TileEntity_loadMethod == null || class_TileEntity_updateMethod == null || class_CraftWorld_getTileEntityAtMethod == null) return;
+
         if (location == null || data == null) return;
         try {
             World world = location.getWorld();
