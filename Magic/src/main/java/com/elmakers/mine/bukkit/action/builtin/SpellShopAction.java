@@ -95,13 +95,18 @@ public class SpellShopAction extends BaseShopAction
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
-        if (wand != null && autoUpgrade && spells.size() == 0) {
-            if (!wand.checkAndUpgrade(false) && !showUpgrades) {
-                return SpellResult.FAIL;
+
+        // Check for auto upgrade, if the wand can no longer progress on its current path and is
+        // eligible for an upgrade, we will upgrade it and skip showing the spell shop so the player
+        // can see their upgrade rewards.
+        boolean canProgress = false;
+        if (wand != null && autoUpgrade) {
+            canProgress = wand.canProgress();
+            if (!canProgress && wand.checkUpgrade(true) && wand.upgrade(false)) {
+                return SpellResult.CAST_SELF;
             }
         }
 
-        MageController controller = context.getController();
         SpellResult contextResult = checkContext(context);
         if (!contextResult.isSuccess()) {
             return contextResult;
@@ -177,6 +182,23 @@ public class SpellShopAction extends BaseShopAction
             }
             Collections.sort(extraItems);
             shopItems.addAll(extraItems);
+        }
+
+        // If there is nothing here for us to do, check for upgrades being blocked
+        // we will upgrade the wand here, but in theory that should never happen since we
+        // checked for upgrades above.
+        if (wand != null && shopItems.size() == 0) {
+            boolean canUpgrade = wand.checkUpgrade(false);
+            boolean hasUpgrade = wand.hasUpgrade();
+            if (!canProgress && !hasUpgrade) {
+                context.showMessage(context.getMessage("no_upgrade", "There is nothing more for you to learn here.").replace("$wand", wand.getName()));
+                return SpellResult.FAIL;
+            } else if (canUpgrade) {
+                wand.upgrade(false);
+                return SpellResult.CAST_SELF;
+            } else {
+                return SpellResult.FAIL;
+            }
         }
 
         return showItems(context, shopItems);

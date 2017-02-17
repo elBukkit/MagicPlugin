@@ -1,9 +1,7 @@
 # TODO
 
 ## High-Priority
- 
- - Can you not get optional spells once you reach the end of wand progression?
- 
+  
 ## Not so High-Priority
  
  - Aliases don't work with levels - Don't refund item costs when a spell goes through auto-undo
