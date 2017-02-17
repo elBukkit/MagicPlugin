@@ -415,8 +415,6 @@ public class NMSUtils {
             class_Entity_motYField.setAccessible(true);
             class_Entity_motZField = class_Entity.getDeclaredField("motZ");
             class_Entity_motZField.setAccessible(true);
-            class_WorldServer_entitiesByUUIDField = class_WorldServer.getDeclaredField("entitiesByUUID");
-            class_WorldServer_entitiesByUUIDField.setAccessible(true);
             class_ItemStack_tagField = class_ItemStack.getDeclaredField("tag");
             class_ItemStack_tagField.setAccessible(true);
             class_EntityTNTPrimed_source = class_EntityTNTPrimed.getDeclaredField("source");
@@ -511,6 +509,10 @@ public class NMSUtils {
             class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_ArmorStand_Constructor = class_EntityArmorStand.getConstructor(class_World);
+
+            // TODO: Server.getEntity(UUID) in 1.11+
+            class_WorldServer_entitiesByUUIDField = class_WorldServer.getDeclaredField("entitiesByUUID");
+            class_WorldServer_entitiesByUUIDField.setAccessible(true);
 
             // TODO: World.getNearbyEntities in 1.11+
             class_AxisAlignedBB_Constructor = class_AxisAlignedBB.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
