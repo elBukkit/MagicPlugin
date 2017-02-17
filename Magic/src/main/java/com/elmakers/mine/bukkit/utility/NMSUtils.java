@@ -358,11 +358,9 @@ public class NMSUtils {
             class_EntityArrow = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
             class_CraftArrow = NMSUtils.getBukkitClass("org.bukkit.craftbukkit.entity.CraftArrow");
 
-            class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
             class_Entity_getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
             class_Entity_setYawPitchMethod = class_Entity.getDeclaredMethod("setYawPitch", Float.TYPE, Float.TYPE);
             class_Entity_setYawPitchMethod.setAccessible(true);
-            class_AxisAlignedBB_Constructor = class_AxisAlignedBB.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
             class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
             class_NBTTagCompound_setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
             class_NBTTagCompound_setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
@@ -512,18 +510,30 @@ public class NMSUtils {
             class_BlockPositionConstructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
             class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
-            class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
             class_ArmorStand_Constructor = class_EntityArmorStand.getConstructor(class_World);
+
+            // TODO: World.getNearbyEntities in 1.11+
+            class_AxisAlignedBB_Constructor = class_AxisAlignedBB.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
+            class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
 
             // Particularly volatile methods that we can live without
             try {
                 class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
                 class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
                 class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
+                try {
+                    // 1.9 and up
+                    class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
+                } catch (Throwable ignore) {
+                    // 1.8 and lower
+                    legacy = true;
+                    class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
+                }
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, handling of tile entities may not work well", ex);
                 class_TileEntity_loadMethod = null;
                 class_TileEntity_updateMethod = null;
+                class_TileEntity_saveMethod = null;
             }
 
             try {
@@ -611,10 +621,12 @@ public class NMSUtils {
                 class_EntityArmorStand_disabledSlotsField.setAccessible(true);
             }
 
+            // TODO: Lockable API in 1.11+
             try {
                 try {
                     try {
                         // 1.11
+                        class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
                         class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
                         class_ChestLock_getString = class_ChestLock.getMethod("b");
                         class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
@@ -746,6 +758,7 @@ public class NMSUtils {
                 class_EntityArrow_damageField = null;
             }
 
+            // TODO: setSilent API in 1.11+
             try {
                 try {
                     // 1.10 and 1.11
@@ -760,6 +773,8 @@ public class NMSUtils {
                 class_Entity_setSilentMethod = null;
             }
 
+            // TODO: ArmorStand.setGravity in 1.11+
+            // Different behavior, but less hacky.
             try {
                 try {
                     // 1.10 and 1.11
@@ -775,21 +790,13 @@ public class NMSUtils {
                 class_ArmorStand_setGravity = null;
             }
 
-            // Things we really need that may be volatile
+            // TODO ItemStack.isEmpty in 1.11+
             try {
                 // 1.11
                 class_ItemStack_isEmptyMethod = class_ItemStack.getMethod("isEmpty");
             } catch (Throwable ignore) {
                 // 1.10 and earlier
                 legacy = true;
-            }
-            try {
-                // 1.9 and up
-                class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
-            } catch (Throwable ignore) {
-                // 1.8 and lower
-                legacy = true;
-                class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
             }
         }
         catch (Throwable ex) {
@@ -1584,7 +1591,7 @@ public class NMSUtils {
     }
 
     public static void clearItems(Location location) {
-        if (class_TileEntity_loadMethod == null || class_TileEntity_updateMethod == null || class_CraftWorld_getTileEntityAtMethod == null) return;
+        if (class_TileEntity_loadMethod == null || class_TileEntity_updateMethod == null || class_CraftWorld_getTileEntityAtMethod == null || class_TileEntity_saveMethod == null) return;
         if (location == null) return;
         try {
             World world = location.getWorld();

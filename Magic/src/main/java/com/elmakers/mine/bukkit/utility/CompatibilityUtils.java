@@ -806,7 +806,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean setLock(Block block, String lockName)
     {
-        if (class_TileEntityContainer_setLock == null) return false;
+        if (class_TileEntityContainer_setLock == null || class_ChestLock_Constructor == null) return false;
         Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
