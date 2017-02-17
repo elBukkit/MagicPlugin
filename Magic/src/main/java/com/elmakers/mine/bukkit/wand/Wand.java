@@ -101,7 +101,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             "icon", "icon_inactive", "icon_inactive_delay", "mode",
 			"active_effects",
             "brush_mode",
-            "keep", "locked", "quiet", "force", "randomize", "rename",
+            "keep", "locked", "quiet", "force", "rename",
             "rename_description",
             "power", "overrides",
             "protection", "protection_physical", "protection_projectiles",
@@ -175,7 +175,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     private boolean autoAlphabetize = false;
 	private boolean autoFill = false;
 	private boolean isUpgrade = false;
-    private boolean randomize = false;
+    private boolean randomizeOnActivate = true;
     private boolean rename = false;
     private boolean renameDescription = false;
     private boolean quickCast = false;
@@ -339,8 +339,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				migrate(version, wandConfig);
 				needsSave = true;
 			}
-
+			randomizeOnActivate = !wandConfig.contains("icon");
 			load(wandConfig);
+		} else {
+        	updateIcon();
 		}
 		loadProperties();
 
@@ -421,7 +423,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 		// Don't randomize now if set to randomize later
 		// Otherwise, do this here so the description updates
-		if (!randomize) {
+		if (!randomizeOnActivate) {
 			randomize();
 		}
 
@@ -1461,7 +1463,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
 		autoAlphabetize = wandConfig.getBoolean("alphabetize", autoAlphabetize);
 		autoFill = wandConfig.getBoolean("fill", autoFill);
-		randomize = wandConfig.getBoolean("randomize", randomize);
 		rename = wandConfig.getBoolean("rename", rename);
 		renameDescription = wandConfig.getBoolean("rename_description", renameDescription);
 		enchantCount = wandConfig.getInt("enchant_count", enchantCount);
@@ -1620,10 +1621,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 		inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
 
-		if (wandConfig.contains("randomize_icon")) {
+		randomizeOnActivate = randomizeOnActivate && wandConfig.contains("randomize_icon");
+		if (randomizeOnActivate) {
 			setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
-			randomize = true;
-		} else if (!randomize && wandConfig.contains("icon")) {
+		} else if (wandConfig.contains("icon")) {
 			String iconKey = wandConfig.getString("icon");
 			if (wandTemplate != null) {
 				iconKey = wandTemplate.migrateIcon(iconKey);
@@ -1638,8 +1639,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				iconKey = templateConfig.getString("icon");
 			}
 			setIcon(new MaterialAndData(iconKey));
+			updateIcon();
 		} else if (isUpgrade) {
 			setIcon(new MaterialAndData(DefaultUpgradeMaterial));
+		} else {
+			setIcon(new MaterialAndData(DefaultWandMaterial));
 		}
 
 		if (wandConfig.contains("upgrade_icon")) {
@@ -1790,7 +1794,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) :
                   (path != null && path.length() > 0 ? ChatColor.LIGHT_PURPLE : ChatColor.GOLD);
 		String name = wandColor + getDisplayName();
-        if (randomize) return name;
+        if (randomizeOnActivate) return name;
 
         Set<String> spells = getSpells();
 
@@ -1830,7 +1834,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
     protected String getDisplayName() {
-        return ChatColor.translateAlternateColorCodes('&', randomize ? getMessage("randomized_name") : wandName);
+        return ChatColor.translateAlternateColorCodes('&', randomizeOnActivate ? getMessage("randomized_name") : wandName);
     }
 
 	public void updateName(boolean isActive) {
@@ -1995,7 +1999,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             }
         }
 
-        if (randomize) {
+        if (randomizeOnActivate) {
             return lore;
         }
 
@@ -2992,7 +2996,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 setDescription(newDescription);
                 updateLore();
                 updateName();
-				setProperty("randomize", false);
             }
         }
 
@@ -3006,7 +3009,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                     iconKey = keys[r.nextInt(keys.length)];
 					setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
 					updateIcon();
-					setProperty("randomize", false);
                 }
             }
         }
@@ -3876,8 +3878,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
         // Check for randomized wands
-        if (randomize) {
+        if (randomizeOnActivate) {
             randomize();
+			randomizeOnActivate = false;
             forceUpdate = true;
         }
 

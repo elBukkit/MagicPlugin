@@ -601,11 +601,7 @@ randomized:
 
 wands:
 
-    default:
-        name: Wand
-        description: $wood and $core
-
-    wandbox:
+    wand:
         name: Wand
         description: $wood and $core
 
