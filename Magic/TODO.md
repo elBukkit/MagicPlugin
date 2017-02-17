@@ -8,15 +8,21 @@
  - Wand templates will specify properties that come from the Mage versus item data. 
  - Handle migration for the above.
  - How to handle /wand commands used for Mage properties- just transfer to mage, probably?
+ - Rename /mage configure and describe to getdata setdata (?)
+ - Implement /mage configure, add, remove, describe
+ - Option to filter spells that show on wand by what's available on its current path
+ - Might need to add yet another category of spells to paths, those that are allowed but never appear in the spell shop
 
 ## High-Priority
   
 ## Not so High-Priority
  
- - Aliases don't work with levels - Don't refund item costs when a spell goes through auto-undo
+ - Aliases don't work with levels 
+ - Don't refund item costs when a spell goes through auto-undo
 
 ## Sabers
 
+ - Fix particle FX
  - Paths being able to upgrade blocking/reflect power
 
 ## Reported Issues
