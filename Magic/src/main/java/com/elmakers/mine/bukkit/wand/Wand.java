@@ -717,8 +717,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 	@Override
     public boolean isUndroppable() {
-		// Don't allow dropping wands while the inventory is open.
-        return undroppable || isInventoryOpen();
+        return undroppable;
     }
 	
 	public boolean isUpgrade() {
@@ -4533,7 +4532,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				currentItem = null;
 			}
 			storedInventory.setItem(storedSlot, currentItem);
-			controller.info("Cleared wand on inv close for player " + player.getName());
 		}
 
 		for (int i = 0; i < storedInventory.getSize(); i++) {
