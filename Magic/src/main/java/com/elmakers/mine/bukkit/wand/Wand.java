@@ -4273,14 +4273,18 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 	@Override
 	public void setActiveSpell(String activeSpell) {
-        SpellKey spellKey = new SpellKey(activeSpell);
-        activeSpell = spellKey.getBaseKey();
-        if (!spellLevels.containsKey(activeSpell))
-        {
-            return;
-        }
-        spellKey = new SpellKey(spellKey.getBaseKey(), spellLevels.get(activeSpell));
-		this.activeSpell = spellKey.getKey();
+    	if (activeSpell != null) {
+			SpellKey spellKey = new SpellKey(activeSpell);
+			activeSpell = spellKey.getBaseKey();
+			if (!spellLevels.containsKey(activeSpell))
+			{
+				return;
+			}
+			spellKey = new SpellKey(spellKey.getBaseKey(), spellLevels.get(activeSpell));
+			this.activeSpell = spellKey.getKey();
+		} else {
+    		this.activeSpell = null;
+		}
 		setProperty("active_spell", this.activeSpell);
         saveState();
 		updateName();
