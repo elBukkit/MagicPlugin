@@ -75,7 +75,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
-	private static int WAND_VERSION = 2;
+	private static int WAND_VERSION = 3;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 
@@ -114,7 +114,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     );
 
     private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
-            "id", "owner", "owner_id", "name", "description",
+            "owner", "owner_id", "name", "description",
             "organize", "alphabetize", "fill", "stored", "upgrade_icon",
             "mana_timestamp", "upgrade_template", "custom_properties", "version",
             // For legacy wands
@@ -488,6 +488,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				}
 			}
 		}
+		if (version <= 2) {
+			wandConfig.set("id", null);
+		}
 
     	wandConfig.set("version", WAND_VERSION);
 	}
@@ -631,28 +634,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 	}
 
-    public void newId() {
-    	if (this.isSingleUse) {
-			id = template;
-    		return;
-		}
-    	if (!this.isUpgrade) {
-            id = UUID.randomUUID().toString();
-        } else {
-            id = null;
-        }
-        setProperty("id", id);
-    }
-
-    public void checkId() {
-        if ((id == null || id.length() == 0) && !this.isUpgrade) {
-            newId();
-        }
-    }
-
     @Override
+	// TODO: Deprecate this
     public String getId() {
-        return id;
+        return null;
     }
 
     public float getManaRegenerationBoost() {
@@ -1250,15 +1235,15 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			Player player = mage.getPlayer();
 			if (player != null) {
 				ItemStack itemInHand = player.getInventory().getItemInMainHand();
-				String itemId = getWandId(itemInHand);
-				if (itemId != null && itemId.equals(id) && itemInHand != item) {
+				if (itemInHand != null && itemInHand != item && itemInHand.equals(item)) {
 					item = itemInHand;
+					isInOffhand = false;
 					return true;
 				}
 				itemInHand = player.getInventory().getItemInOffHand();
-				itemId = getWandId(itemInHand);
-				if (itemId != null && itemId.equals(id) && itemInHand != item) {
+				if (itemInHand != null && itemInHand != item && itemInHand.equals(item)) {
 					item = itemInHand;
+					isInOffhand = true;
 					return true;
 				}
 			}
@@ -1289,22 +1274,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		} else {
             InventoryUtils.saveTagsToNBT(getConfiguration(), wandNode);
         }
-
-		if (mage != null) {
-			Player player = mage.getPlayer();
-			if (player != null) {
-				// Update the stored item, too- in case we save while the
-				// inventory is open.
-				if (storedInventory != null) {
-					int currentSlot = player.getInventory().getHeldItemSlot();
-					ItemStack storedItem = storedInventory.getItem(currentSlot);
-					String storedId = getWandId(storedItem);
-					if (storedId != null && storedId.equals(id)) {
-						storedInventory.setItem(currentSlot, item);
-					}
-				}
-			}
-		}
 	}
 
     public static ConfigurationSection itemToConfig(ItemStack item, ConfigurationSection stateNode) {
@@ -1340,7 +1309,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         // Filter out some fields
         if (filtered) {
-            node.set("id", null);
             node.set("owner_id", null);
             node.set("owner", null);
             node.set("template", null);
@@ -1454,7 +1422,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			setEffectColor(wandConfig.getString("effect_color"));
 		}
 
-		id = wandConfig.getString("id", id);
 		isUpgrade = wandConfig.getBoolean("upgrade", isUpgrade);
 		quietLevel = wandConfig.getInt("quiet", quietLevel);
 		effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
@@ -2200,17 +2167,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         return InventoryUtils.getMetaString(wandNode, "template");
     }
 
-    public static String getWandId(ItemStack item) {
-		if (InventoryUtils.isEmpty(item)) return null;
-        Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
-        if (wandNode == null) return null;
-        String id = InventoryUtils.getMetaString(wandNode, "id");
-        if (id == null || id.isEmpty()) {
-			id = InventoryUtils.getMetaString(wandNode, "template");
-		}
-        return id;
-    }
-
 	public static String getSpell(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");
@@ -2340,8 +2296,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         // we are about to replace with the wand.
 		int currentSlot = playerInventory.getHeldItemSlot();
         ItemStack currentItem = playerInventory.getItem(currentSlot);
-        String currentId = getWandId(currentItem);
-        if (currentId != null && !currentId.equals(id)) {
+        if (currentItem == null || !currentItem.equals(item)) {
             return;
         }
 
@@ -2683,7 +2638,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 
 		ConfigurationSection upgradeConfig = other.getEffectiveConfiguration();
-		upgradeConfig.set("id", null);
 		upgradeConfig.set("indestructible", null);
 		upgradeConfig.set("upgrade", null);
 		upgradeConfig.set("icon", upgradeIcon == null ? null : upgradeIcon.getKey());
@@ -3715,8 +3669,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	 */
 
     @Override
+	// TODO: Deprecate this
     public boolean isLost(com.elmakers.mine.bukkit.api.wand.LostWand lostWand) {
-        return this.id != null && this.id.equals(lostWand.getId());
+        return false;
     }
 
     @Override
@@ -3790,8 +3745,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             mage.sendMessage(getMessage("bound").replace("$name", getOwner()));
             return false;
         }
-
-		this.checkId();
 
         if (this.isUpgrade) {
             controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
@@ -4518,22 +4471,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
 		PlayerInventory inventory = player.getInventory();
-		// Check for the wand having been removed somehow, we don't want to put it back
-		// if that happened.
-		// This fixes dupe issues with armor stands, among other things
-		// We do need to account for the wand not being the active slot anymore
-		ItemStack storedItem = storedInventory.getItem(storedSlot);
-		ItemStack currentItem = inventory.getItem(storedSlot);
-		String currentId = getWandId(currentItem);
-		String storedId = getWandId(storedItem);
-		if (storedId != null && storedId.equals(id) && !Objects.equal(currentId, id)) {
-			// Hacky special-case to avoid glitching spells out of the inventory
-			// via the offhand slot.
-			if (isSpell(currentItem)) {
-				currentItem = null;
-			}
-			storedInventory.setItem(storedSlot, currentItem);
-		}
+
+		// Reset the wand item
+		storedInventory.setItem(storedSlot, item);
 
 		for (int i = 0; i < storedInventory.getSize(); i++) {
 			inventory.setItem(i, storedInventory.getItem(i));
