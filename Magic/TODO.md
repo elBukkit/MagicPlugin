@@ -37,6 +37,10 @@
  - Add Kingdoms support (It's a premium plugin, sooooooo) 
  - Add support for LockettePro
  
+ ZQuest API: https://www.spigotmc.org/resources/zquestapi-feel-the-might-of-java.35327/
+ ZQuest How to make Extensions: http://zquestwiki.com/index.php?title=APIcreatingExtensions
+ ZQuest Page: https://www.spigotmc.org/resources/zquest-feel-the-might-of-creating-1-9-1-10-1-11.18045/
+ 
 ## Older stuff
 
  - MagicArenas: Doesn't TP players out on a draw.. ?
