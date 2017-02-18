@@ -23,6 +23,14 @@ wand:
     effect_bubbles: false
     spells:
      - flagrate
+    effects:
+      randomize:
+      -  class: EffectSingle
+         sound: entity_player_levelup
+      -  class: EffectRing
+         firework: star
+         radius: 4
+         size: 2
 
 elder:
     migrate_icon: iron_hoe

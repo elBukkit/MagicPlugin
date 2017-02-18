@@ -3018,6 +3018,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                     iconKey = keys[r.nextInt(keys.length)];
 					setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
 					updateIcon();
+					playEffects("randomize");
                 }
             }
         }
