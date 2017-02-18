@@ -125,8 +125,7 @@ public class PlayerController implements Listener {
                 // item text gets updated on hotbar item selection "bounce"
                 int previousSlot = event.getPreviousSlot();
                 ItemStack previous = inventory.getItem(previousSlot);
-                String previousId = Wand.getWandId(previous);
-                if (previousId != null && previousId.equals(activeWand.getId())) {
+                if (previous != null && previous.equals(activeWand.getItem())) {
                     player.getInventory().setItem(previousSlot, activeWand.getItem());
                 }
             }
@@ -181,8 +180,8 @@ public class PlayerController implements Listener {
         final ItemStack droppedItem = event.getItemDrop().getItemStack();
 
         boolean cancelEvent = false;
-        String droppedId = Wand.getWandId(droppedItem);
-        boolean droppedWand = droppedId != null && activeWand != null && activeWand.getId().equals(droppedId);
+        ItemStack activeItem = activeWand.getItem();
+        boolean droppedWand = droppedItem != null && activeWand != null && activeItem.equals(droppedItem);
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
@@ -201,8 +200,7 @@ public class PlayerController implements Listener {
 
                 // Clear after inventory restore (potentially with deactivate), since that will put the wand back
                 if (Wand.hasActiveWand(player) && remainingItem.getType() == Material.AIR && restoredItem.getType() != Material.AIR) {
-                    String activeId = Wand.getWandId(restoredItem);
-                    if (activeId != null && activeWand.getId().equals(activeId))
+                    if (activeWand.getItem().equals(activeItem))
                     {
                         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
                     }
@@ -222,7 +220,7 @@ public class PlayerController implements Listener {
             for (int i = 0; i < 9; i++) {
                 ItemStack item = inventory.getItem(i);
 
-                if (item != null && Wand.getWandId(item) != null) {
+                if (item != null && Wand.isWand(item)) {
                     final int previouslySelected = inventory
                             .getHeldItemSlot();
                     inventory.setHeldItemSlot(i);

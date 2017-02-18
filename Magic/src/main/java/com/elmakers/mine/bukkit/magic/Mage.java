@@ -865,18 +865,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
 
-        String itemId = Wand.getWandId(itemInHand);
-        String activeId = activeWand != null ? activeWand.getId() : null;
+        ItemStack activeWandItem = activeWand != null ? activeWand.getItem() : null;
 
-        if ((itemId != null && activeId == null)
-                || (activeId != null && itemId == null)
-                || (itemId != null && activeId != null && !itemId.equals(activeId))
+        if ((itemInHand != null && activeWandItem == null)
+                || (activeWandItem != null && itemInHand == null)
+                || (activeWandItem != null && itemInHand != null && !itemInHand.equals(activeWandItem))
                 )
         {
             if (activeWand != null) {
                 activeWand.deactivate();
             }
-            if (itemInHand != null && itemId != null && controller.hasWandPermission(player)) {
+            if (itemInHand != null && controller.hasWandPermission(player)) {
                 Wand newActiveWand = controller.getWand(itemInHand);
                 if (newActiveWand.activate(this)) {
                     setActiveWand(newActiveWand);
@@ -931,18 +930,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
 
-        String itemId = Wand.getWandId(itemInHand);
-        String activeId = offhandWand != null ? offhandWand.getId() : null;
+        ItemStack offhandWandItem = offhandWand != null ? offhandWand.getItem() : null;
 
-        if ((itemId != null && activeId == null)
-        || (activeId != null && itemId == null)
-        || (itemId != null && activeId != null && !itemId.equals(activeId))
+        if ((itemInHand != null && offhandWandItem == null)
+        || (offhandWandItem != null && itemInHand == null)
+        || (itemInHand != null && offhandWandItem != null && !itemInHand.equals(offhandWandItem))
         )
         {
             if (offhandWand != null) {
                 offhandWand.deactivate();
             }
-            if (itemInHand != null && itemId != null && controller.hasWandPermission(player)) {
+            if (itemInHand != null && controller.hasWandPermission(player)) {
                 Wand newActiveWand = controller.getWand(itemInHand);
                 if (newActiveWand.activateOffhand(this)) {
                     setOffhandWand(newActiveWand);
