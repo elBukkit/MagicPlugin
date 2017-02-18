@@ -866,12 +866,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (isLoading() || player == null) return null;
 
         ItemStack activeWandItem = activeWand != null ? activeWand.getItem() : null;
+        if (!Wand.isWand(itemInHand)) itemInHand = null;
 
         if ((itemInHand != null && activeWandItem == null)
                 || (activeWandItem != null && itemInHand == null)
                 || (activeWandItem != null && itemInHand != null && !itemInHand.equals(activeWandItem))
                 )
         {
+            if (itemInHand != null && activeWandItem != null)
             if (activeWand != null) {
                 activeWand.deactivate();
             }
@@ -931,6 +933,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (isLoading() || player == null) return null;
 
         ItemStack offhandWandItem = offhandWand != null ? offhandWand.getItem() : null;
+        if (!Wand.isWand(itemInHand)) itemInHand = null;
 
         if ((itemInHand != null && offhandWandItem == null)
         || (offhandWandItem != null && itemInHand == null)

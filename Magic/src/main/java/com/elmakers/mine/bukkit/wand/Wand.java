@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.UUID;
 import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
@@ -38,7 +37,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -915,6 +913,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     public ItemStack getItem() {
 		return item;
 	}
+
+	public void setItem(ItemStack item) {
+    	this.item = item;
+	}
 	
 	@Override
 	public com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon() {
@@ -1223,15 +1225,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         updateBrushItem(controller.getMessages(), itemStack, brushData, wand);
 		return itemStack;
 	}
-	
-	public void checkItem(ItemStack newItem) {
-		if (newItem.getAmount() > item.getAmount()) {
-			item.setAmount(newItem.getAmount());
-		}
-	}
 
 	protected boolean findItem() {
-		if (mage != null) {
+		if (mage != null && item != null) {
 			Player player = mage.getPlayer();
 			if (player != null) {
 				ItemStack itemInHand = player.getInventory().getItemInMainHand();
@@ -2272,10 +2268,13 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (wandMode == WandMode.INVENTORY) {
 			if (!hasStoredInventory()) return;
 			PlayerInventory inventory = player.getInventory();
-            for (int i = 0; i < PLAYER_INVENTORY_SIZE; i++) {
-				inventory.setItem(i, null);
+			if (!updateHotbar(inventory)) {
+				for (int i = 0; i < HOTBAR_SIZE; i++) {
+					if (i != inventory.getHeldItemSlot()) {
+						inventory.setItem(i, null);
+					}
+				}
 			}
-			updateHotbar(inventory);
 			updateInventory(inventory, false);
 			updateName();
 			player.updateInventory();
@@ -2287,21 +2286,18 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 	}
 	
-	private void updateHotbar(PlayerInventory playerInventory) {
-        if (getMode() != WandMode.INVENTORY) return;
+	private boolean updateHotbar(PlayerInventory playerInventory) {
+        if (getMode() != WandMode.INVENTORY) return false;
 		Inventory hotbar = getHotbar();
-        if (hotbar == null) return;
+        if (hotbar == null) return false;
 
-        // Check for an item already in the player's held slot, which
-        // we are about to replace with the wand.
+        // Make sure the wand is still in the held slot
 		int currentSlot = playerInventory.getHeldItemSlot();
         ItemStack currentItem = playerInventory.getItem(currentSlot);
-        if (currentItem == null || !currentItem.equals(item)) {
-            return;
+        if (currentItem == null || !currentItem.getItemMeta().equals(item.getItemMeta())) {
+        	controller.getLogger().warning("Trying to update hotbar but the wand has gone missing");
+            return false;
         }
-
-        // Reset the held item, just in case Bukkit made a copy or something.
-        playerInventory.setItemInMainHand(this.item);
 
         // Set hotbar items from remaining list
 		int targetOffset = 0;
@@ -2316,6 +2312,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			updateInventoryName(hotbarItem, true);
 			playerInventory.setItem(hotbarSlot + targetOffset, hotbarItem);
 		}
+		return true;
     }
 	
 	private void updateInventory(Inventory targetInventory, boolean addHotbars) {
@@ -2342,6 +2339,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 currentOffset++;
             }
         }
+        for (;currentOffset < targetInventory.getSize(); currentOffset++) {
+			targetInventory.setItem(currentOffset,  null);
+		}
 	}
 	
 	protected static void addSpellLore(Messages messages, SpellTemplate spell, List<String> lore, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand) {
