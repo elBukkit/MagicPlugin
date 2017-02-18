@@ -1253,12 +1253,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				String itemId = getWandId(itemInHand);
 				if (itemId != null && itemId.equals(id) && itemInHand != item) {
 					item = itemInHand;
+					isInOffhand = false;
 					return true;
 				}
 				itemInHand = player.getInventory().getItemInOffHand();
 				itemId = getWandId(itemInHand);
 				if (itemId != null && itemId.equals(id) && itemInHand != item) {
 					item = itemInHand;
+					isInOffhand = true;
 					return true;
 				}
 			}
