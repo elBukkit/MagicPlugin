@@ -895,7 +895,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         
         ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
         if (Wand.isWand(itemInOffhand)) {
-            if (offhandWand != null && offhandWand.getLeftClickAction() == WandAction.CAST ||  offhandWand.getRightClickAction() == WandAction.CAST) {
+            if (offhandWand != null && (offhandWand.getLeftClickAction() == WandAction.CAST || offhandWand.getRightClickAction() == WandAction.CAST)) {
                 offhandCast = true;
                 try {
                     offhandWand.tickMana(player);
