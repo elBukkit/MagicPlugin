@@ -1544,6 +1544,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			dropAction = WandAction.TOGGLE;
 			swapAction = WandAction.CYCLE_HOTBAR;
 			rightClickAction = WandAction.NONE;
+			quickCast = true;
+			// This is to turn the redundant spell lore off
+			quickCastDisabled = true;
+			manualQuickCastDisabled = false;
 		} else if (mode == WandMode.CAST) {
 			leftClickAction = WandAction.CAST;
 			rightClickAction = WandAction.CAST;
