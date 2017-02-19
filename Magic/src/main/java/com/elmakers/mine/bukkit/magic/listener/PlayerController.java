@@ -411,6 +411,12 @@ public class PlayerController implements Listener {
                 wand.closeInventory();
             }
         }
+        if (!mage.checkLastClick(clickCooldown)) {
+            if (wand != null && wand.getRightClickAction() != WandAction.NONE) {
+                event.setCancelled(true);
+            }
+            return;
+        }
         
         // Check for offhand casting
         if (isRightClick)
@@ -469,16 +475,6 @@ public class PlayerController implements Listener {
                 event.setCancelled(true);
                 return;
             }
-        }
-
-        if (!mage.checkLastClick(clickCooldown)) {
-            if (isLeftClick && wand.getLeftClickAction() != WandAction.NONE) {
-                event.setCancelled(true);
-            }
-            if (isRightClick && wand.getRightClickAction() != WandAction.NONE) {
-                event.setCancelled(true);
-            }
-            return;
         }
         
         if (isLeftClick) {
