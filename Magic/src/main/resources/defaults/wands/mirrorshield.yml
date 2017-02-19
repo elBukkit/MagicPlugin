@@ -5,7 +5,7 @@ mirrorshield:
     bound: true
     keep: true
     right_click: none
-    left_clicK: none
+    left_click: none
     drop: none
     block_reflect_chance: 0.75
     block_chance: 1
