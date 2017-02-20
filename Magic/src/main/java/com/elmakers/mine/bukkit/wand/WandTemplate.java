@@ -40,19 +40,6 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         super(controller);
-
-        // These map to the default values for some non-null, non-zero properties in Wand.
-        // This is here to make sure these properties get removed on migration.
-        if (defaults == null) {
-            defaults = new MemoryConfiguration();
-            defaults.set("effect_particle_radius", 0.2);
-            defaults.set("effect_particle_offset", 0.3);
-            defaults.set("swap", "none");
-            defaults.set("drop", "cycle_hotbar");
-            defaults.set("right_click", "toggle");
-            defaults.set("left_click", "cast");
-            defaults.set("hotbar_count", 1);
-        }
         ConfigurationUtils.addConfigurations(node, defaults, false);
         this.load(node);
         this.key = key;

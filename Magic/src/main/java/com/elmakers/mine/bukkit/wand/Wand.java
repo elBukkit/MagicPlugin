@@ -183,9 +183,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     private boolean manualQuickCastDisabled = false;
     private boolean isInOffhand = false;
 	
-	private WandAction leftClickAction = WandAction.CAST;
-	private WandAction rightClickAction = WandAction.TOGGLE;
-	private WandAction dropAction = WandAction.CYCLE_HOTBAR;
+	private WandAction leftClickAction = WandAction.NONE;
+	private WandAction rightClickAction = WandAction.NONE;
+	private WandAction dropAction = WandAction.NONE;
 	private WandAction swapAction = WandAction.NONE;
 
 	private MaterialAndData icon = null;
@@ -239,8 +239,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	private int effectParticleCount = 0;
 	private int effectParticleInterval = 0;
     private double effectParticleMinVelocity = 0;
-    private double effectParticleRadius = 0.2;
-    private double effectParticleOffset = 0.3;
+    private double effectParticleRadius = 0;
+    private double effectParticleOffset = 0;
 	private boolean effectBubbles = false;
 	private boolean activeEffectsOnly = false;
 	private EffectRing effectPlayer = null;
@@ -823,7 +823,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 	
 	public String getOwner() {
-		return owner;
+		return owner == null ? "" : owner;
 	}
 
     public String getOwnerId() {
@@ -1397,11 +1397,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 	}
 
-	public void loadProperties() {
-		loadProperties(getEffectiveConfiguration());
+	public boolean loadProperties() {
+		return loadProperties(getEffectiveConfiguration());
 	}
 	
-	public void loadProperties(ConfigurationSection wandConfig) {
+	public boolean loadProperties(ConfigurationSection wandConfig) {
 		locked = wandConfig.getBoolean("locked", locked);
 		consumeReduction = (float)wandConfig.getDouble("consume_reduction");
 		costReduction = (float)wandConfig.getDouble("cost_reduction");
@@ -1456,67 +1456,94 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			setEffectColor(wandConfig.getString("effect_color"));
 		}
 
-		id = wandConfig.getString("id", id);
-		isUpgrade = wandConfig.getBoolean("upgrade", isUpgrade);
-		quietLevel = wandConfig.getInt("quiet", quietLevel);
-		effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
-		keep = wandConfig.getBoolean("keep", keep);
-		passive = wandConfig.getBoolean("passive", passive);
-		indestructible = wandConfig.getBoolean("indestructible", indestructible);
-		superPowered = wandConfig.getBoolean("powered", superPowered);
-		superProtected = wandConfig.getBoolean("protected", superProtected);
-		glow = wandConfig.getBoolean("glow", glow);
-		undroppable = wandConfig.getBoolean("undroppable", undroppable);
-		isHeroes = wandConfig.getBoolean("heroes", isHeroes);
-		bound = wandConfig.getBoolean("bound", bound);
-		soul = wandConfig.getBoolean("soul", soul);
-		forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
-		autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
-		autoAlphabetize = wandConfig.getBoolean("alphabetize", autoAlphabetize);
-		autoFill = wandConfig.getBoolean("fill", autoFill);
-		rename = wandConfig.getBoolean("rename", rename);
-		renameDescription = wandConfig.getBoolean("rename_description", renameDescription);
-		enchantCount = wandConfig.getInt("enchant_count", enchantCount);
-		maxEnchantCount = wandConfig.getInt("max_enchant_count", maxEnchantCount);
+		id = wandConfig.getString("id");
+		isUpgrade = wandConfig.getBoolean("upgrade");
+		quietLevel = wandConfig.getInt("quiet");
+		effectBubbles = wandConfig.getBoolean("effect_bubbles");
+		keep = wandConfig.getBoolean("keep");
+		passive = wandConfig.getBoolean("passive");
+		indestructible = wandConfig.getBoolean("indestructible");
+		superPowered = wandConfig.getBoolean("powered");
+		superProtected = wandConfig.getBoolean("protected");
+		glow = wandConfig.getBoolean("glow");
+		undroppable = wandConfig.getBoolean("undroppable");
+		isHeroes = wandConfig.getBoolean("heroes");
+		bound = wandConfig.getBoolean("bound");
+		soul = wandConfig.getBoolean("soul");
+		forceUpgrade = wandConfig.getBoolean("force");
+		autoOrganize = wandConfig.getBoolean("organize");
+		autoAlphabetize = wandConfig.getBoolean("alphabetize");
+		autoFill = wandConfig.getBoolean("fill");
+		rename = wandConfig.getBoolean("rename");
+		renameDescription = wandConfig.getBoolean("rename_description");
+		enchantCount = wandConfig.getInt("enchant_count");
+		maxEnchantCount = wandConfig.getInt("max_enchant_count");
 
 		if (wandConfig.contains("effect_particle")) {
 			effectParticle = ConfigurationUtils.toParticleEffect(wandConfig.getString("effect_particle"));
 			effectParticleData = 0;
+		} else {
+			effectParticle = null;
 		}
 		if (wandConfig.contains("effect_sound")) {
 			effectSound = ConfigurationUtils.toSoundEffect(wandConfig.getString("effect_sound"));
+		} else {
+			effectSound = null;
 		}
-		activeEffectsOnly = wandConfig.getBoolean("active_effects", activeEffectsOnly);
-		effectParticleData = (float)wandConfig.getDouble("effect_particle_data", effectParticleData);
-		effectParticleCount = wandConfig.getInt("effect_particle_count", effectParticleCount);
-		effectParticleRadius = wandConfig.getDouble("effect_particle_radius", effectParticleRadius);
-		effectParticleOffset = wandConfig.getDouble("effect_particle_offset", effectParticleOffset);
-		effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
-		effectParticleMinVelocity = wandConfig.getDouble("effect_particle_min_velocity", effectParticleMinVelocity);
-		effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
+		activeEffectsOnly = wandConfig.getBoolean("active_effects");
+		effectParticleData = (float)wandConfig.getDouble("effect_particle_data");
+		effectParticleCount = wandConfig.getInt("effect_particle_count");
+		effectParticleRadius = wandConfig.getDouble("effect_particle_radius");
+		effectParticleOffset = wandConfig.getDouble("effect_particle_offset");
+		effectParticleInterval = wandConfig.getInt("effect_particle_interval");
+		effectParticleMinVelocity = wandConfig.getDouble("effect_particle_min_velocity");
+		effectSoundInterval =  wandConfig.getInt("effect_sound_interval");
 
-		castInterval = wandConfig.getInt("cast_interval", castInterval);
-		castMinVelocity = wandConfig.getDouble("cast_min_velocity", castMinVelocity);
-		castVelocityDirection = ConfigurationUtils.getVector(wandConfig, "cast_velocity_direction", castVelocityDirection);
-		castSpell = wandConfig.getString("cast_spell", castSpell);
+		castInterval = wandConfig.getInt("cast_interval");
+		castMinVelocity = wandConfig.getDouble("cast_min_velocity");
+		castVelocityDirection = ConfigurationUtils.getVector(wandConfig, "cast_velocity_direction");
+		castSpell = wandConfig.getString("cast_spell");
 		String castParameterString = wandConfig.getString("cast_parameters", null);
 		if (castParameterString != null && !castParameterString.isEmpty()) {
 			castParameters = new MemoryConfiguration();
 			ConfigurationUtils.addParameters(StringUtils.split(castParameterString, ' '), castParameters);
+		} else {
+			castParameters = null;
 		}
 
 		boolean needsInventoryUpdate = false;
-		if (wandConfig.contains("mode")) {
-			WandMode newMode = parseWandMode(wandConfig.getString("mode"), mode);
-			if (newMode != mode) {
-				setMode(newMode);
-				needsInventoryUpdate = true;
+		WandMode newMode = parseWandMode(wandConfig.getString("mode"), WandMode.NONE);
+		if (newMode != mode) {
+			if (isInventoryOpen()) {
+				closeInventory();
 			}
+			mode = newMode;
+			needsInventoryUpdate = true;
 		}
 
-		if (wandConfig.contains("brush_mode")) {
-			setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
+		brushMode = parseWandMode(wandConfig.getString("brush_mode"), WandMode.CHEST);
+
+		// Backwards compatibility
+		if (wandConfig.getBoolean("mode_drop", false)) {
+			dropAction = WandAction.TOGGLE;
+			swapAction = WandAction.CYCLE_HOTBAR;
+			rightClickAction = WandAction.NONE;
+			quickCast = true;
+			// This is to turn the redundant spell lore off
+			quickCastDisabled = true;
+			manualQuickCastDisabled = false;
+		} else if (mode == WandMode.CAST) {
+			leftClickAction = WandAction.CAST;
+			rightClickAction = WandAction.CAST;
+			swapAction = WandAction.NONE;
+			dropAction = WandAction.NONE;
+		} else if (mode == WandMode.CYCLE) {
+			leftClickAction = WandAction.CAST;
+			rightClickAction = WandAction.NONE;
+			swapAction = WandAction.NONE;
+			dropAction = WandAction.CYCLE;
 		}
+
 		String quickCastType = wandConfig.getString("quick_cast", wandConfig.getString("mode_cast"));
 		if (quickCastType != null) {
 			if (quickCastType.equalsIgnoreCase("true")) {
@@ -1538,35 +1565,19 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				manualQuickCastDisabled = false;
 			}
 		}
+		leftClickAction = parseWandAction(wandConfig.getString("left_click"), WandAction.NONE);
+		rightClickAction = parseWandAction(wandConfig.getString("right_click"), WandAction.NONE);
+		dropAction = parseWandAction(wandConfig.getString("drop"), WandAction.NONE);
+		swapAction = parseWandAction(wandConfig.getString("swap"), WandAction.NONE);
 
-		// Backwards compatibility
-		if (wandConfig.getBoolean("mode_drop", false)) {
-			dropAction = WandAction.TOGGLE;
-			swapAction = WandAction.CYCLE_HOTBAR;
-			rightClickAction = WandAction.NONE;
-			quickCast = true;
-			// This is to turn the redundant spell lore off
-			quickCastDisabled = true;
-			manualQuickCastDisabled = false;
-		} else if (mode == WandMode.CAST) {
-			leftClickAction = WandAction.CAST;
-			rightClickAction = WandAction.CAST;
-			swapAction = WandAction.NONE;
-			dropAction = WandAction.NONE;
-		}
-		leftClickAction = parseWandAction(wandConfig.getString("left_click"), leftClickAction);
-		rightClickAction = parseWandAction(wandConfig.getString("right_click"), rightClickAction);
-		dropAction = parseWandAction(wandConfig.getString("drop"), dropAction);
-		swapAction = parseWandAction(wandConfig.getString("swap"), swapAction);
+		owner = wandConfig.getString("owner");
+		ownerId = wandConfig.getString("owner_id");
+		template = wandConfig.getString("template");
+		upgradeTemplate = wandConfig.getString("upgrade_template");
+		path = wandConfig.getString("path");
 
-		owner = wandConfig.getString("owner", owner);
-		ownerId = wandConfig.getString("owner_id", ownerId);
-		template = wandConfig.getString("template", template);
-		upgradeTemplate = wandConfig.getString("upgrade_template", upgradeTemplate);
-		path = wandConfig.getString("path", path);
-
-		activeSpell = wandConfig.getString("active_spell", activeSpell);
-		activeMaterial = wandConfig.getString("active_material", activeMaterial);
+		activeSpell = wandConfig.getString("active_spell");
+		activeMaterial = wandConfig.getString("active_material");
 
 		String wandMaterials = "";
 		String wandSpells = "";
@@ -1583,7 +1594,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 		if (wandConfig.contains("hotbar")) {
 			int hotbar = wandConfig.getInt("hotbar");
-			currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
+			if (hotbar != currentHotbar) {
+				needsInventoryUpdate = true;
+				currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
+			}
 		}
 
 		// Default to template names, override with localizations and finally with wand data
@@ -1629,12 +1643,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			if (iconKey != null) {
 				inactiveIcon = new MaterialAndData(iconKey);
 			}
+		} else {
+			inactiveIcon = null;
 		}
 		if (inactiveIcon != null && (inactiveIcon.getMaterial() == null || inactiveIcon.getMaterial() == Material.AIR))
 		{
 			inactiveIcon = null;
 		}
-		inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
+		inactiveIconDelay = wandConfig.getInt("icon_inactive_delay");
 
 		randomizeOnActivate = randomizeOnActivate && wandConfig.contains("randomize_icon");
 		if (randomizeOnActivate) {
@@ -1676,13 +1692,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			hasSpellProgression = false;
 		}
 
-		// Load spells
-		if (needsInventoryUpdate) {
-			// Force a re-parse of materials and spells
-			wandSpells = getSpellString();
-			wandMaterials = getMaterialString();
-		}
-
 		wandMaterials = wandConfig.getString("materials", wandMaterials);
 		wandSpells = wandConfig.getString("spells", wandSpells);
 
@@ -1692,6 +1701,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			parseInventoryStrings(wandSpells, wandMaterials);
 		}
 
+		castOverrides = null;
 		if (wandConfig.contains("overrides")) {
 			castOverrides = null;
 			String overrides = wandConfig.getString("overrides", null);
@@ -1713,8 +1723,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			}
 		}
 
+		potionEffects.clear();
 		if (wandConfig.contains("potion_effects")) {
-			potionEffects.clear();
 			addPotionEffects(potionEffects, wandConfig.getString("potion_effects", null));
 		}
 
@@ -1732,6 +1742,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         updateMaxMana(false);
         checkActiveMaterial();
+
+        return needsInventoryUpdate;
     }
 
 	@Override
@@ -1756,7 +1768,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		} else {
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.GREEN + "(No Description)");
 		}
-		if (owner.length() > 0 || ownerId.length() > 0) {
+		if (owner != null && owner.length() > 0 && ownerId != null && ownerId.length() > 0) {
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + owner + " (" + ChatColor.GRAY + ownerId + ChatColor.WHITE + ")");
 		} else {
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + "(No Owner)");
@@ -2019,7 +2031,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
 		if (!isUpgrade) {
-			if (owner.length() > 0) {
+			if (owner != null && owner.length() > 0) {
 				if (bound) {
 					if (soul) {
 						String ownerDescription = getMessage("soulbound_description", "$name").replace("$name", owner);
@@ -3676,7 +3688,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     }
 	
 	public WandMode getMode() {
-        WandMode wandMode = mode != null ? mode : controller.getDefaultWandMode();
+        WandMode wandMode = mode;
         Player player = mage == null ? null : mage.getPlayer();
         if (wandMode == WandMode.INVENTORY && player != null && player.getGameMode() == GameMode.CREATIVE) {
             wandMode = WandMode.CHEST;
@@ -3685,7 +3697,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
     public WandMode getBrushMode() {
-        return brushMode != null ? brushMode : controller.getDefaultBrushMode();
+        return brushMode;
     }
 	
 	public void setMode(WandMode mode) {

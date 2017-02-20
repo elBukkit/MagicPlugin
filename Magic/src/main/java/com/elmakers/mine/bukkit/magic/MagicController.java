@@ -1834,14 +1834,6 @@ public class MagicController implements MageController {
         return true;
     }
 
-    public WandMode getDefaultWandMode() {
-        return defaultWandMode;
-    }
-
-    public WandMode getDefaultBrushMode() {
-        return defaultBrushMode;
-    }
-
     public String getDefaultWandPath() {
         return defaultWandPath;
     }
@@ -2230,8 +2222,6 @@ public class MagicController implements MageController {
         saveNonPlayerMages = properties.getBoolean("save_non_player_mages", saveNonPlayerMages);
         defaultWandPath = properties.getString("default_wand_path", "");
         Wand.DEFAULT_WAND_TEMPLATE = properties.getString("default_wand", "");
-        defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
-        defaultBrushMode = Wand.parseWandMode(properties.getString("default_brush_mode", ""), defaultBrushMode);
         backupInventories = properties.getBoolean("backup_player_inventory", true);
         Wand.brushSelectSpell = properties.getString("brush_select_spell", Wand.brushSelectSpell);
 		showMessages = properties.getBoolean("show_messages", showMessages);
@@ -4829,8 +4819,6 @@ public class MagicController implements MageController {
     private boolean                             commitOnQuit             		= false;
     private boolean                             saveNonPlayerMages              = false;
     private String                              defaultWandPath                 = "";
-    private WandMode							defaultWandMode				    = WandMode.INVENTORY;
-    private WandMode							defaultBrushMode				= WandMode.CHEST;
     private boolean                             showMessages                    = true;
     private boolean                             showCastMessages                = false;
     private String								messagePrefix					= "";

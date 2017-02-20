@@ -4,6 +4,7 @@
 #
 base_wand:
     hidden: true
+    mode: inventory
     drop: toggle
     left_click: cast
     right_click: none
@@ -20,6 +21,7 @@ base_wand:
   
 base_sword:
     hidden: true
+    mode: inventory
     drop: toggle
     left_click: none
     right_click: none
@@ -33,6 +35,7 @@ base_sword:
 
 base_lightsaber:
     hidde: true
+    mode: inventory
     icon_inactive: wood_hoe:14
     icon_inactive_delay: 500
     drop: toggle

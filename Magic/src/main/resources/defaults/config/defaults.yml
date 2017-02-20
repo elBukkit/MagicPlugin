@@ -234,16 +234,7 @@ allow_spell_dropping: false
 # e.g. welcome_wand: beginner
 welcome_wand:
 
-# Prefer alternate modes for wand mechanics.
-# Possible vales are:
-# "inventory" : The default, toggles the wand inventory in/out of your player inventory
-# "chest" : Bring up a Wand inventory on right-click.
-# "cycle" : Right-click will cycle to the next active spell (no inventory or icons)
-default_wand_mode: inventory
-# Options for brush mode are inventory and chest
-# In inventory mode, brushes appear along with spells
-# in Chest mode, shift+right-click to select a brush
-default_brush_mode: chest
+
 # The spell to cast on shift+right-click
 brush_select_spell: brushselect
 # This will make hitting the drop button over a wand while open change pages instead of
