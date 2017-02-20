@@ -4,7 +4,6 @@
 wand:
     inherit: base_wand
     icon: wood_hoe:1
-    soul: false
     migrate_icon: wood_hoe
     effect_color: random
     path: beginner
