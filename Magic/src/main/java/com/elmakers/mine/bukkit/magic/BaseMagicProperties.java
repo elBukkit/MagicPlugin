@@ -93,7 +93,10 @@ public class BaseMagicProperties {
 
     protected boolean upgradeProperty(String key, Object value, boolean force) {
         Object currentValue = getEffectiveConfiguration().get(key);
-        if (currentValue != null && !force) {
+        if (currentValue == value) {
+            return false;
+        }
+        if (currentValue != null && value != null && !force) {
             if (currentValue.equals(value)) {
                 return false;
             } else if (value instanceof String) {
@@ -109,18 +112,11 @@ public class BaseMagicProperties {
         }
 
         sendDebug("Upgraded property: " + key);
-        if (value instanceof Number) {
+        if (value != null && value instanceof Number) {
             sendAddMessage("upgraded_property", controller.getMessages().getLevelString("wand." + key, NumberConversions.toFloat(value)));
         }
         sendMessage(key + "_usage");
-
-        // If we end up with the same value as we're inheriting, just clear it out.
-        Object parentValue = parent != null ? parent.getEffectiveConfiguration().get(key) : null;
-        if (parentValue != null && value != null && parentValue.equals(value)) {
-            setProperty(key, null);
-        } else {
-            setProperty(key, value);
-        }
+        setProperty(key, value);
         return true;
     }
 
