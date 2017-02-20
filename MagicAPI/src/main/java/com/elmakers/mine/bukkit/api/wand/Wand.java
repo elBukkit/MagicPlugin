@@ -69,6 +69,8 @@ public interface Wand extends CostReducer {
     public boolean addItem(ItemStack item);
     public boolean configure(Map<String, Object> properties);
     public boolean upgrade(Map<String, Object> properties);
+    public boolean removeProperty(String key);
+    public Object getProperty(String key);
     public boolean addBrush(String key);
     public boolean addSpell(String key);
     public boolean removeBrush(String key);
