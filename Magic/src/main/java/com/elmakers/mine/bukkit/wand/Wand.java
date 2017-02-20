@@ -2683,6 +2683,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			templateConfig.set("upgrade", null);
 			templateConfig.set("icon", templateConfig.getString("upgrade_icon"));
 			templateConfig.set("indestructible", null);
+            templateConfig.set("upgrade_icon", null);
 
 			configure(templateConfig);
 			loadProperties();
@@ -2695,12 +2696,13 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			return false;
 		}
 
-		ConfigurationSection upgradeConfig = other.getEffectiveConfiguration();
+		ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(other.getEffectiveConfiguration());
 		upgradeConfig.set("id", null);
 		upgradeConfig.set("indestructible", null);
 		upgradeConfig.set("upgrade", null);
-		upgradeConfig.set("icon", upgradeIcon == null ? null : upgradeIcon.getKey());
-		upgradeConfig.set("template", upgradeTemplate);
+		upgradeConfig.set("icon", other.upgradeIcon == null ? null : other.upgradeIcon.getKey());
+        upgradeConfig.set("upgrade_icon", null);
+		upgradeConfig.set("template", other.upgradeTemplate);
 
 		Messages messages = controller.getMessages();
 		if (other.rename && templateConfig != null) {
