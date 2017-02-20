@@ -4,6 +4,9 @@ ocarina:
     keep: false
     quick_cast: true
     mode: inventory
+    right_click: toggle
+    swap: cycle_hotbar
+    left_click: cast
     undroppable: false
     bound: false
     undroppable: false
