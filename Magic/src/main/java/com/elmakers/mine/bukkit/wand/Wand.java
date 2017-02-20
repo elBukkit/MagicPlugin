@@ -1781,7 +1781,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration:");
             for (String key : PROPERTY_KEYS) {
                 String value = templateConfig.getString(key);
-                if (value != null && value.length() > 0) {
+                if (value != null && value.length() > 0 && !itemConfig.contains(key)) {
                     sender.sendMessage(key + ": " + value);
                 }
             }

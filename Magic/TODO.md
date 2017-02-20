@@ -1,8 +1,13 @@
 # TODO
 
-## 7.0
+## 6.5
 
+## 6.6
+
+ - Save spells as list
  - Separate out spells/brushes from the spell/brush inventory .. can't decide if we need this but I keep coming back to it
+
+## 7.0
  - Refactor MageProperties to be contained rather than inherited?
  - Mage needs MageProperties. Maybe per-path? Per "class"? Not really sure yet.
  - Wand templates will specify properties that come from the Mage versus item data. 
