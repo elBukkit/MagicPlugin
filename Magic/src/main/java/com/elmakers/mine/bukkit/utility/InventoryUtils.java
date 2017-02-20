@@ -173,7 +173,13 @@ public class InventoryUtils extends NMSUtils
         } else if (class_NBTTagShort.isAssignableFrom(tag.getClass())) {
             value = class_NBTTagShort_dataField.get(tag);
         } else if (class_NBTTagByte.isAssignableFrom(tag.getClass())) {
+            // This is kind of nasty. Really need a type-juggling container class for config properties.
             value = class_NBTTagByte_dataField.get(tag);
+            if (value != null && value.equals((byte)0)) {
+                value = false;
+            } else if (value != null && value.equals((byte)1)) {
+                value = true;
+            }
         } else if (class_NBTTagList.isAssignableFrom(tag.getClass())) {
             List items = (List)class_NBTTagList_list.get(tag);
             List<Object> converted = new ArrayList<Object>();
