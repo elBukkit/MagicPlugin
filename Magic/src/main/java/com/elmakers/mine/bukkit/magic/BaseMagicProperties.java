@@ -93,19 +93,19 @@ public class BaseMagicProperties {
 
     protected boolean upgradeProperty(String key, Object value, boolean force) {
         Object currentValue = getEffectiveConfiguration().get(key);
-        if (currentValue == null || (force && !value.equals(currentValue))) {
-            setProperty(key, value);
-        } else if (value instanceof String) {
-            String stringValue = (String)value;
-            String stringCurrent = (String)currentValue;
-            if (stringValue.equalsIgnoreCase(stringCurrent)) return false;
-        } else if (value instanceof Number) {
-            float floatValue = NumberConversions.toFloat(value);
-            float floatCurrent = NumberConversions.toFloat(currentValue);
-            // TODO: What about properties (see: block_cooldown) where less is better?
-            if (floatCurrent >= floatValue) return false;
-        } else if (currentValue.equals(value)) {
-            return false;
+        if (currentValue != null && !force) {
+            if (currentValue.equals(value)) {
+                return false;
+            } else if (value instanceof String) {
+                String stringValue = (String) value;
+                String stringCurrent = (String) currentValue;
+                if (stringValue.equalsIgnoreCase(stringCurrent)) return false;
+            } else if (value instanceof Number) {
+                float floatValue = NumberConversions.toFloat(value);
+                float floatCurrent = NumberConversions.toFloat(currentValue);
+                // TODO: What about properties (see: block_cooldown) where less is better?
+                if (floatCurrent >= floatValue) return false;
+            }
         }
 
         sendDebug("Upgraded property: " + key);
@@ -114,7 +114,13 @@ public class BaseMagicProperties {
         }
         sendMessage(key + "_usage");
 
-        setProperty(key, value);
+        // If we end up with the same value as we're inheriting, just clear it out.
+        Object parentValue = parent != null ? parent.getEffectiveConfiguration().get(key) : null;
+        if (parentValue != null && value != null && parentValue.equals(value)) {
+            setProperty(key, null);
+        } else {
+            setProperty(key, value);
+        }
         return true;
     }
 
