@@ -1338,7 +1338,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
     @Override
     public void save(ConfigurationSection node, boolean filtered) {
-		ConfigurationUtils.addConfigurations(node, getConfiguration());
+		ConfigurationUtils.addConfigurations(node, getEffectiveConfiguration());
 
         // Filter out some fields
         if (filtered) {
@@ -1347,11 +1347,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             node.set("owner", null);
             node.set("template", null);
             node.set("mana_timestamp", null);
-
-            // Inherit from template if present
-			if (template != null && !template.isEmpty()) {
-				node.set("inherit", template);
-			}
+			node.set("enchant_count", null);
         }
 
         if (isUpgrade) {
@@ -3302,6 +3298,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		setProperty("owner", null);
 		setProperty("owner_id", null);
 		saveState();
+		updateLore();
+		updateName();
 	}
 	
 	@Override
