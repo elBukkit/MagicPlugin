@@ -1,6 +1,5 @@
 note:
     hidden: true
-    icon: skull_item
     category: music
     show_undoable: false
     actions:
