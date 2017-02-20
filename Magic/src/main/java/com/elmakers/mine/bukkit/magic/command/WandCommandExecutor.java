@@ -861,8 +861,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	
 	public boolean onWandConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
 	{
-		if (parameters.length < 1) {
-			sender.sendMessage("Use: /wand configure <property> <value>");
+		if (parameters.length < 1 || (safe && parameters.length < 2)) {
+			sender.sendMessage("Use: /wand configure <property> [value]");
 			sender.sendMessage("Properties: " + StringUtils.join(com.elmakers.mine.bukkit.wand.Wand.PROPERTY_KEYS, ", "));
 			return true;
 		}
@@ -873,21 +873,31 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 
 		Mage mage = api.getMage(player);
-		Map<String, Object> node = new HashMap<>();
 		String value = "";
 		for (int i = 1; i < parameters.length; i++) {
 			if (i != 1) value = value + " ";
 			value = value + parameters[i];
 		}
-		node.put(parameters[0], value);
+		if (value.isEmpty()) {
+			value = null;
+		} else if (value.equals("\"\"")) {
+			value = "";
+		}
 		wand.deactivate();
-		if (safe) {
-			wand.upgrade(node);
+		if (value == null) {
+			wand.removeProperty(parameters[0]);
+			mage.sendMessage(api.getMessages().get("wand.removed_property").replace("$name", parameters[0]));
 		} else {
-			wand.configure(node);
+			Map<String, Object> node = new HashMap<>();
+			node.put(parameters[0], value);
+			if (safe) {
+				wand.upgrade(node);
+			} else {
+				wand.configure(node);
+			}
+			mage.sendMessage(api.getMessages().get("wand.reconfigured"));
 		}
 		mage.checkWand();
-		mage.sendMessage(api.getMessages().get("wand.reconfigured"));
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_reconfigured", "$name", player.getName()));
 		}

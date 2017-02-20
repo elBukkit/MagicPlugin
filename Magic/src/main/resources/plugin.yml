@@ -62,7 +62,8 @@ commands:
     description: Configure wand properties
     usage: |
 
-       /wand configure <property> <value>
+       /wand configure <property> [value]
+       /wand configure xp_max
        /wand configure xp_max 500
        /wand configure xp_regeneration 50
        /wand configure description My Awesome Wand
