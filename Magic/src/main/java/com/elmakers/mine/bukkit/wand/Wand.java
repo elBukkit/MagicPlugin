@@ -1186,7 +1186,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         String iconURL = spell.getIconURL();
 
         ItemStack itemStack = null;
-        if (iconURL != null && controller.isUrlIconsEnabled())
+        if (iconURL != null && (controller.isUrlIconsEnabled() || spell.getIcon() == null || !spell.getIcon().isValid() || spell.getIcon().getMaterial() == Material.AIR))
         {
             itemStack = InventoryUtils.getURLSkull(iconURL);
         }
