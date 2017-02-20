@@ -1,8 +1,25 @@
 #
 # Add some Harry Potter themed wand templates
 #
+base_wand:
+    hidden: true
+    mode: inventory
+    drop: toggle
+    left_click: cast
+    right_click: none
+    swap: cycle_hotbar
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+    effect_bubbles: false
+    attributes:
+      GENERIC_ATTACK_SPEED: 10
+    attribute_slot: mainhand
 
 wand:
+    inherit: base_wand
     icon: wood_hoe:24,wood_hoe:25,wood_hoe:26
     migrate_icons:
       wood_hoe: wood_hoe:24
@@ -33,6 +50,7 @@ wand:
          size: 2
 
 elder:
+    inherit: base_wand
     migrate_icon: iron_hoe
     icon: wood_hoe:27
     undroppable: true
@@ -71,6 +89,7 @@ elder:
       - finiteincantatem
 
 wolf:
+    inherit: base_wand
     icon: wood_hoe:7
     migrate_icon: gold_hoe
     undroppable: true
@@ -109,6 +128,7 @@ wolf:
       - reductomaxima
 
 unspeakable:
+    inherit: base_wand
     icon: wood_hoe:24
     migrate_icon: wood_hoe
     undroppable: true
@@ -135,6 +155,7 @@ unspeakable:
     overrides: patronus.type sheep, patronus.variant blue
 
 slytherinwand:
+    inherit: base_wand
     migrate_icon: gold_axe
     icon: wood_hoe:25
     undroppable: true
@@ -160,6 +181,7 @@ slytherinwand:
     hidden: true
 
 crudwand:
+    inherit: base_wand
     icon: stick
     indestructible: false
     locked: true
@@ -170,6 +192,7 @@ crudwand:
     effect_color: '440044'
 
 video:
+    inherit: base_wand
     active_spell: superfly
     icon: wood_hoe:25
     migrate_icon: gold_axe
@@ -188,6 +211,7 @@ video:
 #
 
 flappy:
+    inherit: base_wand
     icon: feather
     indestructible: false
     locked: true
@@ -202,6 +226,7 @@ flappy:
       - ascendio
 
 squib:
+    inherit: base_wand
     icon: stick
     indestructible: false
     locked: true
