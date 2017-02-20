@@ -1538,6 +1538,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			rightClickAction = WandAction.NONE;
 			swapAction = WandAction.NONE;
 			dropAction = WandAction.CYCLE;
+		} else {
+			leftClickAction = WandAction.NONE;
+			rightClickAction = WandAction.NONE;
+			dropAction = WandAction.NONE;
+			swapAction = WandAction.NONE;
+			quickCast = false;
+			quickCastDisabled = false;
+			manualQuickCastDisabled = false;
 		}
 
 		String quickCastType = wandConfig.getString("quick_cast", wandConfig.getString("mode_cast"));
@@ -1561,10 +1569,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				manualQuickCastDisabled = false;
 			}
 		}
-		leftClickAction = parseWandAction(wandConfig.getString("left_click"), WandAction.NONE);
-		rightClickAction = parseWandAction(wandConfig.getString("right_click"), WandAction.NONE);
-		dropAction = parseWandAction(wandConfig.getString("drop"), WandAction.NONE);
-		swapAction = parseWandAction(wandConfig.getString("swap"), WandAction.NONE);
+		leftClickAction = parseWandAction(wandConfig.getString("left_click"), leftClickAction);
+		rightClickAction = parseWandAction(wandConfig.getString("right_click"), rightClickAction);
+		dropAction = parseWandAction(wandConfig.getString("drop"), dropAction);
+		swapAction = parseWandAction(wandConfig.getString("swap"), swapAction);
 
 		owner = wandConfig.getString("owner");
 		ownerId = wandConfig.getString("owner_id");
