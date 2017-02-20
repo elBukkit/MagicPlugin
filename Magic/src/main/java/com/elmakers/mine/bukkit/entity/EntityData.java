@@ -263,6 +263,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             for (ConfigurationSection potionEffectSection : potionEffectList) {
                 try {
                     PotionEffectType effectType = PotionEffectType.getByName(potionEffectSection.getString("type").toUpperCase());
+                    if (effectType == null) {
+                        controller.getLogger().log(Level.WARNING, "Invalid potion effect type in mob config (" + name + "): " + potionEffectSection.getString("type", "(null)"));
+                        continue;
+                    }
                     int ticks = (int)(potionEffectSection.getLong("duration", 3600000) / 50);
                     ticks = potionEffectSection.getInt("ticks", ticks);
                     int amplifier = potionEffectSection.getInt("amplifier", 0);
@@ -271,7 +275,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
                     potionEffects.add(new PotionEffect(effectType, ticks, amplifier, ambient, particles));
                 } catch (Exception ex) {
-                    controller.getLogger().log(Level.WARNING, "Invalid potion effect type: " + potionEffectSection.getString("type", "(null)"), ex);
+                    controller.getLogger().log(Level.WARNING, "Invalid potion effect type in mob config (" + name + "): " + potionEffectSection.getString("type", "(null)"), ex);
                 }
             }
             hasPotionEffects = !potionEffects.isEmpty();
