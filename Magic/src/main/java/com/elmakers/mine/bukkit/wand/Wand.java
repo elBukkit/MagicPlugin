@@ -3589,10 +3589,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
     }
 	
-	public MagicController getMaster() {
-		return controller;
-	}
-	
 	public void cycleSpells(int direction) {
 		Set<String> spellsSet = getSpells();
 		ArrayList<String> spells = new ArrayList<>(spellsSet);
@@ -3947,22 +3943,38 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	@Override
 	public boolean organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
         WandOrganizer organizer = new WandOrganizer(this, mage);
+        closeInventory();
         organizer.organize();
         openInventoryPage = 0;
 		currentHotbar = 0;
         autoOrganize = false;
-        autoAlphabetize = false;
+        setProperty("organize", null);
+		updateSpells();
+		updateBrushes();
+		if (mage != null) {
+			saveState();
+			loadProperties();
+			updateInventory();
+		}
         return true;
     }
 
     @Override
     public boolean alphabetizeInventory() {
         WandOrganizer organizer = new WandOrganizer(this);
+		closeInventory();
         organizer.alphabetize();
         openInventoryPage = 0;
 		currentHotbar = 0;
-        autoOrganize = false;
         autoAlphabetize = false;
+		setProperty("alphabetize", null);
+		updateSpells();
+		updateBrushes();
+		if (mage != null) {
+			saveState();
+			loadProperties();
+			updateInventory();
+		}
         return true;
     }
 

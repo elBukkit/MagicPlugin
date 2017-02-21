@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -18,7 +19,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class WandOrganizer {
 	private final Wand wand;
@@ -72,12 +72,12 @@ public class WandOrganizer {
         removeHotbar(spells, brushes);
 
         // Collect favorite spells
-		MagicController master = wand.getMaster();
+		MageController controller = wand.getController();
 		TreeMap<Long, List<String>> favoriteSpells = new TreeMap<>();
 		Map<String, Collection<String>> groupedSpells = new TreeMap<>();
 		for (String spellName : spells.keySet()) {
 			Spell mageSpell = mage == null ? null : mage.getSpell(spellName);
-			SpellTemplate spell = mageSpell == null ? master.getSpellTemplate(spellName) : mageSpell;
+			SpellTemplate spell = mageSpell == null ? controller.getSpellTemplate(spellName) : mageSpell;
 			if (spell != null) {
 				long castCount = mageSpell == null ? 0 : mageSpell.getCastCount();
 				if (castCount > favoriteCastCountThreshold) {
