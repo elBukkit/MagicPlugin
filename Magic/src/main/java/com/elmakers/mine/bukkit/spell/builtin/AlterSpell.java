@@ -175,17 +175,12 @@ public class AlterSpell extends BlockSpell
 				Color[] colorValues = Color.values();
 				color = colorValues[(color.ordinal() + 1) % colorValues.length];
 			
-				Variant variant = horse.getVariant();
-				Variant[] variantValues = Variant.values();
-				variant = variantValues[(variant.ordinal() + 1) % variantValues.length];
-			
 				Style horseStyle = horse.getStyle();
 				Style[] styleValues = Style.values();
 				horseStyle = styleValues[(horseStyle.ordinal() + 1) % styleValues.length];
 				
 				horse.setStyle(horseStyle);
 				horse.setColor(color);
-				horse.setVariant(variant);
 			    break;
 			case OCELOT:
 				registerModified(entity);
