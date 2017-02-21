@@ -185,7 +185,7 @@ public class WandLevel {
 		int maxManaCost = 0;
 		Set<String> spells = wand.getSpells();
 		for (String spellName : spells) {
-			SpellTemplate spell = wand.getMaster().getSpellTemplate(spellName);
+			SpellTemplate spell = wand.getController().getSpellTemplate(spellName);
 			if (spell != null) {
 				needsMaterials = needsMaterials || spell.usesBrush();
 				Collection<CastingCost> costs = spell.getCosts();
