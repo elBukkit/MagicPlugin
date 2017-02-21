@@ -6,9 +6,6 @@ default:
     earns_cooldown: 900000
     # Enable this to prevent spell casts outside the world border
     world_border_restricted: false
-    parameters:
-      bypass_confusion: true
-      bypass_weakness: true
     effects:
        target_selected:
        - class: EffectSingle

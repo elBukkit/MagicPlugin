@@ -187,8 +187,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassBuildRestriction    = false;
     protected boolean bypassBreakRestriction    = false;
     protected boolean bypassProtection          = false;
-    protected boolean bypassConfusion             = false;
-    protected boolean bypassWeakness              = false;
+    protected boolean bypassConfusion             = true;
+    protected boolean bypassWeakness              = true;
     protected boolean bypassPermissions           = false;
     protected boolean bypassRegionPermission      = false;
     protected boolean castOnNoTarget              = true;
