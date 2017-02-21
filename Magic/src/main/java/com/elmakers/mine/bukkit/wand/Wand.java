@@ -2974,6 +2974,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
     @Override
 	public boolean fill(Player player, int maxLevel) {
+    	closeInventory();
         Collection<String> currentSpells = new ArrayList<>(getSpells());
         for (String spellKey : currentSpells) {
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
@@ -3008,6 +3009,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 		setProperty("fill", null);
 		autoFill = false;
+		updateSpells();
 		saveState();
 		
 		return true;
