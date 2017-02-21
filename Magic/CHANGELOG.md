@@ -1,10 +1,12 @@
 # CHANGELOG
 
+## 6.6
+
 ## 6.5
 
  - Wands now default to no actions if none are specified in the configs. You may need to add the following to your custom wands:
    - left_click: cast
-   - drop: toggle
+   - drop: toggle (or right_click: toggle, as you prefer)
    - mode: inventory
  - Wands now reference templates, rather than copy all of the configuration to item data. Wands should auto-migrate
  - Wand upgrade item format changed, existing upgrades should migrate
