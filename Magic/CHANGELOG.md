@@ -19,6 +19,7 @@
  - Add cancel_on_no_permission parameter, brooms will deactivate when entering an area where they are not allowed
  - Fixed not being able to purchase optional spells anymore after reaching the end of the Wizard path
  - Replace wand "bubble FX" with something custom and less volatile
+ - Tweak Force FX, reduce mana cost and range
 
 ## 6.4.1
 

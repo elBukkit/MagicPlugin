@@ -26,26 +26,37 @@ force:
         sound_volume: 0.5
       - class: EffectSingle
         location: target
-        use_block_location: false
         use_hit_location: false
-        color_override: color
         effectlib:
           class: StarEffect
           iterations: 4
           particle: redstone
-          color: "00FFAA"
+          color: "222222"
           spikeHeight: 1.2
           innerRadius: 0.2
+      - class: EffectSingle
+        location: target
+        use_hit_location: false
+        use_eye_location: true
+        color_override: color
+        effectlib:
+          class: IconEffect
+          iterations: 1000
+          particle: redstone
+          color: "222222"
+          period: 1
+          yOffset: 0
+          offset: 0,0.7,0
       - class: EffectTrail
         particle: spell_mob
     parameters:
         target_type: LivingEntity
         target_breakables: 1
         target: other_entity
-        range: 48
+        range: 24
         item_force: 1
         entity_force: 4
         bypass_backfire: true
     costs:
-        mana: 200
+        mana: 100
 
