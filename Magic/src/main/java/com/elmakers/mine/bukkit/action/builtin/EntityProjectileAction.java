@@ -111,20 +111,6 @@ public class EntityProjectileAction extends CustomProjectileAction {
             slime.setSize(0);
         }
 
-        if (entity instanceof Horse) {
-            Horse.Variant variant = Horse.Variant.UNDEAD_HORSE;
-            if (variantName != null) {
-                try {
-                    variant = Horse.Variant.valueOf(variantName.toUpperCase());
-                } catch (Exception ex) {
-                }
-            } else {
-                variant = Horse.Variant.UNDEAD_HORSE;
-            }
-
-            ((Horse) entity).setVariant(variant);
-        }
-
         if (entity instanceof Ocelot) {
             Ocelot ocelot = (Ocelot) entity;
             Ocelot.Type variant = Ocelot.Type.WILD_OCELOT;
