@@ -1,8 +1,3 @@
-chestmode:
-    icon: diamond_axe:205
-    upgrade: true
-    indestructible: false
-    mode: chest
 quickcast_enable:
     icon: diamond_axe:206
     upgrade: true
@@ -31,6 +26,7 @@ mode_drop:
     right_click: none
     left_click: cast
     swap: cycle_hotbar
+    quick_cast: false
 mode_rightclick:
     icon: diamond_axe:211
     upgrade: true
@@ -39,6 +35,7 @@ mode_rightclick:
     right_click: toggle
     left_click: cast
     swap: none
+    quick_cast: false
 mode_sword:
     icon: diamond_axe:212
     upgrade: true
@@ -56,6 +53,14 @@ mode_swap:
     right_click: none
     left_click: cast
     swap: toggle
+    quick_cast: false
+chestmode:
+    icon: diamond_axe:205
+    upgrade: true
+    indestructible: false
+    mode: chest
+    drop: toggle
+    swap: none
 inventorymode:
     icon: diamond_axe:214
     upgrade: true
