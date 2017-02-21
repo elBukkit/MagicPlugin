@@ -104,6 +104,7 @@ public class InventoryController implements Listener {
         if (gui != null)
         {
             gui.clicked(event);
+            player.updateInventory();
             return;
         }
 
