@@ -560,10 +560,10 @@ public class NMSUtils {
                 class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
                 class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
                 try {
-                    legacy = true;
                     // 1.9 and up
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
                 } catch (Throwable ignore) {
+                    legacy = true;
                     // 1.8 and lower
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
                 }
