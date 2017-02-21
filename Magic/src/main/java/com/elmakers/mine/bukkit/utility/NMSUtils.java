@@ -520,15 +520,51 @@ public class NMSUtils {
 
             // Particularly volatile methods that we can live without
             try {
+                try {
+                    // 1.11.?
+                    class_Consumer = fixBukkitClass("org.bukkit.util.Consumer");
+                    class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, class_Consumer, CreatureSpawnEvent.SpawnReason.class);
+                    class_CraftWorld_spawnMethod_isLegacy = false;
+                } catch (Throwable ignore) {
+                    legacy = true;
+                    class_CraftWorld_spawnMethod_isLegacy = true;
+                    class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering custom spawn method, spawn reasons will not work", ex);
+                class_CraftWorld_spawnMethod = null;
+                class_Consumer = null;
+            }
+
+            try {
+                try {
+                    // 1.11
+                    if (legacy) throw new Exception("Looks like 1.10");
+                    class_DataWatcher_setMethod = class_DataWatcher.getMethod("set", class_DataWatcherObject, Object.class);
+                    class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("g");
+                } catch (Throwable ignore) {
+                    // 1.10 and earlier
+                    legacy = true;
+                    class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("f");
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, potion bubble effects will not work", ex);
+                class_EntityLiving_potionBubblesField = null;
+            }
+            if (class_EntityLiving_potionBubblesField != null) {
+                class_EntityLiving_potionBubblesField.setAccessible(true);
+            }
+
+            try {
                 class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
                 class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
                 class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
                 try {
+                    legacy = true;
                     // 1.9 and up
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
                 } catch (Throwable ignore) {
                     // 1.8 and lower
-                    legacy = true;
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
                 }
             } catch (Throwable ex) {
@@ -553,40 +589,6 @@ public class NMSUtils {
                 class_EntityLiving_damageEntityMethod = null;
                 class_DamageSource_getMagicSourceMethod = null;
                 class_DamageSource_MagicField = null;
-            }
-
-            try {
-                try {
-                    // 1.11.?
-                    class_Consumer = fixBukkitClass("org.bukkit.util.Consumer");
-                    class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, class_Consumer, CreatureSpawnEvent.SpawnReason.class);
-                    class_CraftWorld_spawnMethod_isLegacy = false;
-                } catch (Throwable ignore) {
-                    class_CraftWorld_spawnMethod_isLegacy = true;
-                    class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
-                }
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering custom spawn method, spawn reasons will not work", ex);
-                class_CraftWorld_spawnMethod = null;
-                class_Consumer = null;
-            }
-
-            try {
-                try {
-                    // 1.11
-                    class_DataWatcher_setMethod = class_DataWatcher.getMethod("set", class_DataWatcherObject, Object.class);
-                    class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("g");
-                } catch (Throwable ignore) {
-                    // 1.10 and earlier
-                    legacy = true;
-                    class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("f");
-                }
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred, potion bubble effects will not work", ex);
-                class_EntityLiving_potionBubblesField = null;
-            }
-            if (class_EntityLiving_potionBubblesField != null) {
-                class_EntityLiving_potionBubblesField.setAccessible(true);
             }
 
             try {
