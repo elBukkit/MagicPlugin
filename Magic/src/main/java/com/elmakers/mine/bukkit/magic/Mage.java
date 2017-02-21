@@ -996,6 +996,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             } else if (virtualExperience) {
                 resetSentExperience();
             }
+            if (offhandWand != null) {
+                offhandWand.tick();
+            }
             
             if (Wand.LiveHotbarSkills && (activeWand == null || !activeWand.isInventoryOpen())) {
                 updateHotbarStatus();

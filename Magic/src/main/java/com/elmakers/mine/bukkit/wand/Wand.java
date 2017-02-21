@@ -93,8 +93,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             "effect_particle_interval",
             "effect_particle_min_velocity",
             "effect_particle_radius", "effect_particle_offset",
-            "effect_sound", "effect_sound_interval", "effect_sound_pitch",
-            "effect_sound_volume",
+            "effect_sound", "effect_sound_interval",
             "cast_spell", "cast_parameters", "cast_interval",
             "cast_min_velocity", "cast_velocity_direction",
             "hotbar_count", "hotbar",
@@ -3103,7 +3102,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		Location location = mage.getLocation();
 		long now = System.currentTimeMillis();
         Vector mageLocation = location.toVector();
-		boolean playEffects = !activeEffectsOnly || inventoryIsOpen;
+		boolean playEffects = !activeEffectsOnly || inventoryIsOpen || isInOffhand;
 		if (playEffects && effectParticle != null && effectParticleInterval > 0 && effectParticleCount > 0) {
             boolean velocityCheck = true;
             if (effectParticleMinVelocity > 0) {
@@ -3527,7 +3526,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		Player player = mage.getPlayer();
 		if (player == null) return;
 
-		if (tickMana(player)) {
+		if (tickMana(player) && !isInOffhand) {
 			updateMana();
 		}
 		
@@ -3536,7 +3535,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
         // Update hotbar glow
-        updateHotbarStatus();
+        if (!isInOffhand) {
+			updateHotbarStatus();
+		}
 
         if (!passive)
         {
