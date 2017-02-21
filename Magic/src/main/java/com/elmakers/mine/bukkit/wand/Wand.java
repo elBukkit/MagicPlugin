@@ -125,6 +125,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             "mode_cast", "mode_drop", "randomize"
     );
 
+    private final static Random random = new Random();
+
     /**
      * Set of properties that are used internally.
 	 *
@@ -261,7 +263,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
     // Transient state
 
-    private boolean effectBubblesApplied = false;
     private boolean hasSpellProgression = false;
 
     private long lastLocationTime;
@@ -3092,12 +3093,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		
 		// Update Bubble effects effects
 		if (effectBubbles && effectColor != null) {
-			CompatibilityUtils.addPotionEffect(player, effectColor.getColor());
-            effectBubblesApplied = true;
-		} else if (effectBubblesApplied) {
-            effectBubblesApplied = false;
-            CompatibilityUtils.removePotionEffect(player);
-        }
+			Location potionEffectLocation = player.getLocation();
+			potionEffectLocation.setX(potionEffectLocation.getX() + random.nextDouble() - 0.5);
+			potionEffectLocation.setY(potionEffectLocation.getY() + random.nextDouble() * player.getEyeHeight());
+			potionEffectLocation.setZ(potionEffectLocation.getZ() + random.nextDouble() - 0.5);
+			ParticleEffect.SPELL_MOB.display(potionEffectLocation, effectColor.getColor(), 24);
+		}
 		
 		Location location = mage.getLocation();
 		long now = System.currentTimeMillis();
@@ -3328,11 +3329,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		playPassiveEffects("deactivate");
 
         Mage mage = this.mage;
-        Player player = mage.getPlayer();
-		if (effectBubblesApplied && player != null) {
-			CompatibilityUtils.removePotionEffect(player);
-            effectBubblesApplied = false;
-		}
 		
 		if (isInventoryOpen()) {
 			closeInventory();

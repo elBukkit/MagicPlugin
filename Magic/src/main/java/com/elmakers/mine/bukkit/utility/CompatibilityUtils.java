@@ -154,10 +154,6 @@ public class CompatibilityUtils extends NMSUtils {
         return inventory;
     }
 
-    public static void addPotionEffect(LivingEntity entity, Color color) {
-        addPotionEffect(entity, color.asRGB());
-    }
-
     public static void setInvulnerable(Entity entity) {
         setInvulnerable(entity, true);
     }
@@ -343,34 +339,6 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return true;
-    }
-
-    public static void removePotionEffect(LivingEntity entity) {
-        if (entity == null || class_DataWatcher_setMethod == null || class_EntityLiving_potionBubblesField == null) return;
-        try {
-            Object entityHandle = getHandle(entity);
-            Object dataWatcher = class_Entity_getDataWatcherMethod.invoke(entityHandle);
-            Object bubblesField = class_EntityLiving_potionBubblesField.get(null);
-            class_DataWatcher_setMethod.invoke(dataWatcher, bubblesField, 0);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static void addPotionEffect(LivingEntity entity, int color) {
-        if (entity == null || class_DataWatcher_setMethod == null || class_EntityLiving_potionBubblesField == null) return;
-        // Hacky safety check
-        if (color == 0) {
-            color = 0x010101;
-        }
-        try {
-            Object entityHandle = getHandle(entity);
-            Object dataWatcher = class_Entity_getDataWatcherMethod.invoke(entityHandle);
-            Object bubblesField = class_EntityLiving_potionBubblesField.get(null);
-            class_DataWatcher_setMethod.invoke(dataWatcher, bubblesField, color);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     public static List<Entity> getNearbyEntities(Location location, double x, double y, double z) {

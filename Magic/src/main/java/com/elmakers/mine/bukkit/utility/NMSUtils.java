@@ -141,7 +141,6 @@ public class NMSUtils {
     protected static Method class_NBTTagList_removeMethod;
     protected static Method class_NBTTagCompound_getKeysMethod;
     protected static Method class_NBTTagCompound_setMethod;
-    protected static Method class_DataWatcher_setMethod;
     protected static Method class_World_getEntitiesMethod;
     protected static Method class_Entity_setSilentMethod;
     protected static Method class_Entity_setYawPitchMethod;
@@ -266,7 +265,6 @@ public class NMSUtils {
     protected static Field class_EntityArrow_lifeField = null;
     protected static Field class_EntityArrow_damageField;
     protected static Field class_CraftWorld_environmentField;
-    protected static Field class_EntityLiving_potionBubblesField;
     protected static Field class_MemorySection_mapField;
     protected static Field class_NBTTagByte_dataField;
     protected static Field class_NBTTagDouble_dataField;
@@ -534,25 +532,6 @@ public class NMSUtils {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering custom spawn method, spawn reasons will not work", ex);
                 class_CraftWorld_spawnMethod = null;
                 class_Consumer = null;
-            }
-
-            try {
-                try {
-                    // 1.11
-                    if (legacy) throw new Exception("Looks like 1.10");
-                    class_DataWatcher_setMethod = class_DataWatcher.getMethod("set", class_DataWatcherObject, Object.class);
-                    class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("g");
-                } catch (Throwable ignore) {
-                    // 1.10 and earlier
-                    legacy = true;
-                    class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("f");
-                }
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred, potion bubble effects will not work", ex);
-                class_EntityLiving_potionBubblesField = null;
-            }
-            if (class_EntityLiving_potionBubblesField != null) {
-                class_EntityLiving_potionBubblesField.setAccessible(true);
             }
 
             try {

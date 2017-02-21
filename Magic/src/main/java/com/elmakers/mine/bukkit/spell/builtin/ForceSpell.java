@@ -105,16 +105,9 @@ public class ForceSpell extends TargetingSpell
 		releaseTarget();
 		targetEntity = entity;
 		getCurrentTarget().setEntity(entity);
-
-		if (effectColor != null) {
-			CompatibilityUtils.addPotionEffect(targetEntity, effectColor);
-		}
 	}
 	
 	protected void releaseTarget() {
-		if (targetEntity != null && effectColor != null) {
-			CompatibilityUtils.removePotionEffect(targetEntity);
-		}
 		targetEntity = null;
 	}
 
