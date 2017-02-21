@@ -72,9 +72,12 @@ base_lightsaber:
            color_override: color
            use_wand_location: true
            effectlib:
-             class: HelixEffect
-             iterations: 1
-             radius: 0.3
+             class: VortexEffect
+             iterations: 10
+             grow: 0.06
+             radius: 0.2
+             offset: 0,-0.8,0
+             pitch: -60
              particle: redstone
         close:
         -  class: EffectSingle
@@ -84,22 +87,29 @@ base_lightsaber:
            color_override: color
            use_wand_location: true
            effectlib:
-             class: HelixEffect
-             iterations: 1
-             radius: 0.3
+             class: VortexEffect
+             iterations: 10
+             grow: 0.06
+             radius: 0.2
+             offset: 0,0.5,0
+             pitch: 60
              particle: redstone
         swing:
         -  class: EffectSingle
            sound: magic.saberswing
            sound_volume: 1
            location: origin
-           color_override: color
            use_wand_location: true
            effectlib:
-             class: HelixEffect
-             iterations: 1
-             radius: 0.3
-             particle: redstone
+             class: VortexEffect
+             iterations: 6
+             circles: 1
+             helixes: 2
+             grow: 0.1
+             radius: 0.1
+             offset: 0,0.5,0
+             pitch: 20
+             particle: fireworks_spark
         hit_entity:
         -  class: EffectSingle
            sound: magic.saberhit

@@ -7,18 +7,37 @@ force:
     class: ForceSpell
     worth: 1000
     effects:
-        cast:
-        -  class: EffectSingle
-           sound: magic.zap_big
-           location: origin
-           effectlib:
-             class: DnaEffect
-             particlesBase: 0
-             particlesHelix: 7
-             particleHelix: spell_mob
-             particleBase1: spell_mob
-             particleBase2: spell_mob
-             iterations: 10
+      cast:
+      - class: EffectSingle
+        sound: magic.zap_big
+        location: origin
+        effectlib:
+           class: DnaEffect
+           particlesBase: 0
+           particlesHelix: 7
+           particleHelix: spell_mob
+           particleBase1: spell_mob
+           particleBase2: spell_mob
+           iterations: 10
+      target_selected:
+      - class: EffectSingle
+        location: origin
+        sound: magic.hit
+        sound_volume: 0.5
+      - class: EffectSingle
+        location: target
+        use_block_location: false
+        use_hit_location: false
+        color_override: color
+        effectlib:
+          class: StarEffect
+          iterations: 4
+          particle: redstone
+          color: "00FFAA"
+          spikeHeight: 1.2
+          innerRadius: 0.2
+      - class: EffectTrail
+        particle: spell_mob
     parameters:
         target_type: LivingEntity
         target_breakables: 1
