@@ -1,7 +1,5 @@
 # TODO
 
-## 6.5
-
 ## 6.6
 
  - Save spells as list
@@ -19,6 +17,9 @@
  - Might need to add yet another category of spells to paths, those that are allowed but never appear in the spell shop
 
 ## High-Priority
+
+ - ArmorStandProjectile can't work with vanilla items :\
+   - Maybe also add unbreakable option
   
 ## Not so High-Priority
  

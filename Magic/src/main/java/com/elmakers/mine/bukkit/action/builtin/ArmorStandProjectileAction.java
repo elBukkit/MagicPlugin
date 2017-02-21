@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import de.slikey.effectlib.math.VectorTransform;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -24,6 +25,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     private boolean adjustHeadPitch = false;
     private boolean showArmorStandArms = true;
     private boolean showArmorStandBaseplate = true;
+    private boolean unbreakableItems = false;
     private ItemStack rightArmItem = null;
     private ItemStack helmetItem = null;
     private ItemStack chestplateItem = null;
@@ -72,27 +74,43 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         adjustHeadPitch = parameters.getBoolean("orient_head", false);
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
+        unbreakableItems = parameters.getBoolean("unbreakable_items", false);
         
         MageController controller = context.getController();
-        ItemData itemType = controller.getItem(parameters.getString("right_arm_item"));
+        ItemData itemType = controller.getOrCreateItem(parameters.getString("right_arm_item"));
         if (itemType != null) {
             rightArmItem = itemType.getItemStack(1);
+            if (rightArmItem != null && unbreakableItems) {
+                InventoryUtils.makeUnbreakable(rightArmItem);
+            }
         }
-        itemType = controller.getItem(parameters.getString("helmet_item"));
+        itemType = controller.getOrCreateItem(parameters.getString("helmet_item"));
         if (itemType != null) {
             helmetItem = itemType.getItemStack(1);
+            if (helmetItem != null && unbreakableItems) {
+                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(helmetItem));
+            }
         }
-        itemType = controller.getItem(parameters.getString("chestplate_item"));
+        itemType = controller.getOrCreateItem(parameters.getString("chestplate_item"));
         if (itemType != null) {
             chestplateItem = itemType.getItemStack(1);
+            if (chestplateItem != null && unbreakableItems) {
+                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(chestplateItem));
+            }
         }
-        itemType = controller.getItem(parameters.getString("leggings_item"));
+        itemType = controller.getOrCreateItem(parameters.getString("leggings_item"));
         if (itemType != null) {
             leggingsItem = itemType.getItemStack(1);
+            if (leggingsItem != null && unbreakableItems) {
+                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(leggingsItem));
+            }
         }
-        itemType = controller.getItem(parameters.getString("boots_item"));
+        itemType = controller.getOrCreateItem(parameters.getString("boots_item"));
         if (itemType != null) {
             bootsItem = itemType.getItemStack(1);
+            if (bootsItem != null && unbreakableItems) {
+                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(bootsItem));
+            }
         }
     }
 

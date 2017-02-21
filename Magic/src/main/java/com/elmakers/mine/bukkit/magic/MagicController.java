@@ -4452,7 +4452,7 @@ public class MagicController implements MageController {
     
     @Override
     public ItemData getOrCreateItem(String key) {
-        if (key == null) {
+        if (key == null || key.isEmpty()) {
             return null;
         }
         return items.getOrCreate(key);
