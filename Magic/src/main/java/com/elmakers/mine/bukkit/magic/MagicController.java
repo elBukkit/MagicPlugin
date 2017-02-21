@@ -1243,7 +1243,6 @@ public class MagicController implements MageController {
         PluginManager pm = plugin.getServer().getPluginManager();
         pm.registerEvents(crafting, plugin);
         pm.registerEvents(mobs, plugin);
-        pm.registerEvents(items, plugin);
         pm.registerEvents(enchanting, plugin);
         pm.registerEvents(anvil, plugin);
         pm.registerEvents(blockController, plugin);

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-public class ItemController implements Listener {
+public class ItemController {
     private MageController controller;
     private final Map<String, ItemData> items = new HashMap<>();
     private final Map<ItemStack, ItemData> itemsByStack = new HashMap<>();
