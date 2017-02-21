@@ -989,7 +989,7 @@
     "sounds": [
       {
         "pitch": 1,
-        "volume": 20,
+        "volume": 5,
         "stream": false,
         "name": "saber/saberhum"
       }
