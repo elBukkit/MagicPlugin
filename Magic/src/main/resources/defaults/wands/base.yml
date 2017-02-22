@@ -2,18 +2,25 @@
 # Base templates
 # These are used to specify defaults for wands and other magic items.
 #
+base_bound:
+  hidden: true
+  bound: true
+  keep: true
+  invulnerable: true
+  immortal: true
+  track: true
+  undroppable: true
+  indestructible: true
+
 base_wand:
     hidden: true
+    inherit: base_bound
     mode: inventory
     drop: toggle
     left_click: cast
     right_click: none
     swap: cycle_hotbar
     quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
     effect_bubbles: false
     attributes:
       GENERIC_ATTACK_SPEED: 10
@@ -21,6 +28,7 @@ base_wand:
   
 base_sword:
     hidden: true
+    inherit: base_bound
     mode: inventory
     drop: toggle
     left_click: none
@@ -28,13 +36,10 @@ base_sword:
     swap: cycle_hotbar
     quick_cast: true
     quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
 
 base_lightsaber:
-    hidde: true
+    hidden: true
+    inherit: base_bound
     mode: inventory
     icon_inactive: wood_hoe:14
     icon_inactive_delay: 500
@@ -53,10 +58,6 @@ base_lightsaber:
     block_mage_cooldown: 3000
     block_cooldown: 5000
     quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
     effect_bubbles: false
     active_effects: true
     effect_sound: magic.saberhum

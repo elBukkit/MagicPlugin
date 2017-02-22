@@ -1,13 +1,10 @@
 broomstick:
+    inherit: base_bound
     path: broom
     mode: cast
     active_spell: broom
     migrate_icon: gold_spade
     icon: wood_hoe:11
-    indestructible: true
-    undroppable: true
-    bound: true
-    keep: true
     effect_color: '880088'
     spells:
         - broom
