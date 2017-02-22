@@ -3892,12 +3892,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             forceUpdate = true;
         }
 
-        checkActiveMaterial();
-
-        tick();
-        saveState();
-
 		updateMaxMana(false);
+		tick();
+		if (!isInOffhand) {
+			updateMana();
+		}
+
+		checkActiveMaterial();
+		saveState();
         updateActiveMaterial();
         updateName();
         updateLore();

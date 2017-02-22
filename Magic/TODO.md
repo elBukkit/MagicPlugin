@@ -2,10 +2,8 @@
 
 ## 6.6
 
- - Remove/re-work wand ids
  - Save spells as list
  - Separate out spells/brushes from the spell/brush inventory .. can't decide if we need this but I keep coming back to it
- - Holding Wolf wand does not immediately show SP
 
 ## 7.0
  - Refactor MageProperties to be contained rather than inherited?
