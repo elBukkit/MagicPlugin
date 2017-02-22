@@ -4,9 +4,6 @@
 
 default:
   hidden: true
-  min_enchant_level: 5
-  max_enchant_level: 30
-  levels: 1,15,25
   upgrade_commands:
     - broadcast &6@pd &3has advanced to &b$path&3!
   effects:
@@ -41,58 +38,65 @@ beginner:
     upgrade: student
     upgrade_item: student_upgrade
     inherit: default
+    # A wand may gain a property (usually protection of some kind) when obtaining a new spell
+    # There is a 25% chance that they will get a property
+    # This is determined by the relative probabilities defined in the map below:
+    # 0 (no new property) = 75% of the time
+    # 1 (1 new property) = 25% of the time
     property_count:
-      0: 100, 20, 10
-      1: 25,  50,  200
+      0: 75
+      1: 25
+    # If gaining a property, one of the following will be chosen, unless the wand is already at the specified limit
     max_protection: 0.2
-    protection:
-      0^1: 100, 100, 90
-      0^2: 0,   5,   10
+    protection: 0.01
     max_protection_falling: 0.4
-    protection_falling:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
+    protection_falling: 0.1
     max_protection_physical: 0.4
-    protection_physical:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-    max_mana_regeneration: 10
-    mana_regeneration:
-      1: 100, 30, 5
-      2: 20,  30, 40
+    protection_physical: 0.05
+    # The limit for mana progression on this path
     max_mana: 100
+    max_mana_regeneration: 10
+    # For the old randomized enchanting system, a wand will gain 1 spell per enchant
+    spell_count: 1
+    # Wands have a chance of gaining 1 or 2 mana regen points per spell
+    # Note that relative probability don't need to sum to 100%. Bigger numbers just mean that option is more likely.
+    mana_regeneration:
+      1: 100
+      2: 20
+    # Wands gain some amount of max mana
     mana_max:
-      2: 100, 10,  0
-      5: 20,  30, 50
-    spell_count:
-      1: 100, 5,   1
-      2: 0,   50,  40
-      3: 0,   10,  90
+      1: 100
+      2: 80
+      3: 70
+      4: 50
+      5: 10
+    # These are spells that are optional, appear in the spell shop but are not required for progression.
     extra_spells:
-      flare: 110,80,60
-      stun: 0,5,15
-      gather: 0,0,5
-      workbench: 50,70,100
+    - flare
+    - stun
+    - gather
+    - workbench
+    # These spells appear in the spell shop and are required to progress to the next path.
     spells:
-      missile: 100,90,80
-      arrow: 0,20,10
-      blast: 30,40,50
-      boon: 0,5,10
-      cloak: 0,0,30
-      collapse: 0,0,30
-      cure: 1,5,10
-      bubble: 10,40,20
-      fireball: 0,0,80
-      torch: 0,60,50
-      push: 0,20,40
-      pull: 10,20,40
-      peek: 10,30,40
-      recall: 0,5,15
-      blind: 0,1,5
-      reflect: 0,0,5
-      poison: 5,10,20
-      fire: 50,70,60
-      frost: 80,70,50
+    - missile
+    - arrow
+    - blast
+    - boon
+    - cloak
+    - collapse
+    - cure
+    - bubble
+    - fireball
+    - torch
+    - push
+    - pull
+    - peek
+    - recall
+    - blind
+    - reflect
+    - poison
+    - fire
+    - frost
 
 student:
     icon: wood_hoe:2
@@ -101,77 +105,58 @@ student:
     upgrade_item: apprentice_upgrade
     inherit: beginner
     property_count:
-      0: 100, 20, 10
-      1: 50,  50, 30
-      2: 0,   10, 100
+      0: 100
+      1: 50
+      2: 10
     max_protection: 0.4
-    protection:
-      0^1: 100, 100, 90
-      0^2: 0,   5,   10
-      0^3: 0 ,  1,   5
+    protection: 0.01
     max_protection_falling: 0.5
-    protection_falling:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
+    protection_falling: 0.1
     max_protection_physical: 0.5
-    protection_physical:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
+    protection_physical: 0.05
     max_protection_fire: 0.3
-    protection_fire:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
+    protection_fire: 0.05
     max_protection_explosions: 0.3
-    protection_explosions:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
+    protection_explosions: 0.05
     max_mana_regeneration: 30
     mana_regeneration:
-      1: 100, 30, 5
-      2: 20, 30, 40
-      3: 0 , 10, 10
+      1: 100
+      2: 30
+      3: 10
     max_mana: 150
     mana_max:
-      5:  100,10,  0
-      7: 20, 30, 50
-      10: 5 , 20, 30
-    spell_count:
-      1: 100, 10,  1
-      2: 0,   70,  40
-      3: 0,   1,   90
+      5: 100
+      7: 20
+      10: 5
     extra_spells:
-      familiar: 10,30,40
-      monster: 5,20,30
-      tracking: 5,10,30
-      rocket: 0,10,20
-      secure: 0,0,5
-      admission: 20,25,30
-      tag: 1,4,5
-      phase: 0,0,1
-      grow: 1,10,20
+    - familiar
+    - monster
+    - tracking
+    - rocket
+    - secure
+    - admission
+    - tag
+    - phase
+    - grow
     spells:
-      blink: 0,0,10
-      arrowrain: 10,30,50
-      boom: 20,50,60
-      fling: 0,5,70
-      grenade: 0,20,70
-      heal: 0,1,5
-      lightning: 40,50,30
-      lava: 5,20,50
-      stream: 0,10,30
-      flamethrower: 0,5,10
-      wither: 5,10,20
-      mine: 0,5,30
-      chop: 0,5,30
-      shell: 1,20,30
-      blob: 1,20,30
-      entangle: 0,0,20
-      whip: 1,10,20
-      curse: 0,0,10
+    - blink
+    - arrowrain
+    - boom
+    - fling
+    - grenade
+    - heal
+    - lightning
+    - lava
+    - stream
+    - flamethrower
+    - wither
+    - mine
+    - chop
+    - shell
+    - blob
+    - entangle
+    - whip
+    - curse
 
 apprentice:
     icon: wood_hoe:3
@@ -179,168 +164,101 @@ apprentice:
     upgrade: master
     upgrade_item: master_upgrade
     inherit: student
-    property_count:
-      0: 100, 100, 50
-      1: 50,  100, 100
-      2: 10,  50,  75
-      3: 0,   0,   50
     max_protection: 0.5
-    protection:
-      0^1: 100, 100, 90
-      0^2: 0,   5,   10
-      0^3: 0 ,  1,   5
     max_protection_falling: 0.75
-    protection_falling:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
     max_protection_physical: 0.75
-    protection_physical:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
     max_protection_fire: 0.5
-    protection_fire:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
     max_protection_explosions: 0.5
-    protection_explosions:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
     max_mana_regeneration: 40
-    mana_regeneration:
-      1: 100, 30, 5
-      2: 20,  30, 40
-      3: 0 ,  10, 10
     max_mana: 200
-    mana_max:
-      5:  100, 10,  0
-      7: 20,  30, 50
-      10: 5 ,  20, 30
-    spell_count:
-      1: 100, 5,   0
-      2: 0,   80,  30
-      3: 0,   10,  80
     extra_spells:
-      emp: 0,0,10
-      music: 110,80,60
-      disarm: 0,0,2
-      ghast: 0,0,5
+    - emp
+    - music
+    - disarm
+    - ghast
     spells:
-      breach: 5,20,30
-      disintegrate: 0,10,40
-      hat: 110,80,60
-      sandblast: 20,30,40
-      counterspell: 0,1,5
-      platform: 0,1,5
-      rubberize: 2,10,20
-      wound: 0,10,20
-      harden: 0,0,15
-      sponge: 0,0,10
-      flashbang: 20,30,50
-      gatling: 0,20,30
-      walls: 5,30,50
-      smite: 10,20,30
-      shuriken: 0,0,5
-      sticky: 1,5,15
-      homing: 1,5,15
-      lift: 1,5,10
-      laser: 0,0,10
-      wave: 5,20,30
-      chainlightning: 5,20,30
-      glide: 0,0,5
-      airscooter: 1,10,20
+    - breach
+    - disintegrate
+    - hat
+    - sandblast
+    - counterspell
+    - platform
+    - rubberize
+    - wound
+    - harden
+    - sponge
+    - flashbang
+    - gatling
+    - walls
+    - smite
+    - shuriken
+    - sticky
+    - homing
+    - lift
+    - laser
+    - wave
+    - chainlightning
+    - glide
+    - airscooter
 
 master:
     icon: wood_hoe:4
     migrate_icon: gold_axe
+    # These are spells that a player must obtain (outside of the normal spellshop progression) to proceed to the next
+    # path.
+    # This means that the engineer path is intentionally locked, server admins may allow players to progress to Engineer
+    # by giving them access to an engineershop.
     required_spells:
       - rollback
     upgrade: engineer
     upgrade_item: engineer_upgrade
     inherit: apprentice
-    property_count:
-      0: 100, 100, 50
-      1: 50,  100, 100
-      2: 10,  50,  75
-      3: 0,   0,   50
     max_protection: 0.75
-    protection:
-      0^1: 100,100,90
-      0^2: 0,   5, 10
-      0^3: 0 ,  1, 5
-      0^4: 0 ,  0, 1
     max_protection_falling: 1
-    protection_falling:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
     max_protection_physical: 0.9
-    protection_physical:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
     max_protection_fire: 0.75
-    protection_fire:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
     max_protection_explosions: 0.75
-    protection_explosions:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
     max_mana_regeneration: 50
     mana_regeneration:
-      1: 100, 30, 5
-      2: 20, 30, 40
-      3: 0 , 10, 10
-      5: 0 ,  0, 1
+      1: 100
+      2: 60
+      3: 30
+      5: 10
     max_mana: 250
     mana_max:
-      5:  100,10,  0
-      10: 20, 30, 50
-      15: 5 , 20, 30
-      20: 0 , 0,   5
-    spell_count:
-      1: 100, 10,  0
-      2: 0,   70,  10
-      3: 0,   10,   90
+      5:  100
+      10: 60
+      15: 20
+      20: 5
     extra_spells:
-      mount: 0,1,5
-      cage: 0,0,2
-      silence: 0,0,5
-      tent: 0,0,1
-      tame: 0,0,5
+    - mount
+    - cage
+    - silence
+    - tent
+    - tame
     spells:
-      fury: 0,0,1
-      blessing: 0,0,1
-      cluster: 0,0,5
-      bomb: 0,0,1
-      invincible: 0,0,10
-      earthquake: 0,0,1
-      icbm: 0,0,1
-      nuke: 0,0,1
-      meteor: 0,0,2
-      pollinate: 0,0,10
-      kill: 2,10,20
-      torture: 2,10,20
-      petrify: 0,10,30
-      singularity: 0,1,5
-      tornado: 1,10,15
-      tendril: 0,0,5
-      force: 5,10,20
-      stash: 0,0,5
-      railgun: 10,20,30
-      levitate: 0,0,10
-      shrink: 5,20,30
-      dragonball: 1,10,20
+    - fury
+    - blessing
+    - cluster
+    - bomb
+    - invincible
+    - earthquake
+    - icbm
+    - nuke
+    - meteor
+    - pollinate
+    - kill
+    - torture
+    - petrify
+    - singularity
+    - tornado
+    - tendril
+    - force
+    - stash
+    - railgun
+    - levitate
+    - shrink
+    - dragonball
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
@@ -356,292 +274,215 @@ master:
 engineer:
     icon: wood_hoe:5
     migrate_icon: gold_axe
+    # The architectshop is required to proceed to Architect
     required_spells:
       - absorb
     upgrade: architect
     upgrade_item: architect_upgrade
     inherit: master
-    property_count:
-      0: 100, 100, 50
-      1: 50,  100, 100
-      2: 10,  50,  75
-      3: 0,   0,   50
     max_protection: 0.9
-    protection:
-      0^1: 100, 100,  90
-      0^2: 0,     5,  10
-      0^3: 0 ,    1,  5
-      0^4: 0 ,    0,  1
     max_protection_falling: 1
-    protection_falling:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
     max_protection_fire: 0.9
-    protection_fire:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
     max_protection_explosions: 0.9
-    protection_explosions:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
     max_mana_regeneration: 55
-    mana_regeneration:
-      1: 100, 30, 5
-      2: 20, 30, 40
-      3: 0 , 10, 10
     max_mana: 300
     mana_max:
-      5:  100,10,  0
-      8: 20, 30, 50
-      10: 5 , 20, 30
-      15: 0 , 0,   5
-    spell_count:
-      1: 100, 20,  0
-      2: 0,   50,  10
-      3: 0,   10,  90
+      5: 100
+      8: 50
+      10: 20
+      15: 10
     spells:
-      rollback: 1,5,10
-      alter: 0,10,20
-      bridge: 0,5,10
-      toss: 2,25,35
-      convert: 0,5,40
-      recurse: 0,5,20
-      paint: 1,20,45
-      #iterate: 0,0,40
-      pillar: 0,5,10
-      place: 0,1,5
-      tree: 0,2,10
-      supertorch: 1,10,20
-      brushselect: 100,100,100
+    - rollback
+    - alter
+    - bridge
+    - toss
+    - convert
+    - recurse
+    - paint
+    - pillar
+    - place
+    - tree
+    - supertorch
+    - brushselect
+    # Engineer wands can gain material brushes, they get some number of them per spell purchase as below
     material_count:
-      2: 50, 20, 20
-      3: 1,  10,  30
-      4: 0,  5,   40
-      5: 0,  1,   10
+      2: 100
+      3: 50
+      4: 20
+      5: 10
     materials:
-      erase: 0,0,1
-      stone: 50,70,80
-      dirt: 50,50,70
-      sand: 20,30,40
-      grass: 5,10,20
-      gravel: 20,30,40
-      glass: 10,20,30
-      glowstone: 5,10,20
-      stained_clay: 1,5,15
-      stained_glass: 0,5,15
-      stained_glass_pane: 0,5,15
+    - erase
+    - stone
+    - dirt
+    - sand
+    - grass
+    - gravel
+    - glass
+    - glowstone
+    - stained_clay
+    - stained_glass
+    - stained_glass_pane
 
 architect:
     icon: wood_hoe:5
     migrate_icon: gold_pickaxe
     inherit: engineer
+    # The conduitshop is required for Conduit
+    # This is generally not recommended as a player-obtainable rank, except maybe on creative servers.
     required_spells:
     - backup
     upgrade: conduit
     upgrade_item: conduit_upgrade
-    property_count:
-      0: 100, 100, 50
-      1: 50,  100, 100
-      2: 10,  50,  75
-      3: 0,   0,   50
     max_protection: 1
-    protection:
-      0^1: 100,100,90
-      0^2: 0,   5, 10
-      0^3: 0 ,  1, 5
-      0^4: 0 ,  0, 1
     max_protection_falling: 1
-    protection_falling:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
     max_protection_fire: 1
-    protection_fire:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
     max_protection_explosions: 1
-    protection_explosions:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
     max_mana_regeneration: 60
-    mana_regeneration:
-      1: 100, 30, 5
-      2: 20, 30, 40
     max_mana: 400
-    mana_max:
-      5:  100,10,  0
-      10: 20, 30, 50
-      15: 5 , 20, 30
-    spell_count:
-      1: 100, 0,   0
-      2: 0,   50,  10
-      3: 0,   5,   90
     spells:
-      absorb: 0,1,2
-      superalter: 0,1,5
-      supershell: 0,0,5
-      superblast: 0,0,5
-      superbox: 0,0,5
-      supercube: 0,0,5
-      superpyramid: 0,0,5
-      superblob: 0,1,10
-      fill: 0,0,5
-      superemp: 0,5,20
-      superdisc: 0,0,5
-      superring: 0,0,5
-      superconvert: 0,20,50
-      supercylinder: 0,20,50
-      #column: 5,50,100
-      superdome: 0,0,2
-      volley: 2,25,35
-      floodfill: 1,10,20
-      tunnel: 5,10,20
+    - absorb
+    - superalter
+    - supershell
+    - superblast
+    - superbox
+    - supercube
+    - superpyramid
+    - superblob
+    - fill
+    - superemp
+    - superdisc
+    - superring
+    - superconvert
+    - supercylinder
+    - superdome
+    - volley
+    - floodfill
+    - tunnel
     material_count:
-      7:  50, 20, 20
-      10:  1,  10, 30
-      12:  0,  5,  40
-      15:  0,  1,  10
+      7:  100
+      10:  60
+      12:  30
+      15:  10
     materials:
-      copy: 0,0,10
-      map: 0,0,1
-      soul_sand: 5,10,20
-      wood: 5,10,20
-      log: 5,10,20
-      vine: 0,5,10
-      mycel: 0,5,10
-      quartz_block: 0,0,25
-      leaves: 0,5,10
-      ice: 10,20,25
-      packed_ice: 10,20,25
-      obsidian: 0,0,15
-      redstone_block: 0,0,5
-      schematic|rainbow_blocks: 0,2,5
-      schematic|creeper_rug: 0,0,5
-      wool|0: 80,60,50
-      wool|1: 80,60,50
-      wool|2: 80,60,50
-      wool|3: 80,60,50
-      wool|4: 80,60,50
-      wool|5: 80,60,50
-      wool|6: 80,60,50
-      wool|7: 80,60,50
-      wool|8: 80,60,50
-      wool|9: 80,60,50
-      wool|10: 80,60,50
-      wool|11: 80,60,50
-      wool|12: 80,60,50
-      wool|13: 80,60,50
-      wool|14: 80,60,50
-      wool|15: 80,60,50
-      stained_clay|0: 80,60,50
-      stained_clay|1: 80,60,50
-      stained_clay|2: 80,60,50
-      stained_clay|3: 80,60,50
-      stained_clay|4: 80,60,50
-      stained_clay|5: 80,60,50
-      stained_clay|6: 80,60,50
-      stained_clay|7: 80,60,50
-      stained_clay|8: 80,60,50
-      stained_clay|9: 80,60,50
-      stained_clay|10: 80,60,50
-      stained_clay|11: 80,60,50
-      stained_clay|12: 80,60,50
-      stained_clay|13: 80,60,50
-      stained_clay|14: 80,60,50
-      stained_clay|15: 80,60,50
-      stained_glass|0: 60,40,30
-      stained_glass|1: 60,40,30
-      stained_glass|2: 60,40,30
-      stained_glass|3: 60,40,30
-      stained_glass|4: 60,40,30
-      stained_glass|5: 60,40,30
-      stained_glass|6: 60,40,30
-      stained_glass|7: 60,40,30
-      stained_glass|8: 60,40,30
-      stained_glass|9: 60,40,30
-      stained_glass|10: 60,40,30
-      stained_glass|11: 60,40,30
-      stained_glass|12: 60,40,30
-      stained_glass|13: 60,40,30
-      stained_glass|14: 60,40,30
-      stained_glass_pane|15: 60,40,30
-      stained_glass_pane|0: 60,40,30
-      stained_glass_pane|1: 60,40,30
-      stained_glass_pane|2: 60,40,30
-      stained_glass_pane|3: 60,40,30
-      stained_glass_pane|4: 60,40,30
-      stained_glass_pane|5: 60,40,30
-      stained_glass_pane|6: 60,40,30
-      stained_glass_pane|7: 60,40,30
-      stained_glass_pane|8: 60,40,30
-      stained_glass_pane|9: 60,40,30
-      stained_glass_pane|10: 60,40,30
-      stained_glass_pane|11: 60,40,30
-      stained_glass_pane|12: 60,40,30
-      stained_glass_pane|13: 60,40,30
-      stained_glass_pane|14: 60,40,30
-      stained_glass_pane|15: 60,40,30
-      schematic|rainbow_blocks: 0,2,5
-      schematic|lantern: 0,1,20
-      schematic|creeper_rug: 0,0,5
-      schematic|elder_tree: 0,0,1
-      schematic|church: 0,0,5
-      schematic|blacksmith: 0,0,5
-      schematic|garden_house: 0,5,10
-      schematic|compact_house: 5,10,15
-      schematic|small_house: 5,10,15
-      schematic|nathanwolf: 0,0,1
+    - copy
+    - map
+    - soul_sand
+    - wood
+    - log
+    - vine
+    - mycel
+    - quartz_block
+    - leaves
+    - ice
+    - packed_ice
+    - obsidian
+    - redstone_block
+    - schematic|rainbow_blocks
+    - schematic|creeper_rug
+    - wool|0
+    - wool|1
+    - wool|2
+    - wool|3
+    - wool|4
+    - wool|5
+    - wool|6
+    - wool|7
+    - wool|8
+    - wool|9
+    - wool|10
+    - wool|11
+    - wool|12
+    - wool|13
+    - wool|14
+    - wool|15
+    - stained_clay|0
+    - stained_clay|1
+    - stained_clay|2
+    - stained_clay|3
+    - stained_clay|4
+    - stained_clay|5
+    - stained_clay|6
+    - stained_clay|7
+    - stained_clay|8
+    - stained_clay|9
+    - stained_clay|10
+    - stained_clay|11
+    - stained_clay|12
+    - stained_clay|13
+    - stained_clay|14
+    - stained_clay|15
+    - stained_glass|0
+    - stained_glass|1
+    - stained_glass|2
+    - stained_glass|3
+    - stained_glass|4
+    - stained_glass|5
+    - stained_glass|6
+    - stained_glass|7
+    - stained_glass|8
+    - stained_glass|9
+    - stained_glass|10
+    - stained_glass|11
+    - stained_glass|12
+    - stained_glass|13
+    - stained_glass|14
+    - stained_glass_pane|15
+    - stained_glass_pane|0
+    - stained_glass_pane|1
+    - stained_glass_pane|2
+    - stained_glass_pane|3
+    - stained_glass_pane|4
+    - stained_glass_pane|5
+    - stained_glass_pane|6
+    - stained_glass_pane|7
+    - stained_glass_pane|8
+    - stained_glass_pane|9
+    - stained_glass_pane|10
+    - stained_glass_pane|11
+    - stained_glass_pane|12
+    - stained_glass_pane|13
+    - stained_glass_pane|14
+    - stained_glass_pane|15
+    - schematic|rainbow_blocks
+    - schematic|lantern
+    - schematic|creeper_rug
+    - schematic|elder_tree
+    - schematic|church
+    - schematic|blacksmith
+    - schematic|garden_house
+    - schematic|compact_house
+    - schematic|small_house
+    - schematic|nathanwolf
 
 conduit:
     icon: wood_hoe:6
     migrate_icon: gold_pickaxe
     inherit: architect
-    spell_count:
-      1: 100, 0,   0
-      2: 0,   50,  10
-      3: 0,   5,   90
     spells:
-      portal: 0,0,25
-      backup: 0,0,1
-      repair: 1,10,30
-      superrepair: 0,0,5
-      paste: 0,1,10
-      anvil: 0,0,10
-      day: 0,5,10
-      night: 0,0,1
-      weather: 0,0,5
-      capture: 10,20,30
-    material_count:
-      1:  50, 20, 20
-      3:  1,  10, 30
-      5:  0,  5,  40
-      8:  0,  1,  10
-      10: 0,  0,  1
+    - portal
+    - backup
+    - repair
+    - superrepair
+    - paste
+    - anvil
+    - day
+    - night
+    - weather
+    - capture
     materials:
-      commit: 0,0,1
-      clone: 0,0,1
-      replicate: 0,0,1
-      lava: 0,0,15
-      water: 0,0,30
-      schematic|rainbow_blocks: 0,2,5
-      schematic|lantern: 0,1,20
-      schematic|creeper_rug: 0,0,5
-      schematic|elder_tree: 0,0,1
-      schematic|church: 0,0,5
-      schematic|blacksmith: 0,0,5
-      schematic|garden_house: 0,5,10
-      schematic|compact_house: 5,10,15
-      schematic|small_house: 5,10,15
-      schematic|nathanwolf: 0,0,1
+    - commit
+    - clone
+    - replicate
+    - lava
+    - water
+    - schematic|rainbow_blocks
+    - schematic|lantern
+    - schematic|creeper_rug
+    - schematic|elder_tree
+    - schematic|church
+    - schematic|blacksmith
+    - schematic|garden_house
+    - schematic|compact_house
+    - schematic|small_house
+    - schematic|nathanwolf
 

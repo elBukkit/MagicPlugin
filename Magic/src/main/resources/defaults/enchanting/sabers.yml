@@ -1,8 +1,6 @@
 
 blaster:
     hidden: true
-    min_enchant_level: 50
-    max_enchant_level: 50
 
 youngling:
     inherit: default
@@ -10,16 +8,13 @@ youngling:
     follows: beginner
     max_mana: 200
     max_mana_regeneration: 20
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
+    mana_regeneration: 1
+    mana_max: 2
+    spell_count: 1
     spells:
-      fling: 100
-      push: 80
-      pull: 10
+    - fling
+    - push
+    - pull
 
 padawan:
     inherit: youngling
@@ -27,15 +22,9 @@ padawan:
     follows: student
     max_mana: 200
     max_mana_regeneration: 20
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
     spells:
-      boon: 80
-      harden: 20
+    - boon
+    - harden
 
 jedi_knight:
     inherit: padawan
@@ -43,121 +32,75 @@ jedi_knight:
     follows: apprentice
     max_mana: 200
     max_mana_regeneration: 20
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
     spells:
-      cure: 20
-      lift: 20
+    - cure
+    - lift
 
 jedi_master:
     inherit: jedi_knight
     follows: master
     max_mana: 200
     max_mana_regeneration: 20
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
     spells:
-      heal: 40
-      force: 90
+    - heal
+    - force
 
 acolyte:
     inherit: default
     upgrade: sith_apprentice
     follows: beginner
-    max_mana: 500
-    max_mana_regeneration: 50
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
+    max_mana: 200
+    max_mana_regeneration: 20
+    spell_count: 1
     spells:
-      push: 1
-      pull: 1
-      fire: 1
+    - push
+    - pull
+    - fire
 
 sith_apprentice:
     inherit: acolyte
     upgrade: sith
     follows: student
-    max_mana: 500
-    max_mana_regeneration: 50
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
+    max_mana: 200
+    max_mana_regeneration: 20
     spells:
-      boom: 1
-      blast: 1
+    - boom
+    - blast
 
 sith:
     inherit: sith_apprentice
     upgrade: marauder
     follows: apprentice
-    max_mana: 500
-    max_mana_regeneration: 50
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
+    max_mana: 200
+    max_mana_regeneration: 20
     spells:
-      fling: 1
-      fireball: 1
+    - fling
+    - fireball
 
 marauder:
     inherit: sith
     upgrade: sith_master
     follows: apprentice
-    max_mana: 500
-    max_mana_regeneration: 50
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
+    max_mana: 200
+    max_mana_regeneration: 20
     spells:
-      collapse: 1
-      lava: 1
+    - collapse
+    - lava
 
 sith_master:
     inherit: marauder
+    upgrade: sith_loord
     follows: master
-    max_mana: 500
-    max_mana_regeneration: 50
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
+    max_mana: 200
+    max_mana_regeneration: 20
     spells:
-      force: 1
-      lift: 1
+    - force
+    - lift
 
 sith_lord:
     inherit: sith_master
-    max_mana: 500
-    max_mana_regeneration: 50
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
+    max_mana: 200
+    max_mana_regeneration: 20
     spells:
-      lightning: 1
-      earthquake: 1
+    - lightning
+    - earthquake

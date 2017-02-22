@@ -5,9 +5,6 @@
 default:
   match_spell_mana: false
   hidden: true
-  min_enchant_level: 5
-  max_enchant_level: 35
-  levels: 1,15,25
   max_uses: 500
   max_mana: 1500
   max_mana_regeneration: 150
@@ -23,6 +20,11 @@ default:
   max_cooldown_reduction: 0.5
   max_haste: 0.5
   max_power: 0.5
+  mana_regeneration: 4
+  mana_max: 20
+  max_mana: 200
+  max_mana_regeneration: 20
+  spell_count: 1
   upgrade_commands:
     - broadcast §6@pd §3has progressed to §b$path§3!
   effects:
@@ -49,113 +51,78 @@ default:
 
 airbending:
     inherit: default
-    max_mana: 200
-    max_mana_regeneration: 20
-    mana_regeneration:
-      4: 100
-    mana_max:
-      20: 100
-    spell_count:
-      1: 100
     spells:
-      airblast: 80
-      suction: 10
-      airscooter: 5
-      breathofwind: 20
-      airbomb: 10
-      airshield: 5
-      enhancedspeed: 20
-      tornado: 1
+    - airblast
+    - suction
+    - airscooter
+    - breathofwind
+    - airbomb
+    - airshield
+    - enhancedspeed
+    - tornado
 
 waterbending:
     inherit: default
-    max_mana: 200
-    max_mana_regeneration: 20
-    mana_regeneration:
-      4: 100
-    mana_max:
-      20: 100
-    spell_count:
-      1: 100
     spells:
-      breathofice: 80
-      waterball: 5
-      waterjet: 40
-      heal: 80
-      cure: 10
-      bloodbending: 1
-      waterwhip: 5
-      iceshield: 10
+    - breathofice
+    - waterball
+    - waterjet
+    - heal
+    - cure
+    - bloodbending
+    - waterwhip
+    - iceshield
 
 earthbending:
     inherit: default
-    max_mana: 200
-    max_mana_regeneration: 20
-    mana_regeneration:
-      4: 100
-    mana_max:
-      20: 100
-    spell_count:
-      1: 100
     spells:
-      earthblock: 20
-      compression: 5
-      harden: 15
-      sandspout: 40
-      collapse: 5
-      earthsmash: 5
-      earthquake: 1
-      earthline: 20
+    - earthblock
+    - compression
+    - harden
+    - sandspout
+    - collapse
+    - earthsmash
+    - earthquake
+    - earthline
 
 firebending:
     inherit: default
-    max_mana: 200
-    max_mana_regeneration: 20
-    mana_regeneration:
-      4: 100
-    mana_max:
-      20: 100
-    spell_count:
-      1: 100
     spells:
-      fireball: 40
-      fire: 90
-      lava: 20
-      firestream: 20
-      combustion: 1
+    - fireball
+    - fire
+    - lava
+    - firestream
+    - combustion
 
 avatar:
     max_mana: 500
     max_mana_regeneration: 50
-    mana_regeneration:
-      1: 100
-    mana_max:
-      2: 100
-    spell_count:
-      1: 100
+    mana_regeneration: 5
+    mana_max: 30
     spells:
-      levitate: 1
-      fireball: 40
-      fire: 90
-      lava: 20
-      firestream: 20
-      combustion: 1
-      compression: 5
-      iterate: 5
-      harden: 15
-      sandblast: 40
-      collapse: 5
-      earthsmash: 5
-      breathofice: 80
-      waterball: 5
-      waterjet: 40
-      heal: 80
-      cure: 1
-      gills: 20
-      bloodbending: 10
-      fling: 100
-      airblast: 80
-      suction: 10
-      breach: 1
-      boon: 20
-      airscooter: 10
+    - airsphere
+    - fireball
+    - fire
+    - lava
+    - firestream
+    - combustion
+    - compression
+    - earthline
+    - harden
+    - sandspout
+    - collapse
+    - earthsmash
+    - breathofice
+    - waterball
+    - waterjet
+    - heal
+    - cure
+    - gills
+    - bloodbending
+    - fling
+    - airblast
+    - suction
+    - breach
+    - boon
+    - airscooter
+

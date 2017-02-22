@@ -9,6 +9,8 @@
    - immortal: if true, dropped wands will not be allowed to despawn
    - invulnerable: if true, dropped wands cannot be destroyed
  - Fix Heroes skill selector breaking when there are unavailable skills shown
+ - Simplified enchanting configs so they are easier to understand and override.
+ - Fix the bending example configs
 
 ## 6.5
 

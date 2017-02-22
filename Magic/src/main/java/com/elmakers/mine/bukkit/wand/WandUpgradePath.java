@@ -78,8 +78,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private float maxCostReduction = 0.5f;
     private float maxCooldownReduction = 0.5f;
     private float maxPower = 1;
-    private int minLevel = 10;
-    private int maxLevel = 50;
+    private int minLevel = 1;
+    private int maxLevel = 1;
 
     private float bonusLevelMultiplier = 0.5f;
 

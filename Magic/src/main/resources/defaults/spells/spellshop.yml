@@ -9,6 +9,6 @@ spellshop:
         quiet: true
         confirm_filler: stained_glass:5
         auto_upgrade: true
-        upgrade_levels: 15
+        upgrade_levels: 1
         use_sp: true
 
