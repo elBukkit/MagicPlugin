@@ -42,6 +42,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerController implements Listener {
@@ -125,8 +126,7 @@ public class PlayerController implements Listener {
                 // item text gets updated on hotbar item selection "bounce"
                 int previousSlot = event.getPreviousSlot();
                 ItemStack previous = inventory.getItem(previousSlot);
-                String previousId = Wand.getWandId(previous);
-                if (previousId != null && previousId.equals(activeWand.getId())) {
+                if (previous != null && previous.equals(activeWand.getItem())) {
                     player.getInventory().setItem(previousSlot, activeWand.getItem());
                 }
             }
@@ -154,12 +154,15 @@ public class PlayerController implements Listener {
         if (mage == null) return;
         
         final com.elmakers.mine.bukkit.api.wand.Wand apiWand = mage.getActiveWand();
-        if (apiWand == null || !(apiWand instanceof Wand)) return;
-        
-        Wand activeWand = (Wand)apiWand;
-        if (activeWand.performAction(activeWand.getSwapAction())) {
+        final com.elmakers.mine.bukkit.api.wand.Wand apiOffhandWand = mage.getOffhandWand();
+        Wand activeWand = (apiWand instanceof Wand) ? (Wand)apiWand : null;
+        Wand offhandWand = (apiOffhandWand instanceof Wand) ? (Wand)apiOffhandWand : null;
+
+        if (activeWand == null && offhandWand == null) return;
+
+        if (activeWand != null && activeWand.performAction(activeWand.getSwapAction())) {
             event.setCancelled(true);
-        } else if (activeWand != null || Wand.isWand(event.getMainHandItem()) || Wand.isWand(event.getOffHandItem())){
+        } else if (activeWand != null || offhandWand != null || Wand.isWand(event.getMainHandItem()) || Wand.isWand(event.getOffHandItem())){
             mage.checkWandNextTick();
         }
     }
@@ -181,14 +184,18 @@ public class PlayerController implements Listener {
         final ItemStack droppedItem = event.getItemDrop().getItemStack();
 
         boolean cancelEvent = false;
-        String droppedId = Wand.getWandId(droppedItem);
-        boolean droppedWand = droppedId != null && activeWand != null && activeWand.getId().equals(droppedId);
+        ItemStack activeItem = activeWand == null ? null : activeWand.getItem();
+        // It seems like Spigot sets the original item to air before dropping
+        // We will be satisfied to only compare the metadata.
+        ItemMeta activeMeta = activeItem == null ? null : activeItem.getItemMeta();
+        ItemMeta droppedMeta = droppedItem.getItemMeta();
+        boolean droppedWand = droppedMeta != null && activeMeta != null && activeItem.getItemMeta().equals(droppedItem.getItemMeta());
+
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
                 @Override
                 public void run() {
-                    activeWand.checkItem(droppedItem);
                     activeWand.performAction(activeWand.getDropAction());
                 }
             });
@@ -201,8 +208,7 @@ public class PlayerController implements Listener {
 
                 // Clear after inventory restore (potentially with deactivate), since that will put the wand back
                 if (Wand.hasActiveWand(player) && remainingItem.getType() == Material.AIR && restoredItem.getType() != Material.AIR) {
-                    String activeId = Wand.getWandId(restoredItem);
-                    if (activeId != null && activeWand.getId().equals(activeId))
+                    if (activeWand.getItem().equals(activeItem))
                     {
                         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
                     }
@@ -222,7 +228,7 @@ public class PlayerController implements Listener {
             for (int i = 0; i < 9; i++) {
                 ItemStack item = inventory.getItem(i);
 
-                if (item != null && Wand.getWandId(item) != null) {
+                if (item != null && Wand.isWand(item)) {
                     final int previouslySelected = inventory
                             .getHeldItemSlot();
                     inventory.setHeldItemSlot(i);
@@ -256,6 +262,9 @@ public class PlayerController implements Listener {
             }
         }
         if (cancelEvent) {
+            if (droppedWand) {
+                activeWand.setItem(droppedItem);
+            }
             event.setCancelled(true);
         }
     }

@@ -930,6 +930,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     public ItemStack getItem() {
 		return item;
 	}
+
+	public void setItem(ItemStack item) {
+    	this.item = item;
+	}
 	
 	@Override
 	public com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon() {
@@ -1246,19 +1250,17 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
 	protected boolean findItem() {
-		if (mage != null) {
+		if (mage != null && item != null) {
 			Player player = mage.getPlayer();
 			if (player != null) {
 				ItemStack itemInHand = player.getInventory().getItemInMainHand();
-				String itemId = getWandId(itemInHand);
-				if (itemId != null && itemId.equals(id) && itemInHand != item) {
+				if (itemInHand != null && itemInHand != item && itemInHand.equals(item)) {
 					item = itemInHand;
 					isInOffhand = false;
 					return true;
 				}
 				itemInHand = player.getInventory().getItemInOffHand();
-				itemId = getWandId(itemInHand);
-				if (itemId != null && itemId.equals(id) && itemInHand != item) {
+				if (itemInHand != null && itemInHand != item && itemInHand.equals(item)) {
 					item = itemInHand;
 					isInOffhand = true;
 					return true;
@@ -1291,22 +1293,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		} else {
             InventoryUtils.saveTagsToNBT(getConfiguration(), wandNode);
         }
-
-		if (mage != null) {
-			Player player = mage.getPlayer();
-			if (player != null) {
-				// Update the stored item, too- in case we save while the
-				// inventory is open.
-				if (storedInventory != null) {
-					int currentSlot = player.getInventory().getHeldItemSlot();
-					ItemStack storedItem = storedInventory.getItem(currentSlot);
-					String storedId = getWandId(storedItem);
-					if (storedId != null && storedId.equals(id)) {
-						storedInventory.setItem(currentSlot, item);
-					}
-				}
-			}
-		}
 	}
 
     public static ConfigurationSection itemToConfig(ItemStack item, ConfigurationSection stateNode) {
@@ -2329,10 +2315,13 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (wandMode == WandMode.INVENTORY) {
 			if (!hasStoredInventory()) return;
 			PlayerInventory inventory = player.getInventory();
-            for (int i = 0; i < PLAYER_INVENTORY_SIZE; i++) {
-				inventory.setItem(i, null);
+			if (!updateHotbar(inventory)) {
+				for (int i = 0; i < HOTBAR_SIZE; i++) {
+					if (i != inventory.getHeldItemSlot()) {
+						inventory.setItem(i, null);
+					}
+				}
 			}
-			updateHotbar(inventory);
 			updateInventory(inventory, false);
 			updateName();
 			player.updateInventory();
@@ -2344,22 +2333,18 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 	}
 	
-	private void updateHotbar(PlayerInventory playerInventory) {
-        if (getMode() != WandMode.INVENTORY) return;
+	private boolean updateHotbar(PlayerInventory playerInventory) {
+        if (getMode() != WandMode.INVENTORY) return false;
 		Inventory hotbar = getHotbar();
-        if (hotbar == null) return;
+        if (hotbar == null) return false;
 
-        // Check for an item already in the player's held slot, which
-        // we are about to replace with the wand.
+        // Make sure the wand is still in the held slot
 		int currentSlot = playerInventory.getHeldItemSlot();
         ItemStack currentItem = playerInventory.getItem(currentSlot);
-        String currentId = getWandId(currentItem);
-        if (currentId != null && !currentId.equals(id)) {
-            return;
+        if (currentItem == null || !currentItem.getItemMeta().equals(item.getItemMeta())) {
+        	controller.getLogger().warning("Trying to update hotbar but the wand has gone missing");
+            return false;
         }
-
-        // Reset the held item, just in case Bukkit made a copy or something.
-        playerInventory.setItemInMainHand(this.item);
 
         // Set hotbar items from remaining list
 		int targetOffset = 0;
@@ -2374,6 +2359,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			updateInventoryName(hotbarItem, true);
 			playerInventory.setItem(hotbarSlot + targetOffset, hotbarItem);
 		}
+		return true;
     }
 	
 	private void updateInventory(Inventory targetInventory, boolean addHotbars) {
@@ -2400,6 +2386,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 currentOffset++;
             }
         }
+        for (;currentOffset < targetInventory.getSize() && currentOffset < PLAYER_INVENTORY_SIZE; currentOffset++) {
+			targetInventory.setItem(currentOffset,  null);
+		}
 	}
 	
 	protected static void addSpellLore(Messages messages, SpellTemplate spell, List<String> lore, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand) {
@@ -4557,22 +4546,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
 		PlayerInventory inventory = player.getInventory();
-		// Check for the wand having been removed somehow, we don't want to put it back
-		// if that happened.
-		// This fixes dupe issues with armor stands, among other things
-		// We do need to account for the wand not being the active slot anymore
-		ItemStack storedItem = storedInventory.getItem(storedSlot);
-		ItemStack currentItem = inventory.getItem(storedSlot);
-		String currentId = getWandId(currentItem);
-		String storedId = getWandId(storedItem);
-		if (storedId != null && storedId.equals(id) && !Objects.equal(currentId, id)) {
-			// Hacky special-case to avoid glitching spells out of the inventory
-			// via the offhand slot.
-			if (isSpell(currentItem)) {
-				currentItem = null;
-			}
-			storedInventory.setItem(storedSlot, currentItem);
-		}
+
+		// Reset the wand item
+		storedInventory.setItem(storedSlot, item);
 
 		for (int i = 0; i < storedInventory.getSize(); i++) {
 			inventory.setItem(i, storedInventory.getItem(i));

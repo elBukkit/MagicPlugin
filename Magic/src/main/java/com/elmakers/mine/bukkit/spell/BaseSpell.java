@@ -2474,11 +2474,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             // Reward SP
             Wand wand = context.getWand();
             Wand activeWand = mage.getActiveWand();
-            if (activeWand != null && wand != null && activeWand.getId() != null && wand.getId() != null && activeWand.getId().equals(wand.getId())) {
+            if (activeWand != null && wand != null && activeWand.getItem() != null && wand.getItem() != null && wand.getItem() != activeWand.getItem() && activeWand.getItem().equals(wand.getItem())) {
                 wand = activeWand;
             }
             Wand offhandWand = mage.getOffhandWand();
-            if (offhandWand != null && wand != null && offhandWand.getId() != null && wand.getId() != null && offhandWand.getId().equals(wand.getId())) {
+            if (offhandWand != null && wand != null && offhandWand.getItem() != null && wand.getItem() != null && wand.getItem() != offhandWand.getItem() && offhandWand.getItem().equals(wand.getItem())) {
                 wand = offhandWand;
             }
             WandUpgradePath path = wand == null ? null : wand.getPath();
