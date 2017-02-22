@@ -32,6 +32,10 @@
 #           <specific spell parameters- TODO: list common ones>
 #
 
+default:
+    # Spells take 1 minute to return to full SP earning potential
+    earns_cooldown: 60000
+
 phase:
    parameters:
       worlds:
