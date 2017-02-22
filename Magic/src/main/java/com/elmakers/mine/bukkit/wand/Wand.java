@@ -109,7 +109,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             "materials", "spells", "powered", "protected", "heroes",
             "enchant_count", "max_enchant_count",
             "quick_cast", "left_click", "right_click", "drop", "swap",
-			"block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown"
+			"block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
+			"unique"
     );
 
     private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
@@ -183,6 +184,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     private boolean quickCastDisabled = false;
     private boolean manualQuickCastDisabled = false;
     private boolean isInOffhand = false;
+	private boolean hasId = false;
 	
 	private WandAction leftClickAction = WandAction.NONE;
 	private WandAction rightClickAction = WandAction.NONE;
@@ -1395,6 +1397,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		damageReductionFalling = (float)wandConfig.getDouble("protection_falling");
 		damageReductionFire = (float)wandConfig.getDouble("protection_fire");
 		damageReductionExplosions =  (float)wandConfig.getDouble("protection_explosions");
+
+		hasId = wandConfig.getBoolean("unique", false);
 
 		blockChance = (float)wandConfig.getDouble("block_chance");
 		blockReflectChance = (float)wandConfig.getDouble("block_reflect_chance");
@@ -3723,6 +3727,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     @Override
     public LostWand makeLost(Location location)
     {
+		checkId();
         return new LostWand(this, location);
     }
 
@@ -3792,7 +3797,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             return false;
         }
 
-		this.checkId();
+		if (hasId) {
+			this.checkId();
+		} else {
+			setProperty("id", null);
+		}
 
         if (this.isUpgrade) {
             controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
