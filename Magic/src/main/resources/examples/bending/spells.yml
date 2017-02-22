@@ -243,7 +243,7 @@ waterjet:
 waterwhip:
   category: waterbending
   icon: diamond_axe:140
-    icon_disabled: diamond_hoe:140
+  icon_disabled: diamond_hoe:140
   icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
   worth: 150
   actions:
@@ -460,7 +460,7 @@ earthline:
   category: earthbending
   icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
   icon: diamond_axe:142
-    icon_disabled: diamond_hoe:142
+  icon_disabled: diamond_hoe:142
   worth: 150
   actions:
       cast:
@@ -491,6 +491,10 @@ earthline:
       mana: 50
 
 ### AVATAR
+
+gills:
+  enabled: true
+  category: avatar
 
 airsphere:
   inherit: levitate
