@@ -1,5 +1,6 @@
 admin:
     inherit: conduit
+    path: staff
     icon: wood_hoe:6
     migrate_icon: monster_eggs:2
     cost_reduction: 2

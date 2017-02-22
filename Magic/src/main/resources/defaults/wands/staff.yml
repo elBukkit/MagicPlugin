@@ -1,5 +1,6 @@
 staff:
   inherit: master
+  path: staff
   hotbar_count: 2
   active_spell: levitate|4
   cost_reduction: 2

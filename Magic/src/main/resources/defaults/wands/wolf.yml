@@ -1,8 +1,8 @@
 wolf:
   inherit: conduit
+  path: staff
   icon: wood_hoe:7
   migrate_icon: gold_hoe
-  path: conduit
   hotbar_count: 3
   fill: true
   protected: true

@@ -1,5 +1,6 @@
 architectstaff:
   inherit: conduit
+  path: staff
   active_spell: pillar
   active_material: copy
   protected: true

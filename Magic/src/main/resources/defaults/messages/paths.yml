@@ -38,6 +38,9 @@ paths:
     blaster:
         name: Blaster
         description: Blaster upgrades
+    staff:
+        name: Staff
+        description: Staff-only spells
     youngling:
         name: Youngling
     padawan:
