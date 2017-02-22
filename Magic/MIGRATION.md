@@ -1,8 +1,22 @@
 # Migration Notes
 
-## CURRENT 1.9 Issues
+## 6.6
 
- - Broom dismounting is currently broken. Hoping for a Spigot fix.
+ - Enchanting configs renamed to "paths". 
+   - Old enchanting.yml file will be renamed (one-time migration)
+   - enchanting folder no longer used, please move files by hand if you have any in there.
+ - New properties (you may want to set on your wands if you have completely custom configs):
+   - unique: if true, wand will always have a unique id (in case you need it for API integration, or want to avoid stacking)
+   - track: if true, wand will be tracked when dropped on the ground
+   - immortal: if true, dropped wands will not be allowed to despawn
+   - invulnerable: if true, dropped wands cannot be destroyed
+   
+## 6.5
+ 
+ - Wands now default to no actions if none are specified in the configs. You may need to add the following to your custom wands:
+     - left_click: cast
+     - drop: toggle (or right_click: toggle, as you prefer)
+     - mode: inventory
  
 ## 6.1
 

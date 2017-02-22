@@ -80,7 +80,6 @@ import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
-import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
 import com.google.common.collect.Maps;
@@ -761,10 +760,17 @@ public class MagicController implements MageController {
             getLogger().warning("Failed to initialize EffectLib");
         }
 
+        // One-time migration of enchanting.yml
+        File legacyPathConfig = new File(configFolder, ENCHANTING_FILE + ".yml");
+        File pathConfig = new File(configFolder, PATHS_FILE + ".yml");
+
+        if (!pathConfig.exists() && legacyPathConfig.exists()) {
+            getLogger().info("Renaming enchanting.yml to paths.yml, please update paths.yml from now on");
+            legacyPathConfig.renameTo(pathConfig);
+        }
         load();
         checkResourcePack(Bukkit.getConsoleSender());
     }
-
 
     protected void finalizeIntegration() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
@@ -1452,7 +1458,8 @@ public class MagicController implements MageController {
         disableDefaultSpells = properties.getBoolean("disable_default_spells", disableDefaultSpells);
         loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
         loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
-        loadDefaultEnchanting = properties.getBoolean("load_default_enchanting", loadDefaultEnchanting);
+        loadDefaultPaths = properties.getBoolean("load_default_enchanting", loadDefaultPaths);
+        loadDefaultPaths = properties.getBoolean("load_default_paths", loadDefaultPaths);
         loadDefaultMobs = properties.getBoolean("load_default_mobs", loadDefaultMobs);
         loadDefaultItems = properties.getBoolean("load_default_items", loadDefaultItems);
 
@@ -1477,8 +1484,8 @@ public class MagicController implements MageController {
         return loadConfigFile(WANDS_FILE, loadDefaultWands, false, true);
     }
 
-    protected ConfigurationSection loadEnchantingConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(ENCHANTING_FILE, loadDefaultEnchanting);
+    protected ConfigurationSection loadPathConfiguration() throws InvalidConfigurationException, IOException {
+        return loadConfigFile(PATHS_FILE, loadDefaultPaths);
     }
 
     protected ConfigurationSection loadCraftingConfiguration() throws InvalidConfigurationException, IOException {
@@ -1566,8 +1573,8 @@ public class MagicController implements MageController {
         loadSpells(loader.spells);
         getLogger().info("Loaded " + spells.size() + " spells");
 
-        enchanting.load(loader.enchanting);
-        getLogger().info("Loaded " + enchanting.getCount() + " enchanting paths");
+        loadPaths(loader.paths);
+        getLogger().info("Loaded " + getPathCount() + " progression paths");
 
         loadWandTemplates(loader.wands);
         getLogger().info("Loaded " + getWandTemplates().size() + " wands");
@@ -1587,6 +1594,14 @@ public class MagicController implements MageController {
         if (sender != null) {
             sender.sendMessage(ChatColor.AQUA + "Configuration reloaded.");
         }
+    }
+
+    private int getPathCount() {
+        return WandUpgradePath.getPathKeys().size();
+    }
+
+    private void loadPaths(ConfigurationSection pathConfiguration) {
+        WandUpgradePath.loadPaths(this, pathConfiguration);
     }
 
     public void loadConfiguration() {
@@ -4818,6 +4833,7 @@ public class MagicController implements MageController {
     private final String                        CONFIG_FILE             	= "config";
     private final String                        WANDS_FILE             		= "wands";
     private final String                        ENCHANTING_FILE             = "enchanting";
+    private final String                        PATHS_FILE                  = "paths";
     private final String                        CRAFTING_FILE             	= "crafting";
     private final String                        MESSAGES_FILE             	= "messages";
     private final String                        MATERIALS_FILE             	= "materials";
@@ -4833,7 +4849,7 @@ public class MagicController implements MageController {
     private boolean                             disableDefaultSpells        = false;
     private boolean 							loadDefaultSpells			= true;
     private boolean 							loadDefaultWands			= true;
-    private boolean 							loadDefaultEnchanting		= true;
+    private boolean loadDefaultPaths = true;
     private boolean 							loadDefaultCrafting			= true;
     private boolean 							loadDefaultMobs 			= true;
     private boolean 							loadDefaultItems 			= true;

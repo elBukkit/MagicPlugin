@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,10 +21,6 @@ public class EnchantingController implements Listener {
 
 	public EnchantingController(MagicController controller) {
 		this.controller = controller;
-	}
-	
-	public void load(ConfigurationSection properties) {
-        WandUpgradePath.loadPaths(controller, properties);
 	}
 
 	@EventHandler
@@ -158,9 +153,5 @@ public class EnchantingController implements Listener {
     public void setEnabled(boolean enabled)
     {
         this.enchantingEnabled = enabled;
-    }
-
-    public int getCount() {
-        return WandUpgradePath.getPathKeys().size();
     }
 }

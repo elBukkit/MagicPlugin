@@ -57,7 +57,7 @@ try {
 	$allSpells = parseConfigFile('spells', $general['load_default_spells'], $general['disable_default_spells']);
 	$wands = parseConfigFile('wands', $general['load_default_wands']);
 	$crafting = parseConfigFile('crafting', $general['load_default_crafting']);
-	$enchantingConfig = parseConfigFile('enchanting', $general['load_default_enchanting']);
+	$enchantingConfig = parseConfigFile('paths', $general['load_default_paths']);
 	$messages = parseConfigFile('messages', true);
 	
 	// Load resource pack textures

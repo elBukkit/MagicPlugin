@@ -16,7 +16,7 @@ public class ConfigurationLoadTask implements Runnable {
     protected ConfigurationSection messages;
     protected ConfigurationSection materials;
     protected ConfigurationSection wands;
-    protected ConfigurationSection enchanting;
+    protected ConfigurationSection paths;
     protected ConfigurationSection crafting;
     protected ConfigurationSection mobs;
     protected ConfigurationSection items;
@@ -77,9 +77,9 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load enchanting paths
         try {
-            enchanting = controller.loadEnchantingConfiguration();
+            paths = controller.loadPathConfiguration();
         } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading enchanting.yml", ex);
+            logger.log(Level.WARNING, "Error loading paths.yml", ex);
             success = false;
         }
 

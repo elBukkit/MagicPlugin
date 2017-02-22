@@ -2,6 +2,9 @@
 
 ## 6.6
 
+ - Enchanting configs renamed to "paths". 
+   - Old enchanting.yml file will be renamed (one-time migration)
+   - enchanting folder no longer used, please move files by hand if you have any in there.
  - Wands no longer have unique ids by default, unless they are tracked and dropped on the ground. 
  - New properties (you may want to set on your wands if you have completely custom configs):
    - unique: if true, wand will always have a unique id (in case you need it for API integration, or want to avoid stacking)

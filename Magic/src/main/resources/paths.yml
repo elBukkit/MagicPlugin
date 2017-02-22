@@ -1,14 +1,14 @@
 #
-# Modify this file to change the available enchanting paths.
+# Modify this file to change the available progression paths.
 # New paths can be added, existing paths can be modified.
 #
-# You can also add individual files to the enchanting/ folder
+# You can also add individual files to the paths/ folder
 #
 # This will change the overall behavior of how wands progress when players
 # spend SP to gain spells (or using the legacy enchanting system).
 #
 # To see the current default builtin configs, look in this folder:
-# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/enchanting
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/paths
 #
 # For customization help see: 
 # https://github.com/elBukkit/MagicPlugin/wiki/Customization

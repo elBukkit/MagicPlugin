@@ -16,7 +16,7 @@ welcome_wand: ticket
 load_default_spells: true
 disable_default_spells: true
 load_default_wands: false
-load_default_enchanting: false
+load_default_paths: false
 load_default_crafting: false
 
 # Don't allow crafting

@@ -260,7 +260,7 @@
 					<exclude>**/defaults/items/*.yml</exclude>
 					<exclude>**/defaults/config/*.yml</exclude>
 					<exclude>**/defaults/crafting/*.yml</exclude>
-					<exclude>**/defaults/enchanting/*.yml</exclude>
+					<exclude>**/defaults/paths/*.yml</exclude>
 					<exclude>**/defaults/materials/*.yml</exclude>
 					<exclude>**/defaults/messages/*.yml</exclude>
 					<exclude>**/defaults/mobs/*.yml</exclude>
@@ -276,7 +276,7 @@
 					<exclude>**/defaults/items/*.yml</exclude>
 					<exclude>**/defaults/config/*.yml</exclude>
 					<exclude>**/defaults/crafting/*.yml</exclude>
-					<exclude>**/defaults/enchanting/*.yml</exclude>
+					<exclude>**/defaults/paths/*.yml</exclude>
 					<exclude>**/defaults/materials/*.yml</exclude>
 					<exclude>**/defaults/messages/*.yml</exclude>
 					<exclude>**/defaults/mobs/*.yml</exclude>
@@ -313,8 +313,8 @@
 										<include name="**/*.yml"></include>
 									</fileset>
 								</concat>
-								<concat destfile="${project.build.directory}/classes/defaults/enchanting.defaults.yml" overwrite="yes" fixlastline="yes">
-									<fileset dir="${project.basedir}/src/main/resources/defaults/enchanting">
+								<concat destfile="${project.build.directory}/classes/defaults/paths.defaults.yml" overwrite="yes" fixlastline="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/paths">
 										<include name="**/*.yml"></include>
 									</fileset>
 								</concat>

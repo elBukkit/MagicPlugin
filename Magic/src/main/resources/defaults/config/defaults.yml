@@ -13,8 +13,8 @@ disable_default_spells: false
 # in the future.
 load_default_wands: true
 
-# Set to false to skip loading defaults/enchanting.defaults.yml entirely.
-load_default_enchanting: true
+# Set to false to skip loading defaults/paths.defaults.yml entirely.
+load_default_paths: true
 
 # Set to false to skip loading defaults/crafting.defaults.yml entirely.
 load_default_crafting: true

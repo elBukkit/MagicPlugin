@@ -312,7 +312,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             if (inheritKey != null && !inheritKey.isEmpty()) {
                 WandUpgradePath inherit = getPath(controller, inheritKey, configuration);
                 if (inherit == null) {
-                    Bukkit.getLogger().warning("Failed to load inherited enchanting path '" + inheritKey + "' for path: " + key);
+                    Bukkit.getLogger().warning("Failed to load inherited path '" + inheritKey + "' for path: " + key);
                     return null;
                 }
                 path = new WandUpgradePath(controller, key, inherit, parameters);
