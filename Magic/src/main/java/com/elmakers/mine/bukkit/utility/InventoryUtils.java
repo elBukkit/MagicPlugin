@@ -158,8 +158,18 @@ public class InventoryUtils extends NMSUtils
         return true;
     }
 
+    public static Object getMetaObject(Object tag, String key) {
+        try {
+            Object metaBase = class_NBTTagCompound_getMethod.invoke(tag, key);
+            return getTagValue(metaBase);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
+    private static Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
         if (tag == null) return null;
         Object value = null;
         if (class_NBTTagDouble.isAssignableFrom(tag.getClass())) {

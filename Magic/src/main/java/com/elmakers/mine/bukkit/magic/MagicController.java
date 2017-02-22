@@ -123,6 +123,7 @@ import org.bukkit.util.Vector;
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
 
+import javax.annotation.Nonnull;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -2868,9 +2869,6 @@ public class MagicController implements MageController {
 	
 	protected boolean addLostWandMarker(LostWand lostWand) {
 		Location location = lostWand.getLocation();
-		if (!lostWand.isIndestructible()) {
-			return true;
-		}
 		return addMarker("wand-" + lostWand.getId(), "Wands", lostWand.getName(), location.getWorld().getName(),
 			location.getBlockX(), location.getBlockY(), location.getBlockZ(), lostWand.getDescription()
 		);
@@ -4768,6 +4766,47 @@ public class MagicController implements MageController {
     
     public void initializeWorldGuardFlags() {
         worldGuardManager.initializeFlags(plugin);
+    }
+
+    @Override
+    public Object getWandProperty(ItemStack item, String key) {
+        if (InventoryUtils.isEmpty(item)) return null;
+        Object wandNode = InventoryUtils.getNode(item, Wand.WAND_KEY);
+        if (wandNode == null) return null;
+        Object value = InventoryUtils.getMetaObject(wandNode, key);
+        if (value == null) {
+            WandTemplate template = getWandTemplate(InventoryUtils.getMetaString(wandNode, "template"));
+            if (template != null) {
+                value = template.getProperty(key);
+            }
+        }
+
+        return value;
+    }
+
+    @Override @Nonnull
+    @SuppressWarnings("unchecked") // I feel like this is safe, but I can't seem to get rid of the unchecked warning here.
+    public <T> T getWandProperty(ItemStack item, @Nonnull String key, @Nonnull T defaultValue) {
+        if (InventoryUtils.isEmpty(item)) return defaultValue;
+        Object wandNode = InventoryUtils.getNode(item, Wand.WAND_KEY);
+        if (wandNode == null) return defaultValue;
+        Object value = InventoryUtils.getMetaObject(wandNode, key);
+        if (value != null) {
+            if (defaultValue.getClass().isAssignableFrom(value.getClass())) {
+                return (T) value;
+            }
+            return defaultValue;
+        }
+
+        WandTemplate template = getWandTemplate(InventoryUtils.getMetaString(wandNode, "template"));
+        if (template != null) {
+            value = template.getProperty(key, defaultValue);
+            if (value != null) {
+                return (T)value;
+            }
+        }
+
+        return defaultValue;
     }
     
     /*

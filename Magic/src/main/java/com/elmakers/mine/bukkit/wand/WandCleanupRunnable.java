@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 
 public class WandCleanupRunnable extends RunnableJob {
@@ -86,13 +85,8 @@ public class WandCleanupRunnable extends RunnableJob {
             Item item = (Item)entity;
             ItemStack itemStack = item.getItemStack();
             if (api.isWand(itemStack)) {
-                Wand wand = api.getWand(itemStack);
-                boolean isLost = false;
-                if (wand instanceof com.elmakers.mine.bukkit.wand.Wand) {
-                    String lostId = ((com.elmakers.mine.bukkit.wand.Wand)wand).getId();
-                    isLost = (lostId == null || lostId.length() == 0);
-                }
-                if (isLost || wand.isLost(lostWand)) {
+            	String lostId = Wand.getWandId(itemStack);
+                if (lostId != null && lostWand.getId().equals(lostId)) {
                     String description = check ? "Found" : "Removed";
                     logger.info(description + " lost wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + " in " +
                             location.getWorld().getName() + " at " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());

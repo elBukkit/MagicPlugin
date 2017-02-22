@@ -628,9 +628,7 @@ public class PlayerController implements Listener {
                 return;
             }
 
-            if (controller.removeLostWand(wand.getId())) {
-                controller.info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getId());
-            }
+            controller.removeLostWand(wand.getId());
         }
 
         // Wands will absorb spells and upgrade items

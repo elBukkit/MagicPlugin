@@ -312,14 +312,15 @@ public class EntityController implements Listener {
     public void onItemDespawn(ItemDespawnEvent event)
     {
         Item entity = event.getEntity();
-        if (Wand.isWand(event.getEntity().getItemStack()))
+        ItemStack itemStack = entity.getItemStack();
+        if (Wand.isWand(itemStack))
         {
-            Wand wand = controller.getWand(entity.getItemStack());
-            if (wand.isIndestructible()) {
+            boolean immortal = controller.getWandProperty(itemStack, "immortal", false);
+            if (immortal) {
                 event.getEntity().setTicksLived(1);
                 event.setCancelled(true);
             } else {
-                controller.removeLostWand(wand.getId());
+                controller.removeLostWand(Wand.getWandId(itemStack));
             }
         }
     }
@@ -369,14 +370,14 @@ public class EntityController implements Listener {
         }
         if (Wand.isWand(spawnedItem))
         {
-            Wand wand = controller.getWand(event.getEntity().getItemStack());
-            if (wand.isIndestructible()) {
+            boolean invulnerable = controller.getWandProperty(spawnedItem, "invulnerable", false);
+            if (invulnerable) {
                 CompatibilityUtils.setInvulnerable(event.getEntity());
-
-                // Don't show non-indestructible wands on dynmap
+            }
+            boolean trackWand = controller.getWandProperty(spawnedItem, "track", false);
+            if (trackWand) {
+                Wand wand = controller.getWand(spawnedItem);
                 controller.addLostWand(wand, event.getEntity().getLocation());
-                Location dropLocation = event.getLocation();
-                controller.info("Wand " + wand.getName() + ", id " + wand.getId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
             }
         } else  {
             // Don't do this, no way to differentiate between a dropped item from a broken block
@@ -420,13 +421,12 @@ public class EntityController implements Listener {
                 ItemStack itemStack = item.getItemStack();
                 if (Wand.isWand(itemStack))
                 {
-                    Wand wand = controller.getWand(item.getItemStack());
-                    if (wand.isIndestructible()) {
+                    boolean invulnerable = controller.getWandProperty(itemStack, "invulnerable", false);
+                    if (invulnerable) {
                         event.setCancelled(true);
                     } else if (event.getDamage() >= itemStack.getDurability()) {
-                        if (controller.removeLostWand(wand.getId())) {
-                            controller.info("Wand " + wand.getName() + ", id " + wand.getId() + " destroyed");
-                        }
+                        String wandId = Wand.getWandId(itemStack);
+                        controller.removeLostWand(wandId);
                     }
                 }
             }

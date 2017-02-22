@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
@@ -21,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-public class BaseMagicProperties {
+public class BaseMagicProperties implements MagicProperties {
 
     protected final @Nonnull MagicController controller;
     private ConfigurationSection configuration = new MemoryConfiguration();
@@ -56,9 +57,19 @@ public class BaseMagicProperties {
         dirty = true;
     }
 
+    @Override
     public Object getProperty(String key) {
         rebuildEffectiveConfiguration();
         return effectiveConfiguration.get(key);
+    }
+
+    @Override
+    @Nonnull
+    public <T> T getProperty(@Nonnull String key, @Nonnull T defaultValue) {
+        rebuildEffectiveConfiguration();
+        Object value = effectiveConfiguration.get(key);
+        if (value == null || !(defaultValue.getClass().isAssignableFrom(value.getClass()))) return defaultValue;
+        return (T)value;
     }
 
     public ConfigurationSection getConfiguration() {

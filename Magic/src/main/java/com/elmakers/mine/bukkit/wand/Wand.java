@@ -38,7 +38,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -110,7 +109,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             "enchant_count", "max_enchant_count",
             "quick_cast", "left_click", "right_click", "drop", "swap",
 			"block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
-			"unique"
+			"unique", "track", "invulnerable", "immortal"
     );
 
     private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
@@ -634,20 +633,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
     public void newId() {
-    	if (this.isSingleUse) {
-			id = template;
-    		return;
-		}
-    	if (!this.isUpgrade) {
-            id = UUID.randomUUID().toString();
-        } else {
-            id = null;
-        }
+		id = UUID.randomUUID().toString();
         setProperty("id", id);
     }
 
     public void checkId() {
-        if ((id == null || id.length() == 0) && !this.isUpgrade) {
+        if (id == null || id.length() == 0) {
             newId();
         }
     }
@@ -2207,11 +2198,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (InventoryUtils.isEmpty(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null) return null;
-        String id = InventoryUtils.getMetaString(wandNode, "id");
-        if (id == null || id.isEmpty()) {
-			id = InventoryUtils.getMetaString(wandNode, "template");
-		}
-        return id;
+        return InventoryUtils.getMetaString(wandNode, "id");
     }
 
 	public static String getSpell(ItemStack item) {
@@ -3728,6 +3715,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     public LostWand makeLost(Location location)
     {
 		checkId();
+		saveState();
         return new LostWand(this, location);
     }
 

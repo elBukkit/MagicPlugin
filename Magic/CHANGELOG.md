@@ -2,6 +2,14 @@
 
 ## 6.6
 
+ - Wands no longer have unique ids by default, unless they are tracked and dropped on the ground. 
+ - New properties (you may want to set on your wands if you have completely custom configs):
+   - unique: if true, wand will always have a unique id (in case you need it for API integration, or want to avoid stacking)
+   - track: if true, wand will be tracked when dropped on the ground
+   - immortal: if true, dropped wands will not be allowed to despawn
+   - invulnerable: if true, dropped wands cannot be destroyed
+ - Fix Heroes skill selector breaking when there are unavailable skills shown
+
 ## 6.5
 
  - Wands now default to no actions if none are specified in the configs. You may need to add the following to your custom wands:
