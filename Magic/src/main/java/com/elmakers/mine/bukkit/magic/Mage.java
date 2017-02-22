@@ -914,7 +914,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public boolean setOffhandActive(boolean active) {
-        boolean wasActive = active;
+        boolean wasActive = offhandCast;
         this.offhandCast = active;
         return wasActive;
     }
