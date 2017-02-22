@@ -33,6 +33,8 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nonnull;
+
 /**
  * The controller is used for more advanced plugin interaction, and is
  * used heavily by Spells themselves to interact with the Magic plugin's
@@ -354,4 +356,7 @@ public interface MageController {
     public Double getWorth(ItemStack item);
     public boolean disguise(Entity entity, ConfigurationSection configuration);
     public void managePlayerData(boolean external, boolean backupInventories);
+
+    Object getWandProperty(ItemStack itemStack, String key);
+    @Nonnull <T> T getWandProperty(ItemStack itemStack, @Nonnull String key, @Nonnull T defaultValue);
 }
