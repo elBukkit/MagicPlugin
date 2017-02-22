@@ -2,12 +2,13 @@ package com.elmakers.mine.bukkit.api.wand;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Collection;
 import java.util.Set;
 
-public interface WandTemplate {
+public interface WandTemplate extends MagicProperties {
     public String getKey();
     public Collection<EffectPlayer> getEffects(String key);
     public ConfigurationSection getConfiguration();
