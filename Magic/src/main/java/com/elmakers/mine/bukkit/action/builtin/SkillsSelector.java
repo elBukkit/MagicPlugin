@@ -153,10 +153,13 @@ public class SkillsSelector implements GUIAction {
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
                 CompatibilityUtils.setDisplayName(skillItem, nameTemplate.replace("$skill", skill.heroesSkill));
+                // It would be cool to be able to do this, but would need to look up Skills Template,
+                // and don't want to mess with that until I have a Heroes test environment set up.
+                /*
                 MaterialAndData disabledIcon = skill.spell.getDisabledIcon();
                 if (disabledIcon != null) {
                     disabledIcon.applyToItem(skillItem);
-                }
+                }*/
             }
             displayInventory.addItem(skillItem);
         }
