@@ -2,16 +2,13 @@
 
 ## 6.6
 
- - Save spells as list
- - Separate out spells/brushes from the spell/brush inventory .. can't decide if we need this but I keep coming back to it
-
 ## 7.0
  - Refactor MageProperties to be contained rather than inherited?
  - Mage needs MageProperties. Maybe per-path? Per "class"? Not really sure yet.
  - Wand templates will specify properties that come from the Mage versus item data. 
+ - Need a default class, Mages have an active class
  - Handle migration for the above.
  - How to handle /wand commands used for Mage properties- just transfer to mage, probably?
- - Rename /mage configure and describe to getdata setdata (?)
  - Implement /mage configure, add, remove, describe
  - Option to filter spells that show on wand by what's available on its current path
  - Might need to add yet another category of spells to paths, those that are allowed but never appear in the spell shop

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -38,6 +38,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -80,7 +81,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     public final static String[] EMPTY_PARAMETERS = new String[0];
 
     public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
-            "active_spell", "active_material",
+            "active_spell", "active_brush",
             "path", "template", "passive",
             "mana", "mana_regeneration", "mana_max", "mana_max_boost",
             "mana_regeneration_boost",
@@ -106,7 +107,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             "protection", "protection_physical", "protection_projectiles",
             "protection_falling", "protection_fire", "protection_explosions",
             "potion_effects",
-            "materials", "spells", "powered", "protected", "heroes",
+            "brushes", "brush_inventory", "spells", "spell_inventory",
+			"powered", "protected", "heroes",
             "enchant_count", "max_enchant_count",
             "quick_cast", "left_click", "right_click", "drop", "swap",
 			"block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
@@ -152,12 +154,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	private String id = "";
 	private List<Inventory> hotbars;
 	private List<Inventory> inventories;
-    private Map<String, Integer> spells = new HashMap<>();
+    private Map<String, Integer> spellInventory = new HashMap<>();
+    private Set<String> spells = new LinkedHashSet<>();
     private Map<String, Integer> spellLevels = new HashMap<>();
-    private Map<String, Integer> brushes = new HashMap<>();
+    private Map<String, Integer> brushInventory = new HashMap<>();
+	private Set<String> brushes = new LinkedHashSet<>();
 	
 	private String activeSpell = "";
-	private String activeMaterial = "";
+	private String activeBrush = "";
 	protected String wandName = "";
 	protected String description = "";
 	private String owner = "";
@@ -948,38 +952,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	@Override
     public Set<String> getSpells() {
-		return spells.keySet();
-	}
-
-    protected String getSpellString() {
-		Set<String> spellNames = new TreeSet<>();
-        for (Map.Entry<String, Integer> spellSlot : spells.entrySet()) {
-            Integer slot = spellSlot.getValue();
-            String spellKey = spellSlot.getKey();
-            if (slot != null) {
-                spellKey += "@" + slot;
-            }
-            spellNames.add(spellKey);
-        }
-		return StringUtils.join(spellNames, ",");
+		return spells;
 	}
 
 	@Override
     public Set<String> getBrushes() {
-		return brushes.keySet();
-	}
-
-    protected String getMaterialString() {
-		Set<String> materialNames = new TreeSet<>();
-        for (Map.Entry<String, Integer> brushSlot : brushes.entrySet()) {
-            Integer slot = brushSlot.getValue();
-            String materialKey = brushSlot.getKey();
-            if (slot != null) {
-                materialKey += "@" + slot;
-            }
-            materialNames.add(materialKey);
-        }
-		return StringUtils.join(materialNames, ",");
+		return brushes;
 	}
 	
 	protected Integer parseSlot(String[] pieces) {
@@ -1084,85 +1062,153 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			addToInventory(existing);
 		}
 	}
-	
-	protected void parseInventoryStrings(String spellString, String materialString) {
-        // Force an update of the display inventory since chest mode is a different size
-        displayInventory = null;
+
+	protected void buildInventory() {
+		// Force an update of the display inventory since chest mode is a different size
+		displayInventory = null;
 
 		for (Inventory hotbar : hotbars) {
 			hotbar.clear();
 		}
 		inventories.clear();
-        spells.clear();
-        spellLevels.clear();
-        brushes.clear();
 
+		List<ItemStack> unsorted = new ArrayList<>();
+		for (String spellKey : spells) {
+			SpellTemplate spell = controller.getSpellTemplate(spellKey);
+			ItemStack itemStack = createSpellItem(spell, "", controller, getActiveMage(), this, false);
+			if (itemStack != null)
+			{
+				Integer slot = spellInventory.get(spellKey);
+				if (slot == null) {
+					unsorted.add(itemStack);
+				} else {
+					addToInventory(itemStack, slot);
+				}
+			}
+		}
+		WandMode brushMode = getBrushMode();
+		for (String brushKey : brushes) {
+			boolean addToInventory = brushMode == WandMode.INVENTORY || (MaterialBrush.isSpecialMaterialKey(brushKey) && !MaterialBrush.isSchematic(brushKey));
+			if (addToInventory)
+			{
+				ItemStack itemStack = createBrushIcon(brushKey);
+				if (itemStack == null) {
+					controller.getPlugin().getLogger().warning("Unable to create brush icon for key " + brushKey);
+					continue;
+				}
+				Integer slot = brushInventory.get(brushKey);
+				if (activeBrush == null || activeBrush.length() == 0) activeBrush = brushKey;
+				addToInventory(itemStack, slot);
+			}
+		}
+		for (ItemStack unsortedItem : unsorted) {
+			addToInventory(unsortedItem);
+		}
+
+		updateHasInventory();
+		if (openInventoryPage >= inventories.size()) {
+			openInventoryPage = 0;
+		}
+	}
+
+	protected void parseSpells(String spellString) {
 		// Support YML-List-As-String format
+		// Maybe don't need this anymore since loading lists is now a separate path
 		spellString = spellString.replaceAll("[\\]\\[]", "");
 		String[] spellNames = StringUtils.split(spellString, ',');
-		for (String spellName : spellNames)
-        {
+		loadSpells(Arrays.asList(spellNames));
+	}
+
+	protected void clearSpells() {
+		spellLevels.clear();
+		spells.clear();
+	}
+
+	protected void loadSpells(Collection<String> spellKeys) {
+    	clearSpells();
+		for (String spellName : spellKeys)
+		{
 			String[] pieces = StringUtils.split(spellName, '@');
 			Integer slot = parseSlot(pieces);
 
-            // Handle aliases and upgrades smoothly
-            String loadedKey = pieces[0].trim();
-            SpellKey spellKey = new SpellKey(loadedKey);
-            SpellTemplate spell = controller.getSpellTemplate(loadedKey);
-            // Downgrade spells if higher levels have gone missing
-            while (spell == null && spellKey.getLevel() > 0)
-            {
-                spellKey = new SpellKey(spellKey.getBaseKey(), spellKey.getLevel() - 1);
-                spell = controller.getSpellTemplate(spellKey.getKey());
-            }
-            if (spell != null)
-            {
-                spellKey = spell.getSpellKey();
-                Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
-                if (currentLevel == null || currentLevel < spellKey.getLevel()) {
-                    spellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
-                    spells.put(spellKey.getKey(), slot);
-                    if (currentLevel != null)
-                    {
-                        SpellKey oldKey = new SpellKey(spellKey.getBaseKey(), currentLevel);
-                        spells.remove(oldKey.getKey());
-                    }
-                }
-                if (activeSpell == null || activeSpell.length() == 0)
-                {
+			// Handle aliases and upgrades smoothly
+			String loadedKey = pieces[0].trim();
+			SpellKey spellKey = new SpellKey(loadedKey);
+			SpellTemplate spell = controller.getSpellTemplate(loadedKey);
+			// Downgrade spells if higher levels have gone missing
+			while (spell == null && spellKey.getLevel() > 0)
+			{
+				spellKey = new SpellKey(spellKey.getBaseKey(), spellKey.getLevel() - 1);
+				spell = controller.getSpellTemplate(spellKey.getKey());
+			}
+			if (spell != null)
+			{
+				spellKey = spell.getSpellKey();
+				Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
+				if (currentLevel == null || currentLevel < spellKey.getLevel()) {
+					spellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
+					if (slot != null) {
+						spellInventory.put(spellKey.getKey(), slot);
+					}
+					spells.add(spellKey.getKey());
+					if (currentLevel != null)
+					{
+						SpellKey oldKey = new SpellKey(spellKey.getBaseKey(), currentLevel);
+						spellInventory.remove(oldKey.getKey());
+						spells.remove(oldKey.getKey());
+					}
+				}
+				if (activeSpell == null || activeSpell.length() == 0)
+				{
 					activeSpell = spellKey.getKey();
-                }
-            }
-            ItemStack itemStack = createSpellItem(spell, "", controller, getActiveMage(), this, false);
-			if (itemStack != null)
-            {
-				addToInventory(itemStack, slot);
-            }
+				}
+			}
 		}
-		materialString = materialString.replaceAll("[\\]\\[]", "");
-		String[] materialNames = StringUtils.split(materialString, ',');
-        WandMode brushMode = getBrushMode();
-		for (String materialName : materialNames) {
+	}
+
+	protected void parseBrushes(String brushString) {
+		// Support YML-List-As-String format
+		// Maybe don't need this anymore since loading lists is now a separate path
+		brushString = brushString.replaceAll("[\\]\\[]", "");
+		String[] brushNames = StringUtils.split(brushString, ',');
+		loadBrushes(Arrays.asList(brushNames));
+	}
+
+	protected void clearBrushes() {
+		brushes.clear();
+	}
+
+	protected void loadBrushes(Collection<String> brushKeys) {
+    	clearBrushes();
+		for (String materialName : brushKeys) {
 			String[] pieces = StringUtils.split(materialName, '@');
 			Integer slot = parseSlot(pieces);
 			String materialKey = pieces[0].trim();
-            brushes.put(materialKey, slot);
-            boolean addToInventory = brushMode == WandMode.INVENTORY || (MaterialBrush.isSpecialMaterialKey(materialKey) && !MaterialBrush.isSchematic(materialKey));
-            if (addToInventory)
-            {
-                ItemStack itemStack = createBrushIcon(materialKey);
-                if (itemStack == null) {
-                    controller.getPlugin().getLogger().warning("Unable to create material icon for key " + materialKey);
-                    continue;
-                }
-                if (activeMaterial == null || activeMaterial.length() == 0) activeMaterial = materialKey;
-                addToInventory(itemStack, slot);
-            }
+			if (slot != null) {
+				brushInventory.put(materialKey, slot);
+			}
+			brushes.add(materialKey);
 		}
-		updateHasInventory();
-        if (openInventoryPage >= inventories.size()) {
-            openInventoryPage = 0;
-        }
+	}
+
+	protected void loadBrushInventory(Map<String, ? extends Object> inventory) {
+    	if (inventory == null) return;
+    	for (Map.Entry<String, ?> brushEntry : inventory.entrySet()) {
+    		Object slot = brushEntry.getValue();
+    		if (slot != null && slot instanceof Integer) {
+    			brushInventory.put(brushEntry.getKey(), (Integer)slot);
+			}
+		}
+	}
+
+	protected void loadSpellInventory(Map<String, ? extends Object> inventory) {
+		if (inventory == null) return;
+		for (Map.Entry<String, ? extends Object> spellEntry : inventory.entrySet()) {
+			Object slot = spellEntry.getValue();
+			if (slot != null && slot instanceof Integer) {
+				spellInventory.put(spellEntry.getKey(), (Integer)slot);
+			}
+		}
 	}
 
     protected ItemStack createSpellIcon(SpellTemplate spell) {
@@ -1214,7 +1260,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 		InventoryUtils.makeUnbreakable(itemStack);
         InventoryUtils.hideFlags(itemStack, (byte)63);
-		updateSpellItem(controller.getMessages(), itemStack, spell, args, mage, wand, wand == null ? null : wand.activeMaterial, isItem);
+		updateSpellItem(controller.getMessages(), itemStack, spell, args, mage, wand, wand == null ? null : wand.activeBrush, isItem);
 		return itemStack;
 	}
 	
@@ -1333,22 +1379,40 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         if (isUpgrade) {
             node.set("upgrade", true);
         }
-
-        // Change some CSV to lists
-        if (node.contains("spells") && node.isString("spells")) {
-            node.set("spells", Arrays.asList(StringUtils.split(node.getString("spells"), ',')));
-        }
-        if (node.contains("materials") && node.isString("materials")) {
-            node.set("materials", Arrays.asList(StringUtils.split(node.getString("materials"), ',')));
-        }
     }
 
     public void updateBrushes() {
-		setProperty("materials", getMaterialString());
+		if (brushes.isEmpty()) {
+			setProperty("brushes", null);
+		} else {
+			setProperty("brushes", new ArrayList<>(brushes));
+		}
+		updateBrushInventory();
 	}
 
 	public void updateSpells() {
-		setProperty("spells", getSpellString());
+		if (spells.isEmpty()) {
+			setProperty("spells", null);
+		} else {
+			setProperty("spells", new ArrayList<>(spells));
+		}
+		updateSpellInventory();
+	}
+
+	public void updateBrushInventory() {
+    	if (brushInventory.isEmpty()) {
+			setProperty("brush_inventory", null);
+		} else {
+			setProperty("brush_inventory", brushInventory);
+		}
+	}
+
+	public void updateSpellInventory() {
+		if (spellInventory.isEmpty()) {
+			setProperty("spell_inventory", null);
+		} else {
+			setProperty("spell_inventory", spellInventory);
+		}
 	}
 
 	public void setEffectColor(String hexColor) {
@@ -1557,10 +1621,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		path = wandConfig.getString("path");
 
 		activeSpell = wandConfig.getString("active_spell");
-		activeMaterial = wandConfig.getString("active_material");
+		activeBrush = wandConfig.getString("active_brush", wandConfig.getString("active_material"));
 
-		String wandMaterials = "";
-		String wandSpells = "";
 		if (wandConfig.contains("hotbar_count")) {
 			int newCount = Math.max(1, wandConfig.getInt("hotbar_count"));
 			if (newCount != hotbars.size() || newCount > hotbars.size()) {
@@ -1672,14 +1734,63 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			hasSpellProgression = false;
 		}
 
-		wandMaterials = wandConfig.getString("materials", wandMaterials);
-		wandSpells = wandConfig.getString("spells", wandSpells);
-
-		if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
-			wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
-			wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
-			parseInventoryStrings(wandSpells, wandMaterials);
+		brushInventory.clear();
+		spellInventory.clear();
+		Object wandSpells = wandConfig.get("spells");
+		if (wandSpells != null) {
+			if (wandSpells instanceof String) {
+				parseSpells((String)wandSpells);
+			} else if (wandSpells instanceof Collection) {
+				@SuppressWarnings("unchecked")
+				Collection<String> spellList = (Collection<String>)wandSpells;
+				loadSpells(spellList);
+			} else {
+				clearSpells();
+			}
+		} else {
+			clearSpells();
 		}
+
+		Object wandBrushes = wandConfig.get("brushes", wandConfig.get("materials"));
+		if (wandBrushes != null) {
+			if (wandBrushes instanceof String) {
+				parseBrushes((String)wandBrushes);
+			} else if (wandBrushes instanceof Collection) {
+				@SuppressWarnings("unchecked")
+				Collection<String> brushList = (Collection<String>)wandBrushes;
+				loadBrushes(brushList);
+			} else {
+				clearBrushes();
+			}
+		} else {
+			clearBrushes();
+		}
+
+		Object brushInventoryRaw = wandConfig.get("brush_inventory");
+		if (brushInventoryRaw != null) {
+			// Not sure this will ever appear as a Map, but just in case
+			if (brushInventoryRaw instanceof Map) {
+				@SuppressWarnings("unchecked")
+				Map<String, Integer> brushInventory = (Map<String, Integer>)brushInventoryRaw;
+				loadBrushInventory(brushInventory);
+			} else if (brushInventoryRaw instanceof ConfigurationSection) {
+				loadBrushInventory(NMSUtils.getMap((ConfigurationSection)brushInventoryRaw));
+
+			}
+		}
+
+		Object spellInventoryRaw = wandConfig.get("spell_inventory");
+		if (spellInventoryRaw != null) {
+			// Not sure this will ever appear as a Map, but just in case
+			if (spellInventoryRaw instanceof Map) {
+				@SuppressWarnings("unchecked")
+				Map<String, Integer> spellInventory = (Map<String, Integer>)spellInventoryRaw;
+				loadSpellInventory(spellInventory);
+			} else if (spellInventoryRaw instanceof ConfigurationSection) {
+				loadSpellInventory(NMSUtils.getMap((ConfigurationSection)spellInventoryRaw));
+			}
+		}
+		buildInventory();
 
 		castOverrides = null;
 		if (wandConfig.contains("overrides")) {
@@ -1840,7 +1951,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 	
 	private String getActiveWandName(SpellTemplate spell) {
-		return getActiveWandName(spell, MaterialBrush.parseMaterialKey(activeMaterial));
+		return getActiveWandName(spell, MaterialBrush.parseMaterialKey(activeBrush));
 	}
 
     private String getActiveWandName(MaterialBrush brush) {
@@ -2058,9 +2169,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         {
             addSpellLore(messages, spell, lore, getActiveMage(), this);
 		}
-        if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
+        if (materialCount == 1 && activeBrush != null && activeBrush.length() > 0)
         {
-            lore.add(getBrushDisplayName(messages, MaterialBrush.parseMaterialKey(activeMaterial)));
+            lore.add(getBrushDisplayName(messages, MaterialBrush.parseMaterialKey(activeBrush)));
         }
 
         if (spellCount > 0) {
@@ -2249,7 +2360,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (isSpell(item)) {
 			Spell spell = mage.getSpell(getSpell(item));
 			if (spell != null) {
-				updateSpellItem(controller.getMessages(), item, spell, "", getActiveMage(), activeName ? this : null, activeMaterial, false);
+				updateSpellItem(controller.getMessages(), item, spell, "", getActiveMage(), activeName ? this : null, activeBrush, false);
 			}
 		} else if (isBrush(item)) {
 			updateBrushItem(controller.getMessages(), item, getBrush(item), activeName ? this : null);
@@ -2468,11 +2579,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     protected boolean updateSlot(int slot, ItemStack item) {
         String spellKey = getSpell(item);
         if (spellKey != null) {
-            spells.put(spellKey, slot);
+            spellInventory.put(spellKey, slot);
         } else {
             String brushKey = getBrush(item);
             if (brushKey != null) {
-                brushes.put(brushKey, slot);
+                brushInventory.put(brushKey, slot);
             } else if (mage != null && item != null && item.getType() != Material.AIR) {
                 // Must have been an item inserted directly into player's inventory?
                 mage.giveItem(item);
@@ -2767,11 +2878,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	private void updateActiveMaterial() {
 		if (mage == null) return;
 		
-		if (activeMaterial == null) {
+		if (activeBrush == null) {
 			mage.clearBuildingMaterial();
 		} else {
 			com.elmakers.mine.bukkit.api.block.MaterialBrush brush = mage.getBrush();
-			brush.update(activeMaterial);
+			brush.update(activeBrush);
 		}
 	}
 	
@@ -2914,7 +3025,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         WandMode mode = getMode();
         try {
             saveInventory();
-            updateSpells();
+            updateSpellInventory();
+			updateBrushInventory();
             inventoryIsOpen = false;
             if (mage != null) {
                 if (!playPassiveEffects("close") && inventoryCloseSound != null) {
@@ -3010,7 +3122,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 		this.mage = mage;
 
-		setProperty("fill", null);
+		if (autoFill) setProperty("fill", false);
 		autoFill = false;
 		updateSpells();
 		saveState();
@@ -3045,10 +3157,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     }
 	
 	protected void checkActiveMaterial() {
-		if (activeMaterial == null || activeMaterial.length() == 0) {
+		if (activeBrush == null || activeBrush.length() == 0) {
 			Set<String> materials = getBrushes();
 			if (materials.size() > 0) {
-				activeMaterial = materials.iterator().next();
+				activeBrush = materials.iterator().next();
 			}
 		}
 	}
@@ -3375,7 +3487,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
     @Override
     public String getActiveBrushKey() {
-        return activeMaterial;
+        return activeBrush;
     }
 
     @Override
@@ -3616,14 +3728,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		Set<String> materialsSet = getBrushes();
 		ArrayList<String> materials = new ArrayList<>(materialsSet);
 		if (materials.size() == 0) return;
-		if (activeMaterial == null) {
+		if (activeBrush == null) {
 			setActiveBrush(StringUtils.split(materials.get(0), '@')[0]);
 			return;
 		}
 		
 		int materialIndex = 0;
 		for (int i = 0; i < materials.size(); i++) {
-			if (StringUtils.split(materials.get(i),'@')[0].equals(activeMaterial)) {
+			if (StringUtils.split(materials.get(i),'@')[0].equals(activeBrush)) {
 				materialIndex = i;
 				break;
 			}
@@ -3865,7 +3977,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 for (String skillKey : skills)
                 {
                     String heroesKey = "heroes*" + skillKey;
-                    if (!spells.containsKey(heroesKey))
+                    if (!spells.contains(heroesKey))
                     {
                         addSpell(heroesKey);
                     }
@@ -3957,10 +4069,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         organizer.organize();
         openInventoryPage = 0;
 		currentHotbar = 0;
-        autoOrganize = false;
-        setProperty("organize", null);
-		updateSpells();
-		updateBrushes();
+        if (autoOrganize) setProperty("organize", false);
+		autoOrganize = false;
+		updateSpellInventory();
+		updateBrushInventory();
 		if (mage != null) {
 			saveState();
 			loadProperties();
@@ -3976,10 +4088,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         organizer.alphabetize();
         openInventoryPage = 0;
 		currentHotbar = 0;
-        autoAlphabetize = false;
-		setProperty("alphabetize", null);
-		updateSpells();
-		updateBrushes();
+		if (autoAlphabetize) setProperty("alphabetize", false);
+		autoAlphabetize = false;
+		updateSpellInventory();
+		updateBrushInventory();
 		if (mage != null) {
 			saveState();
 			loadProperties();
@@ -4102,12 +4214,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                         if (checkKey.getBaseKey().equals(spellKey.getBaseKey())) {
                             inventorySlot = currentSlot;
                             inventory.setItem(index, null);
-                            spells.remove(checkKey.getKey());
+							spells.remove(checkKey.getKey());
+							spellInventory.remove(checkKey.getKey());
                         } else {
                             for (SpellKey key : spellsToRemove) {
                                 if (checkKey.getBaseKey().equals(key.getBaseKey())) {
                                     inventory.setItem(index, null);
                                     spells.remove(key.getKey());
+									spellInventory.remove(checkKey.getKey());
                                     spellLevels.remove(key.getBaseKey());
                                 }
                             }
@@ -4119,7 +4233,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
         spellLevels.put(spellKey.getBaseKey(), level);
-        spells.put(template.getKey(), inventorySlot);
+        spellInventory.put(template.getKey(), inventorySlot);
+		spells.add(template.getKey());
 
 		if (currentLevel != null) {
 			if (activeSpell != null && !activeSpell.isEmpty()) {
@@ -4255,9 +4370,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         int inventoryCount = inventories.size();
         int brushCount = brushes.size();
 
-        brushes.put(materialKey, null);
+        brushInventory.put(materialKey, null);
+        brushes.add(materialKey);
 		addToInventory(itemStack);
-		if (activeMaterial == null || activeMaterial.length() == 0) {
+		if (activeBrush == null || activeBrush.length() == 0) {
 			activateBrush(materialKey);
 		} else {
 			updateInventory();
@@ -4326,8 +4442,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     }
 
 	public void activateBrush(String materialKey) {
-		this.activeMaterial = materialKey;
-		setProperty("active_material", this.activeMaterial);
+		this.activeBrush = materialKey;
+		setProperty("active_brush", this.activeBrush);
         saveState();
 		updateName();
 		updateActiveMaterial();
@@ -4358,10 +4474,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (!isModifiable() || materialKey == null) return false;
 		
 		saveInventory();
-		if (materialKey.equals(activeMaterial)) {
-			activeMaterial = null;
+		if (materialKey.equals(activeBrush)) {
+			activeBrush = null;
 		}
-        brushes.remove(materialKey);
+        brushInventory.remove(materialKey);
+		brushes.remove(materialKey);
 		List<Inventory> allInventories = getAllInventories();
 		boolean found = false;
 		for (Inventory inventory : allInventories) {
@@ -4373,10 +4490,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 					if (itemKey.equals(materialKey)) {
 						found = true;
 						inventory.setItem(index, null);
-					} else if (activeMaterial == null) {
-						activeMaterial = materialKey;
+					} else if (activeBrush == null) {
+						activeBrush = materialKey;
 					}
-					if (found && activeMaterial != null) {
+					if (found && activeBrush != null) {
 						break;
 					}
 				}
@@ -4399,7 +4516,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (spellName.equals(activeSpell)) {
 			setActiveSpell(null);
 		}
-        spells.remove(spellName);
+        spellInventory.remove(spellName);
+		spells.remove(spellName);
         SpellKey spellKey = new SpellKey(spellName);
         spellLevels.remove(spellKey.getBaseKey());
 		
@@ -4635,15 +4753,15 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     }
 
     protected Map<String, Integer> getSpellInventory() {
-        return new HashMap<>(spells);
+        return new HashMap<>(spellInventory);
     }
 
     protected Map<String, Integer> getBrushInventory() {
-        return new HashMap<>(brushes);
+        return new HashMap<>(brushInventory);
     }
 
     protected void updateSpellInventory(Map<String, Integer> updateSpells) {
-        for (Map.Entry<String, Integer> spellEntry : spells.entrySet()) {
+        for (Map.Entry<String, Integer> spellEntry : spellInventory.entrySet()) {
             String spellKey = spellEntry.getKey();
             Integer slot = updateSpells.get(spellKey);
             if (slot != null) {
@@ -4653,7 +4771,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     }
 
     protected void updateBrushInventory(Map<String, Integer> updateBrushes) {
-        for (Map.Entry<String, Integer> brushEntry : brushes.entrySet()) {
+        for (Map.Entry<String, Integer> brushEntry : brushInventory.entrySet()) {
             String brushKey = brushEntry.getKey();
             Integer slot = updateBrushes.get(brushKey);
             if (slot != null) {
