@@ -439,7 +439,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
-			onWandDescribe(sender, player, args2.length > 0);
+			onWandDescribe(sender, player, args2);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("upgrade"))
@@ -531,7 +531,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 
-	public boolean onWandDescribe(CommandSender sender, Player player, boolean details) {
+	public boolean onWandDescribe(CommandSender sender, Player player, String[] parameters) {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (itemInHand == null) {
             if (sender != player) {
@@ -542,7 +542,6 @@ public class WandCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-		boolean isWand = false;
         if (api.isSpell(itemInHand)) {
             String spellKey = api.getSpell(itemInHand);
             sender.sendMessage(ChatColor.GOLD + "Spell: " + spellKey);
@@ -558,41 +557,20 @@ public class WandCommandExecutor extends MagicTabExecutor {
             MaterialAndData brush = new MaterialAndData(brushKey);
             sender.sendMessage(" " + ChatColor.GRAY + brush.getName());
         } else if (api.isWand(itemInHand) || api.isUpgrade(itemInHand)) {
-			isWand = true;
             Wand wand = api.getWand(itemInHand);
-            wand.describe(sender);
-        } else {
-			details = true;
-		}
-
-        if (details) {
-			if (isWand) {
-				long wandId = System.identityHashCode(NMSUtils.getHandle(itemInHand));
-				sender.sendMessage(ChatColor.AQUA + "Id: " + ChatColor.DARK_AQUA + Long.toHexString(wandId));
-				Wand activeWand = api.getMage(player).getActiveWand();
-				if (activeWand == null) {
-					if (api.isWand(itemInHand) && !api.isUpgrade(itemInHand)) {
-						sender.sendMessage(ChatColor.RED + "Mis-match - player has no active wand!");
-					}
+            if (parameters.length == 0) {
+				wand.describe(sender);
+			} else {
+            	Object property = wand.getProperty(parameters[0]);
+            	if (property == null) {
+					sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.RED + "(Not Set)");
 				} else {
-					long activeWandId = System.identityHashCode(NMSUtils.getHandle(activeWand.getItem()));
-					if (activeWandId != wandId) {
-						sender.sendMessage(ChatColor.RED + " Mis-match - Active wand id: " + ChatColor.DARK_RED + Long.toHexString(activeWandId));
-					}
+					sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.AQUA + property.toString());
 				}
 			}
-			if (itemInHand.getType() == Material.SKULL_ITEM) {
-				String skullUrl = InventoryUtils.getSkullURL(itemInHand);
-				if (skullUrl != null) {
-					sender.sendMessage(ChatColor.AQUA + "Player skull:");
-					sender.sendMessage(skullUrl);
-				}
-			}
-			YamlConfiguration configuration = new YamlConfiguration();
-			configuration.set("item", itemInHand);
-            String itemString = configuration.saveToString().replace("item:", "").replace(ChatColor.COLOR_CHAR, '&');
-            sender.sendMessage(itemString);
-        }
+        } else {
+			sender.sendMessage(ChatColor.RED + "That is not a magic item");
+		}
 
         return true;
 	}

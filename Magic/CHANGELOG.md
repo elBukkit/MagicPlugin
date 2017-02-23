@@ -15,6 +15,7 @@
  - Simplified enchanting configs so they are easier to understand and override.
  - Fix the bending example configs
  - /mage configure and /mage describe commands changed to /mage setdata and /mage getdata
+ - /wand describe can now be given a parameter to list a specific wand property
 
 ## 6.5
 
