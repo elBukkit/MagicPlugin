@@ -25,7 +25,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (args.length == 0)
 		{
-			if (api.hasPermission(sender, "Magic.commands.mage")) {
+			if (!api.hasPermission(sender, "Magic.commands.mage")) {
 				sendNoPermission(sender);
 				return true;
 			}
@@ -78,23 +78,23 @@ public class MageCommandExecutor extends MagicMapExecutor {
 
 		if (subCommand.equalsIgnoreCase("check"))
 		{
-			return onMagicCheck(sender, player, args2);
+			return onMageCheck(sender, player, args2);
 		}
         if (subCommand.equalsIgnoreCase("delete"))
         {
-            return onMagicDelete(sender, player);
+            return onMageDelete(sender, player);
         }
 		if (subCommand.equalsIgnoreCase("debug"))
 		{
-			return onMagicDebug(sender, player, args2);
+			return onMageDebug(sender, player, args2);
 		}
-		if (subCommand.equalsIgnoreCase("describe"))
+		if (subCommand.equalsIgnoreCase("getdata"))
 		{
-			return onMagicDescribe(sender, player, args2);
+			return onMageGetData(sender, player, args2);
 		}
-		if (subCommand.equalsIgnoreCase("configure"))
+		if (subCommand.equalsIgnoreCase("setdata"))
 		{
-			return onMagicConfigure(sender, player, args2);
+			return onMageSetData(sender, player, args2);
 		}
         if (subCommand.equalsIgnoreCase("unbind"))
         {
@@ -110,8 +110,8 @@ public class MageCommandExecutor extends MagicMapExecutor {
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<>();
 		if (args.length == 1) {
-            addIfPermissible(sender, options, "Magic.commands.mage.", "describe");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "configure");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "getdata");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "setdata");
             addIfPermissible(sender, options, "Magic.commands.mage.", "check");
             addIfPermissible(sender, options, "Magic.commands.mage.", "debug");
 			addIfPermissible(sender, options, "Magic.commands.mage.", "delete");
@@ -131,21 +131,21 @@ public class MageCommandExecutor extends MagicMapExecutor {
 		return options;
 	}
 
-    public boolean onMagicCheck(CommandSender sender, Player player, String[] args)
+    public boolean onMageCheck(CommandSender sender, Player player, String[] args)
     {
         Mage mage = api.getMage(player);
 		mage.debugPermissions(sender, null);
         return true;
     }
 
-    public boolean onMagicDelete(CommandSender sender, Player player)
+    public boolean onMageDelete(CommandSender sender, Player player)
     {
         api.getController().deleteMage(player.getUniqueId().toString());
         sender.sendMessage(ChatColor.RED + "Deleted player " + player.getName());
         return true;
     }
 
-    public boolean onMagicDebug(CommandSender sender, Player player, String[] args)
+    public boolean onMageDebug(CommandSender sender, Player player, String[] args)
     {
         Mage mage = api.getMage(player);
         if (args.length > 0) {
@@ -175,7 +175,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
         return true;
     }
 
-    public boolean onMagicDescribe(CommandSender sender, Player player, String[] args)
+    public boolean onMageGetData(CommandSender sender, Player player, String[] args)
     {
         Mage mage = api.getMage(player);
         ConfigurationSection data = mage.getData();
@@ -203,7 +203,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
             }
             ConfigurationSection subSection = data.getConfigurationSection(args[0]);
             if (subSection == null) {
-                sender.sendMessage(ChatColor.RED + "Unknown subsection: " + args[0]);
+                sender.sendMessage(ChatColor.RED + "Unknown subsection or spell: " + args[0]);
                 return true;
             }
             data = subSection;
@@ -226,7 +226,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
         return true;
     }
 
-    public boolean onMagicConfigure(CommandSender sender, Player player, String[] args)
+    public boolean onMageSetData(CommandSender sender, Player player, String[] args)
     {
         Mage mage = api.getMage(player);
         if (args.length == 1)

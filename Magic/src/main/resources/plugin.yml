@@ -275,28 +275,28 @@ commands:
     permission: Magic.commands.mage
     usage: |
         Use /help mage [subcommand] for more information
-        /mage configure   Modify Mage data
-        /mage describe    Describe Mage data
+        /mage setdata     Modify Mage data
+        /mage getdata     Describe Mage data
         /mage check       Check player permissions
         /mage debug       Enable/disable debug for a player
         /mage delete      Delete all data for a Mage
         /mage unbind      Delete all of a mage's bound wands
-  "mage configure":
+  "mage setdata":
     description: Configure Mage player data or spell cast counts
-    permission: Magic.commands.mage.configure
+    permission: Magic.commands.mage.setdata
     usage: |
 
-        /mage configure <Player> <Spell/Key> <Value/Cast Count>
-        /mage configure NathanWolf sp 100
-        /mage configure NathanWolf blink 0
-  "mage describe":
+        /mage setdata <Player> <Spell/Key> <Value/Cast Count>
+        /mage setdata NathanWolf sp 100
+        /mage setdata NathanWolf blink 0
+  "mage getdata":
     description: List Mage player data or spell cast counts
-    permission: Magic.commands.mage.describe
+    permission: Magic.commands.mage.getdata
     usage: |
 
-        /mage describe <Player> [Spell]
-        /mage describe NathanWolf
-        /mage describe NathanWolf blink
+        /mage getdata <Player> [SpellKey]
+        /mage getdata NathanWolf
+        /mage getdata NathanWolf blink
   "mage delete":
     description: Complete reset and delete player data
     permission: Magic.commands.mage.delete
@@ -753,11 +753,11 @@ permissions:
     description: Shows help info for the /mage command
     type: boolean
     default: op
-  Magic.commands.mage.describe:
+  Magic.commands.mage.getdata:
     description: Player may check Mage attributes
     type: boolean
     default: op
-  Magic.commands.mage.configure:
+  Magic.commands.mage.setdata:
     description: Player may modify Mage attributes
     type: boolean
     default: op

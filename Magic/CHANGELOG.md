@@ -14,6 +14,7 @@
  - Fix Heroes skill selector breaking when there are unavailable skills shown
  - Simplified enchanting configs so they are easier to understand and override.
  - Fix the bending example configs
+ - /mage configure and /mage describe commands changed to /mage setdata and /mage getdata
 
 ## 6.5
 
