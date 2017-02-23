@@ -518,4 +518,33 @@ public class InventoryUtils extends NMSUtils
         }
         return false;
     }
+
+    public static String describeProperty(Object property) {
+        return describeProperty(property, 0);
+    }
+
+    public static String describeProperty(Object property, int maxLength) {
+        if (property == null) return "(Empty)";
+        String propertyString;
+        if (property instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection)property;
+            Set<String> keys = section.getKeys(false);
+            String full = "{";
+            boolean first = true;
+            for (String key : keys) {
+                if (!first) {
+                    full += ",";
+                }
+                first = false;
+                full += key + "=" + describeProperty(section.get(key));
+            }
+            propertyString = full + "}";
+        } else {
+            propertyString = property.toString();
+        }
+        if (maxLength > 0 && propertyString.length() > maxLength - 3) {
+            propertyString = propertyString.substring(0, maxLength - 3) + "...";
+        }
+        return propertyString;
+    }
 }

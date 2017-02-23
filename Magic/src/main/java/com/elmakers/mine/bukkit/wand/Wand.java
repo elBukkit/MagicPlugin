@@ -75,6 +75,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
 	private static int WAND_VERSION = 2;
+	private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 
@@ -1790,23 +1791,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 	}
 
-	private static String describeProperty(Object property) {
-    	if (property == null) return "(Empty)";
-    	if (property instanceof ConfigurationSection) {
-			ConfigurationSection section = (ConfigurationSection)property;
-    		Set<String> keys = section.getKeys(false);
-    		String full = "{";
-    		boolean first = true;
-    		for (String key : keys) {
-    			if (!first) {
-    				full += ",";
-				}
-				first = false;
-    			full += key + "=" + describeProperty(section.get(key));
-			}
-    		return full + "}";
-		}
-		return property.toString();
+	public static String describeProperty(Object property) {
+    	return InventoryUtils.describeProperty(property, MAX_PROPERTY_DISPLAY_LENGTH);
 	}
 
     private static String getBrushDisplayName(Messages messages, MaterialBrush brush) {
