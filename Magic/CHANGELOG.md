@@ -19,6 +19,7 @@
  - Changed /wand enchant command to work with no parameters, add /wand create, rename /wand unenchant to destroy
  - The Magic.commands.wand.create permission is now used for the /wand create command, not required for /wand
  - Add /mitem destroy command, just destroys your held item
+ - Fix some metadata items like skulls and banners
 
 ## 6.5
 

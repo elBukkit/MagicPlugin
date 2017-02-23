@@ -164,12 +164,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
                 else if (material == Material.MOB_SPAWNER) {
                     extraData = new BlockMobSpawner(pieces[1]);
-                    setMaterial(Material.MOB_SPAWNER, (short) 0);
-                    return;
                 }
                 else if (material == Material.SKULL_ITEM) {
                     if (pieces.length > 2) {
-                        setMaterial(Material.SKULL_ITEM, (short)3);
+                        data = 3;
                         String dataString = pieces[1];
                         for (int i = 2; i < pieces.length; i++) {
                             dataString += ":" + pieces[i];
@@ -179,20 +177,18 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     } else {
                         try {
                             data = Short.parseShort(pieces[1]);
-                            setMaterial(Material.SKULL_ITEM, data);
                         } catch (Exception ex) {
-                            setMaterial(Material.SKULL_ITEM, (short)3);
+                            data = 3;
                             ItemStack item = InventoryUtils.getPlayerSkull(pieces[1]);
                             extraData = new BlockSkull(InventoryUtils.getSkullProfile(item.getItemMeta()), SkullType.PLAYER);
                         }
                     }
-                    return;
                 }
                 else if (material == Material.STANDING_BANNER || material == Material.WALL_BANNER || material == Material.BANNER) {
                     DyeColor color = null;
                     try {
                         short colorIndex = Short.parseShort(pieces[1]);
-                        setMaterial(material, colorIndex);
+                        data = colorIndex;
                         color = DyeColor.values()[colorIndex];
                     }
                     catch (Exception ex) {
@@ -203,7 +199,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     } else {
                         extraData = new BlockBanner(color);
                     }
-                    return;
                 }  else if (material == Material.LEATHER_BOOTS || material == Material.LEATHER_CHESTPLATE
                         || material == Material.LEATHER_HELMET || material == Material.LEATHER_LEGGINGS) {
                     StringUtils.split(pieces[1], ',');
