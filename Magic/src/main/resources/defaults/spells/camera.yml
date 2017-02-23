@@ -18,6 +18,7 @@ camera:
         cooldown: 5000
         allow_max_range: false
         range: 32
+        bypass_pvp: true
     costs:
         mana: 5
 
