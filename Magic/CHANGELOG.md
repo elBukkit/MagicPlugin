@@ -16,6 +16,7 @@
  - Fix the bending example configs
  - /mage configure and /mage describe commands changed to /mage setdata and /mage getdata
  - /wand describe can now be given a parameter to list a specific wand property
+ - Changed /wand enchant command to work with no parameters, add /wand create, rename /wand unenchant to destroy
 
 ## 6.5
 

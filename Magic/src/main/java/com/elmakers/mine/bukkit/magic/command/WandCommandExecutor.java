@@ -13,8 +13,6 @@ import java.util.TreeMap;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.wand.WandAction;
 import com.elmakers.mine.bukkit.wand.WandMode;
@@ -139,7 +137,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "upgrade");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "describe");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "enchant");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unenchant");
+            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "create");
+            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "destroy");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "duplicate");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "restore");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unlock");
@@ -353,22 +352,25 @@ public class WandCommandExecutor extends MagicTabExecutor {
             onWandOverride(sender, player, args2);
             return true;
         }
-		if (subCommand.equalsIgnoreCase("enchant"))
+        if (subCommand.equalsIgnoreCase("enchant"))
+        {
+            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+            String levels = args2.length > 0 ? args2[0] : "1";
+            onWandEnchant(sender, player, levels);
+            return true;
+        }
+		if (subCommand.equalsIgnoreCase("create"))
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
-
-            if (args2.length > 0) {
-                onWandEnchant(sender, player, args2[0]);
-            } else {
-                onWandEnchant(sender, player);
-            }
+            onWandCreate(sender, player);
 			return true;
 		}
-		if (subCommand.equalsIgnoreCase("unenchant"))
+		if (subCommand.equalsIgnoreCase("destroy"))
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
-			onWandUnenchant(sender, player);
+			onWandDestroy(sender, player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("bind"))
@@ -491,15 +493,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
+        if (!api.hasPermission(sender, "Magic.commands." + command)) return true;
 		if (subCommand.length() == 0) 
 		{
-			if (!api.hasPermission(sender, "Magic.commands." + command)) return true;
-            if (!api.hasPermission(sender, "Magic.commands." + command + ".create")) return true;
 			if (!api.hasPermission(sender, "Magic.commands." + command + ".wand.default", true)) return true;
 		} 
 		else 
 		{
-            if (!api.hasPermission(sender, "Magic.commands." + command + ".create")) return true;
 			if (!api.hasPermission(sender, "Magic.commands." + command +".wand." + subCommand, true)) return true;
 		}
 		
@@ -645,7 +645,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
         return true;
     }
 	
-	public boolean onWandEnchant(CommandSender sender, Player player)
+	public boolean onWandCreate(CommandSender sender, Player player)
 	{
 		Mage mage = api.getMage(player);
 		ItemStack heldItem = player.getInventory().getItemInMainHand();
@@ -712,7 +712,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 	
-	public boolean onWandUnenchant(CommandSender sender, Player player)
+	public boolean onWandDestroy(CommandSender sender, Player player)
 	{
 		Wand wand = checkWand(sender, player);
 		if (wand == null) {

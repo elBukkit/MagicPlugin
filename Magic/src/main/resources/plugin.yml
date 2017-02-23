@@ -33,8 +33,9 @@ commands:
         /wand describe   Show information about a wand
         /wand name       Change the display name of a wand
         /wand organize   Re-organize a wand's spell inventory
-        /wand enchant    Turn an item into a wand
-        /wand unenchant  Turn a wand into a normal item
+        /wand enchant    Upgrade a wand
+        /wand create     Turn an item into a wand
+        /wand destroy    Turn a wand into a normal item
         /wand duplicate  Create a copy of a wand
         /wand unlock     Allow a locked wand to be modified
         /wand override   Set or check cast overrides on a wand
@@ -89,21 +90,29 @@ commands:
     permission: Magic.commands.wand.organize
     usage: /wand organize
   "wand enchant":
-    description: Turn the item you are holding into a wand
+    description: Upgrade a wand, adding spells and properties based on its path
     permission: Magic.commands.wand.enchant
-    usage: /wand enchant
-  "wand restore":
-    description: Restore your lost wands
-    permission: Magic.commands.wand.restore
-    usage: /wand restore
-  "wand unenchant":
+    usage: |
+
+       /wand enchant <levels>
+       /wand enchant
+       /wand enchant 10
+  "wand create":
+    description: Turn the item you are holding into a wand
+    permission: Magic.commands.wand.create
+    usage: /wand create
+  "wand destroy":
     description: Turn the wand you are holding into a normal item, wiping its magic data
-    permission: Magic.commands.wand.unenchant
+    permission: Magic.commands.wand.destroy
     usage: /wand unenchant
   "wand duplicate":
     description: Duplicate a wand, making an exact copy
     permission: Magic.commands.wand.duplicate
     usage: /wand duplicate
+  "wand restore":
+    description: Restore your lost wands
+    permission: Magic.commands.wand.restore
+    usage: /wand restore
   "wand unlock":
     description: Clear the "locked" setting on a wand so it can be used with /wand configure
     permission: Magic.commands.wand.unlock
@@ -443,10 +452,6 @@ permissions:
     description: Player may use the /wand commands
     type: boolean
     default: op
-  Magic.commands.wand.create:
-    description: Player may create a wand
-    type: boolean
-    default: op
   Magic.commands.wand.wand:
     description: Player may create a specific wand
     type: list
@@ -471,10 +476,14 @@ permissions:
     type: boolean
     default: op
   Magic.commands.wand.enchant:
+    description: Player may upgrade a wand
+    type: boolean
+    default: op
+  Magic.commands.wand.create:
     description: Player may turn an item into a wand
     type: boolean
     default: op
-  Magic.commands.wand.unenchant:
+  Magic.commands.wand.destroy:
     description: Player may destroy a wand
     type: boolean
     default: op
