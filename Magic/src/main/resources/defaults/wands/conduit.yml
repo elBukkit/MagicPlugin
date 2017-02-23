@@ -50,7 +50,7 @@ conduit:
         - repair
         - backup
         - superrepair
-    materials:
+    brushes:
         - stone
         - wood
         - glass

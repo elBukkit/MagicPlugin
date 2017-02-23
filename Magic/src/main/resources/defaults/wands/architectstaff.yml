@@ -2,7 +2,7 @@ architectstaff:
   inherit: conduit
   path: staff
   active_spell: pillar
-  active_material: copy
+  active_brush: copy
   protected: true
   powered: true
   cost_reduction: 2
@@ -52,7 +52,7 @@ architectstaff:
     - supertorch
     - fling|4
     - lockpick
-  materials:
+  brushes:
     - clone@43
     - cobblestone
     - copy@17

@@ -23,7 +23,7 @@ conway:
         - commit
         - simulate3
         - animate
-    materials:
+    brushes:
         - schematic:life
         - schematic:glider
         - schematic:flare_beacon

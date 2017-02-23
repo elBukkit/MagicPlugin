@@ -169,7 +169,7 @@ wolf:
         - superrepair@14
         - undo@15
         - mount
-    materials:
+    brushes:
         - erase@16
         - copy@17
         - replicate@18

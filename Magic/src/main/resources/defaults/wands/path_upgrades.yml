@@ -36,7 +36,7 @@ engineer_upgrade:
     spells:
     - brushselect
     - place
-    materials:
+    brushes:
     - dirt
     - cobblestone
 architect_upgrade:

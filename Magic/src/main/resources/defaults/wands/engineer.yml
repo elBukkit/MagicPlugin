@@ -27,7 +27,7 @@ engineer:
       - pillar
       - place
       - levitate
-    materials:
+    brushes:
       - erase
       - map
       - stone

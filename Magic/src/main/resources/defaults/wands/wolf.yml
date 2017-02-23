@@ -21,7 +21,7 @@ wolf:
   potion_effects:
     - SATURATION
     - REGENERATION
-  active_material: erase
+  active_brush: erase
   active_spell: missile|4
   spells:
     - absorb@8
@@ -127,7 +127,7 @@ wolf:
     - wolfhouse@122
     - worm@55
     - wound@28
-  materials:
+  brushes:
     - bedrock
     - clone@19
     - copy@17

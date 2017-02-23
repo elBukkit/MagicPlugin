@@ -42,7 +42,7 @@ architect:
         - column
         - levitate
         - superalter
-    materials:
+    brushes:
         - stone
         - wood
         - glass

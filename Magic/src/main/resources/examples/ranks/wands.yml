@@ -398,7 +398,7 @@ painter:
     active_spell: paint
     spells:
         - paint
-    materials:
+    brushes:
         - wool:0
         - wool:1
         - wool:2
@@ -473,7 +473,7 @@ decorator:
     active_spell: convert
     spells:
         - convert
-    materials:
+    brushes:
         - wool:0
         - wool:1
         - wool:2
@@ -564,7 +564,7 @@ farming:
         - alter
         - superalter
         - chop
-    materials:
+    brushes:
         - soil
         - water
 
@@ -582,7 +582,7 @@ alchemist:
         - blob
         - lava
         - wolf
-    materials:
+    brushes:
         - water
         - lava
         - soul_sand
@@ -659,7 +659,7 @@ white:
         - fill
         - absorb
         - flare
-    materials:
+    brushes:
         - replicate
         - clone
         - water
@@ -729,7 +729,7 @@ black:
         - portal
         - neutron
         - night
-    materials:
+    brushes:
         - water
         - erase
         - soul_sand
@@ -767,7 +767,7 @@ red:
         - cluster
         - bomb
         - frag
-    materials:
+    brushes:
         - stationary_lava
         - stained_clay:14
         - stained_glass:14
@@ -799,7 +799,7 @@ blue:
         - tesseract
         - iterate
         - portal
-    materials:
+    brushes:
         - stationary_water
         - ice
         - packed_ice
@@ -843,7 +843,7 @@ green:
         - chop
         - alter
         - superalter
-    materials:
+    brushes:
         - dirt
         - grass
         - wood
