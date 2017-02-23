@@ -78,9 +78,8 @@ public class InventoryUtils extends NMSUtils
         {
             if (currentTags != null) currentTags.remove(tagName);
             Object value = tags.get(tagName);
-            Object wrappedTag = null;
             try {
-                wrappedTag = wrapInTag(value);
+                Object wrappedTag = wrapInTag(value);
                 if (wrappedTag == null) continue;
                 class_NBTTagCompound_setMethod.invoke(node, tagName, wrappedTag);
             } catch (Exception ex) {
@@ -120,15 +119,16 @@ public class InventoryUtils extends NMSUtils
             @SuppressWarnings("unchecked")
             Map<String, Object> valueMap = (Map<String, Object>)value;
             saveTagsToNBT(valueMap, wrappedValue, null);
-        } else if (value instanceof List) {
+        } else if (value instanceof Collection) {
             @SuppressWarnings("unchecked")
-            List<Object> list = (List<Object>)value;
-                Object listMeta = class_NBTTagList.newInstance();
-                for (Object item : list) {
-                    if (item != null) {
-                        class_NBTTagList_addMethod.invoke(listMeta, wrapInTag(item));
-                    }
+            Collection<Object> list = (Collection<Object>)value;
+            Object listMeta = class_NBTTagList.newInstance();
+            for (Object item : list) {
+                if (item != null) {
+                    class_NBTTagList_addMethod.invoke(listMeta, wrapInTag(item));
                 }
+            }
+            wrappedValue = listMeta;
         } else {
             wrappedValue = class_NBTTagString_consructor.newInstance(value.toString());
         }
