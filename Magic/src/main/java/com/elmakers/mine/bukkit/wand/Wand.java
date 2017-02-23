@@ -1341,9 +1341,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         if (node.contains("materials") && node.isString("materials")) {
             node.set("materials", Arrays.asList(StringUtils.split(node.getString("materials"), ',')));
         }
-        if (node.contains("potion_effects") && node.isString("potion_effects")) {
-            node.set("potion_effects", Arrays.asList(StringUtils.split(node.getString("potion_effects"), ',')));
-        }
     }
 
     public void updateBrushes() {
