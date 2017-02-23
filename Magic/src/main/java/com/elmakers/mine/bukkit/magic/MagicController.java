@@ -82,6 +82,7 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
 import org.apache.commons.lang.StringUtils;
@@ -4785,6 +4786,7 @@ public class MagicController implements MageController {
 
     @Override
     public Object getWandProperty(ItemStack item, String key) {
+        Preconditions.checkNotNull(key, "key");
         if (InventoryUtils.isEmpty(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, Wand.WAND_KEY);
         if (wandNode == null) return null;
@@ -4802,6 +4804,8 @@ public class MagicController implements MageController {
     @Override @Nonnull
     @SuppressWarnings("unchecked") // I feel like this is safe, but I can't seem to get rid of the unchecked warning here.
     public <T> T getWandProperty(ItemStack item, @Nonnull String key, @Nonnull T defaultValue) {
+        Preconditions.checkNotNull(key, "key");
+        Preconditions.checkNotNull(defaultValue, "defaultValue");
         if (InventoryUtils.isEmpty(item)) return defaultValue;
         Object wandNode = InventoryUtils.getNode(item, Wand.WAND_KEY);
         if (wandNode == null) return defaultValue;
