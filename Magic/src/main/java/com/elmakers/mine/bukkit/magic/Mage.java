@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.WandAction;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
@@ -2121,6 +2122,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     {
         GUIAction previousGUI = gui;
         gui = null;
+        Player player = getPlayer();
+        if (player != null) {
+            DeprecatedUtils.updateInventory(player);
+        }
 
         if (previousGUI != null)
         {
