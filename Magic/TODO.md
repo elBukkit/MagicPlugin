@@ -20,6 +20,9 @@
   
 ## Not so High-Priority
  
+ - Add SendTitle action
+ - Some way for messages to go to the action bar? Maybe some escape code?
+ - Message on hotbar switch (requested)
  - Aliases don't work with levels 
  - Don't refund item costs when a spell goes through auto-undo
 

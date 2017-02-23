@@ -2449,12 +2449,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			}
 			updateInventory(inventory, false);
 			updateName();
-			player.updateInventory();
+			DeprecatedUtils.updateInventory(player);
 		} else if (wandMode == WandMode.CHEST) {
 			Inventory inventory = getDisplayInventory();
 			inventory.clear();
 			updateInventory(inventory, true);
-			player.updateInventory();
+			DeprecatedUtils.updateInventory(player);
 		}
 	}
 	
@@ -2960,7 +2960,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 if (!playPassiveEffects("cycle") && inventoryCycleSound != null) {
                     mage.playSoundEffect(inventoryCycleSound);
                 }
-				mage.getPlayer().updateInventory();
+				DeprecatedUtils.updateInventory(mage.getPlayer());
 			}
 		}
 	}
@@ -3013,7 +3013,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				}
 				updateInventory();
                 updateHotbarStatus();
-				mage.getPlayer().updateInventory();
+				DeprecatedUtils.updateInventory(mage.getPlayer());
 			}
 		}
 	}
@@ -3572,7 +3572,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 							playerInventory.setItemInMainHand(new ItemStack(Material.AIR, 1));
 						}
 					}
-					player.updateInventory();
+					DeprecatedUtils.updateInventory(player);
                 }
 				setProperty("uses", uses);
 				saveState();
@@ -4693,7 +4693,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         inventory.setHeldItemSlot(storedSlot);
 
-        player.updateInventory();
+		DeprecatedUtils.updateInventory(player);
 
         return true;
     }
