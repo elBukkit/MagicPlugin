@@ -178,6 +178,12 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				}
 			}
 
+			if (subCommand.equalsIgnoreCase("describe")) {
+				for (String key : com.elmakers.mine.bukkit.wand.Wand.PROPERTY_KEYS) {
+					options.add(key);
+				}
+			}
+
 			if (subCommand.equalsIgnoreCase("override")) {
 				Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
 				String partial = args[1];
