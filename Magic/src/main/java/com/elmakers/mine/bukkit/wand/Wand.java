@@ -1340,9 +1340,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         if (node.contains("materials") && node.isString("materials")) {
             node.set("materials", Arrays.asList(StringUtils.split(node.getString("materials"), ',')));
         }
-        if (node.contains("overrides") && node.isString("overrides")) {
-            node.set("overrides", Arrays.asList(StringUtils.split(node.getString("overrides"), ',')));
-        }
         if (node.contains("potion_effects") && node.isString("potion_effects")) {
             node.set("potion_effects", Arrays.asList(StringUtils.split(node.getString("potion_effects"), ',')));
         }
@@ -1689,20 +1686,34 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		castOverrides = null;
 		if (wandConfig.contains("overrides")) {
 			castOverrides = null;
-			String overrides = wandConfig.getString("overrides", null);
-			if (overrides != null && !overrides.isEmpty()) {
-				// Support YML-List-As-String format
-				overrides = overrides.replaceAll("[\\]\\[]", "");
-
+			Object overridesGeneric = wandConfig.get("overrides");
+			if (overridesGeneric != null) {
 				castOverrides = new HashMap<>();
-				String[] pairs = StringUtils.split(overrides, ',');
-				for (String pair : pairs) {
-					// Unescape commas
-					pair = pair.replace("\\|", ",");
-					String[] keyValue = StringUtils.split(pair, ' ');
-					if (keyValue.length > 0) {
-						String value = keyValue.length > 1 ? keyValue[1] : "";
-						castOverrides.put(keyValue[0], value);
+				if (overridesGeneric instanceof String) {
+					String overrides = (String) overridesGeneric;
+					if (!overrides.isEmpty()) {
+						// Support YML-List-As-String format
+						// May not really need this anymore.
+						overrides = overrides.replaceAll("[\\]\\[]", "");
+						String[] pairs = StringUtils.split(overrides, ',');
+						for (String override : pairs) {
+							parseOverride(override);
+						}
+					}
+				} else if (overridesGeneric instanceof List) {
+					@SuppressWarnings("unchecked")
+					List<String> overrideList = (List<String>)overridesGeneric;
+					for (String override : overrideList) {
+						parseOverride(override);
+					}
+				} else if (overridesGeneric instanceof ConfigurationSection) {
+					ConfigurationSection overridesSection = (ConfigurationSection)overridesGeneric;
+					Set<String> keys = overridesSection.getKeys(true);
+					for (String key : keys) {
+						Object leaf = overridesSection.get(key);
+						if (!(leaf instanceof ConfigurationSection) && !(leaf instanceof Map)) {
+							castOverrides.put(key, leaf.toString());
+						}
 					}
 				}
 			}
@@ -1731,6 +1742,16 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         return needsInventoryUpdate;
     }
 
+    private void parseOverride(String override) {
+		// Unescape commas
+		override = override.replace("\\|", ",");
+		String[] keyValue = StringUtils.split(override, ' ');
+		if (keyValue.length > 0) {
+			String value = keyValue.length > 1 ? keyValue[1] : "";
+			castOverrides.put(keyValue[0], value);
+		}
+	}
+
 	@Override
     public void describe(CommandSender sender) {
 		ChatColor wandColor = isModifiable() ? ChatColor.AQUA : ChatColor.RED;
@@ -1751,9 +1772,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 		ConfigurationSection itemConfig = getConfiguration();
 		for (String key : PROPERTY_KEYS) {
-			String value = itemConfig.getString(key);
-			if (value != null && value.length() > 0) {
-				sender.sendMessage(key + ": " + value);
+			Object value = itemConfig.get(key);
+			if (value != null) {
+				sender.sendMessage(key + ": " + describeProperty(value));
 			}
 		}
 
@@ -1761,12 +1782,31 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         if (templateConfig != null) {
             sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration:");
             for (String key : PROPERTY_KEYS) {
-                String value = templateConfig.getString(key);
-                if (value != null && value.length() > 0 && !itemConfig.contains(key)) {
-                    sender.sendMessage(key + ": " + value);
+                Object value = templateConfig.get(key);
+                if (value != null && !itemConfig.contains(key)) {
+                    sender.sendMessage(key + ": " + describeProperty(value));
                 }
             }
         }
+	}
+
+	private static String describeProperty(Object property) {
+    	if (property == null) return "(Empty)";
+    	if (property instanceof ConfigurationSection) {
+			ConfigurationSection section = (ConfigurationSection)property;
+    		Set<String> keys = section.getKeys(false);
+    		String full = "{";
+    		boolean first = true;
+    		for (String key : keys) {
+    			if (!first) {
+    				full += ",";
+				}
+				first = false;
+    			full += key + "=" + describeProperty(section.get(key));
+			}
+    		return full + "}";
+		}
+		return property.toString();
 	}
 
     private static String getBrushDisplayName(Messages messages, MaterialBrush brush) {
@@ -4472,13 +4512,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
     protected void updateOverrides() {
-		if (castOverrides != null && castOverrides.size() > 0) {
-			Collection<String> parameters = new ArrayList<>();
-			for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
-				String value = entry.getValue();
-				parameters.add(entry.getKey() + " " + value.replace(",", "\\|"));
-			}
-			setProperty("overrides", StringUtils.join(parameters, ","));
+		if (castOverrides != null && !castOverrides.isEmpty()) {
+			setProperty("overrides", castOverrides);
 		} else {
 			setProperty("overrides", null);
 		}
