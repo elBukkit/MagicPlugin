@@ -169,7 +169,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				for (SpellTemplate spell : spellList) {
 					addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
 				}
-				addIfPermissible(sender, options, subCommandPNode, "material", true);
+				addIfPermissible(sender, options, subCommandPNode, "brush", true);
 			}
 			
 			if (subCommand.equalsIgnoreCase("configure")) {
@@ -221,7 +221,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 						options.add(spellName);
 					}
 					
-					options.add("material");
+					options.add("brush");
 				}
 			}
 			
@@ -295,8 +295,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			if (!api.hasPermission(sender, subCommandPNode)) {
 				return options;
 			}
-			
-			if (subCommand.equalsIgnoreCase("remove") && subCommand2.equalsIgnoreCase("material")) {
+
+			boolean isBrushCommand = subCommand2.equalsIgnoreCase("material") || subCommand2.equalsIgnoreCase("brush");
+			if (subCommand.equalsIgnoreCase("remove") && isBrushCommand) {
 				Wand activeWand = null;
 				if (player != null) {
 					Mage mage = api.getMage(player);
@@ -310,7 +311,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				}
 			}
 			
-			if (subCommand.equalsIgnoreCase("add") && subCommand2.equalsIgnoreCase("material")) {
+			if (subCommand.equalsIgnoreCase("add") && isBrushCommand) {
 				options.addAll(api.getBrushes());
 			}
 		}
@@ -341,6 +342,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 			if (args2.length > 0 && args2[0].equals("material") && !api.hasPermission(sender,"Magic.commands.wand.add." + args2[0], true)) return true;
+			if (args2.length > 0 && args2[0].equals("brush") && !api.hasPermission(sender,"Magic.commands.wand.add." + args2[0], true)) return true;
 			if (args2.length > 0 && !api.hasPermission(sender,"Magic.commands.wand.add.spell." + args2[0], true)) return true;
 			onWandAdd(sender, player, args2);
 			return true;
@@ -1095,31 +1097,30 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 
 		Mage mage = api.getMage(player);
-        Messages messages = api.getMessages();
 
 		String spellName = parameters[0];
-		if (spellName.equals("material")) {
+		if (spellName.equals("material") || spellName.equals("brush")) {
 			if (parameters.length < 2) {
-				sender.sendMessage("Use: /wand add material <material:data>");
+				sender.sendMessage("Use: /wand add brush <material:data>");
 				return true;
 			}
 			
 			String materialKey = parameters[1];
 			if (!MaterialBrush.isValidMaterial(materialKey, false)) {
-				sender.sendMessage(materialKey + " is not a valid material");
+				sender.sendMessage(materialKey + " is not a valid brush");
 				return true;
 			}
 
 			if (wand.addBrush(materialKey)) {
 				wand.setActiveBrush(materialKey);
 				if (sender != player) {
-					sender.sendMessage("Added material '" + materialKey + "' to " + player.getName() + "'s wand");
+					sender.sendMessage("Added brush '" + materialKey + "' to " + player.getName() + "'s wand");
 				}
 			} else {
 				wand.setActiveBrush(materialKey);
-				mage.sendMessage("Material activated: " + materialKey);
+				mage.sendMessage("Brush activated: " + materialKey);
 				if (sender != player) {
-					sender.sendMessage(player.getName() + "'s wand already has material " + materialKey);
+					sender.sendMessage(player.getName() + "'s wand already has brush " + materialKey);
 				}
 			}
 
@@ -1175,22 +1176,22 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		Mage mage = api.getMage(player);
 
 		String spellName = parameters[0];	
-		if (spellName.equals("material")) {
+		if (spellName.equals("material") || spellName.equals("brush")) {
 			if (parameters.length < 2) {
-				sender.sendMessage("Use: /wand remove material <material:data>");
+				sender.sendMessage("Use: /wand remove brush <material:data>");
 				return true;
 			}
 			String materialKey = parameters[1];
 
 			if (wand.removeBrush(materialKey)) {
-				mage.sendMessage("Material '" + materialKey + "' has been removed from your wand");
+				mage.sendMessage("Brush '" + materialKey + "' has been removed from your wand");
 				if (sender != player) {
-					sender.sendMessage("Removed material '" + materialKey + "' from " + player.getName() + "'s wand");
+					sender.sendMessage("Removed brush '" + materialKey + "' from " + player.getName() + "'s wand");
 				}
 				wand.saveState();
 			} else {
 				if (sender != player) {
-					sender.sendMessage(player.getName() + "'s wand does not have material " + materialKey);
+					sender.sendMessage(player.getName() + "'s wand does not have brush " + materialKey);
 				}
 			}
 

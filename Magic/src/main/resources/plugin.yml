@@ -500,7 +500,11 @@ permissions:
     description: Player may add a specific spell to a wand for another player
     type: list
   Magic.commands.wand.add.material:
-    description: Player may add a specific material to a wand
+    description: Player may add a specific material to a wand (outdated)
+    type: boolean
+    default: op
+  Magic.commands.wand.add.brush:
+    description: Player may add a specific brush to a wand
     type: boolean
     default: op
   Magic.commands.wand.organize:
