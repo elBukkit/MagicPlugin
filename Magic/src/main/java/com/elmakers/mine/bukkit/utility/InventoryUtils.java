@@ -44,8 +44,13 @@ public class InventoryUtils extends NMSUtils
     {
         return saveTagsToNBT(tags, node, null);
     }
-    
+
     public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames)
+    {
+        return saveTagsToNBT(getMap(tags), node, tagNames);
+    }
+    
+    public static boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames)
     {
         if (node == null) {
             Bukkit.getLogger().warning("Trying to save tags to a null node");
@@ -57,7 +62,7 @@ public class InventoryUtils extends NMSUtils
         }
         
         if (tagNames == null) {
-            tagNames = tags.getKeys(false);
+            tagNames = tags.keySet();
         }
 
         // Remove tags that were not included
@@ -73,34 +78,13 @@ public class InventoryUtils extends NMSUtils
         {
             if (currentTags != null) currentTags.remove(tagName);
             Object value = tags.get(tagName);
-            if (value instanceof Boolean) {
-                setMetaBoolean(node, tagName, (Boolean)value);
-            } else if (value instanceof Double) {
-                setMetaDouble(node, tagName, (Double)value);
-            } else if (value instanceof Float) {
-                setMetaDouble(node, tagName, (Float)value);
-            } else if (value instanceof Integer) {
-                setMetaInt(node, tagName, (Integer)value);
-            } else if (value instanceof Long) {
-                setMetaLong(node, tagName, (Long)value);
-            } else if (value instanceof ConfigurationSection) {
-                Object newNode = createNode(node, tagName);
-                saveTagsToNBT((ConfigurationSection)value, newNode, null);
-            } else if (value instanceof List) {
-                Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(tags, tagName);
-                try {
-                    Object listMeta = class_NBTTagList.newInstance();
-                    for (ConfigurationSection nodeConfig : nodeList) {
-                        Object newNode = class_NBTTagCompound.newInstance();
-                        saveTagsToNBT(nodeConfig, newNode, null);
-                        class_NBTTagList_addMethod.invoke(listMeta, newNode);
-                    }
-                    class_NBTTagCompound_setMethod.invoke(node, tagName, listMeta);
-                } catch (Exception ex) {
-                    
-                }
-            } else if (value instanceof String) {
-                setMeta(node, tagName, (String)value);
+            Object wrappedTag = null;
+            try {
+                wrappedTag = wrapInTag(value);
+                if (wrappedTag == null) continue;
+                class_NBTTagCompound_setMethod.invoke(node, tagName, wrappedTag);
+            } catch (Exception ex) {
+                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error saving item data tag " + tagName, ex);
             }
         }
 
@@ -112,6 +96,44 @@ public class InventoryUtils extends NMSUtils
         }
 
         return true;
+    }
+
+    public static Object wrapInTag(Object value)
+        throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        if (value == null) return null;
+        Object wrappedValue = null;
+        if (value instanceof Boolean) {
+            wrappedValue = class_NBTTagByte_constructor.newInstance((byte)((boolean)value ? 1 : 0));
+        } else if (value instanceof Double) {
+            wrappedValue = class_NBTTagDouble_constructor.newInstance((double)value);
+        } else if (value instanceof Float) {
+            wrappedValue = class_NBTTagFloat_constructor.newInstance((float)value);
+        } else if (value instanceof Integer) {
+            wrappedValue = class_NBTTagInt_constructor.newInstance((int)value);
+        } else if (value instanceof Long) {
+            wrappedValue = class_NBTTagLong_constructor.newInstance((long)value);
+        } else if (value instanceof ConfigurationSection) {
+            wrappedValue = class_NBTTagCompound.newInstance();
+            saveTagsToNBT((ConfigurationSection)value, wrappedValue, null);
+        } else if (value instanceof Map) {
+            wrappedValue = class_NBTTagCompound.newInstance();
+            @SuppressWarnings("unchecked")
+            Map<String, Object> valueMap = (Map<String, Object>)value;
+            saveTagsToNBT(valueMap, wrappedValue, null);
+        } else if (value instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<Object> list = (List<Object>)value;
+                Object listMeta = class_NBTTagList.newInstance();
+                for (Object item : list) {
+                    if (item != null) {
+                        class_NBTTagList_addMethod.invoke(listMeta, wrapInTag(item));
+                    }
+                }
+        } else {
+            wrappedValue = class_NBTTagString_consructor.newInstance(value.toString());
+        }
+
+        return wrappedValue;
     }
 
     @SuppressWarnings("unchecked")

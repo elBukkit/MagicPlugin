@@ -211,10 +211,7 @@ public class NMSUtils {
     protected static Method class_ItemStack_isEmptyMethod;
     protected static Method class_ItemStack_createStackMethod;
 
-    protected static Constructor class_NBTTagString_consructor;
     protected static Constructor class_CraftInventoryCustom_constructor;
-    protected static Constructor class_NBTTagByte_constructor;
-    protected static Constructor class_NBTTagByte_legacy_constructor;
     protected static Constructor class_EntityFireworkConstructor;
     protected static Constructor class_EntityPaintingConstructor;
     protected static Constructor class_EntityItemFrameConstructor;
@@ -232,6 +229,12 @@ public class NMSUtils {
     protected static Constructor class_AxisAlignedBB_Constructor;
 
     protected static Constructor class_ItemStack_consructor;
+    protected static Constructor class_NBTTagString_consructor;
+    protected static Constructor class_NBTTagByte_constructor;
+    protected static Constructor class_NBTTagDouble_constructor;
+    protected static Constructor class_NBTTagInt_constructor;
+    protected static Constructor class_NBTTagFloat_constructor;
+    protected static Constructor class_NBTTagLong_constructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -432,6 +435,10 @@ public class NMSUtils {
 
             class_NBTTagString_consructor = class_NBTTagString.getConstructor(String.class);
             class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
+            class_NBTTagDouble_constructor = class_NBTTagDouble.getConstructor(Double.TYPE);
+            class_NBTTagInt_constructor = class_NBTTagInt.getConstructor(Integer.TYPE);
+            class_NBTTagFloat_constructor = class_NBTTagFloat.getConstructor(Float.TYPE);
+            class_NBTTagLong_constructor = class_NBTTagLong.getConstructor(Long.TYPE);
 
             class_NBTTagList_list = class_NBTTagList.getDeclaredField("list");
             class_NBTTagList_list.setAccessible(true);
@@ -1377,11 +1384,7 @@ public class NMSUtils {
             if (tagObject == null) return;
 
             Object unbreakableFlag = null;
-            if (class_NBTTagByte_constructor != null) {
-                unbreakableFlag = class_NBTTagByte_constructor.newInstance((byte) 1);
-            } else {
-                unbreakableFlag = class_NBTTagByte_legacy_constructor.newInstance("", (byte) 1);
-            }
+            unbreakableFlag = class_NBTTagByte_constructor.newInstance((byte) 1);
             class_NBTTagCompound_setMethod.invoke(tagObject, "Unbreakable", unbreakableFlag);
         } catch (Throwable ex) {
 
@@ -1402,11 +1405,7 @@ public class NMSUtils {
             if (tagObject == null) return;
 
             Object hideFlag = null;
-            if (class_NBTTagByte_constructor != null) {
-                hideFlag = class_NBTTagByte_constructor.newInstance(flags);
-            } else {
-                hideFlag = class_NBTTagByte_legacy_constructor.newInstance("", flags);
-            }
+            hideFlag = class_NBTTagByte_constructor.newInstance(flags);
             class_NBTTagCompound_setMethod.invoke(tagObject, "HideFlags", hideFlag);
         } catch (Throwable ex) {
 
