@@ -20,6 +20,7 @@
  - The Magic.commands.wand.create permission is now used for the /wand create command, not required for /wand
  - Add /mitem destroy command, just destroys your held item
  - Fix some metadata items like skulls and banners
+ - Add optional entity_damage_reduction config
 
 ## 6.5
 

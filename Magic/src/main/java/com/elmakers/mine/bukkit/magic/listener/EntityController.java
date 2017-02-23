@@ -9,10 +9,11 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.wand.Wand;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -35,7 +36,10 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class EntityController implements Listener {
     private final MagicController controller;
@@ -46,37 +50,37 @@ public class EntityController implements Listener {
     private boolean	forceSpawn = false;
     private boolean	preventWandMeleeDamage = true;
     private int ageDroppedItems	= 0;
+    private Map<EntityType, Double> entityDamageReduction;
+
+    public void loadProperties(ConfigurationSection properties) {
+        preventMeleeDamage = properties.getBoolean("prevent_melee_damage", false);
+        meleeDamageReduction = properties.getDouble("melee_damage_reduction", 0);
+        keepWandsOnDeath = properties.getBoolean("keep_wands_on_death", true);
+        preventWandMeleeDamage = properties.getBoolean("prevent_wand_melee_damage", true);
+        ageDroppedItems = properties.getInt("age_dropped_items", 0);
+        ConfigurationSection entityReduction = properties.getConfigurationSection("entity_damage_reduction");
+        if (entityReduction != null) {
+            Set<String> keys = entityReduction.getKeys(false);
+            entityDamageReduction = new HashMap<>();
+            for (String key : keys) {
+                try {
+                    EntityType entityType = EntityType.valueOf(key.toUpperCase());
+                    entityDamageReduction.put(entityType, entityReduction.getDouble(key));
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid entity type found in entity_damage_reduction: " + key);
+                }
+            }
+        } else {
+            entityDamageReduction = null;
+        }
+    }
 
     public EntityController(MagicController controller) {
         this.controller = controller;
     }
 
-    public void setPreventMeleeDamage(boolean prevent) {
-        preventMeleeDamage = prevent;
-    }
-
-    public void setMeleeDamageReduction(double reduction) {
-        meleeDamageReduction = reduction;
-    }
-
-    public void setKeepWandsOnDeath(boolean keep) {
-        keepWandsOnDeath = keep;
-    }
-
-    public void setPreventWandMeleeDamage(boolean prevent) {
-        preventWandMeleeDamage = prevent;
-    }
-
     public void setDisableItemSpawn(boolean disable) {
         disableItemSpawn = disable;
-    }
-
-    public void setAgeDroppedItems(int age) {
-        ageDroppedItems = age;
-    }
-
-    public boolean isForceSpawn() {
-        return forceSpawn;
     }
 
     public void setForceSpawn(boolean forceSpawn) {
@@ -162,6 +166,16 @@ public class EntityController implements Listener {
             }
         }
         Entity damager = event.getDamager();
+        if (entityDamageReduction != null) {
+            Double reduction = entityDamageReduction.get(damager.getType());
+            if (reduction != null) {
+                if (reduction >= 1) {
+                    event.setCancelled(true);
+                    return;
+                }
+                event.setDamage(event.getDamage() * (1 - reduction));
+            }
+        }
         if (damager instanceof Player ) {
             Mage damagerMage = controller.getRegisteredMage(damager);
             com.elmakers.mine.bukkit.api.wand.Wand activeWand = null;

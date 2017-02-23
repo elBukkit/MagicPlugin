@@ -200,6 +200,11 @@ prevent_melee_damage: false
 # A value of 1 or high will completely disable all melee damage.
 melee_damage_reduction: 0
 
+# You can make a map here of entity (including projectiles) damage reduction by type.
+# Same as above, this is a percentage, 1 will disable damage from that source completely.
+# entity_damage_reduction:
+#   arrow: 0.5
+
 # Set this to false to allow block-breaking with a wand
 cancel_interact_on_cast: true
 
