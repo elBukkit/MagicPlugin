@@ -1,5 +1,6 @@
 item:
     duplicated: Your item has been duplicated
+    destroyed: Your item has been destroyed
     no_item: You must be holding an item!
     renamed: Your item has been renamed
     rename_clear: Removed the custom name from your item

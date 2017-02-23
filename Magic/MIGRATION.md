@@ -10,6 +10,7 @@
    - track: if true, wand will be tracked when dropped on the ground
    - immortal: if true, dropped wands will not be allowed to despawn
    - invulnerable: if true, dropped wands cannot be destroyed
+ - The Magic.commands.wand.create permission is now used for the /wand create command, not required for /wand
    
 ## 6.5
  

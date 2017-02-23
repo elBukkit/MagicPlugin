@@ -89,6 +89,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "duplicate");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "save");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "delete");
+			addIfPermissible(sender, options, "Magic.commands.mitem.", "destroy");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "worth");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "type");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "skull");
@@ -203,6 +204,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		else if (subCommand.equalsIgnoreCase("remove"))
 		{
 			return onItemRemove(player, item, args);
+		}
+		else if (subCommand.equalsIgnoreCase("destroy"))
+		{
+			return onItemDestroy(player);
 		}
 		else if (subCommand.equalsIgnoreCase("worth"))
 		{
@@ -876,6 +881,13 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			return onItemAddAttribute(player, item, parameters[1], parameters[2], slot);
 		}
 		return false;
+	}
+
+	public boolean onItemDestroy(Player player)
+	{
+		player.getInventory().setItemInMainHand(null);
+		player.sendMessage(api.getMessages().get("item.destroyed"));
+		return true;
 	}
 
 	public boolean onItemRemove(Player player, ItemStack item, String[] parameters)

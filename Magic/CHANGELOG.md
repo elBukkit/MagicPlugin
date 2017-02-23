@@ -17,6 +17,8 @@
  - /mage configure and /mage describe commands changed to /mage setdata and /mage getdata
  - /wand describe can now be given a parameter to list a specific wand property
  - Changed /wand enchant command to work with no parameters, add /wand create, rename /wand unenchant to destroy
+ - The Magic.commands.wand.create permission is now used for the /wand create command, not required for /wand
+ - Add /mitem destroy command, just destroys your held item
 
 ## 6.5
 
