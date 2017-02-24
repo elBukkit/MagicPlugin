@@ -97,7 +97,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -186,6 +185,8 @@ public class MagicController implements MageController {
     }
 
     protected com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
+        Preconditions.checkNotNull(mageId);
+
         com.elmakers.mine.bukkit.magic.Mage apiMage = null;
         if (commandSender == null && entity == null) {
             commandSender = Bukkit.getConsoleSender();
@@ -319,25 +320,17 @@ public class MagicController implements MageController {
 
     protected com.elmakers.mine.bukkit.magic.Mage getMage(Entity entity, CommandSender commandSender) {
         if (entity == null) return getMage(commandSender);
-        String id = entity.getUniqueId().toString();
+        String id = mageIdentifier.fromEntity(entity);
         return getMage(id, commandSender, entity);
     }
 
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getMage(CommandSender commandSender) {
-        String mageId = "COMMAND";
-        if (commandSender instanceof ConsoleCommandSender) {
-            mageId = "CONSOLE";
-        } else if (commandSender instanceof Player) {
+        if (commandSender instanceof Player) {
             return getMage((Player) commandSender);
-        } else if (commandSender instanceof BlockCommandSender) {
-            BlockCommandSender commandBlock = (BlockCommandSender) commandSender;
-            String commandName = commandBlock.getName();
-            if (commandName != null && commandName.length() > 0) {
-                mageId = "COMMAND-" + commandBlock.getName();
-            }
         }
 
+        String mageId = mageIdentifier.fromCommandSender(commandSender);
         return getMage(mageId, commandSender, null);
     }
 
@@ -5055,6 +5048,7 @@ public class MagicController implements MageController {
     private EntityController                    entityController            = null;
     private InventoryController                 inventoryController         = null;
     private ExplosionController                 explosionController         = null;
+    private MageIdentifier                      mageIdentifier              = new MageIdentifier();
     private boolean                             citizensEnabled			    = true;
     private boolean                             libsDisguiseEnabled			= true;
     private boolean                             enableResourcePackCheck     = true;
