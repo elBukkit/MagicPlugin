@@ -170,6 +170,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private MaterialAndData icon = new MaterialAndData(Material.AIR);
     private MaterialAndData disabledIcon = null;
     private String iconURL = null;
+    private String iconDisabledURL = null;
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
 
@@ -829,6 +830,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         icon = ConfigurationUtils.getMaterialAndData(node, "icon", icon);
         disabledIcon = ConfigurationUtils.getMaterialAndData(node, "icon_disabled", null);
         iconURL = node.getString("icon_url");
+        iconDisabledURL = node.getString("icon_disabled_url");
         color = ConfigurationUtils.getColor(node, "color", null);
         worth = node.getDouble("worth", 0);
         if (node.contains("worth_sp")) {
@@ -2241,6 +2243,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public String getIconURL() {
         return iconURL;
+    }
+
+    @Override
+    public String getDisabledIconURL() {
+        return iconDisabledURL;
     }
 
     @Override

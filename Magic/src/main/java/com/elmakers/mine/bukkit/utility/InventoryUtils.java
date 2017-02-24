@@ -309,8 +309,29 @@ public class InventoryUtils extends NMSUtils
         try {
             skull = makeReal(skull);
             Object skullOwner = createNode(skull, "SkullOwner");
-            setMeta(skullOwner, "Id", id.toString());
             setMeta(skullOwner, "Name", ownerName);
+
+            setSkullURL(skull, url, id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return skull;
+    }
+
+    public static void setNewSkullURL(ItemStack itemStack, String url) {
+        try {
+            setSkullURL(itemStack, new URL(url), UUID.randomUUID());
+        } catch (MalformedURLException e) {
+            Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
+        }
+    }
+
+    public static void setSkullURL(ItemStack itemStack, URL url, UUID id) {
+        try {
+            Object skullOwner = createNode(itemStack, "SkullOwner");
+            setMeta(skullOwner, "Id", id.toString());
+
             Object properties = createNode(skullOwner, "Properties");
 
             Object listMeta = class_NBTTagList.newInstance();
@@ -325,7 +346,6 @@ public class InventoryUtils extends NMSUtils
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return skull;
     }
 
     public static String getProfileURL(Object profile)

@@ -2686,7 +2686,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         MaterialAndData disabledIcon = spell.getDisabledIcon();
                         MaterialAndData spellIcon = spell.getIcon();
                         String urlIcon = spell.getIconURL();
-                        boolean usingURLIcon = controller.isUrlIconsEnabled() && urlIcon != null && !urlIcon.isEmpty();
+                        String disabledUrlIcon = spell.getDisabledIconURL();
+                        boolean usingURLIcon = (controller.isUrlIconsEnabled() || spellIcon == null || spellIcon.getMaterial() == Material.AIR) && urlIcon != null && !urlIcon.isEmpty();
                         if (disabledIcon != null && spellIcon != null && !usingURLIcon) {
                             if (!canCast) {
                                 if (disabledIcon.getMaterial() != spellItem.getType() || disabledIcon.getData() != spellItem.getDurability()) {
@@ -2701,6 +2702,25 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                             } else {
                                 if (spellIcon.getMaterial() != spellItem.getType() || spellIcon.getData() != spellItem.getDurability()) {
                                     spellIcon.applyToItem(spellItem);
+                                }
+                            }
+                        } else if (usingURLIcon && disabledUrlIcon != null && !disabledUrlIcon.isEmpty() && spellItem.getType() == Material.SKULL_ITEM) {
+                            String currentURL = InventoryUtils.getSkullURL(spellItem);
+                            if (!canCast) {
+                                if (!disabledUrlIcon.equals(currentURL)) {
+                                    InventoryUtils.setNewSkullURL(spellItem, disabledUrlIcon);
+                                    player.getInventory().setItem(i, spellItem);
+                                }
+                                if (targetAmount == 99) {
+                                    if (spellItem.getAmount() != 1) {
+                                        spellItem.setAmount(1);
+                                    }
+                                    setAmount = true;
+                                }
+                            } else {
+                                if (!urlIcon.equals(currentURL)) {
+                                    InventoryUtils.setNewSkullURL(spellItem, urlIcon);
+                                    player.getInventory().setItem(i, spellItem);
                                 }
                             }
                         }
