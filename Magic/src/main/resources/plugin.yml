@@ -454,12 +454,9 @@ permissions:
     type: boolean
     default: op
   Magic.commands.wand:
-    description: Player may use the /wand commands
+    description: Player may use the /wand command to create a wand
     type: boolean
     default: op
-  Magic.commands.wand.wand:
-    description: Player may create a specific wand
-    type: list
   Magic.commands.wand.override:
     description: Player may configure wand overrides
     type: boolean
@@ -913,6 +910,13 @@ permissions:
   Magic.protected:
     description: The spells a player is immune to
     type: list
+  Magic.create:
+    description: The wands a player may create with the /wand command
+    type: list
+  Magic.create.*:
+    description: A player may create any wand with the /wand command
+    type: boolean
+    default: op
   Magic.wand.overwrite:
     description: A player may delete or overwrite saved wands
     default: op

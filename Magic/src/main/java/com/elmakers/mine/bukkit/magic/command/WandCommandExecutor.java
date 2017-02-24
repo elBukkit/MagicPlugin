@@ -505,11 +505,20 @@ public class WandCommandExecutor extends MagicTabExecutor {
         if (!api.hasPermission(sender, "Magic.commands." + command)) return true;
 		if (subCommand.length() == 0) 
 		{
-			if (!api.hasPermission(sender, "Magic.commands." + command + ".wand.default", true)) return true;
+			if (!api.hasPermission(sender, "Magic.create.default", false)
+				&& !api.hasPermission(sender, "Magic.create." + api.getController().getDefaultWandTemplate())
+				&& !api.hasPermission(sender, "Magic.create.*")) {
+				sender.sendMessage(ChatColor.RED + "You do not have permission to create the default wand");
+				return true;
+			}
 		} 
 		else 
 		{
-			if (!api.hasPermission(sender, "Magic.commands." + command +".wand." + subCommand, true)) return true;
+			if (!api.hasPermission(sender, "Magic.create." + subCommand, false)
+				&& !api.hasPermission(sender, "Magic.create.*")) {
+				sender.sendMessage(ChatColor.RED + "You do not have permission to create the wand \"" + subCommand +"\"");
+				return true;
+			}
 		}
 		
 		return onWand(sender, player, args);
