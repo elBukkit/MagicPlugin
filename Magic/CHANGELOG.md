@@ -6,6 +6,7 @@
    - Magic.create.<wand> : Permission to create a specific wand
    - Magic.create.* : Permission to create any wand, ops have this by default
    - Magic.commands.wand : Permission to use the /wand command to create wands
+ - The Magic.create permission can also be used to limit /mgive access
  - Enchanting configs renamed to "paths". 
    - Old enchanting.yml file will be renamed (one-time migration)
    - enchanting folder no longer used, please move files by hand if you have any in there.

@@ -79,6 +79,11 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             player = (Player)sender;
         }
 
+        if (!api.hasPermission(sender, "Magic.create." + itemName) && !api.hasPermission(sender, "Magic.create.*")) {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to create " + itemName);
+            return true;
+        }
+
         if (itemName.equalsIgnoreCase("xp")) {
             api.giveExperienceToPlayer(player, count);
             sender.sendMessage("Gave " + count + " experience to " + player.getName());
@@ -116,21 +121,21 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
         if (args.length == 1 || args.length == 2) {
             Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
-                options.add(spell.getKey());
+                addIfPermissible(sender, options, "Magic.create.", spell.getKey());
             }
             Collection<String> allWands = api.getWandKeys();
             for (String wandKey : allWands) {
-                options.add(wandKey);
+                addIfPermissible(sender, options, "Magic.create.", wandKey);
             }
             for (Material material : Material.values()) {
-                options.add(material.name().toLowerCase());
+                addIfPermissible(sender, options, "Magic.create.", material.name().toLowerCase());
             }
             Collection<String> allItems = api.getController().getItemKeys();
             for (String itemKey : allItems) {
-                options.add(itemKey);
+                addIfPermissible(sender, options, "Magic.create.", itemKey);
             }
-            options.add("xp");
-            options.add("sp");
+            addIfPermissible(sender, options, "Magic.create.", "xp");
+            addIfPermissible(sender, options, "Magic.create.", "sp");
 		}
 		return options;
 	}

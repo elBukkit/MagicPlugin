@@ -150,7 +150,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 			Collection<String> allWands = api.getWandKeys();
 			for (String wandKey : allWands) {
-				addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".wand.", wandKey, true);
+				addIfPermissible(sender, options, "Magic.create.", wandKey, false);
 			}
 		}
 		

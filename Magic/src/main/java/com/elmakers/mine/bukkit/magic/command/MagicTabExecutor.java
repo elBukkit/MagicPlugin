@@ -75,7 +75,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
 
 	protected void addIfPermissible(CommandSender sender, Collection<String> options, String permissionPrefix, String option)
 	{
-		if (api.hasPermission(sender, permissionPrefix + option))
+		if (api.hasPermission(sender, permissionPrefix + option) || api.hasPermission(sender, permissionPrefix + "*"))
 		{
 			options.add(option);
 		}
