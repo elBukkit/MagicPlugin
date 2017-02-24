@@ -4797,6 +4797,11 @@ public class MagicController implements MageController {
         return value;
     }
 
+    @Override
+    public String getDefaultWandTemplate() {
+        return Wand.DEFAULT_WAND_TEMPLATE;
+    }
+
     @Override @Nonnull
     @SuppressWarnings("unchecked") // I feel like this is safe, but I can't seem to get rid of the unchecked warning here.
     public <T> T getWandProperty(ItemStack item, @Nonnull String key, @Nonnull T defaultValue) {

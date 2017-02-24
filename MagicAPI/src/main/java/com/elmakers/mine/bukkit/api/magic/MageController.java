@@ -356,6 +356,7 @@ public interface MageController {
     public Double getWorth(ItemStack item);
     public boolean disguise(Entity entity, ConfigurationSection configuration);
     public void managePlayerData(boolean external, boolean backupInventories);
+    String getDefaultWandTemplate();
 
     Object getWandProperty(ItemStack itemStack, String key);
     @Nonnull <T> T getWandProperty(ItemStack itemStack, @Nonnull String key, @Nonnull T defaultValue);
