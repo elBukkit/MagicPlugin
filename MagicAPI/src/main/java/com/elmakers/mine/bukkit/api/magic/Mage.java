@@ -100,6 +100,7 @@ public interface Mage extends CostReducer {
      */
     public Location getEyeLocation();
     public Location getWandLocation();
+    public Location getOffhandWandLocation();
 
     /**
      * Get the direction this Mage is facing.

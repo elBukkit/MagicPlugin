@@ -15,8 +15,6 @@ public interface WandTemplate extends MagicProperties {
     public boolean hasTag(String tag);
     public String getCreatorId();
     public String getCreator();
-    public boolean playEffects(Mage mage, String key);
-    public boolean playEffects(Mage mage, String key, float scale);
     public WandTemplate getMigrateTemplate();
     public String migrateIcon(String icon);
     public boolean isSoul();
@@ -24,4 +22,12 @@ public interface WandTemplate extends MagicProperties {
     Set<String> getCategories();
     ConfigurationSection getAttributes();
     String getAttributeSlot();
+
+    public boolean playEffects(Wand wand, String key);
+    public boolean playEffects(Wand wand, String key, float scale);
+
+    @Deprecated
+    public boolean playEffects(Mage mage, String key);
+    @Deprecated
+    public boolean playEffects(Mage mage, String key, float scale);
 }

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -201,4 +202,9 @@ public interface Wand extends CostReducer, MagicProperties {
      */
     @Deprecated
     public void activate(Mage mage);
+
+    Color getEffectColor();
+    String getEffectParticleName();
+    Location getLocation();
+    Mage getMage();
 }
