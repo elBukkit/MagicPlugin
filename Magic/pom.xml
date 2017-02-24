@@ -15,12 +15,6 @@
 	<name>Magic Bukkit Plugin</name>
 	<url>http://mine.elmakers.com</url>
 
-	<properties>
-		<!-- TODO: What do these two do? -->
-		<build.version>3.1</build.version>
-		<api.version>1.3</api.version>
-	</properties>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -42,7 +36,7 @@
 		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicAPI</artifactId>
-			<version>${version.magic.api}</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

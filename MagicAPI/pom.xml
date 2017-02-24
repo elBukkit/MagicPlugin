@@ -10,7 +10,6 @@
 	</parent>
 
 	<artifactId>MagicAPI</artifactId>
-	<version>${version.magic.api}</version>
 
 	<name>Magic API</name>
 	<url>http://mine.elmakers.com</url>
