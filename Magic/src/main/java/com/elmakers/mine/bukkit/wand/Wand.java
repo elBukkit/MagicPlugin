@@ -4125,7 +4125,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 	@Override
 	public boolean removeProperty(String key) {
-    	if (getProperty(key) == null) return false;
+        if (!hasProperty(key)) return false;
     	setProperty(key, null);
 		loadProperties();
 		saveState();

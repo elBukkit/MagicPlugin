@@ -17,6 +17,8 @@ import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.WandAction;
 import com.elmakers.mine.bukkit.wand.WandMode;
+import com.google.common.base.Optional;
+
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -578,12 +580,12 @@ public class WandCommandExecutor extends MagicTabExecutor {
             if (parameters.length == 0) {
             	sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/wand describe spells" + ChatColor.BLUE + " for specific properties");
 				wand.describe(sender);
-			} else {
-            	Object property = wand.getProperty(parameters[0]);
-            	if (property == null) {
+            } else {
+                Optional<Object> property = wand.getProperty(parameters[0]);
+                if (!property.isPresent()) {
 					sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.RED + "(Not Set)");
 				} else {
-					sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(property));
+                    sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(property.get()));
 				}
 			}
         } else {
