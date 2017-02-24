@@ -2,7 +2,7 @@
 
 ## 6.7
 
- - If all goes well, 6.7 will never exit and we'll go straight to 7.0.
+ - Broomsticks will upgrade on use in the potter configs, too
 
 ## 6.6
 
