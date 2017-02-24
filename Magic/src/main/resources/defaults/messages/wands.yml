@@ -344,3 +344,6 @@ wands:
         description: For creating in-game items from scratch
     detonator:
         name: Thermal Detonator
+    talisman:
+        name: Mana Talisman
+        description: Gives a mana bonus when held

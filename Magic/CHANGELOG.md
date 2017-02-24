@@ -21,6 +21,7 @@
  - Add /mitem destroy command, just destroys your held item
  - Fix some metadata items like skulls and banners
  - Add optional entity_damage_reduction config
+ - Add craftable Mana Talisman item
 
 ## 6.5
 

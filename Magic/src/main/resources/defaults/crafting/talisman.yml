@@ -1,0 +1,10 @@
+talisman:
+  output: talisman
+  output_type: wand
+  materials:
+    o: nether_star
+    i: iron_nugget
+  row_1: " i "
+  row_2: "ioi"
+  row_3: " i "
+
