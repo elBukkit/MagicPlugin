@@ -975,7 +975,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return slot;
 	}
 	
-	protected void addToInventory(ItemStack itemStack) {
+	public void addToInventory(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
         }

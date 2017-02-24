@@ -216,6 +216,21 @@ public class PlayerController implements Listener {
             } else if (activeWand.isInventoryOpen()) {
                 if (!controller.isSpellDroppingEnabled()) {
                     cancelEvent = true;
+                    // This will happen if you graph an item, change pages, and then drop the item- it would disappear
+                    // from the inventory until reload.
+                    // Check for this state and prevent it.
+                    boolean isInventoryFull = true;
+                    PlayerInventory playerInventory = player.getInventory();
+                    for (int i = 0; i < Wand.PLAYER_INVENTORY_SIZE; i++) {
+                        ItemStack item = playerInventory.getItem(i);
+                        if (item == null || item.getType() == Material.AIR) {
+                            isInventoryFull = false;
+                            break;
+                        }
+                    }
+                    if (isInventoryFull) {
+                        activeWand.addToInventory(droppedItem);
+                    }
                 } else {
                     // The item is already removed from the wand's inventory, but that should be ok
                     controller.removeItemFromWand(activeWand, droppedItem);
