@@ -293,7 +293,7 @@ commands:
         /mage getdata     Describe Mage data
         /mage check       Check player permissions
         /mage debug       Enable/disable debug for a player
-        /mage delete      Delete all data for a Mage
+        /mage reset       Reset all data for a Mage
         /mage unbind      Delete all of a mage's bound wands
   "mage setdata":
     description: Configure Mage player data or spell cast counts
@@ -311,12 +311,12 @@ commands:
         /mage getdata <Player> [SpellKey]
         /mage getdata NathanWolf
         /mage getdata NathanWolf blink
-  "mage delete":
-    description: Complete reset and delete player data
-    permission: Magic.commands.mage.delete
+  "mage reset":
+    description: Complete reset player data
+    permission: Magic.commands.mage.reset
     usage: |
 
-        /mage delete NathanWolf
+        /mage reset NathanWolf
   "mage check":
     description: Do a permission check on player, show debug info
     permission: Magic.commands.mage.check

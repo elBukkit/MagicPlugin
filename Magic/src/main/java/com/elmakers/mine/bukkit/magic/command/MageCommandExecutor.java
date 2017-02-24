@@ -80,9 +80,9 @@ public class MageCommandExecutor extends MagicMapExecutor {
 		{
 			return onMageCheck(sender, player, args2);
 		}
-        if (subCommand.equalsIgnoreCase("delete"))
+        if (subCommand.equalsIgnoreCase("reset"))
         {
-            return onMageDelete(sender, player);
+            return onMageReset(sender, player);
         }
 		if (subCommand.equalsIgnoreCase("debug"))
 		{
@@ -114,7 +114,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "setdata");
             addIfPermissible(sender, options, "Magic.commands.mage.", "check");
             addIfPermissible(sender, options, "Magic.commands.mage.", "debug");
-			addIfPermissible(sender, options, "Magic.commands.mage.", "delete");
+			addIfPermissible(sender, options, "Magic.commands.mage.", "reset");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unbind");
 		} else if (args.length == 2) {
 			options.addAll(api.getPlayerNames());
@@ -138,10 +138,10 @@ public class MageCommandExecutor extends MagicMapExecutor {
         return true;
     }
 
-    public boolean onMageDelete(CommandSender sender, Player player)
+    public boolean onMageReset(CommandSender sender, Player player)
     {
         api.getController().deleteMage(player.getUniqueId().toString());
-        sender.sendMessage(ChatColor.RED + "Deleted player " + player.getName());
+        sender.sendMessage(ChatColor.RED + "Reset player " + player.getName());
         return true;
     }
 

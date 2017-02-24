@@ -10,6 +10,7 @@
  - Cast permissions changed to avoid complicated negation inheritance issues
    - Add "-Magic.cast.*" to prevent players casting any spells
    - Add "Magic.cast.<spell>" to add back individual spells
+ - The /mage delete command changed to /mage reset
  - Enchanting configs renamed to "paths". 
    - Old enchanting.yml file will be renamed (one-time migration)
    - enchanting folder no longer used, please move files by hand if you have any in there.
