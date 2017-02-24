@@ -144,7 +144,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     private final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
             PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 
-    protected @Nonnull ItemStack item;
+    /**
+     * The item as it appears in the inventory of the player.
+     */
+    protected @Nullable ItemStack item;
 
     /**
      * The currently active mage.
