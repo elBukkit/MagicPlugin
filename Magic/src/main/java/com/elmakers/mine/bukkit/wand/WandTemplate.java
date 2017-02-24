@@ -2,14 +2,15 @@ package com.elmakers.mine.bukkit.wand;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
@@ -125,14 +126,32 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     }
 
     @Override
-    public boolean playEffects(Mage mage, String key)
+    public boolean playEffects(Wand wand, String key)
     {
-        return playEffects(mage, key, 1.0f);
+        return playEffects(wand.getMage(), wand, key, 1.0f);
     }
 
     @Override
-    public boolean playEffects(Mage mage, String effectName, float scale)
+    public boolean playEffects(Wand wand, String effectName, float scale) {
+        return playEffects(wand.getMage(), wand, key, scale);
+    }
+
+    @Override
+    @Deprecated
+    public boolean playEffects(Mage mage, String key)
     {
+        return playEffects(mage, mage.getActiveWand(), key, 1.0f);
+    }
+
+    @Override
+    @Deprecated
+    public boolean playEffects(Mage mage, String effectName, float scale) {
+        return playEffects(mage, mage.getActiveWand(), effectName, scale);
+    }
+
+    private boolean playEffects(Mage mage, Wand wand, String effectName, float scale)
+    {
+        Preconditions.checkNotNull(mage, "mage");
         Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects(effectName);
         if (effects.isEmpty()) return false;
         
@@ -143,13 +162,13 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             player.setScale(scale);
 
             // Set material and color
-            player.setColor(mage.getEffectColor());
-            String overrideParticle = mage.getEffectParticleName();
+            player.setColor(wand == null ? mage.getEffectColor() : wand.getEffectColor());
+            String overrideParticle = wand == null ? mage.getEffectParticleName() : wand.getEffectParticleName();
             player.setParticleOverride(overrideParticle);
 
             Location source = null;
             if (player.shouldUseWandLocation()) {
-                source = mage.getWandLocation();
+                source = wand == null ? mage.getWandLocation() : wand.getLocation();
             } else if (player.shouldUseEyeLocation()) {
                 source = mage.getEyeLocation();
             }

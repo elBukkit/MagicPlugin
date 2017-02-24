@@ -457,7 +457,7 @@ public class CustomProjectileAction extends CompoundAction
         }
         if (updateLaunchLocation)
         {
-            launchLocation = context.getMage().getWandLocation().clone();
+            launchLocation = context.getWandLocation().clone();
         }
         // Advance position
         // We default to 50 ms travel time (one tick) for the first iteration.

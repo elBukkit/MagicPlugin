@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -168,7 +169,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         if (location != null) {
             return location;
         }
-        Location wandLocation = this.baseSpell != null ? baseSpell.getWandLocation() : getEyeLocation();
+        Location wandLocation = wand == null ? null : wand.getLocation();
+        if (wandLocation == null) {
+            wandLocation = this.baseSpell != null ? baseSpell.getWandLocation() : getEyeLocation();
+        }
         if (wandLocation != null && direction != null) {
             wandLocation.setDirection(direction);
         }
@@ -454,15 +458,30 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
             // Set material and color
             player.setMaterial(spell.getEffectMaterial());
-            player.setColor(spell.getEffectColor());
-            String overrideParticle = spell.getEffectParticle();
-            player.setParticleOverride(overrideParticle);
+            player.setColor(getEffectColor());
+            player.setParticleOverride(getEffectParticle());
 
             // Set parameters
             player.setParameterMap(parameterMap);
         }
 
         return effects;
+    }
+
+    public Color getEffectColor() {
+        Color color = wand == null ? null : wand.getEffectColor();
+        if (color == null) {
+            color = spell.getEffectColor();
+        }
+        return color;
+    }
+
+    public String getEffectParticle() {
+        String particle = wand == null ? null : wand.getEffectParticleName();
+        if (particle == null) {
+            particle = spell.getEffectParticle();
+        }
+        return particle;
     }
 
     @Override

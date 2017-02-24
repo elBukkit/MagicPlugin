@@ -57,11 +57,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MainHand;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
@@ -73,6 +75,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public final static int HOTBAR_SIZE = 9;
 	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
+	public static double WAND_LOCATION_OFFSET = 0.5;
+	public static double WAND_LOCATION_VERTICAL_OFFSET = 0;
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
 	private static int WAND_VERSION = 2;
@@ -3762,7 +3766,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			this.mage = (Mage)mage;
 		}
 	}
-	
+
+	@Override
 	public Color getEffectColor() {
 		return effectColor == null ? null : effectColor.getColor();
 	}
@@ -3770,6 +3775,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     public ParticleEffect getEffectParticle() {
         return effectParticle;
     }
+
+	@Override
+	public String getEffectParticleName() {
+		return effectParticle == null ? null : effectParticle.name();
+	}
 
 	public Inventory getHotbar() {
         if (this.hotbars.size() == 0) return null;
@@ -4816,7 +4826,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			boolean offhandActive = mage.setOffhandActive(isInOffhand);
 			boolean result = false;
 			try {
-				result = wandTemplate.playEffects(mage, effects);
+				result = wandTemplate.playEffects(this, effects);
 			} catch (Exception ex) {
 				result = false;
 				controller.getLogger().log(Level.WARNING, "Error playing effects " + effects + " from wand " + template, ex);
@@ -4971,5 +4981,38 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             if (mage != null) mage.setLastBlockTime(System.currentTimeMillis());
 		}
 		return isReflected;
+	}
+
+	@Override
+	public Location getLocation() {
+		if (mage == null) {
+			return null;
+		}
+		Location wandLocation = mage.getEyeLocation();
+		Entity entity = mage.getEntity();
+
+		boolean leftHand = isInOffhand;
+		if (entity instanceof HumanEntity) {
+			HumanEntity human = (HumanEntity)entity;
+			if (human.getMainHand() == MainHand.LEFT) {
+				leftHand = !leftHand;
+			}
+		}
+		Location toTheRight = wandLocation.clone();
+		if (leftHand) {
+			toTheRight.setYaw(toTheRight.getYaw() - 90);
+		} else {
+			toTheRight.setYaw(toTheRight.getYaw() + 90);
+		}
+		Vector wandDirection = toTheRight.getDirection();
+		wandLocation = wandLocation.clone();
+		wandLocation.add(wandDirection.multiply(WAND_LOCATION_OFFSET));
+		wandLocation.setY(wandLocation.getY() + WAND_LOCATION_VERTICAL_OFFSET);
+		return wandLocation;
+	}
+
+	@Override
+	public Mage getMage() {
+    	return mage;
 	}
 }

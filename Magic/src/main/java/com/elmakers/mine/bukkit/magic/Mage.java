@@ -86,8 +86,6 @@ import com.elmakers.mine.bukkit.wand.Wand;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
-    public static double WAND_LOCATION_OFFSET = 0.5;
-    public static double WAND_LOCATION_VERTICAL_OFFSET = 0;
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     public static int OFFHAND_CAST_RANGE = 32;
     final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<>();
@@ -1150,28 +1148,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public Location getWandLocation() {
         Location wandLocation = getEyeLocation();
-        if (wandLocation == null) {
-            return null;
+        if (activeWand != null && !offhandCast) {
+            wandLocation = activeWand.getLocation();
+        } else if (offhandWand != null && offhandCast) {
+            wandLocation = offhandWand.getLocation();
         }
-        
-        boolean leftHand = offhandCast;
-        Entity entity = getEntity();
-        if (entity instanceof HumanEntity) {
-            HumanEntity human = (HumanEntity)entity;
-            if (human.getMainHand() == MainHand.LEFT) {
-                leftHand = !leftHand;
-            }
+        return wandLocation;
+    }
+
+    @Override
+    public Location getOffhandWandLocation() {
+        Location wandLocation = getEyeLocation();
+        if (offhandWand != null) {
+            wandLocation = offhandWand.getLocation();
         }
-        Location toTheRight = wandLocation.clone();
-        if (leftHand) {
-            toTheRight.setYaw(toTheRight.getYaw() - 90);
-        } else {
-            toTheRight.setYaw(toTheRight.getYaw() + 90);
-        }
-        Vector wandDirection = toTheRight.getDirection();
-        wandLocation = wandLocation.clone();
-        wandLocation.add(wandDirection.multiply(WAND_LOCATION_OFFSET));
-        wandLocation.setY(wandLocation.getY() + WAND_LOCATION_VERTICAL_OFFSET);
         return wandLocation;
     }
 
@@ -1475,12 +1465,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public String getEffectParticleName() {
         if (offhandCast && offhandWand != null) {
-            ParticleEffect particle = offhandWand.getEffectParticle();
-            return particle == null ? null : particle.name();
+            return offhandWand.getEffectParticleName();
         }
         if (activeWand == null) return null;
-        ParticleEffect particle = activeWand.getEffectParticle();
-        return particle == null ? null : particle.name();
+        return activeWand.getEffectParticleName();
     }
 
     @Override
