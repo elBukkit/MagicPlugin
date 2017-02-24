@@ -1,7 +1,7 @@
 # TODO
 
 ## 6.6
-
+   
 ## 7.0
  - Refactor MageProperties to be contained rather than inherited?
  - Mage needs MageProperties. Maybe per-path? Per "class"? Not really sure yet.
@@ -15,11 +15,10 @@
 
 ## High-Priority
 
- - Offhand casts need to use the context wand throughout their lifetime
-   ex: Cast missile, color changes to default red after first tick
   
 ## Not so High-Priority
  
+ - Adding spells to wands should try to preserve a few spaces of free space on each page (don't rely on inventory.addItem)
  - Add SendTitle action
  - Some way for messages to go to the action bar? Maybe some escape code?
  - Message on hotbar switch (requested)
