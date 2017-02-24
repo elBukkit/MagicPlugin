@@ -2448,6 +2448,8 @@ public class MagicController implements MageController {
         MaterialBrush.MapCustomIcon = properties.getString("map_icon_url", MaterialBrush.MapCustomIcon);
         MaterialBrush.DefaultBrushCustomIcon = properties.getString("default_brush_icon_url", MaterialBrush.DefaultBrushCustomIcon);
 
+        BaseSpell.DEFAULT_DISABLED_ICON_URL = properties.getString("disabled_icon_url", BaseSpell.DEFAULT_DISABLED_ICON_URL);
+
         Wand.WAND_LOCATION_OFFSET = properties.getDouble("wand_location_offset", Wand.WAND_LOCATION_OFFSET);
         Wand.WAND_LOCATION_VERTICAL_OFFSET = properties.getDouble("wand_location_offset_vertical", Wand.WAND_LOCATION_OFFSET);
         com.elmakers.mine.bukkit.magic.Mage.JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = properties.getInt("jump_exemption", 0);

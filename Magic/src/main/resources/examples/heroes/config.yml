@@ -17,3 +17,7 @@ load_default_paths: false
 load_default_spells: false
 load_default_items: false
 load_default_mobs: false
+
+# Use this to turn off disabled icon URLs when using skull icons
+# disabled_icon_url: ""
+

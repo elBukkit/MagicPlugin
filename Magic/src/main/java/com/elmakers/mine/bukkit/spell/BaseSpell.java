@@ -73,6 +73,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public abstract class BaseSpell implements MageSpell, Cloneable {
     public static int MAX_LORE_LENGTH = 24;
+    public static String DEFAULT_DISABLED_ICON_URL = "";
 
     protected static final double LOOK_THRESHOLD_RADIANS = 0.9;
 
@@ -2247,7 +2248,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public String getDisabledIconURL() {
-        return iconDisabledURL;
+        return iconDisabledURL == null ? DEFAULT_DISABLED_ICON_URL : iconDisabledURL;
     }
 
     @Override

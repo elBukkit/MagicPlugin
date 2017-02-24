@@ -3,6 +3,7 @@
 ## 6.7
 
  - Broomsticks will upgrade on use in the potter configs, too
+ - Add a disabled icon for skull-based configs to use
  - Heroes integration improvements:
    - Allow using disabled icons and skull-based disabled icons.
    - Disabled icons will show in skill selector for unavailable skills
