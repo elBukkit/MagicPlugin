@@ -767,7 +767,7 @@ permissions:
     type: boolean
     default: op
   Magic.commands.mage:
-    description: Shows help info for the /mage command
+    description: Allows use of /mage commands
     type: boolean
     default: op
   Magic.commands.mage.getdata:
