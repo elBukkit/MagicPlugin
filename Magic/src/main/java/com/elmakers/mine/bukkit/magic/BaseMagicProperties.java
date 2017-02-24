@@ -64,15 +64,20 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Override
-    @Nonnull
-    @SuppressWarnings("unchecked") // I feel like this is safe, but I can't seem to get rid of the unchecked warning here.
-    public <T> T getProperty(@Nonnull String key, @Nonnull T defaultValue) {
+    public <T> T getProperty(String key, T defaultValue) {
         Preconditions.checkNotNull(key, "key");
         Preconditions.checkNotNull(defaultValue, "defaultValue");
         rebuildEffectiveConfiguration();
+
+        @SuppressWarnings("unchecked")
+        Class<? extends T> clazz = (Class<? extends T>) defaultValue.getClass();
+
         Object value = effectiveConfiguration.get(key);
-        if (value == null || !(defaultValue.getClass().isAssignableFrom(value.getClass()))) return defaultValue;
-        return (T)value;
+        if (value != null && clazz.isInstance(value)) {
+            return clazz.cast(value);
+        }
+
+        return defaultValue;
     }
 
     public ConfigurationSection getConfiguration() {

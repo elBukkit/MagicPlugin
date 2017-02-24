@@ -124,7 +124,6 @@ import org.bukkit.util.Vector;
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
 
-import javax.annotation.Nonnull;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -4814,28 +4813,39 @@ public class MagicController implements MageController {
         return Wand.DEFAULT_WAND_TEMPLATE;
     }
 
-    @Override @Nonnull
-    @SuppressWarnings("unchecked") // I feel like this is safe, but I can't seem to get rid of the unchecked warning here.
-    public <T> T getWandProperty(ItemStack item, @Nonnull String key, @Nonnull T defaultValue) {
+    @Override
+    public <T> T getWandProperty(ItemStack item, String key, T defaultValue) {
         Preconditions.checkNotNull(key, "key");
         Preconditions.checkNotNull(defaultValue, "defaultValue");
-        if (InventoryUtils.isEmpty(item)) return defaultValue;
-        Object wandNode = InventoryUtils.getNode(item, Wand.WAND_KEY);
-        if (wandNode == null) return defaultValue;
-        Object value = InventoryUtils.getMetaObject(wandNode, key);
-        if (value != null) {
-            if (defaultValue.getClass().isAssignableFrom(value.getClass())) {
-                return (T) value;
-            }
+
+        if (InventoryUtils.isEmpty(item)) {
             return defaultValue;
         }
 
-        WandTemplate template = getWandTemplate(InventoryUtils.getMetaString(wandNode, "template"));
-        if (template != null) {
-            value = template.getProperty(key, defaultValue);
-            if (value != null) {
-                return (T)value;
+        Object wandNode = InventoryUtils.getNode(item, Wand.WAND_KEY);
+        if (wandNode == null) {
+            return defaultValue;
+        }
+
+        // Obtain the type via the default value.
+        // (This is unchecked because of type erasure)
+        @SuppressWarnings("unchecked")
+        Class<? extends T> clazz = (Class<? extends T>) defaultValue.getClass();
+
+        // Value directly stored on wand
+        Object value = InventoryUtils.getMetaObject(wandNode, key);
+        if (value != null) {
+            if (clazz.isInstance(value)) {
+                return clazz.cast(value);
             }
+
+            return defaultValue;
+        }
+
+        String tplName = InventoryUtils.getMetaString(wandNode, "template");
+        WandTemplate template = getWandTemplate(tplName);
+        if (template != null) {
+            return template.getProperty(key, defaultValue);
         }
 
         return defaultValue;
