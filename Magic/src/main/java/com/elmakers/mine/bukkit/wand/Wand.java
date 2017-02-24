@@ -3683,11 +3683,19 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 effectiveBoost += armorWand.getManaMaxBoost();
                 effectiveRegenBoost += armorWand.getManaRegenerationBoost();
             }
-            Wand offhandWand = mage.getOffhandWand();
-            if (offhandWand != null && !offhandWand.isPassive()) {
-				effectiveBoost += offhandWand.getManaMaxBoost();
-				effectiveRegenBoost += offhandWand.getManaRegenerationBoost();
-			}
+            if (isInOffhand) {
+				Wand activeWand = mage.getActiveWand();
+				if (activeWand != null && !activeWand.isPassive()) {
+					effectiveBoost += activeWand.getManaMaxBoost();
+					effectiveRegenBoost += activeWand.getManaRegenerationBoost();
+				}
+            } else {
+				Wand offhandWand = mage.getOffhandWand();
+				if (offhandWand != null && !offhandWand.isPassive()) {
+					effectiveBoost += offhandWand.getManaMaxBoost();
+					effectiveRegenBoost += offhandWand.getManaRegenerationBoost();
+				}
+            }
         }
         effectiveManaMax = manaMax;
         if (effectiveBoost != 0) {
