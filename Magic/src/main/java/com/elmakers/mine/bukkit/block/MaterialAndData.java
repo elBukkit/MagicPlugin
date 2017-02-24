@@ -194,9 +194,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     catch (Exception ex) {
                         color = null;
                     }
-                    if (color == null) {
-                        extraData = null;
-                    } else {
+                    if (color != null) {
                         extraData = new BlockBanner(color);
                     }
                 }  else if (material == Material.LEATHER_BOOTS || material == Material.LEATHER_CHESTPLATE

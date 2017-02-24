@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
-import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -89,7 +88,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private ArmorStand armorStand = null;
     private EntityType mountType = null;
     private Entity mountEntity = null;
-    private Horse.Variant mountHorseVariant = null;
     private Horse.Color mountHorseColor = null;
     private Horse.Style mountHorseStyle = null;
     private double maxMountBoost = 1;
@@ -551,18 +549,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
             }
         } else {
             mountType = null;
-        }
-
-        if (parameters.contains("mount_variant")) {
-            try {
-                String variantString = parameters.getString("mount_variant");
-                mountHorseVariant = Horse.Variant.valueOf(variantString.toUpperCase());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return SpellResult.FAIL;
-            }
-        } else {
-            mountHorseVariant = Horse.Variant.HORSE;
         }
 
         if (parameters.contains("mount_color")) {

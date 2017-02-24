@@ -12,7 +12,6 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;

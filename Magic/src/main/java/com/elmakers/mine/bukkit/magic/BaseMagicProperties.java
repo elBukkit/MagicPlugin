@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -58,21 +59,43 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Override
-    public Object getProperty(String key) {
-        rebuildEffectiveConfiguration();
-        return effectiveConfiguration.get(key);
+    public boolean hasProperty(String key) {
+        return effectiveConfiguration.contains(key);
     }
 
     @Override
-    @Nonnull
-    @SuppressWarnings("unchecked") // I feel like this is safe, but I can't seem to get rid of the unchecked warning here.
-    public <T> T getProperty(@Nonnull String key, @Nonnull T defaultValue) {
+    public Optional<Object> getProperty(String key) {
+        rebuildEffectiveConfiguration();
+        return Optional.fromNullable(effectiveConfiguration.get(key));
+    }
+
+    @Override
+    public <T> Optional<T> getProperty(String key, Class<T> type) {
+        rebuildEffectiveConfiguration();
+
+        Object value = effectiveConfiguration.get(key);
+        if(value == null || !type.isInstance(value)) {
+            return Optional.absent();
+        }
+
+        return Optional.of(type.cast(value));
+    }
+
+    @Override
+    public <T> T getProperty(String key, T defaultValue) {
         Preconditions.checkNotNull(key, "key");
         Preconditions.checkNotNull(defaultValue, "defaultValue");
         rebuildEffectiveConfiguration();
+
+        @SuppressWarnings("unchecked")
+        Class<? extends T> clazz = (Class<? extends T>) defaultValue.getClass();
+
         Object value = effectiveConfiguration.get(key);
-        if (value == null || !(defaultValue.getClass().isAssignableFrom(value.getClass()))) return defaultValue;
-        return (T)value;
+        if (value != null && clazz.isInstance(value)) {
+            return clazz.cast(value);
+        }
+
+        return defaultValue;
     }
 
     public ConfigurationSection getConfiguration() {

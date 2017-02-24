@@ -41,7 +41,6 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 
@@ -119,32 +118,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			"unique", "track", "invulnerable", "immortal"
     );
 
-    private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
-            "id", "owner", "owner_id", "name", "description",
-            "organize", "alphabetize", "fill", "stored", "upgrade_icon",
-            "mana_timestamp", "upgrade_template", "custom_properties", "version",
-            // For legacy wands
-            "haste",
-            "health_regeneration", "hunger_regeneration",
-            "xp", "xp_regeneration", "xp_max", "xp_max_boost",
-            "xp_regeneration_boost",
-            "mode_cast", "mode_drop", "randomize"
-    );
-
     private final static Random random = new Random();
 
     /**
-     * Set of properties that are used internally.
-	 *
-	 * Neither this list nor HIDDEN_PROPERTY_KEYS are really used anymore, but I'm keeping them
-	 * here in case we have some use for them in the future.
-	 *
-	 * Wands now load and retain any wand.* tags on their items.
+     * The item as it appears in the inventory of the player.
      */
-    private final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
-            PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
-
-    protected @Nonnull ItemStack item;
+    protected @Nullable ItemStack item;
 
     /**
      * The currently active mage.
@@ -2433,7 +2412,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
     }
 
-	@SuppressWarnings("deprecation")
 	private void updateInventory() {
 		if (mage == null) return;
 		if (!isInventoryOpen()) return;
@@ -2950,7 +2928,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		hasInventory = inventorySize > 1 || (inventorySize == 1 && hasSpellProgression);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void cycleInventory(int direction) {
 		if (!hasInventory) {
 			return;
@@ -2994,8 +2971,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     public void cycleInventory() {
         cycleInventory(1);
     }
-	
-	@SuppressWarnings("deprecation")
+
 	public void openInventory() {
 		if (mage == null) return;
 		
@@ -3545,7 +3521,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return false;
 	}
 	
-	@SuppressWarnings("deprecation")
 	protected void use() {
 		if (hasUses) {
 			findItem();
@@ -3978,7 +3953,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             fill(mage.getPlayer(), controller.getMaxWandFillLevel());
         }
 
-        if (isHeroes && player != null) {
+        if (isHeroes) {
             HeroesManager heroes = controller.getHeroes();
             if (heroes != null) {
                 Set<String> skills = heroes.getSkills(player);
@@ -4150,7 +4125,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 	@Override
 	public boolean removeProperty(String key) {
-    	if (getProperty(key) == null) return false;
+        if (!hasProperty(key)) return false;
     	setProperty(key, null);
 		loadProperties();
 		saveState();
@@ -4370,6 +4345,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return hasSpell(new SpellKey(spellName));
 	}
 
+    @Override
     public boolean hasSpell(SpellKey spellKey) {
         Integer level = spellLevels.get(spellKey.getBaseKey());
         return (level != null && level >= spellKey.getLevel());
@@ -4688,7 +4664,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     public boolean restoreInventory() {
         if (storedInventory == null) {
             return false;

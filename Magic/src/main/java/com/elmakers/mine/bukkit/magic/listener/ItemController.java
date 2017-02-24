@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.magic.listener;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.item.ItemData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;

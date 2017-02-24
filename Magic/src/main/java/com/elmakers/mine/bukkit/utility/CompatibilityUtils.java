@@ -6,7 +6,6 @@ import com.elmakers.mine.bukkit.block.Schematic;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
 import org.bukkit.Server;

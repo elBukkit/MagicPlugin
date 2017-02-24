@@ -43,21 +43,25 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
         callingPlugin.getLogger().info("Registered custom WorldGuard flags: allowed-spells, blocked-spells, allowed-spell-categories, blocked-spell-categories, allowed-wands, blocked-wands, spell-overrides, destructible, reflective");
     }
 
+    @Override
     public String getDestructible(RegionAssociable source, ApplicableRegionSet checkSet)
     {
         return checkSet.queryValue(source, DESTRUCTIBLE);
     }
 
+    @Override
     public String getReflective(RegionAssociable source, ApplicableRegionSet checkSet)
     {
         return checkSet.queryValue(source, REFLECTIVE);
     }
 
+    @Override
     public Set<String> getSpellOverrides(RegionAssociable source, ApplicableRegionSet checkSet)
     {
         return checkSet.queryValue(source, SPELL_OVERRIDES);
     }
 
+    @Override
     public Boolean getWandPermission(RegionAssociable source, ApplicableRegionSet checkSet, Wand wand) {
         String wandTemplate = wand.getTemplateKey();
         Set<String> blocked = checkSet.queryValue(source, BLOCKED_WANDS);
@@ -71,6 +75,7 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
         return null;
     }
 
+    @Override
     public Boolean getCastPermission(RegionAssociable source, ApplicableRegionSet checkSet, SpellTemplate spell) {
         String spellKey = spell.getSpellKey().getBaseKey();
 

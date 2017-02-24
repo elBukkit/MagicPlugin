@@ -190,7 +190,6 @@ public class InventoryUtils extends NMSUtils
         return null;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     private static Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
         if (tag == null) return null;
         Object value = null;
@@ -213,8 +212,8 @@ public class InventoryUtils extends NMSUtils
                 value = true;
             }
         } else if (class_NBTTagList.isAssignableFrom(tag.getClass())) {
-            List items = (List)class_NBTTagList_list.get(tag);
-            List<Object> converted = new ArrayList<Object>();
+            List<?> items = (List<?>)class_NBTTagList_list.get(tag);
+            List<Object> converted = new ArrayList<>();
             for (Object baseTag : items) {
                 Object convertedBase = getTagValue(baseTag);
                 if (convertedBase != null) {

@@ -41,7 +41,6 @@ import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
-import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -50,7 +49,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -62,7 +60,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MainHand;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -1682,6 +1679,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return activeWand;
     }
 
+    @Override
     public Wand getOffhandWand() {
         return offhandWand;
     }

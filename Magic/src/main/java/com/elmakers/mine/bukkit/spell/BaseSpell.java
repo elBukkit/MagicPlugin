@@ -926,6 +926,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
     }
     
+    @Override
     public void loadPrerequisites(ConfigurationSection node)
     {
         requiredSpells.addAll(ConfigurationUtils.getPrerequisiteSpells(controller, node, "required_spells", "spell " + getKey(), true));

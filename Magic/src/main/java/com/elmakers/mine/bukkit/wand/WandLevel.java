@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -241,7 +240,7 @@ public class WandLevel {
 		// Add random wand properties
 		boolean addedProperties = false;
         Integer propertyCount = propertyCountProbability.size() == 0 ? Integer.valueOf(0) : RandomUtils.weightedRandom(propertyCountProbability);
-		Map<String, Object> wandProperties = new HashMap<String, Object>();
+		Map<String, Object> wandProperties = new HashMap<>();
 		double costReduction = wand.getCostReduction();
 
         List<Integer> propertiesAvailable = new ArrayList<>();
