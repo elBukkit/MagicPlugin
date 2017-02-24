@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -39,14 +40,31 @@ public class SkillsSelector implements GUIAction {
         public String heroesSkill;
         public SpellTemplate spell;
 
-        public SkillDescription(SpellTemplate spell, String heroesSkill) {
-            this.heroesSkill = heroesSkill;
+        public SkillDescription(SpellTemplate spell) {
             this.spell = spell;
         }
 
+        public SkillDescription(MageController controller, String heroesSkill) {
+            this.heroesSkill = heroesSkill;
+            this.spell = controller.getSpellTemplate(getSpellKey());
+        }
+
+        public String getSkillKey() {
+            String key = getSpellKey();
+            if (key != null) {
+                key = "skill:" + key;
+            }
+            return key;
+        }
+
         public String getSpellKey() {
-            if (spell != null) return "skill:" + spell.getKey();
-            return "skill:heroes*" + heroesSkill;
+            if (heroesSkill != null) {
+                return "heroes*" + heroesSkill;
+            }
+            if (spell != null) {
+                return spell.getKey();
+            }
+            return null;
         }
 
         public String getSpellName() {
@@ -88,7 +106,7 @@ public class SkillsSelector implements GUIAction {
 
             List<String> heroesSkills = heroes.getSkillList(player, true, true);
             for (String heroesSkill : heroesSkills) {
-                allSkills.add(new SkillDescription(null, heroesSkill));
+                allSkills.add(new SkillDescription(controller, heroesSkill));
             }
         } else {
             inventoryTitle = messages.get("skills.inventory_title");
@@ -102,7 +120,7 @@ public class SkillsSelector implements GUIAction {
                 if (key.isVariant()) continue;
                 if (key.getBaseKey().startsWith("heroes*")) continue;
                 if (!spell.hasCastPermission(player)) continue;
-                allSkills.add(new SkillDescription(spell, null));
+                allSkills.add(new SkillDescription(spell));
             }
         }
 
@@ -147,19 +165,23 @@ public class SkillsSelector implements GUIAction {
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, title);
         for (SkillDescription skill : skills)
         {
-            ItemStack skillItem = api.createItem(skill.getSpellKey(), mage);
+            ItemStack skillItem = api.createItem(skill.getSkillKey(), mage);
             if (skillItem == null) continue;
             if (skill.isHeroes() && heroes != null && !heroes.canUseSkill(player, skill.heroesSkill))
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
                 CompatibilityUtils.setDisplayName(skillItem, nameTemplate.replace("$skill", skill.heroesSkill));
-                // It would be cool to be able to do this, but would need to look up Skills Template,
-                // and don't want to mess with that until I have a Heroes test environment set up.
-                /*
-                MaterialAndData disabledIcon = skill.spell.getDisabledIcon();
-                if (disabledIcon != null) {
-                    disabledIcon.applyToItem(skillItem);
-                }*/
+                if (skill.spell != null) {
+                    MaterialAndData disabledIcon = skill.spell.getDisabledIcon();
+                    if (disabledIcon != null) {
+                        disabledIcon.applyToItem(skillItem);
+                    } else {
+                        String disabledIconURL = skill.spell.getDisabledIconURL();
+                        if (disabledIconURL != null && !disabledIconURL.isEmpty()) {
+                            InventoryUtils.setNewSkullURL(skillItem, disabledIconURL);
+                        }
+                    }
+                }
             }
             displayInventory.addItem(skillItem);
         }
