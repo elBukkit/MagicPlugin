@@ -176,6 +176,7 @@ public interface MageController {
     public void disablePhysics(int interval);
 
     public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue);
+    public boolean hasPermission(CommandSender sender, String pNode);
     public boolean hasCastPermission(CommandSender sender, SpellTemplate spell);
     public Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location);
     public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location);
