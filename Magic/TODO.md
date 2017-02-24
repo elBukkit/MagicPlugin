@@ -1,7 +1,7 @@
 # TODO
 
-## 6.6
-   
+## 6.7
+
 ## 7.0
  - Refactor MageProperties to be contained rather than inherited?
  - Mage needs MageProperties. Maybe per-path? Per "class"? Not really sure yet.

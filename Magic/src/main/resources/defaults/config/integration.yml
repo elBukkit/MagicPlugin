@@ -88,6 +88,9 @@ use_scoreboard_teams: false
 # Show Heroes skills in the /mskills menu, if Heroes is present
 skills_use_heroes: true
 
+# Use Heroes mana, if Heroes is present
+use_heroes_mana: true
+
 # Show all Magic spells the player has permission to cast in the /mskills menu
 # This might make opening the skills menu lag if you have a lot of spells.
 skills_use_permissions: false

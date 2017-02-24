@@ -285,4 +285,8 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     {
         return  type == Type.MANA ? getRoundedCost(amount, reducer) : 0;
     }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 }

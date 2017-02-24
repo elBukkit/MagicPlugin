@@ -134,6 +134,7 @@ public class HeroesSkillSpell extends BaseSpell {
         if (hero == null) return null;
         int mana = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.MANA, 0, true);
         if (mana == 0 || hero.getMana() > mana) return null;
+        manaCost.setAmount(mana);
         return manaCost;
     }
 

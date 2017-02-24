@@ -2347,6 +2347,7 @@ public class MagicController implements MageController {
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
+        useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
         skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
 
 		messagePrefix = properties.getString("message_prefix", messagePrefix);
@@ -4842,6 +4843,10 @@ public class MagicController implements MageController {
 
         return defaultValue;
     }
+
+    public boolean useHeroesMana() {
+        return useHeroesMana;
+    }
     
     /*
 	 * Private data
@@ -5023,6 +5028,7 @@ public class MagicController implements MageController {
     private String                              defaultSkillIcon            = "stick";
     private int                                 skillInventoryRows          = 6;
     private boolean                             skillsUseHeroes             = true;
+    private boolean                             useHeroesMana               = true;
     private boolean                             skillsUsePermissions        = false;
 
     // Synchronization

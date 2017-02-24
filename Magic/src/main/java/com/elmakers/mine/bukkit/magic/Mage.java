@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.entity.EntityData;
+import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -1724,10 +1725,36 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getMana() {
+        if (controller.useHeroesMana() && isPlayer()) {
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null) {
+                return heroes.getMana(getPlayer());
+            }
+        }
         if (offhandCast && offhandWand != null) {
             return offhandWand.getMana();
         }
         return activeWand == null ? 0 : activeWand.getMana();
+    }
+
+    public int getEffectiveManaMax() {
+        if (controller.useHeroesMana() && isPlayer()) {
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null) {
+                return heroes.getMaxMana(getPlayer());
+            }
+        }
+        return activeWand == null ? 0 : activeWand.getEffectiveManaMax();
+    }
+
+    public int getEffectiveManaRegeneration() {
+        if (controller.useHeroesMana() && isPlayer()) {
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null) {
+                return heroes.getManaRegen(getPlayer());
+            }
+        }
+        return activeWand == null ? 0 : activeWand.getEffectiveManaRegeneration();
     }
 
     @Override
@@ -2653,7 +2680,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (spellKey != null) {
                     Spell spell = getSpell(spellKey);
                     if (spell != null) {
-                        Wand wand = getActiveWand();
                         int targetAmount = 1;
                         long remainingCooldown = spell.getRemainingCooldown();
                         CastingCost requiredCost = spell.getRequiredCost();
@@ -2665,13 +2691,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         } else {
                             canCast = remainingCooldown == 0;
                             targetAmount = Wand.LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
-                            if (Wand.LiveHotbarCooldown && requiredCost != null && wand != null) {
+                            if (Wand.LiveHotbarCooldown && requiredCost != null) {
                                 int mana = requiredCost.getMana();
                                 if (mana > 0) {
-                                    if (mana <= wand.getEffectiveManaMax() && wand.getEffectiveManaRegeneration() > 0) {
-                                        float remainingMana = mana - wand.getMana();
+                                    if (mana <= getEffectiveManaMax() && getEffectiveManaRegeneration() > 0) {
+                                        float remainingMana = mana - getMana();
                                         canCast = canCast && remainingMana <= 0;
-                                        int targetManaTime = (int)Math.min(Math.ceil(remainingMana / wand.getEffectiveManaRegeneration()), 99);
+                                        int targetManaTime = (int)Math.min(Math.ceil(remainingMana / getEffectiveManaRegeneration()), 99);
                                         targetAmount = Math.max(targetManaTime, targetAmount);
                                     } else {
                                         targetAmount = 99;
