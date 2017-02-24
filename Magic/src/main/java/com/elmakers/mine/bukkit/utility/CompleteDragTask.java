@@ -17,7 +17,6 @@ public class CompleteDragTask extends BukkitRunnable {
 	}
 
 	@Override
-    @SuppressWarnings("deprecation")
 	public void run() {
 		ItemStack heldItem = player.getItemOnCursor();
 		view.setItem(itemSlot, heldItem);

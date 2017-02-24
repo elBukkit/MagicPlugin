@@ -11,7 +11,6 @@ public class UpdateInventoryTask extends BukkitRunnable {
 	}
 
 	@Override
-    @SuppressWarnings("deprecation")
 	public void run() {
 		DeprecatedUtils.updateInventory(player);
 	}

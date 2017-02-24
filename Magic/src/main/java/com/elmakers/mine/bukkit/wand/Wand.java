@@ -2433,7 +2433,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
     }
 
-	@SuppressWarnings("deprecation")
 	private void updateInventory() {
 		if (mage == null) return;
 		if (!isInventoryOpen()) return;
@@ -2950,7 +2949,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		hasInventory = inventorySize > 1 || (inventorySize == 1 && hasSpellProgression);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void cycleInventory(int direction) {
 		if (!hasInventory) {
 			return;
@@ -2994,8 +2992,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     public void cycleInventory() {
         cycleInventory(1);
     }
-	
-	@SuppressWarnings("deprecation")
+
 	public void openInventory() {
 		if (mage == null) return;
 		
@@ -3545,7 +3542,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return false;
 	}
 	
-	@SuppressWarnings("deprecation")
 	protected void use() {
 		if (hasUses) {
 			findItem();
@@ -4689,7 +4685,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     public boolean restoreInventory() {
         if (storedInventory == null) {
             return false;

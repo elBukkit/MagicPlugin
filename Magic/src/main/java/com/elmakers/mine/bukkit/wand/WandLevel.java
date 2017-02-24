@@ -240,7 +240,7 @@ public class WandLevel {
 		// Add random wand properties
 		boolean addedProperties = false;
         Integer propertyCount = propertyCountProbability.size() == 0 ? Integer.valueOf(0) : RandomUtils.weightedRandom(propertyCountProbability);
-		Map<String, Object> wandProperties = new HashMap<String, Object>();
+		Map<String, Object> wandProperties = new HashMap<>();
 		double costReduction = wand.getCostReduction();
 
         List<Integer> propertiesAvailable = new ArrayList<>();
