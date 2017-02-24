@@ -2606,7 +2606,7 @@ public class MagicController implements MageController {
         if (sender instanceof Player && ((Player)sender).hasPermission("Magic.bypass")) {
             return true;
         }
-        return hasPermission(sender, spell.getPermissionNode(), true);
+        return hasPermission(sender, spell.getPermissionNode());
     }
 
     @Override
@@ -2646,7 +2646,8 @@ public class MagicController implements MageController {
 	{
 		return hasPermission(player, pNode, false);
 	}
-	
+
+	@Override
 	public boolean hasPermission(CommandSender sender, String pNode)
 	{
 		if (!(sender instanceof Player)) return true;

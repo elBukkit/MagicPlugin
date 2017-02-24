@@ -150,7 +150,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 			Collection<String> allWands = api.getWandKeys();
 			for (String wandKey : allWands) {
-				addIfPermissible(sender, options, "Magic.create.", wandKey, false);
+				addIfPermissible(sender, options, "Magic.create.", wandKey);
 			}
 		}
 		
@@ -201,7 +201,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				} else {
 					for (SpellTemplate spell : spellList) {
 						String spellKey = spell.getKey();
-						if (api.hasPermission(sender, subCommandPNode + spellKey, true))
+						if (api.hasPermission(sender, subCommandPNode + spellKey))
 						{
 							options.add(spellKey + ".");
 						}
@@ -505,7 +505,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
         if (!api.hasPermission(sender, "Magic.commands." + command)) return true;
 		if (subCommand.length() == 0) 
 		{
-			if (!api.hasPermission(sender, "Magic.create.default", false)
+			if (!api.hasPermission(sender, "Magic.create.default")
 				&& !api.hasPermission(sender, "Magic.create." + api.getController().getDefaultWandTemplate())
 				&& !api.hasPermission(sender, "Magic.create.*")) {
 				sender.sendMessage(ChatColor.RED + "You do not have permission to create the default wand");
@@ -514,7 +514,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		} 
 		else 
 		{
-			if (!api.hasPermission(sender, "Magic.create." + subCommand, false)
+			if (!api.hasPermission(sender, "Magic.create." + subCommand)
 				&& !api.hasPermission(sender, "Magic.create.*")) {
 				sender.sendMessage(ChatColor.RED + "You do not have permission to create the wand \"" + subCommand +"\"");
 				return true;

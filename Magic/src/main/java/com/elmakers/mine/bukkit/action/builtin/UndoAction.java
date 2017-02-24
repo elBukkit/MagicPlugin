@@ -139,7 +139,7 @@ public class UndoAction extends BaseSpellAction
 		if (targetBlock != null)
 		{
             boolean undoAny = targetOtherBlocks;
-            undoAny = undoAny || (adminPermission != null && context.getController().hasPermission(context.getMage().getCommandSender(), adminPermission, false));
+            undoAny = undoAny || (adminPermission != null && context.getController().hasPermission(context.getMage().getCommandSender(), adminPermission));
             undoAny = undoAny || mage.isSuperPowered();
             if (undoAny)
 			{

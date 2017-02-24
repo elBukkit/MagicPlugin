@@ -104,7 +104,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         {
             Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
-                addIfPermissible(sender, options, "Magic.cast.", spell.getKey(), true);
+                addIfPermissible(sender, options, "Magic.cast.", spell.getKey());
             }
         }
         else if (lastParameter.equalsIgnoreCase("parameters"))
@@ -150,7 +150,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
 
             Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
-                addIfPermissible(sender, options, "Magic.cast.", spell.getKey(), true);
+                addIfPermissible(sender, options, "Magic.cast.", spell.getKey());
             }
         }
 

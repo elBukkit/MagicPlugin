@@ -907,6 +907,17 @@ permissions:
   Magic.cast:
     description: The spells a player may cast
     type: list
+  Magic.cast.*:
+    description: A player may cast any spell
+    type: boolean
+    default: true
+  Magic.castp:
+    description: The spells a player may cast on behalf of another player
+    type: list
+  Magic.castp.*:
+    description: A player may cast any spell on behalf of another player
+    type: boolean
+    default: op
   Magic.protected:
     description: The spells a player is immune to
     type: list

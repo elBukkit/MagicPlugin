@@ -7,6 +7,9 @@
    - Magic.create.* : Permission to create any wand, ops have this by default
    - Magic.commands.wand : Permission to use the /wand command to create wands
  - The Magic.create permission can also be used to limit /mgive access
+ - Cast permissions changed to avoid complicated negation inheritance issues
+   - Add "-Magic.cast.*" to prevent players casting any spells
+   - Add "Magic.cast.<spell>" to add back individual spells
  - Enchanting configs renamed to "paths". 
    - Old enchanting.yml file will be renamed (one-time migration)
    - enchanting folder no longer used, please move files by hand if you have any in there.
