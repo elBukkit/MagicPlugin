@@ -45,7 +45,9 @@ public class HeroesManager {
         skills = heroes.getSkillManager();
         if (characters != null && skills != null)
         {
-            plugin.getLogger().info("Heroes found, skills available for wand use");
+            plugin.getLogger().info("Heroes found, skills available for wand and hotbar use.");
+            plugin.getLogger().info("Give Magic.commands.mskills permission for /mskills command");
+            plugin.getLogger().info("Use \"/wand heroes\" for a wand that uses Heroes skills");
         }
         else
         {
