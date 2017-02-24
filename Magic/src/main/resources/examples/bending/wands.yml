@@ -2,7 +2,32 @@
 # Bending Powers, which are represented as wand "items"
 #
 
+base_bound:
+  hidden: true
+  bound: true
+  keep: true
+  invulnerable: true
+  immortal: true
+  track: true
+  undroppable: true
+  indestructible: true
+
+base_wand:
+    hidden: true
+    inherit: base_bound
+    mode: inventory
+    drop: toggle
+    left_click: cast
+    right_click: none
+    swap: cycle_hotbar
+    quiet: 1
+    effect_bubbles: false
+    attributes:
+      GENERIC_ATTACK_SPEED: 10
+    attribute_slot: mainhand
+
 airbending:
+    inherit: base_wand
     path: airbending
     migrate_icon: gold_axe
     icon: wood_hoe:19
@@ -10,10 +35,6 @@ airbending:
     mana: 50
     mana_regeneration: 5
     quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
     effect_bubbles: false
     protection_falling: 0.7
     effect_color: 'FFFFFF'
@@ -24,6 +45,7 @@ airbending:
         - airscooter
 
 waterbending:
+    inherit: base_wand
     path: waterbending
     migrate_icon: gold_spade
     icon: wood_hoe:20
@@ -31,10 +53,6 @@ waterbending:
     mana: 50
     mana_regeneration: 5
     quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
     effect_bubbles: false
     effect_color: '0000FF'
     active_spell: waterball
@@ -43,6 +61,7 @@ waterbending:
         - waterball
 
 earthbending:
+    inherit: base_wand
     path: earthbending
     migrate_icon: gold_hoe
     icon: wood_hoe:21
@@ -50,10 +69,6 @@ earthbending:
     mana: 50
     mana_regeneration: 5
     quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
     effect_bubbles: false
     protection_physical: 0.3
     protection_blast: 0.2
@@ -65,6 +80,7 @@ earthbending:
         - block
 
 firebending:
+    inherit: base_wand
     path: firebending
     migrate_icon: gold_pickaxe
     icon: wood_hoe:22
@@ -72,10 +88,6 @@ firebending:
     mana: 50
     mana_regeneration: 5
     quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
     effect_bubbles: false
     protection_fire: 0.9
     effect_color: '880000'
@@ -85,6 +97,7 @@ firebending:
         - fireball
 
 avatar:
+    inherit: base_wand
     migrate_icon: gold_pickaxe
     path: avatar
     icon: wood_hoe:23
@@ -95,10 +108,6 @@ avatar:
     mana_regeneration: 40
     mana_max: 500
     power: 0.5
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
     effect_color: 'FFFFFF'
     effect_bubbles: true
     active_spell: airsphere
@@ -126,14 +135,11 @@ avatar:
 ### Special wands
 
 wolf:
+    inherit: base_wand
     path: avatar
     icon: wood_hoe:7
     migrate_icon: gold_hoe
-    keep: true
-    bound: true
     fill: true
-    undroppable: true
-    indestructible: true
     cost_reduction: 2
     protection: 2
     protected: true
