@@ -1678,6 +1678,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return activeWand;
     }
 
+    @Override
     public Wand getOffhandWand() {
         return offhandWand;
     }

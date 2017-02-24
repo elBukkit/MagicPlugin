@@ -4370,6 +4370,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return hasSpell(new SpellKey(spellName));
 	}
 
+    @Override
     public boolean hasSpell(SpellKey spellKey) {
         Integer level = spellLevels.get(spellKey.getBaseKey());
         return (level != null && level >= spellKey.getLevel());
