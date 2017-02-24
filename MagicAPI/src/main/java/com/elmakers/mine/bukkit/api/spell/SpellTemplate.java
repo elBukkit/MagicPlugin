@@ -38,6 +38,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public MaterialAndData getIcon();
     public MaterialAndData getDisabledIcon();
     public String getIconURL();
+    public String getDisabledIconURL();
     public boolean hasIcon();
     public boolean hasCastPermission(CommandSender sender);
     public Collection<CastingCost> getCosts();
