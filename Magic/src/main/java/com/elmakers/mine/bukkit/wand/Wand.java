@@ -41,7 +41,6 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 
@@ -119,30 +118,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			"unique", "track", "invulnerable", "immortal"
     );
 
-    private final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
-            "id", "owner", "owner_id", "name", "description",
-            "organize", "alphabetize", "fill", "stored", "upgrade_icon",
-            "mana_timestamp", "upgrade_template", "custom_properties", "version",
-            // For legacy wands
-            "haste",
-            "health_regeneration", "hunger_regeneration",
-            "xp", "xp_regeneration", "xp_max", "xp_max_boost",
-            "xp_regeneration_boost",
-            "mode_cast", "mode_drop", "randomize"
-    );
-
     private final static Random random = new Random();
-
-    /**
-     * Set of properties that are used internally.
-	 *
-	 * Neither this list nor HIDDEN_PROPERTY_KEYS are really used anymore, but I'm keeping them
-	 * here in case we have some use for them in the future.
-	 *
-	 * Wands now load and retain any wand.* tags on their items.
-     */
-    private final static Set<String> ALL_PROPERTY_KEYS_SET = Sets.union(
-            PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 
     /**
      * The item as it appears in the inventory of the player.
