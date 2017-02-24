@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## 6.7
+
+ - If all goes well, 6.7 will never exit and we'll go straight to 7.0.
+
 ## 6.6
 
- - Wand creation permissions have changed, no negation required anymore:
+ - Wand creation permissions have changed, negation simplified:
    - Magic.create.<wand> : Permission to create a specific wand
    - Magic.create.* : Permission to create any wand, ops have this by default
    - Magic.commands.wand : Permission to use the /wand command to create wands
@@ -21,7 +25,7 @@
    - immortal: if true, dropped wands will not be allowed to despawn
    - invulnerable: if true, dropped wands cannot be destroyed
  - Fix Heroes skill selector breaking when there are unavailable skills shown
- - Simplified enchanting configs so they are easier to understand and override.
+ - Simplified path configs so they are easier to understand and override.
  - Fix the bending example configs
  - /mage configure and /mage describe commands changed to /mage setdata and /mage getdata
  - /wand describe can now be given a parameter to list a specific wand property
