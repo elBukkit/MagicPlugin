@@ -3953,7 +3953,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             fill(mage.getPlayer(), controller.getMaxWandFillLevel());
         }
 
-        if (isHeroes && player != null) {
+        if (isHeroes) {
             HeroesManager heroes = controller.getHeroes();
             if (heroes != null) {
                 Set<String> skills = heroes.getSkills(player);
