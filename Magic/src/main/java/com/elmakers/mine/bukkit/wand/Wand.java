@@ -1552,7 +1552,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 
 		boolean needsInventoryUpdate = false;
-		WandMode newMode = parseWandMode(wandConfig.getString("mode"), WandMode.NONE);
+		WandMode newMode = parseWandMode(wandConfig.getString("mode"), controller.getDefaultWandMode());
 		if (newMode != mode) {
 			if (isInventoryOpen()) {
 				closeInventory();
@@ -1561,7 +1561,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			needsInventoryUpdate = true;
 		}
 
-		brushMode = parseWandMode(wandConfig.getString("brush_mode"), WandMode.CHEST);
+		brushMode = parseWandMode(wandConfig.getString("brush_mode"), controller.getDefaultBrushMode());
 
 		// Backwards compatibility
 		if (wandConfig.getBoolean("mode_drop", false)) {
