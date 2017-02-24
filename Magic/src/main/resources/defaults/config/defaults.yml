@@ -448,7 +448,7 @@ commit_on_quit: false
 
 # Enable this to persists Mage data on mobs.
 # This can generate quite a lot of save data if you have randomly spawning
-# Mages, but it would also let you undo their spells aftera restart.
+# Mages, but it would also let you undo their spells after a restart.
 save_non_player_mages: false
 
 # Force any pending scheduled undo tasks to run on world save
