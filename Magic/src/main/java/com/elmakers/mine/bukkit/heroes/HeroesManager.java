@@ -155,11 +155,34 @@ public class HeroesManager {
         MageSpell newSpell = new HeroesSkillSpell();
         newSpell.initialize(controller);
         ConfigurationSection config = new MemoryConfiguration();
-        config.set("icon", SkillConfigManager.getRaw(skill, "icon", controller.getDefaultSkillIcon()));
-        String iconURL = SkillConfigManager.getRaw(skill, "icon_url", null);
-        config.set("icon_url", SkillConfigManager.getRaw(skill, "icon-url", iconURL));
-        String iconDisabled = SkillConfigManager.getRaw(skill, "icon_disabled", null);
-        config.set("icon_disabled", SkillConfigManager.getRaw(skill, "icon-disabled", iconDisabled));
+        String iconURL = SkillConfigManager.getRaw(skill, "icon-url", SkillConfigManager.getRaw(skill, "icon_url", null));
+        if (iconURL == null || iconURL.isEmpty()) {
+            String icon = SkillConfigManager.getRaw(skill, "icon", null);
+            if (icon == null || icon.isEmpty()) {
+                config.set("icon", controller.getDefaultSkillIcon());
+            } else if(icon.startsWith("http://")) {
+                config.set("icon_url", icon);
+            } else {
+                config.set("icon", icon);
+            }
+        } else {
+            config.set("icon_url", iconURL);
+        }
+
+        String iconDisabledURL = SkillConfigManager.getRaw(skill, "icon-disabled-url", SkillConfigManager.getRaw(skill, "icon_disabled_url", null));
+        if (iconDisabledURL == null || iconDisabledURL.isEmpty()) {
+            String icon = SkillConfigManager.getRaw(skill, "icon-disabled", SkillConfigManager.getRaw(skill, "icon_disabled", null));
+            if (icon != null && !icon.isEmpty()) {
+                if (icon.startsWith("http://")) {
+                    config.set("icon_disabled_url", icon);
+                } else {
+                    config.set("icon_disabled", icon);
+                }
+            }
+        } else {
+            config.set("icon_disabled_url", iconDisabledURL);
+        }
+
         String nameTemplate = controller.getMessages().get("skills.item_name", "$skill");
         config.set("name", nameTemplate.replace("$skill", skill.getName()));
         config.set("category", "skills");

@@ -3,6 +3,8 @@
 ## 6.7
 
  - Broomsticks will upgrade on use in the potter configs, too
+ - Heroes integration improvements:
+   - Allow using disabled icons and skull-based disabled icons.
 
 ## 6.6
 
