@@ -51,10 +51,6 @@
  - MagicArenas: Doesn't TP players out on a draw.. ?
  - Getting hit with aqua erecto says "cast unknown" on you?
  - Admission+Break door = dupe door (thought this was fixed???)
- - cancel_on_cast flag (cancel pending spell on cast of another)
- 
- - offhand cast is casting both?
-
  - Grow/Shrink doesn't work on rabbits?
  - Put a size cap on slimes with Grow
  	

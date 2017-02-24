@@ -22,6 +22,7 @@
  - Fix some metadata items like skulls and banners
  - Add optional entity_damage_reduction config
  - Add craftable Mana Talisman item
+ - Broomsticks no longer bind and are droppable
 
 ## 6.5
 

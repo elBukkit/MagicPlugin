@@ -1,18 +1,26 @@
 #
 # Add some Harry Potter themed wand templates
 #
+
+base_bound:
+   hidden: true
+   bound: true
+   keep: true
+   invulnerable: true
+   immortal: true
+   track: true
+   undroppable: true
+   indestructible: true
+
 base_wand:
     hidden: true
+    inherit: base_bound
     mode: inventory
     drop: toggle
     left_click: cast
     right_click: none
     swap: cycle_hotbar
     quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
     effect_bubbles: false
     attributes:
       GENERIC_ATTACK_SPEED: 10
@@ -28,10 +36,6 @@ wand:
     randomize_icon: wood_step
     active_spell: flagrate
     path: year1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
     quiet: 1
     mana_max: 50
     mana: 50
@@ -53,11 +57,7 @@ elder:
     inherit: base_wand
     migrate_icon: iron_hoe
     icon: wood_hoe:27
-    undroppable: true
-    indestructible: true
     path: graduate
-    bound: true
-    keep: true
     organize: true
     cost_reduction: 2
     protection_falling: 2
@@ -92,11 +92,7 @@ wolf:
     inherit: base_wand
     icon: wood_hoe:7
     migrate_icon: gold_hoe
-    undroppable: true
-    indestructible: true
     path: graduate
-    keep: true
-    bound: true
     fill: true
     cost_reduction: 2
     cooldown_reduction: 2
@@ -131,11 +127,7 @@ unspeakable:
     inherit: base_wand
     icon: wood_hoe:24
     migrate_icon: wood_hoe
-    undroppable: true
-    indestructible: true
     path: graduate
-    bound: true
-    keep: true
     fill: true
     organize: true
     cost_reduction: 2
@@ -158,11 +150,7 @@ slytherinwand:
     inherit: base_wand
     migrate_icon: gold_axe
     icon: wood_hoe:25
-    undroppable: true
-    indestructible: true
     path: graduate
-    bound: true
-    keep: true
     fill: true
     organize: true
     cost_reduction: 2
@@ -182,6 +170,8 @@ slytherinwand:
 
 crudwand:
     inherit: base_wand
+    bound: false
+    keep: false
     icon: stick
     indestructible: false
     locked: true
@@ -196,8 +186,6 @@ video:
     active_spell: superfly
     icon: wood_hoe:25
     migrate_icon: gold_axe
-    indestructible: true
-    bound: true
     locked: true
     mana: 50
     mana_max: 50
@@ -214,6 +202,8 @@ flappy:
     inherit: base_wand
     icon: feather
     indestructible: false
+    bound: false
+    keep: false
     locked: true
     mana: 45
     mana_max: 45
@@ -229,6 +219,8 @@ squib:
     inherit: base_wand
     icon: stick
     indestructible: false
+    bound: false
+    keep: false
     locked: true
     mana: 100
     mana_max: 100
@@ -367,7 +359,6 @@ thestral:
 
 minister:
     mode: cast
-    bound: true
     path: broom
     active_spell: broom
     migrate_icon: gold_spade
@@ -382,7 +373,6 @@ minister:
 unspeakabroom:
     mode: cast
     path: broom
-    bound: true
     active_spell: broom
     migrate_icon: gold_spade
     icon: wood_hoe:29
@@ -396,7 +386,6 @@ unspeakabroom:
 headmaster:
     mode: cast
     path: broom
-    bound: true
     active_spell: broom
     migrate_icon: gold_spade
     icon: wood_hoe:29
@@ -410,7 +399,6 @@ headmaster:
 firebolt:
     mode: cast
     path: broom
-    bound: true
     active_spell: broom
     migrate_icon: gold_spade
     icon: wood_hoe:29
@@ -437,7 +425,6 @@ crudfirebolt:
 nimbus:
     mode: cast
     path: broom
-    bound: true
     active_spell: broom
     migrate_icon: gold_spade
     icon: wood_hoe:11
@@ -464,7 +451,6 @@ crudnimbus:
 comet290:
     mode: cast
     path: broom
-    bound: true
     active_spell: broom
     migrate_icon: gold_spade
     icon: wood_hoe:11
@@ -478,7 +464,6 @@ comet290:
 cleansweep1:
     mode: cast
     path: broom
-    bound: true
     active_spell: broom
     migrate_icon: gold_spade
     icon: wood_hoe:11
@@ -492,7 +477,6 @@ cleansweep1:
 bluebottle:
     mode: cast
     path: broom
-    bound: true
     active_spell: broom
     migrate_icon: gold_spade
     icon: wood_hoe:11
