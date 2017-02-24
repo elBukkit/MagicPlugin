@@ -171,6 +171,7 @@ public class SkillsSelector implements GUIAction {
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
                 CompatibilityUtils.setDisplayName(skillItem, nameTemplate.replace("$skill", skill.heroesSkill));
+                InventoryUtils.setMetaBoolean(skillItem, "unavailable", true);
                 if (skill.spell != null) {
                     MaterialAndData disabledIcon = skill.spell.getDisabledIcon();
                     if (disabledIcon != null) {
@@ -205,10 +206,16 @@ public class SkillsSelector implements GUIAction {
             event.setCancelled(true);
             return;
         }
+
+        ItemStack clickedItem = event.getCurrentItem();
+        if (clickedItem != null && InventoryUtils.getMetaBoolean(clickedItem, "unavailable", false)) {
+            event.setCancelled(true);
+            return;
+        }
+
         Mage mage = api.getMage(player);
         if (action == InventoryAction.PICKUP_HALF && mage != null)
         {
-            ItemStack clickedItem = event.getCurrentItem();
             Spell spell = mage.getSpell(Wand.getSpell(clickedItem));
             if (spell != null) {
                 spell.cast();

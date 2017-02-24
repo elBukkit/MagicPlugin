@@ -7,6 +7,7 @@
  - Heroes integration improvements:
    - Allow using disabled icons and skull-based disabled icons.
    - Disabled icons will show in skill selector for unavailable skills
+   - Can't take an unavailable skill item out of the skill selector
 
 ## 6.6
 

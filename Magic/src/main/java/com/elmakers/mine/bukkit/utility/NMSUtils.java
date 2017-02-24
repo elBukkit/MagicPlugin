@@ -1315,6 +1315,35 @@ public class NMSUtils {
         }
     }
 
+    public static void setMetaBoolean(ItemStack stack, String tag, boolean value) {
+        if (InventoryUtils.isEmpty(stack)) return;
+        try {
+            Object craft = getHandle(stack);
+            if (craft == null) return;
+            Object tagObject = getTag(craft);
+            if (tagObject == null) return;
+            setMetaBoolean(tagObject, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue) {
+        if (InventoryUtils.isEmpty(stack)) return defaultValue;
+        boolean result = defaultValue;
+        try {
+            Object craft = getHandle(stack);
+            if (craft == null) return defaultValue;
+            Object tagObject = getTag(craft);
+            if (tagObject == null) return defaultValue;
+            Boolean value = getMetaBoolean(tagObject, tag);
+            result = value == null ? defaultValue : value;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
     public static void addGlow(ItemStack stack) {
         if (InventoryUtils.isEmpty(stack)) return;
 
