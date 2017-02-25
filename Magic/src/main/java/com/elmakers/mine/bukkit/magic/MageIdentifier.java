@@ -4,13 +4,23 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
+import com.google.common.base.Preconditions;
+
+/** This can be overridden to store players by an alternative ID system. */
+// TODO: Move this to public API once it is stable enough
 public class MageIdentifier {
     public String fromEntity(Entity entity) {
         return entity.getUniqueId().toString();
     }
 
     public String fromCommandSender(CommandSender commandSender) {
+        Preconditions.checkArgument(
+                !(commandSender instanceof Player),
+                "fromCommandSender does not accept a player argument: %s",
+                commandSender);
+
         if (commandSender instanceof ConsoleCommandSender) {
             return "CONSOLE";
         } else if (commandSender instanceof BlockCommandSender) {

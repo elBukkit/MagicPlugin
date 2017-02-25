@@ -153,6 +153,8 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javax.annotation.Nonnull;
+
 public class MagicController implements MageController {
     public MagicController(final MagicPlugin plugin) {
         this.plugin = plugin;
@@ -4850,7 +4852,16 @@ public class MagicController implements MageController {
     public boolean useHeroesMana() {
         return useHeroesMana;
     }
-    
+
+    public @Nonnull MageIdentifier getMageIdentifier() {
+        return mageIdentifier;
+    }
+
+    public void setMageIdentifier(@Nonnull MageIdentifier mageIdentifier) {
+        Preconditions.checkNotNull(mageIdentifier, "mageIdentifier");
+        this.mageIdentifier = mageIdentifier;
+    }
+
     /*
 	 * Private data
 	 */
