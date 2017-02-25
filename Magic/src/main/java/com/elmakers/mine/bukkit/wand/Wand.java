@@ -1621,7 +1621,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			int hotbar = wandConfig.getInt("hotbar");
 			if (hotbar != currentHotbar) {
 				needsInventoryUpdate = true;
-				currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
+				setCurrentHotbar(hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar);
 			}
 		}
 
@@ -2961,7 +2961,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (isInventoryOpen() && mage != null && hotbars.size() > 1) {
 			saveInventory();
 			int hotbarCount = hotbars.size();
-			currentHotbar = hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount;
+			setCurrentHotbar(hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount);
 			updateHotbar();
 			if (!playPassiveEffects("cycle") && inventoryCycleSound != null) {
 				mage.playSoundEffect(inventoryCycleSound);
@@ -3764,7 +3764,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
 		if (currentHotbar < 0 || currentHotbar >= this.hotbars.size())
 		{
-			currentHotbar = 0;
+			setCurrentHotbar(currentHotbar);
 		}
 		return this.hotbars.get(currentHotbar);
 	}
@@ -4064,7 +4064,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         closeInventory();
         organizer.organize();
         openInventoryPage = 0;
-		currentHotbar = 0;
+		setCurrentHotbar(currentHotbar);
         if (autoOrganize) setProperty("organize", false);
 		autoOrganize = false;
 		updateSpellInventory();
@@ -4083,7 +4083,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		closeInventory();
         organizer.alphabetize();
         openInventoryPage = 0;
-		currentHotbar = 0;
+		setCurrentHotbar(0);
 		if (autoAlphabetize) setProperty("alphabetize", false);
 		autoAlphabetize = false;
 		updateSpellInventory();
@@ -4992,5 +4992,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	@Override
 	public Mage getMage() {
     	return mage;
+	}
+
+	public void setCurrentHotbar(int hotbar) {
+    	this.currentHotbar = hotbar;
+    	setProperty("hotbar", currentHotbar);
 	}
 }
