@@ -62,6 +62,7 @@ public class HeroesSpellSkill extends ActiveSkill {
         }
     }
 
+    @Override
     public void init() {
         Set<String> rawKeys = SkillConfigManager.getRawKeys(this, null);
         for (String rawKey : rawKeys) {
@@ -124,6 +125,7 @@ public class HeroesSpellSkill extends ActiveSkill {
         return success ? SkillResult.NORMAL : SkillResult.FAIL;
     }
 
+    @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
         node.set(SkillSetting.MAX_DISTANCE.node(), spellTemplate.getRange());
