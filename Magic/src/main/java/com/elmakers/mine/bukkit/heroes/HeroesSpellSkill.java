@@ -11,17 +11,30 @@ import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class HeroesSpellSkill extends ActiveSkill {
     private SpellTemplate spellTemplate;
     private MageController controller;
+    private ConfigurationSection parameters = new MemoryConfiguration();
+
+    private final static String[] _IGNORE_PARAMTERS = {
+            "name", "icon", "icon-url", "icon_url", "icon_disabled", "icon-disabled",
+            "icon_disabled_url", "icon-disabled-url", "use-text", "cooldown", "mana",
+            "level", "health-cost"
+    };
+    public final static Set<String> IGNORE_PARAMETERS = new HashSet<>(Arrays.asList(_IGNORE_PARAMTERS));
 
     public HeroesSpellSkill(Heroes heroes, String spellKey) {
         super(heroes, spellKey);
@@ -49,6 +62,15 @@ public class HeroesSpellSkill extends ActiveSkill {
         }
     }
 
+    public void init() {
+        Set<String> rawKeys = SkillConfigManager.getRawKeys(this, null);
+        for (String rawKey : rawKeys) {
+            if (IGNORE_PARAMETERS.contains(rawKey)) continue;
+            String value = SkillConfigManager.getRaw(this, rawKey, "");
+            parameters.set(rawKey, value);
+        }
+    }
+
     @Override
     public SkillResult use(Hero hero, String[] strings) {
         Mage mage = controller.getMage(hero.getPlayer());
@@ -56,7 +78,47 @@ public class HeroesSpellSkill extends ActiveSkill {
         if (mage != null) {
             Spell spell = mage.getSpell(spellTemplate.getKey());
             if (spell != null) {
-                success = spell.cast();
+                Set<String> parameterKeys = parameters.getKeys(false);
+                if (parameterKeys.size() > 0) {
+                    ConfigurationSection heroParameters = new MemoryConfiguration();
+                    for (String parameterKey : parameterKeys) {
+                        String value = parameters.getString(parameterKey);
+                        Double doubleValue = null;
+                        try {
+                            doubleValue = Double.parseDouble(value);
+                        } catch (NumberFormatException cantparse) {
+                        }
+
+                        if (doubleValue != null) {
+                            doubleValue = SkillConfigManager.getUseSetting(hero, this, parameterKey, doubleValue, true);
+                        } else {
+                            value = SkillConfigManager.getUseSetting(hero, this, parameterKey, value);
+                        }
+                        if (parameterKey.equalsIgnoreCase("max-distance")) {
+                            heroParameters.set("range", doubleValue);
+                        } else if (parameterKey.equalsIgnoreCase("damage")) {
+                            heroParameters.set("damage", doubleValue);
+                            if (!parameterKeys.contains("entity_damage") && !parameterKeys.contains("entity-damage")) {
+                                heroParameters.set("entity_damage", doubleValue);
+                            }
+                            if (!parameterKeys.contains("player_damage") && !parameterKeys.contains("player-damage")) {
+                                heroParameters.set("player_damage", doubleValue);
+                            }
+                        } else if (parameterKey.equalsIgnoreCase("duration")) {
+                            heroParameters.set("duration", doubleValue);
+                            if (!parameterKeys.contains("undo")) {
+                                heroParameters.set("undo", doubleValue);
+                            }
+                        } else if (doubleValue != null) {
+                            heroParameters.set(parameterKey.replace('-', '_'), doubleValue);
+                        } else {
+                            heroParameters.set(parameterKey.replace('-', '_'), value);
+                        }
+                    }
+                    success = spell.cast(heroParameters);
+                } else {
+                    success = spell.cast();
+                }
             }
         }
         return success ? SkillResult.NORMAL : SkillResult.FAIL;
