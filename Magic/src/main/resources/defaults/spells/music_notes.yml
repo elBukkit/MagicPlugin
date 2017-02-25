@@ -130,6 +130,7 @@ note16:
       sound: flute.16D#
         
 note17:
+    hidden: true
     inherit: note
     icon_url: http://textures.minecraft.net/texture/d0347fcef38a2fd59eefafb5e969f8536c7c13783b822a12d02f43a9a21d56
     parameters:
@@ -150,6 +151,7 @@ note19:
       sound: flute.19F#
                
 note20:
+    hidden: true
     inherit: note
     icon_url: http://textures.minecraft.net/texture/d0347fcef38a2fd59eefafb5e969f8536c7c13783b822a12d02f43a9a21d56
     parameters:
