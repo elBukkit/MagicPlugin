@@ -139,6 +139,14 @@ public class HeroesSkillSpell extends BaseSpell {
     }
 
     @Override
+    public boolean canCast(Location location) {
+        if (!isCasting && mage != null && mage.isPlayer() && !heroes.canUseSkill(mage.getPlayer(), skillKey)) {
+            return false;
+        }
+        return super.canCast(location);
+    }
+
+    @Override
     public boolean hasCastPermission(CommandSender sender) {
         return true;
     }

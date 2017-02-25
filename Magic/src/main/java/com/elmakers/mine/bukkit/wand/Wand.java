@@ -707,7 +707,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	public boolean usesMana() {
         if (isCostFree()) return false;
-		return manaMax > 0 || isHeroes;
+		return manaMax > 0 || (isHeroes && mage != null);
 	}
 
 	@Override
@@ -1715,6 +1715,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			upgradePath.checkMigration(this);
 		} else {
 			hasSpellProgression = false;
+		}
+		if (isHeroes) {
+			hasSpellProgression = true;
 		}
 
 		brushInventory.clear();

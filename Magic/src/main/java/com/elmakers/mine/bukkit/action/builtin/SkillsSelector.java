@@ -170,7 +170,8 @@ public class SkillsSelector implements GUIAction {
             if (skill.isHeroes() && heroes != null && !heroes.canUseSkill(player, skill.heroesSkill))
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
-                CompatibilityUtils.setDisplayName(skillItem, nameTemplate.replace("$skill", skill.heroesSkill));
+                String spellName = skill.spell != null ? skill.spell.getName() : skill.heroesSkill;
+                CompatibilityUtils.setDisplayName(skillItem, nameTemplate.replace("$skill", spellName));
                 InventoryUtils.setMetaBoolean(skillItem, "unavailable", true);
                 if (skill.spell != null) {
                     MaterialAndData disabledIcon = skill.spell.getDisabledIcon();

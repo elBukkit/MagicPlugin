@@ -306,8 +306,8 @@ wands:
         name: Diving Helmet
         description: Work freely underwater
     heroes:
-        name: Skills
-        description: Right-click to use skills
+        name: Wand
+        description: Use the Q Button to Open Spell Inventory
     ledger:
       name: Ledger
       description: Check your bank balance

@@ -2,11 +2,10 @@
 heroes:
     effect_color: random
     quiet: 1
-    icon: blaze_rod
-    bound: true
-    keep: true
-    undroppable: true
+    icon: stick
     indestructible: true
-    effect_bubbles: false
     heroes: true
+    undroppable: true
+    right_click: none
+    left_click: cast
 

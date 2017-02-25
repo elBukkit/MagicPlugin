@@ -186,7 +186,8 @@ public class HeroesManager {
         }
 
         String nameTemplate = controller.getMessages().get("skills.item_name", "$skill");
-        config.set("name", nameTemplate.replace("$skill", skill.getName()));
+        String skillDisplayName = SkillConfigManager.getRaw(skill, "name", skill.getName());
+        config.set("name", nameTemplate.replace("$skill", skillDisplayName));
         config.set("category", "skills");
         String descriptionTemplate = controller.getMessages().get("skills.item_description", "$description");
         descriptionTemplate = descriptionTemplate.replace("$description", SkillConfigManager.getRaw(skill, "description", ""));

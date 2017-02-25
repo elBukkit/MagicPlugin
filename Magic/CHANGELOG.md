@@ -6,9 +6,14 @@
  - Add a disabled icon for skull-based configs to use
  - Heroes integration improvements:
    - Allow using disabled icons and skull-based disabled icons.
-   - Disabled icons will show in skill selector for unavailable skills
+   - Disabled icons will show in skill selector and hotbar for unavailable skills
    - Can't take an unavailable skill item out of the skill selector
    - Hotbar skill timers will reflect mana costs
+   - Skills can provide display names for the skill icon
+   - Fix the Heroes Wand
+   - Add "example: heroes" configs with craftable Heroes wand
+   - Add Magic Skill Pack, all default Magic spells packaged as skills:
+     https://s3-us-west-2.amazonaws.com/elmakers/Magic/MagicHeroesSkills.zip
 
 ## 6.6
 
