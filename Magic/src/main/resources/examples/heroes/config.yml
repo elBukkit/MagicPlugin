@@ -7,16 +7,18 @@ live_hotbar_skills: true
 # Use the flat skull RP if you're still using skull icons
 default_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/flat-skulls.zip"
 
-# Turn off basically all of Magic's features
-enable_crafting: false
-enable_enchanting: false
+# Turn this off if you don't want crafting of the Heroes wand
+# enable_crafting: false
 
-# Skip loading all configs
-load_default_wands: false
-load_default_paths: false
-load_default_spells: false
-load_default_items: false
-load_default_mobs: false
+# Skip loading configs if you want
+# Though you may want to keep wands for the Heroes wand
+# and spells for the Heroes skill pack, available at
+# https://s3-us-west-2.amazonaws.com/elmakers/Magic/MagicHeroesSkills.zip
+# load_default_wands: false
+# load_default_paths: false
+# load_default_spells: false
+# load_default_items: false
+# load_default_mobs: false
 
 # Use this to turn off disabled icon URLs when using skull icons
 # disabled_icon_url: ""

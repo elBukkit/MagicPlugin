@@ -1,0 +1,29 @@
+# Disable default wand crafting
+wand:
+  enabled: false
+
+# Disable mana talisman
+talisman:
+  enabled: false
+
+# Allow crafting a Heroes wand
+heroes:
+  # This defines the recipe output
+  output: heroes
+  output_type: wand
+
+  # Don't disable the default recipe
+  disable_default: false
+
+  # This defines the materials that will be required to craft this wand
+  materials:
+    o: diamond
+    i: stick
+
+  # This defines the shape of the recipe, row_1 is the top. Each row may
+  # have up to 3 characters that map to the materials listed above.
+  row_1: o
+  row_2: i
+  row_3:
+
+
