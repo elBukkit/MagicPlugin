@@ -2,6 +2,7 @@
 warpmenu:
   earns_sp: 0
   inherit: recall
+  hidden: true
   actions:
       cast:
       -  class: Recall
