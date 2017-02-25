@@ -1,0 +1,10 @@
+superelytra:
+  worth: 10000.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: ELYTRA
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Super Elytra
+      Unbreakable: true
