@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.google.common.collect.ImmutableSet;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
@@ -18,9 +19,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -29,12 +28,10 @@ public class HeroesSpellSkill extends ActiveSkill {
     private MageController controller;
     private ConfigurationSection parameters = new MemoryConfiguration();
 
-    private final static String[] _IGNORE_PARAMTERS = {
-            "name", "icon", "icon-url", "icon_url", "icon_disabled", "icon-disabled",
-            "icon_disabled_url", "icon-disabled-url", "use-text", "cooldown", "mana",
-            "level", "health-cost"
-    };
-    public final static Set<String> IGNORE_PARAMETERS = new HashSet<>(Arrays.asList(_IGNORE_PARAMTERS));
+    public final static Set<String> IGNORE_PARAMETERS = ImmutableSet.of(
+            "name", "icon", "icon-url", "icon_url", "icon_disabled",
+            "icon-disabled", "icon_disabled_url", "icon-disabled-url",
+            "use-text", "cooldown", "mana", "level", "health-cost");
 
     public HeroesSpellSkill(Heroes heroes, String spellKey) {
         super(heroes, spellKey);
