@@ -43,6 +43,7 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         final File playerFile = new File(playerDataFolder, id + ".dat");
         if (!playerFile.exists()) {
             callback.run(null);
+            return;
         }
         YamlConfiguration saveFile = YamlConfiguration.loadConfiguration(playerFile);
         MageData data = load(id, saveFile);
