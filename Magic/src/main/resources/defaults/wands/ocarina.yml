@@ -8,8 +8,6 @@ ocarina:
     swap: cycle_hotbar
     left_click: cast
     undroppable: false
-    bound: false
-    undroppable: false
     indestructible: true
     hotbar_count: 3
     spells:

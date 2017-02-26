@@ -2,6 +2,8 @@
 
 ## 6.7
 
+ - Fix bug where active hotbar number didn't get saved to wand
+ - Fix item dupe bug with droppable wands that have a spell inventory (ocarina)
  - Broomsticks will upgrade on use in the potter configs, too
  - Add a disabled icon for skull-based configs to use
  - Heroes integration improvements:

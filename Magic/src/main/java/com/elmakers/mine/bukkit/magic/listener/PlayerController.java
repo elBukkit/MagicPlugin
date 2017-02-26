@@ -190,7 +190,6 @@ public class PlayerController implements Listener {
         ItemMeta activeMeta = activeItem == null ? null : activeItem.getItemMeta();
         ItemMeta droppedMeta = droppedItem.getItemMeta();
         boolean droppedWand = droppedMeta != null && activeMeta != null && activeItem.getItemMeta().equals(droppedItem.getItemMeta());
-
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
@@ -202,16 +201,13 @@ public class PlayerController implements Listener {
             cancelEvent = true;
         } else if (activeWand != null) {
             if (droppedWand) {
-                ItemStack remainingItem = player.getInventory().getItemInMainHand();
                 activeWand.deactivate();
                 ItemStack restoredItem = player.getInventory().getItemInMainHand();
-
+                ItemMeta restoredMeta = restoredItem == null ? null : restoredItem.getItemMeta();
                 // Clear after inventory restore (potentially with deactivate), since that will put the wand back
-                if (Wand.hasActiveWand(player) && remainingItem.getType() == Material.AIR && restoredItem.getType() != Material.AIR) {
-                    if (activeWand.getItem().equals(activeItem))
-                    {
-                        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
-                    }
+                if (Wand.hasActiveWand(player) && restoredItem.getType() != Material.AIR &&
+                    restoredMeta != null && activeWand.getItem().getItemMeta().equals(restoredMeta)) {
+                    player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
                 }
             } else if (activeWand.isInventoryOpen()) {
                 if (!controller.isSpellDroppingEnabled()) {
