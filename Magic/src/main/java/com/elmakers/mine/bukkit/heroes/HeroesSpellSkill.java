@@ -28,11 +28,6 @@ public class HeroesSpellSkill extends ActiveSkill {
     private MageController controller;
     private ConfigurationSection parameters = new MemoryConfiguration();
 
-    public final static Set<String> IGNORE_PARAMETERS = ImmutableSet.of(
-            "name", "icon", "icon-url", "icon_url", "icon_disabled",
-            "icon-disabled", "icon_disabled_url", "icon-disabled-url",
-            "use-text", "cooldown", "mana", "level", "health-cost");
-
     public HeroesSpellSkill(Heroes heroes, String spellKey) {
         super(heroes, spellKey);
         Plugin magicPlugin = heroes.getServer().getPluginManager().getPlugin("Magic");
@@ -62,11 +57,10 @@ public class HeroesSpellSkill extends ActiveSkill {
     @Override
     public void init() {
         try {
-            Set<String> rawKeys = SkillConfigManager.getRawKeys(this, null);
-            for (String rawKey : rawKeys) {
-                if (IGNORE_PARAMETERS.contains(rawKey)) continue;
-                String value = SkillConfigManager.getRaw(this, rawKey, "");
-                parameters.set(rawKey, value);
+            Set<String> parameterKeys = parameters.getKeys(false);
+            for (String parameterKey : parameterKeys) {
+                String value = SkillConfigManager.getRaw(this, parameterKey, null);
+                parameters.set(parameterKey, value);
             }
         } catch (Throwable ex) {
             controller.getLogger().log(Level.SEVERE, "Error initializing skill spell " + spellTemplate.getKey(), ex);
@@ -83,39 +77,36 @@ public class HeroesSpellSkill extends ActiveSkill {
             if (spell != null) {
                 Set<String> parameterKeys = parameters.getKeys(false);
                 if (parameterKeys.size() > 0) {
+                    ConfigurationSection spellParameters = spell.getSpellParameters();
                     ConfigurationSection heroParameters = new MemoryConfiguration();
                     for (String parameterKey : parameterKeys) {
                         String value = parameters.getString(parameterKey);
+                        String magicKey = heroesToMagic(parameterKey);
                         Double doubleValue = null;
                         try {
                             doubleValue = Double.parseDouble(value);
                         } catch (NumberFormatException cantparse) {
                         }
 
+                        Object magicValue = spellParameters.getString(magicKey);
                         if (doubleValue != null) {
                             doubleValue = SkillConfigManager.getUseSetting(hero, this, parameterKey, doubleValue, true);
+                            Double doubleMagicValue = null;
+                            try {
+                                if (magicValue != null) {
+                                    doubleMagicValue = Double.parseDouble(magicValue.toString());
+                                }
+                            } catch (NumberFormatException cantparse) {
+                            }
+                            if (doubleMagicValue != null && doubleValue.equals(doubleMagicValue)) continue;
                         } else {
                             value = SkillConfigManager.getUseSetting(hero, this, parameterKey, value);
+                            if (magicValue != null && value != null && value.equals(magicValue)) continue;
                         }
-                        if (parameterKey.equalsIgnoreCase("max-distance")) {
-                            heroParameters.set("range", doubleValue);
-                        } else if (parameterKey.equalsIgnoreCase("damage")) {
-                            heroParameters.set("damage", doubleValue);
-                            if (!parameterKeys.contains("entity_damage") && !parameterKeys.contains("entity-damage")) {
-                                heroParameters.set("entity_damage", doubleValue);
-                            }
-                            if (!parameterKeys.contains("player_damage") && !parameterKeys.contains("player-damage")) {
-                                heroParameters.set("player_damage", doubleValue);
-                            }
-                        } else if (parameterKey.equalsIgnoreCase("duration")) {
-                            heroParameters.set("duration", doubleValue);
-                            if (!parameterKeys.contains("undo")) {
-                                heroParameters.set("undo", doubleValue);
-                            }
-                        } else if (doubleValue != null) {
-                            heroParameters.set(parameterKey.replace('-', '_'), doubleValue);
+                        if (doubleValue != null) {
+                            heroParameters.set(magicKey, doubleValue);
                         } else {
-                            heroParameters.set(parameterKey.replace('-', '_'), value);
+                            heroParameters.set(magicKey, value);
                         }
                     }
                     success = spell.cast(heroParameters);
@@ -130,7 +121,22 @@ public class HeroesSpellSkill extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(SkillSetting.MAX_DISTANCE.node(), spellTemplate.getRange());
+
+        // Add in all configured spell parameters
+        // Change keys to match heroes-format
+        ConfigurationSection spellParameters = spellTemplate.getSpellParameters();
+        if (spellParameters != null) {
+            Set<String> parameterKeys = spellParameters.getKeys(false);
+            for (String parameterKey : parameterKeys) {
+                if (!spellParameters.isConfigurationSection(parameterKey) && !spellParameters.isList(parameterKey)) {
+                    String heroesKey = magicToHeroes(parameterKey);
+                    Object value = spellParameters.get(parameterKey);
+                    node.set(heroesKey, value);
+                    parameters.set(heroesKey, value);
+                }
+            }
+        }
+
         node.set("icon-url", spellTemplate.getIconURL());
 
         MaterialAndData icon = spellTemplate.getIcon();
@@ -153,6 +159,20 @@ public class HeroesSpellSkill extends ActiveSkill {
             // TODO: Reagent costs from item costs
         }
         return node;
+    }
+
+    private String magicToHeroes(String key) {
+        if (key.equals("range")) {
+            return SkillSetting.MAX_DISTANCE.node();
+        }
+        return key.replace('_', '-');
+    }
+
+    private String heroesToMagic(String key) {
+        if (key.equals(SkillSetting.MAX_DISTANCE.node())) {
+            return "range";
+        }
+        return key.replace('-', '_');
     }
 
     @Override
