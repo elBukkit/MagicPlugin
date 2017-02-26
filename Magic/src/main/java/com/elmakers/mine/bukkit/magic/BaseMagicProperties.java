@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -367,6 +368,14 @@ public class BaseMagicProperties implements MagicProperties {
                     double costReduction = getEffectiveConfiguration().getDouble("cost_reduction", 0.0);
                     if (costReduction <= 1) {
                         modified = upgradeProperty(key, value) || modified;
+                    }
+                    break;
+
+                // This may parse as a numeric value, which we don't want.
+                case "effect_color":
+                    if (value instanceof String) {
+                        ColorHD newColor = new ColorHD((String)value);
+                        modified = upgradeProperty(key, newColor.toString(), true) || modified;
                     }
                     break;
 

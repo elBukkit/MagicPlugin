@@ -46,7 +46,7 @@ lightgrayeffects:
     upgrade: true
     indestructible: false
     icon: carpet:8
-    effect_color: '404040'
+    effect_color: 'D0D0D0'
 aquaeffects:
     upgrade: true
     indestructible: false
