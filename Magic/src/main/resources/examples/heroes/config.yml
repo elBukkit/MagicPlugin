@@ -7,6 +7,10 @@ live_hotbar_skills: true
 # Use the flat skull RP if you're still using skull icons
 default_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/flat-skulls.zip"
 
+# We don't want spells to level up since that won't work well with Heroes skills overriding
+# spell parameters
+enable_automatic_spell_upgrades: false
+
 # Turn this off if you don't want crafting of the Heroes wand
 # enable_crafting: false
 
