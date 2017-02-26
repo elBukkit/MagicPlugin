@@ -5,6 +5,8 @@
  - Fix bug where active hotbar number didn't get saved to wand
  - Fix item dupe bug with droppable wands that have a spell inventory (ocarina)
  - Broomsticks will upgrade on use in the potter configs, too
+ - Fix Ocarina 7F# note (note07)
+ - Fix some wand effect colors not working (hex with no letters) 
  - Add a disabled icon for skull-based configs to use
  - Heroes integration improvements:
    - Allow using disabled icons and skull-based disabled icons.
