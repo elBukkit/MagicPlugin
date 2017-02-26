@@ -1098,3 +1098,82 @@ quafflepower:
       location_offset: 0,-1.5,0
       lifetime: 30000
       target_self_timeout: 5000
+
+
+bring:
+    name: Bring
+    icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
+    icon: fishing_rod
+    category: elemental
+    worth: 20
+    actions:
+        cast:
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+            direction: 0,1,0
+            entity_speed: 1
+        - class: Delay
+          delay: 500
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_fire_extinguish
+           location: targets
+           effectlib:
+             class: SphereEffect
+             iterations: 2
+             period: 1
+             particle: spell
+             radius: 0.8
+    parameters:
+        target: self
+        target_type: LivingEntity
+        count: 16
+        radius: 32
+        y_radius: 5
+        entity_speed: 2
+        push: -1
+    costs:
+        mana: 50
+
+minions:
+    name: Summon Minions
+    icon_url: http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0
+    icon: monster_egg
+    category: elemental
+    pvp_restricted: true
+    actions:
+      cast:
+      - class: Repeat
+        actions:
+        - class: ChangeContext
+          actions:
+          - class: SpawnEntity
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_moan
+        -  class: EffectSingle
+           location: targets
+           effectlib:
+             class: AtomEffect
+             iterations: 32
+             particleNucleus: drip_lava
+    parameters:
+        target: self
+        force: true
+        track: false
+        random_target_offset: 5,0,5
+        target_offset: 0,-1,0
+        type: undead_minion
+        cooldown: 10000
+        undo: 120000
+        loot: false
+        repeat: 3
+    costs:
+        mana: 50
