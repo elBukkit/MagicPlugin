@@ -19,6 +19,7 @@
    - Add Magic Skill Pack, all default Magic spells packaged as skills:
      https://s3-us-west-2.amazonaws.com/elmakers/Magic/MagicHeroesSkills.zip
    - Support pass-through parameters from skill configs to Magic spell skills
+   - Add Skill Book item, craftable in heroes example configs
 
 ## 6.6
 

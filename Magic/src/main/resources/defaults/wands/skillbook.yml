@@ -1,0 +1,9 @@
+skillbook:
+    mode: cast
+    active_spell: skills
+    icon: book
+    indestructible: false
+    locked: true
+    spells:
+        - skills
+

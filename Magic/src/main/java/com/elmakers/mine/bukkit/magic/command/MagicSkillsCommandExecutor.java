@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import com.elmakers.mine.bukkit.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.action.builtin.SkillsSelector;
+import com.elmakers.mine.bukkit.action.builtin.SkillSelectorAction;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -28,8 +30,8 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "This command may only be used in-game");
             return true;
         }
-        Player player = (Player)sender;
-        SkillsSelector selector = new SkillsSelector(api, player);
+        Mage mage = api.getMage(sender);
+        SkillSelectorAction selector = new SkillSelectorAction();
         int page = 1;
         if (args.length > 0) {
             try {
@@ -39,7 +41,8 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
                 return true;
             }
         }
-        selector.show(page);
+        selector.setPage(page);
+        selector.perform(new CastContext(mage));
         return true;
 	}
 

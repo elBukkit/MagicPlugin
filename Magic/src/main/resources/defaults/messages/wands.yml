@@ -347,3 +347,5 @@ wands:
     talisman:
         name: Mana Talisman
         description: Gives a mana bonus when held
+    skillbook:
+        name: Skill Book

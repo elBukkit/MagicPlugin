@@ -1218,6 +1218,9 @@ spells:
         name: Sponge
         description: Suck up water in an area
         cast: Slurp!
+    skills:
+        name: Skills
+        descriptions: Shows available skills, drag a skill to the hotbar to use it
     upgrades:
         name: Spell Progress
         descriptions: Shows available upgrades

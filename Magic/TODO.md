@@ -1,8 +1,13 @@
 # TODO
 
-## 6.7 (Heroes)
+## 6.7
 
+ - Save active wand inventory page, make sure this and hotbar slot only save if changed
+ - Potter mobs don't load?
+
+ - Heroes:
  - Configs don't seem to work on first run?
+ - Need to skip costs when casting spell
  - Some skills broken:
      - The skill MagicSkill-disposal.jar failed to load for an unknown reason.
      - The skill MagicSkill-capture.jar failed to load for an unknown reason.
