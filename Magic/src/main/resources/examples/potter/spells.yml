@@ -3006,7 +3006,6 @@ patronus:
         hit:
         -  class: EffectSingle
            location: target
-           particle_override: particle
            effectlib:
              class: BigBangEffect
              explosions: 1
@@ -3027,7 +3026,6 @@ patronus:
         projectile:
         -  class: EffectSingle
            location: source
-           particle_override: particle
            effectlib:
              class: WaveEffect
              particle: smoke_large
@@ -3043,14 +3041,14 @@ patronus:
         target_type: Wither
         range: 64
         type: chicken
-        cooldown: 13000
+        cooldown: 30000
         velocity: 5
         track_range: 8
         track_speed: 0.5
         type: chicken
         bypass_backfire: true
         sound: irongolem_hit
-        damage: 5
+        damage: 300
         hitbox_size: 3
         hitbox: true
     costs:
