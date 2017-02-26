@@ -109,6 +109,9 @@ public class HeroesSpellSkill extends ActiveSkill {
                             heroParameters.set(magicKey, value);
                         }
                     }
+                    // Don't let Magic get in the way of using the skill
+                    heroParameters.set("cost_reduction" , 2);
+                    heroParameters.set("cooldown_reduction" , 2);
                     success = spell.cast(heroParameters);
                 } else {
                     success = spell.cast();

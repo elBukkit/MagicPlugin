@@ -7,14 +7,15 @@
 
  - Heroes:
  - Configs don't seem to work on first run?
- - Need to skip costs when casting spell
  - Some skills broken:
      - The skill MagicSkill-disposal.jar failed to load for an unknown reason.
      - The skill MagicSkill-capture.jar failed to load for an unknown reason.
      - The skill MagicSkill-stash.jar failed to load for an unknown reason.
      - The skill MagicSkill-healing.jar failed to load for an unknown reason.
      - The skill MagicSkill-recall.jar failed to load for an unknown reason.
- - Add skill book item, maybe just use SkillSelector action for now
+
+## 6.8
+
  - Add new wand mode for skill book
 
 ## 7.0
