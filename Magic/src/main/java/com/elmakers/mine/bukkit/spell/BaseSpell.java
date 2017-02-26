@@ -2612,4 +2612,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public void setBypassRegionPermission(boolean bypass) {
         bypassRegionPermission = bypass;
     }
+
+    @Override
+    public ConfigurationSection getSpellParameters() {
+        return parameters;
+    }
 }

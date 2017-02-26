@@ -45,8 +45,6 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public Collection<CastingCost> getActiveCosts();
     public Collection<EffectPlayer> getEffects(SpellResult result);
     public Collection<EffectPlayer> getEffects(String effectsKey);
-    public void getParameters(Collection<String> parameters);
-    public void getParameterOptions(Collection<String> examples, String parameterKey);
     public long getDuration();
     public long getCooldown();
     public Spell createSpell();
@@ -82,4 +80,27 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
      * that progress levels are not used for this spell.
      */
     public long getMaxProgressLevel();
+
+    /**
+     * Retrieve the parameters as configured in this spell's parameters section.
+     *
+     * @return The configured spell parameters
+     */
+    ConfigurationSection getSpellParameters();
+
+    /**
+     * Add this spell's possible parameter keys to a collection. Used for tab-completion.
+     *
+     * @param parameters A non-null collection of spell parameters to add to.
+     */
+    void getParameters(Collection<String> parameters);
+
+    /**
+     * Add examples of possible values for a given parameter to this spell.
+     * Used for tab-completion.
+     *
+     * @param examples A collection of strings to add possible parameter values to
+     * @param parameterKey The parameter for which to retrieve example options.
+     */
+    void getParameterOptions(Collection<String> examples, String parameterKey);
 }
