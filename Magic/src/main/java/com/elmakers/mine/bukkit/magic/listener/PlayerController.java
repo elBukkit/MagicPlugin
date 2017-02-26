@@ -204,9 +204,12 @@ public class PlayerController implements Listener {
                 activeWand.deactivate();
                 ItemStack restoredItem = player.getInventory().getItemInMainHand();
                 ItemMeta restoredMeta = restoredItem == null ? null : restoredItem.getItemMeta();
+                activeMeta = activeWand.getItem().getItemMeta();
+                // Might have just saved some changes
+                droppedItem.setItemMeta(activeMeta);
                 // Clear after inventory restore (potentially with deactivate), since that will put the wand back
                 if (Wand.hasActiveWand(player) && restoredItem.getType() != Material.AIR &&
-                    restoredMeta != null && activeWand.getItem().getItemMeta().equals(restoredMeta)) {
+                    restoredMeta != null && activeMeta.equals(restoredMeta)) {
                     player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
                 }
             } else if (activeWand.isInventoryOpen()) {
