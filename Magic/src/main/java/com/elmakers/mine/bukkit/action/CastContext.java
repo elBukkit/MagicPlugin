@@ -65,12 +65,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private Spell spell;
     private BaseSpell baseSpell;
     private BlockSpell blockSpell;
-    private MageSpell mageSpell;
     private BrushSpell brushSpell;
     private TargetingSpell targetingSpell;
     private UndoableSpell undoSpell;
     private MaterialBrush brush;
     private CastContext base;
+    private Mage mage;
     private Wand wand;
 
     private List<ActionHandlerContext> handlers = null;
@@ -84,6 +84,16 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public CastContext() {
         this.location = null;
         this.entity = null;
+        this.base = this;
+        this.result = SpellResult.NO_ACTION;
+        targetMessagesSent = new HashSet<>();
+        currentEffects = new ArrayList<>();
+    }
+
+    public CastContext(Mage mage) {
+        this.mage = mage;
+        this.entity = mage.getEntity();
+        this.location = null;
         this.base = this;
         this.result = SpellResult.NO_ACTION;
         targetMessagesSent = new HashSet<>();
@@ -142,8 +152,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
         if (spell instanceof MageSpell)
         {
-            this.mageSpell = (MageSpell)spell;
-            this.wand = this.mageSpell.getMage().getActiveWand();
+            MageSpell mageSpell = (MageSpell)spell;
+            this.mage = mageSpell.getMage();
+            this.wand = mage.getActiveWand();
         }
         if (spell instanceof UndoableSpell)
         {
@@ -289,7 +300,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public Mage getMage() {
-        return this.mageSpell == null ? null : this.mageSpell.getMage();
+        return this.mage;
     }
 
     @Override
