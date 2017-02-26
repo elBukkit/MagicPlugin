@@ -10,7 +10,7 @@ camera:
         cast:
         -  class: EffectSingle
            effect: smoke
-           sound: entity_tnt_primed
+           sound: entity_tnt_primed,0.5,3
            location: origin
     parameters:
         target_type: LivingEntity
