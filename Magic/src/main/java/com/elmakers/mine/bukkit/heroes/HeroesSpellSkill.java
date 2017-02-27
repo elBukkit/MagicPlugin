@@ -145,11 +145,13 @@ public class HeroesSpellSkill extends ActiveSkill {
         node.set("cooldown", spellTemplate.getCooldown());
         node.set("name", spellTemplate.getName());
         Collection<CastingCost> costs = spellTemplate.getCosts();
-        for (CastingCost cost : costs) {
-            if (cost.getMana() > 0) {
-                node.set(SkillSetting.MANA.node(), cost.getMana());
+        if (costs != null ) {
+            for (CastingCost cost : costs) {
+                if (cost.getMana() > 0) {
+                    node.set(SkillSetting.MANA.node(), cost.getMana());
+                }
+                // TODO: Reagent costs from item costs
             }
-            // TODO: Reagent costs from item costs
         }
         return node;
     }

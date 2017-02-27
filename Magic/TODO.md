@@ -2,14 +2,7 @@
 
 ## 6.7
 
- - Heroes:
- - Configs don't seem to work on first run?
- - Some skills broken:
-     - The skill MagicSkill-disposal.jar failed to load for an unknown reason.
-     - The skill MagicSkill-capture.jar failed to load for an unknown reason.
-     - The skill MagicSkill-stash.jar failed to load for an unknown reason.
-     - The skill MagicSkill-healing.jar failed to load for an unknown reason.
-     - The skill MagicSkill-recall.jar failed to load for an unknown reason.
+ - Heroes skill configs don't seem to work on first run?
 
 ## 6.8
 
