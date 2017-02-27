@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.event.LoadEvent;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -2407,6 +2408,16 @@ public class MagicController implements MageController {
                 }
             }
         }
+
+        String defaultLocationString = properties.getString("default_cast_location");
+        try {
+            com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION = CastSourceLocation.valueOf(defaultLocationString.toUpperCase());
+        } catch (Exception ex) {
+            com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION = CastSourceLocation.MAINHAND;
+            getLogger().warning("Invalid default_cast_location: " + defaultLocationString);
+        }
+        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_OFFSET = properties.getDouble("default_cast_location_offset", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_OFFSET);
+        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_VERTICAL_OFFSET = properties.getDouble("default_cast_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_VERTICAL_OFFSET);
 
 		// Parse wand settings
 		Wand.DefaultUpgradeMaterial = ConfigurationUtils.getMaterial(properties, "wand_upgrade_item", Wand.DefaultUpgradeMaterial);

@@ -56,13 +56,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MainHand;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
@@ -4980,25 +4978,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			return null;
 		}
 		Location wandLocation = mage.getEyeLocation();
-		Entity entity = mage.getEntity();
-
-		boolean leftHand = isInOffhand;
-		if (entity instanceof HumanEntity) {
-			HumanEntity human = (HumanEntity)entity;
-			if (human.getMainHand() == MainHand.LEFT) {
-				leftHand = !leftHand;
-			}
-		}
-		Location toTheRight = wandLocation.clone();
-		if (leftHand) {
-			toTheRight.setYaw(toTheRight.getYaw() - 90);
-		} else {
-			toTheRight.setYaw(toTheRight.getYaw() + 90);
-		}
-		Vector wandDirection = toTheRight.getDirection();
-		wandLocation = wandLocation.clone();
-		wandLocation.add(wandDirection.multiply(WAND_LOCATION_OFFSET));
-		wandLocation.setY(wandLocation.getY() + WAND_LOCATION_VERTICAL_OFFSET);
+		wandLocation = mage.getOffsetLocation(wandLocation, isInOffhand, WAND_LOCATION_OFFSET, WAND_LOCATION_VERTICAL_OFFSET);
 		return wandLocation;
 	}
 

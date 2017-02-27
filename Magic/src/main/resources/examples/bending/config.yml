@@ -22,4 +22,4 @@ enable_enchanting: false
 wand_glow: false
 
 # Effects from from the hands
-wand_location_offset_vertical: -0.5
+wand_location_offset_vertical: -0.4

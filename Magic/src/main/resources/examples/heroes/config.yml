@@ -27,3 +27,15 @@ enable_automatic_spell_upgrades: false
 # Use this to turn off disabled icon URLs when using skull icons
 # disabled_icon_url: ""
 
+# Use this to change where spells originate from
+# This effects visual effects as well as actual projectile source locations.
+# The defaults source from the main hand.
+# The default cast location if not holding a wand. Options are "mainhand", "offhand" and "eyes"
+# default_cast_location: mainhand
+
+# This offsets left or right from the center of the body
+# default_cast__location_offset: 0.5
+
+# This offsets from the eyes
+# default_cast__location_offset_vertical: -0.4
+

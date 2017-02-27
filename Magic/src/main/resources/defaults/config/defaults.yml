@@ -293,6 +293,13 @@ enchant_click: spellshop
 enchant_sneak_click: upgrades
 enchant_block: enchantment_table
 
+# The default cast location if not holding a wand. Options are "mainhand", "offhand" and "eyes"
+default_cast_location: mainhand
+# This offsets left or right from the center of the body
+default_cast__location_offset: 0.5
+# This offsets from the eyes, the result should be around the main hand location
+default_cast__location_offset_vertical: -0.4
+
 # Control whether wands regenerate mana while they are not being held
 regenerate_while_inactive: true
 

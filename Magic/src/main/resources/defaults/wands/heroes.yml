@@ -6,6 +6,7 @@ heroes:
     indestructible: true
     heroes: true
     undroppable: true
+    mode: inventory
     right_click: none
     left_click: cast
 

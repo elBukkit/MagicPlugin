@@ -24,6 +24,7 @@ import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
+import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
@@ -49,6 +50,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -60,6 +62,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MainHand;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -89,6 +92,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<>();
     private static String defaultMageName = "Mage";
     private static String SKILL_POINT_KEY = "sp";
+
+    public static CastSourceLocation DEFAULT_CAST_LOCATION = CastSourceLocation.MAINHAND;
+    public static double DEFAULT_CAST_LOCATION_OFFSET = 0.5;
+    public static double DEFAULT_CAST_LOCATION_VERTICAL_OFFSET = -0.5;
 
     protected final String id;
     protected ConfigurationSection data = new MemoryConfiguration();
@@ -1151,7 +1158,37 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         } else if (offhandWand != null && offhandCast) {
             wandLocation = offhandWand.getLocation();
         }
+
+        if (DEFAULT_CAST_LOCATION == CastSourceLocation.MAINHAND) {
+            wandLocation = getOffsetLocation(wandLocation, false, DEFAULT_CAST_LOCATION_OFFSET, DEFAULT_CAST_LOCATION_VERTICAL_OFFSET);
+        } else if (DEFAULT_CAST_LOCATION == CastSourceLocation.OFFHAND) {
+            wandLocation = getOffsetLocation(wandLocation, true, DEFAULT_CAST_LOCATION_OFFSET, DEFAULT_CAST_LOCATION_VERTICAL_OFFSET);
+        }
+
         return wandLocation;
+    }
+
+    public Location getOffsetLocation(Location baseLocation, boolean isInOffhand, double offset, double verticalOffset) {
+        Entity entity = getEntity();
+
+        boolean leftHand = isInOffhand;
+        if (entity instanceof HumanEntity) {
+            HumanEntity human = (HumanEntity)entity;
+            if (human.getMainHand() == MainHand.LEFT) {
+                leftHand = !leftHand;
+            }
+        }
+        Location toTheRight = baseLocation.clone();
+        if (leftHand) {
+            toTheRight.setYaw(toTheRight.getYaw() - 90);
+        } else {
+            toTheRight.setYaw(toTheRight.getYaw() + 90);
+        }
+        Vector wandDirection = toTheRight.getDirection();
+        baseLocation = baseLocation.clone();
+        baseLocation.add(wandDirection.multiply(offset));
+        baseLocation.setY(baseLocation.getY() + verticalOffset);
+        return baseLocation;
     }
 
     @Override
