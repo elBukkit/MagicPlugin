@@ -14,6 +14,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -59,7 +60,7 @@ public class HeroesSpellSkill extends ActiveSkill {
             controller.getLogger().warning("Failed to load Magic skill spell: " + spellKey);
             throw new RuntimeException("Failed to load Magic skill spell: " + spellKey);
         }
-        return spellTemplate.getName().replace(" ", "");
+        return ChatColor.stripColor(spellTemplate.getName().replace(" ", ""));
     }
 
     @Override
