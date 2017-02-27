@@ -35,36 +35,26 @@ public class HeroesSpellSkill extends ActiveSkill {
             controller.getLogger().warning("MagicHeroes skills require the Magic plugin");
             throw new RuntimeException("MagicHeroes skills require the Magic plugin");
         }
-        try {
-            MagicAPI api = (MagicAPI) magicPlugin;
-            controller = api.getController();
-            spellTemplate = controller.getSpellTemplate(spellKey);
-            if (spellTemplate == null) {
-                controller.getLogger().warning("Failed to load Magic skill spell: " + spellKey);
-                throw new RuntimeException("Failed to load Magic skill spell: " + spellKey);
-            }
-
-            this.setDescription(spellTemplate.getDescription());
-            this.setUsage("/skill " + spellKey);
-            this.setArgumentRange(0, 0);
-            this.setIdentifiers(new String[]{"skill " + spellKey});
-        } catch (Throwable ex) {
-            controller.getLogger().log(Level.SEVERE, "Error loading Magic spell " + spellKey, ex);
-            throw new RuntimeException("Failed to load Magic skill spell: " + spellKey, ex);
+        MagicAPI api = (MagicAPI) magicPlugin;
+        controller = api.getController();
+        spellTemplate = controller.getSpellTemplate(spellKey);
+        if (spellTemplate == null) {
+            controller.getLogger().warning("Failed to load Magic skill spell: " + spellKey);
+            throw new RuntimeException("Failed to load Magic skill spell: " + spellKey);
         }
+
+        this.setDescription(spellTemplate.getDescription());
+        this.setUsage("/skill " + spellKey);
+        this.setArgumentRange(0, 0);
+        this.setIdentifiers(new String[]{"skill " + spellKey});
     }
 
     @Override
     public void init() {
-        try {
-            Set<String> parameterKeys = parameters.getKeys(false);
-            for (String parameterKey : parameterKeys) {
-                String value = SkillConfigManager.getRaw(this, parameterKey, null);
-                parameters.set(parameterKey, value);
-            }
-        } catch (Throwable ex) {
-            controller.getLogger().log(Level.SEVERE, "Error initializing skill spell " + spellTemplate.getKey(), ex);
-            throw new RuntimeException("Failed to init Magic skill spell", ex);
+        Set<String> parameterKeys = parameters.getKeys(false);
+        for (String parameterKey : parameterKeys) {
+            String value = SkillConfigManager.getRaw(this, parameterKey, null);
+            parameters.set(parameterKey, value);
         }
     }
 
