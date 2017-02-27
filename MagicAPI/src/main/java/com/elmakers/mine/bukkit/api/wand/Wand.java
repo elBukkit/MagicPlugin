@@ -207,4 +207,5 @@ public interface Wand extends CostReducer, MagicProperties {
     String getEffectParticleName();
     Location getLocation();
     Mage getMage();
+    boolean hasInventory();
 }
