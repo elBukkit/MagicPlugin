@@ -64,6 +64,7 @@ public class HeroesSpellSkill extends ActiveSkill {
 
     @Override
     public void init() {
+        super.init();
         Set<String> parameterKeys = parameters.getKeys(false);
         for (String parameterKey : parameterKeys) {
             String value = SkillConfigManager.getRaw(this, parameterKey, null);
@@ -137,6 +138,9 @@ public class HeroesSpellSkill extends ActiveSkill {
             heroParameters.set("cost_reduction" , 2);
             heroParameters.set("cooldown_reduction" , 2);
             success = spell.cast(heroParameters);
+        }
+        if (success) {
+            this.broadcastExecuteText(hero);
         }
         return success ? SkillResult.NORMAL : SkillResult.FAIL;
     }

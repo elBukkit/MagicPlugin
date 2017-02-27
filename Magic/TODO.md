@@ -18,7 +18,6 @@
 ## Heroes Issues
 
  - Heroes skill configs don't seem to work on first run?
- - "null" message on Herocraft test server
 
 ## High-Priority
 
