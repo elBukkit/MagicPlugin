@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 6.7
+
+- MagicAPI is now integrated with the Magic plugin, please check Magic's changelog,
+  or just look at the git history for API changes.
+
 ## 3.0
 
  - MagicAPI now builds against Bukkit API 1.8
