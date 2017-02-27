@@ -396,9 +396,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		// Load all properties
 		loadProperties();
 
-		// Add vanilla enchantments
-		InventoryUtils.applyEnchantments(item, templateConfig.getConfigurationSection("enchantments"));
-
 		// Enchant, if an enchanting level was provided
 		if (level > 0) {
 			// Account for randomized locked wands
@@ -1662,10 +1659,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			wandTemplate = migrateTemplate;
 		}
 
-		if (wandTemplate != null) {
-			// Add vanilla attributes
-			InventoryUtils.applyAttributes(item, wandTemplate.getAttributes(), wandTemplate.getAttributeSlot());
-		}
+		// Add vanilla attributes
+		InventoryUtils.applyAttributes(item, wandConfig.getConfigurationSection("attributes"), wandConfig.getString("attribute_slot"));
+
+		// Add vanilla enchantments
+		InventoryUtils.applyEnchantments(item, wandConfig.getConfigurationSection("enchantments"));
 
 		if (wandConfig.contains("icon_inactive")) {
 			String iconKey = wandConfig.getString("icon_inactive");
