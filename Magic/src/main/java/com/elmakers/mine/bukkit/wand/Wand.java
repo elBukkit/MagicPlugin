@@ -733,8 +733,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		cooldownReduction = reduction;
 		setProperty("cooldown_reduction", cooldownReduction);
 	}
-	
-	public boolean getHasInventory() {
+
+	@Override
+	public boolean hasInventory() {
 		return hasInventory;
 	}
 
