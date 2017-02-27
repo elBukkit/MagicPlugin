@@ -79,46 +79,42 @@ public class HeroesSpellSkill extends ActiveSkill {
             Spell spell = mage.getSpell(spellTemplate.getKey());
             if (spell != null) {
                 Set<String> parameterKeys = parameters.getKeys(false);
-                if (parameterKeys.size() > 0) {
-                    ConfigurationSection spellParameters = spell.getSpellParameters();
-                    ConfigurationSection heroParameters = new MemoryConfiguration();
-                    for (String parameterKey : parameterKeys) {
-                        String value = parameters.getString(parameterKey);
-                        String magicKey = heroesToMagic(parameterKey);
-                        Double doubleValue = null;
+                ConfigurationSection spellParameters = spell.getSpellParameters();
+                ConfigurationSection heroParameters = new MemoryConfiguration();
+                for (String parameterKey : parameterKeys) {
+                    String value = parameters.getString(parameterKey);
+                    String magicKey = heroesToMagic(parameterKey);
+                    Double doubleValue = null;
+                    try {
+                        doubleValue = Double.parseDouble(value);
+                    } catch (NumberFormatException cantparse) {
+                    }
+
+                    Object magicValue = spellParameters.getString(magicKey);
+                    if (doubleValue != null) {
+                        doubleValue = SkillConfigManager.getUseSetting(hero, this, parameterKey, doubleValue, true);
+                        Double doubleMagicValue = null;
                         try {
-                            doubleValue = Double.parseDouble(value);
+                            if (magicValue != null) {
+                                doubleMagicValue = Double.parseDouble(magicValue.toString());
+                            }
                         } catch (NumberFormatException cantparse) {
                         }
-
-                        Object magicValue = spellParameters.getString(magicKey);
-                        if (doubleValue != null) {
-                            doubleValue = SkillConfigManager.getUseSetting(hero, this, parameterKey, doubleValue, true);
-                            Double doubleMagicValue = null;
-                            try {
-                                if (magicValue != null) {
-                                    doubleMagicValue = Double.parseDouble(magicValue.toString());
-                                }
-                            } catch (NumberFormatException cantparse) {
-                            }
-                            if (doubleMagicValue != null && doubleValue.equals(doubleMagicValue)) continue;
-                        } else {
-                            value = SkillConfigManager.getUseSetting(hero, this, parameterKey, value);
-                            if (magicValue != null && value != null && value.equals(magicValue)) continue;
-                        }
-                        if (doubleValue != null) {
-                            heroParameters.set(magicKey, doubleValue);
-                        } else {
-                            heroParameters.set(magicKey, value);
-                        }
+                        if (doubleMagicValue != null && doubleValue.equals(doubleMagicValue)) continue;
+                    } else {
+                        value = SkillConfigManager.getUseSetting(hero, this, parameterKey, value);
+                        if (magicValue != null && value != null && value.equals(magicValue)) continue;
                     }
-                    // Don't let Magic get in the way of using the skill
-                    heroParameters.set("cost_reduction" , 2);
-                    heroParameters.set("cooldown_reduction" , 2);
-                    success = spell.cast(heroParameters);
-                } else {
-                    success = spell.cast();
+                    if (doubleValue != null) {
+                        heroParameters.set(magicKey, doubleValue);
+                    } else {
+                        heroParameters.set(magicKey, value);
+                    }
                 }
+                // Don't let Magic get in the way of using the skill
+                heroParameters.set("cost_reduction" , 2);
+                heroParameters.set("cooldown_reduction" , 2);
+                success = spell.cast(heroParameters);
             }
         }
         return success ? SkillResult.NORMAL : SkillResult.FAIL;
