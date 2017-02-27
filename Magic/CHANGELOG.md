@@ -1,8 +1,9 @@
 # CHANGELOG
 
-## 6.8
+## 6.7.1
  
  - Magic Heroes skills will broadcast their use-text like other skills
+ - Change Talisman recipe to use gold nuggets for 1.10 and below support
 
 ## 6.7
 
