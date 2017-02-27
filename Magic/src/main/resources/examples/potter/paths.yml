@@ -93,7 +93,7 @@ year3:
     follows: student
     upgrade: year4
     upgrade_item: year4
-    levels: 15
+    inherit: year2
     max_mana: 110
     max_mana_regeneration: 15
     spells:
@@ -104,16 +104,13 @@ year3:
     - diffindo
     - patronus
     required_spells:
-      - deprimo
+    - deprimo
 
 year4:
     follows: student
     upgrade: year5
     upgrade_item: year5
     inherit: year3
-    min_enchant_level: 18
-    max_enchant_level: 18
-    levels: 18
     max_mana: 130
     max_mana_regeneration: 20
     spells:
@@ -134,9 +131,6 @@ year5:
     upgrade: year6
     upgrade_item: year6
     inherit: year4
-    min_enchant_level: 20
-    max_enchant_level: 20
-    levels: 20
     max_mana: 150
     max_mana_regeneration: 28
     spells:
@@ -157,9 +151,6 @@ year6:
     upgrade_item: year7
     inherit: year5
     max_mana: 170
-    min_enchant_level: 22
-    max_enchant_level: 22
-    levels: 22
     max_mana_regeneration: 34
     spells:
     - firestorm

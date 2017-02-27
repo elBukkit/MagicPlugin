@@ -2,9 +2,12 @@
 
 ## 6.7
 
+ - The active spell inventory page will be saved to wands
  - Fix bug where active hotbar number didn't get saved to wand
  - Fix item dupe bug with droppable wands that have a spell inventory (ocarina)
  - Broomsticks will upgrade on use in the potter configs, too
+ - Some fixes to the potter config progression
+ - Add dementor and deatheater mobs to the potter configs
  - Fix Ocarina 7F# note (note07)
  - Fix some wand effect colors not working (hex with no letters) 
  - Add a disabled icon for skull-based configs to use

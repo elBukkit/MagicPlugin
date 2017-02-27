@@ -2,9 +2,6 @@
 
 ## 6.7
 
- - Save active wand inventory page, make sure this and hotbar slot only save if changed
- - Potter mobs don't load?
-
  - Heroes:
  - Configs don't seem to work on first run?
  - Some skills broken:
