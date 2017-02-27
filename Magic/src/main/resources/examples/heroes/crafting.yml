@@ -27,7 +27,7 @@ heroes:
   row_3:
 
 # Allow crafting a SKill book
-heroes:
+skillbook:
   # This defines the recipe output
   output: skillbook
   output_type: wand

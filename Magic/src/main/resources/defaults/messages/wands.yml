@@ -307,7 +307,7 @@ wands:
         description: Work freely underwater
     heroes:
         name: Wand
-        description: Use the Q Button to Open Spell Inventory
+        description: Use the Q Button to Open Skill Inventory
     ledger:
       name: Ledger
       description: Check your bank balance

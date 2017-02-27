@@ -8,5 +8,6 @@ heroes:
     undroppable: true
     mode: inventory
     right_click: none
+    drop: toggle
     left_click: cast
 
