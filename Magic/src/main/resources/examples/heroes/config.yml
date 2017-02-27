@@ -4,11 +4,17 @@
 # when not holding wands.
 live_hotbar_skills: true
 
+# Turn off cast messages, let Heroes handle messaging
+show_cast_messages: false
+
 # We use skull icons here since the spell items interfere with Heroes
 url_icons_enabled: true
 
 # Use the flat skull RP if you're using skull icons
 default_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/flat-skulls.zip"
+
+# The chances of this RP ever updating are very slim, so skip checking for updates
+resource_pack_check_interval: 0
 
 # We don't want spells to level up since that won't work well with Heroes skills overriding
 # spell parameters
