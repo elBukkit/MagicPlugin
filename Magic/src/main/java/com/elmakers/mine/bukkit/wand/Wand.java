@@ -1629,7 +1629,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			int page = wandConfig.getInt("page");
 			if (page != openInventoryPage) {
 				needsInventoryUpdate = true;
-				setOpenInventoryPage(page);
+                openInventoryPage = page;
 			}
 		}
 
