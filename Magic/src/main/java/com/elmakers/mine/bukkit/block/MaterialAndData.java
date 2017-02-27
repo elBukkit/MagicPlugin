@@ -770,8 +770,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @SuppressWarnings("deprecation")
     @Override
     public MaterialData getMaterialData() {
+        if (material == null) return null;
         byte dataByte = data == null ? 0 : (byte)(short)data;
-        
         return new MaterialData(material, dataByte);
     }
 }
