@@ -1089,8 +1089,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 
 		updateHasInventory();
-		if (openInventoryPage >= inventories.size()) {
-			openInventoryPage = 0;
+		if (openInventoryPage >= inventories.size() && openInventoryPage != 0) {
+			setOpenInventoryPage(0);
 		}
 	}
 
@@ -1622,6 +1622,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			if (hotbar != currentHotbar) {
 				needsInventoryUpdate = true;
 				setCurrentHotbar(hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar);
+			}
+		}
+
+		if (wandConfig.contains("page")) {
+			int page = wandConfig.getInt("page");
+			if (page != openInventoryPage) {
+				needsInventoryUpdate = true;
+				setOpenInventoryPage(page);
 			}
 		}
 
@@ -2938,7 +2946,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (isInventoryOpen()) {
 			saveInventory();
 			int inventoryCount = inventories.size();
-			openInventoryPage = inventoryCount == 0 ? 0 : (openInventoryPage + inventoryCount + direction) % inventoryCount;
+			setOpenInventoryPage(inventoryCount == 0 ? 0 : (openInventoryPage + inventoryCount + direction) % inventoryCount);
 			updateInventory();
 			if (mage != null && inventories.size() > 1) {
                 if (!playPassiveEffects("cycle") && inventoryCycleSound != null) {
@@ -4058,12 +4066,17 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return false;
 	}
 
+	private void setOpenInventoryPage(int page) {
+    	this.openInventoryPage = page;
+    	this.setProperty("page", page);
+	}
+
 	@Override
 	public boolean organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
         WandOrganizer organizer = new WandOrganizer(this, mage);
         closeInventory();
         organizer.organize();
-        openInventoryPage = 0;
+        setOpenInventoryPage(0);
 		setCurrentHotbar(currentHotbar);
         if (autoOrganize) setProperty("organize", false);
 		autoOrganize = false;
@@ -4082,7 +4095,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         WandOrganizer organizer = new WandOrganizer(this);
 		closeInventory();
         organizer.alphabetize();
-        openInventoryPage = 0;
+        setOpenInventoryPage(0);
 		setCurrentHotbar(0);
 		if (autoAlphabetize) setProperty("alphabetize", false);
 		autoAlphabetize = false;
