@@ -6,8 +6,8 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.google.common.collect.ImmutableSet;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
@@ -21,12 +21,12 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
 import java.util.Set;
-import java.util.logging.Level;
 
 public class HeroesSpellSkill extends ActiveSkill {
     private final SpellTemplate spellTemplate;
     private final MageController controller;
     private final ConfigurationSection parameters = new MemoryConfiguration();
+    private int spellLevel = 1;
 
     public HeroesSpellSkill(Heroes heroes, String spellKey) {
         super(heroes, getSkillName(heroes, spellKey));
@@ -69,6 +69,14 @@ public class HeroesSpellSkill extends ActiveSkill {
             String value = SkillConfigManager.getRaw(this, parameterKey, null);
             parameters.set(parameterKey, value);
         }
+        String spellLevelString = SkillConfigManager.getRaw(this, "tier", null);
+        if (spellLevelString != null && spellLevelString.isEmpty()) {
+            try {
+                spellLevel = Integer.parseInt(spellLevelString);
+            } catch(NumberFormatException ex) {
+                controller.getLogger().warning("Invalid tier in skill config for " + spellTemplate.getKey() + ": " + spellLevelString);
+            }
+        }
     }
 
     @Override
@@ -76,46 +84,59 @@ public class HeroesSpellSkill extends ActiveSkill {
         Mage mage = controller.getMage(hero.getPlayer());
         boolean success = false;
         if (mage != null) {
-            Spell spell = mage.getSpell(spellTemplate.getKey());
-            if (spell != null) {
-                Set<String> parameterKeys = parameters.getKeys(false);
-                ConfigurationSection spellParameters = spell.getSpellParameters();
-                ConfigurationSection heroParameters = new MemoryConfiguration();
-                for (String parameterKey : parameterKeys) {
-                    String value = parameters.getString(parameterKey);
-                    String magicKey = heroesToMagic(parameterKey);
-                    Double doubleValue = null;
+            String spellKey = spellTemplate.getKey();
+            int targetLevel = SkillConfigManager.getUseSetting(hero, this, "tier", spellLevel, true);
+            if (targetLevel != 1) {
+                SpellKey key = new SpellKey(spellTemplate.getSpellKey().getBaseKey(), targetLevel);
+                spellKey = key.getKey();
+            }
+
+            Spell spell = mage.getSpell(spellKey);
+            if (spell == null) {
+                if (targetLevel > 1) {
+                    controller.getLogger().warning("Invalid tier for spell in skills config: " + spellKey + " (tier " + spellLevel +")");
+                } else {
+                    controller.getLogger().warning("Invalid spell in skills config: " + spellKey);
+                }
+                return SkillResult.FAIL;
+            }
+            Set<String> parameterKeys = parameters.getKeys(false);
+            ConfigurationSection spellParameters = spell.getSpellParameters();
+            ConfigurationSection heroParameters = new MemoryConfiguration();
+            for (String parameterKey : parameterKeys) {
+                String value = parameters.getString(parameterKey);
+                String magicKey = heroesToMagic(parameterKey);
+                Double doubleValue = null;
+                try {
+                    doubleValue = Double.parseDouble(value);
+                } catch (NumberFormatException cantparse) {
+                }
+
+                Object magicValue = spellParameters.getString(magicKey);
+                if (doubleValue != null) {
+                    doubleValue = SkillConfigManager.getUseSetting(hero, this, parameterKey, doubleValue, true);
+                    Double doubleMagicValue = null;
                     try {
-                        doubleValue = Double.parseDouble(value);
+                        if (magicValue != null) {
+                            doubleMagicValue = Double.parseDouble(magicValue.toString());
+                        }
                     } catch (NumberFormatException cantparse) {
                     }
-
-                    Object magicValue = spellParameters.getString(magicKey);
-                    if (doubleValue != null) {
-                        doubleValue = SkillConfigManager.getUseSetting(hero, this, parameterKey, doubleValue, true);
-                        Double doubleMagicValue = null;
-                        try {
-                            if (magicValue != null) {
-                                doubleMagicValue = Double.parseDouble(magicValue.toString());
-                            }
-                        } catch (NumberFormatException cantparse) {
-                        }
-                        if (doubleMagicValue != null && doubleValue.equals(doubleMagicValue)) continue;
-                    } else {
-                        value = SkillConfigManager.getUseSetting(hero, this, parameterKey, value);
-                        if (magicValue != null && value != null && value.equals(magicValue)) continue;
-                    }
-                    if (doubleValue != null) {
-                        heroParameters.set(magicKey, doubleValue);
-                    } else {
-                        heroParameters.set(magicKey, value);
-                    }
+                    if (doubleMagicValue != null && doubleValue.equals(doubleMagicValue)) continue;
+                } else {
+                    value = SkillConfigManager.getUseSetting(hero, this, parameterKey, value);
+                    if (magicValue != null && value != null && value.equals(magicValue)) continue;
                 }
-                // Don't let Magic get in the way of using the skill
-                heroParameters.set("cost_reduction" , 2);
-                heroParameters.set("cooldown_reduction" , 2);
-                success = spell.cast(heroParameters);
+                if (doubleValue != null) {
+                    heroParameters.set(magicKey, doubleValue);
+                } else {
+                    heroParameters.set(magicKey, value);
+                }
             }
+            // Don't let Magic get in the way of using the skill
+            heroParameters.set("cost_reduction" , 2);
+            heroParameters.set("cooldown_reduction" , 2);
+            success = spell.cast(heroParameters);
         }
         return success ? SkillResult.NORMAL : SkillResult.FAIL;
     }
@@ -161,6 +182,13 @@ public class HeroesSpellSkill extends ActiveSkill {
                 }
                 // TODO: Reagent costs from item costs
             }
+        }
+
+        // Check for an upgrade, set tier if present
+        SpellKey upgradeKey = new SpellKey(spellTemplate.getSpellKey().getBaseKey(), 2);
+        SpellTemplate upgrade = controller.getSpellTemplate(upgradeKey.getKey());
+        if (upgrade != null) {
+            node.set("tier", 1);
         }
         return node;
     }

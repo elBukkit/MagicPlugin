@@ -24,6 +24,8 @@
      https://s3-us-west-2.amazonaws.com/elmakers/Magic/MagicHeroesSkills.zip
    - Support pass-through parameters from skill configs to Magic spell skills
    - Add Skill Book item, craftable in heroes example configs
+   - Allow "tier" in a skill config to use a levelled-up version of a spell as a skill.
+     As it turns out, this is not very useful since the skill parameters override the levelled-up parameters. Left it in anyway.
 
 ## 6.6
 
