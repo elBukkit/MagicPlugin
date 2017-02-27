@@ -24,29 +24,42 @@ import java.util.Set;
 import java.util.logging.Level;
 
 public class HeroesSpellSkill extends ActiveSkill {
-    private SpellTemplate spellTemplate;
-    private MageController controller;
-    private ConfigurationSection parameters = new MemoryConfiguration();
+    private final SpellTemplate spellTemplate;
+    private final MageController controller;
+    private final ConfigurationSection parameters = new MemoryConfiguration();
 
     public HeroesSpellSkill(Heroes heroes, String spellKey) {
-        super(heroes, spellKey);
+        super(heroes, getSkillName(heroes, spellKey));
         Plugin magicPlugin = heroes.getServer().getPluginManager().getPlugin("Magic");
-        if (magicPlugin == null || !(magicPlugin instanceof MagicAPI) && !magicPlugin.isEnabled()) {
-            controller.getLogger().warning("MagicHeroes skills require the Magic plugin");
-            throw new RuntimeException("MagicHeroes skills require the Magic plugin");
-        }
         MagicAPI api = (MagicAPI) magicPlugin;
         controller = api.getController();
         spellTemplate = controller.getSpellTemplate(spellKey);
+        String skillKey = spellTemplate.getName().replace(" ", "");
+
+        this.setDescription(spellTemplate.getDescription());
+        this.setUsage("/skill " + skillKey);
+        this.setArgumentRange(0, 0);
+        this.setIdentifiers(new String[]{"skill " + skillKey});
+    }
+
+    /**
+     * This code is redudant, but unfortunately it needs to be since we need to know the
+     * skill name for the super() constructor call.
+     */
+    private static String getSkillName(Heroes heroes, String spellKey) {
+        Plugin magicPlugin = heroes.getServer().getPluginManager().getPlugin("Magic");
+        if (magicPlugin == null || !(magicPlugin instanceof MagicAPI) && !magicPlugin.isEnabled()) {
+            heroes.getLogger().warning("MagicHeroes skills require the Magic plugin");
+            throw new RuntimeException("MagicHeroes skills require the Magic plugin");
+        }
+        MagicAPI api = (MagicAPI) magicPlugin;
+        MageController controller = api.getController();
+        SpellTemplate spellTemplate = controller.getSpellTemplate(spellKey);
         if (spellTemplate == null) {
             controller.getLogger().warning("Failed to load Magic skill spell: " + spellKey);
             throw new RuntimeException("Failed to load Magic skill spell: " + spellKey);
         }
-
-        this.setDescription(spellTemplate.getDescription());
-        this.setUsage("/skill " + spellKey);
-        this.setArgumentRange(0, 0);
-        this.setIdentifiers(new String[]{"skill " + spellKey});
+        return spellTemplate.getName().replace(" ", "");
     }
 
     @Override
