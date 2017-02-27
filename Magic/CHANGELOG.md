@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.8
+
 ## 6.7.1
  
  - Magic Heroes skills will broadcast their use-text like other skills
