@@ -101,7 +101,7 @@ public class HeroesSpellSkill extends ActiveSkill {
                 return SkillResult.FAIL;
             }
             Set<String> parameterKeys = parameters.getKeys(false);
-            ConfigurationSection spellParameters = spell.getSpellParameters();
+            ConfigurationSection spellParameters = spellTemplate.getSpellParameters();
             ConfigurationSection heroParameters = new MemoryConfiguration();
             for (String parameterKey : parameterKeys) {
                 String value = parameters.getString(parameterKey);
@@ -188,7 +188,14 @@ public class HeroesSpellSkill extends ActiveSkill {
         SpellKey upgradeKey = new SpellKey(spellTemplate.getSpellKey().getBaseKey(), 2);
         SpellTemplate upgrade = controller.getSpellTemplate(upgradeKey.getKey());
         if (upgrade != null) {
+            int maxUpgrade = 2;
+            while (upgrade != null) {
+                upgradeKey = new SpellKey(spellTemplate.getSpellKey().getBaseKey(), maxUpgrade + 1);
+                upgrade = controller.getSpellTemplate(upgradeKey.getKey());
+                if (upgrade != null) maxUpgrade++;
+            }
             node.set("tier", 1);
+            node.set("tier-max", maxUpgrade);
         }
         return node;
     }
