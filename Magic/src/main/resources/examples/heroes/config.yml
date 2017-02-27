@@ -4,7 +4,10 @@
 # when not holding wands.
 live_hotbar_skills: true
 
-# Use the flat skull RP if you're still using skull icons
+# We use skull icons here since the spell items interfere with Heroes
+url_icons_enabled: true
+
+# Use the flat skull RP if you're using skull icons
 default_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/flat-skulls.zip"
 
 # We don't want spells to level up since that won't work well with Heroes skills overriding
