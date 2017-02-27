@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.8
+
 ## 6.7
 
  - The active spell inventory page will be saved to wands

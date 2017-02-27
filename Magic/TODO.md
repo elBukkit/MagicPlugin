@@ -1,9 +1,5 @@
 # TODO
 
-## 6.7
-
- - Heroes skill configs don't seem to work on first run?
-
 ## 6.8
 
  - Add new wand mode for skill book
@@ -18,6 +14,11 @@
  - Implement /mage configure, add, remove, describe
  - Option to filter spells that show on wand by what's available on its current path
  - Might need to add yet another category of spells to paths, those that are allowed but never appear in the spell shop
+
+## Heroes Issues
+
+ - Heroes skill configs don't seem to work on first run?
+ - "null" message on Herocraft test server
 
 ## High-Priority
 
