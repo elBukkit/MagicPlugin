@@ -5,5 +5,5 @@ skillbook:
     indestructible: false
     locked: true
     spells:
-        - skills
+    - skills
 

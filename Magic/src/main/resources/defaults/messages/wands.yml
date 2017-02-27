@@ -349,3 +349,4 @@ wands:
         description: Gives a mana bonus when held
     skillbook:
         name: Skill Book
+        description: Right-click to view skills, drag skill to hotbar to use
