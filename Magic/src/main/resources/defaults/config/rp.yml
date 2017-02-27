@@ -11,3 +11,8 @@ default_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-
 # Set this to false to turn off the player skull-based spell icons
 # This may be needed if you have disabled the RP, spell icons are in the RP.
 url_icons_enabled: false
+
+# Set this to zero to turn off periodic RP update checks. The default is every five minutes.
+# This is done in a separate thread to avoid interfering with the main server thread.
+# Note that this value is in minutes!
+resource_pack_check_interval: 5

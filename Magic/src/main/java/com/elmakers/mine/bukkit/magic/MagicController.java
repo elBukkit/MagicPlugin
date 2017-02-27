@@ -766,7 +766,10 @@ public class MagicController implements MageController {
             legacyPathConfig.renameTo(pathConfig);
         }
         load();
-        checkResourcePack(Bukkit.getConsoleSender());
+        if (checkResourcePack(Bukkit.getConsoleSender(), false) && resourcePackCheckInterval > 0) {
+            int intervalTicks = resourcePackCheckInterval * 60 * 20;
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new RPCheckTask(this), intervalTicks, intervalTicks);
+        }
     }
 
     protected void finalizeIntegration() {
@@ -2221,6 +2224,7 @@ public class MagicController implements MageController {
         EffectPlayer.setParticleRange(properties.getInt("particle_range", EffectPlayer.PARTICLE_RANGE));
 
         enableResourcePackCheck = properties.getBoolean("enable_resource_pack_check", true);
+        resourcePackCheckInterval = properties.getInt("resource_pack_check_interval", 0);
         defaultResourcePack = properties.getString("default_resource_pack", null);
         showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
         showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
@@ -4568,36 +4572,40 @@ public class MagicController implements MageController {
 
         return skinName;
     }
-    
+
     @Override
-    public void checkResourcePack(final CommandSender sender) {
+    public void checkResourcePack(CommandSender sender) {
+        checkResourcePack(sender, false);
+    }
+
+    public boolean checkResourcePack(final CommandSender sender, final boolean quiet) {
         final Server server = plugin.getServer();
         final boolean initialLoad = !checkedResourcePack;
         String resourcePackURL = CompatibilityUtils.getResourcePack(server);
         final String resourcePackHash = CompatibilityUtils.getResourcePackHash(server);
         
         if (!checkedResourcePack && resourcePackHash != null && !resourcePackHash.isEmpty()) {
-            sender.sendMessage("Resource pack hash already set- Magic skipping RP check");
-            return;
+            if (!quiet) sender.sendMessage("Resource pack hash already set- Magic skipping RP check");
+            return false;
         }
         checkedResourcePack = true;
         
         if (resourcePackURL == null || resourcePackURL.isEmpty()) {
             if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
-                sender.sendMessage("No resource pack set, and default has been cleared- Magic skipping RP check");
-                return;
+                if (!quiet) sender.sendMessage("No resource pack set, and default has been cleared- Magic skipping RP check");
+                return false;
             }
 
             resourcePackURL = defaultResourcePack;
             CompatibilityUtils.setResourcePack(server, resourcePackURL, resourcePackHash);
-            sender.sendMessage("No resource pack set, using default from Magic configuration");
+            if (!quiet) sender.sendMessage("No resource pack set, using default from Magic configuration");
         }
 
         if (!enableResourcePackCheck) {
-            sender.sendMessage("Resource pack updates disabled, Magic not checking for updates");
-            return;
+            if (!quiet) sender.sendMessage("Resource pack updates disabled, Magic not checking for updates");
+            return false;
         }
-        sender.sendMessage("Magic checking resource pack for updates: " + ChatColor.GRAY + resourcePackURL);
+        if (!quiet) sender.sendMessage("Magic checking resource pack for updates: " + ChatColor.GRAY + resourcePackURL);
         
         long modifiedTime = 0;
         String currentSHA = null;
@@ -4643,7 +4651,7 @@ public class MagicController implements MageController {
                                     @Override
                                     public void run() {
                                         if (modifiedTimestamp <= 0) {
-                                            sender.sendMessage(ChatColor.YELLOW + "Checking resource pack for the first time");
+                                            if (!quiet) sender.sendMessage(ChatColor.YELLOW + "Checking resource pack for the first time");
                                         } else {
                                             sender.sendMessage(ChatColor.YELLOW + "Resource pack modified, redownloading (" + modifiedDate.getTime() + " > " + modifiedTimestamp + ")");
                                         }
@@ -4690,7 +4698,7 @@ public class MagicController implements MageController {
                 server.getScheduler().runTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        sender.sendMessage(finalResponse);
+                        if (!quiet) sender.sendMessage(finalResponse);
 
                         if (finalResourcePackHash != null) {
                             CompatibilityUtils.setResourcePack(server, finalResourcePack, finalResourcePackHash);
@@ -4699,6 +4707,7 @@ public class MagicController implements MageController {
                 });
             }
         });
+        return true;
     }
 
     private static String byteArrayToHexString(byte[] b) {
@@ -5082,6 +5091,7 @@ public class MagicController implements MageController {
     private boolean                             citizensEnabled			    = true;
     private boolean                             libsDisguiseEnabled			= true;
     private boolean                             enableResourcePackCheck     = true;
+    private int                                 resourcePackCheckInterval   = 0;
     private String                              defaultResourcePack         = null;
     private boolean                             checkedResourcePack         = false;
     private boolean                             saveDefaultConfigs          = true;

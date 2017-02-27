@@ -11,6 +11,7 @@
  - Fix Ocarina 7F# note (note07)
  - Fix some wand effect colors not working (hex with no letters) 
  - Add a disabled icon for skull-based configs to use
+ - Add resource_pack_check_interval, defaults to 5 minutes, to auto-update RP SHA while running
  - Heroes integration improvements:
    - Allow using disabled icons and skull-based disabled icons.
    - Disabled icons will show in skill selector and hotbar for unavailable skills
