@@ -20,6 +20,9 @@ resource_pack_check_interval: 0
 # spell parameters
 enable_automatic_spell_upgrades: false
 
+# Disable SP system
+sp_enabled: false
+
 # Turn this off if you don't want crafting of the Heroes wand
 # enable_crafting: false
 
