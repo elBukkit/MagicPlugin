@@ -16,15 +16,14 @@ heal:
     effects:
         cast:
         - class: EffectSingle
-          custom_sound: magic.rennervate
+          sound: magic.shimmer
           effectlib:
             class: ConeEffect
             iterations: 5
             lengthGrow: .12
             particle: heart
         - class: EffectSingle
-          sound: entity_player_levelup
-          custom_sound: magic.rennervate
+          sound: magic.shimmer
           location: target
           target_offset: 0,-2,0
           effectlib:
@@ -35,10 +34,17 @@ heal:
             particles: 7
             iterations: 40
             radius: 1
+        - class: EffectSingle
+          target_offset: 0,-1.5,0
+          effectlib:
+            class: LineEffect
+            particle: heart
+            duration: 5000
+            particles: 10
+            period: 5
         cast_self:
         - class: EffectSingle
-          sound: entity_player_levelup
-          custom_sound: magic.rennervate
+          sound: magic.shimmer
           location: target
           target_offset: 0,-2,0
           effectlib:
@@ -51,10 +57,9 @@ heal:
             radius: 1
         cast_finish:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           custom_sound: magic.shimmer_quiet
            sound_pitch: 5
            location: origin
-        -  location: origin
            effectlib:
              class: AnimatedBall
              duration: 200

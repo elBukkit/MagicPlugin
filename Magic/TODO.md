@@ -3,7 +3,6 @@
 ## 6.8
 
  - Grab spell just makes item disappear? Push + Grenade does the same thing.
- - Add a line effect to Heal/Cure when cast on other
  - Mine spell particles should take target block
  - Magnetic leggings didn't activate on initial wear
  - Goggles don't reactivate after respawn (armorUpdated is being called- hrm)
