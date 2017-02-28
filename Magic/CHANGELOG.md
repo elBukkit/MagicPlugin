@@ -2,6 +2,9 @@
 
 ## 6.8
 
+ - Add /magic help command, simple command that relies on /help for more info
+ - Add heroes_skill_prefix config property, to prefix skill names from the Magic Heroes skill pack
+
 ## 6.7.1
  
  - Magic Heroes skills will broadcast their use-text like other skills

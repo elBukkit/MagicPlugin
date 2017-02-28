@@ -2347,6 +2347,7 @@ public class MagicController implements MageController {
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
+        heroesSkillPrefix = properties.getString("heroes_skill_prefix", heroesSkillPrefix);
         skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
 
 		messagePrefix = properties.getString("message_prefix", messagePrefix);
@@ -4884,6 +4885,11 @@ public class MagicController implements MageController {
         this.mageIdentifier = mageIdentifier;
     }
 
+    @Override
+    public String getHeroesSkillPrefix() {
+        return heroesSkillPrefix;
+    }
+
     /*
 	 * Private data
 	 */
@@ -5066,6 +5072,7 @@ public class MagicController implements MageController {
     private boolean                             skillsUseHeroes             = true;
     private boolean                             useHeroesMana               = true;
     private boolean                             skillsUsePermissions        = false;
+    private String                              heroesSkillPrefix           = "";
 
     // Synchronization
     private final Object                        saveLock                    = new Object();

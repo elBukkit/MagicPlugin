@@ -23,6 +23,14 @@ enable_automatic_spell_upgrades: false
 # Disable SP system
 sp_enabled: false
 
+# Use this to prefix skills added via the Magic skill pack
+# This can be used to avoid conflicts with public or other skill
+# You can also rename individual spells by adding something like
+# blink:
+#    name: Teleport
+# to Magic's spells.yml
+heroes_skill_prefix: ""
+
 # Turn this off if you don't want crafting of the Heroes wand
 # enable_crafting: false
 

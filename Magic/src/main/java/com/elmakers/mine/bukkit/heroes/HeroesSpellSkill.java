@@ -60,7 +60,8 @@ public class HeroesSpellSkill extends ActiveSkill {
             controller.getLogger().warning("Failed to load Magic skill spell: " + spellKey);
             throw new RuntimeException("Failed to load Magic skill spell: " + spellKey);
         }
-        return ChatColor.stripColor(spellTemplate.getName().replace(" ", ""));
+        String baseName = ChatColor.stripColor(spellTemplate.getName().replace(" ", ""));
+        return controller.getHeroesSkillPrefix() + baseName;
     }
 
     @Override
