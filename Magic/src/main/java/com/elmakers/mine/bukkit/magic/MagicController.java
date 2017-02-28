@@ -4582,7 +4582,9 @@ public class MagicController implements MageController {
         final Server server = plugin.getServer();
         final boolean initialLoad = !checkedResourcePack;
         String resourcePackURL = CompatibilityUtils.getResourcePack(server);
-        final String resourcePackHash = CompatibilityUtils.getResourcePackHash(server);
+        String resourcePackHash = CompatibilityUtils.getResourcePackHash(server);
+        if (resourcePackHash != null) resourcePackHash = resourcePackHash.trim();
+        if (resourcePackURL != null) resourcePackURL = resourcePackURL.trim();
         
         if (!checkedResourcePack && resourcePackHash != null && !resourcePackHash.isEmpty()) {
             if (!quiet) sender.sendMessage("Resource pack hash already set- Magic skipping RP check");
