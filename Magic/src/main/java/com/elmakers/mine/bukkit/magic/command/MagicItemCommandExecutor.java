@@ -92,6 +92,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "destroy");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "worth");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "type");
+			addIfPermissible(sender, options, "Magic.commands.mitem.", "damage");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "skull");
 		}
 
@@ -126,6 +127,11 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				for (Material material : Material.values()) {
 					options.add(material.name().toLowerCase());
 				}
+			}
+
+			if (subCommand.equalsIgnoreCase("damage")) {
+				options.add("0");
+				options.add("100");
 			}
 
 			if (subCommand.equalsIgnoreCase("delete")) {
@@ -216,6 +222,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		else if (subCommand.equalsIgnoreCase("type"))
 		{
 			return onItemType(player, item, args);
+		}
+		else if (subCommand.equalsIgnoreCase("damage"))
+		{
+			return onItemDurability(player, item, args);
 		}
 		else if (subCommand.equalsIgnoreCase("duplicate"))
 		{
@@ -843,6 +853,22 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 		material.applyToItem(item);
+		return true;
+	}
+
+	public boolean onItemDurability(Player player, ItemStack item, String[] parameters)
+	{
+		if (parameters.length < 1) {
+			return false;
+		}
+		short durability = 0;
+		try {
+			durability = (short)Integer.parseInt(parameters[0]);
+		} catch (NumberFormatException ex) {
+			player.sendMessage("Invalid damage value: " + parameters[0]);
+			return true;
+		}
+		item.setDurability(durability);
 		return true;
 	}
 	

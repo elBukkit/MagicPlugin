@@ -163,6 +163,7 @@ commands:
         /mitem delete     Delete a saved item
         /mitem worth      Show the value of an item
         /mitem type       Change the type of an item
+        /mitem damage     Change the damage state of an item
         /mitem export     Export all items, names and worth a CSV file
     permission: Magic.commands.mitem
   "mitem add":
@@ -208,7 +209,14 @@ commands:
        /mitem type <material>[:data]
        /mitem type gold_nugget
        /mitem type wool:12
-    permission: Magic.commands.mitem.save
+    permission: Magic.commands.mitem.type
+  "mitem damage":
+    description: Change the damage (aka durability) of an item
+    usage: |
+       /mitem damage <value>
+       /mitem damage 100
+       /mitem damage 0
+    permission: Magic.commands.mitem.damage
   "mitem destroy":
     description: Destroy your held item
     usage: /mitem destroy
@@ -697,6 +705,10 @@ permissions:
     default: op
   Magic.commands.mitem.type:
     description: Player may change the type of an item
+    type: boolean
+    default: op
+  Magic.commands.mitem.damage:
+    description: Player may change the damaged state of an item
     type: boolean
     default: op
   Magic.commands.mitem.skull:
