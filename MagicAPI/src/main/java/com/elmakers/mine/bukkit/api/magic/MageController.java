@@ -358,6 +358,7 @@ public interface MageController {
     public boolean disguise(Entity entity, ConfigurationSection configuration);
     public void managePlayerData(boolean external, boolean backupInventories);
     String getDefaultWandTemplate();
+    String getHeroesSkillPrefix();
 
     Object getWandProperty(ItemStack itemStack, String key);
     @Nonnull <T> T getWandProperty(ItemStack itemStack, @Nonnull String key, @Nonnull T defaultValue);
