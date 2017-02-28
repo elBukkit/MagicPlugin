@@ -2,9 +2,19 @@
 
 ## 6.8
 
+ - /mitem add enchantment should work with only 1 param, default level to 1
+ - Grab spell just makes item disappear? Push + Grenade does the same thing.
+ - Add a line effect to Heal/Cure when cast on other
+ - Mine spell particles should take target block
+ - Magnetic leggings didn't activate on initial wear
+ - Aura spells shouldn't cancel cancel_on_cast spells
+ - Fix cancel messages
+ - Air scooter should ignore pitch
  - Add new wand mode for skill book
+ - Order Heroes skills by level
 
 ## 7.0
+
  - Refactor MageProperties to be contained rather than inherited?
  - Mage needs MageProperties. Maybe per-path? Per "class"? Not really sure yet.
  - Wand templates will specify properties that come from the Mage versus item data. 

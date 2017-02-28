@@ -368,9 +368,11 @@ commands:
     usage: |
         Use /help mmap [subcommand] for more information
         /mmap load       Load a new image map
+        /mmap player     Load a map from a player's skin
         /mmap list       List all loaded image maps
         /mmap give       Give a player an image map
         /mmap import     Import image maps from Pixelator
+        /mmap fix        Try to fix broken maps
   "mmap load":
     description: Load a new map from a file or URL
     permission: Magic.commands.mmap.load
@@ -379,6 +381,12 @@ commands:
         /mmap load http://i.imgur.com/YsbKHg1.gif Magic
         /mmap load plugins/Pixelator/MyImage.png
         /mmap load http://i.imgur.com/EufZP2A.gif Cropped 128 128
+  "mmap player":
+    description: Load a new map from a player skil
+    permission: Magic.commands.mmap.player
+    usage: |
+        /mmap player [player name]
+        /mmap player Nathan
   "mmap list":
     description: List and search through loaded maps
     permission: Magic.commands.mmap.list
@@ -397,6 +405,10 @@ commands:
     description: Import images from Pixelator
     permission: Magic.commands.mmap.import
     usage: /mmap import
+  "mmap fix":
+    description: Attempt to fix broken map iages
+    permission: Magic.commands.mmap.fix
+    usage: /mmap fix
   mtrait:
     description: Manage Magic NPCs
     permission: Magic.commands.mtrait

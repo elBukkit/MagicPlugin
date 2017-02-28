@@ -38,7 +38,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
 
         if (args.length == 0)
 		{
-            sender.sendMessage("Usage: mmap [list|give|load|import]");
+            sender.sendMessage("Usage: mmap [list|give|load|import|player|fix]");
 			return true;
 		}
 
@@ -276,7 +276,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             return;
         }
         short mapId = item.getDurability();
-        sender.sendMessage("Loaded map id " + mapId);
+        sender.sendMessage("Loaded map id " + mapId + " as player " + playerName);
         if (sender instanceof Player)
         {
             ItemStack mapItem = maps.getMapItem(mapId);
