@@ -3279,7 +3279,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 					if (castParameters == null) {
 						castParameters = new MemoryConfiguration();
 					}
-                    castParameters.set("track_casts", false);
+                    castParameters.set("passive", true);
                     mage.setCostReduction(100);
                     mage.setQuiet(true);
                     try {

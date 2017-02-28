@@ -207,7 +207,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     private boolean backfired                   = false;
     private boolean hidden                      = false;
-    private boolean trackCasts                  = true;
+    private boolean passive                     = false;
 
     protected ConfigurationSection progressLevels = null;
     protected ConfigurationSection progressLevelParameters = null;
@@ -987,15 +987,17 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
         // Check for cancel-on-cast-other spells
-        for (Iterator<Batch> iterator = mage.getPendingBatches().iterator(); iterator.hasNext();) {
-            Batch batch = iterator.next();
-            if (!(batch instanceof SpellBatch)) continue;
-            SpellBatch spellBatch = (SpellBatch)batch;
-            Spell spell = spellBatch.getSpell();
-            if (spell.cancelOnCastOther()) {
-                spell.cancel();
-                batch.finish();
-                iterator.remove();
+        if (!passive) {
+            for (Iterator<Batch> iterator = mage.getPendingBatches().iterator(); iterator.hasNext();) {
+                Batch batch = iterator.next();
+                if (!(batch instanceof SpellBatch)) continue;
+                SpellBatch spellBatch = (SpellBatch)batch;
+                Spell spell = spellBatch.getSpell();
+                if (spell.cancelOnCastOther()) {
+                    spell.cancel();
+                    batch.finish();
+                    iterator.remove();
+                }
             }
         }
         
@@ -1571,7 +1573,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         targetSelf = parameters.getBoolean("target_self", false);
         messageTargets = parameters.getBoolean("message_targets", true);
         verticalSearchDistance = parameters.getInt("vertical_range", 8);
-        trackCasts = parameters.getBoolean("track_casts", true);
+        passive = parameters.getBoolean("passive", false);
 
         cooldown = parameters.getInt("cooldown", 0);
         cooldown = parameters.getInt("cool", cooldown);
@@ -2470,7 +2472,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Track cast counts
-        if (result.isSuccess() && trackCasts) {
+        if (result.isSuccess() && !passive) {
             spellData.addCast();
             if (template != null && template.spellData != null) {
                 template.spellData.addCast();
