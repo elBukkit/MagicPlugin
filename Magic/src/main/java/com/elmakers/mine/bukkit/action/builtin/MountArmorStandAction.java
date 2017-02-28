@@ -53,6 +53,7 @@ public class MountArmorStandAction extends BaseSpellAction
     private int maxHeightAboveGround;
     private int maxHeight;
     private double pitchOffset = 0;
+    private Double yDirection = null;
     private CreatureSpawnEvent.SpawnReason armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
     private Collection<PotionEffect> crashEffects;
     private Collection<PotionEffect> warningEffects;
@@ -122,6 +123,11 @@ public class MountArmorStandAction extends BaseSpellAction
         duration = parameters.getInt("duration", 0);
         durationWarning = parameters.getInt("duration_warning", 0);
         pitchOffset = parameters.getDouble("pitch_offset", 0);
+        if (parameters.contains("direction_y")) {
+            yDirection = parameters.getDouble("direction_y");
+        } else {
+            yDirection = null;
+        }
 
         sound = null;
         String soundKey = parameters.getString("sound");
@@ -254,6 +260,9 @@ public class MountArmorStandAction extends BaseSpellAction
         }
 
         // Apply pitch offset
+        if (yDirection != null) {
+            direction.setY(yDirection).normalize();
+        }
         if (pitchOffset != 0) {
             direction.setY(direction.getY() + pitchOffset).normalize();
         }

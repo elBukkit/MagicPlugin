@@ -33,7 +33,7 @@ airscooter:
         max_height_above_ground: 2
         liftoff_duration: 600
         liftoff_thrust: 0.6
-        pitch_offset: 0.5
+        direction_y: 0.5
     costs:
         mana: 20
     active_costs:
