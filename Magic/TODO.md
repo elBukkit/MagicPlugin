@@ -2,11 +2,11 @@
 
 ## 6.8
 
- - /mitem add enchantment should work with only 1 param, default level to 1
  - Grab spell just makes item disappear? Push + Grenade does the same thing.
  - Add a line effect to Heal/Cure when cast on other
  - Mine spell particles should take target block
  - Magnetic leggings didn't activate on initial wear
+ - Goggles don't reactivate after respawn (armorUpdated is being called- hrm)
  - Aura spells shouldn't cancel cancel_on_cast spells
  - Fix cancel messages
  - Air scooter should ignore pitch

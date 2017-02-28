@@ -870,11 +870,11 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			String loreLine = ChatColor.translateAlternateColorCodes('&', StringUtils.join(loreLines, " "));
 			return onItemAddLore(player, item, loreLine);
 		}
+		if (addCommand.equalsIgnoreCase("enchant")) {
+			return onItemAddEnchant(player, item, parameters[1], parameters.length >= 3 ? parameters[2] : "1");
+		}
 		if (parameters.length < 3) {
 			return false;
-		}
-		if (addCommand.equalsIgnoreCase("enchant")) {
-			return onItemAddEnchant(player, item, parameters[1], parameters[2]);
 		}
 		if (addCommand.equalsIgnoreCase("attribute")) {
 			String slot = parameters.length > 3 ? parameters[3] : null;
