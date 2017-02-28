@@ -76,6 +76,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				return true;
 			}
 			sender.sendMessage("Magic " + getMagicVersion());
+			sender.sendMessage("Use /magic help for more info");
 			return true;
 		}
 		
@@ -86,6 +87,22 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				sendNoPermission(sender);
 				return true;
 			}
+		}
+		if (subCommand.equalsIgnoreCase("help"))
+		{
+			sender.sendMessage(ChatColor.AQUA + "See help information for Magic commands with /help <command>");
+			sender.sendMessage("wand     Create or modify wand items");
+			sender.sendMessage("mage     Inspect or modify mage data");
+			sender.sendMessage("magic    Reload configs and other admin functions");
+			sender.sendMessage("mitem    Create or modify vanilla items");
+			sender.sendMessage("mmob     Spwan vanilla or magic mobs");
+			sender.sendMessage("cast     Cast spells and test parameter changes");
+			sender.sendMessage("mtrait   Create or modify Magic Citizens NPCs");
+			sender.sendMessage("mmap     Create maps from images or players");
+			sender.sendMessage("castp    Cast spells as another player");
+			sender.sendMessage("wandp    Modify other players' wands");
+			sender.sendMessage("mskills  Show the skill selector");
+			return true;
 		}
 		if (subCommand.equalsIgnoreCase("rpcheck"))
 		{
