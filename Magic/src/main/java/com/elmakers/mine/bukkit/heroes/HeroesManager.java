@@ -113,6 +113,14 @@ public class HeroesManager {
         return skillMap;
     }
 
+    public int getSkillLevel(Player player, String skillName) {
+        Skill skill = skills.getSkill(skillName);
+        if (skill == null) return 0;
+        Hero hero = getHero(player);
+        if (hero == null) return 0;
+        return SkillConfigManager.getUseSetting(hero, skill, SkillSetting.LEVEL, 1, true);
+    }
+
     public Set<String> getSkills(Player player) {
         return getSkills(player, false, false);
     }

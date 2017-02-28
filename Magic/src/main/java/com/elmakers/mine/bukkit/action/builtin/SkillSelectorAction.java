@@ -6,7 +6,6 @@ import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
@@ -63,7 +62,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
 
             List<String> heroesSkills = heroes.getSkillList(player, true, true);
             for (String heroesSkill : heroesSkills) {
-                allSkills.add(new SkillDescription(controller, heroesSkill));
+                allSkills.add(new SkillDescription(heroes, controller, player, heroesSkill));
             }
         } else {
             inventoryTitle = messages.get("skills.inventory_title");
@@ -95,14 +94,16 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     class SkillDescription implements Comparable<SkillDescription> {
         public String heroesSkill;
         public SpellTemplate spell;
+        private int skillLevel = 0;
 
         public SkillDescription(SpellTemplate spell) {
             this.spell = spell;
         }
 
-        public SkillDescription(MageController controller, String heroesSkill) {
+        public SkillDescription(HeroesManager heroes, MageController controller, Player player, String heroesSkill) {
             this.heroesSkill = heroesSkill;
             this.spell = controller.getSpellTemplate(getSpellKey());
+            skillLevel = heroes.getSkillLevel(player, heroesSkill);
         }
 
         public String getSkillKey() {
@@ -134,6 +135,9 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
 
         @Override
         public int compareTo(SkillDescription other) {
+            if (heroesSkill != null && skillLevel != other.skillLevel) {
+                return Integer.compare(skillLevel, other.skillLevel);
+            }
             return getSpellName().compareTo(other.getSpellName());
         }
     };

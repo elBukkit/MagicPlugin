@@ -5,6 +5,7 @@
  - Add /magic help command, simple command that relies on /help for more info
  - Add heroes_skill_prefix config property, to prefix skill names from the Magic Heroes skill pack
  - Add /mitem damage command
+ - Heroes skills sorted by level (then name) in skill selector
 
 ## 6.7.1
  
