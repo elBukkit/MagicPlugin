@@ -117,7 +117,7 @@ wolf:
     - supershell@13
     - tag@70
     - tendril@30
-    - torch|2@22
+    - supertorch@22
     - torture@121
     - toss@112
     - tree@89
