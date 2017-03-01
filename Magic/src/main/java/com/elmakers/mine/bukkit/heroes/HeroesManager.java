@@ -261,7 +261,7 @@ public class HeroesManager {
         if (sourceHero == null || checkHero == null) return false;
 
         HeroParty party = sourceHero.getParty();
-        if (party == null) return false;
+        if (party == null || !party.isNoPvp()) return false;
 
         return party.getMembers().contains(checkHero);
     }
