@@ -40,6 +40,7 @@ blessing:
         target_self: true
         cooldown: 30000
         bypass_friendly_fire: true
+        only_friendly: true
     costs:
         mana: 200
 

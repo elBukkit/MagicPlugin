@@ -255,13 +255,13 @@ public class HeroesManager {
         hero.setMana(Math.max(0, hero.getMana() - amount));
     }
 
-    public boolean isInParty(Player source, Player check) {
+    public boolean isInParty(Player source, Player check, boolean pvpCheck) {
         Hero sourceHero = getHero(source);
         Hero checkHero = getHero(check);
         if (sourceHero == null || checkHero == null) return false;
 
         HeroParty party = sourceHero.getParty();
-        if (party == null || !party.isNoPvp()) return false;
+        if (party == null || (pvpCheck && !party.isNoPvp())) return false;
 
         return party.getMembers().contains(checkHero);
     }

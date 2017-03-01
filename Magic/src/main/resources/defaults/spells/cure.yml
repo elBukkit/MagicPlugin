@@ -38,6 +38,7 @@ cure:
         cooldown: 20000
         bypass_pvp: true
         bypass_friendly_fire: true
+        only_friendly: true
         remove_effects:
         - confusion
         - poison

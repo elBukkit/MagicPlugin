@@ -78,6 +78,7 @@ heal:
         cooldown: 20000
         bypass_pvp: true
         bypass_friendly_fire: true
+        only_friendly: true
         hitbox: true
         amount: 1
     costs:

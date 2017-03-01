@@ -32,6 +32,7 @@ boon:
         target_type: Player
         effect_speed: 1
         bypass_friendly_fire: true
+        only_friendly: true
         bypass_pvp: true
         cooldown: 20000
     costs:

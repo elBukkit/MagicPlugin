@@ -7,6 +7,8 @@
  - Add /mitem damage command
  - Heroes skills sorted by level (then name) in skill selector
  - Add Heroes party support, attack spells will not target players in your party
+ - Add "only_friendly" spell parameter (added to Heal, Cure, etc). If using scoreboard teams or Heroes parties, these
+   spells may only be cast at friendly targets.
 
 ## 6.7.1
  

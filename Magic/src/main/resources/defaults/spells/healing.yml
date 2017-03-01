@@ -27,5 +27,6 @@ healing:
         bypass_pvp: true
         bypass_undo: true
         bypass_friendly_fire: true
+        only_friendly: true
         bypass_undo: true
 

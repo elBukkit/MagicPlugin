@@ -83,6 +83,10 @@ pvp_restricted: false
 # targeting each other with spells.
 use_scoreboard_teams: false
 
+# If not using scoreboard teams or Heroes parties, should players be "friends" by default?
+# This will affect being able to cast healing or other perk type spells on other players.
+default_friendly: true
+
 ### Heroes/Skills configuration
 
 # Show Heroes skills in the /mskills menu, if Heroes is present

@@ -185,6 +185,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean glideExclusive            = false;
     protected boolean usesBrushSelection        = false;
     protected boolean bypassFriendlyFire    	= false;
+    protected boolean onlyFriendlyFire    	    = false;
     protected boolean bypassPvpRestriction    	= false;
     protected boolean bypassBuildRestriction    = false;
     protected boolean bypassBreakRestriction    = false;
@@ -1097,6 +1098,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassPvpRestriction = workingParameters.getBoolean("bp", bypassPvpRestriction);
         bypassPermissions = workingParameters.getBoolean("bypass_permissions", bypassPermissions);
         bypassFriendlyFire = workingParameters.getBoolean("bypass_friendly_fire", false);
+        onlyFriendlyFire = workingParameters.getBoolean("only_friendly", false);
 
         // Check cooldowns
         cooldown = workingParameters.getInt("cooldown", cooldown);
@@ -1513,6 +1515,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     if (!controller.isPVPAllowed(magePlayer, mage.getLocation())) return false;
                 }
             }
+        }
+        if (onlyFriendlyFire)
+        {
+            return controller.isFriendly(mage.getEntity(), entity);
         }
         if (!bypassProtection && !bypassFriendlyFire)
         {

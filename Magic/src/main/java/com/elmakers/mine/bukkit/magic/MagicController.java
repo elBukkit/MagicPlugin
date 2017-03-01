@@ -2338,6 +2338,7 @@ public class MagicController implements MageController {
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
         bypassFriendlyFire = properties.getBoolean("bypass_friendly_fire", bypassFriendlyFire);
         useScoreboardTeams = properties.getBoolean("use_scoreboard_teams", useScoreboardTeams);
+        defaultFriendly = properties.getBoolean("default_friendly", defaultFriendly);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
         defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
@@ -3363,7 +3364,7 @@ public class MagicController implements MageController {
     {
         if (useHeroesParties && heroesManager != null && attacker instanceof Player && entity instanceof Player)
         {
-            if (heroesManager.isInParty((Player)attacker, (Player)entity))
+            if (heroesManager.isInParty((Player)attacker, (Player)entity, true))
             {
                 return false;
             }
@@ -3387,6 +3388,49 @@ public class MagicController implements MageController {
             }
         }
         return preciousStonesManager.canTarget(attacker, entity) && townyManager.canTarget(attacker, entity);
+    }
+
+    @Override
+    public boolean isFriendly(Entity attacker, Entity entity)
+    {
+        // We are always friends with ourselves
+        if (attacker == entity) return true;
+
+        // Check to see if we are not using a team or party system
+        if (!useScoreboardTeams && (!useHeroesParties || heroesManager == null))
+        {
+            return defaultFriendly;
+        }
+
+        // Check for Heroes party
+        if (useHeroesParties && heroesManager != null && attacker instanceof Player && entity instanceof Player)
+        {
+            if (heroesManager.isInParty((Player)attacker, (Player)entity, false))
+            {
+                return true;
+            }
+        }
+
+        // Check for scoreboard teams
+        if (useScoreboardTeams && attacker instanceof Player && entity instanceof Player)
+        {
+            Player player1 = (Player)attacker;
+            Player player2 = (Player)entity;
+
+            Scoreboard scoreboard1 = player1.getScoreboard();
+            Scoreboard scoreboard2 = player2.getScoreboard();
+
+            if (scoreboard1 != null && scoreboard2 != null)
+            {
+                Team team1 = scoreboard1.getEntryTeam(player1.getName());
+                Team team2 = scoreboard2.getEntryTeam(player2.getName());
+                if (team1 != null && team2 != null && team1.equals(team2))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -5052,6 +5096,7 @@ public class MagicController implements MageController {
     private boolean							    allPvpRestricted            = false;
     private boolean							    noPvpRestricted             = false;
     private boolean                             useScoreboardTeams          = false;
+    private boolean                             defaultFriendly             = true;
     private boolean							    protectLocked               = true;
 
     private String								extraSchematicFilePath		= null;
