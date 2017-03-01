@@ -10,16 +10,27 @@ mine:
     upgrade_required_casts: 50
     actions:
         cast:
+        # This delay is here so the brush can sample the block material for visual FX
+        # before we turn it to air.
+        - class: Delay
         - class: Recurse
           actions:
           - class: Drop
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_item_break
-        -  class: EffectTrail
-           particle: block_crack
-           material: diamond_ore
+           sound: vanish,1,0.5
+        -  class: EffectSingle
+           sound: entity_item_break,0.8
+           effectlib:
+              class: LineEffect
+              particle: block_crack
+              duration: 1000
+              particles: 15
+              period: 1
+        no_target:
+        -  class: EffectSingle
+           sound: vanish,1,0.5
     parameters:
         faces: all
         allow_max_range: false

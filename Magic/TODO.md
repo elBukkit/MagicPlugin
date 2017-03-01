@@ -2,9 +2,7 @@
 
 ## 6.8
 
- - Order Heroes skills by level
  - Grab spell just makes item disappear? Push + Grenade does the same thing.
- - Mine spell particles should take target block
  - Magnetic leggings didn't activate on initial wear
  - Goggles don't reactivate after respawn (armorUpdated is being called- hrm)
  - Fix cancel messages
