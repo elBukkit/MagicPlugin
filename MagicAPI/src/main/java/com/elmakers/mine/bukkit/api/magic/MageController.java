@@ -182,6 +182,7 @@ public interface MageController {
     public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location);
     public boolean isPVPAllowed(Player player, Location location);
     public boolean canTarget(Entity attacker, Entity target);
+    public boolean isFriendly(Entity attacker, Entity target);
     public boolean isUrlIconsEnabled();
     public Set<EntityType> getUndoEntityTypes();
 
