@@ -181,8 +181,33 @@ public interface MageController {
     public Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location);
     public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location);
     public boolean isPVPAllowed(Player player, Location location);
+
+    /**
+     * Check whether or not one entity is allowed to target another.
+     *
+     * This takes into account region-based PVP permissions, mob protection, scoreboard teams and parties
+     * via other plugins, depending on global settings.
+     *
+     * PvP and friendly fire checks can be overridden on a per-spell or global basis.
+     *
+     * @param attacker The attacking entity
+     * @param target The entity potentially being targeted
+     * @return true if "attacker" can target "target"
+     */
     public boolean canTarget(Entity attacker, Entity target);
-    public boolean isFriendly(Entity attacker, Entity target);
+
+    /**
+     * This checks scoreboard teams or integrated party groupings, as configured and provided by other plugins,
+     * to see if two entities are "friends" with one another.
+     *
+     * This is primarily used for "only_friendly: true" spells to disallow targeting non-friend players.
+     *
+     * @param source The source entity
+     * @param target The target entity
+     * @return true if "source" and "target" are considered friendly.
+     */
+    public boolean isFriendly(Entity source, Entity target);
+
     public boolean isUrlIconsEnabled();
     public Set<EntityType> getUndoEntityTypes();
 
