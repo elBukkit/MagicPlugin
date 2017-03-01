@@ -10,6 +10,7 @@ import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
+import com.herocraftonline.heroes.characters.party.HeroParty;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
@@ -252,5 +253,16 @@ public class HeroesManager {
         Hero hero = getHero(player);
         if (hero == null) return;
         hero.setMana(Math.max(0, hero.getMana() - amount));
+    }
+
+    public boolean isInParty(Player source, Player check) {
+        Hero sourceHero = getHero(source);
+        Hero checkHero = getHero(check);
+        if (sourceHero == null || checkHero == null) return false;
+
+        HeroParty party = sourceHero.getParty();
+        if (party == null) return false;
+
+        return party.getMembers().contains(checkHero);
     }
 }

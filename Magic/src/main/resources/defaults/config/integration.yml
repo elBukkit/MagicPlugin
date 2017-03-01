@@ -91,6 +91,9 @@ skills_use_heroes: true
 # Use Heroes mana, if Heroes is present
 use_heroes_mana: true
 
+# Spells that don't bypass friendly fire will check Heroes' parties
+use_heroes_parties: true
+
 # Use this to prefix skills added via the Magic skill pack
 # This can be used to avoid conflicts with public or other skills
 heroes_skill_prefix: ""

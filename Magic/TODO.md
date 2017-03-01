@@ -6,7 +6,11 @@
  - Magnetic leggings didn't activate on initial wear
  - Goggles don't reactivate after respawn (armorUpdated is being called- hrm)
  - Fix cancel messages
- - Add new wand mode for skill book
+ 
+ - Heroes:
+   - Add new wand mode for skill book
+   - Magic spell skills could pass through permissions information so skill icons reflect region-based perms
+   - Integration with character attribute modifiers. Would be nice to expand Magic's power system to fit this better
 
 ## 7.0
 

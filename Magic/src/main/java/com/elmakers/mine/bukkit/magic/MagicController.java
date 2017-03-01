@@ -2346,6 +2346,7 @@ public class MagicController implements MageController {
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
+        useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
         useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
         heroesSkillPrefix = properties.getString("heroes_skill_prefix", heroesSkillPrefix);
         skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
@@ -3360,6 +3361,13 @@ public class MagicController implements MageController {
     @Override
     public boolean canTarget(Entity attacker, Entity entity)
     {
+        if (useHeroesParties && heroesManager != null && attacker instanceof Player && entity instanceof Player)
+        {
+            if (heroesManager.isInParty((Player)attacker, (Player)entity))
+            {
+                return false;
+            }
+        }
         if (useScoreboardTeams && attacker instanceof Player && entity instanceof Player)
         {
             Player player1 = (Player)attacker;
@@ -5071,6 +5079,7 @@ public class MagicController implements MageController {
     private int                                 skillInventoryRows          = 6;
     private boolean                             skillsUseHeroes             = true;
     private boolean                             useHeroesMana               = true;
+    private boolean                             useHeroesParties            = true;
     private boolean                             skillsUsePermissions        = false;
     private String                              heroesSkillPrefix           = "";
 

@@ -6,6 +6,7 @@
  - Add heroes_skill_prefix config property, to prefix skill names from the Magic Heroes skill pack
  - Add /mitem damage command
  - Heroes skills sorted by level (then name) in skill selector
+ - Add Heroes party support, attack spells will not target players in your party
 
 ## 6.7.1
  
