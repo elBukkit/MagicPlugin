@@ -9,7 +9,6 @@
  
  - Heroes:
    - Add new wand mode for skill book
-   - Magic spell skills could pass through permissions information so skill icons reflect region-based perms
    - Integration with character attribute modifiers. Would be nice to expand Magic's power system to fit this better
 
 ## 7.0

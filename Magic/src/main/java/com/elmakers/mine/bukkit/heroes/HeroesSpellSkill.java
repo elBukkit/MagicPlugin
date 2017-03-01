@@ -220,6 +220,10 @@ public class HeroesSpellSkill extends ActiveSkill {
         return key.replace('-', '_');
     }
 
+    public SpellTemplate getSpellTemplate() {
+        return spellTemplate;
+    }
+
     @Override
     public String getDescription(Hero hero) {
         return this.getDescription();

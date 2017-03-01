@@ -2,7 +2,9 @@ package com.elmakers.mine.bukkit.heroes;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.spell.CastingCost;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -142,6 +144,14 @@ public class HeroesSkillSpell extends BaseSpell {
     public boolean canCast(Location location) {
         if (!isCasting && mage != null && mage.isPlayer() && !heroes.canUseSkill(mage.getPlayer(), skillKey)) {
             return false;
+        }
+        if (skill instanceof HeroesSpellSkill) {
+            HeroesSpellSkill spellSkill = (HeroesSpellSkill)skill;
+            SpellTemplate template = spellSkill.getSpellTemplate();
+            Spell spell = mage.getSpell(template.getKey());
+            if (spell != null) {
+                return spell.canCast(location);
+            }
         }
         return super.canCast(location);
     }

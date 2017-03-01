@@ -9,6 +9,7 @@
  - Add Heroes party support, attack spells will not target players in your party
  - Add "only_friendly" spell parameter (added to Heal, Cure, etc). If using scoreboard teams or Heroes parties, these
    spells may only be cast at friendly targets.
+ - Magic Heroes skills will advertise inability to cast in hotbar icons just like the base spell would
 
 ## 6.7.1
  
