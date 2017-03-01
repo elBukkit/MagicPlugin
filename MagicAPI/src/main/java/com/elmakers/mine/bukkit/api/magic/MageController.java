@@ -103,7 +103,6 @@ public interface MageController {
      * @param item The item to get a wand of.
      * @return The wand of this item.
      * @throws IllegalArgumentException If the item is not a wand.
-     * @see #isWand(ItemStack)
      */
     public Wand getWand(ItemStack item);
     public Wand getWand(ConfigurationSection config);
