@@ -135,6 +135,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.MessageDigest;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -768,7 +769,14 @@ public class MagicController implements MageController {
         load();
         if (checkResourcePack(Bukkit.getConsoleSender(), false) && resourcePackCheckInterval > 0) {
             int intervalTicks = resourcePackCheckInterval * 60 * 20;
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new RPCheckTask(this), intervalTicks, intervalTicks);
+            resourcePackCheckTimer = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new RPCheckTask(this), intervalTicks, intervalTicks);
+        }
+    }
+
+    protected void cancelResourcePackChecks() {
+        if (resourcePackCheckTimer != 0) {
+            Bukkit.getScheduler().cancelTask(resourcePackCheckTimer);
+            resourcePackCheckTimer = 0;
         }
     }
 
@@ -4699,11 +4707,25 @@ public class MagicController implements MageController {
                     if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
                     {
                         SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-                        String lastModified = connection.getHeaderField("Last-Modified");
+                        final String lastModified = connection.getHeaderField("Last-Modified");
                         if (lastModified == null || lastModified.isEmpty()) {
-                            response = ChatColor.YELLOW + "Server did not return a Last-Modified field";
+                            response = ChatColor.YELLOW + "Server did not return a Last-Modified field, cancelling checks until restart";
+                            cancelResourcePackChecks();
                         } else {
-                            final Date modifiedDate = format.parse(lastModified);
+                            Date tryParseDate;
+                            try {
+                                tryParseDate = format.parse(lastModified);
+                            } catch(ParseException dateFormat) {
+                                cancelResourcePackChecks();
+                                server.getScheduler().runTask(plugin, new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        sender.sendMessage("Error parsing resource pack modified time, cancelling checks until restart: " + lastModified);
+                                    }
+                                });
+                                return;
+                            }
+                            final Date modifiedDate = tryParseDate;
                             if (modifiedDate.getTime() > modifiedTimestamp) {
                                 server.getScheduler().runTask(plugin, new Runnable() {
                                     @Override
@@ -4744,10 +4766,12 @@ public class MagicController implements MageController {
                     else
                     {
                         response = ChatColor.RED + "Could not find resource pack at: " + ChatColor.DARK_RED + finalResourcePack;
+                        cancelResourcePackChecks();
                     }
                 }
                 catch (Exception e) {
-                    response = ChatColor.RED + "An error occurred while checking your resource pack (see logs): " + ChatColor.DARK_RED + finalResourcePack;
+                    cancelResourcePackChecks();
+                    response = ChatColor.RED + "An unexpected error occurred while checking your resource pack, cancelling checks until restart (see logs): " + ChatColor.DARK_RED + finalResourcePack;
                     e.printStackTrace();
                 }
                 
@@ -5158,6 +5182,7 @@ public class MagicController implements MageController {
     private boolean                             libsDisguiseEnabled			= true;
     private boolean                             enableResourcePackCheck     = true;
     private int                                 resourcePackCheckInterval   = 0;
+    private int                                 resourcePackCheckTimer      = 0;
     private String                              defaultResourcePack         = null;
     private boolean                             checkedResourcePack         = false;
     private boolean                             saveDefaultConfigs          = true;
