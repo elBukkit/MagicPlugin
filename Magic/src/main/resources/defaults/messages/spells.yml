@@ -1340,7 +1340,7 @@ spells:
       deducted: "&d&oYou deposited &r&a$cost &r&d&oof &r&6$item"
     spshop:
       name: SP Shop
-      description: Exchange money for Skill Points
+      description: Exchange money for Spell Points
     lootshop:
       name: Loot Shop
       description: Earn money for mob drops

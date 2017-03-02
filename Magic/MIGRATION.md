@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 6.8
+
+ - You may use "example: 6" in config.yml to undo the following config changes:
+   - Skill Points renamed to Spell Points
+
 ## 6.6
 
  - Wand creation permissions have changed, no negation required anymore:

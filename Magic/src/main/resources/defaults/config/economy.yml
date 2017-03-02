@@ -51,7 +51,7 @@ worth_effect_sound: 8
 # match up.
 worth_base: 1
 
-# This is how much Skill Points are worth, relative to virtual currency.
+# This is how much Spell Points are worth, relative to virtual currency.
 worth_sp: 1
 
 # If using XP as a currency, how much one XP is worth

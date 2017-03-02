@@ -2,6 +2,7 @@
 
 ## 6.8
 
+ - Renamed Skill Points to Spell Points. Use "example: 6" in config.yml to undo this change.
  - Add /magic help command, simple command that relies on /help for more info
  - Add heroes_skill_prefix config property, to prefix skill names from the Magic Heroes skill pack
  - Add /mitem damage command

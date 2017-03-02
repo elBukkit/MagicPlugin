@@ -136,4 +136,4 @@ wand:
     spell_instructions: "&r&bSwing your $wand to cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."
     enchant_instructions: "&r&bUpgrade your $wand at an enchanting table to add spells and abilities."
     brush_instructions: "&r&eMaterial brushes have been added to your $wand. Shift+Right Click to select a brush."
-    sp_instructions: "&r&6You have earned some Skill Points! SP's are displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn fewer SP's, try mixing it up once you have more spells!"
+    sp_instructions: "&r&6You have earned some Spell Points! SP's are displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn fewer SP's, try mixing it up once you have more spells!"

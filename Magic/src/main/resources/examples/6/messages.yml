@@ -1,0 +1,9 @@
+
+sp:
+  name: "&e$amount &6Skill Points"
+
+costs:
+    sp: Skill Points
+
+wand:
+  sp_instructions: "&r&6You have earned some Skill Points! SP's are displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn fewer SP's, try mixing it up once you have more spells!"

@@ -22,7 +22,7 @@
 # Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
 # 
 
-# Change name of Skill Points
+# Change name of Spell Points
 # sp:
 #     name: "&e$amount &6Academic Credits"
 # costs:

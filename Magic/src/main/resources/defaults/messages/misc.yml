@@ -30,7 +30,7 @@ worlds:
         name: The End
         
 sp:
-    name: "&e$amount &6Skill Points"
+    name: "&e$amount &6Spell Points"
     description: Will be absorbed by your wand
     
 costs:
@@ -39,7 +39,7 @@ costs:
     mana_amount: $amount Mana
     mana: Mana
     xp: XP
-    sp: Skill Points
+    sp: Spell Points
     hunger: Energy
     health: Health
     health_amount: $amount Health
