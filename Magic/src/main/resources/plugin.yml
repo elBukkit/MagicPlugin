@@ -243,6 +243,7 @@ commands:
     usage: |
         Use /help magic [subcommand] for more information
         /magic load        Reload configuration files
+        /magic reload      Same as above
         /magic save        Save all player data
         /magic cancel      Cancel any jobs or spells
         /magic commit      Commit all spells, clear all undo queues
@@ -259,6 +260,10 @@ commands:
       description: Reload configuration files. Useful for testing spell or wand changes.
       permission: Magic.commands.magic.load
       usage: /magic load
+  "magic reload":
+      description: Reload configuration files. Useful for testing spell or wand changes.
+      permission: Magic.commands.magic.reload
+      usage: /magic reload
   "magic save":
     description: Immediately save all player data.
     permission: Magic.commands.magic.save
@@ -724,6 +729,10 @@ permissions:
     type: boolean
     default: op
   Magic.commands.magic.load:
+    description: Player may reload the configuration
+    type: boolean
+    default: op
+  Magic.commands.magic.reload:
     description: Player may reload the configuration
     type: boolean
     default: op

@@ -115,7 +115,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			sender.sendMessage("Data saved.");
 			return true;
 		}
-		if (subCommand.equalsIgnoreCase("load"))
+		if (subCommand.equalsIgnoreCase("load") || subCommand.equalsIgnoreCase("reload"))
 		{		
 			api.reload(sender);
 			return true;
