@@ -104,7 +104,7 @@ anvil_rename_clears_description: false
 # Whether or not using a wand on an anvil will organize its inventory
 enable_organizing: true
 
-# Set this to 0 to disable PluginMetrics collection
+# Set this to 0 to disable BStats metrics collection
 metrics_level: 5
 
 # Set this to a non-zero value to remove common ground items more quickly.

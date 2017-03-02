@@ -76,11 +76,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mcstats.bukkit</groupId>
-			<artifactId>metrics</artifactId>
-			<version>R8-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>net.sacredlabyrinth.Phaed</groupId>
 			<artifactId>PreciousStones</artifactId>
 			<version>10.0.5</version>
@@ -174,6 +169,11 @@
 			<version>3.7.0-BETA</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.bstats</groupId>
+			<artifactId>bstats-bukkit</artifactId>
+			<version>1.1</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -203,6 +203,10 @@
 		<repository>
 			<id>Heroes</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
+		</repository>
+		<repository>
+			<id>bstats-repo</id>
+			<url>http://repo.bstats.org/content/repositories/releases/</url>
 		</repository>
 
 		<!--
@@ -355,8 +359,8 @@
 						<configuration>
 							<relocations>
 								<relocation>
-									<pattern>org.mcstats</pattern>
-									<shadedPattern>com.elmakers.mine.bukkit.plugins.magic.mcstats</shadedPattern>
+									<pattern>org.bstats</pattern>
+									<shadedPattern>com.elmakers.mine.bukkit.bstats</shadedPattern>
 								</relocation>
 								<relocation>
 									<pattern>de.slikey</pattern>

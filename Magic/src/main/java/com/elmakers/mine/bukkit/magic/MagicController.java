@@ -55,9 +55,6 @@ import com.elmakers.mine.bukkit.magic.listener.MinigamesListener;
 import com.elmakers.mine.bukkit.magic.listener.MobController;
 import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.maps.MapController;
-import com.elmakers.mine.bukkit.metrics.CategoryCastPlotter;
-import com.elmakers.mine.bukkit.metrics.DeltaPlotter;
-import com.elmakers.mine.bukkit.metrics.SpellCastPlotter;
 import com.elmakers.mine.bukkit.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
@@ -121,8 +118,7 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
-import org.mcstats.Metrics;
-import org.mcstats.Metrics.Graph;
+import org.bstats.Metrics;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -1107,149 +1103,66 @@ public class MagicController implements MageController {
                 metrics = new Metrics(plugin);
 
                 if (metricsLevel > 1) {
-                    Graph integrationGraph = metrics.createGraph("Plugin Integration");
-                    integrationGraph.addPlotter(new Metrics.Plotter("Essentials") {
+                    metrics.addCustomChart(new Metrics.MultiLineChart("Plugin Integration") {
                         @Override
-                        public int getValue() {
-                            return controller.hasEssentials ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("Dynmap") {
-                        @Override
-                        public int getValue() {
-                            return controller.hasDynmap ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("Factions") {
-                        @Override
-                        public int getValue() {
-                            return controller.factionsManager.isEnabled() ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("WorldGuard") {
-                        @Override
-                        public int getValue() {
-                            return controller.worldGuardManager.isEnabled() ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("Elementals") {
-                        @Override
-                        public int getValue() {
-                            return controller.elementalsEnabled() ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("Citizens") {
-                        @Override
-                        public int getValue() {
-                            return controller.citizens != null ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("CommandBook") {
-                        @Override
-                        public int getValue() {
-                            return controller.hasCommandBook ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("PvpManager") {
-                        @Override
-                        public int getValue() {
-                            return controller.pvpManager.isEnabled() ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("Multiverse-Core") {
-                        @Override
-                        public int getValue() {
-                            return controller.multiverseManager.isEnabled() ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("Towny") {
-                        @Override
-                        public int getValue() {
-                            return controller.townyManager.isEnabled() ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("GriefPrevention") {
-                        @Override
-                        public int getValue() {
-                            return controller.griefPreventionManager.isEnabled() ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("PreciousStones") {
-                        @Override
-                        public int getValue() {
-                            return controller.preciousStonesManager.isEnabled() ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("Lockette") {
-                        @Override
-                        public int getValue() {
-                            return controller.locketteManager.isEnabled() ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("NoCheatPlus") {
-                        @Override
-                        public int getValue() {
-                            return controller.ncpManager.isEnabled() ? 1 : 0;
+                        public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
+                            valueMap.put("Essentials", controller.hasEssentials ? 1 : 0);
+                            valueMap.put("Dynmap", controller.hasDynmap ? 1 : 0);
+                            valueMap.put("Factions", controller.factionsManager.isEnabled() ? 1 : 0);
+                            valueMap.put("WorldGuard", controller.worldGuardManager.isEnabled()  ? 1 : 0);
+                            valueMap.put("Elementals", controller.elementalsEnabled() ? 1 : 0);
+                            valueMap.put("Citizens", controller.citizens != null  ? 1 : 0);
+                            valueMap.put("CommandBook", controller.hasCommandBook ? 1 : 0);
+                            valueMap.put("PvpManager", controller.pvpManager.isEnabled() ? 1 : 0);
+                            valueMap.put("Multiverse-Core", controller.multiverseManager.isEnabled() ? 1 : 0);
+                            valueMap.put("Towny", controller.townyManager.isEnabled() ? 1 : 0);
+                            valueMap.put("GriefPrevention", controller.griefPreventionManager.isEnabled() ? 1 : 0);
+                            valueMap.put("PreciousStones", controller.preciousStonesManager.isEnabled()  ? 1 : 0);
+                            valueMap.put("Lockette", controller.locketteManager.isEnabled() ? 1 : 0);
+                            valueMap.put("NoCheatPlus", controller.ncpManager.isEnabled() ? 1 : 0);
+                            return valueMap;
                         }
                     });
 
-                    Graph featuresGraph = metrics.createGraph("Features Enabled");
-                    featuresGraph.addPlotter(new Metrics.Plotter("Crafting") {
+                    metrics.addCustomChart(new Metrics.MultiLineChart("Features Enabled") {
                         @Override
-                        public int getValue() {
-                            return controller.crafting.isEnabled() ? 1 : 0;
-                        }
-                    });
-                    featuresGraph.addPlotter(new Metrics.Plotter("Enchanting") {
-                        @Override
-                        public int getValue() {
-                            return controller.enchanting.isEnabled() ? 1 : 0;
-                        }
-                    });
-                    featuresGraph.addPlotter(new Metrics.Plotter("Anvil Combining") {
-                        @Override
-                        public int getValue() {
-                            return controller.anvil.isCombiningEnabled() ? 1 : 0;
-                        }
-                    });
-                    featuresGraph.addPlotter(new Metrics.Plotter("Anvil Organizing") {
-                        @Override
-                        public int getValue() {
-                            return controller.anvil.isOrganizingEnabled() ? 1 : 0;
+                        public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
+                            valueMap.put("Crafting", controller.crafting.isEnabled() ? 1 : 0);
+                            valueMap.put("Enchanting", controller.enchanting.isEnabled() ? 1 : 0);
+                            valueMap.put("SP", controller.isSPEnabled() ? 1 : 0);
+                            return valueMap;
                         }
                     });
                 }
 
                 if (metricsLevel > 2) {
-                    Graph categoryGraph = metrics.createGraph("Casts by Category");
-                    for (final SpellCategory category : categories.values()) {
-                        categoryGraph.addPlotter(new DeltaPlotter(new CategoryCastPlotter(category)));
-                    }
-
-                    Graph totalCategoryGraph = metrics.createGraph("Total Casts by Category");
-                    for (final SpellCategory category : categories.values()) {
-                        totalCategoryGraph.addPlotter(new CategoryCastPlotter(category));
-                    }
+                    metrics.addCustomChart(new Metrics.MultiLineChart("Total Casts by Category") {
+                        @Override
+                        public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
+                            for (final SpellCategory category : categories.values()) {
+                                valueMap.put(category.getName(), (int)category.getCastCount());
+                            }
+                            return valueMap;
+                        }
+                    });
                 }
 
                 if (metricsLevel > 3) {
-                    Graph spellGraph = metrics.createGraph("Casts");
-                    for (final SpellTemplate spell : spells.values()) {
-                        if (!(spell instanceof Spell)) continue;
-                        spellGraph.addPlotter(new DeltaPlotter(new SpellCastPlotter((Spell) spell)));
-                    }
-
-                    Graph totalCastGraph = metrics.createGraph("Total Casts");
-                    for (final SpellTemplate spell : spells.values()) {
-                        if (!(spell instanceof Spell)) continue;
-                        totalCastGraph.addPlotter(new SpellCastPlotter((Spell) spell));
-                    }
+                    metrics.addCustomChart(new Metrics.MultiLineChart("Total Casts") {
+                        @Override
+                        public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
+                            for (final SpellTemplate spell : spells.values()) {
+                                if (!(spell instanceof Spell)) continue;
+                                valueMap.put(spell.getName(), (int)((Spell)spell).getCastCount());
+                            }
+                            return valueMap;
+                        }
+                    });
                 }
 
-                metrics.start();
-                plugin.getLogger().info("Activated MCStats");
+                plugin.getLogger().info("Activated BStats");
             } catch (Exception ex) {
-                plugin.getLogger().warning("Failed to load MCStats: " + ex.getMessage());
+                plugin.getLogger().warning("Failed to load BStats: " + ex.getMessage());
             }
         }
     }

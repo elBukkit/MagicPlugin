@@ -11,6 +11,7 @@
  - Add "only_friendly" spell parameter (added to Heal, Cure, etc). If using scoreboard teams or Heroes parties, these
    spells may only be cast at friendly targets.
  - Magic Heroes skills will advertise inability to cast in hotbar icons just like the base spell would
+ - RIP mcstats. Switched to bStats.
 
 ## 6.7.1
  
