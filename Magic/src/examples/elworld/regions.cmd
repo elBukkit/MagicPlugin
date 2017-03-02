@@ -11,6 +11,7 @@ region flag magic_spawn3 -w world console-command-on-entry /castp %username% war
 region flag magic_spawn5 -w world console-command-on-entry /castp %username% warpunlock unlock iron
 region flag magic_spawn4 -w world console-command-on-entry /castp %username% warpunlock unlock frozen
 region flag magic_spawn6 -w world console-command-on-entry /castp %username% warpunlock unlock brick
+region flag mansion_entry -w world console-command-on-entry /castp %username% warpunlock unlock mansion
 region flag refugee -w world console-command-on-entry /castp %username% warpunlock unlock refugee
 region flag redwood -w world console-command-on-entry /castp %username% warpunlock unlock redwood
 region flag gold -w world console-command-on-entry /castp %username% warpunlock unlock gold
