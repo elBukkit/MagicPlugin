@@ -57,8 +57,6 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         attributeSlot = node.getString("attribute_slot");
 
         // Remove some properties that should not transfer to wands
-        setProperty("attributes", null);
-        setProperty("attribute_slot", null);
         setProperty("creator", null);
         setProperty("creator_id", null);
         setProperty("migrate_to", null);
