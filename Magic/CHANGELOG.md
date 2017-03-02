@@ -13,6 +13,7 @@
  - Magic Heroes skills will advertise inability to cast in hotbar icons just like the base spell would
  - RIP mcstats. Switched to bStats.
  - Added /magic clean command, removes all Magic data from item but leaves lore and other metadata intact
+ - Added support for spawning area of effect clouds, Neutron Bomb spell re-worked to use it
 
 ## 6.7.1
  

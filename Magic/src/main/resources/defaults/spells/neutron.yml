@@ -10,11 +10,7 @@ neutron:
         cast:
         -  class: Projectile
            actions:
-           -  class: AreaOfEffect
-              actions:
-              -  class: Probability
-                 actions:
-                 -  class: Damage
+           - class: SpawnEntity
     effects:
         cast:
         -  class: EffectSingle
@@ -28,16 +24,23 @@ neutron:
              iterations: 1
     parameters:
         target: none
-        target_type: Damageable
         projectile: Snowball
-        player_damage: 8
-        entity_damage: 15
-        radius: 32
-        cooldown: 10000
+        radius: 5
+        cooldown: 30000
+        type: area_effect_cloud
+        color: "00AAFF"
+        particle: redstone
+        duration: 10000
+        potion_effects:
+        - type: slow
+          duration: 10000
+        - type: confusion
+          duration: 5000
+        - type: harm
     costs:
         mana: 150
 
 neutron|2:
     parameters:
-      probability: 0.75
+      radius: 10
 
