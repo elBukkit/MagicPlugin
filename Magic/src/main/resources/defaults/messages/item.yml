@@ -1,6 +1,7 @@
 item:
     duplicated: Your item has been duplicated
     destroyed: Your item has been destroyed
+    cleaned: Your item has been cleaned of all Magic data
     no_item: You must be holding an item!
     renamed: Your item has been renamed
     rename_clear: Removed the custom name from your item

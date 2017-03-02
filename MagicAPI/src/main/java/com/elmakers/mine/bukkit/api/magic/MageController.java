@@ -387,4 +387,10 @@ public interface MageController {
 
     Object getWandProperty(ItemStack itemStack, String key);
     @Nonnull <T> T getWandProperty(ItemStack itemStack, @Nonnull String key, @Nonnull T defaultValue);
+
+    /**
+     * Remove all custom Magic data from an item, but leave other metadata intact.
+     * @param itemStack
+     */
+    void cleanItem(ItemStack itemStack);
 }

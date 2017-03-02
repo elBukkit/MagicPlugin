@@ -496,11 +496,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	@Override
     public void unenchant() {
-		InventoryUtils.removeMeta(item, WAND_KEY);
-		InventoryUtils.removeMeta(item, UPGRADE_KEY);
-		InventoryUtils.removeMeta(item, "spell");
-		InventoryUtils.removeMeta(item, "skill");
-		InventoryUtils.removeMeta(item, "brush");
+    	controller.cleanItem(item);
 		clear();
 	}
 	

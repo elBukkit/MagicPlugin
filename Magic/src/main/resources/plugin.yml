@@ -158,6 +158,7 @@ commands:
         /mitem describe   Show information about an item
         /mitem duplicate  Create a copy of an item
         /mitem destroy    Destroy an item
+        /mitem clean      Strip any custom Magic data from an item
         /mitem skull      Create a custom skull based on data in a book
         /mitem save       Save an item as a new template
         /mitem delete     Delete a saved item
@@ -220,7 +221,10 @@ commands:
   "mitem destroy":
     description: Destroy your held item
     usage: /mitem destroy
-    permission: Magic.commands.mitem.destroy
+  "mitem clean":
+    description: Clean magic data from  your held item
+    usage: /mitem clean
+    permission: Magic.commands.mitem.clean
   "mitem delete":
     description: Delete a saved item
     usage: /mitem delete <template>
@@ -694,6 +698,10 @@ permissions:
     default: op
   Magic.commands.mitem.destroy:
     description: Player may destroy their held item
+    type: boolean
+    default: op
+  Magic.commands.mitem.clean:
+    description: Player may clean Magic data from their held item
     type: boolean
     default: op
   Magic.commands.mitem.name:

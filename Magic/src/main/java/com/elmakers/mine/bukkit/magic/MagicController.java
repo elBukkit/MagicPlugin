@@ -3110,6 +3110,16 @@ public class MagicController implements MageController {
             update(blockList.getWorldName(), blockList.getArea());
 		}
 	}
+
+	@Override
+    public void cleanItem(ItemStack item) {
+        InventoryUtils.removeMeta(item, Wand.WAND_KEY);
+        InventoryUtils.removeMeta(item, Wand.UPGRADE_KEY);
+        InventoryUtils.removeMeta(item, "spell");
+        InventoryUtils.removeMeta(item, "skill");
+        InventoryUtils.removeMeta(item, "brush");
+        InventoryUtils.removeMeta(item, "sp");
+    }
 	
 	@Override
 	public boolean canCreateWorlds()

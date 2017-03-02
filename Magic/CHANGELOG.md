@@ -12,6 +12,7 @@
    spells may only be cast at friendly targets.
  - Magic Heroes skills will advertise inability to cast in hotbar icons just like the base spell would
  - RIP mcstats. Switched to bStats.
+ - Added /magic clean command, removes all Magic data from item but leaves lore and other metadata intact
 
 ## 6.7.1
  
