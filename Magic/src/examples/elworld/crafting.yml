@@ -10,11 +10,6 @@
 #   enabled: false
 #
 
-# No crafting any more protection stones!
-protection:
-  output: beacon
-  disable_default: true
-
 zombie_leather:
   enabled: true
 
