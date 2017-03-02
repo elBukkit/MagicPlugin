@@ -17,10 +17,12 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Ocelot;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Villager;
@@ -124,6 +126,13 @@ public class SpawnEntityAction extends BaseSpellAction
             spawnedEntity = entityData.spawn(context.getController(), spawnLocation, spawnReason);
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+
+        // Special check to assign ownership
+        if (spawnedEntity instanceof AreaEffectCloud) {
+            ((AreaEffectCloud)spawnedEntity).setSource(context.getLivingEntity());
+        } else if (spawnedEntity instanceof Projectile) {
+            ((Projectile)spawnedEntity).setShooter(context.getLivingEntity());
         }
 
         if (force) {

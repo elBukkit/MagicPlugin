@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.utility;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
@@ -857,5 +859,32 @@ public class ConfigurationUtils extends ConfigUtils {
             }
         }
         return effects;
+    }
+
+    public static List<PotionEffect> getPotionEffectObjects(ConfigurationSection baseConfig, String key, Logger log) {
+        List<PotionEffect> potionEffects = null;
+        Collection<ConfigurationSection> potionEffectList = ConfigurationUtils.getNodeList(baseConfig, key);
+        if (potionEffectList != null) {
+            potionEffects = new ArrayList<>();
+            for (ConfigurationSection potionEffectSection : potionEffectList) {
+                try {
+                    PotionEffectType effectType = PotionEffectType.getByName(potionEffectSection.getString("type").toUpperCase());
+                    if (effectType == null) {
+                        log.log(Level.WARNING, "Invalid potion effect type: " + potionEffectSection.getString("type", "(null)"));
+                        continue;
+                    }
+                    int ticks = (int) (potionEffectSection.getLong("duration", 3600000) / 50);
+                    ticks = potionEffectSection.getInt("ticks", ticks);
+                    int amplifier = potionEffectSection.getInt("amplifier", 0);
+                    boolean ambient = potionEffectSection.getBoolean("ambient", true);
+                    boolean particles = potionEffectSection.getBoolean("particles", true);
+
+                    potionEffects.add(new PotionEffect(effectType, ticks, amplifier, ambient, particles));
+                } catch (Exception ex) {
+                    log.log(Level.WARNING, "Invalid potion effect type: " + potionEffectSection.getString("type", "(null)"), ex);
+                }
+            }
+        }
+        return potionEffects;
     }
 }

@@ -33,6 +33,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
+import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -56,7 +57,6 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.material.Colorable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -215,6 +215,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             xp = ((ExperienceOrb)entity).getExperience();
         } else if (entity instanceof Zombie) {
             extraData = new EntityZombieData((Zombie)entity);
+        } else if (entity instanceof AreaEffectCloud) {
+            extraData = new EntityAreaEffectCloudData((AreaEffectCloud)entity);
         }
     }
     
@@ -257,29 +259,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         requiresTarget = parameters.getBoolean("cast_requires_target", true);
 
-        Collection<ConfigurationSection> potionEffectList = ConfigurationUtils.getNodeList(parameters, "potion_effects");
-        if (potionEffectList != null) {
-            potionEffects = new ArrayList<>();
-            for (ConfigurationSection potionEffectSection : potionEffectList) {
-                try {
-                    PotionEffectType effectType = PotionEffectType.getByName(potionEffectSection.getString("type").toUpperCase());
-                    if (effectType == null) {
-                        controller.getLogger().log(Level.WARNING, "Invalid potion effect type in mob config (" + name + "): " + potionEffectSection.getString("type", "(null)"));
-                        continue;
-                    }
-                    int ticks = (int)(potionEffectSection.getLong("duration", 3600000) / 50);
-                    ticks = potionEffectSection.getInt("ticks", ticks);
-                    int amplifier = potionEffectSection.getInt("amplifier", 0);
-                    boolean ambient = potionEffectSection.getBoolean("ambient", true);
-                    boolean particles = potionEffectSection.getBoolean("particles", true);
-
-                    potionEffects.add(new PotionEffect(effectType, ticks, amplifier, ambient, particles));
-                } catch (Exception ex) {
-                    controller.getLogger().log(Level.WARNING, "Invalid potion effect type in mob config (" + name + "): " + potionEffectSection.getString("type", "(null)"), ex);
-                }
-            }
-            hasPotionEffects = !potionEffects.isEmpty();
-        }
+        potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
+        hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
 
         defaultDrops = parameters.getBoolean("default_drops", true);
         if (parameters.contains("xp")) {
@@ -292,72 +273,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         
         try {
             if (type == EntityType.HORSE) {
-                EntityHorseData horseData = new EntityHorseData();
-    
-                if (parameters.contains("horse_color")) {
-                    try {
-                        String colorString = parameters.getString("horse_color");
-                        horseData.color = Horse.Color.valueOf(colorString.toUpperCase());
-                    } catch (Exception ex) {
-                        controller.getLogger().log(Level.WARNING, "Invalid horse_color: " + parameters.getString("horse_color"), ex);
-                    }
-                }
-    
-                if (parameters.contains("horse_style")) {
-                    try {
-                        String styleString = parameters.getString("horse_style");
-                        horseData.style = Horse.Style.valueOf(styleString.toUpperCase());
-                    } catch (Exception ex) {
-                        controller.getLogger().log(Level.WARNING, "Invalid horse_style: " + parameters.getString("horse_style"), ex);
-                    }
-                }
-    
-                if (parameters.contains("horse_jump_strength")) {
-                    horseData.jumpStrength = parameters.getDouble("horse_jump_strength");
-                }
-
-                if (parameters.contains("tamed")) {
-                    horseData.tamed = parameters.getBoolean("tamed");
-                }
-                
-                extraData = horseData;
+                extraData = new EntityHorseData(parameters, controller);
             }
             else if (type == EntityType.VILLAGER) {
-                EntityVillagerData villagerData = new EntityVillagerData();
-                if (parameters.contains("villager_profession")) {
-                    villagerData.profession = Villager.Profession.valueOf(parameters.getString("villager_profession").toUpperCase());
-                }
-                if (parameters.contains("villager_riches")) {
-                    villagerData.riches = parameters.getInt("villager_riches");
-                }
-                if (parameters.contains("villager_trades")) {
-                    villagerData.recipes = new ArrayList<>();
-                    Collection<ConfigurationSection> tradeList = ConfigurationUtils.getNodeList(parameters, "villager_trades");
-                    for (ConfigurationSection tradeConfiguration : tradeList) {
-                        String outputKey = tradeConfiguration.getString("output");
-                        ItemStack output = controller.createItem(outputKey);
-                        if (output == null || output.getType() == Material.AIR)
-                        {
-                            controller.getLogger().warning("Invalid output specified in villager trade: " + outputKey);
-                            continue;
-                        }
-                        MerchantRecipe recipe = new MerchantRecipe(output, tradeConfiguration.getInt("max_uses", 1));
-                        recipe.setExperienceReward(tradeConfiguration.getBoolean("experience_reward", true));
-                        List<String> ingredientConfiguration = tradeConfiguration.getStringList("ingredients");
-                        for (String ingredientKey : ingredientConfiguration) {
-                            ItemStack ingredient = controller.createItem(ingredientKey);
-                            if (ingredient == null || ingredient.getType() == Material.AIR)
-                            {
-                                controller.getLogger().warning("Invalid ingredient specified in villager trade: " + ingredientKey);
-                                continue;
-                            }
-                            recipe.addIngredient(ingredient);
-                        }
-                        villagerData.recipes.add(recipe);
-                    }
-                }
-
-                extraData = villagerData;
+                extraData = new EntityVillagerData(parameters, controller);
+            }
+            else if (type == EntityType.AREA_EFFECT_CLOUD) {
+                extraData = new EntityAreaEffectCloudData(parameters, controller);
             }
             else if (type == EntityType.SKELETON && parameters.contains("skeleton_type")) {
                 skeletonType = Skeleton.SkeletonType.valueOf(parameters.getString("skeleton_type").toUpperCase());

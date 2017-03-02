@@ -1,8 +1,13 @@
 package com.elmakers.mine.bukkit.entity;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EntityHorseData extends EntityExtraData {
     public Horse.Color color;
@@ -16,6 +21,35 @@ public class EntityHorseData extends EntityExtraData {
 
     public EntityHorseData() {
 
+    }
+
+    public EntityHorseData(ConfigurationSection parameters, MageController controller) {
+        Logger log = controller.getLogger();
+        if (parameters.contains("horse_color")) {
+            try {
+                String colorString = parameters.getString("horse_color");
+                color = Horse.Color.valueOf(colorString.toUpperCase());
+            } catch (Exception ex) {
+                log.log(Level.WARNING, "Invalid horse_color: " + parameters.getString("horse_color"), ex);
+            }
+        }
+
+        if (parameters.contains("horse_style")) {
+            try {
+                String styleString = parameters.getString("horse_style");
+                style = Horse.Style.valueOf(styleString.toUpperCase());
+            } catch (Exception ex) {
+                log.log(Level.WARNING, "Invalid horse_style: " + parameters.getString("horse_style"), ex);
+            }
+        }
+
+        if (parameters.contains("horse_jump_strength")) {
+            jumpStrength = parameters.getDouble("horse_jump_strength");
+        }
+
+        if (parameters.contains("tamed")) {
+            tamed = parameters.getBoolean("tamed");
+        }
     }
 
     public EntityHorseData(Horse horse) {
