@@ -79,7 +79,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	private static int WAND_VERSION = 2;
 	private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
 
-    public final static String[] EMPTY_PARAMETERS = new String[0];
+    private final static String[] EMPTY_PARAMETERS = new String[0];
 
     public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
             "active_spell", "active_brush",
