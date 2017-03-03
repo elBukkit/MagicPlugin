@@ -15,6 +15,7 @@
  - Added /magic clean command, removes all Magic data from item but leaves lore and other metadata intact
  - Added support for spawning area of effect clouds, Neutron Bomb spell re-worked to use it
  - Fix /mitem duplicate command
+ - Fix mobs not being able to target players with spells in no-pvp areas
 
 ## 6.7.1
  
