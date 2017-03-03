@@ -221,6 +221,11 @@ commands:
   "mitem destroy":
     description: Destroy your held item
     usage: /mitem destroy
+    permission: Magic.commands.mitem.destroy
+  "mitem duplicate":
+    description: Duplicate your held item
+    usage: /mitem duplicate
+    permission: Magic.commands.mitem.duplicate
   "mitem clean":
     description: Clean magic data from  your held item
     usage: /mitem clean
@@ -694,6 +699,10 @@ permissions:
     default: op
   Magic.commands.mitem.delete:
     description: Player may delete a saved item template
+    type: boolean
+    default: op
+  Magic.commands.mitem.duplicate:
+    description: Player may duplicate their held item
     type: boolean
     default: op
   Magic.commands.mitem.destroy:
