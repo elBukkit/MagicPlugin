@@ -1070,6 +1070,7 @@ addmana:
         -  class: ModifyMana
     parameters:
         mana: 100
+        quiet: true
 
 quafflepower:
     icon: wood_hoe:18
@@ -1182,6 +1183,46 @@ minions:
     costs:
         mana: 50
 
+recallshop:
+  inherit: spellshop
+  parameters:
+    spells:
+    - recall
+    confirm: true
+    confirm_filler: stained_glass:3
+    auto_upgrade: false
+    use_sp: false
+
+flingshop:
+  inherit: spellshop
+  parameters:
+    spells:
+    - fling
+    confirm: true
+    confirm_filler: stained_glass:3
+    auto_upgrade: false
+    use_sp: false
+
+blastshop:
+  inherit: spellshop
+  parameters:
+    spells:
+    - blast
+    confirm: true
+    confirm_filler: stained_glass:3
+    auto_upgrade: false
+    use_sp: false
+
+pollinateshop:
+  inherit: spellshop
+  parameters:
+    spells:
+    - pollinate
+    confirm: true
+    confirm_filler: stained_glass:3
+    auto_upgrade: false
+    use_sp: false
+
 intro_spshop:
     inherit: buyshop
     cast_on_no_target: false
@@ -1196,6 +1237,24 @@ intro_spshop:
         require_wand: true
         quiet: false
         loud: true
+
+cursedmeatshop:
+    inherit: buyshop
+    parameters:
+        items:
+        - item: cursedmeat
+          cost: 10
+        auto_close: true
+
+camerashop:
+    inherit: buyshop
+    parameters:
+        items:
+        - item: camera
+          cost: 100
+        confirm: true
+        auto_close: true
+        confirm_filler: stained_glass:3
 
 clearcooldowns:
     actions:
@@ -1226,3 +1285,25 @@ areamissile:
     - type: confusion
       duration: 5000
 
+pollinate:
+  category: light
+
+plantshop:
+    inherit: buyshop
+    parameters:
+        items:
+          red_rose:6@2: 5
+          water_lily: 5
+          red_rose:5@2: 5
+          red_rose:4@2: 5
+          red_rose:2@2: 5
+          red_rose:1@2: 5
+          red_rose:0@2: 5
+          yellow_flower:0@2: 5
+          flower_pot_item: 20
+          red_mushroom@2: 10
+          vine@8: 10
+          leaves@16: 10
+          leaves:1@16: 10
+          leaves:2@16: 10
+          leaves:3@16: 10
