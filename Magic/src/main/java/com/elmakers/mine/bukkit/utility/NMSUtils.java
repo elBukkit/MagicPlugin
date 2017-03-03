@@ -545,14 +545,7 @@ public class NMSUtils {
                 class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
                 class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
                 class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
-                try {
-                    // 1.9 and up
-                    class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
-                } catch (Throwable ignore) {
-                    legacy = true;
-                    // 1.8 and lower
-                    class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
-                }
+                class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, handling of tile entities may not work well", ex);
                 class_TileEntity_loadMethod = null;
@@ -594,12 +587,7 @@ public class NMSUtils {
                             class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
                         } catch (Throwable ignore3) {
                             // 1.9.2
-                            try {
-                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
-                            } catch (Throwable ignore4) {
-                                // 1.8 and lower
-                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
-                            }
+                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
                         }
                     }
                 }
@@ -614,23 +602,17 @@ public class NMSUtils {
             // TODO: Lockable API in 1.11+
             try {
                 try {
-                    try {
-                        // 1.11
-                        class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
-                        class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
-                        class_ChestLock_getString = class_ChestLock.getMethod("b");
-                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                        class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("getLock");
-                    } catch (Throwable ignore) {
-                        // 1.10 and earlier
-                        legacy = true;
-                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                        class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
-                    }
-                } catch (Throwable ignore2) {
-                    // 1.8 and lower
+                    // 1.11
+                    class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
+                    class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
+                    class_ChestLock_getString = class_ChestLock.getMethod("b");
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
+                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("getLock");
+                } catch (Throwable ignore) {
+                    // 1.10 and earlier
+                    legacy = true;
+                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
                 }
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, chest locking and unlocking will not work", ex);
@@ -665,23 +647,8 @@ public class NMSUtils {
                         class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ay"); // ayyyyy lmao
                     } catch (Throwable ignore4) {
                         legacy = true;
-                        try {
-                            // 1.8.3
-                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
-                        } catch (Throwable ignore3) {
-                            try {
-                                // 1.8
-                                class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ap");
-                            } catch (Throwable ignore2) {
-                                try {
-                                    // 1.7
-                                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("at");
-                                } catch (Throwable ignore) {
-                                    // Prior
-                                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("j");
-                                }
-                            }
-                        }
+                        // 1.8.3
+                        class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
                     }
                 }
             } catch (Throwable ex) {
@@ -694,14 +661,8 @@ public class NMSUtils {
             }
 
             try {
-                try {
-                    // 1.9 and up
-                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
-                } catch (Throwable ignore) {
-                    // 1.8 and lower
-                    legacy = true;
-                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
-                }
+                // 1.9 and up
+                class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, thorn damage override to hurt ender dragon will not work", ex);
                 class_EntityDamageSource_setThornsMethod = null;
