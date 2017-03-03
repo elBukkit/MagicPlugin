@@ -8,7 +8,7 @@
 ## 6.6
 
  - Wand creation permissions have changed, no negation required anymore:
-   - Magic.create.<wand> : Permission to create a specific wand
+   - Magic.create.[wand] : Permission to create a specific wand
    - Magic.create.* : Permission to create any wand, ops have this by default
    - Magic.commands.wand : Permission to use the /wand command to create wands
  - Enchanting configs renamed to "paths". 
