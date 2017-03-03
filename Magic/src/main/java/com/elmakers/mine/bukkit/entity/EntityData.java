@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import javax.annotation.Nonnull;
+
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -225,7 +227,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.type = type;
     }
 
-    public EntityData(MageController controller, ConfigurationSection parameters) {
+    public EntityData(@Nonnull MageController controller, ConfigurationSection parameters) {
         name = parameters.getString("name");
         if (name != null) {
             name = ChatColor.translateAlternateColorCodes('&', name);
@@ -317,13 +319,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
         item = itemData == null ? null : itemData.getItemStack(parameters.getInt("amount", 1));
         
-        if (controller != null) {
-            itemInHand = controller.getOrCreateItem(parameters.getString("item"));
-            helmet = controller.getOrCreateItem(parameters.getString("helmet"));
-            chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
-            leggings = controller.getOrCreateItem(parameters.getString("leggings"));
-            boots = controller.getOrCreateItem(parameters.getString("boots"));
-        }
+        itemInHand = controller.getOrCreateItem(parameters.getString("item"));
+        helmet = controller.getOrCreateItem(parameters.getString("helmet"));
+        chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
+        leggings = controller.getOrCreateItem(parameters.getString("leggings"));
+        boots = controller.getOrCreateItem(parameters.getString("boots"));
     }
 
     public static EntityData loadPainting(Vector location, Art art, BlockFace direction) {
