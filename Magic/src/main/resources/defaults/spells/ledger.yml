@@ -2,6 +2,7 @@ ledger:
     icon: paper
     category: specialty
     hidden: true
+    show_undoable: false
     actions:
         cast:
         - class: Command
