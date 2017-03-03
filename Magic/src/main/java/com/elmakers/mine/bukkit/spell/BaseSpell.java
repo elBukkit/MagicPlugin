@@ -1504,16 +1504,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (!bypassPvpRestriction && entity instanceof Player)
         {
             Player magePlayer = mage.getPlayer();
-            if (magePlayer == null || !magePlayer.hasPermission("Magic.bypass_pvp"))
+            if (magePlayer != null && !magePlayer.hasPermission("Magic.bypass_pvp"))
             {
                 // Check that the other player does not have PVP disabled for fairness
                 if (!controller.isPVPAllowed((Player)entity, entity.getLocation())) return false;
-
-                if (magePlayer != null)
-                {
-                    if (!controller.isPVPAllowed(magePlayer, entity.getLocation())) return false;
-                    if (!controller.isPVPAllowed(magePlayer, mage.getLocation())) return false;
-                }
+                if (!controller.isPVPAllowed(magePlayer, entity.getLocation())) return false;
+                if (!controller.isPVPAllowed(magePlayer, mage.getLocation())) return false;
             }
         }
         if (onlyFriendlyFire)
