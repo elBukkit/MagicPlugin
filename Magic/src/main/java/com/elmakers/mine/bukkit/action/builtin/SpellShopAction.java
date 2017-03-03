@@ -187,8 +187,8 @@ public class SpellShopAction extends BaseShopAction
         // we will upgrade the wand here, but in theory that should never happen since we
         // checked for upgrades above.
         if (wand != null && shopItems.size() == 0) {
-            boolean canUpgrade = wand.checkUpgrade(false);
-            boolean hasUpgrade = wand.hasUpgrade();
+            boolean canUpgrade = autoUpgrade && wand.checkUpgrade(false);
+            boolean hasUpgrade = autoUpgrade && wand.hasUpgrade();
             if (!canProgress && !hasUpgrade) {
                 context.showMessage(context.getMessage("no_upgrade", "There is nothing more for you to learn here.").replace("$wand", wand.getName()));
                 return SpellResult.FAIL;
