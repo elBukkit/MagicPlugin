@@ -7,7 +7,10 @@ public class RPCheckTask implements Runnable {
         this.controller = controller;
     }
 
+    @Override
     public void run() {
-        controller.checkResourcePack(controller.getPlugin().getServer().getConsoleSender(), true);
+        controller.checkResourcePack(
+                controller.getPlugin().getServer().getConsoleSender(),
+                true);
     }
 }

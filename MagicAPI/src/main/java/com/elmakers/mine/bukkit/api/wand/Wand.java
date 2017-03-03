@@ -5,8 +5,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.elmakers.mine.bukkit.api.magic.MagicProperties;
-import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -18,8 +16,10 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
 /**
@@ -140,7 +140,7 @@ public interface Wand extends CostReducer, MagicProperties {
     public boolean isBlocked(double angle);
 
     /**
-     * Save this Wand to a Configuartion Section.
+     * Save this Wand to a Configuration Section.
      *
      * @param section
      * @param filtered If true, removes item-specific data such as Wand
@@ -195,8 +195,8 @@ public interface Wand extends CostReducer, MagicProperties {
     public boolean upgrade(boolean quiet);
 
     /**
-     * This method is deprecated, use Mage.checkWand instead. Wands should only ever be active
-     * while held.
+     * This method is deprecated, use {@link Mage#checkWand()} instead.
+     * Wands should only ever be active while held.
      *
      * @param mage
      */
