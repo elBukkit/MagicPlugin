@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.entity;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,7 +26,6 @@ import org.bukkit.Art;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.BlockFace;
@@ -60,7 +58,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 /**
