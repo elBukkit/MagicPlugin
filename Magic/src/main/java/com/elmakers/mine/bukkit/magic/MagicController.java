@@ -782,9 +782,7 @@ public class MagicController implements MageController {
         // Check for BlockPhysics
         if (useBlockPhysics) {
             Plugin blockPhysicsPlugin = pluginManager.getPlugin("BlockPhysics");
-            if (blockPhysicsPlugin == null) {
-                getLogger().info("BlockPhysics not found- install BlockPhysics for physics-based block effects");
-            } else {
+            if (blockPhysicsPlugin != null) {
                 blockPhysicsManager = new BlockPhysicsManager(plugin, blockPhysicsPlugin);
                 if (blockPhysicsManager.isEnabled()) {
                     getLogger().info("Integrated with BlockPhysics, some spells will now use physics-based block effects");
