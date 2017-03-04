@@ -10,6 +10,5 @@ testspellshop:
         confirm: false
         auto_close: false
         auto_upgrade: true
-        upgrade_levels: 15
         use_sp: true
 
