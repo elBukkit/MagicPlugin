@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -61,6 +62,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private Map<Integer, ShopItem> showingItems;
     private List<ItemStack> itemStacks;
 
+    // State
+    private boolean isActive = false;
+    private SpellResult finalResult = null;
+
     protected class ShopItem implements Comparable<ShopItem> {
         private final ItemStack item;
         private final double worth;
@@ -90,6 +95,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (context != null) {
             context.getMage().removeItemsWithTag("shop");
         }
+        isActive = false;
     }
 
     @Override
@@ -336,6 +342,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     }
                 }
                 mage.deactivateGUI();
+                isActive = true;
                 mage.activateGUI(this, confirmInventory);
                 return;
             }
@@ -411,7 +418,8 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     wand.enchant(upgradeLevels, mage, false);
                 }
             }
-            
+
+            finalResult = SpellResult.CAST;
             onPurchase(context, item);
         }
         if (autoClose) {
@@ -477,6 +485,9 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 isSkillPoints = true;
             }
         }
+
+        finalResult = null;
+        isActive = false;
     }
 
     protected String getBalanceDescription(CastContext context) {
@@ -556,10 +567,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             context.showMessage("no_items", "There is nothing for you to buy here");
             return SpellResult.FAIL;
         }
+        isActive = true;
+        finalResult = SpellResult.NO_ACTION;
         Inventory displayInventory = getInventory(context);
         mage.activateGUI(this, displayInventory);
 
-        return SpellResult.CAST;
+        return SpellResult.PENDING;
 	}
 
     protected String getInventoryTitle(CastContext context)
@@ -713,4 +726,32 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             super.getParameterOptions(spell, parameterKey, examples);
         }
     }
+
+    @Override
+    public void finish(CastContext context) {
+        isActive = false;
+        finalResult = null;
+    }
+
+    @Override
+    public SpellResult perform(CastContext context) {
+        if (isActive) {
+            return SpellResult.PENDING;
+        }
+        if (finalResult != null) {
+            return finalResult;
+        }
+        SpellResult contextResult = checkContext(context);
+        if (!contextResult.isSuccess()) {
+            return contextResult;
+        }
+
+        List<ShopItem> items = getItems(context);
+        if (items == null) {
+            return SpellResult.NO_ACTION;
+        }
+        return showItems(context, items);
+    }
+
+    protected abstract List<ShopItem> getItems(CastContext context);
 }

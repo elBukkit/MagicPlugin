@@ -119,13 +119,9 @@ public class ItemShopAction extends BaseShopAction
         
         return new ShopItem(item, worth);
     }
-    
+
     @Override
-    public SpellResult perform(CastContext context) {
-        SpellResult contextResult = checkContext(context);
-        if (!contextResult.isSuccess()) {
-            return contextResult;
-        }
-        return showItems(context, items);
-	}
+    protected List<ShopItem> getItems(CastContext context) {
+        return items;
+    }
 }

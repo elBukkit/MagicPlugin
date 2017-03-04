@@ -91,7 +91,7 @@ public class SpellShopAction extends BaseShopAction
     }
 
     @Override
-    public SpellResult perform(CastContext context) {
+    public List<ShopItem> getItems(CastContext context) {
         Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
 
@@ -102,19 +102,15 @@ public class SpellShopAction extends BaseShopAction
         if (wand != null && autoUpgrade) {
             canProgress = wand.canProgress();
             if (!canProgress && wand.checkUpgrade(true) && wand.upgrade(false)) {
-                return SpellResult.CAST_SELF;
+                return null;
             }
         }
 
-        SpellResult contextResult = checkContext(context);
-        if (!contextResult.isSuccess()) {
-            return contextResult;
-        }
         WandUpgradePath currentPath = wand == null ? null : wand.getPath();
 
         if (!castsSpells && !allowLocked && wand.isLocked()) {
             context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
-            return SpellResult.FAIL;
+            return null;
         }
 
         // Load spells
@@ -127,7 +123,7 @@ public class SpellShopAction extends BaseShopAction
         {
             if (currentPath == null) {
                 context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
-                return SpellResult.FAIL;
+                return null;
             }
 
             if (showPath) {
@@ -191,16 +187,16 @@ public class SpellShopAction extends BaseShopAction
             boolean hasUpgrade = autoUpgrade && wand.hasUpgrade();
             if (!canProgress && !hasUpgrade) {
                 context.showMessage(context.getMessage("no_upgrade", "There is nothing more for you to learn here.").replace("$wand", wand.getName()));
-                return SpellResult.FAIL;
+                return null;
             } else if (canUpgrade) {
                 wand.upgrade(false);
-                return SpellResult.CAST_SELF;
+                return null;
             } else {
-                return SpellResult.FAIL;
+                return null;
             }
         }
 
-        return showItems(context, shopItems);
+        return shopItems;
 	}
 
     private ShopItem createShopItem(String key, Double worth, CastContext context) {
