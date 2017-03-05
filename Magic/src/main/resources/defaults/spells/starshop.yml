@@ -2,6 +2,8 @@ starshop:
     icon: wood_hoe:14
     inherit: buyshop
     parameters:
+        confirm: true
+        confirm_filler: stained_glass:3
         show_active_icons: true
         items:
         - item: detonator
