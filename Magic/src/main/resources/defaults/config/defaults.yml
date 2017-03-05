@@ -376,6 +376,16 @@ brush_replacements:
   monster_eggs|4: smooth_brick:2
   monster_eggs|5: smooth_brick:3
   fire: flint_and_steel
+  flower_pot: flower_pot_item
+  iron_door_block: iron_door
+  wooden_door: wood_door
+  spruce_door: spruce_door_item
+  birch_door: birch_door_item
+  acacia_door: acacia_door_item
+  jungle_door: jungle_door_item
+  dark_oak_door: dark_oak_door_item
+  carrot: carrot_item
+  potato: potato_item
 
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.
