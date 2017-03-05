@@ -70,11 +70,6 @@ public class SpellShopAction extends BaseShopAction
     }
 
     @Override
-    public void deactivated() {
-
-    }
-
-    @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         showPath = parameters.getBoolean("show_path_spells", true);
