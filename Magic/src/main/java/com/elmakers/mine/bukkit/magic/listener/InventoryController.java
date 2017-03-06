@@ -149,7 +149,7 @@ public class InventoryController implements Listener {
 
         // Check for wearing spells
         ItemStack heldItem = event.getCursor();
-        if (heldItem != null && event.getSlotType() == InventoryType.SlotType.ARMOR)
+        if (event.getSlotType() == InventoryType.SlotType.ARMOR)
         {
             if (Wand.isSpell(heldItem)) {
                 event.setCancelled(true);

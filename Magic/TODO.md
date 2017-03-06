@@ -2,8 +2,6 @@
 
 ## 6.8
 
- - Magnetic leggings didn't activate on initial wear
- - Goggles don't reactivate after respawn (armorUpdated is being called- hrm)
  - Fix cancel messages
  
  - Heroes:
