@@ -626,9 +626,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public EntityData damage(Entity entity) {
         EntityData data = modify(entity);
         // Kind of a hack to prevent dropping things we're going to undo later
-        // This mainly prevents item dupe exploits, such as using Pull on an item
-        // and then undoing it.
-        if (data != null && (undoEntityTypes == null || !undoEntityTypes.contains(entity.getType())))
+        if (undoEntityTypes != null && undoEntityTypes.contains(entity.getType()))
+        {
+            data.removed(entity);
+            entity.remove();
+        }
+        if (data != null)
         {
             data.setRespawn(true);
         }
