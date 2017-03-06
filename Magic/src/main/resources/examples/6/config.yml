@@ -1,0 +1,4 @@
+# Show enchantments on wands
+# Note that if using the "glow" property on wands a "Luck of the Sea" enchantment will show if no other
+# enchantments are set.
+wand_hide_flags: 62
