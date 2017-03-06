@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import java.io.InputStream;
@@ -1308,44 +1309,17 @@ public class NMSUtils {
     public static void addGlow(ItemStack stack) {
         if (InventoryUtils.isEmpty(stack)) return;
 
-        try {
-            Object craft = getHandle(stack);
-            if (craft == null) return;
-            Object tagObject = getTag(craft);
-            if (tagObject == null) return;
-            final Object enchList = class_NBTTagList.newInstance();
-            class_NBTTagCompound_setMethod.invoke(tagObject, "ench", enchList);
-
-            // Testing Glow API based on ItemMetadata storage
-            Object bukkitData = createNode(stack, "bukkit");
-            class_NBTTagCompound_setBooleanMethod.invoke(bukkitData, "glow", true);
-        } catch (Throwable ex) {
-
-        }
+        ItemMeta meta = stack.getItemMeta();
+        meta.addEnchant(Enchantment.LUCK, 1, true);
+        stack.setItemMeta(meta);
     }
 
     public static void removeGlow(ItemStack stack) {
         if (InventoryUtils.isEmpty(stack)) return;
 
-        Collection<Enchantment> enchants = stack.getEnchantments().keySet();
-        for (Enchantment enchant : enchants) {
-            stack.removeEnchantment(enchant);
-        }
-
-        try {
-            Object craft = getHandle(stack);
-            if (craft == null) return;
-            Object tagObject = getTag(craft);
-            if (tagObject == null) return;
-
-            // Testing Glow API based on ItemMetadata storage
-            Object bukkitData = getNode(stack, "bukkit");
-            if (bukkitData != null) {
-                class_NBTTagCompound_setBooleanMethod.invoke(bukkitData, "glow", false);
-            }
-        } catch (Throwable ex) {
-
-        }
+        ItemMeta meta = stack.getItemMeta();
+        meta.removeEnchant(Enchantment.LUCK);
+        stack.setItemMeta(meta);
     }
 
     public static boolean isUnbreakable(ItemStack stack) {

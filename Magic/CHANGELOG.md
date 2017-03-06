@@ -2,6 +2,7 @@
 
 ## 6.8
 
+ - Enchantments on wands are now hidden
  - Renamed Skill Points to Spell Points. Use "example: 6" in config.yml to undo this change.
  - Add /magic help command, simple command that relies on /help for more info
  - Add heroes_skill_prefix config property, to prefix skill names from the Magic Heroes skill pack
@@ -16,6 +17,7 @@
  - Added support for spawning area of effect clouds, Neutron Bomb spell re-worked to use it
  - Fix /mitem duplicate command
  - Fix mobs not being able to target players with spells in no-pvp areas
+ - Fix wand "glow" property, now uses a hidden luck enchantment
 
 ## 6.7.1
  

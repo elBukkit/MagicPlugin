@@ -288,7 +288,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public static String WAND_KEY = "wand";
 	public static String UPGRADE_KEY = "wand_upgrade";
     public static String WAND_SELF_DESTRUCT_KEY = null;
-    public static byte HIDE_FLAGS = 60;
+    public static byte HIDE_FLAGS = 63;
 	public static String brushSelectSpell = "";
 
     private Inventory storedInventory = null;
@@ -1659,7 +1659,17 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		InventoryUtils.applyAttributes(item, wandConfig.getConfigurationSection("attributes"), wandConfig.getString("attribute_slot"));
 
 		// Add vanilla enchantments
-		InventoryUtils.applyEnchantments(item, wandConfig.getConfigurationSection("enchantments"));
+		ConfigurationSection enchantments = wandConfig.getConfigurationSection("enchantments");
+		InventoryUtils.applyEnchantments(item, enchantments);
+
+		// Add enchantment glow
+		if (enchantments == null || enchantments.getKeys(false).isEmpty()) {
+			if (glow) {
+				CompatibilityUtils.addGlow(item);
+			} else {
+				CompatibilityUtils.removeGlow(item);
+			}
+		}
 
 		if (wandConfig.contains("icon_inactive")) {
 			String iconKey = wandConfig.getString("icon_inactive");
@@ -1967,11 +1977,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		} else {
 			CompatibilityUtils.setDisplayName(item, ChatColor.stripColor(getDisplayName()));
 		}
-
-		// Reset Enchantment glow
-		if (glow) {
-            CompatibilityUtils.addGlow(item);
-		}
 	}
 	
 	private void updateName() {
@@ -2195,10 +2200,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	protected void updateLore() {
         CompatibilityUtils.setLore(item, getLore());
-
-		if (glow) {
-			CompatibilityUtils.addGlow(item);
-		}
 	}
 
     public void save() {
