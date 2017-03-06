@@ -22,12 +22,16 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class AlterSpell extends BlockSpell
 {
 	// TODO: Fix and future-proof all this mess!
+	// Note: LOG_2 changed to only cycle from acacia to dark oak, there's a "hole" in the bit values
+	// That will throw an error.
+	// Changing this all to lists of materials and states would of course fix this problem.
 	static final String DEFAULT_ADJUSTABLES = "3 ,5, 6, 8, 9, 10,11,12,17,162,18,161,23,24,27,28,29,31,33,35,37,38,43,44,52,53,54,55,58,59,60,61,62,63,65,66,67,68,69,77,78,81,83,85,86,93,94,95,97,98,99,100,104,105,108,109,114,115,125,126,128,134,135,136,140,141,142,144,155,156,159,160,171,172,175";
-	static final String DEFAULT_ADJUST_MAX =  "2 ,5, 5 ,15,15,15,15,1 ,15,15 ,3 ,1  ,5 ,2 ,9 ,9 ,5 ,2 ,5 ,15,8 ,8 ,15,15,15,3 ,5 ,15,5 ,7 ,8 ,5 ,5 ,15,3 ,9 ,3 ,2 ,14,15,7 ,15,15,5 ,0 ,5 ,5 ,15, 5,3 ,15,15 ,7  ,7  ,3  ,3  ,3  ,7  ,15 ,15 ,3  ,3  ,3  ,3  ,15 ,7  ,7  ,4  ,4  ,3  ,15 ,15 ,15 ,15 ,6";
+	static final String DEFAULT_ADJUST_MAX =  "2 ,5, 5 ,15,15,15,15,1 ,15,1 ,3 ,1  ,5 ,2 ,9 ,9 ,5 ,2 ,5 ,15,8 ,8 ,15,15,15,3 ,5 ,15,5 ,7 ,8 ,5 ,5 ,15,3 ,9 ,3 ,2 ,14,15,7 ,15,15,5 ,0 ,5 ,5 ,15, 5,3 ,15,15 ,7  ,7  ,3  ,3  ,3  ,7  ,15 ,15 ,3  ,3  ,3  ,3  ,15 ,7  ,7  ,4  ,4  ,3  ,15 ,15 ,15 ,15 ,6";
 	static final String DEFAULT_ADJUST_MIN =  "0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0  ,0 ,0  ,2 ,0 ,0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,2 ,0 ,2 ,0 ,0 ,2 ,2 ,0 ,0 ,0 ,0 ,5 ,6 ,0 ,0 ,0 ,0 ,0 ,3 ,2 ,2 ,0 , 0,0 ,0 ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0";
 	static final int DEFAULT_RECURSE_DISTANCE = 0;
 	
@@ -109,7 +113,11 @@ public class AlterSpell extends BlockSpell
 	protected void adjust(Block block, byte dataValue, boolean recursive, int recurseDistance, int rDepth)
 	{
 		registerForUndo(block);
-		block.setData(dataValue);
+		try {
+			block.setData(dataValue);
+		} catch (Exception ex) {
+			controller.getLogger().log(Level.WARNING, "Failed to alter block state: " + ex.getMessage());
+		}
 
 		if (recursive && rDepth < recurseDistance)
 		{
