@@ -26,6 +26,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Hanging;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -615,6 +616,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             if (entityData == null) {
                 entityData = new EntityData(entity);
                 modifiedEntities.put(entityId, entityData);
+                watch(entity);
             }
         }
         modifiedTime = System.currentTimeMillis();
@@ -625,8 +627,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public EntityData damage(Entity entity) {
         EntityData data = modify(entity);
-        // Kind of a hack to prevent dropping things we're going to undo later
-        if (undoEntityTypes != null && undoEntityTypes.contains(entity.getType()))
+        // Kind of a hack to prevent dropping hanging entities that we're going to undo later
+        if (entity instanceof Hanging)
         {
             data.removed(entity);
             entity.remove();
@@ -668,11 +670,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void remove(Entity entity)
     {
-        if (entities != null && entities.contains(entity)) {
+        entity.removeMetadata("MagicBlockList", plugin);
+        if (entities != null) {
             entities.remove(entity);
         }
         UUID entityId = entity.getUniqueId();
-        if (modifiedEntities != null && modifiedEntities.containsKey(entityId)) {
+        if (modifiedEntities != null) {
             modifiedEntities.remove(entityId);
         }
         modifiedTime = System.currentTimeMillis();
@@ -681,11 +684,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void convert(Entity fallingBlock, Block block)
     {
-        if (entities != null) {
-            entities.remove(fallingBlock);
-        }
+        remove(fallingBlock);
         add(block);
-        modifiedTime = System.currentTimeMillis();
     }
 
     @Override
@@ -711,9 +711,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void finalizeExplosion(Entity explodingEntity, List<Block> blocks)
     {
-        if (entities != null) {
-            entities.remove(explodingEntity);
-        }
+        remove(explodingEntity);
         // Prevent dropping items if this is going to auto-undo
         if (isScheduled()) {
             for (Block block : blocks) {
@@ -732,10 +730,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void cancelExplosion(Entity explodingEntity)
     {
-        // TODO: What is this about?
-        if (entities != null) {
-            entities.remove(explodingEntity);
-        }
+        // Stop tracking this entity
+        remove(explodingEntity);
     }
 
     @Override

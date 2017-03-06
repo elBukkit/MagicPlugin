@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -623,18 +624,21 @@ public class PlayerController implements Listener {
             event.setCancelled(true);
             return;
         }
+
+        // Check to see if this is an item we might undo, and remove it from undo
+        UndoList undoList = controller.getEntityUndo(item);
+        if (undoList != null) {
+            undoList.remove(item);
+        }
         
         Player player = event.getPlayer();
         Mage mage = controller.getMage(player);
-
-        if (mage == null) return;
-
         // Remove lost wands from records
         Messages messages = controller.getMessages();
         if (isWand) {
             Wand wand = controller.getWand(pickup);
             if (!wand.canUse(player)) {
-                if (lastDropWarn == 0 || System.currentTimeMillis() - lastDropWarn > 10000) {
+                if (mage != null && (lastDropWarn == 0 || System.currentTimeMillis() - lastDropWarn > 10000)) {
                     mage.sendMessage(messages.get("wand.bound").replace("$name", wand.getOwner()));
                 }
                 lastDropWarn = System.currentTimeMillis();
@@ -644,6 +648,8 @@ public class PlayerController implements Listener {
 
             controller.removeLostWand(wand.getId());
         }
+
+        if (mage == null) return;
 
         // Wands will absorb spells and upgrade items
         Wand activeWand = mage.getActiveWand();
