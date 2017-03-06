@@ -833,7 +833,7 @@ spells:
         upgrade_description: "&r&b&bull; &6Increased duration"
     wear:
         name: Wear
-        description: Wear the item in your hand
+        description: Right-click to wear
         cast: You put your item on your head
     magichat:
         name: Magic Hat
