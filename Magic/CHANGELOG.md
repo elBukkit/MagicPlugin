@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 6.8
+## 6.7.2
 
  - Enchantments on wands are now hidden
  - Renamed Skill Points to Spell Points. Use "example: 6" in config.yml to undo this change.
@@ -18,6 +18,7 @@
  - Fix /mitem duplicate command
  - Fix mobs not being able to target players with spells in no-pvp areas
  - Fix wand "glow" property, now uses a hidden luck enchantment
+ - Fix Velocity actions glitching out dropped items and TNT
 
 ## 6.7.1
  
