@@ -2,7 +2,6 @@
 
 ## 6.8
 
- - Grab spell just makes item disappear? Push + Grenade does the same thing.
  - Magnetic leggings didn't activate on initial wear
  - Goggles don't reactivate after respawn (armorUpdated is being called- hrm)
  - Fix cancel messages
