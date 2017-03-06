@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.8
+
 ## 6.7.2
 
  - Enchantments on wands are now hidden
