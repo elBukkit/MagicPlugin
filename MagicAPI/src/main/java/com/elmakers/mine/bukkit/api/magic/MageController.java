@@ -180,6 +180,7 @@ public interface MageController {
     public Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location);
     public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location);
     public boolean isPVPAllowed(Player player, Location location);
+    public boolean isExitAllowed(Player player, Location location);
 
     /**
      * Check whether or not one entity is allowed to target another.

@@ -4,6 +4,7 @@
 
  - EffectLib memory optimizations
  - Fix Pollinate double-high flowers
+ - Blink and other teleport actions will respect WorldGuard exit deny regions (can be turned off via require_exit parameter)
 
 ## 6.7.2
 

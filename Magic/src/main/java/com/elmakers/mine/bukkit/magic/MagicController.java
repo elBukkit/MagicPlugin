@@ -565,6 +565,12 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean isExitAllowed(Player player, Location location) {
+        if (location == null) return true;
+        return worldGuardManager.isExitAllowed(player, location);
+    }
+
+    @Override
     public boolean isPVPAllowed(Player player, Location location)
     {
         if (location == null) return true;

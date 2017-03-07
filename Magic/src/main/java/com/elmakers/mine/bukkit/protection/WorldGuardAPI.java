@@ -85,6 +85,18 @@ public class WorldGuardAPI {
 		return checkSet.queryState(getAssociable(player), DefaultFlag.PVP) != StateFlag.State.DENY;
 	}
 
+    public boolean isExitAllowed(Player player, Location location) {
+        if (worldGuard == null || location == null) return true;
+
+        RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
+        if (regionManager == null) return true;
+
+        ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
+        if (checkSet == null) return true;
+
+        return checkSet.queryState(getAssociable(player), DefaultFlag.EXIT) != StateFlag.State.DENY;
+    }
+
 	public boolean hasBuildPermission(Player player, Block block) {
 		if (block != null && worldGuard != null) {
             RegionContainer container = worldGuard.getRegionContainer();
