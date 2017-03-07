@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>de.slikey</groupId>
 			<artifactId>EffectLib</artifactId>
-			<version>5.3</version>
+			<version>5.4-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

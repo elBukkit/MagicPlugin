@@ -2,6 +2,8 @@
 
 ## 6.8
 
+ - EffectLib memory optimizations
+
 ## 6.7.2
 
  - Enchantments on wands are now hidden
