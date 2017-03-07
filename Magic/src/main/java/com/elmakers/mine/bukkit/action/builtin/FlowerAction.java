@@ -53,7 +53,7 @@ public class FlowerAction extends BaseSpellAction {
 
         MaterialAndData material = null;
         Random random = context.getRandom();
-        boolean tall = tallFlowers.size() > 0 && random.nextBoolean();
+        boolean tall = flowers.size() == 0 || (tallFlowers.size() > 0 && random.nextBoolean());
         if (tall) {
             material = tallFlowers.get(random.nextInt(tallFlowers.size()));
         } else {
@@ -72,7 +72,7 @@ public class FlowerAction extends BaseSpellAction {
         if (tall) {
             block = block.getRelative(BlockFace.UP);
             context.registerForUndo(block);
-            material.setData((short)8);
+            material = new MaterialAndData(material.getMaterial(), (short)(material.getData() | 8));
             material.modify(block);
         }
         return SpellResult.CAST;

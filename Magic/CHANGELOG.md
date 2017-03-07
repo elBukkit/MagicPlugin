@@ -3,6 +3,7 @@
 ## 6.8
 
  - EffectLib memory optimizations
+ - Fix Pollinate double-high flowers
 
 ## 6.7.2
 
