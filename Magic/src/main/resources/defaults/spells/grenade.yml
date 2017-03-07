@@ -32,6 +32,7 @@ grenade|2:
     parameters:
         size: 3
         fire: true
+        undo_speed: 0.5
     costs:
         mana: 75
 
