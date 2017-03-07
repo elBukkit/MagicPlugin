@@ -81,6 +81,8 @@ laser:
         delay: 250
         repeat: 10
         undo_speed: 1
+        orient: true
+        axis: z
     costs:
         mana: 120
 
