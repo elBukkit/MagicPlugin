@@ -399,5 +399,5 @@ enchantwand:
 spellshop:
     enabled: true
     
-sabershop:
+starshop:
     enabled: true
