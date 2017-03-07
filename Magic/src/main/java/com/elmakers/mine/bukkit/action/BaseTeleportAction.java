@@ -24,6 +24,9 @@ public abstract class BaseTeleportAction extends BaseSpellAction
         if (requiresBuildPermission && !context.hasBuildPermission(targetLocation.getBlock())) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
+        if (!context.canCast(targetLocation)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
         return context.teleport(entity, targetLocation, verticalSearchDistance, safe) ? SpellResult.CAST : SpellResult.FAIL;
     }
 }
