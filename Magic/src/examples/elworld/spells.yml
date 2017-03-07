@@ -79,6 +79,10 @@ recall:
         description: Leave this world
         server: chicago
         icon: iron_nugget
+      greenfield:
+        name: Greenfield
+        description: A city to explore
+        icon: leaves
       falcon:
         name: Milennium Falcon
         description: Testing cross-server warps
