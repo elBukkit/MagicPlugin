@@ -180,15 +180,6 @@ public class InventoryController implements Listener {
 
         if (activeWand != null && activeWand.isInventoryOpen())
         {
-            // Kind of a hack to avoid hotbar items with 0 amounts disappearing :(
-            Inventory inventory = player.getInventory();
-            for (int i = 0; i < 8; i++) {
-                ItemStack item = inventory.getItem(i);
-                if (item != null && item.getAmount() == 0) {
-                    item.setAmount(1);
-                }
-            }
-            
             // Don't allow the offhand slot to be messed with while the spell inventory is open
             if (event.getRawSlot() == 45)
             {
