@@ -89,6 +89,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     public static int OFFHAND_CAST_RANGE = 32;
+    public static int OFFHAND_CAST_COOLDOWN = 500;
     final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<>();
     private static String defaultMageName = "Mage";
     private static String SKILL_POINT_KEY = "sp";
@@ -146,6 +147,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private float magePowerBonus = 0;
     private long lastClick = 0;
     private long lastCast = 0;
+    private long lastOffhandCast = 0;
     private long blockPlaceTimeout = 0;
     private Location lastDeathLocation = null;
     private final MaterialBrush brush;
@@ -896,6 +898,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
     
     public boolean offhandCast() {
+        long now = System.currentTimeMillis();
+        if (lastOffhandCast > 0 && now < lastOffhandCast + OFFHAND_CAST_COOLDOWN) {
+            return false;
+        }
+        lastOffhandCast = now;
+
         Player player = getPlayer();
         if (isLoading() || player == null) return false;
         
@@ -903,16 +911,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (Wand.isWand(itemInOffhand)) {
             if (offhandWand != null && (offhandWand.getLeftClickAction() == WandAction.CAST || offhandWand.getRightClickAction() == WandAction.CAST)) {
                 offhandCast = true;
+                boolean castResult = false;
                 try {
                     offhandWand.tickMana(player);
                     offhandWand.setActiveMage(this);
-                    offhandWand.cast();
+                    castResult = offhandWand.cast();
                     CompatibilityUtils.swingOffhand(player, OFFHAND_CAST_RANGE);
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.WARNING, "Error casting from offhand wand", ex);
                 }
                 offhandCast = false;
-                return true;
+                return castResult;
             }
         }
         

@@ -3,6 +3,7 @@
 ## 6.8
 
  - Fix cancel messages
+ - Signs in schematics are showing JSON now
  
  - Heroes:
    - Add new wand mode for skill book

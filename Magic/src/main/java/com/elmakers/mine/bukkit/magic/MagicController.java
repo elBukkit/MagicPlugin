@@ -2353,6 +2353,7 @@ public class MagicController implements MageController {
         }
         com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_OFFSET = properties.getDouble("default_cast_location_offset", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_OFFSET);
         com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_VERTICAL_OFFSET = properties.getDouble("default_cast_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_VERTICAL_OFFSET);
+        com.elmakers.mine.bukkit.magic.Mage.OFFHAND_CAST_COOLDOWN = properties.getInt("offhand_cast_cooldown", com.elmakers.mine.bukkit.magic.Mage.OFFHAND_CAST_COOLDOWN);
 
 		// Parse wand settings
 		Wand.DefaultUpgradeMaterial = ConfigurationUtils.getMaterial(properties, "wand_upgrade_item", Wand.DefaultUpgradeMaterial);

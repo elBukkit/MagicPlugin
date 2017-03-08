@@ -212,6 +212,10 @@ cancel_interact_on_cast: true
 # Set this to false to disallow casting using an offhand wand
 allow_offhand_casting: true
 
+# Set this to specify the time interval in ms that must pass between offhand casts
+# this is meant to throttle the spammy behavior that happens if you hold right-click with an offhand wand
+offhand_cast_cooldown: 500
+
 # Turn this off to use normal damage. May be useful if you want
 # direct damage spells to effect armor.
 # This is incompatible with prevent_melee_damage: true!
