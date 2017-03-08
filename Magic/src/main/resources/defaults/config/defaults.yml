@@ -403,7 +403,7 @@ schematic_files: WorldEdit/schematics/
 undo_depth: 128
 
 # How many pending spells a player may have at one time
-pending_depth: 16
+pending_depth: 64
 
 # What entity types to always undo when auto-undoing a spell.
 # A spell that is countered or manually undone will undo all entity types.
