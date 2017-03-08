@@ -1,0 +1,23 @@
+tocreative:
+  name: Creative
+  show_undoable: false
+  icon: diamond_axe:79
+  icon_disabled: diamond_hoe:79
+  actions:
+    cast:
+    - class: Command
+  parameters:
+   console: true
+   command: gm @p 1
+
+tosurvival:
+ name: Survival
+ show_undoable: false
+ icon: diamond_axe:123
+ icon_disabled: diamond_hoe:123
+ actions:
+   cast:
+   - class: Command
+ parameters:
+  console: true
+  command: gm @p 0
