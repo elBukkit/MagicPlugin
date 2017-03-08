@@ -317,7 +317,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 					for (Batch batch : pendingBatches) {
 						names = names + batch.getName() + " ";
 						totalSize += batch.size();
-						totalRemaining = batch.remaining();
+						totalRemaining += batch.remaining();
 					}
 				}
 
