@@ -53,11 +53,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public static Set<Material>         attachablesWall;
     public static Set<Material>         attachablesDouble;
 
-    protected static final UndoRegistry registry = new UndoRegistry();
-    protected static BlockComparator blockComparator = new BlockComparator();
+    protected static final UndoRegistry     registry = new UndoRegistry();
+    protected static BlockComparator        blockComparator = new BlockComparator();
 
-    protected Map<Long, BlockData>  attached;
-    private boolean                 loading = false;
+    protected Map<Long, BlockData>          watching;
+    private boolean                         loading = false;
 
     protected Set<Entity> 	                entities;
     protected List<Runnable>				runnables;
@@ -199,8 +199,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             return false;
         }
         modifiedTime = System.currentTimeMillis();
-        if (attached != null) {
-            BlockData attachedBlock = attached.remove(blockData.getId());
+        if (watching != null) {
+            BlockData attachedBlock = watching.remove(blockData.getId());
             if (attachedBlock != null) {
                 removeFromWatched(attachedBlock);
             }
@@ -230,7 +230,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         {
             return false;
         }
-        if (attached != null && attached.containsKey(blockId))
+        if (watching != null && watching.containsKey(blockId))
         {
             return false;
         }
@@ -242,11 +242,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             {
                 registerWatched(newBlock);
                 newBlock.setUndoList(this);
-                if (attached == null)
-                {
-                    attached = new HashMap<>();
-                }
-                attached.put(blockId, newBlock);
                 if (attachablesDouble != null && attachablesDouble.contains(material))
                 {
                     if (direction != BlockFace.UP)
@@ -266,7 +261,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public static BlockData register(Block block)
     {
-        return registry.registerModified(block);
+        BlockData blockData = new com.elmakers.mine.bukkit.block.BlockData(block);
+        registry.registerModified(blockData);
+        return blockData;
     }
 
     public static void register(BlockData blockData)
@@ -274,16 +271,21 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         registry.registerModified(blockData);
     }
 
-    public static void registerWatched(BlockData blockData)
+    public void registerWatched(BlockData blockData)
     {
         registry.registerWatched(blockData);
+        if (watching == null)
+        {
+            watching = new HashMap<>();
+        }
+        watching.put(blockData.getId(), blockData);
     }
 
     @Override
     public void commit()
     {
         unlink();
-        unregisterAttached();
+        unregisterWatched();
         if (blockList == null) return;
 
         for (BlockData block : blockList)
@@ -328,11 +330,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         registry.removeFromWatched(block);
     }
 
-    protected static void removeFromWatched(BlockData block, BlockData priorState)
-    {
-        registry.removeFromWatched(block, priorState);
-    }
-
     @Override
     public BlockData undoNext(boolean applyPhysics)
     {
@@ -353,7 +350,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return null;
     }
 
-    public boolean undo(BlockData undoBlock, boolean applyPhysics)
+    private boolean undo(BlockData undoBlock, boolean applyPhysics)
     {
         BlockData priorState = undoBlock.getPriorState();
 
@@ -367,6 +364,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         if (undoBlock.undo(applyPhysics)) {
             removeFromModified(undoBlock, priorState);
+            // Continue watching this block until we completely finish the undo process
+            registerWatched(undoBlock);
             return true;
         }
 
@@ -436,13 +435,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         undo(false, false);
     }
 
-    public void unregisterAttached()
+    public void unregisterWatched()
     {
-        if (attached != null) {
-            for (BlockData block : attached.values()) {
+        if (watching != null) {
+            for (BlockData block : watching.values()) {
                 removeFromWatched(block);
             }
-            attached = null;
+            watching = null;
         }
     }
 
