@@ -8,7 +8,7 @@ tocreative:
     - class: Command
   parameters:
    console: true
-   command: gm @p 1
+   command: gm 1 @p
 
 tosurvival:
  name: Survival
@@ -20,4 +20,4 @@ tosurvival:
    - class: Command
  parameters:
   console: true
-  command: gm @p 0
+  command: gm 0 @p
