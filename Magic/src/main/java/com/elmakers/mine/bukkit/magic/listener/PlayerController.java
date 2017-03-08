@@ -436,7 +436,11 @@ public class PlayerController implements Listener {
             }
         }
         if (!mage.checkLastClick(clickCooldown)) {
+            // We need to be careful about cancelling right-click events since this interferes with offhand
+            // item use and particularly blocking
             if (wand != null && wand.getRightClickAction() != WandAction.NONE) {
+                event.setCancelled(true);
+            } else if (wand != null && wand.getLeftClickAction() != WandAction.NONE && isLeftClick) {
                 event.setCancelled(true);
             }
             return;
