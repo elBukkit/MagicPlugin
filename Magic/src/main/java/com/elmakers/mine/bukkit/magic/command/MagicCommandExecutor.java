@@ -289,10 +289,10 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 
 			Collection<Mage> mages = api.getMages();
-			sender.sendMessage(ChatColor.AQUA + "Modified blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getModified().size() + ChatColor.AQUA + ")");
-			sender.sendMessage(ChatColor.AQUA + "Watching blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getWatching().size() + ChatColor.AQUA + ")");
-			sender.sendMessage(ChatColor.AQUA + "Registered breakable (" + ChatColor.LIGHT_PURPLE + UndoList.getBreakable().size() + ChatColor.AQUA + ")");
-			sender.sendMessage(ChatColor.AQUA + "Registered reflective (" + ChatColor.LIGHT_PURPLE + UndoList.getReflective().size() + ChatColor.AQUA + ")");
+			sender.sendMessage(ChatColor.AQUA + "Modified blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getModified().size() + ChatColor.AQUA + ")");
+			sender.sendMessage(ChatColor.AQUA + "Watching blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getWatching().size() + ChatColor.AQUA + ")");
+			sender.sendMessage(ChatColor.AQUA + "Registered breakable (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreakable().size() + ChatColor.AQUA + ")");
+			sender.sendMessage(ChatColor.AQUA + "Registered reflective (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getReflective().size() + ChatColor.AQUA + ")");
 			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + ChatColor.LIGHT_PURPLE + mages.size());
 			Collection<com.elmakers.mine.bukkit.api.block.UndoList> pendingUndo = api.getPendingUndo();
 			sender.sendMessage(ChatColor.AQUA + "Pending undo (" + ChatColor.LIGHT_PURPLE + pendingUndo.size() + ChatColor.AQUA + "): ");
@@ -477,7 +477,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 		}
 
 		if (listCommand.equalsIgnoreCase("blocks")) {
-			for (BlockData blockData : UndoList.getModified().values())
+			for (BlockData blockData : UndoList.getRegistry().getModified().values())
 			{
 				BlockVector blockLocation = blockData.getLocation();
 				Block block = blockData.getBlock();

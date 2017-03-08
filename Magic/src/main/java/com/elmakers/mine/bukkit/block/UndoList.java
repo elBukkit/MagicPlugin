@@ -53,10 +53,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public static Set<Material>         attachablesWall;
     public static Set<Material>         attachablesDouble;
 
-    protected static Map<Long, BlockData> modified = new HashMap<>();
-    protected static Map<Long, BlockData> watching = new HashMap<>();
-    protected static Map<Long, Double> reflective = new HashMap<>();
-    protected static Map<Long, Double> breakable = new HashMap<>();
+    protected static final UndoRegistry registry = new UndoRegistry();
     protected static BlockComparator blockComparator = new BlockComparator();
 
     protected Map<Long, BlockData>  attached;
@@ -269,26 +266,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public static BlockData register(Block block)
     {
-        BlockData blockData = new com.elmakers.mine.bukkit.block.BlockData(block);
-        register(blockData);
-        return blockData;
+        return registry.registerModified(block);
     }
 
     public static void register(BlockData blockData)
     {
-        BlockData priorState = modified.get(blockData.getId());
-        if (priorState != null)
-        {
-            priorState.setNextState(blockData);
-            blockData.setPriorState(priorState);
-        }
-
-        modified.put(blockData.getId(), blockData);
+        registry.registerModified(blockData);
     }
 
     public static void registerWatched(BlockData blockData)
     {
-        watching.put(blockData.getId(), blockData);
+        registry.registerWatched(blockData);
     }
 
     @Override
@@ -307,24 +295,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public static void commitAll()
     {
-        Collection<BlockData> blocks = modified.values();
-        modified.clear();
-        watching.clear();
-        for (BlockData block : blocks) {
-            block.commit();
-        }
+        registry.commitAll();
     }
 
     public static void commit(com.elmakers.mine.bukkit.api.block.BlockData block)
     {
-        BlockData currentState = modified.get(block.getId());
-        if (currentState == block)
-        {
-            modified.remove(block.getId());
-        }
-        block.commit();
-        reflective.remove(block.getId());
-        breakable.remove(block.getId());
+        registry.commit(block);
     }
 
     @Override
@@ -340,45 +316,21 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     protected static void removeFromModified(BlockData block) {
-        removeFromModified(block, block.getPriorState());
-        block.unlink();
+        registry.removeFromModified(block);
     }
 
     protected static void removeFromModified(BlockData block, BlockData priorState)
     {
-        BlockData currentState = modified.get(block.getId());
-        if (currentState == block)
-        {
-            if (priorState == null)
-            {
-                modified.remove(block.getId());
-            }
-            else
-            {
-                modified.put(block.getId(), priorState);
-            }
-        }
+        registry.removeFromModified(block, priorState);
     }
 
     protected static void removeFromWatched(BlockData block) {
-        removeFromWatched(block, block.getPriorState());
-        block.unlink();
+        registry.removeFromWatched(block);
     }
 
     protected static void removeFromWatched(BlockData block, BlockData priorState)
     {
-        BlockData currentState = watching.get(block.getId());
-        if (currentState == block)
-        {
-            if (priorState == null)
-            {
-                watching.remove(block.getId());
-            }
-            else
-            {
-                watching.put(block.getId(), priorState);
-            }
-        }
+        registry.removeFromWatched(block, priorState);
     }
 
     @Override
@@ -407,10 +359,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         // Remove any tagged metadata
         if (undoBreakable) {
-            breakable.remove(undoBlock.getId());
+            registry.removeBreakable(undoBlock);
         }
         if (undoReflective) {
-            reflective.remove(undoBlock.getId());
+            registry.removeReflective(undoBlock);
         }
 
         if (undoBlock.undo(applyPhysics)) {
@@ -905,17 +857,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     public static BlockData getBlockData(Location location) {
-        long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(location.getBlock());
-        BlockData modifiedBlock = modified.get(blockId);
-        if (modifiedBlock != null) {
-            return modifiedBlock;
-        }
-        BlockData watchedBlock = watching.get(blockId);
-        if (watchedBlock != null) {
-            return watchedBlock;
-        }
-
-        return null;
+        return registry.getBlockData(location);
     }
 
     public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Location location) {
@@ -923,20 +865,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return blockData == null ? null : blockData.getUndoList();
     }
 
-    public static Map<Long, BlockData> getModified() {
-        return modified;
-    }
-
-    public static Map<Long, BlockData> getWatching() {
-        return watching;
-    }
-
-    public static Map<Long, Double> getReflective() {
-        return reflective;
-    }
-
-    public static Map<Long, Double> getBreakable() {
-        return breakable;
+    public static UndoRegistry getRegistry() {
+        return registry;
     }
 
     @Override
@@ -985,42 +915,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
         blockComparator.setAttachables(attachables);
         Collections.sort(blockList, blockComparator);
-    }
-
-    public static boolean isReflective(Block block) {
-        return block != null && reflective.containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
-    }
-
-    public static boolean isBreakable(Block block) {
-        return block != null && breakable.containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
-    }
-
-    public static Double getReflective(Block block) {
-        return block == null ? null : reflective.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
-    }
-
-    public static Double getBreakable(Block block) {
-        return block == null ? null : breakable.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
-    }
-
-    public static void registerReflective(Block block, double amount) {
-        if (block == null) return;
-        reflective.put(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block), amount);
-    }
-
-    public static void registerBreakable(Block block, double amount) {
-        if (block == null) return;
-        breakable.put(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block), amount);
-    }
-
-    public static void unregisterBreakable(Block block) {
-        if (block == null) return;
-        breakable.remove(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
-    }
-
-    public static void unregisterReflective(Block block) {
-        if (block == null) return;
-        reflective.remove(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
     }
 
     public double getUndoSpeed() {

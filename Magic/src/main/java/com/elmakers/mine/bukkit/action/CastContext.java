@@ -1082,22 +1082,22 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public boolean isBreakable(Block block) {
-        return com.elmakers.mine.bukkit.block.UndoList.isBreakable(block);
+        return com.elmakers.mine.bukkit.block.UndoList.getRegistry().isBreakable(block);
     }
 
     @Override
     public Double getBreakable(Block block) {
-        return com.elmakers.mine.bukkit.block.UndoList.getBreakable(block);
+        return com.elmakers.mine.bukkit.block.UndoList.getRegistry().getBreakable(block);
     }
 
     @Override
     public void clearBreakable(Block block) {
-        com.elmakers.mine.bukkit.block.UndoList.unregisterBreakable(block);
+        com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterBreakable(block);
     }
 
     @Override
     public void clearReflective(Block block) {
-        com.elmakers.mine.bukkit.block.UndoList.unregisterReflective(block);
+        com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(block);
     }
 
     @Override
@@ -1106,7 +1106,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         if (targetingSpell != null && targetingSpell.isReflective(block.getType())) {
             return true;
         }
-        return com.elmakers.mine.bukkit.block.UndoList.isReflective(block);
+        return com.elmakers.mine.bukkit.block.UndoList.getRegistry().isReflective(block);
     }
 
     @Override
@@ -1117,18 +1117,18 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             return 1.0;
         }
 
-        return com.elmakers.mine.bukkit.block.UndoList.getReflective(block);
+        return com.elmakers.mine.bukkit.block.UndoList.getRegistry().getReflective(block);
     }
 
     @Override
     public void registerBreakable(Block block, double breakable) {
-        com.elmakers.mine.bukkit.block.UndoList.registerBreakable(block, breakable);
+        com.elmakers.mine.bukkit.block.UndoList.getRegistry().registerBreakable(block, breakable);
         undoList.setUndoBreakable(true);
     }
 
     @Override
     public void registerReflective(Block block, double reflectivity) {
-        com.elmakers.mine.bukkit.block.UndoList.registerReflective(block, reflectivity);
+        com.elmakers.mine.bukkit.block.UndoList.getRegistry().registerReflective(block, reflectivity);
         undoList.setUndoReflective(true);
     }
 
