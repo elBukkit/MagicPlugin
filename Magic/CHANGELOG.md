@@ -7,6 +7,7 @@
  - Blink and other teleport actions will respect WorldGuard exit deny regions (can be turned off via require_exit parameter)
  - Some additional protection against magic fire spread (esp. Grenade Level 2) not undoing properly.
    You may still lose some leaves due to untracked leaf decay when surrounding blocks burn.
+ - Wands with chest mode and quick cast will cast spells on clicking in the spell inventory
 
 ## 6.7.2
 
