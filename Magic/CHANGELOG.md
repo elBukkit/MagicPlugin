@@ -5,6 +5,8 @@
  - EffectLib memory optimizations
  - Fix Pollinate double-high flowers
  - Blink and other teleport actions will respect WorldGuard exit deny regions (can be turned off via require_exit parameter)
+ - Some additional protection against magic fire spread (esp. Grenade Level 2) not undoing properly.
+   You may still lose some leaves due to untracked leaf decay when surrounding blocks burn.
 
 ## 6.7.2
 

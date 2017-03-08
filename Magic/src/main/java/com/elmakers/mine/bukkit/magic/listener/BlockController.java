@@ -31,13 +31,22 @@ import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 public class BlockController implements Listener {
     private final MagicController controller;
     private boolean undoOnWorldSave = false;
     private int creativeBreakFrequency = 0;
+
+    // This is used only for the BlockBurn event, in other cases we get a source block to check.
+    final static List<BlockFace> blockBurnDirections = Arrays.asList(
+            BlockFace.NORTH, BlockFace.SOUTH,
+            BlockFace.EAST, BlockFace.WEST,
+            BlockFace.UP, BlockFace.DOWN
+    );
 
     public BlockController(MagicController controller) {
         this.controller = controller;
@@ -187,6 +196,19 @@ public class BlockController implements Listener {
     public void onBlockBurn(BlockBurnEvent event) {
         Block targetBlock = event.getBlock();
         UndoList undoList = controller.getPendingUndo(targetBlock.getLocation());
+        if (undoList == null)
+        {
+            // This extra check should strictly not be necessary, as we should be tracking blocks adjacent to fire
+            // However, something seems to go wrong there with overlapping spell casts
+            for (BlockFace face : blockBurnDirections) {
+                Block sourceBlock = targetBlock.getRelative(face);
+                if (sourceBlock.getType() != Material.FIRE) continue;
+                undoList = controller.getPendingUndo(sourceBlock.getLocation());
+                if (undoList != null) {
+                    break;
+                }
+            }
+        }
         if (undoList != null)
         {
             undoList.add(targetBlock);
