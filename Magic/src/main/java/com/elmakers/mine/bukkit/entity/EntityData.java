@@ -49,8 +49,6 @@ import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Rabbit;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
@@ -93,7 +91,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected int fireTicks;
     
     protected DyeColor dyeColor;
-    protected SkeletonType skeletonType;
     protected Ocelot.Type ocelotType;
     protected Rabbit.Type rabbitType = null;
     
@@ -194,9 +191,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             item = droppedItem.getItemStack();
         } else if (entity instanceof Horse) {
             extraData = new EntityHorseData((Horse)entity);
-        } else if (entity instanceof Skeleton) {
-            Skeleton skeleton = (Skeleton)entity;
-            skeletonType = skeleton.getSkeletonType();
         } else if (entity instanceof Villager) {
             extraData = new EntityVillagerData((Villager)entity);
         } else if (entity instanceof Wolf) {
@@ -280,9 +274,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             else if (type == EntityType.AREA_EFFECT_CLOUD) {
                 extraData = new EntityAreaEffectCloudData(parameters, controller);
             }
-            else if (type == EntityType.SKELETON && parameters.contains("skeleton_type")) {
-                skeletonType = Skeleton.SkeletonType.valueOf(parameters.getString("skeleton_type").toUpperCase());
-            }
             else if (type == EntityType.OCELOT && parameters.contains("ocelot_type")) {
                 ocelotType = Ocelot.Type.valueOf(parameters.getString("ocelot_type").toUpperCase());
             }
@@ -291,9 +282,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
             else if (type == EntityType.ZOMBIE) {
                 EntityZombieData zombieData = new EntityZombieData();
-                if (parameters.contains("villager_profession")) {
-                    zombieData.profession = Villager.Profession.valueOf(parameters.getString("villager_profession").toUpperCase());
-                }
                 zombieData.isBaby = isBaby;
                 extraData = zombieData;
             }
@@ -540,9 +528,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Item) {
             Item droppedItem = (Item)entity;
             droppedItem.setItemStack(item);
-        } else if (entity instanceof Skeleton && skeletonType != null) {
-            Skeleton skeleton = (Skeleton)entity;
-            skeleton.setSkeletonType(skeletonType);
         } else if (entity instanceof Wolf && dyeColor != null) {
             Wolf wolf = (Wolf)entity;
             wolf.setCollarColor(dyeColor);
@@ -728,9 +713,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (type == null) return "Unknown";
 
         String name = type.name();
-        if (skeletonType != null) {
-            name += ":" + skeletonType;
-        } else if (ocelotType != null) {
+        if (ocelotType != null) {
             name += ":" + ocelotType;
         } else if (rabbitType != null) {
             name += ":" + rabbitType;
