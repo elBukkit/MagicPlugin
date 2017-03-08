@@ -235,7 +235,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             return false;
         }
         Material material = testBlock.getType();
-        if (material.isBurnable() || (materials != null && materials.contains(material)))
+        if (materials != null && materials.contains(material))
         {
             BlockData newBlock = new com.elmakers.mine.bukkit.block.BlockData(testBlock);
             if (contain(newBlock))

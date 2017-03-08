@@ -198,8 +198,20 @@ public class BlockController implements Listener {
         UndoList undoList = controller.getPendingUndo(targetBlock.getLocation());
         if (undoList == null)
         {
-            // This extra check should strictly not be necessary, as we should be tracking blocks adjacent to fire
-            // However, something seems to go wrong there with overlapping spell casts
+            // This extra check is necessary to prevent a very specific condition that is not necessarily unique to
+            // burning, but happens much more frequently. This may be a sign that the attachment-watching code in UndoList
+            // needs review, and perhaps in general instead of watching neighbor blocks we should check all neighbor blocks
+            // for block flow and attachable break events.
+            //
+            // The specific problem here has to do with overlapping spells with paced undo. Take 2 Fire casts as an example:
+            // 1) Fire A casts and begins to burn some blocks, which turn to air
+            // 2) Fire B casts and registers nearby combustible blocks.
+            // 3) Some blocks already burnt by Fire A are adjacent to blocks burning from Fire B, and are not registered
+            //    for watching because they are currently air and non-combustible.
+            // 4) Fire A rolls back, restoring blocks that were air when Fire B cast to something combustible
+            // 5) Rolled back blocks from Fire A start to burn, but are not tracked since they were registered for
+            //    watching by Fire B.
+            // 6) Fire B rolls back, leaving burning blocks that continue to spread.
             for (BlockFace face : blockBurnDirections) {
                 Block sourceBlock = targetBlock.getRelative(face);
                 if (sourceBlock.getType() != Material.FIRE) continue;
