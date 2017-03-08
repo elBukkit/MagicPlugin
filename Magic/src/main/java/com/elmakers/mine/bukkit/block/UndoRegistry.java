@@ -15,13 +15,6 @@ public class UndoRegistry {
     protected Map<Long, Double> reflective = new HashMap<>();
     protected Map<Long, Double> breakable = new HashMap<>();
 
-    public BlockData registerModified(Block block)
-    {
-        BlockData blockData = new com.elmakers.mine.bukkit.block.BlockData(block);
-        registerModified(blockData);
-        return blockData;
-    }
-
     public void registerModified(BlockData blockData)
     {
         BlockData priorState = modified.get(blockData.getId());
@@ -123,11 +116,16 @@ public class UndoRegistry {
 
     public BlockData getBlockData(Location location) {
         long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(location.getBlock());
+
+        // Prefer to return blocks that are watched by lists which are going to auto-undo.
+        BlockData watchedBlock = watching.get(blockId);
+        if (watchedBlock != null && watchedBlock.getUndoList() != null && watchedBlock.getUndoList().isScheduled()) {
+            return watchedBlock;
+        }
         BlockData modifiedBlock = modified.get(blockId);
         if (modifiedBlock != null) {
             return modifiedBlock;
         }
-        BlockData watchedBlock = watching.get(blockId);
         if (watchedBlock != null) {
             return watchedBlock;
         }
