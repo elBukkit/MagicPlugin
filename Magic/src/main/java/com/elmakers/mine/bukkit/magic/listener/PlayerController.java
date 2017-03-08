@@ -486,7 +486,7 @@ public class PlayerController implements Listener {
 
         // Check for enchantment table click
         Block clickedBlock = event.getClickedBlock();
-        if (wand.hasSpellProgression() && controller.isSPEnabled() && clickedBlock != null && clickedBlock.getType() != Material.AIR && enchantBlockMaterial != null && enchantBlockMaterial.is(clickedBlock))
+        if (wand.hasSpellProgression() && clickedBlock != null && clickedBlock.getType() != Material.AIR && enchantBlockMaterial != null && enchantBlockMaterial.is(clickedBlock))
         {
             Spell spell = null;
             if (player.isSneaking())

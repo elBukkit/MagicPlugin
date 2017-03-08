@@ -2,6 +2,8 @@
 
 ## 6.8
 
+ - The enchantment table will still show the spell shop if SP is disabled. 
+   Set enchant_block: "" in config.yml if you don't want this.
  - EffectLib memory optimizations
  - Fix Pollinate double-high flowers
  - Blink and other teleport actions will respect WorldGuard exit deny regions (can be turned off via require_exit parameter)
