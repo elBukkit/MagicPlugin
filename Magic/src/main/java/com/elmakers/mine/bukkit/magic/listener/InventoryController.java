@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -372,7 +373,7 @@ public class InventoryController implements Listener {
                     }
 
                     // Prevent clicking any non-skill item when a skill inventory is open
-                    if (wandMode == WandMode.SKILLS && !Wand.isSkill(clickedItem)) {
+                    if (wandMode == WandMode.SKILLS && clickedItem != null && clickedItem.getType() != Material.AIR && !Wand.isSkill(clickedItem)) {
                         event.setCancelled(true);
                     }
                 }
