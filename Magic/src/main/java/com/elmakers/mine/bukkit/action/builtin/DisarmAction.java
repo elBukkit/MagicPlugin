@@ -66,7 +66,7 @@ public class DisarmAction extends BaseSpellAction
         super.prepare(context, parameters);
 		keepInInventory = parameters.getBoolean("keep_in_inventory", false);
 		minSlot = parameters.getInt("min_slot", Wand.HOTBAR_SIZE);
-		maxSlot = parameters.getInt("max_slot", Wand.INVENTORY_SIZE + Wand.HOTBAR_SIZE- 1);
+		maxSlot = parameters.getInt("max_slot", Wand.PLAYER_INVENTORY_SIZE - 1);
     }
 
 	@Override
