@@ -120,6 +120,7 @@ public class WandOrganizer {
 		currentInventoryCount = 0;
 
 		// Organize favorites
+        WandMode mode = wand.getMode();
         Set<String> addedFavorites = new HashSet<>();
         List<String> favoriteList = new ArrayList<>();
 		for (List<String> favorites : favoriteSpells.descendingMap().values()) {
@@ -136,7 +137,9 @@ public class WandOrganizer {
                 int slot = getNextSlot();
                 spells.put(favorite, slot);
             }
-            nextPage();
+            if (mode != WandMode.CHEST) {
+                nextPage();
+            }
         } else {
             addedFavorites.clear();
         }
@@ -145,7 +148,7 @@ public class WandOrganizer {
 		for (Collection<String> spellGroup : groupedSpells.values()) {
 
 			// Start a new inventory for a new group if the previous inventory is over 2/3 full
-			if (currentInventoryCount > inventoryOrganizeNewGroupSize) {
+			if (mode != WandMode.CHEST && currentInventoryCount > inventoryOrganizeNewGroupSize) {
                 nextPage();
 			}
 
