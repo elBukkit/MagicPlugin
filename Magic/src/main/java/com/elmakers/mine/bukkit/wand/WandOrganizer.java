@@ -24,11 +24,11 @@ public class WandOrganizer {
 	private final Wand wand;
 	private final Mage mage;
 
-	protected final static int inventoryOrganizeSize = 22;
-	protected final static int inventoryOrganizeNewGroupSize = 16;
+	protected final static int inventoryOrganizeBuffer = 4;
+	protected final static int inventoryOrganizeNewGroupBuffer = 8;
 	protected final static int favoriteCastCountThreshold = 20;
-    protected final static int favoriteCountThreshold = 8;
-    protected final static int favoritePageSize = 16;
+    protected final static int favoriteCountBuffer = 9;
+    protected final static int favoritePageBuffer = 4;
 
 	private int currentInventoryIndex = 0;
 	private int currentInventoryCount = 0;
@@ -123,6 +123,7 @@ public class WandOrganizer {
         WandMode mode = wand.getMode();
         Set<String> addedFavorites = new HashSet<>();
         List<String> favoriteList = new ArrayList<>();
+        int favoritePageSize = wand.getInventorySize() - favoritePageBuffer;
 		for (List<String> favorites : favoriteSpells.descendingMap().values()) {
             if (addedFavorites.size() >= favoritePageSize) break;
 			for (String spellName : favorites) {
@@ -132,12 +133,12 @@ public class WandOrganizer {
 			}
 		}
 
-        if (addedFavorites.size() > favoriteCountThreshold) {
+        if (addedFavorites.size() > 0) {
             for (String favorite : favoriteList) {
                 int slot = getNextSlot();
                 spells.put(favorite, slot);
             }
-            if (mode != WandMode.CHEST) {
+            if (mode != WandMode.CHEST && addedFavorites.size() > wand.getInventorySize() - favoriteCountBuffer) {
                 nextPage();
             }
         } else {
@@ -145,6 +146,7 @@ public class WandOrganizer {
         }
 
 		// Add unused spells by category
+        int inventoryOrganizeNewGroupSize = wand.getInventorySize() - inventoryOrganizeNewGroupBuffer;
 		for (Collection<String> spellGroup : groupedSpells.values()) {
 
 			// Start a new inventory for a new group if the previous inventory is over 2/3 full
@@ -223,7 +225,7 @@ public class WandOrganizer {
     }
 
     protected int getNextSlot() {
-        return getNextSlot(inventoryOrganizeSize);
+        return getNextSlot(wand.getInventorySize() - inventoryOrganizeBuffer);
     }
 
     protected int getNextSlot(int nextPageSize) {
