@@ -1,12 +1,7 @@
 # TODO
 
 ## 6.8
- 
- - Bug with swapping a wand to offhand while inventory is open and no cycle action set. Need to always cancel that action.
- 
- - Heroes:
-   - Integration with character attribute modifiers. Would be nice to expand Magic's power system to fit this better
-
+  
 ## 7.0
 
  - Refactor MageProperties to be contained rather than inherited?
@@ -19,8 +14,9 @@
  - Option to filter spells that show on wand by what's available on its current path
  - Might need to add yet another category of spells to paths, those that are allowed but never appear in the spell shop
 
-## Heroes Issues
+## Heroes
 
+ - Integration with character attribute modifiers. Would be nice to expand Magic's power system to fit this better
  - Heroes skill configs don't seem to work on first run?
 
 ## High-Priority
@@ -29,7 +25,6 @@
 ## Not so High-Priority
  
  - Adding spells to wands should try to preserve a few spaces of free space on each page (don't rely on inventory.addItem)
- - Add SendTitle action
  - Some way for messages to go to the action bar? Maybe some escape code?
  - Message on hotbar switch (requested)
  - Aliases don't work with levels 

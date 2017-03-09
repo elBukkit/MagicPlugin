@@ -16,6 +16,9 @@ kill:
           ignore_result: true
         - class: CustomProjectile
           actions:
+          - class: Message
+          - class: Delay
+            delay: 1000
           - class: Damage
     effects:
         cast:
@@ -70,6 +73,9 @@ kill:
         velocity: 5
         interval: 250
         delay: 3000
+        message: "&aAvada Kedavra!"
+        message_type: title
+        message_target: true
     costs:
         mana: 150
 
