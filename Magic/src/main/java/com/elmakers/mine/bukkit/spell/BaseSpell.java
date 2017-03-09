@@ -1546,6 +1546,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         costReduction = (float)parameters.getDouble("cost_reduction", 0);
         consumeReduction = (float)parameters.getDouble("consume_reduction", 0);
         cooldownReduction = (float)parameters.getDouble("cooldown_reduction", 0);
+        if (parameters.getBoolean("free", false)) {
+            costReduction = 2;
+            consumeReduction = 2;
+        }
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
         cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
