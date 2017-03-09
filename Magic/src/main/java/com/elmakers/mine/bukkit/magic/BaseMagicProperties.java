@@ -383,13 +383,13 @@ public class BaseMagicProperties implements MagicProperties {
                 case "organize":
                     if (organizeInventory()) {
                         modified = true;
-                        sendMessage(getMessage("reorganized"));
+                        sendMessage("reorganized");
                     }
                     break;
                 case "alphabetize":
                     if (alphabetizeInventory()) {
                         modified = true;
-                        sendMessage(getMessage("alphabetized"));
+                        sendMessage("alphabetized");
                     }
                     break;
 
