@@ -1401,4 +1401,10 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
     }
+
+    @SuppressWarnings("deprecation")
+    public static void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut) {
+        // TODO: New Player.sendTitle in 1.11
+        player.sendTitle(title, subTitle);
+    }
 }
