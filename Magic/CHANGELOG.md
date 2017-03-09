@@ -12,6 +12,7 @@
  - Wands with chest mode and quick cast will cast spells on clicking in the spell inventory
  - Fix Torch/SuperTorch insta-breaking at close range
  - Throttle offhand casts so it's not so weird and spammy
+ - Fix some edge-cases uses of location offset parameters (otx, oty) that were breaking the Wolf House since .. a long time
 
 ## 6.7.2
 

@@ -223,14 +223,7 @@ public class Targeting {
         this.source = source.clone();
     }
 
-    public Target target(CastContext context, double range)
-    {
-        if (source == null)
-        {
-            source = context.getEyeLocation();
-        }
-        target = findTarget(context, range);
-
+    public Target overrideTarget(CastContext context, Target target) {
         if (targetLocationOffset != null) {
             target.add(targetLocationOffset);
         }
@@ -244,6 +237,17 @@ public class Targeting {
                 target.setWorld(ConfigurationUtils.overrideWorld(targetLocationWorldName, targetWorld, context.getController().canCreateWorlds()));
             }
         }
+        return target;
+    }
+
+    public Target target(CastContext context, double range)
+    {
+        if (source == null)
+        {
+            source = context.getEyeLocation();
+        }
+        target = findTarget(context, range);
+        target = overrideTarget(context, target);
 
         Mage mage = context.getMage();
         if (mage != null && mage.getDebugLevel() > 15)

@@ -247,11 +247,11 @@ public abstract class TargetingSpell extends BaseSpell {
         TargetType targetType = targeting.getTargetType();
         boolean isBlock = targetType == TargetType.BLOCK || targetType == TargetType.SELECT;
         if (!isBlock && targetEntity != null) {
-            return new Target(source, targetEntity);
+            return targeting.overrideTarget(currentCast, new Target(source, targetEntity));
         }
 
         if (targetType != TargetType.SELF && targetLocation != null) {
-            return new Target(source, targetLocation.getBlock());
+            return targeting.overrideTarget(currentCast, new Target(source, targetLocation.getBlock()));
         }
 
         Target target = targeting.target(currentCast, getMaxRange());
