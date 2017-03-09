@@ -114,7 +114,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             "enchant_count", "max_enchant_count",
             "quick_cast", "left_click", "right_click", "drop", "swap",
 			"block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
-			"unique", "track", "invulnerable", "immortal"
+			"unique", "track", "invulnerable", "immortal", "inventory_rows"
     );
 
     private final static Random random = new Random();
@@ -171,6 +171,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     private boolean manualQuickCastDisabled = false;
     private boolean isInOffhand = false;
 	private boolean hasId = false;
+	private int inventoryRows = 1;
 	
 	private WandAction leftClickAction = WandAction.NONE;
 	private WandAction rightClickAction = WandAction.NONE;
@@ -977,7 +978,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			}
 		}
 		if (!added) {
-			Inventory newInventory = CompatibilityUtils.createInventory(null, INVENTORY_SIZE, "Wand");
+			Inventory newInventory = CompatibilityUtils.createInventory(null, getInventorySize(), "Wand");
 			newInventory.addItem(itemStack);
 			inventories.add(newInventory);
 		}
@@ -986,7 +987,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     protected @Nonnull Inventory getInventoryByIndex(int inventoryIndex) {
         // Auto create
         while (inventoryIndex >= inventories.size()) {
-            inventories.add(CompatibilityUtils.createInventory(null, INVENTORY_SIZE, "Wand"));
+            inventories.add(CompatibilityUtils.createInventory(null, getInventorySize(), "Wand"));
         }
 
         return inventories.get(inventoryIndex);
@@ -1004,7 +1005,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             return hotbars.get(slot / HOTBAR_INVENTORY_SIZE);
         }
 
-        int inventoryIndex = (slot - hotbarSize) / INVENTORY_SIZE;
+        int inventoryIndex = (slot - hotbarSize) / getInventorySize();
         return getInventoryByIndex(inventoryIndex);
     }
 
@@ -1015,7 +1016,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             return slot % HOTBAR_INVENTORY_SIZE;
         }
 
-        return ((slot - hotbarSize) % INVENTORY_SIZE);
+        return ((slot - hotbarSize) % getInventorySize());
     }
 
 	protected void addToInventory(ItemStack itemStack, Integer slot) {
@@ -1489,6 +1490,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		renameDescription = wandConfig.getBoolean("rename_description");
 		enchantCount = wandConfig.getInt("enchant_count");
 		maxEnchantCount = wandConfig.getInt("max_enchant_count");
+		inventoryRows = wandConfig.getInt("inventory_rows", 5);
+		if (inventoryRows <= 0) inventoryRows = 1;
 
 		if (wandConfig.contains("effect_particle")) {
 			effectParticle = ConfigurationUtils.toParticleEffect(wandConfig.getString("effect_particle"));
@@ -2498,7 +2501,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	protected Inventory getOpenInventory() {
 		while (openInventoryPage >= inventories.size()) {
-			inventories.add(CompatibilityUtils.createInventory(null, INVENTORY_SIZE, "Wand"));
+			inventories.add(CompatibilityUtils.createInventory(null, getInventorySize(), "Wand"));
 		}
 		return inventories.get(openInventoryPage);
 	}
@@ -2520,7 +2523,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		for (int i = 0; i < displayInventory.getSize(); i++) {
 			ItemStack playerItem = displayInventory.getItem(i);
 			String itemSpellKey = getSpell(playerItem);
-			if (!updateSlot(i + openInventoryPage * INVENTORY_SIZE, playerItem)) {
+			if (!updateSlot(i + openInventoryPage * getInventorySize(), playerItem)) {
 				playerItem = new ItemStack(Material.AIR);
 				displayInventory.setItem(i, playerItem);
 			} else if (itemSpellKey != null) {
@@ -2595,7 +2598,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		Inventory openInventory = getOpenInventory();
 		for (int i = 0; i < openInventory.getSize(); i++) {
             ItemStack playerItem = playerInventory.getItem(i + HOTBAR_SIZE);
-            if (!updateSlot(i + hotbarOffset + openInventoryPage * INVENTORY_SIZE, playerItem)) {
+            if (!updateSlot(i + hotbarOffset + openInventoryPage * getInventorySize(), playerItem)) {
                 playerItem = new ItemStack(Material.AIR);
                 playerInventory.setItem(i + HOTBAR_SIZE, playerItem);
             }
@@ -5029,6 +5032,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
 	public int getInventorySize() {
+    	WandMode mode = getMode();
+    	if (mode == WandMode.CHEST || mode == WandMode.SKILLS) {
+    		return 9 * inventoryRows;
+		}
     	return INVENTORY_SIZE;
 	}
 }
