@@ -224,7 +224,7 @@ public class WandOrganizer {
     }
 
     protected int getNextSlot(int nextPageSize) {
-        int slot = wand.getHotbarSize() + currentInventoryCount + (currentInventoryIndex * nextPageSize);
+        int slot = wand.getHotbarSize() + currentInventoryCount + (currentInventoryIndex * wand.getInventorySize());
         currentInventoryCount++;
         if (currentInventoryCount > nextPageSize) {
             nextPage();
