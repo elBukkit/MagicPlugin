@@ -25,10 +25,9 @@ load_default_mobs: true
 # Set to false to skip loading defaults/items.defaults.yml entirely.
 load_default_items: true
 
-# Set this to true to write default configs out to the defaults folder.
-# You may need to /magic load in game for config.defaults.yml to show up
-# (Chicken+Egg problem, *may* fix in the future)
-save_default_configs: true
+# Give new players a wand when they join.
+# e.g. welcome_wand: beginner
+welcome_wand:
 
 # Whether or not to show any messages (in chat)
 show_messages: true
@@ -55,9 +54,6 @@ sounds: true
 # Whether wands can be crafted on a crafting table
 enable_crafting: true
 
-# Whether wands can be upgraded on an enchanting table
-enable_enchanting: true
-
 # Enable spell upgrades. Turning this off will make all of the upgraded spells
 # unobtainable.
 enable_spell_upgrades: true
@@ -71,9 +67,6 @@ enable_automatic_spell_upgrades: true
 
 # Automatically upgrade wand paths when a spell upgrades or progresses
 enable_automatic_path_upgrades: true
-
-# Whether wands can be combined on an anvil
-enable_combining: false
 
 # Set this to 1 to just turn costs off, or you can use it to scale costs down.
 cost_reduction: 0.0
@@ -95,14 +88,6 @@ cast_console_cooldown_reduction: 0.0
 # Set the to 1.0 to use normal wand power, 0.0 to ignore wand power.
 cast_command_power_multiplier: 0.0
 cast_console_power_multiplier: 0.0
-
-# Whether renaming on an anvil will also clear the description
-# In the future, it may be possible to change the description on
-# an anvil.
-anvil_rename_clears_description: false
-
-# Whether or not using a wand on an anvil will organize its inventory
-enable_organizing: true
 
 # Set this to 0 to disable BStats metrics collection
 metrics_level: 5
@@ -142,9 +127,11 @@ wand_upgrade_key: "wand_upgrade"
 #
 wand_self_destruct_key: ""
 
-# Wand appearance
+# Wand appearance, used when no icon is specified in a wand template config
 wand_item: wood_hoe
 wand_upgrade_item: stick
+
+# Wand FX locations, change to move from where spell casts appear to originate
 wand_location_offset: 0.5
 wand_location_offset_vertical: 0
 
@@ -166,13 +153,16 @@ lore_wrap_limit: 32
 
 # This will hide all flags on a wand.
 # If you want enchantments to show, use
-# wand_hide_flags; 62
+# wand_hide_flags: 62
 # See: http://minecraft.gamepedia.com/Tutorials/Command_NBT_Tags
 wand_hide_flags: 63
 
 # Set this to true to turn on material brush glow.
 brush_glow: false
 brush_item_glow: true
+
+# Set this to true to turn on spell glow. This will apply a hidden luck enchantment to spells.
+spell_glow: false
 
 # Set this to have the hotbar show what spells are castable
 live_hotbar: true
@@ -182,7 +172,7 @@ live_hotbar_cooldown: true
 
 # Set this to true to add the cooldown timers on skills
 # This will involve scanning players' hotbars all the time, even
-# when not holding wands.
+# when not holding an active wand.
 live_hotbar_skills: false
 
 # Turn this off if you want to use Command actions that do damage
@@ -234,15 +224,8 @@ fill_wands: false
 # 1 would be only the level 1 versions
 fill_wand_level: 0
 
-# Players keep their wands when they die
-keep_wands_on_death: false
-
 # Players can remove spells from their wands
 allow_spell_dropping: false
-
-# Give new players a wand when they join.
-# e.g. welcome_wand: beginner
-welcome_wand:
 
 # Prefer alternate modes for wand mechanics.
 # Possible vales are:
@@ -263,17 +246,11 @@ drop_changes_pages: false
 
 # When wands are in "inventory" mode, players' inventories will be backed up
 # so that if the server crashes it is not lost.
-# The same is done for XP.
 # You can turn this feature off by setting this to false.
 backup_player_inventory: true
 
 # The default wand, given when using "/wand"
 default_wand: wand
-
-# The default enchanting path.
-# The default default is "master" for backwards compatibility reasons
-# This means that wands prior to 3.3 will be counted as Master wands regardless of type.
-default_wand_path:
 
 # How to display Mana. Options are "bar", "number", "durability", "glow" and "none"
 mana_display: bar
@@ -296,14 +273,17 @@ sp_max: 9999
 # This controls what players will see when interacting with an enchantment table
 enchant_click: spellshop
 enchant_sneak_click: upgrades
+
+# Set this to empty to prevent the enchantment table from showing players the spell shop defined above
+# enchant_block: ""
 enchant_block: enchantment_table
 
 # The default cast location if not holding a wand. Options are "mainhand", "offhand" and "eyes"
 default_cast_location: mainhand
 # This offsets left or right from the center of the body
-default_cast__location_offset: 0.5
+default_cast_location_offset: 0.5
 # This offsets from the eyes, the result should be around the main hand location
-default_cast__location_offset_vertical: -0.4
+default_cast_location_offset_vertical: -0.4
 
 # Control whether wands regenerate mana while they are not being held
 regenerate_while_inactive: true
@@ -330,7 +310,7 @@ player_data_store:
 protect_locked: true
 
 # Visible particle max range
-# Descrease this if you find you have client or server performance issues
+# Decrease this if you find you have client or server performance issues
 # Related to particle range
 particle_range: 48
 
@@ -565,25 +545,31 @@ hitboxes:
 #   sheep: 1.25, 1.25, 1.25
 #   cow: 1.5, 1.5, 1.5
 
+
+# Some spells, like teleport and velocity based spells, will not function above max world height
+# These can be configured per world type (nether, normal, the_end)
+# The nether is here so we can specify the "roof" of the nether, which is 1/2 the actual world height
 max_height:
   nether: 127
 
 ## Work-in-Progress or not-fully-functional options
 
 # Whether or not to show (or broadcast) cast messages as holotext
+# (This feature was WIP and never really worked)
 show_cast_holotext: false
 cast_holotext_range: 0
 
 # Whether or not to show (or broadcast) spell activate holotext
+# (This feature was WIP and never really worked)
 show_activate_holotext: false
 activate_holotext_range: 0
 
 ## Deprecated configuration options
 
-# This hack should not be required in 1.8 and up
-# This disables the item drag event interceptor
+# These hacks should not be required in 1.8 and up
+# This enables the item drag event interceptor
 enable_custom_item_hacks: false
-# This disables wands ejecting themselves in creative mode
+# This enables wands ejecting themselves in creative mode
 enable_creative_mode_ejecting: false
 
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
@@ -593,9 +579,34 @@ wand_item_enchantable:
 # If set to non-zero, represents a time (in milliseconds) after which all spells will be reversed.
 auto_undo: 0
 
-# Set this to true to turn on spell glow. May not work on all server versions.
-spell_glow: false
-
 # Throttle TNT explosions
 # This is built-in to Spigot, so generally not needed here.
 max_tnt_per_chunk: 0
+
+# The default enchanting path.
+# Paths should be defined per-wand, though this could be used to "update" old wands with no
+# path to some specific path.
+default_wand_path:
+
+# Set this to false to not write default configs out to the defaults folder.
+save_default_configs: true
+
+# Whether wands can be upgraded on an enchanting table
+# This does not affect spellshop-based progression, but rather wands being enchanted via vanilla
+# mechanics, something that no longer works.
+enable_enchanting: false
+
+# Whether wands can be combined on an anvil
+enable_combining: false
+
+# Whether renaming on an anvil will also clear the description
+# In the future, it may be possible to change the description on
+# an anvil.
+anvil_rename_clears_description: false
+
+# Whether or not using a wand on an anvil will organize its inventory
+enable_organizing: true
+
+# Players keep their wands when they die
+# This is better confrolled via the "keep" property on wand configs.
+keep_wands_on_death: false
