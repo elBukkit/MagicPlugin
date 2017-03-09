@@ -551,6 +551,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onWandDescribe(CommandSender sender, Player player, String[] parameters) {
+		// Force-save wand data so it is up to date
+		Mage mage = api.getMage(player);
+		Wand activeWand = mage.getActiveWand();
+		if (activeWand != null) {
+			activeWand.saveState();
+		}
+
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (itemInHand == null) {
             if (sender != player) {
