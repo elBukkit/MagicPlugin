@@ -514,10 +514,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
      */
     @Override
     public void sendMessage(String message) {
-        if (message == null || message.length() == 0 || quiet) return;
+        if (message == null || message.length() == 0 || quiet || !controller.showMessages()) return;
+
+        Player player = getPlayer();
+        if (message.startsWith("a:") && player != null) {
+            CompatibilityUtils.sendActionBar(player, message.substring(2));
+            return;
+        }
+        if (message.startsWith("t:") && player != null) {
+            CompatibilityUtils.sendTitle(player, message.substring(2), null, -1, -1, -1);
+            return;
+        }
 
         CommandSender sender = getCommandSender();
-        if (sender != null && controller.showMessages()) {
+        if (sender != null) {
             sender.sendMessage(controller.getMessagePrefix() + message);
         }
     }

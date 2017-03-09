@@ -20,6 +20,7 @@
  - Fix wand dupe issue with the swap item button when the wand has no handler for swap
  - Add title and action bar support to Message action, add fun title to Kill spell
  - Add hotbar_changed message (by request), will show on hotbar change, but empty by default
+ - Add support for sending any message as a title or action bar message with "t:" or "a:' prefixes in messages.yml
 
 ## 6.7.2
 
