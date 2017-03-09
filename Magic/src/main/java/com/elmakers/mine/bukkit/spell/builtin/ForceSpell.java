@@ -80,7 +80,7 @@ public class ForceSpell extends TargetingSpell
 			}
 			
 			selectTarget(checkTarget);
-			
+			activate();
 			return SpellResult.TARGET_SELECTED;
 		}
 
@@ -116,6 +116,7 @@ public class ForceSpell extends TargetingSpell
 		if (targetEntity != null)
 		{
             releaseTarget();
+            deactivate();
 			return true;
 		}
 		

@@ -846,7 +846,7 @@ blind_trap:
     effect_blind: 1
     duration: 10000
     
-force:
+force2:
     icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
     icon: leash
     category: master

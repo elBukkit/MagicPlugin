@@ -109,6 +109,7 @@ public class GotoSpell extends UndoableSpell
 			}
 
 			selectTarget((LivingEntity)target.getEntity());
+			activate();
 			return SpellResult.TARGET_SELECTED;
 		}
 		
@@ -142,6 +143,7 @@ public class GotoSpell extends UndoableSpell
 		if (targetPlayer == null) return SpellResult.NO_TARGET;
 		
 		selectTarget(targetPlayer);
+		activate();
 		return SpellResult.TARGET_SELECTED;
 	}
 	
@@ -188,6 +190,7 @@ public class GotoSpell extends UndoableSpell
 		if (targetEntity != null)
 		{
             releaseTarget();
+            deactivate();
 			return true;
 		}
 		

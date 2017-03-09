@@ -510,7 +510,7 @@ spells:
         name: SuperHemisphere
         description: Create a large solid half-sphere
         usage: Cast twice to construct
-        cancel: Blob cancelled
+        cancel: Hemisphere cancelled
         target_selected: Cast again to build hemisphere
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -720,6 +720,7 @@ spells:
         cast: Regenerating chunks
         target_selected: Cast again to regenerate chunks
         cast_finish: Regenerated $count blocks
+        cancel: Regenerate cancelled
     regenerate:
         name: Regenerate
         description: Regenerate a selected area
@@ -728,6 +729,7 @@ spells:
         cast: Regenerating area
         target_selected: Cast again to regenerate area
         cast_finish: Regenerated $count blocks
+        cancel: Regenerate cancelled
     recurse:
         name: Recurse
         description: Recursively fill blocks
