@@ -497,12 +497,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
      */
     @Override
     public void castMessage(String message) {
-        if (message == null || message.length() == 0 || quiet) return;
-
-        CommandSender sender = getCommandSender();
-        if (sender != null && controller.showCastMessages() && controller.showMessages()) {
-            sender.sendMessage(controller.getCastMessagePrefix() + message);
-        }
+        if (!controller.showCastMessages()) return;
+        sendMessage(controller.getCastMessagePrefix(), message);
     }
 
     /**
@@ -514,21 +510,47 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
      */
     @Override
     public void sendMessage(String message) {
+        sendMessage(controller.getMessagePrefix(), message);
+    }
+
+    public void sendMessage(String prefix, String message) {
         if (message == null || message.length() == 0 || quiet || !controller.showMessages()) return;
 
         Player player = getPlayer();
-        if (message.startsWith("a:") && player != null) {
-            CompatibilityUtils.sendActionBar(player, message.substring(2));
+        boolean isTitle = false;
+        boolean isActionBar = false;
+        if (prefix.startsWith("a:")) {
+            isActionBar = true;
+            prefix = prefix.substring(2);
+        } else if (prefix.startsWith("t:")) {
+            isTitle = true;
+            prefix = prefix.substring(2);
+        }
+        if (message.startsWith("a:")) {
+            isActionBar = true;
+            // message overrides prefix
+            isTitle = false;
+            message = message.substring(2);
+        } else if (message.startsWith("t:")) {
+            isTitle = true;
+            // message overrides prefix
+            isActionBar = false;
+            message = message.substring(2);
+        }
+
+        String fullMessage = prefix + message;
+        if (isTitle && player != null) {
+            CompatibilityUtils.sendTitle(player, fullMessage, null, -1, -1, -1);
             return;
         }
-        if (message.startsWith("t:") && player != null) {
-            CompatibilityUtils.sendTitle(player, message.substring(2), null, -1, -1, -1);
+        if (isActionBar && player != null) {
+            CompatibilityUtils.sendActionBar(player, fullMessage);
             return;
         }
 
         CommandSender sender = getCommandSender();
         if (sender != null) {
-            sender.sendMessage(controller.getMessagePrefix() + message);
+            sender.sendMessage(fullMessage);
         }
     }
 
