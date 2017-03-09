@@ -2,6 +2,7 @@
 
 ## 6.8
 
+ - Cast messages now go to the action bar, this can be changed via the cast_message_prefix in config.yml
  - Chest mode wands no longer have weird virtual hotbars, and has a configurable inventory_rows property.
  - Add spellbook item which is like a cross between a chest and inventory mode wand and the skill selector.
    Won't be really useful in default configs until 7.0, but may be useful with Heroes skills.

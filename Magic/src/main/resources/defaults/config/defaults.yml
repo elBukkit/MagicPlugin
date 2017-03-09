@@ -46,7 +46,10 @@ message_throttle: 500
 message_prefix: "&d&o"
 
 # A prefix to use for cast messages
-cast_message_prefix: "&5&o"
+# This and the above (and any message in messages.yml) support two special prefixes:
+# a: send as an action bar message
+# t: send as a title (with default fade in/out timing)
+cast_message_prefix: "a:&5&o"
 
 # Enable/Disable Sound Effects
 sounds: true

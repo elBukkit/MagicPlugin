@@ -2,3 +2,6 @@
 # Note that if using the "glow" property on wands a "Luck of the Sea" enchantment will show if no other
 # enchantments are set.
 wand_hide_flags: 62
+
+# Don't send cast messages in the action bar
+cast_message_prefix: "&5&o"
