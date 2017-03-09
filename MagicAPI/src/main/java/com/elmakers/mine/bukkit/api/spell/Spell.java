@@ -29,7 +29,6 @@ public interface Spell extends SpellTemplate {
     public boolean cast(String[] parameters, Location defaultLocation);
     public boolean cast(ConfigurationSection parameters, Location defaultLocation);
     public boolean cast(ConfigurationSection parameters);
-    public boolean cancel();
     public Location getLocation();
     public Entity getEntity();
     public Location getEyeLocation();
@@ -70,4 +69,25 @@ public interface Spell extends SpellTemplate {
     public ConfigurationSection getHandlerParameters(String handlerKey);
     public long getProgressLevel();
     public boolean cancelOnNoPermission();
+
+
+    /**
+     * Signal that this spell was cancelled. Will send cancel messages
+     * and play cancel FX.
+     *
+     * This will not actually cancel any pending spell casts (batches) of this spell,
+     * for that you will need Mage.cancelPending
+     *
+     * @return true (for legacy reasons)
+     */
+    public boolean cancel();
+
+    /**
+     * Cancel a selection in-progress for a two-click selection spell (like Architect magic)
+     *
+     * Will call cancel() if selection was cancelled.
+     *
+     * @return true if the spell was in the middle of selection and was cancelled.
+     */
+    boolean cancelSelection();
 }
