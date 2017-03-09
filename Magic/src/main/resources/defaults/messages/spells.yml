@@ -4,8 +4,8 @@ spells:
         backfire: Your spell backfired!
         fail: Your spell failed!
         insufficient_permission: You don't have permission to cast that here.
-        cast_player_message: "&d&o$player &r&5cast &3&o$spell &r&5on you!"
-        indirect_player_message: "&d&o$player &r&5cast &3&o$spell &r&5on you!"
+        cast_player_message: "a:&d&o$player &r&5cast &3&o$spell &r&5on you!"
+        indirect_player_message: "a:&d&o$player &r&5cast &3&o$spell &r&5on you!"
         insufficient_resources: Not enough $cost
         cooldown: You must wait $time.
         cancelled: Your spell was cancelled!
@@ -122,11 +122,11 @@ spells:
     flashbang:
         name: Flash Bang
         description: Toss a ball of light and fury
-        cast_player_message: "You were hit by $player's flash bang"
+        cast_player_message: "a:You were hit by $player's flash bang"
     singularity:
         name: Singularity
         description: Create a black hole
-        cast_player_message: "You got sucked into a black hole"
+        cast_player_message: "a:You got sucked into a black hole"
     arrow:
         name: Arrow
         description: Fire a magic arrow
@@ -219,7 +219,7 @@ spells:
         description: Teleport you to other players
         cast_to_player: Teleporting you to $target
         cast_entity: Teleporting $target to your target
-        cast_player_message: "&d&o$player &r&5folded space"
+        cast_player_message: "a:&d&o$player &r&5folded space"
         target_selected: You captured $target
         cancel: Released target
         upgrade_description: "&r&b&bull; &6Aim down and cast to gather players to you"
@@ -229,7 +229,7 @@ spells:
         usage: Aim down to cycle targets, up to teleport to them
         cast_to_player: Teleporting you to $target
         cast_entity: Teleporting $target to your target
-        cast_player_message: "&d&o$player &r&5folded space"
+        cast_player_message: "a:&d&o$player &r&5folded space"
         target_selected: You captured $target
         cancel: Released target
     icbm:
@@ -657,7 +657,7 @@ spells:
         description: Counter target player's spell
         usage: Only works on recently cast spells
         cast: "&5You counter &d&o$target's&r&6 $spell &5cast"
-        cast_player_message: "&d&o$player &r&5countered your &3&o$spell &r&5cast!"
+        cast_player_message: "a:&d&o$player &r&5countered your &3&o$spell &r&5cast!"
         fail: Nothing to counter
     counterspell|2:
         upgrade_description: "&r&b&bull; &6No chance of fizzle"
@@ -1115,19 +1115,19 @@ spells:
         description: Shoot a bolt of energy that will track your target
         cast: You fire a homing missile at $target
         lock_on: "&d&o$player&r&5 has locked on to you!"
-        cast_player_message: "&d&o$player&r&5's $spell hit you"
+        cast_player_message: "a:&d&o$player&r&5's $spell hit you"
         upgrade_description: "&r&b&bull; &6Faster missile, more damage"
     fury:
         name: Fury
         description: Launch several homing missiles into the air
         cast: You launch of a fury of missiles
-        cast_player_message: "&d&o$player&r&5's $spell hit you"
+        cast_player_message: "a:&d&o$player&r&5's $spell hit you"
         upgrade_description: "&r&b&bull; &6More missiles"
     chainlightning:
         name: Chain Lightning
         description: Shoot a bolt of electricity that splits to hit multiple targets
         cast: You create some chain lightning
-        cast_player_message: "&d&o$player&r&5's $spell hit you"
+        cast_player_message: "a:&d&o$player&r&5's $spell hit you"
         upgrade_description: "&r&b&bull; &6Chains to more targets"
     blind:
         name: Blind
@@ -1147,6 +1147,7 @@ spells:
         name: Kill
         description: Deal lethal damage to your target
         usage: Has a warmup time.
+        cast_player_message: ""
         cast: DIE!
         upgrade_description: "&r&b&bull; &6Faster, larger projectile and shorter warmup"
     superkill:
@@ -1207,7 +1208,7 @@ spells:
     webbing:
         name: Web Attack
         description: An annoying spider attack
-        cast_player_message: "&r&5You got caught in &d&o$player&r&5's web"
+        cast_player_message: "a:&r&5You got caught in &d&o$player&r&5's web"
     lift:
         name: Lift
         description: Lift up your target
@@ -1262,7 +1263,7 @@ spells:
         name: Give Item
         description: Give an item to the player
         cast: "You received $item"
-        cast_player_message: "You received $item from $player"
+        cast_player_message: "a:You received $item from $player"
         fail: ""
     fillwand:
         name: Fill Wand
