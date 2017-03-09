@@ -1233,6 +1233,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                 return originalItemStack;
             }
         }
+
+		if (wand != null && wand.getMode() == WandMode.SKILLS && !isItem) {
+			InventoryUtils.setMeta(itemStack, "skill", "true");
+		}
 		InventoryUtils.makeUnbreakable(itemStack);
         InventoryUtils.hideFlags(itemStack, (byte)63);
 		updateSpellItem(controller.getMessages(), itemStack, spell, args, mage, wand, wand == null ? null : wand.activeBrush, isItem);
@@ -2437,7 +2441,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			updateInventory(inventory, false);
 			updateName();
 			DeprecatedUtils.updateInventory(player);
-		} else if (wandMode == WandMode.CHEST) {
+		} else if (wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS) {
 			Inventory inventory = getDisplayInventory();
 			inventory.clear();
 			updateInventory(inventory, true);
@@ -2513,9 +2517,26 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		}
 		return inventories.get(openInventoryPage);
 	}
+
+	public void saveChestInventory() {
+		Inventory inventory = getOpenInventory();
+		if (inventory == null) return;
+
+		for (int i = 0; i < inventory.getSize(); i++) {
+			ItemStack playerItem = inventory.getItem(i);
+			if (!updateSlot(i + openInventoryPage * INVENTORY_SIZE, playerItem)) {
+				playerItem = new ItemStack(Material.AIR);
+				inventory.setItem(i, playerItem);
+			}
+		}
+	}
 	
 	public void saveInventory() {
 		if (mage == null) return;
+		if (getMode() == WandMode.SKILLS) {
+			saveChestInventory();
+			return;
+		}
 		if (!isInventoryOpen()) return;
 		if (mage.getPlayer() == null) return;
 		if (getMode() != WandMode.INVENTORY) return;
@@ -2981,7 +3002,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (mage == null) return;
 		
 		WandMode wandMode = getMode();
-		if (wandMode == WandMode.CHEST) {
+		if (wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS) {
 			inventoryIsOpen = true;
             if (!playPassiveEffects("open") && inventoryOpenSound != null) {
                 mage.playSoundEffect(inventoryOpenSound);
@@ -4853,7 +4874,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				cast();
 				break;
 			case TOGGLE:
-				if (mode != WandMode.CHEST && mode != WandMode.INVENTORY) return false;
+				if (mode != WandMode.CHEST && mode != WandMode.INVENTORY && mode != WandMode.SKILLS) return false;
 				toggleInventory();
 				break;
 			case CYCLE:

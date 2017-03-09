@@ -2,8 +2,9 @@
 
 ## 6.8
  
+ - Bug with swapping a wand to offhand while inventory is open and no cycle action set. Need to always cancel that action.
+ 
  - Heroes:
-   - Add new wand mode for skill book
    - Integration with character attribute modifiers. Would be nice to expand Magic's power system to fit this better
 
 ## 7.0

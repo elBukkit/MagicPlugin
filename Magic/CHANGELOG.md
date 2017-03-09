@@ -2,6 +2,9 @@
 
 ## 6.8
 
+ - Add spellbook item which is like a cross between a chest and inventory mode wand and the skill selector.
+   Won't be really useful in default configs until 7.0, but may be useful with Heroes skills.
+   The heroes example configs override the spellbook to use Heroes skills.
  - The enchantment table will still show the spell shop if SP is disabled. 
    Set enchant_block: "" in config.yml if you don't want this.
  - EffectLib memory optimizations

@@ -116,14 +116,6 @@ public class InventoryController implements Listener {
         boolean isDrop = event.getClick() == ClickType.DROP || event.getClick() == ClickType.CONTROL_DROP;
         boolean isSkill = clickedItem != null && Wand.isSkill(clickedItem);
 
-        // Preventing putting skills in containers
-        if (isSkill && inventoryType != InventoryType.CRAFTING) {
-            if (!isDrop) {
-                event.setCancelled(true);
-            }
-            return;
-        }
-
         // Check for right-click-to-use
         if (isSkill && action == InventoryAction.PICKUP_HALF)
         {
@@ -173,12 +165,21 @@ public class InventoryController implements Listener {
         }
 
         Wand activeWand = mage.getActiveWand();
+        boolean isWandInventoryOpen = activeWand != null && activeWand.isInventoryOpen();
+
+        // Preventing putting skills in containers
+        if (isSkill && inventoryType != InventoryType.CRAFTING && !isWandInventoryOpen) {
+            if (!isDrop) {
+                event.setCancelled(true);
+            }
+            return;
+        }
 
         boolean isChest = inventoryType == InventoryType.CHEST || inventoryType == InventoryType.HOPPER || inventoryType == InventoryType.DISPENSER || inventoryType == InventoryType.DROPPER;
         boolean clickedWand = Wand.isWand(clickedItem);
         boolean isContainerSlot = event.getSlot() == event.getRawSlot();
 
-        if (activeWand != null && activeWand.isInventoryOpen())
+        if (isWandInventoryOpen)
         {
             // Don't allow the offhand slot to be messed with while the spell inventory is open
             if (event.getRawSlot() == 45)
@@ -346,8 +347,9 @@ public class InventoryController implements Listener {
         // Check for wand cycling with active inventory
         if (activeWand != null) {
             WandMode wandMode = activeWand.getMode();
+            boolean isChestInventory = wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS;
             if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) ||
-                    (wandMode == WandMode.CHEST && inventoryType == InventoryType.CHEST)) {
+                    (isChestInventory && inventoryType == InventoryType.CHEST)) {
                 if (activeWand.isInventoryOpen()) {
                     if (event.getAction() == InventoryAction.NOTHING) {
                         int direction = event.getClick() == ClickType.LEFT ? 1 : -1;
@@ -362,7 +364,8 @@ public class InventoryController implements Listener {
                     }
 
                     // Chest mode falls back to selection from here.
-                    if (event.getAction() == InventoryAction.PICKUP_HALF || wandMode == WandMode.CHEST) {
+                    boolean isInventoryQuickSelect = event.getAction() == InventoryAction.PICKUP_HALF && wandMode == WandMode.INVENTORY;
+                    if (isInventoryQuickSelect || wandMode == WandMode.CHEST) {
                         controller.onPlayerActivateIcon(mage, activeWand, clickedItem);
                         player.closeInventory();
                         event.setCancelled(true);
@@ -398,9 +401,8 @@ public class InventoryController implements Listener {
                 previousWand.saveInventory();
                 // Update hotbar names
                 previousWand.updateHotbar();
-            } else if (previousWand.getMode() == WandMode.CHEST) {
-                // Check for chest inventory mode, we may just be closing a display inventory.
-                // In theory you can't re-arrange items in here.
+            } else if (previousWand.getMode() == WandMode.CHEST || previousWand.getMode() == WandMode.SKILLS) {
+                // Close and save an open chest mode inventory
                 previousWand.closeInventory();
             }
         } else {

@@ -1,0 +1,8 @@
+spellbook:
+    mode: skills
+    icon: book
+    indestructible: false
+    drop: toggle
+    undroppable: true
+    keep: true
+    bound: true
