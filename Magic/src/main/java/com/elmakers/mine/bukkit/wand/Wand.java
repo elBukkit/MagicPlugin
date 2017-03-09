@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -919,8 +920,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 	
 	protected List<Inventory> getAllInventories() {
-		List<Inventory> allInventories = new ArrayList<>(inventories.size() + hotbars.size());
-        allInventories.addAll(hotbars);
+    	int hotbarCount = getHotbarCount();
+		List<Inventory> allInventories = new ArrayList<>(inventories.size() + hotbarCount);
+        if (hotbarCount > 0) {
+        	allInventories.addAll(hotbars);
+		}
 		allInventories.addAll(inventories);
 		return allInventories;
 	}
@@ -978,15 +982,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			inventories.add(newInventory);
 		}
 	}
-	
-	protected Inventory getDisplayInventory() {
-		if (displayInventory == null) {
-            int inventorySize = INVENTORY_SIZE + HOTBAR_SIZE;
-			displayInventory = CompatibilityUtils.createInventory(null, inventorySize, "Wand");
-		}
-		
-		return displayInventory;
-	}
 
     protected @Nonnull Inventory getInventoryByIndex(int inventoryIndex) {
         // Auto create
@@ -998,6 +993,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     }
 
 	protected int getHotbarSize() {
+    	if (getMode() != WandMode.INVENTORY) return 0;
 		return hotbars.size() * HOTBAR_INVENTORY_SIZE;
 	}
 
@@ -1419,13 +1415,13 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		consumeReduction = (float)wandConfig.getDouble("consume_reduction");
 		costReduction = (float)wandConfig.getDouble("cost_reduction");
 		cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction");
-		power =  (float)wandConfig.getDouble("power");
+		power = (float)wandConfig.getDouble("power");
 		damageReduction = (float)wandConfig.getDouble("protection");
 		damageReductionPhysical = (float)wandConfig.getDouble("protection_physical");
 		damageReductionProjectiles = (float)wandConfig.getDouble("protection_projectiles");
 		damageReductionFalling = (float)wandConfig.getDouble("protection_falling");
 		damageReductionFire = (float)wandConfig.getDouble("protection_fire");
-		damageReductionExplosions =  (float)wandConfig.getDouble("protection_explosions");
+		damageReductionExplosions = (float)wandConfig.getDouble("protection_explosions");
 
 		hasId = wandConfig.getBoolean("unique", false);
 
@@ -2438,14 +2434,13 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 					}
 				}
 			}
-			updateInventory(inventory, false);
+			updateInventory(inventory);
 			updateName();
 			DeprecatedUtils.updateInventory(player);
 		} else if (wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS) {
 			Inventory inventory = getDisplayInventory();
 			inventory.clear();
-			updateInventory(inventory, true);
-			DeprecatedUtils.updateInventory(player);
+			updateInventory(inventory);
 		}
 	}
 	
@@ -2478,22 +2473,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return true;
     }
 	
-	private void updateInventory(Inventory targetInventory, boolean addHotbars) {
-		// Set inventory from current page
-		int currentOffset = addHotbars ? 0 : HOTBAR_SIZE;
+	private void updateInventory(Inventory targetInventory) {
+		// Set inventory from current page, taking into account hotbar offset
+		int currentOffset = getHotbarSize() > 0 ? HOTBAR_SIZE : 0;
         List<Inventory> inventories = this.inventories;
 		if (openInventoryPage < inventories.size()) {
             Inventory inventory = inventories.get(openInventoryPage);
-            ItemStack[] contents = inventory.getContents();
-            for (int i = 0; i < contents.length; i++) {
-                ItemStack inventoryItem = contents[i];
-                updateInventoryName(inventoryItem, false);
-                targetInventory.setItem(currentOffset, inventoryItem);
-                currentOffset++;
-            }
-        }
-        if (addHotbars && openInventoryPage < hotbars.size()) {
-            Inventory inventory = hotbars.get(openInventoryPage);
             ItemStack[] contents = inventory.getContents();
             for (int i = 0; i < contents.length; i++) {
                 ItemStack inventoryItem = contents[i];
@@ -2518,15 +2503,49 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		return inventories.get(openInventoryPage);
 	}
 
-	public void saveChestInventory() {
-		Inventory inventory = getOpenInventory();
-		if (inventory == null) return;
+	protected Inventory getDisplayInventory() {
+		if (displayInventory == null || displayInventory.getSize() != getInventorySize()) {
+			displayInventory = CompatibilityUtils.createInventory(null, getInventorySize(), "Wand");
+		}
 
-		for (int i = 0; i < inventory.getSize(); i++) {
-			ItemStack playerItem = inventory.getItem(i);
+		return displayInventory;
+	}
+
+	public void saveChestInventory() {
+		if (displayInventory == null) return;
+
+		Inventory openInventory = getOpenInventory();
+		Map<String, Integer> previousSlots = new HashMap<>();
+		Set<String> addedBack = new HashSet<>();
+		for (int i = 0; i < displayInventory.getSize(); i++) {
+			ItemStack playerItem = displayInventory.getItem(i);
+			String itemSpellKey = getSpell(playerItem);
 			if (!updateSlot(i + openInventoryPage * INVENTORY_SIZE, playerItem)) {
 				playerItem = new ItemStack(Material.AIR);
-				inventory.setItem(i, playerItem);
+				displayInventory.setItem(i, playerItem);
+			} else if (itemSpellKey != null) {
+				addedBack.add(itemSpellKey);
+			}
+
+			// We don't want to clear items that were taken out, so save them to check later
+			ItemStack current = openInventory.getItem(i);
+			String spellKey = getSpell(current);
+			if (spellKey != null) {
+				previousSlots.put(spellKey, i);
+			}
+			openInventory.setItem(i, playerItem);
+		}
+
+		// Put back any items that were taken out
+		for (Map.Entry<String, Integer> entry : previousSlots.entrySet()) {
+			if (!addedBack.contains(entry.getKey())) {
+				ItemStack current = openInventory.getItem(entry.getValue());
+				ItemStack itemStack = createSpellItem(controller.getSpellTemplate(entry.getKey()), "", controller, getActiveMage(), this, false);
+				if (current == null || current.getType() == Material.AIR) {
+					openInventory.setItem(entry.getValue(), itemStack);
+				} else {
+					openInventory.addItem(itemStack);
+				}
 			}
 		}
 	}
@@ -2585,6 +2604,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
     protected boolean updateSlot(int slot, ItemStack item) {
+    	if (item == null || item.getType() == Material.AIR) return true;
         String spellKey = getSpell(item);
         if (spellKey != null) {
             spellInventory.put(spellKey, slot);
@@ -2592,7 +2612,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             String brushKey = getBrush(item);
             if (brushKey != null) {
                 brushInventory.put(brushKey, slot);
-            } else if (mage != null && item != null && item.getType() != Material.AIR) {
+            } else if (mage != null) {
                 // Must have been an item inserted directly into player's inventory?
                 mage.giveItem(item);
                 return false;
@@ -3086,6 +3106,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             }
         }
         controller.enableItemSpawn();
+
+		saveState();
 	}
 
     @Override
@@ -4713,10 +4735,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			inventory.setItem(i, storedInventory.getItem(i));
 		}
         storedInventory = null;
-        saveState();
-
         inventory.setHeldItemSlot(storedSlot);
-
 		DeprecatedUtils.updateInventory(player);
 
         return true;
@@ -5007,5 +5026,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public void setCurrentHotbar(int hotbar) {
     	this.currentHotbar = hotbar;
     	setProperty("hotbar", currentHotbar);
+	}
+
+	public int getInventorySize() {
+    	return INVENTORY_SIZE;
 	}
 }

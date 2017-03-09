@@ -202,14 +202,14 @@ public class WandOrganizer {
         currentInventoryCount = 0;
 
         for (String spellName : alphabetized.values()) {
-            spells.put(spellName, getNextSlot(Wand.INVENTORY_SIZE));
+            spells.put(spellName, getNextSlot(wand.getInventorySize()));
         }
 
         if (materials.size() > 0) {
             nextPage();
 
             for (String materialName : materials.values()) {
-                brushes.put(materialName, getNextSlot(Wand.INVENTORY_SIZE));
+                brushes.put(materialName, getNextSlot(wand.getInventorySize()));
             }
         }
 
@@ -224,7 +224,7 @@ public class WandOrganizer {
     }
 
     protected int getNextSlot(int nextPageSize) {
-        int slot = wand.getHotbarSize() + currentInventoryCount + (currentInventoryIndex * Wand.INVENTORY_SIZE);
+        int slot = wand.getHotbarSize() + currentInventoryCount + (currentInventoryIndex * nextPageSize);
         currentInventoryCount++;
         if (currentInventoryCount > nextPageSize) {
             nextPage();

@@ -2,6 +2,7 @@
 
 ## 6.8
 
+ - Chest mode wands no longer have weird virtual hotbars.
  - Add spellbook item which is like a cross between a chest and inventory mode wand and the skill selector.
    Won't be really useful in default configs until 7.0, but may be useful with Heroes skills.
    The heroes example configs override the spellbook to use Heroes skills.
