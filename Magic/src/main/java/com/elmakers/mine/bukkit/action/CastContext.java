@@ -1021,10 +1021,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 entity.teleport(targetLocation);
             }
             setTargetLocation(targetLocation);
-            sendMessageKey("teleport");
+            castMessageKey("teleport");
             playEffects("teleport");
         } else {
-            sendMessageKey("teleport_failed");
+            castMessageKey("teleport_failed");
             playEffects("teleport_failed");
             return false;
         }
