@@ -370,6 +370,11 @@ public class InventoryController implements Listener {
                         player.closeInventory();
                         event.setCancelled(true);
                     }
+
+                    // Prevent clicking any non-skill item when a skill inventory is open
+                    if (wandMode == WandMode.SKILLS && !Wand.isSkill(clickedItem)) {
+                        event.setCancelled(true);
+                    }
                 }
             }
         }
