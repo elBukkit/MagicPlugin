@@ -1605,7 +1605,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     /**
      * Called when a material selection spell is cancelled mid-selection.
      */
-    public boolean onCancel()
+    public boolean onCancelSelection()
     {
         return false;
     }
@@ -2082,18 +2082,23 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public boolean cancelSelection()
+    {
+        boolean cancelled = onCancelSelection();
+        if (cancelled) {
+            cancel();
+        }
+        return cancelled;
+    }
+
+    @Override
     public boolean cancel()
     {
-        boolean cancelled = onCancel();
-        // This needs re-work, it is currently called on right click.. but probably shouldn't be.
-        // Need to re-think how to handle stateful spells, cancelling selection, etc.
-        if (cancelled) {
-            sendMessage(getMessage("cancel"));
-        }
+        sendMessage(getMessage("cancel"));
         if (currentCast != null) {
             currentCast.cancelEffects();
         }
-        return cancelled;
+        return true;
     }
 
     @Override

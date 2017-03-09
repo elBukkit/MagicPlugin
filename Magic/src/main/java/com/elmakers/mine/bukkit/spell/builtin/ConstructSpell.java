@@ -247,7 +247,7 @@ public class ConstructSpell extends BrushSpell
 	}
 
 	@Override
-	public boolean onCancel()
+	public boolean onCancelSelection()
 	{
 		if (targetBlock != null)
 		{

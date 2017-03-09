@@ -111,7 +111,7 @@ public class ForceSpell extends TargetingSpell
 	}
 
 	@Override
-	public boolean onCancel()
+	public boolean onCancelSelection()
 	{
 		if (targetEntity != null)
 		{

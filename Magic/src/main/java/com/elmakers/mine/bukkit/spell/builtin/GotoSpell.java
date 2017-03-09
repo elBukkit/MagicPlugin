@@ -183,7 +183,7 @@ public class GotoSpell extends UndoableSpell
 	}
 
 	@Override
-	public boolean onCancel()
+	public boolean onCancelSelection()
 	{
 		if (targetEntity != null)
 		{

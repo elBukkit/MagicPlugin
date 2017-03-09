@@ -252,10 +252,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return (activeWand == null ? false : activeWand.addToStoredInventory(item));
     }
 
-    public boolean cancel() {
+    public boolean cancelSelection() {
         boolean result = false;
         for (MageSpell spell : spells.values()) {
-            result = spell.cancel() || result;
+            result = spell.cancelSelection() || result;
         }
         return result;
     }

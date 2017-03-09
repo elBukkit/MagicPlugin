@@ -2892,7 +2892,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 	
 	public void toggleInventory() {
-		if (mage != null && mage.cancel()) {
+		if (mage != null && mage.cancelSelection()) {
 			mage.playSoundEffect(noActionSound);
 			return;
 		}

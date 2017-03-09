@@ -66,7 +66,7 @@ public class RegenerateSpell extends BlockSpell
 	}
 
 	@Override
-	public boolean onCancel()
+	public boolean onCancelSelection()
 	{
 		if (targetBlock != null)
 		{

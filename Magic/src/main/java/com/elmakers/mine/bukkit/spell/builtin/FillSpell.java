@@ -112,7 +112,7 @@ public class FillSpell extends BrushSpell
 	}
 
 	@Override
-	public boolean onCancel()
+	public boolean onCancelSelection()
 	{
 		if (targetBlock != null)
 		{
