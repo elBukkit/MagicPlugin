@@ -3012,6 +3012,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			if (!playPassiveEffects("cycle") && inventoryCycleSound != null) {
 				mage.playSoundEffect(inventoryCycleSound);
 			}
+			sendMessage("hotbar_changed");
             updateHotbarStatus();
 			DeprecatedUtils.updateInventory(mage.getPlayer());
 		}

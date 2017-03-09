@@ -19,6 +19,7 @@
  - Fix some edge-cases uses of location offset parameters (otx, oty) that were breaking the Wolf House since .. a long time
  - Fix wand dupe issue with the swap item button when the wand has no handler for swap
  - Add title and action bar support to Message action, add fun title to Kill spell
+ - Add hotbar_changed message (by request), will show on hotbar change, but empty by default
 
 ## 6.7.2
 
