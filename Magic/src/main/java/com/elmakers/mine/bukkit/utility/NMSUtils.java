@@ -134,6 +134,9 @@ public class NMSUtils {
     protected static Class<?> class_MinecraftServer;
     protected static Class<?> class_CraftServer;
     protected static Class<?> class_DataWatcherObject;
+    protected static Class<?> class_PacketPlayOutChat;
+    protected static Class<?> class_ChatComponentText;
+    protected static Class<?> class_IChatBaseComponent;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -208,7 +211,6 @@ public class NMSUtils {
     protected static Method class_MinecraftServer_getResourcePackMethod;
     protected static Method class_MinecraftServer_getResourcePackHashMethod;
     protected static Method class_MinecraftServer_setResourcePackMethod;
-
     protected static Method class_ItemStack_isEmptyMethod;
     protected static Method class_ItemStack_createStackMethod;
 
@@ -228,7 +230,6 @@ public class NMSUtils {
     protected static Constructor class_ChestLock_Constructor;
     protected static Constructor class_ArmorStand_Constructor;
     protected static Constructor class_AxisAlignedBB_Constructor;
-
     protected static Constructor class_ItemStack_consructor;
     protected static Constructor class_NBTTagString_consructor;
     protected static Constructor class_NBTTagByte_constructor;
@@ -236,6 +237,8 @@ public class NMSUtils {
     protected static Constructor class_NBTTagInt_constructor;
     protected static Constructor class_NBTTagFloat_constructor;
     protected static Constructor class_NBTTagLong_constructor;
+    protected static Constructor class_PacketPlayOutChat_constructor;
+    protected static Constructor class_ChatComponentText_constructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -525,6 +528,18 @@ public class NMSUtils {
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
 
             // Particularly volatile methods that we can live without
+            try {
+                class_PacketPlayOutChat = fixBukkitClass("net.minecraft.server.PacketPlayOutChat");
+                class_ChatComponentText = fixBukkitClass("net.minecraft.server.ChatComponentText");
+                class_IChatBaseComponent = fixBukkitClass("net.minecraft.server.IChatBaseComponent");
+
+                class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, Byte.TYPE);
+                class_ChatComponentText_constructor = class_ChatComponentText.getConstructor(String.class);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering action bar methods, action bar messages will not work", ex);
+                class_PacketPlayOutChat = null;
+            }
+
             try {
                 try {
                     // 1.11.?

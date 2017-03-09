@@ -77,7 +77,9 @@ public class MessageAction extends BaseSpellAction
 				CompatibilityUtils.sendTitle(player, message, subMessage, fadeIn, stay, fadeOut);
 				break;
 			case ACTION_BAR:
-				player.sendMessage(message);
+				if (!CompatibilityUtils.sendActionBar(player, message)) {
+					player.sendMessage(message);
+				}
 				break;
 		}
 	}

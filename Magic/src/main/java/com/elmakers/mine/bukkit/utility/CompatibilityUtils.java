@@ -1407,4 +1407,16 @@ public class CompatibilityUtils extends NMSUtils {
         // TODO: New Player.sendTitle in 1.11
         player.sendTitle(title, subTitle);
     }
+
+    public static boolean sendActionBar(Player player, String message) {
+        if (class_PacketPlayOutChat == null) return false;
+        try {
+            Object chatComponent = class_ChatComponentText_constructor.newInstance(message);
+            Object packet = class_PacketPlayOutChat_constructor.newInstance(chatComponent, (byte)2);
+            sendPacket(player, packet);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return true;
+    }
 }

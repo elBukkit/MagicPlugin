@@ -18,7 +18,7 @@
  - Throttle offhand casts so it's not so weird and spammy
  - Fix some edge-cases uses of location offset parameters (otx, oty) that were breaking the Wolf House since .. a long time
  - Fix wand dupe issue with the swap item button when the wand has no handler for swap
- - Add title support to Message action, add to Kill spell
+ - Add title and action bar support to Message action, add fun title to Kill spell
 
 ## 6.7.2
 
