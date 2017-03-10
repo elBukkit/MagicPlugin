@@ -33,7 +33,9 @@
     {"predicate": {"damaged": 0, "damage": 0.45}, "model": "item/flat/elder"},
     {"predicate": {"damaged": 0, "damage": 0.4666666666666667}, "model": "item/flat/wolf"},
     {"predicate": {"damaged": 0, "damage": 0.48333333333333334}, "model": "item/custom/broomstick2"},
-    
+    {"predicate": {"damaged": 0, "damage": 0.5}, "model": "item/custom/crystalball"},
+    {"predicate": {"damaged": 0, "damage": 0.5166666666666666}, "model": "item/custom/enchantedbook"},
+
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/wooden_hoe"}
   ]
 }
