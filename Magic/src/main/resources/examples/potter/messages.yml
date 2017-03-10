@@ -548,7 +548,8 @@ spells:
         cast: Spongify Maxima!
     ollivander:
         cast: You exchanged $requires for $item
-        insufficient_resources: You must have a $requires
+        insufficient_resources: You must have $requires
+        title: "Ollivander"
 
 randomized:
    wood:
@@ -604,6 +605,12 @@ wands:
     wand:
         name: Wand
         description: $wood and $core
+        randomized_lore: What kind will you get?
+
+    wandbox:
+        name: Wand
+        description: $wood and $core
+        randomized_lore: What kind will you get?
 
     auror:
         name: Auror Wand
