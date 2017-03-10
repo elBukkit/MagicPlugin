@@ -1,7 +1,7 @@
 spellbook:
     mode: skills
-    icon: book
-    indestructible: false
+    icon: wood_hoe:31
+    indestructible: true
     drop: toggle
     undroppable: true
     keep: true
