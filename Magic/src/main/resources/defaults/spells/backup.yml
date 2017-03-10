@@ -28,6 +28,7 @@ backup:
         obworld: ~-_backup
         brushtarget: true
         bypass_undo: true
+        cooldown: 10000
     costs:
         mana: 100
 

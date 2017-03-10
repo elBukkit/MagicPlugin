@@ -27,6 +27,7 @@ repair:
         otworld: ~-_backup
         obworld: ~_backup
         brushtarget: true
+        cooldown: 7000
     costs:
         mana: 200
 
