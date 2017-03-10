@@ -59,6 +59,10 @@ public class BaseMagicProperties implements MagicProperties {
         dirty = true;
     }
 
+    public boolean hasOwnProperty(String key) {
+        return configuration.contains(key);
+    }
+
     @Override
     public boolean hasProperty(String key) {
         return getEffectiveConfiguration().contains(key);
