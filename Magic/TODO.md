@@ -1,7 +1,5 @@
 # TODO
 
-## 6.8
-  
 ## 7.0
 
  - Refactor MageProperties to be contained rather than inherited?
@@ -20,7 +18,6 @@
  - Heroes skill configs don't seem to work on first run?
 
 ## High-Priority
-
   
 ## Not so High-Priority
  
@@ -37,7 +34,6 @@
 
 ### Requests
 
- - Ability to *only* target teammates (like .. anti-PVP)
  - Add some sort of integration with Partec plugin
    https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/
  - Wand Power based on Strength potion effect

@@ -22,6 +22,7 @@
  - Add title and action bar support to Message action, add fun title to Kill spell
  - Add hotbar_changed message (by request), will show on hotbar change, but empty by default
  - Add support for sending any message as a title or action bar message with "t:" or "a:' prefixes in messages.yml
+ - Fix Sith lightsaber paths not increasing mana
 
 ## 6.7.2
 
