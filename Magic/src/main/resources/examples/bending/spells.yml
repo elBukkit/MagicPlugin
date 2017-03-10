@@ -367,9 +367,9 @@ collapse:
      category: earthbending
      enabled: true
 
-toss:
+earthtoss:
+     inherit: toss
      category: earthbending
-     enabled: true
      parameters:
        undo: 5000
        brush: dirt
@@ -502,221 +502,166 @@ airsphere:
 
 boon:
     enabled: true
-    hidden: true
 
 boon|2:
     enabled: true
-    hidden: true
 
 ## ENGINEERING
 
 box:
     enabled: true
-    hidden: true
 
 tree:
     enabled: true
-    hidden: true
 
 paint:
     enabled: true
-    hidden: true
 
 torch:
     enabled: true
-    hidden: true
-    parameters:
-       undo: 0
 
 recurse:
     enabled: true
-    hidden: true
 
 alter:
     enabled: true
-    hidden: true
 
 superalter:
     enabled: true
-    hidden: true
 
 supershell:
     enabled: true
-    hidden: true
 
 regenerate:
     enabled: true
-    hidden: true
 
 superregenerate:
     enabled: true
-    hidden: true
 
 superblob:
     enabled: true
-    hidden: true
 
 paste:
     enabled: true
-    hidden: true
 
 superconvert:
     enabled: true
-    hidden: true
 
 absorb:
     enabled: true
-    hidden: true
 
 fill:
     enabled: true
-    hidden: true
 
 superdisc:
     enabled: true
-    hidden: true
 
 superring:
     enabled: true
-    hidden: true
 
 superbox:
     enabled: true
-    hidden: true
 
 superpyramid:
     enabled: true
-    hidden: true
 
 supercube:
     enabled: true
-    hidden: true
 
 superdome:
     enabled: true
-    hidden: true
 
 bridge:
     enabled: true
-    hidden: true
 
 pillar:
     enabled: true
-    hidden: true
 
 place:
     enabled: true
-    hidden: true
 
 column:
     enabled: true
-    hidden: true
 
 backup:
     enabled: true
-    hidden: true
 
 repair:
     enabled: true
-    hidden: true
 
 superrepair:
     enabled: true
-    hidden: true
 
 supercollapse:
     enabled: true
-    hidden: true
 
 rollback:
     enabled: true
-    hidden: true
 
 commit:
     enabled: true
-    hidden: true
 
 brushselect:
     enabled: true
-    hidden: true
 
 ## OTHER CARRYOVER SPELLS
 
 hat:
     enabled: true
-    hidden: true
 
 simulate:
     enabled: true
-    hidden: true
 
 music:
     enabled: true
-    hidden: true
 
 wolfhouse:
     enabled: true
-    hidden: true
 
 mount:
     enabled: true
-    hidden: true
 
 life:
     enabled: true
-    hidden: true
 
 superfly:
     enabled: true
-    hidden: true
 
 recall:
     enabled: true
-    hidden: true
 
 gather:
     enabled: true
-    hidden: true
 
 blink:
     enabled: true
-    hidden: true
 
 blink|2:
     enabled: true
-    hidden: true
 
 blink|3:
     enabled: true
-    hidden: true
 
 fling:
     enabled: true
-    hidden: true
 
 fling|2:
     enabled: true
-    hidden: true
 
 day:
     enabled: true
-    hidden: true
 
 night:
     enabled: true
-    hidden: true
 
 stash:
     enabled: true
-    hidden: true
 
 familiar:
     enabled: true
-    hidden: true
 
 phase:
     enabled: true
-    hidden: true
 
 upgrades:
     enabled: true
