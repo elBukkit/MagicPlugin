@@ -65,9 +65,9 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Override
-    public Optional<Object> getProperty(String key) {
+    public Object getProperty(String key) {
         rebuildEffectiveConfiguration();
-        return Optional.fromNullable(effectiveConfiguration.get(key));
+        return effectiveConfiguration.get(key);
     }
 
     @Override
