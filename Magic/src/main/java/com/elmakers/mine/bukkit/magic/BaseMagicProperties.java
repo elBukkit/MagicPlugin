@@ -61,13 +61,12 @@ public class BaseMagicProperties implements MagicProperties {
 
     @Override
     public boolean hasProperty(String key) {
-        return effectiveConfiguration.contains(key);
+        return getEffectiveConfiguration().contains(key);
     }
 
     @Override
     public Object getProperty(String key) {
-        rebuildEffectiveConfiguration();
-        return effectiveConfiguration.get(key);
+        return getEffectiveConfiguration().get(key);
     }
 
     @Override
