@@ -58,6 +58,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     protected boolean showConfirmation = true;
     protected boolean showActiveIcons = false;
     protected boolean putInHand = true;
+    protected ItemStack worthItem = null;
     protected MaterialAndData confirmFillMaterial;
     protected CastContext context;
     private Map<Integer, ShopItem> showingItems;
@@ -236,7 +237,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         {
             worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthItemAmount());
             int amount = (int)Math.ceil(worth);
-            ItemStack worthItem = controller.getWorthItem();
+            ItemStack worthItem = getWorthItem(controller);
             while (amount > 0) {
                 worthItem = InventoryUtils.getCopy(worthItem);
                 worthItem.setAmount(Math.min(amount, 64));
@@ -479,6 +480,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         costScale = parameters.getDouble("scale", 1);
         filterBound = parameters.getBoolean("filter_bound", false);
         putInHand = parameters.getBoolean("put_in_hand", true);
+        String worthItemKey = parameters.getString("worth_item", "");
+        if (!worthItemKey.isEmpty()) {
+            worthItem = context.getController().createItem(worthItemKey);
+        } else {
+            worthItem = null;
+        }
         if (!autoClose) {
             showConfirmation = false;
         }
@@ -493,11 +500,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         MageController controller = context.getController();
         isXP = parameters.getBoolean("use_xp", false);
-        isItems = parameters.getBoolean("use_items", false) && controller.getWorthItem() != null;
+        isItems = parameters.getBoolean("use_items", false) && getWorthItem(controller) != null;
         isSkillPoints = parameters.getBoolean("use_sp", false) && controller.isSPEnabled();
         if (!isSkillPoints && !isXP && !isItems && !VaultController.hasEconomy())
         {
-            if (controller.getWorthItem() != null)
+            if (getWorthItem(controller) != null)
             {
                 isItems = true;
             }
@@ -632,7 +639,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
     protected String formatItemAmount(MageController controller, double amount) {
         CurrencyItem currency = controller.getCurrency();
-        if (currency != null) {
+        if (worthItem == null && currency != null) {
             int evenAmount = (int)Math.ceil(amount);
             String currencyName = currency.getName();
             if (currencyName != null && !currencyName.isEmpty()) {
@@ -647,7 +654,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 return Integer.toString(evenAmount) + " " + pluralName;
             }
         }
-        return formatItemAmount(controller, controller.getWorthItem(), amount);
+        return formatItemAmount(controller, getWorthItem(controller), amount);
+    }
+
+    protected ItemStack getWorthItem(MageController controller) {
+        return worthItem == null ? controller.getWorthItem() : worthItem;
     }
 
     protected String formatItemAmount(MageController controller, ItemStack item, double amount) {
@@ -670,7 +681,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     }
 
     protected int getItemAmount(MageController controller, Mage mage) {
-        return getItemAmount(controller, controller.getWorthItem(), mage);
+        return getItemAmount(controller, getWorthItem(controller), mage);
     }
 
     protected int getItemAmount(MageController controller, ItemStack worthItem, Mage mage) {
@@ -691,7 +702,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     }
 
     protected void removeItems(MageController controller, Mage mage, int amount) {
-        removeItems(controller, mage, controller.getWorthItem(), amount);
+        removeItems(controller, mage, getWorthItem(controller), amount);
     }
 
     protected void removeItems(MageController controller, Mage mage, ItemStack worthItem, int amount) {
