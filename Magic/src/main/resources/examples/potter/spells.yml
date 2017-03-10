@@ -2795,25 +2795,16 @@ dungbomb:
 
 ollivander:
   hidden: true
-  actions:
-    cast:
-    - class: GiveItem
+  inherit: buyshop
   parameters:
-    item: wand:wand
-    requires: wand:ticket
+    put_in_hand: false
+    auto_close: true
+    worth_item: ticket
+    use_items: true
+    items:
+      - item: wand:wand
+        cost: 1
     loud: true
-  effects:
-      cast:
-      -  class: EffectSingle
-         sound: level_up
-      -  class: EffectRing
-         firework: star
-         radius: 4
-         size: 3
-      -  class: EffectRing
-         firework: ball_large
-         radius: 6
-         size: 5
 
 count:
     enabled: true
