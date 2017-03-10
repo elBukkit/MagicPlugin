@@ -1,4 +1,87 @@
 #
+# Shops for obtaining sabers and other items
+#
+
+starshop:
+    icon: wood_hoe:14
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        confirm_filler: stained_glass:3
+        show_active_icons: true
+        items:
+        - item: detonator
+          cost: 100
+        - item: wand|blaster
+          cost: 1000
+        - item: lightsaber_blue
+          cost: 10000
+        - item: lightsaber_green
+          cost: 10000
+        - item: lightsaber_purple
+          cost: 10000
+        - item: lightsaber_orange
+          cost: 10000
+        - item: lightsaber_red
+          cost: 15000
+
+blaster:
+    icon: diamond_axe:159
+    icon_disabled: diamond_hoe:159
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    category: specialty
+    hidden: true
+    worth: 150
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+        tick:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: LineEffect
+             type: instant
+             particle: redstone
+             length: 2
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FF8800
+           color2: FF0000
+           firework: burst
+        backfire:
+        -  class: EffectSingle
+           sound: magic.zap
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           entity_effect: hurt
+    parameters:
+        tick_size: 3
+        target: none
+        target_type: Damageable
+        player_damage: 2
+        entity_damage: 4
+        target_breakables: 1
+        bypass_backfire: false
+        cooldown: 1000
+        velocity: 80
+        interval: 250
+        reflective: iron_block
+    costs:
+        mana: 15
+
+
+
+#
 # Force powers
 #
 
@@ -168,7 +251,6 @@ throw:
 
 levitate:
     enabled: true
-    hidden: true
 
 boon:
     enabled: true
@@ -181,211 +263,157 @@ boon|2:
 
 box:
     enabled: true
-    hidden: true
 
 tree:
     enabled: true
-    hidden: true
 
 paint:
     enabled: true
-    hidden: true
 
 torch:
     enabled: true
-    hidden: true
     parameters:
        undo: 0
 
 recurse:
     enabled: true
-    hidden: true
 
 alter:
     enabled: true
-    hidden: true
 
 superalter:
     enabled: true
-    hidden: true
 
 supershell:
     enabled: true
-    hidden: true
 
 regenerate:
     enabled: true
-    hidden: true
 
 superregenerate:
     enabled: true
-    hidden: true
 
 superblob:
     enabled: true
-    hidden: true
 
 paste:
     enabled: true
-    hidden: true
 
 superconvert:
     enabled: true
-    hidden: true
 
 absorb:
     enabled: true
-    hidden: true
 
 fill:
     enabled: true
-    hidden: true
 
 superdisc:
     enabled: true
-    hidden: true
 
 superring:
     enabled: true
-    hidden: true
 
 superbox:
     enabled: true
-    hidden: true
 
 superpyramid:
     enabled: true
-    hidden: true
 
 supercube:
     enabled: true
-    hidden: true
 
 superdome:
     enabled: true
-    hidden: true
 
 bridge:
     enabled: true
-    hidden: true
 
 pillar:
     enabled: true
-    hidden: true
 
 place:
     enabled: true
-    hidden: true
 
 column:
     enabled: true
-    hidden: true
 
 backup:
     enabled: true
-    hidden: true
 
 repair:
     enabled: true
-    hidden: true
 
 superrepair:
     enabled: true
-    hidden: true
 
 supercollapse:
     enabled: true
-    hidden: true
 
 rollback:
     enabled: true
-    hidden: true
 
 commit:
     enabled: true
-    hidden: true
 
 brushselect:
     enabled: true
-    hidden: true
 
 ## OTHER CARRYOVER SPELLS
 
 hat:
     enabled: true
-    hidden: true
-
-simulate:
-    enabled: true
-    hidden: true
 
 music:
     enabled: true
-    hidden: true
 
 wolfhouse:
     enabled: true
-    hidden: true
 
 mount:
     enabled: true
-    hidden: true
 
 life:
     enabled: true
-    hidden: true
 
 superfly:
     enabled: true
-    hidden: true
 
 recall:
     enabled: true
-    hidden: true
 
 gather:
     enabled: true
-    hidden: true
 
 blink:
     enabled: true
-    hidden: true
 
 blink|2:
     enabled: true
-    hidden: true
 
 blink|3:
     enabled: true
-    hidden: true
 
 fling:
     enabled: true
-    hidden: true
 
 fling|2:
     enabled: true
-    hidden: true
 
 day:
     enabled: true
-    hidden: true
 
 night:
     enabled: true
-    hidden: true
 
 stash:
     enabled: true
-    hidden: true
 
 familiar:
     enabled: true
-    hidden: true
 
 phase:
     enabled: true
-    hidden: true
 
 upgrades:
     enabled: true
@@ -398,6 +426,4 @@ enchantwand:
 
 spellshop:
     enabled: true
-    
-starshop:
-    enabled: true
+

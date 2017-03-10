@@ -31,3 +31,49 @@ categories:
     force:
         name: Force Powers
         description: Use the force!
+
+paths:
+    youngling:
+        name: Youngling
+    padawan:
+        name: Padawan
+    jedi_knight:
+        name: Jedi Knight
+    jedi_master:
+        name: Jedi Master
+    acolyte:
+        name: Sith Acolyte
+    sith_apprentice:
+        name: Sith Apprentice
+    sith:
+        name: Sith
+    marauder:
+        name: Sith Marauder
+    sith_master:
+        name: Sith Master
+    sith_lord:
+        name: Sith Lord
+
+wands:
+    blaster:
+        name: Blaster
+    detonator:
+        name: Thermal Detonator
+    lightsaber_red:
+        name: Lighsaber
+        description: Weapon of a $path
+    lightsaber_green:
+        name: Lighsaber
+        description: Weapon of a $path
+    lightsaber_blue:
+        name: Lighsaber
+        description: Weapon of a $path
+    lightsaber_orange:
+        name: Lighsaber
+        description: Weapon of a $path
+    lightsaber_purple:
+        name: Lighsaber
+        description: Weapon of a $path
+    lightsaber_hilt:
+        name: Lighsaber Hilt
+        description: Used to construct a Lightsaber

@@ -1,9 +1,22 @@
 # Migration Notes
 
+## 7.0
+
+ - You may use "example: 6" in config.yml to undo the following config changes:
+   - See 6.8 for more
+ - Lightsabers, Blaster and Thermal Detonator moved to stars configs, and removed from default configs. 
+   Use "example: stars" for just the Star Wars configs
+   Use the following if you want to continue to mix the default survival configs and stars:
+```
+add_examples:
+- stars
+```
+
 ## 6.8
 
  - You may use "example: 6" in config.yml to undo the following config changes:
    - Skill Points renamed to Spell Points
+   - Cast messages got to chat instead of action bar
 
 ## 6.6
 
