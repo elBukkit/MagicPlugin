@@ -889,8 +889,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 		wand.deactivate();
 		if (value == null) {
-			wand.removeProperty(parameters[0]);
-			mage.sendMessage(api.getMessages().get("wand.removed_property").replace("$name", parameters[0]));
+			if (wand.removeProperty(parameters[0])) {
+				mage.sendMessage(api.getMessages().get("wand.removed_property").replace("$name", parameters[0]));
+			} else {
+				mage.sendMessage(api.getMessages().get("wand.no_property").replace("$name", parameters[0]));
+			}
 		} else {
 			Map<String, Object> node = new HashMap<>();
 			node.put(parameters[0], value);
