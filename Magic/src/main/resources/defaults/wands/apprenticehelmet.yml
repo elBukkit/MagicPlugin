@@ -1,5 +1,5 @@
 apprenticehelmet:
-    icon: leather_helmet:#00AAFF
+    icon: "leather_helmet:#00AAFF"
     indestructible: false
     locked: true
     keep: true

@@ -1,5 +1,5 @@
 apprenticechestplate:
-    icon: leather_chestplate:#00AAFF
+    icon: "leather_chestplate:#00AAFF"
     indestructible: false
     locked: true
     keep: true

@@ -1,5 +1,5 @@
 apprenticeboots:
-    icon: leather_boots:#00AAFF
+    icon: "leather_boots:#00AAFF"
     indestructible: false
     locked: true
     keep: true
