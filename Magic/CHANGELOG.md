@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 7.0
+
+## 6.9
+
 ## 6.8
 
  - Cast messages now go to the action bar, this can be changed via the cast_message_prefix in config.yml
