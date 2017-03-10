@@ -2,30 +2,6 @@
 # Bending Powers, which are represented as wand "items"
 #
 
-base_bound:
-  hidden: true
-  bound: true
-  keep: true
-  invulnerable: true
-  immortal: true
-  track: true
-  undroppable: true
-  indestructible: true
-
-base_wand:
-    hidden: true
-    inherit: base_bound
-    mode: inventory
-    drop: toggle
-    left_click: cast
-    right_click: none
-    swap: cycle_hotbar
-    quiet: 1
-    effect_bubbles: false
-    attributes:
-      GENERIC_ATTACK_SPEED: 10
-    attribute_slot: mainhand
-
 airbending:
     inherit: base_wand
     path: airbending
