@@ -2,30 +2,6 @@
 # Add some Harry Potter themed wand templates
 #
 
-base_bound:
-   hidden: true
-   bound: true
-   keep: true
-   invulnerable: true
-   immortal: true
-   track: true
-   undroppable: true
-   indestructible: true
-
-base_wand:
-    hidden: true
-    inherit: base_bound
-    mode: inventory
-    drop: toggle
-    left_click: cast
-    right_click: none
-    swap: cycle_hotbar
-    quiet: 1
-    effect_bubbles: false
-    attributes:
-      GENERIC_ATTACK_SPEED: 10
-    attribute_slot: mainhand
-
 wand:
     inherit: base_wand
     icon: wood_hoe:24,wood_hoe:25,wood_hoe:26

@@ -4,7 +4,8 @@
 
 load_default_spells: true
 disable_default_spells: true
-load_default_wands: false
+load_default_wands: true
+disable_default_wands: true
 load_default_paths: false
 load_default_crafting: false
 enable_crafting: true
