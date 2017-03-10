@@ -19,3 +19,5 @@ auto_rollback_explosions:
 # We are mixing in all of the configs here to show them off.
 add_examples:
 - stars
+- potter
+- bending
