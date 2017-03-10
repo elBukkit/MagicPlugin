@@ -1386,6 +1386,7 @@ public class MagicController implements MageController {
         loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
         disableDefaultSpells = properties.getBoolean("disable_default_spells", disableDefaultSpells);
         loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
+        disableDefaultWands = properties.getBoolean("disable_default_wands", disableDefaultWands);
         loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
         loadDefaultPaths = properties.getBoolean("load_default_enchanting", loadDefaultPaths);
         loadDefaultPaths = properties.getBoolean("load_default_paths", loadDefaultPaths);
@@ -1410,7 +1411,7 @@ public class MagicController implements MageController {
     }
 
     protected ConfigurationSection loadWandConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(WANDS_FILE, loadDefaultWands, false, true);
+        return loadConfigFile(WANDS_FILE, loadDefaultWands, disableDefaultWands, true);
     }
 
     protected ConfigurationSection loadPathConfiguration() throws InvalidConfigurationException, IOException {
@@ -4923,6 +4924,7 @@ public class MagicController implements MageController {
     private final String						URL_MAPS_FILE				= "imagemaps";
 
     private boolean                             disableDefaultSpells        = false;
+    private boolean                             disableDefaultWands         = false;
     private boolean 							loadDefaultSpells			= true;
     private boolean 							loadDefaultWands			= true;
     private boolean loadDefaultPaths = true;
