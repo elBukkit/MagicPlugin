@@ -1315,6 +1315,7 @@ public class MagicController implements MageController {
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
                 examplesFileName = "examples/" + example + "/" + fileName + ".yml";
+                if (plugin.getResource(examplesFileName) == null) continue;
                 plugin.saveResource(examplesFileName, true);
 
                 InputStream input = plugin.getResource(examplesFileName);
@@ -1324,7 +1325,7 @@ public class MagicController implements MageController {
                     if (disableDefaults) {
                         enableAll(exampleConfig);
                     }
-                    config = ConfigurationUtils.addConfigurations(config, exampleConfig);
+                    config = ConfigurationUtils.addConfigurations(config, exampleConfig, false);
                     getLogger().info(" Added " + examplesFileName);
                 }
             }
@@ -1485,7 +1486,7 @@ public class MagicController implements MageController {
         loadProperties(loader.configuration);
         if (addExamples != null && addExamples.size() > 0)
         {
-            getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
+            getLogger().info("Added examples: " + StringUtils.join(addExamples, ","));
         }
 
         // Sub-configurations
