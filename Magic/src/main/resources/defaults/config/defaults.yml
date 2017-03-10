@@ -13,6 +13,10 @@ disable_default_spells: false
 # in the future.
 load_default_wands: true
 
+# Use this to load, but disable the default wands.
+# This is useful if you want to inherit from the defaults, or choose what to expose.
+disable_default_wands: false
+
 # Set to false to skip loading defaults/paths.defaults.yml entirely.
 load_default_paths: true
 
