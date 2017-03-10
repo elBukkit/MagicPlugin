@@ -2,7 +2,7 @@
 # Add some Harry Potter themed wand templates
 #
 
-wand:
+wandbox:
     inherit: base_wand
     icon: wood_hoe:24,wood_hoe:25,wood_hoe:26
     migrate_icons:
@@ -28,6 +28,9 @@ wand:
          firework: star
          radius: 4
          size: 2
+
+wand:
+  inherit: wandbox
 
 elder:
     inherit: base_wand
