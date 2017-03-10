@@ -41,23 +41,3 @@ paths:
     staff:
         name: Staff
         description: Staff-only spells
-    youngling:
-        name: Youngling
-    padawan:
-        name: Padawan
-    jedi_knight:
-        name: Jedi Knight
-    jedi_master:
-        name: Jedi Master
-    acolyte:
-        name: Sith Acolyte
-    sith_apprentice:
-        name: Sith Apprentice
-    sith:
-        name: Sith
-    marauder:
-        name: Sith Marauder
-    sith_master:
-        name: Sith Master
-    sith_lord:
-        name: Sith Lord

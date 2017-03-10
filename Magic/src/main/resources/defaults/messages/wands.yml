@@ -293,9 +293,6 @@ wands:
         description: You can fly!
         enchant_instructions: ""
         spell_instructions: "&r&bUse your broom to fly through the air. Dive to speed up, and don't fly too long!"
-    blaster:
-        name: Blaster
-        description: Pew-pew!
     crackedbroomstick:
         name: Cracked Broomstick
         description: Good while it lasts!
@@ -318,32 +315,12 @@ wands:
       name: Ocarina
       description: Right-click and use the hotbar buttons to play music
       spell_count: Has $count Notes
-    lightsaber_red:
-        name: Lighsaber
-        description: Weapon of a $path
-    lightsaber_green:
-        name: Lighsaber
-        description: Weapon of a $path
-    lightsaber_blue:
-        name: Lighsaber
-        description: Weapon of a $path
-    lightsaber_orange:
-        name: Lighsaber
-        description: Weapon of a $path
-    lightsaber_purple:
-        name: Lighsaber
-        description: Weapon of a $path
-    lightsaber_hilt:
-        name: Lighsaber Hilt
-        description: Used to construct a Lightsaber
     mirrorshield:
         name: Mirror Shield
         description: Can block and reflect spells
     empty:
         name: Empty
         description: For creating in-game items from scratch
-    detonator:
-        name: Thermal Detonator
     talisman:
         name: Mana Talisman
         description: Gives a mana bonus when held
