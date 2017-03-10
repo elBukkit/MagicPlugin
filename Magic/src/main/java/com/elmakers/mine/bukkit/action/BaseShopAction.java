@@ -394,7 +394,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     }
                     if (showActiveIcons && controller.getAPI().isWand(copy))
                     {
-                        Wand newWand = controller.getWand(item);
+                        Wand newWand = controller.getWand(copy);
                         com.elmakers.mine.bukkit.api.block.MaterialAndData inactiveIcon = newWand.getInactiveIcon();
                         if (inactiveIcon != null) {
                             inactiveIcon.applyToItem(copy);
