@@ -830,10 +830,10 @@ public class CustomProjectileAction extends CompoundAction
     }
 
     protected void finishEffects() {
-        if (activeProjectileEffects != null) {
+        Plugin plugin = actionContext.getPlugin();
+        if (activeProjectileEffects != null && plugin.isEnabled()) {
             final Collection<EffectPlay> cancelEffects = activeProjectileEffects;
             activeProjectileEffects = null;
-            Plugin plugin = actionContext.getPlugin();
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
                 public void run() {
