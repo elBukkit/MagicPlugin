@@ -81,6 +81,10 @@ spells:
     name: SP Shop
     cooldown: You may only use this shop once!
     fail: ""
+  bendingshop:
+    name: Bending Shop
+    cooldown: You may only use this shop once!
+    fail: ""
     
 spell:
     required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
