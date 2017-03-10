@@ -6,7 +6,6 @@ import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -27,6 +26,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -57,6 +57,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     protected boolean isItems = false;
     protected boolean showConfirmation = true;
     protected boolean showActiveIcons = false;
+    protected boolean putInHand = true;
     protected MaterialAndData confirmFillMaterial;
     protected CastContext context;
     private Map<Integer, ShopItem> showingItems;
@@ -400,7 +401,26 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                             inactiveIcon.applyToItem(copy);
                         }
                     }
-                    context.getController().giveItemToPlayer(mage.getPlayer(), copy);
+                    Player player = mage.getPlayer();
+                    if (putInHand) {
+                        context.getController().giveItemToPlayer(player, copy);
+                    } else {
+                        PlayerInventory inventory = player.getInventory();
+                        ItemStack inHand = inventory.getItemInMainHand();
+                        Integer freeSlot = null;
+                        if (InventoryUtils.isEmpty(inHand)) {
+                            for (int i = 0; i < inventory.getSize() && freeSlot == null; i++) {
+                                if (i != inventory.getHeldItemSlot() && InventoryUtils.isEmpty(inventory.getItem(i))) {
+                                    freeSlot = i;
+                                }
+                            }
+                        }
+                        if (freeSlot == null) {
+                            context.getController().giveItemToPlayer(player, copy);
+                        } else {
+                            inventory.setItem(freeSlot, copy);
+                        }
+                    }
                 }
             }
 
@@ -458,6 +478,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         autoClose = parameters.getBoolean("auto_close", true);
         costScale = parameters.getDouble("scale", 1);
         filterBound = parameters.getBoolean("filter_bound", false);
+        putInHand = parameters.getBoolean("put_in_hand", true);
         if (!autoClose) {
             showConfirmation = false;
         }
