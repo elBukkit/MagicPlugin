@@ -2386,7 +2386,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         if (activeCosts != null) {
             for (CastingCost cost : activeCosts) {
-                if (cost.isEmpty(reducer)) {
+                if (!cost.isEmpty(reducer)) {
                     lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
                 }
             }
