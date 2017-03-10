@@ -1,3 +1,13 @@
+base_bound:
+  hidden: true
+  bound: true
+  keep: true
+  invulnerable: true
+  immortal: true
+  track: true
+  undroppable: true
+  indestructible: true
+
 base_lightsaber:
     hidden: true
     inherit: base_bound
