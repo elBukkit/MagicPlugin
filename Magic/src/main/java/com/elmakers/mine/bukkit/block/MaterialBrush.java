@@ -809,6 +809,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             }
         }
         ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) return null;
         List<String> lore = new ArrayList<>();
         if (extraLore != null) {
             lore.add(ChatColor.LIGHT_PURPLE + extraLore);
