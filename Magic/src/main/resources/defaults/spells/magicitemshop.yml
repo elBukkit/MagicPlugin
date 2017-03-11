@@ -20,7 +20,8 @@ magicitemshop:
           cost: 1000
         - item: wand|magichat
           cost: 5000
-        - item: none
+        - item: wand|talisman
+          cost: 6000
         - item: none
         - item: none
         - item: none
