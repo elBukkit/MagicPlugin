@@ -19,18 +19,18 @@ battle:
     mana_max: 2
     spell_count: 1
     spells:
-    - missile
-    - arrow
-    - cure
-    - fireball
-    - push
-    - pull
-    - blind
-    - reflect
-    - stun
-    - poison
-    - fire
-    - frost
+      - missile
+      - arrow
+      - cure
+      - fireball
+      - push
+      - pull
+      - blind
+      - reflect
+      - stun
+      - poison
+      - fire
+      - frost
 
 squire:
     upgrade: soldier
@@ -42,20 +42,20 @@ squire:
     mana_regeneration: 1
     mana_max: 2
     spells:
-    - arrowrain
-    - boom
-    - grenade
-    - heal
-    - lightning
-    - lava
-    - stream
-    - flamethrower
-    - wither
-    - shell
-    - blob
-    - entangle
-    - whip
-    - curse
+      - arrowrain
+      - boom
+      - grenade
+      - heal
+      - lightning
+      - lava
+      - stream
+      - flamethrower
+      - wither
+      - shell
+      - blob
+      - entangle
+      - whip
+      - curse
 
 soldier:
     upgrade: knight
@@ -67,21 +67,21 @@ soldier:
     mana_regeneration: 1
     mana_max: 2
     spells:
-    - breach
-    - disintegrate
-    - sandblast
-    - counterspell
-    - wound
-    - flashbang
-    - gatling
-    - smite
-    - shuriken
-    - sticky
-    - homing
-    - lift
-    - disarm
-    - laser
-    - wave
+      - breach
+      - disintegrate
+      - sandblast
+      - counterspell
+      - wound
+      - flashbang
+      - gatling
+      - smite
+      - shuriken
+      - sticky
+      - homing
+      - lift
+      - disarm
+      - laser
+      - wave
 
 knight:
     inherit: soldier
@@ -91,18 +91,18 @@ knight:
     mana_regeneration: 1
     mana_max: 2
     spells:
-    - cluster
-    - bomb
-    - earthquake
-    - icbm
-    - nuke
-    - cage
-    - meteor
-    - kill
-    - torture
-    - petrify
-    - singularity
-    - tornado
-    - tendril
-    - force
-    - railgun
+      - cluster
+      - bomb
+      - earthquake
+      - icbm
+      - nuke
+      - cage
+      - meteor
+      - kill
+      - torture
+      - petrify
+      - singularity
+      - tornado
+      - tendril
+      - force
+      - railgun

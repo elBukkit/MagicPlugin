@@ -37,9 +37,9 @@ youngling:
     mana_max: 2
     spell_count: 1
     spells:
-    - fling
-    - push
-    - pull
+      - fling
+      - push
+      - pull
 
 padawan:
     inherit: youngling
@@ -48,8 +48,8 @@ padawan:
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-    - boon
-    - harden
+      - boon
+      - harden
 
 jedi_knight:
     inherit: padawan
@@ -58,8 +58,8 @@ jedi_knight:
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-    - cure
-    - lift
+      - cure
+      - lift
 
 jedi_master:
     inherit: jedi_knight
@@ -67,8 +67,8 @@ jedi_master:
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-    - heal
-    - force
+      - heal
+      - force
 
 acolyte:
     inherit: default
@@ -80,9 +80,9 @@ acolyte:
     mana_max: 2
     spell_count: 1
     spells:
-    - push
-    - pull
-    - fire
+      - push
+      - pull
+      - fire
 
 sith_apprentice:
     inherit: acolyte
@@ -91,8 +91,8 @@ sith_apprentice:
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-    - boom
-    - blast
+      - boom
+      - blast
 
 sith:
     inherit: sith_apprentice
@@ -101,8 +101,8 @@ sith:
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-    - fling
-    - fireball
+      - fling
+      - fireball
 
 marauder:
     inherit: sith
@@ -111,8 +111,8 @@ marauder:
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-    - collapse
-    - lava
+      - collapse
+      - lava
 
 sith_master:
     inherit: marauder
@@ -121,13 +121,13 @@ sith_master:
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-    - force
-    - lift
+      - force
+      - lift
 
 sith_lord:
     inherit: sith_master
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-    - lightning
-    - earthquake
+      - lightning
+      - earthquake

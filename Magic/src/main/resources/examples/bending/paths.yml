@@ -52,47 +52,47 @@ default:
 airbending:
     inherit: default
     spells:
-    - airblast
-    - suction
-    - airscooter
-    - breathofwind
-    - airbomb
-    - airshield
-    - enhancedspeed
-    - tornado
+      - airblast
+      - suction
+      - airscooter
+      - breathofwind
+      - airbomb
+      - airshield
+      - enhancedspeed
+      - tornado
 
 waterbending:
     inherit: default
     spells:
-    - breathofice
-    - waterball
-    - waterjet
-    - heal
-    - cure
-    - bloodbending
-    - waterwhip
-    - iceshield
+      - breathofice
+      - waterball
+      - waterjet
+      - heal
+      - cure
+      - bloodbending
+      - waterwhip
+      - iceshield
 
 earthbending:
     inherit: default
     spells:
-    - earthblock
-    - compression
-    - harden
-    - sandspout
-    - collapse
-    - earthsmash
-    - earthquake
-    - earthline
+      - earthblock
+      - compression
+      - harden
+      - sandspout
+      - collapse
+      - earthsmash
+      - earthquake
+      - earthline
 
 firebending:
     inherit: default
     spells:
-    - fireball
-    - fire
-    - lava
-    - firestream
-    - combustion
+      - fireball
+      - fire
+      - lava
+      - firestream
+      - combustion
 
 avatar:
     max_mana: 500
@@ -100,29 +100,29 @@ avatar:
     mana_regeneration: 5
     mana_max: 30
     spells:
-    - airsphere
-    - fireball
-    - fire
-    - lava
-    - firestream
-    - combustion
-    - compression
-    - earthline
-    - harden
-    - sandspout
-    - collapse
-    - earthsmash
-    - breathofice
-    - waterball
-    - waterjet
-    - heal
-    - cure
-    - gills
-    - bloodbending
-    - fling
-    - airblast
-    - suction
-    - breach
-    - boon
-    - airscooter
+      - airsphere
+      - fireball
+      - fire
+      - lava
+      - firestream
+      - combustion
+      - compression
+      - earthline
+      - harden
+      - sandspout
+      - collapse
+      - earthsmash
+      - breathofice
+      - waterball
+      - waterjet
+      - heal
+      - cure
+      - gills
+      - bloodbending
+      - fling
+      - airblast
+      - suction
+      - breach
+      - boon
+      - airscooter
 
