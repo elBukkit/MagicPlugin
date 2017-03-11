@@ -83,6 +83,12 @@ spells:
     fail: ""
   bendingshop:
     name: Bending Shop
+    title: Choose Your Element
+    cooldown: You may only use this shop once!
+    fail: ""
+  ticketshop:
+    name: Ticket Shop
+    title: Tickets!
     cooldown: You may only use this shop once!
     fail: ""
     
