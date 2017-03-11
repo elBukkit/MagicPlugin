@@ -3,6 +3,7 @@
 ## 6.9
 
  - Moved lightsabers back to the stars config only. Use "example: stars", or see MIGRATION.md
+ - Fix Stash (maybe others) not working in chest mode
 
 ## 6.8
 

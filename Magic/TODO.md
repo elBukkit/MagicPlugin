@@ -2,11 +2,10 @@
 
 ## 6.9
 
+ - Chest Mode loses some spells? :(
  - Brush inventory always starts as page 2
- - Stash is now broken in chest mode (due to quick-cast?)
  - Per-wand template cast location offsets would be nice
  - SuperRing is broken
- - Chest Mode loses some spells? :(
 
 ## 7.0
 

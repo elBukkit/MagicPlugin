@@ -367,8 +367,8 @@ public class InventoryController implements Listener {
                     // Chest mode falls back to selection from here.
                     boolean isInventoryQuickSelect = event.getAction() == InventoryAction.PICKUP_HALF && wandMode == WandMode.INVENTORY;
                     if (isInventoryQuickSelect || wandMode == WandMode.CHEST) {
-                        controller.onPlayerActivateIcon(mage, activeWand, clickedItem);
                         player.closeInventory();
+                        controller.onPlayerActivateIcon(mage, activeWand, clickedItem);
                         event.setCancelled(true);
                     }
 
