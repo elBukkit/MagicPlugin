@@ -53,7 +53,7 @@ try {
 	if (!isset($general['disable_default_spells'])) $general['disable_default_spells'] = false;
 	if (!isset($general['load_default_wands'])) $general['load_default_wands'] = true;
 	if (!isset($general['load_default_crafting'])) $general['load_default_crafting'] = true;
-	if (!isset($general['load_default_enchanting'])) $general['load_default_enchanting'] = true;
+	if (!isset($general['load_default_paths'])) $general['load_default_paths'] = true;
 	$allSpells = parseConfigFile('spells', $general['load_default_spells'], $general['disable_default_spells']);
 	$wands = parseConfigFile('wands', $general['load_default_wands']);
 	$crafting = parseConfigFile('crafting', $general['load_default_crafting']);
@@ -135,18 +135,16 @@ function getPath($key) {
 
     if (!isset($enchanting[$key])) {
         $config = $enchantingConfig[$key];
-        $spellKeys = isset($config['spells']) ? $config['spells'] : array();
-        $pathSpells = array();
-        if ($spellKeys) {
-            foreach ($spellKeys as $spellKey => $spellData) {
-                $pathSpells[] = $spellKey;
-            }
-        }
+        $pathSpells = isset($config['spells']) ? $config['spells'] : array();
         $requiredSpells = isset($config['required_spells']) ? $config['required_spells'] : array();
         if (isset($config['inherit'])) {
             $baseConfig = getPath($config['inherit']);
             unset($baseConfig['hidden']);
+            $spells = $config['spells'];
             $config = array_replace_recursive($baseConfig, $config);
+            if ($baseConfig['spells']) {
+                $config['spells'] = array_merge($spells, $baseConfig['spells']);
+            }
         }
         $config['required_spells'] = $requiredSpells;
         $config['path_spells'] = $pathSpells;
@@ -167,19 +165,6 @@ foreach ($enchanting as $key => $path) {
     }
     $path['name'] = isset($messages['paths'][$key]['name']) ? $messages['paths'][$key]['name'] : '';
     $path['description'] = isset($messages['paths'][$key]['description']) ? $messages['paths'][$key]['description'] : '';
-
-    $convertedRandomSpells = array();
-    if (isset($path['spells'])) {
-        $path['spell_probabilities'] = $path['spells'];
-        $randomSpells = $path['spells'];
-        $path['spells'] = $convertedRandomSpells;
-
-        foreach ($randomSpells as $spellKey => $probability) {
-            $convertedRandomSpells[] = $spellKey;
-        }
-    }
-
-    $path['spells'] = $convertedRandomSpells;
     $enchanting[$key] = $path;
 }
 
@@ -386,7 +371,7 @@ function printIcon($iconUrl, $title) {
 				<li><a href="#overview">Overview</a></li>
 				<li><a href="#spells">Spells</a></li>
 				<li><a href="#crafting">Crafting</a></li>
-				<li><a href="#enchanting">Enchanting</a></li>
+				<li><a href="#enchanting">Paths</a></li>
 				<li><a href="#wands">Wands and Items</a></li>
 				<li><a href="#upgrades">Upgrades</a></li>
 				<li id="booksTab"><a href="#books">Books</a></li>
