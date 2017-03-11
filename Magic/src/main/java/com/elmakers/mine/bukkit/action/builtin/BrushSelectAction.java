@@ -35,7 +35,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
     private CastContext context;
     private List<ItemStack> schematics = new ArrayList<>();
     private Map<Material, List<ItemStack>> variants = new HashMap<>();
-    private int page;
+    private int page = 1;
 
     @Override
     public void deactivated() {
