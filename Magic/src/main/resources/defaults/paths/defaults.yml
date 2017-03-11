@@ -72,31 +72,31 @@ beginner:
       5: 10
     # These are spells that are optional, appear in the spell shop but are not required for progression.
     extra_spells:
-    - flare
-    - stun
-    - gather
-    - workbench
+      - flare
+      - stun
+      - gather
+      - workbench
     # These spells appear in the spell shop and are required to progress to the next path.
     spells:
-    - missile
-    - arrow
-    - blast
-    - boon
-    - cloak
-    - collapse
-    - cure
-    - bubble
-    - fireball
-    - torch
-    - push
-    - pull
-    - peek
-    - recall
-    - blind
-    - reflect
-    - poison
-    - fire
-    - frost
+      - missile
+      - arrow
+      - blast
+      - boon
+      - cloak
+      - collapse
+      - cure
+      - bubble
+      - fireball
+      - torch
+      - push
+      - pull
+      - peek
+      - recall
+      - blind
+      - reflect
+      - poison
+      - fire
+      - frost
 
 student:
     icon: wood_hoe:2
@@ -129,34 +129,34 @@ student:
       7: 20
       10: 5
     extra_spells:
-    - familiar
-    - monster
-    - tracking
-    - rocket
-    - secure
-    - admission
-    - tag
-    - phase
-    - grow
+      - familiar
+      - monster
+      - tracking
+      - rocket
+      - secure
+      - admission
+      - tag
+      - phase
+      - grow
     spells:
-    - blink
-    - arrowrain
-    - boom
-    - fling
-    - grenade
-    - heal
-    - lightning
-    - lava
-    - stream
-    - flamethrower
-    - wither
-    - mine
-    - chop
-    - shell
-    - blob
-    - entangle
-    - whip
-    - curse
+      - blink
+      - arrowrain
+      - boom
+      - fling
+      - grenade
+      - heal
+      - lightning
+      - lava
+      - stream
+      - flamethrower
+      - wither
+      - mine
+      - chop
+      - shell
+      - blob
+      - entangle
+      - whip
+      - curse
 
 apprentice:
     icon: wood_hoe:3
@@ -172,34 +172,34 @@ apprentice:
     max_mana_regeneration: 40
     max_mana: 200
     extra_spells:
-    - emp
-    - music
-    - disarm
-    - ghast
-    - glide
+      - emp
+      - music
+      - disarm
+      - ghast
+      - glide
     spells:
-    - breach
-    - disintegrate
-    - hat
-    - sandblast
-    - counterspell
-    - platform
-    - rubberize
-    - wound
-    - harden
-    - sponge
-    - flashbang
-    - gatling
-    - walls
-    - smite
-    - shuriken
-    - sticky
-    - homing
-    - lift
-    - laser
-    - wave
-    - chainlightning
-    - airscooter
+      - breach
+      - disintegrate
+      - hat
+      - sandblast
+      - counterspell
+      - platform
+      - rubberize
+      - wound
+      - harden
+      - sponge
+      - flashbang
+      - gatling
+      - walls
+      - smite
+      - shuriken
+      - sticky
+      - homing
+      - lift
+      - laser
+      - wave
+      - chainlightning
+      - airscooter
 
 master:
     icon: wood_hoe:4
@@ -231,34 +231,34 @@ master:
       15: 20
       20: 5
     extra_spells:
-    - mount
-    - cage
-    - silence
-    - tent
-    - tame
+      - mount
+      - cage
+      - silence
+      - tent
+      - tame
     spells:
-    - fury
-    - blessing
-    - cluster
-    - bomb
-    - invincible
-    - earthquake
-    - icbm
-    - nuke
-    - meteor
-    - pollinate
-    - kill
-    - torture
-    - petrify
-    - singularity
-    - tornado
-    - tendril
-    - force
-    - stash
-    - railgun
-    - levitate
-    - shrink
-    - dragonball
+      - fury
+      - blessing
+      - cluster
+      - bomb
+      - invincible
+      - earthquake
+      - icbm
+      - nuke
+      - meteor
+      - pollinate
+      - kill
+      - torture
+      - petrify
+      - singularity
+      - tornado
+      - tendril
+      - force
+      - stash
+      - railgun
+      - levitate
+      - shrink
+      - dragonball
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
@@ -292,18 +292,18 @@ engineer:
       10: 20
       15: 10
     spells:
-    - rollback
-    - alter
-    - bridge
-    - toss
-    - convert
-    - recurse
-    - paint
-    - pillar
-    - place
-    - tree
-    - supertorch
-    - brushselect
+      - rollback
+      - alter
+      - bridge
+      - toss
+      - convert
+      - recurse
+      - paint
+      - pillar
+      - place
+      - tree
+      - supertorch
+      - brushselect
     # Engineer wands can gain material brushes, they get some number of them per spell purchase as below
     material_count:
       2: 100
@@ -311,17 +311,17 @@ engineer:
       4: 20
       5: 10
     materials:
-    - erase
-    - stone
-    - dirt
-    - sand
-    - grass
-    - gravel
-    - glass
-    - glowstone
-    - stained_clay
-    - stained_glass
-    - stained_glass_pane
+      - erase
+      - stone
+      - dirt
+      - sand
+      - grass
+      - gravel
+      - glass
+      - glowstone
+      - stained_clay
+      - stained_glass
+      - stained_glass_pane
 
 architect:
     icon: wood_hoe:5
@@ -330,7 +330,7 @@ architect:
     # The conduitshop is required for Conduit
     # This is generally not recommended as a player-obtainable rank, except maybe on creative servers.
     required_spells:
-    - backup
+      - backup
     upgrade: conduit
     upgrade_item: conduit_upgrade
     max_protection: 1
@@ -340,149 +340,149 @@ architect:
     max_mana_regeneration: 60
     max_mana: 400
     spells:
-    - absorb
-    - superalter
-    - supershell
-    - superblast
-    - superbox
-    - supercube
-    - superpyramid
-    - superblob
-    - fill
-    - superemp
-    - superdisc
-    - superring
-    - superconvert
-    - supercylinder
-    - superdome
-    - volley
-    - floodfill
-    - tunnel
+      - absorb
+      - superalter
+      - supershell
+      - superblast
+      - superbox
+      - supercube
+      - superpyramid
+      - superblob
+      - fill
+      - superemp
+      - superdisc
+      - superring
+      - superconvert
+      - supercylinder
+      - superdome
+      - volley
+      - floodfill
+      - tunnel
     material_count:
       7:  100
       10:  60
       12:  30
       15:  10
     materials:
-    - copy
-    - map
-    - soul_sand
-    - wood
-    - log
-    - vine
-    - mycel
-    - quartz_block
-    - leaves
-    - ice
-    - packed_ice
-    - obsidian
-    - redstone_block
-    - schematic|rainbow_blocks
-    - schematic|creeper_rug
-    - wool|0
-    - wool|1
-    - wool|2
-    - wool|3
-    - wool|4
-    - wool|5
-    - wool|6
-    - wool|7
-    - wool|8
-    - wool|9
-    - wool|10
-    - wool|11
-    - wool|12
-    - wool|13
-    - wool|14
-    - wool|15
-    - stained_clay|0
-    - stained_clay|1
-    - stained_clay|2
-    - stained_clay|3
-    - stained_clay|4
-    - stained_clay|5
-    - stained_clay|6
-    - stained_clay|7
-    - stained_clay|8
-    - stained_clay|9
-    - stained_clay|10
-    - stained_clay|11
-    - stained_clay|12
-    - stained_clay|13
-    - stained_clay|14
-    - stained_clay|15
-    - stained_glass|0
-    - stained_glass|1
-    - stained_glass|2
-    - stained_glass|3
-    - stained_glass|4
-    - stained_glass|5
-    - stained_glass|6
-    - stained_glass|7
-    - stained_glass|8
-    - stained_glass|9
-    - stained_glass|10
-    - stained_glass|11
-    - stained_glass|12
-    - stained_glass|13
-    - stained_glass|14
-    - stained_glass_pane|15
-    - stained_glass_pane|0
-    - stained_glass_pane|1
-    - stained_glass_pane|2
-    - stained_glass_pane|3
-    - stained_glass_pane|4
-    - stained_glass_pane|5
-    - stained_glass_pane|6
-    - stained_glass_pane|7
-    - stained_glass_pane|8
-    - stained_glass_pane|9
-    - stained_glass_pane|10
-    - stained_glass_pane|11
-    - stained_glass_pane|12
-    - stained_glass_pane|13
-    - stained_glass_pane|14
-    - stained_glass_pane|15
-    - schematic|rainbow_blocks
-    - schematic|lantern
-    - schematic|creeper_rug
-    - schematic|elder_tree
-    - schematic|church
-    - schematic|blacksmith
-    - schematic|garden_house
-    - schematic|compact_house
-    - schematic|small_house
-    - schematic|nathanwolf
+      - copy
+      - map
+      - soul_sand
+      - wood
+      - log
+      - vine
+      - mycel
+      - quartz_block
+      - leaves
+      - ice
+      - packed_ice
+      - obsidian
+      - redstone_block
+      - schematic|rainbow_blocks
+      - schematic|creeper_rug
+      - wool|0
+      - wool|1
+      - wool|2
+      - wool|3
+      - wool|4
+      - wool|5
+      - wool|6
+      - wool|7
+      - wool|8
+      - wool|9
+      - wool|10
+      - wool|11
+      - wool|12
+      - wool|13
+      - wool|14
+      - wool|15
+      - stained_clay|0
+      - stained_clay|1
+      - stained_clay|2
+      - stained_clay|3
+      - stained_clay|4
+      - stained_clay|5
+      - stained_clay|6
+      - stained_clay|7
+      - stained_clay|8
+      - stained_clay|9
+      - stained_clay|10
+      - stained_clay|11
+      - stained_clay|12
+      - stained_clay|13
+      - stained_clay|14
+      - stained_clay|15
+      - stained_glass|0
+      - stained_glass|1
+      - stained_glass|2
+      - stained_glass|3
+      - stained_glass|4
+      - stained_glass|5
+      - stained_glass|6
+      - stained_glass|7
+      - stained_glass|8
+      - stained_glass|9
+      - stained_glass|10
+      - stained_glass|11
+      - stained_glass|12
+      - stained_glass|13
+      - stained_glass|14
+      - stained_glass_pane|15
+      - stained_glass_pane|0
+      - stained_glass_pane|1
+      - stained_glass_pane|2
+      - stained_glass_pane|3
+      - stained_glass_pane|4
+      - stained_glass_pane|5
+      - stained_glass_pane|6
+      - stained_glass_pane|7
+      - stained_glass_pane|8
+      - stained_glass_pane|9
+      - stained_glass_pane|10
+      - stained_glass_pane|11
+      - stained_glass_pane|12
+      - stained_glass_pane|13
+      - stained_glass_pane|14
+      - stained_glass_pane|15
+      - schematic|rainbow_blocks
+      - schematic|lantern
+      - schematic|creeper_rug
+      - schematic|elder_tree
+      - schematic|church
+      - schematic|blacksmith
+      - schematic|garden_house
+      - schematic|compact_house
+      - schematic|small_house
+      - schematic|nathanwolf
 
 conduit:
     icon: wood_hoe:6
     migrate_icon: gold_pickaxe
     inherit: architect
     spells:
-    - portal
-    - backup
-    - repair
-    - superrepair
-    - paste
-    - anvil
-    - day
-    - night
-    - weather
-    - capture
+      - portal
+      - backup
+      - repair
+      - superrepair
+      - paste
+      - anvil
+      - day
+      - night
+      - weather
+      - capture
     materials:
-    - commit
-    - clone
-    - replicate
-    - lava
-    - water
-    - schematic|rainbow_blocks
-    - schematic|lantern
-    - schematic|creeper_rug
-    - schematic|elder_tree
-    - schematic|church
-    - schematic|blacksmith
-    - schematic|garden_house
-    - schematic|compact_house
-    - schematic|small_house
-    - schematic|nathanwolf
+      - commit
+      - clone
+      - replicate
+      - lava
+      - water
+      - schematic|rainbow_blocks
+      - schematic|lantern
+      - schematic|creeper_rug
+      - schematic|elder_tree
+      - schematic|church
+      - schematic|blacksmith
+      - schematic|garden_house
+      - schematic|compact_house
+      - schematic|small_house
+      - schematic|nathanwolf
 
