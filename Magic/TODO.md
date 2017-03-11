@@ -2,7 +2,6 @@
 
 ## 6.9
 
- - Chest Mode loses some spells? :(
  - Brush inventory always starts as page 2
  - Per-wand template cast location offsets would be nice
  - SuperRing is broken

@@ -112,13 +112,15 @@ public class InventoryController implements Listener {
         // Check for temporary items and skill items
         InventoryAction action = event.getAction();
         InventoryType inventoryType = event.getInventory().getType();
+        boolean isPlayerInventory = inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.PLAYER;
         ItemStack clickedItem = event.getCurrentItem();
 
         boolean isDrop = event.getClick() == ClickType.DROP || event.getClick() == ClickType.CONTROL_DROP;
         boolean isSkill = clickedItem != null && Wand.isSkill(clickedItem);
 
         // Check for right-click-to-use
-        if (isSkill && action == InventoryAction.PICKUP_HALF)
+        boolean isRightClick = action == InventoryAction.PICKUP_HALF;
+        if (isSkill && isRightClick)
         {
             Spell spell = mage.getSpell(Wand.getSpell(clickedItem));
             if (spell != null) {
@@ -169,7 +171,7 @@ public class InventoryController implements Listener {
         boolean isWandInventoryOpen = activeWand != null && activeWand.isInventoryOpen();
 
         // Preventing putting skills in containers
-        if (isSkill && inventoryType != InventoryType.CRAFTING && !isWandInventoryOpen) {
+        if (isSkill && !isPlayerInventory && !isWandInventoryOpen) {
             if (!isDrop) {
                 event.setCancelled(true);
             }
@@ -196,10 +198,15 @@ public class InventoryController implements Listener {
             if (clickedWand)
             {
                 event.setCancelled(true);
-                if (dropChangesPages) {
+                if (dropChangesPages || isRightClick) {
                     activeWand.cycleInventory();
                 } else {
                     activeWand.cycleHotbar(1);
+
+                    // There doesn't seem to be any other way to allow cycling in creative
+                    if (inventoryType == InventoryType.PLAYER) {
+                        activeWand.cycleInventory();
+                    }
                 }
                 return;
             }
@@ -349,7 +356,7 @@ public class InventoryController implements Listener {
         if (activeWand != null) {
             WandMode wandMode = activeWand.getMode();
             boolean isChestInventory = wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS;
-            if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) ||
+            if ((wandMode == WandMode.INVENTORY && isPlayerInventory) ||
                     (isChestInventory && inventoryType == InventoryType.CHEST)) {
                 if (activeWand.isInventoryOpen()) {
                     if (event.getAction() == InventoryAction.NOTHING) {
@@ -365,7 +372,7 @@ public class InventoryController implements Listener {
                     }
 
                     // Chest mode falls back to selection from here.
-                    boolean isInventoryQuickSelect = event.getAction() == InventoryAction.PICKUP_HALF && wandMode == WandMode.INVENTORY;
+                    boolean isInventoryQuickSelect = isRightClick && wandMode == WandMode.INVENTORY;
                     if (isInventoryQuickSelect || wandMode == WandMode.CHEST) {
                         player.closeInventory();
                         controller.onPlayerActivateIcon(mage, activeWand, clickedItem);

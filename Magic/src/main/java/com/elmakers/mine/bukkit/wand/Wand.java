@@ -3842,12 +3842,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     }
 	
 	public WandMode getMode() {
-        WandMode wandMode = mode;
-        Player player = mage == null ? null : mage.getPlayer();
-        if (wandMode == WandMode.INVENTORY && player != null && player.getGameMode() == GameMode.CREATIVE) {
-            wandMode = WandMode.CHEST;
-        }
-		return wandMode;
+        return mode;
 	}
 
     public WandMode getBrushMode() {
