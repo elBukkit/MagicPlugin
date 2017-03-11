@@ -10,6 +10,8 @@
 
 ## 7.0
 
+ - Per-wand template cast location offsets would be nice
+
  - Refactor MageProperties to be contained rather than inherited?
  - Mage needs MageProperties. Maybe per-path? Per "class"? Not really sure yet.
  - Wand templates will specify properties that come from the Mage versus item data. 
