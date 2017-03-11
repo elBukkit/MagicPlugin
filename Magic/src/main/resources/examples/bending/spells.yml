@@ -519,6 +519,8 @@ paint:
 
 torch:
     enabled: true
+    parameters:
+       undo: 0
 
 recurse:
     enabled: true

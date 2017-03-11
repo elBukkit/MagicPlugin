@@ -53,7 +53,7 @@ earthbending:
     active_spell: block
     spells:
         - compression
-        - block
+        - earthblock
 
 firebending:
     inherit: base_wand
