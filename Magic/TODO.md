@@ -1,8 +1,14 @@
 # TODO
 
-## 7.0
+## 6.9
 
+ - Brush inventory always starts as page 2
+ - Stash is now broken in chest mode (due to quick-cast?)
  - Per-wand template cast location offsets would be nice
+ - SuperRing is broken
+ - Chest Mode loses some spells? :(
+
+## 7.0
 
  - Refactor MageProperties to be contained rather than inherited?
  - Mage needs MageProperties. Maybe per-path? Per "class"? Not really sure yet.

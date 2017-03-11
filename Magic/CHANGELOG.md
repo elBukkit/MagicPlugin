@@ -1,10 +1,8 @@
 # CHANGELOG
 
-## 7.0
+## 6.9
 
  - Move lightsabers back to the stars config only. Use "example: stars", or see MIGRATION.md
-
-## 6.9
 
 ## 6.8
 
