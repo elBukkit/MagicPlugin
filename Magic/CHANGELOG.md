@@ -2,7 +2,7 @@
 
 ## 6.9
 
- - Move lightsabers back to the stars config only. Use "example: stars", or see MIGRATION.md
+ - Moved lightsabers back to the stars config only. Use "example: stars", or see MIGRATION.md
 
 ## 6.8
 
