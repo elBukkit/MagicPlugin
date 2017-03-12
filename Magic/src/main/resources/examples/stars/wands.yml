@@ -9,6 +9,7 @@ base_lightsaber:
     right_click: none
     swap: cycle_hotbar
     quick_cast: true
+    cast_location: 0,-0.6,0.5
     mana_max: 50
     mana: 50
     mana_regeneration: 5

@@ -2,8 +2,12 @@
 # Bending Powers, which are represented as wand "items"
 #
 
-airbending:
+base_bending:
     inherit: base_wand
+    cast_location: 0,-0.6,0.5
+
+airbending:
+    inherit: base_bending
     path: airbending
     migrate_icon: gold_axe
     icon: wood_hoe:19
@@ -21,7 +25,7 @@ airbending:
         - airscooter
 
 waterbending:
-    inherit: base_wand
+    inherit: base_bending
     path: waterbending
     migrate_icon: gold_spade
     icon: wood_hoe:20
@@ -37,7 +41,7 @@ waterbending:
         - waterball
 
 earthbending:
-    inherit: base_wand
+    inherit: base_bending
     path: earthbending
     migrate_icon: gold_hoe
     icon: wood_hoe:21
@@ -56,7 +60,7 @@ earthbending:
         - earthblock
 
 firebending:
-    inherit: base_wand
+    inherit: base_bending
     path: firebending
     migrate_icon: gold_pickaxe
     icon: wood_hoe:22
@@ -73,7 +77,7 @@ firebending:
         - fireball
 
 avatar:
-    inherit: base_wand
+    inherit: base_bending
     migrate_icon: gold_pickaxe
     path: avatar
     icon: wood_hoe:23
