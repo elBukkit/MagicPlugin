@@ -25,6 +25,7 @@ add_examples:
  - Enchanting configs renamed to "paths". 
    - Old enchanting.yml file will be renamed (one-time migration)
    - enchanting folder no longer used, please move files by hand if you have any in there.
+   - load_default_enchanting changed to load_default_paths
  - New properties (you may want to set on your wands if you have completely custom configs):
    - unique: if true, wand will always have a unique id (in case you need it for API integration, or want to avoid stacking)
    - track: if true, wand will be tracked when dropped on the ground

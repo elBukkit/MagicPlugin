@@ -198,6 +198,8 @@ public class BlockController implements Listener {
         UndoList undoList = controller.getPendingUndo(targetBlock.getLocation());
         if (undoList == null)
         {
+            // TODO: Use BlockBurnEvent.getIgnitingBlock to avoid this mess, 1.11 and up
+
             // This extra check is necessary to prevent a very specific condition that is not necessarily unique to
             // burning, but happens much more frequently. This may be a sign that the attachment-watching code in UndoList
             // needs review, and perhaps in general instead of watching neighbor blocks we should check all neighbor blocks
