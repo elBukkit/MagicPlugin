@@ -97,6 +97,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public static CastSourceLocation DEFAULT_CAST_LOCATION = CastSourceLocation.MAINHAND;
     public static Vector DEFAULT_CAST_OFFSET = new Vector(0.5, -0.5, 0);
+    public static double SNEAKING_CAST_OFFSET = -0.2;
 
     protected final String id;
     protected ConfigurationSection data = new MemoryConfiguration();
@@ -1220,10 +1221,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 leftHand = !leftHand;
             }
         }
+        double sneakOffset = 0;
+        if (entity instanceof Player && ((Player)entity).isSneaking()) {
+            sneakOffset = SNEAKING_CAST_OFFSET;
+        }
 
         if (leftHand) {
-            offset = new Vector(offset.getX(), offset.getY(), -offset.getZ());
+            offset = new Vector(offset.getX(), offset.getY() + sneakOffset, -offset.getZ());
+        } else if (sneakOffset != 0) {
+            offset = new Vector(offset.getX(), offset.getY() + sneakOffset, offset.getZ());
         }
+
         baseLocation.add(VectorUtils.rotateVector(offset, baseLocation));
         return baseLocation;
     }

@@ -7,6 +7,7 @@
  - Remove creative mode switching wands to chest mode. Click on wand to cycle inventory pages, it's a little glitchy though.
  - Fix SuperRing spell
  - Add cast_location property to Wands, a vector that will determine the source location of spells
+ - Add confiurable cast location offset when a player is sneaking
 
 ## 6.8
 

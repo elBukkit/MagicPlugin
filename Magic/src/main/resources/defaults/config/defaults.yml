@@ -291,6 +291,8 @@ default_cast_location: mainhand
 default_cast_location_offset: 0.5
 # This offsets from the eyes, the result should be around the main hand location
 default_cast_location_offset_vertical: -0.6
+# How much we should lower down the cast location when a player is sneaking
+sneaking_cast_location_offset_vertical: -0.15
 
 # Control whether wands regenerate mana while they are not being held
 regenerate_while_inactive: true
