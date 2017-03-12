@@ -6,6 +6,7 @@
  - Fix Stash (maybe others) not working in chest mode
  - Remove creative mode switching wands to chest mode. Click on wand to cycle inventory pages, it's a little glitchy though.
  - Fix SuperRing spell
+ - Add cast_location property to Wands, a vector that will determine the source location of spells
 
 ## 6.8
 

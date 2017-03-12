@@ -73,8 +73,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public final static int HOTBAR_SIZE = 9;
 	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
-	public static double WAND_LOCATION_OFFSET = 0.5;
-	public static double WAND_LOCATION_VERTICAL_OFFSET = 0;
+	public static Vector DEFAULT_CAST_OFFSET = new Vector(0.5, 0, 0);
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
 	private static int WAND_VERSION = 2;
@@ -114,7 +113,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             "enchant_count", "max_enchant_count",
             "quick_cast", "left_click", "right_click", "drop", "swap",
 			"block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
-			"unique", "track", "invulnerable", "immortal", "inventory_rows"
+			"unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location"
     );
 
     private final static Random random = new Random();
@@ -172,6 +171,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     private boolean isInOffhand = false;
 	private boolean hasId = false;
 	private int inventoryRows = 1;
+	private Vector castLocation;
 	
 	private WandAction leftClickAction = WandAction.NONE;
 	private WandAction rightClickAction = WandAction.NONE;
@@ -1512,6 +1512,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		effectParticleInterval = wandConfig.getInt("effect_particle_interval");
 		effectParticleMinVelocity = wandConfig.getDouble("effect_particle_min_velocity");
 		effectSoundInterval =  wandConfig.getInt("effect_sound_interval");
+		castLocation = ConfigurationUtils.getVector(wandConfig, "cast_location");
 
 		castInterval = wandConfig.getInt("cast_interval");
 		castMinVelocity = wandConfig.getDouble("cast_min_velocity");
@@ -5013,7 +5014,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			return null;
 		}
 		Location wandLocation = mage.getEyeLocation();
-		wandLocation = mage.getOffsetLocation(wandLocation, isInOffhand, WAND_LOCATION_OFFSET, WAND_LOCATION_VERTICAL_OFFSET);
+		wandLocation = mage.getOffsetLocation(wandLocation, isInOffhand, castLocation == null ? DEFAULT_CAST_OFFSET : castLocation);
 		return wandLocation;
 	}
 

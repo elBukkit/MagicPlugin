@@ -2353,8 +2353,8 @@ public class MagicController implements MageController {
             com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION = CastSourceLocation.MAINHAND;
             getLogger().warning("Invalid default_cast_location: " + defaultLocationString);
         }
-        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_OFFSET = properties.getDouble("default_cast_location_offset", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_OFFSET);
-        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_VERTICAL_OFFSET = properties.getDouble("default_cast_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION_VERTICAL_OFFSET);
+        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.setZ(properties.getDouble("default_cast_location_offset", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.getZ()));
+        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.setY(properties.getDouble("default_cast_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.getY()));
         com.elmakers.mine.bukkit.magic.Mage.OFFHAND_CAST_COOLDOWN = properties.getInt("offhand_cast_cooldown", com.elmakers.mine.bukkit.magic.Mage.OFFHAND_CAST_COOLDOWN);
 
 		// Parse wand settings
@@ -2394,8 +2394,8 @@ public class MagicController implements MageController {
 
         BaseSpell.DEFAULT_DISABLED_ICON_URL = properties.getString("disabled_icon_url", BaseSpell.DEFAULT_DISABLED_ICON_URL);
 
-        Wand.WAND_LOCATION_OFFSET = properties.getDouble("wand_location_offset", Wand.WAND_LOCATION_OFFSET);
-        Wand.WAND_LOCATION_VERTICAL_OFFSET = properties.getDouble("wand_location_offset_vertical", Wand.WAND_LOCATION_OFFSET);
+        Wand.DEFAULT_CAST_OFFSET.setZ(properties.getDouble("wand_location_offset", Wand.DEFAULT_CAST_OFFSET.getZ()));
+        Wand.DEFAULT_CAST_OFFSET.setY(properties.getDouble("wand_location_offset_vertical", Wand.DEFAULT_CAST_OFFSET.getY()));
         com.elmakers.mine.bukkit.magic.Mage.JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = properties.getInt("jump_exemption", 0);
 
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));

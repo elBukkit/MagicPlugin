@@ -42,6 +42,7 @@ import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
+import de.slikey.effectlib.util.VectorUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -95,8 +96,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private static String SKILL_POINT_KEY = "sp";
 
     public static CastSourceLocation DEFAULT_CAST_LOCATION = CastSourceLocation.MAINHAND;
-    public static double DEFAULT_CAST_LOCATION_OFFSET = 0.5;
-    public static double DEFAULT_CAST_LOCATION_VERTICAL_OFFSET = -0.5;
+    public static Vector DEFAULT_CAST_OFFSET = new Vector(0.5, -0.5, 0);
 
     protected final String id;
     protected ConfigurationSection data = new MemoryConfiguration();
@@ -1201,18 +1201,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             wandLocation = activeWand.getLocation();
         } else if (offhandWand != null && offhandCast) {
             wandLocation = offhandWand.getLocation();
-        }
-
-        if (DEFAULT_CAST_LOCATION == CastSourceLocation.MAINHAND) {
-            wandLocation = getOffsetLocation(wandLocation, false, DEFAULT_CAST_LOCATION_OFFSET, DEFAULT_CAST_LOCATION_VERTICAL_OFFSET);
+        } else if (DEFAULT_CAST_LOCATION == CastSourceLocation.MAINHAND) {
+            wandLocation = getOffsetLocation(wandLocation, false, DEFAULT_CAST_OFFSET);
         } else if (DEFAULT_CAST_LOCATION == CastSourceLocation.OFFHAND) {
-            wandLocation = getOffsetLocation(wandLocation, true, DEFAULT_CAST_LOCATION_OFFSET, DEFAULT_CAST_LOCATION_VERTICAL_OFFSET);
+            wandLocation = getOffsetLocation(wandLocation, true, DEFAULT_CAST_OFFSET);
         }
 
         return wandLocation;
     }
 
-    public Location getOffsetLocation(Location baseLocation, boolean isInOffhand, double offset, double verticalOffset) {
+    public Location getOffsetLocation(Location baseLocation, boolean isInOffhand, Vector offset) {
         Entity entity = getEntity();
 
         boolean leftHand = isInOffhand;
@@ -1222,16 +1220,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 leftHand = !leftHand;
             }
         }
-        Location toTheRight = baseLocation.clone();
+
         if (leftHand) {
-            toTheRight.setYaw(toTheRight.getYaw() - 90);
-        } else {
-            toTheRight.setYaw(toTheRight.getYaw() + 90);
+            offset = new Vector(offset.getX(), offset.getY(), -offset.getZ());
         }
-        Vector wandDirection = toTheRight.getDirection();
-        baseLocation = baseLocation.clone();
-        baseLocation.add(wandDirection.multiply(offset));
-        baseLocation.setY(baseLocation.getY() + verticalOffset);
+        baseLocation.add(VectorUtils.rotateVector(offset, baseLocation));
         return baseLocation;
     }
 

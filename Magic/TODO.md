@@ -2,7 +2,6 @@
 
 ## 6.9
 
- - Per-wand template cast location offsets would be nice
  - Add sp_multiplier to wands, stacks in Mage, 0 means turn off SP display, add lore when not 0 or 1
 
 ## 7.0
