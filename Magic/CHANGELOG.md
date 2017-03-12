@@ -5,6 +5,7 @@
  - Moved lightsabers back to the stars config only. Use "example: stars", or see MIGRATION.md
  - Fix Stash (maybe others) not working in chest mode
  - Remove creative mode switching wands to chest mode. Click on wand to cycle inventory pages, it's a little glitchy though.
+ - Fix SuperRing spell
 
 ## 6.8
 

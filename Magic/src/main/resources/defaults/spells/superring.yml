@@ -21,10 +21,11 @@ superring:
         type: sphere
         orient_dimension_max: 0
         orient_dimension_min: 0
-        thickness: 1
-        orient: true
         transparent: transparent_to_construction
+        destructible: destructible_replace
+        orient: true
         consume: true
+        thickness: 1
     costs:
         mana: 200
 
