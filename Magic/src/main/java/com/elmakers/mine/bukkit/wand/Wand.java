@@ -69,6 +69,7 @@ import org.bukkit.util.Vector;
 public class Wand extends BaseMagicProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int PLAYER_INVENTORY_SIZE = 36;
+	public final static int INVENTORY_ORGANIZE_BUFFER = 4;
 	public final static int HOTBAR_SIZE = 9;
 	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
@@ -1007,11 +1008,25 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		List<Inventory> checkInventories = getAllInventories();
 		boolean added = false;
 
+		WandMode mode = getMode();
 		for (Inventory inventory : checkInventories) {
-			HashMap<Integer, ItemStack> returned = inventory.addItem(itemStack);
+			int inventorySize = inventory.getSize();
+			Integer slot = null;
+			int freeSpace = 0;
+			for (int i = 0; i < inventorySize && freeSpace < INVENTORY_ORGANIZE_BUFFER; i++) {
+				ItemStack existing = inventory.getItem(i);
+				if (InventoryUtils.isEmpty(existing)) {
+					if (slot == null) {
+						slot = i;
+					}
+					freeSpace++;
+				}
+			}
 
-			if (returned.size() == 0) {
+			// Don't leave free space in hotbars
+			if (slot != null && (freeSpace >= INVENTORY_ORGANIZE_BUFFER || inventorySize == HOTBAR_INVENTORY_SIZE || mode == WandMode.CHEST)) {
 				added = true;
+				inventory.setItem(slot, itemStack);
 				break;
 			}
 		}

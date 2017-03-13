@@ -25,7 +25,6 @@ public class WandOrganizer {
 	private final Wand wand;
 	private final Mage mage;
 
-	protected final static int inventoryOrganizeBuffer = 4;
 	protected final static int inventoryOrganizeNewGroupBuffer = 8;
 	protected final static int favoriteCastCountThreshold = 20;
     protected final static int favoriteCountBuffer = 9;
@@ -239,7 +238,7 @@ public class WandOrganizer {
     }
 
     protected int getNextSlot() {
-        return getNextSlot(wand.getInventorySize() - inventoryOrganizeBuffer);
+        return getNextSlot(wand.getInventorySize() - Wand.INVENTORY_ORGANIZE_BUFFER);
     }
 
     protected int getNextSlot(int nextPageSize) {

@@ -28,13 +28,11 @@
   
 ## Not so High-Priority
  
- - Adding spells to wands should try to preserve a few spaces of free space on each page (don't rely on inventory.addItem)
  - Aliases don't work with levels 
  - Don't refund item costs when a spell goes through auto-undo
 
 ## Sabers
 
- - Fix particle FX
  - Paths being able to upgrade blocking/reflect power
 
 ## Reported Issues

@@ -11,6 +11,7 @@
  - Potter wands start with Vermillious, not Flagrate
  - Potter wand box is now "wandbox", and wand is "potterwand". The "wand" template was left in for backwards compatibility.
  - Add "replace_on_activate" wand property, for a wand that will change into a different wand when held
+ - Wands will attempt to keep some inventory space free, to make organizing easier and to allow item pickup
 
 ## 6.8
 
