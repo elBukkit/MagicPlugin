@@ -17,6 +17,7 @@ pollinate:
               -  class: Spread
                  actions:
                  -  class: ThrowItem
+           - class: Delay
         - class: Brush
           actions:
           - class: ThrowItem
@@ -47,15 +48,16 @@ pollinate:
         target: none
         radius: 3
         center_probability: 0.9
-        outer_probability: 0.1
+        outer_probability: 0.5
         vertical_range: 8
         cooldown: 20000
         age_items: 5940
         item_speed_min: 0.75
         item_speed_max: 1.1
         yaw_max: 30
-        pitch_max: 2
+        pitch_max: 4
         uses_brush: false
+        delay: 100
         brushes:
         - yellow_flower
         - red_rose
@@ -91,4 +93,3 @@ pollinate:
         - double_plant:5
     costs:
         mana: 100
-
