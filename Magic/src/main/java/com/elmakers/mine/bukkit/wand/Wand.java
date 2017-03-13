@@ -113,7 +113,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             "enchant_count", "max_enchant_count",
             "quick_cast", "left_click", "right_click", "drop", "swap",
 			"block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
-			"unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location"
+			"unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
+			"sp_multiplier"
     );
 
     private final static Random random = new Random();
@@ -194,6 +195,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     protected float damageReductionFire = 0;
     protected float damageReductionExplosions = 0;
     private float power = 0;
+    private float spMultiplier = 1;
 	
 	private float blockFOV = 0;
 	private float blockChance = 0;
@@ -1488,6 +1490,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         manaMaxBoost = (float)wandConfig.getDouble("mana_max_boost", wandConfig.getDouble("xp_max_boost"));
         manaRegenerationBoost = (float)wandConfig.getDouble("mana_regeneration_boost", wandConfig.getDouble("xp_regeneration_boost"));
         manaPerDamage = (float)wandConfig.getDouble("mana_per_damage");
+		spMultiplier = (float)wandConfig.getDouble("sp_multiplier", 1);
 
         // Check for single-use wands
 		uses = wandConfig.getInt("uses");
@@ -2143,6 +2146,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_fire", damageReductionFire));
             if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_explosions", damageReductionExplosions));
         }
+        if (spMultiplier > 1) {
+			lore.add(ChatColor.AQUA + getPercentageString(controller.getMessages(), "wand.sp_multiplier", spMultiplier - 1));
+		}
 	}
 	
 	public static String getLevelString(Messages messages, String templateName, float amount)
@@ -3420,12 +3426,12 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
     public boolean usesXPBar()
     {
-        return (hasSpellProgression && spMode.useXP()) || (usesMana() && manaMode.useXP());
+        return (usesSP() && spMode.useXP()) || (usesMana() && manaMode.useXP());
     }
 
     public boolean usesXPNumber()
     {
-        return (hasSpellProgression && spMode.useXPNumber() && controller.isSPEnabled()) || (usesMana() && manaMode.useXP());
+        return (usesSP() && spMode.useXPNumber() && controller.isSPEnabled()) || (usesMana() && manaMode.useXP());
     }
 
     public boolean hasSpellProgression()
@@ -3468,7 +3474,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             {
                 playerProgress = Math.max(0, mana / effectiveManaMax);
             }
-            if (controller.isSPEnabled() && spMode.useXPNumber() && hasSpellProgression)
+            if (usesSP() && spMode.useXPNumber())
             {
                 playerLevel = mage.getSkillPoints();
             }
@@ -5101,5 +5107,13 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     		return 9 * inventoryRows;
 		}
     	return INVENTORY_SIZE;
+	}
+
+	public float getSPMultiplier() {
+    	return spMultiplier;
+	}
+
+	public boolean usesSP() {
+    	return hasSpellProgression && controller.isSPEnabled() && controller.isSPEarnEnabled() && spMultiplier > 0;
 	}
 }

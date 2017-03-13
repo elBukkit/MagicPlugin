@@ -146,6 +146,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long cooldownExpiration = 0;
     private float powerMultiplier = 1;
     private float magePowerBonus = 0;
+    private float spMultiplier = 1;
     private long lastClick = 0;
     private long lastCast = 0;
     private long lastOffhandCast = 0;
@@ -2555,6 +2556,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         damageReductionFalling = 0;
         damageReductionFire = 0;
         damageReductionExplosions = 0;
+        spMultiplier = 1;
         
         List<PotionEffectType> currentEffects = new ArrayList<>(effectivePotionEffects.keySet());
         LivingEntity entity = getLivingEntity();
@@ -2568,6 +2570,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             damageReductionFire += activeWand.getDamageReductionFire();
             damageReductionExplosions += activeWand.getDamageReductionExplosions();
             effectivePotionEffects.putAll(activeWand.getPotionEffects());
+
+            spMultiplier *= activeWand.getSPMultiplier();
         }
         // Don't add these together so things stay balanced!
         if (offhandWand != null && !offhandWand.isPassive())
@@ -2579,6 +2583,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             damageReductionFire += Math.max(damageReductionFire, offhandWand.getDamageReductionFire());
             damageReductionExplosions += Math.max(damageReductionExplosions, offhandWand.getDamageReductionExplosions());
             effectivePotionEffects.putAll(offhandWand.getPotionEffects());
+
+            spMultiplier *= offhandWand.getSPMultiplier();
         }
         for (Wand armorWand : activeArmor.values())
         {
@@ -2590,6 +2596,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 damageReductionFire += armorWand.getDamageReductionFire();
                 damageReductionExplosions += armorWand.getDamageReductionExplosions();
                 effectivePotionEffects.putAll(armorWand.getPotionEffects());
+
+                spMultiplier *= armorWand.getSPMultiplier();
             }
         }
         damageReduction = Math.min(damageReduction, 1);
@@ -2741,7 +2749,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         data.set(SKILL_POINT_KEY, amount);
 
-        if (activeWand != null && Wand.spMode != WandManaMode.NONE) {
+        if (activeWand != null && Wand.spMode != WandManaMode.NONE && activeWand.usesSP()) {
             if (firstEarn) {
                 sendMessage(activeWand.getMessage("sp_instructions"));
             }
@@ -2891,6 +2899,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return true;
         }
         return false;
+    }
+
+    @Override
+    public float getSPMultiplier() {
+        return spMultiplier;
     }
 }
 

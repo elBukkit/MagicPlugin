@@ -2441,9 +2441,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         if (earns > 0 && controller.isSPEnabled() && controller.isSPEarnEnabled()) {
-            String earnsText = messages.get("spell.earns").replace("$earns", Integer.toString(earns));
-            if (!earnsText.isEmpty()) {
-                lore.add(earnsText);
+            int scaledEarn = earns;
+            if (mage != null) {
+                scaledEarn = (int)Math.floor(mage.getSPMultiplier() * scaledEarn);
+            }
+            if (scaledEarn > 0) {
+                String earnsText = messages.get("spell.earns").replace("$earns", Integer.toString(scaledEarn));
+                if (!earnsText.isEmpty()) {
+                    lore.add(earnsText);
+                }
             }
         }
         if (controller.isSpellProgressionEnabled() && progressDescription != null
@@ -2525,7 +2531,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     context.playEffects("earn_sp");
                 }
                 if (scaledEarn > 0) {
-                    mage.addSkillPoints(scaledEarn);
+                    mage.addSkillPoints((int)Math.floor(mage.getSPMultiplier() * scaledEarn));
                     spellData.setLastEarn(now);
                 }
             }

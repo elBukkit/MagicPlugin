@@ -15,6 +15,8 @@
  - Add SuperLaser spell (to Architect path)
  - Fix engineering spell bug with erase brush when switching from a non-engineering wand, would fill with dirt
  - Fix passive wand potion effects (like night vision goggles) not always restoring after death
+ - Add sp_multiplier property to wands. Can be used for bonuses, or to turn off SP earn. 
+ - Mana Talisman got a new icon and some buffs
 
 ## 6.8
 

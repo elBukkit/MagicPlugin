@@ -477,6 +477,7 @@ public interface Mage extends CostReducer {
     boolean tryToOwn(Wand wand);
     boolean isReflected(double angle);
     boolean isBlocked(double angle);
+    float getSPMultiplier();
 
     /**
      * This method is deprecated, soul wand functionality was never implemented.

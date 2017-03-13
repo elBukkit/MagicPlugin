@@ -2,8 +2,6 @@
 
 ## 6.9
 
- - Add sp_multiplier to wands, stacks in Mage, 0 means turn off SP display, add lore when not 0 or 1
-
 ## 7.0
 
  - Refactor MageProperties to be contained rather than inherited?
