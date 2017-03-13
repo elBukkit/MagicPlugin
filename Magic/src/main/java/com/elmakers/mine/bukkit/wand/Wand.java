@@ -1139,6 +1139,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		for (String spellName : spellKeys)
 		{
 			String[] pieces = StringUtils.split(spellName, '@');
+			Integer slot = parseSlot(pieces);
 
 			// Handle aliases and upgrades smoothly
 			String loadedKey = pieces[0].trim();
@@ -1156,6 +1157,9 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
 				if (currentLevel == null || currentLevel < spellKey.getLevel()) {
 					spellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
+					if (slot != null) {
+						spellInventory.put(spellKey.getBaseKey(), slot);
+					}
 					spells.add(spellKey.getKey());
 					if (currentLevel != null)
 					{
@@ -1396,7 +1400,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		} else {
 			setProperty("brushes", new ArrayList<>(brushes));
 		}
-		updateBrushInventory();
 	}
 
 	public void updateSpells() {
@@ -1405,7 +1408,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		} else {
 			setProperty("spells", new ArrayList<>(spells));
 		}
-		updateSpellInventory();
 	}
 
 	public void updateBrushInventory() {
@@ -1822,6 +1824,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			} else if (spellInventoryRaw instanceof ConfigurationSection) {
 				loadSpellInventory(NMSUtils.getMap((ConfigurationSection)spellInventoryRaw));
 			}
+		}
+		else {
+			// Spells may have contained an inventory from migration or templates with a spell@slot format.
+			updateSpellInventory();
 		}
 		buildInventory();
 
@@ -4319,7 +4325,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
         spellLevels.put(spellKey.getBaseKey(), level);
-        spellInventory.put(spellKey.getBaseKey(), inventorySlot);
 		spells.add(template.getKey());
 
 		if (currentLevel != null) {
@@ -4589,6 +4594,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		updateActiveMaterial();
 		updateInventory();
 		updateBrushes();
+		updateBrushInventory();
         saveState();
 		updateName();
 		updateLore();
@@ -4635,6 +4641,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         updateInventory();
 		updateHasInventory();
 		updateSpells();
+		updateSpellInventory();
         saveState();
         updateName();
         updateLore();
