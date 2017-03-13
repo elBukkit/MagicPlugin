@@ -9,6 +9,8 @@
  - Add cast_location property to Wands, a vector that will determine the source location of spells
  - Add configurable cast location offset when a player is sneaking
  - Potter wands start with Vermillious, not Flagrate
+ - Potter wand box is now "wandbox", and wand is "potterwand". The "wand" template was left in for backwards compatibility.
+ - Add "replace_on_activate" wand property, for a wand that will change into a different wand when held
 
 ## 6.8
 

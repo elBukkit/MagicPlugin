@@ -10,6 +10,10 @@ add_examples:
 - stars
 ```
 
+ - The default potter wand was changed to "potterwand". "wand" will still work for now, but I'd like to remove it eventually.
+   - Use "potterwand" to give a wand directly
+   - Use "wandbox" to give a wand box that, when opened, will produce a wand
+
 ## 6.8
 
  - You may use "example: 6" in config.yml to undo the following config changes:

@@ -1312,12 +1312,6 @@ plantshop:
           leaves:2@16: 10
           leaves:3@16: 10
 
-ollivander:
-  parameters:
-    items:
-      - item: wand:wandbox
-        cost: 1
-
 bendingshop:
   inherit: buyshop
   cast_on_no_target: false

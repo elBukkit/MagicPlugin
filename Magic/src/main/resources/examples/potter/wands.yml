@@ -2,14 +2,42 @@
 # Add some Harry Potter themed wand templates
 #
 
-wandbox:
+# These are copied from the default cofigs. We can't reference them or there will be a collision on the "wand"
+# item.
+# This may be fixed in the future by removing "wand" from these configs- please use "potterwand" instead!
+
+base_bound:
+  hidden: true
+  bound: true
+  keep: true
+  invulnerable: true
+  immortal: true
+  track: true
+  undroppable: true
+  indestructible: true
+
+base_wand:
+    hidden: true
+    inherit: base_bound
+    mode: inventory
+    drop: toggle
+    left_click: cast
+    right_click: none
+    swap: cycle_hotbar
+    quiet: 1
+    effect_bubbles: false
+    attributes:
+      GENERIC_ATTACK_SPEED: 10
+    attribute_slot: mainhand
+
+# This was renamed from wand to support mixing configs with defaults
+potterwand:
     inherit: base_wand
     icon: wood_hoe:24,wood_hoe:25,wood_hoe:26
     migrate_icons:
       wood_hoe: wood_hoe:24
       gold_axe: wood_hoe:25
       gold_pickaxe: wood_hoe:26
-    randomize_icon: wood_step
     active_spell: vermillious
     path: year1
     quiet: 1
@@ -20,17 +48,34 @@ wandbox:
     effect_bubbles: false
     spells:
      - vermillious
-    effects:
-      randomize:
-      -  class: EffectSingle
-         sound: entity_player_levelup
-      -  class: EffectRing
-         firework: star
-         radius: 4
-         size: 2
 
+# This will turn into a potterwand when held
+wandbox:
+  icon: wood_step:2
+  replace_on_activate: potterwand
+  effects:
+    replace:
+    -  class: EffectSingle
+       sound: entity_player_levelup
+    -  class: EffectRing
+       firework: star
+       radius: 4
+       size: 2
+
+
+# This is here for backwards-compatibility
+# Please use wandbox or potterwand instead, this may be removed in the future.
 wand:
-  inherit: wandbox
+  inherit: potterwand
+  randomize_icon: wood_step
+  effects:
+    randomize:
+    -  class: EffectSingle
+       sound: entity_player_levelup
+    -  class: EffectRing
+       firework: star
+       radius: 4
+       size: 2
 
 elder:
     inherit: base_wand

@@ -607,10 +607,13 @@ wands:
         description: $wood and $core
         randomized_lore: What kind will you get?
 
-    wandbox:
+    potterwand:
         name: Wand
         description: $wood and $core
-        randomized_lore: What kind will you get?
+
+    wandbox:
+        name: Wand Box
+        description: What kind will you get?
 
     auror:
         name: Auror Wand

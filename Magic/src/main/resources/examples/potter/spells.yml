@@ -2802,7 +2802,7 @@ ollivander:
     worth_item: ticket
     use_items: true
     items:
-      - item: wand:wand
+      - item: wand:wandbox
         cost: 1
     loud: true
 
