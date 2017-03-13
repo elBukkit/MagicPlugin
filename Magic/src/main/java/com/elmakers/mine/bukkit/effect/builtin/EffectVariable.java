@@ -32,12 +32,22 @@ public class EffectVariable extends EffectPlayer {
     public void load(Plugin plugin, ConfigurationSection configuration) {
         super.load(plugin, configuration);
 
+        playAtOrigin = false;
+        playAtTarget = false;
+        playAtAllTargets = false;
         ConfigurationSection brightness = ConfigurationUtils.getConfigurationSection(configuration, "brightness");
         Collection<String> keys = brightness.getKeys(false);
         for (String key : keys) {
             try {
                 double level = Double.parseDouble(key);
-                brightnessMap.put(level, EffectPlayer.loadEffects(plugin, brightness, key));
+                Collection<EffectPlayer> childPlayers = EffectPlayer.loadEffects(plugin, brightness, key);
+                brightnessMap.put(level, childPlayers);
+                for (EffectPlayer childPlayer : childPlayers) {
+                    playAtOrigin = playAtOrigin | childPlayer.playsAtOrigin();
+                    playAtAllTargets = playAtAllTargets | childPlayer.playsAtAllTargets();
+                    playAtTarget = playAtTarget | childPlayer.playsAtTarget();
+                }
+
             } catch (Exception ex) {
             }
         }

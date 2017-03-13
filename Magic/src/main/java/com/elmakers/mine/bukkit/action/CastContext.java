@@ -535,14 +535,14 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 Mage mage = getMage();
                 Location source = sourceLocation;
                 if (source == null) {
-                    if (mage.getEntity() == sourceEntity) {
+                    if (mage.getEntity() == sourceEntity && player.playsAtOrigin()) {
                         source = player.getSourceLocation(this);
                     } else {
                         source = location;
                     }
                 }
                 Location target = targetLocation;
-                if (target == null) {
+                if (target == null && player.playsAtTarget()) {
                     target = getTargetLocation();
                     if (player.shouldUseBlockLocation() && target != null) {
                         target = target.getBlock().getLocation();

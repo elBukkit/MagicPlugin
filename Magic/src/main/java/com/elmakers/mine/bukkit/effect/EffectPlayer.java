@@ -689,4 +689,19 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     public void setParameterMap(Map<String, String> map) {
         this.parameterMap = map;
     }
+
+    @Override
+    public boolean playsAtOrigin() {
+        return playAtOrigin;
+    }
+
+    @Override
+    public boolean playsAtTarget() {
+        return playAtTarget;
+    }
+
+    @Override
+    public boolean playsAtAllTargets() {
+        return playAtAllTargets;
+    }
 }
