@@ -76,7 +76,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public static Vector DEFAULT_CAST_OFFSET = new Vector(0.5, 0, 0);
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
-	private static int WAND_VERSION = 2;
+	private static int WAND_VERSION = 3;
 	private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
 
     private final static String[] EMPTY_PARAMETERS = new String[0];
@@ -425,6 +425,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		updateName();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void migrate(int version, ConfigurationSection wandConfig) {
     	// First migration, clean out wand data that matches template
 		// We've done this twice now, the second time to handle removing hard-coded defaults that
@@ -471,6 +472,31 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 					if (wandData.equals(templateData)) {
 						wandConfig.set(key, null);
 					}
+				}
+			}
+		}
+
+		// Migration: remove level from spell inventory
+		if (version <= 2) {
+			Object spellInventoryRaw = wandConfig.get("spell_inventory");
+			if (spellInventoryRaw != null) {
+				Map<String, ? extends Object> spellInventory = null;
+				Map<String, Integer> newSpellInventory = new HashMap<>();
+				if (spellInventoryRaw instanceof Map) {
+					org.bukkit.Bukkit.getLogger().info("MAP");
+					spellInventory = (Map<String, ? extends Object>)spellInventoryRaw;
+				} else if (spellInventoryRaw instanceof ConfigurationSection) {
+					spellInventory = NMSUtils.getMap((ConfigurationSection)spellInventoryRaw);
+				}
+				if (spellInventory != null) {
+					for (Map.Entry<String, ? extends Object> spellEntry : spellInventory.entrySet()) {
+						Object slot = spellEntry.getValue();
+						if (slot != null && slot instanceof Integer) {
+							SpellKey spellKey = new SpellKey(spellEntry.getKey());
+							newSpellInventory.put(spellKey.getBaseKey(), (Integer)slot);
+						}
+					}
+					wandConfig.set("spell_inventory", newSpellInventory);
 				}
 			}
 		}
@@ -1050,7 +1076,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			ItemStack itemStack = createSpellItem(spell, "", controller, getActiveMage(), this, false);
 			if (itemStack != null)
 			{
-				Integer slot = spellInventory.get(spellKey);
+				Integer slot = spellInventory.get(spell.getSpellKey().getBaseKey());
 				if (slot == null) {
 					unsorted.add(itemStack);
 				} else {
@@ -1101,7 +1127,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		for (String spellName : spellKeys)
 		{
 			String[] pieces = StringUtils.split(spellName, '@');
-			Integer slot = parseSlot(pieces);
 
 			// Handle aliases and upgrades smoothly
 			String loadedKey = pieces[0].trim();
@@ -1119,14 +1144,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 				Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
 				if (currentLevel == null || currentLevel < spellKey.getLevel()) {
 					spellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
-					if (slot != null) {
-						spellInventory.put(spellKey.getKey(), slot);
-					}
 					spells.add(spellKey.getKey());
 					if (currentLevel != null)
 					{
 						SpellKey oldKey = new SpellKey(spellKey.getBaseKey(), currentLevel);
-						spellInventory.remove(oldKey.getKey());
 						spells.remove(oldKey.getKey());
 					}
 				}
@@ -2611,7 +2632,8 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
     	if (item == null || item.getType() == Material.AIR) return true;
         String spellKey = getSpell(item);
         if (spellKey != null) {
-            spellInventory.put(spellKey, slot);
+        	SpellKey key = new SpellKey(spellKey);
+            spellInventory.put(key.getBaseKey(), slot);
         } else {
             String brushKey = getBrush(item);
             if (brushKey != null) {
@@ -4261,13 +4283,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
                             inventorySlot = currentSlot;
                             inventory.setItem(index, null);
 							spells.remove(checkKey.getKey());
-							spellInventory.remove(checkKey.getKey());
                         } else {
                             for (SpellKey key : spellsToRemove) {
                                 if (checkKey.getBaseKey().equals(key.getBaseKey())) {
                                     inventory.setItem(index, null);
                                     spells.remove(key.getKey());
-									spellInventory.remove(checkKey.getKey());
                                     spellLevels.remove(key.getBaseKey());
                                 }
                             }
@@ -4279,7 +4299,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 
         spellLevels.put(spellKey.getBaseKey(), level);
-        spellInventory.put(template.getKey(), inventorySlot);
+        spellInventory.put(spellKey.getBaseKey(), inventorySlot);
 		spells.add(template.getKey());
 
 		if (currentLevel != null) {
@@ -4563,10 +4583,15 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (spellName.equals(activeSpell)) {
 			setActiveSpell(null);
 		}
-        spellInventory.remove(spellName);
-		spells.remove(spellName);
         SpellKey spellKey = new SpellKey(spellName);
+		Integer level = spellLevels.get(spellKey.getBaseKey());
+		if (level != null && level > 1) {
+			spellKey = new SpellKey(spellKey.getBaseKey(), level);
+			spellName = spellKey.getKey();
+		}
+		spells.remove(spellName);
         spellLevels.remove(spellKey.getBaseKey());
+		spellInventory.remove(spellKey.getBaseKey());
 		
 		List<Inventory> allInventories = getAllInventories();
 		boolean found = false;
