@@ -4,7 +4,6 @@
 
  - Goggles still seem to turn off on death? Or on maybe on Recall?
  - Add SuperLaser spell
- - Spell organizing should really use the sum of cast counts across all levels :|
  
  - Add sp_multiplier to wands, stacks in Mage, 0 means turn off SP display, add lore when not 0 or 1
 

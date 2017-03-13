@@ -1359,6 +1359,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public boolean hasSpell(String key) {
+        return spells.containsKey(key);
+    }
+
+    @Override
     public MageSpell getSpell(String key) {
         if (loading) return null;
 

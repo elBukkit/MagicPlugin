@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -79,7 +80,16 @@ public class WandOrganizer {
 			Spell mageSpell = mage == null ? null : mage.getSpell(spellName);
 			SpellTemplate spell = mageSpell == null ? controller.getSpellTemplate(spellName) : mageSpell;
 			if (spell != null) {
-				long castCount = mageSpell == null ? 0 : mageSpell.getCastCount();
+                // Sum up all levels of this spell;
+				long castCount = 0;
+				int spellLevel = 1;
+                while (mageSpell != null) {
+                    castCount += mageSpell.getCastCount();
+                    spellLevel++;
+                    SpellKey spellKey = new SpellKey(spellName, spellLevel);
+                    String key = spellKey.getKey();
+                    mageSpell = mage.hasSpell(key) ? mage.getSpell(key) : null;
+                }
 				if (castCount > favoriteCastCountThreshold) {
 					List<String> favorites = null;
 					if (!favoriteSpells.containsKey(castCount)) {
