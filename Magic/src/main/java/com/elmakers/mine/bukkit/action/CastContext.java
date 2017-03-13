@@ -180,14 +180,14 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         if (location != null) {
             return location;
         }
-        Location wandLocation = wand == null ? null : wand.getLocation();
-        if (wandLocation == null) {
-            wandLocation = this.baseSpell != null ? baseSpell.getCastLocation() : getEyeLocation();
+        Location castLocation = wand == null ? null : wand.getLocation();
+        if (castLocation == null) {
+            castLocation = this.baseSpell != null ? baseSpell.getCastLocation() : getEyeLocation();
         }
-        if (wandLocation != null && direction != null) {
-            wandLocation.setDirection(direction);
+        if (castLocation != null && direction != null) {
+            castLocation.setDirection(direction);
         }
-        return wandLocation;
+        return castLocation;
     }
 
     @Override

@@ -12,8 +12,14 @@ public class SourceLocation {
     private boolean useCastLocation = true;
     private boolean useEyeLocation = false;
     private boolean useTargetLocation = true;
+    private boolean useCache = false;
 
     private Location location;
+
+    public SourceLocation(ConfigurationSection configuration, boolean useCache) {
+        this(configuration);
+        this.useCache = true;
+    }
 
     public SourceLocation(ConfigurationSection configuration) {
         // This is here for backwards-compatibility
@@ -34,7 +40,9 @@ public class SourceLocation {
     }
 
     public Location getLocation(CastContext context) {
-        if (location != null) {
+        if (!useCache) {
+            location = null;
+        } else if (location != null) {
             return location;
         }
         Mage mage = context.getMage();
