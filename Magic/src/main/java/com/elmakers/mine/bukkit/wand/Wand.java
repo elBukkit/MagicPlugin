@@ -76,7 +76,7 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	public static Vector DEFAULT_CAST_OFFSET = new Vector(0.5, 0, 0);
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
-	private static int WAND_VERSION = 3;
+	private static int WAND_VERSION = 4;
 	private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
 
     private final static String[] EMPTY_PARAMETERS = new String[0];
@@ -501,6 +501,15 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			}
 		}
 
+		// Remove icon if matches template
+		if (version <= 3) {
+			ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(wandConfig.getString("template"));
+			String templateIcon = templateConfig == null ? null : templateConfig.getString("icon");
+			if (templateIcon != null && templateIcon.equals(wandConfig.getString("icon", ""))) {
+				wandConfig.set("icon", null);
+			}
+		}
+
     	wandConfig.set("version", WAND_VERSION);
 	}
 	
@@ -543,7 +552,11 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			if (iconKey != null && iconKey.isEmpty()) {
 				iconKey = null;
 			}
-			setProperty("icon", iconKey);
+			WandTemplate template = getTemplate();
+			String templateIcon = template != null ? template.getProperty("icon", "") : null;
+			if (templateIcon == null || !templateIcon.equals(iconKey)) {
+				setProperty("icon", iconKey);
+			}
         }
     }
 
