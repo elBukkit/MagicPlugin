@@ -40,7 +40,21 @@ public interface CastContext {
     public World getWorld();
     public Plugin getPlugin();
     public Location getEyeLocation();
+
+
+    /**
+     * Currently return the cast source location, but in the future may change
+     * to return only the wand location, or null if this spell was not cast with
+     * a wand.
+     * @return
+     */
     public Location getWandLocation();
+
+    /**
+     * Get the source location of this cast.
+     * @return
+     */
+    public Location getCastLocation();
     public Block getTargetBlock();
     public Block getInteractBlock();
     public Entity getTargetEntity();

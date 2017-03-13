@@ -99,8 +99,22 @@ public interface Mage extends CostReducer {
      * @return Location the location of the Mage's eyes, used for targeting.
      */
     public Location getEyeLocation();
-    public Location getWandLocation();
     public Location getOffhandWandLocation();
+
+    /**
+     * Gets the source location of spells cast by this mage, which were
+     * not cast with a wand.
+     * @return
+     */
+    public Location getCastLocation();
+
+    /**
+     * Currently returns the cast location, even when not holding a wand,
+     * but this behavior is subject to change and in the future this may
+     * return null if the Mage is not holding a Wand.
+     * @return
+     */
+    public Location getWandLocation();
 
     /**
      * Get the direction this Mage is facing.
