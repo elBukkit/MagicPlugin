@@ -61,8 +61,7 @@ broom_legacy:
            sound_pitch: 0.7
         -  class: EffectRing
            particle: block_crack
-           use_wand_location: false
-           use_eye_location: false
+           source_location: feet
            period: 4
            particle_count: 80
            radius: 4

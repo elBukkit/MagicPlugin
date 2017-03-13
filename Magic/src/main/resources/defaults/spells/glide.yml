@@ -18,7 +18,7 @@ glide:
            sound_pitch: 1.5
            sound_volume: 0.7
            location: origin
-           use_wand_location: false
+           source_location: eyes
            effectlib:
              class: IconEffect
              duration: 30000

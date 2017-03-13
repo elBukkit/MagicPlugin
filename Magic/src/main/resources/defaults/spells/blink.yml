@@ -29,7 +29,7 @@ blink:
            location: origin
            particle_override: particleNucleus
            color_override: colorOrbital
-           use_wand_location: false
+           source_location: eyes
            effectlib:
                class: AtomEffect
                particleNucleus: dragon_breath

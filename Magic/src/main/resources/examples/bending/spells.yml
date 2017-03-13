@@ -156,7 +156,7 @@ enhancedspeed:
            - class: EffectSingle
              sound: enderdragon_wings
              location: origin
-             use_wand_location: false
+             source_location: eyes
              effectlib:
                  class: SphereEffect
                  particle: redstone

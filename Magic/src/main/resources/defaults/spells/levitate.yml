@@ -17,8 +17,7 @@ levitate:
              sound: entity_enderdragon_flap
              location: origin
              color_override: color
-             use_wand_location: false
-             use_eye_location: false
+             source_location: feet
              effectlib:
                  class: SphereEffect
                  particle: redstone
@@ -33,8 +32,7 @@ levitate:
            sound_pitch: 0.7
         -  class: EffectRing
            particle: block_crack
-           use_wand_location: false
-           use_eye_location: false
+           source_location: feet
            period: 4
            particle_count: 80
            particle_offset_x: 0.9

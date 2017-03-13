@@ -23,7 +23,7 @@ recall:
            sound: magic.teleport
            sound_volume: 0.8
            sound_pitch: 0.3
-           use_wand_location: false
+           source_location: eyes
            color_override: color
            effectlib:
             class: WarpEffect
@@ -36,7 +36,7 @@ recall:
             radius: 1
             offset: 0,-1,0
         -  class: EffectSingle
-           use_wand_location: false
+           source_location: eyes
            effectlib:
             class: WarpEffect
             duration: $delay
@@ -51,7 +51,7 @@ recall:
         teleport:
         -  class: EffectSingle
            location: both
-           use_wand_location: false
+           source_location: eyes
            color_override: color
            effectlib:
              class: WarpEffect
@@ -65,7 +65,7 @@ recall:
            sound: magic.teleport
            sound_pitch: 1.2
            location: both
-           use_wand_location: false
+           source_location: eyes
            effectlib:
              class: WarpEffect
              period: 1

@@ -20,7 +20,7 @@ phase:
            sound_volume: 0.5
            sound_pitch: 0.4
            location: source
-           use_wand_location: false
+           source_location: eyes
            effectlib:
              class: AnimatedBall
              particle: portal
@@ -32,7 +32,7 @@ phase:
              particleOffsetZ: 0.9
         phase:
         - class: EffectSingle
-          use_wand_location: false
+          source_location: eyes
           sound: magic.teleport
           location: source
           sound_volume: 0.8
@@ -45,7 +45,7 @@ phase:
           sound_volume: 0.8
           sound_pitch: 0.8
           location: target
-          use_wand_location: false
+          source_location: eyes
           color: FF00FF
           firework: star
           effectlib:

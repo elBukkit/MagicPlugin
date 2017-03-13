@@ -13,7 +13,7 @@ gills:
         -  class: EffectSingle
            sound: block_water_ambient
            location: origin
-           use_wand_location: false
+           source_location: eyes
            effectlib:
              class: SphereEffect
              iterations: 10
