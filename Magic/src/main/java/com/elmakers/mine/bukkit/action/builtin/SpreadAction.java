@@ -36,7 +36,7 @@ public class SpreadAction extends CompoundAction
 
 	@Override
 	public SpellResult step(CastContext context) {
-        Location sourceLocation = context.getEyeLocation();
+        Location sourceLocation = context.getCastLocation();
         Entity source = context.getEntity();
         Random random = context.getRandom();
         if (pitchMax > 0 || yawMax > 0)
