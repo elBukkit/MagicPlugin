@@ -88,7 +88,7 @@ wolf:
     - place@9
     - portal@119
     - pull@25
-    - push@88
+    - push@24
     - recall@23
     - recurse@97
     - regenerate@98
