@@ -212,7 +212,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         setLocationType(configuration.getString("location", "origin"));
         requireEntity = configuration.getBoolean("requires_entity", false);
         requireTargetEntity = configuration.getBoolean("requires_entity_target", false);
-        sourceLocation = new SourceLocation(configuration, true);
+        sourceLocation = new SourceLocation(configuration);
         useHitLocation = configuration.getBoolean("use_hit_location", true);
         useBlockLocation = configuration.getBoolean("use_block_location", false);
     }

@@ -366,7 +366,6 @@ public class CustomProjectileAction extends CompoundAction
         Location projectileLocation = null;
         if (velocity == null)
         {
-            org.bukkit.Bukkit.getLogger().info("Getting projectile direction");
             projectileLocation = sourceLocation.getLocation(context).clone();
             
             /* This feels confusing however...
@@ -378,12 +377,10 @@ public class CustomProjectileAction extends CompoundAction
             if (pitchMin < projectileLocation.getPitch())
             {
                 projectileLocation.setPitch(pitchMin);
-                sourceLocation.setLocation(projectileLocation);
             } 
             else if (pitchMax > projectileLocation.getPitch())
             {
                 projectileLocation.setPitch(pitchMax);
-                sourceLocation.setLocation(projectileLocation);
             }
             launchLocation = projectileLocation.clone();
             velocity = projectileLocation.getDirection().clone().normalize();

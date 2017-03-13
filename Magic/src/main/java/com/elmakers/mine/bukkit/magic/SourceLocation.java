@@ -12,20 +12,12 @@ public class SourceLocation {
     private boolean useCastLocation = true;
     private boolean useEyeLocation = false;
     private boolean useTargetLocation = true;
-    private boolean useCache = false;
 
     private enum LocationType {
         CAST,
         EYES,
         FEET,
         WAND
-    }
-
-    private Location location;
-
-    public SourceLocation(ConfigurationSection configuration, boolean useCache) {
-        this(configuration);
-        this.useCache = true;
     }
 
     public SourceLocation(ConfigurationSection configuration) {
@@ -73,14 +65,10 @@ public class SourceLocation {
     }
 
     public Location getLocation(CastContext context) {
-        if (!useCache) {
-            location = null;
-        } else if (location != null) {
-            return location;
-        }
         Mage mage = context.getMage();
         boolean useWand = mage != null && useWandLocation;
         boolean useCast = mage != null && useCastLocation;
+        Location location = null;
 
         // Order is important here, given how we interpret defaults in the constructor
         if (useEyeLocation) {
@@ -103,10 +91,6 @@ public class SourceLocation {
             }
         }
         return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     public boolean shouldUseWandLocation() {
