@@ -18,25 +18,25 @@ import java.util.Set;
  * 
  */
 public interface BlockData extends MaterialAndData {
-    public long getId();
-    public World getWorld();
-    public String getWorldName();
-    public Block getBlock();
-    public BlockVector getPosition();
-    public void restore();
-    public void restore(boolean applyPhysics);
-    public void commit();
-    public boolean undo();
-    public boolean undo(boolean applyPhysics);
-    public boolean isDifferent();
+    long getId();
+    World getWorld();
+    String getWorldName();
+    Block getBlock();
+    BlockVector getPosition();
+    void restore();
+    void restore(boolean applyPhysics);
+    void commit();
+    boolean undo();
+    boolean undo(boolean applyPhysics);
+    boolean isDifferent();
 
-    public void unlink();
-    public BlockData getNextState();
-    public void setNextState(BlockData next);
-    public BlockData getPriorState();
-    public void setPriorState(BlockData prior);
-    public UndoList getUndoList();
-    public void setUndoList(UndoList undoList);
-    public BlockVector getLocation();
-    public boolean containsAny(Set<Material> materials);
+    void unlink();
+    BlockData getNextState();
+    void setNextState(BlockData next);
+    BlockData getPriorState();
+    void setPriorState(BlockData prior);
+    UndoList getUndoList();
+    void setUndoList(UndoList undoList);
+    BlockVector getLocation();
+    boolean containsAny(Set<Material> materials);
 }

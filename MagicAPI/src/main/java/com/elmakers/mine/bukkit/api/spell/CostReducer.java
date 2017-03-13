@@ -12,17 +12,17 @@ public interface CostReducer {
      * Get the percent cost reduction, from 0.0 to 1.0
      * @return The percent cost reduction.
      */
-    public float getCostReduction();
+    float getCostReduction();
 
     /**
      * Get the percent item consume reduction, from 0.0 to 1.0
      * @return The percent item consume reduction.
      */
-    public float getConsumeReduction();
+    float getConsumeReduction();
 
     /**
      * Get the amount to scale the end cost by.
      * @return The final scale to apply
      */
-    public float getCostScale();
+    float getCostScale();
 }

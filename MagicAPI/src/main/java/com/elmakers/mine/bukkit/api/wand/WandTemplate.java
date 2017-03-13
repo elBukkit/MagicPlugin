@@ -9,25 +9,25 @@ import java.util.Collection;
 import java.util.Set;
 
 public interface WandTemplate extends MagicProperties {
-    public String getKey();
-    public Collection<EffectPlayer> getEffects(String key);
-    public ConfigurationSection getConfiguration();
-    public boolean hasTag(String tag);
-    public String getCreatorId();
-    public String getCreator();
-    public WandTemplate getMigrateTemplate();
-    public String migrateIcon(String icon);
-    public boolean isSoul();
-    public boolean isRestorable();
+    String getKey();
+    Collection<EffectPlayer> getEffects(String key);
+    ConfigurationSection getConfiguration();
+    boolean hasTag(String tag);
+    String getCreatorId();
+    String getCreator();
+    WandTemplate getMigrateTemplate();
+    String migrateIcon(String icon);
+    boolean isSoul();
+    boolean isRestorable();
     Set<String> getCategories();
     ConfigurationSection getAttributes();
     String getAttributeSlot();
 
-    public boolean playEffects(Wand wand, String key);
-    public boolean playEffects(Wand wand, String key, float scale);
+    boolean playEffects(Wand wand, String key);
+    boolean playEffects(Wand wand, String key, float scale);
 
     @Deprecated
-    public boolean playEffects(Mage mage, String key);
+    boolean playEffects(Mage mage, String key);
     @Deprecated
-    public boolean playEffects(Mage mage, String key, float scale);
+    boolean playEffects(Mage mage, String key, float scale);
 }

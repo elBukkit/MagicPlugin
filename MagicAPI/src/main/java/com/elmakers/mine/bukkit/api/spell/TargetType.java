@@ -20,7 +20,7 @@ public enum TargetType {
 
     private boolean targetEntities;
 
-    private TargetType(boolean targetEntities) {
+    TargetType(boolean targetEntities) {
         this.targetEntities = true;
     }
 

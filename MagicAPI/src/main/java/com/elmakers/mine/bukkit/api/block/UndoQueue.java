@@ -4,9 +4,9 @@ import com.elmakers.mine.bukkit.api.data.UndoData;
 import org.bukkit.block.Block;
 
 public interface UndoQueue {
-    public void add(UndoList blocks);
-    public UndoList getLast();
-    public UndoList getLast(Block target);
+    void add(UndoList blocks);
+    UndoList getLast();
+    UndoList getLast(Block target);
 
     /**
      * Undo a recent construction performed by this Mage.
@@ -21,8 +21,8 @@ public interface UndoQueue {
      * @param timeout The maximum age of the change
      * @return The UndoList that was undone, or null if none.
      */
-    public UndoList undoRecent(int timeout);
-    public UndoList undoRecent(int timeout, String spellKey);
+    UndoList undoRecent(int timeout);
+    UndoList undoRecent(int timeout, String spellKey);
 
     /**
      * Undo a recent construction performed by this Mage against the
@@ -39,37 +39,37 @@ public interface UndoQueue {
      * @param timeout The maximum age of the change
      * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
      */
-    public UndoList undoRecent(Block block, int timeout);
+    UndoList undoRecent(Block block, int timeout);
 
     /**
      * Immediately undo any scheduled undo tasks.
      *
      * @return The number of tasks (spells) undone.
      */
-    public int undoScheduled();
+    int undoScheduled();
 
     /**
      * Get the current size of the queue.
      *
      * @return The queue depth.
      */
-    public int getSize();
+    int getSize();
 
-    public boolean isEmpty();
-    public boolean commit();
+    boolean isEmpty();
+    boolean commit();
 
     /**
      * Save the data in this undo queue
      */
-    public void save(UndoData data);
+    void save(UndoData data);
 
     /**
      * Load the data in this undo queue
      */
-    public void load(UndoData data);
+    void load(UndoData data);
 
     /**
      * Check to see if there are any scheduled undo changes pending in this queue.
      */
-    public boolean hasScheduled();
+    boolean hasScheduled();
 }

@@ -15,11 +15,11 @@ import org.bukkit.util.Vector;
  * A BlockList should not contain blocks from more than one World in it.
  */
 public interface BlockList extends Collection<BlockData> {
-    public void save(ConfigurationSection node);
-    public void load(ConfigurationSection node);
-    public String getWorldName();
-    public BoundingBox getArea();
-    public boolean add(Block block);
-    public void contain(Vector vector);
-    public boolean contains(Block block);
+    void save(ConfigurationSection node);
+    void load(ConfigurationSection node);
+    String getWorldName();
+    BoundingBox getArea();
+    boolean add(Block block);
+    void contain(Vector vector);
+    boolean contains(Block block);
 }

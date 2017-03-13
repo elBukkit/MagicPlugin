@@ -14,34 +14,34 @@ import java.util.Collection;
 import java.util.Map;
 
 public interface EffectPlayer {
-    public void setEffectPlayList(Collection<EffectPlay> plays);
-    public void setEffect(Effect effect);
-    public void setEffectData(int data);
-    public void setScale(float scale);
+    void setEffectPlayList(Collection<EffectPlay> plays);
+    void setEffect(Effect effect);
+    void setEffectData(int data);
+    void setScale(float scale);
 
-    public void setSound(Sound sound);
-    public void setSound(Sound sound, float volume, float pitch);
-    public void setParameterMap(Map<String, String> parameters);
+    void setSound(Sound sound);
+    void setSound(Sound sound, float volume, float pitch);
+    void setParameterMap(Map<String, String> parameters);
 
-    public void setDelayTicks(int ticks);
+    void setDelayTicks(int ticks);
 
-    public void setParticleOverride(String particleType);
-    public void setMaterial(MaterialAndData material);
-    public void setMaterial(Block block);
-    public void setColor(Color color);
-    public boolean shouldUseHitLocation();
-    public boolean shouldUseWandLocation();
-    public boolean shouldUseCastLocation();
-    public boolean shouldUseEyeLocation();
-    public boolean shouldUseBlockLocation();
-    public Location getSourceLocation(CastContext context);
+    void setParticleOverride(String particleType);
+    void setMaterial(MaterialAndData material);
+    void setMaterial(Block block);
+    void setColor(Color color);
+    boolean shouldUseHitLocation();
+    boolean shouldUseWandLocation();
+    boolean shouldUseCastLocation();
+    boolean shouldUseEyeLocation();
+    boolean shouldUseBlockLocation();
+    Location getSourceLocation(CastContext context);
 
-    public boolean playsAtOrigin();
-    public boolean playsAtTarget();
-    public boolean playsAtAllTargets();
+    boolean playsAtOrigin();
+    boolean playsAtTarget();
+    boolean playsAtAllTargets();
 
-    public void start(Location origin, Location target);
-    public void start(Entity origin, Entity target);
-    public void start(Location origin, Entity originEntity, Location target, Entity targetEntity);
-    public void start(Location origin, Entity originEntity, Location target, Entity targetEntity, Collection<Entity> targets);
+    void start(Location origin, Location target);
+    void start(Entity origin, Entity target);
+    void start(Location origin, Entity originEntity, Location target, Entity targetEntity);
+    void start(Location origin, Entity originEntity, Location target, Entity targetEntity, Collection<Entity> targets);
 }

@@ -18,14 +18,14 @@ public interface CastingCost extends Cost {
      *
      * @return The raw XP cost, without reduction.
      */
-    public int getXP();
+    int getXP();
 
     /**
      * Returns the raw mana cost.
      *
      * @return The raw mana cost, without reduction.
      */
-    public int getMana();
+    int getMana();
 
     /**
      * Returns the XP amount to deduct
@@ -33,7 +33,7 @@ public interface CastingCost extends Cost {
      * @param reducer The CostReducer to use to calculate costs
      * @return The XP amount cost
      */
-    public int getXP(CostReducer reducer);
+    int getXP(CostReducer reducer);
 
     /**
      * Returns the Mana amount to deduct
@@ -41,7 +41,7 @@ public interface CastingCost extends Cost {
      * @param reducer The CostReducer to use to calculate costs
      * @return The Mana amount cost
      */
-    public int getMana(CostReducer reducer);
+    int getMana(CostReducer reducer);
 
     /**
      * Check to see if a given spell cast should succeed, given that
@@ -50,12 +50,12 @@ public interface CastingCost extends Cost {
      * @param spell the spell being cast
      * @return true if the caster of the spell has this cost
      */
-    public boolean has(Spell spell);
+    boolean has(Spell spell);
 
     /**
      * Use this cost, taking it from the caster of the target spell
      * 
      * @param spell the spell being cast
      */
-    public void use(Spell spell);
+    void use(Spell spell);
 }

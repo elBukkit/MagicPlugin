@@ -18,60 +18,60 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
  * A Spell template, as defined in the spells configuration files.
  */
 public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
-    public String getName();
-    public String getAlias();
-    public String getDescription();
-    public String getExtendedDescription();
-    public String getLevelDescription();
-    public String getCooldownDescription();
-    public String getMageCooldownDescription();
-    public String getKey();
-    public SpellKey getSpellKey();
-    public Color getColor();
-    public double getWorth();
-    public double getEarns();
-    public double getRange();
-    public SpellCategory getCategory();
-    public long getCastCount();
-    public void setCastCount(long count);
-    public String getUsage();
-    public MaterialAndData getIcon();
-    public MaterialAndData getDisabledIcon();
-    public String getIconURL();
-    public String getDisabledIconURL();
-    public boolean hasIcon();
-    public boolean hasCastPermission(CommandSender sender);
-    public Collection<CastingCost> getCosts();
-    public Collection<CastingCost> getActiveCosts();
-    public Collection<EffectPlayer> getEffects(SpellResult result);
-    public Collection<EffectPlayer> getEffects(String effectsKey);
-    public long getDuration();
-    public long getCooldown();
-    public Spell createSpell();
-    public void loadTemplate(String key, ConfigurationSection node);
-    public void loadPrerequisites(ConfigurationSection node);
-    public String getPermissionNode();
-    public boolean isHidden();
-    public boolean usesBrush();
-    public boolean usesBrushSelection();
-    public boolean isUndoable();
-    public boolean showUndoable();
-    public boolean isQuickCast();
-    public String getRequiredUpgradePath();
-    public Set<String> getRequiredUpgradeTags();
-    public long getRequiredUpgradeCasts();
-    public Collection<PrerequisiteSpell> getPrerequisiteSpells();
+    String getName();
+    String getAlias();
+    String getDescription();
+    String getExtendedDescription();
+    String getLevelDescription();
+    String getCooldownDescription();
+    String getMageCooldownDescription();
+    String getKey();
+    SpellKey getSpellKey();
+    Color getColor();
+    double getWorth();
+    double getEarns();
+    double getRange();
+    SpellCategory getCategory();
+    long getCastCount();
+    void setCastCount(long count);
+    String getUsage();
+    MaterialAndData getIcon();
+    MaterialAndData getDisabledIcon();
+    String getIconURL();
+    String getDisabledIconURL();
+    boolean hasIcon();
+    boolean hasCastPermission(CommandSender sender);
+    Collection<CastingCost> getCosts();
+    Collection<CastingCost> getActiveCosts();
+    Collection<EffectPlayer> getEffects(SpellResult result);
+    Collection<EffectPlayer> getEffects(String effectsKey);
+    long getDuration();
+    long getCooldown();
+    Spell createSpell();
+    void loadTemplate(String key, ConfigurationSection node);
+    void loadPrerequisites(ConfigurationSection node);
+    String getPermissionNode();
+    boolean isHidden();
+    boolean usesBrush();
+    boolean usesBrushSelection();
+    boolean isUndoable();
+    boolean showUndoable();
+    boolean isQuickCast();
+    String getRequiredUpgradePath();
+    Set<String> getRequiredUpgradeTags();
+    long getRequiredUpgradeCasts();
+    Collection<PrerequisiteSpell> getPrerequisiteSpells();
 
     /**
      * Returns a collection of spell keys of spells that should be removed when this spell is added to a wand.
      */
-    public Collection<SpellKey> getSpellsToRemove();
-    public String getUpgradeDescription();
-    public ConfigurationSection getConfiguration();
-    public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore);
-    public boolean hasTag(String tag);
-    public boolean hasAnyTag(Collection<String> tags);
-    public SpellTemplate getUpgrade();
+    Collection<SpellKey> getSpellsToRemove();
+    String getUpgradeDescription();
+    ConfigurationSection getConfiguration();
+    void addLore(Messages messages, Mage mage, Wand wand, List<String> lore);
+    boolean hasTag(String tag);
+    boolean hasAnyTag(Collection<String> tags);
+    SpellTemplate getUpgrade();
 
     /**
      * Returns the maximum progress level for this spell.
@@ -79,7 +79,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
      * This may return 0 even though a spell's current progress level is always 1 or greater. A result of 0 indicates
      * that progress levels are not used for this spell.
      */
-    public long getMaxProgressLevel();
+    long getMaxProgressLevel();
 
     /**
      * Retrieve the parameters as configured in this spell's parameters section.

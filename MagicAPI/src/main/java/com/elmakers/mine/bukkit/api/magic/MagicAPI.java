@@ -88,7 +88,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 * into your plugin, it should always be referenced externally (e.g. "provided" in Maven).
 * 
 * <pre>
-*       public MagicAPI getMagicAPI() {
+*       MagicAPI getMagicAPI() {
 *           Plugin magicPlugin = Bukkit.getPluginManager().getPlugin("Magic");
 * 		    if (magicPlugin == null || !(magicPlugin instanceof MagicAPI)) {
 * 			    return null;
@@ -122,14 +122,14 @@ public interface MagicAPI {
      *
      * @return The Magic Plugin instance, likely "this"
      */
-    public Plugin getPlugin();
+    Plugin getPlugin();
 
     /**
      * Retrieve the Logger for this API instance.
      *
      * @return The logger being used by the API provider (usually MagicPlugin).
      */
-    public Logger getLogger();
+    Logger getLogger();
 
     /**
      * Check to see if a CommandSender has permission.
@@ -141,7 +141,7 @@ public interface MagicAPI {
      * @param pNode The permission node to check
      * @return True if the CommandSender has the requested permission
      */
-    public boolean hasPermission(CommandSender sender, String pNode);
+    boolean hasPermission(CommandSender sender, String pNode);
 
     /**
      * Check for permission, but include a default permission. This is generally used
@@ -157,34 +157,34 @@ public interface MagicAPI {
      * @param defaultPermission set to true to enable permission by default
      * @return True if the sender has permission
      */
-    public boolean hasPermission(CommandSender sender, String pNode, boolean defaultPermission);
+    boolean hasPermission(CommandSender sender, String pNode, boolean defaultPermission);
 
     /**
      * Save all Magic data.
      */
-    public void save();
+    void save();
 
     /**
      * Reload all Magic configurations.
      */
-    public void reload();
+    void reload();
 
     /**
      * Reload all Magic configurations, report success/fail to sender
      */
-    public void reload(CommandSender sender);
+    void reload(CommandSender sender);
 
     /**
      * Clear all image and schematic caches
      */
-    public void clearCache();
+    void clearCache();
 
     /**
      * Commit and clear all loaded undo queues
      *
      * @return True if anything was committed
      */
-    public boolean commit();
+    boolean commit();
 
     /**
      * Get all currently loaded Mage instances.
@@ -193,7 +193,7 @@ public interface MagicAPI {
      *
      * @return The list of all currently active mages.
      */
-    public Collection<Mage> getMages();
+    Collection<Mage> getMages();
 
     /**
      * Get all currently loaded Mage instances that have
@@ -203,8 +203,8 @@ public interface MagicAPI {
      *
      * @return The list of Mages that have pending constructions in progress.
      */
-    public Collection<Mage> getMagesWithPendingBatches();
-    public Collection<UndoList> getPendingUndo();
+    Collection<Mage> getMagesWithPendingBatches();
+    Collection<UndoList> getPendingUndo();
 
     /**
      * Retrieve or create a Mage for a particular CommandSender.
@@ -219,7 +219,7 @@ public interface MagicAPI {
      * @param sender the CommandSender (Player, Command block, etc) to turn into a Mage
      * @return Mage instance, new, created or loaded.
      */
-    public Mage getMage(CommandSender sender);
+    Mage getMage(CommandSender sender);
 
     /**
      * Retrieve or create a Mage for a particular Entity.
@@ -232,7 +232,7 @@ public interface MagicAPI {
      * @param sender the CommandSender to use, optional
      * @return Mage instance, new, created or loaded.
      */
-    public Mage getMage(Entity entity, CommandSender sender);
+    Mage getMage(Entity entity, CommandSender sender);
 
     /**
      * A utility method for giving an item to a player. This will place
@@ -246,7 +246,7 @@ public interface MagicAPI {
      * @param player The Player to give an item to
      * @param itemStack The ItemStack to giev the player, may be a Wand.
      */
-    public void giveItemToPlayer(Player player, ItemStack itemStack);
+    void giveItemToPlayer(Player player, ItemStack itemStack);
 
     /**
      * Give experience to a player, in a way that is safe for wands.
@@ -257,7 +257,7 @@ public interface MagicAPI {
      * @param player The Player to give XP
      * @param xp The amount of XP to give
      */
-    public void giveExperienceToPlayer(Player player, int xp);
+    void giveExperienceToPlayer(Player player, int xp);
 
     /**
      * A utility method to get the names of all currently logged-in Players.
@@ -266,7 +266,7 @@ public interface MagicAPI {
      *
      * @return The names of all logged-in players.
      */
-    public Collection<String> getPlayerNames();
+    Collection<String> getPlayerNames();
 
     /**
      * Retrieve the keys for all wand templates. These can be used
@@ -274,7 +274,7 @@ public interface MagicAPI {
      *
      * @return A list of all known wand template keys.
      */
-    public Collection<String> getWandKeys();
+    Collection<String> getWandKeys();
 
     /**
      * Create a new Magic item. This could be a wand, spell, upgrade
@@ -283,15 +283,15 @@ public interface MagicAPI {
      * @param magicItemKey The template key, may be a wand, spell, etc.
      * @return An ItemStack representing the magic item.
      */
-    public ItemStack createItem(String magicItemKey);
-    public ItemStack createItem(String magicItemKey, Mage mage);
+    ItemStack createItem(String magicItemKey);
+    ItemStack createItem(String magicItemKey, Mage mage);
 
     /**
      * Create a generic version of an item with no extra data.
      * @param magicItemKey The template key, may be a wand, spell, etc.
      * @return The specified item.
      */
-    public ItemStack createGenericItem(String magicItemKey);
+    ItemStack createGenericItem(String magicItemKey);
 
     /**
      * Return the key name of an item, so it can be re-created with
@@ -300,7 +300,7 @@ public interface MagicAPI {
      * @param item
      * @return
      */
-    public String getItemKey(ItemStack item);
+    String getItemKey(ItemStack item);
 
     /**
      * Return a string description of an item.
@@ -311,7 +311,7 @@ public interface MagicAPI {
      * @param item
      * @return A description of this item
      */
-    public String describeItem(ItemStack item);
+    String describeItem(ItemStack item);
 
     /**
      * Check to see if a player has a specific item.
@@ -320,7 +320,7 @@ public interface MagicAPI {
      * @param item
      * @return
      */
-    public boolean hasItem(Player player, ItemStack item);
+    boolean hasItem(Player player, ItemStack item);
 
     /**
      * Check to see if a player has a specific item, and remove it
@@ -330,7 +330,7 @@ public interface MagicAPI {
      * @param item
      * @return
      */
-    public boolean takeItem(Player player, ItemStack item);
+    boolean takeItem(Player player, ItemStack item);
 
     /**
      * Create a new Wand from a template.
@@ -341,7 +341,7 @@ public interface MagicAPI {
      * @param wandKey The template key, or blank for a default wand.
      * @return A new Wand instance, with a useable ItemStack.
      */
-    public Wand createWand(String wandKey);
+    Wand createWand(String wandKey);
 
     /**
      * Create an upgrade Wand item from a template.
@@ -352,7 +352,7 @@ public interface MagicAPI {
      * @param wandKey The template key
      * @return A new Wand instance, converted to an upgrade if necessary.
      */
-    public Wand createUpgrade(String wandKey);
+    Wand createUpgrade(String wandKey);
 
     /**
      * Load a Wand instance of an ItemStack. Will return null if the
@@ -361,7 +361,7 @@ public interface MagicAPI {
      * @param item The item to load Wand data from.
      * @return The wand instance, or null on error.
      */
-    public Wand getWand(ItemStack item);
+    Wand getWand(ItemStack item);
 
     /**
      * Turn the given ItemStack into a wand
@@ -369,7 +369,7 @@ public interface MagicAPI {
      * @param item The item to use as the wand's icon.
      * @return The wand instance, or null on error.
      */
-    public Wand createWand(ItemStack item);
+    Wand createWand(ItemStack item);
 
     /**
      * Create a new Wand instance out of a given Material type.
@@ -380,7 +380,7 @@ public interface MagicAPI {
      * @param iconData Data used for durability or icon variants.
      * @return A newly-created Wand.
      */
-    public Wand createWand(Material iconMaterial, short iconData);
+    Wand createWand(Material iconMaterial, short iconData);
 
     /**
      * Check to see if an existing item is a Wand. This will inspect
@@ -389,7 +389,7 @@ public interface MagicAPI {
      * @param item The ItemStack to inspect.
      * @return true if the item is a Wand, in which case getWand can be used.
      */
-    public boolean isWand(ItemStack item);
+    boolean isWand(ItemStack item);
 
     /**
      * Check to see if an existing item is a wand upgrade. This will inspect
@@ -398,7 +398,7 @@ public interface MagicAPI {
      * @param item The ItemStack to inspect.
      * @return true if the item is a wand upgrade, in which case getWand can be used.
      */
-    public boolean isUpgrade(ItemStack item);
+    boolean isUpgrade(ItemStack item);
 
     /**
      * Check to see if an existing item is a spell item. This will inspect
@@ -407,7 +407,7 @@ public interface MagicAPI {
      * @param item The ItemStack to inspect.
      * @return true if the item is a spell, in which case getSpell can be used.
      */
-    public boolean isSpell(ItemStack item);
+    boolean isSpell(ItemStack item);
 
     /**
      * Check to see if an existing item is a material brush item. This will inspect
@@ -416,7 +416,7 @@ public interface MagicAPI {
      * @param item The ItemStack to inspect.
      * @return true if the item is a wand upgrade, in which case getBrush can be used.
      */
-    public boolean isBrush(ItemStack item);
+    boolean isBrush(ItemStack item);
 
     /**
      * Get the key of the Spell or SpellTemplate represented by an item.
@@ -424,7 +424,7 @@ public interface MagicAPI {
      * @param item The item to inspect
      * @return The key of the Spell represented by this item.
      */
-    public String getSpell(ItemStack item);
+    String getSpell(ItemStack item);
 
     /**
      * Get the key of the material brush represented by an item.
@@ -432,7 +432,7 @@ public interface MagicAPI {
      * @param item The item to inspect
      * @return The key of the material brush represented by this item.
      */
-    public String getBrush(ItemStack item);
+    String getBrush(ItemStack item);
 
     /**
      * Create an ItemStack that represents a Spell.
@@ -443,7 +443,7 @@ public interface MagicAPI {
      * @param spellKey The Spell to create an item for.
      * @return A new ItemStack, or null on error.
      */
-    public ItemStack createSpellItem(String spellKey);
+    ItemStack createSpellItem(String spellKey);
 
     /**
      * Create an ItemStack that represents a Material Brush.
@@ -454,14 +454,14 @@ public interface MagicAPI {
      * @param brushKey The Material brush to create an item for.
      * @return A new ItemStack, or null on error.
      */
-    public ItemStack createBrushItem(String brushKey);
+    ItemStack createBrushItem(String brushKey);
 
     /**
      * Return a list of all known LostWand records.
      *
      * @return A list of all known LostWand data.
      */
-    public Collection<LostWand> getLostWands();
+    Collection<LostWand> getLostWands();
 
     /**
      * Forget a specific LostWand.
@@ -472,14 +472,14 @@ public interface MagicAPI {
      *
      * @param id The id of the LostWand to forget.
      */
-    public void removeLostWand(String id);
+    void removeLostWand(String id);
 
     /**
      * Get a list of all known Automaton records.
      *
      * @return The list of currently known Automaton blocks.
      */
-    public Collection<Automaton> getAutomata();
+    Collection<Automaton> getAutomata();
 
     /**
      * Cast a specific Spell, with optional parameters.
@@ -494,7 +494,7 @@ public interface MagicAPI {
      * @param parameters A list of parameters, as if cast from the command-line.
      * @return true if the spell succeeds, else false
      */
-    public boolean cast(String spellName, String[] parameters);
+    boolean cast(String spellName, String[] parameters);
 
     /**
      * Cast a specific Spell, with optional parameters, using a specific CommandSender and/or Player.
@@ -511,8 +511,8 @@ public interface MagicAPI {
      * @param entity The Entity this Spell is cast on behalf of, may be Player or differ from sender
      * @return true if the spell succeeds, else false
      */
-    public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity);
-    public boolean cast(String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity);
+    boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity);
+    boolean cast(String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity);
 
     /**
      * Get a list of all currently loaded SpellTemplate records, as defined in spells.defaults.yml
@@ -522,8 +522,8 @@ public interface MagicAPI {
      *
      * @return A list of all known SpellTemplate definitions.
      */
-    public Collection<SpellTemplate> getSpellTemplates();
-    public Collection<SpellTemplate> getSpellTemplates(boolean showHidden);
+    Collection<SpellTemplate> getSpellTemplates();
+    Collection<SpellTemplate> getSpellTemplates(boolean showHidden);
 
     /**
      * Retrieve a specific SpellTemplate.
@@ -531,7 +531,7 @@ public interface MagicAPI {
      * @param key The key of the SpellTemplate to look up.
      * @return The requested SpellTemplate, or null on failure.
      */
-    public SpellTemplate getSpellTemplate(String key);
+    SpellTemplate getSpellTemplate(String key);
 
     /**
      * Get a list of all valid Material Brush names.
@@ -541,7 +541,7 @@ public interface MagicAPI {
      *
      * @return A list of all valid brush keys.
      */
-    public Collection<String> getBrushes();
+    Collection<String> getBrushes();
 
     /**
      * Get a list of all known schematics.
@@ -555,7 +555,7 @@ public interface MagicAPI {
      *
      * @return The list of known schematic names.
      */
-    public Collection<String> getSchematicNames();
+    Collection<String> getSchematicNames();
 
     /**
      * Get the MageController.
@@ -566,7 +566,7 @@ public interface MagicAPI {
      *
      * @return The current MageController, there is only one.
      */
-    public MageController getController();
+    MageController getController();
 
     /**
      * Returns a written book item describing all of the spells in
@@ -576,11 +576,11 @@ public interface MagicAPI {
      * @param count How many to give (max 1 stack)
      * @return An ItemStack spell book
      */
-    public ItemStack getSpellBook(SpellCategory category, int count);
+    ItemStack getSpellBook(SpellCategory category, int count);
 
     /**
      * Return the Messages controller, which manages Magic's
      * localization store.
      */
-    public Messages getMessages();
+    Messages getMessages();
 }

@@ -65,7 +65,7 @@ public interface Mage extends CostReducer {
      *
      * @return Collection<BlockBatch> pending construction batches
      */
-    public Collection<Batch> getPendingBatches();
+    Collection<Batch> getPendingBatches();
 
     /**
      * Get the name of this mage. This may be the Player's display name, or
@@ -73,8 +73,8 @@ public interface Mage extends CostReducer {
      *
      * @return String the display name of this mage
      */
-    public String getName();
-    public String getDisplayName();
+    String getName();
+    String getDisplayName();
 
     /**
      * Get the unique id of this mage. May be a UUID for a player, or
@@ -82,7 +82,7 @@ public interface Mage extends CostReducer {
      *
      * @return String the unique id of this Mage
      */
-    public String getId();
+    String getId();
 
     /**
      * Get the location of this Mage. This may be a Player location,
@@ -90,7 +90,7 @@ public interface Mage extends CostReducer {
      *
      * @return Location the location of this Mage.
      */
-    public Location getLocation();
+    Location getLocation();
 
     /**
      * Get the eye location of this Mage. May be the Player eye
@@ -98,15 +98,15 @@ public interface Mage extends CostReducer {
      *
      * @return Location the location of the Mage's eyes, used for targeting.
      */
-    public Location getEyeLocation();
-    public Location getOffhandWandLocation();
+    Location getEyeLocation();
+    Location getOffhandWandLocation();
 
     /**
      * Gets the source location of spells cast by this mage, which were
      * not cast with a wand.
      * @return
      */
-    public Location getCastLocation();
+    Location getCastLocation();
 
     /**
      * Currently returns the cast location, even when not holding a wand,
@@ -114,14 +114,14 @@ public interface Mage extends CostReducer {
      * return null if the Mage is not holding a Wand.
      * @return
      */
-    public Location getWandLocation();
+    Location getWandLocation();
 
     /**
      * Get the direction this Mage is facing.
      *
      * @return Vector the facing direction
      */
-    public Vector getDirection();
+    Vector getDirection();
 
     /**
      * Get the Player instance backed by this Mage.
@@ -141,7 +141,7 @@ public interface Mage extends CostReducer {
      *
      * @return The player backed by this Mage, or null for Automaton Mages.
      */
-    public Player getPlayer();
+    Player getPlayer();
 
     /**
      * Get the Entity instance backed by this Mage.
@@ -151,7 +151,7 @@ public interface Mage extends CostReducer {
      *
      * @return The Entity represented by this Mage
      */
-    public Entity getEntity();
+    Entity getEntity();
 
     /**
      * Get the LivingEntity instance backed by this Mage.
@@ -161,7 +161,7 @@ public interface Mage extends CostReducer {
      *
      * @return The LivingEntity represented by this Mage
      */
-    public LivingEntity getLivingEntity();
+    LivingEntity getLivingEntity();
 
     /**
      * Get the CommandSender backed by this Mage.
@@ -172,7 +172,7 @@ public interface Mage extends CostReducer {
      *
      * @return CommandSender The sender driving this Mage.
      */
-    public CommandSender getCommandSender();
+    CommandSender getCommandSender();
 
     /**
      * Send a message to this Mage.
@@ -184,9 +184,9 @@ public interface Mage extends CostReducer {
      *
      * @param message The message to send.
      */
-    public void sendMessage(String message);
-    public void sendDebugMessage(String message);
-    public void sendDebugMessage(String message, int level);
+    void sendMessage(String message);
+    void sendDebugMessage(String message);
+    void sendDebugMessage(String message, int level);
 
     /**
      * Send a message to this Mage.
@@ -198,17 +198,17 @@ public interface Mage extends CostReducer {
      *
      * @param message The message to send.
      */
-    public void castMessage(String message);
+    void castMessage(String message);
 
     /**
      * Cancel any pending construction batches.
      *
      * @return The batch that was cancelled, or null if nothing was pending.
      */
-    public Batch cancelPending();
-    public Batch cancelPending(String spellKey);
-    public Batch cancelPending(boolean force);
-    public Batch cancelPending(String spellKey, boolean force);
+    Batch cancelPending();
+    Batch cancelPending(String spellKey);
+    Batch cancelPending(boolean force);
+    Batch cancelPending(String spellKey, boolean force);
 
     /**
      * Undo the last construction performed by this Mage.
@@ -219,7 +219,7 @@ public interface Mage extends CostReducer {
      *
      * @return The UndoList that was undone, or null if none.
      */
-    public UndoList undo();
+    UndoList undo();
 
     /**
      * Undo the last construction performed by this Mage against the
@@ -232,7 +232,7 @@ public interface Mage extends CostReducer {
      * @param block The block to check for modifications.
      * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
      */
-    public UndoList undo(Block block);
+    UndoList undo(Block block);
 
     /**
      * Commit this Mage's UndoQueue.
@@ -248,7 +248,7 @@ public interface Mage extends CostReducer {
      *
      * @return True if anything was commited, false if the Mage has no undo queue.
      */
-    public boolean commit();
+    boolean commit();
 
     /**
      * Get the active Wand being used by this Mage.
@@ -260,9 +260,9 @@ public interface Mage extends CostReducer {
      *
      * @return The Mage's active Wand.
      */
-    public Wand getActiveWand();
-    public Wand getOffhandWand();
-    public GUIAction getActiveGUI();
+    Wand getActiveWand();
+    Wand getOffhandWand();
+    GUIAction getActiveGUI();
 
     /**
      * Get the Mage's "soul" wand. This represents all of the
@@ -271,18 +271,18 @@ public interface Mage extends CostReducer {
      *
      * This wand never appears as an in-game item.
      */
-    public Wand getSoulWand();
+    Wand getSoulWand();
 
     /**
      * Get a bound wand. Bound wands are stored based on their template,
      * only one wand per template type is stored.
      */
-    public Wand getBoundWand(String template);
+    Wand getBoundWand(String template);
 
     /**
      * @return An immutable list of bound wands.
      */
-    public List<? extends Wand> getBoundWands();
+    List<? extends Wand> getBoundWands();
 
     /**
      * Force a re-check of the current active wand vs the item the player is holding.
@@ -291,7 +291,7 @@ public interface Mage extends CostReducer {
      *
      * @return The current active wand, after checking
      */
-    public Wand checkWand();
+    Wand checkWand();
 
     /**
      * Return a Spell for this Mage, which can be used to programatically
@@ -303,7 +303,7 @@ public interface Mage extends CostReducer {
      * @param key The key of the Spell to retrieve.
      * @return The Spell instance for this Mage, or null if the Mage does not have access to this Spell.
      */
-    public MageSpell getSpell(String key);
+    MageSpell getSpell(String key);
 
     /**
      * Check to see if this Mage has a certain spell, generally meaning they
@@ -312,7 +312,7 @@ public interface Mage extends CostReducer {
      * @param key The spell key
      * @return True if the Mage has ever cast this spell
      */
-    public boolean hasSpell(String key);
+    boolean hasSpell(String key);
 
     /**
      * Return all of the Spell objects registered to this Mage.
@@ -321,7 +321,7 @@ public interface Mage extends CostReducer {
      *
      * @return A Collection of Spell objects this Mage has cast.
      */
-    public Collection<Spell> getSpells();
+    Collection<Spell> getSpells();
 
     /**
      * Set a Spell as "active". An "active" spell is generally a toggleable on/off
@@ -330,7 +330,7 @@ public interface Mage extends CostReducer {
      *
      * @param spell The spell to activate.
      */
-    public void activateSpell(Spell spell);
+    void activateSpell(Spell spell);
 
     /**
      * Deactivate a currently active spell. A spell may call this to deactivate
@@ -340,49 +340,49 @@ public interface Mage extends CostReducer {
      *
      * @param spell The spell to deactivate
      */
-    public void deactivateSpell(Spell spell);
+    void deactivateSpell(Spell spell);
 
     /**
      * Deactivate all active spells for this Mage.
      */
-    public void deactivateAllSpells();
-    public void deactivateAllSpells(boolean force, boolean quiet);
+    void deactivateAllSpells();
+    void deactivateAllSpells(boolean force, boolean quiet);
 
-    public ConfigurationSection getData();
+    ConfigurationSection getData();
 
-    public boolean isCooldownFree();
-    public float getCooldownReduction();
-    public boolean isCostFree();
-    public boolean isConsumeFree();
+    boolean isCooldownFree();
+    float getCooldownReduction();
+    boolean isCostFree();
+    boolean isConsumeFree();
     @Override
-    public float getCostReduction();
-    public long getRemainingCooldown();
-    public void setRemainingCooldown(long ms);
-    public void clearCooldown();
+    float getCostReduction();
+    long getRemainingCooldown();
+    void setRemainingCooldown(long ms);
+    void clearCooldown();
 
-    public boolean isSuperPowered();
-    public boolean isSuperProtected();
+    boolean isSuperPowered();
+    boolean isSuperProtected();
 
-    public float getRangeMultiplier();
-    public float getDamageMultiplier();
-    public float getRadiusMultiplier();
-    public float getConstructionMultiplier();
+    float getRangeMultiplier();
+    float getDamageMultiplier();
+    float getRadiusMultiplier();
+    float getConstructionMultiplier();
 
-    public Color getEffectColor();
-    public String getEffectParticleName();
-    public float getPower();
-    public float getPowerMultiplier();
-    public void setPowerMultiplier(float power);
-    public float getMagePowerBonus();
-    public void setMagePowerBonus(float magePowerBonus);
+    Color getEffectColor();
+    String getEffectParticleName();
+    float getPower();
+    float getPowerMultiplier();
+    void setPowerMultiplier(float power);
+    float getMagePowerBonus();
+    void setMagePowerBonus(float magePowerBonus);
 
-    public boolean isPlayer();
-    public boolean isOnline();
-    public boolean isDead();
-    public boolean isLoading();
-    public boolean hasLocation();
+    boolean isPlayer();
+    boolean isOnline();
+    boolean isDead();
+    boolean isLoading();
+    boolean hasLocation();
 
-    public void setLocation(Location location);
+    void setLocation(Location location);
 
     /**
      * This should be called by a Spell upon
@@ -391,99 +391,99 @@ public interface Mage extends CostReducer {
      * @param spell The Spell that was cast
      * @param result The result of the cast.
      */
-    public void onCast(Spell spell, SpellResult result);
+    void onCast(Spell spell, SpellResult result);
 
-    public boolean isRestricted(Material material);
-    public Set<Material> getRestrictedMaterials();
+    boolean isRestricted(Material material);
+    Set<Material> getRestrictedMaterials();
 
-    public MageController getController();
-    public boolean hasCastPermission(Spell spell);
-    public boolean hasBuildPermission(Block block);
-    public boolean hasBreakPermission(Block block);
-    public boolean isPVPAllowed(Location location);
-    public boolean isIndestructible(Block block);
-    public boolean isDestructible(Block block);
+    MageController getController();
+    boolean hasCastPermission(Spell spell);
+    boolean hasBuildPermission(Block block);
+    boolean hasBreakPermission(Block block);
+    boolean isPVPAllowed(Location location);
+    boolean isIndestructible(Block block);
+    boolean isDestructible(Block block);
 
-    public boolean registerForUndo(UndoList blocks);
-    public boolean prepareForUndo(UndoList blocks);
+    boolean registerForUndo(UndoList blocks);
+    boolean prepareForUndo(UndoList blocks);
 
-    public Inventory getInventory();
-    public int removeItem(ItemStack item);
-    public boolean hasItem(ItemStack item);
-    public int removeItem(ItemStack item, boolean allowVariants);
-    public boolean hasItem(ItemStack item, boolean allowVariants);
+    Inventory getInventory();
+    int removeItem(ItemStack item);
+    boolean hasItem(ItemStack item);
+    int removeItem(ItemStack item, boolean allowVariants);
+    boolean hasItem(ItemStack item, boolean allowVariants);
 
-    public MaterialBrush getBrush();
+    MaterialBrush getBrush();
 
-    public void removeExperience(int xp);
-    public int getExperience();
-    public void giveExperience(int xp);
+    void removeExperience(int xp);
+    int getExperience();
+    void giveExperience(int xp);
 
-    public void removeMana(float mana);
-    public float getMana();
+    void removeMana(float mana);
+    float getMana();
 
-    public int getLevel();
-    public void setLevel(int level);
+    int getLevel();
+    void setLevel(int level);
 
-    public boolean addBatch(Batch batch);
-    public void addUndoBatch(UndoBatch batch);
+    boolean addBatch(Batch batch);
+    void addUndoBatch(UndoBatch batch);
 
-    public void registerEvent(SpellEventType type, Listener spell);
-    public void unregisterEvent(SpellEventType type, Listener spell);
+    void registerEvent(SpellEventType type, Listener spell);
+    void unregisterEvent(SpellEventType type, Listener spell);
 
-    public UndoQueue getUndoQueue();
-    public int finishPendingUndo();
-    public List<LostWand> getLostWands();
-    public Location getLastDeathLocation();
+    UndoQueue getUndoQueue();
+    int finishPendingUndo();
+    List<LostWand> getLostWands();
+    Location getLastDeathLocation();
 
-    public boolean hasStoredInventory();
+    boolean hasStoredInventory();
 
-    public Set<Spell> getActiveSpells();
-    public void enableFallProtection(int ms);
-    public void enableFallProtection(int ms, Spell protector);
-    public void enableFallProtection(int ms, int count, Spell protector);
+    Set<Spell> getActiveSpells();
+    void enableFallProtection(int ms);
+    void enableFallProtection(int ms, Spell protector);
+    void enableFallProtection(int ms, int count, Spell protector);
 
-    public void enableSuperProtection(int ms);
-    public void clearSuperProtection();
+    void enableSuperProtection(int ms);
+    void clearSuperProtection();
 
-    public boolean load(MageData data);
-    public boolean save(MageData data);
-    public void deactivate();
-    public boolean isValid();
-    public boolean hasPending();
-    public boolean restoreWand();
-    public UndoList getLastUndoList();
-    public boolean isStealth();
-    public boolean isSneaking();
-    public boolean isJumping();
+    boolean load(MageData data);
+    boolean save(MageData data);
+    void deactivate();
+    boolean isValid();
+    boolean hasPending();
+    boolean restoreWand();
+    UndoList getLastUndoList();
+    boolean isStealth();
+    boolean isSneaking();
+    boolean isJumping();
 
-    public void tick();
+    void tick();
 
-    public void activateGUI(GUIAction action, Inventory inventory);
-    public void continueGUI(GUIAction action, Inventory inventory);
-    public void deactivateGUI();
-    public void playSoundEffect(SoundEffect sound);
+    void activateGUI(GUIAction action, Inventory inventory);
+    void continueGUI(GUIAction action, Inventory inventory);
+    void deactivateGUI();
+    void playSoundEffect(SoundEffect sound);
 
-    public void showHoloText(Location location, String text, int duration);
-    public int getDebugLevel();
-    public void setDebugLevel(int level);
-    public void setDebugger(CommandSender debugger);
-    public void debugPermissions(CommandSender sender, Spell spell);
-    public CommandSender getDebugger();
-    public void giveItem(ItemStack item);
-    public void removeItemsWithTag(String tag);
-    public void setQuiet(boolean quiet);
-    public boolean isQuiet();
-    public int getSkillPoints();
-    public void addSkillPoints(int delta);
-    public void setSkillPoints(int sp);
-    public boolean isAtMaxSkillPoints();
-    public WandUpgradePath getBoundWandPath(String templateKey);
-    public void unbind(Wand wand);
-    public void unbindAll();
-    public void undoScheduled();
-    public EntityData getEntityData();
-    public boolean tryToOwn(Wand wand);
-    public boolean isReflected(double angle);
-    public boolean isBlocked(double angle);
+    void showHoloText(Location location, String text, int duration);
+    int getDebugLevel();
+    void setDebugLevel(int level);
+    void setDebugger(CommandSender debugger);
+    void debugPermissions(CommandSender sender, Spell spell);
+    CommandSender getDebugger();
+    void giveItem(ItemStack item);
+    void removeItemsWithTag(String tag);
+    void setQuiet(boolean quiet);
+    boolean isQuiet();
+    int getSkillPoints();
+    void addSkillPoints(int delta);
+    void setSkillPoints(int sp);
+    boolean isAtMaxSkillPoints();
+    WandUpgradePath getBoundWandPath(String templateKey);
+    void unbind(Wand wand);
+    void unbindAll();
+    void undoScheduled();
+    EntityData getEntityData();
+    boolean tryToOwn(Wand wand);
+    boolean isReflected(double angle);
+    boolean isBlocked(double angle);
 }

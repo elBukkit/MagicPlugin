@@ -6,19 +6,19 @@ import java.util.Collection;
 import java.util.List;
 
 public interface Messages {
-    public String get(String key);
-    public String getRandomized(String key);
-    public String get(String key, String defaultValue);
-    public List<String> getAll(String path);
-    public String getParameterized(String key, String paramName, String paramValue);
-    public String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2);
-    public String escape(String source);
-    public String describeItem(ItemStack item);
-    public String describeCurrency(double amount);
-    public String getCurrency();
-    public String getCurrencyPlural();
-    public String formatList(String basePath, Collection<String> nodes, String nameKey);
-    public String getLevelString(String templateName, float amount);
-    public String getLevelString(String templateName, float amount, float max);
-    public String getPercentageString(String templateName, float amount);
+    String get(String key);
+    String getRandomized(String key);
+    String get(String key, String defaultValue);
+    List<String> getAll(String path);
+    String getParameterized(String key, String paramName, String paramValue);
+    String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2);
+    String escape(String source);
+    String describeItem(ItemStack item);
+    String describeCurrency(double amount);
+    String getCurrency();
+    String getCurrencyPlural();
+    String formatList(String basePath, Collection<String> nodes, String nameKey);
+    String getLevelString(String templateName, float amount);
+    String getLevelString(String templateName, float amount, float max);
+    String getPercentageString(String templateName, float amount);
 }

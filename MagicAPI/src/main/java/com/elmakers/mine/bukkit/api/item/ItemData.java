@@ -5,10 +5,10 @@ import java.util.Set;
 import org.bukkit.inventory.ItemStack;
 
 public interface ItemData {
-    public String getKey();
-    public double getWorth();
-    public ItemStack getItemStack(int amount);
-    public String getCreator();
-    public String getCreatorId();
+    String getKey();
+    double getWorth();
+    ItemStack getItemStack(int amount);
+    String getCreator();
+    String getCreatorId();
     Set<String> getCategories();
 }

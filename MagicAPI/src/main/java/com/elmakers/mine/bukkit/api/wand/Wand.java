@@ -36,108 +36,108 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
  *
  */
 public interface Wand extends CostReducer, MagicProperties {
-    public String getName();
-    public String getId();
-    public long getWorth();
-    public void closeInventory();
-    public void deactivate();
-    public boolean organizeInventory(Mage mage);
-    public boolean alphabetizeInventory();
-    public boolean organizeInventory();
-    public ItemStack getItem();
-    public MaterialAndData getIcon();
-    public MaterialAndData getInactiveIcon();
-    public void setIcon(MaterialAndData icon);
-    public void setInactiveIcon(MaterialAndData icon);
-    public void makeUpgrade();
-    public Collection<String> getSpells();
-    public Collection<String> getBrushes();
-    public void describe(CommandSender sender);
-    public void unenchant();
-    public void unlock();
-    public Wand duplicate();
-    public Spell getSpell(String key);
-    public Spell getSpell(String key, Mage mage);
-    public SpellTemplate getSpellTemplate(String key);
-    public boolean hasSpell(String key);
-    public boolean hasSpell(SpellKey spellKey);
-    public boolean hasBrush(String key);
-    public boolean isLocked();
-    public boolean canUse(Player player);
-    public boolean fill(Player player);
-    public boolean fill(Player player, int maxLevel);
-    public boolean add(Wand other);
-    public boolean add(Wand other, Mage mage);
-    public boolean addItem(ItemStack item);
-    public boolean configure(Map<String, Object> properties);
-    public boolean upgrade(Map<String, Object> properties);
-    public boolean removeProperty(String key);
-    public boolean addBrush(String key);
-    public boolean addSpell(String key);
-    public boolean removeBrush(String key);
-    public boolean removeSpell(String key);
-    public String getActiveBrushKey();
-    public String getActiveSpellKey();
-    public Spell getActiveSpell();
-    public void setActiveBrush(String key);
-    public void setActiveSpell(String key);
-    public void setName(String name);
-    public void setDescription(String description);
-    public void setPath(String path);
+    String getName();
+    String getId();
+    long getWorth();
+    void closeInventory();
+    void deactivate();
+    boolean organizeInventory(Mage mage);
+    boolean alphabetizeInventory();
+    boolean organizeInventory();
+    ItemStack getItem();
+    MaterialAndData getIcon();
+    MaterialAndData getInactiveIcon();
+    void setIcon(MaterialAndData icon);
+    void setInactiveIcon(MaterialAndData icon);
+    void makeUpgrade();
+    Collection<String> getSpells();
+    Collection<String> getBrushes();
+    void describe(CommandSender sender);
+    void unenchant();
+    void unlock();
+    Wand duplicate();
+    Spell getSpell(String key);
+    Spell getSpell(String key, Mage mage);
+    SpellTemplate getSpellTemplate(String key);
+    boolean hasSpell(String key);
+    boolean hasSpell(SpellKey spellKey);
+    boolean hasBrush(String key);
+    boolean isLocked();
+    boolean canUse(Player player);
+    boolean fill(Player player);
+    boolean fill(Player player, int maxLevel);
+    boolean add(Wand other);
+    boolean add(Wand other, Mage mage);
+    boolean addItem(ItemStack item);
+    boolean configure(Map<String, Object> properties);
+    boolean upgrade(Map<String, Object> properties);
+    boolean removeProperty(String key);
+    boolean addBrush(String key);
+    boolean addSpell(String key);
+    boolean removeBrush(String key);
+    boolean removeSpell(String key);
+    String getActiveBrushKey();
+    String getActiveSpellKey();
+    Spell getActiveSpell();
+    void setActiveBrush(String key);
+    void setActiveSpell(String key);
+    void setName(String name);
+    void setDescription(String description);
+    void setPath(String path);
 
-    public LostWand makeLost(Location location);
-    public boolean isLost(LostWand wand);
-    public int enchant(int levels);
-    public int enchant(int levels, Mage mage);
-    public int enchant(int levels, Mage mage, boolean addSpells);
+    LostWand makeLost(Location location);
+    boolean isLost(LostWand wand);
+    int enchant(int levels);
+    int enchant(int levels, Mage mage);
+    int enchant(int levels, Mage mage, boolean addSpells);
 
-    public Map<String, String> getOverrides();
-    public void setOverrides(Map<String, String> overrides);
-    public void removeOverride(String key);
-    public void setOverride(String key, String value);
-    public SpellTemplate getBaseSpell(String spellKey);
+    Map<String, String> getOverrides();
+    void setOverrides(Map<String, String> overrides);
+    void removeOverride(String key);
+    void setOverride(String key, String value);
+    SpellTemplate getBaseSpell(String spellKey);
 
-    public boolean isSuperProtected();
-    public boolean isSuperPowered();
-    public boolean isCostFree();
-    public boolean isConsumeFree();
-    public boolean isCooldownFree();
-    public float getPower();
-    public float getHealthRegeneration();
-    public float getHungerRegeneration();
-    public float getCooldownReduction();
+    boolean isSuperProtected();
+    boolean isSuperPowered();
+    boolean isCostFree();
+    boolean isConsumeFree();
+    boolean isCooldownFree();
+    float getPower();
+    float getHealthRegeneration();
+    float getHungerRegeneration();
+    float getCooldownReduction();
     @Override
-    public float getCostReduction();
-    public void removeMana(float mana);
-    public float getMana();
-    public int getManaMax();
-    public void setMana(float mana);
-    public void setManaMax(int manaMax);
-    public int getManaRegeneration();
-    public void updateMana();
-    public WandUpgradePath getPath();
-    public MageController getController();
-    public boolean showCastMessages();
-    public boolean showMessages();
-    public @Nullable String getTemplateKey();
-    public @Nullable WandTemplate getTemplate();
-    public boolean isIndestructible();
-    public boolean playEffects(String key);
-    public boolean cast();
-    public boolean isBound();
-    public boolean isSoul();
-    public boolean isUndroppable();
-    public boolean isQuickCastDisabled();
-    public boolean isInventoryOpen();
-    public boolean isQuickCast();
-    public void cycleHotbar();
-    public void damageDealt(double damage, Entity target);
-    public int getSpellLevel(String spellKey);
-    public boolean hasTag(String tag);
-    public void bind();
-    public void unbind();
-    public boolean isReflected(double angle);
-    public boolean isBlocked(double angle);
+    float getCostReduction();
+    void removeMana(float mana);
+    float getMana();
+    int getManaMax();
+    void setMana(float mana);
+    void setManaMax(int manaMax);
+    int getManaRegeneration();
+    void updateMana();
+    WandUpgradePath getPath();
+    MageController getController();
+    boolean showCastMessages();
+    boolean showMessages();
+    @Nullable String getTemplateKey();
+    @Nullable WandTemplate getTemplate();
+    boolean isIndestructible();
+    boolean playEffects(String key);
+    boolean cast();
+    boolean isBound();
+    boolean isSoul();
+    boolean isUndroppable();
+    boolean isQuickCastDisabled();
+    boolean isInventoryOpen();
+    boolean isQuickCast();
+    void cycleHotbar();
+    void damageDealt(double damage, Entity target);
+    int getSpellLevel(String spellKey);
+    boolean hasTag(String tag);
+    void bind();
+    void unbind();
+    boolean isReflected(double angle);
+    boolean isBlocked(double angle);
 
     /**
      * Save this Wand to a Configuration Section.
@@ -146,7 +146,7 @@ public interface Wand extends CostReducer, MagicProperties {
      * @param filtered If true, removes item-specific data such as Wand
      *                 id and bound owner.
      */
-    public void save(ConfigurationSection section, boolean filtered);
+    void save(ConfigurationSection section, boolean filtered);
 
     /**
      * Save current Wand state to the ItemStack's NBT data immediately.
@@ -154,14 +154,14 @@ public interface Wand extends CostReducer, MagicProperties {
      * Wands are saved periodically so this is generally not needed unless
      * you need to force an update right away.
      */
-    public void saveState();
+    void saveState();
 
     /**
      * Checks if the wand can be upgraded to the next {@link WandUpgradePath} and if so upgrades it.
      *
      * @return false if the player is blocked based on a path requirement
      */
-    public boolean checkAndUpgrade(boolean quiet);
+    boolean checkAndUpgrade(boolean quiet);
 
     /**
      * See if this wand is ready for an upgrade.
@@ -169,14 +169,14 @@ public interface Wand extends CostReducer, MagicProperties {
      * @param quiet if false, will send messages to a player informing them why they are blocked
      * @return false if the wand is blocked from upgrading for some reason
      */
-    public boolean checkUpgrade(boolean quiet);
+    boolean checkUpgrade(boolean quiet);
 
     /**
      * Check to see if this wand has an upgrade on its current path
      *
      * @return true if this wand has a path with an upgrade
      */
-    public boolean hasUpgrade();
+    boolean hasUpgrade();
 
     /**
      * See if this wand can progress. This means the wand can still acquire more spells on its current
@@ -184,7 +184,7 @@ public interface Wand extends CostReducer, MagicProperties {
      *
      * @return true if the wand can progress
      */
-    public boolean canProgress();
+    boolean canProgress();
 
     /**
      * Trigger an upgrade to the next path.
@@ -192,7 +192,7 @@ public interface Wand extends CostReducer, MagicProperties {
      * @param quiet if false, will send messages to the player about their upgrade
      * @return true if the upgrade was successful.
      */
-    public boolean upgrade(boolean quiet);
+    boolean upgrade(boolean quiet);
 
     /**
      * This method is deprecated, use {@link Mage#checkWand()} instead.
@@ -201,7 +201,7 @@ public interface Wand extends CostReducer, MagicProperties {
      * @param mage
      */
     @Deprecated
-    public void activate(Mage mage);
+    void activate(Mage mage);
 
     Color getEffectColor();
     String getEffectParticleName();

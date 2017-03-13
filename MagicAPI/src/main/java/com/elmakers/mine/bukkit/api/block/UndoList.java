@@ -16,59 +16,59 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import org.bukkit.entity.EntityType;
 
 public interface UndoList extends BlockList, Comparable<UndoList> {
-    public void commit();
-    public void undo();
-    public void undo(boolean blocking);
-    public void undoScheduled();
-    public void undoScheduled(boolean blocking);
-    public BlockData undoNext(boolean applyPhysics);
+    void commit();
+    void undo();
+    void undo(boolean blocking);
+    void undoScheduled();
+    void undoScheduled(boolean blocking);
+    BlockData undoNext(boolean applyPhysics);
 
-    public void setEntityUndo(boolean undoEntityEffects);
-    public void setEntityUndoTypes(Set<EntityType> undoTypes);
+    void setEntityUndo(boolean undoEntityEffects);
+    void setEntityUndoTypes(Set<EntityType> undoTypes);
 
-    public void setScheduleUndo(int ttl);
-    public int getScheduledUndo();
-    public void updateScheduledUndo();
-    public boolean bypass();
-    public void setApplyPhysics(boolean physics);
-    public long getCreatedTime();
-    public long getModifiedTime();
-    public long getScheduledTime();
-    public boolean isScheduled();
-    public void setUndoSpeed(double speed);
+    void setScheduleUndo(int ttl);
+    int getScheduledUndo();
+    void updateScheduledUndo();
+    boolean bypass();
+    void setApplyPhysics(boolean physics);
+    long getCreatedTime();
+    long getModifiedTime();
+    long getScheduledTime();
+    boolean isScheduled();
+    void setUndoSpeed(double speed);
 
-    public void setUndoBreakable(boolean breakable);
-    public void setUndoReflective(boolean reflective);
+    void setUndoBreakable(boolean breakable);
+    void setUndoReflective(boolean reflective);
 
-    public void prune();
+    void prune();
 
-    public void add(Entity entity);
-    public void remove(Entity entity);
-    public EntityData damage(Entity entity);
-    public EntityData modify(Entity entity);
-    public void add(Runnable runnable);
-    public void move(Entity entity);
-    public void modifyVelocity(Entity entity);
-    public void addPotionEffects(Entity entity);
+    void add(Entity entity);
+    void remove(Entity entity);
+    EntityData damage(Entity entity);
+    EntityData modify(Entity entity);
+    void add(Runnable runnable);
+    void move(Entity entity);
+    void modifyVelocity(Entity entity);
+    void addPotionEffects(Entity entity);
 
-    public void convert(Entity entity, Block block);
-    public void fall(Entity entity, Block block);
-    public void explode(Entity entity, List<Block> explodedBlocks);
-    public void finalizeExplosion(Entity entity, List<Block> explodedBlocks);
-    public void cancelExplosion(Entity entity);
-    public void setBatch(Batch batch);
-    public void setSpell(Spell spell);
-    public void clearAttachables(Block block);
+    void convert(Entity entity, Block block);
+    void fall(Entity entity, Block block);
+    void explode(Entity entity, List<Block> explodedBlocks);
+    void finalizeExplosion(Entity entity, List<Block> explodedBlocks);
+    void cancelExplosion(Entity entity);
+    void setBatch(Batch batch);
+    void setSpell(Spell spell);
+    void clearAttachables(Block block);
 
-    public boolean contains(Location location, int threshold);
+    boolean contains(Location location, int threshold);
 
-    public String getName();
-    public Mage getOwner();
-    public CastContext getContext();
-    public void setBypass(boolean bypass);
-    public Collection<Entity> getAllEntities();
-    public boolean getApplyPhysics();
+    String getName();
+    Mage getOwner();
+    CastContext getContext();
+    void setBypass(boolean bypass);
+    Collection<Entity> getAllEntities();
+    boolean getApplyPhysics();
 
-    public boolean isConsumed();
-    public void setConsumed(boolean consumed);
+    boolean isConsumed();
+    void setConsumed(boolean consumed);
 }

@@ -18,7 +18,7 @@ public interface Automaton extends BlockData {
      * @return String name
      */
     @Override
-    public String getName();
+    String getName();
 
-    public long getCreatedTime();
+    long getCreatedTime();
 }

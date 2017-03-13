@@ -21,14 +21,14 @@ public interface Batch {
      * @param maxBlocks The maximum number of blocks the batch should process
      * @return The number of blocks processed.
      */
-    public int process(int maxBlocks);
+    int process(int maxBlocks);
 
     /**
      * Whether or not this batch is finished
      *
      * @return true if finished
      */
-    public boolean isFinished();
+    boolean isFinished();
 
     /**
      * Immediatelly finish this batch.
@@ -37,7 +37,7 @@ public interface Batch {
      * clean up, add to undo queues, etc, whatever has been
      * done so far.
      */
-    public void finish();
+    void finish();
 
     /**
      * The size of this batch. May be in blocks, or some
@@ -47,7 +47,7 @@ public interface Batch {
      *
      * @return The size of this batch.
      */
-    public int size();
+    int size();
 
     /**
      * The remaining size of this batch. May be in blocks, or some
@@ -57,11 +57,11 @@ public interface Batch {
      *
      * @return The remaining size of this batch.
      */
-    public int remaining();
+    int remaining();
 
     /**
      * Return a friendly name to identify this batch.
      * @return
      */
-    public String getName();
+    String getName();
 }

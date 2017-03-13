@@ -20,7 +20,7 @@ public interface Cost {
      * @param reducer The CostReducer to use for calculating costs
      * @return False if this has any non-zero costs.
      */
-    public boolean isEmpty(CostReducer reducer);
+    boolean isEmpty(CostReducer reducer);
     
     /**
      * Whether or not this record has any costs associated with it,
@@ -31,7 +31,7 @@ public interface Cost {
      * @param reducer An optional scale for costs
      * @return True if this has any non-zero costs.
      */
-    public boolean has(Mage mage, Wand wand, CostReducer reducer);
+    boolean has(Mage mage, Wand wand, CostReducer reducer);
     
     /**
      * Whether or not this record has any costs associated with it,
@@ -40,7 +40,7 @@ public interface Cost {
      * @param mage The mage to check for costs
      * @return True if this has any non-zero costs.
      */
-    public boolean has(Mage mage);
+    boolean has(Mage mage);
 
     /**
      * Deduct these costs from the specified Mage
@@ -49,7 +49,7 @@ public interface Cost {
      * @param wand A optional wand, to be used for mana costs
      * @param reducer An optional scale for costs
      */
-    public void deduct(Mage mage, Wand wand, CostReducer reducer);
+    void deduct(Mage mage, Wand wand, CostReducer reducer);
 
     /**
      * Deduct these costs from the specified Mage
@@ -57,7 +57,7 @@ public interface Cost {
      * @param mage The mage to check for costs
      * @return False if deducting costs failed
      */
-    public void deduct(Mage mage);
+    void deduct(Mage mage);
 
     /**
      * Get a human-readable description of this cost.
@@ -71,7 +71,7 @@ public interface Cost {
      * @param reducer An optional scale for costs
      * @return A printable String to display this casting cost to a Player.
      */
-    public String getDescription(Messages messages, CostReducer reducer);
+    String getDescription(Messages messages, CostReducer reducer);
 
     /**
      * Get a human-readable description of this cost.
@@ -84,7 +84,7 @@ public interface Cost {
      * @param messages The Messages class for looking up localizations
      * @return A printable String to display this casting cost to a Player.
      */
-    public String getDescription(Messages messages);
+    String getDescription(Messages messages);
 
     /**
      * Get a human-readable description of this cost.
@@ -98,7 +98,7 @@ public interface Cost {
      * @param reducer An optional scale for costs
      * @return A printable String to display this casting cost to a Player.
      */
-    public String getFullDescription(Messages messages, CostReducer reducer);
+    String getFullDescription(Messages messages, CostReducer reducer);
     
     /**
      * Get a human-readable description of this cost.
@@ -111,7 +111,7 @@ public interface Cost {
      * @param messages The Messages class for looking up localizations
      * @return A printable String to display this casting cost to a Player.
      */
-    public String getFullDescription(Messages messages);
+    String getFullDescription(Messages messages);
 
     /**
      * Get a copy of the item represented by this cost.
@@ -120,12 +120,12 @@ public interface Cost {
      * 
      * @return The item cost, or null if none.
      */
-    public ItemStack getItemStack();
+    ItemStack getItemStack();
 
     /**
      * Check to see if this Cost is an ItemStack
      * 
      * @return true if this cost is an item
      */
-    public boolean isItem();
+    boolean isItem();
 }

@@ -23,52 +23,52 @@ import org.bukkit.util.Vector;
  * implement the MageSpell interface.
  */
 public interface Spell extends SpellTemplate {
-    public MageController getController();
-    public boolean cast();
-    public boolean cast(String[] parameters);
-    public boolean cast(String[] parameters, Location defaultLocation);
-    public boolean cast(ConfigurationSection parameters, Location defaultLocation);
-    public boolean cast(ConfigurationSection parameters);
-    public Location getLocation();
-    public Entity getEntity();
-    public Location getEyeLocation();
-    public void target();
-    public Location getTargetLocation();
-    public Entity getTargetEntity();
-    public Vector getDirection();
-    public boolean canTarget(Entity entity);
-    public boolean isActive();
-    public boolean hasBrushOverride();
-    public boolean canCast(Location location);
-    public void clearCooldown();
-    public void setRemainingCooldown(long ms);
-    public long getRemainingCooldown();
-    public CastingCost getRequiredCost();
-    public void messageTargets(String messageKey);
-    public void playEffects(String effectName);
-    public CastContext getCurrentCast();
-    public void playEffects(String effectName, CastContext context);
-    public void playEffects(String effectName, CastContext context, float scale);
-    public boolean requiresBuildPermission();
-    public boolean requiresBreakPermission();
-    public boolean isPvpRestricted();
-    public boolean isDisguiseRestricted();
-    public void sendMessage(String message);
-    public void castMessage(String message);
-    public MaterialAndData getEffectMaterial();
-    public String getEffectParticle();
-    public Color getEffectColor();
-    public MaterialBrush getBrush();
-    public boolean isCancellable();
-    public ConfigurationSection getWorkingParameters();
-    public void finish(CastContext context);
-    public double cancelOnDamage();
-    public boolean cancelOnCastOther();
-    public String getMessage(String messageKey);
-    public boolean hasHandlerParameters(String handlerKey);
-    public ConfigurationSection getHandlerParameters(String handlerKey);
-    public long getProgressLevel();
-    public boolean cancelOnNoPermission();
+    MageController getController();
+    boolean cast();
+    boolean cast(String[] parameters);
+    boolean cast(String[] parameters, Location defaultLocation);
+    boolean cast(ConfigurationSection parameters, Location defaultLocation);
+    boolean cast(ConfigurationSection parameters);
+    Location getLocation();
+    Entity getEntity();
+    Location getEyeLocation();
+    void target();
+    Location getTargetLocation();
+    Entity getTargetEntity();
+    Vector getDirection();
+    boolean canTarget(Entity entity);
+    boolean isActive();
+    boolean hasBrushOverride();
+    boolean canCast(Location location);
+    void clearCooldown();
+    void setRemainingCooldown(long ms);
+    long getRemainingCooldown();
+    CastingCost getRequiredCost();
+    void messageTargets(String messageKey);
+    void playEffects(String effectName);
+    CastContext getCurrentCast();
+    void playEffects(String effectName, CastContext context);
+    void playEffects(String effectName, CastContext context, float scale);
+    boolean requiresBuildPermission();
+    boolean requiresBreakPermission();
+    boolean isPvpRestricted();
+    boolean isDisguiseRestricted();
+    void sendMessage(String message);
+    void castMessage(String message);
+    MaterialAndData getEffectMaterial();
+    String getEffectParticle();
+    Color getEffectColor();
+    MaterialBrush getBrush();
+    boolean isCancellable();
+    ConfigurationSection getWorkingParameters();
+    void finish(CastContext context);
+    double cancelOnDamage();
+    boolean cancelOnCastOther();
+    String getMessage(String messageKey);
+    boolean hasHandlerParameters(String handlerKey);
+    ConfigurationSection getHandlerParameters(String handlerKey);
+    long getProgressLevel();
+    boolean cancelOnNoPermission();
 
 
     /**
@@ -80,7 +80,7 @@ public interface Spell extends SpellTemplate {
      *
      * @return true (for legacy reasons)
      */
-    public boolean cancel();
+    boolean cancel();
 
     /**
      * Cancel a selection in-progress for a two-click selection spell (like Architect magic)
