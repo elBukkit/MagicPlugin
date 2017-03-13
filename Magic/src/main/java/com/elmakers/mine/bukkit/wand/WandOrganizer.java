@@ -55,6 +55,10 @@ public class WandOrganizer {
 
                 String spellName = Wand.getSpell(hotbarItem);
                 if (spellName != null) {
+                    SpellKey spellKey = new SpellKey(spellName);
+                    spellName = spellKey.getBaseKey();
+                }
+                if (spellName != null) {
                     spells.remove(spellName);
                 } else {
                     String materialKey = Wand.getBrush(hotbarItem);
