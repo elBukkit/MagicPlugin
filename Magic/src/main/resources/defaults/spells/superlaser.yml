@@ -1,0 +1,86 @@
+superlaser:
+    icon: diamond_axe:142
+    icon_disabled: diamond_hoe:142
+    icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
+    category: engineering
+    tags: noduel
+    worth: 450
+    earns_sp: 8
+    upgrade_required_path: architect
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: Line
+          ignore_result: true
+          actions:
+          - class: ModifyBlock
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: Retarget
+            actions:
+            - class: PlayEffects
+              effect: beam
+              ignore_result: true
+            - class: Line
+              ignore_result: true
+              actions:
+              - class: ModifyBlock
+    effects:
+        beam:
+        -  class: EffectSingle
+           sound: magic.zap
+           location: origin
+           sound_volume: 0.1
+           color_override: colorHelix
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: redstone
+             particleBase1: drip_lava
+             particleBase2: smoke_normal
+             iterations: 10
+             radius: 0.5
+             grow: 0.2
+             baseInterval: 5
+             length: 16
+             particlesBase: 5
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+    parameters:
+        target: block
+        target_type: Damageable
+        allow_max_range: true
+        range: 32
+        size: 1
+        start_at_target: true
+        increment_data: false
+        check_destructible: true
+        destructible: destructible
+        transparent: air
+        brush: air
+        radius: 0
+        cooldown: 10000
+        delay: 250
+        repeat: 10
+        orient: true
+        axis: z
+    costs:
+        mana: 200
+
+superlaser|2:
+    upgrade_required_casts: 50
+    parameters:
+        destructible: destructible,destructible2,transparent
+        repeat: 11
+
+superlaser|3:
+    parameters:
+        destructible: destructible,destructible2,destructible3,transparent
+        player_damage: 1
+        entity_damage: 3
+        repeat: 12
+
