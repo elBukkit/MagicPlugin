@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -29,6 +30,7 @@ public class ThrowBlockAction extends BaseProjectileAction
     private int maxDamage;
     private boolean consumeBlocks = false;
     private boolean consumeVariants = true;
+    private SourceLocation sourceLocation;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -42,6 +44,7 @@ public class ThrowBlockAction extends BaseProjectileAction
         maxDamage = parameters.getInt("max_damage", damage);
         consumeBlocks = parameters.getBoolean("consume", false);
         consumeVariants = parameters.getBoolean("consume_variants", true);
+        sourceLocation = new SourceLocation(parameters);
     }
 
 	@Override
@@ -78,7 +81,8 @@ public class ThrowBlockAction extends BaseProjectileAction
 		Material material = buildWith.getMaterial();
 		byte data = buildWith.getBlockData();
 
-		Vector direction = context.getDirection();
+        location = sourceLocation.getLocation(context);
+		Vector direction = location.getDirection();
         double speed = context.getRandom().nextDouble() * (speedMax - speedMin) + speedMin;
         direction.normalize().multiply(speed);
 		Vector up = new Vector(0, 1, 0);
@@ -86,7 +90,6 @@ public class ThrowBlockAction extends BaseProjectileAction
 		perp.copy(direction);
 		perp.crossProduct(up);
 
-        location = context.getEyeLocation();
         FallingBlock falling = DeprecatedUtils.spawnFallingBlock(location, material, data);
         if (falling == null)
         {

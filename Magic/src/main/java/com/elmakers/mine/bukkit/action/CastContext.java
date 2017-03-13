@@ -176,18 +176,23 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public Location getWandLocation() {
+    public Location getCastLocation() {
         if (location != null) {
             return location;
         }
         Location wandLocation = wand == null ? null : wand.getLocation();
         if (wandLocation == null) {
-            wandLocation = this.baseSpell != null ? baseSpell.getWandLocation() : getEyeLocation();
+            wandLocation = this.baseSpell != null ? baseSpell.getCastLocation() : getEyeLocation();
         }
         if (wandLocation != null && direction != null) {
             wandLocation.setDirection(direction);
         }
         return wandLocation;
+    }
+
+    @Override
+    public Location getWandLocation() {
+        return getCastLocation();
     }
 
     @Override
@@ -519,8 +524,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         Collection<EffectPlayer> effects = getEffects(effectName);
         if (effects.size() > 0)
         {
-            Location wand = null;
-            Location eyeLocation = getEyeLocation();
             Location location = getLocation();
             Collection<Entity> targeted = getTargetedEntities();
 
@@ -532,13 +535,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 Mage mage = getMage();
                 Location source = sourceLocation;
                 if (source == null) {
-                    boolean useWand = mage != null && mage.getEntity() == sourceEntity && player.shouldUseWandLocation();
-                    source = player.shouldUseEyeLocation() ? eyeLocation : location;
-                    if (useWand) {
-                        if (wand == null) {
-                            wand = getWandLocation();
-                        }
-                        source = wand;
+                    if (mage.getEntity() == sourceEntity) {
+                        source = player.getSourceLocation(this);
+                    } else {
+                        source = location;
                     }
                 }
                 Location target = targetLocation;

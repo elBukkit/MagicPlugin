@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.magic.SourceLocation;
 import de.slikey.effectlib.math.VectorTransform;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -59,9 +60,7 @@ public class CustomProjectileAction extends CompoundAction
     private double drag;
     private double tickSize;
     private boolean reorient;
-    private boolean useWandLocation;
-    private boolean useEyeLocation;
-    private boolean useTargetLocation;
+    private SourceLocation sourceLocation;
     private boolean trackEntity;
     private double trackCursorRange;
     private double trackSpeed;
@@ -227,9 +226,7 @@ public class CustomProjectileAction extends CompoundAction
         hitEffectKey = parameters.getString("hit_effects", "hit");
         missEffectKey = parameters.getString("miss_effects", "miss");
         tickEffectKey = parameters.getString("tick_effects", "tick");
-        useWandLocation = parameters.getBoolean("use_wand_location", true);
-        useEyeLocation = parameters.getBoolean("use_eye_location", true);
-        useTargetLocation = parameters.getBoolean("use_target_location", true);
+        sourceLocation = new SourceLocation(parameters);
         targetSelfTimeout = parameters.getInt("target_self_timeout", 0);
         targetSelf = parameters.contains("target_self") ? parameters.getBoolean("target_self") : null;
         breaksBlocks = parameters.getBoolean("break_blocks", true);
@@ -369,14 +366,8 @@ public class CustomProjectileAction extends CompoundAction
         Location projectileLocation = null;
         if (velocity == null)
         {
-            Location targetLocation = context.getTargetLocation();
-            if (useWandLocation) {
-                projectileLocation = context.getWandLocation().clone();
-            } else if (useEyeLocation) {
-                projectileLocation = context.getEyeLocation().clone();
-            } else {
-                projectileLocation = context.getLocation().clone();
-            }
+            org.bukkit.Bukkit.getLogger().info("Getting projectile direction");
+            projectileLocation = sourceLocation.getLocation(context).clone();
             
             /* This feels confusing however...
              * Looking straight down in Minecraft gives a pitch of 90
@@ -387,19 +378,15 @@ public class CustomProjectileAction extends CompoundAction
             if (pitchMin < projectileLocation.getPitch())
             {
                 projectileLocation.setPitch(pitchMin);
+                sourceLocation.setLocation(projectileLocation);
             } 
             else if (pitchMax > projectileLocation.getPitch())
             {
                 projectileLocation.setPitch(pitchMax);
+                sourceLocation.setLocation(projectileLocation);
             }
             launchLocation = projectileLocation.clone();
-
-            if (targetLocation != null && !reorient && useTargetLocation) {
-                velocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
-                launchLocation.setDirection(velocity);
-            } else {
-                velocity = context.getDirection().clone().normalize();
-            }
+            velocity = projectileLocation.getDirection().clone().normalize();
 
             if (spread > 0) {
                 Random random = context.getRandom();
@@ -456,7 +443,7 @@ public class CustomProjectileAction extends CompoundAction
         }
         if (updateLaunchLocation)
         {
-            launchLocation = context.getWandLocation().clone();
+            launchLocation = context.getCastLocation().clone();
         }
         // Advance position
         // We default to 50 ms travel time (one tick) for the first iteration.

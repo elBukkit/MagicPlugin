@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -22,6 +23,7 @@ public class ThrowItemAction extends BaseProjectileAction {
     private double itemSpeedMin;
     private double itemSpeedMax;
     private int ageItems;
+    private SourceLocation sourceLocation;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -31,19 +33,20 @@ public class ThrowItemAction extends BaseProjectileAction {
         itemSpeedMin = parameters.getDouble("speed_min", itemSpeed);
         itemSpeedMax = parameters.getDouble("speed_max", itemSpeed);
         ageItems = parameters.getInt("age_items", 5500);
+        sourceLocation = new SourceLocation(parameters);
     }
 
     @Override
     public SpellResult start(CastContext context)
     {
         MaterialAndData material = context.getBrush();
-        Location spawnLocation = context.getWandLocation();
+        Location spawnLocation = sourceLocation.getLocation(context);
         if (spawnLocation == null || material == null)
         {
             return SpellResult.NO_TARGET;
         }
         double itemSpeed = context.getRandom().nextDouble() * (itemSpeedMax - itemSpeedMin) + itemSpeedMin;
-        Vector velocity = context.getDirection().normalize().multiply(itemSpeed);
+        Vector velocity = spawnLocation.getDirection().normalize().multiply(itemSpeed);
         ItemStack itemStack = new ItemStack(material.getMaterial(), 1, material.getData());
         String removedMessage = context.getMessage("removed");
         if (removedMessage != null) {

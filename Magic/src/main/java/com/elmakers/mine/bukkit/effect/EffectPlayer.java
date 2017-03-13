@@ -2,8 +2,10 @@ package com.elmakers.mine.bukkit.effect;
 
 import java.util.*;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 
+import com.elmakers.mine.bukkit.magic.SourceLocation;
 import de.slikey.effectlib.util.DynamicLocation;
 import de.slikey.effectlib.util.ParticleEffect;
 
@@ -100,10 +102,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected boolean requireEntity = false;
     protected boolean requireTargetEntity = false;
-    protected boolean useWandLocation = true;
-    protected boolean useEyeLocation = true;
     protected boolean useHitLocation = true;
     protected boolean useBlockLocation = true;
+    protected SourceLocation sourceLocation = null;
 
     protected float scale = 1.0f;
 
@@ -211,8 +212,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         setLocationType(configuration.getString("location", "origin"));
         requireEntity = configuration.getBoolean("requires_entity", false);
         requireTargetEntity = configuration.getBoolean("requires_entity_target", false);
-        useWandLocation = configuration.getBoolean("use_wand_location", true);
-        useEyeLocation = configuration.getBoolean("use_eye_location", true);
+        sourceLocation = new SourceLocation(configuration);
         useHitLocation = configuration.getBoolean("use_hit_location", true);
         useBlockLocation = configuration.getBoolean("use_block_location", false);
     }
@@ -667,12 +667,22 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     @Override
     public boolean shouldUseWandLocation() {
-        return useWandLocation;
+        return sourceLocation.shouldUseWandLocation();
+    }
+
+    @Override
+    public boolean shouldUseCastLocation() {
+        return sourceLocation.shouldUseCastLocation();
     }
 
     @Override
     public boolean shouldUseEyeLocation() {
-        return useEyeLocation;
+        return sourceLocation.shouldUseEyeLocation();
+    }
+
+    @Override
+    public Location getSourceLocation(CastContext context)  {
+        return sourceLocation.getLocation(context);
     }
 
     @Override

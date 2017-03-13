@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -39,9 +40,7 @@ public class ProjectileAction  extends BaseProjectileAction
     private int tickIncrease;
     private String projectileTypeName;
     private int startDistance;
-	private boolean useWandLocation;
-	private boolean useEyeLocation;
-	private boolean useTargetLocation;
+	private SourceLocation sourceLocation;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -76,9 +75,7 @@ public class ProjectileAction  extends BaseProjectileAction
         projectileTypeName = parameters.getString("projectile", "Arrow");
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
-		useWandLocation = parameters.getBoolean("use_wand_location", true);
-		useEyeLocation = parameters.getBoolean("use_eye_location", true);
-		useTargetLocation = parameters.getBoolean("use_target_location", true);
+		sourceLocation = new SourceLocation(parameters);
     }
 
 	@Override
@@ -104,14 +101,8 @@ public class ProjectileAction  extends BaseProjectileAction
 		}
 		
 		// Prepare parameters
-		Location location = useWandLocation ? context.getWandLocation() : (useEyeLocation ? context.getEyeLocation() : context.getLocation());
-		Location targetLocation = context.getTargetLocation();
-		Vector direction;
-		if (targetLocation != null && useTargetLocation) {
-			direction = targetLocation.toVector().subtract(location.toVector()).normalize();
-		} else {
-			direction = context.getDirection().clone().normalize();
-		}
+		Location location = sourceLocation.getLocation(context);
+		Vector direction = location.getDirection();
 
         if (startDistance > 0) {
             location = location.clone().add(direction.clone().multiply(startDistance));
