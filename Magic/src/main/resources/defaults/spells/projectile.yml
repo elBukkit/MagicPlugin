@@ -19,6 +19,17 @@ projectile:
         -  class: EffectSingle
            sound: magic.zap_crack
            location: origin
+           color_override: color
+           effectlib:
+             color: 00FF00
+             class: ConeEffect
+             iterations: 500
+             particlesCone: 10000
+             particle: redstone
+             lengthGrow: 0.01
+             radiusGrow: 0.00003
+             updateLocations: false
+             updateDirections: false
         -  class: EffectSingle
            location: target
            effectlib:
