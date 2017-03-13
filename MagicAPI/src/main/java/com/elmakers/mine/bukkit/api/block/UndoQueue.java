@@ -67,4 +67,9 @@ public interface UndoQueue {
      * Load the data in this undo queue
      */
     public void load(UndoData data);
+
+    /**
+     * Check to see if there are any scheduled undo changes pending in this queue.
+     */
+    public boolean hasScheduled();
 }

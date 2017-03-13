@@ -438,6 +438,7 @@ public interface Mage extends CostReducer {
     public boolean save(MageData data);
     public void deactivate();
     public boolean isValid();
+    public boolean hasPending();
     public boolean restoreWand();
     public UndoList getLastUndoList();
     public boolean isStealth();
