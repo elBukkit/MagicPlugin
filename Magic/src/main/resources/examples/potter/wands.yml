@@ -10,7 +10,7 @@ wandbox:
       gold_axe: wood_hoe:25
       gold_pickaxe: wood_hoe:26
     randomize_icon: wood_step
-    active_spell: flagrate
+    active_spell: vermillious
     path: year1
     quiet: 1
     mana_max: 50
@@ -19,7 +19,7 @@ wandbox:
     effect_color: '888888'
     effect_bubbles: false
     spells:
-     - flagrate
+     - vermillious
     effects:
       randomize:
       -  class: EffectSingle
