@@ -297,10 +297,22 @@ public interface Mage extends CostReducer {
      * Return a Spell for this Mage, which can be used to programatically
      * cast or modify a Spell on behalf of this Mage.
      *
+     * This will create and register the spell if the Mage has never cast it, but has
+     * permission to do so.
+     *
      * @param key The key of the Spell to retrieve.
      * @return The Spell instance for this Mage, or null if the Mage does not have access to this Spell.
      */
     public MageSpell getSpell(String key);
+
+    /**
+     * Check to see if this Mage has a certain spell, generally meaning they
+     * have cast it at least once.
+     *
+     * @param key The spell key
+     * @return True if the Mage has ever cast this spell
+     */
+    public boolean hasSpell(String key);
 
     /**
      * Return all of the Spell objects registered to this Mage.
