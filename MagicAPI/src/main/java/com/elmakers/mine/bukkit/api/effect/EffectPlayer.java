@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.effect;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -30,8 +31,10 @@ public interface EffectPlayer {
     public void setColor(Color color);
     public boolean shouldUseHitLocation();
     public boolean shouldUseWandLocation();
+    public boolean shouldUseCastLocation();
     public boolean shouldUseEyeLocation();
     public boolean shouldUseBlockLocation();
+    public Location getSourceLocation(CastContext context);
 
     public void start(Location origin, Location target);
     public void start(Entity origin, Entity target);
