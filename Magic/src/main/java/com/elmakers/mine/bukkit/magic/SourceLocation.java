@@ -14,6 +14,13 @@ public class SourceLocation {
     private boolean useTargetLocation = true;
     private boolean useCache = false;
 
+    private enum LocationType {
+        CAST,
+        EYES,
+        FEET,
+        WAND
+    }
+
     private Location location;
 
     public SourceLocation(ConfigurationSection configuration, boolean useCache) {
@@ -31,13 +38,33 @@ public class SourceLocation {
 
         useCastLocation = configuration.getBoolean("use_cast_location", useCastLocation);
         useEyeLocation = configuration.getBoolean("use_eye_location", useEyeLocation);
-
-        if (configuration.getBoolean("use_foot_location", false)) {
-            useEyeLocation = false;
-            useCastLocation = false;
-            useWandLocation = false;
-        }
         useTargetLocation = configuration.getBoolean("use_target_location", true);
+
+        // The new format overrides any of the old ones
+        String locationTypeString = configuration.getString("source_location", "");
+        if (!locationTypeString.isEmpty()) {
+            try {
+                LocationType locationType = LocationType.valueOf(locationTypeString.toUpperCase());
+                useEyeLocation = false;
+                useCastLocation = false;
+                useWandLocation = false;
+                switch (locationType) {
+                    case CAST:
+                        useCastLocation = true;
+                        break;
+                    case WAND:
+                        useWandLocation = true;
+                        break;
+                    case EYES:
+                        useEyeLocation = true;
+                        break;
+                    case FEET:
+                        break;
+                }
+            } catch (Exception ex) {
+                org.bukkit.Bukkit.getLogger().warning("Invalid location type specified in source_location parameter: " + locationTypeString);
+            }
+        }
 
         // This is a special-case here for CustomProjectile
         if (configuration.getBoolean("reorient", false)) {
