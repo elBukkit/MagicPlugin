@@ -13,6 +13,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
     private final Mage					owner;
     private UndoList                    head = null;
     private UndoList                    tail = null;
+    private int                         scheduledSize = 0;
     private int                         size = 0;
     private int                         maxSize    = 0;
 
@@ -49,6 +50,9 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         }
 
         addList.setUndoQueue(this);
+        if (addList.isScheduled()) {
+            scheduledSize++;
+        }
         size++;
         if (head == null) {
             head = addList;
@@ -68,7 +72,15 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         if (list == tail) {
             tail = list.getNext();
         }
+        if (list.isScheduled()) {
+            scheduledSize--;
+        }
         size--;
+    }
+
+    @Override
+    public boolean hasScheduled() {
+        return scheduledSize > 0;
     }
 
     @Override

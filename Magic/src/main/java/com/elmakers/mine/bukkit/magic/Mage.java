@@ -1025,7 +1025,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void tick() {
-        if (entityData != null) {
+        if (entityData != null && isValid()) {
             long now = System.currentTimeMillis();
             if (lastTick != 0) {
                 long tickInterval = entityData.getTickInterval();
@@ -2126,6 +2126,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public boolean isUnloading() {
         return unloading;
+    }
+
+    @Override
+    public boolean hasPending() {
+        if (undoQueue != null && undoQueue.hasScheduled()) return true;
+        if (pendingBatches.size() > 0) return true;
+
+        return false;
     }
 
     @Override
