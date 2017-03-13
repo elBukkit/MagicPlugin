@@ -23,6 +23,47 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.revapi</groupId>
+				<artifactId>revapi-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				<configuration>
+					<oldArtifacts>
+						<oldArtifact>com.elmakers.mine.bukkit:MagicAPI:6.0</oldArtifact>
+					</oldArtifacts>
+					<checkDependencies>false</checkDependencies>
+					<resolveProvidedDependencies>false</resolveProvidedDependencies>
+					<analysisConfigurationFiles>
+						<configurationFile>
+							<path>revapi.json</path>
+							<roots>
+								<root>base</root>
+								<root>6.9+</root>
+							</roots>
+						</configurationFile>
+					</analysisConfigurationFiles>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.revapi</groupId>
+						<artifactId>revapi-java</artifactId>
+						<version>0.13.2</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 	<repositories>
 		<repository>
 			<id>elMakers</id>
