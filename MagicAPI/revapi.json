@@ -37,7 +37,7 @@
                     "methodName": "retarget",
                     "parameterIndex": "0",
                     "elementKind": "parameter",
-                    "justification": ""
+                    "justification": "More fine-grained control over range, changed from int to double"
                 },
                 {
                     "code": "java.method.parameterTypeChanged",
@@ -50,7 +50,7 @@
                     "methodName": "retarget",
                     "parameterIndex": "0",
                     "elementKind": "parameter",
-                    "justification": ""
+                    "justification": "More fine-grained control over range, changed from int to double"
                 },
                 {
                     "code": "java.method.returnTypeChanged",
@@ -62,7 +62,7 @@
                     "classSimpleName": "SpellData",
                     "methodName": "getKey",
                     "elementKind": "method",
-                    "justification": ""
+                    "justification": "Use SpellKey instead of String keys for convenience"
                 },
                 {
                     "code": "java.method.numberOfParametersChanged",
@@ -72,7 +72,7 @@
                     "classSimpleName": "LoadEvent",
                     "methodName": "<init>",
                     "elementKind": "constructor",
-                    "justification": ""
+                    "justification": "LoadEvent needs a MageController, should only be instantiated by plugin"
                 },
                 {
                     "code": "java.method.removed",
@@ -81,7 +81,7 @@
                     "classSimpleName": "CastingCost",
                     "methodName": "getAmount",
                     "elementKind": "method",
-                    "justification": ""
+                    "justification": "Removed amount in favor of separate mana, xp methods"
                 },
                 {
                     "code": "java.method.removed",
@@ -90,7 +90,7 @@
                     "classSimpleName": "CastingCost",
                     "methodName": "getAmount",
                     "elementKind": "method",
-                    "justification": ""
+                    "justification": "Removed amount in favor of separate mana, xp methods"
                 },
                 {
                     "code": "java.method.returnTypeChanged",
@@ -102,7 +102,7 @@
                     "classSimpleName": "CastingCost",
                     "methodName": "getMana",
                     "elementKind": "method",
-                    "justification": ""
+                    "justification": "Mana is an integer, the float was carried over from the cover-all getAmount method"
                 },
                 {
                     "code": "java.method.removed",
@@ -111,7 +111,7 @@
                     "classSimpleName": "CastingCost",
                     "methodName": "getMaterial",
                     "elementKind": "method",
-                    "justification": ""
+                    "justification": "Encapsulate item costs"
                 },
                 {
                     "code": "java.method.removed",
@@ -120,7 +120,7 @@
                     "classSimpleName": "CastingCost",
                     "methodName": "hasCosts",
                     "elementKind": "method",
-                    "justification": ""
+                    "justification": "Simplify CostReducer interface"
                 },
                 {
                     "code": "java.method.returnTypeChanged",
@@ -132,7 +132,7 @@
                     "classSimpleName": "SpellTemplate",
                     "methodName": "getRange",
                     "elementKind": "method",
-                    "justification": ""
+                    "justification": "More fine-grained control over range, changed from int to double"
                 },
                 {
                     "code": "java.method.returnTypeChanged",
@@ -144,7 +144,7 @@
                     "classSimpleName": "Wand",
                     "methodName": "alphabetizeInventory",
                     "elementKind": "method",
-                    "justification": ""
+                    "justification": "Organizing and alphabetizing may fail"
                 },
                 {
                     "code": "java.method.returnTypeChanged",
@@ -156,7 +156,7 @@
                     "classSimpleName": "Wand",
                     "methodName": "organizeInventory",
                     "elementKind": "method",
-                    "justification": ""
+                    "justification": "Organizing and alphabetizing may fail"
                 },
                 {
                     "code": "java.method.returnTypeChanged",
@@ -168,7 +168,7 @@
                     "classSimpleName": "Wand",
                     "methodName": "playEffects",
                     "elementKind": "method",
-                    "justification": ""
+                    "justification": "Playing wand FX may fail if no effects are assigned to the given type"
                 }
             ]
         }
