@@ -31,6 +31,12 @@ public class SourceLocation {
 
         useCastLocation = configuration.getBoolean("use_cast_location", useCastLocation);
         useEyeLocation = configuration.getBoolean("use_eye_location", useEyeLocation);
+
+        if (configuration.getBoolean("use_foot_location", false)) {
+            useEyeLocation = false;
+            useCastLocation = false;
+            useWandLocation = false;
+        }
         useTargetLocation = configuration.getBoolean("use_target_location", true);
 
         // This is a special-case here for CustomProjectile
