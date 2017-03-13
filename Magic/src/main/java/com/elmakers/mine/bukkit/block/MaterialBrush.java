@@ -253,6 +253,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             isValid = false;
         }
         fillWithAir = true;
+        mode = BrushMode.MATERIAL;
     }
 
     public void enableCloning() {

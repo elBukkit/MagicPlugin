@@ -13,6 +13,7 @@
  - Add "replace_on_activate" wand property, for a wand that will change into a different wand when held
  - Wands will attempt to keep some inventory space free, to make organizing easier and to allow item pickup
  - Add SuperLaser spell (to Architect path)
+ - Fix engineering spell bug with erase brush when switching from a non-engineering wand, would fill with dirt
 
 ## 6.8
 
