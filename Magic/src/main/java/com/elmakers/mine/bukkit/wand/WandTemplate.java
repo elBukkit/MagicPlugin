@@ -166,7 +166,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
 
             Location source = null;
             if (player.shouldUseWandLocation()) {
-                source = wand == null ? mage.getWandLocation() : wand.getLocation();
+                source = wand == null ? mage.getCastLocation() : wand.getLocation();
             } else if (player.shouldUseEyeLocation()) {
                 source = mage.getEyeLocation();
             }

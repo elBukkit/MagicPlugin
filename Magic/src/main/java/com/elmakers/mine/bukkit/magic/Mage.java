@@ -1196,19 +1196,24 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public Location getWandLocation() {
-        Location wandLocation = getEyeLocation();
+    public Location getCastLocation() {
+        Location castLocation = getEyeLocation();
         if (activeWand != null && !offhandCast) {
-            wandLocation = activeWand.getLocation();
+            castLocation = activeWand.getLocation();
         } else if (offhandWand != null && offhandCast) {
-            wandLocation = offhandWand.getLocation();
+            castLocation = offhandWand.getLocation();
         } else if (DEFAULT_CAST_LOCATION == CastSourceLocation.MAINHAND) {
-            wandLocation = getOffsetLocation(wandLocation, false, DEFAULT_CAST_OFFSET);
+            castLocation = getOffsetLocation(castLocation, false, DEFAULT_CAST_OFFSET);
         } else if (DEFAULT_CAST_LOCATION == CastSourceLocation.OFFHAND) {
-            wandLocation = getOffsetLocation(wandLocation, true, DEFAULT_CAST_OFFSET);
+            castLocation = getOffsetLocation(castLocation, true, DEFAULT_CAST_OFFSET);
         }
 
-        return wandLocation;
+        return castLocation;
+    }
+
+    @Override
+    public Location getWandLocation() {
+        return getCastLocation();
     }
 
     public Location getOffsetLocation(Location baseLocation, boolean isInOffhand, Vector offset) {

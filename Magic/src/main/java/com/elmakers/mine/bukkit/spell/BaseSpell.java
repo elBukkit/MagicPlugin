@@ -563,6 +563,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return mage.getWandLocation();
     }
 
+    public Location getCastLocation()
+    {
+        if (this.location != null)
+        {
+            return location.clone();
+        }
+        return mage.getCastLocation();
+    }
+
     @Override
     public Location getEyeLocation()
     {
