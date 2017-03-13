@@ -36,6 +36,10 @@ public interface EffectPlayer {
     public boolean shouldUseBlockLocation();
     public Location getSourceLocation(CastContext context);
 
+    public boolean playsAtOrigin();
+    public boolean playsAtTarget();
+    public boolean playsAtAllTargets();
+
     public void start(Location origin, Location target);
     public void start(Entity origin, Entity target);
     public void start(Location origin, Entity originEntity, Location target, Entity targetEntity);
