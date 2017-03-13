@@ -2457,7 +2457,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 armor[entry.getKey()] = entry.getValue();
             }
             player.getInventory().setArmorContents(armor);
-            armorUpdated();
         }
         if (respawnInventory != null) {
             for (Map.Entry<Integer, ItemStack> entry : respawnInventory.entrySet()) {
@@ -2465,7 +2464,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         clearRespawnInventories();
-        armorUpdated();
+        controller.getPlugin().getServer().getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                armorUpdated();
+            }
+        }, 1);
     }
 
     public void addToRespawnInventory(int slot, ItemStack item) {

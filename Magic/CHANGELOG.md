@@ -14,6 +14,7 @@
  - Wands will attempt to keep some inventory space free, to make organizing easier and to allow item pickup
  - Add SuperLaser spell (to Architect path)
  - Fix engineering spell bug with erase brush when switching from a non-engineering wand, would fill with dirt
+ - Fix passive wand potion effects (like night vision goggles) not always restoring after death
 
 ## 6.8
 
