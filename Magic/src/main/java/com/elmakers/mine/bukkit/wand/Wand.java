@@ -49,7 +49,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -1725,7 +1724,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 			inactiveIcon = null;
 		}
 		inactiveIconDelay = wandConfig.getInt("icon_inactive_delay");
-
 		randomizeOnActivate = randomizeOnActivate && wandConfig.contains("randomize_icon");
 		if (randomizeOnActivate) {
 			setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
@@ -2146,6 +2144,20 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		List<String> lore = new ArrayList<>();
 
         if (description.length() > 0) {
+			if (randomizeOnActivate) {
+				String randomDescription = getMessage("randomized_lore");
+				if (randomDescription.length() > 0) {
+					InventoryUtils.wrapText(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN, randomDescription, MAX_LORE_LENGTH, lore);
+					return lore;
+				}
+			}
+			if (description.contains("$") && !description.contains("$path")) {
+				String newDescription = controller.getMessages().escape(description);
+				if (!newDescription.equals(description)) {
+					this.description = newDescription;
+					setProperty("description", description);
+				}
+			}
             if (description.contains("$path")) {
                 String pathName = "Unknown";
                 com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
@@ -2164,10 +2176,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
             } else {
 				InventoryUtils.wrapText(ChatColor.ITALIC + "" + ChatColor.GREEN, description, MAX_LORE_LENGTH, lore);
             }
-        }
-
-        if (randomizeOnActivate) {
-            return lore;
         }
 
 		if (!isUpgrade) {
@@ -3199,15 +3207,6 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	}
 
     protected void randomize() {
-        if (description.contains("$")) {
-            String newDescription = controller.getMessages().escape(description);
-            if (!newDescription.equals(description)) {
-                setDescription(newDescription);
-                updateLore();
-                updateName();
-            }
-        }
-
         if (template != null && template.length() > 0) {
             ConfigurationSection wandConfig = controller.getWandTemplateConfiguration(template);
             if (wandConfig != null && wandConfig.contains("icon")) {
@@ -4015,6 +4014,14 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 
         this.mage = mage;
         this.isInOffhand = offhand;
+
+		// Check for replacement template
+		String replacementTemplate = getProperty("replace_on_activate", "");
+		if (!replacementTemplate.isEmpty() && !replacementTemplate.equals(template)) {
+			playEffects("replace");
+			setTemplate(replacementTemplate);
+			loadProperties();
+		}
 
 		// Since these wands can't be opened we will just show them as open when held
 		// We have to delay this 1 tick so it happens after the Mage has accepted the Wand
