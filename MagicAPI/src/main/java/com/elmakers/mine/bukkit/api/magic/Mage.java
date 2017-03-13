@@ -265,15 +265,6 @@ public interface Mage extends CostReducer {
     GUIAction getActiveGUI();
 
     /**
-     * Get the Mage's "soul" wand. This represents all of the
-     * spells and other properties that are bound to the Mage itself,
-     * rather than to a specific wand.
-     *
-     * This wand never appears as an in-game item.
-     */
-    Wand getSoulWand();
-
-    /**
      * Get a bound wand. Bound wands are stored based on their template,
      * only one wand per template type is stored.
      */
@@ -486,4 +477,16 @@ public interface Mage extends CostReducer {
     boolean tryToOwn(Wand wand);
     boolean isReflected(double angle);
     boolean isBlocked(double angle);
+
+    /**
+     * This method is deprecated, soul wand functionality was never implemented.
+     *
+     * Get the Mage's "soul" wand. This represents all of the
+     * spells and other properties that are bound to the Mage itself,
+     * rather than to a specific wand.
+     *
+     * This wand never appears as an in-game item.
+     */
+    @Deprecated
+    Wand getSoulWand();
 }

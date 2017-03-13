@@ -17,7 +17,6 @@ public interface WandTemplate extends MagicProperties {
     String getCreator();
     WandTemplate getMigrateTemplate();
     String migrateIcon(String icon);
-    boolean isSoul();
     boolean isRestorable();
     Set<String> getCategories();
     ConfigurationSection getAttributes();
@@ -30,4 +29,6 @@ public interface WandTemplate extends MagicProperties {
     boolean playEffects(Mage mage, String key);
     @Deprecated
     boolean playEffects(Mage mage, String key, float scale);
+    @Deprecated
+    boolean isSoul();
 }

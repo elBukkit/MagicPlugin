@@ -33,7 +33,6 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     private String migrateTemplate;
     private String migrateIcon;
     private String icon;
-    private boolean soul;
     private boolean restorable;
     private Map<String, String> migrateIcons;
     private ConfigurationSection attributes;
@@ -52,7 +51,6 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         migrateIcon = node.getString("migrate_icon");
         restorable = node.getBoolean("restorable", true);
         icon = node.getString("icon");
-        soul = node.getBoolean("soul", false);
         attributes = node.getConfigurationSection("attributes");
         attributeSlot = node.getString("attribute_slot");
 
@@ -220,8 +218,9 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     }
     
     @Override
+    @Deprecated
     public boolean isSoul() {
-        return soul;
+        return false;
     }
     
     @Override

@@ -24,7 +24,6 @@ public class MageData {
     private Map<String, ItemStack> boundWands;
     private Map<Integer, ItemStack> respawnArmor;
     private Map<Integer, ItemStack> respawnInventory;
-    private Wand soulWand;
     private List<ItemStack> storedInventory;
     private Collection<SpellData> spellData;
     private BrushData brushData;
@@ -177,13 +176,6 @@ public class MageData {
         this.cooldownExpiration = cooldownExpiration;
     }
 
-    public Wand getSoulWand() {
-        return soulWand;
-    }
-
-    public void setSoulWand(Wand soulWand) {
-        this.soulWand = soulWand;
-    }
 
     public Float getStoredExperience() {
         return storedExperience;
@@ -215,5 +207,15 @@ public class MageData {
 
     public void setGaveWelcomeWand(boolean gaveWelcomeWand) {
         this.gaveWelcomeWand = gaveWelcomeWand;
+    }
+
+    @Deprecated
+    public Wand getSoulWand() {
+        return null;
+    }
+
+    @Deprecated
+    public void setSoulWand(Wand soulWand) {
+
     }
 }
