@@ -31,7 +31,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
-import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ColorHD;
@@ -66,7 +65,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-public class Wand extends BaseMagicProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
+public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int PLAYER_INVENTORY_SIZE = 36;
 	public final static int INVENTORY_ORGANIZE_BUFFER = 4;
@@ -869,8 +868,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 	
 	public void setTemplate(String templateName) {
 		this.template = templateName;
-		// TODO: Fix this ugliness.
-		setParent((com.elmakers.mine.bukkit.wand.WandTemplate)controller.getWandTemplate(templateName));
+		WandTemplate wandTemplate = controller.getWandTemplate(templateName);
+		if (wandTemplate instanceof WandTemplateProperties) {
+			setWandTemplate((WandTemplateProperties)wandTemplate);
+		}
 		setProperty("template", template);
 	}
 
