@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
@@ -22,9 +21,8 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-public class WandTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
+public class WandTemplate extends WandTemplateProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
     private final String key;
-    private static ConfigurationSection defaults = null;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private Set<String> tags;
     private @Nonnull Set<String> categories = ImmutableSet.of();
@@ -40,7 +38,6 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         super(controller);
-        ConfigurationUtils.addConfigurations(node, defaults, false);
         this.load(node);
         this.key = key;
 
@@ -55,14 +52,14 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         attributeSlot = node.getString("attribute_slot");
 
         // Remove some properties that should not transfer to wands
-        setProperty("creator", null);
-        setProperty("creator_id", null);
-        setProperty("migrate_to", null);
-        setProperty("migrate_icon", null);
-        setProperty("restorable", null);
-        setProperty("hidden", null);
-        setProperty("enabled", null);
-        setProperty("inherit", null);
+        clearProperty("creator");
+        clearProperty("creator_id");
+        clearProperty("migrate_to");
+        clearProperty("migrate_icon");
+        clearProperty("restorable");
+        clearProperty("hidden");
+        clearProperty("enabled");
+        clearProperty("inherit");
 
         ConfigurationSection migrateConfig = node.getConfigurationSection("migrate_icons");
         if (migrateConfig != null) {
@@ -71,7 +68,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             for (String migrateKey : keys) {
                 migrateIcons.put(migrateKey, migrateConfig.getString(migrateKey));
             }
-            setProperty("migrate_icons", null);
+            clearProperty("migrate_icons");
         }
         
         if (node.contains("effects")) {
@@ -89,20 +86,20 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
                     effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
                 }
             }
-            setProperty("effects", null);
+            clearProperty("effects");
         }
 
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
         if (tagList != null) {
             tags = new HashSet<>(tagList);
-            setProperty("tags", null);
+            clearProperty("tags");
         } else {
             tags = null;
         }
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(node, "categories");
         if (categoriesList != null) {
-            setProperty("categories", null);
+            clearProperty("categories");
             categories = ImmutableSet.copyOf(categoriesList);
         }
     }
