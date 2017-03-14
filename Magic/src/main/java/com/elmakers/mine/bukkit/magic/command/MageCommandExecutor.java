@@ -119,7 +119,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
 		} else if (args.length == 2) {
 			options.addAll(api.getPlayerNames());
 		} else if (args.length == 3) {
-			if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
+			if (args[0].equalsIgnoreCase("setdata") || args[0].equalsIgnoreCase("getdata")) {
                 Player player = DeprecatedUtils.getPlayer(args[1]);
                 if (player != null) {
                     Mage mage = api.getMage(player);
