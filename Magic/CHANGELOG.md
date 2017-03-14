@@ -17,6 +17,7 @@
  - Fix passive wand potion effects (like night vision goggles) not always restoring after death
  - Add sp_multiplier property to wands. Can be used for bonuses, or to turn off SP earn. 
  - Mana Talisman got a new icon and some buffs
+ - Fix some issues with NPC casting on custom environments (don't load NPCs as player data)
 
 ## 6.8
 

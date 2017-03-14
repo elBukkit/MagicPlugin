@@ -237,6 +237,7 @@ public class Targeting {
                 target.setWorld(ConfigurationUtils.overrideWorld(targetLocationWorldName, targetWorld, context.getController().canCreateWorlds()));
             }
         }
+        this.target = target;
         return target;
     }
 
