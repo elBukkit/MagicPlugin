@@ -1691,6 +1691,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public int removeItem(ItemStack itemStack, boolean allowVariants) {
+        if (!isPlayer()) return 0;
         Integer sp = Wand.getSP(itemStack);
         if (sp != null) {
             int currentSP = getSkillPoints();
@@ -1727,6 +1728,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean hasItem(ItemStack itemStack, boolean allowVariants) {
+        if (!isPlayer()) return false;
         Integer sp = Wand.getSP(itemStack);
         if (sp != null) {
             return getSkillPoints() >= sp;
