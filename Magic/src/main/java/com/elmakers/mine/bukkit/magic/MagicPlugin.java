@@ -50,7 +50,7 @@ import java.util.logging.Level;
 * This is the documentation for the MagicPlugin. If you are looking to
 * integrate with Magic (but not extend it), see the MagicAPI:
 * 
-* http://jenkins.elmakers.com/job/MagicAPI/doxygen/
+* http://jenkins.elmakers.com/job/MagicPlugin/doxygen/
 * 
 * Building against MagicPlugin directly is only necessary if you want
 * to extend Magic, such as adding a new Spell or EffectPlayer.
@@ -59,7 +59,7 @@ import java.util.logging.Level;
 * 
 * For issues, bugs, feature requests, spell ideas, use our issue tracker:
 * 
-* http://jira.elmakers.com/browse/MAGIC/
+* https://github.com/elBukkit/MagicPlugin/issues
 * 
 * \section start_sec Getting Started
 * 
