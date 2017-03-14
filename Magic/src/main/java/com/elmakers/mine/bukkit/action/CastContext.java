@@ -542,7 +542,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                     }
                 }
                 Location target = targetLocation;
-                if (target == null && player.playsAtTarget()) {
+                if (target == null) {
                     target = getTargetLocation();
                     if (player.shouldUseBlockLocation() && target != null) {
                         target = target.getBlock().getLocation();
