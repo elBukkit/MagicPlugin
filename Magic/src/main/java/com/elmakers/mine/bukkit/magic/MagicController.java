@@ -218,6 +218,7 @@ public class MagicController implements MageController {
             // Check for existing data file
             // For now we only do async loads for Players
             boolean isPlayer = (commandSender instanceof Player);
+            isPlayer = (isPlayer && !isNPC((Player)commandSender));
             if (savePlayerData && mageDataStore != null) {
                 if (asynchronousSaving && isPlayer) {
                     mage.setLoading(true);
