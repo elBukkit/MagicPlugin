@@ -496,10 +496,13 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			for (Mage mage : api.getController().getMages())
 			{
 				Entity mageEntity = mage.getEntity();
+				Location location = mage.getLocation();
 				String mageType = mageEntity == null ? "Non-Entity" : mageEntity.getType().name();
-				sender.sendMessage(ChatColor.AQUA + "Mage id " + ChatColor.YELLOW + mage.getId()
-						+ ChatColor.GRAY + " (" + mage.getName() + ") " + ChatColor.AQUA + " of type "
-						+ ChatColor.DARK_AQUA + mageType + ChatColor.AQUA);
+				sender.sendMessage(ChatColor.AQUA + "Mage " + ChatColor.YELLOW + mage.getId()
+						+ ChatColor.GRAY + " (" + mage.getName() + ")" + ChatColor.AQUA + " of type "
+						+ ChatColor.DARK_AQUA + mageType + ChatColor.AQUA
+						+ " is at " + ChatColor.BLUE + location.getWorld().getName() + " " + ChatColor.DARK_PURPLE
+						+ " " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
 			}
 			return true;
 		}
