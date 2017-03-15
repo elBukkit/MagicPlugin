@@ -43,6 +43,7 @@ add_examples:
      - left_click: cast
      - drop: toggle (or right_click: toggle, as you prefer)
      - mode: inventory
+     - swap: cycle_hotbar
  
 ## 6.1
 
