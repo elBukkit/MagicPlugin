@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -196,12 +197,7 @@ public class PlayerController implements Listener {
         boolean droppedWand = droppedMeta != null && activeMeta != null && activeItem.getItemMeta().equals(droppedItem.getItemMeta());
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
-            Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
-                @Override
-                public void run() {
-                    activeWand.performAction(activeWand.getDropAction());
-                }
-            });
+            Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new DropActionTask(activeWand));
             cancelEvent = true;
         } else if (activeWand != null) {
             if (droppedWand) {
