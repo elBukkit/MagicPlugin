@@ -149,6 +149,21 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             ConfigurationSection dataSection = saveFile.createSection("data");
             ConfigurationUtils.addConfigurations(dataSection, extraData);
         }
+
+        ConfigurationSection properties = mage.getProperties();
+        if (properties != null) {
+            ConfigurationSection propertiesSection = saveFile.createSection("properties");
+            ConfigurationUtils.addConfigurations(propertiesSection, properties);
+        }
+
+        Map<String, ConfigurationSection> classProperties = mage.getClassProperties();
+        if (classProperties != null) {
+            ConfigurationSection classesSection = saveFile.createSection("classes");
+            for (Map.Entry<String, ConfigurationSection> entry : classProperties.entrySet()) {
+                ConfigurationSection classSection = classesSection.createSection(entry.getKey());
+                ConfigurationUtils.addConfigurations(classSection, entry.getValue());
+            }
+        }
     }
 
     @Override
@@ -197,6 +212,20 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             }
             data.setBoundWands(boundWands);
         }
+
+        // Load properties
+        data.setProperties(saveFile.getConfigurationSection("properties"));
+
+        // Load classes
+        Map<String, ConfigurationSection> classProperties = new HashMap<>();
+        ConfigurationSection classes = saveFile.getConfigurationSection("classes");
+        if (classes != null) {
+            Set<String> classKeys = classes.getKeys(false);
+            for (String classKey : classKeys) {
+                classProperties.put(classKey, classes.getConfigurationSection(classKey));
+            }
+        }
+        data.setClassProperties(classProperties);
 
         // Load extra data
         data.setExtraData(saveFile.getConfigurationSection("data"));

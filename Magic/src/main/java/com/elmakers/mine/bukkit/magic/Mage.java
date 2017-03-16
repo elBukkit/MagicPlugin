@@ -86,6 +86,8 @@ import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.wand.Wand;
 
+import javax.annotation.Nonnull;
+
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
@@ -100,6 +102,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static double SNEAKING_CAST_OFFSET = -0.2;
 
     protected final String id;
+    private final MageProperties properties;
+    private final Map<String, MageClass> classes = new HashMap<>();
     protected ConfigurationSection data = new MemoryConfiguration();
     protected Map<String, SpellData> spellData = new HashMap<>();
     protected WeakReference<Player> _player;
@@ -178,6 +182,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         this.id = id;
         this.controller = controller;
         this.brush = new MaterialBrush(this, Material.DIRT, (byte) 0);
+        this.properties = new MageProperties(this);
         _player = new WeakReference<>(null);
         _entity = new WeakReference<>(null);
         _commandSender = new WeakReference<>(null);
@@ -769,6 +774,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
             this.data = data.getExtraData();
+            this.properties.load(data.getProperties());
+
+            this.classes.clear();
+            Map<String, ConfigurationSection> classProperties = data.getClassProperties();
+            for (Map.Entry<String, ConfigurationSection> entry : classProperties.entrySet()) {
+                MageClass newClass = new MageClass(this);
+                newClass.load(entry.getValue());
+                classes.put(entry.getKey(), newClass);
+            }
+
+            // TODO: Resolve class inheritance using MageClassTemplate structure
 
             cooldownExpiration = data.getCooldownExpiration();
             fallProtectionCount = data.getFallProtectionCount();
@@ -872,6 +888,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             data.setGaveWelcomeWand(gaveWelcomeWand);
             data.setExtraData(this.data);
+            data.setProperties(properties.getConfiguration());
+
+            Map<String, ConfigurationSection> classProperties = new HashMap<>();
+            for (Map.Entry<String, MageClass> entry : classes.entrySet()) {
+                classProperties.put(entry.getKey(), entry.getValue().getConfiguration());
+            }
+            data.setClassProperties(classProperties);
         } catch (Exception ex) {
             controller.getPlugin().getLogger().log(Level.WARNING, "Failed to save player data for " + playerName, ex);
             return false;
@@ -2906,6 +2929,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public float getSPMultiplier() {
         return spMultiplier;
+    }
+
+    @Override
+    public @Nonnull MageProperties getProperties() {
+        return properties;
     }
 }
 
