@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrushAction extends CompoundAction {
-    private List<MaterialBrush> brushes = new ArrayList<>();
+    private List<String> brushes = new ArrayList<>();
     private boolean sample = false;
 
     @Override
@@ -21,23 +21,21 @@ public class BrushAction extends CompoundAction {
         super.prepare(context, parameters);
         brushes.clear();
 
-        Mage mage = context.getMage();
-        Location location = context.getLocation();
         String materialKey = parameters.getString("brush", null);
         if (materialKey != null) {
-            addBrush(mage, location, materialKey);
+            addBrush(materialKey);
         }
         List<String> brushList = parameters.getStringList("brushes");
         if (brushList != null) {
             for (String brushKey : brushList) {
-                addBrush(mage, location, brushKey);
+                addBrush(brushKey);
             }
         }
         sample = parameters.getBoolean("sample", false);
     }
 
-    protected void addBrush(Mage mage, Location location, String brushKey) {
-        brushes.add(new MaterialBrush(mage, location, brushKey));
+    protected void addBrush(String brushKey) {
+        brushes.add(brushKey);
     }
 
     @Override
@@ -58,8 +56,8 @@ public class BrushAction extends CompoundAction {
         }
         else
         {
-            MaterialBrush brush = brushes.get(context.getRandom().nextInt(brushes.size()));
-            brush.clearCloneTarget();
+            String brushKey = brushes.get(context.getRandom().nextInt(brushes.size()));
+            MaterialBrush brush = new MaterialBrush(context.getMage(), context.getLocation(), brushKey);
             actionContext.setBrush(brush);
         }
         return startActions();
