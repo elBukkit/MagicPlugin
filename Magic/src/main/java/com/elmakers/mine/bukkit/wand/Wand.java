@@ -2421,10 +2421,10 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
 		if (isSpell(item)) {
 			Spell spell = mage.getSpell(getSpell(item));
 			if (spell != null) {
-				updateSpellItem(controller.getMessages(), item, spell, "", getActiveMage(), activeName ? this : null, activeBrush, false);
+				updateSpellName(controller.getMessages(), item, spell, activeName ? this : null, activeBrush);
 			}
 		} else if (isBrush(item)) {
-			updateBrushItem(controller.getMessages(), item, getBrush(item), activeName ? this : null);
+			updateBrushName(controller.getMessages(), item, getBrush(item), activeName ? this : null);
 		}
 	}
 
@@ -2432,14 +2432,18 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         updateSpellItem(messages, itemStack, spell, args, wand == null ? null : wand.getActiveMage(), wand, activeMaterial, isItem);
     }
 
-    public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, String activeMaterial, boolean isItem) {
-        String displayName;
+	public static void updateSpellName(Messages messages, ItemStack itemStack, SpellTemplate spell, Wand wand, String activeMaterial) {
+		String displayName;
 		if (wand != null && !wand.isQuickCast()) {
 			displayName = wand.getActiveWandName(spell);
 		} else {
 			displayName = getSpellDisplayName(messages, spell, MaterialBrush.parseMaterialKey(activeMaterial));
 		}
-        CompatibilityUtils.setDisplayName(itemStack, displayName);
+		CompatibilityUtils.setDisplayName(itemStack, displayName);
+	}
+
+	public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, String activeMaterial, boolean isItem) {
+        updateSpellName(messages, itemStack, spell, wand, activeMaterial);
 		List<String> lore = new ArrayList<>();
 		addSpellLore(messages, spell, lore, mage, wand);
 		if (isItem) {
@@ -2454,23 +2458,31 @@ public class Wand extends BaseMagicProperties implements CostReducer, com.elmake
         }
 	}
 
+	public static void updateBrushName(Messages messages, ItemStack itemStack, String materialKey, Wand wand) {
+		updateBrushName(messages, itemStack, MaterialBrush.parseMaterialKey(materialKey), wand);
+	}
+
+	public static void updateBrushName(Messages messages, ItemStack itemStack, MaterialBrush brush, Wand wand) {
+		String displayName;
+		if (wand != null) {
+			Spell activeSpell = wand.getActiveSpell();
+			if (activeSpell != null && activeSpell.usesBrush()) {
+				displayName = wand.getActiveWandName(brush);
+			} else {
+				displayName = ChatColor.RED + brush.getName(messages);
+			}
+		} else {
+			displayName = brush.getName(messages);
+		}
+		CompatibilityUtils.setDisplayName(itemStack, displayName);
+	}
+
     public static void updateBrushItem(Messages messages, ItemStack itemStack, String materialKey, Wand wand) {
         updateBrushItem(messages, itemStack, MaterialBrush.parseMaterialKey(materialKey), wand);
     }
 	
 	public static void updateBrushItem(Messages messages, ItemStack itemStack, MaterialBrush brush, Wand wand) {
-		String displayName;
-		if (wand != null) {
-            Spell activeSpell = wand.getActiveSpell();
-            if (activeSpell != null && activeSpell.usesBrush()) {
-                displayName = wand.getActiveWandName(brush);
-            } else {
-                displayName = ChatColor.RED + brush.getName(messages);
-            }
-        } else {
-            displayName = brush.getName(messages);
-        }
-        CompatibilityUtils.setDisplayName(itemStack, displayName);
+		updateBrushName(messages, itemStack, brush, wand);
         Object brushNode = CompatibilityUtils.createNode(itemStack, "brush");
         CompatibilityUtils.setMeta(brushNode, "key", brush.getKey());
 	}
