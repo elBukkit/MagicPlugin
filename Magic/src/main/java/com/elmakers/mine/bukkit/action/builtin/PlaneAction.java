@@ -1,28 +1,36 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class PlaneAction extends VolumeAction
 {
 	protected enum Axis { X, Y, Z };
 	protected Axis axis;
+	protected Axis brushAxis;
 
 	@Override
 	public void prepare(CastContext context, ConfigurationSection parameters) {
-		String axisType = parameters.getString("axis");
+		axis = parseAxis(parameters.getString("axis"), Axis.Y);
+		brushAxis = parseAxis(parameters.getString("brush_axis"), axis);
+
+		super.prepare(context, parameters);
+	}
+
+	protected Axis parseAxis(String axisType, Axis defaultAxis) {
 		if (axisType != null) {
 			if (axisType.equalsIgnoreCase("x")) {
-				axis = Axis.X;
+				return Axis.X;
 			} else if (axisType.equalsIgnoreCase("z")) {
-				axis = Axis.Z;
+				return Axis.Z;
 			} else {
-				axis = Axis.Y;
+				return Axis.Y;
 			}
-		} else {
-			axis = Axis.Y;
 		}
-		super.prepare(context, parameters);
+
+		return defaultAxis;
 	}
 
 	@Override
@@ -40,6 +48,29 @@ public class PlaneAction extends VolumeAction
 				break;
 		}
 		return super.calculateSize(context);
+	}
+
+	@Override
+	public void reset(CastContext context) {
+		super.reset(context);
+		MaterialBrush brush = context.getBrush();
+		Location targetLocation = context.getTargetLocation();
+		Location orientLocation = targetLocation.clone();
+		switch (brushAxis) {
+			case X:
+				orientLocation.setY(orientLocation.getY() + 1);
+				orientLocation.setZ(orientLocation.getZ() + 1);
+				break;
+			case Z:
+				orientLocation.setX(orientLocation.getX() + 1);
+				orientLocation.setY(orientLocation.getY() + 1);
+				break;
+			default:
+				orientLocation.setX(orientLocation.getX() + 1);
+				orientLocation.setZ(orientLocation.getZ() + 1);
+				break;
+		}
+		brush.setTarget(orientLocation, targetLocation);
 	}
 
 	@Override
