@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ColorHD;
@@ -10,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-public abstract class BaseMagicConfigurable extends InheritedMagicProperties {
+public abstract class BaseMagicConfigurable extends InheritedMagicProperties implements MagicConfigurable {
     protected final MagicPropertyType type;
 
     public BaseMagicConfigurable(MagicPropertyType type, MageController controller) {
@@ -32,9 +34,35 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties {
         dirty = true;
     }
 
-    public void configure(ConfigurationSection configuration) {
-        ConfigurationUtils.addConfigurations(this.configuration, configuration);
-        dirty = true;
+    protected void convertProperties(ConfigurationSection properties) {
+        Set<String> keys = properties.getKeys(true);
+        for (String key : keys) {
+            Object original = properties.get(key);
+            Object converted = convertProperty(original);
+            if (original != converted) {
+                properties.set(key, converted);
+            }
+        }
+    }
+
+    protected Object convertProperty(Object value) {
+        Object result = value;
+        boolean isTrue = value.equals("true");
+        boolean isFalse = value.equals("false");
+        if (isTrue || isFalse) {
+            result = Boolean.valueOf(isTrue);
+        } else {
+            try {
+                result = Double.valueOf(value instanceof Double?((Double)value).doubleValue():(value instanceof Float?(double)((Float)value).floatValue():Double.parseDouble(value.toString())));
+            } catch (Exception notADouble) {
+                try {
+                    result = Integer.valueOf(value instanceof Integer?((Integer)value).intValue():Integer.parseInt(value.toString()));
+                } catch (Exception notAnInteger) {
+                }
+            }
+        }
+
+        return result;
     }
 
     protected boolean upgradeProperty(String key, Object value) {
@@ -42,6 +70,7 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties {
     }
 
     protected boolean upgradeProperty(String key, Object value, boolean force) {
+        value = convertProperty(value);
         Object currentValue = getEffectiveConfiguration().get(key);
         if (currentValue == value) {
             return false;
@@ -215,8 +244,16 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties {
         return modified;
     }
 
-    public boolean upgrade(ConfigurationSection configuration) {
+    @Override
+    public void configure(@Nonnull ConfigurationSection configuration) {
+        convertProperties(configuration);
+        ConfigurationUtils.addConfigurations(this.configuration, configuration);
+        dirty = true;
+        updated();
+    }
 
+    @Override
+    public boolean upgrade(@Nonnull ConfigurationSection configuration) {
         boolean modified = false;
         Set<String> keys = configuration.getKeys(false);
         for (String key : keys) {
@@ -282,6 +319,21 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties {
         }
 
         dirty = dirty || modified;
+        if (modified) {
+            updated();
+        }
         return modified;
+    }
+
+    protected void updated() {
+
+    }
+
+    @Override
+    public boolean removeProperty(String key) {
+        if (!hasOwnProperty(key)) return false;
+        setProperty(key, null);
+        updated();
+        return true;
     }
 }

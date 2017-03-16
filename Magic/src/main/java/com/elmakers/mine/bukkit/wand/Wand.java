@@ -76,45 +76,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
 	private static int WAND_VERSION = 4;
-	private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
 
     private final static String[] EMPTY_PARAMETERS = new String[0];
-
-    public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
-            "active_spell", "active_brush",
-            "path", "template", "passive",
-            "mana", "mana_regeneration", "mana_max", "mana_max_boost",
-            "mana_regeneration_boost",
-            "mana_per_damage",
-            "bound", "soul", "has_uses", "uses", "upgrade", "indestructible",
-            "undroppable",
-            "consume_reduction", "cost_reduction", "cooldown_reduction",
-            "effect_bubbles", "effect_color",
-            "effect_particle", "effect_particle_count", "effect_particle_data",
-            "effect_particle_interval",
-            "effect_particle_min_velocity",
-            "effect_particle_radius", "effect_particle_offset",
-            "effect_sound", "effect_sound_interval",
-            "cast_spell", "cast_parameters", "cast_interval",
-            "cast_min_velocity", "cast_velocity_direction",
-            "hotbar_count", "hotbar",
-            "icon", "icon_inactive", "icon_inactive_delay", "mode",
-			"active_effects",
-            "brush_mode",
-            "keep", "locked", "quiet", "force", "rename",
-            "rename_description",
-            "power", "overrides",
-            "protection", "protection_physical", "protection_projectiles",
-            "protection_falling", "protection_fire", "protection_explosions",
-            "potion_effects",
-            "brushes", "brush_inventory", "spells", "spell_inventory",
-			"powered", "protected", "heroes",
-            "enchant_count", "max_enchant_count",
-            "quick_cast", "left_click", "right_click", "drop", "swap",
-			"block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
-			"unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
-			"sp_multiplier"
-    );
 
     private final static Random random = new Random();
 
@@ -1937,28 +1900,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + "(No Owner)");
 		}
 
+		super.describe(sender);
+
 		ConfigurationSection itemConfig = getConfiguration();
-		for (String key : PROPERTY_KEYS) {
-			Object value = itemConfig.get(key);
-			if (value != null) {
-				sender.sendMessage(key + ": " + describeProperty(value));
+		ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(template);
+		if (templateConfig != null) {
+			sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration:");
+			for (String key : PROPERTY_KEYS) {
+				Object value = templateConfig.get(key);
+				if (value != null && !itemConfig.contains(key)) {
+					sender.sendMessage(key + ": " + describeProperty(value));
+				}
 			}
 		}
-
-		ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(template);
-        if (templateConfig != null) {
-            sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration:");
-            for (String key : PROPERTY_KEYS) {
-                Object value = templateConfig.get(key);
-                if (value != null && !itemConfig.contains(key)) {
-                    sender.sendMessage(key + ": " + describeProperty(value));
-                }
-            }
-        }
-	}
-
-	public static String describeProperty(Object property) {
-    	return InventoryUtils.describeProperty(property, MAX_PROPERTY_DISPLAY_LENGTH);
 	}
 
     private static String getBrushDisplayName(Messages messages, MaterialBrush brush) {
@@ -2915,8 +2869,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             templateConfig.set("upgrade_icon", null);
 
 			configure(templateConfig);
-			loadProperties();
-			saveState();
 			return true;
 		}
 
@@ -2949,12 +2901,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		} else {
 			upgradeConfig.set("description", null);
 		}
-		boolean modified = upgrade(upgradeConfig);
-		if (modified) {
-			loadProperties();
-			saveState();
-		}
-		return modified;
+		return upgrade(upgradeConfig);
 	}
 
     public boolean isForcedUpgrade()
@@ -4240,33 +4187,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public boolean configure(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
 		configure(ConfigurationUtils.toConfigurationSection(convertedProperties));
-		loadProperties();
-        saveState();
-        updateName();
-        updateLore();
 		return true;
 	}
 
 	@Override
 	public boolean upgrade(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
-		upgrade(ConfigurationUtils.toConfigurationSection(convertedProperties));
-		loadProperties();
-        saveState();
-        updateName();
-        updateLore();
-		return true;
+		return upgrade(ConfigurationUtils.toConfigurationSection(convertedProperties));
 	}
 
 	@Override
-	public boolean removeProperty(String key) {
-        if (!hasOwnProperty(key)) return false;
-    	setProperty(key, null);
+	protected void updated() {
 		loadProperties();
 		saveState();
 		updateName();
 		updateLore();
-		return true;
 	}
 
 	@Override

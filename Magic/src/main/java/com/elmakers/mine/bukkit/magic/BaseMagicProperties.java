@@ -3,17 +3,22 @@ package com.elmakers.mine.bukkit.magic;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 public class BaseMagicProperties implements MagicProperties {
 
@@ -21,13 +26,50 @@ public class BaseMagicProperties implements MagicProperties {
     protected ConfigurationSection configuration = new MemoryConfiguration();
     protected boolean dirty = false;
 
-    protected BaseMagicProperties(MageController controller) {
+    private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
+    public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
+            "active_spell", "active_brush",
+            "path", "template", "passive",
+            "mana", "mana_regeneration", "mana_max", "mana_max_boost",
+            "mana_regeneration_boost",
+            "mana_per_damage",
+            "bound", "soul", "has_uses", "uses", "upgrade", "indestructible",
+            "undroppable",
+            "consume_reduction", "cost_reduction", "cooldown_reduction",
+            "effect_bubbles", "effect_color",
+            "effect_particle", "effect_particle_count", "effect_particle_data",
+            "effect_particle_interval",
+            "effect_particle_min_velocity",
+            "effect_particle_radius", "effect_particle_offset",
+            "effect_sound", "effect_sound_interval",
+            "cast_spell", "cast_parameters", "cast_interval",
+            "cast_min_velocity", "cast_velocity_direction",
+            "hotbar_count", "hotbar",
+            "icon", "icon_inactive", "icon_inactive_delay", "mode",
+            "active_effects",
+            "brush_mode",
+            "keep", "locked", "quiet", "force", "rename",
+            "rename_description",
+            "power", "overrides",
+            "protection", "protection_physical", "protection_projectiles",
+            "protection_falling", "protection_fire", "protection_explosions",
+            "potion_effects",
+            "brushes", "brush_inventory", "spells", "spell_inventory",
+            "powered", "protected", "heroes",
+            "enchant_count", "max_enchant_count",
+            "quick_cast", "left_click", "right_click", "drop", "swap",
+            "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
+            "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
+            "sp_multiplier"
+    );
+
+    protected BaseMagicProperties(@Nonnull MageController controller) {
         // Don't really like this, but Wand is very dependent on MagicController
         Preconditions.checkArgument(controller instanceof MagicController);
         this.controller = (MagicController)controller;
     }
 
-    public void load(ConfigurationSection configuration) {
+    public void load(@Nullable ConfigurationSection configuration) {
         this.configuration = ConfigurationUtils.cloneConfiguration(configuration);
         dirty = true;
     }
@@ -125,5 +167,20 @@ public class BaseMagicProperties implements MagicProperties {
 
     protected String getMessage(String messageKey, String defaultValue) {
         return controller.getMessages().get(messageKey, defaultValue);
+    }
+
+    public static String describeProperty(Object property) {
+        return InventoryUtils.describeProperty(property, MAX_PROPERTY_DISPLAY_LENGTH);
+    }
+
+    @Override
+    public void describe(CommandSender sender) {
+        ConfigurationSection itemConfig = getConfiguration();
+        for (String key : PROPERTY_KEYS) {
+            Object value = itemConfig.get(key);
+            if (value != null) {
+                sender.sendMessage(key + ": " + describeProperty(value));
+            }
+        }
     }
 }

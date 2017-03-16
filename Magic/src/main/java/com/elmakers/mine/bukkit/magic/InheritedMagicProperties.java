@@ -5,12 +5,14 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 
+import javax.annotation.Nonnull;
+
 public abstract class InheritedMagicProperties extends BaseMagicProperties {
 
     protected ConfigurationSection effectiveConfiguration = new MemoryConfiguration();
     protected boolean dirty = false;
 
-    protected InheritedMagicProperties(MageController controller) {
+    protected InheritedMagicProperties(@Nonnull MageController controller) {
         super(controller);
     }
 
@@ -27,7 +29,7 @@ public abstract class InheritedMagicProperties extends BaseMagicProperties {
         }
     }
 
-    protected abstract void addEffectiveConfiguration(ConfigurationSection effectiveConfiguration);
+    protected abstract void addEffectiveConfiguration(@Nonnull ConfigurationSection effectiveConfiguration);
 
     public void clear() {
         super.clear();
