@@ -23,6 +23,8 @@ public class VolumeAction extends CompoundAction
 	private static final int DEFAULT_RADIUS	= 2;
     protected boolean autoOrient;
 	protected boolean autoPitch;
+	protected float orientYawLock = 0;
+	protected float orientPitchLock = 0;
 	protected double radius;
 	protected double radiusSquared;
 	protected int spiralRadius;
@@ -80,6 +82,8 @@ public class VolumeAction extends CompoundAction
         thickness = parameters.getDouble("thickness", 0);
 		autoOrient = parameters.getBoolean("orient", false);
 		autoPitch = parameters.getBoolean("orient_pitch", autoOrient);
+		orientYawLock = (float)parameters.getDouble("orient_snap", 0);
+		orientPitchLock = (float)parameters.getDouble("orient_pitch_snap", orientYawLock);
 		centerProbability = (float)parameters.getDouble("probability", 1);
 		outerProbability = (float)parameters.getDouble("probability", 1);
 		centerProbability = (float)parameters.getDouble("center_probability", centerProbability);
@@ -320,10 +324,20 @@ public class VolumeAction extends CompoundAction
 				offset.setX(dx + xOffset);
 				offset.setY(dy);
 				offset.setZ(dz + zOffset);
-				float pitch = autoPitch ? location.getPitch() : 0;
+				float pitch = 0;
+				if (autoPitch) {
+					pitch = location.getPitch();
+					if (orientPitchLock > 0) {
+						pitch = orientPitchLock * Math.round(pitch / orientPitchLock);
+					}
+				}
 				Block originalBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
 				actionContext.setTargetSourceLocation(originalBlock.getRelative(-xOffset, 0, -zOffset).getLocation());
-				offset = rotate(location.getYaw(), pitch, offset.getX(), offset.getY(), offset.getZ());
+				float yaw = location.getYaw();
+				if (orientYawLock > 0) {
+					yaw = orientYawLock * Math.round(yaw / orientYawLock);
+				}
+				offset = rotate(yaw, pitch, offset.getX(), offset.getY(), offset.getZ());
 			} else {
 				offset.setX(dx);
 				offset.setY(dy);

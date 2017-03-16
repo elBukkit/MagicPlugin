@@ -2,6 +2,7 @@
 
 ## 7.0
 
+ - Reflect now snaps to even 45 degree angles
  - Add /mage configure, upgrade and describe commands for dealing with Mage data
 
 ## 6.9
