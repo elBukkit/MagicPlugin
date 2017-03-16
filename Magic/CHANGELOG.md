@@ -3,6 +3,7 @@
 ## 7.0
 
  - Reflect now snaps to even 45 degree angles
+ - Fix Laser level 2, level 3 - upgrade SuperLaser
  - Add /mage configure, upgrade and describe commands for dealing with Mage data
 
 ## 6.9

@@ -7,7 +7,7 @@ superlaser:
     worth: 450
     earns_sp: 8
     upgrade_required_path: architect
-    upgrade_required_casts: 50
+    upgrade_required_casts: 20
     actions:
         cast:
         - class: Line
@@ -41,7 +41,7 @@ superlaser:
              particleBase1: drip_lava
              particleBase2: smoke_normal
              iterations: 10
-             radius: 0.5
+             radius: 1.5
              grow: 0.2
              baseInterval: 5
              length: 16
@@ -62,7 +62,7 @@ superlaser:
         destructible: destructible
         transparent: air
         brush: air
-        radius: 0
+        radius: 1.5
         cooldown: 10000
         delay: 250
         repeat: 10
@@ -72,7 +72,7 @@ superlaser:
         mana: 200
 
 superlaser|2:
-    upgrade_required_casts: 50
+    upgrade_required_casts: 20
     parameters:
         destructible: destructible,destructible2,transparent
         repeat: 11

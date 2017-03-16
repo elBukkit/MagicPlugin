@@ -90,7 +90,7 @@ laser|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        radius: 0.5
+        radius: 1
         size: 1
         destructible: destructible,destructible2,transparent
         player_damage: 1
@@ -100,7 +100,7 @@ laser|2:
 laser|3:
     parameters:
         destructible: destructible,destructible2,destructible3,transparent
-        radius: 0.5
+        radius: 1
         size: 2
         player_damage: 1
         entity_damage: 3
