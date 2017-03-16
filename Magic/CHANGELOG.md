@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 7.0
+
+ - Add /mage configure, upgrade and describe commands for dealing with Mage data
+
 ## 6.9
 
  - Using "example: 6" in config.yml will restore previous default wand behavior

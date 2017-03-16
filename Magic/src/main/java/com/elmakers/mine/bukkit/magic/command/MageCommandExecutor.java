@@ -2,9 +2,12 @@ package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,7 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class MageCommandExecutor extends MagicMapExecutor {
+public class MageCommandExecutor extends MagicConfigurableExecutor {
 	public MageCommandExecutor(MagicAPI api) {
 		super(api);
 	}
@@ -101,6 +104,22 @@ public class MageCommandExecutor extends MagicMapExecutor {
             onMageUnbind(sender, player);
             return true;
         }
+        if (subCommand.equalsIgnoreCase("configure"))
+        {
+            onMageConfigure(sender, player, args2, false);
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("upgrade"))
+        {
+            onMageConfigure(sender, player, args2, true);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("describe"))
+        {
+            onMageDescribe(sender, player, args2);
+            return true;
+        }
 
 		sender.sendMessage("Unknown mage command: " + subCommand);
 		return true;
@@ -110,6 +129,9 @@ public class MageCommandExecutor extends MagicMapExecutor {
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<>();
 		if (args.length == 1) {
+            addIfPermissible(sender, options, "Magic.commands.mage.", "configure");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "describe");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "upgrade");
             addIfPermissible(sender, options, "Magic.commands.mage.", "getdata");
             addIfPermissible(sender, options, "Magic.commands.mage.", "setdata");
             addIfPermissible(sender, options, "Magic.commands.mage.", "check");
@@ -118,6 +140,11 @@ public class MageCommandExecutor extends MagicMapExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "unbind");
 		} else if (args.length == 2) {
 			options.addAll(api.getPlayerNames());
+            if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe") || args[0].equalsIgnoreCase("upgrade")) {
+                for (String key : BaseMagicConfigurable.PROPERTY_KEYS) {
+                    options.add(key);
+                }
+            }
 		} else if (args.length == 3) {
 			if (args[0].equalsIgnoreCase("setdata") || args[0].equalsIgnoreCase("getdata")) {
                 Player player = DeprecatedUtils.getPlayer(args[1]);
@@ -294,6 +321,32 @@ public class MageCommandExecutor extends MagicMapExecutor {
         if (sender != player) {
             sender.sendMessage(api.getMessages().getParameterized("wand.player_unboundall", "$name", player.getName()));
         }
+        return true;
+    }
+
+    public boolean onMageConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
+    {
+        Mage mage = api.getMage(player);
+        return onConfigure("mage", mage.getProperties(), sender, player, parameters, safe);
+    }
+
+    public boolean onMageDescribe(CommandSender sender, Player player, String[] parameters) {
+        // Force-save wand data so it is up to date
+        Mage mage = api.getMage(player);
+        MagicProperties mageProperties = mage.getProperties();
+
+        if (parameters.length == 0) {
+            sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage describe <property>" + ChatColor.BLUE + " for specific properties");
+            mageProperties.describe(sender);
+        } else {
+            Object property = mageProperties.getProperty(parameters[0]);
+            if (property == null) {
+                sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.RED + "(Not Set)");
+            } else {
+                sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(property));
+            }
+        }
+
         return true;
     }
 }

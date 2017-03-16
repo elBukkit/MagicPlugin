@@ -316,12 +316,36 @@ commands:
     permission: Magic.commands.mage
     usage: |
         Use /help mage [subcommand] for more information
+        /mage configure   Set mage properties
+        /mage describe    Show mage properties
+        /mage upgrade     Upgrade properties of a mage
         /mage setdata     Modify Mage data
         /mage getdata     Describe Mage data
         /mage check       Check player permissions
         /mage debug       Enable/disable debug for a player
         /mage reset       Reset all data for a Mage
         /mage unbind      Delete all of a mage's bound wands
+  "mage configure":
+    description: Configure mage properties
+    usage: |
+
+       /mage configure <property> [value]
+       /mage configure xp_max
+       /mage configure xp_max 500
+       /mage configure xp_regeneration 50
+    permission: Magic.commands.mage.configure
+  "mage describe":
+    description: List mage properties, which can be changed with /mage configure
+    permission: Magic.commands.mage.describe
+    usage: /mage describe
+  "mage upgrade":
+    description: Upgrade mage properties, won't decrease values
+    usage: |
+
+       /mage upgrade <property> <value>
+       /mage upgrade xp_max 500
+       /mage upgrade xp_regeneration 50
+    permission: Magic.commands.mage.upgrade
   "mage setdata":
     description: Configure Mage player data or spell cast counts
     permission: Magic.commands.mage.setdata
@@ -827,6 +851,18 @@ permissions:
     default: op
   Magic.commands.mage:
     description: Allows use of /mage commands
+    type: boolean
+    default: op
+  Magic.commands.mage.configure:
+    description: Player may configure Mage properties
+    type: boolean
+    default: op
+  Magic.commands.mage.upgrade:
+    description: Player may upgrade Mage properties
+    type: boolean
+    default: op
+  Magic.commands.mage.describe:
+    description: Player may check Mage properties
     type: boolean
     default: op
   Magic.commands.mage.getdata:

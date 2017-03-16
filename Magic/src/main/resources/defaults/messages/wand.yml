@@ -116,9 +116,11 @@ wand:
     player_unlocked: $name's wand has been unlocked
     unknown_template: Unknown wand name $name
     reconfigured: Wand reconfigured
+    not_reconfigured: Wand not reconfigured
     removed_property: Removed property $name
     no_property: Wand has no property $name
     player_reconfigured: $name's wand reconfigured
+    player_not_reconfigured: $name's wand not reconfigured
     filled: Your $wand now contains all of your spells
     player_filled: $name's wand filled
     renamed: Your wand has been renamed
