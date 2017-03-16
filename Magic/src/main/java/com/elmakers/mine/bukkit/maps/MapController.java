@@ -287,6 +287,18 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return getMapItem(name, mapView);
     }
 
+    @Override
+    @SuppressWarnings("deprecation")
+    public short getURLMapId(String world, String url, String name, int x, int y, int width, int height, Integer priority) {
+        MapView mapView = getURL(world, url, name, x, y, null, null, width, height, priority);
+        return mapView == null ? 0 : mapView.getId();
+    }
+
+    @Override
+    public short getURLMapId(String world, String url) {
+        return getURLMapId(world, url, null, 0, 0, 0, 0, null);
+    }
+
     @SuppressWarnings("deprecation")
     protected ItemStack getMapItem(String name, MapView mapView) {
         short id = 0;

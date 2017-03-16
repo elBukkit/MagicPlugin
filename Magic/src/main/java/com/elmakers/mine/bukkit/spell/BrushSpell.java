@@ -102,7 +102,7 @@ public abstract class BrushSpell extends BlockSpell {
             String materialKey = parameters.getString("brush", null);
             hasBrush = materialKey != null && !materialKey.isEmpty();
             if (materialKey != null && !materialKey.isEmpty()) {
-                brush = new MaterialBrush(materialKey);
+                brush = new MaterialBrush(controller, materialKey);
             }
         }
     }

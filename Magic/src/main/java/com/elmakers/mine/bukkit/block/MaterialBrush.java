@@ -77,6 +77,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     private Vector targetOffset = null;
     private String targetWorldName = null;
     private final Mage mage;
+    private final MageController controller;
     private int mapId = -1;
     private BufferedMapCanvas mapCanvas = null;
     private Material mapMaterialBase = Material.STAINED_CLAY;
@@ -89,11 +90,13 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public MaterialBrush(final Mage mage, final Material material, final  byte data) {
         super(material, data);
         this.mage = mage;
+        this.controller = mage != null ? mage.getController() : null;
     }
 
     public MaterialBrush(final Mage mage, final Location location, final String materialKey) {
         super(DEFAULT_MATERIAL, (byte)0);
         this.mage = mage;
+        this.controller = mage != null ? mage.getController() : null;
         update(materialKey);
         activate(location, materialKey);
     }
@@ -101,11 +104,17 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public MaterialBrush(final Mage mage, final Block block) {
         super(block);
         this.mage = mage;
+        this.controller = mage != null ? mage.getController() : null;
     }
 
     public MaterialBrush(final String materialKey) {
+        this(null, materialKey);
+    }
+
+    public MaterialBrush(final MageController controller, final String materialKey) {
         super(DEFAULT_MATERIAL, (byte)0);
         this.mage = null;
+        this.controller = controller;
         update(materialKey);
     }
 
@@ -630,9 +639,14 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 }
             }
             if (pieces.length > 2) {
-                try {
-                    mapId = Integer.parseInt(pieces[2]);
-                } catch (Exception ex) {
+                String mapKey = pieces[2];
+                if (controller != null && mapKey.startsWith("http")) {
+                    mapId = controller.getMaps().getURLMapId(Bukkit.getWorlds().get(0).getName(), pieces[2]);
+                } else {
+                    try {
+                        mapId = Integer.parseInt(mapKey);
+                    } catch (Exception ex) {
+                    }
                 }
             }
             enableMap(size);
