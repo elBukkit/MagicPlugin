@@ -961,8 +961,12 @@ permissions:
     default: false
     type: boolean
   Magic.craft:
-    description: The wands a player may craft
+    description: The wands and items a player may craft
     type: list
+  Magic.craft.*:
+    description: A player may craft any item
+    type: boolean
+    default: true
   Magic.cast:
     description: The spells a player may cast
     type: list
