@@ -2,6 +2,7 @@
 
 ## 6.9
 
+ - Using "example: 6" in config.yml will restore previous default wand behavior
  - Moved lightsabers back to the stars config only. Use "example: stars", or see MIGRATION.md
  - Fix Stash (maybe others) not working in chest mode
  - Remove creative mode switching wands to chest mode. Click on wand to cycle inventory pages, it's a little glitchy though.
@@ -18,6 +19,7 @@
  - Add sp_multiplier property to wands. Can be used for bonuses, or to turn off SP earn. 
  - Mana Talisman got a new icon and some buffs
  - Fix some issues with NPC casting on custom environments (don't load NPCs as player data)
+ - Fix enchantwand spell giving 30 levels instead of 1
 
 ## 6.8
 
