@@ -1,0 +1,13 @@
+defaults:
+  mode: inventory
+  left_click: cast
+  right_click: none
+  drop: toggle
+  swap: cycle_hotbar
+  bound: true
+  keep: true
+  invulnerable: true
+  immortal: true
+  track: true
+  undroppable: true
+  indestructible: true
