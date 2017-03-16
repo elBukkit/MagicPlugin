@@ -6,6 +6,8 @@ import javax.annotation.Nullable;
 import com.google.common.base.Optional;
 import org.bukkit.command.CommandSender;
 
+import java.util.Set;
+
 public interface MagicProperties {
     /**
      * Check to see if this property store contains a specific property.
@@ -51,4 +53,14 @@ public interface MagicProperties {
      * @param sender Where to print properties.
      */
     void describe(CommandSender sender);
+
+    /**
+     * Print all properties except those in a specific set.
+     *
+     * Useful for differentiating between inherited and non-inherited properties.
+     *
+     * @param sender Where to print properties.
+     * @param ignoreProperties A set of properties to ignore
+     */
+    void describe(CommandSender sender, @Nullable Set<String> ignoreProperties);
 }
