@@ -14,4 +14,6 @@ public interface MapController {
     boolean hasMap(short id);
     boolean remove(short id);
     void save();
+    short getURLMapId(String world, String url, String name, int x, int y, int width, int height, Integer priority);
+    short getURLMapId(String world, String url);
 }
