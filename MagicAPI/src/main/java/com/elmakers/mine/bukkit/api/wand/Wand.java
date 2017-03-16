@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.MagicProperties;
+import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
@@ -35,7 +35,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
  * via a tracked LostWand record, if the ItemStack can be found.
  *
  */
-public interface Wand extends CostReducer, MagicProperties {
+public interface Wand extends CostReducer, MagicConfigurable  {
     String getName();
     String getId();
     long getWorth();
