@@ -12,6 +12,7 @@ import java.util.TreeMap;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -37,7 +38,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 
-public class WandCommandExecutor extends MagicTabExecutor {
+public class WandCommandExecutor extends MagicConfigurableExecutor {
 	
 	public WandCommandExecutor(MagicAPI api) {
 		super(api);
@@ -172,14 +173,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				addIfPermissible(sender, options, subCommandPNode, "brush", true);
 			}
 			
-			if (subCommand.equalsIgnoreCase("configure")) {
-				for (String key : com.elmakers.mine.bukkit.wand.Wand.PROPERTY_KEYS) {
-					options.add(key);
-				}
-			}
-
-			if (subCommand.equalsIgnoreCase("describe")) {
-				for (String key : com.elmakers.mine.bukkit.wand.Wand.PROPERTY_KEYS) {
+			if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
+				for (String key : BaseMagicConfigurable.PROPERTY_KEYS) {
 					options.add(key);
 				}
 			}
@@ -584,7 +579,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
         } else if (api.isWand(itemInHand) || api.isUpgrade(itemInHand)) {
             Wand wand = api.getWand(itemInHand);
             if (parameters.length == 0) {
-            	sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/wand describe spells" + ChatColor.BLUE + " for specific properties");
+            	sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/wand describe <property>" + ChatColor.BLUE + " for specific properties");
 				wand.describe(sender);
             } else {
                 Object property = wand.getProperty(parameters[0]);
@@ -865,50 +860,12 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	
 	public boolean onWandConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
 	{
-		if (parameters.length < 1 || (safe && parameters.length < 2)) {
-			sender.sendMessage("Use: /wand configure <property> [value]");
-			sender.sendMessage("Properties: " + StringUtils.join(com.elmakers.mine.bukkit.wand.Wand.PROPERTY_KEYS, ", "));
-			return true;
-		}
-
 		Wand wand = checkWand(sender, player);
 		if (wand == null) {
 			return true;
 		}
-
-		Mage mage = api.getMage(player);
-		String value = "";
-		for (int i = 1; i < parameters.length; i++) {
-			if (i != 1) value = value + " ";
-			value = value + parameters[i];
-		}
-		if (value.isEmpty()) {
-			value = null;
-		} else if (value.equals("\"\"")) {
-			value = "";
-		}
 		wand.deactivate();
-		if (value == null) {
-			if (wand.removeProperty(parameters[0])) {
-				mage.sendMessage(api.getMessages().get("wand.removed_property").replace("$name", parameters[0]));
-			} else {
-				mage.sendMessage(api.getMessages().get("wand.no_property").replace("$name", parameters[0]));
-			}
-		} else {
-			Map<String, Object> node = new HashMap<>();
-			node.put(parameters[0], value);
-			if (safe) {
-				wand.upgrade(node);
-			} else {
-				wand.configure(node);
-			}
-			mage.sendMessage(api.getMessages().get("wand.reconfigured"));
-		}
-		mage.checkWand();
-		if (sender != player) {
-			sender.sendMessage(api.getMessages().getParameterized("wand.player_reconfigured", "$name", player.getName()));
-		}
-		return true;
+		return onConfigure("wand", wand, sender, player, parameters, safe);
 	}
 	
 	protected Wand checkWand(CommandSender sender, Player player)

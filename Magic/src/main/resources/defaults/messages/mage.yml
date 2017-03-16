@@ -1,0 +1,7 @@
+mage:
+    removed_property: Removed property $name
+    no_property: Mage has no property $name
+    player_reconfigured: $name mage data reconfigured
+    player_not_reconfigured: $name mage data not reconfigured
+    reconfigured: Mage reconfigured
+    not_reconfigured: Mage not reconfigured
