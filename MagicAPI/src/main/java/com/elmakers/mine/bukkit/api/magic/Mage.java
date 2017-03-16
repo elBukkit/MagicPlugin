@@ -31,6 +31,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -478,6 +479,7 @@ public interface Mage extends CostReducer {
     boolean isReflected(double angle);
     boolean isBlocked(double angle);
     float getSPMultiplier();
+    @Nonnull MagicConfigurable getProperties();
 
     /**
      * This method is deprecated, soul wand functionality was never implemented.

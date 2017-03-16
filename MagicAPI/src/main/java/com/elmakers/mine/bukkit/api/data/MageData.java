@@ -14,6 +14,8 @@ public class MageData {
     private String id;
     private String name;
     private ConfigurationSection data;
+    private ConfigurationSection properties;
+    private Map<String, ConfigurationSection> classProperties;
     private long lastCast;
     private Location lastDeathLocation;
     private Location location;
@@ -207,6 +209,22 @@ public class MageData {
 
     public void setGaveWelcomeWand(boolean gaveWelcomeWand) {
         this.gaveWelcomeWand = gaveWelcomeWand;
+    }
+
+    public ConfigurationSection getProperties() {
+        return properties;
+    }
+
+    public void setProperties(ConfigurationSection properties) {
+        this.properties = properties;
+    }
+
+    public Map<String, ConfigurationSection> getClassProperties() {
+        return classProperties;
+    }
+
+    public void setClassProperties(Map<String, ConfigurationSection> classProperties) {
+        this.classProperties = classProperties;
     }
 
     @Deprecated
