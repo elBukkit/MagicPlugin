@@ -16,7 +16,6 @@ enchantwand:
         cast:
         -  class: EnchantWand
     parameters:
-        levels: 30
         cooldown: 7200000
         loud: true
 
