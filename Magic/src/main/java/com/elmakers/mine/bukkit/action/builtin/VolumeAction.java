@@ -23,6 +23,7 @@ public class VolumeAction extends CompoundAction
 	private static final int DEFAULT_RADIUS	= 2;
     protected boolean autoOrient;
 	protected boolean autoPitch;
+	protected boolean reorient;
 	protected float orientYawLock = 0;
 	protected float orientPitchLock = 0;
 	protected double radius;
@@ -58,6 +59,8 @@ public class VolumeAction extends CompoundAction
 	private boolean centerZ;
 	private boolean replaceTarget;
 	private boolean appliedMultiplier;
+	private float pitch;
+	private float yaw;
 	
 	private Material replaceMaterial;
 
@@ -80,6 +83,7 @@ public class VolumeAction extends CompoundAction
 		centerX = parameters.getBoolean("center_x", true);
 		centerZ = parameters.getBoolean("center_z", true);
         thickness = parameters.getDouble("thickness", 0);
+		reorient = parameters.getBoolean("reorient", true);
 		autoOrient = parameters.getBoolean("orient", false);
 		autoPitch = parameters.getBoolean("orient_pitch", autoOrient);
 		orientYawLock = (float)parameters.getDouble("orient_snap", 0);
@@ -99,6 +103,25 @@ public class VolumeAction extends CompoundAction
 			}
  		} else {
 			volumeType = VolumeType.SPIRAL;
+		}
+
+		if (!reorient && autoOrient) {
+			updateOrient(context);
+		}
+	}
+
+	private void updateOrient(CastContext context) {
+		Location location = context.getLocation();
+		pitch = 0.0f;
+		if (autoPitch) {
+			pitch = location.getPitch();
+			if (orientPitchLock > 0) {
+				pitch = orientPitchLock * Math.round(pitch / orientPitchLock);
+			}
+		}
+		yaw = location.getYaw();
+		if (orientYawLock > 0) {
+			yaw = orientYawLock * Math.round(yaw / orientYawLock);
 		}
 	}
 
@@ -320,23 +343,14 @@ public class VolumeAction extends CompoundAction
 			Block block = context.getTargetBlock();
 			Vector offset = new Vector();
 			if (autoOrient) {
-				Location location = actionContext.getLocation();
+				if (reorient) {
+					updateOrient(actionContext);
+				}
 				offset.setX(dx + xOffset);
 				offset.setY(dy);
 				offset.setZ(dz + zOffset);
-				float pitch = 0;
-				if (autoPitch) {
-					pitch = location.getPitch();
-					if (orientPitchLock > 0) {
-						pitch = orientPitchLock * Math.round(pitch / orientPitchLock);
-					}
-				}
 				Block originalBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
 				actionContext.setTargetSourceLocation(originalBlock.getRelative(-xOffset, 0, -zOffset).getLocation());
-				float yaw = location.getYaw();
-				if (orientYawLock > 0) {
-					yaw = orientYawLock * Math.round(yaw / orientYawLock);
-				}
 				offset = rotate(yaw, pitch, offset.getX(), offset.getY(), offset.getZ());
 			} else {
 				offset.setX(dx);

@@ -35,6 +35,7 @@ tendril:
         delay: 50
         volume_type: yxz
         center_z: false
+        reorient: false
     costs:
         mana: 100
 
