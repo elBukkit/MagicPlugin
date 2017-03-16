@@ -8,6 +8,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -61,6 +62,11 @@ public class BaseMagicProperties implements MagicProperties {
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
             "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
             "sp_multiplier"
+    );
+
+    public final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
+            "owner", "owner_id", "version", "attributes", "attribute_slot",
+            "mana_timestamp"
     );
 
     protected BaseMagicProperties(@Nonnull MageController controller) {
@@ -174,13 +180,20 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Override
-    public void describe(CommandSender sender) {
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
         ConfigurationSection itemConfig = getConfiguration();
-        for (String key : PROPERTY_KEYS) {
+        Set<String> keys = itemConfig.getKeys(false);
+        for (String key : keys) {
             Object value = itemConfig.get(key);
-            if (value != null) {
-                sender.sendMessage(key + ": " + describeProperty(value));
+            if (value != null && (ignoreProperties == null || !ignoreProperties.contains(key))) {
+                String propertyColor = PROPERTY_KEYS.contains(key) ? ChatColor.DARK_AQUA.toString() : ChatColor.DARK_GREEN.toString();
+                sender.sendMessage(propertyColor + key + ChatColor.GRAY + ": " + ChatColor.WHITE + describeProperty(value));
             }
         }
+    }
+
+    @Override
+    public void describe(CommandSender sender) {
+        describe(sender, null);
     }
 }
