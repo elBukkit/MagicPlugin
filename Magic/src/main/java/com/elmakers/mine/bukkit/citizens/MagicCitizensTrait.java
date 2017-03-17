@@ -16,6 +16,7 @@ public class MagicCitizensTrait extends CitizensTrait {
     private String spellKey;
     private boolean npcCaster = false;
     private boolean targetPlayer = true;
+    private boolean messagePlayer = false;
     private YamlConfiguration parameters = null;
 
 	public MagicCitizensTrait() {
@@ -28,6 +29,7 @@ public class MagicCitizensTrait extends CitizensTrait {
         spellKey = data.getString("spell", null);
         npcCaster = data.getBoolean("caster", false);
         targetPlayer = data.getBoolean("target_player", true);
+        messagePlayer = data.getBoolean("message_player", false);
         String parameterString = data.getString("parameters", null);
         parameters = new YamlConfiguration();
         if (parameterString != null && !parameterString.isEmpty()) {
@@ -52,6 +54,7 @@ public class MagicCitizensTrait extends CitizensTrait {
         data.setString("spell", spellKey);
         data.setBoolean("caster", npcCaster);
         data.setBoolean("target_player", targetPlayer);
+        data.setBoolean("message_player", messagePlayer);
         String parameterString = parameters == null ? null : parameters.saveToString();
         data.setString("parameters", parameterString);
 	}
@@ -66,7 +69,9 @@ public class MagicCitizensTrait extends CitizensTrait {
         if (npcCaster) {
             if (event.getNPC().isSpawned()) {
                 entity = event.getNPC().getEntity();
-                sender = null;
+                if (!messagePlayer) {
+                    sender = null;
+                }
                 if (targetPlayer) {
                     config = new MemoryConfiguration();
                     ConfigurationUtils.addConfigurations(config, parameters);
@@ -85,10 +90,15 @@ public class MagicCitizensTrait extends CitizensTrait {
         String spellDescription = spellKey == null ? (ChatColor.RED + "(None)") : (ChatColor.LIGHT_PURPLE + spellKey);
         sender.sendMessage(ChatColor.DARK_PURPLE + "Spell: " + spellDescription);
         String casterDescription = npcCaster ? (ChatColor.GRAY + "NPC") : (ChatColor.LIGHT_PURPLE + "Player");
-        if (targetPlayer) {
-            casterDescription = casterDescription + ChatColor.DARK_GRAY + " (" + ChatColor.YELLOW + "Auto-target player" + ChatColor.DARK_GRAY + ")";
-        }
         sender.sendMessage(ChatColor.DARK_PURPLE + "Caster: " + casterDescription);
+        if (npcCaster) {
+            if (targetPlayer) {
+                sender.sendMessage(" " + ChatColor.YELLOW + "Will auto-target player");
+            }
+            if (messagePlayer) {
+                sender.sendMessage(" " + ChatColor.YELLOW + "Will relay cast messages to player");
+            }
+        }
         sender.sendMessage(ChatColor.DARK_PURPLE + "Parameters: ");
         describeParameters(sender);
     }
@@ -175,6 +185,22 @@ public class MagicCitizensTrait extends CitizensTrait {
             {
                 targetPlayer = true;
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Will auto-target the clicking player");
+            }
+            if (!npcCaster) {
+                sender.sendMessage(ChatColor.RED + "NOTE: " + ChatColor.YELLOW + "Has no effect unless you also set " + ChatColor.AQUA + "caster true");
+            }
+        }
+        else if (key.equalsIgnoreCase("message_player"))
+        {
+            if (value == null || !value.equalsIgnoreCase("true"))
+            {
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Will not relay messages to the clicking player");
+                messagePlayer = false;
+            }
+            else
+            {
+                messagePlayer = true;
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Will relay messages to the clicking player");
             }
             if (!npcCaster) {
                 sender.sendMessage(ChatColor.RED + "NOTE: " + ChatColor.YELLOW + "Has no effect unless you also set " + ChatColor.AQUA + "caster true");
