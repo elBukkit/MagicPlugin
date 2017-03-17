@@ -59,6 +59,7 @@ public interface Spell extends SpellTemplate {
     String getEffectParticle();
     Color getEffectColor();
     MaterialBrush getBrush();
+    boolean brushIsErase();
     boolean isCancellable();
     ConfigurationSection getWorkingParameters();
     void finish(CastContext context);
