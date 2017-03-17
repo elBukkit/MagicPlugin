@@ -351,7 +351,7 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     public boolean isSuperProtected(Mage mage) {
-        return !bypassProtection && mage.isSuperProtected();
+        return !bypassProtection && !bypassAll && mage.isSuperProtected();
     }
 
     protected double getMaxRange()

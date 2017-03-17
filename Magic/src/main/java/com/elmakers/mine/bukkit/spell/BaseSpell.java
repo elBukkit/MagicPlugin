@@ -109,7 +109,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public final static String[] BOOLEAN_PARAMETERS = {
         "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_protection",
-        "bypass_build", "bypass_break", "bypass_pvp", "target_npc", "ignore_blocks", "target_self"
+        "bypass", "bypass_build", "bypass_break", "bypass_pvp", "target_npc", "ignore_blocks", "target_self"
     };
 
     protected final static Set<String> booleanParameterMap = new HashSet<>(Arrays.asList(BOOLEAN_PARAMETERS));
@@ -196,6 +196,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassRegionPermission      = false;
     protected boolean castOnNoTarget              = true;
     protected boolean bypassDeactivate            = false;
+    protected boolean bypassAll                   = false;
     protected boolean quiet                       = false;
     protected boolean loud                        = false;
     protected boolean messageTargets              = true;
@@ -913,6 +914,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
             bypassProtection = parameters.getBoolean("bypass_protection", false);
             bypassProtection = parameters.getBoolean("bp", bypassProtection);
+            bypassAll = parameters.getBoolean("bypass", false);
             duration = parameters.getInt("duration", 0);
             totalDuration = parameters.getInt("total_duration", -1);
         }
@@ -1191,12 +1193,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean canCast(Location location) {
-        if (location == null) return true;
+        if (bypassAll) return true;
         if (!hasCastPermission(mage.getCommandSender())) return false;
         Entity entity = mage.getEntity();
         if (disguiseRestricted && entity != null && entity instanceof Player && controller.isDisguised(entity)) return false;
         if (glideRestricted && entity != null && entity instanceof LivingEntity && ((LivingEntity)entity).isGliding()) return false;
         if (glideExclusive && entity != null && entity instanceof LivingEntity && !((LivingEntity)entity).isGliding()) return false;
+
+        if (location == null) return true;
         Boolean regionPermission = bypassRegionPermission ? null : controller.getRegionCastPermission(mage.getPlayer(), this, location);
         if (regionPermission != null && regionPermission == true) return true;
         Boolean personalPermission = bypassRegionPermission ? null : controller.getPersonalCastPermission(mage.getPlayer(), this, location);
@@ -1241,7 +1245,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public boolean hasBreakPermission(Block block) {
         // Cast permissions bypass
-        if (bypassBreakRestriction) return true;
+        if (bypassBreakRestriction || bypassAll) return true;
         Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
         if (castPermission != null && castPermission == true) return true;
         if (castPermission != null && castPermission == false) return false;
@@ -1255,7 +1259,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public boolean hasBuildPermission(Block block) {
         // Cast permissions bypass
-        if (bypassBuildRestriction || bypassRegionPermission) return true;
+        if (bypassBuildRestriction || bypassRegionPermission || bypassAll) return true;
         Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
         if (castPermission != null && castPermission == true) return true;
         if (castPermission != null && castPermission == false) return false;
@@ -1510,6 +1514,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean canTarget(Entity entity) {
+        if (bypassAll) return true;
         if (!bypassPvpRestriction && entity instanceof Player)
         {
             Player magePlayer = mage.getPlayer();
@@ -1600,6 +1605,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
         bypassProtection = parameters.getBoolean("bypass_protection", false);
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
+        bypassAll = parameters.getBoolean("bypass", false);
         duration = parameters.getInt("duration", 0);
         totalDuration = parameters.getInt("total_duration", 0);
     }

@@ -6,6 +6,7 @@
  - Fix Laser level 2, level 3 - upgrade SuperLaser
  - Add /mage configure, upgrade and describe commands for dealing with Mage data
  - Add Projector spell (architect), just a bit of showing off
+ - Add "bypass" parameter to spells, to simply bypass all permission, build, pvp and other checks. Useful for NPC casting.
 
 ## 6.9
 
