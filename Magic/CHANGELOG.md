@@ -7,6 +7,7 @@
  - Add /mage configure, upgrade and describe commands for dealing with Mage data
  - Add Projector spell (architect), just a bit of showing off
  - Add "bypass" parameter to spells, to simply bypass all permission, build, pvp and other checks. Useful for NPC casting.
+ - Improvements to /mtrait parameters command, add "target_player" option to turn off auto-targeting the clicker
 
 ## 6.9
 

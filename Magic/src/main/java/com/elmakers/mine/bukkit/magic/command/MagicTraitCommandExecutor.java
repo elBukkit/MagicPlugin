@@ -133,7 +133,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         {
             options.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         }
-        else if (lastParameter.equalsIgnoreCase("caster") || lastParameter.equalsIgnoreCase("invisible"))
+        else if (lastParameter.equalsIgnoreCase("caster") || lastParameter.equalsIgnoreCase("invisible") || lastParameter.equalsIgnoreCase("target_player"))
         {
             options.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         }
@@ -142,6 +142,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
             options.add("spell");
             options.add("parameter");
             options.add("caster");
+            options.add("target_player");
             options.add("cost");
             options.add("permission");
             options.add("invisible");
