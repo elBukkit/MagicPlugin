@@ -364,7 +364,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return idMap.containsKey(id);
     }
 
-    private URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
+    public URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
         String key = URLMap.getKey(world, url, x, y, width, height);
         URLMap map = idMap.get(mapId);
         if (map != null) {
@@ -425,7 +425,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return plugin;
     }
 
-    protected File getCacheFolder() {
+    public File getCacheFolder() {
         return cacheFolder;
     }
 

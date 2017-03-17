@@ -124,6 +124,11 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -364,8 +369,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                         }
                         else
                         {
-                            @SuppressWarnings("deprecation")
-                            String cacheFileName = URLEncoder.encode(url);
+                            String cacheFileName = URLEncoder.encode(url, "UTF-8");
                             File cacheFile = cacheFolder != null ? new File(cacheFolder, cacheFileName) : null;
                             if (cacheFile != null) {
                                 if (cacheFile.exists()) {

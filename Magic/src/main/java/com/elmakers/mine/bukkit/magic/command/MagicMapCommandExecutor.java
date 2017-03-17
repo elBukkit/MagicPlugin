@@ -18,9 +18,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.InflaterInputStream;
 
 public class MagicMapCommandExecutor extends MagicMapExecutor {
@@ -38,7 +44,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
 
         if (args.length == 0)
 		{
-            sender.sendMessage("Usage: mmap [list|give|load|import|player|fix]");
+            sender.sendMessage("Usage: mmap [list|give|load|import|player|fix|restore]");
 			return true;
 		}
 
@@ -177,6 +183,19 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
                 }
             }
             onMapFix(sender, world, limit);
+        }
+        else if (subCommand.equalsIgnoreCase("restore"))
+        {
+            int startingId = 1;
+            if (args.length > 1)
+            {
+                try {
+                    startingId = Integer.parseInt(args[1]);
+                } catch (Exception ex) {
+
+                }
+            }
+            onMapRestore(sender, world, startingId);
         }
         else if (subCommand.equalsIgnoreCase("load"))
         {
@@ -367,6 +386,95 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         if (notFixed > 0) {
             sender.sendMessage(ChatColor.RED + "There are still " + ChatColor.DARK_RED + notFixed + ChatColor.RED + " maps disabled, you may want to try running this command again.");
         }
+    }
+
+    protected void onMapRestore(CommandSender sender, World world, int mapId)
+    {
+        final boolean backwards = mapId > 1;
+        String direction = ChatColor.YELLOW + " " + (backwards ? "moving backward" : "moving forward");
+        sender.sendMessage(ChatColor.AQUA + "Restoring maps, starting at id " + ChatColor.DARK_AQUA + mapId + direction);
+
+        // Getting dirty now!
+        MapController apiController = api.getController().getMaps();
+        com.elmakers.mine.bukkit.maps.MapController mapController = (com.elmakers.mine.bukkit.maps.MapController)apiController;
+        List<URLMap> maps = mapController.getAll();
+        Set<String> urls = new HashSet<>();
+        Set<Integer> ids = new HashSet<>();
+        int maxId = 0;
+        final String skinURL = "http://skins.minecraft.net/MinecraftSkins/";
+        final String alternateSkinURL = "http://s3.amazonaws.com/MinecraftSkins/";
+        for (URLMap map : maps) {
+            maxId = Math.max(maxId, map.getId());
+            if (map.getURL().startsWith(skinURL) && map.getName() == null) {
+                map.setName("Photo of " + map.getURL().replace(skinURL, "").replace(".png", ""));
+                sender.sendMessage("Added name to " + map.getName());
+            } else if (map.getURL().startsWith(alternateSkinURL) && map.getName() == null) {
+                map.setName("Photo of " + map.getURL().replace(alternateSkinURL, "").replace(".png", ""));
+                sender.sendMessage("Added name to " + map.getName());
+            }
+            urls.add(map.getURL());
+            ids.add((int)map.getId());
+        }
+        if (!backwards) {
+            mapId = maxId;
+        }
+        int addedFiles = 0;
+        File[] cacheFiles = mapController.getCacheFolder().listFiles();
+        Arrays.sort(cacheFiles, new Comparator<File>(){
+            public int compare(File f1, File f2)
+            {
+                if (backwards) {
+                    return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
+                }
+                return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
+            } });
+        for (File cacheFile : cacheFiles) {
+            try {
+                while (mapId > 0 && ids.contains(mapId)) mapId--;
+                if (mapId <= 0) break;
+                if (cacheFile.getName().startsWith(".") || cacheFile.isDirectory()) continue;
+                String url = URLDecoder.decode(cacheFile.getName(), "UTF-8");
+                if (maps.contains(url)) {
+                    sender.sendMessage("Skipping " + url);
+                    continue;
+                }
+
+                String name = null;
+                int x = 0;
+                int y = 0;
+                int width = 0;
+                int height = 0;
+                Integer xOverlay = null;
+                Integer yOverlay = null;
+
+                if (url.startsWith(skinURL)) {
+                    name = "Photo of " + url.replace(skinURL, "").replace(".png", "");
+                    x = 8;
+                    y = 8;
+                    width = 8;
+                    height = 8;
+                    xOverlay = 40;
+                    yOverlay = 8;
+
+                    sender.sendMessage("Added " + mapId + " as player skin: " + name);
+                } else {
+                    sender.sendMessage("Added " + mapId + " as: " + url);
+                }
+                mapController.get(world.getName(), (short)mapId, url, name, x, y, xOverlay, yOverlay, width, height, null);
+
+                addedFiles++;
+                if (backwards) {
+                    mapId--;
+                } else {
+                    mapId++;
+                }
+            } catch (UnsupportedEncodingException ex) {
+                sender.sendMessage("Error decoding: " + cacheFile.getName());
+            }
+        }
+
+        mapController.save();
+        sender.sendMessage(ChatColor.AQUA + "Restored " + ChatColor.DARK_AQUA + addedFiles);
     }
 
     protected void onMapGive(CommandSender sender, Player recipient, short mapId)

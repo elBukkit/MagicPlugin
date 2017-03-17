@@ -419,6 +419,7 @@ commands:
         /mmap give       Give a player an image map
         /mmap import     Import image maps from Pixelator
         /mmap fix        Try to fix broken maps
+        /mmap restore    Try to restore maps when data file was lost
   "mmap load":
     description: Load a new map from a file or URL
     permission: Magic.commands.mmap.load
@@ -455,6 +456,10 @@ commands:
     description: Attempt to fix broken map iages
     permission: Magic.commands.mmap.fix
     usage: /mmap fix
+  "mmap restore":
+    description: Try to restore maps when data file was lost
+    permission: Magic.commands.mmap.restore
+    usage: /mmap restore
   mtrait:
     description: Manage Magic NPCs
     permission: Magic.commands.mtrait
@@ -923,6 +928,10 @@ permissions:
     default: op
   Magic.commands.mmap.fix:
     description: Player may use the /mmap fix command
+    type: boolean
+    default: op
+  Magic.commands.mmap.restore:
+    description: Player may use the /mmap restore command
     type: boolean
     default: op
   Magic.commands.mserver:
