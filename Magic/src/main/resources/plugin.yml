@@ -420,6 +420,8 @@ commands:
         /mmap import     Import image maps from Pixelator
         /mmap fix        Try to fix broken maps
         /mmap restore    Try to restore maps when data file was lost
+        /mmap unnamed    Give yourself the first unnamed map in the database
+        /mmap name       Name the map in your hand
   "mmap load":
     description: Load a new map from a file or URL
     permission: Magic.commands.mmap.load
@@ -460,6 +462,14 @@ commands:
     description: Try to restore maps when data file was lost
     permission: Magic.commands.mmap.restore
     usage: /mmap restore
+  "mmap unnamed":
+    description: Give yourself the first unnamed map
+    permission: Magic.commands.mmap.unnamed
+    usage: /mmap unnamed
+  "mmap name":
+    description: Name the map in your hand, easier to find with /mmap list
+    permission: Magic.commands.mmap.name
+    usage: /mmap name
   mtrait:
     description: Manage Magic NPCs
     permission: Magic.commands.mtrait
@@ -932,6 +942,14 @@ permissions:
     default: op
   Magic.commands.mmap.restore:
     description: Player may use the /mmap restore command
+    type: boolean
+    default: op
+  Magic.commands.mmap.unnamed:
+    description: Player may use the /mmap unnamed command
+    type: boolean
+    default: op
+  Magic.commands.mmap.name:
+    description: Player may use the /mmap name command
     type: boolean
     default: op
   Magic.commands.mserver:

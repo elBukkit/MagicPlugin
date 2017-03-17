@@ -364,6 +364,11 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return idMap.containsKey(id);
     }
 
+    @Override
+    public URLMap getMap(short id) {
+        return idMap.get(id);
+    }
+
     public URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
         String key = URLMap.getKey(world, url, x, y, width, height);
         URLMap map = idMap.get(mapId);

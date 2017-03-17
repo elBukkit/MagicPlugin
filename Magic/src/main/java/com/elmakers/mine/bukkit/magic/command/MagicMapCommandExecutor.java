@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -44,7 +45,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
 
         if (args.length == 0)
 		{
-            sender.sendMessage("Usage: mmap [list|give|load|import|player|fix|restore]");
+            sender.sendMessage("Usage: mmap [list|give|load|import|player|fix|restore|unnamed|name]");
 			return true;
 		}
 
@@ -163,7 +164,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         }
         else if (subCommand.equalsIgnoreCase("player"))
         {
-            if (args.length == 1) {
+            if (args.length <= 1) {
                 sender.sendMessage("Usage: mmap player <name>");
                 return true;
             }
@@ -183,6 +184,21 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
                 }
             }
             onMapFix(sender, world, limit);
+        }
+        else if (subCommand.equalsIgnoreCase("name"))
+        {
+            if (args.length <= 1) {
+                sender.sendMessage("Usage: mmap name <name>");
+            }
+            String mapName = args[1];
+            for (int i = 2; i < args.length; i++) {
+                mapName = mapName + " " + args[i];
+            }
+            onMapName(sender, mapName);
+        }
+        else if (subCommand.equalsIgnoreCase("unnamed"))
+        {
+            onMapUnnamed(sender);
         }
         else if (subCommand.equalsIgnoreCase("restore"))
         {
@@ -388,6 +404,51 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         }
     }
 
+    protected void onMapUnnamed(CommandSender sender)
+    {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("This command only works in-game");
+            return;
+        }
+        Player player = (Player)sender;
+        MapController mapController = api.getController().getMaps();
+        List<URLMap> maps = mapController.getAll();
+        for (URLMap map : maps) {
+            if (map.getName() == null) {
+                ItemStack newMap = new ItemStack(Material.MAP, 1);
+                newMap.setDurability(map.getId());
+                api.giveItemToPlayer(player, newMap);
+                sender.sendMessage("Found unnamed map id " + map.getId() + " with url " + ChatColor.AQUA + map.getURL());
+                return;
+            }
+        }
+        sender.sendMessage("There are no unnamed maps!");
+    }
+
+    protected void onMapName(CommandSender sender, String mapName)
+    {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("This command only works in-game");
+            return;
+        }
+        Player player = (Player)sender;
+        ItemStack currentMap = player.getInventory().getItemInMainHand();
+        if (currentMap == null || currentMap.getType() != Material.MAP) {
+            sender.sendMessage("You must be holding a map");
+            return;
+        }
+        MapController mapController = api.getController().getMaps();
+        URLMap map = mapController.getMap(currentMap.getDurability());
+        if (map == null) {
+            sender.sendMessage("Map id " + currentMap.getDurability() + " is not registered");
+            return;
+        }
+        map.setName(mapName);
+        mapController.save();
+        sender.sendMessage("Renamed map id " + map.getId() + " to " + map.getName());
+        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+    }
+
     protected void onMapRestore(CommandSender sender, World world, int mapId)
     {
         final boolean backwards = mapId > 1;
@@ -434,7 +495,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
                 if (mapId <= 0) break;
                 if (cacheFile.getName().startsWith(".") || cacheFile.isDirectory()) continue;
                 String url = URLDecoder.decode(cacheFile.getName(), "UTF-8");
-                if (maps.contains(url)) {
+                if (urls.contains(url)) {
                     sender.sendMessage("Skipping " + url);
                     continue;
                 }
@@ -447,8 +508,8 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
                 Integer xOverlay = null;
                 Integer yOverlay = null;
 
-                if (url.startsWith(skinURL)) {
-                    name = "Photo of " + url.replace(skinURL, "").replace(".png", "");
+                if (url.startsWith(skinURL) || url.startsWith(alternateSkinURL)) {
+                    name = "Photo of " + url.replace(skinURL, "").replace(alternateSkinURL, "").replace(".png", "");
                     x = 8;
                     y = 8;
                     width = 8;
@@ -514,6 +575,9 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             options.add("remove");
             options.add("player");
             options.add("fix");
+            options.add("restore");
+            options.add("name");
+            options.add("unnamed");
 		} else if (args.length == 2 && args[0].equals("give")) {
             options.addAll(api.getPlayerNames());
         }

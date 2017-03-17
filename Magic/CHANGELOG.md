@@ -11,6 +11,9 @@
    - Add "target_player" option to turn off auto-targeting the clicker
    - Add "message_player" option to relay cast messages to the clicker
    - /mtrait parameters now lets you edit individual parameters instead of having to replace them all
+ - Improvements to /mmap command:
+   - A backup file will be saved in case the imagemaps.yml file gets lost or corrupted
+   - Added /mmap name command to name existing maps, makes them easier to find with /mmap list <name>
  
  
 ### Player Data! 
