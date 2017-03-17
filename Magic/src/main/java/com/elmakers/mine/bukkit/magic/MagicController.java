@@ -2904,13 +2904,8 @@ public class MagicController implements MageController {
 		Location targetLocation = null;
 		if (mage == null) {
 			CommandSender mageController = (entity != null && entity instanceof Player) ? (Player)entity : sender;
-			if (sender != null) {
-                if (sender instanceof BlockCommandSender) {
-                    targetLocation = ((BlockCommandSender) sender).getBlock().getLocation();
-                } else if (entity != null && sender != entity) {
-                    // TODO: What is this special case meant to cover?
-                    targetLocation = entity.getLocation();
-                }
+			if (sender != null && sender instanceof BlockCommandSender) {
+                targetLocation = ((BlockCommandSender) sender).getBlock().getLocation();
             }
             if (mageController == null) {
                 mage = getMage(entity);
