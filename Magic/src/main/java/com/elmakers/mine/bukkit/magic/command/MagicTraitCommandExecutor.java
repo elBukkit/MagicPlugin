@@ -140,7 +140,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         else
         {
             options.add("spell");
-            options.add("parameters");
+            options.add("parameter");
             options.add("caster");
             options.add("cost");
             options.add("permission");

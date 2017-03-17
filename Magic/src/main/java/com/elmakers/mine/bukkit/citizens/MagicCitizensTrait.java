@@ -121,7 +121,7 @@ public class MagicCitizensTrait extends CitizensTrait {
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Set spell to: " + ChatColor.LIGHT_PURPLE + spellKey);
             }
         }
-        else if (key.equalsIgnoreCase("parameters"))
+        else if (key.equalsIgnoreCase("parameters") || key.equalsIgnoreCase("parameter"))
         {
             if (value == null)
             {
@@ -131,10 +131,16 @@ public class MagicCitizensTrait extends CitizensTrait {
             else
             {
                 String[] params = StringUtils.split(value, ' ');
-                parameters = new YamlConfiguration();
-                ConfigurationUtils.addParameters(params, parameters);
-                sender.sendMessage(ChatColor.DARK_PURPLE + "Set parameters to: ");
-                describeParameters(sender);
+                if (params.length == 1) {
+                    parameters.set(params[0], null);
+                    sender.sendMessage(ChatColor.DARK_PURPLE + "Cleared " + ChatColor.LIGHT_PURPLE + params[0] +
+                            ChatColor.DARK_PURPLE + ", parameters now: ");
+                    describeParameters(sender);
+                } else {
+                    ConfigurationUtils.addParameters(params, parameters);
+                    sender.sendMessage(ChatColor.DARK_PURPLE + "Set parameters to: ");
+                    describeParameters(sender);
+                }
             }
         }
         else if (key.equalsIgnoreCase("caster"))
