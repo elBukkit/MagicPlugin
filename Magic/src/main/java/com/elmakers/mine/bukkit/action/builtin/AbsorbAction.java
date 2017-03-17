@@ -44,6 +44,8 @@ public class AbsorbAction extends BaseSpellAction
 		// Add to the wand
 		MaterialAndData mat = new MaterialAndData(material, data);
 		if (!wand.addBrush(mat.getKey())) {
+			// Still try and activate it
+			wand.setActiveBrush(mat.getKey());
 			return SpellResult.NO_TARGET;
 		}
 		

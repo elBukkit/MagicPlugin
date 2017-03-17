@@ -1,7 +1,5 @@
 # TODO
 
-## 6.9
-
 ## 7.0
 
  - Refactor MageProperties to be contained rather than inherited?
