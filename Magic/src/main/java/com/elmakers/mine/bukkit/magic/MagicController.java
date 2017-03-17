@@ -192,16 +192,16 @@ public class MagicController implements MageController {
             commandSender = Bukkit.getConsoleSender();
         }
         if (!loaded) {
-            if (commandSender instanceof Player) {
+            if (entity instanceof Player) {
                 getLogger().warning("Player data request for " + mageId + " (" + ((Player)commandSender).getName() + ") failed, plugin not loaded yet");
             }
             return null;
         }
 
         if (!mages.containsKey(mageId)) {
-            if (commandSender instanceof Player && !((Player)commandSender).isOnline() && !isNPC((Player)commandSender))
+            if (entity instanceof Player && !((Player)entity).isOnline() && !isNPC(entity))
             {
-                getLogger().warning("Player data for " + mageId + " (" + ((Player)commandSender).getName() + ") loaded while offline!");
+                getLogger().warning("Player data for " + mageId + " (" + entity.getName() + ") loaded while offline!");
                 Thread.dumpStack();
             }
 
@@ -211,14 +211,14 @@ public class MagicController implements MageController {
             mage.setName(mageName);
             mage.setCommandSender(commandSender);
             mage.setEntity(entity);
-            if (commandSender instanceof Player) {
-                mage.setPlayer((Player) commandSender);
+            if (entity instanceof Player) {
+                mage.setPlayer((Player) entity);
             }
 
             // Check for existing data file
             // For now we only do async loads for Players
-            boolean isPlayer = (commandSender instanceof Player);
-            isPlayer = (isPlayer && !isNPC((Player)commandSender));
+            boolean isPlayer = (entity instanceof Player);
+            isPlayer = (isPlayer && !isNPC(entity));
             if (savePlayerData && mageDataStore != null) {
                 if (asynchronousSaving && isPlayer) {
                     mage.setLoading(true);
@@ -278,8 +278,8 @@ public class MagicController implements MageController {
             mage.setName(mageName);
             mage.setCommandSender(commandSender);
             mage.setEntity(entity);
-            if (commandSender instanceof Player) {
-                mage.setPlayer((Player) commandSender);
+            if (entity instanceof Player) {
+                mage.setPlayer((Player) entity);
             }
         }
         if (apiMage == null) {
@@ -2908,13 +2908,14 @@ public class MagicController implements MageController {
                 if (sender instanceof BlockCommandSender) {
                     targetLocation = ((BlockCommandSender) sender).getBlock().getLocation();
                 } else if (entity != null && sender != entity) {
+                    // TODO: What is this special case meant to cover?
                     targetLocation = entity.getLocation();
                 }
             }
             if (mageController == null) {
                 mage = getMage(entity);
             } else {
-                mage = getMage(mageController);
+                mage = getMage(entity, mageController);
             }
 		}
 
