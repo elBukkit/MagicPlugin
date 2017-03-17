@@ -23,6 +23,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     private final File cacheFolder;
     private final Plugin plugin;
 
+    private boolean loaded = false;
     private boolean disabled = false;
     private BukkitTask saveTask = null;
 
@@ -104,6 +105,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                     }
                 }
 
+                loaded = true;
                 if (needsUpdate) {
                     save();
                 }
@@ -153,6 +155,12 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                 }
                 File tempFile = new File(configurationFile.getAbsolutePath() + ".tmp");
                 configuration.save(tempFile);
+                if (configurationFile.exists()) {
+                    File backupFile = new File(configurationFile.getAbsolutePath() + ".bak");
+                    if (!backupFile.exists() || configurationFile.length() >= backupFile.length()) {
+                        configurationFile.renameTo(backupFile);
+                    }
+                }
                 tempFile.renameTo(configurationFile);
             } catch (Exception ex) {
                 warning("Failed to save file " + configurationFile.getAbsolutePath());
@@ -167,7 +175,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
      * This is called automatically as changes are made, but you can call it in onDisable to be safe.
      */
     public void save(boolean asynchronous) {
-        if (configurationFile == null || disabled) return;
+        if (configurationFile == null || disabled || !loaded) return;
         if (asynchronous && (saveTask != null || plugin == null)) return;
 
         Runnable runnable = new SaveRunnable(idMap.values());
