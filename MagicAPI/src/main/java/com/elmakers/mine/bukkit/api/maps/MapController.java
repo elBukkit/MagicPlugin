@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface MapController {
     List<URLMap> getAll();
+    URLMap getMap(short id);
     void loadMap(String world, short id, String url, String name, int x, int y, int width, int height, Integer priority);
     ItemStack getURLItem(String world, String url, String name, int x, int y, int width, int height, Integer priority);
     void forceReloadPlayerPortrait(String worldName, String playerName);
