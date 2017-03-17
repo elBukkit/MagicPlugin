@@ -4,13 +4,17 @@
 
  - Reflect now snaps to even 45 degree angles
  - Fix Laser level 2, level 3 - upgrade SuperLaser
- - Add /mage configure, upgrade and describe commands for dealing with Mage data
+ - Cleaned up trinketshop, added a few new skulls.
  - Add Projector spell (architect), just a bit of showing off
  - Add "bypass" parameter to spells, to simply bypass all permission, build, pvp and other checks. Useful for NPC casting.
  - Improvements to /mtrait command:
    - Add "target_player" option to turn off auto-targeting the clicker
    - Add "message_player" option to relay cast messages to the clicker
    - /mtrait parameters now lets you edit individual parameters instead of having to replace them all
+ 
+ 
+### Player Data! 
+ - Add /mage configure, upgrade and describe commands for dealing with Mage data
 
 ## 6.9
 

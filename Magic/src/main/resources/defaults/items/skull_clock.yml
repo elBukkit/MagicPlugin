@@ -1,4 +1,12 @@
 skull_clock:
-  item: "skull_item|http://textures.minecraft.net/texture/a82dc4c46d350d42d7372a2a118b9a6421f7eb2a38be3af6a7759259f6a17"
-  worth: 200
-  name: "&bClock"
+  worth: 200.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: SKULL_ITEM
+    damage: 3
+    meta:
+      ==: ItemMeta
+      meta-type: SKULL
+      display-name: §bClock
+      internal: H4sIAAAAAAAAAA2L0UrDMBRAr6JSg5/hayFplpQ8ijA2KavbpHN7kbS5odVkjjZltl9vng6HwyEABJ72P6Nz7/2v7RwmcLs28JxjZmqeydRgnqcLwWWqWM5SptjCCiUbriUBEqcL9qHD4RGSgH9h7HEgAHCTwH2l3YjQIt85XO1Y46u5PIePPXVlZPSrXPuWmtWLLCY168yNzSSCPgh35G/t6bwda1/RgrJL5Hfjl94sN33sc0HVcDyc7HYS19o3nf1kCiCBu432CA+l0/brFeAfAZtDG98AAAA=
+      skull-owner: Olaf_C

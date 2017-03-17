@@ -1,4 +1,12 @@
 skull_popcorn:
-  item: "skull_item|http://textures.minecraft.net/texture/7444c78cf6ba309a89e27cbab9338ae2c072bce455df4babbfa8ecd3ae7baf53"
-  worth: 200
-  name: "&bPopcorn"
+  worth: 200.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: SKULL_ITEM
+    damage: 3
+    meta:
+      ==: ItemMeta
+      meta-type: SKULL
+      display-name: §bPopcorn
+      internal: H4sIAAAAAAAAAA2L0WqDMBRA78YGTvoZfRWSamx9LBtFRdrNDqu+JfGKbomT1NDVr69Ph8PhuAAurM6/VqlP89f2Ch14ThpYC98PIsoiT4REeAHF1tuRrfTIlgke7PyIEnTBXaYRzdTj9Q2cCf8na/DqAsCTA68FVxZhRD9XGOdU6mI+DdP3majTwsVvYaI70sT7MLtHM98oK+9s4hemKj/t6uHLCl2QjNBx4Y/UB90cjmbpc0bHrtp0ZVWmti7TJH9nN6Fl35Y0AnDg5cg1wqrmsrtwM6CJPwAeVcQWFu0AAAA=
+      skull-owner: ZachWarnerHD
