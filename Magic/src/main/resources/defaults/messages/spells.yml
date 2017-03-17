@@ -1460,3 +1460,6 @@ spells:
     disposal:
       name: Disposal
       description: Permanently destroy unwanted items
+    projector:
+      name: Projector
+      description: It's-a Me!

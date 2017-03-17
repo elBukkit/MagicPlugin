@@ -1,0 +1,36 @@
+projector:
+  icon: diamond_axe:169
+  icon_disabled: diamond_hoe:169
+  icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
+  category: engineering
+  effects:
+      cast:
+      -  class: EffectSingle
+         sound: entity_player_levelup
+      -  class: EffectTrail
+         particle: block_crack
+  actions:
+    cast:
+    - class: Repeat
+      actions:
+      - class: Brush
+        actions:
+        - class: Plane
+          actions:
+          - class: ModifyBlock
+      - class: Delay
+  parameters:
+    target: block
+    range: 32
+    radius: 32
+    cooldown: 60000
+    undo: 100
+    delay: 1000
+    repeat: 30
+    axis: z
+    reorient: false
+    orient: true
+    orient_snap: 90
+    destructible: air,stained_clay
+    allow_max_range: true
+    brush: "map:64:http://media.giphy.com/media/jHI82Yz48dVjG/giphy.gif"

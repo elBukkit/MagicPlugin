@@ -5,6 +5,7 @@
  - Reflect now snaps to even 45 degree angles
  - Fix Laser level 2, level 3 - upgrade SuperLaser
  - Add /mage configure, upgrade and describe commands for dealing with Mage data
+ - Add Projector spell (architect), just a bit of showing off
 
 ## 6.9
 

@@ -339,6 +339,8 @@ architect:
     max_protection_explosions: 1
     max_mana_regeneration: 60
     max_mana: 400
+    extra_spells:
+      - projector
     spells:
       - absorb
       - superalter
