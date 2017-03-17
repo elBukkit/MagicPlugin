@@ -175,7 +175,15 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
      * This is called automatically as changes are made, but you can call it in onDisable to be safe.
      */
     public void save(boolean asynchronous) {
-        if (configurationFile == null || disabled || !loaded) return;
+        if (!loaded) {
+            if (plugin == null) {
+                Bukkit.getLogger().warning("[Magic] Attempted to save image map data before initialization");
+            } else {
+                plugin.getLogger().warning("Attempted to save image map data before initialization");
+            }
+            return;
+        }
+        if (configurationFile == null || disabled) return;
         if (asynchronous && (saveTask != null || plugin == null)) return;
 
         Runnable runnable = new SaveRunnable(idMap.values());
