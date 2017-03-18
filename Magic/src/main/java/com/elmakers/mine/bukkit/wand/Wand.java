@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ColorHD;
@@ -832,8 +833,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public void setTemplate(String templateName) {
 		this.template = templateName;
 		WandTemplate wandTemplate = controller.getWandTemplate(templateName);
-		if (wandTemplate instanceof WandTemplateProperties) {
-			setWandTemplate((WandTemplateProperties)wandTemplate);
+		if (wandTemplate instanceof BaseMagicProperties) {
+			setWandTemplate((BaseMagicProperties)wandTemplate);
 		}
 		setProperty("template", template);
 	}
