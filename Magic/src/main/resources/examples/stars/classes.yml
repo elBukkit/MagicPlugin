@@ -1,0 +1,10 @@
+jedi:
+  locked: true
+  path_start: youngling
+
+sith:
+  locked: true
+  path_start: acolyte
+
+soldier:
+  locked: false

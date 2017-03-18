@@ -1389,6 +1389,7 @@ public class MagicController implements MageController {
         loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
         disableDefaultWands = properties.getBoolean("disable_default_wands", disableDefaultWands);
         loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
+        loadDefaultClasses = properties.getBoolean("load_default_classes", loadDefaultClasses);
         loadDefaultPaths = properties.getBoolean("load_default_enchanting", loadDefaultPaths);
         loadDefaultPaths = properties.getBoolean("load_default_paths", loadDefaultPaths);
         loadDefaultMobs = properties.getBoolean("load_default_mobs", loadDefaultMobs);
@@ -1421,6 +1422,10 @@ public class MagicController implements MageController {
 
     protected ConfigurationSection loadCraftingConfiguration() throws InvalidConfigurationException, IOException {
         return loadConfigFile(CRAFTING_FILE, loadDefaultCrafting);
+    }
+
+    protected ConfigurationSection loadClassConfiguration() throws InvalidConfigurationException, IOException {
+        return loadConfigFile(CLASSES_FILE, loadDefaultClasses);
     }
 
     protected ConfigurationSection loadMobsConfiguration() throws InvalidConfigurationException, IOException {
@@ -1503,6 +1508,9 @@ public class MagicController implements MageController {
 
         loadSpells(loader.spells);
         getLogger().info("Loaded " + spells.size() + " spells");
+
+        loadMageClasses(loader.classes);
+        getLogger().info("Loaded " + mageClasses.size() + " classes");
 
         loadPaths(loader.paths);
         getLogger().info("Loaded " + getPathCount() + " progression paths");
@@ -3503,6 +3511,40 @@ public class MagicController implements MageController {
         
         return configuration;
     }
+
+    public void loadMageClasses(ConfigurationSection properties) {
+        mageClasses.clear();
+
+        Set<String> classKeys = properties.getKeys(false);
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
+        for (String key : classKeys)
+        {
+            loadMageClassTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
+        }
+
+        // Resolve parents, we don't check for an inherited "parent" property, so it's important
+        // to use the original un-inherited configs for parenting.
+        for (String key : classKeys)
+        {
+            MageClassTemplate template = mageClasses.get(key);
+            if (template != null) {
+                String parentKey = properties.getConfigurationSection(key).getString("parent");
+                if (parentKey != null) {
+                    MageClassTemplate parent = mageClasses.get(parentKey);
+                    if (parent == null) {
+                        getLogger().warning("Class '" + key + "' has unknown parent: " + parentKey);
+                    }
+                    template.setParent(parent);
+                }
+            }
+        }
+    }
+
+    public void loadMageClassTemplate(String key, ConfigurationSection classNode) {
+        if (classNode.getBoolean("enabled", true)) {
+            mageClasses.put(key, new MageClassTemplate(this, key, classNode));
+        }
+    }
     
     public void loadWandTemplates(ConfigurationSection properties) {
         wandTemplates.clear();
@@ -4911,6 +4953,7 @@ public class MagicController implements MageController {
     private final String                        ENCHANTING_FILE             = "enchanting";
     private final String                        PATHS_FILE                  = "paths";
     private final String                        CRAFTING_FILE             	= "crafting";
+    private final String                        CLASSES_FILE             	= "classes";
     private final String                        MESSAGES_FILE             	= "messages";
     private final String                        MATERIALS_FILE             	= "materials";
     private final String                        MOBS_FILE             	    = "mobs";
@@ -4926,8 +4969,9 @@ public class MagicController implements MageController {
     private boolean                             disableDefaultWands         = false;
     private boolean 							loadDefaultSpells			= true;
     private boolean 							loadDefaultWands			= true;
-    private boolean loadDefaultPaths = true;
+    private boolean                             loadDefaultPaths            = true;
     private boolean 							loadDefaultCrafting			= true;
+    private boolean                             loadDefaultClasses          = true;
     private boolean 							loadDefaultMobs 			= true;
     private boolean 							loadDefaultItems 			= true;
 
@@ -5011,6 +5055,7 @@ public class MagicController implements MageController {
     private WarpController						warpController					= null;
 
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();
+    private final Map<String, MageClassTemplate> mageClasses                = new HashMap<>();
     private final Map<String, SpellTemplate>    spells              		= new HashMap<>();
     private final Map<String, SpellTemplate>    spellAliases                = new HashMap<>();
     private final Map<String, SpellData>        templateDataMap             = new HashMap<>();

@@ -1,0 +1,13 @@
+mage:
+  locked: false
+
+battle_mage:
+  parent: mage
+  locked: false
+  limit_spells_to_path: true
+  path_start: battle
+
+wand_mage:
+  parent: mage
+  locked: false
+  path_start: beginner

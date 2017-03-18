@@ -20,6 +20,7 @@ public class ConfigurationLoadTask implements Runnable {
     protected ConfigurationSection crafting;
     protected ConfigurationSection mobs;
     protected ConfigurationSection items;
+    protected ConfigurationSection classes;
     protected Map<String, ConfigurationSection> spells;
 
     protected boolean success;
@@ -98,6 +99,16 @@ public class ConfigurationLoadTask implements Runnable {
             logger.log(Level.WARNING, "Error loading crafting.yml", ex);
             success = false;
         }
+
+
+        // Load classes
+        try {
+            classes = controller.loadClassConfiguration();
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Error loading classes.yml", ex);
+            success = false;
+        }
+
         // Load mobs
         try {
             mobs = controller.loadMobsConfiguration();
@@ -105,6 +116,7 @@ public class ConfigurationLoadTask implements Runnable {
             logger.log(Level.WARNING, "Error loading mobs.yml", ex);
             success = false;
         }
+
         // Load items
         try {
             items = controller.loadItemsConfiguration();

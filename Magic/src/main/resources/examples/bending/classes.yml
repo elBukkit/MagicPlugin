@@ -1,0 +1,22 @@
+bender:
+  locked: false
+
+waterbender:
+  parent: bender
+  locked: true
+  path_start: waterbending
+
+airbender:
+  parent: bender
+  locked: true
+  path_start: airbending
+
+firebender:
+  parent: bender
+  locked: true
+  path_start: firebending
+
+earthbender:
+  parent: bender
+  locked: true
+  path_start: earthbending
