@@ -1610,6 +1610,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         totalDuration = parameters.getInt("total_duration", 0);
     }
 
+    @Override
+    public boolean brushIsErase() {
+        return false;
+    }
 
     @Override
     public String getPermissionNode()
