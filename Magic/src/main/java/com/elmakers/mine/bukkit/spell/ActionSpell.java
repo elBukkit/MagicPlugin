@@ -254,12 +254,13 @@ public class ActionSpell extends BrushSpell
 
     @Override
     public boolean requiresBuildPermission() {
-        return requiresBuildPermission;
+        // If erase, requires break permission instead.
+        return requiresBuildPermission && !brushIsErase();
     }
 
     @Override
     public boolean requiresBreakPermission() {
-        return requiresBreakPermission;
+        return requiresBreakPermission || (requiresBuildPermission && brushIsErase());
     }
 
     @Override

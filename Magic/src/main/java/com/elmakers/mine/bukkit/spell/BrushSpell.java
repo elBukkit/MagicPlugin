@@ -19,8 +19,10 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 public abstract class BrushSpell extends BlockSpell {
 
     protected MaterialBrush brush;
+    protected String brushKey;
     protected boolean hasBrush = false;
     protected boolean usesBrush = true;
+    protected boolean brushIsErase = false;
     protected boolean usesBrushEffects = true;
 
     public final static String[] BRUSH_PARAMETERS = {
@@ -32,10 +34,12 @@ public abstract class BrushSpell extends BlockSpell {
     {
         super.processParameters(parameters);
 
-        String materialKey = parameters.getString("brush", null);
+        brushKey = parameters.getString("brush", null);
+        brushIsErase = brushKey != null && (brushKey.equalsIgnoreCase("erase") || brushKey.equalsIgnoreCase("air"));
 
-        if (materialKey != null && !materialKey.isEmpty()) {
-            brush = new MaterialBrush(mage, getLocation(), materialKey);
+        hasBrush = brushKey != null && !brushKey.isEmpty();
+        if (hasBrush) {
+            brush = new MaterialBrush(mage, getLocation(), brushKey);
 
             if (parameters.getBoolean("preserve_data", false)) {
                 brush.setData(null);
@@ -43,7 +47,7 @@ public abstract class BrushSpell extends BlockSpell {
 
             if (parameters.contains("brushmod")) {
                 brush.update(parameters.getString("brushmod"));
-                brush.update(materialKey);
+                brush.update(brushKey);
             }
 
             Double dmxValue = ConfigurationUtils.getDouble(parameters, "obx", null);
@@ -99,17 +103,23 @@ public abstract class BrushSpell extends BlockSpell {
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
         if (parameters != null)
         {
-            String materialKey = parameters.getString("brush", null);
-            hasBrush = materialKey != null && !materialKey.isEmpty();
-            if (materialKey != null && !materialKey.isEmpty()) {
-                brush = new MaterialBrush(controller, materialKey);
-            }
+            brushKey = parameters.getString("brush", null);
+            hasBrush = brushKey != null && !brushKey.isEmpty();
         }
+        else
+        {
+            brushKey = null;
+            hasBrush = false;
+        }
+        brushIsErase = brushKey != null && (brushKey.equalsIgnoreCase("erase") || brushKey.equalsIgnoreCase("air"));
     }
 
+    @Override
     public boolean brushIsErase() {
-        com.elmakers.mine.bukkit.api.block.MaterialBrush brush = getBrush();
-        return brush != null && brush.isErase();
+        if (mage != null && !hasBrush) {
+            return getBrush().isErase();
+        }
+        return brushIsErase;
     }
 
     @Override
@@ -125,6 +135,10 @@ public abstract class BrushSpell extends BlockSpell {
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush()
     {
+        if (brush == null && hasBrush)
+        {
+            brush = new MaterialBrush(controller, brushKey);
+        }
         if (brush != null)
         {
             return brush;
@@ -137,13 +151,13 @@ public abstract class BrushSpell extends BlockSpell {
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {
         if (!usesBrush || !usesBrushEffects) return null;
-        return brush != null ? brush : mage.getBrush();
+        return getBrush();
     }
 
     @Override
     public boolean hasBrushOverride()
     {
-        return brush != null || hasBrush;
+        return hasBrush;
     }
 
     @Override

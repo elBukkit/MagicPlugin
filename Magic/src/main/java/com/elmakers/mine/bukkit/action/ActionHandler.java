@@ -94,7 +94,6 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
     }
 
     public void initialize(Spell spell, ConfigurationSection baseParameters) {
-        MaterialBrush brush = spell.getBrush();
         for (ActionContext action : actions) {
             action.initialize(spell, baseParameters);
             usesBrush = usesBrush || action.getAction().usesBrush();
@@ -102,11 +101,6 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
 
             boolean actionRequiresBreakPermission = action.getAction().requiresBreakPermission();
             boolean actionRequiresBuildPermission = action.getAction().requiresBuildPermission();
-            if (usesBrush && brush != null && brush.isErase() && actionRequiresBuildPermission && !actionRequiresBreakPermission)
-            {
-                actionRequiresBreakPermission = true;
-                actionRequiresBuildPermission = false;
-            }
 
             requiresBuildPermission = requiresBuildPermission || actionRequiresBuildPermission;
             requiresBreakPermission = requiresBreakPermission || actionRequiresBreakPermission;
