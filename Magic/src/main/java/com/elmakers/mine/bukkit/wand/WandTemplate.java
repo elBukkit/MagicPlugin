@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
@@ -21,7 +22,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-public class WandTemplate extends WandTemplateProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
+public class WandTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
     private final String key;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private Set<String> tags;
@@ -233,5 +234,9 @@ public class WandTemplate extends WandTemplateProperties implements com.elmakers
     @Override
     public String getAttributeSlot() {
         return attributeSlot;
+    }
+
+    protected void clearProperty(String key) {
+        configuration.set(key, null);
     }
 }
