@@ -1,4 +1,12 @@
+base:
+  property_holders:
+    mana: subclass
+    spells: class
+    brushes: class
+    path: subclass
+
 mage:
+  inherit: base
   locked: false
 
 battle_mage:

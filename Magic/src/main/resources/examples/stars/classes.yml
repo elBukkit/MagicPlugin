@@ -1,10 +1,13 @@
 jedi:
+  inherit: base
   locked: true
   path_start: youngling
 
 sith:
+  inherit: base
   locked: true
   path_start: acolyte
 
 soldier:
+  inherit: base
   locked: false

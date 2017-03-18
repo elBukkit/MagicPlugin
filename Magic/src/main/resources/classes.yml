@@ -11,9 +11,8 @@
 # should they use a wand of that class. Or a class may be locked, meaning a player must
 # be added to a class (unlocking it for them) before they may use any wands of that class.
 #
-# Progression paths (paths.yml) can be rooted in a class, this is generally a one-to-one
-# relationship, meaning each class has one tree or path that defines its progression. Assigning
-# more than one progression path to a class may result in odd behavior.
+# A class may refer to a progression path (paths.yml) via path_start. This will allow the class to progress
+# as defined by that path.
 #
 # You can add new classes in this file or modify the builtin ones. Use load_default_classes: false
 # in config.yml to remove the default classes completely.

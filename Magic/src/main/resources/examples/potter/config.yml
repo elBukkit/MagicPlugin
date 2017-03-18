@@ -18,7 +18,7 @@ default_wand: potterwand
 load_default_spells: true
 disable_default_spells: true
 load_default_wands: false
-load_default_classes: false
+load_default_classes: true
 load_default_paths: false
 load_default_crafting: false
 

@@ -1,4 +1,5 @@
 bender:
+  inherit: base
   locked: false
 
 waterbender:

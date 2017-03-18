@@ -1,3 +1,4 @@
 wizard:
+  inherit: base
   locked: false
   path_start: year1
