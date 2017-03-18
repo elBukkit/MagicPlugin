@@ -1573,14 +1573,6 @@ public class MagicController implements MageController {
     }
 
     public void load() {
-        // Load URL Map Data
-        try {
-            maps.resetAll();
-            maps.loadConfiguration();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
         loadConfiguration();
         loadSpellData();
 
@@ -1594,6 +1586,14 @@ public class MagicController implements MageController {
                 // Load toggle-on-load blocks
                 getLogger().info("Loading automata data");
                 loadAutomata();
+
+                // Load URL Map Data
+                try {
+                    maps.resetAll();
+                    maps.loadConfiguration();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 
                 getLogger().info("Finished loading data.");
             }
