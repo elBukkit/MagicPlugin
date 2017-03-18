@@ -217,7 +217,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         {
             if (args.length == 1)
             {
-                sender.sendMessage("Usage: mmap load <file/url> [width] [height]");
+                sender.sendMessage("Usage: mmap load <file/url> [width] [height] [x] [y]");
                 return true;
             }
             int width = 0;
