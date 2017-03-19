@@ -2380,31 +2380,6 @@ wingardium:
 phase:
     hidden: true
     enabled: true
-    icon: diamond_axe:72
-    icon_disabled: diamond_hoe:72
-    category: staff
-    class: PhaseSpell
-    worth: 10
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: portal_travel
-           location: both
-           effectlib:
-             class: WarpEffect
-             particle: portal
-    parameters:
-        target: self
-        cooldown: 2000
-        worlds:
-            Hogwarts:
-               target: Hogwarts_muggle
-               scale: 1
-            Hogwarts_muggle:
-               target: Hogwarts
-               scale: 1
-    costs:
-        mana: 50
 
 revelio:
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
