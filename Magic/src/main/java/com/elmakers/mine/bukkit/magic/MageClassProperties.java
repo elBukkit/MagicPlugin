@@ -9,17 +9,21 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class MageClassProperties extends BaseMagicConfigurable {
-    private MageClassProperties parent;
-    private final MageProperties mage;
+    protected final MageClassTemplate template;
+    protected final MageProperties mage;
 
-    public MageClassProperties(@Nonnull MageProperties mage, @Nonnull MageController controller) {
-        super(MagicPropertyType.CLASS, controller);
-        parent = null;
+    private MageClassProperties parent;
+
+    public MageClassProperties(@Nonnull MageProperties mage, @Nonnull MageClassTemplate template, @Nonnull MageController controller) {
+        super(template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, controller);
+        this.template = template;
         this.mage = mage;
     }
 
     @Override
-    protected void addEffectiveConfiguration(@Nonnull ConfigurationSection effectiveConfiguration) {
+    protected void rebuildEffectiveConfiguration(@Nonnull ConfigurationSection effectiveConfiguration) {
+        ConfigurationSection templateConfiguration = template.getEffectiveConfiguration();
+        ConfigurationUtils.addConfigurations(effectiveConfiguration, templateConfiguration, false);
         if (parent != null) {
             ConfigurationSection parentConfiguration = parent.getEffectiveConfiguration();
             ConfigurationUtils.addConfigurations(effectiveConfiguration, parentConfiguration, false);

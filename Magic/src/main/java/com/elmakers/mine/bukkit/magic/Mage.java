@@ -87,6 +87,7 @@ import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
@@ -779,12 +780,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             this.classes.clear();
             Map<String, ConfigurationSection> classProperties = data.getClassProperties();
             for (Map.Entry<String, ConfigurationSection> entry : classProperties.entrySet()) {
-                MageClass newClass = new MageClass(this);
-                newClass.load(entry.getValue());
-                classes.put(entry.getKey(), newClass);
+                // ... what to do if missing templates? Don't want to lose data. Will need to think about this.
+                String mageClassKey = entry.getKey();
+                MageClassTemplate classTemplate = controller.getMageClass(mageClassKey);
+                if (classTemplate != null) {
+                    MageClass newClass = new MageClass(this, classTemplate);
+                    newClass.load(entry.getValue());
+                    classes.put(mageClassKey, newClass);
+                }
             }
 
-            // TODO: Resolve class inheritance using MageClassTemplate structure
+            // Link up parents
+            for (MageClass mageClass : classes.values()) {
+                MageClassTemplate template = mageClass.getTemplate();
+                MageClassTemplate parentTemplate = template.getParent();
+                if (parentTemplate != null) {
+                    // Having a sub-class means having the parent class.
+                    MageClass parentClass = getClass(parentTemplate.getKey(), true);
+                    mageClass.setParent(parentClass);
+                }
+            }
 
             cooldownExpiration = data.getCooldownExpiration();
             fallProtectionCount = data.getFallProtectionCount();
@@ -836,6 +851,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         finishLoad(data);
         return true;
+    }
+
+    public @Nullable  MageClass getClass(@Nonnull  String key) {
+        return getClass(key, false);
+    }
+
+    private @Nullable MageClass getClass(@Nonnull String key, boolean forceCreate) {
+        MageClass mageClass = classes.get(key);
+        if (mageClass == null) {
+            MageClassTemplate template = controller.getMageClass(key);
+            if (template != null && !template.isLocked()) {
+                mageClass = new MageClass(this, template);
+            }
+        }
+        return mageClass;
     }
 
     @Override

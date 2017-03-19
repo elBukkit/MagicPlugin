@@ -24,12 +24,12 @@ public abstract class InheritedMagicProperties extends BaseMagicProperties {
     protected void rebuildEffectiveConfiguration() {
         if (dirty) {
             effectiveConfiguration = ConfigurationUtils.cloneConfiguration(configuration);
-            addEffectiveConfiguration(effectiveConfiguration);
+            rebuildEffectiveConfiguration(effectiveConfiguration);
             dirty = false;
         }
     }
 
-    protected abstract void addEffectiveConfiguration(@Nonnull ConfigurationSection effectiveConfiguration);
+    protected abstract void rebuildEffectiveConfiguration(@Nonnull ConfigurationSection effectiveConfiguration);
 
     public void clear() {
         super.clear();

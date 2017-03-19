@@ -3540,6 +3540,10 @@ public class MagicController implements MageController {
         }
     }
 
+    public MageClassTemplate getMageClass(String key) {
+	    return mageClasses.get(key);
+    }
+
     public void loadMageClassTemplate(String key, ConfigurationSection classNode) {
         if (classNode.getBoolean("enabled", true)) {
             mageClasses.put(key, new MageClassTemplate(this, key, classNode));

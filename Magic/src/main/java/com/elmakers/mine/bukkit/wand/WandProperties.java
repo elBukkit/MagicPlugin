@@ -25,7 +25,7 @@ public class WandProperties extends BaseMagicConfigurable {
     }
 
     @Override
-    protected void addEffectiveConfiguration(ConfigurationSection effectiveConfiguration) {
+    protected void rebuildEffectiveConfiguration(ConfigurationSection effectiveConfiguration) {
         if (wandTemplate != null) {
             ConfigurationSection parentConfiguration = wandTemplate.getEffectiveConfiguration();
             ConfigurationUtils.addConfigurations(effectiveConfiguration, parentConfiguration, false);

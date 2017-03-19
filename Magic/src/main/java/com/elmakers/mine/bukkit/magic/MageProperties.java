@@ -14,7 +14,7 @@ public class MageProperties extends BaseMagicConfigurable {
     }
 
     @Override
-    protected void addEffectiveConfiguration(ConfigurationSection effectiveConfiguration) {
+    protected void rebuildEffectiveConfiguration(ConfigurationSection effectiveConfiguration) {
         // Not really doing anything here, this is the root of the tree.
     }
 
