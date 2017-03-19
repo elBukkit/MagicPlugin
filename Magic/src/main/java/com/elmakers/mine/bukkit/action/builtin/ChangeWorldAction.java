@@ -150,12 +150,8 @@ public class ChangeWorldAction extends BaseTeleportAction
         targetLocation.setYaw(playerLocation.getYaw());
         targetLocation.setPitch(playerLocation.getPitch());
 
-        if (!context.canCast(targetLocation)) {
-            return SpellResult.INSUFFICIENT_PERMISSION;
-        }
-
         setTargetWorldName(context, targetLocation.getWorld().getName());
-        context.teleport(entity, targetLocation, verticalSearchDistance);
+        teleport(context, entity, targetLocation);
 		
 		return SpellResult.CAST;
 	}
