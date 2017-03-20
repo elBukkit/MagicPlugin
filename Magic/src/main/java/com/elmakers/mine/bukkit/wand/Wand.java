@@ -288,6 +288,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (isWand || isUpgradeItem) {
         	ConfigurationSection wandConfig = itemToConfig(item, new MemoryConfiguration());
 
+        	// Check for template migration
+			WandTemplate wandTemplate = controller.getWandTemplate(wandConfig.getString("template"));
+			WandTemplate migrateTemplate = wandTemplate == null ? null : wandTemplate.getMigrateTemplate();
+			if (migrateTemplate != null) {
+				wandConfig.set("template", migrateTemplate.getKey());
+			}
+
+			// Check for wand data migration
 			int version = wandConfig.getInt("version", 0);
 			if (version < WAND_VERSION) {
 				migrate(version, wandConfig);
@@ -1670,12 +1678,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		description = wandConfig.getString("description", description);
 
 		WandTemplate wandTemplate = getTemplate();
-		WandTemplate migrateTemplate = wandTemplate == null ? null : wandTemplate.getMigrateTemplate();
-		if (migrateTemplate != null) {
-			template = migrateTemplate.getKey();
-			templateConfig = migrateTemplate.getConfiguration();
-			wandTemplate = migrateTemplate;
-		}
 
 		// Add vanilla attributes
 		InventoryUtils.applyAttributes(item, wandConfig.getConfigurationSection("attributes"), wandConfig.getString("attribute_slot"));

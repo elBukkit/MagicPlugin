@@ -14,9 +14,9 @@
  - Improvements to /mmap command:
    - A backup file will be saved in case the imagemaps.yml file gets lost or corrupted
    - Added /mmap name command to name existing maps, makes them easier to find with /mmap list <name>
+  - Fix wand template migrate_to, old wands should once again migrate to new
  
- 
-### Player Data! 
+### Player Data and Classes! 
  - Add /mage configure, upgrade and describe commands for dealing with Mage data
 
 ## 6.9
