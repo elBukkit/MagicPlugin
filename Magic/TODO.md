@@ -2,15 +2,20 @@
 
 ## 7.0
 
- - Refactor MageProperties to be contained rather than inherited?
- - Mage needs MageProperties. Maybe per-path? Per "class"? Not really sure yet.
+ - Replicate brush changed back to erase whe using Phase (not saving brush.. ?) .. could not reproduce
+ 
+ - Rename WandUpgradePath to Progression path, Deprecate old API classes (can't do this without breaking API changes?)
  - Wand templates will specify properties that come from the Mage versus item data. 
  - Need a default class, Mages have an active class
  - Handle migration for the above.
  - How to handle /wand commands used for Mage properties- just transfer to mage, probably?
- - Implement /mage configure, add, remove, describe
+ - Implement /mage add, remove
  - Option to filter spells that show on wand by what's available on its current path
  - Might need to add yet another category of spells to paths, those that are allowed but never appear in the spell shop
+
+ - Things to check when it's all ready:
+   - What happens if configs fail to load, or classes get messed up? Do we lose data?
+   - Should we lose data when a class is intentionally removed? (Hard to tell the difference)
 
 ## Heroes
 
@@ -23,6 +28,7 @@
  
  - Aliases don't work with levels 
  - Don't refund item costs when a spell goes through auto-undo
+ - Ability to specify map dimensions/offset in percentage
 
 ## Sabers
 
@@ -32,6 +38,7 @@
 
 ### Requests
 
+ - An attribute that lets spells level up more quickly
  - Add some sort of integration with Partec plugin
    https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/
  - Wand Power based on Strength potion effect

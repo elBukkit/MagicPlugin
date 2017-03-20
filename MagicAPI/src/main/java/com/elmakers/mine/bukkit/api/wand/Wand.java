@@ -69,8 +69,6 @@ public interface Wand extends CostReducer, MagicConfigurable  {
     boolean add(Wand other);
     boolean add(Wand other, Mage mage);
     boolean addItem(ItemStack item);
-    boolean configure(Map<String, Object> properties);
-    boolean upgrade(Map<String, Object> properties);
     boolean removeProperty(String key);
     boolean addBrush(String key);
     boolean addSpell(String key);
@@ -208,4 +206,27 @@ public interface Wand extends CostReducer, MagicConfigurable  {
     Location getLocation();
     Mage getMage();
     boolean hasInventory();
+
+
+    /**
+     * This method is deprecated, it just converts the Map to a ConfigurationSection.
+     *
+     * Use {@link MagicConfigurable#configure(ConfigurationSection)} instead.
+     *
+     * @param properties
+     * @return
+     */
+    @Deprecated
+    boolean configure(Map<String, Object> properties);
+
+    /**
+     * This method is deprecated, it just converts the Map to a ConfigurationSection.
+     *
+     * Use {@link MagicConfigurable#upgrade(ConfigurationSection)} instead.
+     *
+     * @param properties
+     * @return
+     */
+    @Deprecated
+    boolean upgrade(Map<String, Object> properties);
 }
