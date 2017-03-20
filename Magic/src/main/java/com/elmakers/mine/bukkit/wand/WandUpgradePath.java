@@ -508,6 +508,9 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         {
             wand.setIcon(icon);
         }
+        else if (parent != null) {
+            parent.checkMigration(wand);
+        }
     }
 
     @Override
