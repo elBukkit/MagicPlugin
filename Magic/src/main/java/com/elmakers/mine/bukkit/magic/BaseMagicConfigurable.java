@@ -174,7 +174,7 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties imp
         // Add materials
         @SuppressWarnings("unchecked")
         Collection<String> materials = value instanceof String ?
-                Arrays.asList(StringUtils.split((String)value))
+                Arrays.asList(StringUtils.split((String)value, ','))
                 : (List<String>)value;
         for (String materialKey : materials) {
             materialKey = StringUtils.split(materialKey, '@')[0].trim();
@@ -232,7 +232,7 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties imp
 
         @SuppressWarnings("unchecked")
         Collection<String> spells = value instanceof String ?
-                Arrays.asList(StringUtils.split((String)value))
+                Arrays.asList(StringUtils.split((String)value, ','))
                 : (List<String>)value;
         for (String spellKey : spells) {
             spellKey = StringUtils.split(spellKey,'@')[0].trim();
