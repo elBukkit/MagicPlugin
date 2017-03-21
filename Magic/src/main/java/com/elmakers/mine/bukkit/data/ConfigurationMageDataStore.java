@@ -164,6 +164,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 ConfigurationUtils.addConfigurations(classSection, entry.getValue());
             }
         }
+        saveFile.set("activeClass", mage.getActiveClass());
     }
 
     @Override
@@ -226,6 +227,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             }
         }
         data.setClassProperties(classProperties);
+        data.setActiveClass(saveFile.getString("activeClass"));
 
         // Load extra data
         data.setExtraData(saveFile.getConfigurationSection("data"));

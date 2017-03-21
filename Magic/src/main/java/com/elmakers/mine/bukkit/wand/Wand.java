@@ -3967,6 +3967,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				return false;
 			}
 			setMageClass(mageClass);
+			if (!offhand) {
+				mage.setActiveClass(mageClassKey);
+			}
 			// This double-load here is not really ideal.
 			// Seems hard to prevent without merging Wand construction and activation, though.
 			loadProperties();

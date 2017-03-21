@@ -117,6 +117,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected HashMap<String, MageSpell> spells = new HashMap<>();
     private Wand activeWand = null;
     private Wand offhandWand = null;
+    private MageClass activeClass = null;
     private boolean offhandCast = false;
     private Map<String, Wand> boundWands = new HashMap<>();
     private final Collection<Listener> quitListeners = new HashSet<>();
@@ -795,6 +796,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 assignParent(mageClass);
             }
 
+            // Load activeClass
+            setActiveClass(data.getActiveClass());
+
             cooldownExpiration = data.getCooldownExpiration();
             fallProtectionCount = data.getFallProtectionCount();
             fallProtection = data.getFallProtectionDuration();
@@ -848,8 +852,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public @Nullable MageClass getActiveClass() {
-        // TODO
-        return null;
+        return activeClass;
+    }
+
+    public void setActiveClass(String classKey) {
+        if (classKey == null) {
+            activeClass = null;
+        } else {
+            activeClass = classes.get(classKey);
+        }
     }
 
     @Override
@@ -937,6 +948,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 classProperties.put(entry.getKey(), entry.getValue().getConfiguration());
             }
             data.setClassProperties(classProperties);
+
+            String activeClassKey = activeClass == null ? null : activeClass.getTemplate().getKey();
+            data.setActiveClass(activeClassKey);
         } catch (Exception ex) {
             controller.getPlugin().getLogger().log(Level.WARNING, "Failed to save player data for " + playerName, ex);
             return false;
