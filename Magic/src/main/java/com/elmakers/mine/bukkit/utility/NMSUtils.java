@@ -1032,6 +1032,18 @@ public class NMSUtils {
         return getNode(stack, tag) != null;
     }
 
+    public static Object getTag(ItemStack itemStack) {
+        Object tag = null;
+        try {
+            Object mcItemStack = getHandle(itemStack);
+            if (mcItemStack == null) return null;
+            tag = class_ItemStack_tagField.get(mcItemStack);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return tag;
+    }
+
     public static Object getNode(ItemStack stack, String tag) {
         if (InventoryUtils.isEmpty(stack)) return null;
         Object meta = null;
@@ -1089,7 +1101,10 @@ public class NMSUtils {
                 Object craft = getHandle(stack);
                 if (craft == null) return null;
                 Object tagObject = getTag(craft);
-                if (tagObject == null) return null;
+                if (tagObject == null) {
+                    tagObject = class_NBTTagCompound.newInstance();
+                    class_ItemStack_tagField.set(craft, tagObject);
+                }
                 outputObject = class_NBTTagCompound.newInstance();
                 class_NBTTagCompound_setMethod.invoke(tagObject, tag, outputObject);
             } catch (Throwable ex) {
@@ -1333,8 +1348,10 @@ public class NMSUtils {
         if (InventoryUtils.isEmpty(stack)) return;
 
         ItemMeta meta = stack.getItemMeta();
-        meta.removeEnchant(Enchantment.LUCK);
-        stack.setItemMeta(meta);
+        if (meta.hasEnchant(Enchantment.LUCK)) {
+            meta.removeEnchant(Enchantment.LUCK);
+            stack.setItemMeta(meta);
+        }
     }
 
     public static boolean isUnbreakable(ItemStack stack) {
