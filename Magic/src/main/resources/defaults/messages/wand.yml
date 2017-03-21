@@ -65,7 +65,6 @@ wand:
     range_description: "&9Range: &6$range &9meters"
     owner_description: $name's Wand
     bound_description: Bound to $name
-    soulbound_description: Soulbound to $name
     unmodifiable: That wand can not be modified
     player_unmodifiable: $name's wand can not be modified
     bound_to_other: That wand is not bound to you

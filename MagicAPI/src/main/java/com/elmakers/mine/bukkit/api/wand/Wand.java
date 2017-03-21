@@ -124,7 +124,6 @@ public interface Wand extends CostReducer, MagicConfigurable  {
     boolean playEffects(String key);
     boolean cast();
     boolean isBound();
-    boolean isSoul();
     boolean isUndroppable();
     boolean isQuickCastDisabled();
     boolean isInventoryOpen();
@@ -231,4 +230,7 @@ public interface Wand extends CostReducer, MagicConfigurable  {
      */
     @Deprecated
     boolean upgrade(Map<String, Object> properties);
+
+    @Deprecated
+    boolean isSoul();
 }

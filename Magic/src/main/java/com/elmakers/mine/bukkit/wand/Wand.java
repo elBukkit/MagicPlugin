@@ -118,7 +118,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean superProtected = false;
     private boolean superPowered = false;
     private boolean glow = false;
-	private boolean soul = false;
     private boolean bound = false;
 	private boolean indestructible = false;
     private boolean undroppable = false;
@@ -1510,7 +1509,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		undroppable = wandConfig.getBoolean("undroppable");
 		isHeroes = wandConfig.getBoolean("heroes");
 		bound = wandConfig.getBoolean("bound");
-		soul = wandConfig.getBoolean("soul");
 		forceUpgrade = wandConfig.getBoolean("force");
 		autoOrganize = wandConfig.getBoolean("organize");
 		autoAlphabetize = wandConfig.getBoolean("alphabetize");
@@ -2166,13 +2164,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (!isUpgrade) {
 			if (owner != null && owner.length() > 0) {
 				if (bound) {
-					if (soul) {
-						String ownerDescription = getMessage("soulbound_description", "$name").replace("$name", owner);
-						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
-					} else {
-						String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
-						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
-					}
+                    String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
+                    lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
 				} else {
 					String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
 					lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
@@ -4781,8 +4774,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
+    @Deprecated
     public boolean isSoul() {
-        return soul;
+        return false;
     }
 
     @Override
