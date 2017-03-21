@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.Mage;
+import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -113,6 +114,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private String ownerId = "";
 	private String template = "";
     private String path = "";
+    private String mageClassKey = null;
     private boolean superProtected = false;
     private boolean superPowered = false;
     private boolean glow = false;
@@ -1332,7 +1334,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		Object wandNode = InventoryUtils.createNode(item, isUpgrade ? UPGRADE_KEY : WAND_KEY);
 		if (wandNode == null) {
 			controller.getLogger().warning("Failed to save wand state for wand to : " + item);
-            Thread.dumpStack();
 		} else {
             InventoryUtils.saveTagsToNBT(getConfiguration(), wandNode);
         }
@@ -1436,7 +1437,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return loadProperties(getEffectiveConfiguration());
 	}
 	
-	public boolean loadProperties(ConfigurationSection wandConfig) {
+	private boolean loadProperties(ConfigurationSection wandConfig) {
 		locked = wandConfig.getBoolean("locked", locked);
 		consumeReduction = (float)wandConfig.getDouble("consume_reduction");
 		costReduction = (float)wandConfig.getDouble("cost_reduction");
@@ -1464,6 +1465,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         manaRegenerationBoost = (float)wandConfig.getDouble("mana_regeneration_boost", wandConfig.getDouble("xp_regeneration_boost"));
         manaPerDamage = (float)wandConfig.getDouble("mana_per_damage");
 		spMultiplier = (float)wandConfig.getDouble("sp_multiplier", 1);
+
+		mageClassKey = wandConfig.getString("class");
 
         // Check for single-use wands
 		uses = wandConfig.getInt("uses");
@@ -3963,6 +3966,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (player == null) return false;
 
 		if (!controller.hasWandPermission(player, this)) return false;
+
+		if (mageClassKey != null && !mageClassKey.isEmpty()) {
+			MageClass mageClass = mage.getClass(mageClassKey);
+			if (mageClass == null) {
+				// TODO: Message the player? Would need a cooldown.
+				return false;
+			}
+			setMageClass(mageClass);
+			// This double-load here is not really ideal.
+			// Seems hard to prevent without merging Wand construction and activation, though.
+			loadProperties();
+		}
+
 		InventoryView openInventory = player.getOpenInventory();
 		InventoryType inventoryType = openInventory.getType();
 		if (inventoryType == InventoryType.ENCHANTING ||
@@ -4184,6 +4200,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	@Override
+	@Deprecated
 	public boolean configure(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
 		configure(ConfigurationUtils.toConfigurationSection(convertedProperties));
@@ -4191,6 +4208,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	@Override
+	@Deprecated
 	public boolean upgrade(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
 		return upgrade(ConfigurationUtils.toConfigurationSection(convertedProperties));

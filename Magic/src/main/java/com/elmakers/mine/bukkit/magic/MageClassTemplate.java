@@ -17,6 +17,14 @@ public class MageClassTemplate extends BaseMagicProperties {
         this.load(configuration);
 
         isLocked = getProperty("locked", false);
+
+        // Clear properties we don't want to pass along
+        clearProperty("locked");
+        clearProperty("parent");
+        clearProperty("path_start");
+        clearProperty("hidden");
+        clearProperty("enabled");
+        clearProperty("inherit");
     }
 
     public @Nonnull String getKey() {
@@ -37,5 +45,9 @@ public class MageClassTemplate extends BaseMagicProperties {
 
     public boolean isLocked() {
         return isLocked;
+    }
+
+    protected void clearProperty(String key) {
+        configuration.set(key, null);
     }
 }

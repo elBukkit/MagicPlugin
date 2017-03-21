@@ -25,7 +25,6 @@ public class BaseMagicProperties implements MagicProperties {
 
     protected final @Nonnull MagicController controller;
     protected ConfigurationSection configuration = new MemoryConfiguration();
-    protected boolean dirty = false;
 
     private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
     public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
@@ -61,7 +60,7 @@ public class BaseMagicProperties implements MagicProperties {
             "quick_cast", "left_click", "right_click", "drop", "swap",
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
             "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
-            "sp_multiplier"
+            "sp_multiplier", "class"
     );
 
     public final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
@@ -77,7 +76,6 @@ public class BaseMagicProperties implements MagicProperties {
 
     public void load(@Nullable ConfigurationSection configuration) {
         this.configuration = ConfigurationUtils.cloneConfiguration(configuration);
-        dirty = true;
     }
 
     public boolean hasOwnProperty(String key) {
@@ -130,7 +128,6 @@ public class BaseMagicProperties implements MagicProperties {
     
     public void clear() {
         configuration = new MemoryConfiguration();
-        dirty = false;
     }
 
     protected static String getPotionEffectString(Map<PotionEffectType, Integer> potionEffects) {

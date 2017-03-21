@@ -5,17 +5,17 @@ base:
     brushes: class
     path: subclass
 
-mage:
+caster:
   inherit: base
   locked: false
 
 battle_mage:
-  parent: mage
+  parent: caster
   locked: false
   limit_spells_to_path: true
   path_start: battle
 
-wand_mage:
-  parent: mage
+mage:
+  parent: caster
   locked: false
   path_start: beginner

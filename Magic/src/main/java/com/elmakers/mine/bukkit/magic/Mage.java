@@ -792,13 +792,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
             // Link up parents
             for (MageClass mageClass : classes.values()) {
-                MageClassTemplate template = mageClass.getTemplate();
-                MageClassTemplate parentTemplate = template.getParent();
-                if (parentTemplate != null) {
-                    // Having a sub-class means having the parent class.
-                    MageClass parentClass = getClass(parentTemplate.getKey(), true);
-                    mageClass.setParent(parentClass);
-                }
+                assignParent(mageClass);
             }
 
             cooldownExpiration = data.getCooldownExpiration();
@@ -861,11 +855,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         MageClass mageClass = classes.get(key);
         if (mageClass == null) {
             MageClassTemplate template = controller.getMageClass(key);
-            if (template != null && !template.isLocked()) {
+            if (template != null && (forceCreate || !template.isLocked())) {
                 mageClass = new MageClass(this, template);
+                assignParent(mageClass);
+                classes.put(key, mageClass);
             }
         }
         return mageClass;
+    }
+
+    private void assignParent(MageClass mageClass) {
+        MageClassTemplate template = mageClass.getTemplate();
+        MageClassTemplate parentTemplate = template.getParent();
+        if (parentTemplate != null) {
+            // Having a sub-class means having the parent class.
+            MageClass parentClass = getClass(parentTemplate.getKey(), true);
+            mageClass.setParent(parentClass);
+        }
     }
 
     @Override

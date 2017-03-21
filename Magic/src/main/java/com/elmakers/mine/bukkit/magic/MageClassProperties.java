@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -11,7 +10,6 @@ import javax.annotation.Nullable;
 public class MageClassProperties extends BaseMagicConfigurable {
     protected final MageClassTemplate template;
     protected final MageProperties mage;
-
     private MageClassProperties parent;
 
     public MageClassProperties(@Nonnull MageProperties mage, @Nonnull MageClassTemplate template, @Nonnull MageController controller) {
