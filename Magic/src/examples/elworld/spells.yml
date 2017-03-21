@@ -79,6 +79,7 @@ recall:
         description: Leave this world
         server: chicago
         icon: iron_nugget
+        locked: true
       greenfield:
         name: Greenfield
         description: A city to explore
