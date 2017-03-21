@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -31,6 +32,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -71,6 +73,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private MaterialBrush brush;
     private CastContext base;
     private Mage mage;
+    private MageClass mageClass;
     private Wand wand;
 
     private List<ActionHandlerContext> handlers = null;
@@ -125,6 +128,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.currentEffects = copy.getCurrentEffects();
         this.result = copy.getResult();
         this.wand = copy.getWand();
+        this.mageClass = copy.getMageClass();
 
         Location centerLocation = copy.getTargetCenterLocation();
         if (centerLocation != null) {
@@ -155,6 +159,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             MageSpell mageSpell = (MageSpell)spell;
             this.mage = mageSpell.getMage();
             this.wand = mage.getActiveWand();
+            this.mageClass = (this.wand == null ? this.mage.getActiveClass() : this.wand.getMageClass());
         }
         if (spell instanceof UndoableSpell)
         {
@@ -306,6 +311,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public Mage getMage() {
         return this.mage;
+    }
+
+    @Override
+    public @Nullable MageClass getMageClass() {
+        return this.mageClass;
     }
 
     @Override

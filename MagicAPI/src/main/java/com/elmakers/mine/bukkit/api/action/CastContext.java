@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -21,6 +22,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
@@ -40,7 +42,6 @@ public interface CastContext {
     World getWorld();
     Plugin getPlugin();
     Location getEyeLocation();
-
 
     /**
      * Currently return the cast source location, but in the future may change
@@ -64,6 +65,7 @@ public interface CastContext {
     Spell getSpell();
     Mage getMage();
     Wand getWand();
+    @Nullable MageClass getMageClass();
     Collection<EffectPlayer> getEffects(String key);
     boolean hasEffects(String key);
     MageController getController();

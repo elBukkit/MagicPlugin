@@ -32,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -479,6 +480,8 @@ public interface Mage extends CostReducer {
     boolean isReflected(double angle);
     boolean isBlocked(double angle);
     float getSPMultiplier();
+    @Nullable MageClass getActiveClass();
+    @Nullable MageClass getClass(@Nonnull String key);
     @Nonnull MagicConfigurable getProperties();
 
     /**

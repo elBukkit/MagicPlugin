@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.elmakers.mine.bukkit.api.magic.MageClass;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -205,6 +206,7 @@ public interface Wand extends CostReducer, MagicConfigurable  {
     String getEffectParticleName();
     Location getLocation();
     Mage getMage();
+    @Nullable MageClass getMageClass();
     boolean hasInventory();
 
 

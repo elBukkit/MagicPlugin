@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.wand;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
@@ -9,7 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class WandProperties extends BaseMagicConfigurable {
     protected BaseMagicProperties wandTemplate;
-    protected BaseMagicProperties mageClass;
+    protected MageClass mageClass;
 
     public WandProperties(MageController controller) {
         super(MagicPropertyType.WAND, controller);
@@ -20,7 +21,7 @@ public class WandProperties extends BaseMagicConfigurable {
         dirty = true;
     }
 
-    public void setMageClass(BaseMagicProperties mageClass) {
+    public void setMageClass(MageClass mageClass) {
         this.mageClass = mageClass;
         dirty = true;
     }

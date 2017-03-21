@@ -5059,7 +5059,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	@Override
 	public Mage getMage() {
-    	return mage;
+		return mage;
+	}
+
+	@Override
+	public @Nullable MageClass getMageClass() {
+		return mageClass;
 	}
 
 	public void setCurrentHotbar(int hotbar) {
