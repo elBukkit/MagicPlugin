@@ -80,10 +80,10 @@ recall:
         server: chicago
         icon: iron_nugget
         locked: true
-      greenfield:
-        name: Greenfield
-        description: A city to explore
-        icon: leaves
+      walls:
+        name: The Walls
+        description: A sprawling urbal dueling arena
+        icon: wood_hoe:3
       falcon:
         name: Milennium Falcon
         description: Testing cross-server warps
