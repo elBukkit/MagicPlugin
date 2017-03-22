@@ -1,0 +1,701 @@
+woolshop:
+    inherit: buyshop
+    parameters:
+        items:
+          wool:0@16: 3
+          wool:1@16: 4
+          wool:2@16: 4
+          wool:3@16: 4
+          wool:4@16: 4
+          wool:5@16: 4
+          wool:6@16: 4
+          wool:7@16: 4
+          wool:8@16: 4
+          wool:9@16: 4
+          wool:10@16: 4
+          wool:11@16: 4
+          wool:12@16: 4
+          wool:13@16: 4
+          wool:14@16: 4
+          wool:15@16: 4
+          carpet:0@16: 3
+          carpet:1@16: 4
+          carpet:2@16: 4
+          carpet:3@16: 4
+          carpet:4@16: 4
+          carpet:5@16: 4
+          carpet:6@16: 4
+          carpet:7@16: 4
+          carpet:8@16: 4
+          carpet:9@16: 4
+          carpet:10@16: 4
+          carpet:11@16: 4
+          carpet:12@16: 4
+          carpet:13@16: 4
+          carpet:14@16: 4
+          carpet:15@16: 4
+
+glassshop:
+    inherit: buyshop
+    parameters:
+        items:
+          glass@16: 1
+          stained_glass:1@16: 3
+          stained_glass:2@16: 3
+          stained_glass:3@16: 3
+          stained_glass:4@16: 3
+          stained_glass:5@16: 3
+          stained_glass:6@16: 3
+          stained_glass:7@16: 3
+          stained_glass:8@16: 3
+          stained_glass:9@16: 3
+          stained_glass:10@16: 3
+          stained_glass:11@16: 3
+          stained_glass:12@16: 3
+          stained_glass:13@16: 3
+          stained_glass:14@16: 3
+          stained_glass:15@16: 3
+          thin_glass@16: 1
+          stained_glass_pane:1@16: 3
+          stained_glass_pane:2@16: 3
+          stained_glass_pane:3@16: 3
+          stained_glass_pane:4@16: 3
+          stained_glass_pane:5@16: 3
+          stained_glass_pane:6@16: 3
+          stained_glass_pane:7@16: 3
+          stained_glass_pane:8@16: 3
+          stained_glass_pane:9@16: 3
+          stained_glass_pane:10@16: 3
+          stained_glass_pane:11@16: 3
+          stained_glass_pane:12@16: 3
+          stained_glass_pane:13@16: 3
+          stained_glass_pane:14@16: 3
+          stained_glass_pane:15@16: 3
+
+stoneshop:
+    inherit: buyshop
+    parameters:
+        items:
+          stone:2@16: 6
+          stone:4@16: 6
+          stone:6@16: 6
+          quartz_block:1@16: 6
+          quartz_block:2@16: 7
+          quartz_stairs:0@16: 5
+          flint@4: 1
+
+brickshop:
+    inherit: buyshop
+    parameters:
+        items:
+          stone@16: 4
+          stone:1@16: 5
+          stone:3@16: 5
+          stone:5@16: 5
+          ender_stone@4: 5
+          cobblestone:0@16: 2
+          cobblestone_stairs:0@16: 2
+          step:3@16: 2
+          smooth_brick:0@16: 5
+          smooth_stairs:0@16: 5
+          step:5@16: 4
+          step:0@16: 4
+          sandstone:0@16: 3
+          sandstone:1@16: 5
+          sandstone:2@16: 5
+          sandstone_stairs:0@16: 4
+          step:1@16: 4
+          quartz_block:0@16: 5
+          quartz_stairs:0@16: 5
+          step:7@16: 5
+          nether_brick:0@16: 5
+          nether_brick:1@16: 5
+          nether_brick:2@16: 5
+          nether_brick_stairs:0@16: 5
+          step:6@16: 5
+          brick:0@16: 5
+          brick_stairs:0@16: 6
+          step:4@16: 3
+
+woodshop:
+    inherit: buyshop
+    parameters:
+        items:
+          wood:0@16: 3
+          wood:1@16: 3
+          wood:2@16: 3
+          wood:3@16: 3
+          wood:4@16: 3
+          wood:5@16: 3
+          wood_stairs:0@16: 3
+          birch_wood_stairs:0@16: 3
+          spruce_wood_stairs:0@16: 3
+          jungle_wood_stairs:0@16: 3
+          dark_oak_stairs:0@16: 3
+          wood_step:0@16: 3
+          wood_step:1@16: 3
+          wood_step:2@16: 3
+          wood_step:3@16: 3
+          wood_step:4@16: 3
+          wood_step:5@16: 3
+          log:0@16: 5
+          log:1@16: 5
+          log:2@16: 5
+          log:3@16: 5
+          log_2:1@16: 5
+          log_2:0@16: 5
+
+decorshop:
+    inherit: buyshop
+    parameters:
+        items:
+          stone_plate@8: 5
+          wood_plate@8: 5
+          wood_button@4: 6
+          lever@4: 6
+          trap_door@2: 5
+          redstone_torch_on@8: 5
+          packed_ice@16: 7
+          iron_fence@8: 30
+          brewing_stand_item@2: 45
+          ladder@16: 4
+          tripwire_hook@4: 5
+          torch@16: 2
+          furnace: 10
+          cauldron_item: 50
+          vine@8: 10
+          sign@2: 5
+          flower_pot_item@4: 20
+          leaves@16: 10
+          leaves:1@16: 10
+          leaves:2@16: 10
+          leaves:3@16: 10
+          bookshelf@16: 50
+
+doorshop:
+    inherit: buyshop
+    parameters:
+        items:
+          wood_door@2: 2
+          spruce_door_item@2: 3
+          acacia_door_item@2: 3
+          jungle_door_item@2: 3
+          dark_oak_door_item@2: 3
+          fence@8: 2
+          fence_gate@8: 3
+          dark_oak_fence@8: 3
+          spruce_fence@8: 3
+          nether_fence@8: 3
+          cobble_wall@8: 2
+          cobble_wall:1@8: 3
+
+terrainshop:
+    inherit: buyshop
+    parameters:
+        items:
+          dirt@16: 2
+          grass@16: 2
+          gravel@16: 2
+          snow_block@16: 2
+          snow@16: 2
+          jack_o_lantern@8: 15
+
+plantshop:
+    inherit: buyshop
+    parameters:
+        items:
+          red_rose:6@2: 5
+          water_lily: 5
+          red_rose:5@2: 5
+          red_rose:4@2: 5
+          red_rose:2@2: 5
+          red_rose:1@2: 5
+          red_rose:0@2: 5
+          yellow_flower:0@2: 5
+          flower_pot_item: 20
+          red_mushroom@2: 10
+          vine@8: 10
+          leaves@16: 10
+          leaves:1@16: 10
+          leaves:2@16: 10
+          leaves:3@16: 10
+
+saplingshop:
+    inherit: buyshop
+    parameters:
+        items:
+          sapling: 5
+          sapling|1: 5
+          sapling|2: 5
+          sapling|3: 5
+          sapling|4: 5
+          sapling|5: 5
+          
+naturesellshop:
+    inherit: sellshop
+    parameters:
+        items:
+          sapling@8: 1
+          sapling|1@8: 1
+          sapling|2@8: 1
+          sapling|3@8: 1
+          sapling|4@8: 1
+          sapling|5@8: 1
+          seeds@8: 1
+          apple@8: 1
+          flower_pot_item@4: 1
+          sapling@64: 8
+          sapling|1@64: 8
+          sapling|2@64: 8
+          sapling|3@64: 8
+          sapling|4@64: 8
+          sapling|5@64: 8
+          seeds@64: 8
+          apple@64: 8
+          flower_pot_item@64: 16
+
+miningsellshop:
+    inherit: sellshop
+    parameters:
+        items:
+          coal@4: 1
+          iron_ore@2: 1
+          gold_ore: 1
+          coal@64: 16
+          iron_ore@64: 32
+          gold_ore@64: 64
+          
+clayshop:
+    inherit: buyshop
+    parameters:
+        items:
+          clay@16: 4
+          hard_clay@16: 5
+          stained_clay:0@16: 5
+          stained_clay:1@16: 5
+          stained_clay:2@16: 5
+          stained_clay:3@16: 5
+          stained_clay:4@16: 5
+          stained_clay:5@16: 5
+          stained_clay:6@16: 5
+          stained_clay:7@16: 5
+          stained_clay:8@16: 5
+          stained_clay:9@16: 5
+          stained_clay:10@16: 5
+          stained_clay:11@16: 5
+          stained_clay:12@16: 5
+          stained_clay:13@16: 5
+          stained_clay:14@16: 5
+          stained_clay:15@16: 5
+
+bannershop:
+    inherit: buyshop
+    parameters:
+        items:
+          banner:15@1: 32
+          banner:14@1: 32
+          banner:13@1: 32
+          banner:12@1: 32
+          banner:11@1: 32
+          banner:10@1: 32
+          banner:9@1: 32
+          banner:8@1: 32
+          banner:7@1: 32
+          banner:6@1: 32
+          banner:5@1: 32
+          banner:4@1: 32
+          banner:3@1: 32
+          banner:2@1: 32
+          banner:1@1: 32
+          banner:0@1: 32
+
+foodshop:
+    inherit: buyshop
+    parameters:
+        items:
+          apple@3: 1
+          carrot_item@4: 1
+          potato_item@6: 32
+          baked_potato@3: 32
+          melon@2: 1
+          pumpkin@1: 1
+
+farmshop:
+    inherit: buyshop
+    parameters:
+        items:
+          carrot_item@4: 1
+          potato_item@6: 32
+          seeds@4: 1
+          melon_seeds@4: 1
+          pumpkin_seeds@4: 1
+
+bowshop:
+    inherit: buyshop
+    parameters:
+        items:
+          bow@4: 5
+          arrow@4: 1
+
+leathershop:
+    inherit: buyshop
+    parameters:
+        items:
+          leather@1: 10
+          rotten_flesh@1: 1
+          leather_helmet@1: 50
+          leather_chestplate@1: 80
+          leather_leggings@1: 70
+          leather_boots@1: 40
+
+fishshop:
+    inherit: buyshop
+    parameters:
+        items:
+          fishing_rod@1: 4
+          raw_fish@1: 1
+          cooked_fish@1: 1
+          raw_fish|1@1: 4
+          raw_fish|2@1: 5
+          raw_fish|3@1: 10
+
+redstoneshop:
+    inherit: buyshop
+    parameters:
+        items:
+          slime_ball@1: 16
+          redstone@8: 2
+          redstone_block: 36
+          redstone_lamp_off@4: 5
+          daylight_detector@3: 2
+          dropper@2: 5
+          hopper@2: 5
+          redstone_comparator@3: 4
+          diode@3: 3
+          dispenser@2: 6
+          note_block@16: 1
+          piston_base: 4
+          piston_sticky_base: 20
+          lever: 1
+          stone_button: 1
+          wood_button: 1
+          stone_plate: 1
+          wood_plate: 1
+      
+redstonesellshop:
+    inherit: sellshop
+    parameters:
+        items:
+          redstone@16: 1
+          redstone@64: 4
+          redstone_block@64: 36
+          slime_ball@5: 2
+
+generalshop:
+    inherit: buyshop
+    parameters:
+        items:
+          enchantment_table: 20
+          glass: 1
+          ender_chest: 10
+          painting: 1
+          item_frame: 2
+          furnace: 1
+          jukebox: 18
+          chest: 1
+          thin_glass: 1
+          workbench: 1
+          sign: 1
+          bed: 4
+          anvil: 30
+
+coffeeshop:
+    icon: ink_sack:3
+    inherit: buyshop
+    parameters:
+        items:
+        - item: ink_sack:3
+          cost: 1
+        - cost: 10
+          item: 
+            ==: org.bukkit.inventory.ItemStack
+            type: POTION
+            damage: 8194
+            meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Cup o' Jo
+        - cost: 20
+          item: 
+            ==: org.bukkit.inventory.ItemStack
+            type: POTION
+            damage: 8258
+            meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Espresso
+        - cost: 50
+          item: 
+            ==: org.bukkit.inventory.ItemStack
+            type: POTION
+            damage: 8226
+            meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Double Espresso
+
+axeshop:
+    icon: diamond_axe
+    inherit: buyshop
+    parameters:
+        confirm: true
+        confirm_filler: stained_glass:3
+        auto_close: true
+        items:
+        - item: diamond_axe
+          cost: 50
+        - cost: 7777
+          item:
+             ==: org.bukkit.inventory.ItemStack
+             type: DIAMOND_AXE
+             meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Dwarven Battle Axe
+               enchants:
+                 DAMAGE_ALL: 8
+                 DURABILITY: 5
+
+armorshop:
+    icon: diamond_helmet
+    inherit: buyshop
+    parameters:
+        confirm: true
+        confirm_filler: stained_glass:3
+        auto_close: true
+        items:
+        - item: diamond_helmet
+          cost: 80
+        - cost: 500
+          item:
+             ==: org.bukkit.inventory.ItemStack
+             type: DIAMOND_HELMET
+             meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Helmet of Blinding
+               lore:
+               - 'For use outside of water'
+               enchants:
+                 WATER_WORKER: 10
+                 
+toolshop:
+    icon: diamond_helmet
+    inherit: buyshop
+    parameters:
+        confirm: true
+        confirm_filler: stained_glass:3
+        auto_close: true
+        items:
+        - item: diamond_spade
+          cost: 16
+        - item: diamond_axe
+          cost: 50
+        - cost: 100
+          item:
+             ==: org.bukkit.inventory.ItemStack
+             type: DIAMOND_SPADE
+             meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Dwarven Spade
+               lore:
+               - 'A spade used by many young dwarves'
+               enchants:
+                 DIG_SPEED: 1
+                 DURABILITY: 1
+        - cost: 100
+          item:
+             ==: org.bukkit.inventory.ItemStack
+             type: DIAMOND_AXE
+             meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Dwarven Axe
+               lore:
+               - 'An axe used by many young dwarves'
+               enchants:
+                 DIG_SPEED: 1
+                 DURABILITY: 1
+                 
+pickaxeshop:
+    icon: diamond_pickaxe
+    inherit: buyshop
+    parameters:
+        confirm: true
+        confirm_filler: stained_glass:3
+        auto_close: true
+        items:
+        - item: diamond_pickaxe
+          cost: 50
+        - cost: 777
+          item:
+             ==: org.bukkit.inventory.ItemStack
+             type: DIAMOND_PICKAXE
+             meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Dwarven Pickaxe
+               enchants:
+                 DIG_SPEED: 3
+                 DURABILITY: 3
+        - cost: 1337
+          item:
+             ==: org.bukkit.inventory.ItemStack
+             type: DIAMOND_PICKAXE
+             meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Dwarven Pickaxe of Luck
+               enchants:
+                 DIG_SPEED: 3
+                 DURABILITY: 3
+                 LOOT_BONUS_BLOCKS: 3
+        - cost: 2500
+          item:
+             ==: org.bukkit.inventory.ItemStack
+             type: DIAMOND_PICKAXE
+             meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Felicis Pickaxe
+               enchants:
+                 LOOT_BONUS_BLOCKS: 5
+        - cost: 5555
+          item:
+             ==: org.bukkit.inventory.ItemStack
+             type: DIAMOND_PICKAXE
+             meta:
+               ==: ItemMeta
+               meta-type: UNSPECIFIC
+               display-name: Dwarven Felicis Pickaxe
+               enchants:
+                 DIG_SPEED: 5
+                 DURABILITY: 5
+                 LOOT_BONUS_BLOCKS: 5
+          
+potionshop:
+    icon: diamond_pickaxe
+    category: shop
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        use_items: false
+        items:
+        - cost: 10
+          item: 
+            ==: org.bukkit.inventory.ItemStack
+            type: POTION
+            damage: 16450
+
+brushshop:
+    inherit: buyshop
+    parameters:
+        require_wand: true
+        path: engineer
+        items:
+          brush:wool|0: 300
+          brush:wool|1: 400
+          brush:wool|2: 400
+          brush:wool|3: 400
+          brush:wool|4: 400
+          brush:wool|5: 400
+          brush:wool|6: 400
+          brush:wool|7: 400
+          brush:wool|8: 400
+          brush:wool|9: 400
+          brush:wool|10: 400
+          brush:wool|11: 400
+          brush:wool|12: 400
+          brush:wool|13: 400
+          brush:wool|14: 400
+          brush:wool|15: 400
+          brush:glass: 100
+          brush:stained_glass|1: 300
+          brush:stained_glass|2: 300
+          brush:stained_glass|3: 300
+          brush:stained_glass|4: 300
+          brush:stained_glass|5: 300
+          brush:stained_glass|6: 300
+          brush:stained_glass|7: 300
+          brush:stained_glass|8: 300
+          brush:stained_glass|9: 300
+          brush:stained_glass|10: 300
+          brush:stained_glass|11: 300
+          brush:stained_glass|12: 300
+          brush:stained_glass|13: 300
+          brush:stained_glass|14: 300
+          brush:stained_glass|15: 300
+          brush:thin_glass: 100
+          brush:stained_glass_pane|1: 300
+          brush:stained_glass_pane|2: 300
+          brush:stained_glass_pane|3: 300
+          brush:stained_glass_pane|4: 300
+          brush:stained_glass_pane|5: 300
+          brush:stained_glass_pane|6: 300
+          brush:stained_glass_pane|7: 300
+          brush:stained_glass_pane|8: 300
+          brush:stained_glass_pane|9: 300
+          brush:stained_glass_pane|10: 300
+          brush:stained_glass_pane|11: 300
+          brush:stained_glass_pane|12: 300
+          brush:stained_glass_pane|13: 300
+          brush:stained_glass_pane|14: 300
+          brush:stained_glass_pane|15: 300
+          brush:stone|2: 600
+          brush:stone|4: 600
+          brush:stone|6: 600
+          brush:quartz_block: 600
+          brush:quartz_block|1: 600
+          brush:quartz_block|2: 700
+          
+appraiser:
+    inherit: sellshop
+    icon: emerald
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        scale: 0.9
+        items:
+          - iron_ingot@10
+          - iron_block@10
+          - diamond@10
+          - diamond_block@10
+          - iron_ingot@60
+          - iron_block@60
+          - diamond@60
+          - diamond_block@60
+
+jeweller:
+    icon: emerald
+    inherit: buyshop
+    category: npc
+    hidden: true
+    parameters:
+        items:
+          - iron_ingot
+          - iron_block
+          - diamond
+          - diamond_block
+          - iron_ingot@64
+          - iron_block@64
+          - diamond@64
+          - diamond_block@64
