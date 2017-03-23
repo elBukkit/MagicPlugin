@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.spell;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
+import com.elmakers.mine.bukkit.api.batch.Batch;
+import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -270,5 +272,18 @@ public class ActionSpell extends BrushSpell
             return null;
         }
         return super.getEffectMaterial();
+    }
+
+    @Override
+    public boolean isActive()
+    {
+        if (mage == null) return false;
+        Collection<Batch> pendingBatches = mage.getPendingBatches();
+        for (Batch batch : pendingBatches) {
+            if (batch instanceof SpellBatch && ((SpellBatch)batch).getSpell() == this) {
+                return true;
+            }
+        }
+        return false;
     }
 }
