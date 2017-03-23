@@ -292,6 +292,10 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             || this.material == Material.CARPET) {
             this.mapMaterialBase = this.material;
         }
+
+        if (this.mapId == -1 && mage != null) {
+            this.mapId = mage.getLastHeldMapId();
+        }
     }
 
     public void enableSchematic(String name) {
@@ -317,6 +321,10 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public void setMapId(int mapId) {
         this.mapCanvas = null;
         this.mapId = mapId;
+    }
+
+    public int getMapId() {
+        return this.mapId;
     }
 
     public void setCloneLocation(Location cloneFrom) {
@@ -636,6 +644,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 try {
                     size = Integer.parseInt(pieces[1]);
                 } catch (Exception ex) {
+                    Bukkit.getLogger().info("Error in map brush definition, first part is not an integer: " + activeMaterial);
                 }
             }
             if (pieces.length > 2) {
@@ -646,6 +655,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                     try {
                         mapId = Integer.parseInt(mapKey);
                     } catch (Exception ex) {
+                        Bukkit.getLogger().info("Error in map brush definition, second part is not an integer or a URL: " + activeMaterial);
                     }
                 }
             }
