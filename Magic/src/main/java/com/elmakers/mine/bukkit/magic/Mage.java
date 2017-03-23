@@ -1183,6 +1183,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         brush.setMapId(mapId);
     }
 
+    @Override
+    public int getLastHeldMapId() {
+        return brush.getMapId();
+    }
+
     protected void loadSpells(Map<String, ConfigurationSection> spellConfiguration) {
         if (spellConfiguration == null) return;
 

@@ -479,6 +479,7 @@ public interface Mage extends CostReducer {
     boolean tryToOwn(Wand wand);
     boolean isReflected(double angle);
     boolean isBlocked(double angle);
+    int getLastHeldMapId();
     float getSPMultiplier();
     @Nullable MageClass getActiveClass();
     @Nullable MageClass getClass(@Nonnull String key);
