@@ -2113,7 +2113,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean cancel()
     {
-        sendMessage(getMessage("cancel"));
+        if (isActive()) {
+            sendMessage(getMessage("cancel"));
+        }
         if (currentCast != null) {
             currentCast.cancelEffects();
         }
