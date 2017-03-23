@@ -2817,6 +2817,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void addSkillPoints(int delta) {
         int current = getSkillPoints();
+        String earnMessage = controller.getMessages().get("mage.earned_sp");
+        if (earnMessage != null && !earnMessage.isEmpty()) {
+            sendMessage(earnMessage.replace("$amount", Integer.toString(delta)));
+        }
         setSkillPoints(current + delta);
     }
 
