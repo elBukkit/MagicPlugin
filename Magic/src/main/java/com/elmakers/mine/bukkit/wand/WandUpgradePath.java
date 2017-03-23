@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
+import com.elmakers.mine.bukkit.api.event.PathUpgradeEvent;
 import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
@@ -702,7 +703,10 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
         wand.setPath(newPath.getKey());
 
-        WandUpgradeEvent upgradeEvent = new WandUpgradeEvent(mage, wand, this, newPath);
+        WandUpgradeEvent legacyEvent = new WandUpgradeEvent(mage, wand, this, newPath);
+        Bukkit.getPluginManager().callEvent(legacyEvent);
+
+        PathUpgradeEvent upgradeEvent = new PathUpgradeEvent(mage, wand, wand == null ? mage.getActiveClass() : wand.getMageClass(), this, newPath);
         Bukkit.getPluginManager().callEvent(upgradeEvent);
     }
 
