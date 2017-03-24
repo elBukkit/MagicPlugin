@@ -1346,3 +1346,49 @@ ticketshop:
       confirm_filler: stained_glass:3
       quiet: false
       loud: true
+
+antigravity:
+    icon: diamond_axe:125
+    icon_disabled: diamond_hoe:125
+    icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
+    category: master
+    worth: 800
+    earns_sp: 8
+    actions:
+        cast:
+        -  class: Projectile
+           actions:
+           -  class: AreaOfEffect
+              actions:
+              -  class: PotionEffect
+    effects:
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           sound: block_portal_travel
+           effectlib:
+             class: SmokeEffect
+             iterations: 10
+             particle: cloud
+        hit:
+        -  class: EffectSingle
+           sound: block_portal_travel
+           location: origin
+           effectlib:
+             class: HelixEffect
+             particle: cloud
+             iterations: 2
+    parameters:
+        target_type: Player
+        projectile: EnderPearl
+        effect_levitation: 10
+        effect_slowness: 2
+        effect_nausea: 2
+        duration: 50000
+        radius: 8
+        target_self: true
+        cooldown: 30000
+        bypass_friendly_fire: false
+        only_friendly: false
+    costs:
+        mana: 200
