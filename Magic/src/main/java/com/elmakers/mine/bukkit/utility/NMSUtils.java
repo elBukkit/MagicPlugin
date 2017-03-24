@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
@@ -56,6 +57,7 @@ public class NMSUtils {
     protected static int WITHER_SKULL_TYPE = 66;
     protected static int FIREWORK_TYPE = 76;
 
+    protected static Class<?> class_Block;
     protected static Class<?> class_ItemStack;
     protected static Class<?> class_NBTBase;
     protected static Class<?> class_NBTTagCompound;
@@ -213,6 +215,7 @@ public class NMSUtils {
     protected static Method class_MinecraftServer_setResourcePackMethod;
     protected static Method class_ItemStack_isEmptyMethod;
     protected static Method class_ItemStack_createStackMethod;
+    protected static Method class_CraftMagicNumbers_getBlockMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -280,6 +283,7 @@ public class NMSUtils {
     protected static Field class_NBTTagLong_dataField;
     protected static Field class_NBTTagShort_dataField;
     protected static Field class_NBTTagString_dataField;
+    protected static Field class_Block_durabilityField;
 
     static
     {
@@ -292,6 +296,7 @@ public class NMSUtils {
         }
 
         try {
+            class_Block = fixBukkitClass("net.minecraft.server.Block");
             class_Entity = fixBukkitClass("net.minecraft.server.Entity");
             class_EntityLiving = fixBukkitClass("net.minecraft.server.EntityLiving");
             class_EntityHuman = fixBukkitClass("net.minecraft.server.EntityHuman");
@@ -528,6 +533,17 @@ public class NMSUtils {
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
 
             // Particularly volatile methods that we can live without
+            try {
+                class_Block_durabilityField = class_Block.getDeclaredField("durability");
+                class_Block_durabilityField.setAccessible(true);
+                Class<?> craftMagicNumbers = fixBukkitClass("org.bukkit.craftbukkit.util.CraftMagicNumbers");
+                class_CraftMagicNumbers_getBlockMethod = craftMagicNumbers.getMethod("getBlock", Material.class);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering block durability accessor, durability-based block checks will not work", ex);
+                class_Block_durabilityField = null;
+                class_CraftMagicNumbers_getBlockMethod = null;
+            }
+
             try {
                 class_PacketPlayOutChat = fixBukkitClass("net.minecraft.server.PacketPlayOutChat");
                 class_ChatComponentText = fixBukkitClass("net.minecraft.server.ChatComponentText");

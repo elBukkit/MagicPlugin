@@ -7,6 +7,7 @@ import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -1416,7 +1417,22 @@ public class CompatibilityUtils extends NMSUtils {
             sendPacket(player, packet);
         } catch (Exception ex) {
             ex.printStackTrace();
+            return false;
         }
         return true;
+    }
+
+    public static float getDurability(Material material) {
+        if (class_Block_durabilityField == null || class_CraftMagicNumbers_getBlockMethod == null) return 0.0f;
+        try {
+            Object block = class_CraftMagicNumbers_getBlockMethod.invoke(null, material);
+            if (block == null) {
+                return 0.0f;
+            }
+            return (float)class_Block_durabilityField.get(block);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0.0f;
     }
 }
