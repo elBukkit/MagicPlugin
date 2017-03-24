@@ -2,6 +2,8 @@
 
 ## 7.0
 
+ - Fix wildcard (*) and negated material sets
+
 ### Player Data and Classes! 
 
  - Add /mage configure, upgrade and describe commands for dealing with Mage data

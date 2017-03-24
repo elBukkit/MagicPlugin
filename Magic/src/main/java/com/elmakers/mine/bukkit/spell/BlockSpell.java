@@ -78,8 +78,10 @@ public abstract class BlockSpell extends UndoableSpell {
     }
 
     protected void addDestructible(Material material) {
-        if (destructible == null) {
-            destructible = new HashSet<>(controller.getDestructibleMaterials());
+        Set<Material> current = getDestructible();
+        destructible = new HashSet<>();
+        if (current != null) {
+            destructible.addAll(current);
         }
         destructible.add(material);
     }
@@ -96,18 +98,17 @@ public abstract class BlockSpell extends UndoableSpell {
         }
         destructible = null;
         if (parameters.contains("destructible")) {
-            // This always needs to be a copy since it can be modified by addDestructible
-            // Kind of a hack for Automata.
-            destructible = new HashSet<>(controller.getMaterialSet(parameters.getString("destructible")));
+            destructible = controller.getMaterialSet(parameters.getString("destructible"));
         }
 
         if (parameters.getBoolean("destructible_override", false)) {
             String destructibleKey = controller.getDestructibleMaterials(mage, mage.getLocation());
             if (destructibleKey != null) {
                 if (destructible == null) {
-                    destructible = new HashSet<>();
+                    destructible = controller.getMaterialSet(destructibleKey);
+                } else {
+                    destructible.addAll(controller.getMaterialSet(destructibleKey));
                 }
-                destructible.addAll(controller.getMaterialSet(destructibleKey));
             }
         }
         checkDestructible = parameters.getBoolean("check_destructible", true);
