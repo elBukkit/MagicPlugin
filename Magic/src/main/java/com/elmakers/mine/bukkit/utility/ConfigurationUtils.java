@@ -211,42 +211,6 @@ public class ConfigurationUtils extends ConfigUtils {
         return null;
     }
 
-
-    public static Set<Material> getMaterials(ConfigurationSection node, String key)
-    {
-         List<String> materialData = node.getStringList(key);
-         if (materialData == null) {
-             return null;
-         }
-
-         Set<Material> materials = new HashSet<>();
-         for (String matName : materialData)
-         {
-             Material material = toMaterial(matName);
-             if (material != null) {
-                 materials.add(material);
-             }
-         }
-
-         return materials;
-    }
-
-    public static Set<Material> parseMaterials(String csv)
-    {
-         String[] nameList = StringUtils.split(csv, ',');
-         Set<Material> materials = new HashSet<>();
-
-         for (String matName : nameList)
-         {
-             Material material = toMaterial(matName);
-             if (material != null) {
-                 materials.add(material);
-             }
-         }
-
-         return materials;
-     }
-
     @SuppressWarnings("unchecked")
     protected void combine(Map<Object, Object> to, Map<? extends Object, Object> from) {
          for (Entry<?, Object> entry : from.entrySet()) {

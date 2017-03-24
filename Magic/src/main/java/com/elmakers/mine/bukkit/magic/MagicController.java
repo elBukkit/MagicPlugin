@@ -2105,7 +2105,7 @@ public class MagicController implements MageController {
 		
 		Set<String> keys = materialNode.getKeys(false);
 		for (String key : keys) {
-			materialSets.put(key, ConfigurationUtils.getMaterials(materialNode, key));
+			materialSets.put(key, getMaterials(materialNode, key));
 		}
 		if (materialSets.containsKey("building")) {
 			buildingMaterials = materialSets.get("building");
@@ -3143,6 +3143,55 @@ public class MagicController implements MageController {
 		return createWorldsEnabled;
 	}
 
+    private Set<Material> getMaterials(String materialSet) {
+        Set<Material> materials;
+        String materialString = materialSet;
+        if (materialSet.equals("*")) {
+            materials = new WildcardHashSet<>();
+        } else if (materialSet.startsWith("!")) {
+            materialString = materialString.substring(1);
+            materials = new NegatedHashSet<>();
+        } else {
+            materials = new HashSet<>();
+        }
+        String[] nameList = StringUtils.split(materialString, ',');
+        for (String matName : nameList)
+        {
+            if (materialSets.containsKey(matName)) {
+                materials.addAll(materialSets.get(matName));
+            } else {
+                Material material = ConfigurationUtils.toMaterial(matName);
+                if (material != null) {
+                    materials.add(material);
+                }
+            }
+        }
+
+        return materials;
+    }
+
+    private Set<Material> getMaterials(ConfigurationSection node, String key)
+    {
+        if (node.isString(key)) {
+            return getMaterials(node.getString(key));
+        }
+        List<String> materialData = node.getStringList(key);
+        if (materialData == null) {
+            return null;
+        }
+
+        Set<Material> materials = new HashSet<>();
+        for (String matName : materialData)
+        {
+            Material material = ConfigurationUtils.toMaterial(matName);
+            if (material != null) {
+                materials.add(material);
+            }
+        }
+
+        return materials;
+    }
+
 	@Override
     public Set<Material> getMaterialSet(String name)
 	{
@@ -3150,27 +3199,7 @@ public class MagicController implements MageController {
         
         Set<Material> materials = materialSets.get(name);
         if (materials == null) {
-            String materialString = name;
-            if (name.equals("*")) {
-                materials = new WildcardHashSet<>();
-            } else if (name.startsWith("!")) {
-                materialString = materialString.substring(1);
-                materials = new NegatedHashSet<>();
-            } else {
-                materials = new HashSet<>();
-            }
-            String[] nameList = StringUtils.split(materialString, ',');
-            for (String matName : nameList)
-            {
-                if (materialSets.containsKey(matName)) {
-                    materials.addAll(materialSets.get(matName));
-                } else {
-                    Material material = ConfigurationUtils.toMaterial(matName);
-                    if (material != null) {
-                        materials.add(material);
-                    }
-                }
-            }
+            materials = getMaterials(name);
             materialSets.put(name, materials);
         }
 		return materials;
