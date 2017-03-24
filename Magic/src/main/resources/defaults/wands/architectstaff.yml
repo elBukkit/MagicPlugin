@@ -9,6 +9,7 @@ architectstaff:
   effect_color: 8af553b2025f,0,8af553b2025f
   icon: wood_hoe:6
   migrate_icon: gold_pickaxe
+  sp_multiplier: 0
   spells:
     - absorb@8
     - alter@22

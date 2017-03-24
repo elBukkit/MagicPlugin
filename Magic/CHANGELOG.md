@@ -18,6 +18,7 @@
  - Fix /wand create command
  - Add a ton of example shops to the default configs, see defaults/spells/shops.yml
  - Add mage.earned_sp message, goes to action bar by default whenever a player gains Spell Points
+ - Staff wands no longer earn SP
  
 ### Player Data and Classes! 
  - Add /mage configure, upgrade and describe commands for dealing with Mage data

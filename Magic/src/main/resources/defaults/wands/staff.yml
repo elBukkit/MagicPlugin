@@ -8,6 +8,7 @@ staff:
   protected: true
   icon: wood_hoe:6
   migrate_icon: gold_pickaxe
+  sp_multiplier: 0
   spells:
     - blink|6
     - cloak

@@ -9,6 +9,7 @@ wolf:
   powered: true
   cost_reduction: 2.0
   cooldown_reduction: 2.0
+  sp_multiplier: 0
   consume_reduction: 1
   mode: inventory
   effect_color: 0,aa0000000000,cc0000000000
