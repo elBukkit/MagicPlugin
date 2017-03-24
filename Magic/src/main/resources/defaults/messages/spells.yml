@@ -625,7 +625,7 @@ spells:
         name: Blast
         description: Explode weaker objects
         cast_finish: Blasted $count blocks
-        upgrade_description: "&r&b&bull; &6Increased radius, breaks more types of blocks"
+        upgrade_description: "&r&b&bull; &6Increased radius, breaks stronger blocks"
     earthquake:
         name: Earthquake
         description: Create an earthquake

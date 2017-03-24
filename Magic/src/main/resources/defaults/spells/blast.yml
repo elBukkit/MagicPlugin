@@ -48,8 +48,9 @@ blast:
         radius: 1
         undo: 15000
         cooldown: 5000
-        destructible: destructible_mining
+        destructible: solid
         destructible_override: true
+        destructible_durability: 10
         select_self: false
         physics_blocks: true
         undo_speed: 0.5
@@ -60,7 +61,7 @@ blast|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     parameters:
-        destructible: destructible
+        destructible_durability: 50
         radius: 2
         speed: 1.2
 
@@ -68,13 +69,13 @@ blast|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        destructible: destructible,destructible2
+        destructible_durability: 100
         radius: 2
         undo: 20000
 
 blast|4:
     parameters:
-        destructible: destructible,destructible2,destructible3
+        destructible_durability: 1000
         radius: 3
         undo: 30000
 

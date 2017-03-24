@@ -3,6 +3,7 @@
 ## 7.0
 
  - Fix wildcard (*) and negated material sets
+ - The blocks Blast can break are now based on vanilla durability rather than a material list
 
 ### Player Data and Classes! 
 
