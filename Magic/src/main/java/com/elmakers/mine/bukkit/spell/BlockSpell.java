@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -16,10 +17,12 @@ public abstract class BlockSpell extends UndoableSpell {
 
     private Set<Material>	indestructible;
     private Set<Material>	destructible;
+    private Set<Material>	destructibleOverride;
     protected boolean 		checkDestructible 		= true;
+    protected float         destructibleDurability = 0.0f;
 
     public final static String[] BLOCK_PARAMETERS = {
-        "indestructible", "destructible", "check_destructible", "bypass_undo", "undo"
+        "indestructible", "destructible", "check_destructible", "bypass_undo", "undo", "destructible_durability"
     };
 
     public boolean isIndestructible(Block block)
@@ -39,6 +42,8 @@ public abstract class BlockSpell extends UndoableSpell {
         if (isIndestructible(block)) return false;
 
         if (!checkDestructible) return true;
+        if (destructibleOverride != null && destructibleOverride.contains(block.getType())) return true;
+        if (destructibleDurability > 0 && CompatibilityUtils.getDurability(block.getType()) > destructibleDurability) return false;
         if (targetBreakables > 0 && currentCast.isBreakable(block)) return true;
         if (destructible == null) {
             return mage.isDestructible(block);
@@ -103,16 +108,13 @@ public abstract class BlockSpell extends UndoableSpell {
 
         if (parameters.getBoolean("destructible_override", false)) {
             String destructibleKey = controller.getDestructibleMaterials(mage, mage.getLocation());
-            if (destructibleKey != null) {
-                if (destructible == null) {
-                    destructible = controller.getMaterialSet(destructibleKey);
-                } else {
-                    destructible.addAll(controller.getMaterialSet(destructibleKey));
-                }
-            }
+            destructibleOverride = destructibleKey == null ? null : controller.getMaterialSet(destructibleKey);
+        } else {
+            destructibleOverride = null;
         }
         checkDestructible = parameters.getBoolean("check_destructible", true);
         checkDestructible = parameters.getBoolean("cd", checkDestructible);
+        destructibleDurability = (float)parameters.getDouble("destructible_durability", 0.0);
     }
 
     @Override
