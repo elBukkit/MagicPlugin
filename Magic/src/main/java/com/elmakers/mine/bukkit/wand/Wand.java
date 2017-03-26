@@ -1916,7 +1916,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 	}
 
-    private static String getBrushDisplayName(Messages messages, MaterialBrush brush) {
+    private static String getBrushDisplayName(Messages messages, com.elmakers.mine.bukkit.api.block.MaterialBrush brush) {
         String materialName = brush == null ? null : brush.getName(messages);
         if (materialName == null) {
             materialName = "none";
@@ -1924,7 +1924,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return ChatColor.GRAY + materialName;
     }
 
-    private static String getSpellDisplayName(Messages messages, SpellTemplate spell, MaterialBrush brush) {
+    private static String getSpellDisplayName(Messages messages, SpellTemplate spell, com.elmakers.mine.bukkit.api.block.MaterialBrush brush) {
 		String name = "";
 		if (spell != null) {
 			if (brush != null && spell.usesBrush()) {
@@ -1937,7 +1937,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return name;
 	}
 
-	private String getActiveWandName(SpellTemplate spell, MaterialBrush brush) {
+	private String getActiveWandName(SpellTemplate spell, com.elmakers.mine.bukkit.api.block.MaterialBrush brush) {
 		// Build wand name
         int remaining = getRemainingUses();
 		ChatColor wandColor = (hasUses && remaining <= 1) ? ChatColor.DARK_RED : isModifiable()
@@ -1964,7 +1964,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 	
 	private String getActiveWandName(SpellTemplate spell) {
-		return getActiveWandName(spell, MaterialBrush.parseMaterialKey(activeBrush));
+		return getActiveWandName(spell, mage == null ? MaterialBrush.parseMaterialKey(activeBrush) : mage.getBrush());
 	}
 
     private String getActiveWandName(MaterialBrush brush) {
