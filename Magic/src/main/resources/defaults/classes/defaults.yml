@@ -13,9 +13,15 @@ battle_mage:
   parent: caster
   locked: false
   limit_spells_to_path: true
-  path_start: battle
+  path: battle
+  mana_regeneration: 4
+  mana_max: 40
+  mana: 40
 
 mage:
   parent: caster
   locked: false
-  path_start: beginner
+  path: beginner
+  mana_max: 50
+  mana: 50
+  mana_regeneration: 5

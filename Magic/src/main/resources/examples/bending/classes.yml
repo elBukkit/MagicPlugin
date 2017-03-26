@@ -5,19 +5,19 @@ bender:
 waterbender:
   parent: bender
   locked: true
-  path_start: waterbending
+  path: waterbending
 
 airbender:
   parent: bender
   locked: true
-  path_start: airbending
+  path: airbending
 
 firebender:
   parent: bender
   locked: true
-  path_start: firebending
+  path: firebending
 
 earthbender:
   parent: bender
   locked: true
-  path_start: earthbending
+  path: earthbending
