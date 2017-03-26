@@ -206,6 +206,7 @@ public interface Wand extends CostReducer, MagicConfigurable  {
     Location getLocation();
     Mage getMage();
     @Nullable MageClass getMageClass();
+    @Nullable String getMageClassKey();
     boolean hasInventory();
 
 
