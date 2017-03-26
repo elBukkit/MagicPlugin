@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.block;
 
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -51,6 +52,7 @@ public interface MaterialAndData {
     Material getMaterial();
     String getKey();
     String getName();
+    String getName(Messages messages);
     String getBaseName();
     boolean is(Block block);
     boolean isDifferent(Block block);
