@@ -1,7 +1,7 @@
 appearance_beginner:
     upgrade: true
-    icon: wood_hoe
-    upgrade_icon: wood_hoe
+    icon: wood_hoe:1
+    upgrade_icon: wood_hoe:1
 
 appearance_student:
     upgrade: true
