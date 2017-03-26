@@ -61,13 +61,12 @@ public class MessageAction extends BaseSpellAction
 			return SpellResult.PLAYER_REQUIRED;
 		}
 		sendMessage(context, player);
-        String message = context.parameterize(context.getMessage(this.message, this.message));
-        context.sendMessage(message.replace("$spell", context.getSpell().getName()));
 		return SpellResult.CAST;
 	}
 
 	private void sendMessage(CastContext context, Player player) {
 		String message = context.parameterize(context.getMessage(this.message, this.message));
+		message = message.replace("$spell", context.getSpell().getName());
 		switch (messageType) {
 			case CHAT:
 				player.sendMessage(message);
