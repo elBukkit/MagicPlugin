@@ -2,8 +2,8 @@
 
 ## 7.0
 
- - Map brush not working for me?
- - Replicate brush changed back to erase whe using Phase (not saving brush.. ?) .. could not reproduce
+ - Move property holder configs to wands
+ - List active class and parent classes in /mage describe
  
  - Rename WandUpgradePath to Progression path, Deprecate old API classes (can't do this without breaking API changes?)
  - Wand templates will specify properties that come from the Mage versus item data. 
@@ -39,6 +39,7 @@
 
 ### Requests
 
+ - Allow multiple welcome_wand entries
  - An attribute that lets spells level up more quickly
  - Add some sort of integration with Partec plugin
    https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/

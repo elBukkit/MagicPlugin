@@ -6,6 +6,7 @@
  - The blocks Blast can break are now based on vanilla durability rather than a material list
  - Add appearanceshop, for selling wand appearance upgrades
  - Add Uberwand, the go-to "what's the most powerful wand" for showing off or plugin testing
+ - Added crafting recipe for the spellbook
 
 ### Player Data and Classes! 
 

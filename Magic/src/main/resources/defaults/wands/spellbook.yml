@@ -6,4 +6,4 @@ spellbook:
     undroppable: true
     keep: true
     bound: true
-    path: beginner
+    class: mage
