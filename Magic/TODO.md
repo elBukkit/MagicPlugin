@@ -2,6 +2,7 @@
 
 ## 7.0
 
+ - Map brush not working for me?
  - Replicate brush changed back to erase whe using Phase (not saving brush.. ?) .. could not reproduce
  
  - Rename WandUpgradePath to Progression path, Deprecate old API classes (can't do this without breaking API changes?)

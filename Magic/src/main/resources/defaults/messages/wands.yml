@@ -352,3 +352,6 @@ wands:
     appearance_conduit:
         name: Conduit Wand Appearance
         description: Will change the appearance of your wand
+    uberwand:
+        name: "Überwand"
+        description: The Ultimate Wand

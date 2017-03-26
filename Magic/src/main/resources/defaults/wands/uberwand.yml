@@ -1,19 +1,14 @@
-wolf:
+uberwand:
   inherit: conduit
   path: staff
-  icon: wood_hoe:7
-  migrate_icon: gold_hoe
   hotbar_count: 3
+  fill: true
   protected: true
-  powered: true
   cost_reduction: 2.0
   cooldown_reduction: 2.0
   sp_multiplier: 0
   consume_reduction: 1
   mode: inventory
-  effect_color: 0,aa0000000000,cc0000000000
-  effect_particle_radius: 0.2
-  effect_particle_offset: 0.3
   overrides:
     - max_dimension 1024
     - floodfill.depth 256
@@ -21,6 +16,7 @@ wolf:
   potion_effects:
     - SATURATION
     - REGENERATION
+    - SPEED
   active_brush: erase
   active_spell: missile|4
   spells:
@@ -46,7 +42,6 @@ wolf:
     - counterspell@59
     - curse@66
     - day@4
-    - defender@52
     - disarm@73
     - disc@136
     - disintegrate@31
@@ -66,7 +61,6 @@ wolf:
     - glider@56
     - grenade|2@78
     - heal@6
-    - hunter@53
     - icbm@79
     - iterate@95
     - kill@36
@@ -121,11 +115,9 @@ wolf:
     - torture@121
     - toss@112
     - tree@89
-    - virus@54
     - volley@113
     - wither@71
     - wolfhouse@122
-    - worm@55
     - wound@28
   brushes:
     - bedrock
