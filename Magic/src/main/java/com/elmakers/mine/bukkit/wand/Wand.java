@@ -457,7 +457,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				Map<String, ? extends Object> spellInventory = null;
 				Map<String, Integer> newSpellInventory = new HashMap<>();
 				if (spellInventoryRaw instanceof Map) {
-					org.bukkit.Bukkit.getLogger().info("MAP");
 					spellInventory = (Map<String, ? extends Object>)spellInventoryRaw;
 				} else if (spellInventoryRaw instanceof ConfigurationSection) {
 					spellInventory = NMSUtils.getMap((ConfigurationSection)spellInventoryRaw);
@@ -1258,13 +1257,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 return originalItemStack;
             }
         }
-
-		if (wand != null && wand.getMode() == WandMode.SKILLS && !isItem) {
-			InventoryUtils.setMeta(itemStack, "skill", "true");
-		}
 		InventoryUtils.makeUnbreakable(itemStack);
         InventoryUtils.hideFlags(itemStack, (byte)63);
 		updateSpellItem(controller.getMessages(), itemStack, spell, args, mage, wand, wand == null ? null : wand.activeBrush, isItem);
+
+        if (wand != null && wand.getMode() == WandMode.SKILLS && !isItem) {
+            InventoryUtils.setMeta(itemStack, "skill", "true");
+            String mageClassKey = wand.getMageClassKey();
+            if (mageClassKey != null) {
+                Object spellNode = InventoryUtils.getNode(itemStack, "spell");
+                if (spellNode != null) {
+                    InventoryUtils.setMeta(spellNode, "class", mageClassKey);
+                }
+            }
+        }
+
 		return itemStack;
 	}
 	
@@ -2353,6 +2360,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (spellNode == null) return null;
         return InventoryUtils.getMetaString(spellNode, "key");
 	}
+
+    public static String getSpellClass(ItemStack item) {
+        if (InventoryUtils.isEmpty(item)) return null;
+        Object spellNode = InventoryUtils.getNode(item, "spell");
+        if (spellNode == null) return null;
+        return InventoryUtils.getMetaString(spellNode, "class");
+    }
 
     public static String getSpellArgs(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
@@ -3963,7 +3977,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (mageClassKey != null && !mageClassKey.isEmpty()) {
 			MageClass mageClass = mage.getClass(mageClassKey);
 			if (mageClass == null) {
-				// TODO: Message the player? Would need a cooldown.
+                sendMessage(controller.getMessages().get("mage.no_class").replace("$name", getName()));
 				return false;
 			}
 			setMageClass(mageClass);
@@ -5063,6 +5077,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public @Nullable MageClass getMageClass() {
 		return mageClass;
 	}
+
+	@Override
+    public @Nullable String getMageClassKey() {
+        return mageClassKey;
+    }
 
 	public void setCurrentHotbar(int hotbar) {
     	this.currentHotbar = hotbar;

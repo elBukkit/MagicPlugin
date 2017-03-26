@@ -6,3 +6,4 @@ mage:
     reconfigured: Mage reconfigured
     not_reconfigured: Mage not reconfigured
     earned_sp: "a:&6+&e$amount &6SP"
+    no_class: "You are not trained to use $name"

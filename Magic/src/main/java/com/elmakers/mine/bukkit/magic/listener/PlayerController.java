@@ -105,14 +105,7 @@ public class PlayerController implements Listener {
         boolean isQuickCast = activeWand != null && activeWand.isQuickCast() && activeWand.isInventoryOpen();
         if (isSkill || isQuickCast)
         {
-            Spell spell = mage.getSpell(Wand.getSpell(next));
-            if (spell != null) {
-                if (activeWand != null) {
-                    activeWand.cast(spell);
-                } else {
-                    spell.cast();
-                }
-            }
+            mage.useSkill(next);
             event.setCancelled(true);
             return;
         }

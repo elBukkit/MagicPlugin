@@ -855,12 +855,30 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return activeClass;
     }
 
-    public void setActiveClass(String classKey) {
+    public boolean setActiveClass(String classKey) {
         if (classKey == null) {
             activeClass = null;
         } else {
-            activeClass = classes.get(classKey);
+            activeClass = getClass(classKey);
         }
+        return activeClass != null;
+    }
+
+    public boolean useSkill(ItemStack skillItem) {
+        Spell spell = getSpell(Wand.getSpell(skillItem));
+        if (spell == null) return false;
+        boolean canUse = true;
+        String skillClass = Wand.getSpellClass(skillItem);
+        if (skillClass != null && !skillClass.isEmpty()) {
+            if (!setActiveClass(skillClass)) {
+                canUse = false;
+                sendMessage(controller.getMessages().get("mage.no_class").replace("$name", spell.getName()));
+            }
+        }
+        if (canUse) {
+            spell.cast();
+        }
+        return canUse;
     }
 
     @Override

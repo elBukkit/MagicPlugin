@@ -122,10 +122,7 @@ public class InventoryController implements Listener {
         boolean isRightClick = action == InventoryAction.PICKUP_HALF;
         if (isSkill && isRightClick)
         {
-            Spell spell = mage.getSpell(Wand.getSpell(clickedItem));
-            if (spell != null) {
-                spell.cast();
-            }
+            mage.useSkill(clickedItem);
             player.closeInventory();
             event.setCancelled(true);
             return;
