@@ -330,3 +330,25 @@ wands:
     spellbook:
         name: Spell Book
         description: Press Q to view spells, drag skill to hotbar to use
+    appearance_beginner:
+        name: Beginner Wand Appearance
+        description: Will change the appearance of your wand
+    appearance_student:
+        name: Student Wand Appearance
+        description: Will change the appearance of your wand
+    appearance_apprentice:
+        name: Apprentice Wand Appearance
+        description: Will change the appearance of your wand
+    appearance_master:
+        upgrade: true
+        name: Wizard Wand Appearance
+        description: Will change the appearance of your wand
+    appearance_engineer:
+        name: Engineer Wand Appearance
+        description: Will change the appearance of your wand
+    appearance_architect:
+        name: Architect Wand Appearance
+        description: Will change the appearance of your wand
+    appearance_conduit:
+        name: Conduit Wand Appearance
+        description: Will change the appearance of your wand

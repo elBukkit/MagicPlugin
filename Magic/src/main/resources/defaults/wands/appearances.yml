@@ -1,0 +1,34 @@
+appearance_beginner:
+    upgrade: true
+    icon: wood_hoe
+    upgrade_icon: wood_hoe
+
+appearance_student:
+    upgrade: true
+    icon: wood_hoe:2
+    upgrade_icon: wood_hoe:2
+
+appearance_apprentice:
+    upgrade: true
+    icon: wood_hoe:3
+    upgrade_icon: wood_hoe:3
+
+appearance_master:
+    upgrade: true
+    icon: wood_hoe:4
+    upgrade_icon: wood_hoe:4
+
+appearance_engineer:
+    upgrade: true
+    icon: wood_hoe:5
+    upgrade_icon: wood_hoe:5
+
+appearance_architect:
+    upgrade: true
+    icon: wood_hoe:5
+    upgrade_icon: wood_hoe:5
+
+appearance_conduit:
+    upgrade: true
+    icon: wood_hoe:6
+    upgrade_icon: wood_hoe:6
