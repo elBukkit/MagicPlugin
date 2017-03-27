@@ -469,7 +469,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     materialKey += ":" + spawnerData.mobName;
                 }
             }
-            else if ((material == Material.STANDING_BANNER || material == Material.WALL_BANNER || material == Material.BANNER) && extraData != null && extraData instanceof BlockBanner) {
+            else if ((material == Material.STANDING_BANNER || material == Material.WALL_BANNER || material == Material.BANNER) && extraData != null && extraData instanceof BlockBanner && ((BlockBanner)extraData).baseColor != null) {
                 materialKey += ":" + ((BlockBanner)extraData).baseColor.ordinal();
             } else if (this.material == Material.LEATHER_BOOTS || this.material == Material.LEATHER_CHESTPLATE
                     || this.material == Material.LEATHER_HELMET || this.material == Material.LEATHER_LEGGINGS) {
