@@ -761,6 +761,10 @@ public class MagicController implements MageController {
             getLogger().warning("Failed to initialize EffectLib");
         }
 
+        // Pre-create schematic folder
+        File magicSchematicFolder = new File(plugin.getDataFolder(), "schematics");
+        magicSchematicFolder.mkdirs();
+
         // One-time migration of enchanting.yml
         File legacyPathConfig = new File(configFolder, ENCHANTING_FILE + ".yml");
         File pathConfig = new File(configFolder, PATHS_FILE + ".yml");
@@ -1239,6 +1243,7 @@ public class MagicController implements MageController {
         YamlDataFile configuration = new YamlDataFile(getLogger(), dataFile);
         return configuration;
     }
+
     protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults)
         throws IOException, InvalidConfigurationException {
         return loadConfigFile(fileName, loadDefaults, false);
