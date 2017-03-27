@@ -897,7 +897,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         if (canUse) {
+            // TODO: Maybe find a better way to handle this.
+            // There is also an issue of an active wand taking over the hotbar display.
+            Wand activeWand = this.activeWand;
+            this.activeWand = null;
             spell.cast();
+            this.activeWand = activeWand;
         }
         return canUse;
     }
