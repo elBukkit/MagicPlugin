@@ -323,7 +323,7 @@ commands:
         /mage getdata     Describe Mage data
         /mage check       Check player permissions
         /mage debug       Enable/disable debug for a player
-        /mage reset       Reset all data for a Mage
+        /mage reset       Reset all data for a Mage, or for a specific class
         /mage unbind      Delete all of a mage's bound wands
   "mage configure":
     description: Configure mage properties
@@ -367,7 +367,9 @@ commands:
     permission: Magic.commands.mage.reset
     usage: |
 
+        /mage reset <Player> [Class]
         /mage reset NathanWolf
+        /mage reset NathanWolf mage
   "mage check":
     description: Do a permission check on player, show debug info
     permission: Magic.commands.mage.check

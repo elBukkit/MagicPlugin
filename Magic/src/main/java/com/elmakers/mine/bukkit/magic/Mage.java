@@ -855,6 +855,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return activeClass;
     }
 
+    @Override
     public boolean setActiveClass(String classKey) {
         if (classKey == null) {
             activeClass = null;
@@ -862,6 +863,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             activeClass = getClass(classKey);
         }
         return activeClass != null;
+    }
+
+    @Override
+    public boolean removeClass(String classKey) {
+        if (!classes.containsKey(classKey)) {
+            return false;
+        }
+        classes.remove(classKey);
+        if (activeClass != null && activeClass.getTemplate().getKey().equals(classKey)) {
+            activeClass = null;
+        }
+        return true;
     }
 
     public boolean useSkill(ItemStack skillItem) {
@@ -879,6 +892,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             spell.cast();
         }
         return canUse;
+    }
+
+    @Override
+    @Nullable
+    public MageClass unlockClass(@Nonnull String key) {
+        return getClass(key, true);
     }
 
     @Override

@@ -86,7 +86,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 		}
         if (subCommand.equalsIgnoreCase("reset"))
         {
-            return onMageReset(sender, player);
+            return onMageReset(sender, player, args2);
         }
 		if (subCommand.equalsIgnoreCase("debug"))
 		{
@@ -166,10 +166,19 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         return true;
     }
 
-    public boolean onMageReset(CommandSender sender, Player player)
+    public boolean onMageReset(CommandSender sender, Player player, String[] args)
     {
-        api.getController().deleteMage(player.getUniqueId().toString());
-        sender.sendMessage(ChatColor.RED + "Reset player " + player.getName());
+        if (args.length == 0) {
+            api.getController().deleteMage(player.getUniqueId().toString());
+            sender.sendMessage(ChatColor.RED + "Reset player " + player.getName());
+        } else {
+            Mage mage = api.getMage(player);
+            if (mage.removeClass(args[0])) {
+                sender.sendMessage(ChatColor.RED + "Reset class " + args[0] + " for player " + player.getName());
+            } else {
+                sender.sendMessage(ChatColor.RED + "player " + player.getName() + " does not have class " + args[0] + " unlocked");
+            }
+        }
         return true;
     }
 
