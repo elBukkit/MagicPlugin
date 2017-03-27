@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
 
-public class MageClass extends BaseMagicConfigurable implements com.elmakers.mine.bukkit.api.magic.MageClass  {
+public class MageClass extends CasterProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
     protected final MageClassTemplate template;
     protected final MageProperties mage;
     private MageClass parent;

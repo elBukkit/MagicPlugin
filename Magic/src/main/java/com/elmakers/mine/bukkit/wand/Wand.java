@@ -148,8 +148,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private MaterialAndData inactiveIcon = null;
     private int inactiveIconDelay = 0;
     private String upgradeTemplate = null;
-	
-	protected float costReduction = 0;
+
 	protected float consumeReduction = 0;
     protected float cooldownReduction = 0;
     protected float damageReduction = 0;
@@ -177,16 +176,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	private int uses = 0;
     private boolean hasUses = false;
     private boolean isSingleUse = false;
-	private float mana = 0;
 
     private float manaMaxBoost = 0;
     private float manaRegenerationBoost = 0;
-	private int manaRegeneration = 0;
-	private int manaMax = 0;
-    private long lastManaRegeneration = 0;
     private float manaPerDamage = 0;
-    private int effectiveManaMax = 0;
-    private int effectiveManaRegeneration = 0;
 	
 	private ColorHD effectColor = null;
 	private float effectColorSpellMixWeight = DEFAULT_SPELL_COLOR_MIX_WEIGHT;
@@ -649,49 +642,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return manaMaxBoost;
     }
 	
-	@Override
-    public int getManaRegeneration() {
-		return manaRegeneration;
-	}
-
-	@Override
-	public int getManaMax() {
-		return manaMax;
-	}
-
-    @Override
-    public void setMana(float mana) {
-    	if (isCostFree()) {
-			setProperty("mana", null);
-		} else {
-			this.mana = Math.max(0, mana);
-			setProperty("mana", this.mana);
-		}
-    }
-
-    @Override
-    public void setManaMax(int manaMax) {
-        this.manaMax = Math.max(0, manaMax);
-		setProperty("mana_max", this.manaMax);
-    }
-
-	@Override
-	public float getMana() {
-		return mana;
-	}
-
-	@Override
-	public void removeMana(float amount) {
-        if (isHeroes && mage != null) {
-            HeroesManager heroes = controller.getHeroes();
-            if (heroes != null) {
-                heroes.removeMana(mage.getPlayer(), (int)Math.ceil(amount));
-            }
-        }
-		setMana(mana - amount);
-		updateMana();
-	}
-	
 	public boolean isModifiable() {
 		return !locked;
 	}
@@ -716,14 +666,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	@Override
-    public float getCooldownReduction() {
-		return controller.getCooldownReduction() + cooldownReduction * controller.getMaxCooldownReduction();
+	public void removeMana(float amount) {
+		if (isHeroes && mage != null) {
+			HeroesManager heroes = controller.getHeroes();
+			if (heroes != null) {
+				heroes.removeMana(mage.getPlayer(), (int)Math.ceil(amount));
+			}
+		}
+		super.removeMana(amount);
+		updateMana();
 	}
 
-    @Override
-	public float getCostReduction() {
-		if (isCostFree()) return 1.0f;
-		return controller.getCostReduction() + costReduction * controller.getMaxCostReduction();
+	@Override
+    public float getCooldownReduction() {
+		return controller.getCooldownReduction() + cooldownReduction * controller.getMaxCooldownReduction();
 	}
 
 	@Override
@@ -759,11 +715,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	@Override
     public boolean isSuperPowered() {
 		return superPowered;
-	}
-	
-	@Override
-    public boolean isCostFree() {
-		return costReduction > 1;
 	}
 
 	@Override
@@ -1439,11 +1390,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 	}
 
-	public boolean loadProperties() {
-		return loadProperties(getEffectiveConfiguration());
+	public void loadProperties() {
+		loadProperties(getEffectiveConfiguration());
 	}
 	
-	private boolean loadProperties(ConfigurationSection wandConfig) {
+	protected void loadProperties(ConfigurationSection wandConfig) {
+    	super.loadProperties(wandConfig);
 		locked = wandConfig.getBoolean("locked", locked);
 		consumeReduction = (float)wandConfig.getDouble("consume_reduction");
 		costReduction = (float)wandConfig.getDouble("cost_reduction");
@@ -1464,11 +1416,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         blockMageCooldown = wandConfig.getInt("block_mage_cooldown");
         blockCooldown = wandConfig.getInt("block_cooldown");
 
-		manaRegeneration = wandConfig.getInt("mana_regeneration", wandConfig.getInt("xp_regeneration"));
-		manaMax = wandConfig.getInt("mana_max", wandConfig.getInt("xp_max"));
-		mana = wandConfig.getInt("mana", wandConfig.getInt("xp"));
         manaMaxBoost = (float)wandConfig.getDouble("mana_max_boost", wandConfig.getDouble("xp_max_boost"));
-        manaRegenerationBoost = (float)wandConfig.getDouble("mana_regeneration_boost", wandConfig.getDouble("xp_regeneration_boost"));
         manaPerDamage = (float)wandConfig.getDouble("mana_per_damage");
 		spMultiplier = (float)wandConfig.getDouble("sp_multiplier", 1);
 
@@ -1493,10 +1441,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             potionEffects.put(PotionEffectType.SATURATION, 1);
         }
 
-        if (regenWhileInactive) {
-            lastManaRegeneration = wandConfig.getLong("mana_timestamp");
-        } else {
-            lastManaRegeneration = System.currentTimeMillis();
+        // This overrides the value loaded in CasterProperties
+        if (!regenWhileInactive) {
+			lastManaRegeneration = System.currentTimeMillis();
         }
 
 		if (wandConfig.contains("effect_color")) {
@@ -1879,8 +1826,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         updateMaxMana(false);
         checkActiveMaterial();
-
-        return needsInventoryUpdate;
     }
 
     private void parseOverride(String override) {
@@ -5020,14 +4965,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (path == null) return false;
 		path.upgrade(this, quiet ? null : mage);
 		return true;
-	}
-    
-    public int getEffectiveManaMax() {
-		return effectiveManaMax;
-	}
-	
-	public int getEffectiveManaRegeneration() {
-		return effectiveManaRegeneration;
 	}
 	
 	@Override

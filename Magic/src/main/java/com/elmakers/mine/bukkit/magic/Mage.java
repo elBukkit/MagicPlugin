@@ -1949,7 +1949,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (offhandCast && offhandWand != null) {
             return offhandWand.getMana();
         }
-        return activeWand == null ? 0 : activeWand.getMana();
+        if (activeWand != null) {
+            return activeWand.getMana();
+        }
+        if (activeClass != null) {
+            return activeClass.getMana();
+        }
+        return properties.getMana();
     }
 
     public int getEffectiveManaMax() {
@@ -1976,9 +1982,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void removeMana(float mana) {
         if (offhandCast && offhandWand != null) {
             offhandWand.removeMana(mana);
-        }
-        if (activeWand != null) {
+        } else if (activeWand != null) {
             activeWand.removeMana(mana);
+        } else if (activeClass != null) {
+            activeClass.removeMana(mana);
+        } else {
+            properties.removeMana(mana);
         }
     }
 

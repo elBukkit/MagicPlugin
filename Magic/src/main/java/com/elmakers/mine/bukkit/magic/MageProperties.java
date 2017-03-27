@@ -7,7 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import javax.annotation.Nullable;
 import java.util.Set;
 
-public class MageProperties extends BaseMagicConfigurable {
+public class MageProperties extends CasterProperties {
     private final Mage mage;
 
     public MageProperties(Mage mage) {
