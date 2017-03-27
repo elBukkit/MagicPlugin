@@ -30,7 +30,6 @@ import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
-import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
@@ -42,7 +41,6 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 
@@ -172,7 +170,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	private boolean hasInventory = false;
 	private boolean locked = false;
     private boolean forceUpgrade = false;
-    private boolean isHeroes = false;
 	private int uses = 0;
     private boolean hasUses = false;
     private boolean isSingleUse = false;
@@ -659,20 +656,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public boolean isUpgrade() {
 		return isUpgrade;
 	}
-	
-	public boolean usesMana() {
-        if (isCostFree()) return false;
-		return manaMax > 0 || (isHeroes && mage != null);
-	}
 
 	@Override
 	public void removeMana(float amount) {
-		if (isHeroes && mage != null) {
-			HeroesManager heroes = controller.getHeroes();
-			if (heroes != null) {
-				heroes.removeMana(mage.getPlayer(), (int)Math.ceil(amount));
-			}
-		}
 		super.removeMana(amount);
 		updateMana();
 	}
@@ -1461,7 +1447,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		superProtected = wandConfig.getBoolean("protected");
 		glow = wandConfig.getBoolean("glow");
 		undroppable = wandConfig.getBoolean("undroppable");
-		isHeroes = wandConfig.getBoolean("heroes");
 		bound = wandConfig.getBoolean("bound");
 		forceUpgrade = wandConfig.getBoolean("force");
 		autoOrganize = wandConfig.getBoolean("organize");
@@ -1704,9 +1689,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			upgradePath.checkMigration(this);
 		} else {
 			hasSpellProgression = false;
-		}
-		if (isHeroes) {
-			hasSpellProgression = true;
 		}
 
 		brushInventory.clear();
@@ -2805,9 +2787,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         {
             return false;
         }
-        if (isHeroes || other.isHeroes) {
-            return false;
-        }
 
 		ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(other.getTemplateKey());
 
@@ -3616,20 +3595,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		boolean updated = false;
 		if (usesMana()) {
 			long now = System.currentTimeMillis();
-			if (isHeroes)
-			{
-				HeroesManager heroes = controller.getHeroes();
-				if (heroes != null)
-				{
-					effectiveManaMax = heroes.getMaxMana(player);
-					effectiveManaRegeneration = heroes.getManaRegen(player);
-					manaMax = effectiveManaMax;
-					manaRegeneration = effectiveManaRegeneration;
-					setMana(heroes.getMana(player));
-					updated = true;
-				}
-			}
-			else if (manaRegeneration > 0 && lastManaRegeneration > 0 && effectiveManaRegeneration > 0)
+			if (manaRegeneration > 0 && lastManaRegeneration > 0 && effectiveManaRegeneration > 0)
 			{
 				long delta = now - lastManaRegeneration;
 				if (effectiveManaMax == 0 && manaMax > 0) {
@@ -3641,17 +3607,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			lastManaRegeneration = now;
 			setProperty("mana_timestamp", lastManaRegeneration);
 		}
-		
+
 		return updated;
 	}
-	
+
 	public void tick() {
 		if (mage == null) return;
 		
 		Player player = mage.getPlayer();
 		if (player == null) return;
 
-		if (tickMana(player) && !isInOffhand) {
+		if (tickMana() && !isInOffhand) {
 			updateMana();
 		}
 		
@@ -3679,8 +3645,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected void updateMaxMana(boolean updateLore) {
-        if (isHeroes) return;
-
 		int currentMana = effectiveManaMax;
 		int currentManaRegen = effectiveManaRegeneration;
 
@@ -4001,32 +3965,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Check for an empty wand and auto-fill
         if (!isUpgrade && (controller.fillWands() || autoFill)) {
             fill(mage.getPlayer(), controller.getMaxWandFillLevel());
-        }
-
-        if (isHeroes) {
-            HeroesManager heroes = controller.getHeroes();
-            if (heroes != null) {
-                Set<String> skills = heroes.getSkills(player);
-                Collection<String> currentSpells = new ArrayList<>(getSpells());
-                for (String spellKey : currentSpells) {
-                    if (spellKey.startsWith("heroes*") && !skills.contains(spellKey.substring(7)))
-                    {
-                        removeSpell(spellKey);
-                    }
-                }
-
-                // Hack to prevent messaging
-                this.mage = null;
-                for (String skillKey : skills)
-                {
-                    String heroesKey = "heroes*" + skillKey;
-                    if (!spells.contains(heroesKey))
-                    {
-                        addSpell(heroesKey);
-                    }
-                }
-                this.mage = mage;
-            }
         }
 
         // Check for auto-organize

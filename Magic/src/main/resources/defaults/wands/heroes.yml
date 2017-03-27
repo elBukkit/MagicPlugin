@@ -1,10 +1,10 @@
 # Heroes Integration
 heroes:
+    description: "Temporarily not working... will fix it eventually, I think"
     effect_color: random
     quiet: 1
     icon: stick
     indestructible: true
-    heroes: true
     undroppable: true
     mode: inventory
     right_click: none

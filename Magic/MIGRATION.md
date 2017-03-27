@@ -3,8 +3,14 @@
 ## Restoring Previous Behavior
  - You may use "example: 6" in config.yml to undo the following config changes:
    - Skill Points renamed to Spell Points
-   - Cast messages got to chat instead of action bar
+   - Cast messages go to chat instead of action bar
    - Default wand configs will use old behavior for actions and flags (per below)
+   - Wands aren't class-based and store data as normal
+
+## 7.0
+
+ - The "heroes" wand has been removed. I hope to replace it with a class-based wand option, but it didn't seem
+   very popular and was a pain to keep working.
 
 ## 6.9
 
