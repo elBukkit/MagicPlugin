@@ -777,6 +777,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             this.data = data.getExtraData();
             this.properties.load(data.getProperties());
+            this.properties.loadProperties();
 
             this.classes.clear();
             Map<String, ConfigurationSection> classProperties = data.getClassProperties();
@@ -866,6 +867,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return false;
         }
         activeClass = targetClass;
+
+        // TODO: Is this the best place to do this?
+        activeClass.loadProperties();
         return true;
     }
 
@@ -1070,7 +1074,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 offhandCast = true;
                 boolean castResult = false;
                 try {
-                    offhandWand.tickMana(player);
+                    offhandWand.tickMana();
                     offhandWand.setActiveMage(this);
                     castResult = offhandWand.cast();
                     CompatibilityUtils.swingOffhand(player, OFFHAND_CAST_RANGE);
@@ -1169,6 +1173,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (offhandWand != null) {
                 offhandWand.tick();
             }
+            if (activeClass != null) {
+                activeClass.tick();
+            }
+            properties.tick();
             
             if (Wand.LiveHotbarSkills && (activeWand == null || !activeWand.isInventoryOpen())) {
                 updateHotbarStatus();
@@ -1965,7 +1973,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return heroes.getMaxMana(getPlayer());
             }
         }
-        return activeWand == null ? 0 : activeWand.getEffectiveManaMax();
+        if (activeWand != null) {
+            return activeWand.getEffectiveManaMax();
+        }
+        if (activeClass != null) {
+            return activeClass.getEffectiveManaMax();
+        }
+        return properties.getEffectiveManaMax();
     }
 
     public int getEffectiveManaRegeneration() {
@@ -1975,7 +1989,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return heroes.getManaRegen(getPlayer());
             }
         }
-        return activeWand == null ? 0 : activeWand.getEffectiveManaRegeneration();
+        if (activeWand != null) {
+            return activeWand.getEffectiveManaRegeneration();
+        }
+        if (activeClass != null) {
+            return activeClass.getEffectiveManaRegeneration();
+        }
+        return properties.getEffectiveManaRegeneration();
     }
 
     @Override

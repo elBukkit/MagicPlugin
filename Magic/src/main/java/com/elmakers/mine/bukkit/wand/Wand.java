@@ -174,8 +174,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean hasUses = false;
     private boolean isSingleUse = false;
 
-    private float manaMaxBoost = 0;
-    private float manaRegenerationBoost = 0;
     private float manaPerDamage = 0;
 	
 	private ColorHD effectColor = null;
@@ -629,14 +627,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public String getId() {
         return id;
-    }
-
-    public float getManaRegenerationBoost() {
-        return manaRegenerationBoost;
-    }
-
-    public float getManaMaxBoost() {
-        return manaMaxBoost;
     }
 	
 	public boolean isModifiable() {
@@ -1375,10 +1365,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setProperty("effect_color", effectColor.toString());
         }
 	}
-
-	public void loadProperties() {
-		loadProperties(getEffectiveConfiguration());
-	}
 	
 	protected void loadProperties(ConfigurationSection wandConfig) {
     	super.loadProperties(wandConfig);
@@ -1402,7 +1388,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         blockMageCooldown = wandConfig.getInt("block_mage_cooldown");
         blockCooldown = wandConfig.getInt("block_cooldown");
 
-        manaMaxBoost = (float)wandConfig.getDouble("mana_max_boost", wandConfig.getDouble("xp_max_boost"));
         manaPerDamage = (float)wandConfig.getDouble("mana_per_damage");
 		spMultiplier = (float)wandConfig.getDouble("sp_multiplier", 1);
 
@@ -1806,7 +1791,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			effectParticleInterval = 0;
 		}
 
-        updateMaxMana(false);
         checkActiveMaterial();
     }
 
@@ -3590,26 +3574,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             mage.updateHotbarStatus();
         }
     }
-	
-	public boolean tickMana(Player player) {
-		boolean updated = false;
-		if (usesMana()) {
-			long now = System.currentTimeMillis();
-			if (manaRegeneration > 0 && lastManaRegeneration > 0 && effectiveManaRegeneration > 0)
-			{
-				long delta = now - lastManaRegeneration;
-				if (effectiveManaMax == 0 && manaMax > 0) {
-					effectiveManaMax = manaMax;
-				}
-				setMana(Math.min(effectiveManaMax, mana + (float) effectiveManaRegeneration * (float)delta / 1000));
-				updated = true;
-			}
-			lastManaRegeneration = now;
-			setProperty("mana_timestamp", lastManaRegeneration);
-		}
-
-		return updated;
-	}
 
 	public void tick() {
 		if (mage == null) return;
@@ -3645,42 +3609,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected void updateMaxMana(boolean updateLore) {
-		int currentMana = effectiveManaMax;
-		int currentManaRegen = effectiveManaRegeneration;
-
-        float effectiveBoost = manaMaxBoost;
-        float effectiveRegenBoost = manaRegenerationBoost;
-        if (mage != null)
-        {
-            Collection<Wand> activeArmor = mage.getActiveArmor();
-            for (Wand armorWand : activeArmor) {
-                effectiveBoost += armorWand.getManaMaxBoost();
-                effectiveRegenBoost += armorWand.getManaRegenerationBoost();
-            }
-            if (isInOffhand) {
-				Wand activeWand = mage.getActiveWand();
-				if (activeWand != null && !activeWand.isPassive()) {
-					effectiveBoost += activeWand.getManaMaxBoost();
-					effectiveRegenBoost += activeWand.getManaRegenerationBoost();
-				}
-            } else {
-				Wand offhandWand = mage.getOffhandWand();
-				if (offhandWand != null && !offhandWand.isPassive()) {
-					effectiveBoost += offhandWand.getManaMaxBoost();
-					effectiveRegenBoost += offhandWand.getManaRegenerationBoost();
-				}
-            }
-        }
-        effectiveManaMax = manaMax;
-        if (effectiveBoost != 0) {
-            effectiveManaMax = (int)Math.ceil(effectiveManaMax + effectiveBoost * effectiveManaMax);
-        }
-        effectiveManaRegeneration = manaRegeneration;
-        if (effectiveRegenBoost != 0) {
-            effectiveManaRegeneration = (int)Math.ceil(effectiveManaRegeneration + effectiveRegenBoost * effectiveManaRegeneration);
-        }
-
-		if (updateLore && (currentMana != effectiveManaMax || effectiveManaRegeneration != currentManaRegen)) {
+		if (super.updateMaxMana(mage) && updateLore) {
 			updateLore();
 		}
     }
