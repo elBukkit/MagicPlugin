@@ -394,4 +394,6 @@ public interface MageController {
      * @param itemStack
      */
     void cleanItem(ItemStack itemStack);
+
+    Set<String> getMageClassKeys();
 }
