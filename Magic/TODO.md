@@ -2,8 +2,14 @@
 
 ## 7.0
 
- - Move property holder configs to wands
- - List active class and parent classes in /mage describe
+ - Refactor mana into BaseConfigurable
+ - Maybe reconsider config-collapsing approach, switch to routing on get/set ?
+ - Add commands:
+   - /mage activate <class>
+   - /mage unlock <class>
+   - /mage reset <class?>
+
+ - Move property holder configs to wands (? How to handle /mage configure? Maybe not...)
  - Stash chest is broken
  
  - Rename WandUpgradePath to Progression path, Deprecate old API classes (can't do this without breaking API changes?)

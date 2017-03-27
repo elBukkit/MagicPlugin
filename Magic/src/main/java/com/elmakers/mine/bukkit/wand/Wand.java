@@ -1894,7 +1894,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	@Override
-    public void describe(CommandSender sender) {
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
 		ChatColor wandColor = isModifiable() ? ChatColor.AQUA : ChatColor.RED;
 		sender.sendMessage(wandColor + wandName);
         if (isUpgrade) {
@@ -1911,14 +1911,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + "(No Owner)");
 		}
 
-		super.describe(sender, HIDDEN_PROPERTY_KEYS);
+		super.describe(sender, ignoreProperties);
 
 		WandTemplate template = getTemplate();
 		if (template != null) {
 			sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration:");
 			ConfigurationSection itemConfig = getConfiguration();
 			Set<String> ownKeys = itemConfig.getKeys(false);
-			ownKeys.addAll(HIDDEN_PROPERTY_KEYS);
+			if (ignoreProperties != null) {
+				ownKeys.addAll(ignoreProperties);
+			}
 			template.describe(sender, ownKeys);
 		}
 	}

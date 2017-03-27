@@ -12,7 +12,7 @@ import java.util.TreeMap;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
+import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -174,7 +174,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			}
 			
 			if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
-				for (String key : BaseMagicConfigurable.PROPERTY_KEYS) {
+				for (String key : BaseMagicProperties.PROPERTY_KEYS) {
 					options.add(key);
 				}
 			}
@@ -580,7 +580,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             Wand wand = api.getWand(itemInHand);
             if (parameters.length == 0) {
             	sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/wand describe <property>" + ChatColor.BLUE + " for specific properties");
-				wand.describe(sender);
+				wand.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
             } else {
                 Object property = wand.getProperty(parameters[0]);
                 if (property == null) {

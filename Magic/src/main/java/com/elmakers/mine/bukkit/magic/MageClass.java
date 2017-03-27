@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Set;
 
 public class MageClass extends BaseMagicConfigurable implements com.elmakers.mine.bukkit.api.magic.MageClass  {
     protected final MageClassTemplate template;
@@ -44,5 +45,22 @@ public class MageClass extends BaseMagicConfigurable implements com.elmakers.min
     public void setParent(@Nonnull MageClass parent) {
         this.parent = parent;
         this.dirty = true;
+    }
+
+    @Override
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
+        super.describe(sender, ignoreProperties);
+        Set<String> hideKeys = getConfiguration().getKeys(false);
+        if (ignoreProperties != null) {
+            hideKeys.addAll(ignoreProperties);
+        }
+        template.describe(sender, hideKeys);
+        hideKeys.addAll(template.getConfiguration().getKeys(false));
+
+        MageClass parent = getParent();
+        if (parent != null) {
+            sender.sendMessage(ChatColor.AQUA + "Parent Class: " + ChatColor.GREEN + parent.getTemplate().getKey());
+            parent.describe(sender, hideKeys);
+        }
     }
 }

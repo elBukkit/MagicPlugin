@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
+import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -141,7 +142,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 		} else if (args.length == 2) {
 			options.addAll(api.getPlayerNames());
             if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe") || args[0].equalsIgnoreCase("upgrade")) {
-                for (String key : BaseMagicConfigurable.PROPERTY_KEYS) {
+                for (String key : BaseMagicProperties.PROPERTY_KEYS) {
                     options.add(key);
                 }
             }
@@ -327,7 +328,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     public boolean onMageConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
     {
         Mage mage = api.getMage(player);
-        return onConfigure("mage", mage.getProperties(), sender, player, parameters, safe);
+        MageClass activeClass = mage.getActiveClass();
+        return onConfigure("mage", activeClass == null ? mage.getProperties() : activeClass, sender, player, parameters, safe);
     }
 
     public boolean onMageDescribe(CommandSender sender, Player player, String[] parameters) {
@@ -337,7 +339,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
         if (parameters.length == 0) {
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage describe <property>" + ChatColor.BLUE + " for specific properties");
-            mageProperties.describe(sender);
+            mageProperties.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
         } else {
             Object property = mageProperties.getProperty(parameters[0]);
             if (property == null) {
