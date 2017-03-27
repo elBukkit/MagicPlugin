@@ -482,7 +482,10 @@ public interface Mage extends CostReducer {
     int getLastHeldMapId();
     float getSPMultiplier();
     @Nullable MageClass getActiveClass();
+    @Nullable MageClass unlockClass(@Nonnull String key);
     @Nullable MageClass getClass(@Nonnull String key);
+    boolean setActiveClass(@Nonnull String key);
+    boolean removeClass(@Nonnull String key);
     @Nonnull MagicConfigurable getProperties();
 
     /**
