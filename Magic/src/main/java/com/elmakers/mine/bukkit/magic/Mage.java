@@ -859,10 +859,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public boolean setActiveClass(String classKey) {
         if (classKey == null) {
             activeClass = null;
-        } else {
-            activeClass = getClass(classKey);
+            return true;
         }
-        return activeClass != null;
+        MageClass targetClass = getClass(classKey);
+        if (targetClass == null) {
+            return false;
+        }
+        activeClass = targetClass;
+        return true;
     }
 
     @Override

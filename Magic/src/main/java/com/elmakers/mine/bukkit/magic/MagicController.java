@@ -3574,6 +3574,11 @@ public class MagicController implements MageController {
         }
     }
 
+    @Override
+    public Set<String> getMageClassKeys() {
+	    return mageClasses.keySet();
+    }
+
     public MageClassTemplate getMageClass(String key) {
 	    return mageClasses.get(key);
     }

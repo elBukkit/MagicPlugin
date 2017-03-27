@@ -318,6 +318,8 @@ commands:
         Use /help mage [subcommand] for more information
         /mage configure   Set mage properties
         /mage describe    Show mage properties
+        /mage activate    Set or clear a player's active class
+        /mage unlock      Unlock a class for a player
         /mage upgrade     Upgrade properties of a mage
         /mage setdata     Modify Mage data
         /mage getdata     Describe Mage data
@@ -326,7 +328,7 @@ commands:
         /mage reset       Reset all data for a Mage, or for a specific class
         /mage unbind      Delete all of a mage's bound wands
   "mage configure":
-    description: Configure mage properties
+    description: Configure mage properties, configures the active class
     usage: |
 
        /mage configure <property> [value]
@@ -362,8 +364,24 @@ commands:
         /mage getdata <Player> [SpellKey]
         /mage getdata NathanWolf
         /mage getdata NathanWolf blink
+  "mage activate":
+    description: Active a class for a player
+    permission: Magic.commands.mage.activate
+    usage: |
+
+        /mage activate <Player> <Class>
+        /mage activate NathanWolf mage
+        /mage activate NathanWolf battle_mage
+  "mage unlock":
+    description: Unlock a class for a player
+    permission: Magic.commands.mage.unlock
+    usage: |
+
+        /mage unlock <Player> <Class>
+        /mage unlock NathanWolf jedi
+        /mage unlock NathanWolf waterbender
   "mage reset":
-    description: Complete reset player data
+    description: Completely reset player data
     permission: Magic.commands.mage.reset
     usage: |
 
@@ -884,6 +902,14 @@ permissions:
     default: op
   Magic.commands.mage.getdata:
     description: Player may check Mage attributes
+    type: boolean
+    default: op
+  Magic.commands.mage.unlock:
+    description: Player may unlock mage classes
+    type: boolean
+    default: op
+  Magic.commands.mage.activate:
+    description: Player may activate mage classes
     type: boolean
     default: op
   Magic.commands.mage.setdata:

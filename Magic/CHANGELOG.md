@@ -12,6 +12,7 @@
 
  - Add /mage configure, upgrade and describe commands for dealing with Mage data
  - Add /mage reset (class) option, for resetting a class progress on a player
+ - Add /mage activate and unlock commands, for manipulating mage classes
  - Add classes config file, defaults have a basic setup in each example config. Generally:
    - Spells are held by a base class that may be shared (like by the Master Sword, Wand and Spellbook)
    - Mana is stored in a sub-class that may be separate, as in Master Sword and Wand, or shared as in Wand and Spellbook

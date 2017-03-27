@@ -102,24 +102,27 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 		}
         if (subCommand.equalsIgnoreCase("unbind"))
         {
-            onMageUnbind(sender, player);
-            return true;
+            return onMageUnbind(sender, player);
         }
         if (subCommand.equalsIgnoreCase("configure"))
         {
-            onMageConfigure(sender, player, args2, false);
-            return true;
+            return onMageConfigure(sender, player, args2, false);
         }
         if (subCommand.equalsIgnoreCase("upgrade"))
         {
-            onMageConfigure(sender, player, args2, true);
-            return true;
+            return onMageConfigure(sender, player, args2, true);
         }
-
         if (subCommand.equalsIgnoreCase("describe"))
         {
-            onMageDescribe(sender, player, args2);
-            return true;
+            return onMageDescribe(sender, player, args2);
+        }
+        if (subCommand.equalsIgnoreCase("activate"))
+        {
+            return onMageActivate(sender, player, args2);
+        }
+        if (subCommand.equalsIgnoreCase("unlock"))
+        {
+            return onMageUnlock(sender, player, args2);
         }
 
 		sender.sendMessage("Unknown mage command: " + subCommand);
@@ -139,6 +142,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "debug");
 			addIfPermissible(sender, options, "Magic.commands.mage.", "reset");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unbind");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "activate");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "unlock");
 		} else if (args.length == 2) {
 			options.addAll(api.getPlayerNames());
             if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe") || args[0].equalsIgnoreCase("upgrade")) {
@@ -155,7 +160,11 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     options.addAll(data.getKeys(false));
                 }
             }
-		}
+		} else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("unlock") || args[0].equalsIgnoreCase("activate")) {
+                options.addAll(api.getController().getMageClassKeys());
+            }
+        }
 		return options;
 	}
 
@@ -341,6 +350,39 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         return onConfigure("mage", activeClass == null ? mage.getProperties() : activeClass, sender, player, parameters, safe);
     }
 
+    public boolean onMageUnlock(CommandSender sender, Player player, String[] parameters)
+    {
+        if (parameters.length < 1) {
+            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mage unlock [player] <class>");
+            return true;
+        }
+        Mage mage = api.getMage(player);
+        String classKey = parameters[0];
+        MageClass mageClass = mage.unlockClass(classKey);
+        if (mageClass == null) {
+            sender.sendMessage(ChatColor.RED + "Invalid class: " + ChatColor.WHITE + classKey);
+        } else {
+            sender.sendMessage("Unlocked class " + classKey + " for " + player.getName());
+        }
+        return true;
+    }
+
+    public boolean onMageActivate(CommandSender sender, Player player, String[] parameters)
+    {
+        Mage mage = api.getMage(player);
+        String classKey = parameters.length == 0 ? null : parameters[0];
+        if (mage.setActiveClass(classKey)) {
+            if (classKey == null) {
+                sender.sendMessage("Cleared active class for " + player.getName());
+            } else {
+                sender.sendMessage("Activated class " + classKey + " for " + player.getName());
+            }
+        } else {
+            sender.sendMessage(ChatColor.RED + player.getName() + " does not have class: " + ChatColor.WHITE + classKey + ChatColor.RED + " unlocked");
+        }
+        return true;
+    }
+
     public boolean onMageDescribe(CommandSender sender, Player player, String[] parameters) {
         // Force-save wand data so it is up to date
         Mage mage = api.getMage(player);
@@ -348,6 +390,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
         if (parameters.length == 0) {
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage describe <property>" + ChatColor.BLUE + " for specific properties");
+            sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage activate" + ChatColor.BLUE + " to change or clear the active class");
             mageProperties.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
         } else {
             Object property = mageProperties.getProperty(parameters[0]);
