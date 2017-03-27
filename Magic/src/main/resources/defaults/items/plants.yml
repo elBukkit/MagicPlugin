@@ -1,0 +1,60 @@
+water_lily:
+  worth: 5
+red_rose:0:
+  worth: 3
+red_rose:1:
+  worth: 3
+red_rose:2:
+  worth: 3
+red_rose:3:
+  worth: 3
+red_rose:4:
+  worth: 3
+red_rose:5:
+  worth: 3
+red_rose:6:
+  worth: 3
+yellow_flower:0:
+   worth: 3
+red_mushroom:
+  worth: 2
+
+seeds:
+  worth: 0.5
+melon_seeds:
+  worth: 0.5
+pumpkin_seeds:
+  worth: 0.5
+beetroot_seeds:
+  worth: 0.5
+
+jack_o_lantern:
+  worth: 2
+
+apple:
+  worth: 1
+carrot_item:
+  worth: 0.25
+potato_item:
+  worth: 0.25
+baked_potato:
+  worth: 0.3
+beetroot:
+  worth: 0.3
+melon:
+  worth: 0.5
+pumpkin:
+  worth: 1
+
+sapling:
+  worth: 5
+sapling:1:
+  worth: 5
+sapling:2:
+  worth: 5
+sapling:3:
+  worth: 5
+sapling:4:
+  worth: 5
+sapling:5:
+  worth: 5

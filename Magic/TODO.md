@@ -4,6 +4,7 @@
 
  - Move property holder configs to wands
  - List active class and parent classes in /mage describe
+ - Stash chest is broken
  
  - Rename WandUpgradePath to Progression path, Deprecate old API classes (can't do this without breaking API changes?)
  - Wand templates will specify properties that come from the Mage versus item data. 
@@ -39,6 +40,7 @@
 
 ### Requests
 
+ - Add ignore_entity_types parameter
  - Allow multiple welcome_wand entries
  - An attribute that lets spells level up more quickly
  - Add some sort of integration with Partec plugin

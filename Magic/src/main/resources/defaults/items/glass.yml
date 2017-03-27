@@ -1,0 +1,64 @@
+glass:
+  worth: 0.4
+stained_glass:1:
+  worth: 0.5
+stained_glass:2:
+  worth: 0.5
+stained_glass:3:
+  worth: 0.5
+stained_glass:4:
+  worth: 0.5
+stained_glass:5:
+  worth: 0.5
+stained_glass:6:
+  worth: 0.5
+stained_glass:7:
+  worth: 0.5
+stained_glass:8:
+  worth: 0.5
+stained_glass:9:
+  worth: 0.5
+stained_glass:10:
+  worth: 0.5
+stained_glass:11:
+  worth: 0.5
+stained_glass:12:
+  worth: 0.5
+stained_glass:13:
+  worth: 0.5
+stained_glass:14:
+  worth: 0.5
+stained_glass:15:
+  worth: 0.5
+thin_glass:
+  worth: 0.1
+stained_glass_pane:1:
+  worth: 0.2
+stained_glass_pane:2:
+  worth: 0.2
+stained_glass_pane:3:
+  worth: 0.2
+stained_glass_pane:4:
+  worth: 0.2
+stained_glass_pane:5:
+  worth: 0.2
+stained_glass_pane:6:
+  worth: 0.2
+stained_glass_pane:7:
+  worth: 0.2
+stained_glass_pane:8:
+  worth: 0.2
+stained_glass_pane:9:
+  worth: 0.2
+stained_glass_pane:10:
+  worth: 0.2
+stained_glass_pane:11:
+  worth: 0.2
+stained_glass_pane:12:
+  worth: 0.2
+stained_glass_pane:13:
+  worth: 0.2
+stained_glass_pane:14:
+  worth: 0.2
+stained_glass_pane:15:
+  worth: 0.2

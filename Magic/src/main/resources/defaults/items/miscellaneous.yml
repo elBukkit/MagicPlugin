@@ -1,0 +1,192 @@
+stone:
+  worth: 0.2
+stone:1:
+  worth: 0.4
+stone:2:
+  worth: 0.5
+stone:3:
+  worth: 0.4
+stone:4:
+  worth: 0.5
+stone:5:
+  worth: 0.4
+stone:6:
+  worth: 0.5
+quartz_block:0:
+  worth: 0.4
+quartz_block:1:
+  worth: 0.5
+quartz_block:2:
+  worth: 0.5
+quartz_stairs:
+  worth: 0.5
+flint:
+  worth: 0.25
+
+ender_stone:
+  worth: 0.5
+cobblestone:
+  worth: 0.05
+cobblestone_stairs:
+  worth: 0.05
+step:0:
+  worth: 0.1
+step:1:
+  worth: 0.1
+step:2:
+  worth: 0.1
+step:3:
+  worth: 0.1
+step:4:
+  worth: 0.1
+step:5:
+  worth: 0.1
+step:6:
+  worth: 0.1
+step:7:
+  worth: 0.5
+smooth_brick:0:
+  worth: 0.3
+smooth_stairs:0:
+  worth: 0.3
+sandstone:0:
+  worth: 0.2
+sandstone:1:
+  worth: 0.2
+sandstone:2:
+  worth: 0.2
+sandstone_stairs:0:
+  worth: 0.2
+nether_brick:0:
+  worth: 0.2
+nether_brick:1:
+  worth: 0.2
+nether_brick:2:
+  worth: 0.2
+nether_brick_stairs:0:
+  worth: 0.2
+brick:0:
+  worth: 0.2
+brick_stairs:0:
+  worth: 0.3
+step:4:
+  worth: 0.2
+
+packed_ice:
+  worth: 2
+iron_fence:
+  worth: 4
+brewing_stand_item:
+  worth: 20
+ladder:
+  worth: 0.5
+
+torch:
+  worth: 0.1
+furnace:
+  worth: 10
+cauldron_item:
+  worth: 50
+vine:
+  worth: 2
+flower_pot_item:
+  worth: 5
+leaves:
+  worth: 2
+leaves:1:
+  worth: 2
+leaves:2:
+  worth: 2
+leaves:3:
+  worth: 2
+bookshelf:
+  worth: 10
+
+wood_door:
+  worth: 1
+spruce_door_item:
+  worth: 1.5
+acacia_door_item:
+  worth: 1.5
+jungle_door_item:
+  worth: 1.5
+dark_oak_door_item:
+  worth: 1.5
+fence:
+  worth: 0.25
+fence_gate:
+  worth: 0.4
+dark_oak_fence:
+  worth: 0.3
+spruce_fence:
+  worth: 0.3
+nether_fence:
+  worth: 0.3
+cobble_wall:
+  worth: 0.25
+cobble_wall:1:
+  worth: 0.25
+
+dirt:
+  worth: 0.05
+grass:
+  worth: 0.1
+gravel:
+  worth: 0.25
+snow_block:
+  worth: 0.25
+snow:
+  worth: 0.1
+
+coal:
+  worth: 0.25
+iron_ore:
+  worth: 0.5
+gold_ore:
+  worth: 6
+
+bow:
+  worth: 4
+arrow:
+  worth: 0.5
+
+leather:
+  worth: 10
+rotten_flesh:
+  worth: 1
+
+fishing_rod:
+  worth: 4
+raw_fish:
+  worth: 1
+cooked_fish:
+  worth: 2
+raw_fish:1:
+  worth: 4
+raw_fish:2:
+  worth: 5
+raw_fish:3:
+  worth: 10
+
+enchantment_table:
+  worth: 20
+ender_chest:
+  worth: 10
+painting:
+  worth: 2
+item_frame:
+  worth: 15
+furnace:
+  worth: 1
+jukebox:
+  worth: 18
+chest:
+  worth: 2
+workbench:
+  worth: 1
+sign:
+  worth: 1
+bed:
+  worth: 4
+anvil:
+  worth: 30

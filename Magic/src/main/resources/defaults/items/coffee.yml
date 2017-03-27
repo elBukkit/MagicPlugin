@@ -1,0 +1,32 @@
+coffee1:
+  worth: 10.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      display-name: Cup o' Jo
+      potion-type: minecraft:swiftness
+
+coffee2:
+  worth: 20.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      display-name: Espresso
+      potion-type: minecraft:long_swiftness
+
+coffee3:
+  worth: 50
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      display-name: Double Espresso
+      potion-type: minecraft:strong_swiftness

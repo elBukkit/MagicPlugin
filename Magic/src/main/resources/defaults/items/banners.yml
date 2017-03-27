@@ -1,0 +1,61 @@
+banner:15:
+  worth: 32
+banner:14:
+  worth: 32
+banner:13:
+  worth: 32
+banner:12:
+  worth: 32
+banner:11:
+  worth: 32
+banner:10:
+  worth: 32
+banner:9:
+  worth: 32
+banner:8:
+  worth: 32
+banner:7:
+  worth: 32
+banner:6:
+  worth: 32
+banner:5:
+  worth: 32
+banner:4:
+  worth: 32
+banner:3:
+  worth: 32
+banner:2:
+  worth: 32
+banner:1:
+  worth: 32
+banner:0:
+  worth: 32
+
+hylian_banner:
+  worth: 100
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: BANNER
+    meta:
+      ==: ItemMeta
+      meta-type: BANNER
+      display-name: §aHylian Banner
+      patterns:
+      - ==: Pattern
+        color: SILVER
+        pattern: cbo
+      - ==: Pattern
+        color: RED
+        pattern: flo
+      - ==: Pattern
+        color: BLUE
+        pattern: hh
+      - ==: Pattern
+        color: YELLOW
+        pattern: tt
+      - ==: Pattern
+        color: BLUE
+        pattern: ts
+      - ==: Pattern
+        color: SILVER
+        pattern: bo
