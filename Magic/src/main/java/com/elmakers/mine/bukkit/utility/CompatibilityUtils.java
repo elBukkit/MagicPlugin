@@ -1291,6 +1291,18 @@ public class CompatibilityUtils extends NMSUtils {
                     attributeName = "generic.movementSpeed";
                     attributeUUID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
                     break;
+                case GENERIC_MAX_HEALTH:
+                    attributeName = "generic.maxHealth";
+                    attributeUUID = UUID.fromString("5D6F0BA2-1186-46AC-B896-C61C5CEE99CC");
+                    break;
+                case GENERIC_LUCK:
+                    attributeName = "generic.luck";
+                    attributeUUID = UUID.fromString("03C3C89D-7037-4B42-869F-B146BCB64D2E");
+                    break;
+                case GENERIC_ARMOR:
+                    attributeName = "generic.armor";
+                    attributeUUID = UUID.fromString("556E1665-8B10-40C8-8F9D-CF9B1667F295");
+                    break;
                 default:
                     break;
             }
