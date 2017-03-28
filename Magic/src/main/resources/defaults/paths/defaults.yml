@@ -472,8 +472,8 @@ conduit:
       - night
       - weather
       - capture
-    materials:
       - commit
+    materials:
       - clone
       - replicate
       - lava

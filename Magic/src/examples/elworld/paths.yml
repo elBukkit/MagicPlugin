@@ -22,3 +22,8 @@ engineer:
   upgrade_commands:
     - broadcast §6@pd §3has advanced to §b$path§3!
     - pex user @pn group add architect
+
+architect:
+  upgrade_commands:
+    - broadcast §6@pd §3has advanced to §b$path§3!
+    - pex user @pn group add conduit
