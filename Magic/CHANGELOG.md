@@ -2,6 +2,7 @@
 
 ## 7.0
 
+ - Change spell names for all force powers in stars configs
  - Fix wildcard (*) and negated material sets
  - The blocks Blast can break are now based on vanilla durability rather than a material list
  - Add appearanceshop, for selling wand appearance upgrades

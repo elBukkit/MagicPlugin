@@ -135,8 +135,8 @@ lightsaber_green:
     icon: shield:2
     effect_color: '00FF00'
     spells:
-        - push
-        - pull
+        - forcepush
+        - forcepull
 
 lightsaber_blue:
     inherit: base_lightsaber
@@ -144,8 +144,8 @@ lightsaber_blue:
     icon: shield:3
     effect_color: '0000FF'
     spells:
-        - push
-        - pull
+        - forcepush
+        - forcepull
 
 lightsaber_red:
     inherit: base_lightsaber
@@ -153,8 +153,8 @@ lightsaber_red:
     icon: shield:4
     effect_color: 'FF0000'
     spells:
-        - push
-        - fire
+        - forcepush
+        - forceignite
 
 lightsaber_orange:
     inherit: base_lightsaber
@@ -162,8 +162,8 @@ lightsaber_orange:
     icon: shield:5
     effect_color: 'FF00FF'
     spells:
-        - push
-        - pull
+        - forcepush
+        - forcepull
 
 lightsaber_purple:
     inherit: base_lightsaber
@@ -171,8 +171,8 @@ lightsaber_purple:
     icon: shield:6
     effect_color: 'FFFF00'
     spells:
-        - push
-        - pull
+        - forcepush
+        - forcepull
 
 detonator:
   icon: tnt
@@ -184,7 +184,7 @@ detonator:
   cost_reduction: 2
   cooldown_reduction: 0.9
   spells:
-  - grenade|2
+   - detonator
 
 blaster:
     migrate_icon: monster_eggs:3
@@ -199,5 +199,5 @@ blaster:
     active_spell: blaster
     indestructible: true
     spells:
-        - blaster
+     - blaster
 

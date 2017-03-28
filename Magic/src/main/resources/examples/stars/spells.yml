@@ -79,98 +79,71 @@ blaster:
     costs:
         mana: 15
 
-
+detonator:
+  inherit: grenade|2
 
 #
 # Force powers
 #
 
-fireball:
-     category: force
-     enabled: true
+forceignite:
+  inherit: fire
+  category: force
 
-fire:
-     category: force
-     enabled: true
+forcepush:
+  inherit: push
+  category: force
 
-lightning:
-     category: force
-     enabled: true
+forcepull:
+  inherit: pull
+  category: force
 
-flamethrower:
-     category: force
-     enabled: true
+forceleap:
+  inherit: fling
+  category: force
+  parameters:
+    cooldown: 10000
+  costs:
+    mana: 20
 
-boom:
-     category: force
-     enabled: true
+forcespeed:
+  inherit: boon
+  category: force
 
-lava:
-     category: force
-     enabled: true
+forcespeed|2:
+  inherit: boon|2
+  category: force
 
-push:
-     category: force
-     enabled: true
+forcelift:
+  inherit: lift
+  category: force
 
-pull:
-     category: force
-     enabled: true
+forcetelekinesis:
+  inherit: force
+  category: force
+  costs:
+    mana: 50
 
-fling:
-     category: force
-     enabled: true
+forceblast:
+  inherit: blast
+  category: force
 
-force:
-     category: force
-     enabled: true
+forceexplode:
+  inherit: boom
+  category: force
 
-heal:
-     category: force
-     enabled: true
+forcecollapse:
+  inherit: collapse
+  category: force
 
-cure:
-     category: force
-     enabled: true
+forcelightning:
+  inherit: chainlightning
+  category: force
 
-lift:
-     category: force
-     enabled: true
-
-frost:
-     category: force
-     enabled: true
-
-blob:
-    category: force
-    enabled: true
-    parameters:
-       brush: copy
-
-breach:
-     category: force
-     enabled: true
-
-blast:
-     category: force
-     enabled: true
-
-harden:
-     category: force
-     enabled: true
-
-earthquake:
-     category: force
-     enabled: true
-
-collapse:
-     category: force
-     enabled: true
-
-throw:
-    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
-    icon: diamond_axe:226
-    icon_disabled: diamond_hoe:226
+forcethrow:
+    icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
+    icon: diamond_axe:43
+    icon_disabled: diamond_hoe:43
     category: force
     worth: 1500
     pvp_restricted: true
@@ -249,14 +222,59 @@ throw:
     costs:
         mana: 40
 
-levitate:
-    enabled: true
+## OTHER SPELLS WE MAY WANT TO USE
 
-boon:
-    enabled: true
+fireball:
+     category: force
+     enabled: true
+
+lightning:
+     category: force
+     enabled: true
+
+flamethrower:
+     category: force
+     enabled: true
+
+lava:
+     category: force
+     enabled: true
+
+heal:
+     category: force
+     enabled: true
+
+cure:
+     category: force
+     enabled: true
+
+lift:
+     category: force
+     enabled: true
+
+frost:
+     category: force
+     enabled: true
+
+blob:
     category: force
+    enabled: true
+    parameters:
+       brush: copy
 
-boon|2:
+breach:
+     category: force
+     enabled: true
+
+harden:
+     category: force
+     enabled: true
+
+earthquake:
+     category: force
+     enabled: true
+
+levitate:
     enabled: true
 
 ## ENGINEERING

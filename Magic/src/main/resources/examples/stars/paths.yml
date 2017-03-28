@@ -30,104 +30,91 @@ blaster:
 youngling:
     inherit: default
     upgrade: padawan
-    follows: beginner
     max_mana: 200
     max_mana_regeneration: 20
     mana_regeneration: 1
     mana_max: 2
     spell_count: 1
     spells:
-      - fling
-      - push
-      - pull
+      - forceleap
+      - forcepush
+      - forcepull
 
 padawan:
     inherit: youngling
     upgrade: jedi_knight
-    follows: student
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-      - boon
-      - harden
+      - forcespeed
 
 jedi_knight:
     inherit: padawan
     upgrade: jedi_master
-    follows: apprentice
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-      - cure
-      - lift
+      - forcelift
+      - forcethrow
 
 jedi_master:
     inherit: jedi_knight
-    follows: master
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-      - heal
-      - force
+      - forcetelekinesis
 
 acolyte:
     inherit: default
     upgrade: sith_apprentice
-    follows: beginner
     max_mana: 200
     max_mana_regeneration: 20
     mana_regeneration: 1
     mana_max: 2
     spell_count: 1
     spells:
-      - push
-      - pull
-      - fire
+      - forcepush
+      - forcepull
+      - forceignite
 
 sith_apprentice:
     inherit: acolyte
     upgrade: sith
-    follows: student
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-      - boom
-      - blast
+      - forceblast
+      - forceexplode
 
 sith:
     inherit: sith_apprentice
     upgrade: marauder
-    follows: apprentice
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-      - fling
-      - fireball
+      - forceleap
+      - forcethrow
 
 marauder:
     inherit: sith
     upgrade: sith_master
-    follows: apprentice
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-      - collapse
-      - lava
+      - forcecollapse
 
 sith_master:
     inherit: marauder
     upgrade: sith_loord
-    follows: master
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-      - force
-      - lift
+      - forcetelekinesis
+      - forcelift
 
 sith_lord:
     inherit: sith_master
     max_mana: 200
     max_mana_regeneration: 20
     spells:
-      - lightning
-      - earthquake
+      - forcelightning
