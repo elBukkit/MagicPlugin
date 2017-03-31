@@ -262,7 +262,7 @@ public class PlayerController implements Listener {
                             @Override
                             public void run() {
                                 newWand.openInventory();
-                                newWand.setStoredSlot(previouslySelected);
+                                newWand.setHeldSlot(previouslySelected);
                             }
                         }.runTaskLater(mage.getController().getPlugin(), 0);
                         break;

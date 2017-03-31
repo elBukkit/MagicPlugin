@@ -66,6 +66,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
+	public final static int OFFHAND_SLOT = 40;
 	public final static int INVENTORY_SIZE = 27;
 	public final static int PLAYER_INVENTORY_SIZE = 36;
 	public final static int INVENTORY_ORGANIZE_BUFFER = 4;
@@ -89,7 +90,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     /**
      * The currently active mage.
      *
-     * Is only set when the wand is active of when the wand is
+     * Is only set when the wand is active or when the wand is
      * used for off-hand casting.
      */
     protected @Nullable Mage mage;
@@ -103,7 +104,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private Map<String, Integer> spellLevels = new HashMap<>();
     private Map<String, Integer> brushInventory = new HashMap<>();
 	private Set<String> brushes = new LinkedHashSet<>();
-	
+
 	private String activeSpell = "";
 	private String activeBrush = "";
 	protected String wandName = "";
@@ -248,7 +249,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public static String brushSelectSpell = "";
 
     private Inventory storedInventory = null;
-    private int storedSlot;
+    private int heldSlot = 0;
 
     public Wand(MagicController controller) {
 		super(controller);
@@ -880,7 +881,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public Set<String> getBrushes() {
 		return brushes;
 	}
-	
+
 	protected Integer parseSlot(String[] pieces) {
 		Integer slot = null;
 		if (pieces.length > 1) {
@@ -3867,6 +3868,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         this.mage = mage;
         this.isInOffhand = offhand;
+        this.heldSlot = offhand ? OFFHAND_SLOT : player.getInventory().getHeldItemSlot();
 
 		// Check for replacement template
 		String replacementTemplate = getProperty("replace_on_activate", "");
@@ -4248,7 +4250,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public boolean hasBrush(String materialKey) {
 		return getBrushes().contains(materialKey);
 	}
-	
+
 	@Override
 	public boolean hasSpell(String spellName) {
 		return hasSpell(new SpellKey(spellName));
@@ -4259,7 +4261,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Integer level = spellLevels.get(spellKey.getBaseKey());
         return (level != null && level >= spellKey.getLevel());
     }
-	
+
 	@Override
 	public boolean addBrush(String materialKey) {
 		if (!isModifiable()) return false;
@@ -4547,8 +4549,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return remainder.size() == 0;
     }
 
-    public void setStoredSlot(int slot) {
-        this.storedSlot = slot;
+    public void setHeldSlot(int slot) {
+        this.heldSlot = slot;
     }
 
     public boolean storeInventory() {
@@ -4574,8 +4576,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 			inventory.setItem(i, null);
 		}
-        storedSlot = inventory.getHeldItemSlot();
-		inventory.setItem(storedSlot, item);
+        heldSlot = inventory.getHeldItemSlot();
+		inventory.setItem(heldSlot, item);
 
         return true;
     }
@@ -4592,13 +4594,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		PlayerInventory inventory = player.getInventory();
 
 		// Reset the wand item
-		storedInventory.setItem(storedSlot, item);
+		storedInventory.setItem(heldSlot, item);
 
 		for (int i = 0; i < storedInventory.getSize(); i++) {
 			inventory.setItem(i, storedInventory.getItem(i));
 		}
         storedInventory = null;
-        inventory.setHeldItemSlot(storedSlot);
+        inventory.setHeldItemSlot(heldSlot);
 		DeprecatedUtils.updateInventory(player);
 
         return true;
@@ -4908,5 +4910,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	public boolean usesSP() {
     	return hasSpellProgression && controller.isSPEnabled() && controller.isSPEarnEnabled() && spMultiplier > 0;
+	}
+
+	@Nullable public int getHeldSlot() {
+    	return heldSlot;
 	}
 }

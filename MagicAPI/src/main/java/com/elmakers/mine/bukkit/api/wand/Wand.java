@@ -208,7 +208,7 @@ public interface Wand extends CostReducer, MagicConfigurable  {
     @Nullable MageClass getMageClass();
     @Nullable String getMageClassKey();
     boolean hasInventory();
-
+    @Nullable int getHeldSlot();
 
     /**
      * This method is deprecated, it just converts the Map to a ConfigurationSection.
