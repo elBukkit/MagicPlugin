@@ -2,13 +2,6 @@
 
 ## 7.0
 
- - Change spell names for all force powers in stars configs
- - Fix wildcard (*) and negated material sets
- - The blocks Blast can break are now based on vanilla durability rather than a material list
- - Add appearanceshop, for selling wand appearance upgrades
- - Add Uberwand, the go-to "what's the most powerful wand" for showing off or plugin testing
- - Added crafting recipe for the spellbook
-
 ### Player Data and Classes! 
 
  - Add /mage configure, upgrade and describe commands for dealing with Mage data
@@ -19,6 +12,16 @@
    - Mana is stored in a sub-class that may be separate, as in Master Sword and Wand, or shared as in Wand and Spellbook
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
+
+## 6.9.2
+
+ - Fix broom duplication/wand destruction glitch when using a broom in the offhand
+ - Change spell names for all force powers in stars configs
+ - Fix wildcard (*) and negated material sets
+ - The blocks Blast can break are now based on vanilla durability rather than a material list
+ - Add appearanceshop, for selling wand appearance upgrades
+ - Add Uberwand, the go-to "what's the most powerful wand" for showing off or plugin testing
+ - Added crafting recipe for the spellbook
 
 ## 6.9.1
 
