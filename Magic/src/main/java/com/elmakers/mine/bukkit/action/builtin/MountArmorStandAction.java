@@ -310,24 +310,19 @@ public class MountArmorStandAction extends BaseSpellAction
 
         item = null;
         if (mountWand) {
-            Wand activeWand = mage.getActiveWand();
+            Wand wand = context.getWand();
 
-            // Check for trying to mount an item from the offhand slot
-            // Not handling this for now.
-            if (activeWand != context.getWand()) {
+            if (wand == null) {
                 return SpellResult.NO_TARGET;
             }
+            wand.deactivate();
 
-            if (activeWand != null) {
-                activeWand.deactivate();
-            }
-
-            item = activeWand.getItem();
+            item = wand.getItem();
             if (item == null || item.getType() == Material.AIR)
             {
                 return SpellResult.FAIL;
             }
-            slotNumber = player.getInventory().getHeldItemSlot();
+            slotNumber = wand.getHeldSlot();
         }
 
         direction = entity.getLocation().getDirection();
@@ -335,7 +330,7 @@ public class MountArmorStandAction extends BaseSpellAction
             return SpellResult.FAIL;
         }
         if (mountWand) {
-            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            player.getInventory().setItem(slotNumber, new ItemStack(Material.AIR));
         }
         
         liftoffTime = System.currentTimeMillis();
@@ -407,19 +402,14 @@ public class MountArmorStandAction extends BaseSpellAction
         Mage mage = context.getMage();
         Player player = mage.getPlayer();
         if (player == null || item == null) return;
-        
-        ItemStack currentItem = player.getInventory().getItemInMainHand();
-        if (currentItem == null || currentItem.getType() == Material.AIR) {
-            player.getInventory().setItemInMainHand(item);
-            mage.checkWand();
+
+        ItemStack currentItem = player.getInventory().getItem(slotNumber);
+        if (currentItem != null) {
+            context.getMage().giveItem(item);
         } else {
-            currentItem = player.getInventory().getItem(slotNumber);
-            if (currentItem != null) {
-                context.getMage().giveItem(item);
-            } else {
-                player.getInventory().setItem(slotNumber, item);
-            }
+            player.getInventory().setItem(slotNumber, item);
         }
+        mage.checkWand();
         
         item = null;
     }
