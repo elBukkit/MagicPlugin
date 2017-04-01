@@ -15,7 +15,8 @@
 
 ## 6.9.3
 
- - Fix quiet loud and silent wand upgrades.
+ - Fix quiet, loud and silent wand upgrades
+ - Brooms will stop working when they hit a world border
 
 ## 6.9.2
 
