@@ -7,6 +7,7 @@ broom:
     worth: 600
     upgrade_required_path: broom
     upgrade_required_casts: 20
+    world_border_restricted: true
     actions:
         cast:
         - class: MountArmorStand
