@@ -13,6 +13,10 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.3
+
+ - Fix quiet loud and silent wand upgrades.
+
 ## 6.9.2
 
  - Fix broom duplication/wand destruction glitch when using a broom in the offhand

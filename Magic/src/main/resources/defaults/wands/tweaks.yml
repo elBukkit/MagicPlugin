@@ -89,14 +89,14 @@ loud:
     icon: diamond_axe:218
     upgrade: true
     indestructible: false
-    quiet: -1
+    quiet: 0
 quiet:
     icon: diamond_axe:219
     upgrade: true
     indestructible: false
-    quiet: -2
+    quiet: 1
 silent:
     icon: diamond_axe:220
     upgrade: true
     indestructible: false
-    quiet: -3
+    quiet: 2
