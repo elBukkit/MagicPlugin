@@ -17,6 +17,7 @@
 
  - Fix quiet, loud and silent wand upgrades
  - Brooms will stop working when they hit a world border
+ - Add Extinguisher item, just for fun
 
 ## 6.9.2
 

@@ -1226,6 +1226,10 @@ spells:
         name: Sponge
         description: Suck up water in an area
         cast: Slurp!
+    extinguish:
+        name: Extinguish
+        description: Put out fires in an area
+        cast: Flame off!
     skills:
         name: Skills
         descriptions: Shows available skills, drag a skill to the hotbar to use it

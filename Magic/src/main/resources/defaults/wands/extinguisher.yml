@@ -1,0 +1,8 @@
+extinguisher:
+    mode: cast
+    icon: wood_hoe:32
+    indestructible: true
+    undroppable: true
+    spells: extinguish
+    uses: 10
+    cost_reduction: 2

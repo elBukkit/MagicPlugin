@@ -355,3 +355,6 @@ wands:
     uberwand:
         name: "Überwand"
         description: The Ultimate Wand
+    extinguisher:
+        name: Extinguisher
+        description: Puts out fires
