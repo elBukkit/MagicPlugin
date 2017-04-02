@@ -24,6 +24,13 @@ cd assets
 cp -R ../../../skulls/assets/* .
 cd ..
 cp -R ../../default/* .
+rm -R assets/minecraft/textures/items/spells
+rm -R assets/minecraft/textures/items/brushes
+rm -R assets/minecraft/models/item/spells
+rm -R assets/minecraft/models/item/spells_disabled
+rm -R assets/minecraft/models/item/brushes
+rm assets/minecraft/models/item/diamond_axe.json
+rm assets/minecraft/models/item/diamond_hoe.json
 find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-skulls-RP-6-4.zip *
 cd ..

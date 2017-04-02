@@ -31,6 +31,8 @@
  - Heroes skill configs don't seem to work on first run?
 
 ## High-Priority
+
+ - Recall warps don't show up with /mage describe?
   
 ## Not so High-Priority
  
