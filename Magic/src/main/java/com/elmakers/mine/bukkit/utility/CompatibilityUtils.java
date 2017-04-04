@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.utility;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
 import com.elmakers.mine.bukkit.block.Schematic;
+import com.google.common.io.BaseEncoding;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -1094,6 +1095,18 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return hash;
+    }
+
+    public static boolean setResourcePack(Player player, String rp, byte[] hash) {
+        // TODO: Player.setResourcePack in 1.11+
+        try {
+            String hashString = BaseEncoding.base16().lowerCase().encode(hash);
+            class_EntityPlayer_setResourcePackMethod.invoke(getHandle(player), rp, hashString);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public static boolean setResourcePack(Server server, String rp, String hash) {

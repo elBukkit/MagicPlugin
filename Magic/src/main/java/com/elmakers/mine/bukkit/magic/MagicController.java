@@ -84,6 +84,7 @@ import com.elmakers.mine.bukkit.warp.WarpController;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
+import com.google.common.io.BaseEncoding;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -4658,32 +4659,57 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean sendResourcePack(CommandSender sender) {
+        if (resourcePack == null || resourcePackHash == null) {
+            if (sender != null) {
+                sender.sendMessage(ChatColor.RED + "No RP set or RP already set in server.properties, not sending.");
+            }
+            return false;
+        }
+        int sent = 0;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            CompatibilityUtils.setResourcePack(player, resourcePack, resourcePackHash);
+            sent++;
+        }
+        if (sender != null) {
+            sender.sendMessage(ChatColor.AQUA + "Sent current RP to " + sent + " players");
+        }
+
+        return true;
+    }
+
+    @Override
     public void checkResourcePack(CommandSender sender) {
         checkResourcePack(sender, false);
     }
 
     public boolean checkResourcePack(final CommandSender sender, final boolean quiet) {
         final Server server = plugin.getServer();
+        resourcePack = null;
+        resourcePackHash = null;
         final boolean initialLoad = !checkedResourcePack;
-        String resourcePackURL = CompatibilityUtils.getResourcePack(server);
-        String resourcePackHash = CompatibilityUtils.getResourcePackHash(server);
-        if (resourcePackHash != null) resourcePackHash = resourcePackHash.trim();
-        if (resourcePackURL != null) resourcePackURL = resourcePackURL.trim();
+        resourcePack = CompatibilityUtils.getResourcePack(server);
+        String resourcePackHashString = CompatibilityUtils.getResourcePackHash(server);
+        if (resourcePackHashString != null) {
+            resourcePackHashString = resourcePackHashString.trim();
+            resourcePackHash = BaseEncoding.base64().decode(resourcePackHashString);
+        }
+        if (resourcePack != null) resourcePack = resourcePack.trim();
         
-        if (!checkedResourcePack && resourcePackHash != null && !resourcePackHash.isEmpty()) {
+        if (!checkedResourcePack && resourcePackHashString != null && !resourcePackHashString.isEmpty()) {
             if (!quiet) sender.sendMessage("Resource pack hash already set- Magic skipping RP check");
             return false;
         }
         checkedResourcePack = true;
         
-        if (resourcePackURL == null || resourcePackURL.isEmpty()) {
+        if (resourcePack == null || resourcePack.isEmpty()) {
             if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
                 if (!quiet) sender.sendMessage("No resource pack set, and default has been cleared- Magic skipping RP check");
                 return false;
             }
 
-            resourcePackURL = defaultResourcePack;
-            CompatibilityUtils.setResourcePack(server, resourcePackURL, resourcePackHash);
+            resourcePack = defaultResourcePack;
+            CompatibilityUtils.setResourcePack(server, resourcePack, resourcePackHashString);
             if (!quiet) sender.sendMessage("No resource pack set, using default from Magic configuration");
         }
 
@@ -4691,13 +4717,13 @@ public class MagicController implements MageController {
             if (!quiet) sender.sendMessage("Resource pack updates disabled, Magic not checking for updates");
             return false;
         }
-        if (!quiet) sender.sendMessage("Magic checking resource pack for updates: " + ChatColor.GRAY + resourcePackURL);
+        if (!quiet) sender.sendMessage("Magic checking resource pack for updates: " + ChatColor.GRAY + resourcePack);
         
         long modifiedTime = 0;
         String currentSHA = null;
         final YamlConfiguration rpConfig = new YamlConfiguration();
         final File rpFile = new File(plugin.getDataFolder(), "data/" + RP_FILE + ".yml");
-        final String rpKey = resourcePackURL.replace(".", "_");
+        final String rpKey = resourcePack.replace(".", "_");
         if (rpFile.exists()) {
             try {
                 rpConfig.load(rpFile);
@@ -4710,7 +4736,7 @@ public class MagicController implements MageController {
             }
         }
 
-        final String finalResourcePack = resourcePackURL;
+        final String finalResourcePack = resourcePack;
         final long modifiedTimestamp = modifiedTime;
         final String currentHash = currentSHA;
         server.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
@@ -4766,12 +4792,13 @@ public class MagicController implements MageController {
                                         digest.update(data, 0, count);
                                     }
                                 }
-                                newResourcePackHash = byteArrayToHexString(digest.digest());
+                                resourcePackHash = digest.digest();
+                                newResourcePackHash = byteArrayToHexString(resourcePackHash);
 
                                 if (initialLoad) {
                                     response = ChatColor.GREEN + "Resource pack hash set to " + ChatColor.GRAY + newResourcePackHash;
                                 } else {
-                                    response = ChatColor.YELLOW + "Resource pack hash changed, clients will see updates after relogging";
+                                    response = ChatColor.YELLOW + "Resource pack hash changed, use " + ChatColor.AQUA + "/magic rpsend" + ChatColor.YELLOW + " to update connected players";
                                 }
 
                                 ConfigurationSection rpSection = rpConfig.createSection(rpKey);
@@ -5209,6 +5236,8 @@ public class MagicController implements MageController {
     private int                                 resourcePackCheckTimer      = 0;
     private String                              defaultResourcePack         = null;
     private boolean                             checkedResourcePack         = false;
+    private String                              resourcePack                = null;
+    private byte[]                              resourcePackHash            = null;
     private boolean                             saveDefaultConfigs          = true;
 
     private FactionsManager					    factionsManager				= new FactionsManager();

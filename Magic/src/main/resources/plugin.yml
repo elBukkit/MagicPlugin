@@ -260,6 +260,7 @@ commands:
         /magic give        Give players wands or items
         /magic clear       Remove dropped wands from the world
         /magic rpcheck     Check your resource pack for updates
+        /magic rpsend      Send the current RP to all connected players
         /magic help        Print some basic help usage
   "magic help":
     description: Prints basic help usage, which relies on the Bukkit /help command
@@ -289,6 +290,10 @@ commands:
     description: Check for updates to your server resource pack, so clients will update if the file has changed
     permission: Magic.commands.magic.rpcheck
     usage: /magic rpcheck
+  "magic rpsend":
+    description: Send the latest resource pack to all connected players
+    permission: Magic.commands.magic.rpsend
+    usage: /magic rpsend
   "magic list":
     description: List various bits of information
     permission: Magic.commands.magic.list
@@ -830,6 +835,10 @@ permissions:
     default: op
   Magic.commands.magic.rpcheck:
     description: Player may check for resource pack updates
+    type: boolean
+    default: op
+  Magic.commands.magic.rpsend:
+    description: Player may update connected players' resourc epack
     type: boolean
     default: op
   Magic.commands.magic.list:

@@ -209,6 +209,7 @@ public class NMSUtils {
     protected static Method class_CraftLivingEntity_getHandleMethod;
     protected static Method class_CraftWorld_getHandleMethod;
     protected static Method class_EntityPlayer_openSignMethod;
+    protected static Method class_EntityPlayer_setResourcePackMethod;
     protected static Method class_CraftServer_getServerMethod;
     protected static Method class_MinecraftServer_getResourcePackMethod;
     protected static Method class_MinecraftServer_getResourcePackHashMethod;
@@ -399,6 +400,7 @@ public class NMSUtils {
             class_CraftLivingEntity_getHandleMethod = class_CraftLivingEntity.getMethod("getHandle");
             class_CraftWorld_getHandleMethod = class_CraftWorld.getMethod("getHandle");
             class_EntityPlayer_openSignMethod = class_EntityPlayer.getMethod("openSign", class_TileEntitySign);
+            class_EntityPlayer_setResourcePackMethod = class_EntityPlayer.getMethod("setResourcePack", String.class, String.class);
             class_CraftServer_getServerMethod = class_CraftServer.getMethod("getServer");
             class_MinecraftServer_getResourcePackMethod = class_MinecraftServer.getMethod("getResourcePack");
             class_MinecraftServer_getResourcePackHashMethod = class_MinecraftServer.getMethod("getResourcePackHash");

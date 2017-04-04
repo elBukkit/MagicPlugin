@@ -21,6 +21,7 @@
  - EffectLib optimizations
  - Fix an error that happens if a projectile is cancelled before it launches (e.g. Disarm someone during Kill warmup)
  - Sell shops will differentiate between custom-named items
+ - Add /magic rpsend command to re-send current RP to all online players
 
 ## 6.9.2
 

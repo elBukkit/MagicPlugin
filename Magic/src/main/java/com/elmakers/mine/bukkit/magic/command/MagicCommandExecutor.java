@@ -109,6 +109,12 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			api.getController().checkResourcePack(sender);
 			return true;
 		}
+
+		if (subCommand.equalsIgnoreCase("rpsend"))
+		{
+			api.getController().sendResourcePack(sender);
+			return true;
+		}
 		if (subCommand.equalsIgnoreCase("save"))
 		{
 			api.save();
@@ -831,6 +837,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             addIfPermissible(sender, options, "Magic.commands.magic.", "worth");
             addIfPermissible(sender, options, "Magic.commands.magic.", "sell");
 			addIfPermissible(sender, options, "Magic.commands.magic.", "list");
+			addIfPermissible(sender, options, "Magic.commands.magic.", "rpcheck");
+			addIfPermissible(sender, options, "Magic.commands.magic.", "rpsend");
 		} else if (args.length == 2) {
 			if (args[0].equalsIgnoreCase("list")) {
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
