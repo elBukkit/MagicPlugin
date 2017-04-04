@@ -372,7 +372,8 @@ public interface MageController {
     String getBlockSkin(Material blockType);
     String getMobSkin(EntityType mobType);
     void checkResourcePack(CommandSender sender);
-    boolean sendResourcePack(CommandSender sender);
+    boolean sendResourcePackToAllPlayers(CommandSender sender);
+    boolean sendResourcePack(Player player);
     boolean commitOnQuit();
     
     Set<String> getItemKeys();

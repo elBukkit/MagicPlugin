@@ -1,16 +1,19 @@
-# Set this to allow Magic to set the SHA hash of your resource pack
-# automatically on startup.
-# Turn this off if you don't need it, but you will then need to manually
-# change the name or the SHA of your RP whenever it changes.
-enable_resource_pack_check: true
-
 # This resource pack will automatically be used if none is defined in your server.properties
 # Set this to "" if you have some other plugin or Bungee managing resource packs.
-default_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-6-4.zip"
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-6-4.zip"
+
+# This will delay sending resource packs to players. This can mitigate issues with the vanilla
+# client timing out on connect due to RP processing on potato computers.
+# This value is in milliseconds.
+resource_pack_delay: 2000
 
 # Set this to false to turn off the player skull-based spell icons
 # This may be needed if you have disabled the RP, spell icons are in the RP.
 url_icons_enabled: false
+
+# Set this to allow Magic to periodically check for updates to the resource pack.
+# Setting this to false is the same as setting resource_pack_check_interval to 0.
+enable_resource_pack_check: true
 
 # Set this to zero to turn off periodic RP update checks. The default is every five minutes.
 # This is done in a separate thread to avoid interfering with the main server thread.

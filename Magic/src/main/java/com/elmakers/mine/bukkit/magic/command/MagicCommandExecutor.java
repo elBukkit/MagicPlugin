@@ -112,7 +112,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
 		if (subCommand.equalsIgnoreCase("rpsend"))
 		{
-			api.getController().sendResourcePack(sender);
+			api.getController().sendResourcePackToAllPlayers(sender);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("save"))

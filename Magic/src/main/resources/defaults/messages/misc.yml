@@ -81,4 +81,9 @@ skills:
     none: "You have no skills!"
     none_on_page: "There are no skills on page $page"
 
+resource_pack:
+    sending: ""
+    # Use this if you'd like players to receive a message before getting the resource pack
+    # sending: "Sending resource pack, please wait"
+
 
