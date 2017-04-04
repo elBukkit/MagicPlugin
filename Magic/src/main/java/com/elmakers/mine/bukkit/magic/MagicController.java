@@ -4246,7 +4246,11 @@ public class MagicController implements MageController {
             return firstBrushKey.equalsIgnoreCase(secondBrushKey);
         }
 
-        return true;
+        String firstName = first.hasItemMeta() ? first.getItemMeta().getDisplayName() : null;
+        String secondName = second.hasItemMeta() ? second.getItemMeta().getDisplayName() : null;
+        if (firstName == null && secondName == null) return true;
+        if (firstName == null || secondName == null) return false;
+        return firstName.equals(secondName);
     }
 
     @Override
