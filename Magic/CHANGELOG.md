@@ -17,7 +17,10 @@
 
  - Fix quiet, loud and silent wand upgrades
  - Brooms will stop working when they hit a world border
- - Add Extinguisher item, just for fun
+ - Add Extinguisher and game mode switcher items, just for fun
+ - EffectLib optimizations
+ - Fix an error that happens if a projectile is cancelled before it launches (e.g. Disarm someone during Kill warmup)
+ - Sell shops will differentiate between custom-named items
 
 ## 6.9.2
 
