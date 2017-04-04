@@ -144,6 +144,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
@@ -4251,9 +4252,7 @@ public class MagicController implements MageController {
 
         String firstName = first.hasItemMeta() ? first.getItemMeta().getDisplayName() : null;
         String secondName = second.hasItemMeta() ? second.getItemMeta().getDisplayName() : null;
-        if (firstName == null && secondName == null) return true;
-        if (firstName == null || secondName == null) return false;
-        return firstName.equals(secondName);
+        return Objects.equals(firstName, secondName);
     }
 
     @Override
