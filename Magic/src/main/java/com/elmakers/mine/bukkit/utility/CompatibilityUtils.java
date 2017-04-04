@@ -1084,19 +1084,6 @@ public class CompatibilityUtils extends NMSUtils {
         return rp;
     }
 
-    public static String getResourcePackHash(Server server) {
-        String hash = null;
-        try {
-            Object minecraftServer = getHandle(server);
-            if (minecraftServer != null) {
-                hash = (String)class_MinecraftServer_getResourcePackHashMethod.invoke(minecraftServer);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return hash;
-    }
-
     public static boolean setResourcePack(Player player, String rp, byte[] hash) {
         // TODO: Player.setResourcePack in 1.11+
         try {
@@ -1107,24 +1094,6 @@ public class CompatibilityUtils extends NMSUtils {
             return false;
         }
         return true;
-    }
-
-    public static boolean setResourcePack(Server server, String rp, String hash) {
-        try {
-            Object minecraftServer = getHandle(server);
-            if (minecraftServer == null) {
-                return false;
-            }
-            class_MinecraftServer_setResourcePackMethod.invoke(minecraftServer, rp, hash);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-    
-    public static boolean checkResourcePackHash(String hash) {
-        return (hash == null || hash.isEmpty() || hash.matches("^[a-f0-9]{40}$"));
     }
 
     public static boolean loadSchematic(File inputFile, Schematic schematic) {

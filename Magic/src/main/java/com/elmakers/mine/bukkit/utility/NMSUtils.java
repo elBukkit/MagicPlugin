@@ -212,8 +212,6 @@ public class NMSUtils {
     protected static Method class_EntityPlayer_setResourcePackMethod;
     protected static Method class_CraftServer_getServerMethod;
     protected static Method class_MinecraftServer_getResourcePackMethod;
-    protected static Method class_MinecraftServer_getResourcePackHashMethod;
-    protected static Method class_MinecraftServer_setResourcePackMethod;
     protected static Method class_ItemStack_isEmptyMethod;
     protected static Method class_ItemStack_createStackMethod;
     protected static Method class_CraftMagicNumbers_getBlockMethod;
@@ -403,8 +401,6 @@ public class NMSUtils {
             class_EntityPlayer_setResourcePackMethod = class_EntityPlayer.getMethod("setResourcePack", String.class, String.class);
             class_CraftServer_getServerMethod = class_CraftServer.getMethod("getServer");
             class_MinecraftServer_getResourcePackMethod = class_MinecraftServer.getMethod("getResourcePack");
-            class_MinecraftServer_getResourcePackHashMethod = class_MinecraftServer.getMethod("getResourcePackHash");
-            class_MinecraftServer_setResourcePackMethod = class_MinecraftServer.getMethod("setResourcePack", String.class, String.class);
             
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
