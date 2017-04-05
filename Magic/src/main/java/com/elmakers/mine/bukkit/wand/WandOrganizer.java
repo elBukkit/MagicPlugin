@@ -83,7 +83,7 @@ public class WandOrganizer {
 			Spell mageSpell = mage == null ? null : mage.getSpell(spellName);
 			SpellTemplate spell = mageSpell == null ? controller.getSpellTemplate(spellName) : mageSpell;
 			if (spell != null) {
-                // Sum up all levels of this spell;
+                // Sum up all levels of this spell:
 				long castCount = 0;
 				int spellLevel = 1;
                 while (mageSpell != null) {
@@ -93,6 +93,7 @@ public class WandOrganizer {
                     String key = spellKey.getKey();
                     mageSpell = mage.hasSpell(key) ? mage.getSpell(key) : null;
                 }
+                spellName = spell.getSpellKey().getBaseKey();
 				if (castCount > favoriteCastCountThreshold) {
 					List<String> favorites = null;
 					if (!favoriteSpells.containsKey(castCount)) {
@@ -213,7 +214,7 @@ public class WandOrganizer {
             if (spell != null) {
                 name = spell.getName();
             }
-            alphabetized.put(name, spellKey);
+            alphabetized.put(name, spell.getSpellKey().getBaseKey());
         }
 
         currentInventoryIndex = 0;
