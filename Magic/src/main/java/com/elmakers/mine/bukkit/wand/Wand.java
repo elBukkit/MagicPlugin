@@ -3123,10 +3123,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     Random r = new Random();
                     String[] keys = StringUtils.split(iconKey, ',');
                     iconKey = keys[r.nextInt(keys.length)];
-					setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
-					updateIcon();
-					playEffects("randomize");
                 }
+				setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
+				updateIcon();
+				playEffects("randomize");
             }
         }
     }
