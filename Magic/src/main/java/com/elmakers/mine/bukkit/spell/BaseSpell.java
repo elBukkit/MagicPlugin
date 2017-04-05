@@ -1212,7 +1212,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         {
             WorldBorder border = location.getWorld().getWorldBorder();
             double borderSize = border.getSize() / 2 - border.getWarningDistance();
-            Location offset = location.subtract(border.getCenter());
+            Location offset = location.clone().subtract(border.getCenter());
             if (offset.getX() < -borderSize || offset.getX() > borderSize || offset.getZ() < -borderSize || offset.getZ() > borderSize) return false;
         }
         return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location);
