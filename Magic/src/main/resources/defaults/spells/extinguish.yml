@@ -10,12 +10,20 @@ extinguish:
       - class: Sphere
         actions:
         - class: ModifyBlock
+      - class: AreaOfEffect
+        actions:
+        - class: Ignite
+          duration: 0
     effects:
       cast:
       - class: EffectSingle
-        sound: entity_player_levelup
-      - class: EffectTrail
-        particle: block_crack
+        sound: block_fire_extinguish
+        effectlib:
+         class: ConeEffect
+         iterations: 20
+         particle: smoke_normal
+         lengthGrow: 0.03
+         radiusGrow: 0.008
     parameters:
       allow_max_range: false
       range: 32
@@ -25,7 +33,7 @@ extinguish:
       radius: 10
       transparent: transparent_to_construction
       cooldown: 8000
-      select_self: false
+      target_self: true
     costs:
       mana: 30
 
