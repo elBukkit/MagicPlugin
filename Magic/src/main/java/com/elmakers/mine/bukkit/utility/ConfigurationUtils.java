@@ -367,6 +367,19 @@ public class ConfigurationUtils extends ConfigUtils {
         return first;
     }
 
+    public static ConfigurationSection overlayConfigurations(ConfigurationSection first, ConfigurationSection second)
+    {
+        if (second == null) return first;
+        Map<String, Object> map = NMSUtils.getMap(second);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if (!first.contains(entry.getKey())) {
+                first.set(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return first;
+    }
+
     protected static double parseDouble(String s)
     {
         char firstChar = s.charAt(0);

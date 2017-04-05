@@ -36,11 +36,11 @@ public class WandProperties extends CasterProperties {
     protected void rebuildEffectiveConfiguration(ConfigurationSection effectiveConfiguration) {
         if (wandTemplate != null) {
             ConfigurationSection parentConfiguration = wandTemplate.getEffectiveConfiguration();
-            ConfigurationUtils.addConfigurations(effectiveConfiguration, parentConfiguration, false);
+            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, parentConfiguration);
         }
         if (mageClass != null) {
             ConfigurationSection classConfiguration = mageClass.getEffectiveConfiguration();
-            ConfigurationUtils.addConfigurations(effectiveConfiguration, classConfiguration, false);
+            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, classConfiguration);
         }
     }
 }

@@ -23,14 +23,14 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
     @Override
     protected void rebuildEffectiveConfiguration(@Nonnull ConfigurationSection effectiveConfiguration) {
         ConfigurationSection templateConfiguration = template.getEffectiveConfiguration();
-        ConfigurationUtils.addConfigurations(effectiveConfiguration, templateConfiguration, false);
+        ConfigurationUtils.overlayConfigurations(effectiveConfiguration, templateConfiguration);
         if (parent != null) {
             ConfigurationSection parentConfiguration = parent.getEffectiveConfiguration();
-            ConfigurationUtils.addConfigurations(effectiveConfiguration, parentConfiguration, false);
+            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, parentConfiguration);
         } else {
             // If we have a parent, it has already incorporated Mage data
             ConfigurationSection mageConfiguration = mage.getEffectiveConfiguration();
-            ConfigurationUtils.addConfigurations(effectiveConfiguration, mageConfiguration, false);
+            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, mageConfiguration);
         }
     }
 

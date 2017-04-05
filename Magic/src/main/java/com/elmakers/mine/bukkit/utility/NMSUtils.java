@@ -1679,6 +1679,7 @@ public class NMSUtils {
 
     public static Map<String, Object> getMap(ConfigurationSection section)
     {
+        if (section == null) return null;
         if (section instanceof MemorySection)
         {
             try {
