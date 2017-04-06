@@ -5,6 +5,12 @@ wands:
     name: Sniper Rifle
   jetpack:
     name: Jetpack
+  pistol:
+    name: Pistol
+  rocketlauncher:
+    name: Rocket Launcher
+  shotgun:
+    name: Shotgun
 
 wand:
     spell_aura: ""

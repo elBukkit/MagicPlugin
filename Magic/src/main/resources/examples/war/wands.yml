@@ -14,6 +14,24 @@ sniper:
   active_spell: shoot_sniper
   quiet: 1
 
+pistol:
+  icon: diamond_pickaxe:3
+  inherit: base_gun
+  active_spell: shoot_pistol
+  quiet: 1
+
+shotgun:
+  icon: diamond_pickaxe:3
+  inherit: base_gun
+  active_spell: shoot_shotgun
+  quiet: 1
+
+rocketlauncher:
+  icon: diamond_pickaxe:3
+  inherit: base_gun
+  active_spell: shoot_rocket
+  quiet: 1
+
 jetpack:
   icon: elytra
   cast_spell: thruster
