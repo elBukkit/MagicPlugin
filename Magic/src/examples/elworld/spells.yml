@@ -73,13 +73,14 @@ recall:
         icon: nether_star
         command: mserver hub
         op: true
+        locked: true
     warps:
       bean:
-        name: Chicago
+        name: Chicago Warzone
         description: Leave this world
         server: chicago
         icon: iron_nugget
-        locked: true
+        locked: false
       walls:
         name: The Walls
         description: A sprawling urbal dueling arena

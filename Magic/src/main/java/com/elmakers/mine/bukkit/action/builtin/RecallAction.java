@@ -853,8 +853,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 String warpName = waypoint.warpName;
                 if (warpName != null && serverName != null) {
                     context.getController().warpPlayerToServer(player, serverName, warpName);
+                } else {
+                    context.sendMessage(waypoint.failMessage);
                 }
-                context.sendMessage(waypoint.failMessage);
 			return false;
 		}
 		if (!allowCrossWorld && !mage.getLocation().getWorld().equals(targetLocation.getWorld())) {
