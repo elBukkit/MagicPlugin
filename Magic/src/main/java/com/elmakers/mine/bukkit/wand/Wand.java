@@ -4334,17 +4334,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         boolean eraseWasActive = brush.isEraseModifierActive();
         brush.activate(mage.getLocation(), materialKey);
 
-        if (mage != null) {
-            BrushMode mode = brush.getMode();
-            if (mode == BrushMode.CLONE) {
-                mage.sendMessage(getMessage("clone_material_activated"));
-            } else if (mode == BrushMode.REPLICATE) {
-                mage.sendMessage(getMessage("replicate_material_activated"));
-            }
-            if (!eraseWasActive && brush.isEraseModifierActive()) {
-                mage.sendMessage(getMessage("erase_modifier_activated"));
-            }
-        }
+		BrushMode mode = brush.getMode();
+		if (mode == BrushMode.CLONE) {
+			mage.sendMessage(getMessage("clone_material_activated"));
+		} else if (mode == BrushMode.REPLICATE) {
+			mage.sendMessage(getMessage("replicate_material_activated"));
+		}
+		if (!eraseWasActive && brush.isEraseModifierActive()) {
+			mage.sendMessage(getMessage("erase_modifier_activated"));
+		}
     }
 
     public void setActiveBrush(ItemStack itemStack) {
@@ -4356,8 +4354,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		this.activeBrush = materialKey;
 		setProperty("active_brush", this.activeBrush);
         saveState();
-		updateName();
 		updateActiveMaterial();
+		updateName();
         updateHotbar();
 	}
 
