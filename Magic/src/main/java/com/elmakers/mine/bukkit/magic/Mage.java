@@ -2988,7 +2988,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         boolean usingURLIcon = (controller.isUrlIconsEnabled() || spellIcon == null || spellIcon.getMaterial() == Material.AIR) && urlIcon != null && !urlIcon.isEmpty();
                         if (disabledIcon != null && spellIcon != null && !usingURLIcon) {
                             if (!canCast) {
-                                if (disabledIcon.getMaterial() != spellItem.getType() || disabledIcon.getData() != spellItem.getDurability()) {
+                                if (disabledIcon.isValid() && (disabledIcon.getMaterial() != spellItem.getType() || disabledIcon.getData() != spellItem.getDurability())) {
                                     disabledIcon.applyToItem(spellItem);
                                 }
                                 if (targetAmount == 99) {
@@ -2998,7 +2998,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                     setAmount = true;
                                 }
                             } else {
-                                if (spellIcon.getMaterial() != spellItem.getType() || spellIcon.getData() != spellItem.getDurability()) {
+                                if (spellIcon.isValid() && (spellIcon.getMaterial() != spellItem.getType() || spellIcon.getData() != spellItem.getDurability())) {
                                     spellIcon.applyToItem(spellItem);
                                 }
                             }
