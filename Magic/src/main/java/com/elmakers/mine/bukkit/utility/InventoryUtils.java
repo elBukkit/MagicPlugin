@@ -555,7 +555,7 @@ public class InventoryUtils extends NMSUtils
                     full += ",";
                 }
                 first = false;
-                full += key + "=" + describeProperty(section.get(key));
+                full += key + ":" + describeProperty(section.get(key));
             }
             propertyString = full + "}";
         } else {
