@@ -76,7 +76,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public static Vector DEFAULT_CAST_OFFSET = new Vector(0.5, 0, 0);
 	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
-	private static int WAND_VERSION = 4;
+	private static int WAND_VERSION = 5;
 
     private final static String[] EMPTY_PARAMETERS = new String[0];
 
@@ -439,8 +439,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 		}
 
+		// Remove icon if matches template
+		if (version <= 3) {
+			ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(wandConfig.getString("template"));
+			String templateIcon = templateConfig == null ? null : templateConfig.getString("icon");
+			if (templateIcon != null && templateIcon.equals(wandConfig.getString("icon", ""))) {
+				wandConfig.set("icon", null);
+			}
+		}
+
 		// Migration: remove level from spell inventory
-		if (version <= 2) {
+		if (version <= 4) {
 			Object spellInventoryRaw = wandConfig.get("spell_inventory");
 			if (spellInventoryRaw != null) {
 				Map<String, ? extends Object> spellInventory = null;
@@ -455,20 +464,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 						Object slot = spellEntry.getValue();
 						if (slot != null && slot instanceof Integer) {
 							SpellKey spellKey = new SpellKey(spellEntry.getKey());
+							// Prefer to use the base spell if present since that is what we'd be
+							// using on load.
+							Object testSlot = spellInventory.get(spellKey.getBaseKey());
+							if (testSlot != null) {
+								slot = testSlot;
+							}
 							newSpellInventory.put(spellKey.getBaseKey(), (Integer)slot);
 						}
 					}
 					wandConfig.set("spell_inventory", newSpellInventory);
 				}
-			}
-		}
-
-		// Remove icon if matches template
-		if (version <= 3) {
-			ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(wandConfig.getString("template"));
-			String templateIcon = templateConfig == null ? null : templateConfig.getString("icon");
-			if (templateIcon != null && templateIcon.equals(wandConfig.getString("icon", ""))) {
-				wandConfig.set("icon", null);
 			}
 		}
 
