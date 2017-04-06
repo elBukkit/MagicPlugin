@@ -241,7 +241,11 @@ commands:
   "mitem describe":
     description: List all item properties
     permission: Magic.commands.mitem.describe
-    usage: /mitem describe
+    usage: |
+
+            /mitem describe
+            /mitem describe wand
+            /mitem describe wand.spells
   "mitem worth":
     description: Show the value of an item
     usage: /mitem worth

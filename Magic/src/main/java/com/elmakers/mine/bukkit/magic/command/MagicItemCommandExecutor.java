@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -242,7 +243,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		}
 		else if (subCommand.equalsIgnoreCase("describe"))
 		{
-			return onItemDescribe(player, item);
+			return onItemDescribe(player, item, args);
 		}
 		else if (subCommand.equalsIgnoreCase("name"))
 		{
@@ -260,21 +261,34 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		return false;
 	}
 
-	public boolean onItemDescribe(Player player, ItemStack item) {
+	public boolean onItemDescribe(Player player, ItemStack item, String[] args) {
 		MaterialAndData material = new MaterialAndData(item);
 		player.sendMessage(ChatColor.GOLD + material.getKey());
 		YamlConfiguration configuration = new YamlConfiguration();
 		if (InventoryUtils.loadAllTagsFromNBT(configuration, item)) {
-			player.sendMessage(ChatColor.YELLOW + " ---- EXTRA DATA ---- ");
-			String itemString = configuration.saveToString().replace(ChatColor.COLOR_CHAR, '&');
+			String itemString = null;
+			if (args.length > 0) {
+				Object target = configuration.get(args[0]);
+				if (target == null) {
+					itemString += ChatColor.AQUA + args[0] + ChatColor.GRAY + ": " + ChatColor.RED + "(Not Set)";
+				} else  {
+					configuration = new YamlConfiguration();
+					configuration.set(args[0], target);
+					itemString = configuration.saveToString().replace(ChatColor.COLOR_CHAR, '&');
+				}
+			} else {
+				itemString = configuration.saveToString().replace(ChatColor.COLOR_CHAR, '&');
+			}
 			player.sendMessage(itemString);
 		}
-		ItemData itemData = api.getController().getItem(item);
-		if (itemData != null) {
-			player.sendMessage(ChatColor.AQUA + "Give with: " + ChatColor.GRAY + "/mgive " + ChatColor.YELLOW + itemData.getKey());
-			double worth = itemData.getWorth();
-			if (worth > 0) {
-				player.sendMessage(ChatColor.AQUA + " Worth " + ChatColor.GREEN + worth);
+		if (args.length == 0) {
+			ItemData itemData = api.getController().getItem(item);
+			if (itemData != null) {
+				player.sendMessage(ChatColor.AQUA + "Give with: " + ChatColor.GRAY + "/mgive " + ChatColor.YELLOW + itemData.getKey());
+				double worth = itemData.getWorth();
+				if (worth > 0) {
+					player.sendMessage(ChatColor.AQUA + " Worth " + ChatColor.GREEN + worth);
+				}
 			}
 		}
 		return true;
