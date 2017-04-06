@@ -2171,8 +2171,15 @@ public class MagicController implements MageController {
 
         enableResourcePackCheck = properties.getBoolean("enable_resource_pack_check", true);
         resourcePackCheckInterval = properties.getInt("resource_pack_check_interval", 0);
-        defaultResourcePack = properties.getString("default_resource_pack", null);
-        defaultResourcePack = properties.getString("resource_pack", defaultResourcePack);
+        defaultResourcePack = properties.getString("resource_pack", null);
+        // For legacy configs
+        defaultResourcePack = properties.getString("default_resource_pack", defaultResourcePack);
+        // For reloading after disabling the RP
+        if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
+            resourcePack = null;
+            resourcePackHash = null;
+        }
+
         resourcePackDelay = properties.getLong("resource_pack_delay", 0);
         showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
         showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
