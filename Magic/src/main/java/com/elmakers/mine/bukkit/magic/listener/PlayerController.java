@@ -125,7 +125,7 @@ public class PlayerController implements Listener {
         if (activeWand != null && activeWand.isInventoryOpen()) {
             // If the wand inventory is open, we're going to let them select a spell or material
             if (!isWand) {
-                controller.onPlayerActivateIcon(mage, activeWand, next);
+                mage.activateIcon(activeWand, next);
 
                 // Make sure we have the current wand item in the player's inventory so the
                 // item text gets updated on hotbar item selection "bounce"
@@ -558,7 +558,7 @@ public class PlayerController implements Listener {
     {
         Player player = event.getPlayer();
         Mage mage = controller.getMage(player);
-        mage.checkWand();
+        mage.onChangeWorld();
     }
 
     @EventHandler

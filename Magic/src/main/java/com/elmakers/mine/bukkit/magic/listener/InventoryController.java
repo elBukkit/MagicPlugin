@@ -372,7 +372,7 @@ public class InventoryController implements Listener {
                     boolean isInventoryQuickSelect = isRightClick && wandMode == WandMode.INVENTORY;
                     if (isInventoryQuickSelect || wandMode == WandMode.CHEST) {
                         player.closeInventory();
-                        controller.onPlayerActivateIcon(mage, activeWand, clickedItem);
+                        mage.activateIcon(activeWand, clickedItem);
                         event.setCancelled(true);
                     }
 

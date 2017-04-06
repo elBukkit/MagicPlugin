@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.WandAction;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
+import com.elmakers.mine.bukkit.wand.WandMode;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
@@ -91,6 +92,7 @@ import javax.annotation.Nullable;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
+    public static int CHANGE_WORLD_EQUIP_COOLDOWN = 1000;
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     public static int OFFHAND_CAST_RANGE = 32;
     public static int OFFHAND_CAST_COOLDOWN = 500;
@@ -133,6 +135,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private EntityData entityData;
     private long lastTick;
     private long lastBlockTime;
+    private long ignoreItemActivationUntil = 0;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     protected float damageReduction = 0;
@@ -444,6 +447,38 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (wand == offhandWand) {
             setOffhandWand(null);
         }
+    }
+
+    public void onChangeWorld() {
+        checkWandNextTick();
+        if (CHANGE_WORLD_EQUIP_COOLDOWN > 0) {
+            ignoreItemActivationUntil = System.currentTimeMillis() + CHANGE_WORLD_EQUIP_COOLDOWN;
+        }
+    }
+
+    public void activateIcon(Wand activeWand, ItemStack icon)
+    {
+        if (System.currentTimeMillis() < ignoreItemActivationUntil) {
+            return;
+        }
+        // Check for spell or material selection
+        if (icon != null && icon.getType() != Material.AIR) {
+            com.elmakers.mine.bukkit.api.spell.Spell spell = getSpell(Wand.getSpell(icon));
+            if (spell != null) {
+                boolean isQuickCast = spell.isQuickCast() && !activeWand.isQuickCastDisabled();
+                isQuickCast = isQuickCast || (activeWand.getMode() == WandMode.CHEST && activeWand.isQuickCast());
+                if (isQuickCast) {
+                    activeWand.cast(spell);
+                } else {
+                    activeWand.setActiveSpell(spell.getKey());
+                }
+            } else if (Wand.isBrush(icon)){
+                activeWand.setActiveBrush(icon);
+            }
+        } else {
+            activeWand.setActiveSpell("");
+        }
+        DeprecatedUtils.updateInventory(getPlayer());
     }
 
     private void setActiveWand(Wand activeWand) {

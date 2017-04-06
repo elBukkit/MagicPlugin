@@ -72,7 +72,6 @@ import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.wand.LostWand;
@@ -2424,6 +2423,7 @@ public class MagicController implements MageController {
         Wand.DEFAULT_CAST_OFFSET.setZ(properties.getDouble("wand_location_offset", Wand.DEFAULT_CAST_OFFSET.getZ()));
         Wand.DEFAULT_CAST_OFFSET.setY(properties.getDouble("wand_location_offset_vertical", Wand.DEFAULT_CAST_OFFSET.getY()));
         com.elmakers.mine.bukkit.magic.Mage.JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = properties.getInt("jump_exemption", 0);
+        com.elmakers.mine.bukkit.magic.Mage.CHANGE_WORLD_EQUIP_COOLDOWN = properties.getInt("change_world_equip_cooldown", 0);
 
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
@@ -2673,28 +2673,6 @@ public class MagicController implements MageController {
         }
 		
 		return blockList;
-	}
-	
-	public void onPlayerActivateIcon(Mage mage, Wand activeWand, ItemStack icon)
-	{
-		// Check for spell or material selection
-		if (icon != null && icon.getType() != Material.AIR) {
-			com.elmakers.mine.bukkit.api.spell.Spell spell = mage.getSpell(Wand.getSpell(icon));
-			if (spell != null) {
-			    boolean isQuickCast = spell.isQuickCast() && !activeWand.isQuickCastDisabled();
-                isQuickCast = isQuickCast || (activeWand.getMode() == WandMode.CHEST && activeWand.isQuickCast());
-                if (isQuickCast) {
-                    activeWand.cast(spell);
-                } else {
-                    activeWand.setActiveSpell(spell.getKey());
-                }
-            } else if (Wand.isBrush(icon)){
-				activeWand.setActiveBrush(icon);
-            }
-		} else {
-			activeWand.setActiveSpell("");
-		}
-		DeprecatedUtils.updateInventory(mage.getPlayer());
 	}
     
 	@Override

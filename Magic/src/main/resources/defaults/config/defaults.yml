@@ -218,6 +218,10 @@ allow_offhand_casting: true
 # this is meant to throttle the spammy behavior that happens if you hold right-click with an offhand wand
 offhand_cast_cooldown: 500
 
+# This is here to work around an MC bug which causes multiple equip events to fire when changing worlds
+# Which can cause some unintended effects like changing spells or brushes when a wand inventory is open.
+change_world_equip_cooldown: 1000
+
 # Turn this off to use normal damage. May be useful if you want
 # direct damage spells to effect armor.
 # This is incompatible with prevent_melee_damage: true!
