@@ -104,6 +104,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected boolean requireTargetEntity = false;
     protected boolean useHitLocation = true;
     protected boolean useBlockLocation = true;
+    protected boolean sampleTarget = false;
     protected SourceLocation sourceLocation = null;
 
     protected float scale = 1.0f;
@@ -215,6 +216,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         sourceLocation = new SourceLocation(configuration);
         useHitLocation = configuration.getBoolean("use_hit_location", true);
         useBlockLocation = configuration.getBoolean("use_block_location", false);
+        sampleTarget = configuration.getString("sample", "").equalsIgnoreCase("target");
     }
 
     public void setLocationType(String locationType) {
@@ -295,9 +297,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     @SuppressWarnings("deprecation")
     protected MaterialAndData getWorkingMaterial() {
+        Location target = getTarget();
+        if (sampleTarget && target != null) {
+            return new MaterialAndData(target.getBlock().getType(), target.getBlock().getData());
+        }
         if (material1 != null) return material1;
         MaterialAndData result = material;
-        Location target = getTarget();
         Location origin = getOrigin();
         if (result == null && target != null) {
             result = new MaterialAndData(target.getBlock().getType(), target.getBlock().getData());
