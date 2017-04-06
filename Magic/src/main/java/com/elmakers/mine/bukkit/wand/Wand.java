@@ -3244,48 +3244,50 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 
         if (castSpell != null && castInterval > 0) {
-            boolean velocityCheck = true;
-            if (castMinVelocity > 0) {
-                if (lastLocation != null && lastLocationTime != 0) {
-                    double velocitySquared = castMinVelocity * castMinVelocity;
-                    Vector velocity = lastLocation.subtract(mageLocation).multiply(-1);
-                    if (castVelocityDirection != null) {
-                        velocity = velocity.multiply(castVelocityDirection);
+            if (lastSpellCast == 0 || now > lastSpellCast + castInterval) {
+				boolean velocityCheck = true;
+				if (castMinVelocity > 0) {
+					if (lastLocation != null && lastLocationTime != 0) {
+						double velocitySquared = castMinVelocity * castMinVelocity;
+						Vector velocity = lastLocation.subtract(mageLocation).multiply(-1);
+						if (castVelocityDirection != null) {
+							velocity = velocity.multiply(castVelocityDirection);
 
-                        // This is kind of a hack to make jump-detection work.
-                        if (castVelocityDirection.getY() < 0) {
-                            velocityCheck = velocity.getY() < 0;
-                        } else {
-                            velocityCheck = velocity.getY() > 0;
-                        }
-                    }
-                    if (velocityCheck)
-                    {
-                        double speedSquared = velocity.lengthSquared() * 1000 / (now - lastLocationTime);
-                        velocityCheck = (speedSquared > velocitySquared);
-                    }
-                } else {
-                    velocityCheck = false;
-                }
-            }
-            if (velocityCheck && (lastSpellCast == 0 || now > lastSpellCast + castInterval)) {
-                lastSpellCast = now;
-                Spell spell = mage.getSpell(castSpell);
-                if (spell != null) {
-					if (castParameters == null) {
-						castParameters = new MemoryConfiguration();
+							// This is kind of a hack to make jump-detection work.
+							if (castVelocityDirection.getY() < 0) {
+								velocityCheck = velocity.getY() < 0;
+							} else {
+								velocityCheck = velocity.getY() > 0;
+							}
+						}
+						if (velocityCheck)
+						{
+							double speedSquared = velocity.lengthSquared() * 1000 / (now - lastLocationTime);
+							velocityCheck = (speedSquared > velocitySquared);
+						}
+					} else {
+						velocityCheck = false;
 					}
-                    castParameters.set("passive", true);
-                    mage.setCostReduction(100);
-                    mage.setQuiet(true);
-                    try {
-                        spell.cast(castParameters);
-                    } catch (Exception ex) {
-                        controller.getLogger().log(Level.WARNING, "Error casting aura spell " + spell.getKey(), ex);
-                    }
-                    mage.setQuiet(false);
-                    mage.setCostReduction(0);
-                }
+				}
+				if (velocityCheck) {
+					lastSpellCast = now;
+					Spell spell = mage.getSpell(castSpell);
+					if (spell != null) {
+						if (castParameters == null) {
+							castParameters = new MemoryConfiguration();
+						}
+						castParameters.set("passive", true);
+						mage.setCostReduction(100);
+						mage.setQuiet(true);
+						try {
+							spell.cast(castParameters);
+						} catch (Exception ex) {
+							controller.getLogger().log(Level.WARNING, "Error casting aura spell " + spell.getKey(), ex);
+						}
+						mage.setQuiet(false);
+						mage.setCostReduction(0);
+					}
+				}
             }
         }
 		
