@@ -54,7 +54,6 @@ public class ExplosionController implements Listener {
             blockList = new com.elmakers.mine.bukkit.block.UndoList(mage, "Explosion (" + explodingEntity.getType().name() + ")");
             blockList.setScheduleUndo(autoRollbackDuration);
             blockList.setUndoSpeed(autoRollbackSpeed);
-            mage.registerForUndo(blockList);
         }
         return blockList;
     }
@@ -98,6 +97,7 @@ public class ExplosionController implements Listener {
         }
         else if (blockList != null) {
             blockList.explode(explodingEntity, event.blockList());
+            blockList.getOwner().registerForUndo(blockList);
         }
     }
 

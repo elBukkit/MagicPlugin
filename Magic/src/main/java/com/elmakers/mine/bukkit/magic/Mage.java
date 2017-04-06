@@ -627,7 +627,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean prepareForUndo(com.elmakers.mine.bukkit.api.block.UndoList undoList) {
         if (undoList == null) return false;
-        if (undoList.bypass()) return true;
+        if (undoList.bypass()) return false;
         UndoQueue queue = getUndoQueue();
         queue.add(undoList);
         return true;
@@ -644,7 +644,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             undoList.updateScheduledUndo();
         }
 
-        if (undoList.isScheduled())
+        if (undoList.isScheduled() && undoList.hasChanges())
         {
             controller.scheduleUndo(undoList);
         }
