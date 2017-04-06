@@ -1,0 +1,327 @@
+#
+# These options are applied to all spells by default.
+#
+default:
+    effects:
+       fail:
+       - class: EffectSingle
+         location: origin
+         sound: block_note_basedrum
+         sound_volume: 0.8
+         sound_pitch: 1.2
+       insufficient_resources:
+       - class: EffectSingle
+         location: origin
+         sound: block_note_bass
+         sound_volume: 0.7
+         sound_pitch: 1.2
+       insufficient_permission:
+       - class: EffectSingle
+         location: origin
+         sound: block_note_bass
+         sound_volume: 0.9
+         sound_pitch: 1.5
+       cooldown:
+       - class: EffectSingle
+         location: origin
+         sound: block_note_basedrum
+         sound_volume: 0.6
+         sound_pitch: 0.8
+       cursed:
+       - class: EffectSingle
+         location: origin
+         entity_effect: hurt
+       backfire:
+       - class: EffectSingle
+         location: origin
+         entity_effect: hurt
+       blocked:
+       - class: EffectSingle
+         location: origin
+         entity_effect: hurt
+       upgrade:
+       - class: EffectSingle
+         location: origin
+         sound: entity_player_levelup
+         firework: ball_large
+       progress:
+       - class: EffectSingle
+         location: origin
+         sound: entity_player_levelup
+         firework: ball_large
+       break:
+       - class: EffectSingle
+         location: target
+         effect: step_sound
+       earn_sp:
+       - class: EffectSingle
+         location: origin
+         sound: entity_player_levelup
+         sound_volume: 0.6
+         sound_pitch: 0.75
+       - class: EffectSingle
+         location: origin
+         sound: entity_experience_orb_pickup
+         sound_volume: 0.4
+         sound_pitch: 1.5
+       earn_scaled_sp:
+       - class: EffectSingle
+         location: origin
+         sound: entity_experience_orb_pickup
+         sound_volume: 0.6
+         sound_pitch: 1.5
+       reflect:
+       - class: EffectSingle
+         location: target
+         particle: fireworks_spark
+         particle_count: 3
+         particle_offset_x: 0.1
+         particle_offset_y: 0.1
+         particle_offset_z: 0.1
+         sound: magic.shimmer_quiet
+       cast_self: cast
+       no_target: cast
+       no_action: cast
+       alternate: cast
+       alternate_up: cast
+       alternate_down: cast
+       alternate_sneak: cast
+       fizzle: fail
+       cancelled: fail
+       entity_required: fail
+       living_entity_required: fail
+       player_required: fail
+       location_required: fail
+       world_required: fail
+       invalid_world: fail
+
+shoot_sniper:
+    icon: ghast_tear
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    category: combat
+    worth: 9999
+    actions:
+        cast:
+        - class: ChangeContext
+          target_caster: true
+          ignore_result: true
+          actions:
+          - class: PotionEffect
+          - class: Deactivate
+        - class: Delay
+          delay: 0
+        - class: Retarget
+        - class: ChangeContext
+        - class: PlayEffects
+          effect: launch
+        - class: ChangeContext
+          ignore_result: true
+          target_caster: true
+          actions:
+          - class: PotionEffectAction
+        -   class: Parallel
+            actions:
+            -   class: CustomProjectile
+                actions:
+                - class: Damage
+                - class: ModifyBlock
+                ignore_result: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           sound_pitch: 1.5
+           location: origin
+           color_override: color
+           effectlib:
+             class: VortexEffect
+             iterations: 100
+             particle: flame
+             radius: 0.2
+             grow: 0.5
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: fireworks_spark
+          location: target
+        - particle: redstone
+          location: target
+          color: FF8800
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: redstone_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 20
+           particle_offset_x: 0.4
+           particle_offset_y: 0.5
+           particle_offset_z: 0.4
+           particle_data: 0.4
+           sound: magic.zap
+           sound_pitch: 1.2
+           sound_volume: 0.5
+        hit_block:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 0.8
+           particle_offset_y: 1
+           particle_offset_z: 0.8
+        headshot:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 15
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 0.5
+           sound: magic.zap
+           sound_volume: .3
+           particle_data: 0.4
+        -  class: EffectSingle
+           sound: entity_slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 50
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particleCount: 20
+            material: redstone_block
+            size: 0.3
+            yOffset: 0
+    headshot_parameters:
+      player_damage: 15
+      entity_damage: 30
+    parameters:
+        cooldown: 5000
+        allow_max_range: true
+        velocity: 3000
+        range: 100
+        effect_slow: 20
+        hitbox: true
+        entity_hit_count: 5
+        duration: 2000
+        hitbox: true
+        target_type: Damageable
+        player_damage: 8
+        entity_damage: 10
+        target_breakables: 1
+        cooldown: 20
+        reorient: false
+
+shoot_ak47:
+    icon: ghast_tear
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    category: combat
+    worth: 9999
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: ModifyBlock
+            ignore_result: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: war.ak47
+           location: origin
+           color_override: color
+           effectlib:
+             class: VortexEffect
+             iterations: 100
+             particle: smoke_normal
+             radius: 0.2
+             grow: 0.5
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: fireworks_spark
+          location: target
+        - particle: redstone
+          location: target
+          color: FF8800
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: redstone_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 20
+           particle_offset_x: 0.4
+           particle_offset_y: 0.5
+           particle_offset_z: 0.4
+           particle_data: 0.4
+        hit_block:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+           sample: target
+        -  class: EffectSingle
+           location: target
+           sample: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 0.8
+           particle_offset_y: 1
+           particle_offset_z: 0.8
+        headshot:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 15
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 0.5
+           particle_data: 0.4
+        -  class: EffectSingle
+           sound: entity_slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 50
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particleCount: 20
+            material: redstone_block
+            size: 0.3
+            yOffset: 0
+    headshot_parameters:
+      player_damage: 8
+      entity_damage: 300
+    parameters:
+        allow_max_range: true
+        velocity: 2000
+        range: 100
+        hitbox: true
+        player_damage: 4
+        entity_damage: 6
+        target_breakables: 1
+        destructible: glass
+        undo: 30000
+        brush: erase
+

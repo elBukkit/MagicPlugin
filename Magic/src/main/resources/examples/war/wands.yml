@@ -1,0 +1,9 @@
+base_gun:
+  right_click: cast
+  indestructible: true
+
+ak47:
+  icon: diamond_pickaxe:1
+  inherit: base_gun
+  active_spell: shoot_ak47
+  quiet: 1

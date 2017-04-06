@@ -1,0 +1,22 @@
+#
+# This is a full customization, replacing wands and spells with guns and
+# other combat weapons.
+#
+
+load_default_spells: false
+load_default_wands: false
+load_default_classes: false
+load_default_paths: false
+load_default_crafting: false
+load_default_mobs: false
+load_default_items: false
+
+# Use a special RP
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-war-RP-7.zip"
+
+# Roll back creeper explosions and tnt
+auto_rollback_duration: 10000
+auto_rollback_speed: 0.5
+auto_rollback_explosions:
+- creeper
+- primed_tnt

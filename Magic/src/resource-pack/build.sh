@@ -64,3 +64,13 @@ cp -R ../../potter/* .
 find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-potter-RP-6-4.zip *
 cd ..
+
+
+echo "** BUILDING WAR **"
+
+mkdir war
+cd war
+cp -R ../../war/* .
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-war-RP-7.zip *
+cd ..

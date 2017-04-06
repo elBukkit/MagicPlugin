@@ -15,6 +15,7 @@
 
 ## 6.9.3
 
+ - Add "war" example configs, WIP
  - Fix quiet, loud and silent wand upgrades
  - Brooms will stop working when they hit a world border
  - Add Extinguisher and game mode switcher items, just for fun
