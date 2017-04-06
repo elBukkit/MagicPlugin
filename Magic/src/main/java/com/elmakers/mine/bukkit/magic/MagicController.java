@@ -1435,11 +1435,11 @@ public class MagicController implements MageController {
     }
 
     protected ConfigurationSection loadMobsConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(MOBS_FILE, loadDefaultItems);
+        return loadConfigFile(MOBS_FILE, loadDefaultMobs);
     }
 
     protected ConfigurationSection loadItemsConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(ITEMS_FILE, loadDefaultMobs);
+        return loadConfigFile(ITEMS_FILE, loadDefaultItems);
     }
 
     protected Map<String, ConfigurationSection> loadAndMapSpells() throws InvalidConfigurationException, IOException {
