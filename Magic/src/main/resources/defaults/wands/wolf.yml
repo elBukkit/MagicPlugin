@@ -32,7 +32,7 @@ wolf:
     - backup@91
     - blast|2@132
     - blessing@115
-    - blink|3@1
+    - blink|6@1
     - blob@57
     - boom|2@37
     - boon|2@135
@@ -59,7 +59,7 @@ wolf:
     - fire|3@33
     - flamethrower@62
     - flare@114
-    - fling|2@2
+    - fling|4@2
     - force@34
     - gather@40
     - ghast@38
@@ -71,7 +71,7 @@ wolf:
     - iterate@95
     - kill@36
     - laser|3@80
-    - levitate@0
+    - levitate|5@0
     - life@82
     - lightning|3@87
     - missile|4@3

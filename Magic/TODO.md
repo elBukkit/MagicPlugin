@@ -41,6 +41,7 @@
   
 ## Not so High-Priority
  
+ - An option on a wand to put all spells at max level (but don't fill)
  - Aliases don't work with levels 
  - Don't refund item costs when a spell goes through auto-undo
  - Ability to specify map dimensions/offset in percentage
