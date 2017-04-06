@@ -7,3 +7,17 @@ ak47:
   inherit: base_gun
   active_spell: shoot_ak47
   quiet: 1
+
+sniper:
+  icon: diamond_pickaxe:2
+  inherit: base_gun
+  active_spell: shoot_sniper
+  quiet: 1
+
+jetpack:
+  icon: elytra
+  cast_spell: thruster
+  cast_interval: 10
+  cast_min_velocity: 4
+  passive: true
+

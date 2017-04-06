@@ -1,3 +1,10 @@
 wands:
   ak47:
     name: AK-47
+  sniper:
+    name: Sniper Rifle
+  jetpack:
+    name: Jetpack
+
+wand:
+    spell_aura: ""

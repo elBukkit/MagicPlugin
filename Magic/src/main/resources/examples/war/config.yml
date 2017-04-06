@@ -11,6 +11,9 @@ load_default_crafting: false
 load_default_mobs: false
 load_default_items: false
 
+# No SP here, for now
+sp_enabled: false
+
 # Use a special RP
 resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-war-RP-7.zip"
 
