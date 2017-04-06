@@ -2009,7 +2009,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             SpellTemplate spell = controller.getSpellTemplate(castSpell);
             if (spell != null)
             {
-                lore.add(ChatColor.AQUA + getMessage("spell_aura").replace("$spell", spell.getName()));
+            	String auraMessage = getMessage("spell_aura").replace("$spell", spell.getName());
+            	if (auraMessage.length() > 0) {
+					lore.add(ChatColor.AQUA + auraMessage);
+				}
             }
         }
         for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
