@@ -35,7 +35,7 @@ public class VelocityAction extends BaseSpellAction
     private double yOffset;
     private int exemptionDuration;
     private double maxMagnitude;
-    private double maxLength;
+    private double maxMagnitudeSquared;
     private boolean additive;
     private Vector direction;
     private boolean registerDamaged;
@@ -54,7 +54,7 @@ public class VelocityAction extends BaseSpellAction
         direction = ConfigurationUtils.getVector(parameters, "direction");
         exemptionDuration = parameters.getInt("exemption_duration", (int)(maxSpeed * 2000));
         maxMagnitude = parameters.getDouble("max_magnitude", 0);
-        maxLength = maxMagnitude * maxMagnitude;
+        maxMagnitudeSquared = maxMagnitude * maxMagnitude;
         additive = parameters.getBoolean("additive", false);
         registerDamaged = parameters.getBoolean("damaged", true);
     }
@@ -126,7 +126,7 @@ public class VelocityAction extends BaseSpellAction
             velocity = entity.getVelocity().clone().add(velocity);
         }
 
-        if (maxLength != 0D && velocity.lengthSquared() > maxLength) {
+        if (maxMagnitudeSquared != 0D && velocity.lengthSquared() > maxMagnitudeSquared) {
             velocity = velocity.normalize().multiply(maxMagnitude);
             magnitude = maxMagnitude;
         }
