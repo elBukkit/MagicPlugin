@@ -2540,6 +2540,7 @@ public class MagicController implements MageController {
     @Override
     public void scheduleUndo(UndoList undoList)
     {
+        undoList.setHasBeenScheduled();
         scheduledUndo.add(undoList);
     }
 

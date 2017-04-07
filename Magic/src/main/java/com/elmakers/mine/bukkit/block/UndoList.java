@@ -73,6 +73,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected boolean               applyPhysics        = false;
 
     protected boolean				bypass		 	    = false;
+    protected boolean				hasBeenScheduled    = false;
     protected final long			createdTime;
     protected long					modifiedTime;
     protected long                  scheduledTime;
@@ -779,6 +780,15 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public int compareTo(com.elmakers.mine.bukkit.api.block.UndoList o) {
         return (int)(scheduledTime - o.getScheduledTime());
+    }
+
+    @Override
+    public boolean hasBeenScheduled() {
+        return hasBeenScheduled;
+    }
+
+    public void setHasBeenScheduled() {
+        hasBeenScheduled = true;
     }
 
     @Override

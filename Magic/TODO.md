@@ -54,6 +54,7 @@
 
 ### Requests
 
+ - Async config load on startup option
  - Add probability table to mob drops
  - Add ignore_entity_types parameter
  - Allow multiple welcome_wand entries

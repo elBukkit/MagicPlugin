@@ -36,6 +36,8 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     long getScheduledTime();
     boolean isScheduled();
     void setUndoSpeed(double speed);
+    boolean hasBeenScheduled();
+    void setHasBeenScheduled();
 
     void setUndoBreakable(boolean breakable);
     void setUndoReflective(boolean reflective);
