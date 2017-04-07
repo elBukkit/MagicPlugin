@@ -786,7 +786,7 @@ public class CustomProjectileAction extends CompoundAction
                     reflect(null, 0.5);
                     return SpellResult.PENDING;
                 }
-                if (targetMage.isBlocked(angle)) {
+                if (targetMage.isBlocked(angle) && !bypassBackfire) {
                     return miss();
                 }
             }
