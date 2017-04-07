@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,6 +24,7 @@ public class ThrowItemAction extends BaseProjectileAction {
     private double itemSpeedMin;
     private double itemSpeedMax;
     private int ageItems;
+    private boolean unbreakable;
     private SourceLocation sourceLocation;
 
     @Override
@@ -33,6 +35,7 @@ public class ThrowItemAction extends BaseProjectileAction {
         itemSpeedMin = parameters.getDouble("speed_min", itemSpeed);
         itemSpeedMax = parameters.getDouble("speed_max", itemSpeed);
         ageItems = parameters.getInt("age_items", 5500);
+        unbreakable = parameters.getBoolean("unbreakable", false);
         sourceLocation = new SourceLocation(parameters);
     }
 
@@ -57,6 +60,9 @@ public class ThrowItemAction extends BaseProjectileAction {
             removedMessage = removedMessage.replace("$material", name);
         }
         NMSUtils.makeTemporary(itemStack, removedMessage);
+        if (unbreakable) {
+            InventoryUtils.makeUnbreakable(itemStack);
+        }
         Item droppedItem = null;
         try {
             droppedItem = spawnLocation.getWorld().dropItem(spawnLocation, itemStack);
