@@ -50,7 +50,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         consumeBlocks = parameters.getBoolean("consume", false);
         consumeVariants = parameters.getBoolean("consume_variants", true);
         fallingBlockDirection = null;
-        if (spawnFallingBlocks && parameters.contains("direction"))
+        if (spawnFallingBlocks && parameters.contains("direction") && !parameters.getString("direction").isEmpty())
         {
             if (fallingBlockSpeed == 0) {
                 fallingBlockSpeed = 1;
@@ -166,7 +166,7 @@ public class ModifyBlockAction extends BaseSpellAction {
                 spawned = context.getController().spawnPhysicsBlock(blockCenter, previousMaterial, previousData, fallingBlockVelocity);
             }
             if (!spawned) {
-                FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, previousMaterial, previousData);
+                FallingBlock falling = block.getWorld().spawnFallingBlock(blockCenter, previousMaterial, previousData);
                 falling.setDropItem(false);
                 if (fallingBlockVelocity != null) {
                     falling.setVelocity(fallingBlockVelocity);
