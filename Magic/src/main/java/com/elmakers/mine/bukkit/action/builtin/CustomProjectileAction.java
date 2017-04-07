@@ -354,10 +354,10 @@ public class CustomProjectileAction extends CompoundAction
         {
             return miss();
         }
-        if (targetSelfDeadline > 0 && now > targetSelfDeadline)
+        if (targetSelfDeadline > 0 && now > targetSelfDeadline && actionContext != null)
         {
             targetSelfDeadline = 0;
-            context.setTargetsCaster(true);
+            actionContext.setTargetsCaster(true);
         }
         nextUpdate = now + interval;
 
@@ -868,6 +868,9 @@ public class CustomProjectileAction extends CompoundAction
         if (targetSelf != null)
         {
             actionContext.setTargetsCaster(targetSelf);
+        }
+        if (targetSelfTimeout > 0) {
+            actionContext.setTargetsCaster(true);
         }
         return startActions();
     }
