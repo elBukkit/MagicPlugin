@@ -538,6 +538,18 @@ rocketlauncher:
             actions:
             - class: ModifyBlock
               ignore_result: true
+          - class: Sphere
+            radius: 4
+            thickness: 1
+            center_y: false
+            y_size: 2
+            actions:
+            - class: Recurse
+              actions:
+              - class: ModifyBlock
+                ignore_result: true
+                speed: 0
+                direction: ""
     effects:
         cast:
         -  class: EffectSingle
@@ -588,7 +600,7 @@ rocketlauncher:
         velocity: 20
         range: 60
         hitbox: true
-        radius: 4
+        radius: 3
         target_type: LivingEntity
         damage_max_distance: 5
         player_damage: 15
@@ -600,15 +612,17 @@ rocketlauncher:
         undo: 30000
         brush: erase
         cooldown: 20000
-        speed: 0.9
+        speed: 1.1
         direction: 0,0.8,0
         falling: true
-        undo_speed: 0.2
+        undo_speed: 0.8
         target_self_timeout: 2000
         y_offset: 0.75
         push: 1
         velocity_max_distance: 5
         magic_damage: false
+        faces: up
+        recursion_depth: 128
 
 thruster:
     icon: feather
