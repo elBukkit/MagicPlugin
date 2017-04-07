@@ -39,6 +39,7 @@ public class VelocityAction extends BaseSpellAction
     private boolean additive;
     private Vector direction;
     private boolean registerDamaged;
+    private double maxDistanceSquared;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -57,6 +58,8 @@ public class VelocityAction extends BaseSpellAction
         maxMagnitudeSquared = maxMagnitude * maxMagnitude;
         additive = parameters.getBoolean("additive", false);
         registerDamaged = parameters.getBoolean("damaged", true);
+        double maxDistance = parameters.getDouble("velocity_max_distance");
+        maxDistanceSquared = maxDistance * maxDistance;
     }
 
     @Override
@@ -103,21 +106,35 @@ public class VelocityAction extends BaseSpellAction
 
             velocity = toVector;
             velocity.subtract(fromVector);
-            if (velocity.lengthSquared() < Double.MIN_NORMAL)
+            double distanceSquared = velocity.lengthSquared();
+            if (distanceSquared < Double.MIN_NORMAL)
             {
                 velocity = context.getDirection();
             }
 
-            velocity.normalize().multiply(pushDirection);
+            double speed = pushDirection;
+            if (maxDistanceSquared > 0) {
+                if (distanceSquared > maxDistanceSquared) {
+                    return SpellResult.NO_TARGET;
+                }
+                if (distanceSquared > 0) {
+                    speed = speed * (1 - distanceSquared / maxDistanceSquared);
+                }
+            }
+            if (yOffset != 0)
+            {
+                velocity.setY(velocity.getY() + yOffset);
+            }
+            velocity.normalize().multiply(speed);
+        }
+        else if (yOffset != 0)
+        {
+            velocity.setY(velocity.getY() + yOffset);
         }
 
         if (context.getLocation().getBlockY() >= 256)
         {
             velocity.setY(0);
-        }
-        else if (yOffset != 0)
-        {
-            velocity.setY(velocity.getY() + yOffset);
         }
 
         velocity.multiply(magnitude);

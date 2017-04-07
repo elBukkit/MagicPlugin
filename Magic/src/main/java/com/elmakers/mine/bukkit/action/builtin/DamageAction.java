@@ -28,6 +28,7 @@ public class DamageAction extends BaseSpellAction
 	private boolean magicEntityDamage;
 	private Double percentage;
 	private Double knockbackResistance;
+	private double maxDistanceSquared;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -49,6 +50,8 @@ public class DamageAction extends BaseSpellAction
         } else {
             knockbackResistance = null;
         }
+		double maxDistance = parameters.getDouble("damage_max_distance");
+		maxDistanceSquared = maxDistance * maxDistance;
     }
 
 	@Override
@@ -87,6 +90,15 @@ public class DamageAction extends BaseSpellAction
 					damage = entityDamage;
 				}
 				damage *= mage.getDamageMultiplier();
+				if (maxDistanceSquared > 0) {
+					double distanceSquared = context.getLocation().distanceSquared(entity.getLocation());
+					if (distanceSquared > maxDistanceSquared) {
+						return SpellResult.NO_TARGET;
+					}
+					if (distanceSquared > 0) {
+						damage = damage * (1 - distanceSquared / maxDistanceSquared);
+					}
+				}
 				if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
 					CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
 				} else {
