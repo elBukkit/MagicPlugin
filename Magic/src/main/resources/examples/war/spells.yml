@@ -198,7 +198,7 @@ sniper:
             size: 0.4
             yOffset: 0
     headshot_parameters:
-      player_damage: 15
+      player_damage: 20
       entity_damage: 30
     parameters:
         cooldown: 5000
@@ -218,6 +218,7 @@ sniper:
         destructible: solid
         destructible_durability: 100
         brush: erase
+        magic_damage: false
 
 ak47:
     icon: ghast_tear
@@ -298,13 +299,13 @@ ak47:
             size: 0.3
             yOffset: 0
     headshot_parameters:
-      player_damage: 8
-      entity_damage: 12
+      player_damage: 4
+      entity_damage: 8
     parameters:
         velocity: 2000
         range: 60
         hitbox: true
-        player_damage: 4
+        player_damage: 3
         entity_damage: 6
         target_breakables: 1
         destructible: solid
@@ -312,6 +313,7 @@ ak47:
         undo: 30000
         spread: 0.1
         brush: erase
+        magic_damage: false
 
 pistol:
     icon: ghast_tear
@@ -393,8 +395,8 @@ pistol:
             size: 0.3
             yOffset: 0
     headshot_parameters:
-      player_damage: 4
-      entity_damage: 6
+      player_damage: 8
+      entity_damage: 16
     parameters:
         velocity: 1500
         range: 40
@@ -407,6 +409,7 @@ pistol:
         undo: 30000
         brush: erase
         cooldown: 800
+        magic_damage: false
 
 shotgun:
     icon: ghast_tear
@@ -492,16 +495,16 @@ shotgun:
             size: 0.3
             yOffset: 0
     headshot_parameters:
-      player_damage: 2
-      entity_damage: 4
+      player_damage: 8
+      entity_damage: 16
     parameters:
         velocity: 1500
         spread: 0.2
         range: 20
         multiply: 8
         hitbox: true
-        player_damage: 1
-        entity_damage: 2
+        player_damage: 2
+        entity_damage: 4
         target_breakables: 1
         destructible: solid
         destructible_durability: 4
@@ -511,8 +514,9 @@ shotgun:
         undo_speed: 0.4
         speed: 1
         y_offset: 0.75
+        magic_damage: false
 
-rocket:
+rocketlauncher:
     icon: ghast_tear
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: combat
@@ -522,10 +526,14 @@ rocket:
         - class: CustomProjectile
           actions:
           - class: Damage
+            damage_max_distance: 0
+            player_damage: 8
+            entity_damage: 10
           - class: AreaOfEffect
             actions:
             - class: Damage
             - class: Velocity
+              speed: 1.5
           - class: Sphere
             actions:
             - class: ModifyBlock
@@ -581,8 +589,10 @@ rocket:
         range: 60
         hitbox: true
         radius: 4
-        player_damage: 8
-        entity_damage: 10
+        target_type: LivingEntity
+        damage_max_distance: 5
+        player_damage: 15
+        entity_damage: 15
         target_breakables: 1
         bypass_backfire: true
         destructible: solid
@@ -593,7 +603,13 @@ rocket:
         speed: 0.9
         direction: 0,0.8,0
         falling: true
-        undo_speed: 0.5
+        undo_speed: 0.2
+        target_self: true
+        target_self_timeout: 2000
+        y_offset: 0.75
+        push: 1
+        velocity_max_distance: 5
+        magic_damage: false
 
 thruster:
     icon: feather

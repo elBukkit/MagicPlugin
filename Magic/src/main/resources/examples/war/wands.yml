@@ -29,7 +29,7 @@ shotgun:
 rocketlauncher:
   icon: diamond_pickaxe:3
   inherit: base_gun
-  active_spell: rocket
+  active_spell: rocketlauncher
   quiet: 1
 
 radar:
