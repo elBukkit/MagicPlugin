@@ -27,9 +27,10 @@ public class BoomSpell extends BlockSpell {
 		}
         Entity entity = mage.getEntity();
 		Location l = block.getLocation();
-		registerForUndo();
+		prepareForUndo();
 		NMSUtils.createExplosion(entity, target.getWorld(), l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
 		controller.updateBlock(block);
+		registerForUndo();
 		return SpellResult.CAST;
 	}
 

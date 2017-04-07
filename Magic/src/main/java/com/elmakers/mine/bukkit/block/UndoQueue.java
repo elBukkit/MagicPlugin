@@ -230,7 +230,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             if (undoList != null) {
                 for (com.elmakers.mine.bukkit.api.block.UndoList list : undoList) {
                     add(list);
-                    if (list.isScheduled())
+                    if (list.isScheduled() && list.hasChanges())
                     {
                         owner.getController().scheduleUndo(list);
                     }

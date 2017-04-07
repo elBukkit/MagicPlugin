@@ -158,7 +158,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     @Override
     public boolean hasChanges() {
-        return size() > 0 || (undoEntityEffects && ((entities != null && entities.size() > 0) || (modifiedEntities != null && modifiedEntities.size() > 0)));
+        return size() > 0 || (entities != null && entities.size() > 0) || (undoEntityEffects && modifiedEntities != null && modifiedEntities.size() > 0);
     }
 
     @Override

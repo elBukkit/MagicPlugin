@@ -101,6 +101,12 @@ public abstract class UndoableSpell extends TargetingSpell {
         mage.registerForUndo(list);
     }
 
+    public void prepareForUndo()
+    {
+        UndoList list = getUndoList();
+        mage.prepareForUndo(list);
+    }
+
     public void registerForUndo(Block block) {
         getUndoList().add(block);
     }

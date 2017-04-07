@@ -38,7 +38,6 @@ public class DisintegrateSpell extends BlockSpell
 			}
 			else
 			{
-				registerForUndo();
                 registerModified(targetEntity);
 				if (targetEntity instanceof Player)
 				{
@@ -54,6 +53,7 @@ public class DisintegrateSpell extends BlockSpell
                 {
                     targetEntity.remove();
                 }
+				registerForUndo();
 				return SpellResult.CAST;
 			}
 		}
