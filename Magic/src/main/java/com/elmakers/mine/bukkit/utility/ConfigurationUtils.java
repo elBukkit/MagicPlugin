@@ -614,6 +614,12 @@ public class ConfigurationUtils extends ConfigUtils {
         }
     }
 
+    public static void addIfNotEmpty(String message, Collection<String> list) {
+        if (message != null && !message.isEmpty()) {
+            list.add(message);
+        }
+    }
+
     public static List<String> getStringList(ConfigurationSection section, String path, List<String> def) {
         List<String> list = getStringList(section, path);
         return list == null ? (def == null ? new ArrayList<String>() : def) : list;

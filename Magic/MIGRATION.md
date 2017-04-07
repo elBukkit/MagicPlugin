@@ -15,6 +15,10 @@
    If this has broken you in a bad way, you can copy the configs from here to revert back:
    https://github.com/elBukkit/MagicPlugin/tree/ca8e853b5f5d6bef3b6a6d050080177cc351f47f/Magic/src/main/resources/examples/stars
 
+## 6.9.3
+
+ - Wand lore colors moved to messages config, you may need to update any customizations if you want to keep the colors
+
 ## 6.9
 
  - Lightsabers, Blaster and Thermal Detonator moved to stars configs, and removed from default configs. 

@@ -24,6 +24,7 @@
  - Sell shops will differentiate between custom-named items
  - Add /magic rpsend command to re-send current RP to all online players
  - Resource packs are now sent to players on join instead of relying on vanilla mechanics. They are delayed by 1 second by default.
+ - Wand lore colors moved to messages config, you may need to update any customizations if you want to keep the colors
 
 ## 6.9.2
 

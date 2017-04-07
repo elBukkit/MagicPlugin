@@ -1,9 +1,9 @@
 wand:
     default_name: Wand
     upgrade_default_description: Will upgrade your wand.
-    upgrade_item_description: Will be absorbed by your wand
-    spell_item_description: Will be absorbed by your wand
-    brush_item_description: Will be absorbed by your wand
+    upgrade_item_description: "&eWill be absorbed by your wand"
+    spell_item_description: "&eWill be absorbed by your wand"
+    brush_item_description: "&eWill be absorbed by your wand"
     copy_material_name: Copy
     copy_material_description: Fills with the target material
     erase_material_name: Erase
@@ -20,10 +20,10 @@ wand:
     map_material_description: Creates pixel art from last held map
     schematic_material_description: Uses $schematic to build.
     building_material_description: Build with $material
-    upgrade_uses: Adds $count Uses
-    upgrade_uses_singular: Adds $count Use
-    uses_remaining_brief: $count Uses
-    uses_remaining_singular: $count Use
+    upgrade_uses: "&aAdds $count Uses"
+    upgrade_uses_singular: "&aAdds $count Use"
+    uses_remaining_brief: "&c$count Uses"
+    uses_remaining_singular: "&c$count Use"
     uses_remaining: $count Uses Remaining
     enchantment_level_1: I
     enchantment_level_2: II
@@ -36,35 +36,35 @@ wand:
     upgrade_spell_count: Adds $count Spells
     upgrade_material_count: Adds $count Materials
     mana_max: "Mana: $amount"
-    mana_amount: "Mana: $amount"
-    mana_amount_boosted: "Mana: $amount &f(&b$mana&f)"
-    mana_regeneration: "Mana Regeneration: $amount/s"
-    mana_per_damage: "Mana Rage: $amount/HP"
-    mana_regeneration_boosted: "Mana Regeneration: $amount &f(&b$mana&f)&d/s"
-    mana_boost: "Mana Boost: $amount%"
-    mana_regeneration_boost: "Mana Regeneration Boost: $amount%"
-    sp_multiplier: "SP Earn Boost: $amount%"
-    block_chance: Blocking $roman
-    reflect_chance: Reflective $roman
-    cost_reduction: Cost Reduction $roman
-    consume_reduction: Manifestation
-    cooldown_reduction: Cooldown Reduction $roman
-    power: Power $roman
-    protection: Protection $roman
-    protection_physical: Physical Protection $roman
-    protection_projectile: Projectile Protection $roman
-    protection_falling: Fall Protection $roman
-    protection_fire: Fire Protection $roman
-    protection_explosions: Blast Protection $roman
-    potion_effect: $effect $roman
-    super_powered: Superpowered
-    super_protected: Invulnerability
-    spell_aura: "Aura: &6$spell"
+    mana_amount: "&d&oMana: $amount"
+    mana_amount_boosted: "&d&oMana: $amount &f(&b$mana&f)"
+    mana_regeneration: "&d&oMana Regeneration: $amount/s"
+    mana_per_damage: "&4&oMana Rage: $amount/HP"
+    mana_regeneration_boosted: "&d&oMana Regeneration: $amount &f(&b$mana&f)&d/s"
+    mana_boost: "&d&oMana Boost: $amount%"
+    mana_regeneration_boost: "&d&oMana Regeneration Boost: $amount%"
+    sp_multiplier: "&6SP Earn Boost: $amount%"
+    block_chance: "&bBlocking $roman"
+    reflect_chance: "&bReflective $roman"
+    cost_reduction: "&6Cost Reduction $roman"
+    consume_reduction: "&6Manifestation"
+    cooldown_reduction: "&6Cooldown Reduction $roman"
+    power: "&6Power $roman"
+    protection: "&2Protection $roman"
+    protection_physical: "&2Physical Protection $roman"
+    protection_projectile: "&2Projectile Protection $roman"
+    protection_falling: "&2Fall Protection $roman"
+    protection_fire: "&2Fire Protection $roman"
+    protection_explosions: "&2Blast Protection $roman"
+    potion_effect: "&b$effect $roman"
+    super_powered: "&3Superpowered"
+    super_protected: "&3Invulnerability"
+    spell_aura: "&bAura: &6$spell"
     costs_description: Costs $description
     active_costs_description: Costs $description Per Second
     range_description: "&9Range: &6$range &9meters"
-    owner_description: $name's Wand
-    bound_description: Bound to $name
+    owner_description: "&2&o$name's Wand"
+    bound_description: "&3&oBound to $name"
     unmodifiable: That wand can not be modified
     player_unmodifiable: $name's wand can not be modified
     bound_to_other: That wand is not bound to you

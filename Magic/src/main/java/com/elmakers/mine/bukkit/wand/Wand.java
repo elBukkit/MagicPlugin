@@ -1885,7 +1885,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		if (remaining > 1) {
 			String message = getMessage("uses_remaining_brief");
-			name = name + ChatColor.DARK_RED + " (" + ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()) + ChatColor.DARK_RED + ")";
+			name = name + ChatColor.DARK_RED + " (" + message.replace("$count", ((Integer)remaining).toString()) + ChatColor.DARK_RED + ")";
 		}
 		return name;
 	}
@@ -1974,66 +1974,63 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (usesMana()) {
             if (effectiveManaMax != manaMax) {
                 String fullMessage = getLevelString(controller.getMessages(), "wand.mana_amount_boosted", manaMax, controller.getMaxMana());
-                lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + fullMessage.replace("$mana", Integer.toString(effectiveManaMax)));
+                ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaMax)), lore);
             } else {
-                lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getLevelString(controller.getMessages(), "wand.mana_amount", manaMax, controller.getMaxMana()));
+				ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.mana_amount", manaMax, controller.getMaxMana()), lore);
             }
             if (manaRegeneration > 0) {
                 if (effectiveManaRegeneration != manaRegeneration) {
                     String fullMessage = getLevelString(controller.getMessages(), "wand.mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
-                    lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + fullMessage.replace("$mana", Integer.toString(effectiveManaRegeneration)));
+					ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaRegeneration)), lore);
                 } else {
-                    lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(controller.getMessages(), "wand.mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()));
+					ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()), lore);
                 }
             }
             if (manaPerDamage > 0) {
-                lore.add(ChatColor.DARK_RED + "" + ChatColor.ITALIC + getLevelString(controller.getMessages(), "wand.mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration()));
+				ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration()), lore);
             }
 		}
         if (superPowered) {
-            lore.add(ChatColor.DARK_AQUA + getMessage("super_powered"));
+			ConfigurationUtils.addIfNotEmpty(getMessage("super_powered"), lore);
         }
         if (blockReflectChance > 0) {
-			lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.reflect_chance", blockReflectChance));
+			ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.reflect_chance", blockReflectChance), lore);
 		} else if (blockChance != 0) {
-			lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.block_chance", blockChance));
+			ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.block_chance", blockChance), lore);
         }
 		if (manaMaxBoost != 0) {
-			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_boost", manaMaxBoost));
+			ConfigurationUtils.addIfNotEmpty(getPercentageString(controller.getMessages(), "wand.mana_boost", manaMaxBoost), lore);
 		}
         if (manaRegenerationBoost != 0) {
-            lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_regeneration_boost", manaRegenerationBoost));
+			ConfigurationUtils.addIfNotEmpty(getPercentageString(controller.getMessages(), "wand.mana_regeneration_boost", manaRegenerationBoost), lore);
         }
         
         if (castSpell != null) {
             SpellTemplate spell = controller.getSpellTemplate(castSpell);
             if (spell != null)
             {
-            	String auraMessage = getMessage("spell_aura").replace("$spell", spell.getName());
-            	if (auraMessage.length() > 0) {
-					lore.add(ChatColor.AQUA + auraMessage);
-				}
+            	ConfigurationUtils.addIfNotEmpty(getMessage("spell_aura").replace("$spell", spell.getName()), lore);
             }
         }
         for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
-            lore.add(ChatColor.AQUA + describePotionEffect(effect.getKey(), effect.getValue()));
+			ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
         }
-		if (consumeReduction > 0 && !isSingleSpell) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.consume_reduction", consumeReduction));
-		if (costReduction > 0 && !isSingleSpell) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction));
-		if (cooldownReduction > 0 && !isSingleSpell) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction));
-		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.power", power));
+		if (consumeReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.consume_reduction", consumeReduction), lore);
+		if (costReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction), lore);
+		if (cooldownReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction), lore);
+		if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.power", power), lore);
         if (superProtected) {
-            lore.add(ChatColor.DARK_AQUA + getMessage("super_protected"));
+            ConfigurationUtils.addIfNotEmpty(getMessage("super_protected"), lore);
         } else {
-            if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection", damageReduction));
-            if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_physical", damageReductionPhysical));
-            if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_projectile", damageReductionProjectiles));
-            if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_falling", damageReductionFalling));
-            if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_fire", damageReductionFire));
-            if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_explosions", damageReductionExplosions));
+            if (damageReduction > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection", damageReduction), lore);
+            if (damageReductionPhysical > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection_physical", damageReductionPhysical), lore);
+            if (damageReductionProjectiles > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection_projectile", damageReductionProjectiles), lore);
+            if (damageReductionFalling > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection_falling", damageReductionFalling), lore);
+            if (damageReductionFire > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection_fire", damageReductionFire), lore);
+            if (damageReductionExplosions > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection_explosions", damageReductionExplosions), lore);
         }
         if (spMultiplier > 1) {
-			lore.add(ChatColor.AQUA + getPercentageString(controller.getMessages(), "wand.sp_multiplier", spMultiplier - 1));
+			ConfigurationUtils.addIfNotEmpty(getPercentageString(controller.getMessages(), "wand.sp_multiplier", spMultiplier - 1), lore);
 		}
 	}
 	
@@ -2095,10 +2092,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			if (owner != null && owner.length() > 0) {
 				if (bound) {
                     String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
-                    lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
+                    ConfigurationUtils.addIfNotEmpty(ownerDescription, lore);
 				} else {
 					String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
-					lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
+					ConfigurationUtils.addIfNotEmpty(ownerDescription, lore);
 				}
 			}
 		}
@@ -2122,16 +2119,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         if (spellCount > 0) {
             if (isUpgrade) {
-                lore.add(getMessage("upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()));
+				ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()), lore);
             } else if (spellCount > 1) {
-                lore.add(getMessage("spell_count").replace("$count", ((Integer)spellCount).toString()));
+				ConfigurationUtils.addIfNotEmpty(getMessage("spell_count").replace("$count", ((Integer)spellCount).toString()), lore);
             }
         }
         if (materialCount > 0) {
             if (isUpgrade) {
-                lore.add(getMessage("upgrade_material_count").replace("$count", ((Integer)materialCount).toString()));
+				ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_material_count").replace("$count", ((Integer)materialCount).toString()), lore);
             } else if (materialCount > 1) {
-                lore.add(getMessage("material_count").replace("$count", ((Integer)materialCount).toString()));
+				ConfigurationUtils.addIfNotEmpty(getMessage("material_count").replace("$count", ((Integer)materialCount).toString()), lore);
             }
         }
 
@@ -2139,15 +2136,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (!isSingleUse && remaining > 0) {
 			if (isUpgrade) {
 				String message = (remaining == 1) ? getMessage("upgrade_uses_singular") : getMessage("upgrade_uses");
-				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
+				ConfigurationUtils.addIfNotEmpty(message.replace("$count", ((Integer)remaining).toString()), lore);
 			} else {
 				String message = (remaining == 1) ? getMessage("uses_remaining_singular") : getMessage("uses_remaining_brief");
-				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
+				ConfigurationUtils.addIfNotEmpty(message.replace("$count", ((Integer)remaining).toString()), lore);
 			}
 		}
 		addPropertyLore(lore, isSingleSpell);
 		if (isUpgrade) {
-			lore.add(ChatColor.YELLOW + getMessage("upgrade_item_description"));
+			ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_item_description"), lore);
 		}
 		return lore;
 	}
@@ -2335,7 +2332,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		List<String> lore = new ArrayList<>();
 		addSpellLore(messages, spell, lore, mage, wand);
 		if (isItem) {
-			lore.add(ChatColor.YELLOW + messages.get("wand.spell_item_description"));
+			ConfigurationUtils.addIfNotEmpty(messages.get("wand.spell_item_description"), lore);
 		}
         CompatibilityUtils.setLore(itemStack, lore);
         Object spellNode = CompatibilityUtils.createNode(itemStack, "spell");

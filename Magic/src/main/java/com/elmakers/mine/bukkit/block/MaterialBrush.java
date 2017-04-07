@@ -840,7 +840,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             lore.add(ChatColor.LIGHT_PURPLE + extraLore);
         }
         if (isItem) {
-            lore.add(ChatColor.YELLOW + messages.get("wand.brush_item_description"));
+            ConfigurationUtils.addIfNotEmpty(messages.get("wand.brush_item_description"), lore);
         }
         meta.setLore(lore);
         if (customName != null) {
