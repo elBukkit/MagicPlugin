@@ -95,7 +95,7 @@ default:
        world_required: fail
        invalid_world: fail
 
-shoot_sniper:
+sniper:
     icon: ghast_tear
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: combat
@@ -219,7 +219,7 @@ shoot_sniper:
         destructible_durability: 100
         brush: erase
 
-shoot_ak47:
+ak47:
     icon: ghast_tear
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: combat
@@ -313,7 +313,7 @@ shoot_ak47:
         spread: 0.1
         brush: erase
 
-shoot_pistol:
+pistol:
     icon: ghast_tear
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: combat
@@ -408,7 +408,7 @@ shoot_pistol:
         brush: erase
         cooldown: 800
 
-shoot_shotgun:
+shotgun:
     icon: ghast_tear
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: combat
@@ -512,7 +512,7 @@ shoot_shotgun:
         speed: 1
         y_offset: 0.75
 
-shoot_rocket:
+rocket:
     icon: ghast_tear
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: combat

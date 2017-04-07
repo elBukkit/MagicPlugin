@@ -5,31 +5,31 @@ base_gun:
 ak47:
   icon: diamond_pickaxe:1
   inherit: base_gun
-  active_spell: shoot_ak47
+  active_spell: ak47
   quiet: 1
 
 sniper:
   icon: diamond_pickaxe:2
   inherit: base_gun
-  active_spell: shoot_sniper
+  active_spell: sniper
   quiet: 1
 
 pistol:
   icon: diamond_pickaxe:3
   inherit: base_gun
-  active_spell: shoot_pistol
+  active_spell: pistol
   quiet: 1
 
 shotgun:
   icon: diamond_pickaxe:3
   inherit: base_gun
-  active_spell: shoot_shotgun
+  active_spell: shotgun
   quiet: 1
 
 rocketlauncher:
   icon: diamond_pickaxe:3
   inherit: base_gun
-  active_spell: shoot_rocket
+  active_spell: rocket
   quiet: 1
 
 radar:
