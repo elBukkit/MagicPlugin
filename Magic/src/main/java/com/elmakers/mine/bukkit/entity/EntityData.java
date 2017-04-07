@@ -30,6 +30,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
@@ -570,6 +571,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     li.setRemainingAir(Math.min(airLevel, li.getRemainingAir()));
                 }
             } catch (Throwable ex) {
+                ex.printStackTrace();
             }
         }
 
@@ -604,7 +606,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public void applyAttributes(LivingEntity entity) {
         if (attributes != null) {
             for (Map.Entry<Attribute, Double> entry : attributes.entrySet()) {
-                entity.getAttribute(entry.getKey()).setBaseValue(entry.getValue());
+                AttributeInstance attribute = entity.getAttribute(entry.getKey());
+                if (attribute != null) {
+                    attribute.setBaseValue(entry.getValue());
+                }
             }
         }
     }
