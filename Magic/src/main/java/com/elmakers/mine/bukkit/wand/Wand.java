@@ -106,6 +106,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	private Set<String> brushes = new LinkedHashSet<>();
 
 	private String activeSpell = "";
+	private String alternateSpell = "";
 	private String activeBrush = "";
 	protected String wandName = "";
 	protected String description = "";
@@ -1558,6 +1559,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		path = wandConfig.getString("path");
 
 		activeSpell = wandConfig.getString("active_spell");
+		alternateSpell = wandConfig.getString("alternate_spell");
 		activeBrush = wandConfig.getString("active_brush", wandConfig.getString("active_material"));
 
 		if (wandConfig.contains("hotbar_count")) {
@@ -3447,6 +3449,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return mage.getSpell(activeSpell);
 	}
 
+	public Spell getAlternateSpell() {
+		if (mage == null || alternateSpell == null || alternateSpell.length() == 0) return null;
+		return mage.getSpell(alternateSpell);
+	}
+
     @Override
     public SpellTemplate getBaseSpell(String spellName) {
         return getBaseSpell(new SpellKey(spellName));
@@ -3485,9 +3492,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
-    public boolean cast() {
-        return cast(getActiveSpell());
-    }
+	public boolean cast() {
+		return cast(getActiveSpell());
+	}
+
+	public boolean alternateCast() {
+		return cast(getAlternateSpell());
+	}
 
 	public boolean cast(Spell spell) {
 		if (spell != null) {
@@ -4763,6 +4774,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		switch (action) {
 			case CAST:
 				cast();
+				break;
+			case ALT_CAST:
+				alternateCast();
 				break;
 			case TOGGLE:
 				if (mode != WandMode.CHEST && mode != WandMode.INVENTORY && mode != WandMode.SKILLS) return false;

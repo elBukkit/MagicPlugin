@@ -23,6 +23,7 @@ wands:
 wand:
     spell_aura: ""
     block_chance: ""
+    mana_amount: "Ammo: $amount"
 
 spells:
     default:
@@ -30,6 +31,8 @@ spells:
         insufficient_permission: You don't have permission to use that here.
         cast_player_message: ""
         indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
     radar:
         name: RADAR
         cast: $target shows on the RADAR

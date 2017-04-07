@@ -16,11 +16,13 @@ import java.util.Collection;
 public class ModifyManaAction extends BaseSpellAction
 {
     private int mana;
+    private boolean fillMana;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         mana = parameters.getInt("mana", 1);
+        fillMana = parameters.getBoolean("fill_mana", false);
     }
 
     @Override
@@ -43,8 +45,13 @@ public class ModifyManaAction extends BaseSpellAction
         if (mana > 0 && currentMana >= manaMax) {
             return SpellResult.NO_TARGET;
         }
-        currentMana = Math.min(Math.max(0, currentMana + mana), manaMax);
+        if (fillMana) {
+            currentMana = manaMax;
+        } else {
+            currentMana = Math.min(Math.max(0, currentMana + mana), manaMax);
+        }
         wand.setMana((float)currentMana);
+        wand.updateMana();
         return SpellResult.CAST;
 	}
 

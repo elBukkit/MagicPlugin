@@ -1,36 +1,47 @@
 base_gun:
   right_click: cast
+  left_click: alt_cast
   indestructible: true
 
 ak47:
   icon: diamond_pickaxe:1
   inherit: base_gun
   active_spell: ak47
-  quiet: 1
+  alternate_spell: reload_ak47
+  mana: 70
+  mana_max: 70
 
 sniper:
   icon: diamond_pickaxe:2
   inherit: base_gun
   active_spell: sniper
-  quiet: 1
+  alternate_spell: reload_sniper
+  mana: 3
+  mana_max: 3
 
 pistol:
   icon: diamond_pickaxe:3
   inherit: base_gun
   active_spell: pistol
-  quiet: 1
+  alternate_spell: reload_pistol
+  mana: 20
+  mana_max: 20
 
 shotgun:
   icon: diamond_pickaxe:3
   inherit: base_gun
   active_spell: shotgun
-  quiet: 1
+  alternate_spell: reload_shotgun
+  mana: 6
+  mana_max: 6
 
 rocketlauncher:
   icon: diamond_pickaxe:3
   inherit: base_gun
   active_spell: rocketlauncher
-  quiet: 1
+  alternate_spell: reload_rocketlauncher
+  mana: 1
+  mana_max: 1
 
 radar:
   icon: compass
