@@ -15,6 +15,10 @@ wands:
     name: Riot Shield
   radar:
     name: RADAR
+  incendiary:
+    name: Incendiary Grenade
+  flashbang:
+    name: Flash Bang
 
 wand:
     spell_aura: ""

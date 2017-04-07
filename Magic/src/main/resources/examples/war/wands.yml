@@ -62,3 +62,14 @@ jetpack:
   passive: true
   indestructible: true
 
+incendiary:
+  icon: tnt
+  uses: 1
+  right_click: cast
+  active_spell: incendiary
+
+flashbang:
+  icon: eye_of_ender
+  uses: 1
+  right_click: cast
+  active_spell: flash_bang
