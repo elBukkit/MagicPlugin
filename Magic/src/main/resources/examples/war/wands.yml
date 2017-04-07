@@ -32,6 +32,11 @@ rocketlauncher:
   active_spell: shoot_rocket
   quiet: 1
 
+radar:
+  icon: compass
+  right_click: cast
+  active_spell: radar
+
 riotshield:
   icon: shield:1
   indestructible: true

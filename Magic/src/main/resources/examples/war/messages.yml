@@ -13,6 +13,8 @@ wands:
     name: Shotgun
   riotshield:
     name: Riot Shield
+  radar:
+    name: RADAR
 
 wand:
     spell_aura: ""
@@ -24,3 +26,7 @@ spells:
         insufficient_permission: You don't have permission to use that here.
         cast_player_message: ""
         indirect_player_message: ""
+    radar:
+        name: RADAR
+        cast: $target shows on the RADAR
+        no_target: RADAR is quiet
