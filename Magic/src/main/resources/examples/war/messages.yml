@@ -11,6 +11,16 @@ wands:
     name: Rocket Launcher
   shotgun:
     name: Shotgun
+  riotshield:
+    name: Riot Shield
 
 wand:
     spell_aura: ""
+    block_chance: ""
+
+spells:
+    default:
+        fail: That failed!
+        insufficient_permission: You don't have permission to use that here.
+        cast_player_message: ""
+        indirect_player_message: ""

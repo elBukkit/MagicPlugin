@@ -420,6 +420,7 @@ shoot_shotgun:
           - class: CustomProjectile
             actions:
             - class: Damage
+            - class: Velocity
             - class: ModifyBlock
               ignore_result: true
     effects:
@@ -508,6 +509,8 @@ shoot_shotgun:
         brush: erase
         cooldown: 2000
         undo_speed: 0.4
+        speed: 1
+        y_offset: 0.75
 
 shoot_rocket:
     icon: ghast_tear
@@ -522,6 +525,7 @@ shoot_rocket:
           - class: AreaOfEffect
             actions:
             - class: Damage
+            - class: Velocity
           - class: Sphere
             actions:
             - class: ModifyBlock
@@ -580,6 +584,7 @@ shoot_rocket:
         player_damage: 8
         entity_damage: 10
         target_breakables: 1
+        bypass_backfire: true
         destructible: solid
         destructible_durability: 40
         undo: 30000
