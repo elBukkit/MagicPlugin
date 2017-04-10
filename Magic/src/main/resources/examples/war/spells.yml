@@ -78,7 +78,7 @@ default:
          particle_offset_x: 0.1
          particle_offset_y: 0.1
          particle_offset_z: 0.1
-         sound: magic.shimmer_quiet
+         sound: war.ricochet
        cast_self: cast
        no_target: cast
        no_action: cast
@@ -108,6 +108,9 @@ base_reload:
 
 reload_sniper:
   inherit: base_reload
+  effects:
+    cast:
+    - sound: war.sniperrifle-reload
   parameters:
     delay: 5000
     mage_cooldown: 5000
@@ -138,7 +141,7 @@ sniper:
     effects:
         launch:
         -  class: EffectSingle
-           sound: war.ak47
+           sound: war.sniperrifle
            sound_pitch: 0.7
            location: origin
            effectlib:
@@ -241,6 +244,9 @@ sniper:
 
 reload_ak47:
   inherit: base_reload
+  effects:
+    cast:
+    - sound: war.ak47-reload
   parameters:
     delay: 5000
     mage_cooldown: 5000
@@ -344,6 +350,9 @@ ak47:
 
 reload_pistol:
   inherit: base_reload
+  effects:
+    cast:
+    - sound: war.deserteagle-reload
   parameters:
     delay: 1500
     mage_cooldown: 1500
@@ -363,7 +372,7 @@ pistol:
     effects:
         cast:
         -  class: EffectSingle
-           sound: war.ak47
+           sound: war.deserteagle
            sound_pitch: 1.2
            location: origin
         tick:
@@ -448,6 +457,9 @@ pistol:
 
 reload_shotgun:
   inherit: base_reload
+  effects:
+    cast:
+    - sound: war.shotgun-reload
   parameters:
     delay: 5000
     mage_cooldown: 5000
@@ -470,7 +482,7 @@ shotgun:
     effects:
         cast:
         -  class: EffectSingle
-           sound: war.ak47
+           sound: war.shotgun
            sound_pitch: 1.2
            location: origin
         tick:
@@ -561,6 +573,9 @@ shotgun:
 
 reload_rocketlauncher:
   inherit: base_reload
+  effects:
+    cast:
+    - sound: war.rocketlauncher-reload
   parameters:
     delay: 8000
     mage_cooldown: 8000
@@ -602,7 +617,7 @@ rocketlauncher:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_ghast_shoot
+           sound: war.rocketlauncher
            sound_pitch: 1.2
            location: origin
         tick:
@@ -796,8 +811,7 @@ flash_bang:
            location: target
            color: CC9933
            firework: burst
-           sound: entity_generic_explode
-           sound: magic.hit
+           sound: war.flashbang
            effectlib:
              class: SphereEffect
              iterations: 70
