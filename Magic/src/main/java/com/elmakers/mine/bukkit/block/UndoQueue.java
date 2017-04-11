@@ -254,7 +254,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             while (list != null) {
                 if (maxSize > 0 && list.size() > maxSize) {
                     discarded++;
-                } else {
+                } else if (list.size() > 0){
                     undoList.add(list);
                 }
 

@@ -32,7 +32,6 @@
 
 ## High-Priority
 
- - Don't save undolist without changes, periodically prune, show in /magic describe
  - Broomstick glitch?
  i made my broomstick a friggin wand!
  i flied while using phase
