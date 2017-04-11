@@ -472,6 +472,7 @@ public interface Mage extends CostReducer {
     void setSkillPoints(int sp);
     boolean isAtMaxSkillPoints();
     WandUpgradePath getBoundWandPath(String templateKey);
+    boolean unbind(String template);
     void unbind(Wand wand);
     void unbindAll();
     void undoScheduled();

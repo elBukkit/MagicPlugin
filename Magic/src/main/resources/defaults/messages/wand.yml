@@ -111,6 +111,8 @@ wand:
     player_unbound: $name's wand has been unbound
     unboundall: All of your bound wands have been forgotten
     player_unboundall: All of $name's bound wands have been forgotten. Their inventory was not cleared!
+    notunbound: You do not have a bound $wand wand
+    player_notunbound: Player $name does not have a bound $wand wand
     unlocked: Your wand has been unlocked
     player_unlocked: $name's wand has been unlocked
     unknown_template: Unknown wand name $name

@@ -102,7 +102,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 		}
         if (subCommand.equalsIgnoreCase("unbind"))
         {
-            return onMageUnbind(sender, player);
+            return onMageUnbind(sender, player, args2);
         }
         if (subCommand.equalsIgnoreCase("configure"))
         {
@@ -331,9 +331,25 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         return true;
     }
 
-    public boolean onMageUnbind(CommandSender sender, Player player)
+    public boolean onMageUnbind(CommandSender sender, Player player, String[] parameters)
     {
         Mage mage = api.getMage(player);
+        if (parameters.length > 0) {
+            String template = parameters[0];
+            if (mage.unbind(template)) {
+                mage.sendMessage(api.getMessages().get("wand.unbound"));
+                if (sender != player) {
+                    sender.sendMessage(api.getMessages().getParameterized("wand.player_unbound", "$name", player.getName()));
+                }
+            } else {
+                mage.sendMessage(api.getMessages().get("wand.notunbound").replace("$wand", parameters[0]));
+                if (sender != player) {
+                    sender.sendMessage(api.getMessages().getParameterized("wand.player_notunbound", "$name", player.getName()).replace("$wand", parameters[0]));
+                }
+            }
+            return true;
+        }
+
         mage.unbindAll();
 
         mage.sendMessage(api.getMessages().get("wand.unboundall"));

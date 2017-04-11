@@ -335,7 +335,7 @@ commands:
         /mage check       Check player permissions
         /mage debug       Enable/disable debug for a player
         /mage reset       Reset all data for a Mage, or for a specific class
-        /mage unbind      Delete all of a mage's bound wands
+        /mage unbind      Delete specific bound wands for a mage
   "mage configure":
     description: Configure mage properties, configures the active class
     usage: |
@@ -413,9 +413,12 @@ commands:
         /mage debug NathanWolf
         /mage debug NathanWolf 10
   "mage unbind":
-    description: Unbinds all stored wands for a player. Does not clear their inventory.
+    description: Unbinds a specific stored wand for a player, or all of them. Does not clear their inventory.
     permission: Magic.commands.mage.unbind
-    usage: /mage unbind
+    usage: |
+        /mage unbind
+        /mage unbind wand
+        /mage unbind battle
   mgive:
     description: Give players items
     permission: Magic.commands.mgive
