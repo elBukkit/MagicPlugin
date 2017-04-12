@@ -32,6 +32,7 @@
 
 ## High-Priority
 
+ - Check Earth Block in bending configs
  - Broomstick glitch?
  i made my broomstick a friggin wand!
  i flied while using phase
