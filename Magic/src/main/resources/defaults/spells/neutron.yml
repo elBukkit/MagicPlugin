@@ -10,7 +10,7 @@ neutron:
         cast:
         -  class: Projectile
            actions:
-           - class: SpawnEntity
+           - class: AreaOfEffectCloud
     effects:
         cast:
         -  class: EffectSingle
@@ -27,7 +27,6 @@ neutron:
         projectile: Snowball
         radius: 5
         cooldown: 30000
-        type: area_effect_cloud
         color: "00AAFF"
         particle: redstone
         duration: 10000
