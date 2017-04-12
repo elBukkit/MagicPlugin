@@ -14,6 +14,7 @@ public class UndoRegistry {
     protected Map<Long, BlockData> watching = new HashMap<>();
     protected Map<Long, Double> reflective = new HashMap<>();
     protected Map<Long, Double> breakable = new HashMap<>();
+    protected Map<Long, Double> breaking = new HashMap<>();
 
     public void registerModified(BlockData blockData)
     {
@@ -114,6 +115,19 @@ public class UndoRegistry {
         reflective.remove(block.getId());
     }
 
+    public void removeBreaking(BlockData block) {
+        breaking.remove(block.getId());
+    }
+
+    public double registerBreaking(Block block, double addAmount) {
+        if (block == null) return 0;
+        long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
+        Double currentAmount = breaking.get(blockId);
+        currentAmount = currentAmount == null ? addAmount : currentAmount + addAmount;
+        breaking.put(blockId, currentAmount);
+        return currentAmount;
+    }
+
     public BlockData getBlockData(Location location) {
         long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(location.getBlock());
 
@@ -183,5 +197,9 @@ public class UndoRegistry {
 
     public Map<Long, Double> getBreakable() {
         return breakable;
+    }
+
+    public Map<Long, Double> getBreaking() {
+        return breaking;
     }
 }

@@ -1,0 +1,87 @@
+package com.elmakers.mine.bukkit.action.builtin;
+
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.BlockData;
+import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.Arrays;
+import java.util.Collection;
+
+public class BreakBlockAction extends BaseSpellAction {
+    private int durabilityAmount;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        durabilityAmount = parameters.getInt("break_durability", 1);
+    }
+
+    @Override
+    public SpellResult perform(CastContext context) {
+        MaterialBrush brush = context.getBrush();
+        if (brush == null) {
+            return SpellResult.FAIL;
+        }
+        Block block = context.getTargetBlock();
+        if (!context.hasBreakPermission(block)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
+        if (block.getType() == Material.AIR || !context.isDestructible(block)) {
+            return SpellResult.NO_TARGET;
+        }
+        context.registerForUndo(block);
+        double breakAmount = 1;
+        double durability = CompatibilityUtils.getDurability(block.getType());
+        if (durability > 0) {
+            double breakPercentage = (double)durabilityAmount / durability;
+            breakAmount = context.registerBreaking(block, breakPercentage);
+        }
+        if (breakAmount > 1) {
+            block.setType(Material.AIR);
+            context.playEffects("break");
+        } else {
+            int breakState = (int)Math.floor(9 * breakAmount);
+            CompatibilityUtils.setBreaking(BlockData.getBlockId(block), block, breakState, UndoList.BLOCK_BREAK_RANGE);
+        }
+        return SpellResult.CAST;
+    }
+
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
+        parameters.add("durability");
+    }
+
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("durability")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
+    }
+
+    @Override
+    public boolean requiresBreakPermission() {
+        return true;
+    }
+
+    @Override
+    public boolean requiresTarget() {
+        return true;
+    }
+
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
+}

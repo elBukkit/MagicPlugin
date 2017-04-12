@@ -41,6 +41,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
 
     void setUndoBreakable(boolean breakable);
     void setUndoReflective(boolean reflective);
+    void setUndoBreaking(boolean breaking);
 
     void prune();
 

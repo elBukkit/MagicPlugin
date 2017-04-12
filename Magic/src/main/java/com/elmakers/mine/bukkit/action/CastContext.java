@@ -1143,6 +1143,13 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public double registerBreaking(Block block, double addAmount) {
+        double breakAmount = com.elmakers.mine.bukkit.block.UndoList.getRegistry().registerBreaking(block, addAmount);
+        undoList.setUndoBreaking(true);
+        return breakAmount;
+    }
+
+    @Override
     public String parameterize(String command) {
         Location location = getLocation();
         Mage mage = getMage();

@@ -119,6 +119,7 @@ public class NMSUtils {
     protected static Class<?> class_PacketPlayOutCustomSoundEffect;
     protected static Class<?> class_PacketPlayOutExperience;
     protected static Class<?> class_PacketPlayOutAnimation;
+    protected static Class<?> class_PacketPlayOutBlockBreakAnimation;
     protected static Enum<?> enum_SoundCategory_PLAYERS;
     protected static Class<Enum> class_EnumSoundCategory;
     protected static Class<?> class_EntityFallingBlock;
@@ -220,7 +221,7 @@ public class NMSUtils {
     protected static Constructor class_EntityFireworkConstructor;
     protected static Constructor class_EntityPaintingConstructor;
     protected static Constructor class_EntityItemFrameConstructor;
-    protected static Constructor class_BlockPositionConstructor;
+    protected static Constructor class_BlockPosition_Constructor;
     protected static Constructor class_PacketSpawnEntityConstructor;
     protected static Constructor class_PacketSpawnLivingEntityConstructor;
     protected static Constructor class_PacketPlayOutEntityMetadata_Constructor;
@@ -229,6 +230,7 @@ public class NMSUtils {
     protected static Constructor class_PacketPlayOutCustomSoundEffect_Constructor;
     protected static Constructor class_PacketPlayOutExperience_Constructor;
     protected static Constructor class_PacketPlayOutAnimation_Constructor;
+    protected static Constructor class_PacketPlayOutBlockBreakAnimation_Constructor;
     protected static Constructor class_ChestLock_Constructor;
     protected static Constructor class_ArmorStand_Constructor;
     protected static Constructor class_AxisAlignedBB_Constructor;
@@ -350,6 +352,7 @@ public class NMSUtils {
             class_PacketPlayOutCustomSoundEffect = fixBukkitClass("net.minecraft.server.PacketPlayOutCustomSoundEffect");
             class_PacketPlayOutExperience = fixBukkitClass("net.minecraft.server.PacketPlayOutExperience");
             class_PacketPlayOutAnimation = fixBukkitClass("net.minecraft.server.PacketPlayOutAnimation");
+            class_PacketPlayOutBlockBreakAnimation = fixBukkitClass("net.minecraft.server.PacketPlayOutBlockBreakAnimation");
             class_EntityFallingBlock = fixBukkitClass("net.minecraft.server.EntityFallingBlock");
             class_EntityArmorStand = fixBukkitClass("net.minecraft.server.EntityArmorStand");
             class_EntityPlayer = fixBukkitClass("net.minecraft.server.EntityPlayer");
@@ -361,7 +364,8 @@ public class NMSUtils {
             class_TileEntitySign = fixBukkitClass("net.minecraft.server.TileEntitySign");
             class_CraftServer = fixBukkitClass("org.bukkit.craftbukkit.CraftServer");
             class_MinecraftServer = fixBukkitClass("net.minecraft.server.MinecraftServer");
-                    
+            class_BlockPosition = fixBukkitClass("net.minecraft.server.BlockPosition");
+
             class_EntityProjectile = NMSUtils.getBukkitClass("net.minecraft.server.EntityProjectile");
             class_EntityFireball = NMSUtils.getBukkitClass("net.minecraft.server.EntityFireball");
             class_EntityArrow = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
@@ -412,7 +416,8 @@ public class NMSUtils {
             class_PacketPlayOutCustomSoundEffect_Constructor = class_PacketPlayOutCustomSoundEffect.getConstructor(String.class, class_EnumSoundCategory, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
             class_PacketPlayOutExperience_Constructor = class_PacketPlayOutExperience.getConstructor(Float.TYPE, Integer.TYPE, Integer.TYPE);
             class_PacketPlayOutAnimation_Constructor = class_PacketPlayOutAnimation.getConstructor(class_Entity, Integer.TYPE);
-            
+            class_PacketPlayOutBlockBreakAnimation_Constructor = class_PacketPlayOutBlockBreakAnimation.getConstructor(Integer.TYPE, class_BlockPosition, Integer.TYPE);
+
             class_CraftWorld_environmentField = class_CraftWorld.getDeclaredField("environment");
             class_CraftWorld_environmentField.setAccessible(true);
             class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
@@ -515,9 +520,8 @@ public class NMSUtils {
             class_CraftBanner_setPatternsMethod = class_CraftBanner.getMethod("setPatterns", List.class);
             class_CraftBanner_setBaseColorMethod = class_CraftBanner.getMethod("setBaseColor", DyeColor.class);
 
-            class_BlockPosition = fixBukkitClass("net.minecraft.server.BlockPosition");
             class_EnumDirection = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumDirection");
-            class_BlockPositionConstructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
+            class_BlockPosition_Constructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
             class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_ArmorStand_Constructor = class_EntityArmorStand.getConstructor(class_World);

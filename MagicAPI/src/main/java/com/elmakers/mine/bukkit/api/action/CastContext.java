@@ -81,6 +81,7 @@ public interface CastContext {
     void registerPotionEffects(Entity entity);
     void registerBreakable(Block block, double breakable);
     void registerReflective(Block block, double reflectivity);
+    double registerBreaking(Block block, double breakAmount);
     Block getPreviousBlock();
     boolean isIndestructible(Block block);
     boolean hasBuildPermission(Block block);

@@ -277,7 +277,7 @@ ak47:
         - class: CustomProjectile
           actions:
           - class: Damage
-          - class: ModifyBlock
+          - class: BreakBlock
             ignore_result: true
     effects:
         cast:
@@ -309,6 +309,15 @@ ak47:
            particle_offset_y: 0.3
            particle_offset_z: 0.2
            particle_data: 0.2
+        break:
+        -  class: EffectSingle
+           location: target
+           sample: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 1.5
+           particle_offset_y: 1
+           particle_offset_z: 1.5
         hit_block:
         -  class: EffectSingle
            effect: step_sound
@@ -318,7 +327,7 @@ ak47:
            location: target
            sample: target
            particle: block_crack
-           particle_count: 50
+           particle_count: 20
            particle_offset_x: 0.8
            particle_offset_y: 1
            particle_offset_z: 0.8
@@ -356,10 +365,10 @@ ak47:
         entity_damage: 6
         target_breakables: 1
         destructible: solid
-        destructible_durability: 2
+        destructible_durability: 4
+        break_durability: 2
         undo: 30000
         spread: 0.1
-        brush: erase
         magic_damage: false
     costs:
       mana: 1
@@ -384,7 +393,7 @@ pistol:
         - class: CustomProjectile
           actions:
           - class: Damage
-          - class: ModifyBlock
+          - class: BreakBlock
             ignore_result: true
     effects:
         cast:
@@ -417,6 +426,15 @@ pistol:
            particle_offset_y: 0.3
            particle_offset_z: 0.2
            particle_data: 0.2
+        break:
+        -  class: EffectSingle
+           location: target
+           sample: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 1.5
+           particle_offset_y: 1
+           particle_offset_z: 1.5
         hit_block:
         -  class: EffectSingle
            effect: step_sound
@@ -426,7 +444,7 @@ pistol:
            location: target
            sample: target
            particle: block_crack
-           particle_count: 50
+           particle_count: 20
            particle_offset_x: 0.8
            particle_offset_y: 1
            particle_offset_z: 0.8
@@ -464,9 +482,8 @@ pistol:
         entity_damage: 4
         target_breakables: 1
         destructible: solid
-        destructible_durability: 2
+        destructible_durability: 9
         undo: 30000
-        brush: erase
         cooldown: 500
         magic_damage: false
     costs:
@@ -494,7 +511,7 @@ shotgun:
             actions:
             - class: Damage
             - class: Velocity
-            - class: ModifyBlock
+            - class: BreakBlock
               ignore_result: true
     effects:
         cast:
@@ -528,6 +545,15 @@ shotgun:
            particle_offset_y: 0.3
            particle_offset_z: 0.2
            particle_data: 0.2
+        break:
+        -  class: EffectSingle
+           location: target
+           sample: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 1.5
+           particle_offset_y: 1
+           particle_offset_z: 1.5
         hit_block:
         -  class: EffectSingle
            effect: step_sound
@@ -537,7 +563,7 @@ shotgun:
            location: target
            sample: target
            particle: block_crack
-           particle_count: 50
+           particle_count: 20
            particle_offset_x: 0.8
            particle_offset_y: 1
            particle_offset_z: 0.8
@@ -577,9 +603,9 @@ shotgun:
         entity_damage: 4
         target_breakables: 1
         destructible: solid
-        destructible_durability: 4
+        destructible_durability: 50
+        break_durability: 5
         undo: 30000
-        brush: erase
         cooldown: 800
         undo_speed: 0.4
         speed: 1

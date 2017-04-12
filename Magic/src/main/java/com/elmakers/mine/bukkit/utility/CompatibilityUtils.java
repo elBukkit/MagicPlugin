@@ -256,7 +256,7 @@ public class CompatibilityUtils extends NMSUtils {
             Object newEntity = null;
             @SuppressWarnings("unchecked")
             Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
-            Object blockLocation = class_BlockPositionConstructor.newInstance(location.getX(), location.getY(), location.getZ());
+            Object blockLocation = class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             newEntity = class_EntityPaintingConstructor.newInstance(worldHandle, blockLocation, directionEnum);
             if (newEntity != null) {
                 Entity bukkitEntity = getBukkitEntity(newEntity);
@@ -282,7 +282,7 @@ public class CompatibilityUtils extends NMSUtils {
             Object newEntity = null;
             @SuppressWarnings("unchecked")
             Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
-            Object blockLocation = class_BlockPositionConstructor.newInstance(location.getX(), location.getY(), location.getZ());
+            Object blockLocation = class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             newEntity = class_EntityItemFrameConstructor.newInstance(worldHandle, blockLocation, directionEnum);
             if (newEntity != null) {
                 Entity bukkitEntity = getBukkitEntity(newEntity);
@@ -1428,5 +1428,27 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return 0.0f;
+    }
+
+    public static void sendBreaking(Player player, long id, Location location, int breakAmount) {
+        try {
+            Object blockPosition = class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
+            Object packet = class_PacketPlayOutBlockBreakAnimation_Constructor.newInstance((int)id, blockPosition, breakAmount);
+            sendPacket(player, packet);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setBreaking(long id, Block block, int breakAmount, int range) {
+        String worldName = block.getWorld().getName();
+        Location location = block.getLocation();
+        int rangeSquared = range * range;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(location) > rangeSquared) {
+                continue;
+            }
+            sendBreaking(player, id, location, breakAmount);
+        }
     }
 }

@@ -15,6 +15,7 @@ import java.util.UUID;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Location;
@@ -49,6 +50,8 @@ import com.elmakers.mine.bukkit.entity.EntityData;
  */
 public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.block.UndoList
 {
+    public static int                  BLOCK_BREAK_RANGE = 64;
+
     public static Set<Material>         attachables;
     public static Set<Material>         attachablesWall;
     public static Set<Material>         attachablesDouble;
@@ -94,6 +97,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     private Set<EntityType>         undoEntityTypes = null;
     protected boolean               undoBreakable = false;
     protected boolean               undoReflective = false;
+    protected boolean               undoBreaking = false;
 
     public UndoList(Mage mage, String name)
     {
@@ -368,10 +372,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             registry.removeReflective(undoBlock);
         }
 
+        boolean isTopOfQueue = undoBlock.getNextState() == null;
         if (undoBlock.undo(applyPhysics)) {
             removeFromModified(undoBlock, priorState);
             // Continue watching this block until we completely finish the undo process
             registerWatched(undoBlock);
+
+            // Undo breaking state only if this was the top of the queue
+            if (undoBreaking && isTopOfQueue) {
+                registry.removeBreaking(undoBlock);
+                CompatibilityUtils.setBreaking(undoBlock.getId(), undoBlock.getBlock(), 10, BLOCK_BREAK_RANGE);
+            }
             return true;
         }
 
@@ -891,6 +902,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void setUndoReflective(boolean reflective) {
         this.undoReflective = reflective;
+    }
+
+    @Override
+    public void setUndoBreaking(boolean breaking) {
+        this.undoBreaking = breaking;
     }
 
     @Override
