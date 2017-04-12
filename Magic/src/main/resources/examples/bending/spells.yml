@@ -387,16 +387,19 @@ earthblock:
         - class: Delay
         - class: ChangeContext
           actions:
-          - class: Brush
-            sample: true
+          - class: Parallel
             actions:
-            - class: ThrowBlock
+            - class: Brush
+              sample: true
               actions:
-              - class: AreaOfEffect
+              - class: ThrowBlock
+                use_target_location: false
                 actions:
-                - class: Velocity
-                - class: Damage
-          - class: ModifyBlock
+                - class: AreaOfEffect
+                  actions:
+                  - class: Velocity
+                  - class: Damage
+            - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -406,6 +409,8 @@ earthblock:
         -  class: EffectSingle
            target_offset: 0.5,2.5,0.5
            location: target
+           use_hit_location: false
+           use_block_location: true
            effectlib:
              class: SphereEffect
              iterations: 5
