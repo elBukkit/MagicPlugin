@@ -21,12 +21,6 @@ default:
          sound: block_note_bass
          sound_volume: 0.9
          sound_pitch: 1.5
-       cooldown:
-       - class: EffectSingle
-         location: origin
-         sound: block_note_basedrum
-         sound_volume: 0.6
-         sound_pitch: 0.8
        cursed:
        - class: EffectSingle
          location: origin
@@ -95,25 +89,47 @@ default:
        world_required: fail
        invalid_world: fail
 
-base_reload:
+incremental_reload:
   icon: sulphur
   actions:
     cast:
-    - class: Delay
-    - class: ModifyMana
+    - class: Repeat
+      actions:
+      - class: CheckMana
+        actions:
+        - class: PlayEffects
+        - class: Delay
+        - class: ModifyMana
   parameters:
+    effects: reload
+    cancel_on_cast_other: true
+    require_mana_not_full: true
+
+full_reload:
+  icon: sulphur
+  actions:
+    cast:
+    - class: CheckMana
+      actions:
+      - class: Repeat
+        actions:
+          - class: PlayEffects
+          - class: Delay
+      - class: ModifyMana
+  parameters:
+    effects: reload
+    cancel_on_cast_other: true
+    require_mana_not_full: true
     fill_mana: true
-    delay: 2000
-    mage_cooldown: 2000
 
 reload_sniper:
-  inherit: base_reload
+  inherit: incremental_reload
   effects:
-    cast:
+    reload:
     - sound: war.sniperrifle-reload
   parameters:
-    delay: 5000
-    mage_cooldown: 5000
+    repeat: 3
+    delay: 1000
 
 sniper:
     icon: ghast_tear
@@ -221,7 +237,7 @@ sniper:
       player_damage: 20
       entity_damage: 30
     parameters:
-        cooldown: 1000
+        mage_cooldown: 1000
         velocity: 3000
         range: 100
         effect_slow: 20
@@ -243,13 +259,13 @@ sniper:
       mana: 1
 
 reload_ak47:
-  inherit: base_reload
+  inherit: full_reload
   effects:
-    cast:
+    reload:
     - sound: war.ak47-reload
   parameters:
-    delay: 5000
-    mage_cooldown: 5000
+    delay: 700
+    repeat: 4
 
 ak47:
     icon: ghast_tear
@@ -349,13 +365,14 @@ ak47:
       mana: 1
 
 reload_pistol:
-  inherit: base_reload
+  inherit: incremental_reload
   effects:
-    cast:
+    reload:
     - sound: war.deserteagle-reload
   parameters:
-    delay: 1500
-    mage_cooldown: 1500
+    delay: 200
+    repeat: 10
+    mana: 2
 
 pistol:
     icon: ghast_tear
@@ -456,13 +473,13 @@ pistol:
       mana: 1
 
 reload_shotgun:
-  inherit: base_reload
+  inherit: incremental_reload
   effects:
-    cast:
+    reload:
     - sound: war.shotgun-reload
   parameters:
-    delay: 5000
-    mage_cooldown: 5000
+    delay: 1000
+    repeat: 6
 
 shotgun:
     icon: ghast_tear
@@ -572,13 +589,13 @@ shotgun:
       mana: 1
 
 reload_rocketlauncher:
-  inherit: base_reload
+  inherit: full_reload
   effects:
-    cast:
+    reload:
     - sound: war.rocketlauncher-reload
   parameters:
-    delay: 8000
-    mage_cooldown: 8000
+    repeat: 5
+    delay: 1000
 
 rocketlauncher:
     icon: ghast_tear
