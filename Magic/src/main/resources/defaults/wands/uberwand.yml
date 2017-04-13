@@ -20,105 +20,25 @@ uberwand:
   active_brush: erase
   active_spell: missile|4
   spells:
-    - absorb@8
-    - alter@90
-    - animate@51
-    - arrowrain@72
-    - arrow|4@35
-    - backup@91
-    - blast|2@132
-    - blessing@115
-    - blink|3@1
-    - blob@57
-    - boom|2@37
-    - boon|2@135
-    - box@92
-    - bridge@29
-    - superbroom@7
-    - camera@133
-    - collapse@58
-    - commit@93
-    - convert@94
-    - counterspell@59
-    - curse@66
-    - day@4
-    - disarm@73
-    - disc@136
-    - disintegrate@31
-    - emp@81
-    - entangle@60
-    - familiar@85
-    - farm@86
-    - fill@10
-    - fireball@61
-    - fire|3@33
-    - flamethrower@62
-    - flare@114
-    - fling|2@2
-    - force@34
-    - gather@40
-    - ghast@38
-    - glider@56
-    - grenade|2@78
-    - heal@6
-    - icbm@79
-    - iterate@95
-    - kill@36
-    - laser|3@80
     - levitate@0
-    - life@82
-    - lightning|3@87
+    - blink|3@1
+    - fling|2@2
     - missile|4@3
-    - mob@67
-    - monster@68
-    - mount@116
-    - neutron@69
-    - nuke@117
-    - paint@27
-    - petrify@39
-    - phase@118
-    - pickpocket@134
-    - pillar@96
-    - place@9
-    - portal@119
-    - pull@25
-    - push@24
-    - recall@23
-    - recurse@97
-    - regenerate@98
-    - repair@99
-    - rollback@15
-    - shell|4@63
-    - shrink@64
-    - simulate3@84
-    - simulate@83
-    - singularity@120
-    - stash@137
-    - stun@65
-    - superalter@32
-    - superblast@100
-    - superblob@11
-    - superbox@105
-    - supercollapse@106
-    - superconvert@12
-    - superdisc@107
-    - superdome@108
+    - day@4
     - superkill@5
-    - superpyramid@109
-    - superregenerate@110
-    - superrepair@14
-    - superring@111
+    - heal@6
+    - superbroom@7
+    - absorb@8
+    - place@9
+    - fill@10
+    - superblob@11
+    - superconvert@12
     - supershell@13
-    - tag@70
-    - tendril@30
+    - superrepair@14
+    - rollback@15
     - supertorch@22
-    - torture@121
-    - toss@112
-    - tree@89
-    - volley@113
-    - wither@71
-    - wolfhouse@122
-    - wound@28
+    - recall@23
+    - push@24
   brushes:
     - bedrock
     - clone@19
