@@ -759,6 +759,10 @@ c4:
                 speed: 0
                 direction: ""
     effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_lava_pop
+           location: origin
         projectile:
         - class: EffectSingle
           effectlib:
@@ -933,9 +937,7 @@ flash_bang:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magic.bonk
-           sound_pitch: 0.2
-           sound_volume: 0.3
+           sound: block_lava_pop
            location: origin
         hit:
         -  class: EffectSingle
@@ -961,8 +963,6 @@ flash_bang:
              radius: 1
              particles: 20
     parameters:
-      allow_max_range: true
-      range: 32
       brush: diamond_pickaxe:6
       undo: 10000
       duration: 8000
