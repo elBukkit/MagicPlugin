@@ -61,6 +61,7 @@ public class ThrowItemAction extends BaseProjectileAction {
         }
         NMSUtils.makeTemporary(itemStack, removedMessage);
         if (unbreakable) {
+            itemStack = InventoryUtils.makeReal(itemStack);
             InventoryUtils.makeUnbreakable(itemStack);
         }
         Item droppedItem = null;
