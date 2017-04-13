@@ -650,18 +650,6 @@ rocketlauncher:
             actions:
             - class: ModifyBlock
               ignore_result: true
-          - class: Sphere
-            radius: 4
-            thickness: 1
-            center_y: false
-            y_size: 2
-            actions:
-            - class: Recurse
-              actions:
-              - class: ModifyBlock
-                ignore_result: true
-                speed: 0
-                direction: ""
     effects:
         cast:
         -  class: EffectSingle
@@ -733,10 +721,101 @@ rocketlauncher:
         push: 1
         velocity_max_distance: 5
         magic_damage: false
-        faces: up
-        recursion_depth: 128
     costs:
       mana: 1
+
+c4:
+    icon: tnt
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    category: combat
+    worth: 9999
+    actions:
+        cast:
+        - class: TNT
+          actions:
+          - class: Damage
+            damage_max_distance: 0
+            player_damage: 8
+            entity_damage: 10
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+            - class: Velocity
+              speed: 1.5
+          - class: Sphere
+            actions:
+            - class: ModifyBlock
+              ignore_result: true
+          - class: Sphere
+            radius: 4
+            thickness: 1
+            center_y: false
+            y_size: 2
+            actions:
+            - class: Recurse
+              actions:
+              - class: ModifyBlock
+                ignore_result: true
+                speed: 0
+                direction: ""
+    effects:
+        projectile:
+        - class: EffectSingle
+          effectlib:
+             class: SphereEffect
+             particle: redstone
+             color: "FF0000"
+             iterations: 100
+             radius: 0.3
+        hit_entity:
+        -  class: EffectSingle
+           sound: entity_slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 50
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particleCount: 30
+            material: redstone_block
+            size: 1
+            yOffset: 0
+        hit:
+        -  class: EffectSingle
+           location: target
+           sound: entity_generic_explode
+           particle: explosion_huge
+           particle_count: 4
+           particle_offset_x: 2
+           particle_offset_y: 2
+           particle_offset_z: 2
+           particle_data: 0.2
+    parameters:
+        radius: 3
+        target_type: LivingEntity
+        damage_max_distance: 5
+        player_damage: 15
+        entity_damage: 15
+        target_breakables: 1
+        bypass_backfire: true
+        destructible: solid
+        destructible_durability: 40
+        undo: 30000
+        brush: erase
+        cooldown: 2000
+        speed: 1.1
+        direction: 0,0.8,0
+        falling: true
+        undo_speed: 0.8
+        y_offset: 0.75
+        push: 1
+        velocity_max_distance: 5
+        magic_damage: false
+        faces: up
+        recursion_depth: 128
+        size: 0
 
 thruster:
     icon: feather
@@ -811,31 +890,35 @@ radar:
         duration: 10000
 
 incendiary:
-     icon: tnt
+     icon: diamond_pickaxe:8
      icon_url: http://textures.minecraft.net/texture/c6a7fcfee0ffebae25b69bd16f55c993898ba72791d3a89e58736e7bad0faa3
      category: demolition
      pvp_restricted: true
      worth: 300
      actions:
          cast:
-         -  class: TNT
+         -  class: ThrowItem
+            actions:
+            - class: Explosion
      effects:
          cast:
          -  class: EffectSingle
             sound: block_lava_pop
      parameters:
-         target: none
          allow_max_range: true
          range: 32
+         brush: diamond_pickaxe:8
+         unbreakable: true
          size: 3
          fire: true
          fuse: 60
          undo: 20000
          cooldown: 500
          undo_speed: 0.5
+         age_items: 5960
 
 flash_bang:
-    icon: eye_of_ender
+    icon: diamond_pickaxe:6
     icon_url: http://textures.minecraft.net/texture/964590674dbaf76126bd87694bfe97575be8de19aac4a8d9aa5579f8f01ed1
     category: combat
     pvp_restricted: true
@@ -878,7 +961,8 @@ flash_bang:
              radius: 1
              particles: 20
     parameters:
-      target: none
+      allow_max_range: true
+      range: 32
       brush: diamond_pickaxe:6
       undo: 10000
       duration: 8000

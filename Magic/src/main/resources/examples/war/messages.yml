@@ -17,6 +17,8 @@ wands:
     name: RADAR
   incendiary:
     name: Incendiary Grenade
+  c4:
+    name: C4
   flashbang:
     name: Flash Bang
 
