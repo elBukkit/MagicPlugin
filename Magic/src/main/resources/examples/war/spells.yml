@@ -130,6 +130,7 @@ reload_sniper:
   parameters:
     repeat: 3
     delay: 1000
+    cooldown: 3500
 
 sniper:
     icon: ghast_tear
@@ -266,6 +267,7 @@ reload_ak47:
   parameters:
     delay: 700
     repeat: 4
+    cooldown: 3000
 
 ak47:
     icon: ghast_tear
@@ -367,7 +369,7 @@ ak47:
         destructible: solid
         destructible_durability: 4
         break_durability: 2
-        undo: 30000
+        undo: 18000
         spread: 0.1
         magic_damage: false
     costs:
@@ -382,6 +384,7 @@ reload_pistol:
     delay: 200
     repeat: 10
     mana: 2
+    cooldown: 2500
 
 pistol:
     icon: ghast_tear
@@ -495,8 +498,9 @@ reload_shotgun:
     reload:
     - sound: war.shotgun-reload
   parameters:
-    delay: 1000
+    delay: 500
     repeat: 6
+    cooldown: 3500
 
 shotgun:
     icon: ghast_tear
@@ -622,6 +626,7 @@ reload_rocketlauncher:
   parameters:
     repeat: 5
     delay: 1000
+    cooldown: 5500
 
 rocketlauncher:
     icon: ghast_tear
