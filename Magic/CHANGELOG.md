@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.4
+
 ## 6.9.3
 
  - Add "war" example configs, WIP
