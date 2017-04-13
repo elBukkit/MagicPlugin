@@ -46,6 +46,7 @@ public class BreakBlockAction extends BaseSpellAction {
             breakAmount = context.registerBreaking(block, breakPercentage);
         }
         if (breakAmount > 1) {
+            CompatibilityUtils.setBreaking(BlockData.getBlockId(block), block, 10, UndoList.BLOCK_BREAK_RANGE);
             block.setType(Material.AIR);
             context.playEffects("break");
         } else {

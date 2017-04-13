@@ -173,7 +173,7 @@ sniper:
           location: target
         - particle: redstone
           location: target
-          color: "882200"
+          color: "#666600"
         hit_entity:
         -  class: EffectSingle
            location: target
