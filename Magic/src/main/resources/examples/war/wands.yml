@@ -2,6 +2,8 @@ base_gun:
   right_click: cast
   left_click: alt_cast
   indestructible: true
+  attributes:
+    GENERIC_ATTACK_SPEED: 10
 
 ak47:
   icon: diamond_pickaxe:1
