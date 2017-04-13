@@ -380,8 +380,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
             // Undo breaking state only if this was the top of the queue
             if (undoBreaking && isTopOfQueue) {
-                registry.removeBreaking(undoBlock);
-                CompatibilityUtils.setBreaking(undoBlock.getId(), undoBlock.getBlock(), 10, BLOCK_BREAK_RANGE);
+                // This may have been unregistered already, if the block was broken for instance.
+                if (registry.removeBreaking(undoBlock) != null) {
+                    CompatibilityUtils.setBreaking(undoBlock.getBlock(), 10, BLOCK_BREAK_RANGE);
+                }
             }
             return true;
         }

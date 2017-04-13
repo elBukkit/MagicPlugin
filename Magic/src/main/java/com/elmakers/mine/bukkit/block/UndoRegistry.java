@@ -115,8 +115,8 @@ public class UndoRegistry {
         reflective.remove(block.getId());
     }
 
-    public void removeBreaking(BlockData block) {
-        breaking.remove(block.getId());
+    public Double removeBreaking(BlockData block) {
+        return breaking.remove(block.getId());
     }
 
     public double registerBreaking(Block block, double addAmount) {
@@ -171,6 +171,11 @@ public class UndoRegistry {
     public void registerBreakable(Block block, double amount) {
         if (block == null) return;
         breakable.put(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block), amount);
+    }
+
+    public void unregisterBreaking(Block block) {
+        if (block == null) return;
+        breaking.remove(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
     }
 
     public void unregisterBreakable(Block block) {

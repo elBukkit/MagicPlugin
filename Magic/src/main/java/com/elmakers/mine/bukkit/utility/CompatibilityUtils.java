@@ -1430,7 +1430,7 @@ public class CompatibilityUtils extends NMSUtils {
         return 0.0f;
     }
 
-    public static void sendBreaking(Player player, long id, Location location, int breakAmount) {
+    private static void sendBreaking(Player player, long id, Location location, int breakAmount) {
         try {
             Object blockPosition = class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             Object packet = class_PacketPlayOutBlockBreakAnimation_Constructor.newInstance((int)id, blockPosition, breakAmount);
@@ -1440,7 +1440,14 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static void setBreaking(long id, Block block, int breakAmount, int range) {
+    private static int getBlockEntityId(Block block) {
+        // There will be some overlap here, but these effects are very localized so it should be OK.
+        return   ((block.getX() & 0xFFF) << 20)
+               | ((block.getZ() & 0xFFF) << 8)
+               | (block.getY() & 0xFF);
+    }
+
+    public static void setBreaking(Block block, int breakAmount, int range) {
         String worldName = block.getWorld().getName();
         Location location = block.getLocation();
         int rangeSquared = range * range;
@@ -1448,7 +1455,7 @@ public class CompatibilityUtils extends NMSUtils {
             if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(location) > rangeSquared) {
                 continue;
             }
-            sendBreaking(player, id, location, breakAmount);
+            sendBreaking(player, getBlockEntityId(block), location, breakAmount);
         }
     }
 }

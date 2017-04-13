@@ -82,6 +82,7 @@ public interface CastContext {
     void registerBreakable(Block block, double breakable);
     void registerReflective(Block block, double reflectivity);
     double registerBreaking(Block block, double breakAmount);
+    void unregisterBreaking(Block block);
     Block getPreviousBlock();
     boolean isIndestructible(Block block);
     boolean hasBuildPermission(Block block);

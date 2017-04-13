@@ -5,7 +5,6 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -46,12 +45,13 @@ public class BreakBlockAction extends BaseSpellAction {
             breakAmount = context.registerBreaking(block, breakPercentage);
         }
         if (breakAmount > 1) {
-            CompatibilityUtils.setBreaking(BlockData.getBlockId(block), block, 10, UndoList.BLOCK_BREAK_RANGE);
+            CompatibilityUtils.setBreaking(block, 10, UndoList.BLOCK_BREAK_RANGE);
             block.setType(Material.AIR);
+            context.unregisterBreaking(block);
             context.playEffects("break");
         } else {
             int breakState = (int)Math.floor(9 * breakAmount);
-            CompatibilityUtils.setBreaking(BlockData.getBlockId(block), block, breakState, UndoList.BLOCK_BREAK_RANGE);
+            CompatibilityUtils.setBreaking(block, breakState, UndoList.BLOCK_BREAK_RANGE);
         }
         return SpellResult.CAST;
     }
