@@ -58,7 +58,7 @@ riotshield:
   effects:
     spell_blocked:
     -  class: EffectSingle
-       sound: magic.saberhit
+       sound: war.ricochet
        sound_volume: 1
        location: origin
        effectlib:
