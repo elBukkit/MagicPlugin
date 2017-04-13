@@ -10,8 +10,6 @@ ak47:
   alternate_spell: reload_ak47
   mana: 70
   mana_max: 70
-  attributes:
-    GENERIC_ATTACK_SPEED: -3.5
 
 sniper:
   icon: diamond_pickaxe:2
@@ -20,8 +18,6 @@ sniper:
   alternate_spell: reload_sniper
   mana: 3
   mana_max: 3
-  attributes:
-    GENERIC_ATTACK_SPEED: -3.5
 
 pistol:
   icon: diamond_pickaxe:3
@@ -30,28 +26,22 @@ pistol:
   alternate_spell: reload_pistol
   mana: 20
   mana_max: 20
-  attributes:
-    GENERIC_ATTACK_SPEED: -3.5
 
 shotgun:
-  icon: diamond_pickaxe:3
+  icon: diamond_pickaxe:4
   inherit: base_gun
   active_spell: shotgun
   alternate_spell: reload_shotgun
   mana: 6
   mana_max: 6
-  attributes:
-    GENERIC_ATTACK_SPEED: -3.5
 
 rocketlauncher:
-  icon: diamond_pickaxe:3
+  icon: diamond_pickaxe:5
   inherit: base_gun
   active_spell: rocketlauncher
   alternate_spell: reload_rocketlauncher
   mana: 1
   mana_max: 1
-  attributes:
-    GENERIC_ATTACK_SPEED: -3.8
 
 radar:
   icon: compass
@@ -90,7 +80,8 @@ incendiary:
   active_spell: incendiary
 
 flashbang:
-  icon: eye_of_ender
+  icon: diamond_pickaxe:6
+  indestructible: true
   uses: 1
   right_click: cast
   active_spell: flash_bang
