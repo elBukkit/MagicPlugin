@@ -932,6 +932,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		boolean added = false;
 
 		WandMode mode = getMode();
+		int fullSlot = 0;
 		for (Inventory inventory : checkInventories) {
 			int inventorySize = inventory.getSize();
 			Integer slot = null;
@@ -950,14 +951,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			if (slot != null && (freeSpace >= INVENTORY_ORGANIZE_BUFFER || inventorySize == HOTBAR_INVENTORY_SIZE || mode == WandMode.CHEST)) {
 				added = true;
 				inventory.setItem(slot, itemStack);
+				fullSlot += slot;
 				break;
 			}
+			fullSlot += inventory.getSize();
 		}
 		if (!added) {
+			fullSlot = getHotbarSize() + getInventorySize() * inventories.size();
 			Inventory newInventory = CompatibilityUtils.createInventory(null, getInventorySize(), "Wand");
 			newInventory.addItem(itemStack);
 			inventories.add(newInventory);
 		}
+		updateSlot(fullSlot, itemStack);
 	}
 
     protected @Nonnull Inventory getInventoryByIndex(int inventoryIndex) {
@@ -3173,9 +3178,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (isUpgrade) return false;
 
 		if (isModifiable() && isSpell(item) && !isSkill(item)) {
-			String spellKey = getSpell(item);
-			Set<String> spells = getSpells();
-			if (!spells.contains(spellKey) && addSpell(spellKey)) {
+			String spell = getSpell(item);
+			SpellKey spellKey = new SpellKey(spell);
+			Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
+			if ((currentLevel == null || currentLevel < spellKey.getLevel()) && addSpell(spell)) {
                 return true;
 			}
 		} else if (isModifiable() && isBrush(item)) {
@@ -3483,11 +3489,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Integer spellLevel = spellLevels.get(key.getBaseKey());
         if (spellLevel == null) return null;
 
-        String spellKey = key.getBaseKey();
-        if (key.isVariant()) {
-            spellKey += "|" + key.getLevel();
-        }
-        return controller.getSpellTemplate(spellKey);
+        SpellKey baseKey = new SpellKey(key.getBaseKey(), spellLevel);
+        return controller.getSpellTemplate(baseKey.getKey());
     }
 
     @Override
@@ -4186,40 +4189,30 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         int inventoryCount = inventories.size();
         int spellCount = spells.size();
 
-        // Special handling for spell upgrades and spells to remove
-        Integer inventorySlot = null;
+        // Look for existing spells for spell upgrades
+        Integer inventorySlot = spellInventory.get(spellKey.getBaseKey());
         Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
         SpellTemplate currentSpell = getBaseSpell(spellKey);
-        List<SpellKey> spellsToRemove = new ArrayList<>(template.getSpellsToRemove().size());
-        for (SpellKey key : template.getSpellsToRemove()) {
-            if (spellLevels.get(key.getBaseKey()) != null) {
-                spellsToRemove.add(key);
-            }
-        }
-        if (currentLevel != null || !spellsToRemove.isEmpty()) {
+        clearSlot(inventorySlot);
+
+		// Special handling for spells to remove
+        Collection<SpellKey> spellsToRemove = template.getSpellsToRemove();
+        if (!spellsToRemove.isEmpty()) {
             List<Inventory> allInventories = getAllInventories();
-            int currentSlot = 0;
             for (Inventory inventory : allInventories) {
                 ItemStack[] items = inventory.getContents();
                 for (int index = 0; index < items.length; index++) {
                     ItemStack itemStack = items[index];
                     if (isSpell(itemStack)) {
                         SpellKey checkKey = new SpellKey(getSpell(itemStack));
-                        if (checkKey.getBaseKey().equals(spellKey.getBaseKey())) {
-                            inventorySlot = currentSlot;
-                            inventory.setItem(index, null);
-							spells.remove(checkKey.getKey());
-                        } else {
-                            for (SpellKey key : spellsToRemove) {
-                                if (checkKey.getBaseKey().equals(key.getBaseKey())) {
-                                    inventory.setItem(index, null);
-                                    spells.remove(key.getKey());
-                                    spellLevels.remove(key.getBaseKey());
-                                }
-                            }
-                        }
+						for (SpellKey key : spellsToRemove) {
+							if (checkKey.getBaseKey().equals(key.getBaseKey())) {
+								inventory.setItem(index, null);
+								spells.remove(key.getKey());
+								spellLevels.remove(key.getBaseKey());
+							}
+						}
                     }
-                    currentSlot++;
                 }
             }
         }
@@ -4285,6 +4278,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 		
 		return true;
+	}
+
+	private void clearSlot(Integer slot) {
+		if (slot != null) {
+			Inventory inventory = getInventory(slot);
+			slot = getInventorySlot(slot);
+			inventory.setItem(slot, null);
+		}
 	}
 
 	@Override
@@ -4462,32 +4463,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	@Override
 	public boolean removeBrush(String materialKey) {
 		if (!isModifiable() || materialKey == null) return false;
-		
+
 		saveInventory();
 		if (materialKey.equals(activeBrush)) {
 			activeBrush = null;
 		}
+		clearSlot(brushInventory.get(materialKey));
         brushInventory.remove(materialKey);
-		brushes.remove(materialKey);
-		List<Inventory> allInventories = getAllInventories();
-		boolean found = false;
-		for (Inventory inventory : allInventories) {
-			ItemStack[] items = inventory.getContents();
-			for (int index = 0; index < items.length; index++) {
-				ItemStack itemStack = items[index];
-				if (itemStack != null && isBrush(itemStack)) {
-					String itemKey = getBrush(itemStack);
-					if (itemKey.equals(materialKey)) {
-						found = true;
-						inventory.setItem(index, null);
-					} else if (activeBrush == null) {
-						activeBrush = materialKey;
-					}
-					if (found && activeBrush != null) {
-						break;
-					}
-				}
-			}
+		boolean found = brushes.remove(materialKey);
+		if (activeBrush == null && brushes.size() > 0) {
+			activeBrush = brushes.iterator().next();
 		}
 		updateActiveMaterial();
 		updateInventory();
@@ -4502,40 +4487,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	@Override
 	public boolean removeSpell(String spellName) {
 		if (!isModifiable()) return false;
+		SpellKey spellKey = new SpellKey(spellName);
+		Integer level = spellLevels.get(spellKey.getBaseKey());
+		if (level == null) return false;
 		
 		saveInventory();
-		if (spellName.equals(activeSpell)) {
-			setActiveSpell(null);
-		}
-        SpellKey spellKey = new SpellKey(spellName);
-		Integer level = spellLevels.get(spellKey.getBaseKey());
 		if (level != null && level > 1) {
 			spellKey = new SpellKey(spellKey.getBaseKey(), level);
 			spellName = spellKey.getKey();
 		}
+		if (spellName.equals(activeSpell)) {
+			setActiveSpell(null);
+		}
+		clearSlot(spellInventory.get(spellKey.getBaseKey()));
 		spells.remove(spellName);
         spellLevels.remove(spellKey.getBaseKey());
 		spellInventory.remove(spellKey.getBaseKey());
-		
-		List<Inventory> allInventories = getAllInventories();
-		boolean found = false;
-		for (Inventory inventory : allInventories) {
-			ItemStack[] items = inventory.getContents();
-			for (int index = 0; index < items.length; index++) {
-				ItemStack itemStack = items[index];
-				if (itemStack != null && itemStack.getType() != Material.AIR && isSpell(itemStack)) {
-					if (getSpell(itemStack).equals(spellName)) {
-						found = true;
-						inventory.setItem(index, null);
-					} else if (activeSpell == null) {
-						setActiveSpell(getSpell(itemStack));
-					}
-					if (found && activeSpell != null) {
-						break;
-					}
-				}
-			}
+		if (activeSpell == null && spells.size() > 0) {
+			setActiveSpell(spells.iterator().next());
 		}
+
         updateInventory();
 		updateHasInventory();
 		updateSpells();
@@ -4544,7 +4515,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateName();
         updateLore();
 
-		return found;
+		return true;
 	}
 
     @Override
