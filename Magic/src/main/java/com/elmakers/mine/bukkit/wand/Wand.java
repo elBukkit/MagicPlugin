@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
+import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
@@ -172,6 +173,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	private boolean hasInventory = false;
 	private boolean locked = false;
     private boolean forceUpgrade = false;
+    private boolean isHeroes = false;
 	private int uses = 0;
     private boolean hasUses = false;
     private boolean isSingleUse = false;
@@ -655,8 +657,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return isUpgrade;
 	}
 
+	public boolean usesMana() {
+        if (isCostFree()) return false;
+		return manaMax > 0 || (isHeroes && mage != null);
+	}
+
 	@Override
 	public void removeMana(float amount) {
+		if (isHeroes && mage != null) {
+			HeroesManager heroes = controller.getHeroes();
+			if (heroes != null) {
+				heroes.removeMana(mage.getPlayer(), (int)Math.ceil(amount));
+			}
+		}
 		super.removeMana(amount);
 		updateMana();
 	}
@@ -1440,6 +1453,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		superProtected = wandConfig.getBoolean("protected");
 		glow = wandConfig.getBoolean("glow");
 		undroppable = wandConfig.getBoolean("undroppable");
+		isHeroes = wandConfig.getBoolean("heroes");
 		bound = wandConfig.getBoolean("bound");
 		forceUpgrade = wandConfig.getBoolean("force");
 		autoOrganize = wandConfig.getBoolean("organize");
@@ -1683,6 +1697,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			upgradePath.checkMigration(this);
 		} else {
 			hasSpellProgression = false;
+		}
+		if (isHeroes) {
+			hasSpellProgression = true;
 		}
 
 		brushInventory.clear();
@@ -2780,6 +2797,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         {
             return false;
         }
+        if (isHeroes || other.isHeroes) {
+            return false;
+        }
 
 		ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(other.getTemplateKey());
 
@@ -3595,6 +3615,27 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
+    @Override
+    public boolean tickMana() {
+        if (isHeroes)
+        {
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null && mage != null && mage.isPlayer())
+            {
+            	Player player = mage.getPlayer();
+                effectiveManaMax = heroes.getMaxMana(player);
+                effectiveManaRegeneration = heroes.getManaRegen(player);
+                manaMax = effectiveManaMax;
+                manaRegeneration = effectiveManaRegeneration;
+                setMana(heroes.getMana(player));
+                return true;
+            }
+
+            return false;
+        }
+        return super.tickMana();
+    }
+
 	public void tick() {
 		if (mage == null) return;
 		
@@ -3629,7 +3670,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected void updateMaxMana(boolean updateLore) {
-		if (super.updateMaxMana(mage) && updateLore) {
+		if (isHeroes) return;
+        if (super.updateMaxMana(mage) && updateLore) {
 			updateLore();
 		}
     }
@@ -3915,6 +3957,32 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Check for an empty wand and auto-fill
         if (!isUpgrade && (controller.fillWands() || autoFill)) {
             fill(mage.getPlayer(), controller.getMaxWandFillLevel());
+        }
+
+        if (isHeroes) {
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null) {
+                Set<String> skills = heroes.getSkills(player);
+                Collection<String> currentSpells = new ArrayList<>(getSpells());
+                for (String spellKey : currentSpells) {
+                    if (spellKey.startsWith("heroes*") && !skills.contains(spellKey.substring(7)))
+                    {
+                        removeSpell(spellKey);
+                    }
+                }
+
+                // Hack to prevent messaging
+                this.mage = null;
+                for (String skillKey : skills)
+                {
+                    String heroesKey = "heroes*" + skillKey;
+                    if (!spells.contains(heroesKey))
+                    {
+                        addSpell(heroesKey);
+                    }
+                }
+                this.mage = mage;
+            }
         }
 
         // Check for auto-organize

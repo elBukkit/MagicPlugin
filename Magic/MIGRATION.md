@@ -7,15 +7,11 @@
    - Default wand configs will use old behavior for actions and flags (per below)
    - Wands aren't class-based and store data as normal
 
-## 7.0
+## 6.9.3
 
- - The "heroes" wand has been removed. I hope to replace it with a class-based wand option, but it didn't seem
-   very popular and was a pain to keep working.
  - The "stars" config was changed, all force powers now have different names from their survival counterpart.
    If this has broken you in a bad way, you can copy the configs from here to revert back:
    https://github.com/elBukkit/MagicPlugin/tree/ca8e853b5f5d6bef3b6a6d050080177cc351f47f/Magic/src/main/resources/examples/stars
-
-## 6.9.3
 
  - Wand lore colors moved to messages config, you may need to update any customizations if you want to keep the colors
 
