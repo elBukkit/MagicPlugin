@@ -1,0 +1,13 @@
+{
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "items/custom/rpgshell"
+	},
+	"display": {
+		"head": {
+			"rotation": [0, -90, 45],
+			"translation": [0, 0, -20],
+			"scale": [1, 1, 1]
+		}
+	}
+}
