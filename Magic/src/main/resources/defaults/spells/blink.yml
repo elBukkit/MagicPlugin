@@ -16,8 +16,6 @@ blink:
           ignore_result: true
           actions:
           - class: FallProtectionAction
-        - class: PlayEffects
-          effects: depart
         - class: Teleport
     effects:
         teleport:
@@ -33,7 +31,7 @@ blink:
              particleOrbital: redstone
              iterations: 8
              offset: 0,-1,0
-        depart:
+        precast:
          - class: EffectSingle
            sound: magic.teleport
            location: origin

@@ -130,6 +130,7 @@ public class ActionSpell extends BrushSpell
         }
 
         target();
+        playEffects("precast");
         if (currentHandler != null)
         {
             currentHandler = (ActionHandler)currentHandler.clone();
