@@ -17,6 +17,8 @@
 
  - Fix compatibility with PerWorldInventory plugin via a "deactivate_wand_on_world_change: true" config.yml option
  - Put the Heroes wand back, I removed it prematurely.
+ - Fix mob spawners that use cave spiders (entity id changed?)
+ - Fix the Stash Chest schematic
 
 ## 6.9.3
 
