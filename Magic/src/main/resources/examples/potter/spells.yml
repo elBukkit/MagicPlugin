@@ -2107,10 +2107,6 @@ expulsion:
         cooldown: 1000
         check_protection: true
 
-cage:
-    enabled: true
-    category: staff
-
 stupefy:
     inherit: stun
     category: dada
@@ -2781,123 +2777,6 @@ ollivander:
         cost: 1
     loud: true
 
-count:
-    enabled: true
-
-## ENGINEERING
-
-box:
-    enabled: true
-
-tree:
-    enabled: true
-
-paint:
-    enabled: true
-
-torch:
-    enabled: true
-    parameters:
-       undo: 0
-
-recurse:
-    enabled: true
-
-alter:
-    enabled: true
-
-superalter:
-    enabled: true
-
-supershell:
-    enabled: true
-
-regenerate:
-    enabled: true
-
-superregenerate:
-    enabled: true
-
-superblob:
-    enabled: true
-
-paste:
-    enabled: true
-
-superconvert:
-    enabled: true
-
-absorb:
-    enabled: true
-
-fill:
-    enabled: true
-
-superdisc:
-    enabled: true
-
-superring:
-    enabled: true
-
-superbox:
-    enabled: true
-
-superpyramid:
-    enabled: true
-
-supercube:
-    enabled: true
-
-superdome:
-    enabled: true
-
-bridge:
-    enabled: true
-
-pillar:
-    enabled: true
-
-place:
-    enabled: true
-
-column:
-    enabled: true
-
-iterate:
-    enabled: true
-
-## OTHER CARRYOVER SPELLS
-
-hat:
-    enabled: true
-
-simulate:
-    enabled: true
-
-music:
-    enabled: true
-
-wolfhouse:
-    enabled: true
-
-mount:
-    enabled: true
-
-life:
-    enabled: true
-
-superfly:
-    enabled: true
-
-recall:
-    enabled: true
-
-gather:
-    enabled: true
-
-stash:
-    enabled: true
-
 upgrades:
     enabled: true
 
@@ -2912,9 +2791,6 @@ spellshop:
 
 colorshop:
     enabled: true
-
-brushselect:
-  enabled: true
 
 patronus:
     icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
