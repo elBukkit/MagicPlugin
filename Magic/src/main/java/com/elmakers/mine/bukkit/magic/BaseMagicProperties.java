@@ -54,7 +54,7 @@ public class BaseMagicProperties implements MagicProperties {
             "protection", "protection_physical", "protection_projectiles",
             "protection_falling", "protection_fire", "protection_explosions",
             "potion_effects",
-            "brushes", "brush_inventory", "spells", "spell_inventory",
+            "brushes", "brush_inventory", "spells", "spell_inventory", "spell_levels",
             "powered", "protected", "heroes",
             "enchant_count", "max_enchant_count",
             "quick_cast", "left_click", "right_click", "drop", "swap",

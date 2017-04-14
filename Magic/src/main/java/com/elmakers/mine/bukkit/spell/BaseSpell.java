@@ -2590,7 +2590,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
             // Check for level up
             // This currently only works on wands.
-            if (wand != null && !wand.isLocked() && wand.getSpellLevel(spellKey.getKey()) == spellKey.getLevel())
+            if (wand != null && !wand.isLocked() && wand.getSpellLevel(spellKey.getBaseKey()) == spellKey.getLevel())
             {
                 if (controller.isSpellUpgradingEnabled()) {
                     SpellTemplate upgrade = getUpgrade();
