@@ -32,7 +32,6 @@
 
 ## High-Priority
 
- - Wand inventory glitch? Give a PS field with wand open, does it pop out?
  - Broomstick glitch?
  i made my broomstick a friggin wand!
  i flied while using phase

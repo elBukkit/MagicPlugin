@@ -41,6 +41,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -551,6 +552,14 @@ public class PlayerController implements Listener {
             mage.onPlayerQuit(event);
             controller.playerQuit(mage);
         }
+    }
+
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent event)
+    {
+        Player player = event.getPlayer();
+        Mage mage = controller.getMage(player);
+        mage.onTeleport(event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

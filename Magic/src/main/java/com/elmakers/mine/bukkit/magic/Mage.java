@@ -62,6 +62,7 @@ import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MainHand;
@@ -96,6 +97,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     public static int OFFHAND_CAST_RANGE = 32;
     public static int OFFHAND_CAST_COOLDOWN = 500;
+    public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
     final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<>();
     private static String defaultMageName = "Mage";
     private static String SKILL_POINT_KEY = "sp";
@@ -451,6 +453,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         if (wand == offhandWand) {
             setOffhandWand(null);
+        }
+    }
+
+    public void onTeleport(PlayerTeleportEvent event) {
+        if (DEACTIVATE_WAND_ON_WORLD_CHANGE) {
+            Location from = event.getFrom();
+            Location to = event.getTo();
+
+            if (from.getWorld().equals(to.getWorld())) {
+                return;
+            }
+            deactivateWand();
         }
     }
 
@@ -2829,12 +2843,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void deactivate() {
+        deactivateWand();
+        deactivateAllSpells(true, true);
+        removeActiveEffects();
+    }
+
+    protected void deactivateWand() {
         // Close the wand inventory to make sure the player's normal inventory gets saved
         if (activeWand != null) {
             activeWand.deactivate();
         }
-        deactivateAllSpells(true, true);
-        removeActiveEffects();
     }
     
     @Override

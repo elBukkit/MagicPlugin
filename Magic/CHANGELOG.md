@@ -15,6 +15,8 @@
 
 ## 6.9.4
 
+ - Fix compatibility with PerWorldInventory plugin via a "deactivate_wand_on_world_change: true" config.yml option
+
 ## 6.9.3
 
  - Add "war" example configs, WIP
