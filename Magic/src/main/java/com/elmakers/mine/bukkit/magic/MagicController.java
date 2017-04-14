@@ -2424,7 +2424,7 @@ public class MagicController implements MageController {
         Wand.DEFAULT_CAST_OFFSET.setY(properties.getDouble("wand_location_offset_vertical", Wand.DEFAULT_CAST_OFFSET.getY()));
         com.elmakers.mine.bukkit.magic.Mage.JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = properties.getInt("jump_exemption", 0);
         com.elmakers.mine.bukkit.magic.Mage.CHANGE_WORLD_EQUIP_COOLDOWN = properties.getInt("change_world_equip_cooldown", 0);
-        com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE = properties.getBoolean("deactivate_wand_on_world_change", false);
+        com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE = properties.getBoolean("close_wand_on_world_change", false);
         com.elmakers.mine.bukkit.magic.Mage.DEFAULT_SP = properties.getInt("sp_default", 0);
 
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
