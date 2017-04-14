@@ -1,0 +1,10 @@
+wands:
+
+    wizardwand:
+        name: Wand
+
+    roguebow:
+        name: Bow
+
+    battlesword:
+        name: Sword

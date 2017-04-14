@@ -1,0 +1,11 @@
+wizard:
+  inherit: base
+  locked: true
+
+warrior:
+  inherit: base
+  locked: true
+
+rogue:
+  inherit: base
+  locked: true
