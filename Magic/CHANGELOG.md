@@ -21,6 +21,7 @@
  - Fix the Stash Chest schematic
  - Add sp_default config option, for starting out players with some spell points
  - Add "warmup" option to spells, to show a warmup in spell lore.
+ - Add some spell lore options to show cooldowns less than a second, and show spell categories (not used in default configs)
 
 ## 6.9.3
 

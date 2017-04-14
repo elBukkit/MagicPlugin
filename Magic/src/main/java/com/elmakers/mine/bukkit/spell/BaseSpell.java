@@ -2413,6 +2413,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (usage != null && usage.length() > 0) {
             InventoryUtils.wrapText(usage, MAX_LORE_LENGTH, lore);
         }
+        if (category != null) {
+            String categoryLore = messages.get("spell.category", "");
+            String categoryName = category.getName();
+            if (!categoryLore.isEmpty() && !categoryName.isEmpty()) {
+                lore.add(categoryLore.replace("$category", categoryName));
+            }
+        }
         if (quickCast && wand != null && !wand.isQuickCastDisabled() && wand.hasInventory()) {
             String quickCastText = messages.get("spell.quick_cast", "");
             if (!quickCastText.isEmpty()) {

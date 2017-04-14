@@ -22,6 +22,7 @@ spell:
     available_path: Available to $paths
     required_path: Required for $path graduation
     required_spell: "You must learn &r&4$spell &d&oto advance"
+    category: "&7&o$category"
 
 paths:
     year1:

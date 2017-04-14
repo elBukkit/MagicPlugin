@@ -1,4 +1,6 @@
 spell:
+    category: ""
+    # category: "&7&o$category"
     brush: Uses Material Brushes
     undoable: ""
     not_undoable: "&4Not Undoable"
