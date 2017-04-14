@@ -52,10 +52,11 @@ try {
 	if (!isset($general['load_default_spells'])) $general['load_default_spells'] = true;
 	if (!isset($general['disable_default_spells'])) $general['disable_default_spells'] = false;
 	if (!isset($general['load_default_wands'])) $general['load_default_wands'] = true;
+    if (!isset($general['disable_default_wands'])) $general['disable_default_wands'] = false;
 	if (!isset($general['load_default_crafting'])) $general['load_default_crafting'] = true;
 	if (!isset($general['load_default_paths'])) $general['load_default_paths'] = true;
 	$allSpells = parseConfigFile('spells', $general['load_default_spells'], $general['disable_default_spells']);
-	$wands = parseConfigFile('wands', $general['load_default_wands']);
+	$wands = parseConfigFile('wands', $general['load_default_wands'], $general['disable_default_wands']);
 	$crafting = parseConfigFile('crafting', $general['load_default_crafting']);
 	$enchantingConfig = parseConfigFile('paths', $general['load_default_paths']);
 	$messages = parseConfigFile('messages', true);
@@ -107,9 +108,10 @@ foreach ($allSpells as $key => $spell) {
 	if (isset($spell['inherit']) && $spell['inherit'])
     {
         $spell = array_merge($spell, $allSpells[$spell['inherit']]);
+        $spell['enabled'] = true;
     }
 	if ((isset($spell['hidden']) && $spell['hidden']) || (isset($spell['enabled']) && !$spell['enabled'])) {
-		continue;
+        continue;
 	}
     if (!isset($spell['name']))
     {
@@ -216,7 +218,7 @@ $maxXp = isset($general['max_mana']) ? $general['max_mana'] : 0;
 // Calculate worth
 // Hide hidden wands, organize upgrades
 foreach ($wands as $key => $wand) {
-	if (isset($wand['hidden']) && $wand['hidden']) {
+	if ((isset($wand['hidden']) && $wand['hidden']) || (isset($wand['enabled']) && !$wand['enabled'])) {
 		unset($wands[$key]);
 		continue;
 	}
