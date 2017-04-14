@@ -235,8 +235,8 @@ sniper:
             size: 0.4
             yOffset: 0
     headshot_parameters:
-      player_damage: 20
-      entity_damage: 30
+      player_damage: 30
+      entity_damage: 60
     parameters:
         mage_cooldown: 1000
         velocity: 3000
@@ -348,11 +348,10 @@ ak47:
            location: target
            effectlib:
             class: AnimatedBallEffect
-            particles: 50
-            particlesPerIteration: 8
-            iterations: 15
+            particles: 15
+            particlesPerIteration: 5
+            iterations: 5
             particle: block_crack
-            particleCount: 20
             material: redstone_block
             size: 0.3
             yOffset: 0
@@ -466,11 +465,10 @@ pistol:
            location: target
            effectlib:
             class: AnimatedBallEffect
-            particles: 50
-            particlesPerIteration: 8
-            iterations: 15
+            particles: 30
+            particlesPerIteration: 10
+            iterations: 5
             particle: block_crack
-            particleCount: 20
             material: redstone_block
             size: 0.3
             yOffset: 0
@@ -536,7 +534,7 @@ shotgun:
            location: target
            particle: block_crack
            material: redstone_block
-           particle_count: 40
+           particle_count: 6
            particle_offset_x: 0.3
            particle_offset_y: 0.3
            particle_offset_z: 0.3
@@ -586,11 +584,10 @@ shotgun:
            location: target
            effectlib:
             class: AnimatedBallEffect
-            particles: 50
+            particles: 20
             particlesPerIteration: 8
-            iterations: 15
+            iterations: 5
             particle: block_crack
-            particleCount: 20
             material: redstone_block
             size: 0.3
             yOffset: 0
@@ -612,8 +609,8 @@ shotgun:
         undo: 30000
         cooldown: 800
         undo_speed: 0.4
-        speed: 1
-        y_offset: 0.75
+        speed: 0.7
+        y_offset: 0.2
         magic_damage: false
     costs:
       mana: 1
