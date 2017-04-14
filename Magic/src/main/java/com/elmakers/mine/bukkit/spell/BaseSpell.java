@@ -234,6 +234,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean                             bypassMageCooldown      = false;
     private int                                 mageCooldown            = 0;
     private int                                 cooldown                = 0;
+    private int                                 warmup                  = 0;
     private int                                 earnCooldown            = 0;
     private int                                 duration                = 0;
     private int                                 totalDuration           = -1;
@@ -903,6 +904,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         parameters = node.getConfigurationSection("parameters");
         if (parameters != null) {
             bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
+            warmup = parameters.getInt("warmup", 0);
             cooldown = parameters.getInt("cooldown", 0);
             cooldown = parameters.getInt("cool", cooldown);
             mageCooldown = parameters.getInt("cooldown_mage", 0);
@@ -1597,6 +1599,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         cooldown = parameters.getInt("cooldown", 0);
         cooldown = parameters.getInt("cool", cooldown);
+        warmup = parameters.getInt("warmup", 0);
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
         bypassPermissions = parameters.getBoolean("bypass_permissions", false);
@@ -1983,13 +1986,45 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return getCooldownDescription(controller.getMessages(), mageCooldown, null);
     }
 
+    public String getMageCooldownDescription(com.elmakers.mine.bukkit.api.wand.Wand wand) {
+        return getCooldownDescription(controller.getMessages(), mageCooldown, wand);
+    }
+
     @Override
     public String getCooldownDescription() {
         return getCooldownDescription(controller.getMessages(), cooldown,  null);
     }
 
+    public String getWarmupDescription() {
+        return getTimeDescription(controller.getMessages(), warmup);
+    }
+
     public String getCooldownDescription(com.elmakers.mine.bukkit.api.wand.Wand wand) {
         return getCooldownDescription(controller.getMessages(), cooldown, wand);
+    }
+
+    private String getTimeDescription(Messages messages, int time) {
+        if (time > 0) {
+            int timeInSeconds = time / 1000;
+            if (timeInSeconds > 60 * 60 ) {
+                int hours = timeInSeconds / (60 * 60);
+                if (hours == 1) {
+                    return messages.get("cooldown.description_hour");
+                }
+                return messages.get("cooldown.description_hours").replace("$hours", ((Integer)hours).toString());
+            } else if (timeInSeconds > 60) {
+                int minutes = timeInSeconds / 60;
+                if (minutes == 1) {
+                    return messages.get("cooldown.description_minute");
+                }
+                return messages.get("cooldown.description_minutes").replace("$minutes", ((Integer)minutes).toString());
+            } else if (timeInSeconds > 1) {
+                return messages.get("cooldown.description_seconds").replace("$seconds", ((Integer)timeInSeconds).toString());
+            } else {
+                return messages.get("cooldown.description_moment");
+            }
+        }
+        return null;
     }
 
     public String getCooldownDescription(Messages messages, int cooldown, com.elmakers.mine.bukkit.api.wand.Wand wand) {
@@ -2004,27 +2039,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        if (cooldown > 0) {
-            int cooldownInSeconds = cooldown / 1000;
-            if (cooldownInSeconds > 60 * 60 ) {
-                int hours = cooldownInSeconds / (60 * 60);
-                if (hours == 1) {
-                    return messages.get("cooldown.description_hour");
-                }
-                return messages.get("cooldown.description_hours").replace("$hours", ((Integer)hours).toString());
-            } else if (cooldownInSeconds > 60) {
-                int minutes = cooldownInSeconds / 60;
-                if (minutes == 1) {
-                    return messages.get("cooldown.description_minute");
-                }
-                return messages.get("cooldown.description_minutes").replace("$minutes", ((Integer)minutes).toString());
-            } else if (cooldownInSeconds > 1) {
-                return messages.get("cooldown.description_seconds").replace("$seconds", ((Integer)cooldownInSeconds).toString());
-            } else {
-                return messages.get("cooldown.description_moment");
-            }
-        }
-        return null;
+        return getTimeDescription(messages, cooldown);
     }
 
     @Override
@@ -2390,11 +2405,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 lore.add(quickCastText);
             }
         }
+        String warmupDescription = getWarmupDescription();
+        if (warmupDescription != null && !warmupDescription.isEmpty()) {
+            lore.add(messages.get("warmup.description").replace("$time", warmupDescription));
+        }
         String cooldownDescription = getCooldownDescription(wand);
         if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
             lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
         }
-        String mageCooldownDescription = getMageCooldownDescription();
+        String mageCooldownDescription = getMageCooldownDescription(wand);
         if (mageCooldownDescription != null && !mageCooldownDescription.isEmpty()) {
             lore.add(messages.get("cooldown.mage_description").replace("$time", mageCooldownDescription));
         }

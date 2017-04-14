@@ -19,7 +19,8 @@ public class DelayAction extends BaseSpellAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        delay = ConfigurationUtils.getInteger(parameters, "delay", 1);
+        delay = ConfigurationUtils.getInteger(parameters, "warmup", 1);
+        delay = ConfigurationUtils.getInteger(parameters, "delay", delay);
     }
 
     @Override

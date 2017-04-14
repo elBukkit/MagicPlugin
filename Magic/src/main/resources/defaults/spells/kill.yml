@@ -72,7 +72,7 @@ kill:
         hitbox_size: 1
         velocity: 5
         interval: 250
-        delay: 3000
+        warmup: 3000
         message: "&aAvada Kedavra!"
         message_type: title
         message_target: true
@@ -88,7 +88,7 @@ kill|2:
         entity_damage: 35
         hitbox_size: 1.5
         velocity: 7
-        delay: 2000
+        warmup: 2000
 
 kill|3:
     parameters:
@@ -97,5 +97,5 @@ kill|3:
         entity_damage: 40
         hitbox_size: 2
         velocity: 10
-        delay: 1500
+        warmup: 1500
 

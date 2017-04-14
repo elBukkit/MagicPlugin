@@ -58,7 +58,7 @@ phase:
              particleOffsetY: 2
              particleOffsetZ: 0.9
     parameters:
-        delay: 5000
+        warmup: 5000
         cancel_on_damage: 1
         cancel_on_cast_other: true
         cooldown: 15000

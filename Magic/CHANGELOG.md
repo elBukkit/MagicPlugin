@@ -20,6 +20,7 @@
  - Fix mob spawners that use cave spiders (entity id changed?)
  - Fix the Stash Chest schematic
  - Add sp_default config option, for starting out players with some spell points
+ - Add "warmup" option to spells, to show a warmup in spell lore.
 
 ## 6.9.3
 

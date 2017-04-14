@@ -76,7 +76,7 @@ recall:
              particleOffsetZ: 0.9
              offset: 0,-1,0
     parameters:
-        delay: 5000
+        warmup: 5000
         cancel_on_damage: 1
         cancel_on_cast_other: true
         allow_spawn: false

@@ -64,7 +64,10 @@ cooldown:
     description_moment: A Moment
     description: "&eCooldown: &6$time"
     mage_description: "&cExhaustion: &6$time"
-    
+
+warmup:
+    description: "&7Warmup: &6$time"
+
 duration:
     lasts_seconds: Lasts for $seconds seconds
     lasts_minutes: Lasts for $minutes minutes
