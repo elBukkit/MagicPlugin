@@ -1,4 +1,5 @@
 base_gun:
+  hidden: true
   right_click: cast
   left_click: alt_cast
   indestructible: true
