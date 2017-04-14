@@ -6,9 +6,9 @@
   "overrides": [
     {"predicate": {"damaged": 0, "damage": 0.000640204865557}, "model": "item/custom/ak47"},
     {"predicate": {"damaged": 0, "damage": 0.00128040973111}, "model": "item/custom/sniperrifle"},
-    {"predicate": {"damaged": 0, "damage": 0.00192061459667}, "model": "item/custom/pistol"},
+    {"predicate": {"damaged": 0, "damage": 0.00192061459667}, "model": "item/custom/deserteagle"},
     {"predicate": {"damaged": 0, "damage": 0.00256081946223}, "model": "item/custom/shotgun"},
-    {"predicate": {"damaged": 0, "damage": 0.00320102432778}, "model": "item/custom/rocketlauncher"},
+    {"predicate": {"damaged": 0, "damage": 0.00320102432778}, "model": "item/custom/rpg"},
     {"predicate": {"damaged": 0, "damage": 0.00384122919334}, "model": "item/custom/flashbang"},
     {"predicate": {"damaged": 0, "damage": 0.0044814340589}, "model": "item/custom/remote"},
     {"predicate": {"damaged": 0, "damage": 0.00512163892446}, "model": "item/custom/incendiary"},
