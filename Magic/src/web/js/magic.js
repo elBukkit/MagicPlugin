@@ -499,7 +499,7 @@ function getWandItemDetails(key, wand, recipe)
 	var title = $('<div class="wandTitleBanner"/>').text(wand.name);
 	var scrollingContainer = $('<div class="wandContainer"/>');
 	var description = $('<div class="wandDescription"/>').text(wand.description);
-	var admin = $('<div class="adminuse"/>').text("Admin use: /wand " + key);
+	var admin = $('<div class="adminuse"/>').text("Admin use: /mgive " + key);
 	var costReduction = ('cost_reduction' in wand) ? wand['cost_reduction'] : 0;
 	var cooldownReduction = ('cooldown_reduction' in wand) ? wand['cooldown_reduction'] : 0;
 	var xpRegeneration = ('xp_regeneration' in wand) ? wand['xp_regeneration'] : 0;
