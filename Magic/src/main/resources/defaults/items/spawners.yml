@@ -37,9 +37,9 @@ darkspiderspawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 12
-        EntityId: CaveSpider
+        EntityId: cave_spider
         SpawnData:
-          id: CaveSpider
+          id: cave_spider
           CustomName: Dark Spider
                        
 megaspiderspawner:
@@ -79,9 +79,9 @@ cavespiderspawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 12
-        EntityId: CaveSpider
+        EntityId: cave_spider
         SpawnData:
-          id: CaveSpider
+          id: cave_spider
              
 spiderspawner:
   worth: 20000.0
