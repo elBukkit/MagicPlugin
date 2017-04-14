@@ -54,6 +54,7 @@ cooldown:
     wait_minutes: another $minutes minutes
     wait_hours: another $hours hours
     wait_moment: a moment
+    wait_second: a second
     wait_minute: a minute
     wait_hour: another hour
     description_seconds: $seconds seconds
@@ -61,6 +62,7 @@ cooldown:
     description_hours: $hours hours
     description_minute: One minute
     description_hour: One hour
+    description_second: One second
     description_moment: A Moment
     description: "&eCooldown: &6$time"
     mage_description: "&cExhaustion: &6$time"

@@ -133,6 +133,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         );
     
     private static final DecimalFormat RANGE_FORMATTER = new DecimalFormat("0.#");
+    private static final DecimalFormat SECONDS_FORMATTER = new DecimalFormat("0.##");
 
     /*
      * protected members that are helpful to use
@@ -1130,20 +1131,27 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 if (hours == 1) {
                     timeDescription = controller.getMessages().get("cooldown.wait_hour");
                 } else {
-                    timeDescription = controller.getMessages().get("cooldown.wait_hours").replace("$hours", ((Long) hours).toString());
+                    timeDescription = controller.getMessages().get("cooldown.wait_hours").replace("$hours", Long.toString(hours));
                 }
             } else if (cooldownRemaining > 60) {
                 long minutes = (long)Math.ceil(cooldownRemaining / 60);
                 if (minutes == 1) {
                     timeDescription = controller.getMessages().get("cooldown.wait_minute");
                 } else {
-                    timeDescription = controller.getMessages().get("cooldown.wait_minutes").replace("$minutes", ((Long) minutes).toString());
+                    timeDescription = controller.getMessages().get("cooldown.wait_minutes").replace("$minutes", Long.toString(minutes));
                 }
-            } else if (cooldownRemaining > 1) {
+            } else if (cooldownRemaining >= 1) {
                 long seconds = (long)Math.ceil(cooldownRemaining);
-                timeDescription = controller.getMessages().get("cooldown.wait_seconds").replace("$seconds", ((Long)seconds).toString());
+                if (seconds == 1) {
+                    timeDescription = controller.getMessages().get("cooldown.wait_second");
+                } else {
+                    timeDescription = controller.getMessages().get("cooldown.wait_seconds").replace("$seconds", Long.toString(seconds));
+                }
             } else {
                 timeDescription = controller.getMessages().get("cooldown.wait_moment");
+                if (timeDescription.contains("$seconds")) {
+                    timeDescription = timeDescription.replace("$seconds", SECONDS_FORMATTER.format(cooldownRemaining));
+                }
             }
             castMessage(getMessage("cooldown").replace("$time", timeDescription));
             processResult(SpellResult.COOLDOWN, workingParameters);
@@ -2011,17 +2019,23 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 if (hours == 1) {
                     return messages.get("cooldown.description_hour");
                 }
-                return messages.get("cooldown.description_hours").replace("$hours", ((Integer)hours).toString());
+                return messages.get("cooldown.description_hours").replace("$hours", Integer.toString(hours));
             } else if (timeInSeconds > 60) {
                 int minutes = timeInSeconds / 60;
                 if (minutes == 1) {
                     return messages.get("cooldown.description_minute");
                 }
-                return messages.get("cooldown.description_minutes").replace("$minutes", ((Integer)minutes).toString());
+                return messages.get("cooldown.description_minutes").replace("$minutes", Integer.toString(minutes));
             } else if (timeInSeconds > 1) {
-                return messages.get("cooldown.description_seconds").replace("$seconds", ((Integer)timeInSeconds).toString());
+                return messages.get("cooldown.description_seconds").replace("$seconds", Integer.toString(timeInSeconds));
+            } else if (timeInSeconds == 1) {
+                return messages.get("cooldown.description_second");
             } else {
-                return messages.get("cooldown.description_moment");
+                String timeDescription = controller.getMessages().get("cooldown.description_moment");
+                if (timeDescription.contains("$seconds")) {
+                    timeDescription = timeDescription.replace("$seconds", SECONDS_FORMATTER.format((double)time / 1000.0));
+                }
+                return timeDescription;
             }
         }
         return null;
