@@ -258,6 +258,14 @@ spells:
         name: Expelliarmus
         description: Disarms your opponent
         cast: Expelliarmus!
+    pulsus:
+        name: Pulsus
+        description: Blast your enemies away
+        cast: Pulsus!
+    rictusempra:
+        name: Rictusempra
+        description: The tickling charm
+        cast: Rictusempra!
     expulsion:
         name: Expulsion
         description: Kick your target out of school

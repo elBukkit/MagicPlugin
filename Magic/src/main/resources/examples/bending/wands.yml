@@ -3,6 +3,7 @@
 #
 
 base_bending:
+    hidden: true
     inherit: base_wand
     cast_location: 0,-0.6,0.5
 

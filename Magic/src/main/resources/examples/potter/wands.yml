@@ -2,7 +2,7 @@
 # Add some Harry Potter themed wand templates
 #
 
-# These are copied from the default cofigs. We can't reference them or there will be a collision on the "wand"
+# These are copied from the default configs. We can't reference them or there will be a collision on the "wand"
 # item.
 # This may be fixed in the future by removing "wand" from these configs- please use "potterwand" instead!
 
