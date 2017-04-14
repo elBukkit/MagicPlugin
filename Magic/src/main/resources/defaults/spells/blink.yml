@@ -16,14 +16,24 @@ blink:
           ignore_result: true
           actions:
           - class: FallProtectionAction
-        - class: Delay
+        - class: PlayEffects
+          effects: depart
         - class: Teleport
     effects:
         teleport:
         - class: EffectSingle
           sound: magic.teleport
           location: target
-        cast:
+          particle_override: particleNucleus
+          color_override: colorOrbital
+          source_location: eyes
+          effectlib:
+             class: AtomEffect
+             particleNucleus: dragon_breath
+             particleOrbital: redstone
+             iterations: 8
+             offset: 0,-1,0
+        depart:
          - class: EffectSingle
            sound: magic.teleport
            location: origin
@@ -32,6 +42,7 @@ blink:
            source_location: eyes
            effectlib:
                class: AtomEffect
+               updateLocations: false
                particleNucleus: dragon_breath
                particleOrbital: redstone
                iterations: 8
@@ -41,6 +52,7 @@ blink:
            effectlib:
                class: LineEffect
                particle: redstone
+               updateLocations: false
     parameters:
         target: block
         allow_max_range: true
