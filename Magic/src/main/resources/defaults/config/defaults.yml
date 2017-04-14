@@ -291,6 +291,9 @@ sp_item_icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73ba
 # Cap SP- mainly so the UI doesn't get broken. 0 to disable and allow unlimited SP.
 sp_max: 9999
 
+# The amount of SP that new players start with
+sp_default: 0
+
 # This controls what players will see when interacting with an enchantment table
 enchant_click: spellshop
 enchant_sneak_click: upgrades

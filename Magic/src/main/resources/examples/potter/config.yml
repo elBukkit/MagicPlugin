@@ -14,6 +14,9 @@ welcome_wand: ticket
 
 default_wand: potterwand
 
+# Start players off with some Spell Points
+sp_default: 100
+
 # This is a complete wand/spell overhaul
 load_default_spells: true
 disable_default_spells: true

@@ -98,6 +98,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int OFFHAND_CAST_RANGE = 32;
     public static int OFFHAND_CAST_COOLDOWN = 500;
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
+    public static int DEFAULT_SP = 0;
     final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<>();
     private static String defaultMageName = "Mage";
     private static String SKILL_POINT_KEY = "sp";
@@ -2936,19 +2937,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public int getSkillPoints() {
-        if (data.contains(SKILL_POINT_KEY)) {
-            // .. I thought Configuration section would auto-convert? I guess not!
-            if (data.isString(SKILL_POINT_KEY)) {
-                try {
-                    data.set(SKILL_POINT_KEY, Integer.parseInt(data.getString(SKILL_POINT_KEY)));
-                } catch (Exception ex) {
-                    data.set(SKILL_POINT_KEY, 0);
-                }
-            }
-            return data.getInt(SKILL_POINT_KEY);
+        if (!data.contains(SKILL_POINT_KEY)) {
+            data.set(SKILL_POINT_KEY, DEFAULT_SP);
         }
-
-        return 0;
+        // .. I thought Configuration section would auto-convert? I guess not!
+        if (data.isString(SKILL_POINT_KEY)) {
+            try {
+                data.set(SKILL_POINT_KEY, Integer.parseInt(data.getString(SKILL_POINT_KEY)));
+            } catch (Exception ex) {
+                data.set(SKILL_POINT_KEY, 0);
+            }
+        }
+        return data.getInt(SKILL_POINT_KEY);
     }
 
     @Override

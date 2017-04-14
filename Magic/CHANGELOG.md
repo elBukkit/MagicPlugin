@@ -19,6 +19,7 @@
  - Put the Heroes wand back, I removed it prematurely.
  - Fix mob spawners that use cave spiders (entity id changed?)
  - Fix the Stash Chest schematic
+ - Add sp_default config option, for starting out players with some spell points
 
 ## 6.9.3
 
