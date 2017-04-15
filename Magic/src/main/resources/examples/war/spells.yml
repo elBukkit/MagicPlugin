@@ -713,8 +713,9 @@ rocketlauncher:
         magic_damage: false
         unbreakable_items: true
         helmet_item: diamond_pickaxe:9
-        location_offset: 0,-2,0
         orient_head: true
+        armor_stand_small: true
+        armor_stand_gravity: false
     costs:
       mana: 1
 
