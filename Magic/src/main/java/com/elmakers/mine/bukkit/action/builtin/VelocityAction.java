@@ -121,20 +121,16 @@ public class VelocityAction extends BaseSpellAction
                     speed = speed * (1 - distanceSquared / maxDistanceSquared);
                 }
             }
-            if (yOffset != 0)
-            {
-                velocity.setY(velocity.getY() + yOffset);
-            }
             velocity.normalize().multiply(speed);
-        }
-        else if (yOffset != 0)
-        {
-            velocity.setY(velocity.getY() + yOffset);
         }
 
         if (context.getLocation().getBlockY() >= 256)
         {
             velocity.setY(0);
+        }
+        else if (yOffset != 0)
+        {
+            velocity.setY(velocity.getY() + yOffset);
         }
 
         velocity.multiply(magnitude);
