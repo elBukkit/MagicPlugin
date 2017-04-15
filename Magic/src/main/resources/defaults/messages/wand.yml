@@ -137,6 +137,8 @@ wand:
     upgrade_name: $name Upgrade
     randomized_description: "&o&2$description"
     description_lore: "&o&a$description"
+    path_lore: ""
+    #path_lore: "&o$path"
     inventory_instructions: "&r&eYour $wand now has more than one spell. Use the drop (Q) button to open/close the spell inventory. Use the hotbar buttons to select a spell."
     page_instructions: "&r&eYour $wand now has more than one page of spells. Click outside the spell inventory to change pages."
     bound_instructions: "&r&3Your $wand is bound to you, and is undroppable."

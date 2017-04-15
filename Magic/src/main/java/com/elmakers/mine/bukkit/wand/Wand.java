@@ -2112,6 +2112,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	{
 		List<String> lore = new ArrayList<>();
 
+		com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
         if (description.length() > 0) {
 			if (randomizeOnActivate) {
 				String randomDescription = getMessage("randomized_lore");
@@ -2131,7 +2132,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			String descriptionTemplate = controller.getMessages().get("wand.description_lore", "");
             if (description.contains("$path") && !descriptionTemplate.isEmpty()) {
                 String pathName = "Unknown";
-                com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
                 if (path != null) {
                     pathName = path.getName();
                 }
@@ -2150,6 +2150,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), MAX_LORE_LENGTH, lore);
             }
         }
+		String pathTemplate = controller.getMessages().get("wand.path_lore", "");
+		if (path != null && !pathTemplate.isEmpty()) {
+			lore.add(pathTemplate.replace("$path", path.getName()));
+		}
 
 		if (!isUpgrade) {
 			if (owner != null && owner.length() > 0) {
