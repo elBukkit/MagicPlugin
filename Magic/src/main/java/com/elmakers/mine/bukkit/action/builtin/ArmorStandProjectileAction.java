@@ -117,7 +117,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     @Override
     public SpellResult start(CastContext context) {
         MageController controller = context.getController();
-        Location location = context.getEyeLocation();
+        Location location = adjustLocation(sourceLocation.getLocation(context));
         ArmorStand armorStand = (ArmorStand)setEntity(controller, CompatibilityUtils.spawnArmorStand(location));
         CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
         armorStand.setItemInHand(rightArmItem);
@@ -175,8 +175,8 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
             armorStand.setHeadPose(new EulerAngle(direction.getX(), direction.getY() + pitchOffset, direction.getZ()));
         } else if (adjustHeadPitch) {
             EulerAngle headPose = armorStand.getHeadPose();
-            headPose = headPose.setY(Math.toRadians(-currentLocation.getPitch()));
-            armorStand.setRightArmPose(headPose);
+            headPose = headPose.setX(Math.toRadians(currentLocation.getPitch()));
+            armorStand.setHeadPose(headPose);
         }
         return result;
     }

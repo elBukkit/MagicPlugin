@@ -60,7 +60,7 @@ public class CustomProjectileAction extends CompoundAction
     private double drag;
     private double tickSize;
     private boolean reorient;
-    private SourceLocation sourceLocation;
+    protected SourceLocation sourceLocation;
     private boolean trackEntity;
     private double trackCursorRange;
     private double trackSpeed;

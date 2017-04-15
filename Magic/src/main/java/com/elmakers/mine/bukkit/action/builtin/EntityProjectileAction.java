@@ -46,7 +46,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
         doVelocity = parameters.getBoolean("apply_velocity", true);
         doTeleport = parameters.getBoolean("teleport", true);
         noTarget = parameters.getBoolean("no_target", true);
-        orient = parameters.getBoolean("orient", true);
+        orient = parameters.getBoolean("orient", false);
         velocityOffset = ConfigurationUtils.getVector(parameters, "velocity_offset");
         locationOffset = ConfigurationUtils.getVector(parameters, "location_offset");
 
@@ -159,7 +159,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
     @Override
     public SpellResult start(CastContext context) {
         if (entity == null && entityType != null) {
-            Location location = context.getEyeLocation();
+            Location location = adjustLocation(sourceLocation.getLocation(context));
             setEntity(context.getController(), CompatibilityUtils.spawnEntity(location, entityType, spawnReason));
         }
         if (entity == null) {
@@ -168,18 +168,24 @@ public class EntityProjectileAction extends CustomProjectileAction {
         return super.start(context);
     }
 
+    protected Location adjustLocation(Location target) {
+        // TODO: locationOffset and velocityOffset should be made relative
+        if (locationOffset != null) {
+            target = target.clone().add(locationOffset);
+        }
+        return target;
+    }
+
     @Override
     public SpellResult step(CastContext context) {
         if (entity == null) {
             return SpellResult.FAIL;
         }
         SpellResult result = super.step(context);
-        Location target = actionContext.getTargetLocation();
 
-        // TODO: locationOffset and velocityOffset should be made relative
-        if (locationOffset != null) {
-            target = target.clone().add(locationOffset);
-        }
+        // Note that in testing it somehow doesn't seem to matter if we adjust the location here
+        // I really have no idea why, but it seems to work OK if we adjust it on spawn.
+        Location target = adjustLocation(actionContext.getTargetLocation());
         if (doVelocity) {
             Vector velocity = this.velocity.clone().multiply(distanceTravelledThisTick);
             if (velocityOffset != null) {
@@ -187,11 +193,9 @@ public class EntityProjectileAction extends CustomProjectileAction {
             }
             entity.setVelocity(velocity);
         }
-        Location currentLocation = entity.getLocation();
         if (doTeleport) {
-            if (!orient) {
-                target.setYaw(currentLocation.getYaw());
-                target.setPitch(currentLocation.getPitch());
+            if (orient) {
+                target.setDirection(velocity);
             }
             entity.teleport(target);
         }
