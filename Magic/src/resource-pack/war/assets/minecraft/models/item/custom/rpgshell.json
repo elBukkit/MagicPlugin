@@ -7,7 +7,7 @@
 		"head": {
 			"rotation": [0, -90, 45],
 			"translation": [0, 0, -20],
-			"scale": [1, 1, 1]
+			"scale": [2, 2, 2]
 		}
 	}
 }

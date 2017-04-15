@@ -632,7 +632,7 @@ rocketlauncher:
     worth: 9999
     actions:
         cast:
-        - class: CustomProjectile
+        - class: ArmorStandProjectile
           actions:
           - class: Damage
             damage_max_distance: 0
@@ -660,14 +660,6 @@ rocketlauncher:
           particle_offset_x: 0.2
           particle_offset_y: 0.2
           particle_offset_z: 0.2
-        projectile:
-        - class: EffectSingle
-          effectlib:
-             class: SphereEffect
-             particle: redstone
-             color: "FF0000"
-             iterations: 100
-             radius: 0.3
         hit_entity:
         -  class: EffectSingle
            sound: entity_slime_attack
@@ -687,6 +679,7 @@ rocketlauncher:
         -  class: EffectSingle
            location: target
            sound: entity_generic_explode
+           sound_volume: 3
            particle: explosion_huge
            particle_count: 4
            particle_offset_x: 2
@@ -694,7 +687,7 @@ rocketlauncher:
            particle_offset_z: 2
            particle_data: 0.2
     parameters:
-        velocity: 20
+        velocity: 10
         range: 60
         hitbox: true
         radius: 3
@@ -718,6 +711,10 @@ rocketlauncher:
         push: 1
         velocity_max_distance: 5
         magic_damage: false
+        unbreakable_items: true
+        helmet_item: diamond_pickaxe:9
+        location_offset: 0,-2,0
+        orient_head: true
     costs:
       mana: 1
 
@@ -767,7 +764,7 @@ c4:
              particle: redstone
              color: "FF0000"
              iterations: 100
-             radius: 0.3
+             radius: 1.2
         hit_entity:
         -  class: EffectSingle
            sound: entity_slime_attack
@@ -971,4 +968,3 @@ flash_bang:
       speed: 1
       age_items: 5960
       unbreakable: true
-
