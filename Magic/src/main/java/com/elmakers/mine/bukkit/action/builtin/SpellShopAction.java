@@ -282,7 +282,7 @@ public class SpellShopAction extends BaseShopAction
                     }
                     unpurchasableMessage = ChatColor.RED + context.getMessage("required_spells", "&r&cRequires: $spells")
                             .replace("$spells", StringUtils.join(spells, ", "));
-                    InventoryUtils.wrapText(ChatColor.GOLD.toString(), unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
+                    InventoryUtils.wrapText(ChatColor.GOLD + unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
                 }
             }
 

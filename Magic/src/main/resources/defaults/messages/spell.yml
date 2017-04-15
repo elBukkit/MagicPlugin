@@ -15,3 +15,5 @@ spell:
     progress_description: "&6Progress: &b$level&6/&3$max_level"
     quick_cast: "&2Quick Cast"
     earns: "&2Earns up to &6$earns &eSP"
+    description_lore: "&b$description"
+    level_lore: "&6$level"

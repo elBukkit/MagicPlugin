@@ -2115,8 +2115,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (description.length() > 0) {
 			if (randomizeOnActivate) {
 				String randomDescription = getMessage("randomized_lore");
-				if (randomDescription.length() > 0) {
-					InventoryUtils.wrapText(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN, randomDescription, MAX_LORE_LENGTH, lore);
+				String randomTemplate = controller.getMessages().get("wand.randomized_description", "");
+				if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
+					InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), MAX_LORE_LENGTH, lore);
 					return lore;
 				}
 			}
@@ -2127,7 +2128,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 					setProperty("description", description);
 				}
 			}
-            if (description.contains("$path")) {
+			String descriptionTemplate = controller.getMessages().get("wand.description_lore", "");
+            if (description.contains("$path") && !descriptionTemplate.isEmpty()) {
                 String pathName = "Unknown";
                 com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
                 if (path != null) {
@@ -2135,15 +2137,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
                 String description = this.description;
                 description = description.replace("$path", pathName);
-				InventoryUtils.wrapText(ChatColor.ITALIC + "" + ChatColor.GREEN, description, MAX_LORE_LENGTH, lore);
+				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), MAX_LORE_LENGTH, lore);
             }
             else if (description.contains("$")) {
                 String randomDescription = getMessage("randomized_lore");
-                if (randomDescription.length() > 0) {
-					InventoryUtils.wrapText(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN, randomDescription, MAX_LORE_LENGTH, lore);
-                }
-            } else {
-				InventoryUtils.wrapText(ChatColor.ITALIC + "" + ChatColor.GREEN, description, MAX_LORE_LENGTH, lore);
+				String randomTemplate = controller.getMessages().get("wand.randomized_description", "");
+				if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
+					InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), MAX_LORE_LENGTH, lore);
+					return lore;
+				}
+            } else if (!descriptionTemplate.isEmpty()) {
+				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), MAX_LORE_LENGTH, lore);
             }
         }
 

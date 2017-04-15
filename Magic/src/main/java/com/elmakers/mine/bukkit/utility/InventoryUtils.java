@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.google.common.collect.Multimap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -435,23 +436,21 @@ public class InventoryUtils extends NMSUtils
 
     public static void wrapText(String text, int maxLength, Collection<String> list)
     {
-        wrapText("", text, maxLength, list);
-    }
-
-    public static void wrapText(String prefix, String text, int maxLength, Collection<String> list)
-    {
+        String colorPrefix = "";
         while (text.length() > maxLength)
         {
             int spaceIndex = text.lastIndexOf(' ', maxLength);
             if (spaceIndex <= 0) {
-                list.add(prefix + text);
+                list.add(colorPrefix + text);
                 return;
             }
-            list.add(prefix + text.substring(0, spaceIndex));
+            String colorText = colorPrefix + text.substring(0, spaceIndex);
+            colorPrefix = ChatColor.getLastColors(colorText);
+            list.add(colorText);
             text = text.substring(spaceIndex);
         }
 
-        list.add(prefix + text);
+        list.add(colorPrefix + text);
     }
 
     public static boolean hasItem(Mage mage, String itemName) {
