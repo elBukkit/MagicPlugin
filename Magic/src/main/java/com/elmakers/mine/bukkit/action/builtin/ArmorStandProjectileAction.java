@@ -24,7 +24,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     private boolean adjustArmPitch = false;
     private boolean adjustHeadPitch = false;
     private boolean showArmorStandArms = true;
-    private boolean showArmorStandBaseplate = true;
+    private boolean showArmorStandBaseplate = false;
     private boolean unbreakableItems = false;
     private ItemStack rightArmItem = null;
     private ItemStack helmetItem = null;
@@ -68,9 +68,9 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
 
         armorStandMarker = parameters.getBoolean("armor_stand_marker", true);
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);
-        armorStandGravity = parameters.getBoolean("armor_stand_gravity", true);
+        armorStandGravity = parameters.getBoolean("armor_stand_gravity", false);
         showArmorStandArms = parameters.getBoolean("armor_stand_arms", true);
-        showArmorStandBaseplate = parameters.getBoolean("armor_stand_baseplate", true);
+        showArmorStandBaseplate = parameters.getBoolean("armor_stand_baseplate", false);
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         adjustHeadPitch = parameters.getBoolean("orient_head", false);
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
