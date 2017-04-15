@@ -141,6 +141,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -4752,7 +4753,7 @@ public class MagicController implements MageController {
                     connection.setRequestMethod("HEAD");
                     if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
                     {
-                        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+                        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
                         final String lastModified = connection.getHeaderField("Last-Modified");
                         if (lastModified == null || lastModified.isEmpty()) {
                             response = ChatColor.YELLOW + "Server did not return a Last-Modified field, cancelling checks until restart";
