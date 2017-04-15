@@ -1001,20 +1001,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 mage.sendDebugMessage(ChatColor.BLUE + "Cast " + ChatColor.GOLD + getName() + " " + ChatColor.GREEN + ConfigurationUtils.getParameters(extraParameters));
             }
         }
-        // Check for cancel-on-cast-other spells
-        if (!passive) {
-            for (Iterator<Batch> iterator = mage.getPendingBatches().iterator(); iterator.hasNext();) {
-                Batch batch = iterator.next();
-                if (!(batch instanceof SpellBatch)) continue;
-                SpellBatch spellBatch = (SpellBatch)batch;
-                Spell spell = spellBatch.getSpell();
-                if (spell.cancelOnCastOther()) {
-                    spell.cancel();
-                    batch.finish();
-                    iterator.remove();
-                }
-            }
-        }
         
         this.reset();
 
@@ -1178,6 +1164,21 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             long progressLevel = getProgressLevel();
             for (Entry<String, EquationTransform> entry : progressLevelEquations.entrySet()) {
                 workingParameters.set(entry.getKey(), entry.getValue().get(progressLevel));
+            }
+        }
+
+        // Check for cancel-on-cast-other spells, after we have determined that this spell can really be cast.
+        if (!passive) {
+            for (Iterator<Batch> iterator = mage.getPendingBatches().iterator(); iterator.hasNext();) {
+                Batch batch = iterator.next();
+                if (!(batch instanceof SpellBatch)) continue;
+                SpellBatch spellBatch = (SpellBatch)batch;
+                Spell spell = spellBatch.getSpell();
+                if (spell.cancelOnCastOther()) {
+                    spell.cancel();
+                    batch.finish();
+                    iterator.remove();
+                }
             }
         }
 
