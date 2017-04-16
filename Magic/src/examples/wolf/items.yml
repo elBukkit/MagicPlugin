@@ -1,0 +1,51 @@
+#
+# Modify this file to change, add or disable custom item types.
+# These items are not wands and don't have any non-vanilla data attached.
+#
+# You can also add individual files to the items/ folder
+#
+# See the following folder for the current builtin items:
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/items
+#
+# For customization help see: 
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+# You can also specify the worth of items in this file, so that all shops
+# can be balanced by using the same costs as described here.
+#
+# Items defined in here may be given in-game with the /mgive command
+#
+
+#
+# General format:
+#
+# <itemkey>:
+#   item: <item type, itemkey used if omitted>
+#   worth: currency value per item
+#
+
+# Examples:
+# Note that a "#" chararacter means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
+# 
+
+# Change value of emeralds
+# emerald:
+#  worth: 200
+#
+
+# Add an OP axe
+# dwarven_axe:
+#  worth: 10000.0
+#  item:
+#    ==: org.bukkit.inventory.ItemStack
+#    type: DIAMOND_AXE
+#    meta:
+#      ==: ItemMeta
+#      meta-type: UNSPECIFIC
+#      display-name: Dwarven Axe
+#      enchants:
+#        DURABILITY: 8
+#        DIG_SPEED: 8
+#

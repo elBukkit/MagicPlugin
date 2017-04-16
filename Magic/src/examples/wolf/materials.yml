@@ -1,0 +1,42 @@
+#
+# Modify this file to change the behavior of various materials.
+#
+# You can also add individual files to the materials/ folder
+#
+# This controls how magic deals with individual materials in a variety of ways,
+# such as which are indestructible, destructible, transparent, etc.
+#
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/materials
+#
+# For customization help see: 
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+# You only need to edit this file if you want to change the default configuration.
+#
+
+#
+# Examples:
+# Note that a "#" chararacter means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
+# 
+
+# Change/Limit which blocks are destructible by most block-destroying spells
+
+# destructible:
+# - grass
+# - dirt
+
+# destructible2:
+# - cobblestone
+
+# destructible3:
+# - stone
+
+# Change which blocks are considered transparent, to only air:
+# transparent:
+# - air
+
+
+

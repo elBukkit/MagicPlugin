@@ -74,3 +74,14 @@ cp -R ../../war/* .
 find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-war-RP-7.zip *
 cd ..
+
+
+echo "** BUILDING AJ **"
+
+mkdir aj
+cd aj
+cp -R ../../default/* .
+cp -R ../../aj/* .
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-aj.zip *
+cd ..

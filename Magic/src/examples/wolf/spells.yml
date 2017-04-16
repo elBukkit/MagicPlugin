@@ -1,0 +1,111 @@
+#
+# Modify this file to change the available spells.
+# New spells can be added, existing spells modified or removed (disabled)
+#
+# You can also add individual files to the spells/ folder
+#
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/spells
+#
+# For customization help see: 
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+
+#
+# This is the Spell configuration file for the Magic plugin.
+#
+# Here you may alter default spell behavior, or add and remove spells.
+# 
+# The name, description, and usage of a spell should be defined in messages.yml as
+#  messages.spells.<spellkey>.name
+#  messages.spells.<spellkey>.description
+#  messages.spells.<spellkey>.usage
+#  messages.spells.<spellkey>.cast
+#  ... etc.
+#
+# General format:
+#
+# <spellkey>:
+#       icon:  <material name>
+#       category: <anything>
+#       class: <Must be a class from the spells package.>
+#       costs:
+#           xp: <xp/mana amount>
+#           <material_name>: <reagent amount>#      
+#       parameters:
+#           <specific spell parameters- TODO: list common ones>
+#
+
+#
+# Examples:
+# Note that a "#" chararacter means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
+# 
+
+# Disable the kill spell completely
+# kill:
+#   enabled: false
+
+# Change the cooldown on the petrify spell to one minute (60 seconds, 60000 ms)
+# petrify:
+#   parameters:
+#      cooldown: 60000
+
+# Change casting cost of blind spell to 100 mana
+# blind:
+#   costs:
+#      mana: 100
+
+# Require kill spell to consume health
+# kill:
+#    costs:
+#       health: 10
+
+recall:
+  parameters:
+    warps:
+     village:
+        name: Village
+        description: Near our house
+        locked: false
+        icon: compass 
+     dueling:
+        name: Dueling
+        description: Let's fight!
+        locked: false
+        icon: diamond_sword
+     nether:
+        name: Nether
+        description: By ghasts!
+        locked: false
+        icon: lava_bucket
+     mansion:
+        name: Wolf Vacation Home
+        description: Our mansion
+        locked: false
+        icon: emerald
+     fortress:
+        name: Nether Fortress
+        description: Blazes!
+        icon: nether_brick
+     dragon:
+        name: Ender Dragon
+        description: Scary!
+        icon: skull_item:5
+     endcity:
+        name: Ender City
+        description: yay!
+        icon: end_rod
+     icespikes:
+        name: North Pole
+        description: Igloos!
+        icon: snow_ball
+     pyramid:
+        name: Pyramid
+        description: Puzzling!
+        icon: sand
+
+override:  
+  pvp_restricted: false
+

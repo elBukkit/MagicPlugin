@@ -1,0 +1,79 @@
+#
+# Modify this file to change the available enchanting paths.
+# New paths can be added, existing paths can be modified.
+#
+# You can also add individual files to the enchanting/ folder
+#
+# This will change the overall behavior of how wands progress when players
+# spend SP to gain spells (or using the legacy enchanting system).
+#
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/defaults/enchanting
+#
+# For customization help see: 
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+
+#
+# This is the Enchanthing configuration file for the Magic plugin.
+#
+# This defines the randomization paths for wands, used in several places:
+#
+# - Wand crafting
+# - Wand enchanting
+# - Block populator
+#
+# Note that enchanting paths can now contain simple lists of spells, rather than probability tables.
+# The following information mostly only applies if you are still using the legacy enchanting system, and not the
+# SP / Spell Shop system.
+#
+# The randomization system works with "levels".
+# When enchanting, these map directly to the number of xp levels a player spends.
+# When creating a random wand, you can specify a level like random(23).
+# The default "/wand random" will give you a level-1 random wand. This is also what the crafting table generates.
+#
+# An enchanting table with no bookshelves can add about 27 levels to a wand at one time. A full bookshelf table
+# can add about 40. This is used to try to give out the "big" spells to only the high-level enchanting tables.
+#
+# The "levels" line defines the level thresholds. This list is used in all of the following lists, think of it
+# as the column headers.
+#
+# The randomization blocks create a lookup table that is used to randomly choose values based on the input level.
+# (Note that the actual values are interpolated based on the provided level and the thresholds set.)
+# The key in a randomization block is the output. The values separated by columns are weights that match to the level
+# in the same column in the "levels" list. Higher weights mean higher probability for that value at that level threshold.
+#
+# For example:
+#
+# # Define level thresholds at 1, 20, 30 and 40.
+# levels: 1,20,30,40
+# # Add spells to a wand
+# spell_count:
+# # levels:  1  20   30    40
+#       1: 99,  85, 100,   100
+#       2: 1,   10,  60,   100
+#       3: 0,   5,   20,   70
+#       4: 0,   0,   10,   60
+#
+# At level 1, a wand has a 99% chance of getting 1 spell added to it, and a 1% chance of 2 spells.
+# At level 20, a wand has an 85% chane of getting 1 spell, 10% chance of 2 spells, and a 5% chance of 3
+#
+# Levels between 1 and 20 will be scaled linearly between the two.
+# The same logic is applies for levels 20-30 and 30-40.
+#
+# Note that the actual values need not add up to 100- and generally do not. This is much easier to tweak, but also generally
+# harder to comprehend when looking at the numbers- I'm thinking about ways to clean that up.
+#
+
+#
+# Examples:
+# Note that a "#" chararacter means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
+# 
+
+# Change broadcast message
+# default:
+#  upgrade_commands:
+#    - broadcast &6@pd &3has graduated to &b$path&3!
+

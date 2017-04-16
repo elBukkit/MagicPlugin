@@ -1,0 +1,28 @@
+#
+# Modify this file to change the class structure.
+#
+# Classes in Magic are used to group player data together. Players may learn spells
+# or gain mana or other attributes within a specific class, rather than globally.
+#
+# Wands may also uses classes to determine where to store their data, if not stored
+# on the wand itself.
+#
+# Classes may be unlocked, meaning a player will automatically be put in that class
+# should they use a wand of that class. Or a class may be locked, meaning a player must
+# be added to a class (unlocking it for them) before they may use any wands of that class.
+#
+# A class may refer to a progression path (paths.yml) via path_start. This will allow the class to progress
+# as defined by that path.
+#
+# You can add new classes in this file or modify the builtin ones. Use load_default_classes: false
+# in config.yml to remove the default classes completely.
+#
+# You can also add individual files to the classes/ folder
+#
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/classes
+#
+# For customization help see:
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+#
