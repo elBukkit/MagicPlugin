@@ -12,9 +12,7 @@ default:
        insufficient_resources:
        - class: EffectSingle
          location: origin
-         sound: ui_button_click
-         sound_volume: 0.7
-         sound_pitch: 2
+         sound: war.noammo
        insufficient_permission:
        - class: EffectSingle
          location: origin
