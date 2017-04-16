@@ -9,9 +9,13 @@ blast:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: Sphere
-           actions:
-           -  class: ModifyBlock
+        - class: AreaOfEffect
+          actions:
+          - class: Damage
+          - class: Velocity
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -42,10 +46,12 @@ blast:
         allow_max_range: false
         range: 32
         speed: 0.9
+        living_entity_speed: 0.7
         direction: 0,0.8,0
         falling: true
         brush: air
         radius: 1
+        damage_max_distance: 2
         undo: 15000
         cooldown: 5000
         destructible: solid
@@ -54,6 +60,7 @@ blast:
         select_self: false
         physics_blocks: true
         undo_speed: 0.5
+        damage: 6
     costs:
         mana: 45
 
@@ -63,7 +70,10 @@ blast|2:
     parameters:
         destructible_durability: 50
         radius: 2
+        damage_max_distance: 3
         speed: 1.2
+        damage: 8
+        living_entity_speed: 0.8
 
 blast|3:
     upgrade_required_path: master
@@ -72,10 +82,13 @@ blast|3:
         destructible_durability: 100
         radius: 2
         undo: 20000
+        damage: 10
 
 blast|4:
     parameters:
         destructible_durability: 1000
         radius: 3
+        damage_max_distance: 4
         undo: 30000
+        damage: 12
 
