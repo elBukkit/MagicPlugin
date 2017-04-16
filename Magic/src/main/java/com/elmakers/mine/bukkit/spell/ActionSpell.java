@@ -222,6 +222,8 @@ public class ActionSpell extends BrushSpell
             }
         }
         undoable = template.getBoolean("undoable", undoable);
+        requiresBreakPermission = template.getBoolean("require_break", requiresBreakPermission);
+        requiresBuildPermission = template.getBoolean("require_build", requiresBuildPermission);
     }
 
     @Override

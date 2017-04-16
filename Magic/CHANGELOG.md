@@ -15,6 +15,7 @@
 
 ## 6.9.4
 
+ - Magic Missile and Laser now use block-breaking effects
  - Fix compatibility with PerWorldInventory plugin via a "close_wand_on_world_change: true" config.yml option
  - Put the Heroes wand back, I removed it prematurely.
  - Fix mob spawners that use cave spiders (entity id changed?)
@@ -22,6 +23,7 @@
  - Add sp_default config option, for starting out players with some spell points
  - Add "warmup" option to spells, to show a warmup in spell lore.
  - Add some spell lore options to show cooldowns less than a second, and show spell categories (not used in default configs)
+ - Fix an issue with loading resource packs from outside the U.S.
 
 ## 6.9.3
 

@@ -8,11 +8,14 @@ missile:
     worth: 150
     earns_sp: 7
     earns_cooldown: 10000
+    require_break: false
     actions:
         cast:
         - class: CustomProjectile
           actions:
           - class: Damage
+          - class: BreakBlock
+            ignore_result: true
     effects:
         cast:
         -  class: EffectSingle
@@ -97,6 +100,10 @@ missile:
         target_breakables: 1
         cooldown: 1000
         reorient: false
+        destructible: solid
+        destructible_durability: 50
+        break_durability: 2
+        undo: 10000
     costs:
         mana: 15
 
@@ -112,6 +119,7 @@ missile|2:
         player_damage: 3
         entity_damage: 6
         target_breakables: 1
+        break_durability: 3
     costs:
         mana: 20
 
@@ -127,6 +135,7 @@ missile|3:
         player_damage: 4
         entity_damage: 8
         target_breakables: 2
+        break_durability: 4
     costs:
         mana: 50
 
@@ -139,6 +148,7 @@ missile|4:
         player_damage: 4
         entity_damage: 10
         target_breakables: 3
+        break_durability: 5
     costs:
         mana: 80
 

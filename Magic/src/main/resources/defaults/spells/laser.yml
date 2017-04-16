@@ -8,6 +8,7 @@ laser:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     pvp_restricted: true
+    require_break: false
     actions:
         cast:
         -  class: Line
@@ -15,7 +16,7 @@ laser:
            actions:
            -  class: Disc
               actions:
-              -  class: ModifyBlock
+              -  class: BreakBlock
         -  class: Repeat
            actions:
            - class: Delay
@@ -29,7 +30,7 @@ laser:
                 actions:
                 -  class: Disc
                    actions:
-                   -  class: ModifyBlock
+                   -  class: BreakBlock
               - class: ConeOfEffect
                 actions:
                 -  class: Damage
@@ -72,9 +73,11 @@ laser:
         start_at_target: true
         increment_data: false
         check_destructible: true
-        destructible: destructible_mining,transparent
+        destructible: solid
+        destructible_durability: 100
+        break_durability: 4
+        undo: 30000
         transparent: air
-        brush: air
         radius: 0
         undo: 15000
         cooldown: 10000
@@ -96,6 +99,7 @@ laser|2:
         player_damage: 1
         entity_damage: 2
         repeat: 11
+        break_durability: 6
 
 laser|3:
     parameters:
@@ -105,4 +109,5 @@ laser|3:
         player_damage: 1
         entity_damage: 3
         repeat: 12
+        break_durability: 8
 
