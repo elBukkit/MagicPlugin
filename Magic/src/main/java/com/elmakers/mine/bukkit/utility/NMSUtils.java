@@ -216,7 +216,6 @@ public class NMSUtils {
     protected static Method class_ItemStack_isEmptyMethod;
     protected static Method class_ItemStack_createStackMethod;
     protected static Method class_CraftMagicNumbers_getBlockMethod;
-    protected static Method class_Entity_getTagsMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -537,18 +536,6 @@ public class NMSUtils {
 
             // Particularly volatile methods that we can live without
 
-            // On second thought, not dealing with tags for now. Maybe in a future version,
-            // so leaving most of the code in place.
-            /*
-            try {
-                // 1.11
-                class_Entity_getTagsMethod = class_Entity.getMethod("P");
-                if (!class_Entity_getTagsMethod.getReturnType().equals(Set.class)) throw new Exception("Entity.getTags method is not a Set type");
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering entity tags accessor, custom entities and mobs may not work", ex);
-                class_Entity_getTagsMethod = null;
-            }
-            */
             try {
                 class_Block_durabilityField = class_Block.getDeclaredField("durability");
                 class_Block_durabilityField.setAccessible(true);
