@@ -24,6 +24,7 @@
  - Add "warmup" option to spells, to show a warmup in spell lore.
  - Add some spell lore options to show cooldowns less than a second, and show spell categories (not used in default configs)
  - Fix an issue with loading resource packs from outside the U.S.
+ - Add driveable car to war configs, WIP, requires ProtocolLib for acceleration control
 
 ## 6.9.3
 

@@ -47,7 +47,7 @@ broom:
     parameters:
         target: self
         mount_wand: true
-        start_speed: 0.4
+        start_speed: 0.2
         min_speed: 0.1
         max_speed: 1
         max_acceleration: 0.01
@@ -72,6 +72,7 @@ broom:
         sound_max_pitch: 2
         sound_min_pitch: 0.5
         armor_stand_pitch: 0.3
+        controllable: true
 
 broom|2:
   upgrade_required_casts: 30
