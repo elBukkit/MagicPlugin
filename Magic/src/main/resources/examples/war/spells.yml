@@ -967,3 +967,40 @@ flash_bang:
       speed: 1
       age_items: 5960
       unbreakable: true
+
+drive:
+    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
+    icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
+    category: utility
+    worth: 200
+    show_undoable: false
+    quick_cast: true
+    cancel_effects: true
+    actions:
+      cast:
+      - class: MountArmorStand
+    effects:
+        cast:
+           - class: EffectSingle
+             sound: enderdragon_wings
+             location: origin
+             source_location: eyes
+             effectlib:
+                 class: SphereEffect
+                 particle: redstone
+                 radius: 1.0
+                 offset: 0,-2.5,0
+                 color: FFFFFF
+        deactivate:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_pitch: 0.2
+    parameters:
+        start_speed: 1
+        steer_speed: 0.6
+        max_height_above_ground: 2
+        liftoff_duration: 600
+        liftoff_thrust: 0.6
+        direction_y: 0.5
+        mount_target: true

@@ -16,3 +16,6 @@ soldier:
   attributes:
     generic_knockback_resistance: 1
 
+car:
+  type: armor_stand
+  tags: magic,spell:drive
