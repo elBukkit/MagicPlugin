@@ -987,6 +987,14 @@ drive:
         deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
+        crash_entity:
+        - sound: entity_generic_explode
+          sound_volume: 0.5
+          sound_pitch: 0.8
+        crash:
+        - sound: entity_generic_explode
+          sound_volume: 1
+          sound_pitch: 0.6
     parameters:
         max_speed: 1
         # TODO: Something goes really wonky with driving in reverse :(
@@ -1007,16 +1015,27 @@ drive:
         sound_min_volume: 0.1
         sound_max_pitch: 2
         sound_min_pitch: 0.5
+        mount_untargetable: false
+        crash_damage: 10
+        crash_braking: 0.02
+        crash_entity_fov: 0.5
+        crash_entity_damage: 30
+        crash_velocity_y_offset: 0.2
+        crash_velocity: 2.0
+        crash_entity_distance: 2.5
+        crash_vehicle_damage: 1
 
 steal:
     inherit: drive
     actions:
       cast:
-      - class: MountArmorStand
       - class: AreaOfEffect
         actions:
         - class: Damage
+      - class: MountArmorStand
     parameters:
       radius: 64
-      damage: 0.0001
+      damage: 0.000001
       target_type: PigZombie
+      crash_distance: 1
+      crash_into: LivingEntity

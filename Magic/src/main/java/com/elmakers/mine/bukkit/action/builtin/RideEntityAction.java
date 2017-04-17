@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -20,6 +21,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class RideEntityAction extends BaseSpellAction
 {
@@ -58,8 +60,18 @@ public class RideEntityAction extends BaseSpellAction
     private boolean warningEffectsApplied;
     private long nextSoundPlay;
     private boolean noTarget = true;
+    private Class<?> crashEntityType;
+    private double crashEntityDistance;
+    private double crashVelocityYOffset = 0;
+    private double crashVelocity = 0;
+    private double crashDamage = 0;
+    private double crashVehicleDamage = 0;
+    private double crashEntityDamage = 0;
+    private double crashBraking = 0;
+    private double crashEntityFOV = 0;
 
     protected Vector direction;
+
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -68,6 +80,15 @@ public class RideEntityAction extends BaseSpellAction
         crashEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("crash_effects"));
         durationWarning = parameters.getInt("duration_warning", 0);
         warningEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("warning_effects"), durationWarning);
+        if (parameters.contains("crash_into")) {
+            String entityTypeName = parameters.getString("crash_into");
+            try {
+                crashEntityType = Class.forName("org.bukkit.entity." + entityTypeName);
+            } catch (Throwable ex) {
+                spell.getController().getLogger().warning("Unknown entity type in crash_into: " + entityTypeName);
+                crashEntityType = null;
+            }
+        }
     }
 
     @Override
@@ -102,6 +123,14 @@ public class RideEntityAction extends BaseSpellAction
         controllable = parameters.getBoolean("controllable", false);
         pitchControllable = parameters.getBoolean("pitch_controllable", true);
         braking = parameters.getDouble("braking", 0.0);
+        crashEntityDistance = parameters.getDouble("crash_entity_distance", 2.0);
+        crashVelocityYOffset = parameters.getDouble("crash_velocity_y_offset" , 0.0);
+        crashVelocity = parameters.getDouble("crash_velocity" , 1.0);
+        crashDamage = parameters.getDouble("crash_damage" , 0.0);
+        crashVehicleDamage = parameters.getDouble("crash_vehicle_damage" , 0.0);
+        crashEntityDamage = parameters.getDouble("crash_entity_damage" , 0.0);
+        crashBraking = parameters.getDouble("crash_braking" , 0.0);
+        crashEntityFOV = parameters.getDouble("crash_entity_fov" , 0.3);
         if (parameters.contains("direction_y")) {
             yDirection = parameters.getDouble("direction_y");
         } else {
@@ -170,6 +199,35 @@ public class RideEntityAction extends BaseSpellAction
         if (!context.isPassthrough(mounted.getLocation().getBlock().getType())) {
             crash(context);
             return SpellResult.CAST;
+        }
+        if (crashEntityType != null && speed > 0 && crashEntityDistance > 0 && maxSpeed > 0) {
+            List<Entity> nearby = mounted.getNearbyEntities(crashEntityDistance, crashEntityDistance, crashEntityDistance);
+            Vector crashDirection = direction;
+            if (crashVelocityYOffset > 0) {
+                crashDirection = crashDirection.clone();
+                crashDirection.setY(crashDirection.getY() + crashVelocityYOffset).normalize();
+            }
+            Vector velocity = crashDirection.multiply(crashVelocity * speed / maxSpeed);
+            for (Entity entity : nearby) {
+                if (entity == mounted || entity == mount) continue;
+
+                Vector targetDirection = entity.getLocation().subtract(mounted.getLocation()).toVector();
+                double angle = targetDirection.angle(direction);
+                if (angle > crashEntityFOV) continue;
+                if (crashEntityType.isAssignableFrom(entity.getClass())) {
+                    if (crashEntityDamage > 0 && entity instanceof Damageable) {
+                        Damageable damageable = (Damageable)entity;
+                        double crashDamage = crashEntityDamage * speed / maxSpeed;
+                        damageable.damage(crashDamage);
+                    }
+                    entity.setVelocity(velocity);
+                    speed = Math.max(0, speed - crashBraking);
+                    if (mount instanceof Damageable && crashVehicleDamage > 0) {
+                        ((Damageable)mount).damage(crashVehicleDamage);
+                    }
+                    context.playEffects("crash_entity");
+                }
+            }
         }
         
         adjustHeading(context);
@@ -334,6 +392,9 @@ public class RideEntityAction extends BaseSpellAction
         Entity mountedEntity = context.getEntity();
         if (crashEffects != null && mountedEntity != null && crashEffects.size() > 0 && mountedEntity instanceof LivingEntity) {
             CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, crashEffects);
+        }
+        if (crashDamage > 0 && mount != null && mount.isValid() && mount instanceof Damageable) {
+            ((Damageable)mount).damage(crashDamage);
         }
         warningEffectsApplied = false;
     }
