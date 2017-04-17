@@ -121,7 +121,7 @@ public class MountArmorStandAction extends BaseSpellAction
         crashDistance = parameters.getDouble("crash_distance", 0);
         mountWand = parameters.getBoolean("mount_wand", false);
         maxHeight = parameters.getInt("max_height", 0);
-        maxHeightAboveGround = parameters.getInt("max_height_above_ground", 0);
+        maxHeightAboveGround = parameters.getInt("max_height_above_ground", -1);
         duration = parameters.getInt("duration", 0);
         durationWarning = parameters.getInt("duration_warning", 0);
         pitchOffset = parameters.getDouble("pitch_offset", 0);
@@ -282,7 +282,7 @@ public class MountArmorStandAction extends BaseSpellAction
         Location currentLocation = getMountingEntity(context).getLocation();
         if (maxHeight > 0 && currentLocation.getY() >= maxHeight) {
             blocksAbove = currentLocation.getY() - maxHeight + 1;
-        } else if (maxHeightAboveGround > 0) {
+        } else if (maxHeightAboveGround >= 0) {
             Block block = currentLocation.getBlock();
             int height = 0;
             while (height < maxHeightAboveGround && context.isPassthrough(block.getType()))
