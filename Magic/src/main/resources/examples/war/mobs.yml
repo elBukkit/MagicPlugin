@@ -16,6 +16,9 @@ soldier:
   attributes:
     generic_knockback_resistance: 1
 
-car:
+model3:
   type: armor_stand
-  tags: magic,spell:drive
+  helmet: model3
+  invisible: true
+  name: Model 3
+  interact_spell: drive

@@ -984,23 +984,11 @@ drive:
         cast:
            - class: EffectSingle
              sound: enderdragon_wings
-             location: origin
-             source_location: eyes
-             effectlib:
-                 class: SphereEffect
-                 particle: redstone
-                 radius: 1.0
-                 offset: 0,-2.5,0
-                 color: FFFFFF
         deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
-           sound_pitch: 0.2
     parameters:
         start_speed: 1
-        steer_speed: 0.6
-        max_height_above_ground: 2
-        liftoff_duration: 600
-        liftoff_thrust: 0.6
-        direction_y: 0.5
+        steer_speed: 0.1
+        max_height_above_ground: 0
         mount_target: true
