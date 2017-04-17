@@ -58,19 +58,91 @@ soldierspawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 32
+        EntityId: zombie
+        SpawnData:
+          id: zombie
+          CustomName: Soldier
+
+policespawner:
+  worth: 50000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Police Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 32
         EntityId: zombie_pigman
         SpawnData:
           id: zombie_pigman
-          CustomName: Soldier
-          HandItems:
-          - id: diamond_pickaxe
-            Damage: 3
-            tag:
-              Unbreakable: true
-              display:
-                Name: Pistol
-          ArmorItems:
-          - id: iron_boots
-          - id: iron_leggings
-          - id: iron_chestplate
-          - id: iron_helmet
+          CustomName: Police
+
+fbispawner:
+  worth: 50000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: FBI Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 32
+        EntityId: skeleton
+        SpawnData:
+          id: skeleton
+          CustomName: FBI
+
+riotpolicespawner:
+  worth: 50000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Riot Police Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 32
+        EntityId: zombie_pigman
+        SpawnData:
+          id: zombie_pigman
+          CustomName: Riot Police
+
+model3spawner:
+  worth: 50000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Model 3 Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 2
+        SpawnRange: 3
+        Delay: 200
+        MinSpawnDelay: 300
+        MaxSpawnDelay: 800
+        RequiredPlayerRange: 32
+        EntityId: armor_stand
+        SpawnData:
+          id: armor_stand
+          CustomName: Model 3
