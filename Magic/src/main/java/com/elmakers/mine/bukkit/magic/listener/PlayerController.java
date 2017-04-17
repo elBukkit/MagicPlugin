@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -16,6 +17,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -32,6 +34,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -47,6 +50,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Set;
 
 public class PlayerController implements Listener {
     private final MagicController controller;
@@ -307,6 +312,26 @@ public class PlayerController implements Listener {
                 return;
             } else {
                 wand.deactivate();
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event)
+    {
+        Entity entity = event.getRightClicked();
+        Set<String> tags = CompatibilityUtils.getTags(entity);
+        if (tags.contains("magic")) {
+            Player player = event.getPlayer();
+            Mage mage = controller.getMage(player);
+            event.setCancelled(true);
+            for (String tag : tags) {
+                if (tag.startsWith("spell")) {
+                    String spellKey = tag.substring(6);
+                    ConfigurationSection config = new MemoryConfiguration();
+                    config.set("entity", entity.getUniqueId().toString());
+                    controller.cast(mage, spellKey, config, player, player);
+                }
             }
         }
     }

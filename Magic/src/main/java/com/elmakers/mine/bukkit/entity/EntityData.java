@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     protected boolean defaultDrops;
     protected List<String> drops;
+    protected Set<String> tags;
 
     // Spellcasting
     protected long tickInterval;
@@ -138,6 +140,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.location = location;
         this.fireTicks = entity.getFireTicks();
         name = entity.getCustomName();
+        tags = CompatibilityUtils.getTags(entity);
 
         // This can sometimes throw an exception on an invalid
         // entity velocity!
@@ -264,6 +267,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             dropXp = parameters.getInt("drop_xp");
         }
         drops = ConfigurationUtils.getStringList(parameters, "drops");
+        List<String> tagList = ConfigurationUtils.getStringList(parameters, "tags");
+        if (tagList != null) {
+            tags = new HashSet<String>(tagList);
+        }
         
         try {
             if (type == EntityType.HORSE) {
@@ -509,6 +516,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (entity instanceof Colorable && dyeColor != null) {
             Colorable colorable = (Colorable)entity;
             colorable.setColor(dyeColor);
+        }
+
+        if (tags != null && !tags.isEmpty()) {
+            Set<String> entityTags = CompatibilityUtils.getTags(entity);
+            entityTags.addAll(tags);
         }
 
         if (entity instanceof Painting) {
