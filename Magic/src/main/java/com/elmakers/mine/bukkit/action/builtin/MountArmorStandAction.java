@@ -74,6 +74,7 @@ public class MountArmorStandAction extends BaseSpellAction
     private boolean mounted;
     private boolean warningEffectsApplied;
     private long nextSoundPlay;
+    private boolean mountTarget = false;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -102,6 +103,7 @@ public class MountArmorStandAction extends BaseSpellAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        mountTarget = parameters.getBoolean("mount_target", false);
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);
         armorStandSmall = parameters.getBoolean("armor_stand_small", false);
         armorStandMarker = parameters.getBoolean("armor_stand_marker", true);
@@ -154,23 +156,31 @@ public class MountArmorStandAction extends BaseSpellAction
         }
     }
 
+    protected Entity getMountingEntity(CastContext context) {
+        return mountTarget ? context.getEntity() : context.getTargetEntity();
+    }
+
 	@Override
 	public SpellResult perform(CastContext context) {
         if (!mounted) {
             return mount(context);
         }
-        Entity target = context.getTargetEntity();
-        if (target == null)
+        Entity mounted = getMountingEntity(context);
+        if (mounted == null)
         {
             return SpellResult.CAST;
         }
-        Entity mount = target.getVehicle();
+        Entity mount = mounted.getVehicle();
         if (mount == null || mount != armorStand)
         {
             return SpellResult.CAST;
         }
         if (!armorStand.isValid())
         {
+            if (mountTarget) {
+                return SpellResult.FAIL;
+            }
+
             // This seems to happen occasionally... guess we'll work around it for now.
             armorStand.remove();
             if (!mountNewArmorStand(context)) {
@@ -185,19 +195,19 @@ public class MountArmorStandAction extends BaseSpellAction
             double speedRatio = minSpeed >= maxSpeed ? 1 : (speed - minSpeed) / (maxSpeed - minSpeed);
             sound.setPitch((float)((soundMaxPitch - soundMinPitch) * speedRatio));
             sound.setVolume((float)((soundMaxVolume - soundMinVolume) * speedRatio));
-            sound.play(context.getPlugin(), target);
+            sound.play(context.getPlugin(), mounted);
         }
 
         // Check for crashing
         if (crashDistance > 0)
         {
             Vector threshold = direction.clone().multiply(crashDistance);
-            if (checkForCrash(context, target.getLocation(), threshold)) {
+            if (checkForCrash(context, mounted.getLocation(), threshold)) {
                 crash(context);
                 return SpellResult.CAST;
             }
         }
-        if (!context.isPassthrough(target.getLocation().getBlock().getType())) {
+        if (!context.isPassthrough(mounted.getLocation().getBlock().getType())) {
             crash(context);
             return SpellResult.CAST;
         }
@@ -211,7 +221,7 @@ public class MountArmorStandAction extends BaseSpellAction
     }
     
     protected void adjustHeading(CastContext context) {
-        Location targetLocation = context.getTargetEntity().getLocation();
+        Location targetLocation = getMountingEntity(context).getLocation();
         Vector targetDirection = targetLocation.getDirection();
         if (moveDistance == 0) {
             direction = targetDirection;
@@ -237,9 +247,9 @@ public class MountArmorStandAction extends BaseSpellAction
     protected void applyThrust(CastContext context) {
         if (duration > 0) {
             long flightTime = System.currentTimeMillis() - liftoffTime;
-            Entity targetEntity = context.getTargetEntity();
-            if (!warningEffectsApplied && warningEffects != null && targetEntity instanceof LivingEntity && durationWarning > 0 && flightTime > duration - durationWarning) {
-                CompatibilityUtils.applyPotionEffects((LivingEntity)targetEntity, warningEffects);
+            Entity mountedEntity = getMountingEntity(context);
+            if (!warningEffectsApplied && warningEffects != null && mountedEntity instanceof LivingEntity && durationWarning > 0 && flightTime > duration - durationWarning) {
+                CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, warningEffects);
                 warningEffectsApplied = true;
             }
 
@@ -269,7 +279,7 @@ public class MountArmorStandAction extends BaseSpellAction
         
         // Check for max height
         double blocksAbove = 0;
-        Location currentLocation = context.getTargetEntity().getLocation();
+        Location currentLocation = getMountingEntity(context).getLocation();
         if (maxHeight > 0 && currentLocation.getY() >= maxHeight) {
             blocksAbove = currentLocation.getY() - maxHeight + 1;
         } else if (maxHeightAboveGround > 0) {
@@ -297,12 +307,12 @@ public class MountArmorStandAction extends BaseSpellAction
     protected SpellResult mount(CastContext context) {
         Mage mage = context.getMage();
         Player player = mage.getPlayer();
-        if (player == null)
+        if (player == null && mountWand)
         {
             return SpellResult.PLAYER_REQUIRED;
         }
         
-        Entity entity = context.getTargetEntity();
+        Entity entity = getMountingEntity(context);
         if (entity == null)
         {
             return SpellResult.NO_TARGET;
@@ -326,7 +336,14 @@ public class MountArmorStandAction extends BaseSpellAction
         }
 
         direction = entity.getLocation().getDirection();
-        if (!mountNewArmorStand(context)) {
+        if (mountTarget) {
+            Entity targetEntity = context.getTargetEntity();
+            if (targetEntity == null || !(targetEntity instanceof ArmorStand)) {
+                return SpellResult.NO_TARGET;
+            }
+            armorStand = ((ArmorStand)targetEntity);
+            mount(entity, context);
+        } else if (!mountNewArmorStand(context)) {
             return SpellResult.FAIL;
         }
         if (mountWand) {
@@ -348,7 +365,7 @@ public class MountArmorStandAction extends BaseSpellAction
 	
 	protected boolean mountNewArmorStand(CastContext context) {
         Mage mage = context.getMage();
-        Entity entity = context.getTargetEntity();
+        Entity entity = getMountingEntity(context);
         armorStand = CompatibilityUtils.spawnArmorStand(mage.getLocation());
 
         if (armorStandInvisible) {
@@ -366,7 +383,6 @@ public class MountArmorStandAction extends BaseSpellAction
         }
 
         MageController controller = context.getController();
-        armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
         controller.setForceSpawn(true);
         try {
             CompatibilityUtils.addToWorld(entity.getWorld(), armorStand, armorStandSpawnReason);
@@ -379,24 +395,31 @@ public class MountArmorStandAction extends BaseSpellAction
         if (mountWand) {
             armorStand.setHelmet(item);
         }
+        mount(entity, context);
+
+        return true;
+    }
+
+    private void mount(Entity entity, CastContext context) {
         entity.eject();
+        armorStand.setMetadata("notarget", new FixedMetadataValue(context.getController().getPlugin(), true));
         armorStand.setPassenger(entity);
         adjustHeading(context);
-        
-        return true;
     }
 	
 	@Override
     public void finish(CastContext context) {
         if (armorStand != null) {
             armorStand.removeMetadata("notarget", context.getPlugin());
-            armorStand.remove();
+            if (!mountTarget) {
+                armorStand.remove();
+            }
             armorStand = null;
         }
-        Entity targetEntity = context.getTargetEntity();
-        if (warningEffectsApplied && warningEffects != null && targetEntity != null && targetEntity instanceof LivingEntity) {
+        Entity mountedEntity = getMountingEntity(context);
+        if (warningEffectsApplied && warningEffects != null && mountedEntity != null && mountedEntity instanceof LivingEntity) {
             for (PotionEffect effect : warningEffects) {
-                ((LivingEntity)targetEntity).removePotionEffect(effect.getType());
+                ((LivingEntity)mountedEntity).removePotionEffect(effect.getType());
             }
         }
         Mage mage = context.getMage();
@@ -418,9 +441,9 @@ public class MountArmorStandAction extends BaseSpellAction
     {
         context.sendMessageKey("crash");
         context.playEffects("crash");
-        Entity targetEntity = context.getTargetEntity();
-        if (crashEffects != null && targetEntity != null && crashEffects.size() > 0 && targetEntity instanceof LivingEntity) {
-            CompatibilityUtils.applyPotionEffects((LivingEntity)targetEntity, crashEffects);
+        Entity mountedEntity = getMountingEntity(context);
+        if (crashEffects != null && mountedEntity != null && crashEffects.size() > 0 && mountedEntity instanceof LivingEntity) {
+            CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, crashEffects);
         }
         warningEffectsApplied = false;
     }
