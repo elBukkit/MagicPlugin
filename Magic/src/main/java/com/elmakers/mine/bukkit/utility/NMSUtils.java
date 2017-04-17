@@ -536,6 +536,10 @@ public class NMSUtils {
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
 
             // Particularly volatile methods that we can live without
+
+            // On second thought, not dealing with tags for now. Maybe in a future version,
+            // so leaving most of the code in place.
+            /*
             try {
                 // 1.11
                 class_Entity_getTagsMethod = class_Entity.getMethod("P");
@@ -544,6 +548,7 @@ public class NMSUtils {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering entity tags accessor, custom entities and mobs may not work", ex);
                 class_Entity_getTagsMethod = null;
             }
+            */
             try {
                 class_Block_durabilityField = class_Block.getDeclaredField("durability");
                 class_Block_durabilityField.setAccessible(true);
