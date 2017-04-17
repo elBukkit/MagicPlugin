@@ -4711,6 +4711,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 		SpellKey key = new SpellKey(spellKey);
 		spellKey = key.getBaseKey();
+		if (!spells.contains(spellKey)) return null;
 		Integer level = spellLevels.get(spellKey);
 		if (level != null) {
 			spellKey = new SpellKey(spellKey, level).getKey();
@@ -4722,6 +4723,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public SpellTemplate getSpellTemplate(String spellKey) {
 		SpellKey key = new SpellKey(spellKey);
 		spellKey = key.getBaseKey();
+		if (!spells.contains(spellKey)) return null;
 		Integer level = spellLevels.get(spellKey);
 		if (level != null) {
 			spellKey = new SpellKey(spellKey, level).getKey();
