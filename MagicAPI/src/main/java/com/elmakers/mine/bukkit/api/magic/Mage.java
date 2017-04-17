@@ -490,6 +490,14 @@ public interface Mage extends CostReducer {
     @Nonnull MagicConfigurable getProperties();
 
     /**
+     * This method returns a positive number if the player is moving
+     * forward while in a vehicle, negative if moving backward.
+     *
+     * If ProtocolLib is not active, this will always return 0.
+     */
+    double getVehicleMovementDirection();
+
+    /**
      * This method is deprecated, soul wand functionality was never implemented.
      *
      * Get the Mage's "soul" wand. This represents all of the

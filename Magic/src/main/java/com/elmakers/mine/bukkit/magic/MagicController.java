@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
+import com.elmakers.mine.bukkit.integration.ProtocolLibManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
@@ -816,15 +817,33 @@ public class MagicController implements MageController {
         Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
         if (libsDisguisePlugin == null) {
             getLogger().info("LibsDisguises not found");
-        } else {
+        } else if (libsDisguiseEnabled) {
             libsDisguiseManager = new LibsDisguiseManager(plugin, libsDisguisePlugin);
             if (libsDisguiseManager.initialize()) {
-                if (libsDisguiseEnabled) {
-                    getLogger().info("Integrated with LibsDisguises, mob disguises and disguise_restricted features enabled");
-                } else {
-                    getLogger().info("LibsDisguises integration disabled");
-                }
+                getLogger().info("Integrated with LibsDisguises, mob disguises and disguise_restricted features enabled");
+            } else {
+                getLogger().warning("LibsDisguises integration failed");
             }
+        } else {
+            getLogger().info("LibsDisguises integration disabled");
+        }
+
+
+        // Check for LibsDisguise
+        protocolLibActive = false;
+        Plugin protocolLibPlugin = pluginManager.getPlugin("ProtocolLib");
+        if (protocolLibPlugin == null) {
+            getLogger().info("Protocol not found, install for vehicle control");
+        } else if (protocolLibEnabled) {
+            protocolLibManager = new ProtocolLibManager(this, protocolLibPlugin);
+            if (protocolLibManager.initialize()) {
+                protocolLibActive = true;
+                getLogger().info("Integrated with ProtocolLib, certain vehicles are controllable with W and S");
+            } else {
+                getLogger().warning("ProtocolLib integration failed");
+            }
+        } else {
+            getLogger().info("ProtocolLib integration disabled");
         }
 
         // Vault integration is handled internally in MagicLib
@@ -2301,6 +2320,7 @@ public class MagicController implements MageController {
         BaseSpell.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", BaseSpell.MAX_LORE_LENGTH);
         Wand.MAX_LORE_LENGTH = BaseSpell.MAX_LORE_LENGTH;
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
+        protocolLibEnabled = properties.getBoolean("enable_protocollib", protocolLibEnabled);
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
@@ -5010,6 +5030,12 @@ public class MagicController implements MageController {
         return heroesSkillPrefix;
     }
 
+    @Override
+    public boolean isProtocolLibActive() {
+        return protocolLibActive;
+    }
+
+
     /*
 	 * Private data
 	 */
@@ -5226,6 +5252,8 @@ public class MagicController implements MageController {
     private boolean                             citizensEnabled			    = true;
     private boolean                             libsDisguiseEnabled			= true;
     private boolean                             enableResourcePackCheck     = true;
+    private boolean                             protocolLibEnabled			= true;
+    private boolean                             protocolLibActive			= false;
     private int                                 resourcePackCheckInterval   = 0;
     private int                                 resourcePackCheckTimer      = 0;
     private String                              defaultResourcePack         = null;
@@ -5248,6 +5276,7 @@ public class MagicController implements MageController {
     private BlockPhysicsManager                 blockPhysicsManager         = null;
     private boolean                             useBlockPhysics             = true;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
+    private ProtocolLibManager                  protocolLibManager          = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();

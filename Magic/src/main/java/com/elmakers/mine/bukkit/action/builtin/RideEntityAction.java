@@ -36,6 +36,9 @@ public class RideEntityAction extends BaseSpellAction
     private int liftoffDuration = 0;
     private int maxHeightAboveGround;
     private int maxHeight;
+    private boolean controllable = false;
+    private boolean pitchControllable = true;
+    private double braking = 0;
     private double pitchOffset = 0;
     private double yawOffset = 0;
     private Double yDirection = null;
@@ -96,6 +99,9 @@ public class RideEntityAction extends BaseSpellAction
         pitchOffset = parameters.getDouble("pitch_offset", 0);
         yawOffset = parameters.getDouble("yaw_offset", 0);
         noTarget = parameters.getBoolean("mount_untargetable", true);
+        controllable = parameters.getBoolean("controllable", false);
+        pitchControllable = parameters.getBoolean("pitch_controllable", true);
+        braking = parameters.getDouble("braking", 0.0);
         if (parameters.contains("direction_y")) {
             yDirection = parameters.getDouble("direction_y");
         } else {
@@ -138,7 +144,15 @@ public class RideEntityAction extends BaseSpellAction
         if (sound != null && nextSoundPlay < System.currentTimeMillis()) {
             nextSoundPlay = System.currentTimeMillis() + soundInterval;
 
-            double speedRatio = minSpeed >= maxSpeed ? 1 : (speed - minSpeed) / (maxSpeed - minSpeed);
+            double speedRatio = 1;
+            if (speed > 0) {
+                double minForwardSpeed = Math.max(0, minSpeed);
+                speedRatio = minSpeed >= maxSpeed ? 1 : (speed - minForwardSpeed) / (maxSpeed - minForwardSpeed);
+            } else if (minSpeed < 0 ) {
+                double maxBackwardSpeed = Math.max(Math.abs(minSpeed), maxSpeed);
+                double backwardSpeed = Math.abs(speed);
+                speedRatio = backwardSpeed / maxBackwardSpeed;
+            }
             sound.setPitch((float)((soundMaxPitch - soundMinPitch) * speedRatio));
             sound.setVolume((float)((soundMaxVolume - soundMinVolume) * speedRatio));
             sound.play(context.getPlugin(), mounted);
@@ -199,16 +213,36 @@ public class RideEntityAction extends BaseSpellAction
                 return;
             }
         }
-        
+
+        double minBrakingSpeed = Math.max(0, minSpeed);
+
         // Adjust speed
-        if (direction.getY() < 0 && maxAcceleration > 0) {
-            speed = speed - direction.getY() * maxAcceleration;
-            if (maxSpeed > 0 && speed > maxSpeed) {
-                speed = maxSpeed;
+        if (pitchControllable) {
+            if (direction.getY() < 0 && maxAcceleration > 0) {
+                speed = speed - direction.getY() * maxAcceleration;
+                if (maxSpeed > 0 && speed > maxSpeed) {
+                    speed = maxSpeed;
+                }
+            } else if (direction.getY() > 0 && maxDeceleration > 0) {
+                speed = speed - direction.getY() * maxDeceleration;
+                speed = Math.max(minBrakingSpeed, speed);
             }
-        } else if (direction.getY() > 0 && maxDeceleration > 0) {
-            speed = speed - direction.getY() * maxDeceleration;
-            speed = Math.max(minSpeed, speed);
+        }
+
+        if (controllable && context.getController().isProtocolLibActive()) {
+            double direction = context.getMage().getVehicleMovementDirection();
+            if (direction > 0) {
+                speed = speed + maxAcceleration;
+                if (maxSpeed > 0 && speed > maxSpeed) {
+                    speed = maxSpeed;
+                }
+            } else if (direction < 0) {
+                speed = speed - maxDeceleration;
+                speed = Math.max(minSpeed, speed);
+            } else {
+                speed = speed - braking;
+                speed = Math.max(minBrakingSpeed, speed);
+            }
         }
 
         // Apply pitch offset
@@ -241,7 +275,7 @@ public class RideEntityAction extends BaseSpellAction
         }
         
         // Apply thrust
-        if (speed > 0) {
+        if (speed != 0) {
             mount.setVelocity(direction.multiply(speed));
         }
     }
@@ -341,6 +375,8 @@ public class RideEntityAction extends BaseSpellAction
         parameters.add("max_deceleration");
         parameters.add("pitch_offset");
         parameters.add("yaw_offset");
+        parameters.add("braking");
+        parameters.add("controllable");
     }
 
     @Override
@@ -356,6 +392,7 @@ public class RideEntityAction extends BaseSpellAction
                 || parameterKey.equals("max_speed")
                 || parameterKey.equals("max_acceleration")
                 || parameterKey.equals("max_deceleration")
+                || parameterKey.equals("braking")
                 || parameterKey.equals("pitch_offset")
                 || parameterKey.equals("yaw_offset")
                 || parameterKey.equals("liftoff_thrust")) {

@@ -398,4 +398,5 @@ public interface MageController {
     void cleanItem(ItemStack itemStack);
 
     Set<String> getMageClassKeys();
+    boolean isProtocolLibActive();
 }
