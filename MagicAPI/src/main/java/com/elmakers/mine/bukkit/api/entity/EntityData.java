@@ -28,4 +28,5 @@ public interface EntityData {
     boolean modify(Entity entity);
     EntityData getRelativeTo(Location center);
     String describe();
+    String getInteractSpell();
 }

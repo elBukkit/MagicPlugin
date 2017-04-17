@@ -1,13 +1,13 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -320,20 +320,18 @@ public class PlayerController implements Listener {
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event)
     {
         Entity entity = event.getRightClicked();
-        Set<String> tags = CompatibilityUtils.getTags(entity);
-        if (tags.contains("magic")) {
-            Player player = event.getPlayer();
-            Mage mage = controller.getMage(player);
-            event.setCancelled(true);
-            for (String tag : tags) {
-                if (tag.startsWith("spell")) {
-                    String spellKey = tag.substring(6);
-                    ConfigurationSection config = new MemoryConfiguration();
-                    config.set("entity", entity.getUniqueId().toString());
-                    controller.cast(mage, spellKey, config, player, player);
-                }
-            }
-        }
+
+        EntityData mob = controller.getMobByName(entity.getCustomName());
+        if (mob == null) return;
+        String interactSpell = mob.getInteractSpell();
+        if (interactSpell == null || interactSpell.isEmpty()) return;
+
+        Player player = event.getPlayer();
+        Mage mage = controller.getMage(player);
+        event.setCancelled(true);
+        ConfigurationSection config = new MemoryConfiguration();
+        config.set("entity", entity.getUniqueId().toString());
+        controller.cast(mage, interactSpell, config, player, player);
     }
 
     @EventHandler(priority=EventPriority.LOW, ignoreCancelled = true)

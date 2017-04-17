@@ -118,6 +118,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean defaultDrops;
     protected List<String> drops;
     protected Set<String> tags;
+    protected String interactSpell;
 
     // Spellcasting
     protected long tickInterval;
@@ -266,6 +267,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (parameters.contains("drop_xp")) {
             dropXp = parameters.getInt("drop_xp");
         }
+        interactSpell = parameters.getString("interact_spell");
         drops = ConfigurationUtils.getStringList(parameters, "drops");
         List<String> tagList = ConfigurationUtils.getStringList(parameters, "tags");
         if (tagList != null) {
@@ -293,6 +295,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 zombieData.isBaby = isBaby;
                 extraData = zombieData;
             }
+            else if (type == EntityType.ARMOR_STAND) {
+                extraData = new EntityArmorStandData(parameters);
+            }
+
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
         }
@@ -775,5 +781,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 spell.cast(parameters);
             }
         }
+    }
+
+    public String getInteractSpell() {
+        return interactSpell;
     }
 }
