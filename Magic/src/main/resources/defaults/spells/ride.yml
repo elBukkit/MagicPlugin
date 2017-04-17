@@ -1,0 +1,24 @@
+ride:
+    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
+    icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
+    category: utility
+    show_undoable: false
+    quick_cast: true
+    cancel_effects: true
+    hidden: true
+    actions:
+      cast:
+      - class: RideEntity
+    effects:
+        cast:
+           - class: EffectSingle
+             sound: enderdragon_wings
+        deactivate:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+    parameters:
+        range: 8
+        target_type: LivingEntity
+        start_speed: 1
+        steer_speed: 0.1

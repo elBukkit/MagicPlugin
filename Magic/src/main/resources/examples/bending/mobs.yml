@@ -1,0 +1,4 @@
+skybison:
+  type: cow
+  name: Sky Bison
+  interact_spell: ride
