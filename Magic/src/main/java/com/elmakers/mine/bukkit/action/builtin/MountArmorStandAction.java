@@ -108,7 +108,7 @@ public class MountArmorStandAction extends BaseSpellAction
         armorStandSmall = parameters.getBoolean("armor_stand_small", false);
         armorStandMarker = parameters.getBoolean("armor_stand_marker", true);
         armorStandGravity = parameters.getBoolean("armor_stand_gravity", true);
-        armorStandPitch = parameters.getDouble("armor_stand_pitch", 0.3);
+        armorStandPitch = parameters.getDouble("armor_stand_pitch", 0.0);
         armorStandYaw = ConfigurationUtils.getDouble(parameters, "armor_stand_yaw", 0.0);
         moveDistance = parameters.getDouble("steer_speed", 0);
         startSpeed = parameters.getDouble("start_speed", 0);

@@ -71,6 +71,7 @@ broom:
         sound_min_volume: 0.9
         sound_max_pitch: 2
         sound_min_pitch: 0.5
+        armor_stand_pitch: 0.3
 
 broom|2:
   upgrade_required_casts: 30
