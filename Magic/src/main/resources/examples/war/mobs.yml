@@ -5,6 +5,7 @@ soldier:
   chestplate: iron_chestplate
   leggings: iron_leggings
   boots: iron_boots
+  helmet: pumpkin
   name: Soldier
   health: 50
   default_drops: false
@@ -31,7 +32,6 @@ riotpolice:
   baby: false
   chestplate: iron_chestplate
   leggings: iron_leggings
-  helmet: iron_helmet
   boots: iron_boots
   name: Riot Police
   health: 25
