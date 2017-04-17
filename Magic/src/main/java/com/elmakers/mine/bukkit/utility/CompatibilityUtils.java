@@ -59,6 +59,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -1457,5 +1458,18 @@ public class CompatibilityUtils extends NMSUtils {
             }
             sendBreaking(player, getBlockEntityId(block), location, breakAmount);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Set<String> getTags(Entity entity) {
+        if (class_Entity_getTagsMethod == null) {
+            return new HashSet<String>();
+        }
+        try {
+            return (Set<String>)class_Entity_getTagsMethod.invoke(getHandle(entity));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new HashSet<String>();
     }
 }
