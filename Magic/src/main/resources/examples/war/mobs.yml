@@ -1,24 +1,65 @@
 soldier:
-  type: pig_zombie
-  item: pistol_item
+  type: zombie
+  item: ak47_item
   baby: false
   chestplate: iron_chestplate
   leggings: iron_leggings
-  helmet: iron_helmet
   boots: iron_boots
   name: Soldier
   health: 50
   default_drops: false
   cast_interval: 1000
   cast:
+    ak47: 80
+    none: 50
+
+police:
+  type: pig_zombie
+  item: pistol_item
+  baby: false
+  name: Police
+  health: 20
+  default_drops: false
+  cast_interval: 1000
+  cast:
     pistol: 80
     none: 100
-  attributes:
-    generic_knockback_resistance: 1
+
+riotpolice:
+  type: pig_zombie
+  item: shotgun_item
+  baby: false
+  chestplate: iron_chestplate
+  leggings: iron_leggings
+  helmet: iron_helmet
+  boots: iron_boots
+  name: Riot Police
+  health: 25
+  default_drops: false
+  cast_interval: 1000
+  cast:
+    shotgun: 50
+    none: 100
+
+fbi:
+  type: skeleton
+  item: pistol_item
+  baby: false
+  chestplate: iron_chestplate
+  leggings: iron_leggings
+  helmet: iron_helmet
+  boots: iron_boots
+  name: FBI
+  health: 30
+  default_drops: false
+  cast_interval: 1000
+  cast:
+    pistol: 80
+    none: 20
 
 model3:
   type: armor_stand
   helmet: model3
   invisible: true
   name: Model 3
-  interact_spell: drive
+  interact_spell: steal
