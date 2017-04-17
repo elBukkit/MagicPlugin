@@ -1025,5 +1025,16 @@
         "pitch": 1.1
       }
     ]
+  },
+  "war.electricmotor": {
+    "sounds": [
+      {
+        "name": "war/electricmotor-1",
+        "volume": 1,
+        "pitch": 1,
+        "weight": 3
+      }
+    ],
+    "category": "player"
   }
 }
