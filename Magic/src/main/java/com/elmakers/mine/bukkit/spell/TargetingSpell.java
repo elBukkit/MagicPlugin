@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -30,6 +31,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public abstract class TargetingSpell extends BaseSpell {
     // This differs from CompatibilityUtils.MAX_ENTITY_RANGE,
@@ -558,7 +560,13 @@ public abstract class TargetingSpell extends BaseSpell {
         defaultLocation = targetLocation == null ? defaultLocation : targetLocation;
         targetLocation2 = ConfigurationUtils.overrideLocation(parameters, "t2", defaultLocation, controller.canCreateWorlds());
 
-        if (parameters.contains("player")) {
+        if (parameters.contains("entity") && mage != null) {
+            Entity entity = CompatibilityUtils.getEntity(mage.getEntity().getWorld(), UUID.fromString(parameters.getString("entity")));
+            if (entity != null) {
+                targetLocation = entity.getLocation();
+                targetEntity = entity;
+            }
+        } else if (parameters.contains("player")) {
             Player player = DeprecatedUtils.getPlayer(parameters.getString("player"));
             if (player != null) {
                 targetLocation = player.getLocation();
