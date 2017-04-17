@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.entity;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +18,7 @@ public class EntityArmorStandData extends EntityExtraData {
     public EulerAngle leftLegPose;
     public EulerAngle rightLegPose;
     public EulerAngle headPose;
+    public boolean isMarker;
     public boolean hasGravity;
     public boolean isVisible;
     public boolean hasArms;
@@ -49,6 +51,15 @@ public class EntityArmorStandData extends EntityExtraData {
         hasArms = armorStand.hasArms();
         isSmall = armorStand.isSmall();
         hasBasePlate = armorStand.hasBasePlate();
+        isMarker = armorStand.isMarker();
+    }
+
+    public EntityArmorStandData(ConfigurationSection parameters) {
+        isSmall = parameters.getBoolean("small", false);
+        isVisible = !parameters.getBoolean("invisible", false);
+        hasBasePlate = !parameters.getBoolean("baseplate", true);
+        hasGravity = parameters.getBoolean("gravity", true);
+        isMarker = parameters.getBoolean("marker", false);
     }
 
     @Override
@@ -61,17 +72,18 @@ public class EntityArmorStandData extends EntityExtraData {
         armorStand.setLeggings(leggings);
         armorStand.setChestplate(chestplate);
         armorStand.setHelmet(helmet);
-        armorStand.setBodyPose(bodyPose);
-        armorStand.setLeftArmPose(leftArmPose);
-        armorStand.setRightArmPose(rightArmPose);
-        armorStand.setLeftLegPose(leftLegPose);
-        armorStand.setRightLegPose(rightLegPose);
-        armorStand.setHeadPose(headPose);
+        if (bodyPose != null) armorStand.setBodyPose(bodyPose);
+        if (leftArmPose != null) armorStand.setLeftArmPose(leftArmPose);
+        if (rightArmPose != null) armorStand.setRightArmPose(rightArmPose);
+        if (leftLegPose != null) armorStand.setLeftLegPose(leftLegPose);
+        if (rightLegPose != null) armorStand.setRightLegPose(rightLegPose);
+        if (headPose != null) armorStand.setHeadPose(headPose);
         armorStand.setGravity(hasGravity);
         armorStand.setVisible(isVisible);
         armorStand.setArms(hasArms);
         armorStand.setSmall(isSmall);
         armorStand.setBasePlate(hasBasePlate);
+        armorStand.setMarker(isMarker);
     }
 
     @Override
@@ -93,6 +105,7 @@ public class EntityArmorStandData extends EntityExtraData {
         copy.hasArms = hasArms;
         copy.isSmall = isSmall;
         copy.hasBasePlate = hasBasePlate;
+        copy.isMarker = isMarker;
         return copy;
     }
 
