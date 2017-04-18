@@ -205,7 +205,7 @@ public class EntityController implements Listener {
                 if (isMelee && hasWand && !isMeleeWeapon) {
                     event.setCancelled(true);
                     CompatibilityUtils.isDamaging = true;
-                    activeWand.cast();
+                    activeWand.performAction(activeWand.getLeftClickAction());
                     CompatibilityUtils.isDamaging = false;
                 }
                 else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon) {
