@@ -492,10 +492,20 @@ public interface Mage extends CostReducer {
     /**
      * This method returns a positive number if the player is moving
      * forward while in a vehicle, negative if moving backward.
-     *
-     * If ProtocolLib is not active, this will always return 0.
      */
     double getVehicleMovementDirection();
+
+    /**
+     * This method returns a positive number if the player is strafing
+     * right while in a vehicle, negative if strafing left.
+     */
+    double getVehicleStrafeDirection();
+
+    /**
+     * Check to see if a player is trying to jump while in a vehicle
+     * @return true if the player is pressing the spacebar while in a vehicle
+     */
+    boolean isVehicleJumping();
 
     /**
      * This method is deprecated, soul wand functionality was never implemented.

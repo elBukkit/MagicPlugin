@@ -3140,5 +3140,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (li == null) return 0.0f;
         return CompatibilityUtils.getForwardMovement(li);
     }
+
+    @Override
+    public double getVehicleStrafeDirection() {
+        LivingEntity li = getLivingEntity();
+        if (li == null) return 0.0f;
+        return CompatibilityUtils.getStrafeMovement(li);
+    }
+
+    @Override
+    public boolean isVehicleJumping() {
+        LivingEntity li = getLivingEntity();
+        if (li == null) return false;
+        return CompatibilityUtils.isJumping(li);
+    }
 }
 
