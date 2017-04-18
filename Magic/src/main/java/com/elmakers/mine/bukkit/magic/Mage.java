@@ -37,7 +37,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.wand.WandAction;
+import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import com.google.common.base.Objects;

@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
-import com.elmakers.mine.bukkit.wand.WandAction;
+import com.elmakers.mine.bukkit.api.wand.WandAction;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -50,8 +50,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Set;
 
 public class PlayerController implements Listener {
     private final MagicController controller;

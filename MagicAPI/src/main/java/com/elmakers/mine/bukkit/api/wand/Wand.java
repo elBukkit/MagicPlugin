@@ -234,4 +234,10 @@ public interface Wand extends CostReducer, MagicConfigurable  {
 
     @Deprecated
     boolean isSoul();
+
+    WandAction getDropAction();
+    WandAction getRightClickAction();
+    WandAction getLeftClickAction();
+    WandAction getSwapAction();
+    boolean performAction(WandAction action);
 }

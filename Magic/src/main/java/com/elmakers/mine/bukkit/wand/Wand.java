@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -4829,23 +4830,28 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 		return playPassiveEffects(effects);
     }
-	
+
+    @Override
 	public WandAction getDropAction() {
 		return dropAction;
 	}
-	
+
+	@Override
 	public WandAction getRightClickAction() {
 		return rightClickAction;
 	}
 
+	@Override
 	public WandAction getLeftClickAction() {
 		return leftClickAction;
 	}
 
+	@Override
 	public WandAction getSwapAction() {
 		return swapAction;
 	}
-	
+
+	@Override
 	public boolean performAction(WandAction action) {
 		WandMode mode = getMode();
 		switch (action) {
