@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.5
+
 ## 6.9.4
 
  - Magic Missile and Laser now use block-breaking effects
