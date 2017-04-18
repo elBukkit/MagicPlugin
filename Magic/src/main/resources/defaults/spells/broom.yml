@@ -11,7 +11,6 @@ broom:
     actions:
         cast:
         - class: MountArmorStand
-        - class: FallProtection
     effects:
         cast:
         -  class: EffectSingle
@@ -56,6 +55,7 @@ broom:
         liftoff_duration: 600
         liftoff_thrust: 1
         steer_speed: 0.03
+        fall_protection: 8000
         duration: 60000
         duration_warning: 10000
         cooldown: 15000

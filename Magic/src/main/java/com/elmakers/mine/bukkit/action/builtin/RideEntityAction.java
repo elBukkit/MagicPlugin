@@ -72,6 +72,7 @@ public class RideEntityAction extends BaseSpellAction
     private double crashEntityDamage = 0;
     private double crashBraking = 0;
     private double crashEntityFOV = 0;
+    private int fallProtection = 0;
 
     protected Vector direction;
 
@@ -138,6 +139,7 @@ public class RideEntityAction extends BaseSpellAction
         crashEntityDamage = parameters.getDouble("crash_entity_damage" , 0.0);
         crashBraking = parameters.getDouble("crash_braking" , 0.0);
         crashEntityFOV = parameters.getDouble("crash_entity_fov" , 0.3);
+        fallProtection = parameters.getInt("fall_protection", 0);
         if (parameters.contains("direction_y")) {
             yDirection = parameters.getDouble("direction_y");
         } else {
@@ -251,6 +253,10 @@ public class RideEntityAction extends BaseSpellAction
         adjustHeading(context);
         if (System.currentTimeMillis() > liftoffTime + liftoffDuration) {
             applyThrust(context);
+        }
+
+        if (fallProtection > 0) {
+            context.getMage().enableFallProtection(fallProtection, Integer.MAX_VALUE, context.getSpell());
         }
         
         return SpellResult.PENDING;
