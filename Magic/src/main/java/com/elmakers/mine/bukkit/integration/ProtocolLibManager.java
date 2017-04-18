@@ -29,6 +29,7 @@ public class ProtocolLibManager {
         if (protocolLibPlugin == null) {
             return false;
         }
+        /*
         try {
             ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
             protocolManager.addPacketListener(new PacketAdapter(owningPlugin, ListenerPriority.NORMAL, PacketType.Play.Client.STEER_VEHICLE) {
@@ -49,6 +50,7 @@ public class ProtocolLibManager {
             owningPlugin.getLogger().log(Level.WARNING, "Error registering ProtocolLib hooks", ex);
             return false;
         }
+        */
         return true;
     }
 }
