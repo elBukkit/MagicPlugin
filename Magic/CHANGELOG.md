@@ -25,6 +25,7 @@
  - Add some spell lore options to show cooldowns less than a second, and show spell categories (not used in default configs)
  - Fix an issue with loading resource packs from outside the U.S.
  - Add driveable car to war configs, WIP, requires ProtocolLib for acceleration control
+ - Fix imagemaps not saving if the save file does not already exist
 
 ## 6.9.3
 

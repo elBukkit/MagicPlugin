@@ -105,7 +105,6 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                     }
                 }
 
-                loaded = true;
                 if (needsUpdate) {
                     save();
                 }
@@ -115,6 +114,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                 warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
             }
         }
+        loaded = true;
     }
 
     @Override
