@@ -59,7 +59,6 @@ public class RideEntityAction extends BaseSpellAction
 
     private long liftoffTime;
     private double speed;
-    private Entity mount;
     private boolean warningEffectsApplied;
     private long nextSoundPlay;
     private boolean noTarget = true;
@@ -75,6 +74,7 @@ public class RideEntityAction extends BaseSpellAction
     private int fallProtection = 0;
 
     protected Vector direction;
+    protected Entity mount;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -162,8 +162,7 @@ public class RideEntityAction extends BaseSpellAction
         soundMinPitch = (float)parameters.getDouble("sound_min_pitch", soundMinPitch);
     }
 
-    protected Entity remount(CastContext context) {
-        return null;
+    protected void remount(CastContext context) {
     }
 
 	@Override
@@ -182,7 +181,7 @@ public class RideEntityAction extends BaseSpellAction
             return SpellResult.CAST;
         }
         if (!mount.isValid()) {
-            mount = remount(context);
+            remount(context);
             if (mount == null) {
                 return SpellResult.CAST;
             }

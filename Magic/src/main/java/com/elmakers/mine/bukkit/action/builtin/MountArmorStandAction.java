@@ -29,22 +29,22 @@ public class MountArmorStandAction extends RideEntityAction
     private boolean armorStandGravity;
     private boolean mountWand;
     private double armorStandPitch = 0;
+    private double armorStandRoll = 0;
     private CreatureSpawnEvent.SpawnReason armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
 
     private ItemStack item;
     private int slotNumber;
-    private ArmorStand armorStand;
     private boolean mountTarget = false;
 
     @Override
     public void reset(CastContext context)
     {
+        Entity mount = this.mount;
         super.reset(context);
         item = null;
-        if (armorStand != null && !mountTarget) {
-            armorStand.remove();
+        if (mount != null && !mountTarget) {
+            mount.remove();
         }
-        armorStand = null;
     }
     
     @Override
@@ -57,6 +57,7 @@ public class MountArmorStandAction extends RideEntityAction
         armorStandMarker = parameters.getBoolean("armor_stand_marker", true);
         armorStandGravity = parameters.getBoolean("armor_stand_gravity", true);
         armorStandPitch = parameters.getDouble("armor_stand_pitch", 0.0);
+        armorStandRoll = parameters.getDouble("armor_stand_roll", 0.0);
         mountWand = parameters.getBoolean("mount_wand", false);
         if (parameters.contains("armor_stand_reason")) {
             String reasonText = parameters.getString("armor_stand_reason").toUpperCase();
@@ -69,22 +70,18 @@ public class MountArmorStandAction extends RideEntityAction
     }
 
     @Override
-    protected Entity remount(CastContext context) {
+    protected void remount(CastContext context) {
         if (mountTarget) {
-            return null;
+            return;
         }
 
         // This seems to happen occasionally... guess we'll work around it for now.
-        if (armorStand != null) {
-            armorStand.remove();
+        if (mount != null) {
+            mount.remove();
         }
-        if (!mountNewArmorStand(context)) {
-            return null;
+        if (mountNewArmorStand(context)) {
+            mount = context.getTargetEntity();
         }
-
-        org.bukkit.Bukkit.getLogger().info("   REMOUNTED!");
-
-        return armorStand;
     }
     
     protected void adjustHeading(CastContext context) {
@@ -92,8 +89,16 @@ public class MountArmorStandAction extends RideEntityAction
 
         Location targetLocation = context.getEntity().getLocation();
         float targetPitch = targetLocation.getPitch();
-        if (armorStandPitch != 0) {
-            armorStand.setHeadPose(new EulerAngle(armorStandPitch * targetPitch / 180 * Math.PI, 0, 0));
+        if (armorStandPitch != 0 || armorStandRoll != 0) {
+            double pitch = armorStandPitch * targetPitch / 180 * Math.PI;
+            double roll = 0;
+            if (armorStandRoll != 0) {
+                double strafeDirection = context.getMage().getVehicleStrafeDirection();
+                roll = armorStandRoll * strafeDirection;
+            }
+
+            ArmorStand armorStand = (ArmorStand)mount;
+            armorStand.setHeadPose(new EulerAngle(pitch, 0, roll));
         }
     }
     
@@ -128,14 +133,18 @@ public class MountArmorStandAction extends RideEntityAction
         if (mountWand) {
             player.getInventory().setItem(slotNumber, new ItemStack(Material.AIR));
         }
-        
-        return super.mount(context);
+
+        SpellResult result = super.mount(context);;
+        if (mount == null || !(mount instanceof ArmorStand)) {
+            result = SpellResult.FAIL;
+        }
+        return result;
 	}
 	
 	protected boolean mountNewArmorStand(CastContext context) {
         Mage mage = context.getMage();
         Entity entity = context.getEntity();
-        armorStand = CompatibilityUtils.spawnArmorStand(mage.getLocation());
+        ArmorStand armorStand = CompatibilityUtils.spawnArmorStand(mage.getLocation());
 
         if (armorStandInvisible) {
             CompatibilityUtils.setInvisible(armorStand, true);
@@ -171,10 +180,9 @@ public class MountArmorStandAction extends RideEntityAction
 	
 	@Override
     public void finish(CastContext context) {
-        if (!mountTarget && armorStand != null) {
-            armorStand.remove();
+        if (!mountTarget && mount != null) {
+            mount.remove();
         }
-        armorStand = null;
 
         super.finish(context);
 
