@@ -32,6 +32,8 @@
 
 ## High-Priority
 
+ - Add minimum speed for a car/broom to crash? IDK, how to allow backing up after crashing?
+
  - Broomstick glitch?
  i made my broomstick a friggin wand!
  i flied while using phase
