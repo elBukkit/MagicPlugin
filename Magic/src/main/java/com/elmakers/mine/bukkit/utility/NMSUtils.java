@@ -285,6 +285,9 @@ public class NMSUtils {
     protected static Field class_NBTTagShort_dataField;
     protected static Field class_NBTTagString_dataField;
     protected static Field class_Block_durabilityField;
+    protected static Field class_Entity_jumpingField;
+    protected static Field class_Entity_moveStrafingField;
+    protected static Field class_Entity_moveForwardField;
 
     static
     {
@@ -535,6 +538,34 @@ public class NMSUtils {
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
 
             // Particularly volatile methods that we can live without
+
+            try {
+                // 1.11
+                try {
+                    class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bd");
+                    class_Entity_jumpingField.setAccessible(true);
+                    class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("be");
+                    class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bf");
+                } catch (Throwable not11) {
+                    // 1.10
+                    try {
+                        class_Entity_jumpingField = class_EntityLiving.getDeclaredField("be`");
+                        class_Entity_jumpingField.setAccessible(true);
+                        class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bf");
+                        class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bg");
+                    } catch (Throwable not10) {
+                        class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bc");
+                        class_Entity_jumpingField.setAccessible(true);
+                        class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bd");
+                        class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("be");
+                    }
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering entity movement accessors, vehicle control will not work", ex);
+                class_Entity_jumpingField = null;
+                class_Entity_moveStrafingField = null;
+                class_Entity_moveForwardField = null;
+            }
 
             try {
                 class_Block_durabilityField = class_Block.getDeclaredField("durability");

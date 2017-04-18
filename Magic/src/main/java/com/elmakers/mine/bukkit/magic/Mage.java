@@ -139,7 +139,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long lastTick;
     private long lastBlockTime;
     private long ignoreItemActivationUntil = 0;
-    private double vehicleMovementDirection = 0;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     protected float damageReduction = 0;
@@ -3137,11 +3136,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public double getVehicleMovementDirection() {
-        return vehicleMovementDirection;
-    }
-
-    public void setVehicleMovementDirection(double direction) {
-        this.vehicleMovementDirection = direction;
+        LivingEntity li = getLivingEntity();
+        if (li == null) return 0.0f;
+        return CompatibilityUtils.getForwardMovement(li);
     }
 }
 

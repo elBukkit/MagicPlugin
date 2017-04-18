@@ -9,9 +9,6 @@ enable_essentials_signs: true
 # Allow integration with LibsDisguises, spells can be restricted if disguised
 enable_libsdisguises: true
 
-# Allow integration with ProtocolLib for controllable vehicles
-enable_protocollib: true
-
 # Update dynmap when constructing, if dynmap is present.
 dynmap_update: true
 

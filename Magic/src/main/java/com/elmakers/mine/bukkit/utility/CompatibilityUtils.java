@@ -1465,4 +1465,34 @@ public class CompatibilityUtils extends NMSUtils {
         // TODO: Use Entity.getScoreboardTags in a future version.
         return null;
     }
+
+    public static boolean isJumping(LivingEntity entity) {
+        if (class_Entity_jumpingField == null) return false;
+        try {
+            return (boolean)class_Entity_jumpingField.get(getHandle(entity));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public static float getForwardMovement(LivingEntity entity) {
+        if (class_Entity_moveForwardField == null) return 0.0f;
+        try {
+            return (float)class_Entity_moveForwardField.get(getHandle(entity));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0.0f;
+    }
+
+    public static float getStrafeMovement(LivingEntity entity) {
+        if (class_Entity_moveStrafingField == null) return 0.0f;
+        try {
+            return (float)class_Entity_moveStrafingField.get(getHandle(entity));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0.0f;
+    }
 }

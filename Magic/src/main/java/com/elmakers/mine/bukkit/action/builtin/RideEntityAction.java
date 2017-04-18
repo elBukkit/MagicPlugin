@@ -290,7 +290,7 @@ public class RideEntityAction extends BaseSpellAction
             }
         }
 
-        if (controllable && context.getController().isProtocolLibActive()) {
+        if (controllable) {
             double direction = context.getMage().getVehicleMovementDirection();
             if (direction > 0) {
                 speed = speed + maxAcceleration;
