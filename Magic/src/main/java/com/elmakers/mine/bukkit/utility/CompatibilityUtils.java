@@ -468,7 +468,16 @@ public class CompatibilityUtils extends NMSUtils {
         }
         isDamaging = true;
         try {
-            target.damage(amount, source);
+            if (target instanceof ArmorStand) {
+                double newHealth = Math.max(0, target.getHealth() - amount);
+                if (newHealth <= 0) {
+                    target.remove();
+                } else {
+                    target.setHealth(newHealth);
+                }
+            } else {
+                target.damage(amount, source);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -486,8 +495,9 @@ public class CompatibilityUtils extends NMSUtils {
 
             // Special-case for witches .. witches are immune to magic damage :\
             // And endermen are immune to indirect damage .. or something.
+            // Also armor stands suck.
             // Might need to config-drive this, or just go back to defaulting to normal damage
-            if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman || !(target instanceof LivingEntity))
+            if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman || target instanceof ArmorStand || !(target instanceof LivingEntity))
             {
                 damage(target, amount, source);
                 return;
