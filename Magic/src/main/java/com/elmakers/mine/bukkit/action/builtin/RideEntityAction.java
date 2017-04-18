@@ -321,18 +321,19 @@ public class RideEntityAction extends BaseSpellAction
             blocksAbove = currentLocation.getY() - maxHeight + 1;
         } else if (maxHeightAboveGround >= 0) {
             Block block = currentLocation.getBlock();
-            int height = 0;
-            while (height < maxHeightAboveGround && context.isPassthrough(block.getType()))
+            while (blocksAbove < maxHeightAboveGround + 5 && context.isPassthrough(block.getType()))
             {
                 block = block.getRelative(BlockFace.DOWN);
-                height++;
+                blocksAbove++;
             }
-            if (context.isPassthrough(block.getType())) {
-                blocksAbove = height + 1;
-            }
+            blocksAbove = blocksAbove - maxHeightAboveGround - 1;
         }
         if (blocksAbove > 0 && direction.getY() > 0) {
-            direction.setY(-blocksAbove / 5).normalize();
+            if (blocksAbove > 1) {
+                direction.setY(-blocksAbove / 5).normalize();
+            } else {
+                direction.setY(0).normalize();
+            }
         }
         
         // Apply thrust
