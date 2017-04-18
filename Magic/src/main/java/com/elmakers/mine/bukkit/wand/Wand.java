@@ -1597,8 +1597,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		path = wandConfig.getString("path");
 
 		activeSpell = wandConfig.getString("active_spell");
-		if (activeSpell != null) {
-
+		if (activeSpell != null && activeSpell.contains("|")) {
+			SpellKey activeKey = new SpellKey(activeSpell);
+			activeSpell = activeKey.getBaseKey();
+			setProperty("active_spell", activeSpell);
         }
 		alternateSpell = wandConfig.getString("alternate_spell");
 		activeBrush = wandConfig.getString("active_brush", wandConfig.getString("active_material"));
