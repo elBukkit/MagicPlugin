@@ -549,7 +549,7 @@ public class NMSUtils {
                 } catch (Throwable not11) {
                     // 1.10
                     try {
-                        class_Entity_jumpingField = class_EntityLiving.getDeclaredField("be`");
+                        class_Entity_jumpingField = class_EntityLiving.getDeclaredField("be");
                         class_Entity_jumpingField.setAccessible(true);
                         class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bf");
                         class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bg");

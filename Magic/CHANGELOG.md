@@ -15,6 +15,8 @@
 
 ## 6.9.5
 
+ - Fix vehicle control in 1.10 and 1.9 (I think)
+
 ## 6.9.4
 
  - Magic Missile and Laser now use block-breaking effects
