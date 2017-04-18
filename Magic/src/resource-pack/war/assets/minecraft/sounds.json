@@ -1036,5 +1036,16 @@
       }
     ],
     "category": "player"
+  },
+  "war.radar": {
+    "sounds": [
+      {
+        "name": "war/radar-1",
+        "volume": 1,
+        "pitch": 1,
+        "weight": 3
+      }
+    ],
+    "category": "player"
   }
 }
