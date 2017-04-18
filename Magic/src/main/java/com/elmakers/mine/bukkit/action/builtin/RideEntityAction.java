@@ -95,6 +95,9 @@ public class RideEntityAction extends BaseSpellAction
     public void reset(CastContext context)
     {
         super.reset(context);
+        if (mount != null) {
+            mount.eject();
+        }
         mount = null;
         warningEffectsApplied = false;
         nextSoundPlay = 0;
@@ -349,7 +352,6 @@ public class RideEntityAction extends BaseSpellAction
         {
             return SpellResult.NO_TARGET;
         }
-        entity.eject();
         if (noTarget) {
             mount.setMetadata("notarget", new FixedMetadataValue(context.getController().getPlugin(), true));
         }
@@ -375,6 +377,7 @@ public class RideEntityAction extends BaseSpellAction
             if (noTarget) {
                 mount.removeMetadata("notarget", context.getPlugin());
             }
+            mount.eject();
             mount = null;
         }
         Entity mountedEntity = context.getEntity();
