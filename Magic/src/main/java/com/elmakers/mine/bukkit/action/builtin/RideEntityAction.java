@@ -236,13 +236,14 @@ public class RideEntityAction extends BaseSpellAction
                 if (crashEntityType.isAssignableFrom(entity.getClass())) {
                     if (crashEntityDamage > 0 && entity instanceof Damageable) {
                         Damageable damageable = (Damageable)entity;
-                        double crashDamage = crashEntityDamage * speed / maxSpeed;
-                        damageable.damage(crashDamage);
+                        double crashDamage = maxSpeed > 0 ? crashEntityDamage * speed / maxSpeed : crashEntityDamage;
+                        CompatibilityUtils.damage(damageable, crashDamage, mounted);
                     }
                     entity.setVelocity(velocity);
                     speed = Math.max(0, speed - crashBraking);
                     if (mount instanceof Damageable && crashVehicleDamage > 0) {
-                        ((Damageable)mount).damage(crashVehicleDamage);
+                        double crashDamage = maxSpeed > 0 ? crashVehicleDamage * speed / maxSpeed : crashVehicleDamage;
+                        CompatibilityUtils.damage((Damageable)mount, crashDamage, mounted);
                     }
                     context.playEffects("crash_entity");
                 }
@@ -433,8 +434,14 @@ public class RideEntityAction extends BaseSpellAction
         if (crashEffects != null && mountedEntity != null && crashEffects.size() > 0 && mountedEntity instanceof LivingEntity) {
             CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, crashEffects);
         }
-        if (crashDamage > 0 && mount != null && mount.isValid() && mount instanceof Damageable) {
-            ((Damageable)mount).damage(crashDamage);
+        double damage = maxSpeed > 0 ? crashDamage * speed / maxSpeed : crashDamage;
+        if (crashDamage > 0) {
+            if (mount != null && mount.isValid() && mount instanceof Damageable) {
+                CompatibilityUtils.damage((Damageable)mount, damage, mountedEntity);
+            }
+            if (mountedEntity.isValid() && mountedEntity instanceof Damageable) {
+                CompatibilityUtils.damage((Damageable)mountedEntity, damage, mountedEntity);
+            }
         }
         warningEffectsApplied = false;
     }
