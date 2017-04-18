@@ -328,9 +328,10 @@ public class RideEntityAction extends BaseSpellAction
             }
             blocksAbove = blocksAbove - maxHeightAboveGround - 1;
         }
-        if (blocksAbove > 0 && direction.getY() > 0) {
+        int multiplier = speed < 0 ? -1 : 1;
+        if (blocksAbove > 0 && multiplier * direction.getY() > 0) {
             if (blocksAbove > 1) {
-                direction.setY(-blocksAbove / 5).normalize();
+                direction.setY(multiplier * -blocksAbove / 5).normalize();
             } else {
                 direction.setY(0).normalize();
             }
@@ -338,7 +339,7 @@ public class RideEntityAction extends BaseSpellAction
         
         // Apply thrust
         if (speed != 0) {
-            mount.setVelocity(direction.multiply(speed));
+            mount.setVelocity(direction.clone().multiply(speed));
         }
     }
     

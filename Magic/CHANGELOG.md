@@ -16,6 +16,7 @@
 ## 6.9.5
 
  - Fix vehicle control in 1.10 and 1.9 (I think)
+ - Cars can drive in reverse
 
 ## 6.9.4
 

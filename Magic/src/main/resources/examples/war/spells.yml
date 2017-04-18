@@ -997,9 +997,7 @@ drive:
           sound_pitch: 0.6
     parameters:
         max_speed: 1
-        # TODO: Something goes really wonky with driving in reverse :(
-        # min_speed: -0.2
-        min_speed: 0
+        min_speed: -0.2
         max_acceleration: 0.01
         max_deceleration: 0.02
         braking: 0.005
