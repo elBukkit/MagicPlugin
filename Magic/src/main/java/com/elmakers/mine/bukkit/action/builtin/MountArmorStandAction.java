@@ -67,6 +67,25 @@ public class MountArmorStandAction extends RideEntityAction
             }
         }
     }
+
+    @Override
+    protected Entity remount(CastContext context) {
+        if (mountTarget) {
+            return null;
+        }
+
+        // This seems to happen occasionally... guess we'll work around it for now.
+        if (armorStand != null) {
+            armorStand.remove();
+        }
+        if (!mountNewArmorStand(context)) {
+            return null;
+        }
+
+        org.bukkit.Bukkit.getLogger().info("   REMOUNTED!");
+
+        return armorStand;
+    }
     
     protected void adjustHeading(CastContext context) {
         super.adjustHeading(context);

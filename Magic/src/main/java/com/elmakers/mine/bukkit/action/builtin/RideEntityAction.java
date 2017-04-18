@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import de.slikey.effectlib.util.VectorUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -40,6 +41,8 @@ public class RideEntityAction extends BaseSpellAction
     private int maxHeight;
     private boolean controllable = false;
     private boolean pitchControllable = true;
+    private double strafeControllable = 0;
+    private double jumpControllable = 0;
     private double braking = 0;
     private double pitchOffset = 0;
     private double yawOffset = 0;
@@ -71,7 +74,6 @@ public class RideEntityAction extends BaseSpellAction
     private double crashEntityFOV = 0;
 
     protected Vector direction;
-
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -125,6 +127,8 @@ public class RideEntityAction extends BaseSpellAction
         noTarget = parameters.getBoolean("mount_untargetable", true);
         controllable = parameters.getBoolean("controllable", false);
         pitchControllable = parameters.getBoolean("pitch_controllable", true);
+        strafeControllable = parameters.getDouble("strafe_controllable", 0.0);
+        jumpControllable = parameters.getDouble("jump_controllable", 0.0);
         braking = parameters.getDouble("braking", 0.0);
         crashEntityDistance = parameters.getDouble("crash_entity_distance", 2.0);
         crashVelocityYOffset = parameters.getDouble("crash_velocity_y_offset" , 0.0);
@@ -156,6 +160,10 @@ public class RideEntityAction extends BaseSpellAction
         soundMinPitch = (float)parameters.getDouble("sound_min_pitch", soundMinPitch);
     }
 
+    protected Entity remount(CastContext context) {
+        return null;
+    }
+
 	@Override
 	public SpellResult perform(CastContext context) {
         if (mount == null) {
@@ -164,12 +172,19 @@ public class RideEntityAction extends BaseSpellAction
         Entity mounted = context.getEntity();
         if (mounted == null)
         {
-            return SpellResult.CAST;
+            return SpellResult.ENTITY_REQUIRED;
         }
-        Entity mount = mounted.getVehicle();
-        if (mount == null || mount != mount || !mount.isValid())
+        Entity currentMount = mounted.getVehicle();
+        if (currentMount == null || currentMount != currentMount)
         {
             return SpellResult.CAST;
+        }
+        if (!mount.isValid()) {
+            mount = remount(context);
+            if (mount == null) {
+                return SpellResult.CAST;
+            }
+            mount.setPassenger(mounted);
         }
         
         // Play sound effects
@@ -244,6 +259,11 @@ public class RideEntityAction extends BaseSpellAction
     protected void adjustHeading(CastContext context) {
         Location targetLocation = context.getEntity().getLocation();
         Vector targetDirection = targetLocation.getDirection();
+
+        if (jumpControllable != 0 && context.getMage().isVehicleJumping()) {
+            targetDirection.setY(jumpControllable);
+        }
+
         if (moveDistance == 0) {
             direction = targetDirection;
         } else {
@@ -262,9 +282,9 @@ public class RideEntityAction extends BaseSpellAction
     }
     
     protected void applyThrust(CastContext context) {
+        Entity mountedEntity = context.getEntity();
         if (duration > 0) {
             long flightTime = System.currentTimeMillis() - liftoffTime;
-            Entity mountedEntity = context.getEntity();
             if (!warningEffectsApplied && warningEffects != null && mountedEntity instanceof LivingEntity && durationWarning > 0 && flightTime > duration - durationWarning) {
                 CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, warningEffects);
                 warningEffectsApplied = true;
@@ -316,7 +336,7 @@ public class RideEntityAction extends BaseSpellAction
         
         // Check for max height
         double blocksAbove = 0;
-        Location currentLocation = context.getEntity().getLocation();
+        Location currentLocation = mountedEntity.getLocation();
         if (maxHeight > 0 && currentLocation.getY() >= maxHeight) {
             blocksAbove = currentLocation.getY() - maxHeight + 1;
         } else if (maxHeightAboveGround >= 0) {
@@ -339,7 +359,17 @@ public class RideEntityAction extends BaseSpellAction
         
         // Apply thrust
         if (speed != 0) {
-            mount.setVelocity(direction.clone().multiply(speed));
+            Vector velocity = direction.clone();
+            if (strafeControllable != 0) {
+                double strafeDirection = context.getMage().getVehicleStrafeDirection();
+                if (strafeDirection != 0) {
+                    Vector strafeVector = new Vector(0, 0, -strafeDirection * strafeControllable);
+                    strafeVector = VectorUtils.rotateVector(strafeVector, mountedEntity.getLocation());
+                    velocity.add(strafeVector).normalize();
+                }
+            }
+
+            mount.setVelocity(velocity.multiply(speed));
         }
     }
     
@@ -443,6 +473,9 @@ public class RideEntityAction extends BaseSpellAction
         parameters.add("yaw_offset");
         parameters.add("braking");
         parameters.add("controllable");
+        parameters.add("strafe_controllable");
+        parameters.add("pitch_controllable");
+        parameters.add("jump_controllable");
     }
 
     @Override
