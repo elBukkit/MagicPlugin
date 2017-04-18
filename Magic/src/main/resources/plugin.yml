@@ -156,6 +156,7 @@ commands:
         /mitem add        Add enchantments, attributes or lore
         /mitem remove     Remove enchantments, attributes or lore
         /mitem describe   Show information about an item
+        /mitem configure  Modify NBT tags on an item (may be dangerous!)
         /mitem duplicate  Create a copy of an item
         /mitem destroy    Destroy an item
         /mitem clean      Strip any custom Magic data from an item
@@ -246,6 +247,14 @@ commands:
             /mitem describe
             /mitem describe wand
             /mitem describe wand.spells
+  "mitem configure":
+    description: Modify NBT tags on an item
+    permission: Magic.commands.mitem.configure
+    usage: |
+
+            /mitem configure wand.mana_max 100
+            /mitem configure wand.protected true
+            /mitem configure wand.protected
   "mitem worth":
     description: Show the value of an item
     usage: /mitem worth
@@ -790,6 +799,10 @@ permissions:
     default: op
   Magic.commands.mitem.describe:
     description: Player may describe an item
+    type: boolean
+    default: op
+  Magic.commands.mitem.configure:
+    description: Player may modify NBT tags of an item
     type: boolean
     default: op
   Magic.commands.mitem.worth:

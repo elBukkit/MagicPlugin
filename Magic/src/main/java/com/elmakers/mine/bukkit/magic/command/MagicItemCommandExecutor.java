@@ -86,6 +86,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "add");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "remove");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "name");
+			addIfPermissible(sender, options, "Magic.commands.mitem.", "configure");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "describe");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "duplicate");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "save");
@@ -245,6 +246,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		{
 			return onItemDescribe(player, item, args);
 		}
+		else if (subCommand.equalsIgnoreCase("configure"))
+		{
+			return onItemConfigure(player, item, args);
+		}
 		else if (subCommand.equalsIgnoreCase("name"))
 		{
 			return onItemName(player, item, args);
@@ -259,6 +264,48 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		}
 		
 		return false;
+	}
+
+	public boolean onItemConfigure(Player player, ItemStack item, String[] args) {
+		if (args.length == 0) {
+			player.sendMessage(ChatColor.RED + "Usage: /mitem configure <key> [value]");
+			return true;
+		}
+		if (args.length == 1) {
+			String tag = args[0];
+			String[] path = StringUtils.split(tag, '.');
+			Object node = CompatibilityUtils.getNode(item, path[0]);
+			int i = 1;
+			while (node != null && i < path.length - 1) {
+				node = CompatibilityUtils.getNode(node, path[i]);
+			}
+			if (node == null) {
+				player.sendMessage(ChatColor.RED + "Item does not have path: " + ChatColor.DARK_RED + tag);
+				return true;
+			}
+			if (CompatibilityUtils.containsNode(node, path[path.length - 1])) {
+				player.sendMessage(ChatColor.RED + "Item does not have tag: " + ChatColor.DARK_RED + tag);
+				return true;
+			}
+			CompatibilityUtils.removeMeta(node, path[path.length - 1]);
+			return true;
+		}
+		String tag = args[0];
+		String[] path = StringUtils.split(tag, '.');
+		Object node = InventoryUtils.getTag(item);
+		for (int i = 0; i < path.length; i++) {
+			String key = path[i];
+			if (node == null) {
+				player.sendMessage(ChatColor.RED + "Failed to set item data");
+				return true;
+			}
+			if (i < path.length - 1) {
+				node = InventoryUtils.getNode(node, key);
+			} else {
+				InventoryUtils.setMeta(node, key, args[1]);
+			}
+		}
+		return true;
 	}
 
 	public boolean onItemDescribe(Player player, ItemStack item, String[] args) {

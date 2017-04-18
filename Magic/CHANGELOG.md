@@ -26,6 +26,7 @@
  - Fix an issue with loading resource packs from outside the U.S.
  - Add driveable car to war configs, WIP, requires ProtocolLib for acceleration control
  - Fix imagemaps not saving if the save file does not already exist
+ - Add /mitem configure command, mostly for me to test things, maybe dangerous to use
 
 ## 6.9.3
 
