@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface Messages {
+    boolean containsKey(String key);
     String get(String key);
     String getRandomized(String key);
     String get(String key, String defaultValue);

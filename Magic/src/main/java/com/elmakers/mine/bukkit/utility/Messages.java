@@ -61,6 +61,11 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     }
 
     @Override
+    public boolean containsKey(String key) {
+        return messageMap.containsKey(key);
+    }
+
+    @Override
     public String get(String key, String defaultValue) {
         if (messageMap.containsKey(key)) {
             return messageMap.get(key);

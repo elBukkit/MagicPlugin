@@ -608,7 +608,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (!isUpgrade) {
             isUpgrade = true;
             String oldName = wandName;
-			String newName = controller.getMessages().get("wand.upgrade_name");
+			String newName = getMessage("upgrade_name");
 			newName = newName.replace("$name", oldName);
             String newDescription = controller.getMessages().get("wand.upgrade_default_description");
             if (template != null && template.length() > 0) {
@@ -2035,36 +2035,36 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	{
 		if (usesMana()) {
             if (effectiveManaMax != manaMax) {
-                String fullMessage = getLevelString(controller.getMessages(), "wand.mana_amount_boosted", manaMax, controller.getMaxMana());
+                String fullMessage = getLevelString("mana_amount_boosted", manaMax, controller.getMaxMana());
                 ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaMax)), lore);
             } else {
-				ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.mana_amount", manaMax, controller.getMaxMana()), lore);
+				ConfigurationUtils.addIfNotEmpty(getLevelString("mana_amount", manaMax, controller.getMaxMana()), lore);
             }
             if (manaRegeneration > 0) {
                 if (effectiveManaRegeneration != manaRegeneration) {
-                    String fullMessage = getLevelString(controller.getMessages(), "wand.mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
+                    String fullMessage = getLevelString("mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
 					ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaRegeneration)), lore);
                 } else {
-					ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()), lore);
+					ConfigurationUtils.addIfNotEmpty(getLevelString("mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()), lore);
                 }
             }
             if (manaPerDamage > 0) {
-				ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration()), lore);
+				ConfigurationUtils.addIfNotEmpty(getLevelString("mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration()), lore);
             }
 		}
         if (superPowered) {
 			ConfigurationUtils.addIfNotEmpty(getMessage("super_powered"), lore);
         }
         if (blockReflectChance > 0) {
-			ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.reflect_chance", blockReflectChance), lore);
+			ConfigurationUtils.addIfNotEmpty(getLevelString("reflect_chance", blockReflectChance), lore);
 		} else if (blockChance != 0) {
-			ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.block_chance", blockChance), lore);
+			ConfigurationUtils.addIfNotEmpty(getLevelString("block_chance", blockChance), lore);
         }
 		if (manaMaxBoost != 0) {
-			ConfigurationUtils.addIfNotEmpty(getPercentageString(controller.getMessages(), "wand.mana_boost", manaMaxBoost), lore);
+			ConfigurationUtils.addIfNotEmpty(getPercentageString("mana_boost", manaMaxBoost), lore);
 		}
         if (manaRegenerationBoost != 0) {
-			ConfigurationUtils.addIfNotEmpty(getPercentageString(controller.getMessages(), "wand.mana_regeneration_boost", manaRegenerationBoost), lore);
+			ConfigurationUtils.addIfNotEmpty(getPercentageString("mana_regeneration_boost", manaRegenerationBoost), lore);
         }
         
         if (castSpell != null) {
@@ -2077,38 +2077,38 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
 			ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
         }
-		if (consumeReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.consume_reduction", consumeReduction), lore);
-		if (costReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction), lore);
-		if (cooldownReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction), lore);
-		if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.power", power), lore);
+		if (consumeReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("consume_reduction", consumeReduction), lore);
+		if (costReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cost_reduction", costReduction), lore);
+		if (cooldownReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cooldown_reduction", cooldownReduction), lore);
+		if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("power", power), lore);
         if (superProtected) {
             ConfigurationUtils.addIfNotEmpty(getMessage("super_protected"), lore);
         } else {
-            if (damageReduction > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection", damageReduction), lore);
-            if (damageReductionPhysical > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection_physical", damageReductionPhysical), lore);
-            if (damageReductionProjectiles > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection_projectile", damageReductionProjectiles), lore);
-            if (damageReductionFalling > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection_falling", damageReductionFalling), lore);
-            if (damageReductionFire > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection_fire", damageReductionFire), lore);
-            if (damageReductionExplosions > 0) ConfigurationUtils.addIfNotEmpty(getLevelString(controller.getMessages(), "wand.protection_explosions", damageReductionExplosions), lore);
+            if (damageReduction > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection", damageReduction), lore);
+            if (damageReductionPhysical > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_physical", damageReductionPhysical), lore);
+            if (damageReductionProjectiles > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_projectile", damageReductionProjectiles), lore);
+            if (damageReductionFalling > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_falling", damageReductionFalling), lore);
+            if (damageReductionFire > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_fire", damageReductionFire), lore);
+            if (damageReductionExplosions > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_explosions", damageReductionExplosions), lore);
         }
         if (spMultiplier > 1) {
-			ConfigurationUtils.addIfNotEmpty(getPercentageString(controller.getMessages(), "wand.sp_multiplier", spMultiplier - 1), lore);
+			ConfigurationUtils.addIfNotEmpty(getPercentageString("sp_multiplier", spMultiplier - 1), lore);
 		}
 	}
 	
-	public static String getLevelString(Messages messages, String templateName, float amount)
+	public String getLevelString(String templateName, float amount)
 	{
-		return messages.getLevelString(templateName, amount);
+		return controller.getMessages().getLevelString(getMessageKey(templateName), amount);
 	}
 	
-	public static String getLevelString(Messages messages, String templateName, float amount, float max)
+	public String getLevelString(String templateName, float amount, float max)
 	{
-		return messages.getLevelString(templateName, amount, max);
+		return controller.getMessages().getLevelString(getMessageKey(templateName), amount, max);
 	}
 
-    public static String getPercentageString(Messages messages, String templateName, float amount)
+    public String getPercentageString(String templateName, float amount)
     {
-        return messages.getPercentageString(templateName, amount);
+        return controller.getMessages().getPercentageString(getMessageKey(templateName), amount);
     }
 	
 	protected List<String> getLore(int spellCount, int materialCount) 
@@ -2119,7 +2119,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (description.length() > 0) {
 			if (randomizeOnActivate) {
 				String randomDescription = getMessage("randomized_lore");
-				String randomTemplate = controller.getMessages().get("wand.randomized_description", "");
+				String randomTemplate = controller.getMessages().get(getMessageKey("randomized_description"), "");
 				if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
 					InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), MAX_LORE_LENGTH, lore);
 					return lore;
@@ -2132,7 +2132,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 					setProperty("description", description);
 				}
 			}
-			String descriptionTemplate = controller.getMessages().get("wand.description_lore", "");
+			String descriptionTemplate = controller.getMessages().get(getMessageKey("description_lore"), "");
             if (description.contains("$path") && !descriptionTemplate.isEmpty()) {
                 String pathName = "Unknown";
                 if (path != null) {
@@ -2144,7 +2144,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             else if (description.contains("$")) {
                 String randomDescription = getMessage("randomized_lore");
-				String randomTemplate = controller.getMessages().get("wand.randomized_description", "");
+				String randomTemplate = controller.getMessages().get(getMessageKey("randomized_description"), "");
 				if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
 					InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), MAX_LORE_LENGTH, lore);
 					return lore;
@@ -2153,7 +2153,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), MAX_LORE_LENGTH, lore);
             }
         }
-		String pathTemplate = controller.getMessages().get("wand.path_lore", "");
+		String pathTemplate = getMessage("path_lore", "");
 		if (path != null && !pathTemplate.isEmpty()) {
 			lore.add(pathTemplate.replace("$path", path.getName()));
 		}
@@ -4351,13 +4351,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	@Override
     public String getMessage(String key, String defaultValue) {
-        String message = controller.getMessages().get("wand." + key, defaultValue);
-        if (template != null && !template.isEmpty()) {
-            message = controller.getMessages().get("wands." + template + "." + key, message);
-        }
-        return message;
+        return controller.getMessages().get(getMessageKey(key), defaultValue);
     }
 
+    protected String getMessageKey(String key) {
+    	String wandKey = "wands." + template + "." + key;
+		if (template != null && !template.isEmpty() && controller.getMessages().containsKey(wandKey)) {
+			return wandKey;
+		}
+		return "wand." + key;
+	}
 
 	@Override
 	protected void sendDebug(String debugMessage) {
