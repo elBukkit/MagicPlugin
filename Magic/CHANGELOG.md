@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.6
+
 ## 6.9.5
 
  - Fix broken build from 6.9.4 (Sorry about that!)
@@ -20,6 +22,7 @@
  - Cars can drive in reverse
  - Broomsticks now fully controllable, including strafing and using spacebar to ascend
  - Fix brooms randomly kicking players off (again- working around a Spigot/MC bug)
+ - Add Ferrari to war configs (Thanks, BlueYoshi68!)
 
 ## 6.9.4
 
