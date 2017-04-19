@@ -173,6 +173,26 @@ sniper:
         - particle: redstone
           location: target
           color: "#666600"
+        hit_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: iron_block
+           sound: war.ricochet
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        headshot_armor_stand:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: iron_block
+           sound: war.ricochet
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
         hit_entity:
         -  class: EffectSingle
            location: target
@@ -290,6 +310,26 @@ ak47:
           particle_offset_x: 0.1
           particle_offset_y: 0.1
           particle_offset_z: 0.1
+        hit_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           sound: war.ricochet
+           particle: block_crack
+           material: iron_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        headshot_armor_stand:
+        -  class: EffectSingle
+           location: target
+           sound: war.ricochet
+           particle: block_crack
+           material: iron_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
         hit_entity:
         -  class: EffectSingle
            location: target
@@ -408,6 +448,26 @@ pistol:
           particle_offset_x: 0.1
           particle_offset_y: 0.1
           particle_offset_z: 0.1
+        hit_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           sound: war.ricochet
+           particle: block_crack
+           material: iron_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        headshot_armor_stand:
+        -  class: EffectSingle
+           location: target
+           sound: war.ricochet
+           particle: block_crack
+           material: iron_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
         hit_entity:
         -  class: EffectSingle
            location: target
@@ -528,6 +588,26 @@ shotgun:
           particle_offset_x: 0.1
           particle_offset_y: 0.1
           particle_offset_z: 0.1
+        hit_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           sound: war.ricochet
+           particle: block_crack
+           material: redstone_block
+           particle_count: 6
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        headshot_armor_stand:
+        -  class: EffectSingle
+           location: target
+           sound: war.ricochet
+           particle: block_crack
+           material: redstone_block
+           particle_count: 6
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
         hit_entity:
         -  class: EffectSingle
            location: target
@@ -660,6 +740,16 @@ rocketlauncher:
           particle_offset_x: 0.2
           particle_offset_y: 0.2
           particle_offset_z: 0.2
+        hit_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           sound: war.ricochet
+           particle: block_crack
+           material: iron_block
+           particle_count: 20
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
         hit_entity:
         -  class: EffectSingle
            sound: entity_slime_attack
@@ -767,6 +857,15 @@ c4:
              color: "FF0000"
              iterations: 100
              radius: 1.2
+        hit_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: iron_block
+           particle_count: 20
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
         hit_entity:
         -  class: EffectSingle
            sound: entity_slime_attack
@@ -993,6 +1092,30 @@ drive:
         deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
+        crash_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 15
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 0.5
+           sound_volume: .3
+           particle_data: 0.4
+        -  class: EffectSingle
+           sound: entity_generic_explode
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 30
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particleCount: 20
+            material: iron_block
+            size: 0.4
+            yOffset: 0
         crash_entity:
         -  class: EffectSingle
            location: target
@@ -1017,7 +1140,6 @@ drive:
             material: redstone_block
             size: 0.4
             yOffset: 0
-            relativeOffset: 2,0,0
         crash:
         - sound: entity_generic_explode
           sound_volume: 1

@@ -246,7 +246,7 @@ public class RideEntityAction extends BaseSpellAction
                     double crashDamage = maxSpeed > 0 ? crashVehicleDamage * speed / maxSpeed : crashVehicleDamage;
                     CompatibilityUtils.damage((Damageable)mount, crashDamage, mounted);
                 }
-                context.playEffects("crash_entity");
+                context.playEffects("crash_entity", 1.0f, null, mounted, null, entity);
             }
         }
         

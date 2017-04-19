@@ -531,6 +531,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void playEffects(String effectName, float scale, Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity, Block sourceBlock)
     {
+        if (targetEntity != null) {
+            String entityKey = effectName + "_" + targetEntity.getType().name().toLowerCase();
+            if (baseSpell != null && baseSpell.hasEffects(entityKey)) {
+                effectName = entityKey;
+            }
+        }
         Collection<EffectPlayer> effects = getEffects(effectName);
         if (effects.size() > 0)
         {
