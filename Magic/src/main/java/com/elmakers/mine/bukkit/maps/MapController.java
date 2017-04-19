@@ -158,13 +158,18 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                 if (configurationFile.exists()) {
                     File backupFile = new File(configurationFile.getAbsolutePath() + ".bak");
                     if (!backupFile.exists() || configurationFile.length() >= backupFile.length()) {
+                        if (backupFile.exists() && !backupFile.delete()) {
+                            warning("Failed to delete backup file in order to replace it: " + backupFile.getAbsolutePath());
+                        }
                         configurationFile.renameTo(backupFile);
+                    } else {
+                        warning("Backup file is larger than current map file, you may want to restore or delete it? " + backupFile.getAbsolutePath());
+                        if (!configurationFile.delete()) {
+                            warning("Failed to delete file in order to replace it: " + configurationFile.getAbsolutePath());
+                        }
                     }
                 }
 
-                if (!configurationFile.delete()) {
-                    warning("Failed to delete file in order to replace it: " + configurationFile.getAbsolutePath());
-                }
                 if (!tempFile.renameTo(configurationFile)) {
                     warning("Failed to rename file from " + tempFile.getAbsolutePath() + " to " + configurationFile.getAbsolutePath());
                 }
