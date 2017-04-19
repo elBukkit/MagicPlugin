@@ -2170,7 +2170,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 		}
 
-		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
+		SpellTemplate spell = controller.getSpellTemplate(getActiveSpellKey());
         Messages messages = controller.getMessages();
 
         // This is here specifically for a wand that only has
