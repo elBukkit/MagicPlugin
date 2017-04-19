@@ -1,20 +1,27 @@
 wands:
   ak47:
     name: AK-47
+    mana_amount: "Ammo: $amount"
   sniper:
     name: Sniper Rifle
-  jetpack:
-    name: Jetpack
+    mana_amount: "Ammo: $amount"
   pistol:
     name: Pistol
+    mana_amount: "Ammo: $amount"
   rocketlauncher:
     name: Rocket Launcher
+    mana_amount: "Ammo: $amount"
   shotgun:
     name: Shotgun
+    mana_amount: "Ammo: $amount"
   riotshield:
     name: Riot Shield
+    block_chance: ""
   radar:
     name: RADAR
+  jetpack:
+    name: Jetpack
+    spell_aura: ""
   incendiary:
     name: Incendiary Grenade
   c4:
@@ -22,20 +29,46 @@ wands:
   flashbang:
     name: Flash Bang
 
-wand:
-    spell_aura: ""
-    block_chance: ""
-    mana_amount: "Ammo: $amount"
-
 spells:
-    default:
-        fail: That failed!
-        insufficient_permission: You don't have permission to use that here.
-        cast_player_message: ""
-        indirect_player_message: ""
-        insufficient_resources: "a:Left-click to reload"
-        cooldown: ""
     radar:
         name: RADAR
         cast: $target shows on the RADAR
         no_target: RADAR is quiet
+        cast_player_message: ""
+        indirect_player_message: ""
+    sniper:
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
+    ak47:
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
+    pistol:
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
+    shotgun:
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
+    rocketlauncher:
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
+    c4:
+        cast_player_message: ""
+        indirect_player_message: ""
+        cooldown: ""
+    incendiary:
+        cast_player_message: ""
+        indirect_player_message: ""
+        cooldown: ""
+    flashbang:
+        cast_player_message: "a:You were hit by $player's flash bang"
+        cooldown: ""
