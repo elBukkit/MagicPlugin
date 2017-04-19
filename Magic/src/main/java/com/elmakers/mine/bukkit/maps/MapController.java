@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
 public class MapController implements com.elmakers.mine.bukkit.api.maps.MapController {
     private final File configurationFile;
@@ -44,13 +43,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     }
 
     public void loadConfiguration() {
-        if (configurationFile == null) {
-            plugin.getLogger().info("* Trying to load config file before initialized");
-
-            return;
-        }
-
-        plugin.getLogger().info("* Loading config file: " + configurationFile.getAbsolutePath() + ", exists? " + configurationFile.exists() + ", size: " + configurationFile.length());
+        if (configurationFile == null) return;
 
         YamlConfiguration configuration = new YamlConfiguration();
         if (configurationFile.exists()) {
@@ -160,35 +153,22 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                         mapConfig.set("y_overlay", map.yOverlay);
                     }
                 }
-                // Temporary logging to try and figure this out..
                 File tempFile = new File(configurationFile.getAbsolutePath() + ".tmp");
-                plugin.getLogger().info("* Writing to temp file: " + tempFile.getAbsolutePath());
                 configuration.save(tempFile);
-                plugin.getLogger().info("* Wrote to temp file, size=" + tempFile.length() + ", config exists? " + configurationFile.exists() + ", config size=" + configurationFile.length());
                 if (configurationFile.exists()) {
                     File backupFile = new File(configurationFile.getAbsolutePath() + ".bak");
-
-                    plugin.getLogger().info("* Writing to backup file: " + backupFile.getAbsolutePath() + ", exists? " + backupFile.exists());
                     if (!backupFile.exists() || configurationFile.length() >= backupFile.length()) {
                         configurationFile.renameTo(backupFile);
-                        plugin.getLogger().info("* Wrote to backup file: " + backupFile.length());
                     }
                 }
-                plugin.getLogger().info("* Moving temp file in place: " + tempFile.getAbsolutePath() + " to " + configurationFile.getAbsolutePath());
 
                 if (!configurationFile.delete()) {
-                    plugin.getLogger().info("* Failed to delete config file!");
+                    warning("Failed to delete file in order to replace it: " + configurationFile.getAbsolutePath());
                 }
                 if (!tempFile.renameTo(configurationFile)) {
-                    plugin.getLogger().info("* Failed to rename temp file!");
+                    warning("Failed to rename file from " + tempFile.getAbsolutePath() + " to " + configurationFile.getAbsolutePath());
                 }
-                plugin.getLogger().info("* Moved, final file exists? " + configurationFile.exists() + ", size=" + configurationFile.length());
-
-                File testFile = new File(configurationFile.getAbsolutePath());
-                plugin.getLogger().info("* Double-check absolute path exists? " + testFile.exists() + ", size=" + testFile.length());
-
             } catch (Exception ex) {
-                plugin.getLogger().log(Level.SEVERE, "* FAILED to save: " +  configurationFile.getAbsolutePath(), ex);
                 warning("Failed to save file " + configurationFile.getAbsolutePath());
             }
             saveTask = null;
