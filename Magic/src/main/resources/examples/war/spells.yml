@@ -1032,18 +1032,18 @@ drive:
              class: SmokeEffect
              iterations: 12
     parameters:
+        start_speed: 0
         max_speed: 1
         min_speed: -0.2
         max_acceleration: 0.01
         max_deceleration: 0.02
         braking: 0.005
-        start_speed: 0
         steer_speed: 0.1
         max_height_above_ground: 0
         mount_target: true
         controllable: true
         pitch_controllable: false
-        sound: war.electricmotor
+        sound: war.engine
         sound_interval: 100
         sound_max_volume: 4
         sound_min_volume: 0.1
@@ -1076,3 +1076,24 @@ steal:
       radius: 64
       damage: 0.000001
       target_type: PigZombie
+
+steal_model3:
+    inherit: steal
+    parameters:
+      sound: war.electricmotor
+      max_speed: 1
+      min_speed: -0.2
+      max_acceleration: 0.02
+      max_deceleration: 0.03
+      braking: 0.008
+      steer_speed: 0.1
+
+steal_ferrari:
+    inherit: steal
+    parameters:
+      max_speed: 1.2
+      min_speed: -0.1
+      max_acceleration: 0.01
+      max_deceleration: 0.02
+      braking: 0.005
+      steer_speed: 0.05

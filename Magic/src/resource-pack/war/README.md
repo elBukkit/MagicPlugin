@@ -6,7 +6,10 @@ https://github.com/elBukkit/MagicPlugin/wiki
 
 ## RP Credits
 
-- 3D Artist: SOPhorrific
+- 3D Artist: 
+  - SOPhorrific
+  - BlueYoshi68
+  - NathanWolf (lolz)
 - 2D Artist: 
   - zeeroakari (https://shotbow.net/forum/threads/zees-realistic-128x-wasted-textures.249184/)
   - ticogamer2244 (Soldier skin)

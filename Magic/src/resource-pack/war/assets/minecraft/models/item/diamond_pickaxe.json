@@ -14,7 +14,7 @@
     {"predicate": {"damaged": 0, "damage": 0.00512163892446}, "model": "item/custom/incendiary"},
     {"predicate": {"damaged": 0, "damage": 0.00576184379001}, "model": "item/custom/rpgshell"},
     {"predicate": {"damaged": 0, "damage": 0.00640204865557}, "model": "item/custom/model3"},
-    {"predicate": {"damaged": 0, "damage": 0.00704225352113}, "model": "item/custom/ak47"},
+    {"predicate": {"damaged": 0, "damage": 0.00704225352113}, "model": "item/custom/ferrari"},
     {"predicate": {"damaged": 0, "damage": 0.00768245838668}, "model": "item/custom/ak47"},
     {"predicate": {"damaged": 0, "damage": 0.00832266325224}, "model": "item/custom/ak47"},
     {"predicate": {"damaged": 0, "damage": 0.0089628681178}, "model": "item/custom/ak47"},

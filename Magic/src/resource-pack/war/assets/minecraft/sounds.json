@@ -1037,6 +1037,17 @@
     ],
     "category": "player"
   },
+  "war.engine": {
+    "sounds": [
+      {
+        "name": "war/engine-1",
+        "volume": 1,
+        "pitch": 1,
+        "weight": 3
+      }
+    ],
+    "category": "player"
+  },
   "war.radar": {
     "sounds": [
       {
