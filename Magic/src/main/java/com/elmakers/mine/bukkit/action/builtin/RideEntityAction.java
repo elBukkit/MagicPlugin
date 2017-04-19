@@ -442,7 +442,7 @@ public class RideEntityAction extends BaseSpellAction
                 CompatibilityUtils.damage((Damageable)mount, damage, mountedEntity);
             }
             if (mountedEntity.isValid() && mountedEntity instanceof Damageable) {
-                CompatibilityUtils.damage((Damageable)mountedEntity, damage, mountedEntity);
+                CompatibilityUtils.damage((Damageable)mountedEntity, damage, mount);
             }
         }
         warningEffectsApplied = false;
