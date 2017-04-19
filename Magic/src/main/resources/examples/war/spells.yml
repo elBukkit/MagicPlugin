@@ -252,6 +252,7 @@ sniper:
         destructible_durability: 100
         brush: erase
         magic_damage: false
+        target_armor_stand: true
     costs:
       mana: 1
 
@@ -367,6 +368,7 @@ ak47:
         undo: 18000
         spread: 0.1
         magic_damage: false
+        target_armor_stand: true
     costs:
       mana: 1
 
@@ -483,6 +485,7 @@ pistol:
         undo: 30000
         cooldown: 500
         magic_damage: false
+        target_armor_stand: true
     costs:
       mana: 1
 
@@ -608,6 +611,7 @@ shotgun:
         speed: 0.7
         y_offset: 0.2
         magic_damage: false
+        target_armor_stand: true
     costs:
       mana: 1
 
@@ -712,6 +716,7 @@ rocketlauncher:
         orient_head: true
         armor_stand_small: true
         armor_stand_gravity: false
+        target_armor_stand: true
     costs:
       mana: 1
 
@@ -811,6 +816,7 @@ c4:
         faces: up
         recursion_depth: 128
         size: 0
+        target_armor_stand: true
 
 thruster:
     icon: feather
@@ -883,6 +889,7 @@ radar:
         bypass_pvp: true
         effect_glowing: 1
         duration: 10000
+       target_armor_stand: true
 
 incendiary:
      icon: diamond_pickaxe:8
@@ -911,6 +918,7 @@ incendiary:
          cooldown: 500
          undo_speed: 0.5
          age_items: 5960
+         target_armor_stand: true
 
 flash_bang:
     icon: diamond_pickaxe:6
