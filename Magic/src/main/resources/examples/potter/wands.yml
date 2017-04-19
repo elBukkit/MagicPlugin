@@ -69,6 +69,7 @@ wand:
   inherit: randomizedpotterwand
 
 randomizedpotterwand:
+  hidden: true
   inherit: potterwand
   randomize_icon: wood_step
   effects:

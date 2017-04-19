@@ -1032,6 +1032,7 @@ drive:
              class: SmokeEffect
              iterations: 12
     parameters:
+        target_armor_stand: true
         start_speed: 0
         max_speed: 1
         min_speed: -0.2
