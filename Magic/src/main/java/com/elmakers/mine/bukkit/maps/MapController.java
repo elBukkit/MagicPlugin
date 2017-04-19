@@ -176,7 +176,12 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                 }
                 plugin.getLogger().info("* Moving temp file in place: " + tempFile.getAbsolutePath() + " to " + configurationFile.getAbsolutePath());
 
-                tempFile.renameTo(configurationFile);
+                if (!configurationFile.delete()) {
+                    plugin.getLogger().info("* Failed to delete config file!");
+                }
+                if (!tempFile.renameTo(configurationFile)) {
+                    plugin.getLogger().info("* Failed to rename temp file!");
+                }
                 plugin.getLogger().info("* Moved, final file exists? " + configurationFile.exists() + ", size=" + configurationFile.length());
 
                 File testFile = new File(configurationFile.getAbsolutePath());
