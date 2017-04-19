@@ -15,7 +15,8 @@
 
 ## 6.9.5
 
- - Fix vehicle control in 1.10 and 1.9 (I think)
+ - Fix broken build from 6.9.4 (Sorry about that!)
+ - Fix vehicle control in 1.10 and 1.9
  - Cars can drive in reverse
  - Broomsticks now fully controllable, including strafing and using spacebar to ascend
  - Fix brooms randomly kicking players off (again- working around a Spigot/MC bug)
