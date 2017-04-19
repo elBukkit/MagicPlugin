@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
 public class MapController implements com.elmakers.mine.bukkit.api.maps.MapController {
     private final File configurationFile;
@@ -154,27 +153,16 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                         mapConfig.set("y_overlay", map.yOverlay);
                     }
                 }
-                // Temporary logging to try and figure this out..
                 File tempFile = new File(configurationFile.getAbsolutePath() + ".tmp");
-                plugin.getLogger().info("* Writing to temp file: " + tempFile);
                 configuration.save(tempFile);
-                plugin.getLogger().info("* Wrote to temp file, config exists? " + configurationFile.exists());
                 if (configurationFile.exists()) {
                     File backupFile = new File(configurationFile.getAbsolutePath() + ".bak");
-
-                    plugin.getLogger().info("* Writing to backup file: " + backupFile + ", exists? " + backupFile.exists());
                     if (!backupFile.exists() || configurationFile.length() >= backupFile.length()) {
                         configurationFile.renameTo(backupFile);
-                        plugin.getLogger().info("* Wrote to backup file");
                     }
                 }
-                plugin.getLogger().info("* Moving temp file in place: " + tempFile + " to " + configurationFile);
-
                 tempFile.renameTo(configurationFile);
-                plugin.getLogger().info("* Moved, final file exists? " + configurationFile.exists());
-
             } catch (Exception ex) {
-                plugin.getLogger().log(Level.SEVERE, "* FAILED to save: " +  configurationFile.getAbsolutePath(), ex);
                 warning("Failed to save file " + configurationFile.getAbsolutePath());
             }
             saveTask = null;
