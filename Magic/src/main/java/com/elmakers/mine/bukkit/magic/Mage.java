@@ -183,6 +183,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Float restoreExperience;
     private Integer restoreLevel;
     private boolean virtualExperience = false;
+    private float virtualExperienceProgress = 0.0f;
+    private int virtualExperienceLevel = 0;
 
     private String destinationWarp;
 
@@ -2147,10 +2149,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
     
     public void sendExperience(float exp, int level) {
+        if (virtualExperience && exp == virtualExperienceProgress && level == virtualExperienceLevel) return;
         Player player = getPlayer();
         if (player != null) {
             CompatibilityUtils.sendExperienceUpdate(player, exp, level);
             virtualExperience = true;
+            virtualExperienceProgress = exp;
+            virtualExperienceLevel = level;
         }
     }
 
@@ -2159,6 +2164,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null) {
             CompatibilityUtils.sendExperienceUpdate(player, player.getExp(), player.getLevel());
         }
+        virtualExperience = false;
+    }
+
+    public void experienceChanged() {
         virtualExperience = false;
     }
 

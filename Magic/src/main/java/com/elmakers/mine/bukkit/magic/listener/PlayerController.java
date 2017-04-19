@@ -33,6 +33,7 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -76,6 +77,16 @@ public class PlayerController implements Listener {
         openOnSneakDrop = properties.getBoolean("open_wand_on_sneak_drop");
         cancelInteractOnCast = properties.getBoolean("cancel_interact_on_cast", true);
         allowOffhandCasting = properties.getBoolean("allow_offhand_casting", true);
+    }
+
+    @EventHandler
+    public void onPlayerExpChange(PlayerExpChangeEvent event)
+    {
+        Player player = event.getPlayer();
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage != null) {
+            mage.experienceChanged();
+        }
     }
 
     @EventHandler

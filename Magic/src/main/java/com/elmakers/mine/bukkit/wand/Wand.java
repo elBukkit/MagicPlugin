@@ -3695,7 +3695,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		Player player = mage.getPlayer();
 		if (player == null) return;
 
-		if (tickMana() && !isInOffhand) {
+		tickMana();
+		if (usesMana() && !isInOffhand) {
 			updateMana();
 		}
 		
