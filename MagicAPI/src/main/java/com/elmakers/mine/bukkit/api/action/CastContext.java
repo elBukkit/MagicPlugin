@@ -118,6 +118,7 @@ public interface CastContext {
     boolean areAnyDestructible(Block block);
     boolean isTargetable(Block block);
     boolean canTarget(Entity entity);
+    boolean canTarget(Entity entity, Class<?> targetType);
     MaterialBrush getBrush();
     void setBrush(MaterialBrush brush);
     Collection<Entity> getTargetedEntities();

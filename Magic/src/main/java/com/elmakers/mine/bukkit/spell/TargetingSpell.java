@@ -310,6 +310,10 @@ public abstract class TargetingSpell extends BaseSpell {
 
     @Override
     public boolean canTarget(Entity entity) {
+        return canTarget(entity, null);
+    }
+
+    public boolean canTarget(Entity entity, Class<?> targetType) {
         // This is mainly here to ignore pets...
         if (!targetUnknown && entity.getType() == EntityType.UNKNOWN) {
             return false;
@@ -344,6 +348,9 @@ public abstract class TargetingSpell extends BaseSpell {
             ItemFrame itemFrame = (ItemFrame)entity;
             ItemStack item = itemFrame.getItem();
             if (item == null || item.getType() != targetContents) return false;
+        }
+        if (targetType != null) {
+            return targetType.isAssignableFrom(entity.getClass()) && super.canTarget(entity);
         }
         if (targetEntityType == null && targetEntityTypes == null) return super.canTarget(entity);
         if (targetEntityTypes != null) {

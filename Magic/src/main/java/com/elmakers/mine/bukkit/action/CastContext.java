@@ -806,6 +806,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public boolean canTarget(Entity entity, Class<?> targetType) {
+        return targetingSpell == null ? true : targetingSpell.canTarget(entity, targetType);
+    }
+
+    @Override
     public MaterialBrush getBrush() {
         if (brush != null) {
             return brush;

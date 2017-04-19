@@ -230,25 +230,23 @@ public class RideEntityAction extends BaseSpellAction
             }
             Vector velocity = crashDirection.multiply(crashVelocity * speed / maxSpeed);
             for (Entity entity : nearby) {
-                if (entity == mounted || entity == mount || !entity.isValid()) continue;
+                if (entity == mounted || entity == mount || !entity.isValid() || !context.canTarget(entity, crashEntityType)) continue;
 
                 Vector targetDirection = entity.getLocation().subtract(mounted.getLocation()).toVector();
                 double angle = targetDirection.angle(direction);
                 if (angle > crashEntityFOV) continue;
-                if (crashEntityType.isAssignableFrom(entity.getClass())) {
-                    if (crashEntityDamage > 0 && entity instanceof Damageable) {
-                        Damageable damageable = (Damageable)entity;
-                        double crashDamage = maxSpeed > 0 ? crashEntityDamage * speed / maxSpeed : crashEntityDamage;
-                        CompatibilityUtils.damage(damageable, crashDamage, mounted);
-                    }
-                    entity.setVelocity(velocity);
-                    speed = Math.max(0, speed - crashBraking);
-                    if (mount instanceof Damageable && crashVehicleDamage > 0) {
-                        double crashDamage = maxSpeed > 0 ? crashVehicleDamage * speed / maxSpeed : crashVehicleDamage;
-                        CompatibilityUtils.damage((Damageable)mount, crashDamage, mounted);
-                    }
-                    context.playEffects("crash_entity");
+                if (crashEntityDamage > 0 && entity instanceof Damageable) {
+                    Damageable damageable = (Damageable)entity;
+                    double crashDamage = maxSpeed > 0 ? crashEntityDamage * speed / maxSpeed : crashEntityDamage;
+                    CompatibilityUtils.damage(damageable, crashDamage, mounted);
                 }
+                entity.setVelocity(velocity);
+                speed = Math.max(0, speed - crashBraking);
+                if (mount instanceof Damageable && crashVehicleDamage > 0) {
+                    double crashDamage = maxSpeed > 0 ? crashVehicleDamage * speed / maxSpeed : crashVehicleDamage;
+                    CompatibilityUtils.damage((Damageable)mount, crashDamage, mounted);
+                }
+                context.playEffects("crash_entity");
             }
         }
         
