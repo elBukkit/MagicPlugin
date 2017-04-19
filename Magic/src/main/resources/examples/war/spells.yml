@@ -889,7 +889,7 @@ radar:
         bypass_pvp: true
         effect_glowing: 1
         duration: 10000
-       target_armor_stand: true
+        target_armor_stand: true
 
 incendiary:
      icon: diamond_pickaxe:8
