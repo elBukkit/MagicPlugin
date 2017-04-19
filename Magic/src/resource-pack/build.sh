@@ -65,16 +65,35 @@ find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-potter-RP-6-4.zip *
 cd ..
 
-
 echo "** BUILDING WAR **"
 
 mkdir war
 cd war
 cp -R ../../war/* .
+
+sed -e '$ d' ../../war/assets/minecraft/sounds.json > assets/minecraft/sounds.json
+echo , >> assets/minecraft/sounds.json
+tail -n +2 ../../war/assets/minecraft/sound-overrides.json >> assets/minecraft/sounds.json
+rm assets/minecraft/sound-overrides.json
 find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-war-RP-7.zip *
 cd ..
 
+echo "** BUILDING ALL **"
+
+mkdir all
+cd all
+cp -R ../../default/* .
+cp -R ../../war/assets/minecraft/sounds/* assets/minecraft/sounds/
+cp -R ../../war/assets/minecraft/models/item/* assets/minecraft/models/item/
+cp -R ../../war/assets/minecraft/textures/misc assets/minecraft/textures/
+cp -R ../../war/assets/minecraft/textures/items/custom/* assets/minecraft/textures/items/custom/
+sed -e '$ d' ../../default/assets/minecraft/sounds.json > assets/minecraft/sounds.json
+echo , >> assets/minecraft/sounds.json
+tail -n +2 ../../war/assets/minecraft/sounds.json >> assets/minecraft/sounds.json
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-all-RP-7.zip *
+cd ..
 
 echo "** BUILDING AJ **"
 

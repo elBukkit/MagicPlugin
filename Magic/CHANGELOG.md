@@ -18,6 +18,7 @@
  - Fix image map file not saving in some environments (Windows, I think?)
  - Fix broom disappearing glitch if you open a wand inventory while riding
  - Move vehicle improvements
+ - Make it possible to combine war configs with other configs- see wiki for more info
 
 ## 6.9.5
 
