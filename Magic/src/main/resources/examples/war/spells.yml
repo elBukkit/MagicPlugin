@@ -1098,3 +1098,31 @@ steal_ferrari:
       max_deceleration: 0.02
       braking: 0.005
       steer_speed: 0.05
+
+gunshop:
+    icon: wood_hoe:14
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        confirm_filler: stained_glass:3
+        show_active_icons: true
+        items:
+        - item: pistol
+          cost: 2000
+        - item: ak47
+          cost: 5000
+        - item: shotgun
+          cost: 5000
+        - item: sniper
+          cost: 8000
+        - item: rocketlauncher
+          cost: 10000
+        - item: riotshield
+          cost: 2000
+        - item: incendiary@10
+          cost: 5000
+        - item: c4@10
+          cost: 5000
+        - item: flashbang@10
+          cost: 2000
