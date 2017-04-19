@@ -34,6 +34,7 @@ public class RideEntityAction extends BaseSpellAction
     private double maxDeceleration = 0;
     private double liftoffThrust = 0;
     private double crashDistance = 0;
+    private double crashSpeed = 0;
     private int duration = 0;
     private int durationWarning = 0;
     private int liftoffDuration = 0;
@@ -119,6 +120,7 @@ public class RideEntityAction extends BaseSpellAction
         liftoffThrust = parameters.getDouble("liftoff_thrust", 0);
         liftoffDuration = parameters.getInt("liftoff_duration", 0);
         crashDistance = parameters.getDouble("crash_distance", 0);
+        crashSpeed = parameters.getDouble("crash_speed", 0);
         maxHeight = parameters.getInt("max_height", 0);
         maxHeightAboveGround = parameters.getInt("max_height_above_ground", -1);
         duration = parameters.getInt("duration", 0);
@@ -207,9 +209,9 @@ public class RideEntityAction extends BaseSpellAction
         }
 
         // Check for crashing
-        if (crashDistance > 0)
+        if (crashDistance > 0 && Math.abs(speed) >= crashSpeed)
         {
-            Vector threshold = direction.clone().multiply(crashDistance);
+            Vector threshold = direction.clone().multiply(speed * crashDistance);
             if (checkForCrash(context, mounted.getLocation(), threshold)) {
                 crash(context);
                 return SpellResult.CAST;
@@ -228,7 +230,7 @@ public class RideEntityAction extends BaseSpellAction
             }
             Vector velocity = crashDirection.multiply(crashVelocity * speed / maxSpeed);
             for (Entity entity : nearby) {
-                if (entity == mounted || entity == mount) continue;
+                if (entity == mounted || entity == mount || !entity.isValid()) continue;
 
                 Vector targetDirection = entity.getLocation().subtract(mounted.getLocation()).toVector();
                 double angle = targetDirection.angle(direction);

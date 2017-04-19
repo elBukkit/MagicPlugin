@@ -191,7 +191,6 @@ sniper:
            particle_offset_y: 0.5
            particle_offset_z: 0.4
            particle_data: 0.4
-           sound: magic.zap
            sound_pitch: 1.2
            sound_volume: 0.5
         hit_block:
@@ -215,7 +214,6 @@ sniper:
            particle_offset_y: 0.5
            particle_offset_x: 0.5
            particle_offset_z: 0.5
-           sound: magic.zap
            sound_volume: .3
            particle_data: 0.4
         -  class: EffectSingle
@@ -862,7 +860,7 @@ radar:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magic.zap
+           sound: war.radar
            location: origin
         -  class: EffectSingle
            location: target
@@ -988,13 +986,43 @@ drive:
         -  class: EffectSingle
            sound: enderdragon_wings
         crash_entity:
-        - sound: entity_generic_explode
-          sound_volume: 0.5
-          sound_pitch: 0.8
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 15
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 0.5
+           sound_volume: .3
+           particle_data: 0.4
+        -  class: EffectSingle
+           sound: entity_slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 30
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particleCount: 20
+            material: redstone_block
+            size: 0.4
+            yOffset: 0
+            relativeOffset: 2,0,0
         crash:
         - sound: entity_generic_explode
           sound_volume: 1
           sound_pitch: 0.6
+        - class: EffectSingle
+          location: origin
+          entity_effect: hurt
+          particle: explosion_large
+        - class: EffectSingle
+          location: origin
+          effectlib:
+             class: SmokeEffect
+             iterations: 12
     parameters:
         max_speed: 1
         min_speed: -0.2
@@ -1014,14 +1042,19 @@ drive:
         sound_max_pitch: 2
         sound_min_pitch: 0.5
         mount_untargetable: false
+        crash_speed: 0.1
         crash_damage: 10
-        crash_braking: 0.02
+        crash_braking: 0.1
         crash_entity_fov: 0.5
         crash_entity_damage: 30
         crash_velocity_y_offset: 0.2
         crash_velocity: 2.0
         crash_entity_distance: 2.5
         crash_vehicle_damage: 1
+        crash_distance: 1
+        crash_into: LivingEntity
+        crash_effects:
+          confusion: 120,3
 
 steal:
     inherit: drive
@@ -1035,5 +1068,3 @@ steal:
       radius: 64
       damage: 0.000001
       target_type: PigZombie
-      crash_distance: 1
-      crash_into: LivingEntity
