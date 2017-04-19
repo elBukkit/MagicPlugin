@@ -15,6 +15,10 @@
 
 ## 6.9.6
 
+ - Fix image map file not saving in some environments (Windows, I think?)
+ - Fix broom disappearing glitch if you open a wand inventory while riding
+ - Move vehicle improvements
+
 ## 6.9.5
 
  - Fix broken build from 6.9.4 (Sorry about that!)

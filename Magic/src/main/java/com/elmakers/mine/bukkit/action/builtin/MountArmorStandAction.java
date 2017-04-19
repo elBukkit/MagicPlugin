@@ -194,7 +194,7 @@ public class MountArmorStandAction extends RideEntityAction
         if (player == null || item == null) return;
 
         ItemStack currentItem = player.getInventory().getItem(slotNumber);
-        if (currentItem != null) {
+        if (currentItem != null || mage.hasStoredInventory()) {
             context.getMage().giveItem(item);
         } else {
             player.getInventory().setItem(slotNumber, item);
