@@ -38,6 +38,8 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     private VectorTransform rightLegTransform;
     private VectorTransform bodyTransform;
     private VectorTransform headTransform;
+    private int visibleDelayTicks = 1;
+
     private int stepCount = 0;
 
     @Override
@@ -77,6 +79,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         adjustHeadPitch = parameters.getBoolean("orient_head", false);
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
         unbreakableItems = parameters.getBoolean("unbreakable_items", false);
+        visibleDelayTicks = parameters.getInt("visible_delay_ticks", 1);
         
         MageController controller = context.getController();
         ItemData itemType = controller.getOrCreateItem(parameters.getString("right_arm_item"));
@@ -183,7 +186,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         ArmorStand armorStand = (ArmorStand)entity;
         update(armorStand);
 
-        if (stepCount == 1) {
+        if (stepCount == visibleDelayTicks) {
             armorStand.setItemInHand(rightArmItem);
             armorStand.setHelmet(helmetItem);
             armorStand.setChestplate(chestplateItem);
