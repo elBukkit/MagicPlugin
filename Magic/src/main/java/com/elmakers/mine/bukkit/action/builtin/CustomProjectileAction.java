@@ -49,7 +49,7 @@ public class CustomProjectileAction extends CompoundAction
     private VectorTransform velocityTransform;
     private double spread;
     private double movementSpread;
-    private double maxSpread;
+    private double maxMovementSpread;
     private int startDistance;
     private String projectileEffectKey;
     private String hitEffectKey;
@@ -234,7 +234,7 @@ public class CustomProjectileAction extends CompoundAction
         targetBreakableSize = parameters.getInt("breakable_size", 1);
         bypassBackfire = parameters.getBoolean("bypass_backfire", false);
         spread = parameters.getDouble("spread", 0);
-        maxSpread = parameters.getDouble("spread_max", 0);
+        maxMovementSpread = parameters.getDouble("spread_movement_max", 0);
         movementSpread = parameters.getDouble("spread_movement", 0);
         int hitLimit = parameters.getInt("hit_count", 1);
         entityHitLimit = parameters.getInt("entity_hit_count", hitLimit);
@@ -313,12 +313,14 @@ public class CustomProjectileAction extends CompoundAction
     @Override
     public SpellResult start(CastContext context) {
         if (movementSpread > 0) {
-            Entity sourceEntity = context.getEntity();
-            double entitySpeed = sourceEntity != null ? sourceEntity.getVelocity().lengthSquared() : 0;
-            if (entitySpeed > 0.01) {
-                spread += Math.min(movementSpread * entitySpeed, maxSpread);
-                context.getMage().sendDebugMessage(ChatColor.DARK_RED + " Applying spread of " + ChatColor.RED + spread
-                    + ChatColor.DARK_RED + " from speed^2 of " + ChatColor.GOLD + entitySpeed, 3);
+            double entitySpeed = context.getMage().getVelocity().lengthSquared();
+            if (entitySpeed > 0) {
+                double movementAmount = Math.min(1.0, entitySpeed / (movementSpread * movementSpread));
+                spread += (movementAmount * maxMovementSpread);
+                if (context.getMage().getDebugLevel() >= 3) {
+                    context.getMage().sendDebugMessage(ChatColor.DARK_RED + " Applying spread of " + ChatColor.RED + spread
+                            + ChatColor.DARK_RED + " from speed of " + ChatColor.GOLD + context.getMage().getVelocity().length());
+                }
             }
         }
         return super.start(context);
@@ -898,6 +900,8 @@ public class CustomProjectileAction extends CompoundAction
         parameters.add("target_entities");
         parameters.add("track_target");
         parameters.add("spread");
+        parameters.add("spread_movement");
+        parameters.add("spread_movement_max");
     }
 
     @Override
@@ -908,7 +912,7 @@ public class CustomProjectileAction extends CompoundAction
         if (parameterKey.equals("speed") || parameterKey.equals("lifetime") ||
             parameterKey.equals("interval") || parameterKey.equals("start") || parameterKey.equals("size") ||
             parameterKey.equals("gravity") || parameterKey.equals("drag") || parameterKey.equals("tick_size") ||
-            parameterKey.equals("spread")) {
+            parameterKey.equals("spread") || parameterKey.equals("spread_movement") || parameterKey.equals("spread_movement_max")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("target_entities") || parameterKey.equals("track_target")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));

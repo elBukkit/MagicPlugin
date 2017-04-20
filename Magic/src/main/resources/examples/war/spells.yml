@@ -273,6 +273,8 @@ sniper:
         brush: erase
         magic_damage: false
         target_armor_stand: true
+        spread_movement_max: 0.2
+        spread_movement: 5
     costs:
       mana: 1
 
@@ -407,6 +409,8 @@ ak47:
         break_durability: 2
         undo: 18000
         spread: 0.1
+        spread_movement_max: 0.1
+        spread_movement: 5
         magic_damage: false
         target_armor_stand: true
     costs:
@@ -546,6 +550,8 @@ pistol:
         cooldown: 500
         magic_damage: false
         target_armor_stand: true
+        spread_movement: 5
+        spread_movement_max: 0.08
     costs:
       mana: 1
 
@@ -676,6 +682,8 @@ shotgun:
     parameters:
         velocity: 1500
         spread: 0.2
+        spread_movement_max: 0.1
+        spread_movement: 5
         range: 20
         multiply: 8
         hitbox: true
@@ -807,6 +815,8 @@ rocketlauncher:
         armor_stand_small: true
         armor_stand_gravity: false
         target_armor_stand: true
+        spread_movement_max: 0.1
+        spread_movement: 5
     costs:
       mana: 1
 

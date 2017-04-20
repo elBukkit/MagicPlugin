@@ -19,6 +19,7 @@
  - Fix broom disappearing glitch if you open a wand inventory while riding
  - Move vehicle improvements
  - Make it possible to combine war configs with other configs (using add_examples)
+ - Guns are now less accurate if used while moving
 
 ## 6.9.5
 
