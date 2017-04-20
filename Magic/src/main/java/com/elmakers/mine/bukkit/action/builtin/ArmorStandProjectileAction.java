@@ -131,6 +131,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         armorStand.setGravity(armorStandGravity);
         armorStand.setSmall(smallArmorStand);
         armorStand.setArms(showArmorStandArms);
+        CompatibilityUtils.setSilent(armorStand, true);
         CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
         CompatibilityUtils.addToWorld(location.getWorld(), armorStand, spawnReason);
 
