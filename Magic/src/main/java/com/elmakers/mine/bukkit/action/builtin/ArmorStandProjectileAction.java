@@ -38,6 +38,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     private VectorTransform rightLegTransform;
     private VectorTransform bodyTransform;
     private VectorTransform headTransform;
+    private int stepCount = 0;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -119,11 +120,6 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     protected Entity spawnEntity(Location location) {
         ArmorStand armorStand = CompatibilityUtils.spawnArmorStand(location);
         CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
-        armorStand.setItemInHand(rightArmItem);
-        armorStand.setHelmet(helmetItem);
-        armorStand.setChestplate(chestplateItem);
-        armorStand.setLeggings(leggingsItem);
-        armorStand.setBoots(bootsItem);
         armorStand.setMarker(armorStandMarker);
         armorStand.setVisible(!armorStandInvisible);
         armorStand.setBasePlate(showArmorStandBaseplate);
@@ -186,6 +182,22 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         }
         ArmorStand armorStand = (ArmorStand)entity;
         update(armorStand);
+
+        if (stepCount == 1) {
+            armorStand.setItemInHand(rightArmItem);
+            armorStand.setHelmet(helmetItem);
+            armorStand.setChestplate(chestplateItem);
+            armorStand.setLeggings(leggingsItem);
+            armorStand.setBoots(bootsItem);
+        }
+        stepCount++;
         return result;
+    }
+
+    @Override
+    public void reset(CastContext context)
+    {
+        super.reset(context);
+        stepCount = 0;
     }
 }
