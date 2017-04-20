@@ -58,6 +58,14 @@ public class MultiplyAction extends CompoundAction
     }
 
     @Override
+    public void finish(CastContext context) {
+        super.reset(context);
+        for (ActionHandler handler : multiplied) {
+            handler.finish(context);
+        }
+    }
+
+    @Override
 	public SpellResult perform(CastContext context) {
         SpellResult result = SpellResult.NO_ACTION;
         if (remaining.size() == 0) return result;
