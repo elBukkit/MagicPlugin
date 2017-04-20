@@ -61,6 +61,7 @@ model3:
   type: armor_stand
   helmet: model3
   invisible: true
+  silent: true
   name: Model 3
   interact_spell: steal_model3
   disabled_slots: 2039552
@@ -69,6 +70,7 @@ ferrari:
   type: armor_stand
   helmet: ferrari
   invisible: true
+  silent: true
   name: Ferrari California
   interact_spell: steal_ferrari
   disabled_slots: 2039552

@@ -90,6 +90,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Double health;
     protected Integer airLevel;
     protected boolean isBaby;
+    protected boolean isSilent;
     protected int fireTicks;
     
     protected DyeColor dyeColor;
@@ -140,6 +141,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.type = entity.getType();
         this.location = location;
         this.fireTicks = entity.getFireTicks();
+        this.isSilent = CompatibilityUtils.isSilent(entity);
         name = entity.getCustomName();
         tags = CompatibilityUtils.getTags(entity);
 
@@ -238,6 +240,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (parameters.contains("max_health")) {
             maxHealth = parameters.getDouble("max_health", 1);
         }
+        isSilent = parameters.getBoolean("silent", false);
 
         String entityName = parameters.getString("type");
         if (entityName != null) {
@@ -509,6 +512,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData.apply(entity);
         }
 
+        CompatibilityUtils.setSilent(entity, isSilent);
         entity.setFireTicks(fireTicks);
         if (entity instanceof Ageable) {
             Ageable ageable = (Ageable)entity;

@@ -170,12 +170,24 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void setSilent(Entity entity, boolean flag) {
+        if (class_Entity_setSilentMethod == null) return;
         try {
             Object handle = getHandle(entity);
             class_Entity_setSilentMethod.invoke(handle, flag);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static boolean isSilent(Entity entity) {
+        if (class_Entity_isSilentMethod == null) return false;
+        try {
+            Object handle = getHandle(entity);
+            return (boolean)class_Entity_isSilentMethod.invoke(handle);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     /**

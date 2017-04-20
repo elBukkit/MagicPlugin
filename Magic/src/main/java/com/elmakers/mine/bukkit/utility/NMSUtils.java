@@ -150,6 +150,7 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_setMethod;
     protected static Method class_World_getEntitiesMethod;
     protected static Method class_Entity_setSilentMethod;
+    protected static Method class_Entity_isSilentMethod;
     protected static Method class_Entity_setYawPitchMethod;
     protected static Method class_Entity_getBukkitEntityMethod;
     protected static Method class_EntityLiving_damageEntityMethod;
@@ -780,14 +781,17 @@ public class NMSUtils {
                 try {
                     // 1.10 and 1.11
                     class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("setSilent", Boolean.TYPE);
+                    class_Entity_isSilentMethod = class_Entity.getDeclaredMethod("isSilent");
                 } catch (Throwable ignore) {
                     // 1.9 and earlier
                     legacy = true;
                     class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
+                    class_Entity_isSilentMethod = class_Entity.getDeclaredMethod("ad");
                 }
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, silent entities will not work", ex);
                 class_Entity_setSilentMethod = null;
+                class_Entity_isSilentMethod = null;
             }
 
             // TODO: ArmorStand.setGravity in 1.11+
