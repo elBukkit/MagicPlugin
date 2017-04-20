@@ -8,7 +8,6 @@ missile:
     worth: 150
     earns_sp: 7
     earns_cooldown: 10000
-    require_break: false
     actions:
         cast:
         - class: CustomProjectile

@@ -31,9 +31,6 @@ public class BreakBlockAction extends BaseSpellAction {
             return SpellResult.FAIL;
         }
         Block block = context.getTargetBlock();
-        if (!context.hasBreakPermission(block)) {
-            return SpellResult.INSUFFICIENT_PERMISSION;
-        }
         if (block.getType() == Material.AIR || !context.isDestructible(block)) {
             return SpellResult.NO_TARGET;
         }
@@ -44,11 +41,14 @@ public class BreakBlockAction extends BaseSpellAction {
             double breakPercentage = (double)durabilityAmount / durability;
             breakAmount = context.registerBreaking(block, breakPercentage);
         }
+
         if (breakAmount > 1) {
-            CompatibilityUtils.setBreaking(block, 10, UndoList.BLOCK_BREAK_RANGE);
-            block.setType(Material.AIR);
-            context.unregisterBreaking(block);
-            context.playEffects("break");
+            if (context.hasBreakPermission(block)) {
+                CompatibilityUtils.setBreaking(block, 10, UndoList.BLOCK_BREAK_RANGE);
+                block.setType(Material.AIR);
+                context.unregisterBreaking(block);
+                context.playEffects("break");
+            }
         } else {
             int breakState = (int)Math.floor(9 * breakAmount);
             CompatibilityUtils.setBreaking(block, breakState, UndoList.BLOCK_BREAK_RANGE);
@@ -69,11 +69,6 @@ public class BreakBlockAction extends BaseSpellAction {
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }
-    }
-
-    @Override
-    public boolean requiresBreakPermission() {
-        return true;
     }
 
     @Override

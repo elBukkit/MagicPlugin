@@ -8,7 +8,6 @@ laser:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     pvp_restricted: true
-    require_break: false
     actions:
         cast:
         -  class: Line
