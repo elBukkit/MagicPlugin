@@ -205,8 +205,8 @@ public class EntityProjectileAction extends CustomProjectileAction {
     }
 
     @Override
-    public void finish(CastContext context) {
-        super.finish(context);
+    public void finishEffects() {
+        super.finishEffects();
         if (entity != null) {
             entity.remove();
             entity = null;
