@@ -61,6 +61,16 @@ spells:
         indirect_player_message: ""
         insufficient_resources: "a:Left-click to reload"
         cooldown: ""
+    reload_sniper:
+        cooldown: ""
+    reload_ak47:
+        cooldown: ""
+    reload_pistol:
+        cooldown: ""
+    reload_shotgun:
+        cooldown: ""
+    reload_rocketlauncher:
+        cooldown: ""
     c4:
         cast_player_message: ""
         indirect_player_message: ""
