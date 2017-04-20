@@ -1323,9 +1323,6 @@ public class MagicController implements MageController {
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
                 examplesFileName = "examples/" + example + "/" + fileName + ".yml";
-                if (plugin.getResource(examplesFileName) == null) continue;
-                plugin.saveResource(examplesFileName, true);
-
                 InputStream input = plugin.getResource(examplesFileName);
                 if (input != null)
                 {
@@ -1387,8 +1384,12 @@ public class MagicController implements MageController {
             if (exampleDefaults != null && exampleDefaults.length() > 0)
             {
                 getLogger().info("Overriding configuration with example: " + exampleDefaults);
-                properties = loadConfigFile(CONFIG_FILE, true);
             }
+            if (addExamples != null && addExamples.size() > 0)
+            {
+                getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
+            }
+            properties = loadConfigFile(CONFIG_FILE, true);
         }
 
         loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
@@ -1498,10 +1499,6 @@ public class MagicController implements MageController {
 
         // Main configuration
         loadProperties(loader.configuration);
-        if (addExamples != null && addExamples.size() > 0)
-        {
-            getLogger().info("Added examples: " + StringUtils.join(addExamples, ","));
-        }
 
         // Sub-configurations
         messages.load(loader.messages);
@@ -2174,6 +2171,12 @@ public class MagicController implements MageController {
         defaultResourcePack = properties.getString("resource_pack", null);
         // For legacy configs
         defaultResourcePack = properties.getString("default_resource_pack", defaultResourcePack);
+        // For combined configs
+        if (addExamples != null && addExamples.size() > 0)
+        {
+            defaultResourcePack = properties.getString("add_resource_pack", defaultResourcePack);
+        }
+
         // For reloading after disabling the RP
         if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
             resourcePack = null;
