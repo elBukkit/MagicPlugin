@@ -12,6 +12,7 @@ import de.slikey.effectlib.math.VectorTransform;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -115,10 +116,8 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     }
 
     @Override
-    public SpellResult start(CastContext context) {
-        MageController controller = context.getController();
-        Location location = adjustLocation(sourceLocation.getLocation(context));
-        ArmorStand armorStand = (ArmorStand)setEntity(controller, CompatibilityUtils.spawnArmorStand(location));
+    protected Entity spawnEntity(Location location) {
+        ArmorStand armorStand = CompatibilityUtils.spawnArmorStand(location);
         CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
         armorStand.setItemInHand(rightArmItem);
         armorStand.setHelmet(helmetItem);
@@ -133,18 +132,16 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         armorStand.setArms(showArmorStandArms);
         CompatibilityUtils.setSilent(armorStand, true);
         CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
+        update(armorStand);
         CompatibilityUtils.addToWorld(location.getWorld(), armorStand, spawnReason);
 
-        return super.start(context);
+        return armorStand;
     }
 
-    @Override
-    public SpellResult step(CastContext context) {
-        SpellResult result = super.step(context);
-        ArmorStand armorStand = (ArmorStand)entity;
-        double t = (double)flightTime / 1000;
-        Location currentLocation = entity.getLocation();
+    protected void update(ArmorStand armorStand) {
 
+        double t = (double)flightTime / 1000;
+        Location currentLocation = armorStand.getLocation();
         if (leftArmTransform != null) {
             Vector direction = leftArmTransform.get(launchLocation, t);
             armorStand.setLeftArmPose(new EulerAngle(direction.getX(), direction.getY(), direction.getZ()));
@@ -179,6 +176,16 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
             headPose = headPose.setX(Math.toRadians(currentLocation.getPitch()));
             armorStand.setHeadPose(headPose);
         }
+    }
+
+    @Override
+    public SpellResult step(CastContext context) {
+        SpellResult result = super.step(context);
+        if (entity == null) {
+            return SpellResult.FAIL;
+        }
+        ArmorStand armorStand = (ArmorStand)entity;
+        update(armorStand);
         return result;
     }
 }
