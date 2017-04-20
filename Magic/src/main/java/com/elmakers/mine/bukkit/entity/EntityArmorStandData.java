@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.entity;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -24,6 +25,7 @@ public class EntityArmorStandData extends EntityExtraData {
     public boolean hasArms;
     public boolean isSmall;
     public boolean hasBasePlate;
+    public int disabledSlots;
 
     public EntityArmorStandData() {
 
@@ -52,6 +54,7 @@ public class EntityArmorStandData extends EntityExtraData {
         isSmall = armorStand.isSmall();
         hasBasePlate = armorStand.hasBasePlate();
         isMarker = armorStand.isMarker();
+        disabledSlots = CompatibilityUtils.getDisabledSlots(armorStand);
     }
 
     public EntityArmorStandData(ConfigurationSection parameters) {
@@ -60,6 +63,7 @@ public class EntityArmorStandData extends EntityExtraData {
         hasBasePlate = !parameters.getBoolean("baseplate", true);
         hasGravity = parameters.getBoolean("gravity", true);
         isMarker = parameters.getBoolean("marker", false);
+        disabledSlots = parameters.getInt("disabled_slots", 0);
     }
 
     @Override
@@ -84,6 +88,7 @@ public class EntityArmorStandData extends EntityExtraData {
         armorStand.setSmall(isSmall);
         armorStand.setBasePlate(hasBasePlate);
         armorStand.setMarker(isMarker);
+        CompatibilityUtils.setDisabledSlots(armorStand, disabledSlots);
     }
 
     @Override
@@ -106,6 +111,7 @@ public class EntityArmorStandData extends EntityExtraData {
         copy.isSmall = isSmall;
         copy.hasBasePlate = hasBasePlate;
         copy.isMarker = isMarker;
+        copy.disabledSlots = disabledSlots;
         return copy;
     }
 

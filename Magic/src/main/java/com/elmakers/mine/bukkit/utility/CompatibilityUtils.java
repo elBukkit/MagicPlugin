@@ -916,6 +916,17 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static int getDisabledSlots(ArmorStand armorStand) {
+        if (class_EntityArmorStand_disabledSlotsField == null) return 0;
+        try {
+            Object handle = getHandle(armorStand);
+            return (int)class_EntityArmorStand_disabledSlotsField.get(handle);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
     public static void setYawPitch(Entity entity, float yaw, float pitch) {
         try {
             Object handle = getHandle(entity);
