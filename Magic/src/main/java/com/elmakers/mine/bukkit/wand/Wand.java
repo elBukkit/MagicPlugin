@@ -212,9 +212,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     private boolean hasSpellProgression = false;
 
-    private long lastLocationTime;
-    private Vector lastLocation;
-
     private long lastSoundEffect;
     private long lastParticleEffect;
     private long lastSpellCast;
@@ -3275,15 +3272,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (playEffects && effectParticle != null && effectParticleInterval > 0 && effectParticleCount > 0) {
             boolean velocityCheck = true;
             if (effectParticleMinVelocity > 0) {
-                if (lastLocation != null && lastLocationTime != 0) {
-                    double velocitySquared = effectParticleMinVelocity * effectParticleMinVelocity;
-                    Vector velocity = lastLocation.subtract(mageLocation);
-                    velocity.setY(0);
-                    double speedSquared = velocity.lengthSquared() * 1000 / (now - lastLocationTime);
-                    velocityCheck = (speedSquared > velocitySquared);
-                } else {
-                    velocityCheck = false;
-                }
+				double velocitySquared = effectParticleMinVelocity * effectParticleMinVelocity;
+				Vector velocity = mage.getVelocity().clone();
+				velocity.setY(0);
+				double speedSquared = velocity.lengthSquared();
+				velocityCheck = (speedSquared > velocitySquared);
             }
 			if (velocityCheck && (lastParticleEffect == 0 || now > lastParticleEffect + effectParticleInterval)) {
                 lastParticleEffect = now;
@@ -3317,26 +3310,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (lastSpellCast == 0 || now > lastSpellCast + castInterval) {
 				boolean velocityCheck = true;
 				if (castMinVelocity > 0) {
-					if (lastLocation != null && lastLocationTime != 0) {
-						double velocitySquared = castMinVelocity * castMinVelocity;
-						Vector velocity = lastLocation.subtract(mageLocation).multiply(-1);
-						if (castVelocityDirection != null) {
-							velocity = velocity.multiply(castVelocityDirection);
+					double velocitySquared = castMinVelocity * castMinVelocity;
+					Vector velocity = mage.getVelocity();
+					if (castVelocityDirection != null) {
+						velocity = velocity.clone().multiply(castVelocityDirection);
 
-							// This is kind of a hack to make jump-detection work.
-							if (castVelocityDirection.getY() < 0) {
-								velocityCheck = velocity.getY() < 0;
-							} else {
-								velocityCheck = velocity.getY() > 0;
-							}
+						// This is kind of a hack to make jump-detection work.
+						if (castVelocityDirection.getY() < 0) {
+							velocityCheck = velocity.getY() < 0;
+						} else {
+							velocityCheck = velocity.getY() > 0;
 						}
-						if (velocityCheck)
-						{
-							double speedSquared = velocity.lengthSquared() * 1000 / (now - lastLocationTime);
-							velocityCheck = (speedSquared > velocitySquared);
-						}
-					} else {
-						velocityCheck = false;
+					}
+					if (velocityCheck)
+					{
+						double speedSquared = velocity.lengthSquared();
+						velocityCheck = (speedSquared > velocitySquared);
 					}
 				}
 				if (velocityCheck) {
@@ -3367,9 +3356,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 effectSound.play(controller.getPlugin(), mage.getPlayer());
             }
 		}
-
-        lastLocation = mageLocation;
-        lastLocationTime = now;
 	}
 
     protected void updateDurability() {
@@ -4098,8 +4084,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         lastSoundEffect = 0;
         lastParticleEffect = 0;
         lastSpellCast = 0;
-        lastLocationTime = 0;
-        lastLocation = null;
         if (forceUpdate) {
             DeprecatedUtils.updateInventory(player);
         }

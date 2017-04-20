@@ -137,6 +137,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean quiet = false;
     private EntityData entityData;
     private long lastTick;
+    private Location lastLocation;
+    private Vector velocity = new Vector();
     private long lastBlockTime;
     private long ignoreItemActivationUntil = 0;
 
@@ -1211,18 +1213,46 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public Vector getVelocity() {
+        return velocity;
+    }
+
+    protected void updateVelocity() {
+        if (lastLocation != null) {
+            Location currentLocation = getLocation();
+            if (currentLocation.getWorld().equals(lastLocation.getWorld())) {
+                long interval = System.currentTimeMillis() - lastTick;
+                velocity.setX((currentLocation.getX() - lastLocation.getX()) * 1000 / interval);
+                velocity.setY((currentLocation.getY() - lastLocation.getY()) * 1000 / interval);
+                velocity.setZ((currentLocation.getZ() - lastLocation.getZ()) * 1000 / interval);
+            } else {
+                velocity.setX(0);
+                velocity.setY(0);
+                velocity.setZ(0);
+            }
+        }
+        lastLocation = getLocation().clone();
+    }
+
+    @Override
     public void tick() {
-        if (entityData != null && isValid()) {
-            long now = System.currentTimeMillis();
+        if (!isValid()) return;
+
+        long now = System.currentTimeMillis();
+        if (entityData != null) {
             if (lastTick != 0) {
                 long tickInterval = entityData.getTickInterval();
                 if (now - lastTick > tickInterval) {
+                    updateVelocity();
                     entityData.tick(this);
                     lastTick = now;
                 }
             } else {
                 lastTick = now;
             }
+        } else {
+            updateVelocity();
+            lastTick = now;
         }
         
         Player player = getPlayer();

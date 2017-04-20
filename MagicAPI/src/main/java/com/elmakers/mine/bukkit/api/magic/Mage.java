@@ -508,6 +508,13 @@ public interface Mage extends CostReducer {
     boolean isVehicleJumping();
 
     /**
+     * Return the current movement vector of this entity, in blocks per second.
+     *
+     * This is a computed value, and is not the same as getEntity().getVelocity.
+     */
+    Vector getVelocity();
+
+    /**
      * This method is deprecated, soul wand functionality was never implemented.
      *
      * Get the Mage's "soul" wand. This represents all of the
