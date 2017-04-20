@@ -1221,6 +1221,33 @@ steal_ferrari:
       braking: 0.005
       steer_speed: 0.05
 
+buyshop:
+    icon: sulphur
+    category: shop
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: false
+        auto_close: false
+        use_items: false
+
+sellshop:
+    icon: sulphur
+    category: shop
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: false
+        auto_close: false
+        use_items: false
+        sell: true
+
 gunshop:
     icon: wood_hoe:14
     inherit: buyshop
