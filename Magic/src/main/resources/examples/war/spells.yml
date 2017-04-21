@@ -135,6 +135,8 @@ sniper:
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: combat
     worth: 9999
+    require_break: false
+    require_build: false
     actions:
         cast:
         - class: ChangeContext
