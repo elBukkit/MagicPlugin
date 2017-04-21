@@ -93,6 +93,7 @@ import javax.annotation.Nullable;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
+    public static int UPDATE_FREQUENCY = 5;
     public static int CHANGE_WORLD_EQUIP_COOLDOWN = 1000;
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     public static int OFFHAND_CAST_RANGE = 32;
@@ -137,6 +138,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean quiet = false;
     private EntityData entityData;
     private long lastTick;
+    private int updateTicks = 0;
     private Location lastLocation;
     private Vector velocity = new Vector();
     private long lastBlockTime;
@@ -1261,6 +1263,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // We don't tick non-player or offline Mages, except
         // above where entityData is ticked if present.
         if (player != null && player.isOnline()) {
+            // We only update all of this at a configurable interval,
+            // as it could have performance concerns.
+            if (updateTicks++ < UPDATE_FREQUENCY) return;
+            updateTicks = 0;
+
             checkWand();
             if (activeWand != null) {
                 activeWand.tick();

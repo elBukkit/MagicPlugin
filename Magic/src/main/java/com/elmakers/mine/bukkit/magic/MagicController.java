@@ -1014,7 +1014,7 @@ public class MagicController implements MageController {
 
         // Set up the PlayerSpells timer
         final MageUpdateTask mageTask = new MageUpdateTask(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mageTask, 0, mageUpdateFrequency);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mageTask, 0, workFrequency);
 
         // Set up the Block update timer
         final BatchUpdateTask blockTask = new BatchUpdateTask(this);
@@ -2196,7 +2196,7 @@ public class MagicController implements MageController {
 		undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);
-        mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
+        com.elmakers.mine.bukkit.magic.Mage.UPDATE_FREQUENCY = properties.getInt("mage_update_frequency", com.elmakers.mine.bukkit.magic.Mage.UPDATE_FREQUENCY);
         undoFrequency = properties.getInt("undo_frequency", undoFrequency);
 		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
@@ -5148,7 +5148,6 @@ public class MagicController implements MageController {
     private int								    toggleCooldown				= 1000;
     private int								    toggleMessageRange			= 1024;
 
-    private int                                 mageUpdateFrequency         = 20;
     private int                                 workFrequency               = 1;
     private int                                 undoFrequency               = 10;
     private int								    workPerUpdate				= 5000;
