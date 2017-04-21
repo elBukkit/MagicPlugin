@@ -2871,7 +2871,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
             for (Map.Entry<PotionEffectType, Integer> effects : effectivePotionEffects.entrySet()) {
-                PotionEffect effect = new PotionEffect(effects.getKey(), Integer.MAX_VALUE, effects.getValue(), true);
+                PotionEffect effect = new PotionEffect(effects.getKey(), Integer.MAX_VALUE, effects.getValue(), true, false);
                 CompatibilityUtils.applyPotionEffect(entity, effect);
             }
         }
