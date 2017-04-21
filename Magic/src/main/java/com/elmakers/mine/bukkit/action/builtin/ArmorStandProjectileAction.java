@@ -12,7 +12,6 @@ import de.slikey.effectlib.math.VectorTransform;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -80,7 +79,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
         unbreakableItems = parameters.getBoolean("unbreakable_items", false);
         visibleDelayTicks = parameters.getInt("visible_delay_ticks", 1);
-        
+
         MageController controller = context.getController();
         ItemData itemType = controller.getOrCreateItem(parameters.getString("right_arm_item"));
         if (itemType != null) {
@@ -120,9 +119,10 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     }
 
     @Override
-    protected Entity spawnEntity(Location location) {
-        ArmorStand armorStand = CompatibilityUtils.spawnArmorStand(location);
-        CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
+    public SpellResult start(CastContext context) {
+        MageController controller = context.getController();
+        Location location = adjustLocation(sourceLocation.getLocation(context));
+        ArmorStand armorStand = (ArmorStand)setEntity(controller, CompatibilityUtils.spawnArmorStand(location));
         armorStand.setMarker(armorStandMarker);
         armorStand.setVisible(!armorStandInvisible);
         armorStand.setBasePlate(showArmorStandBaseplate);
@@ -134,13 +134,13 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         update(armorStand);
         CompatibilityUtils.addToWorld(location.getWorld(), armorStand, spawnReason);
 
-        return armorStand;
+        return super.start(context);
     }
 
     protected void update(ArmorStand armorStand) {
-
         double t = (double)flightTime / 1000;
         Location currentLocation = armorStand.getLocation();
+
         if (leftArmTransform != null) {
             Vector direction = leftArmTransform.get(launchLocation, t);
             armorStand.setLeftArmPose(new EulerAngle(direction.getX(), direction.getY(), direction.getZ()));

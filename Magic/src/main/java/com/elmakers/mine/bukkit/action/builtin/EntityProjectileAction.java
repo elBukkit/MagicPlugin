@@ -156,6 +156,18 @@ public class EntityProjectileAction extends CustomProjectileAction {
         return entity;
     }
 
+    @Override
+    public SpellResult start(CastContext context) {
+        if (entity == null && entityType != null) {
+            Location location = adjustLocation(sourceLocation.getLocation(context));
+            setEntity(context.getController(), CompatibilityUtils.spawnEntity(location, entityType, spawnReason));
+        }
+        if (entity == null) {
+            return SpellResult.FAIL;
+        }
+        return super.start(context);
+    }
+
     protected Location adjustLocation(Location target) {
         // TODO: locationOffset and velocityOffset should be made relative
         if (locationOffset != null) {
@@ -164,30 +176,16 @@ public class EntityProjectileAction extends CustomProjectileAction {
         return target;
     }
 
-    protected Entity spawnEntity(Location location) {
-        if (entityType != null) {
-            return CompatibilityUtils.spawnEntity(location, entityType, spawnReason);
-        }
-        return null;
-    }
-
     @Override
     public SpellResult step(CastContext context) {
         SpellResult result = super.step(context);
-        Location target = adjustLocation(actionContext.getTargetLocation());
-
         if (entity == null) {
-            Location location = adjustLocation(target);
-            Entity spawned = spawnEntity(location);
-            if (spawned == null) {
-                return SpellResult.FAIL;
-            }
-            setEntity(context.getController(), spawned);
-            return result;
+            return SpellResult.CAST;
         }
 
         // Note that in testing it somehow doesn't seem to matter if we adjust the location here
         // I really have no idea why, but it seems to work OK if we adjust it on spawn.
+        Location target = adjustLocation(actionContext.getTargetLocation());
         if (doVelocity) {
             Vector velocity = this.velocity.clone().multiply(distanceTravelledThisTick);
             if (velocityOffset != null) {
