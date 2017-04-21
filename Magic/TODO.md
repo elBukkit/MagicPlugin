@@ -32,11 +32,6 @@
 
 ## High-Priority
 
- - Broomstick glitch?
- i made my broomstick a friggin wand!
- i flied while using phase
- iy now got spells
-
  - Recall warps don't show up with /mage describe?
   
 ## Not so High-Priority
@@ -57,7 +52,6 @@
 
  - Async config load on startup option
  - Add probability table to mob drops
- - Add ignore_entity_types parameter
  - Allow multiple welcome_wand entries
  - An attribute that lets spells level up more quickly
  - Add some sort of integration with Partec plugin

@@ -51,6 +51,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean								targetUnknown			= true;
     protected Class<?>                          targetEntityType        = null;
     protected Set<EntityType>                   targetEntityTypes       = null;
+    protected Set<EntityType>                   ignoreEntityTypes       = null;
     protected Material                          targetContents          = null;
     protected double 		                    targetBreakables	    = 0;
     protected boolean                           instantBlockEffects     = false;
@@ -321,6 +322,10 @@ public abstract class TargetingSpell extends BaseSpell {
         if (entity.hasMetadata("notarget")) return false;
         if (!targetNPCs && controller.isNPC(entity)) return false;
         if (!targetArmorStands && entity instanceof ArmorStand) return false;
+        if (ignoreEntityTypes != null && ignoreEntityTypes.contains(entity.getType())) {
+            return false;
+        }
+
         if (damageResistanceProtection > 0 && entity instanceof LivingEntity)
         {
             LivingEntity living = (LivingEntity)entity;
@@ -555,6 +560,20 @@ public abstract class TargetingSpell extends BaseSpell {
         } else {
             targetEntityType = null;
             targetEntityTypes = null;
+        }
+        if (parameters.contains("ignore_types")) {
+            ignoreEntityTypes = new HashSet<>();
+            Collection<String> typeKeys = ConfigurationUtils.getStringList(parameters, "ignore_types");
+            for (String typeKey : typeKeys) {
+                try {
+                    EntityType entityType = EntityType.valueOf(typeKey.toUpperCase());
+                    ignoreEntityTypes.add(entityType);
+                } catch (Throwable ex) {
+                    controller.getLogger().warning("Unknown entity type in ignore_types of " + getKey() + ": " + typeKey);
+                }
+            }
+        } else {
+            ignoreEntityTypes = null;
         }
 
         targetContents = ConfigurationUtils.getMaterial(parameters, "target_contents", null);
