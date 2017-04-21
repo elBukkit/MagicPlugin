@@ -514,6 +514,9 @@ public interface Mage extends CostReducer {
      */
     Vector getVelocity();
 
+    void setVanished(boolean vanished);
+    boolean isVanished();
+
     /**
      * This method is deprecated, soul wand functionality was never implemented.
      *

@@ -150,6 +150,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected float damageReductionFire = 0;
     protected float damageReductionExplosions = 0;
 
+    protected boolean isVanished = false;
     protected long superProtectionExpiration = 0;
 
     private Map<Integer, Wand> activeArmor = new HashMap<>();
@@ -3192,6 +3193,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         LivingEntity li = getLivingEntity();
         if (li == null) return false;
         return CompatibilityUtils.isJumping(li);
+    }
+
+    @Override
+    public void setVanished(boolean vanished) {
+        Player thisPlayer = getPlayer();
+        if (thisPlayer != null && isVanished != vanished) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (vanished) {
+                    player.hidePlayer(thisPlayer);
+                } else {
+                    player.showPlayer(thisPlayer);
+                }
+            }
+        }
+        isVanished = vanished;
+    }
+
+    @Override
+    public boolean isVanished() {
+        return isVanished;
     }
 }
 
