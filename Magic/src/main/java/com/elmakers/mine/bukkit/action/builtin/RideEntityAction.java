@@ -64,6 +64,7 @@ public class RideEntityAction extends BaseSpellAction
     private long nextSoundPlay;
     private boolean noTarget = true;
     private Class<?> crashEntityType;
+    private double crashDismountSpeed;
     private double crashEntityDistance;
     private double crashVelocityYOffset = 0;
     private double crashVelocity = 0;
@@ -141,6 +142,7 @@ public class RideEntityAction extends BaseSpellAction
         crashEntityDamage = parameters.getDouble("crash_entity_damage" , 0.0);
         crashBraking = parameters.getDouble("crash_braking" , 0.0);
         crashEntityFOV = parameters.getDouble("crash_entity_fov" , 0.3);
+        crashDismountSpeed = parameters.getDouble("crash_dismount_speed", 0.0);
         fallProtection = parameters.getInt("fall_protection", 0);
         if (parameters.contains("direction_y")) {
             yDirection = parameters.getDouble("direction_y");
@@ -213,19 +215,20 @@ public class RideEntityAction extends BaseSpellAction
         {
             Vector threshold = direction.clone().multiply(speed * crashDistance);
             if (checkForCrash(context, mounted.getLocation(), threshold)) {
-                crash(context);
-                return SpellResult.CAST;
+                if (crash(context)) {
+                    return SpellResult.CAST;
+                }
             }
         }
         if (!context.isPassthrough(mounted.getLocation().getBlock().getType())) {
-            crash(context);
-            return SpellResult.CAST;
+            if (crash(context)) {
+                return SpellResult.CAST;
+            }
         }
         if (crashEntityType != null && speed > 0 && crashEntityDistance > 0 && maxSpeed > 0) {
             List<Entity> nearby = mounted.getNearbyEntities(crashEntityDistance, crashEntityDistance, crashEntityDistance);
-            Vector crashDirection = direction;
+            Vector crashDirection = direction.clone();
             if (crashVelocityYOffset > 0) {
-                crashDirection = crashDirection.clone();
                 crashDirection.setY(crashDirection.getY() + crashVelocityYOffset).normalize();
             }
             Vector velocity = crashDirection.multiply(crashVelocity * speed / maxSpeed);
@@ -426,14 +429,11 @@ public class RideEntityAction extends BaseSpellAction
         }
     }
 
-    protected void crash(CastContext context)
+    protected boolean crash(CastContext context)
     {
         context.sendMessageKey("crash");
         context.playEffects("crash");
         Entity mountedEntity = context.getEntity();
-        if (crashEffects != null && mountedEntity != null && crashEffects.size() > 0 && mountedEntity instanceof LivingEntity) {
-            CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, crashEffects);
-        }
         double damage = maxSpeed > 0 ? crashDamage * speed / maxSpeed : crashDamage;
         if (crashDamage > 0) {
             if (mount != null && mount.isValid() && mount instanceof Damageable) {
@@ -443,7 +443,22 @@ public class RideEntityAction extends BaseSpellAction
                 CompatibilityUtils.damage((Damageable)mountedEntity, damage, mount);
             }
         }
-        warningEffectsApplied = false;
+        boolean dismount = (speed >= crashDismountSpeed);
+        if (dismount) {
+            if (crashVelocity > 0) {
+                Vector crashDirection = direction.clone();
+                if (crashVelocityYOffset > 0) {
+                    crashDirection.setY(crashDirection.getY() + crashVelocityYOffset).normalize();
+                }
+                Vector velocity = crashDirection.multiply(crashVelocity * speed / maxSpeed);
+                mountedEntity.setVelocity(velocity);
+            }
+            if (crashEffects != null && mountedEntity != null && crashEffects.size() > 0 && mountedEntity instanceof LivingEntity) {
+                CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, crashEffects);
+            }
+            warningEffectsApplied = false;
+        }
+        return dismount;
     }
 
     protected boolean checkForCrash(CastContext context, Location source, Vector threshold)

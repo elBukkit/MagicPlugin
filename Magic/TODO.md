@@ -2,19 +2,13 @@
 
 ## 7.0
 
- - Refactor mana into BaseConfigurable
  - Maybe reconsider config-collapsing approach, switch to routing on get/set ?
- - Add commands:
-   - /mage activate <class>
-   - /mage unlock <class>
-   - /mage reset <class?>
 
  - Move property holder configs to wands (? How to handle /mage configure? Maybe not...)
- - Stash chest is broken
  
  - Rename WandUpgradePath to Progression path, Deprecate old API classes (can't do this without breaking API changes?)
  - Wand templates will specify properties that come from the Mage versus item data. 
- - Need a default class, Mages have an active class
+ - Need a default class option?
  - Handle migration for the above.
  - How to handle /wand commands used for Mage properties- just transfer to mage, probably?
  - Implement /mage add, remove

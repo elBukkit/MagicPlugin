@@ -1196,6 +1196,7 @@ drive:
         crash_vehicle_damage: 1
         crash_distance: 1
         crash_into: LivingEntity
+        crash_dismount_speed: 0.75
         crash_effects:
           confusion: 120,3
 
