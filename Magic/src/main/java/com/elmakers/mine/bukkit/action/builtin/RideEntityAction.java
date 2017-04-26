@@ -458,6 +458,7 @@ public class RideEntityAction extends BaseSpellAction
             }
             warningEffectsApplied = false;
         }
+        speed = 0;
         return dismount;
     }
 
