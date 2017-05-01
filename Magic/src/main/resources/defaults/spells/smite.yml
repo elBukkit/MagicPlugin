@@ -35,6 +35,7 @@ smite:
         allow_max_range: true
         range: 32
         radius: 3
+        damage_max_distance: 4
         cooldown: 15000
         effect_only: true
         damage: 4
