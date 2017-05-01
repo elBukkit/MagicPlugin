@@ -106,7 +106,6 @@ public class CompatibilityUtils extends NMSUtils {
             if (currentEffect.getType().equals(effect.getType())) {
                 if (effect.getAmplifier() < 0) {
                     applyEffect = false;
-                    entity.removePotionEffect(effect.getType());
                     break;
                 } else if (currentEffect.getAmplifier() > effect.getAmplifier() || effect.getDuration() > Integer.MAX_VALUE / 4) {
                     applyEffect = false;
