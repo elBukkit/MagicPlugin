@@ -10,6 +10,7 @@ polymorph:
       - class: CustomProjectile
         actions:
         - class: Disguise
+        - class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -49,6 +50,8 @@ polymorph:
         target_breakables: 1
         target: other
         undo: 20000
+        duration: 20000
+        effect_slow: 2
         hitbox: true
         cooldown: 30000
 
