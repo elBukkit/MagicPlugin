@@ -22,6 +22,7 @@
  - Guns are now less accurate if used while moving
  - Add "ignore_types" optional list to spells, for ignoring specific entity types when targeting
  - Fix broomsticks randomly re-mounting players while riding
+ - Fix Polymorph spell not undoing after 20 seconds as advertised
 
 ## 6.9.5
 

@@ -48,7 +48,7 @@ polymorph:
         target_type: LivingEntity
         target_breakables: 1
         target: other
-        duration: 20000
+        undo: 20000
         hitbox: true
         cooldown: 30000
 
