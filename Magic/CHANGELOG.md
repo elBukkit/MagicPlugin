@@ -23,6 +23,7 @@
  - Add "ignore_types" optional list to spells, for ignoring specific entity types when targeting
  - Fix broomsticks randomly re-mounting players while riding
  - Fix Polymorph spell not undoing after 20 seconds as advertised
+ - The Silence spell will now work on Heroes skills as well (applies a cooldown to them)
 
 ## 6.9.5
 

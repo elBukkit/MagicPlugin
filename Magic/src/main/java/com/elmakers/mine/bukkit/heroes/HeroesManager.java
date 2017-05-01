@@ -11,11 +11,7 @@ import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
 import com.herocraftonline.heroes.characters.party.HeroParty;
-import com.herocraftonline.heroes.characters.skill.ActiveSkill;
-import com.herocraftonline.heroes.characters.skill.Skill;
-import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
-import com.herocraftonline.heroes.characters.skill.SkillManager;
-import com.herocraftonline.heroes.characters.skill.SkillSetting;
+import com.herocraftonline.heroes.characters.skill.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
@@ -156,6 +152,27 @@ public class HeroesManager {
         addSkills(hero, heroClass, skillSet, showUnuseable, showPassive);
         addSkills(hero, secondClass, skillSet, showUnuseable, showPassive);
         return skillSet;
+    }
+
+    public void clearCooldown(Player player) {
+        Hero hero = getHero(player);
+        if (hero == null) return;
+
+        hero.clearCooldowns();
+    }
+
+    public void setCooldown(Player player, long ms) {
+        Hero hero = getHero(player);
+        if (hero == null) return;
+
+        long cooldown = System.currentTimeMillis() + ms;
+        Set<String> skills = getSkills(player, false, false);
+        for (String skill : skills) {
+            Long currentCooldown = hero.getCooldown(skill);
+            if (currentCooldown == null || currentCooldown < cooldown) {
+                hero.setCooldown(skill, cooldown);
+            }
+        }
     }
 
     public SpellTemplate createSkillSpell(MagicController controller, String skillName) {
