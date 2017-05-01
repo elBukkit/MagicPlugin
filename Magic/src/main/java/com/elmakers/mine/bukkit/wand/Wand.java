@@ -4654,7 +4654,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 			inventory.setItem(i, null);
 		}
-        heldSlot = inventory.getHeldItemSlot();
 		inventory.setItem(heldSlot, item);
 
         return true;
