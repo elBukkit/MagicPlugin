@@ -246,8 +246,7 @@ public class InventoryController implements Listener {
         } 
             
         if (clickedWand && Wand.Undroppable && !player.hasPermission("Magic.wand.override_drop") && isChest && !isContainerSlot) {
-            Wand wand = controller.getWand(clickedItem);
-            if (wand.isUndroppable()) {
+            if (controller.getWandProperty(clickedItem, "undroppable", false)) {
                 event.setCancelled(true);
                 return;
             }
@@ -265,8 +264,7 @@ public class InventoryController implements Listener {
         // or dropping undroppable wands
         if (isDrop) {
             if (clickedWand) {
-                Wand wand = controller.getWand(clickedItem);
-                if (wand.isUndroppable()) {
+                if (controller.getWandProperty(clickedItem, "undroppable", false)) {
                     event.setCancelled(true);
                     if (activeWand != null) {
                         if (activeWand.getHotbarCount() > 1) {

@@ -293,6 +293,9 @@ public class PlayerController implements Listener {
                 cancelEvent = true;
             }
         }
+        if (!cancelEvent && controller.getWandProperty(droppedItem, "undroppable", false)) {
+            cancelEvent = true;
+        }
         if (cancelEvent) {
             if (droppedWand) {
                 activeWand.setItem(droppedItem);
