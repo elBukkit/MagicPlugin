@@ -192,6 +192,7 @@ public class NMSUtils {
     protected static Method class_CraftItemStack_mirrorMethod;
     protected static Method class_NBTTagCompound_hasKeyMethod;
     protected static Method class_CraftWorld_getTileEntityAtMethod;
+    protected static Method class_CraftWorld_createEntityMethod;
     protected static Method class_CraftWorld_spawnMethod;
     protected static boolean class_CraftWorld_spawnMethod_isLegacy;
     protected static Method class_Entity_setLocationMethod;
@@ -233,7 +234,6 @@ public class NMSUtils {
     protected static Constructor class_PacketPlayOutAnimation_Constructor;
     protected static Constructor class_PacketPlayOutBlockBreakAnimation_Constructor;
     protected static Constructor class_ChestLock_Constructor;
-    protected static Constructor class_ArmorStand_Constructor;
     protected static Constructor class_AxisAlignedBB_Constructor;
     protected static Constructor class_ItemStack_consructor;
     protected static Constructor class_NBTTagString_consructor;
@@ -528,7 +528,6 @@ public class NMSUtils {
             class_BlockPosition_Constructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
             class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
-            class_ArmorStand_Constructor = class_EntityArmorStand.getConstructor(class_World);
 
             // TODO: Server.getEntity(UUID) in 1.11+
             class_WorldServer_entitiesByUUIDField = class_WorldServer.getDeclaredField("entitiesByUUID");
@@ -594,6 +593,7 @@ public class NMSUtils {
             try {
                 try {
                     // 1.11.?
+                    class_CraftWorld_createEntityMethod = class_CraftWorld.getMethod("createEntity", Location.class, Class.class);
                     class_Consumer = fixBukkitClass("org.bukkit.util.Consumer");
                     class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, class_Consumer, CreatureSpawnEvent.SpawnReason.class);
                     class_CraftWorld_spawnMethod_isLegacy = false;

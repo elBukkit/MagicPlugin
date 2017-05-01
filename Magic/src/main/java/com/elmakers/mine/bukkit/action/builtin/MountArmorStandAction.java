@@ -76,6 +76,8 @@ public class MountArmorStandAction extends RideEntityAction
         }
 
         // This seems to happen occasionally... guess we'll work around it for now.
+        // TODO: Remove this, was an issue with how I was spawning armor stands and should no
+        // longer be a problem.
         if (mount != null) {
             mount.remove();
         }

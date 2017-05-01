@@ -324,9 +324,7 @@ public class CompatibilityUtils extends NMSUtils {
     {
         ArmorStand armorStand = null;
         try {
-            Object worldHandle = getHandle(location.getWorld());
-            Object newEntity = null;
-            newEntity = class_ArmorStand_Constructor.newInstance(worldHandle);
+            Object newEntity = class_CraftWorld_createEntityMethod.invoke(location.getWorld(), location, ArmorStand.class);
             if (newEntity != null) {
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof ArmorStand)) return null;
@@ -335,9 +333,6 @@ public class CompatibilityUtils extends NMSUtils {
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
-        }
-        if (armorStand != null) {
-            armorStand.teleport(location);
         }
         return armorStand;
     }
