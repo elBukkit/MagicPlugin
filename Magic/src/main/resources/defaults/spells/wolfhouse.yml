@@ -3,7 +3,7 @@ wolfhouse:
     icon_disabled: diamond_hoe:158
     hidden: true
     icon_url: http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b
-    category: master
+    category: engineering
     class: ConstructSpell
     worth: 1000
     cancellable: false
