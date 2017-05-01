@@ -10,7 +10,11 @@ wither:
     earns_sp: 10
     actions:
         cast:
-        -  class: Projectile
+        - class: Projectile
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
