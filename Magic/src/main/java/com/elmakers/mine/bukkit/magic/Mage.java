@@ -1235,9 +1235,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         lastLocation = getLocation();
-        if (lastLocation != null) {
-            lastLocation = lastLocation.clone();
-        }
     }
 
     @Override
