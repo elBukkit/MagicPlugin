@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.7
+
 ## 6.9.6
 
  - Fix image map file not saving in some environments (Windows, I think?)
