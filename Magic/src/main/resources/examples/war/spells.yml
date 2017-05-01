@@ -1187,13 +1187,14 @@ drive:
         mount_untargetable: false
         crash_speed: 0.1
         crash_damage: 10
+        crash_vehicle_damage: 8
         crash_braking: 0.1
         crash_entity_fov: 0.5
         crash_entity_damage: 30
+        crash_entity_vehicle_damage: 1
         crash_velocity_y_offset: 0.2
         crash_velocity: 2.0
         crash_entity_distance: 2.5
-        crash_vehicle_damage: 1
         crash_distance: 1
         crash_into: LivingEntity
         crash_dismount_speed: 0.75
