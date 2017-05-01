@@ -2487,8 +2487,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (hotbar == null) return false;
 
         // Make sure the wand is still in the held slot
-		int currentSlot = playerInventory.getHeldItemSlot();
-        ItemStack currentItem = playerInventory.getItem(currentSlot);
+        ItemStack currentItem = playerInventory.getItem(heldSlot);
         if (currentItem == null || !currentItem.getItemMeta().equals(item.getItemMeta())) {
         	controller.getLogger().warning("Trying to update hotbar but the wand has gone missing");
             return false;
@@ -2498,7 +2497,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		int targetOffset = 0;
 		for (int hotbarSlot = 0; hotbarSlot < HOTBAR_INVENTORY_SIZE; hotbarSlot++)
 		{
-			if (hotbarSlot == currentSlot)
+			if (hotbarSlot == heldSlot)
 			{
 				targetOffset = 1;
 			}
