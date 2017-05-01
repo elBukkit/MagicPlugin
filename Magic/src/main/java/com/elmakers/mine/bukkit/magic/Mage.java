@@ -1234,7 +1234,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 velocity.setZ(0);
             }
         }
-        lastLocation = getLocation().clone();
+        lastLocation = getLocation();
+        if (lastLocation != null) {
+            lastLocation = lastLocation.clone();
+        }
     }
 
     @Override
