@@ -44,7 +44,7 @@ public class DamageAction extends BaseSpellAction
 			percentage = null;
 		}
         magicDamage = parameters.getBoolean("magic_damage", true);
-		magicEntityDamage = parameters.getBoolean("magic_entity_damage", true);
+		magicEntityDamage = parameters.getBoolean("magic_entity_damage", magicDamage);
         if (parameters.contains("knockback_resistance")) {
             knockbackResistance = parameters.getDouble("knockback_resistance");
         } else {
