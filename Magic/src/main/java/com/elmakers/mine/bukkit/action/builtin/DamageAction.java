@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
@@ -100,8 +101,10 @@ public class DamageAction extends BaseSpellAction
 					}
 				}
 				if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
+					mage.sendDebugMessage(ChatColor.RED + "Damaging (Magic) " + targetEntity.getType() + ": " + damage, 20);
 					CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
 				} else {
+					mage.sendDebugMessage(ChatColor.RED + "Damaging " + targetEntity.getType() + ": " + damage, 20);
 					CompatibilityUtils.damage(targetEntity, damage, mage.getEntity());
 				}
 			}
