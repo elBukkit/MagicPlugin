@@ -29,6 +29,7 @@ public class DamageAction extends BaseSpellAction
 	private boolean magicEntityDamage;
 	private Double percentage;
 	private Double knockbackResistance;
+	private Double damageMultiplier;
 	private double maxDistanceSquared;
 
     @Override
@@ -39,6 +40,11 @@ public class DamageAction extends BaseSpellAction
         entityDamage = parameters.getDouble("entity_damage", damage);
         playerDamage = parameters.getDouble("player_damage", damage);
         elementalDamage = parameters.getDouble("elemental_damage", damage);
+        if (parameters.contains("damage_multiplier")) {
+			damageMultiplier = parameters.getDouble("damage_multiplier");
+		} else {
+        	damageMultiplier = null;
+		}
 		if (parameters.contains("percentage")) {
 			percentage = parameters.getDouble("percentage");
 		} else {
@@ -99,6 +105,9 @@ public class DamageAction extends BaseSpellAction
 					if (distanceSquared > 0) {
 						damage = damage * (1 - distanceSquared / maxDistanceSquared);
 					}
+				}
+				if (damageMultiplier != null) {
+					damage *= damageMultiplier;
 				}
 				if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
 					mage.sendDebugMessage(ChatColor.RED + "Damaging (Magic) " + targetEntity.getType() + ": " + damage, 20);

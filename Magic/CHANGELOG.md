@@ -15,6 +15,9 @@
 
 ## 6.9.7
 
+ - Headshot parameters for missile,railgun and blind changed to use multipliers. If you have overridden these
+   in your configs you may need to update. (set damage_multiplier or duration_multiplier to 1 in headshot_parameters)
+
 ## 6.9.6
 
  - Fix image map file not saving in some environments (Windows, I think?)

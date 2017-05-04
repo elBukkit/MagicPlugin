@@ -86,8 +86,7 @@ missile:
             size: 0.1
             yOffset: 0
     headshot_parameters:
-      player_damage: 4
-      entity_damage: 6
+      damage_multiplier: 1.5
     parameters:
         allow_max_range: true
         velocity: 200
@@ -110,9 +109,6 @@ missile|2:
     upgrade_required_path: student
     upgrade_required_casts: 50
     earns_cooldown: 600000
-    headshot_parameters:
-      player_damage: 5
-      entity_damage: 8
     parameters:
         range: 32
         player_damage: 3
@@ -126,9 +122,6 @@ missile|3:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     earns_cooldown: 900000
-    headshot_parameters:
-      player_damage: 6
-      entity_damage: 10
     parameters:
         range: 48
         player_damage: 4
@@ -139,9 +132,6 @@ missile|3:
         mana: 50
 
 missile|4:
-    headshot_parameters:
-      player_damage: 7
-      entity_damage: 11
     parameters:
         range: 64
         player_damage: 4

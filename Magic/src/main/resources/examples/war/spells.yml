@@ -253,8 +253,7 @@ sniper:
             size: 0.4
             yOffset: 0
     headshot_parameters:
-      player_damage: 30
-      entity_damage: 60
+      damage_multiplier: 4
     parameters:
         mage_cooldown: 1000
         velocity: 3000
@@ -397,8 +396,7 @@ ak47:
             size: 0.3
             yOffset: 0
     headshot_parameters:
-      player_damage: 4
-      entity_damage: 8
+      damage_multiplier: 1.5
     parameters:
         velocity: 2000
         range: 60
@@ -537,8 +535,7 @@ pistol:
             size: 0.3
             yOffset: 0
     headshot_parameters:
-      player_damage: 8
-      entity_damage: 16
+      damage_multiplier: 3
     parameters:
         velocity: 1500
         range: 40
@@ -679,8 +676,7 @@ shotgun:
             size: 0.3
             yOffset: 0
     headshot_parameters:
-      player_damage: 8
-      entity_damage: 16
+      damage_multiplier: 2
     parameters:
         velocity: 1500
         spread: 0.2

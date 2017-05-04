@@ -57,7 +57,7 @@ blind:
     costs:
         mana: 45
     headshot_parameters:
-      duration: 5000
+      duration_multiplier: 3
     parameters:
         velocity: 120
         range: 32

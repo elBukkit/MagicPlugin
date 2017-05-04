@@ -94,8 +94,7 @@ railgun:
             size: 0.3
             yOffset: 0
     headshot_parameters:
-      player_damage: 12
-      entity_damage: 20
+      damage_multiplier: 2
     parameters:
         destructible: destructible,destructible2,destructible3,transparent
         allow_max_range: true

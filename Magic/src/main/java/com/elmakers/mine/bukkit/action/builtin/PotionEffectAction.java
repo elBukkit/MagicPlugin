@@ -54,6 +54,9 @@ public class PotionEffectAction extends BaseSpellAction
         if (parameters.contains("duration"))
         {
             duration = parameters.getInt("duration");
+            if (parameters.contains("duration_multiplier")) {
+                duration = (int)Math.ceil(parameters.getDouble("duration_multiplier") * duration);
+            }
         }
         else
         {
@@ -69,6 +72,9 @@ public class PotionEffectAction extends BaseSpellAction
         if (parameters.contains("duration"))
         {
             int durationOverride = parameters.getInt("duration");
+            if (parameters.contains("duration_multiplier")) {
+                durationOverride = (int)Math.ceil(parameters.getDouble("duration_multiplier") * durationOverride);
+            }
             if (duration == null || durationOverride != duration)
             {
                 addEffects = BaseSpell.getPotionEffects(parameters, durationOverride);
