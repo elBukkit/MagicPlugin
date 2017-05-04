@@ -20,6 +20,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 public class EntityProjectileAction extends CustomProjectileAction {
@@ -38,11 +39,12 @@ public class EntityProjectileAction extends CustomProjectileAction {
     boolean isBaby;
 
     protected Entity entity = null;
+    protected Plugin plugin = null;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-
+        plugin = context.getPlugin();
         doVelocity = parameters.getBoolean("apply_velocity", true);
         doTeleport = parameters.getBoolean("teleport", true);
         noTarget = parameters.getBoolean("no_target", true);
@@ -206,6 +208,9 @@ public class EntityProjectileAction extends CustomProjectileAction {
     public void finishEffects() {
         super.finishEffects();
         if (entity != null) {
+            if (plugin != null) {
+                entity.removeMetadata("notarget", plugin);
+            }
             entity.remove();
             entity = null;
         }
