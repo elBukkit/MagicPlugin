@@ -193,7 +193,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             if (velocityOffset != null) {
                 velocity = velocity.add(velocityOffset);
             }
-            entity.setVelocity(velocity);
+            CompatibilityUtils.setVelocity(entity, velocity);
         }
         if (doTeleport) {
             if (orient) {

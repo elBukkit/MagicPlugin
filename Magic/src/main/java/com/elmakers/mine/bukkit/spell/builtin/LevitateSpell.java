@@ -360,7 +360,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (mountEntity != null) {
             ArmorStand activeArmorStand = armorStand != null ? armorStand : (mountEntity instanceof ArmorStand ? (ArmorStand)mountEntity : null);
             if (activeArmorStand != null) {
-                activeArmorStand.setVelocity(direction);
+                CompatibilityUtils.setVelocity(activeArmorStand, direction);
                 CompatibilityUtils.setYawPitch(activeArmorStand, location.getYaw() + (float)yawAmount, location.getPitch());
                 if (pitchAmount != 0) {
                     if (armorStandHead == null && useHelmet) {
@@ -373,10 +373,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     }
                 }
             } else {
-                mountEntity.setVelocity(direction);
+                CompatibilityUtils.setVelocity(mountEntity, direction);
             }
         } else {
-            player.setVelocity(direction);
+            CompatibilityUtils.setVelocity(player, direction);
         }
 
         if (effectParticle != null) {
@@ -928,12 +928,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
             if (mountEntity != null) {
                 if (armorStand != null) {
-                    armorStand.setVelocity(velocity);
+                    CompatibilityUtils.setVelocity(armorStand, velocity);
                 } else {
-                    mountEntity.setVelocity(velocity);
+                    CompatibilityUtils.setVelocity(mountEntity, velocity);
                 }
             } else {
-                player.setVelocity(velocity);
+                CompatibilityUtils.setVelocity(player, velocity);
             }
         }
         if (flight) {

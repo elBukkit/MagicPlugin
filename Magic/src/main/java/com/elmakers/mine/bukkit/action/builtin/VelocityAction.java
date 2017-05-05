@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import de.slikey.effectlib.util.MathUtils;
 import org.bukkit.ChatColor;
@@ -167,7 +168,7 @@ public class VelocityAction extends BaseSpellAction
                 ChatColor.AQUA + "Context direction: " + ChatColor.DARK_AQUA + context.getDirection() +
                 ChatColor.AQUA + "direction: " + ChatColor.DARK_AQUA + direction);
         } else {
-            entity.setVelocity(velocity);
+            CompatibilityUtils.setVelocity(entity, velocity);
         }
 
         return SpellResult.CAST;

@@ -76,7 +76,7 @@ public class ThrowItemAction extends BaseProjectileAction {
         }
         droppedItem.setMetadata("temporary", new FixedMetadataValue(context.getController().getPlugin(), true));
         CompatibilityUtils.ageItem(droppedItem, ageItems);
-        droppedItem.setVelocity(velocity);
+        CompatibilityUtils.setVelocity(droppedItem, velocity);
 
         track(context, droppedItem);
         return checkTracking(context);

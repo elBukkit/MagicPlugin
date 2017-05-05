@@ -17,6 +17,7 @@
 
  - Headshot parameters for missile,railgun and blind changed to use multipliers. If you have overridden these
    in your configs you may need to update. (set damage_multiplier or duration_multiplier to 1 in headshot_parameters)
+ - Fix airscooter crash, add general protection for invalid velocities
 
 ## 6.9.6
 

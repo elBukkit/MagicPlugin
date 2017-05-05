@@ -606,7 +606,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         if (hasVelocity && velocity != null) {
-            entity.setVelocity(velocity);
+            CompatibilityUtils.setVelocity(entity, velocity);
         }
 
         if (controller != null && spells != null && tickInterval >= 0) {

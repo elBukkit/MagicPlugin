@@ -165,6 +165,6 @@ public class PushSpell extends UndoableSpell
         }
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
-		target.setVelocity(forceVector);
+		CompatibilityUtils.setVelocity(target, forceVector);
 	}
 }

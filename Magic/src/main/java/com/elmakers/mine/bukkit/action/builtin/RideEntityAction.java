@@ -245,7 +245,7 @@ public class RideEntityAction extends BaseSpellAction
                     double crashDamage = maxSpeed > 0 ? crashEntityDamage * speed / maxSpeed : crashEntityDamage;
                     CompatibilityUtils.damage(damageable, crashDamage, mounted);
                 }
-                entity.setVelocity(velocity);
+                CompatibilityUtils.setVelocity(entity, velocity);
                 speed = Math.max(0, speed - crashBraking);
                 if (mount instanceof Damageable && crashEntityVehicleDamage > 0) {
                     double crashDamage = maxSpeed > 0 ? crashEntityVehicleDamage * speed / maxSpeed : crashEntityVehicleDamage;
@@ -380,7 +380,7 @@ public class RideEntityAction extends BaseSpellAction
                 }
             }
 
-            mount.setVelocity(velocity.multiply(speed));
+            CompatibilityUtils.setVelocity(mount, velocity.multiply(speed));
         }
     }
     
@@ -405,7 +405,7 @@ public class RideEntityAction extends BaseSpellAction
         liftoffTime = System.currentTimeMillis();
         speed = startSpeed;
         if (liftoffThrust > 0) {
-            mount.setVelocity(new Vector(0, liftoffThrust, 0));
+            CompatibilityUtils.setVelocity(mount, new Vector(0, liftoffThrust, 0));
         }
         if (sound != null) {
             nextSoundPlay = System.currentTimeMillis();
@@ -456,7 +456,7 @@ public class RideEntityAction extends BaseSpellAction
                     crashDirection.setY(crashDirection.getY() + crashVelocityYOffset).normalize();
                 }
                 Vector velocity = crashDirection.multiply(crashVelocity * speed / maxSpeed);
-                mountedEntity.setVelocity(velocity);
+                CompatibilityUtils.setVelocity(mountedEntity, velocity);
             }
             if (crashEffects != null && mountedEntity != null && crashEffects.size() > 0 && mountedEntity instanceof LivingEntity) {
                 CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, crashEffects);

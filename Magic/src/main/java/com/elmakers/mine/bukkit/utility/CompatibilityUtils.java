@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
 import com.elmakers.mine.bukkit.block.Schematic;
 import com.google.common.io.BaseEncoding;
+import de.slikey.effectlib.util.MathUtils;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -1524,5 +1525,15 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return 0.0f;
+    }
+
+    public static void setVelocity(Entity entity, Vector velocity) {
+        if (!MathUtils.isFinite(velocity.getX()) || !MathUtils.isFinite(velocity.getY()) || !MathUtils.isFinite(velocity.getZ())) {
+            return;
+        }
+        if (Math.abs(velocity.getX()) > 10) velocity.setX(10 * Math.signum(velocity.getX()));
+        if (Math.abs(velocity.getY()) > 10) velocity.setY(10 * Math.signum(velocity.getY()));
+        if (Math.abs(velocity.getZ()) > 10) velocity.setZ(10 * Math.signum(velocity.getZ()));
+        entity.setVelocity(velocity);
     }
 }

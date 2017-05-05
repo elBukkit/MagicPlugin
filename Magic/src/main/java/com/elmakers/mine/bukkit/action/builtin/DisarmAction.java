@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -145,7 +146,7 @@ public class DisarmAction extends BaseSpellAction
 			Item item = entity.getWorld().dropItemNaturally(location, stack);
 			Vector velocity = item.getVelocity();
 			velocity.setY(velocity.getY() * 5);
-			item.setVelocity(velocity);
+			CompatibilityUtils.setVelocity(item, velocity);
 		}
 
 		return SpellResult.CAST;

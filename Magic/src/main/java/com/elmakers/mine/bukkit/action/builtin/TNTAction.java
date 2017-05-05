@@ -71,7 +71,7 @@ public class TNTAction extends BaseProjectileAction
                 CompatibilityUtils.setTNTSource(grenade, living);
             }
 			Vector aim = context.getDirection();
-			grenade.setVelocity(aim);
+			CompatibilityUtils.setVelocity(grenade, aim);
 			grenade.setYield(size);
 			grenade.setFuseTicks(fuse);
 			grenade.setIsIncendiary(useFire);

@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -339,7 +340,7 @@ public class InventoryController implements Listener {
                 if (newDrop != null) {
                     Location location = player.getLocation();
                     Item item = location.getWorld().dropItem(location, newDrop);
-                    item.setVelocity(location.getDirection().normalize());
+                    CompatibilityUtils.setVelocity(item, location.getDirection().normalize());
                 } else {
                     event.setCancelled(true);
                 }

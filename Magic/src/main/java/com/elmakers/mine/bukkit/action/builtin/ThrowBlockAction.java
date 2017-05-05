@@ -99,7 +99,7 @@ public class ThrowBlockAction extends BaseProjectileAction
         if (!consumeBlocks) {
             falling.setDropItem(false);
         }
-        falling.setVelocity(direction);
+        CompatibilityUtils.setVelocity(falling, direction);
         if (maxDamage > 0 && fallDamage > 0) {
             CompatibilityUtils.setFallingBlockDamage(falling, fallDamage, maxDamage);
         }

@@ -169,7 +169,7 @@ public class ModifyBlockAction extends BaseSpellAction {
                 FallingBlock falling = block.getWorld().spawnFallingBlock(blockCenter, previousMaterial, previousData);
                 falling.setDropItem(false);
                 if (fallingBlockVelocity != null) {
-                    falling.setVelocity(fallingBlockVelocity);
+                    CompatibilityUtils.setVelocity(falling, fallingBlockVelocity);
                 }
                 if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
                     CompatibilityUtils.setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);

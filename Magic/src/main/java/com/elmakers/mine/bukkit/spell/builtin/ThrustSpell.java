@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -214,7 +215,7 @@ public class ThrustSpell extends TargetingSpell
         scaledForce.multiply(overallScale);
 
         if (scaledForce.lengthSquared() > 0.001) {
-            entity.setVelocity(scaledForce);
+			CompatibilityUtils.setVelocity(entity, scaledForce);
         }
 
 		this.lastTick = System.currentTimeMillis();
