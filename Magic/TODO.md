@@ -1,7 +1,5 @@
 # TODO
 
-- Make sure armor stand projectiles are marked as temporary and that we never restore them in undo
-
 ## 7.0
 
  - Maybe reconsider config-collapsing approach, switch to routing on get/set ?

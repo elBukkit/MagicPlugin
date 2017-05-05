@@ -137,7 +137,7 @@ public class RideEntityAction extends BaseSpellAction
         braking = parameters.getDouble("braking", 0.0);
         crashEntityDistance = parameters.getDouble("crash_entity_distance", 2.0);
         crashVelocityYOffset = parameters.getDouble("crash_velocity_y_offset" , 0.0);
-        crashVelocity = parameters.getDouble("crash_velocity" , 1.0);
+        crashVelocity = parameters.getDouble("crash_velocity" , 0.0);
         crashDamage = parameters.getDouble("crash_damage" , 0.0);
         crashVehicleDamage = parameters.getDouble("crash_vehicle_damage" , 0.0);
         crashEntityVehicleDamage = parameters.getDouble("crash_entity_vehicle_damage" , 0.0);
