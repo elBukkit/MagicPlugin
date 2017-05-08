@@ -5003,7 +5003,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     	return hasSpellProgression && controller.isSPEnabled() && controller.isSPEarnEnabled() && spMultiplier > 0;
 	}
 
-	@Nullable public int getHeldSlot() {
-    	return heldSlot;
-	}
+    public int getHeldSlot() {
+        return heldSlot;
+    }
 }

@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.action.BaseShopAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import de.slikey.effectlib.util.ConfigUtils;

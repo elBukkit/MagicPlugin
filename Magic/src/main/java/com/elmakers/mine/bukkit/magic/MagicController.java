@@ -3563,8 +3563,9 @@ public class MagicController implements MageController {
                     MageClassTemplate parent = mageClasses.get(parentKey);
                     if (parent == null) {
                         getLogger().warning("Class '" + key + "' has unknown parent: " + parentKey);
+                    } else {
+                        template.setParent(parent);
                     }
-                    template.setParent(parent);
                 }
             }
         }
