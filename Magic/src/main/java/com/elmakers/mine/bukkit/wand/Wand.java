@@ -893,7 +893,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	
 	@Override
     public Set<String> getSpells() {
-        Set<String> spellSet = new HashSet<String>();
+        Set<String> spellSet = new HashSet<>();
         for (String key : spells) {
             Integer level = spellLevels.get(key);
             if (level != null) {

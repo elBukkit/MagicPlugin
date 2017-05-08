@@ -274,7 +274,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         drops = ConfigurationUtils.getStringList(parameters, "drops");
         List<String> tagList = ConfigurationUtils.getStringList(parameters, "tags");
         if (tagList != null) {
-            tags = new HashSet<String>(tagList);
+            tags = new HashSet<>(tagList);
         }
         
         try {
