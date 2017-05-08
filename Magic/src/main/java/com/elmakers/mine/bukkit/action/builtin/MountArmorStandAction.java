@@ -86,6 +86,7 @@ public class MountArmorStandAction extends RideEntityAction
         }
     }
     
+    @Override
     protected void adjustHeading(CastContext context) {
         super.adjustHeading(context);
 
@@ -104,6 +105,7 @@ public class MountArmorStandAction extends RideEntityAction
         }
     }
     
+    @Override
     protected SpellResult mount(CastContext context) {
         Mage mage = context.getMage();
         Player player = mage.getPlayer();

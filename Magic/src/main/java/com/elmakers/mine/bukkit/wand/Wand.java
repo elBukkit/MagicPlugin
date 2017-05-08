@@ -655,7 +655,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return isUpgrade;
 	}
 
-	public boolean usesMana() {
+    @Override
+    public boolean usesMana() {
         if (isCostFree()) return false;
 		return manaMax > 0 || (isHeroes && mage != null);
 	}
@@ -1407,8 +1408,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setProperty("effect_color", effectColor.toString());
         }
 	}
-	
-	protected void loadProperties(ConfigurationSection wandConfig) {
+
+    @Override
+    protected void loadProperties(ConfigurationSection wandConfig) {
     	super.loadProperties(wandConfig);
 		locked = wandConfig.getBoolean("locked", locked);
 		consumeReduction = (float)wandConfig.getDouble("consume_reduction");
@@ -3674,7 +3676,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return super.tickMana();
     }
 
-	public void tick() {
+    @Override
+    public void tick() {
 		if (mage == null) return;
 		
 		Player player = mage.getPlayer();
@@ -5003,6 +5006,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     	return hasSpellProgression && controller.isSPEnabled() && controller.isSPEarnEnabled() && spMultiplier > 0;
 	}
 
+    @Override
     public int getHeldSlot() {
         return heldSlot;
     }

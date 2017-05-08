@@ -914,6 +914,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return true;
     }
 
+    @Override
     public @Nullable MageClass getActiveClass() {
         return activeClass;
     }

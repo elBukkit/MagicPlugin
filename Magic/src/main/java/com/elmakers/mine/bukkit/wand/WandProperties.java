@@ -26,6 +26,7 @@ public class WandProperties extends CasterProperties {
         dirty = true;
     }
 
+    @Override
     public void clear() {
         super.clear();
         wandTemplate = null;

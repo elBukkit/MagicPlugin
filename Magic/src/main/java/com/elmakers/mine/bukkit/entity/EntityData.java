@@ -787,6 +787,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
+    @Override
     public String getInteractSpell() {
         return interactSpell;
     }
