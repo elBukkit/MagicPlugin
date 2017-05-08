@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import static com.google.common.base.Preconditions.*;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 import javax.annotation.Nonnull;
@@ -13,6 +15,9 @@ public class MageClassTemplate extends BaseMagicProperties {
 
     public MageClassTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         super(controller);
+        checkNotNull(key, "key");
+        checkNotNull(configuration, "configuration");
+
         this.key = key;
         this.load(configuration);
 
@@ -35,7 +40,7 @@ public class MageClassTemplate extends BaseMagicProperties {
         return parent;
     }
 
-    public void setParent(@Nonnull  MageClassTemplate parent) {
+    public void setParent(@Nullable  MageClassTemplate parent) {
         this.parent = parent;
     }
 
@@ -47,7 +52,7 @@ public class MageClassTemplate extends BaseMagicProperties {
         return isLocked;
     }
 
-    protected void clearProperty(String key) {
+    private void clearProperty(String key) {
         configuration.set(key, null);
     }
 }

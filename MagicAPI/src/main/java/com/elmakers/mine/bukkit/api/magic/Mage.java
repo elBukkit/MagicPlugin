@@ -485,7 +485,14 @@ public interface Mage extends CostReducer {
     @Nullable MageClass getActiveClass();
     @Nullable MageClass unlockClass(@Nonnull String key);
     @Nullable MageClass getClass(@Nonnull String key);
-    boolean setActiveClass(@Nonnull String key);
+
+    /**
+     * Sets the active class.
+     *
+     * @param key The key of the class to set, may be null to clear it.
+     * @return True iff this was a valid class key.
+     */
+    boolean setActiveClass(@Nullable String key);
     boolean removeClass(@Nonnull String key);
     @Nonnull MagicConfigurable getProperties();
 

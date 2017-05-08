@@ -1,9 +1,11 @@
 package com.elmakers.mine.bukkit.api.wand;
 
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
-
-import java.util.Set;
 
 /**
  * This interface is deprecated and will be replaced by ProgressionPath.
@@ -15,9 +17,10 @@ import java.util.Set;
 //@Deprecated
 public interface WandUpgradePath extends ProgressionPath {
     boolean checkUpgradeRequirements(Wand wand, Mage mage);
+    @Override
     Set<String> getTags();
     WandUpgradePath getUpgrade();
-    void upgrade(Wand wand, Mage mage);
+    void upgrade(@Nonnull Wand wand, Mage mage);
     void checkMigration(Wand wand);
     boolean canEnchant(Wand wand);
 }

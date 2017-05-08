@@ -808,6 +808,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return hasBeenScheduled;
     }
 
+    @Override
     public void setHasBeenScheduled() {
         hasBeenScheduled = true;
     }

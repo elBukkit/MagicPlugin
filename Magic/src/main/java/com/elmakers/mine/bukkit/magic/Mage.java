@@ -914,6 +914,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return true;
     }
 
+    @Override
     public @Nullable MageClass getActiveClass() {
         return activeClass;
     }
@@ -999,7 +1000,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (parentTemplate != null) {
             // Having a sub-class means having the parent class.
             MageClass parentClass = getClass(parentTemplate.getKey(), true);
-            mageClass.setParent(parentClass);
+
+            // Should never be null, check is here to silence the compiler.
+            if(parentClass != null) {
+                mageClass.setParent(parentClass);
+            }
         }
     }
 

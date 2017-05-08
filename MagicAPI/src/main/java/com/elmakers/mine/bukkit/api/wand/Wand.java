@@ -53,6 +53,7 @@ public interface Wand extends CostReducer, MagicConfigurable  {
     void makeUpgrade();
     Collection<String> getSpells();
     Collection<String> getBrushes();
+    @Override
     void describe(CommandSender sender);
     void unenchant();
     void unlock();
@@ -70,6 +71,7 @@ public interface Wand extends CostReducer, MagicConfigurable  {
     boolean add(Wand other);
     boolean add(Wand other, Mage mage);
     boolean addItem(ItemStack item);
+    @Override
     boolean removeProperty(String key);
     boolean addBrush(String key);
     boolean addSpell(String key);

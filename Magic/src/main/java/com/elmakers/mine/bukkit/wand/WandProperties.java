@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.CasterProperties;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MagicPropertyType;
-import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,6 +26,7 @@ public class WandProperties extends CasterProperties {
         dirty = true;
     }
 
+    @Override
     public void clear() {
         super.clear();
         wandTemplate = null;

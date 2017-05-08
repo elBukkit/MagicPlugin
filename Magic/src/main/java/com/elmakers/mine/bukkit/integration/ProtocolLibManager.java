@@ -1,19 +1,9 @@
 package com.elmakers.mine.bukkit.integration;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.logging.Level;
-
+@SuppressWarnings("unused")
 public class ProtocolLibManager {
     private final Plugin owningPlugin;
     private final Plugin protocolLibPlugin;
