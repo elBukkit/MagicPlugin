@@ -81,8 +81,6 @@ wand:
     hotbar_count_usage: "&ePress F while your $wand is active to cycle hotbars"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
-    no_item: You are not holding an item
-    player_no_item: $name is not holding an item
     no_wand: You must be holding a wand
     player_no_wand: $name is not holding a wand
     no_item: You must be holding an item
