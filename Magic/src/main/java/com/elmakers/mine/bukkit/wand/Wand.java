@@ -1522,14 +1522,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			castParameters = null;
 		}
 
-		boolean needsInventoryUpdate = false;
 		WandMode newMode = parseWandMode(wandConfig.getString("mode"), controller.getDefaultWandMode());
 		if (newMode != mode) {
 			if (isInventoryOpen()) {
 				closeInventory();
 			}
 			mode = newMode;
-			needsInventoryUpdate = true;
 		}
 
 		brushMode = parseWandMode(wandConfig.getString("brush_mode"), controller.getDefaultBrushMode());
@@ -1610,7 +1608,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				if (isInventoryOpen()) {
 					closeInventory();
 				}
-				needsInventoryUpdate = true;
 				setHotbarCount(newCount);
 			}
 		}
@@ -1618,7 +1615,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (wandConfig.contains("hotbar")) {
 			int hotbar = wandConfig.getInt("hotbar");
 			if (hotbar != currentHotbar) {
-				needsInventoryUpdate = true;
 				setCurrentHotbar(hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar);
 			}
 		}
@@ -1626,7 +1622,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (wandConfig.contains("page")) {
 			int page = wandConfig.getInt("page");
 			if (page != openInventoryPage) {
-				needsInventoryUpdate = true;
                 openInventoryPage = page;
 			}
 		}
@@ -3268,7 +3263,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		
 		Location location = mage.getLocation();
 		long now = System.currentTimeMillis();
-        Vector mageLocation = location.toVector();
 		boolean playEffects = !activeEffectsOnly || inventoryIsOpen || isInOffhand;
 		if (playEffects && effectParticle != null && effectParticleInterval > 0 && effectParticleCount > 0) {
             boolean velocityCheck = true;

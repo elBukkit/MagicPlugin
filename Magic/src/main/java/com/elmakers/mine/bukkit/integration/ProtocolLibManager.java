@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.integration;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.plugin.Plugin;
 
+@SuppressWarnings("unused")
 public class ProtocolLibManager {
     private final Plugin owningPlugin;
     private final Plugin protocolLibPlugin;
