@@ -2034,7 +2034,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             } else {
                 String timeDescription = controller.getMessages().get("cooldown.description_moment");
                 if (timeDescription.contains("$seconds")) {
-                    timeDescription = timeDescription.replace("$seconds", SECONDS_FORMATTER.format((double)time / 1000.0));
+                    timeDescription = timeDescription.replace("$seconds", SECONDS_FORMATTER.format(time / 1000.0D));
                 }
                 return timeDescription;
             }

@@ -1490,7 +1490,6 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static Set<String> getTags(Entity entity) {
         // TODO: Use Entity.getScoreboardTags in a future version.
         return null;

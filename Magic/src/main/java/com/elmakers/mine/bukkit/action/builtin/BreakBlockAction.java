@@ -38,7 +38,7 @@ public class BreakBlockAction extends BaseSpellAction {
         double breakAmount = 1;
         double durability = CompatibilityUtils.getDurability(block.getType());
         if (durability > 0) {
-            double breakPercentage = (double)durabilityAmount / durability;
+            double breakPercentage = durabilityAmount / durability;
             breakAmount = context.registerBreaking(block, breakPercentage);
         }
 
