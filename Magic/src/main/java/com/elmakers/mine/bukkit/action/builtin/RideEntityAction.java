@@ -182,8 +182,7 @@ public class RideEntityAction extends BaseSpellAction
             return SpellResult.ENTITY_REQUIRED;
         }
         Entity currentMount = mounted.getVehicle();
-        if (currentMount == null || currentMount != currentMount)
-        {
+        if (currentMount == null) {
             return SpellResult.CAST;
         }
         if (!mount.isValid()) {
