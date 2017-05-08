@@ -252,7 +252,7 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties imp
     }
 
     @Override
-    public boolean upgrade(@Nonnull ConfigurationSection configuration) {
+    public boolean upgrade(ConfigurationSection configuration) {
         boolean modified = false;
         Set<String> keys = configuration.getKeys(false);
         for (String key : keys) {

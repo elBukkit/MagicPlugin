@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.api.magic;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import javax.annotation.Nonnull;
+
+import org.bukkit.configuration.ConfigurationSection;
 
 public interface MagicConfigurable extends MagicProperties {
     /**
@@ -27,7 +27,7 @@ public interface MagicConfigurable extends MagicProperties {
      * @param configuration The configuration to copy into this store
      * @return true if any property was changed, false means the upgrade was rejected.
      */
-    boolean upgrade(ConfigurationSection configuration);
+    boolean upgrade(@Nonnull ConfigurationSection configuration);
 
     /**
      * Remove a property from this store.

@@ -711,7 +711,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         WandUpgradeEvent legacyEvent = new WandUpgradeEvent(mage, wand, this, newPath);
         Bukkit.getPluginManager().callEvent(legacyEvent);
 
-        PathUpgradeEvent upgradeEvent = new PathUpgradeEvent(mage, wand, wand == null ? mage.getActiveClass() : wand.getMageClass(), this, newPath);
+        PathUpgradeEvent upgradeEvent = new PathUpgradeEvent(mage, wand, wand.getMageClass(), this, newPath);
         Bukkit.getPluginManager().callEvent(upgradeEvent);
     }
 
