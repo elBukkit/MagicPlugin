@@ -40,6 +40,10 @@ public class ChangeContextAction extends CompoundAction {
     private float relativeSourceDirectionPitchOffset;
     private float relativeTargetDirectionYawOffset;
     private float relativeTargetDirectionPitchOffset;
+    private float sourceYawOffset;
+    private float sourcePitchOffset;
+    private float targetYawOffset;
+    private float targetPitchOffset;
     private String targetLocation;
     private String sourceLocation;
     private boolean persistTarget;
@@ -82,6 +86,10 @@ public class ChangeContextAction extends CompoundAction {
         sourcePitchMin = parameters.getInt("source_pitch_min", 90);
         sourcePitchMax = parameters.getInt("source_pitch_max", -90);
         orientPitch = parameters.getBoolean("orient_pitch", true);
+        sourceYawOffset = (float)(parameters.getDouble("source_yaw_offset", 0));
+        sourcePitchOffset = (float)(parameters.getDouble("source_pitch_offset", 0));
+        targetYawOffset = (float)(parameters.getDouble("target_yaw_offset", 0));
+        targetPitchOffset = (float)(parameters.getDouble("target_pitch_offset", 0));
         
         if (parameters.contains("target_direction_speed"))
         {
@@ -227,11 +235,27 @@ public class ChangeContextAction extends CompoundAction {
             sourceLocation.setDirection(relativeDirection);
         }
         // Same thing but with a Target's location.
-        if (relativeTargetDirectionYawOffset != 0  || relativeTargetDirectionPitchOffset != 0)
+        if (targetLocation != null && (relativeTargetDirectionYawOffset != 0  || relativeTargetDirectionPitchOffset != 0))
         {
             Vector relativeDirection = targetLocation.getDirection();
             relativeDirection = VectorUtils.rotateVector(relativeDirection, relativeTargetDirectionYawOffset, relativeTargetDirectionPitchOffset);
             targetLocation.setDirection(relativeDirection);
+        }
+        if (sourceYawOffset != 0)
+        {
+            sourceLocation.setYaw(sourceLocation.getYaw() + sourceYawOffset);
+        }
+        if (sourcePitchOffset != 0)
+        {
+            sourceLocation.setPitch(sourceLocation.getPitch() + sourcePitchOffset);
+        }
+        if (targetLocation != null && targetYawOffset != 0)
+        {
+            targetLocation.setYaw(targetLocation.getYaw() + targetYawOffset);
+        }
+        if (targetLocation != null && targetPitchOffset != 0)
+        {
+            targetLocation.setPitch(targetLocation.getPitch() + targetPitchOffset);
         }
         if (targetDirection != null && targetLocation != null)
         {
