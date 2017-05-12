@@ -29,7 +29,6 @@ chop:
         drop_count: 8
         destructible: trees
         cooldown: 5000
-        bypass_undo: true
     costs:
         mana: 80
 
