@@ -15,53 +15,80 @@
 	<name>Magic Bukkit Plugin</name>
 	<url>http://mine.elmakers.com</url>
 
+	<!--
+		Force the bukkit version even if a third party plugin somehow creeps a
+		different version in.
+	-->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.bukkit</groupId>
 				<artifactId>bukkit</artifactId>
-				<version>1.9-R0.1-SNAPSHOT</version>
-				<scope>provided</scope>
+				<version>${bukkit.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<dependencies>
-		<dependency>
-			<groupId>de.slikey</groupId>
-			<artifactId>EffectLib</artifactId>
-			<version>5.5-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
+		<!-- API Module (shaded) -->
 		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicAPI</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Effect library (shaded) -->
+		<dependency>
+			<groupId>de.slikey</groupId>
+			<artifactId>EffectLib</artifactId>
+			<version>5.5-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Metrics integration (shaded) -->
+		<dependency>
+			<groupId>org.bstats</groupId>
+			<artifactId>bstats-bukkit</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Bukkit, our dear friend. Implicitly also provides guava. -->
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!--
+			Third party plugin integrations. We have added exclusions here to
+			avoid leaking dependencies and improve build times.
+			(Note to plugin devs: please set your dependency scopes correctly)
+		-->
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
 			<version>1.6</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava-collections</artifactId>
-			<version>r03</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sk89q</groupId>
-			<artifactId>worldguard</artifactId>
-			<version>6.2.0</version>
-			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.dynmap</groupId>
 			<artifactId>dynmap-api</artifactId>
 			<version>0.80</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.ess3</groupId>
@@ -74,12 +101,24 @@
 			<artifactId>commandbook</artifactId>
 			<version>2.3</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.sacredlabyrinth.Phaed</groupId>
 			<artifactId>PreciousStones</artifactId>
 			<version>10.0.5</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.palmergames</groupId>
@@ -92,6 +131,12 @@
 			<artifactId>Splateds_Elementals</artifactId>
 			<version>B.1.6</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>me.NoChance.PvPManager</groupId>
@@ -104,14 +149,10 @@
 			<artifactId>Multiverse-Core</artifactId>
 			<version>2.5</version>
 			<scope>provided</scope>
-			<!--
-				Multiverse has a transitive dependency on craftbukkit 1.3 via
-				"Logging". Do not remove this exclusion or builds might break.
-			-->
 			<exclusions>
 				<exclusion>
-					<groupId>org.bukkit</groupId>
-					<artifactId>craftbukkit</artifactId>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -120,6 +161,30 @@
 			<artifactId>WGCustomFlags</artifactId>
 			<version>1.6.1</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.sk89q.worldguard</groupId>
+			<artifactId>worldguard-legacy</artifactId>
+			<version>6.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sk89q</groupId>
+			<artifactId>worldedit</artifactId>
+			<version>5.5.8</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.citizensnpcs</groupId>
@@ -138,6 +203,12 @@
 			<artifactId>Heroes</artifactId>
 			<version>1.5.5.5-SNAPSHOT</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>fr.neatmonster</groupId>
@@ -156,6 +227,12 @@
 			<artifactId>Minigames</artifactId>
 			<version>1.8.0-SNAPSHOT</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>LibsDisguises</groupId>
@@ -169,12 +246,8 @@
 			<version>3.7.0-BETA</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.bstats</groupId>
-			<artifactId>bstats-bukkit</artifactId>
-			<version>1.1</version>
-		</dependency>
 	</dependencies>
+
 	<repositories>
 		<repository>
 			<id>elMakers</id>
