@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+@Deprecated
 public class AlterSpell extends BlockSpell
 {
 	// TODO: Fix and future-proof all this mess!

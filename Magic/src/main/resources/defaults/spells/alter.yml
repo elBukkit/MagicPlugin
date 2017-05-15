@@ -5,9 +5,12 @@ alter:
     category: engineering
     tags: noduel
     cancellable: false
-    class: AlterSpell
     worth: 1500
     earns_sp: 12
+    actions:
+      cast:
+      - class: CycleBlock
+      - class: CycleEntity
     effects:
         cast:
         -  class: EffectSingle
@@ -28,9 +31,742 @@ alter:
         target_type: Entity
         allow_max_range: false
         range: 32
-        depth: 0
         transparent: transparent_to_construction
-        check_destructible: false
+        materials:
+        - - dirt
+          - dirt:1
+          - dirt:2
+        - - wood
+          - wood:1
+          - wood:2
+          - wood:3
+          - wood:4
+          - wood:5
+        - - sapling
+          - sapling:1
+          - sapling:2
+          - sapling:3
+          - sapling:4
+          - sapling:5
+        - - water
+          - water:1
+          - water:2
+          - water:3
+          - water:4
+          - water:5
+          - water:6
+          - water:7
+          - water:8
+          - water:9
+          - water:10
+          - water:11
+          - water:12
+          - water:13
+          - water:14
+          - water:15
+        - - stationary_water
+          - stationary_water:1
+          - stationary_water:2
+          - stationary_water:3
+          - stationary_water:4
+          - stationary_water:5
+          - stationary_water:6
+          - stationary_water:7
+          - stationary_water:8
+          - stationary_water:9
+          - stationary_water:10
+          - stationary_water:11
+          - stationary_water:12
+          - stationary_water:13
+          - stationary_water:14
+          - stationary_water:15
+        - - lava
+          - lava:1
+          - lava:2
+          - lava:3
+          - lava:4
+          - lava:5
+          - lava:6
+          - lava:7
+          - lava:8
+          - lava:9
+          - lava:10
+          - lava:11
+          - lava:12
+          - lava:13
+          - lava:14
+          - lava:15
+        - - stationary_lava
+          - stationary_lava:1
+          - stationary_lava:2
+          - stationary_lava:3
+          - stationary_lava:4
+          - stationary_lava:5
+          - stationary_lava:6
+          - stationary_lava:7
+          - stationary_lava:8
+          - stationary_lava:9
+          - stationary_lava:10
+          - stationary_lava:11
+          - stationary_lava:12
+          - stationary_lava:13
+          - stationary_lava:14
+          - stationary_lava:15
+        - - sand
+          - sand:1
+        - - log
+          - log:1
+          - log:2
+          - log:3
+          - log:4
+          - log:5
+          - log:6
+          - log:7
+          - log:8
+          - log:9
+          - log:10
+          - log:11
+          - log:12
+          - log:13
+          - log:14
+          - log:15
+          - log_2
+          - log_2:1
+        - - leaves
+          - leaves:1
+          - leaves:2
+          - leaves:3
+          - leaves_2
+          - leaves_2:1
+        - - dispenser:2
+          - dispenser:3
+          - dispenser:4
+          - dispenser:5
+        - - sandstone
+          - sandstone:1
+          - sandstone:2
+        - - powered_rail
+          - powered_rail:1
+          - powered_rail:2
+          - powered_rail:3
+          - powered_rail:4
+          - powered_rail:5
+          - powered_rail:6
+          - powered_rail:7
+          - powered_rail:8
+          - powered_rail:9
+        - - detector_rail
+          - detector_rail:1
+          - detector_rail:2
+          - detector_rail:3
+          - detector_rail:4
+          - detector_rail:5
+          - detector_rail:6
+          - detector_rail:7
+          - detector_rail:8
+          - detector_rail:9
+        - - piston_sticky_base
+          - piston_sticky_base:1
+          - piston_sticky_base:2
+          - piston_sticky_base:3
+          - piston_sticky_base:4
+          - piston_sticky_base:5
+        - - long_grass
+          - long_grass:1
+          - long_grass:2
+        - - piston_base
+          - piston_base:1
+          - piston_base:2
+          - piston_base:3
+          - piston_base:4
+          - piston_base:5
+        - - wool
+          - wool:1
+          - wool:2
+          - wool:3
+          - wool:4
+          - wool:5
+          - wool:6
+          - wool:7
+          - wool:8
+          - wool:9
+          - wool:10
+          - wool:11
+          - wool:12
+          - wool:13
+          - wool:14
+          - wool:15
+        - - yellow_flower
+          - yellow_flower:1
+          - yellow_flower:2
+          - yellow_flower:3
+          - yellow_flower:4
+          - yellow_flower:5
+          - yellow_flower:6
+          - yellow_flower:7
+          - yellow_flower:8
+        - - red_rose
+          - red_rose:1
+          - red_rose:2
+          - red_rose:3
+          - red_rose:4
+          - red_rose:5
+          - red_rose:6
+          - red_rose:7
+          - red_rose:8
+        - - double_step
+          - double_step:1
+          - double_step:2
+          - double_step:3
+          - double_step:4
+          - double_step:5
+          - double_step:6
+          - double_step:7
+          - double_step:8
+          - double_step:9
+          - double_step:10
+          - double_step:11
+          - double_step:12
+          - double_step:13
+          - double_step:14
+          - double_step:15
+        - - step
+          - step:1
+          - step:2
+          - step:3
+          - step:4
+          - step:5
+          - step:6
+          - step:7
+          - step:8
+          - step:9
+          - step:10
+          - step:11
+          - step:12
+          - step:13
+          - step:14
+          - step:15
+        - - wood_stairs
+          - wood_stairs:1
+          - wood_stairs:2
+          - wood_stairs:3
+        - - chest:2
+          - chest:3
+          - chest:4
+          - chest:5
+        - - redstone_wire
+          - redstone_wire:1
+          - redstone_wire:2
+          - redstone_wire:3
+          - redstone_wire:4
+          - redstone_wire:5
+          - redstone_wire:6
+          - redstone_wire:7
+          - redstone_wire:8
+          - redstone_wire:9
+          - redstone_wire:10
+          - redstone_wire:11
+          - redstone_wire:12
+          - redstone_wire:13
+          - redstone_wire:14
+          - redstone_wire:15
+        - - workbench:2
+          - workbench:3
+          - workbench:4
+          - workbench:5
+        - - crops
+          - crops:1
+          - crops:2
+          - crops:3
+          - crops:4
+          - crops:5
+          - crops:6
+          - crops:7
+        - - soil
+          - soil:1
+          - soil:2
+          - soil:3
+          - soil:4
+          - soil:5
+          - soil:6
+          - soil:7
+          - soil:8
+        - - furnace:2
+          - furnace:3
+          - furnace:4
+          - furnace:5
+        - - burning_furnace:2
+          - burning_furnace:3
+          - burning_furnace:4
+          - burning_furnace:5
+        - - sign_post
+          - sign_post:1
+          - sign_post:2
+          - sign_post:3
+          - sign_post:4
+          - sign_post:5
+          - sign_post:6
+          - sign_post:7
+          - sign_post:8
+          - sign_post:9
+          - sign_post:10
+          - sign_post:11
+          - sign_post:12
+          - sign_post:13
+          - sign_post:14
+          - sign_post:15
+        - - ladder
+          - ladder:1
+          - ladder:2
+          - ladder:3
+        - - rails
+          - rails:1
+          - rails:2
+          - rails:3
+          - rails:4
+          - rails:5
+          - rails:6
+          - rails:7
+          - rails:8
+          - rails:9
+        - - cobblestone_stairs
+          - cobblestone_stairs:1
+          - cobblestone_stairs:2
+          - cobblestone_stairs:3
+        - - lever:6
+          - lever:7
+          - lever:8
+          - lever:9
+          - lever:10
+          - lever:11
+          - lever:12
+          - lever:13
+          - lever:14
+        - - stone_button
+          - stone_button:1
+          - stone_button:2
+          - stone_button:3
+          - stone_button:4
+          - stone_button:5
+          - stone_button:6
+          - stone_button:7
+          - stone_button:8
+          - stone_button:9
+          - stone_button:10
+          - stone_button:11
+          - stone_button:12
+          - stone_button:13
+          - stone_button:14
+          - stone_button:15
+        - - snow
+          - snow:1
+          - snow:2
+          - snow:3
+          - snow:4
+          - snow:5
+          - snow:6
+          - snow:7
+        - - cactus
+          - cactus:1
+          - cactus:2
+          - cactus:3
+          - cactus:4
+          - cactus:5
+          - cactus:6
+          - cactus:7
+          - cactus:8
+          - cactus:9
+          - cactus:10
+          - cactus:11
+          - cactus:12
+          - cactus:13
+          - cactus:14
+          - cactus:15
+        - - sugar_cane_block
+          - sugar_cane_block:1
+          - sugar_cane_block:2
+          - sugar_cane_block:3
+          - sugar_cane_block:4
+          - sugar_cane_block:5
+          - sugar_cane_block:6
+          - sugar_cane_block:7
+          - sugar_cane_block:8
+          - sugar_cane_block:9
+          - sugar_cane_block:10
+          - sugar_cane_block:11
+          - sugar_cane_block:12
+          - sugar_cane_block:13
+          - sugar_cane_block:14
+          - sugar_cane_block:15
+        - - fence
+          - fence:1
+          - fence:2
+          - fence:3
+          - fence:4
+          - fence:5
+        - - diode_block_off:2
+          - diode_block_off:3
+          - diode_block_off:4
+          - diode_block_off:5
+        - - diode_block_on:2
+          - diode_block_on:3
+          - diode_block_on:4
+          - diode_block_on:5
+        - - stained_glass
+          - stained_glass:1
+          - stained_glass:2
+          - stained_glass:3
+          - stained_glass:4
+          - stained_glass:5
+          - stained_glass:6
+          - stained_glass:7
+          - stained_glass:8
+          - stained_glass:9
+          - stained_glass:10
+          - stained_glass:11
+          - stained_glass:12
+          - stained_glass:13
+          - stained_glass:14
+          - stained_glass:15
+        - - monster_eggs
+          - monster_eggs:1
+          - monster_eggs:2
+          - monster_eggs:3
+          - monster_eggs:4
+          - monster_eggs:5
+        - - smooth_brick
+          - smooth_brick:1
+          - smooth_brick:2
+          - smooth_brick:3
+        - - huge_mushroom_1
+          - huge_mushroom_1:1
+          - huge_mushroom_1:2
+          - huge_mushroom_1:3
+          - huge_mushroom_1:4
+          - huge_mushroom_1:5
+          - huge_mushroom_1:6
+          - huge_mushroom_1:7
+          - huge_mushroom_1:8
+          - huge_mushroom_1:9
+          - huge_mushroom_1:10
+          - huge_mushroom_1:11
+          - huge_mushroom_1:12
+          - huge_mushroom_1:13
+          - huge_mushroom_1:14
+          - huge_mushroom_1:15
+        - - huge_mushroom_2
+          - huge_mushroom_2:1
+          - huge_mushroom_2:2
+          - huge_mushroom_2:3
+          - huge_mushroom_2:4
+          - huge_mushroom_2:5
+          - huge_mushroom_2:6
+          - huge_mushroom_2:7
+          - huge_mushroom_2:8
+          - huge_mushroom_2:9
+          - huge_mushroom_2:10
+          - huge_mushroom_2:11
+          - huge_mushroom_2:12
+          - huge_mushroom_2:13
+          - huge_mushroom_2:14
+          - huge_mushroom_2:15
+        - - pumpkin_stem
+          - pumpkin_stem:1
+          - pumpkin_stem:2
+          - pumpkin_stem:3
+          - pumpkin_stem:4
+          - pumpkin_stem:5
+          - pumpkin_stem:6
+          - pumpkin_stem:7
+        - - melon_stem
+          - melon_stem:1
+          - melon_stem:2
+          - melon_stem:3
+          - melon_stem:4
+          - melon_stem:5
+          - melon_stem:6
+          - melon_stem:7
+        - - brick_stairs
+          - brick_stairs:1
+          - brick_stairs:2
+          - brick_stairs:3
+        - - smooth_stairs
+          - smooth_stairs:1
+          - smooth_stairs:2
+          - smooth_stairs:3
+        - - nether_brick_stairs
+          - nether_brick_stairs:1
+          - nether_brick_stairs:2
+          - nether_brick_stairs:3
+        - - nether_warts
+          - nether_warts:1
+          - nether_warts:2
+          - nether_warts:3
+          - nether_warts:4
+          - nether_warts:5
+          - nether_warts:6
+          - nether_warts:7
+        - - wood_double_step
+          - wood_double_step:1
+          - wood_double_step:2
+          - wood_double_step:3
+          - wood_double_step:4
+          - wood_double_step:5
+          - wood_double_step:6
+          - wood_double_step:7
+          - wood_double_step:8
+          - wood_double_step:9
+          - wood_double_step:10
+          - wood_double_step:11
+          - wood_double_step:12
+          - wood_double_step:13
+          - wood_double_step:14
+          - wood_double_step:15
+        - - wood_step
+          - wood_step:1
+          - wood_step:2
+          - wood_step:3
+          - wood_step:4
+          - wood_step:5
+          - wood_step:6
+          - wood_step:7
+          - wood_step:8
+          - wood_step:9
+          - wood_step:10
+          - wood_step:11
+          - wood_step:12
+          - wood_step:13
+          - wood_step:14
+          - wood_step:15
+        - - sandstone_stairs
+          - sandstone_stairs:1
+          - sandstone_stairs:2
+          - sandstone_stairs:3
+        - - spruce_wood_stairs
+          - spruce_wood_stairs:1
+          - spruce_wood_stairs:2
+          - spruce_wood_stairs:3
+        - - birch_wood_stairs
+          - birch_wood_stairs:1
+          - birch_wood_stairs:2
+          - birch_wood_stairs:3
+        - - jungle_wood_stairs
+          - jungle_wood_stairs:1
+          - jungle_wood_stairs:2
+          - jungle_wood_stairs:3
+        - - flower_pot
+          - flower_pot:1
+          - flower_pot:2
+          - flower_pot:3
+          - flower_pot:4
+          - flower_pot:5
+          - flower_pot:6
+          - flower_pot:7
+          - flower_pot:8
+          - flower_pot:9
+          - flower_pot:10
+          - flower_pot:11
+          - flower_pot:12
+          - flower_pot:13
+          - flower_pot:14
+          - flower_pot:15
+        - - carrot
+          - carrot:1
+          - carrot:2
+          - carrot:3
+          - carrot:4
+          - carrot:5
+          - carrot:6
+          - carrot:7
+        - - potato
+          - potato:1
+          - potato:2
+          - potato:3
+          - potato:4
+          - potato:5
+          - potato:6
+          - potato:7
+        - - skull
+          - skull:1
+          - skull:2
+          - skull:3
+          - skull:4
+        - - quartz_block
+          - quartz_block:1
+          - quartz_block:2
+          - quartz_block:3
+          - quartz_block:4
+        - - quartz_stairs
+          - quartz_stairs:1
+          - quartz_stairs:2
+          - quartz_stairs:3
+        - - stained_clay
+          - stained_clay:1
+          - stained_clay:2
+          - stained_clay:3
+          - stained_clay:4
+          - stained_clay:5
+          - stained_clay:6
+          - stained_clay:7
+          - stained_clay:8
+          - stained_clay:9
+          - stained_clay:10
+          - stained_clay:11
+          - stained_clay:12
+          - stained_clay:13
+          - stained_clay:14
+          - stained_clay:15
+        - - stained_glass_pane
+          - stained_glass_pane:1
+          - stained_glass_pane:2
+          - stained_glass_pane:3
+          - stained_glass_pane:4
+          - stained_glass_pane:5
+          - stained_glass_pane:6
+          - stained_glass_pane:7
+          - stained_glass_pane:8
+          - stained_glass_pane:9
+          - stained_glass_pane:10
+          - stained_glass_pane:11
+          - stained_glass_pane:12
+          - stained_glass_pane:13
+          - stained_glass_pane:14
+          - stained_glass_pane:15
+        - - carpet
+          - carpet:1
+          - carpet:2
+          - carpet:3
+          - carpet:4
+          - carpet:5
+          - carpet:6
+          - carpet:7
+          - carpet:8
+          - carpet:9
+          - carpet:10
+          - carpet:11
+          - carpet:12
+          - carpet:13
+          - carpet:14
+          - carpet:15
+        - - hard_clay
+          - hard_clay:1
+          - hard_clay:2
+          - hard_clay:3
+          - hard_clay:4
+          - hard_clay:5
+          - hard_clay:6
+          - hard_clay:7
+          - hard_clay:8
+          - hard_clay:9
+          - hard_clay:10
+          - hard_clay:11
+          - hard_clay:12
+          - hard_clay:13
+          - hard_clay:14
+          - hard_clay:15
+        - - double_plant
+          - double_plant:1
+          - double_plant:2
+          - double_plant:3
+          - double_plant:4
+          - double_plant:5
+          - double_plant:6
+        - - white_glazed_terracotta
+          - white_glazed_terracotta:1
+          - white_glazed_terracotta:2
+          - white_glazed_terracotta:3
+        - - orange_glazed_terracotta
+          - orange_glazed_terracotta:1
+          - orange_glazed_terracotta:2
+          - orange_glazed_terracotta:3
+        - - magenta_glazed_terracotta
+          - magenta_glazed_terracotta:1
+          - magenta_glazed_terracotta:2
+          - magenta_glazed_terracotta:3
+        - - light_blue_glazed_terracotta
+          - light_blue_glazed_terracotta:1
+          - light_blue_glazed_terracotta:2
+          - light_blue_glazed_terracotta:3
+        - - yellow_glazed_terracotta
+          - yellow_glazed_terracotta:1
+          - yellow_glazed_terracotta:2
+          - yellow_glazed_terracotta:3
+        - - lime_glazed_terracotta
+          - lime_glazed_terracotta:1
+          - lime_glazed_terracotta:2
+          - lime_glazed_terracotta:3
+        - - pink_glazed_terracotta
+          - pink_glazed_terracotta:1
+          - pink_glazed_terracotta:2
+          - pink_glazed_terracotta:3
+        - - gray_glazed_terracotta
+          - gray_glazed_terracotta:1
+          - gray_glazed_terracotta:2
+          - gray_glazed_terracotta:3
+        - - silver_glazed_terracotta
+          - silver_glazed_terracotta:1
+          - silver_glazed_terracotta:2
+          - silver_glazed_terracotta:3
+        - - cyan_glazed_terracotta
+          - cyan_glazed_terracotta:1
+          - cyan_glazed_terracotta:2
+          - cyan_glazed_terracotta:3
+        - - purple_glazed_terracotta
+          - purple_glazed_terracotta:1
+          - purple_glazed_terracotta:2
+          - purple_glazed_terracotta:3
+        - - blue_glazed_terracotta
+          - blue_glazed_terracotta:1
+          - blue_glazed_terracotta:2
+          - blue_glazed_terracotta:3
+        - - brown_glazed_terracotta
+          - brown_glazed_terracotta:1
+          - brown_glazed_terracotta:2
+          - brown_glazed_terracotta:3
+        - - green_glazed_terracotta
+          - green_glazed_terracotta:1
+          - green_glazed_terracotta:2
+          - green_glazed_terracotta:3
+        - - red_glazed_terracotta
+          - red_glazed_terracotta:1
+          - red_glazed_terracotta:2
+          - red_glazed_terracotta:3
+        - - black_glazed_terracotta
+          - black_glazed_terracotta:1
+          - black_glazed_terracotta:2
+          - black_glazed_terracotta:3
+        - - concrete
+          - concrete:1
+          - concrete:2
+          - concrete:3
+          - concrete:4
+          - concrete:5
+          - concrete:6
+          - concrete:7
+          - concrete:8
+          - concrete:9
+          - concrete:10
+          - concrete:11
+          - concrete:12
+          - concrete:13
+          - concrete:14
+          - concrete:15
+        - - concrete_powder
+          - concrete_powder:1
+          - concrete_powder:2
+          - concrete_powder:3
+          - concrete_powder:4
+          - concrete_powder:5
+          - concrete_powder:6
+          - concrete_powder:7
+          - concrete_powder:8
+          - concrete_powder:9
+          - concrete_powder:10
+          - concrete_powder:11
+          - concrete_powder:12
+          - concrete_powder:13
+          - concrete_powder:14
+          - concrete_powder:15
     costs:
         mana: 10
 

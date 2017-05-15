@@ -5,6 +5,8 @@
  - How to disable RP delay
  - How to let spells target NPCs
 
+## 6.9.8
+
 ## 7.0
 
  - Maybe reconsider config-collapsing approach, switch to routing on get/set ?
@@ -128,7 +130,6 @@
  - There's an area in the RoR where you can cast alohomora and it will spawn doors, in the center of the right side when you enter~
  - Need to fix some door-related undo issues, e.g. casting admission then breaking door sometimes drops door
 
- - Alter *really* needs an update!
  - Fix block targeting cast messages
 
  - Fix that horrible inv-dupe issue :(

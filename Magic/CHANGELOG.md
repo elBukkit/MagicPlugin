@@ -16,6 +16,7 @@
 ## 6.9.8
 
  - 1.12 Compatibility
+ - Update Alter spell to be much more flexible, group blocks like logs and leaves, work on new 1.12 blocks
 
 ## 6.9.7
 
