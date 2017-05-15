@@ -1438,7 +1438,12 @@ public class CompatibilityUtils extends NMSUtils {
         if (class_PacketPlayOutChat == null) return false;
         try {
             Object chatComponent = class_ChatComponentText_constructor.newInstance(message);
-            Object packet = class_PacketPlayOutChat_constructor.newInstance(chatComponent, (byte)2);
+            Object packet;
+            if (enum_ChatMessageType_GAME_INFO == null) {
+                packet = class_PacketPlayOutChat_constructor.newInstance(chatComponent, (byte)2);
+            } else {
+                packet = class_PacketPlayOutChat_constructor.newInstance(chatComponent, enum_ChatMessageType_GAME_INFO);
+            }
             sendPacket(player, packet);
         } catch (Exception ex) {
             ex.printStackTrace();

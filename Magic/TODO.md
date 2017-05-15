@@ -1,5 +1,10 @@
 # TODO
 
+## Add a FAQ on the wiki:
+
+ - How to disable RP delay
+ - How to let spells target NPCs
+
 ## 7.0
 
  - Maybe reconsider config-collapsing approach, switch to routing on get/set ?

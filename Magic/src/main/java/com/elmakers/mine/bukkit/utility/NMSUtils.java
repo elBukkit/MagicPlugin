@@ -138,6 +138,8 @@ public class NMSUtils {
     protected static Class<?> class_CraftServer;
     protected static Class<?> class_DataWatcherObject;
     protected static Class<?> class_PacketPlayOutChat;
+    protected static Class<Enum> class_ChatMessageType;
+    protected static Enum<?> enum_ChatMessageType_GAME_INFO;
     protected static Class<?> class_ChatComponentText;
     protected static Class<?> class_IChatBaseComponent;
 
@@ -475,7 +477,6 @@ public class NMSUtils {
             class_NBTTagCompound_getKeysMethod = class_NBTTagCompound.getMethod("c");
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
-            class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
             class_NBTTagList_sizeMethod = class_NBTTagList.getMethod("size");
             class_NBTTagList_removeMethod = class_NBTTagList.getMethod("remove", Integer.TYPE);
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
@@ -538,6 +539,18 @@ public class NMSUtils {
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
 
             // Particularly volatile methods that we can live without
+            try {
+                try {
+                    // 1.12
+                    class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("f", Integer.TYPE);
+                } catch (Throwable not12) {
+                    // 1.11 and lower
+                    class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering NBTTagList.getDouble, loading entities from schematics will not work", ex);
+                class_NBTTagList_getDoubleMethod = null;
+            }
 
             try {
                 // 1.11
@@ -579,12 +592,23 @@ public class NMSUtils {
             }
 
             try {
-                class_PacketPlayOutChat = fixBukkitClass("net.minecraft.server.PacketPlayOutChat");
-                class_ChatComponentText = fixBukkitClass("net.minecraft.server.ChatComponentText");
-                class_IChatBaseComponent = fixBukkitClass("net.minecraft.server.IChatBaseComponent");
+                // 1.12
+                try {
+                    // Common to 1.12 and below
+                    class_PacketPlayOutChat = fixBukkitClass("net.minecraft.server.PacketPlayOutChat");
+                    class_ChatComponentText = fixBukkitClass("net.minecraft.server.ChatComponentText");
+                    class_IChatBaseComponent = fixBukkitClass("net.minecraft.server.IChatBaseComponent");
+                    class_ChatComponentText_constructor = class_ChatComponentText.getConstructor(String.class);
 
-                class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, Byte.TYPE);
-                class_ChatComponentText_constructor = class_ChatComponentText.getConstructor(String.class);
+                    // 1.12 specific
+                    class_ChatMessageType = (Class<Enum>)fixBukkitClass("net.minecraft.server.class_ChatMessageType");
+                    enum_ChatMessageType_GAME_INFO = Enum.valueOf(class_ChatMessageType, "GAME_INFO");
+                    class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, class_ChatMessageType);
+
+                } catch (Throwable ex) {
+                    // 1.11 fallback
+                    class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, Byte.TYPE);
+                }
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering action bar methods, action bar messages will not work", ex);
                 class_PacketPlayOutChat = null;
@@ -669,17 +693,25 @@ public class NMSUtils {
             // TODO: Lockable API in 1.11+
             try {
                 try {
-                    // 1.11
+                    // Common
                     class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
                     class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
-                    class_ChestLock_getString = class_ChestLock.getMethod("b");
-                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                     class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("getLock");
-                } catch (Throwable ignore) {
-                    // 1.10 and earlier
-                    legacy = true;
-                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
+
+                    // 1.12 only
+                    class_ChestLock_getString = class_ChestLock.getMethod("getKey");
+                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("setLock", class_ChestLock);
+                } catch (Throwable not12) {
+                    try {
+                        // 1.11
+                        class_ChestLock_getString = class_ChestLock.getMethod("b");
+                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                    } catch (Throwable ignore) {
+                        // 1.10 and earlier
+                        legacy = true;
+                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                        class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
+                    }
                 }
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, chest locking and unlocking will not work", ex);
@@ -737,14 +769,20 @@ public class NMSUtils {
 
             try {
                 try {
-                    // 1.10 and 1.11
-                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("at");
-                } catch (Throwable ignore) {
-                    // 1.9 and earlier
-                    legacy = true;
-                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
+                    // 1.12
+                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("getSaveID");
+                    class_Entity_saveMethod = class_Entity.getMethod("save", class_NBTTagCompound);
+                } catch (Throwable not12) {
+                    try {
+                        // 1.10 and 1.11
+                        class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("at");
+                    } catch (Throwable ignore) {
+                        // 1.9 and earlier
+                        legacy = true;
+                        class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
+                    }
+                    class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
                 }
-                class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, saving entities to spawn eggs will not work", ex);
                 class_Entity_getTypeMethod = null;
@@ -1669,6 +1707,7 @@ public class NMSUtils {
     }
 
     public static Vector getPosition(Object entityData, String tag) {
+        if (class_NBTTagList_getDoubleMethod == null) return null;
         try {
             Object posList = class_NBTTagCompound_getListMethod.invoke(entityData, tag, NBT_TYPE_DOUBLE);
             Double x = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 0);

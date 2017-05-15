@@ -15,6 +15,8 @@
 
 ## 6.9.8
 
+ - 1.12 Compatibility
+
 ## 6.9.7
 
  - Fix airscooter crash, add general protection for invalid velocities
