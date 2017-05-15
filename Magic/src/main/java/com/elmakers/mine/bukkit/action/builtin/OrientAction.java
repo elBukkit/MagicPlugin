@@ -16,6 +16,8 @@ import java.util.Collection;
 public class OrientAction extends BaseSpellAction {
     private Float pitch;
     private Float yaw;
+    private Float pitchOffset;
+    private Float yawOffset;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -29,6 +31,15 @@ public class OrientAction extends BaseSpellAction {
             yaw = (float)parameters.getDouble("yaw");
         } else {
             yaw = null;
+        }if (parameters.contains("pitch_offset")) {
+            pitchOffset = (float)parameters.getDouble("pitch_offset");
+        } else {
+            pitchOffset = null;
+        }
+        if (parameters.contains("yaw_offset")) {
+            yawOffset = (float)parameters.getDouble("yaw_offset");
+        } else {
+            yawOffset = null;
         }
     }
 
@@ -52,7 +63,16 @@ public class OrientAction extends BaseSpellAction {
                 location.setYaw(yaw);
             }
         }
-        else
+        if (pitchOffset != null || yawOffset != null)
+        {
+            if (pitchOffset != null) {
+                location.setPitch(location.getPitch() + pitchOffset);
+            }
+            if (yawOffset != null) {
+                location.setYaw(location.getYaw() + yawOffset);
+            }
+        }
+        if (pitchOffset == null && yawOffset == null && yaw == null && pitch == null)
         {
             Entity targetEntity = context.getTargetEntity();
             if (targetEntity == null)
