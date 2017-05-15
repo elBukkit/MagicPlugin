@@ -27,6 +27,7 @@ public class ConeOfEffectAction extends CompoundEntityAction
     public void reset(CastContext context) {
         super.reset(context);
         targeting.start(context.getEyeLocation());
+        createActionContext(context, context.getTargetEntity(), context.getTargetLocation());
     }
 
     @Override

@@ -606,7 +606,7 @@ public class Targeting {
     {
         List<Target> candidates = getAllTargetEntities(context, range);
         if (targetCount < 0) {
-            targetCount = entities.size();
+            targetCount = candidates.size();
         }
 
         for (int i = 0; i < targetCount && i < candidates.size(); i++) {
