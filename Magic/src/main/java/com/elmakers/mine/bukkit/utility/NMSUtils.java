@@ -553,24 +553,32 @@ public class NMSUtils {
             }
 
             try {
-                // 1.11
+                // 1.12
                 try {
                     class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bd");
                     class_Entity_jumpingField.setAccessible(true);
                     class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("be");
-                    class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bf");
-                } catch (Throwable not11) {
-                    // 1.10
+                    class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bg");
+                } catch (Throwable not12) {
+                    // 1.11
                     try {
-                        class_Entity_jumpingField = class_EntityLiving.getDeclaredField("be");
+                        class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bd");
                         class_Entity_jumpingField.setAccessible(true);
-                        class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bf");
-                        class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bg");
-                    } catch (Throwable not10) {
-                        class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bc");
-                        class_Entity_jumpingField.setAccessible(true);
-                        class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bd");
-                        class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("be");
+                        class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("be");
+                        class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bf");
+                    } catch (Throwable not11) {
+                        // 1.10
+                        try {
+                            class_Entity_jumpingField = class_EntityLiving.getDeclaredField("be");
+                            class_Entity_jumpingField.setAccessible(true);
+                            class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bf");
+                            class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bg");
+                        } catch (Throwable not10) {
+                            class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bc");
+                            class_Entity_jumpingField.setAccessible(true);
+                            class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bd");
+                            class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("be");
+                        }
                     }
                 }
             } catch (Throwable ex) {
