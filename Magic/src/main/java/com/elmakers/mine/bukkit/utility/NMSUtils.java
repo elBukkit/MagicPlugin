@@ -601,7 +601,7 @@ public class NMSUtils {
                     class_ChatComponentText_constructor = class_ChatComponentText.getConstructor(String.class);
 
                     // 1.12 specific
-                    class_ChatMessageType = (Class<Enum>)fixBukkitClass("net.minecraft.server.class_ChatMessageType");
+                    class_ChatMessageType = (Class<Enum>)fixBukkitClass("net.minecraft.server.ChatMessageType");
                     enum_ChatMessageType_GAME_INFO = Enum.valueOf(class_ChatMessageType, "GAME_INFO");
                     class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, class_ChatMessageType);
 
