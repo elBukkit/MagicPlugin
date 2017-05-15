@@ -8,3 +8,17 @@ wands:
 
     battlesword:
         name: Sword
+
+spells:
+  sweep:
+    name: Sweep
+    description: Attack all targets around you
+  dash:
+    name: Dash
+    description: Quickly dash forward, attacking anything in front of you
+  throwsword:
+    name: Throw Sword
+    description: Throw your weapon at your opponent
+  boomerang:
+    name: Boomerang
+    description: Throw a boomerange, it always comes back!

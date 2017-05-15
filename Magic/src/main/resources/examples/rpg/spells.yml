@@ -1,0 +1,173 @@
+
+## Warrior Spells
+
+sweep:
+    icon: diamond_axe:178
+    icon_disabled: diamond_hoe:178
+    icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
+    category: combat
+    worth: 100
+    earns_sp: 8
+    actions:
+        cast:
+        cast:
+        - class: Repeat
+          actions:
+          - class: ConeOfEffect
+            actions:
+            - class: Damage
+          - class: ChangeContext
+            target_caster: true
+            actions:
+            - class: Orient
+          - class: Delay
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer_crack
+           sound_volume: 1
+           particle: sweep_attack
+    parameters:
+        allow_max_range: true
+        target: none
+        target_type: Damageable
+        range: 3
+        fov: 0.4
+        damage: 2
+        target_breakables: 1
+        cooldown: 5000
+        magic_damage: false
+        instant_block_effects: true
+        yaw_offset: 20
+        repeat: 9
+        delay: 5
+    costs:
+        mana: 50
+
+dash:
+    icon: diamond_axe:178
+    icon_disabled: diamond_hoe:178
+    icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
+    category: combat
+    worth: 100
+    earns_sp: 8
+    actions:
+        cast:
+        - class: Repeat
+          actions:
+          - class: ConeOfEffect
+            actions:
+            - class: Damage
+          - class: ChangeContext
+            target_caster: true
+            actions:
+            - class: Velocity
+          - class: Delay
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer_crack
+           sound_volume: 1
+           particle: sweep_attack
+    parameters:
+        target: none
+        target_type: Damageable
+        range: 3
+        hitbox: false
+        fov: 0.4
+        velocity: 0.2
+        source_pitch_min: 0
+        source_pitch_max: 0
+        damage: 2
+        target_breakables: 1
+        cooldown: 5000
+        magic_damage: false
+        instant_block_effects: true
+        repeat: 10
+        delay: 100
+    costs:
+        mana: 100
+
+throwsword:
+    icon: diamond_sword
+    actions:
+        cast:
+        - class: ArmorStandProjectile
+          actions:
+          - class: Damage
+    effects:
+        projectile:
+        -   class: EffectSingle
+            effectlib:
+                class: SphereEffect
+                particle: flame
+                particles: 4
+                radius: 0.2
+                duration: 30000
+    parameters:
+      velocity: 10
+      held_item: diamond_sword
+      location_offset: 0,4,0
+      armor_stand_invisible: true
+      armor_stand_marker: true
+      orient_right_arm: true
+      attach_duration: 5000
+      gravity: 0.05
+
+boomerang:
+    icon: gold_sword
+    actions:
+        cast:
+        - class: ArmorStandProjectile
+          velocity_transform:
+            x:
+              class: dSin
+              a: 10
+              b: 0.31416
+              c: 0
+            y: 0
+            z:
+              class: dSin
+              a: 5
+              b: 0.62832
+              c: 0
+          actions:
+          - class: Damage
+    effects:
+        projectile:
+        -   class: EffectSingle
+            effectlib:
+                class: SphereEffect
+                particle: flame
+                particles: 4
+                radius: 0.2
+                duration: 30000
+        tick:
+        - particle: redstone
+          color: FF0000
+          location: target
+    parameters:
+        target_type: LivingEntity
+        range: 100
+        armor_stand_invisible: false
+        lifetime: 10000
+        hitbox_size: 0.2
+        damage: 1
+        entity_damage: 2
+        cooldown: 0
+        right_arm_item: diamond_sword
+        # This won't do anything with teleport: false
+        # But it doesn't seem to do anything either way? Whhuutttt?
+        location_offset: 0,30,0
+        # Turns off teleporting the entity every tick
+        teleport: true
+        # Turns off re-orienting, we don't want this since we're animating the armor
+        orient: false
+        # This is supposed to account for gravity, maybe not working
+        apply_velocity: false
+        velocity_offset: 0,0.05,0
+        armor_stand_gravity: false
+        right_arm_transform:
+            x: "6.28*sin(0.2*t)"
+            y: 0
+            z: 0

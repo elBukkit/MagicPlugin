@@ -470,32 +470,6 @@ relative:
         damage: 1
         entity_damage: 2
         cooldown: 0
-
-throwsword:
-    icon: diamond_sword
-    actions:
-        cast:
-        - class: ArmorStandProjectile
-          actions:
-          - class: Damage
-    effects:
-        projectile:
-        -   class: EffectSingle
-            effectlib:
-                class: SphereEffect
-                particle: flame
-                particles: 4
-                radius: 0.2
-                duration: 30000
-    parameters:
-      velocity: 10
-      held_item: diamond_sword
-      location_offset: 0,4,0
-      armor_stand_invisible: true
-      armor_stand_marker: true
-      orient_right_arm: true
-      attach_duration: 5000
-      gravity: 0.05
       
 creepster:
     icon: sulphur
@@ -538,64 +512,6 @@ creepster:
         x: "6.28*sin(0.4*t + 0.04)"
         y: 0
         z: 0
-
-boomerang:
-    icon: gold_sword
-    actions:
-        cast:
-        - class: ArmorStandProjectile
-          velocity_transform:
-            x:
-              class: dSin
-              a: 10
-              b: 0.31416
-              c: 0
-            y: 0
-            z:
-              class: dSin
-              a: 5
-              b: 0.62832
-              c: 0
-          actions:
-          - class: Damage
-    effects:
-        projectile:
-        -   class: EffectSingle
-            effectlib:
-                class: SphereEffect
-                particle: flame
-                particles: 4
-                radius: 0.2
-                duration: 30000
-        tick:
-        - particle: redstone
-          color: FF0000
-          location: target
-    parameters:
-        target_type: LivingEntity
-        range: 100
-        armor_stand_invisible: false
-        lifetime: 10000
-        hitbox_size: 0.2
-        damage: 1
-        entity_damage: 2
-        cooldown: 0
-        right_arm_item: diamond_sword
-        # This won't do anything with teleport: false
-        # But it doesn't seem to do anything either way? Whhuutttt?
-        location_offset: 0,30,0
-        # Turns off teleporting the entity every tick
-        teleport: true
-        # Turns off re-orienting, we don't want this since we're animating the armor
-        orient: false
-        # This is supposed to account for gravity, maybe not working
-        apply_velocity: false
-        velocity_offset: 0,0.05,0
-        armor_stand_gravity: false
-        right_arm_transform:
-            x: "6.28*sin(0.2*t)"
-            y: 0
-            z: 0
 
 mathtest:
     icon: paper
