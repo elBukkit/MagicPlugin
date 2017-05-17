@@ -538,13 +538,20 @@ public class NMSUtils {
             class_AxisAlignedBB_Constructor = class_AxisAlignedBB.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
 
+            // We don't want to consider new-ish builds as "legacy" and print a warning, so keep a separate flag
+            boolean current = true;
+
             // Particularly volatile methods that we can live without
             try {
                 try {
                     // 1.12
                     class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("f", Integer.TYPE);
+                    if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
+                        throw new Exception("Not 1.12");
+                    }
                 } catch (Throwable not12) {
                     // 1.11 and lower
+                    current = false;
                     class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
                 }
             } catch (Throwable ex) {
@@ -555,12 +562,16 @@ public class NMSUtils {
             try {
                 // 1.12
                 try {
+                    if (!current) {
+                        throw new Exception("Not 1.12");
+                    }
                     class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bd");
                     class_Entity_jumpingField.setAccessible(true);
                     class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("be");
                     class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bg");
                 } catch (Throwable not12) {
                     // 1.11
+                    current = false;
                     try {
                         class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bd");
                         class_Entity_jumpingField.setAccessible(true);
@@ -615,6 +626,7 @@ public class NMSUtils {
 
                 } catch (Throwable ex) {
                     // 1.11 fallback
+                    current = false;
                     class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, Byte.TYPE);
                 }
             } catch (Throwable ex) {
@@ -624,7 +636,7 @@ public class NMSUtils {
 
             try {
                 try {
-                    // 1.11.?
+                    // 1.11
                     class_CraftWorld_createEntityMethod = class_CraftWorld.getMethod("createEntity", Location.class, Class.class);
                     class_Consumer = fixBukkitClass("org.bukkit.util.Consumer");
                     class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, class_Consumer, CreatureSpawnEvent.SpawnReason.class);

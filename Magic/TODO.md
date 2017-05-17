@@ -7,6 +7,8 @@
 
 ## 6.9.8
 
+ - Need to clear flower pots when breaking them
+ 
 ## 7.0
 
  - Maybe reconsider config-collapsing approach, switch to routing on get/set ?
