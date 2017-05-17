@@ -8,6 +8,7 @@ https://github.com/elBukkit/MagicPlugin/wiki
 
 - 3D Artist: 
   - SOPhorrific
+  - Droobledore
   - BlueYoshi68
   - NathanWolf (lolz)
 - 2D Artist: 
