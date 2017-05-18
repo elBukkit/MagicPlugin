@@ -1,0 +1,7 @@
+{
+	"parent": "item/custom/model3",
+	"textures": {
+		"particle": "items/custom/model3_white",
+		"texture": "items/custom/model3_white"
+	}
+}
