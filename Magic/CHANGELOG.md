@@ -17,6 +17,7 @@
 
  - 1.12 Compatibility
  - Update Alter spell to be much more flexible, group blocks like logs and leaves, work on new 1.12 blocks
+ - Add model3_red, model3_silver, model3_black, model3_white to war configs, now have a real model
 
 ## 6.9.7
 
