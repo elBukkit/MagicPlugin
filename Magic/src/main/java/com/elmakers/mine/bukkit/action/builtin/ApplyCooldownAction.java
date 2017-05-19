@@ -19,6 +19,7 @@ public class ApplyCooldownAction extends BaseSpellAction
 {
     private int cooldownAmount;
 	private String[] spells;
+	private String[] excludeSpells;
 	private boolean clear;
 	private boolean bypassReduction;
 	private boolean targetCaster;
@@ -39,6 +40,15 @@ public class ApplyCooldownAction extends BaseSpellAction
 		else
 		{
 			spells = null;
+		}
+		String excludeCSV = parameters.getString("exclude_spells", null);
+		if (excludeCSV != null)
+		{
+			excludeSpells = StringUtils.split(spellCSV, ',');
+		}
+		else
+		{
+			excludeSpells = null;
 		}
     }
 
@@ -63,14 +73,7 @@ public class ApplyCooldownAction extends BaseSpellAction
 				amount = 0;
 			}
 		}
-		if (spells == null) {
-			if (clear) {
-				targetMage.clearCooldown();
-			}
-			if (amount > 0) {
-				targetMage.setRemainingCooldown(amount);
-			}
-		} else {
+		if (spells != null) {
 			Wand wand = targetMage.getActiveWand();
 			for (String spellName : spells) {
 				Spell spell = null;
@@ -88,6 +91,32 @@ public class ApplyCooldownAction extends BaseSpellAction
 						spell.setRemainingCooldown(amount);
 					}
 				}
+			}
+		} else if (excludeSpells != null) {
+			Collection<Spell> allSpells = targetMage.getSpells();
+			for (Spell spell : allSpells) {
+				boolean exclude = false;
+				for (String excludeEntry : excludeSpells) {
+					if (spell.getSpellKey().getBaseKey().equalsIgnoreCase(excludeEntry)) {
+						exclude = true;
+						break;
+					}
+				}
+				if (!exclude) {
+					if (clear) {
+						spell.clearCooldown();
+					}
+					if (amount > 0) {
+						spell.setRemainingCooldown(amount);
+					}
+				}
+			}
+		} else {
+			if (clear) {
+				targetMage.clearCooldown();
+			}
+			if (amount > 0) {
+				targetMage.setRemainingCooldown(amount);
 			}
 		}
 		return SpellResult.CAST;

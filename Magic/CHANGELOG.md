@@ -20,6 +20,7 @@
  - Fix item dupe exploit from exploding flower pots that auto-undo, they no longer drop their contents
  - Fix dropping stackable wands (like C4, thermal detonators)
  - Fix armor stand projectiles getting stuck in the world when hit with an explosion
+ - Add exclude_spells option to ApplyCooldown. May not be super performant.
 
 ## 6.9.8
 
