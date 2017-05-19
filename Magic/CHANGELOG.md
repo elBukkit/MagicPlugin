@@ -21,6 +21,7 @@
  - Fix dropping stackable wands (like C4, thermal detonators)
  - Fix armor stand projectiles getting stuck in the world when hit with an explosion
  - Add exclude_spells option to ApplyCooldown. May not be super performant.
+ - Add more support for special disguises with LibsDisugises (baby=true, item=stone, etc)
 
 ## 6.9.8
 

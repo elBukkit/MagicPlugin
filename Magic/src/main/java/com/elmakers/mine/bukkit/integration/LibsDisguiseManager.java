@@ -4,17 +4,23 @@ import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.LibsDisguises;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
+import me.libraryaddict.disguise.disguisetypes.MiscDisguise;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
+import java.util.logging.Level;
+
 public class LibsDisguiseManager {
     private final Plugin disguisePlugin;
+    private final Plugin owningPlugin;
 
     public LibsDisguiseManager(Plugin owningPlugin, Plugin disguisePlugin) {
         this.disguisePlugin = disguisePlugin;
+        this.owningPlugin = owningPlugin;
     }
 
     public boolean initialize() {
@@ -46,11 +52,35 @@ public class LibsDisguiseManager {
                     }
                     disguise = playerDisguise;
                     break;
+                case FALLING_BLOCK:
+                case DROPPED_ITEM:
+                    Material material = Material.valueOf(configuration.getString("material").toUpperCase());
+                    MiscDisguise itemDisguise = new MiscDisguise(disguiseType, material.getId(), configuration.getInt("data"));
+                    disguise = itemDisguise;
+                    break;
+                case SPLASH_POTION:
+                case PAINTING:
+                    MiscDisguise paintingDisguise = new MiscDisguise(disguiseType, configuration.getInt("data"));
+                    disguise = paintingDisguise;
+                    break;
+                case ARROW:
+                case TIPPED_ARROW:
+                case SPECTRAL_ARROW:
+                case FIREBALL:
+                case SMALL_FIREBALL:
+                case DRAGON_FIREBALL:
+                case WITHER_SKULL:
+                case FISHING_HOOK:
+                    MiscDisguise miscDisguise = new MiscDisguise(disguiseType);
+                    disguise = miscDisguise;
+                    break;
                 default:
-                    disguise = new MobDisguise(disguiseType);
+                    boolean isBaby = configuration.getBoolean("baby", false);
+                    disguise = new MobDisguise(disguiseType, isBaby);
             }
             DisguiseAPI.disguiseEntity(entity, disguise);
         } catch (Exception ex) {
+            owningPlugin.getLogger().log(Level.WARNING, "Error creating disguise", ex);
             return false;
         }
         return true;
