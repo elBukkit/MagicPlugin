@@ -1285,3 +1285,36 @@ gunshop:
           cost: 5000
         - item: flashbang@10
           cost: 2000
+
+carshop:
+    icon: wood_hoe:14
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        confirm_filler: stained_glass:3
+        items:
+        - item: ferrari
+          cost: 75000
+        - item: model3
+          cost: 35000
+        - item: model3_red
+          cost: 35000
+        - item: model3_silver
+          cost: 35000
+        - item: model3_black
+          cost: 35000
+        - item: model3_white
+          cost: 35000
+
+spawn_car:
+    icon: diamond_pickaxe:10
+    actions:
+      cast:
+      - class: SpawnEntity
+      - class: Message
+        ignore_result: true
+    parameters:
+      range: 3
+      message: "Right-click around the driver's door to get in"
+      message_type: action_bar

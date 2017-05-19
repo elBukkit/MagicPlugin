@@ -96,3 +96,66 @@ flashbang:
   uses: 1
   right_click: cast
   active_spell: flash_bang
+
+model3:
+  name: Model 3
+  icon: diamond_pickaxe:10
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type model3
+  uses: 1
+
+ferrari:
+  name: Ferrari California
+  icon: diamond_pickaxe:11
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type ferrari
+  uses: 1
+
+train:
+  name: Steam Engine
+  icon: diamond_pickaxe:12
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type train
+  uses: 1
+
+model3_white:
+  name: Model 3
+  icon: diamond_pickaxe:13
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type model3_white
+  uses: 1
+
+model3_silver:
+  name: Model 3
+  icon: diamond_pickaxe:14
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type model3_silver
+  uses: 1
+
+model3_black:
+  name: Model 3
+  icon: diamond_pickaxe:15
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type model3_black
+  uses: 1
+
+model3_red:
+  name: Model 3
+  icon: diamond_pickaxe:16
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type model3_red
+  uses: 1

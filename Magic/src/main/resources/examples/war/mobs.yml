@@ -59,7 +59,7 @@ fbi:
 
 model3:
   type: armor_stand
-  helmet: model3
+  helmet: model3_item
   invisible: true
   silent: true
   name: Model 3
@@ -68,7 +68,7 @@ model3:
 
 ferrari:
   type: armor_stand
-  helmet: ferrari
+  helmet: ferrari_item
   invisible: true
   silent: true
   name: Ferrari California
@@ -77,7 +77,7 @@ ferrari:
 
 train:
   type: armor_stand
-  helmet: train
+  helmet: train_item
   invisible: true
   silent: true
   name: Steam Engine
@@ -86,7 +86,7 @@ train:
 
 model3_red:
   type: armor_stand
-  helmet: model3_red
+  helmet: model3_red_item
   invisible: true
   silent: true
   name: Model 3
@@ -95,7 +95,7 @@ model3_red:
 
 model3_black:
   type: armor_stand
-  helmet: model3_black
+  helmet: model3_black_item
   invisible: true
   silent: true
   name: Model 3
@@ -104,7 +104,7 @@ model3_black:
 
 model3_white:
   type: armor_stand
-  helmet: model3_white
+  helmet: model3_white_item
   invisible: true
   silent: true
   name: Model 3
@@ -113,7 +113,7 @@ model3_white:
 
 model3_silver:
   type: armor_stand
-  helmet: model3_silver
+  helmet: model3_silver_item
   invisible: true
   silent: true
   name: Model 3

@@ -21,7 +21,8 @@
  - Fix dropping stackable wands (like C4, thermal detonators)
  - Fix armor stand projectiles getting stuck in the world when hit with an explosion
  - Add exclude_spells option to ApplyCooldown. May not be super performant.
- - Add more support for special disguises with LibsDisugises (baby=true, item=stone, etc)
+ - Add more support for special disguises with LibsDisugises (baby=true, material=stone, etc)
+ - Add carshop to war configs, and single-use wand items for spawning cars
 
 ## 6.9.8
 
