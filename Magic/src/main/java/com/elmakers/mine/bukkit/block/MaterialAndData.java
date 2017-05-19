@@ -355,6 +355,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         modify(block, false);
     }
 
+    public static void clearItems(BlockState block) {
+        if (block != null && (block instanceof InventoryHolder || block.getType() == Material.FLOWER_POT)) {
+            NMSUtils.clearItems(block.getLocation());
+        }
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public void modify(Block block, boolean applyPhysics) {
@@ -362,13 +368,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         try {
             BlockState blockState = block.getState();
-            // Clear chests so they don't dump their contents.
-            if (blockState instanceof InventoryHolder) {
-                NMSUtils.clearItems(block.getLocation());
-            }
-
             if (material != null) {
                 byte blockData = data != null ? (byte)(short)data : block.getData();
+
+                if (material == Material.AIR) {
+                    // Clear chests and flower pots so they don't dump their contents.
+                    clearItems(blockState);
+                }
+
                 block.setTypeIdAndData(material.getId(), blockData, applyPhysics);
                 blockState = block.getState();
             }

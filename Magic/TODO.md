@@ -7,7 +7,6 @@
 
 ## 6.9.8
 
- - Need to clear flower pots when breaking them
  - Dropping a stack of C4 and picking it up again, gets you only 1 C4
  - Armor stand projectiles sometimes get stuck in the world
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
@@ -42,6 +41,7 @@
   
 ## Not so High-Priority
  
+ - Ability to alter flower pots and beds (need to tweak TileEntity data.. doable, but messy to track with Material keys)
  - Brush selector on a sub-page for beds says "diamond axe sub-types"?
  - An option on a wand to put all spells at max level (but don't fill)
  - Aliases don't work with levels 

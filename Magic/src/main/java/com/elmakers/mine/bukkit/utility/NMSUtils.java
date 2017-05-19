@@ -1695,9 +1695,10 @@ public class NMSUtils {
                 if (itemList != null) {
                     List items = (List)class_NBTTagList_list.get(itemList);
                     items.clear();
-                    class_TileEntity_loadMethod.invoke(tileEntity, entityData);
-                    class_TileEntity_updateMethod.invoke(tileEntity);
                 }
+                class_NBTTagCompound_removeMethod.invoke(entityData,"Item");
+                class_TileEntity_loadMethod.invoke(tileEntity, entityData);
+                class_TileEntity_updateMethod.invoke(tileEntity);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

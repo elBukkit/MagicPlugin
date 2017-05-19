@@ -16,6 +16,7 @@
 ## 6.9.9
 
  - Fix cooldown on sniper rifle
+ - Fix item dupe exploit from exploding flower pots that auto-undo, they no longer drop their contents
 
 ## 6.9.8
 
