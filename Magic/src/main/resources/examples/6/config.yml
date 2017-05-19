@@ -5,3 +5,6 @@ wand_hide_flags: 62
 
 # Don't send cast messages in the action bar
 cast_message_prefix: "&5&o"
+
+# Don't let players put wands in chests or drag them out of their inventories
+wand_undroppable: true

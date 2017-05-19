@@ -152,7 +152,7 @@ wand_unbreakable: false
 # and to let players put wands in chests.
 # The Magic.wand.override_drop permission also allows players to do this.
 # Wands are droppable normally unless they are set to "undroppable: true"
-wand_undroppable: true
+wand_undroppable: false
 
 # Skill configuration
 default_skill_icon: stick

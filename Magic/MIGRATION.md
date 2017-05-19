@@ -4,8 +4,13 @@
  - You may use "example: 6" in config.yml to undo the following config changes:
    - Skill Points renamed to Spell Points
    - Cast messages go to chat instead of action bar
+   - Wands can't be put in chests
    - Default wand configs will use old behavior for actions and flags (per below)
    - Wands aren't class-based and store data as normal
+
+## 6.9.9
+
+ - Wands can now be put in chests or dropped by dragging them out of the inventory. Set "wand_undroppable: true" in config.yml to change back.
 
 ## 6.9.3
 
