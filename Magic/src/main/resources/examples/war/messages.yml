@@ -79,6 +79,11 @@ spells:
         cast_player_message: ""
         indirect_player_message: ""
         cooldown: ""
-    flashbang:
+    flash_bang:
         cast_player_message: "a:You were hit by $player's flash bang"
         cooldown: ""
+    steal_model3:
+        cast_player_message: "a:$player ran you down"
+    steal_ferrari:
+        cast_player_message: "a:$player ran you down"
+
