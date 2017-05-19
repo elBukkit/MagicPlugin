@@ -219,6 +219,7 @@ public class PlayerController implements Listener {
             cancelEvent = true;
         } else if (activeWand != null) {
             if (droppedWand) {
+                ItemStack mainhandItem = player.getInventory().getItemInMainHand();
                 activeWand.deactivate();
                 ItemStack restoredItem = player.getInventory().getItemInMainHand();
                 ItemMeta restoredMeta = restoredItem == null ? null : restoredItem.getItemMeta();
@@ -228,7 +229,13 @@ public class PlayerController implements Listener {
                 // Clear after inventory restore (potentially with deactivate), since that will put the wand back
                 if (Wand.hasActiveWand(player) && restoredItem.getType() != Material.AIR &&
                     restoredMeta != null && activeMeta.equals(restoredMeta)) {
-                    player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
+                    ItemStack newItem = player.getInventory().getItemInMainHand();
+                    if (mainhandItem.getAmount() > 0) {
+                        newItem.setAmount(mainhandItem.getAmount());
+                        player.getInventory().setItemInMainHand(newItem);
+                    } else {
+                        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
+                    }
                 }
             } else if (activeWand.isInventoryOpen()) {
                 if (!controller.isSpellDroppingEnabled()) {

@@ -18,6 +18,7 @@
  - Wands can now be put in chests or dropped by dragging them out of the inventory. Set "wand_undroppable: true" in config.yml to change back.
  - Fix cooldown on sniper rifle
  - Fix item dupe exploit from exploding flower pots that auto-undo, they no longer drop their contents
+ - Fix dropping stackable wands (like C4, thermal detonators)
 
 ## 6.9.8
 
