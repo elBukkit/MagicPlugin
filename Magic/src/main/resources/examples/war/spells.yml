@@ -1174,6 +1174,7 @@ drive:
         mount_target: true
         controllable: true
         pitch_controllable: false
+        rider_untargetable: true
         sound: war.engine
         sound_interval: 100
         sound_max_volume: 4

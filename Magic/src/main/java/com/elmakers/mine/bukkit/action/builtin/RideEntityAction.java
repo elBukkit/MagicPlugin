@@ -63,6 +63,7 @@ public class RideEntityAction extends BaseSpellAction
     private boolean warningEffectsApplied;
     private long nextSoundPlay;
     private boolean noTarget = true;
+    private boolean noTargetPlayer = false;
     private Class<?> crashEntityType;
     private double crashDismountSpeed;
     private double crashEntityDistance;
@@ -130,6 +131,7 @@ public class RideEntityAction extends BaseSpellAction
         pitchOffset = parameters.getDouble("pitch_offset", 0);
         yawOffset = parameters.getDouble("yaw_offset", 0);
         noTarget = parameters.getBoolean("mount_untargetable", true);
+        noTargetPlayer = parameters.getBoolean("rider_untargetable", false);
         controllable = parameters.getBoolean("controllable", false);
         pitchControllable = parameters.getBoolean("pitch_controllable", true);
         strafeControllable = parameters.getDouble("strafe_controllable", 0.0);
@@ -409,6 +411,9 @@ public class RideEntityAction extends BaseSpellAction
         if (sound != null) {
             nextSoundPlay = System.currentTimeMillis();
         }
+        if (noTargetPlayer) {
+            entity.setMetadata("notarget", new FixedMetadataValue(context.getController().getPlugin(), true));
+        }
         
         return SpellResult.PENDING;
 	}
@@ -421,6 +426,9 @@ public class RideEntityAction extends BaseSpellAction
             }
             mount.eject();
             mount = null;
+        }
+        if (noTargetPlayer) {
+            context.getEntity().removeMetadata("notarget", context.getPlugin());
         }
         Entity mountedEntity = context.getEntity();
         if (warningEffectsApplied && warningEffects != null && mountedEntity != null && mountedEntity instanceof LivingEntity) {
