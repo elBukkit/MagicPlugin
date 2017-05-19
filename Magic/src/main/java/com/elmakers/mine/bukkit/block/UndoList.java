@@ -580,7 +580,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         // Check to see if this is something we spawned, and has now been destroyed
         if (entities != null && entities.contains(entity) && !entity.isValid()) {
             entities.remove(entity);
-        } else {
+        } else if (entity.isValid()) {
             if (modifiedEntities == null) modifiedEntities = new HashMap<>();
             UUID entityId = entity.getUniqueId();
             entityData = modifiedEntities.get(entityId);
