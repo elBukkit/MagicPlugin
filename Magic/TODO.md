@@ -8,6 +8,9 @@
 ## 6.9.8
 
  - Need to clear flower pots when breaking them
+ - Dropping a stack of C4 and picking it up again, gets you only 1 C4
+ - Armor stand projectiles sometimes get stuck in the world
+ - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  
 ## 7.0
 

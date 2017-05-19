@@ -15,6 +15,8 @@
 
 ## 6.9.9
 
+ - Fix cooldown on sniper rifle
+
 ## 6.9.8
 
  - 1.12 Compatibility

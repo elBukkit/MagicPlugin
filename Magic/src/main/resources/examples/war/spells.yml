@@ -255,7 +255,7 @@ sniper:
     headshot_parameters:
       damage_multiplier: 4
     parameters:
-        mage_cooldown: 1000
+        cooldown_mage: 2500
         velocity: 3000
         range: 100
         effect_slow: 20
