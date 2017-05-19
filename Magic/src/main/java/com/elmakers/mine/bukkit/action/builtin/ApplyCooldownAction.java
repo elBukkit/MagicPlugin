@@ -14,12 +14,14 @@ import org.bukkit.entity.Entity;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ApplyCooldownAction extends BaseSpellAction
 {
     private int cooldownAmount;
 	private String[] spells;
-	private String[] excludeSpells;
+	private Set<String> excludeSpells;
 	private boolean clear;
 	private boolean bypassReduction;
 	private boolean targetCaster;
@@ -44,7 +46,7 @@ public class ApplyCooldownAction extends BaseSpellAction
 		String excludeCSV = parameters.getString("exclude_spells", null);
 		if (excludeCSV != null)
 		{
-			excludeSpells = StringUtils.split(spellCSV, ',');
+			excludeSpells = new HashSet<>(Arrays.asList(StringUtils.split(excludeCSV, ',')));
 		}
 		else
 		{
@@ -95,14 +97,7 @@ public class ApplyCooldownAction extends BaseSpellAction
 		} else if (excludeSpells != null) {
 			Collection<Spell> allSpells = targetMage.getSpells();
 			for (Spell spell : allSpells) {
-				boolean exclude = false;
-				for (String excludeEntry : excludeSpells) {
-					if (spell.getSpellKey().getBaseKey().equalsIgnoreCase(excludeEntry)) {
-						exclude = true;
-						break;
-					}
-				}
-				if (!exclude) {
+				if (!excludeSpells.contains(spell.getSpellKey().getBaseKey())) {
 					if (clear) {
 						spell.clearCooldown();
 					}
