@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.integration;
 
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.LibsDisguises;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
@@ -55,7 +56,8 @@ public class LibsDisguiseManager {
                 case FALLING_BLOCK:
                 case DROPPED_ITEM:
                     Material material = Material.valueOf(configuration.getString("material").toUpperCase());
-                    MiscDisguise itemDisguise = new MiscDisguise(disguiseType, material.getId(), configuration.getInt("data"));
+                    int id = DeprecatedUtils.getId(material);
+                    MiscDisguise itemDisguise = new MiscDisguise(disguiseType, id, configuration.getInt("data"));
                     disguise = itemDisguise;
                     break;
                 case SPLASH_POTION:
