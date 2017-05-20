@@ -1318,6 +1318,7 @@ spawn_car:
       - class: Message
         ignore_result: true
     parameters:
-      range: 3
+      range: 4
       message: "Right-click around the driver's door to get in"
       message_type: action_bar
+      allow_max_range: true
