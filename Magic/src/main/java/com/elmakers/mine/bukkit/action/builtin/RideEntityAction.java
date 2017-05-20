@@ -469,6 +469,7 @@ public class RideEntityAction extends BaseSpellAction
         boolean dismount = (speed >= crashDismountSpeed);
         if (dismount) {
             if (crashVelocity > 0 && maxSpeed > 0 ) {
+                mount.eject();
                 Vector crashDirection = direction.clone();
                 if (crashVelocityYOffset > 0) {
                     crashDirection.setY(crashDirection.getY() + crashVelocityYOffset).normalize();
