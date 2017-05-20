@@ -50,6 +50,7 @@ public class RideEntityAction extends BaseSpellAction
     private Double yDirection = null;
     private Collection<PotionEffect> crashEffects;
     private Collection<PotionEffect> warningEffects;
+    private Collection<PotionEffect> ridingEffects;
 
     private SoundEffect sound = null;
     private int soundInterval = 1000;
@@ -87,6 +88,8 @@ public class RideEntityAction extends BaseSpellAction
         crashEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("crash_effects"));
         durationWarning = parameters.getInt("duration_warning", 0);
         warningEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("warning_effects"), durationWarning);
+        ridingEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("riding_effects"), Integer.MAX_VALUE, true, false);
+
         if (parameters.contains("crash_into")) {
             String entityTypeName = parameters.getString("crash_into");
             try {
@@ -414,7 +417,10 @@ public class RideEntityAction extends BaseSpellAction
         if (noTargetPlayer) {
             entity.setMetadata("notarget", new FixedMetadataValue(context.getController().getPlugin(), true));
         }
-        
+        if (ridingEffects != null && entity instanceof LivingEntity) {
+            CompatibilityUtils.applyPotionEffects((LivingEntity)entity, ridingEffects);
+        }
+
         return SpellResult.PENDING;
 	}
 	
@@ -433,6 +439,11 @@ public class RideEntityAction extends BaseSpellAction
         Entity mountedEntity = context.getEntity();
         if (warningEffectsApplied && warningEffects != null && mountedEntity != null && mountedEntity instanceof LivingEntity) {
             for (PotionEffect effect : warningEffects) {
+                ((LivingEntity)mountedEntity).removePotionEffect(effect.getType());
+            }
+        }
+        if (ridingEffects != null && mountedEntity != null && mountedEntity instanceof LivingEntity) {
+            for (PotionEffect effect : ridingEffects) {
                 ((LivingEntity)mountedEntity).removePotionEffect(effect.getType());
             }
         }

@@ -23,6 +23,7 @@
  - Add exclude_spells option to ApplyCooldown. May not be super performant.
  - Add more support for special disguises with LibsDisugises (baby=true, material=stone, etc)
  - Add carshop to war configs, and single-use wand items for spawning cars
+ - Players are invisible and untargetable while riding in a car
 
 ## 6.9.8
 

@@ -1197,6 +1197,8 @@ drive:
         crash_dismount_speed: 0.75
         crash_effects:
           confusion: 120,3
+        riding_effects:
+          invisibility: 1
 
 steal:
     inherit: drive

@@ -808,8 +808,13 @@ public class ConfigurationUtils extends ConfigUtils {
     {
         return getPotionEffects(effectConfig, null);
     }
-    
+
     public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig, Integer duration)
+    {
+        return getPotionEffects(effectConfig, duration, true, true);
+    }
+
+    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig, Integer duration, boolean ambient, boolean particles)
     {
         if (effectConfig == null) return null;
         List<PotionEffect> effects = new ArrayList<>();
@@ -834,7 +839,7 @@ public class ConfigurationUtils extends ConfigUtils {
                     }
                 }
 
-                PotionEffect effect = new PotionEffect(effectType, ticks, power, true);
+                PotionEffect effect = new PotionEffect(effectType, ticks, power, ambient, particles);
                 effects.add(effect);
 
             } catch (Exception ex) {
