@@ -1,0 +1,18 @@
+pyromancer:
+  inherit: default
+  icon: stick
+  spells:
+  - fireball
+  - lava
+  - meteor
+  - tendril
+
+endermancer:
+  inherit: default
+  icon: stick
+  spells:
+  - blink
+  - dragonball
+  - counterspell
+  - phase
+  - homing

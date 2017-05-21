@@ -1,0 +1,19 @@
+pyromancer:
+  name: Pyromancer
+  inherit: base_wand
+  path: pyromancer
+  effect_color: 'FF0000'
+  mana_max: 200
+  mana_regeneration: 10
+  spells:
+  - fire
+
+endermancer:
+  name: Endermancer
+  inherit: base_wand
+  path: endermancer
+  effect_color: 'FF00FF'
+  mana_max: 200
+  mana_regeneration: 10
+  spells:
+  - missile
