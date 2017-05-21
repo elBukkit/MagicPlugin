@@ -1,5 +1,6 @@
 pyromancer:
   name: Pyromancer
+  icon: stick
   inherit: base_wand
   path: pyromancer
   effect_color: 'FF0000'
@@ -10,6 +11,7 @@ pyromancer:
 
 endermancer:
   name: Endermancer
+  icon: stick
   inherit: base_wand
   path: endermancer
   effect_color: 'FF00FF'

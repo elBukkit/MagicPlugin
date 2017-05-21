@@ -1,6 +1,5 @@
 pyromancer:
   inherit: default
-  icon: stick
   spells:
   - fireball
   - lava
@@ -9,7 +8,6 @@ pyromancer:
 
 endermancer:
   inherit: default
-  icon: stick
   spells:
   - blink
   - dragonball
