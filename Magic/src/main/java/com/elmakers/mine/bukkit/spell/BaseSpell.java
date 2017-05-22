@@ -645,6 +645,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters, Integer duration)
     {
+        return getPotionEffects(parameters, duration, true, true);
+    }
+
+    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters, Integer duration, boolean ambient, boolean particles)
+    {
         List<PotionEffect> effects = new ArrayList<>();
         PotionEffectType[] effectTypes = PotionEffectType.values();
         for (PotionEffectType effectType : effectTypes) {

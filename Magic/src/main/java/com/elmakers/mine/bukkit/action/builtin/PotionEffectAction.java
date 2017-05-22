@@ -25,11 +25,15 @@ public class PotionEffectAction extends BaseSpellAction
     private Set<PotionEffectType> removeEffects;
     private Collection<PotionEffect> addEffects;
     private Integer duration;
+    private boolean ambient = true;
+    private boolean particles = true;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
     {
         super.initialize(spell, parameters);
+        ambient = parameters.getBoolean("effects_ambient", true);
+        particles = parameters.getBoolean("effects_particles", true);
         if (parameters.contains("remove_effects"))
         {
             removeEffects = new HashSet<>();
@@ -62,13 +66,15 @@ public class PotionEffectAction extends BaseSpellAction
         {
             duration = null;
         }
-        addEffects = BaseSpell.getPotionEffects(parameters, duration);
+        addEffects = BaseSpell.getPotionEffects(parameters, duration, ambient, particles);
     }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        ambient = parameters.getBoolean("effects_ambient", true);
+        particles = parameters.getBoolean("effects_particles", true);
         if (parameters.contains("duration"))
         {
             int durationOverride = parameters.getInt("duration");
@@ -77,7 +83,7 @@ public class PotionEffectAction extends BaseSpellAction
             }
             if (duration == null || durationOverride != duration)
             {
-                addEffects = BaseSpell.getPotionEffects(parameters, durationOverride);
+                addEffects = BaseSpell.getPotionEffects(parameters, durationOverride, ambient, particles);
             }
         }
         if (addEffects == null) {
@@ -102,7 +108,7 @@ public class PotionEffectAction extends BaseSpellAction
                 int strength = section.getInt(key, 0);
                 PotionEffectType type = PotionEffectType.getByName(key);
                 if (type != null) {
-                    effects.add(type.createEffect(ticks, strength));
+                    effects.add(new PotionEffect(type, type.isInstant() ? 1 : ticks, strength, ambient, particles));
                 }
             }
             return effects;
