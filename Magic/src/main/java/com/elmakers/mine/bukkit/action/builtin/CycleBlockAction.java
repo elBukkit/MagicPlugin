@@ -51,6 +51,7 @@ public class CycleBlockAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
+        context.registerForUndo(block);
         newMaterial.modify(block);
         return SpellResult.CAST;
     }
