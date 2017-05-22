@@ -22,7 +22,13 @@ public class MagicItemDb extends ItemDb {
 	@Override
 	public ItemStack get(final String id) throws Exception
 	{
-		if (id.equals("wand")) {
+		if (id.startsWith("m:")) {
+			String itemId = id.replace("m:", "");
+			return controller.createItem(itemId);
+		} if (id.startsWith("magic:")) {
+			String itemId = id.replace("magic:", "");
+			return controller.createItem(itemId);
+		} else if (id.equals("wand")) {
 			Wand wand = Wand.createWand(controller, "");
 			if (wand != null) {
 				return wand.getItem();
