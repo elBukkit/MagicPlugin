@@ -19,10 +19,14 @@ levitate:
              color_override: color
              source_location: feet
              effectlib:
-                 class: SphereEffect
+                 class: CylinderEffect
                  particle: redstone
                  radius: 1
-                 offset: 0,-0.5,0
+                 height: 0
+                 enableRotation: false
+                 particles: 20
+                 offset: 0,-0.1,0
+                 iterations: 5000
         deactivate:
         -  class: EffectSingle
            sound: entity_enderdragon_flap
