@@ -22,3 +22,9 @@ spells:
   boomerang:
     name: Boomerang
     description: Throw a boomerange, it always comes back!
+  evade:
+    name: Evade
+    description: Randomly teleport nearby
+  backflip:
+    name: Backflip
+    description: Jump backwards to avoid attacks
