@@ -964,7 +964,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
         if (targetingSpell != null)
         {
-            targetingSpell.retarget(range, fov, closeRange, closeFOV, useHitbox);
+            targetingSpell.retarget(this, range, fov, closeRange, closeFOV, useHitbox);
             setTargetEntity(targetingSpell.getTargetEntity());
             setTargetLocation(targetingSpell.getTargetLocation());
         }

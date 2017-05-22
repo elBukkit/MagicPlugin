@@ -185,23 +185,32 @@ public abstract class TargetingSpell extends BaseSpell {
         target();
     }
 
-    public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
+    public void retarget(CastContext context, double range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
         initializeTargeting();
         this.range = range;
         targeting.setFOV(fov);
         targeting.setCloseRange(closeFOV);
         targeting.setCloseFOV(closeRange);
         targeting.setUseHitbox(useHitbox);
-        target();
+        target(context);
     }
+
+    public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
+        retarget(currentCast, range, fov, closeRange, closeFOV, useHitbox);
+    }
+
+    public void target(CastContext castContext) {
+        if (!targeting.hasTarget())
+        {
+            getTarget(castContext);
+        }
+    }
+
 
     @Override
     public void target()
     {
-        if (!targeting.hasTarget())
-        {
-            getTarget();
-        }
+        target(currentCast);
     }
 
     protected Target processBlockEffects()
@@ -244,26 +253,31 @@ public abstract class TargetingSpell extends BaseSpell {
         return target;
     }
 
-    protected Target findTarget()
+    protected Target findTarget(CastContext context)
     {
         Location source = getEyeLocation();
         TargetType targetType = targeting.getTargetType();
         boolean isBlock = targetType == TargetType.BLOCK || targetType == TargetType.SELECT;
         if (!isBlock && targetEntity != null) {
-            return targeting.overrideTarget(currentCast, new Target(source, targetEntity));
+            return targeting.overrideTarget(context, new Target(source, targetEntity));
         }
 
         if (targetType != TargetType.SELF && targetLocation != null) {
-            return targeting.overrideTarget(currentCast, new Target(source, targetLocation.getBlock()));
+            return targeting.overrideTarget(context, new Target(source, targetLocation.getBlock()));
         }
 
-        Target target = targeting.target(currentCast, getMaxRange());
+        Target target = targeting.target(context, getMaxRange());
         return targeting.getResult() == Targeting.TargetingResult.MISS && !allowMaxRange ? new Target(source) : target;
     }
 
     protected Target getTarget()
     {
-        Target target = findTarget();
+        return getTarget(currentCast);
+    }
+
+    protected Target getTarget(CastContext context)
+    {
+        Target target = findTarget(context);
 
         if (instantBlockEffects)
         {
@@ -281,13 +295,10 @@ public abstract class TargetingSpell extends BaseSpell {
             }
         }
 
-        if (currentCast != null)
-        {
-            Entity targetEntity = target != null ? target.getEntity() : null;
-            Location targetLocation = target != null ? target.getLocation() : null;
-            currentCast.setTargetLocation(targetLocation);
-            currentCast.setTargetEntity(targetEntity);
-        }
+        Entity targetEntity = target != null ? target.getEntity() : null;
+        Location targetLocation = target != null ? target.getLocation() : null;
+        context.setTargetLocation(targetLocation);
+        context.setTargetEntity(targetEntity);
 
         return target;
     }
