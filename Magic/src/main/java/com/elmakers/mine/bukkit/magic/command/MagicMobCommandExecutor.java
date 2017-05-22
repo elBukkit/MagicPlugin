@@ -23,6 +23,7 @@ import org.bukkit.util.BlockIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -189,6 +190,33 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
                 entity.remove();
             }
             removed++;
+        }
+        List<World> worlds = new ArrayList<>();
+        if (worldName != null) {
+            worlds.add(Bukkit.getWorld(worldName));
+        } else {
+            worlds.addAll(Bukkit.getWorlds());
+        }
+        Set<String> mobNames = new HashSet<>();
+        if (mobType != null) {
+            EntityData mob = api.getController().getMob(mobType);
+            mobNames.add(mob.getName());
+        } else {
+            Set<String> allKeys = api.getController().getMobKeys();
+            for (String key : allKeys) {
+                EntityData mob = api.getController().getMob(key);
+                mobNames.add(mob.getName());
+            }
+        }
+        for (World world : worlds) {
+            List<Entity> entities = world.getEntities();
+            for (Entity entity : entities) {
+                String customName = entity.getCustomName();
+                if (entity.isValid() && customName != null && mobNames.contains(customName)) {
+                    entity.remove();
+                    removed++;
+                }
+            }
         }
         sender.sendMessage("Removed " + removed + " magic mobs");
     }
