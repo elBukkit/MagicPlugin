@@ -97,6 +97,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.garbagemule</groupId>
+			<artifactId>MobArena</artifactId>
+			<version>0.98.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.sk89q</groupId>
 			<artifactId>commandbook</artifactId>
 			<version>2.3</version>

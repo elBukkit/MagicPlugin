@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
+import com.elmakers.mine.bukkit.integration.MobArenaManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
@@ -825,6 +826,19 @@ public class MagicController implements MageController {
             }
         } else {
             getLogger().info("LibsDisguises integration disabled");
+        }
+
+        // Check for MobArena
+        Plugin mobArenaPlugin = pluginManager.getPlugin("MobArena");
+        if (mobArenaPlugin == null) {
+            getLogger().info("MobArena not found");
+        } else {
+            try {
+                mobArenaManager = new MobArenaManager(this);
+                getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items");
+            } catch (Throwable ex) {
+                getLogger().warning("MobArena integration failed, you may need to update the MobArena plugin to use Magic items");
+            }
         }
 
         // Vault integration is handled internally in MagicLib
@@ -5251,6 +5265,7 @@ public class MagicController implements MageController {
     private BlockPhysicsManager                 blockPhysicsManager         = null;
     private boolean                             useBlockPhysics             = true;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
+    private MobArenaManager                     mobArenaManager             = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();
