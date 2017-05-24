@@ -106,6 +106,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isHanging = false;
     protected boolean isLiving = false;
     protected boolean isProjectile = false;
+    protected boolean canPickupItems = false;
 
     protected ItemData itemInHand;
     protected ItemData helmet;
@@ -142,6 +143,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.location = location;
         this.fireTicks = entity.getFireTicks();
         this.isSilent = CompatibilityUtils.isSilent(entity);
+        this.canPickupItems = (entity instanceof Creature) ? ((Creature)entity).getCanPickupItems() : false;
         name = entity.getCustomName();
         tags = CompatibilityUtils.getTags(entity);
 
@@ -329,6 +331,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
         leggings = controller.getOrCreateItem(parameters.getString("leggings"));
         boots = controller.getOrCreateItem(parameters.getString("boots"));
+
+        canPickupItems = parameters.getBoolean("can_pickup_items", false);
     }
 
     public static EntityData loadPainting(Vector location, Art art, BlockFace direction) {
@@ -531,6 +535,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (tags != null && !tags.isEmpty()) {
             Set<String> entityTags = CompatibilityUtils.getTags(entity);
             entityTags.addAll(tags);
+        }
+
+
+        if (entity instanceof Creature) {
+            Creature creature = (Creature)entity;
+            creature.setCanPickupItems(canPickupItems);
         }
 
         if (entity instanceof Painting) {
