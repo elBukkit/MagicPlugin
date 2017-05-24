@@ -1572,3 +1572,125 @@ terracotta:
     repeat: 10
     delay: 100
     target_offset: -2,4,0
+
+launchmob:
+    name: Launch Mob
+    description: Launches a mob high into the air!
+    icon: diamond_axe:63
+    icon_disabled: diamond_hoe:63
+    icon_url: http://textures.minecraft.net/texture/621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4
+    category: elemental
+    hidden: true
+    worth: 100
+    actions:
+        cast:
+        - class: SpawnEntity
+          entity_types:
+              chicken: 30
+              cow: 100
+              pig: 100
+              mushroom_cow: 15
+              iron_golem: 2
+        - class: VelocityAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_villager_yes
+           effectlib:
+             class: DnaEffect
+             particleHelix: drip_lava
+             iterations: 24
+             particleBase1: drip_water
+    parameters:
+        target: self
+        set_target: true
+        cooldown: 0
+        undo: 10000
+        loot: false
+        living_entity_speed: 1
+        y_offset: 0.2
+        target_breakables: 0
+
+laser2:
+  inherit: laser
+  parameters:
+    brush: ice
+
+
+stream2:
+  inherit: stream
+  parameters:
+    brush: ice
+    start: 2
+    increment_data: false
+    transparent: air,ice
+    undo_to: 10
+    track_range: 0
+
+placer:
+    icon: diamond_axe:145
+    icon_disabled: diamond_hoe:145
+    icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
+    category: demolition
+    worth: 450
+    earns_sp: 8
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    pvp_restricted: true
+    actions:
+        cast:
+        - class: Repeat
+          actions:
+          - class: PlayEffects
+            effects: beam
+          - class: Retarget
+            actions:
+            - class: ChangeContext
+              target_attachment: true
+              actions:
+              - class: Damage
+              - class: ModifyBlock
+          - class: Delay
+    effects:
+        beam:
+        -  class: EffectSingle
+           sound: magic.zap
+           location: origin
+           sound_volume: 0.1
+           color_override: colorHelix
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: redstone
+             particleBase1: drip_lava
+             particleBase2: smoke_normal
+             relativeOffset: -2,0,0
+             iterations: 10
+             radius: 0.5
+             grow: 0.2
+             baseInterval: 5
+             length: 16
+             particlesBase: 5
+        cast:
+        -  class: EffectSingle
+           particle: drip_lava
+           particle_count: 20
+    parameters:
+        target: other
+        target_type: Damageable
+        player_damage: 0.5
+        entity_damage: 1
+        target_count: 5
+        range: 32
+        destructible: destructible_replace
+        allow_max_range: true
+        undo: 30000
+        brush: ice
+        undo: 15000
+        cooldown: 10000
+        repeat: 20
+        undo_speed: 1
+        delay: 100
+    costs:
+        mana: 120

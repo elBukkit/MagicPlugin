@@ -1177,8 +1177,8 @@ drive:
         rider_untargetable: true
         sound: war.engine
         sound_interval: 100
-        sound_max_volume: 4
-        sound_min_volume: 0.1
+        sound_max_volume: 1
+        sound_min_volume: 0.01
         sound_max_pitch: 2
         sound_min_pitch: 0.5
         mount_untargetable: false
