@@ -1,0 +1,43 @@
+dash:
+    icon: diamond_axe:178
+    icon_disabled: diamond_hoe:178
+    icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
+    category: combat
+    worth: 100
+    earns_sp: 8
+    actions:
+        cast:
+        - class: Repeat
+          actions:
+          - class: ConeOfEffect
+            actions:
+            - class: Damage
+          - class: ChangeContext
+            target_caster: true
+            actions:
+            - class: Velocity
+          - class: Delay
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer_crack
+           sound_volume: 1
+           particle: sweep_attack
+    parameters:
+        target: none
+        target_type: Damageable
+        range: 3
+        hitbox: false
+        fov: 0.4
+        velocity: 0.2
+        source_pitch_min: 0
+        source_pitch_max: 0
+        damage: 2
+        target_breakables: 1
+        cooldown: 5000
+        magic_damage: false
+        instant_block_effects: true
+        repeat: 10
+        delay: 100
+    costs:
+        mana: 40
