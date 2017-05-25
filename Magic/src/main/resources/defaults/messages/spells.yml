@@ -1465,3 +1465,22 @@ spells:
     projector:
       name: Projector
       description: It's-a Me!
+    sweep:
+      name: Sweep
+      description: A powerful 360 degree attack
+    dash:
+      name: Dash
+      description: Run forward, damaging all in your path
+    throwsword:
+      name: Throw Sword
+      description: Throw your sword at your enemy
+    boomerang:
+      name: Boomerang
+      description: Throw a boomerange- it always comes back!
+    evade:
+      name: Evade
+      description: Randomly teleport to a nearby location
+    backflip:
+      name: Backflip
+      descripttion: Quickly move backwards to evade your foes
+      fail: "a:There's nowhere to go!"
