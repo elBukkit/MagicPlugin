@@ -16,7 +16,9 @@ public class MobArenaManager implements ItemProvider {
 
         Set<String> magicMobKeys = controller.getMobKeys();
         for (String mob : magicMobKeys) {
-            new MagicMACreature(controller, mob, controller.getMob(mob));
+            // Have to obey special MobArena naming restrictions
+            String mobKey = mob.toLowerCase().replaceAll("[-_\\.]", "");
+            new MagicMACreature(controller, mobKey, controller.getMob(mob));
         }
     }
 
