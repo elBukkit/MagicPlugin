@@ -1,8 +1,17 @@
 #
 # Wands meant for use in MobArena classes
-# 
+#
+
+base_arena:
+  inherit: base_wand
+  bound: false
+  keep: false
+  invulnerable: false
+  immortal: false
+  track: false
+
 mage:
-    inherit: base_wand
+    inherit: base_arena
     icon: wood_hoe:3
     effect_color: "00FFAA"
     active_spell: missile
@@ -17,7 +26,7 @@ mage:
      - push
 
 demolitions:
-    inherit: base_wand
+    inherit: base_arena
     icon: wood_hoe:4
     effect_color: "FF0000"
     active_spell: fire
@@ -32,7 +41,7 @@ demolitions:
      - sticky
 
 healer:
-    inherit: base_wand
+    inherit: base_arena
     icon: wood_hoe:1
     effect_color: "FFFFFF"
     active_spell: heal
@@ -47,7 +56,7 @@ healer:
      - boon
 
 rogue:
-    inherit: base_wand
+    inherit: base_arena
     icon: wood_hoe:1
     effect_color: "0022FF"
     active_spell: dash
@@ -61,7 +70,7 @@ rogue:
      - boon
 
 warrior:
-    inherit: base_wand
+    inherit: base_arena
     icon: gold_sword:1
     effect_color: "882222"
     active_spell: wound
