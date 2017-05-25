@@ -63,7 +63,7 @@ wound:
         magic_damage: false
         instant_block_effects: true
     costs:
-        mana: 100
+        mana: 50
 
 wound|2:
   upgrade_required_path: master
