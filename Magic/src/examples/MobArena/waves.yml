@@ -1,0 +1,52 @@
+
+    waves:
+      recurrent:
+        def1:
+          type: default
+          priority: 1
+          frequency: 1
+          monsters:
+            zombies: 20
+            skeletons: 20
+            spiders: 20
+            creepers: 20
+            wolves: 20
+            darkspider: 10
+            warlock: 1
+            mutant: 10
+            mutantcaptain: 5
+            mutantspider: 15
+            undeadoverlord: 2
+            undeadminion: 5
+        spec1:
+          type: special
+          priority: 2
+          frequency: 4
+          monsters:
+            powered-creepers: 10
+            zombie-pigmen: 10
+            angry-wolves: 10
+            blazes: 10
+            darkwizard: 1
+            warlock: 10
+            megaspider: 10
+      single:
+        swarm1:
+          type: swarm
+          wave: 6
+          monster: slime
+          amount: low
+        boss1:
+          type: boss
+          wave: 10
+          monster: darkwizard
+    rewards:
+      waves:
+        every:
+          '3': gold_nugget, magic:sp:10
+          '5': emerald, magic:sp:30
+          '10': emerald, magic:sp:50
+        after:
+          '7': diamond, magic:sp:50
+          '13': diamond, magic:sp:100
+          '16': diamond, magic:sp:150
