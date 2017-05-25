@@ -4,23 +4,37 @@ classes:
     items: magic:warrior, potion:8197:3
     armor: 306,307,308,309
     offhand: magic:hylian_shield
+    unbreakable-weapons: false
   Mage:
     items: magic:mage
-    armor: 310,311,312,313
+    helmet: magic:wizardhelmet
+    boots: magic:wizardboots
+    chestplate: magic:wizardchestplate
+    leggings: magic:wizardleggings
+    unbreakable-weapons: false
   Rogue:
     items: magic:rogue, bow, arrow:256
     armor: 298,299,300,301
+    unbreakable-weapons: false
   Demolitions:
-    items: magic:demolitions
+    items: magic:demolitions,magic:c4@16
     armor: 314,315,316,317
+    unbreakable-weapons: false
   Healer:
     items: magic:healer, potion:16428:30, potion:16388:8, potion:16389:20, potion:8197:3,
       potion:8226:1
     armor: 314,315,316,317
+    unbreakable-weapons: false
   Soldier:
-    items: magic:pistol
+    items: magic:pistol,magic:ak47
     offhand: magic:riotshield
+    unbreakable-weapons: false
   Jedi:
     items: magic:jedi
+    unbreakable-weapons: false
   Sith:
     items: magic:sith
+    unbreakable-weapons: false
+  Bender:
+    items: magic:bender
+    unbreakable-weapons: false

@@ -171,3 +171,21 @@ sith:
         - forcepush
         - forceignite
         - forcelightning
+
+bender:
+    name: Bending
+    inherit: base_arena
+    icon: wood_hoe:23
+    effect_color: '999999'
+    mana_regeneration: 10
+    mana_max: 100
+    mana: 100
+    spells:
+      - airblast
+      - airbomb
+      - waterjet
+      - waterwhip
+      - earthblock
+      - earthsmash
+      - fire
+      - firestream
