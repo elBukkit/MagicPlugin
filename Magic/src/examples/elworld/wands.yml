@@ -143,3 +143,31 @@ quaffle:
   mode: cast
   spells:
   - quafflepower
+
+base_arena_lightsaber:
+  inherit: base_lightsaber
+  bound: false
+  keep: false
+  invulnerable: false
+  immortal: false
+  track: false
+
+jedi:
+    name: Lightsaber
+    inherit: base_arena_lightsaber
+    icon: shield:3
+    effect_color: '0000FF'
+    spells:
+        - forcepush
+        - forcepull
+        - forceleap
+
+sith:
+    name: Lightsaber
+    inherit: base_arena_lightsaber
+    icon: shield:4
+    effect_color: 'FF0000'
+    spells:
+        - forcepush
+        - forceignite
+        - forcelightning

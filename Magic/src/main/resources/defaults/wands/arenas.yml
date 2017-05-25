@@ -74,6 +74,10 @@ warrior:
     icon: gold_sword:1
     effect_color: "882222"
     active_spell: wound
+    left_click: none
+    right_click: none
+    swap: cycle_hotbar
+    quick_cast: true
     mana_max: 50
     mana: 50
     mana_regeneration: 5
@@ -81,3 +85,4 @@ warrior:
      - wound
      - throwsword
      - dash
+     - sweep
