@@ -42,7 +42,7 @@ fling:
         bypass_confusion: true
         cooldown: 5000
     costs:
-        mana: 60
+        mana: 50
 
 fling|2:
     upgrade_required_path: apprentice
@@ -52,7 +52,7 @@ fling|2:
         max_speed: 3
         cooldown: 2000
     costs:
-        mana: 75
+        mana: 60
 
 fling|3:
     upgrade_required_path: master
@@ -62,7 +62,7 @@ fling|3:
         max_speed: 4
         cooldown: 1000
     costs:
-        mana: 90
+        mana: 75
 
 fling|4:
     parameters:
