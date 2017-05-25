@@ -101,6 +101,7 @@ public class DisarmAction extends BaseSpellAction
 
 			if (targetMage != null && targetMage.getActiveWand() != null) {
 				targetMage.getActiveWand().deactivate();
+				stack = equipment.getItemInMainHand();
 			}
 		}
 
