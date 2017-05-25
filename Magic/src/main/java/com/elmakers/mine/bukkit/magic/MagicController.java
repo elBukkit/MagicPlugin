@@ -4149,16 +4149,22 @@ public class MagicController implements MageController {
                 }
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
                 if (wand != null) {
-                    return wand.getItem();
+                    ItemStack wandItem = wand.getItem();
+                    wandItem.setAmount(amount);
+                    return wandItem;
                 }
                 // Spells may be using the | delimiter for levels
                 // I am regretting overloading this delimiter!
                 String spellKey = magicItemKey.replace(":", "|");
                 itemStack = createSpellItem(spellKey, brief);
                 if (itemStack != null) {
+                    itemStack.setAmount(amount);
                     return itemStack;
                 }
                 itemStack = createBrushItem(magicItemKey);
+                if (itemStack != null) {
+                    itemStack.setAmount(amount);
+                }
             }
 
         } catch (Exception ex) {
