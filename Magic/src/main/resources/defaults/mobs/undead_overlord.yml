@@ -5,6 +5,6 @@ undead_overlord:
   name: Undead Overlord
   health: 150
   potion_effects:
-  - type: speed
+  - type: increase_damage
     amplifier: 1
     

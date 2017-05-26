@@ -22,7 +22,3 @@ warlock:
   drops:
   - gold_nugget@16
   - sp:16
-  potion_effects:
-  - type: speed
-    amplifier: 1
-
