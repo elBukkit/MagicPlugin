@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.integration;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.garbagemule.MobArena.events.ArenaPlayerJoinEvent;
+import com.garbagemule.MobArena.events.ArenaPlayerLeaveEvent;
 import com.garbagemule.MobArena.util.ItemParser;
 import com.garbagemule.MobArena.util.ItemProvider;
 import org.bukkit.Bukkit;
@@ -39,6 +40,15 @@ public class MobArenaManager implements ItemProvider, Listener {
 
     @EventHandler
     public void onPlayerJoinArena(ArenaPlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Mage mage = controller.getRegisteredMage(player.getUniqueId().toString());
+        if (mage != null) {
+            mage.deactivate();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerLeaveArena(ArenaPlayerLeaveEvent event) {
         Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player.getUniqueId().toString());
         if (mage != null) {
