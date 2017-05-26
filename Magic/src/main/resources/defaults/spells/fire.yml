@@ -74,7 +74,7 @@ fire|3:
     costs:
         mana: 60
 
-fire|3:
+fire|4:
     parameters:
         radius: 2
         cooldown: 4000

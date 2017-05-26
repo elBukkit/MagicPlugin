@@ -39,6 +39,8 @@ cure:
         bypass_pvp: true
         bypass_friendly_fire: true
         only_friendly: true
+        cancel_on_damage: 0.5
+        cancel_on_cast_other: true
         remove_effects:
         - confusion
         - poison
@@ -82,8 +84,6 @@ cure|4:
           - class: Feed
     parameters:
         feed: 1
-        cancel_on_damage: 0.5
-        cancel_on_cast_other: true
         delay: 500
         repeat: 10
 
