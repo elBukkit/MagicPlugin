@@ -29,8 +29,12 @@ public class RetargetAction extends CompoundAction {
 
     @Override
     public SpellResult step(CastContext context) {
-        actionContext.addWork((int)Math.ceil(range));
-        actionContext.retarget(range, fov, closeRange, closeFOV, useHitbox);
+        context.addWork((int)Math.ceil(range));
+        if (hasActions()) {
+            actionContext.retarget(range, fov, closeRange, closeFOV, useHitbox);
+        } else {
+            context.retarget(range, fov, closeRange, closeFOV, useHitbox);
+        }
         return startActions();
     }
 
