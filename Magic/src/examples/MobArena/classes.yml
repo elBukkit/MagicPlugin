@@ -1,7 +1,9 @@
 
+# Level 1
+
 classes:
   Warrior:
-    items: magic:warrior, potion:8197:3
+    items: magic:warrior
     armor: 306,307,308,309
     offhand: magic:hylian_shield
     unbreakable-weapons: false
@@ -13,7 +15,7 @@ classes:
     leggings: magic:wizardleggings
     unbreakable-weapons: false
   Rogue:
-    items: magic:rogue, bow, arrow:256
+    items: magic:rogue, arrow:1
     armor: 298,299,300,301
     unbreakable-weapons: false
   Demolitions:
@@ -37,4 +39,59 @@ classes:
     unbreakable-weapons: false
   Bender:
     items: magic:bender
+    unbreakable-weapons: false
+
+# Level 2
+
+classes:
+  Warrior:
+    items: magic:warrior2
+    leggings: diamond_leggings
+    helmet: diamond_helmet
+    boots: diamond_boots
+    chestplate: diamond_chestplate
+    offhand: magic:hylian_shield
+    unbreakable-weapons: false
+  Mage:
+    items: magic:mage2
+    helmet: magic:wizardhelmet
+    boots: magic:wizardboots
+    chestplate: magic:wizardchestplate
+    leggings: magic:wizardleggings
+    unbreakable-weapons: false
+  Rogue:
+    items: magic:rogue2, magic:emerald_sword, arrow:1
+    helmet: magic:apprenticehelmet
+    boots: magic:flashboots
+    chestplate: magic:apprenticechestplate
+    leggings: magic:apprenticeleggings
+    unbreakable-weapons: false
+  Demolitions:
+    items: magic:demolitions2,magic:c4@32
+    armor: 314,315,316,317
+    unbreakable-weapons: false
+  Healer:
+    items: magic:healer2, potion:16428:30, potion:16388:8, potion:16389:20, potion:8197:3,
+      potion:8226:1
+    leggings: leather_leggings
+    helmet: leather_helmet
+    boots: leather_boots
+    chestplate: magic:clericchestplate
+    unbreakable-weapons: false
+  Soldier:
+    items: magic:pistol,magic:ak47,magic:rocketlauncher,magic:sniper,magic:shotgun
+    offhand: magic:riotshield
+    unbreakable-weapons: false
+    leggings: iron_leggings
+    helmet: iron_helmet
+    boots: iron_boots
+    chestplate: iron_chestplate
+  Jedi:
+    items: magic:jedi2,magic:detonator@32
+    unbreakable-weapons: false
+  Sith:
+    items: magic:sith2,magic:detonator@32
+    unbreakable-weapons: false
+  Bender:
+    items: magic:bender2
     unbreakable-weapons: false
