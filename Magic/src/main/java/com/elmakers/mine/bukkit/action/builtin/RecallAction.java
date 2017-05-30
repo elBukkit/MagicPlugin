@@ -532,7 +532,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
                         return SpellResult.NO_TARGET;
                     }
-                    if (hasMarker())
+                    if (hasMarker() && parameters.getBoolean("confirm_marker", true))
                     {
                         showMarkerConfirm(context);
                         return SpellResult.CAST;
