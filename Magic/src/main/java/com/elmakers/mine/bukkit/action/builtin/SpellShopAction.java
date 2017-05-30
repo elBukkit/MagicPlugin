@@ -176,6 +176,7 @@ public class SpellShopAction extends BaseShopAction
         // If there is nothing here for us to do, check for upgrades being blocked
         // we will upgrade the wand here, but in theory that should never happen since we
         // checked for upgrades above.
+        mage.sendDebugMessage(ChatColor.GOLD + "Spells to buy: " + shopItems.size(), 2);
         if (wand != null && shopItems.size() == 0) {
             boolean canUpgrade = autoUpgrade && wand.checkUpgrade(false);
             boolean hasUpgrade = autoUpgrade && wand.hasUpgrade();
@@ -202,16 +203,28 @@ public class SpellShopAction extends BaseShopAction
         key = context.parameterize(key);
         String spellKey = key.split(" ", 2)[0];
 
-        if (!castsSpells && wand.hasSpell(spellKey)) return null;
+        if (!castsSpells && wand.hasSpell(spellKey)) {
+            mage.sendDebugMessage(ChatColor.GRAY + " Skipping " + spellKey + ", already have it", 3);
+            return null;
+        }
 
         SpellTemplate spell = controller.getSpellTemplate(spellKey);
-        if (spell == null) return null;
+        if (spell == null) {
+            mage.sendDebugMessage(ChatColor.RED + " Skipping " + spellKey + ", invalid spell", 0);
+            return null;
+        }
 
         if (worth == null) {
             worth = spell.getWorth();
         }
-        if (worth <= 0 && !showFree) return null;
-        if (!spell.hasCastPermission(mage.getCommandSender())) return null;
+        if (worth <= 0 && !showFree) {
+            mage.sendDebugMessage(ChatColor.YELLOW + " Skipping " + spellKey + ", is free (worth " + worth + ")", 3);
+            return null;
+        }
+        if (!spell.hasCastPermission(mage.getCommandSender())) {
+            mage.sendDebugMessage(ChatColor.YELLOW + " Skipping " + spellKey + ", no permission", 3);
+            return null;
+        }
 
         ItemStack spellItem = controller.createSpellItem(key, castsSpells);
         if (!castsSpells)
