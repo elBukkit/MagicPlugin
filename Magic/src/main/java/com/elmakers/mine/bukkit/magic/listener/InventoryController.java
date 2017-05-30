@@ -244,7 +244,15 @@ public class InventoryController implements Listener {
                 mage.checkWand();
                 activeWand = mage.getActiveWand();
             }
-        } 
+        }
+
+        if (Wand.Undroppable && event.getAction() == InventoryAction.HOTBAR_SWAP) {
+            ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
+            if (controller.getWandProperty(destinationItem, "undroppable", false)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
             
         if (clickedWand && Wand.Undroppable && !player.hasPermission("Magic.wand.override_drop") && isChest && !isContainerSlot) {
             if (controller.getWandProperty(clickedItem, "undroppable", false)) {

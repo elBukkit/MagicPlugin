@@ -26,6 +26,7 @@
  - Players are invisible and untargetable while riding in a car
  - /mmob clear will also clear non-mage mobs (like cars), though only in loaded chunks
  - Add MobArena integration (PR to MobArena pending), use "magic:wand" in MobArena configs for Magic items, magic mobs can also be used
+ - Fix being able to put wands in chests with wand_undroppable on by using the hotbar buttons
 
 ## 6.9.8
 
