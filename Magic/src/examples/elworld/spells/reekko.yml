@@ -1,0 +1,234 @@
+horrify:
+    name: Horrify
+    description: Scare your target
+    icon: diamond_axe:9
+    icon_disabled: diamond_hoe:9
+    icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
+    category: dark
+    worth: 80
+    earns_sp: 6
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: PotionEffect
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_irongolem_death
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 210B61
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: redstone
+          color: 380B61
+          location: target
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: 380B61
+           firework: star
+        -  class: EffectSingle
+           location: target
+           requires_entity_target: true
+           sound: entity_wither_death
+           sound_pitch: 2
+           effectlib:
+             class: SmokeEffect
+             iterations: 16
+             particle: spell_mob
+             color: 210B61
+        -  class: EffectSingle
+           location: target
+           requires_entity_target: true
+           effectlib:
+             class: SphereEffect
+             iterations: 45
+             period: .1
+             particle: spell_mob
+             color: 210B61
+             radius: 1
+             particles: 20
+    costs:
+        mana: 50
+    parameters:
+        speed: 5
+        range: 16
+        target_type: LivingEntity
+        target_breakables: 1
+        target: other
+        duration: 4000
+        cooldown: 6000
+        hitbox: true
+        effect_slow: 2
+        effect_weakness: 3
+        effect_confusion: 5
+
+relocate:
+  name: Relocate
+  description: Send your target away
+  icon: diamond_axe:201
+  icon_disabled: diamond_hoe:201
+  icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
+  hidden: true
+  category: specialty
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Repeat
+        actions:
+        - class: ChangeContext
+          actions:
+          - class: Teleport
+  parameters:
+    target: other
+    range: 20
+    target_offset: rand(-5,5) 0 rand(-5,5)
+    vertical_range: 5
+    stop_on_success: true
+    repeat: 10
+    unsafe: water,stationary_water,lava,stationary_lava
+    passthrough: transparent_no_water
+    prevent_passthrough: "!transparent_no_water"
+    require_build: true
+    cooldown: 2000
+  costs:
+    mana: 30
+
+concussive:
+    name: Concussive Blast
+    description: Send your targets flying
+    icon: diamond_axe:108
+    icon_disabled: diamond_hoe:108
+    icon_url: http://textures.minecraft.net/texture/4a458a62561a9e6ab960b9bdccaddbf039429c836dfacdd39ff7c7085c9e9b9
+    category: combat
+    worth: 200
+    earns_sp: 2
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: Velocity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_generic_explode
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: spell_mob
+             color: FACC2E
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FACC2E
+           firework: burst
+           particle: explosion_large
+        undo:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           location: target
+           effectlib:
+               class: AtomEffect
+               particleNucleus: smoke_large
+               particleOrbital: redstone
+               iterations: 8
+    parameters:
+        range: 32
+        speed: 0.9
+        living_entity_speed: 0.9
+        direction: 0,0.8,0
+        radius: 3
+        damage_max_distance: 2
+        cooldown: 5000
+        damage: 6
+    costs:
+        mana: 45
+
+disengage:
+    name: Disengage
+    description: Escape and slow nearby enemies
+    icon: diamond_axe:134
+    icon_disabled: diamond_hoe:134
+    icon_url: http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2
+    alias: tesseract
+    category: utility
+    tags: nojail
+    worth: 500
+    earns_sp: 2
+    upgrade_required_path: student
+    upgrade_required_casts: 40
+    actions:
+        cast:
+        - class: AreaOfEffect
+          actions:
+          - class: PotionEffect
+        - class: ChangeContext
+          target_caster: true
+          ignore_result: true
+          actions:
+          - class: FallProtectionAction
+        - class: ChangeContext
+          source_yaw_offset: 180
+          actions:
+          - class: Retarget
+            actions:
+            - class: Teleport
+    effects:
+        teleport:
+        - class: EffectSingle
+          sound: magic.teleport
+          location: target
+          particle_override: particleNucleus
+          color_override: colorOrbital
+          source_location: eyes
+          effectlib:
+             class: AtomEffect
+             particleNucleus: dragon_breath
+             particleOrbital: redstone
+             iterations: 8
+             offset: 0,-1,0
+        precast:
+         - class: EffectSingle
+           sound: magic.teleport
+           location: origin
+           particle_override: particleNucleus
+           color_override: colorOrbital
+           source_location: eyes
+           effectlib:
+               class: AtomEffect
+               updateLocations: false
+               particleNucleus: dragon_breath
+               particleOrbital: redstone
+               iterations: 8
+               offset: 0,-1,0
+         - class: EffectSingle
+           color_override: color
+           effectlib:
+               class: LineEffect
+               particle: redstone
+               updateLocations: false
+    parameters:
+        target: block
+        allow_max_range: true
+        allow_passthrough: false
+        range: 12
+        cooldown: 10000
+        prevent_passthrough: nopassthrough
+        bypass_confusion: true
+        vertical_range: 8
+        radius: 20
+        effect_slow: 3
+    costs:
+        mana: 20
