@@ -61,8 +61,6 @@ public class SpellKey {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .addValue(getKey())
-                .toString();
+        return key;
     }
 }
