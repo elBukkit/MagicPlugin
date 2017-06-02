@@ -1457,6 +1457,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public Location getOffsetLocation(Location baseLocation, boolean isInOffhand, Vector offset) {
         Entity entity = getEntity();
+        if (entity == null) return baseLocation;
 
         boolean leftHand = isInOffhand;
         if (entity instanceof HumanEntity) {
