@@ -33,7 +33,6 @@ whip:
         target: other
         hitbox: true
         allow_max_range: true
-        velocity: 8
         reorient: false
         range: 48
         target_type: Damageable

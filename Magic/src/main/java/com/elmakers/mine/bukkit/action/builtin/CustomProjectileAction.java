@@ -410,6 +410,10 @@ public class CustomProjectileAction extends CompoundAction
 
             // Start up projectile FX
             startProjectileEffects(context, projectileEffectKey);
+
+            context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile launched from "
+                    + ChatColor.GRAY + projectileLocation.toVector() + ChatColor.BLUE, 7);
+
         }
         else
         {
