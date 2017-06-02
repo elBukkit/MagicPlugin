@@ -56,18 +56,18 @@ public class TeleportAction extends BaseTeleportAction
 				context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting passthrough engaged", 11);
 			}
 		}
-		
+
 		
 		Block target;
+		Block source = context.getEyeLocation().getBlock();
+		Block face = context.getPreviousBlock();
 		if (useTargetLocation) {
-		        Location location = context.getTargetLocation();
+			Location location = context.getTargetLocation();
 			target = location == null ? null : location.getBlock();
+			face = null;
 		} else {
 			target = context.getTargetBlock();
 		}
-		
-		Block source = context.getEyeLocation().getBlock();
-		Block face = context.getPreviousBlock();
 
 		if (target == null)
 		{
@@ -95,7 +95,7 @@ public class TeleportAction extends BaseTeleportAction
 		}
 
 		// Don't drop the player too far, and make sure there is somewhere to stand - unless they are flying
-		if (!(entity instanceof Player && ((Player)entity).isFlying())) {
+		if (!(entity instanceof Player && ((Player)entity).isFlying()) && safe) {
             Location safeLocation = context.findPlaceToStand(destination.getLocation(), verticalSearchDistance, false);
 			if (safeLocation != null)
             {
