@@ -4,6 +4,7 @@ glide:
     icon_url: http://textures.minecraft.net/texture/0da6cb9e9cd875794b8b9f3a4b77227a18adb963b42af21d52d58d2ef24e47
     category: utility
     worth: 750
+    cancel_effects: true
     actions:
         cast:
         - class: Wear
@@ -32,12 +33,12 @@ glide:
         target: self
         duration: 50000
         cooldown: 60000
-        undo: 30000
         material: elytra
         armor_slot: 2
         direction: 0,1,0
         speed: 2
         delay: 750
+        return_on_finish: true
     costs:
         mana: 100
                      
