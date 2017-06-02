@@ -87,6 +87,10 @@ relocate:
         - class: ChangeContext
           actions:
           - class: Teleport
+  effects:
+    tick:
+    - location: target
+      particle: redstone
   parameters:
     target: other
     range: 20
@@ -99,6 +103,7 @@ relocate:
     prevent_passthrough: "!transparent_no_water"
     require_build: true
     cooldown: 2000
+    source_is_target: true
   costs:
     mana: 30
 
