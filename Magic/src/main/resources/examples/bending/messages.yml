@@ -48,6 +48,8 @@ categories:
         color: 'FFFFFF'
 
 wands:
+    airstaff:
+        name: Air Staff
     airbending:
         name: Airbending
     waterbending:
@@ -118,6 +120,9 @@ spells:
   airsphere:
     name: Air Sphere
     description: Fly in a protective shield of air
+  airglider:
+    name: Air Glider
+    description: Use your staff to ride the wind
 
 paths:
     airbending:

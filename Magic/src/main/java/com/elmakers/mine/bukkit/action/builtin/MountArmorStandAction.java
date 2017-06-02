@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -8,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,6 +32,7 @@ public class MountArmorStandAction extends RideEntityAction
     private boolean mountWand;
     private double armorStandPitch = 0;
     private double armorStandRoll = 0;
+    private ItemStack helmetItem;
     private CreatureSpawnEvent.SpawnReason armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
 
     private ItemStack item;
@@ -65,6 +68,15 @@ public class MountArmorStandAction extends RideEntityAction
                 armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.valueOf(reasonText);
             } catch (Exception ex) {
                 context.getMage().sendMessage("Unknown spawn reason: " + reasonText);
+            }
+        }
+
+        MageController controller = context.getController();
+        ItemData itemType = controller.getOrCreateItem(parameters.getString("helmet_item"));
+        if (itemType != null) {
+            helmetItem = itemType.getItemStack(1);
+            if (helmetItem != null) {
+                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(helmetItem));
             }
         }
     }
@@ -176,6 +188,8 @@ public class MountArmorStandAction extends RideEntityAction
 
         if (mountWand) {
             armorStand.setHelmet(item);
+        } else if (helmetItem != null) {
+            armorStand.setHelmet(helmetItem);
         }
         context.setTargetEntity(armorStand);
 

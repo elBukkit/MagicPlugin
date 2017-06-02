@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -37,6 +38,9 @@ public class WearAction extends BaseSpellAction
     private boolean useItem;
     private Map<Enchantment, Integer> enchantments;
     private int slotNumber;
+    private boolean unbreakable = true;
+    private boolean returnOnFinish = false;
+    private Mage targetMage = null;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -61,31 +65,32 @@ public class WearAction extends BaseSpellAction
 
 	private class WearUndoAction implements Runnable
 	{
-		private final Mage mage;
-        private final int slotNumber;
-
-		public WearUndoAction(Mage mage, int slotNumber) {
-			this.mage = mage;
-            this.slotNumber = slotNumber;
+		public WearUndoAction() {
 		}
 
 		@Override
 		public void run() {
-            Player player = mage.getPlayer();
-            if (player == null) return;
-
-            ItemStack[] armor = player.getInventory().getArmorContents();
-			ItemStack currentItem = armor[slotNumber];
-			if (NMSUtils.isTemporary(currentItem)) {
-				ItemStack replacement = NMSUtils.getReplacement(currentItem);
-                armor[slotNumber] = replacement;
-				player.getInventory().setArmorContents(armor);
-			}
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
-            }
+		    returnItem();
 		}
 	}
+
+	private void returnItem() {
+        if (targetMage == null) return;
+        Player player = targetMage.getPlayer();
+        if (player == null) return;
+
+        ItemStack[] armor = player.getInventory().getArmorContents();
+        ItemStack currentItem = armor[slotNumber];
+        if (NMSUtils.isTemporary(currentItem)) {
+            ItemStack replacement = NMSUtils.getReplacement(currentItem);
+            armor[slotNumber] = replacement;
+            player.getInventory().setArmorContents(armor);
+        }
+        if (targetMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+            ((com.elmakers.mine.bukkit.magic.Mage)targetMage).armorUpdated();
+        }
+        targetMage = null;
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -95,6 +100,8 @@ public class WearAction extends BaseSpellAction
         useItem = parameters.getBoolean("use_item", false);
         slotNumber = parameters.getInt("armor_slot", 3);
         slotNumber = Math.max(Math.min(slotNumber, 3), 0);
+        unbreakable = parameters.getBoolean("unbreakable", true);
+        returnOnFinish = parameters.getBoolean("return_on_finish", false);
     }
 
 	@Override
@@ -209,6 +216,9 @@ public class WearAction extends BaseSpellAction
         if (enchantments != null) {
             wearItem.addUnsafeEnchantments(enchantments);
         }
+        if (unbreakable) {
+            CompatibilityUtils.makeUnbreakable(wearItem);
+        }
 
         ItemStack[] armor = player.getInventory().getArmorContents();
 		ItemStack itemStack = armor[slotNumber];
@@ -236,13 +246,22 @@ public class WearAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-        context.registerForUndo(new WearUndoAction(mage, slotNumber));
+        targetMage = mage;
+        context.registerForUndo(new WearUndoAction());
 
         if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
         }
 		return SpellResult.CAST;
 	}
+
+    @Override
+    public void finish(CastContext context) {
+        super.finish(context);
+        if (returnOnFinish) {
+            returnItem();
+        }
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

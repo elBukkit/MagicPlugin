@@ -19,8 +19,26 @@ airbending:
     effect_bubbles: false
     protection_falling: 0.7
     effect_color: 'FFFFFF'
-    active_spell: fling
+    active_spell: airblast
     spells:
+        - airblast
+        - suction
+        - airscooter
+
+airstaff:
+    inherit: base_bending
+    path: airbending
+    icon: wood_hoe:34
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
+    quiet: 1
+    effect_bubbles: false
+    protection_falling: 0.7
+    effect_color: 'FFFFFF'
+    active_spell: airblast
+    spells:
+        - airglider
         - airblast
         - suction
         - airscooter
@@ -55,7 +73,7 @@ earthbending:
     protection_blast: 0.2
     mana_regeneration: 2
     effect_color: 'CD853F'
-    active_spell: block
+    active_spell: earthblock
     spells:
         - compression
         - earthblock

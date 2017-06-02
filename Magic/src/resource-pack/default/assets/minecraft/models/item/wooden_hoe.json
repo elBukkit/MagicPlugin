@@ -36,6 +36,8 @@
     {"predicate": {"damaged": 0, "damage": 0.5}, "model": "item/custom/crystalball"},
     {"predicate": {"damaged": 0, "damage": 0.5166666666666666}, "model": "item/custom/enchantedbook"},
     {"predicate": {"damaged": 0, "damage": 0.533333333333333}, "model": "item/custom/extinguisher"},
+    {"predicate": {"damaged": 0, "damage": 0.55}, "model": "item/bending/air_glider"},
+    {"predicate": {"damaged": 0, "damage": 0.566666666666667}, "model": "item/bending/air_staff"},
 
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/wooden_hoe"}
   ]

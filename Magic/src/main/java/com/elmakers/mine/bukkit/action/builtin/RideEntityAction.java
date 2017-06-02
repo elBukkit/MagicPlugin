@@ -77,6 +77,7 @@ public class RideEntityAction extends BaseSpellAction
     private double crashBraking = 0;
     private double crashEntityFOV = 0;
     private int fallProtection = 0;
+    private boolean isPassenger;
 
     protected Vector direction;
     protected Entity mount;
@@ -156,6 +157,7 @@ public class RideEntityAction extends BaseSpellAction
         } else {
             yDirection = null;
         }
+        isPassenger = parameters.getBoolean("passenger", false);
 
         sound = null;
         String soundKey = parameters.getString("sound");
@@ -186,7 +188,7 @@ public class RideEntityAction extends BaseSpellAction
         {
             return SpellResult.ENTITY_REQUIRED;
         }
-        Entity currentMount = mounted.getVehicle();
+        Entity currentMount = isPassenger ? mounted.getPassenger() : mounted.getVehicle();
         if (currentMount == null) {
             return SpellResult.CAST;
         }
@@ -195,7 +197,11 @@ public class RideEntityAction extends BaseSpellAction
             if (mount == null) {
                 return SpellResult.CAST;
             }
-            mount.setPassenger(mounted);
+            if (isPassenger) {
+                mounted.setPassenger(mount);
+            } else {
+                mount.setPassenger(mounted);
+            }
         }
         
         // Play sound effects
@@ -384,8 +390,12 @@ public class RideEntityAction extends BaseSpellAction
                 }
             }
 
-            CompatibilityUtils.setVelocity(mount, velocity.multiply(speed));
+            CompatibilityUtils.setVelocity(getMount(context), velocity.multiply(speed));
         }
+    }
+
+    protected Entity getMount(CastContext context) {
+        return isPassenger ? context.getEntity() : mount;
     }
     
     protected SpellResult mount(CastContext context) {
@@ -402,14 +412,18 @@ public class RideEntityAction extends BaseSpellAction
         if (noTarget) {
             mount.setMetadata("notarget", new FixedMetadataValue(context.getController().getPlugin(), true));
         }
-        mount.setPassenger(entity);
+        if (isPassenger) {
+            entity.setPassenger(mount);
+        } else {
+            mount.setPassenger(entity);
+        }
         direction = mount.getLocation().getDirection();
         adjustHeading(context);
 
         liftoffTime = System.currentTimeMillis();
         speed = startSpeed;
         if (liftoffThrust > 0) {
-            CompatibilityUtils.setVelocity(mount, new Vector(0, liftoffThrust, 0));
+            CompatibilityUtils.setVelocity(getMount(context), new Vector(0, liftoffThrust, 0));
         }
         if (sound != null) {
             nextSoundPlay = System.currentTimeMillis();
