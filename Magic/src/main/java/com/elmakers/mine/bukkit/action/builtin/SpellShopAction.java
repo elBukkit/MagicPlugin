@@ -238,6 +238,10 @@ public class SpellShopAction extends BaseShopAction
 
             ItemMeta meta = spellItem.getItemMeta();
             List<String> itemLore = meta.getLore();
+            if (itemLore == null) {
+                mage.sendDebugMessage(ChatColor.RED + " Skipping " + spellKey + ", spell item is invalid", 0);
+                return null;
+            }
             List<String> lore = new ArrayList<>();
             if (spell.getSpellKey().getLevel() > 1 && itemLore.size() > 0) {
                 lore.add(itemLore.get(0));

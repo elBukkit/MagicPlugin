@@ -8,6 +8,7 @@
 ## 6.9.8
 
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
+ - Would be nice to have per-path text, particularly for spell_required (so only Master shows the "what mysteries lay ahead" message)
  
 ## 7.0
 
