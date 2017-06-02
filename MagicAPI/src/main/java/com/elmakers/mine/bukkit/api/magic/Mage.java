@@ -524,6 +524,9 @@ public interface Mage extends CostReducer {
     void setVanished(boolean vanished);
     boolean isVanished();
 
+    void setGlidingAllowed(boolean allow);
+    boolean isGlidingAllowed();
+
     /**
      * This method is deprecated, soul wand functionality was never implemented.
      *

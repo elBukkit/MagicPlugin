@@ -7,7 +7,6 @@ glide:
     cancel_effects: true
     actions:
         cast:
-        - class: Wear
         - class: FallProtection
         - class: Velocity
         - class: Delay
@@ -38,7 +37,6 @@ glide:
         direction: 0,1,0
         speed: 2
         delay: 750
-        return_on_finish: true
     costs:
         mana: 100
                      

@@ -190,6 +190,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean virtualExperience = false;
     private float virtualExperienceProgress = 0.0f;
     private int virtualExperienceLevel = 0;
+    private boolean glidingAllowed = false;
 
     private String destinationWarp;
 
@@ -3236,6 +3237,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isVanished() {
         return isVanished;
+    }
+
+    @Override
+    public void setGlidingAllowed(boolean allow) {
+        glidingAllowed = allow;
+    }
+
+    @Override
+    public boolean isGlidingAllowed() {
+        return glidingAllowed;
     }
 }
 

@@ -27,7 +27,8 @@
  - /mmob clear will also clear non-mage mobs (like cars), though only in loaded chunks
  - Add MobArena integration (PR to MobArena pending), use "magic:wand" in MobArena configs for Magic items, magic mobs can also be used
  - Fix being able to put wands in chests with wand_undroppable on by using the hotbar buttons
- - Add staff/glider to bending configs (Thanks, dejakob!)
+ - Add staff/glider to bending configs WIP (Thanks, dejakob!)
+ - The Glide spell no longer puts an Elytra on you, it just makes you glide
 
 ## 6.9.8
 

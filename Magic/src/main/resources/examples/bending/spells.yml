@@ -237,9 +237,6 @@ airglider:
     cancel_effects: true
     actions:
         cast:
-        - class: Wear
-          material: elytra
-          armor_slot: 2
         - class: StashWand
         - class: Wear
           material: wood_hoe:33

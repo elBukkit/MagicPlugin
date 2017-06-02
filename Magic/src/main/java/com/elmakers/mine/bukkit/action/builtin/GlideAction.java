@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -16,6 +17,7 @@ public class GlideAction extends BaseSpellAction
 {
 	private boolean waitForLanding;
 	private boolean isGliding = false;
+	private boolean requireElytra = false;
 
 	@Override
 	public SpellResult perform(CastContext context)
@@ -28,17 +30,32 @@ public class GlideAction extends BaseSpellAction
 
 		LivingEntity livingEntity = (LivingEntity)targetEntity;
 
+		Mage mage = context.getController().getMage(livingEntity);
 		if (isGliding) {
 			if (!livingEntity.isGliding()) {
+				if (!requireElytra) {
+					mage.setGlidingAllowed(false);
+				}
 				isGliding = false;
 				return SpellResult.CAST;
 			}
 		} else {
 			livingEntity.setGliding(true);
 			isGliding = true;
+			if (!requireElytra) {
+				mage.setGlidingAllowed(true);
+			}
 		}
 
-		return waitForLanding ? SpellResult.PENDING : SpellResult.CAST;
+		if (waitForLanding) {
+			return SpellResult.PENDING;
+		}
+
+		if (!requireElytra) {
+			mage.setGlidingAllowed(false);
+		}
+
+		return SpellResult.CAST;
 	}
 
 	@Override
@@ -62,6 +79,7 @@ public class GlideAction extends BaseSpellAction
 	public void prepare(CastContext context, ConfigurationSection parameters)
 	{
 		waitForLanding = parameters.getBoolean("wait_for_landing", true);
+		requireElytra = parameters.getBoolean("require_elytra", false);
 	}
 
     @Override

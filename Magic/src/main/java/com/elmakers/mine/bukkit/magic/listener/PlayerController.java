@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.ArmorStand;
@@ -27,6 +28,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -86,6 +88,19 @@ public class PlayerController implements Listener {
         Mage mage = controller.getRegisteredMage(player);
         if (mage != null) {
             mage.experienceChanged();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerToggleGlide(EntityToggleGlideEvent event)
+    {
+        Entity entity = event.getEntity();
+        Mage mage = controller.getRegisteredMage(entity);
+        if (mage != null && mage.isGlidingAllowed() && !event.isGliding()) {
+            Block block = entity.getLocation().getBlock().getRelative(BlockFace.DOWN);
+            if (controller.getMaterialSet("passthrough").contains(block.getType())) {
+                event.setCancelled(true);
+            }
         }
     }
 
