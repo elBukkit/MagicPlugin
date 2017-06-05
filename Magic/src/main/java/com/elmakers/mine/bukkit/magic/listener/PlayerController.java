@@ -96,11 +96,8 @@ public class PlayerController implements Listener {
     {
         Entity entity = event.getEntity();
         Mage mage = controller.getRegisteredMage(entity);
-        if (mage != null && mage.isGlidingAllowed() && !event.isGliding()) {
-            Block block = entity.getLocation().getBlock().getRelative(BlockFace.DOWN);
-            if (controller.getMaterialSet("passthrough").contains(block.getType())) {
-                event.setCancelled(true);
-            }
+        if (mage != null && mage.isGlidingAllowed() && !event.isGliding() && !entity.isOnGround()) {
+            event.setCancelled(true);
         }
     }
 
