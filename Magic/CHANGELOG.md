@@ -29,6 +29,8 @@
  - Fix being able to put wands in chests with wand_undroppable on by using the hotbar buttons
  - Add staff/glider to bending configs WIP (Thanks, dejakob!)
  - The Glide spell no longer puts an Elytra on you, it just makes you glide
+ - Add "sp_items_enabled" config option, just in case you've, idk, given a bunch of creative players SP items that they
+   of course duped and now you need to turn off SP items.
 
 ## 6.9.8
 

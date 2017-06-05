@@ -2249,6 +2249,7 @@ public class MagicController implements MageController {
         maxManaRegeneration = properties.getInt("max_mana_regeneration", maxManaRegeneration);
         worthSkillPoints = properties.getDouble("worth_sp", 1);
         skillPointIcon = properties.getString("sp_item_icon_url");
+        skillPointItemsEnabled = properties.getBoolean("sp_items_enabled", true);
         worthBase = properties.getDouble("worth_base", 1);
         worthXP = properties.getDouble("worth_xp", 1);
         ConfigurationSection currencies = properties.getConfigurationSection("currency");
@@ -4102,7 +4103,7 @@ public class MagicController implements MageController {
                     }
                 }
                 itemStack = getSpellBook(category, amount);
-            } else if (magicItemKey.contains("sp:")) {
+            } else if (skillPointItemsEnabled && magicItemKey.contains("sp:")) {
                 String spAmount = magicItemKey.substring(3);
                 itemStack = InventoryUtils.getURLSkull(skillPointIcon);
                 ItemMeta meta = itemStack.getItemMeta();
@@ -5034,6 +5035,10 @@ public class MagicController implements MageController {
         return heroesSkillPrefix;
     }
 
+    public boolean skillPointItemsEnabled() {
+        return skillPointItemsEnabled;
+    }
+
     /*
 	 * Private data
 	 */
@@ -5125,6 +5130,7 @@ public class MagicController implements MageController {
     private double                              worthBase                       = 1;
     private double                              worthSkillPoints                = 1;
     private String                              skillPointIcon                  = null;
+    private boolean                             skillPointItemsEnabled          = true;
     private double                              worthXP                         = 1;
     private CurrencyItem                        currencyItem                    = null;
     private boolean                             spEnabled                       = true;
