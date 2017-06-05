@@ -2403,6 +2403,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public void disable() {
+        // Kind of a hack, but the loading flag will prevent the Mage from doing anything further
+        this.loading = true;
+    }
+
+    @Override
     public boolean isLoading() {
         return loading;
     }

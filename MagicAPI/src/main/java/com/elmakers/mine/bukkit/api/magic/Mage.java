@@ -375,6 +375,8 @@ public interface Mage extends CostReducer {
     boolean isLoading();
     boolean hasLocation();
 
+    void disable();
+
     void setLocation(Location location);
 
     /**
