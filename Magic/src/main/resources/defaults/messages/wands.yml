@@ -56,7 +56,7 @@ wands:
         description: Take a portrait of yourself or others
     magichat:
         name: Magic Hat
-        description: A true wizard's hat
+        description: A true wizard's hat! Look straight up and right-click to wear it.
     wizardhelmet:
         name: Wizard's Scarf
         description: Indestructible!
