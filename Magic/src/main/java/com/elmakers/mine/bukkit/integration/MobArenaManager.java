@@ -4,8 +4,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.garbagemule.MobArena.events.ArenaPlayerJoinEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerLeaveEvent;
-import com.garbagemule.MobArena.util.ItemParser;
-import com.garbagemule.MobArena.util.ItemProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,12 +12,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Set;
 
-public class MobArenaManager implements ItemProvider, Listener {
+public class MobArenaManager implements Listener {
     private final MageController controller;
 
     public MobArenaManager(MageController controller) {
         this.controller = controller;
-        ItemParser.registerItemProvider(this);
 
         Set<String> magicMobKeys = controller.getMobKeys();
         for (String mob : magicMobKeys) {
@@ -29,13 +26,6 @@ public class MobArenaManager implements ItemProvider, Listener {
         }
 
         Bukkit.getPluginManager().registerEvents(this, controller.getPlugin());
-    }
-
-    @Override
-    public ItemStack getItem(String s) {
-        if (!s.startsWith("magic:")) return null;
-        s = s.substring(6);
-        return controller.createItem(s);
     }
 
     @EventHandler
@@ -54,5 +44,12 @@ public class MobArenaManager implements ItemProvider, Listener {
         if (mage != null) {
             mage.deactivate();
         }
+    }
+
+    // Hopefully can use this again one day for custom item provider
+    public ItemStack getItem(String s) {
+        if (!s.startsWith("magic:")) return null;
+        s = s.substring(6);
+        return controller.createItem(s);
     }
 }

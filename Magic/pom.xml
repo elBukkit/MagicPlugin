@@ -99,7 +99,7 @@
 		<dependency>
 			<groupId>com.garbagemule</groupId>
 			<artifactId>MobArena</artifactId>
-			<version>0.98.1-SNAPSHOT</version>
+			<version>0.98.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
