@@ -2187,7 +2187,7 @@ public class MagicController implements MageController {
         // For legacy configs
         defaultResourcePack = properties.getString("default_resource_pack", defaultResourcePack);
         // For combined configs
-        if (addExamples != null && addExamples.size() > 0)
+        if (addExamples != null && addExamples.size() > 0 && !defaultResourcePack.isEmpty())
         {
             defaultResourcePack = properties.getString("add_resource_pack", defaultResourcePack);
         }
