@@ -3713,8 +3713,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 	
 	public void cycleSpells(int direction) {
-		Set<String> spellsSet = getSpells();
-		ArrayList<String> spells = new ArrayList<>(spellsSet);
+		ArrayList<String> spells = new ArrayList<>(this.spells);
 		if (spells.size() == 0) return;
 		if (activeSpell == null) {
 			setActiveSpell(spells.get(0));
