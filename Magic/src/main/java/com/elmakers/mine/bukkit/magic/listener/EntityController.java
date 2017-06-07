@@ -131,6 +131,20 @@ public class EntityController implements Listener {
         if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
 
         Entity damager = event.getDamager();
+        /*
+        if (damager instanceof Projectile) {
+            Projectile projectile = (Projectile)damager;
+            ProjectileSource source = projectile.getShooter();
+            if (source instanceof LivingEntity) {
+                damager = (Entity)source;
+            }
+        }
+        if (entity instanceof Creature && damager instanceof LivingEntity) {
+            Creature creature = (Creature)entity;
+            creature.setTarget((LivingEntity)damager);
+        }
+        */
+
         UndoList undoList = controller.getEntityUndo(damager);
         if (undoList != null) {
             // Prevent dropping items from frames,
