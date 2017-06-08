@@ -31,8 +31,8 @@ enable_crafting: false
 # Don't allow combining
 enable_combining: false
 
-# Whether wands can be upgraded on an enchanting table
-enable_enchanting: false
+# Disable the enchantment table showing the spell shop or upgrades
+enchant_block: ""
 
 # Wands don't glow because they don't in the movies
 wand_glow: false

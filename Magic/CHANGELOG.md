@@ -16,6 +16,7 @@
 ## 6.9.9
 
  - Wands can now be put in chests or dropped by dragging them out of the inventory. Set "wand_undroppable: true" in config.yml to change back.
+ - Example configs (stars, potter, etc) no longer use enchantment table
  - Fix cooldown on sniper rifle
  - Fix item dupe exploit from exploding flower pots that auto-undo, they no longer drop their contents
  - Fix dropping stackable wands (like C4, thermal detonators)
@@ -31,7 +32,8 @@
  - The Glide spell no longer puts an Elytra on you, it just makes you glide
  - Add "sp_items_enabled" config option, just in case you've, idk, given a bunch of creative players SP items that they
    of course duped and now you need to turn off SP items.
-
+ - Fix cycle mode with upgraded spells
+ 
 ## 6.9.8
 
  - 1.12 Compatibility

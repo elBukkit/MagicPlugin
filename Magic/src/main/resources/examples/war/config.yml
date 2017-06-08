@@ -14,6 +14,9 @@ load_default_items: false
 # No SP here, for now
 sp_enabled: false
 
+# Disable the enchantment table showing the spell shop or upgrades
+enchant_block: ""
+
 # Use a special RP
 resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-war-RP-7.zip"
 
