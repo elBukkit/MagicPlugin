@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -434,6 +435,48 @@ public class InventoryUtils extends NMSUtils
         return false;
     }
 
+    public static Object getSkullProfile(Skull state)
+    {
+        Object profile = null;
+        try {
+            if (state == null || !class_CraftSkull.isInstance(state)) return false;
+            profile = class_CraftSkull_profile.get(state);
+        } catch (Exception ex) {
+
+        }
+        return profile;
+    }
+
+    public static boolean setSkullProfile(Skull state, Object data)
+    {
+        try {
+            if (state == null || !class_CraftSkull.isInstance(state)) return false;
+            class_CraftSkull_profile.set(state, data);
+            return true;
+        } catch (Exception ex) {
+
+        }
+
+        return false;
+    }
+
+    public static boolean setSkullOwner(Skull state, String playerName, UUID playerId)
+    {
+        // TODO: This could be done directly, but is kind of tricky.
+        ItemStack skullItem = InventoryUtils.getPlayerSkull(playerName, playerId);
+        if (skullItem == null) {
+            return false;
+        }
+
+        return setSkullProfile(state, InventoryUtils.getSkullProfile(skullItem.getItemMeta()));
+
+    }
+
+    public static boolean setSkullOwner(Skull state, Player owner)
+    {
+        return setSkullOwner(state, owner.getName(), owner.getUniqueId());
+    }
+
     public static void wrapText(String text, int maxLength, Collection<String> list)
     {
         String colorPrefix = "";
@@ -522,19 +565,6 @@ public class InventoryUtils extends NMSUtils
                 Bukkit.getLogger().warning("Invalid enchantment: " + enchantKey);
             }
         }
-    }
-    
-    public static boolean isEmpty(ItemStack itemStack) {
-        if (itemStack == null || itemStack.getType() == Material.AIR) return true;
-        if (class_ItemStack_isEmptyMethod == null) return false;
-        try {
-            Object handle = getHandle(itemStack);
-            if (handle == null) return false;
-           return (Boolean)class_ItemStack_isEmptyMethod.invoke(handle);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return false;
     }
 
     public static String describeProperty(Object property) {

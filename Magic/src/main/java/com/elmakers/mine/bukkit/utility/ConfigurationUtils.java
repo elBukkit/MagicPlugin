@@ -712,7 +712,7 @@ public class ConfigurationUtils extends ConfigUtils {
         {
             for (int i = 0; i < extraParameters.length - 1; i += 2)
             {
-                ConfigurationUtils.set(parameters, extraParameters[i], extraParameters[i + 1]);
+                set(parameters, extraParameters[i], extraParameters[i + 1]);
             }
         }
     }
@@ -851,7 +851,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static List<PotionEffect> getPotionEffectObjects(ConfigurationSection baseConfig, String key, Logger log) {
         List<PotionEffect> potionEffects = null;
-        Collection<ConfigurationSection> potionEffectList = ConfigurationUtils.getNodeList(baseConfig, key);
+        Collection<ConfigurationSection> potionEffectList = getNodeList(baseConfig, key);
         if (potionEffectList != null) {
             potionEffects = new ArrayList<>();
             for (ConfigurationSection potionEffectSection : potionEffectList) {

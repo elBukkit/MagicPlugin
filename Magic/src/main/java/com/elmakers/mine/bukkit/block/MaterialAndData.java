@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.block;
 
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.integration.VaultController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -332,7 +331,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
                 data = (short)skull.getSkullType().ordinal();
-                extraData = new BlockSkull(CompatibilityUtils.getSkullProfile(skull), skull.getSkullType(), skull.getRotation());
+                extraData = new BlockSkull(InventoryUtils.getSkullProfile(skull), skull.getSkullType(), skull.getRotation());
             } else if (blockState instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
                 extraData = new BlockMobSpawner(spawner.getCreatureTypeName());
@@ -417,7 +416,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     skull.setRotation(skullData.rotation);
                 }
                 if (skullData.profile != null) {
-                    CompatibilityUtils.setSkullProfile(skull, skullData.profile);
+                    InventoryUtils.setSkullProfile(skull, skullData.profile);
                 }
                 skull.update(true, false);
             } else if (blockState != null && blockState instanceof CreatureSpawner && extraData != null && extraData instanceof BlockMobSpawner) {

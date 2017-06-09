@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -58,7 +58,7 @@ public class TossSpell extends BrushSpell
 			}
 			registerForUndo(block);
 			block.setDropItem(false);
-			CompatibilityUtils.setVelocity(block, direction);
+			SafetyUtils.setVelocity(block, direction);
 		}
 
 		registerForUndo();

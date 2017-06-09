@@ -38,6 +38,14 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- Compatibility Lib (shaded) -->
+		<dependency>
+			<groupId>com.elmakers.mine.bukkit</groupId>
+			<artifactId>CompatibilityLib</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- Effect library (shaded) -->
 		<dependency>
 			<groupId>de.slikey</groupId>

@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -360,7 +361,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (mountEntity != null) {
             ArmorStand activeArmorStand = armorStand != null ? armorStand : (mountEntity instanceof ArmorStand ? (ArmorStand)mountEntity : null);
             if (activeArmorStand != null) {
-                CompatibilityUtils.setVelocity(activeArmorStand, direction);
+                SafetyUtils.setVelocity(activeArmorStand, direction);
                 CompatibilityUtils.setYawPitch(activeArmorStand, location.getYaw() + (float)yawAmount, location.getPitch());
                 if (pitchAmount != 0) {
                     if (armorStandHead == null && useHelmet) {
@@ -373,10 +374,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     }
                 }
             } else {
-                CompatibilityUtils.setVelocity(mountEntity, direction);
+                SafetyUtils.setVelocity(mountEntity, direction);
             }
         } else {
-            CompatibilityUtils.setVelocity(player, direction);
+            SafetyUtils.setVelocity(player, direction);
         }
 
         if (effectParticle != null) {
@@ -928,12 +929,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
             if (mountEntity != null) {
                 if (armorStand != null) {
-                    CompatibilityUtils.setVelocity(armorStand, velocity);
+                    SafetyUtils.setVelocity(armorStand, velocity);
                 } else {
-                    CompatibilityUtils.setVelocity(mountEntity, velocity);
+                    SafetyUtils.setVelocity(mountEntity, velocity);
                 }
             } else {
-                CompatibilityUtils.setVelocity(player, velocity);
+                SafetyUtils.setVelocity(player, velocity);
             }
         }
         if (flight) {

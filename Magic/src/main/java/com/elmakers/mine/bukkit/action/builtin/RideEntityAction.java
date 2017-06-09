@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import de.slikey.effectlib.util.VectorUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -255,7 +256,7 @@ public class RideEntityAction extends BaseSpellAction
                     double crashDamage = maxSpeed > 0 ? crashEntityDamage * speed / maxSpeed : crashEntityDamage;
                     CompatibilityUtils.damage(damageable, crashDamage, mounted);
                 }
-                CompatibilityUtils.setVelocity(entity, velocity);
+                SafetyUtils.setVelocity(entity, velocity);
                 speed = Math.max(0, speed - crashBraking);
                 if (mount instanceof Damageable && crashEntityVehicleDamage > 0) {
                     double crashDamage = maxSpeed > 0 ? crashEntityVehicleDamage * speed / maxSpeed : crashEntityVehicleDamage;
@@ -390,7 +391,7 @@ public class RideEntityAction extends BaseSpellAction
                 }
             }
 
-            CompatibilityUtils.setVelocity(getMount(context), velocity.multiply(speed));
+            SafetyUtils.setVelocity(getMount(context), velocity.multiply(speed));
         }
     }
 
@@ -423,7 +424,7 @@ public class RideEntityAction extends BaseSpellAction
         liftoffTime = System.currentTimeMillis();
         speed = startSpeed;
         if (liftoffThrust > 0) {
-            CompatibilityUtils.setVelocity(getMount(context), new Vector(0, liftoffThrust, 0));
+            SafetyUtils.setVelocity(getMount(context), new Vector(0, liftoffThrust, 0));
         }
         if (sound != null) {
             nextSoundPlay = System.currentTimeMillis();
@@ -489,7 +490,7 @@ public class RideEntityAction extends BaseSpellAction
                     crashDirection.setY(crashDirection.getY() + crashVelocityYOffset).normalize();
                 }
                 Vector velocity = crashDirection.multiply(crashVelocity * speed / maxSpeed);
-                CompatibilityUtils.setVelocity(mountedEntity, velocity);
+                SafetyUtils.setVelocity(mountedEntity, velocity);
             }
             if (crashEffects != null && mountedEntity != null && crashEffects.size() > 0 && mountedEntity instanceof LivingEntity) {
                 CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, crashEffects);

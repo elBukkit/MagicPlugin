@@ -24,3 +24,9 @@ add_examples:
 - war
 - rpg
 - arenas
+
+# Just leaving this here for now, to re-enable wand enchanting:
+# enable_enchanting: true
+# sp_enabled: false
+# enchant_click: ""
+# wand_item_enchantable: wood_sword

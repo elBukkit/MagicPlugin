@@ -263,7 +263,7 @@ public class Target implements Comparable<Target>
             BoundingBox hitbox = null;
             if (entity != null)
             {
-                hitbox = CompatibilityUtils.getHitbox(entity);
+                hitbox = HitboxUtils.getHitbox(entity);
             }
             if (hitbox == null)
             {

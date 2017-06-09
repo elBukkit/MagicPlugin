@@ -1,10 +1,6 @@
 package com.elmakers.mine.bukkit.utility;
 
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-
-import com.elmakers.mine.bukkit.block.Schematic;
 import com.google.common.io.BaseEncoding;
-import de.slikey.effectlib.util.MathUtils;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -49,7 +45,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,13 +79,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static boolean USE_MAGIC_DAMAGE = true;
     public static boolean isDamaging = false;
     public final static int MAX_ENTITY_RANGE = 72;
-    private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<>();
-    private final static Map<EntityType, Double> headSizes = new HashMap<>();
     private final static Map<World.Environment, Integer> maxHeights = new HashMap<>();
-    private static double hitboxScale = 1.0;
-    private static double hitboxScaleY = 1.0;
-    private static double hitboxSneakScaleY = 0.75;
-    private static BoundingBox defaultHitbox;
 
     public static void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
         for (PotionEffect effect: effects) {
@@ -383,7 +372,7 @@ public class CompatibilityUtils extends NMSUtils {
         return null;
     }
 
-    public static Minecart spawnCustomMinecart(Location location, MaterialAndData display, int offset)
+    public static Minecart spawnCustomMinecart(Location location, Material material, short data, int offset)
     {
         Minecart newMinecart = null;
         try {
@@ -565,48 +554,6 @@ public class CompatibilityUtils extends NMSUtils {
         return entity.getLocation();
     }
 
-    public static Object getSkullProfile(Skull state)
-    {
-        Object profile = null;
-        try {
-            if (state == null || !class_CraftSkull.isInstance(state)) return false;
-            profile = class_CraftSkull_profile.get(state);
-        } catch (Exception ex) {
-
-        }
-        return profile;
-    }
-
-    public static boolean setSkullProfile(Skull state, Object data)
-    {
-        try {
-            if (state == null || !class_CraftSkull.isInstance(state)) return false;
-            class_CraftSkull_profile.set(state, data);
-            return true;
-        } catch (Exception ex) {
-
-        }
-
-        return false;
-    }
-
-    public static boolean setSkullOwner(Skull state, String playerName, UUID playerId)
-    {
-        // TODO: This could be done directly, but is kind of tricky.
-        ItemStack skullItem = InventoryUtils.getPlayerSkull(playerName, playerId);
-        if (skullItem == null) {
-            return false;
-        }
-
-        return setSkullProfile(state, InventoryUtils.getSkullProfile(skullItem.getItemMeta()));
-
-    }
-
-    public static boolean setSkullOwner(Skull state, Player owner)
-    {
-        return setSkullOwner(state, owner.getName(), owner.getUniqueId());
-    }
-
     public static ConfigurationSection loadConfiguration(String fileName) throws IOException, InvalidConfigurationException
     {
         YamlConfiguration configuration = new YamlConfiguration();
@@ -662,16 +609,6 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static BoundingBox getHitbox(Block block)
-    {
-        int blockX = block.getX();
-        int blockY = block.getY();
-        int blockZ = block.getZ();
-
-        // We make these slightly small to ensure the coordinates stay within the block!
-        return new BoundingBox(blockX + 0.001, blockX + 0.999, blockY + 0.001, blockY + 0.999, blockZ + 0.001, blockZ + 0.999);
-    }
-
     public static Vector getNormal(Block block, Location intersection)
     {
         double x = intersection.getX() - (block.getX() + 0.5);
@@ -687,110 +624,6 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return new Vector(0, 0, Math.signum(z));
-    }
-
-    public static BoundingBox getHitbox(Entity entity)
-    {
-        if (entity == null)
-        {
-            return null;
-        }
-        BoundingBox hitbox = hitboxes.get(entity.getType());
-        if (hitbox != null)
-        {
-            return hitbox.center(entity.getLocation().toVector());
-        }
-
-        try {
-            Object entityHandle = getHandle(entity);
-            Object aabb = class_Entity_getBoundingBox.invoke(entityHandle);
-            if (aabb == null) {
-                return defaultHitbox.center(entity.getLocation().toVector());
-            }
-
-            double scaleY = hitboxScaleY;
-            if (entity instanceof Player && ((Player)entity).isSneaking()) {
-                scaleY = hitboxSneakScaleY;
-            }
-            return new BoundingBox(
-                    class_AxisAlignedBB_minXField.getDouble(aabb),
-                    class_AxisAlignedBB_maxXField.getDouble(aabb),
-                    class_AxisAlignedBB_minYField.getDouble(aabb),
-                    class_AxisAlignedBB_maxYField.getDouble(aabb),
-                    class_AxisAlignedBB_minZField.getDouble(aabb),
-                    class_AxisAlignedBB_maxZField.getDouble(aabb)
-            ).scaleFromBase(hitboxScale, scaleY);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return defaultHitbox.center(entity.getLocation().toVector());
-    }
-
-    public static void setHitboxScale(double scale) {
-        hitboxScale = scale;
-    }
-
-    public static void setHitboxScaleY(double scaleY) {
-        hitboxScaleY = scaleY;
-    }
-
-    public static void setHitboxSneakScaleY(double hitboxSneakScaleY) {
-        CompatibilityUtils.hitboxSneakScaleY = hitboxSneakScaleY;
-    }
-
-    public static boolean isHeadshot(Entity target, Location hitLocation) {
-        if (target == null) return false;
-        Double headSize = headSizes.get(target.getType());
-        if (headSize == null) return false;
-        Location eyeLocation = null;
-        if (target instanceof LivingEntity) {
-            eyeLocation = ((LivingEntity)target).getEyeLocation();
-        } else {
-            eyeLocation = target.getLocation();
-        }
-        if (!eyeLocation.getWorld().equals(hitLocation.getWorld())) return false;
-        double distance = Math.abs(hitLocation.getY() - eyeLocation.getY());
-        return distance <= headSize;
-    }
-
-    public static void configureHeadSizes(ConfigurationSection config) {
-        headSizes.clear();
-        Collection<String> keys = config.getKeys(false);
-        for (String key : keys) {
-            try {
-                double size = config.getDouble(key);
-                EntityType entityType = EntityType.valueOf(key.toUpperCase());
-                if (size > 0)
-                {
-                    headSizes.put(entityType, size);
-                }
-            } catch (Exception ex) {
-                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type in head size definition: " + key, ex);
-            }
-        }
-    }
-
-    public static void configureHitboxes(ConfigurationSection config) {
-        hitboxes.clear();
-        Collection<String> keys = config.getKeys(false);
-        for (String key : keys) {
-            try {
-                Vector bounds = ConfigurationUtils.getVector(config, key);
-                String upperKey = key.toUpperCase();
-                double halfX = bounds.getX() / 2;
-                double halfZ = bounds.getZ() / 2;
-                BoundingBox bb = new BoundingBox(-halfX, halfX, 0, bounds.getY(), -halfZ, halfZ).scaleFromBase(hitboxScale, hitboxScaleY);
-                if (upperKey.equals("DEFAULT")) {
-                    defaultHitbox = bb;
-                    continue;
-                }
-                EntityType entityType = EntityType.valueOf(upperKey);
-                hitboxes.put(entityType, bb);
-            } catch (Exception ex) {
-                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type in hitbox definition: " + key, ex);
-            }
-        }
     }
 
     public static boolean setLock(Block block, String lockName)
@@ -1127,103 +960,6 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
-    public static boolean loadSchematic(File inputFile, Schematic schematic) {
-        if (inputFile == null || !inputFile.exists() || schematic == null) {
-            return false;
-        }
-
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(inputFile);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
-        return loadSchematic(inputStream, schematic);
-    }
-
-    public static boolean loadSchematic(InputStream input, Schematic schematic) {
-        if (input == null || schematic == null || class_NBTCompressedStreamTools_loadFileMethod == null) return false;
-
-        try {
-            Object nbtData = class_NBTCompressedStreamTools_loadFileMethod.invoke(null, input);
-            if (nbtData == null) {
-                return false;
-            }
-
-            // Version check
-            String materials = (String)class_NBTTagCompound_getStringMethod.invoke(nbtData, "Materials");
-            if (!materials.equals("Alpha")) {
-                Bukkit.getLogger().warning("Schematic is not in Alpha format");
-                return false;
-            }
-
-            short width = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Width");
-            short height = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Height");
-            short length = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Length");
-
-            byte[] blockIds = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "Blocks");
-
-            // Have to combine block ids to get 12 bits of ids
-            // Thanks to the WorldEdit team for showing me how to do this.
-            short[] blocks = new short[blockIds.length];
-            byte[] addBlocks = new byte[0];
-            if ((Boolean)class_NBTTagCompound_hasKeyMethod.invoke(nbtData, "AddBlocks")) {
-                addBlocks = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "AddBlocks");
-            }
-            for (int index = 0; index < blocks.length; index++) {
-                if ((index >> 1) >= addBlocks.length) {
-                    blocks[index] = (short) (blockIds[index] & 0xFF);
-                } else {
-                    if ((index & 1) == 0) {
-                        blocks[index] = (short) (((addBlocks[index >> 1] & 0x0F) << 8) + (blockIds[index] & 0xFF));
-                    } else {
-                        blocks[index] = (short) (((addBlocks[index >> 1] & 0xF0) << 4) + (blockIds[index] & 0xFF));
-                    }
-                }
-            }
-
-            byte[] data = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "Data");
-
-            Collection<Object> tileEntityData = new ArrayList<>();
-            Collection<Object> entityData = new ArrayList<>();
-
-            Object entityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "Entities", NBT_TYPE_COMPOUND);
-            Object tileEntityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "TileEntities", NBT_TYPE_COMPOUND);
-
-            if (entityList != null) {
-                int size = (Integer)class_NBTTagList_sizeMethod.invoke(entityList);
-                for (int i = 0; i < size; i++) {
-                    Object entity = class_NBTTagList_getMethod.invoke(entityList, i);
-                    entityData.add(entity);
-                }
-            }
-
-            if (tileEntityList != null) {
-                int size = (Integer)class_NBTTagList_sizeMethod.invoke(tileEntityList);
-                for (int i = 0; i < size; i++) {
-                    Object tileEntity = class_NBTTagList_getMethod.invoke(tileEntityList, i);
-                    tileEntityData.add(tileEntity);
-                }
-            }
-
-            int originX = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOriginX");
-            int originY = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOriginY");
-            int originZ = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOriginZ");
-
-            int offsetX = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOffsetX");
-            int offsetY = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOffsetY");
-            int offsetZ = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOffsetZ");
-
-            schematic.load(width, height, length, blocks, data, tileEntityData, entityData, new Vector(originX, originY, originZ), new Vector(offsetX, offsetY, offsetZ));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
     public static boolean removeItemAttribute(ItemStack item, Attribute attribute) {
         try {
             Object handle = getHandle(item);
@@ -1528,15 +1264,5 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return 0.0f;
-    }
-
-    public static void setVelocity(Entity entity, Vector velocity) {
-        if (!MathUtils.isFinite(velocity.getX()) || !MathUtils.isFinite(velocity.getY()) || !MathUtils.isFinite(velocity.getZ())) {
-            return;
-        }
-        if (Math.abs(velocity.getX()) > 10) velocity.setX(10 * Math.signum(velocity.getX()));
-        if (Math.abs(velocity.getY()) > 10) velocity.setY(10 * Math.signum(velocity.getY()));
-        if (Math.abs(velocity.getZ()) > 10) velocity.setZ(10 * Math.signum(velocity.getZ()));
-        entity.setVelocity(velocity);
     }
 }

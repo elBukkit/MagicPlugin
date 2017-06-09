@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
@@ -669,7 +670,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
 	private void showEntityInfo(CommandSender sender, Entity entity, String label, NumberFormat formatter)
 	{
-		BoundingBox hitbox = CompatibilityUtils.getHitbox(entity);
+		BoundingBox hitbox = HitboxUtils.getHitbox(entity);
 		Vector size = hitbox.size();
 		String message = ChatColor.BLACK + label + ": "
 				+ ChatColor.AQUA + formatter.format(size.getX()) + ChatColor.DARK_GRAY + "x"

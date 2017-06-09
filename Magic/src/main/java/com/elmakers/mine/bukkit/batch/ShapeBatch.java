@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.batch;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.batch.BrushBatch;
 import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -222,7 +221,7 @@ public class ShapeBatch extends BrushBatch {
         Location loc = center.clone();
         Vector direction = block.getLocation().toVector().subtract(center.toVector()).normalize();
         loc.setDirection(direction);
-        Minecart minecart = CompatibilityUtils.spawnCustomMinecart(loc, brush, radius * 16);
+        Minecart minecart = CompatibilityUtils.spawnCustomMinecart(loc, brush.getMaterial(), brush.getData(), radius * 16);
         registerForUndo(minecart);
 		return true;
 	}

@@ -1146,7 +1146,7 @@ public class NMSUtils {
     }
 
     public static boolean hasMeta(ItemStack stack, String tag) {
-        if (InventoryUtils.isEmpty(stack)) return false;
+        if (NMSUtils.isEmpty(stack)) return false;
         return getNode(stack, tag) != null;
     }
 
@@ -1163,7 +1163,7 @@ public class NMSUtils {
     }
 
     public static Object getNode(ItemStack stack, String tag) {
-        if (InventoryUtils.isEmpty(stack)) return null;
+        if (NMSUtils.isEmpty(stack)) return null;
         Object meta = null;
         try {
             Object craft = getHandle(stack);
@@ -1212,7 +1212,7 @@ public class NMSUtils {
     }
 
     public static Object createNode(ItemStack stack, String tag) {
-        if (InventoryUtils.isEmpty(stack)) return null;
+        if (NMSUtils.isEmpty(stack)) return null;
         Object outputObject = getNode(stack, tag);
         if (outputObject == null) {
             try {
@@ -1351,7 +1351,7 @@ public class NMSUtils {
     }
 
     public static void removeMeta(ItemStack stack, String tag) {
-        if (InventoryUtils.isEmpty(stack)) return;
+        if (NMSUtils.isEmpty(stack)) return;
 
         try {
             Object craft = getHandle(stack);
@@ -1378,7 +1378,7 @@ public class NMSUtils {
     }
 
     public static boolean setMetaNode(ItemStack stack, String tag, Object child) {
-        if (InventoryUtils.isEmpty(stack)) return false;
+        if (NMSUtils.isEmpty(stack)) return false;
         try {
             Object craft = getHandle(stack);
             if (craft == null) return false;
@@ -1398,7 +1398,7 @@ public class NMSUtils {
     }
 
     public static String getMetaString(ItemStack stack, String tag) {
-        if (InventoryUtils.isEmpty(stack)) return null;
+        if (NMSUtils.isEmpty(stack)) return null;
         String meta = null;
         try {
             Object craft = getHandle(stack);
@@ -1413,7 +1413,7 @@ public class NMSUtils {
     }
 
     public static void setMeta(ItemStack stack, String tag, String value) {
-        if (InventoryUtils.isEmpty(stack)) return;
+        if (NMSUtils.isEmpty(stack)) return;
         try {
             Object craft = getHandle(stack);
             if (craft == null) return;
@@ -1426,7 +1426,7 @@ public class NMSUtils {
     }
 
     public static void setMetaBoolean(ItemStack stack, String tag, boolean value) {
-        if (InventoryUtils.isEmpty(stack)) return;
+        if (NMSUtils.isEmpty(stack)) return;
         try {
             Object craft = getHandle(stack);
             if (craft == null) return;
@@ -1439,7 +1439,7 @@ public class NMSUtils {
     }
 
     public static boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue) {
-        if (InventoryUtils.isEmpty(stack)) return defaultValue;
+        if (NMSUtils.isEmpty(stack)) return defaultValue;
         boolean result = defaultValue;
         try {
             Object craft = getHandle(stack);
@@ -1455,7 +1455,7 @@ public class NMSUtils {
     }
 
     public static void addGlow(ItemStack stack) {
-        if (InventoryUtils.isEmpty(stack)) return;
+        if (NMSUtils.isEmpty(stack)) return;
 
         ItemMeta meta = stack.getItemMeta();
         meta.addEnchant(Enchantment.LUCK, 1, true);
@@ -1463,7 +1463,7 @@ public class NMSUtils {
     }
 
     public static void removeGlow(ItemStack stack) {
-        if (InventoryUtils.isEmpty(stack)) return;
+        if (NMSUtils.isEmpty(stack)) return;
 
         ItemMeta meta = stack.getItemMeta();
         if (meta.hasEnchant(Enchantment.LUCK)) {
@@ -1473,7 +1473,7 @@ public class NMSUtils {
     }
 
     public static boolean isUnbreakable(ItemStack stack) {
-        if (InventoryUtils.isEmpty(stack)) return false;
+        if (NMSUtils.isEmpty(stack)) return false;
         Boolean unbreakableFlag = null;
         try {
             Object craft = getHandle(stack);
@@ -1489,7 +1489,7 @@ public class NMSUtils {
     }
 
     public static void makeUnbreakable(ItemStack stack) {
-        if (InventoryUtils.isEmpty(stack)) return;
+        if (NMSUtils.isEmpty(stack)) return;
 
         try {
             Object craft = getHandle(stack);
@@ -1510,7 +1510,7 @@ public class NMSUtils {
     }
 
     public static void hideFlags(ItemStack stack, byte flags) {
-        if (InventoryUtils.isEmpty(stack)) return;
+        if (NMSUtils.isEmpty(stack)) return;
 
         try {
             Object craft = getHandle(stack);
@@ -1806,6 +1806,19 @@ public class NMSUtils {
         }
         
         return map;
+    }
+
+    public static boolean isEmpty(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getType() == Material.AIR) return true;
+        if (class_ItemStack_isEmptyMethod == null) return false;
+        try {
+            Object handle = getHandle(itemStack);
+            if (handle == null) return false;
+            return (Boolean)class_ItemStack_isEmptyMethod.invoke(handle);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 }
 

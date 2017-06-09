@@ -73,6 +73,7 @@ import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.wand.LostWand;
@@ -2274,20 +2275,20 @@ public class MagicController implements MageController {
             currencyItem = null;
         }
 
-        CompatibilityUtils.setHitboxScale(properties.getDouble("hitbox_scale", 1.0));
-        CompatibilityUtils.setHitboxScaleY(properties.getDouble("hitbox_scale_y", 1.0));
-        CompatibilityUtils.setHitboxSneakScaleY(properties.getDouble("hitbox_sneaking_scale_y", 0.75));
+        HitboxUtils.setHitboxScale(properties.getDouble("hitbox_scale", 1.0));
+        HitboxUtils.setHitboxScaleY(properties.getDouble("hitbox_scale_y", 1.0));
+        HitboxUtils.setHitboxSneakScaleY(properties.getDouble("hitbox_sneaking_scale_y", 0.75));
         if (properties.contains("hitboxes"))
         {
-            CompatibilityUtils.configureHitboxes(properties.getConfigurationSection("hitboxes"));
+            HitboxUtils.configureHitboxes(properties.getConfigurationSection("hitboxes"));
         }
         if (properties.contains("head_sizes"))
         {
-            CompatibilityUtils.configureHeadSizes(properties.getConfigurationSection("head_sizes"));
+            HitboxUtils.configureHeadSizes(properties.getConfigurationSection("head_sizes"));
         }
         if (properties.contains("max_height"))
         {
-            CompatibilityUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
+            HitboxUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
         }
 
         costReduction = (float)properties.getDouble("cost_reduction", costReduction);

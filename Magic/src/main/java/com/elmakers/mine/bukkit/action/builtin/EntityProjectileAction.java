@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -193,7 +194,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             if (velocityOffset != null) {
                 velocity = velocity.add(velocityOffset);
             }
-            CompatibilityUtils.setVelocity(entity, velocity);
+            SafetyUtils.setVelocity(entity, velocity);
         }
         if (doTeleport) {
             if (orient) {

@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -169,7 +170,7 @@ public class ModifyBlockAction extends BaseSpellAction {
                 FallingBlock falling = block.getWorld().spawnFallingBlock(blockCenter, previousMaterial, previousData);
                 falling.setDropItem(false);
                 if (fallingBlockVelocity != null) {
-                    CompatibilityUtils.setVelocity(falling, fallingBlockVelocity);
+                    SafetyUtils.setVelocity(falling, fallingBlockVelocity);
                 }
                 if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
                     CompatibilityUtils.setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);

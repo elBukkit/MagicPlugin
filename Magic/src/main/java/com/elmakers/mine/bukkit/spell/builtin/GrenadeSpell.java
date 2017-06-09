@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.Random;
 
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -50,7 +50,7 @@ public class GrenadeSpell extends BlockSpell
 				return SpellResult.FAIL;
 			}
 			Vector aim = getDirection();
-			CompatibilityUtils.setVelocity(grenade, aim);
+			SafetyUtils.setVelocity(grenade, aim);
 			grenade.setYield(size);
 			grenade.setFuseTicks(fuse);
 			grenade.setIsIncendiary(useFire);

@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
@@ -616,7 +617,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         if (hasVelocity && velocity != null) {
-            CompatibilityUtils.setVelocity(entity, velocity);
+            SafetyUtils.setVelocity(entity, velocity);
         }
 
         if (controller != null && spells != null && tickInterval >= 0) {

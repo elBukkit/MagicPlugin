@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
+import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import de.slikey.effectlib.math.VectorTransform;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -805,7 +806,7 @@ public class CustomProjectileAction extends CompoundAction
         if (hitEntity != null) {
             actionContext.playEffects("hit_entity");
 
-            if (hasActions("headshot") && CompatibilityUtils.isHeadshot(hitEntity, targetLocation)) {
+            if (hasActions("headshot") && HitboxUtils.isHeadshot(hitEntity, targetLocation)) {
                 actionContext.getMage().sendDebugMessage(ChatColor.GOLD + "   Projectile headshot", 3);
                 return headshot();
             }

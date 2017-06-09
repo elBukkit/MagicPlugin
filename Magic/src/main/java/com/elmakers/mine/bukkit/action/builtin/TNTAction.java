@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
@@ -71,7 +72,7 @@ public class TNTAction extends BaseProjectileAction
                 CompatibilityUtils.setTNTSource(grenade, living);
             }
 			Vector aim = context.getDirection();
-			CompatibilityUtils.setVelocity(grenade, aim);
+			SafetyUtils.setVelocity(grenade, aim);
 			grenade.setYield(size);
 			grenade.setFuseTicks(fuse);
 			grenade.setIsIncendiary(useFire);

@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Item;
@@ -76,7 +77,7 @@ public class ThrowItemAction extends BaseProjectileAction {
         }
         droppedItem.setMetadata("temporary", new FixedMetadataValue(context.getController().getPlugin(), true));
         CompatibilityUtils.ageItem(droppedItem, ageItems);
-        CompatibilityUtils.setVelocity(droppedItem, velocity);
+        SafetyUtils.setVelocity(droppedItem, velocity);
 
         track(context, droppedItem);
         return checkTracking(context);

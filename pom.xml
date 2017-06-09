@@ -21,6 +21,7 @@
 
 	<modules>
 		<module>MagicAPI</module>
+		<module>CompatibilityLib</module>
 		<module>Magic</module>
 	</modules>
 
