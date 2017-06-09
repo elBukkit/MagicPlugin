@@ -33,6 +33,7 @@
  - Add "sp_items_enabled" config option, just in case you've, idk, given a bunch of creative players SP items that they
    of course duped and now you need to turn off SP items.
  - Fix cycle mode with upgraded spells
+ - The GiveItem action now needs to have "target: self" added if you want the item given to the player, see giveitem spell
  
 ## 6.9.8
 

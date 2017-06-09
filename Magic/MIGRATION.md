@@ -11,6 +11,7 @@
 ## 6.9.9
 
  - Wands can now be put in chests or dropped by dragging them out of the inventory. Set "wand_undroppable: true" in config.yml to change back.
+ - The GiveItem action now needs to have "target: self" added if you want the item given to the player, see giveitem spell
 
 ## 6.9.3
 

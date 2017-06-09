@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -76,12 +77,16 @@ public class GiveItemAction extends BaseSpellAction
             return SpellResult.FAIL;
         }
 
-        Mage mage = context.getMage();
-        MageController controller = context.getController();
-		Player player = mage.getPlayer();
-		if (player == null) {
+        Entity targetEntity = context.getTargetEntity();
+        if (targetEntity == null) {
+            return SpellResult.NO_TARGET;
+        }
+		if (!(targetEntity instanceof Player)) {
             return SpellResult.PLAYER_REQUIRED;
         }
+
+        MageController controller = context.getController();
+        Player player = (Player)targetEntity;
         if (permissionNode != null && !player.hasPermission(permissionNode)) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
@@ -90,8 +95,9 @@ public class GiveItemAction extends BaseSpellAction
             return SpellResult.INSUFFICIENT_RESOURCES;
         }
 
+        Mage mage = controller.getMage(player);
         mage.giveItem(InventoryUtils.getCopy(item));
-        DeprecatedUtils.updateInventory(mage.getPlayer());
+        DeprecatedUtils.updateInventory(player);
         return SpellResult.CAST;
 	}
 

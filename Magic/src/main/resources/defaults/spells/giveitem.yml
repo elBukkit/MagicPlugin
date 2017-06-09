@@ -8,4 +8,5 @@ giveitem:
     parameters:
         item: magichat
         loud: true
+        target: self
 
