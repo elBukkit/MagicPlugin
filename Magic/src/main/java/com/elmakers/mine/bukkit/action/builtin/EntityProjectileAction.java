@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -22,7 +23,10 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
+
+import java.util.Collection;
 
 public class EntityProjectileAction extends CustomProjectileAction {
     private boolean noTarget = true;
@@ -33,6 +37,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
     private Vector locationOffset;
     private EntityType entityType;
     protected CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
+    private Collection<PotionEffect> projectileEffects;
 
     // To do .. use EntityData for all of this
     private String customName;
@@ -41,6 +46,14 @@ public class EntityProjectileAction extends CustomProjectileAction {
 
     protected Entity entity = null;
     protected Plugin plugin = null;
+
+
+    @Override
+    public void initialize(Spell spell, ConfigurationSection parameters) {
+        super.initialize(spell, parameters);
+
+        projectileEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("projectile_effects"));
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -154,6 +167,10 @@ public class EntityProjectileAction extends CustomProjectileAction {
                 }
                 wolf.setCollarColor(color);
             }
+        }
+
+        if (projectileEffects != null && entity != null && entity instanceof LivingEntity) {
+            CompatibilityUtils.applyPotionEffects((LivingEntity)entity, projectileEffects);
         }
         targeting.ignoreEntity(entity);
         return entity;

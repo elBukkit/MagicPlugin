@@ -1026,7 +1026,8 @@ quafflepower:
       location_offset: 0,-1.5,0
       lifetime: 30000
       target_self_timeout: 5000
-
+      projectile_effects:
+        glowing: 10000,1
 
 bring:
     name: Bring
