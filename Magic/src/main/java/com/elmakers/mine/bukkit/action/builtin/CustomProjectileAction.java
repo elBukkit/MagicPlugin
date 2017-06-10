@@ -82,6 +82,7 @@ public class CustomProjectileAction extends CompoundAction
     private boolean reflectResetDistanceTraveled;
     private boolean reflectTargetCaster;
     private boolean reflectTrackEntity;
+    private boolean hitRequiresEntity;
     private double reflectTrackCursorRange;
 
     protected Targeting targeting;
@@ -231,6 +232,7 @@ public class CustomProjectileAction extends CompoundAction
         targetSelfTimeout = parameters.getInt("target_self_timeout", 0);
         targetSelf = parameters.contains("target_self") ? parameters.getBoolean("target_self") : null;
         breaksBlocks = parameters.getBoolean("break_blocks", true);
+        hitRequiresEntity = parameters.getBoolean("hit_requires_entity", false);
         targetBreakables = parameters.getDouble("target_breakables", 1);
         targetBreakableSize = parameters.getInt("breakable_size", 1);
         bypassBackfire = parameters.getBoolean("bypass_backfire", false);
@@ -777,7 +779,7 @@ public class CustomProjectileAction extends CompoundAction
         if (!continueProjectile) {
             blockHitCount++;
         }
-        return continueProjectile ? SpellResult.PENDING : hit();
+        return continueProjectile ? SpellResult.PENDING : (hitRequiresEntity ? miss() : hit());
     }
     
     protected SpellResult hitEntity(Target target) {
