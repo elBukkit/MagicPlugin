@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -94,7 +95,7 @@ public class ThrowBlockAction extends BaseProjectileAction
         if (!consumeBlocks) {
             falling.setDropItem(false);
         }
-        falling.setVelocity(direction);
+        SafetyUtils.setVelocity(falling, direction);
         if (maxDamage > 0 && fallDamage > 0) {
             CompatibilityUtils.setFallingBlockDamage(falling, fallDamage, maxDamage);
         }

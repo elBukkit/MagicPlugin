@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -166,6 +167,6 @@ public class PushSpell extends UndoableSpell
         }
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
-		target.setVelocity(forceVector);
+		SafetyUtils.setVelocity(target, forceVector);
 	}
 }

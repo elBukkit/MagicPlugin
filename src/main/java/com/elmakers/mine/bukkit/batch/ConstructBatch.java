@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.batch.BrushBatch;
 import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -535,7 +536,7 @@ public class ConstructBatch extends BrushBatch {
                     Vector direction = this.fallingDirection != null ? this.fallingDirection :
                             falling.getLocation().subtract(center).toVector();
                     direction = direction.normalize().multiply(fallingBlockSpeed);
-                    falling.setVelocity(direction);
+                    SafetyUtils.setVelocity(falling, direction);
                 }
                 registerForUndo(falling);
             }

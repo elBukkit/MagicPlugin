@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.batch;
 
 import com.elmakers.mine.bukkit.batch.BrushBatch;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -121,7 +122,7 @@ public class FillBatch extends BrushBatch {
 						FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
 						falling.setDropItem(false);
 						if (fallingBlockVelocity != null) {
-							falling.setVelocity(fallingBlockVelocity);
+							SafetyUtils.setVelocity(falling, fallingBlockVelocity);
 						}
 					}
 				}

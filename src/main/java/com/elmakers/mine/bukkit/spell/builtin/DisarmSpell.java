@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -96,7 +97,7 @@ public class DisarmSpell extends TargetingSpell
             Item item = entity.getWorld().dropItemNaturally(location, stack);
             Vector velocity = item.getVelocity();
             velocity.setY(velocity.getY() * 5);
-            item.setVelocity(velocity);
+            SafetyUtils.setVelocity(item, velocity);
         }
 		
 		return SpellResult.CAST;

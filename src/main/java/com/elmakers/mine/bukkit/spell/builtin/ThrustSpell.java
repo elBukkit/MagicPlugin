@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -218,7 +219,7 @@ public class ThrustSpell extends TargetingSpell
         scaledForce.multiply(overallScale);
 
         if (scaledForce.lengthSquared() > 0.001) {
-            entity.setVelocity(scaledForce);
+            SafetyUtils.setVelocity(entity, scaledForce);
         }
 
 		this.lastTick = System.currentTimeMillis();

@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 import org.bukkit.Bukkit;
@@ -548,7 +549,7 @@ public class PlayerController implements Listener {
                 Item droppedItem = event.getItem();
                 org.bukkit.util.Vector velocity = droppedItem.getVelocity();
                 velocity.setY(velocity.getY() * 2 + 1);
-                droppedItem.setVelocity(velocity);
+                SafetyUtils.setVelocity(droppedItem, velocity);
                 return;
             }
 

@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -101,7 +102,7 @@ public class ForceSpell extends TargetingSpell
 		Vector forceVector = mage.getLocation().getDirection();
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
-		target.setVelocity(forceVector);
+		SafetyUtils.setVelocity(target, forceVector);
 	}
 	
 	protected void selectTarget(LivingEntity entity) {

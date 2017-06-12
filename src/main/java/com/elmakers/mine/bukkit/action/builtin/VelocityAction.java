@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -140,7 +141,7 @@ public class VelocityAction extends BaseSpellAction
                 ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude
                 , 11);
 
-        entity.setVelocity(velocity);
+        SafetyUtils.setVelocity(entity, velocity);
 
         return SpellResult.CAST;
     }

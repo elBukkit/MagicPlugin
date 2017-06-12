@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -67,7 +68,7 @@ public class FlingSpell extends UndoableSpell implements Listener
 
         registerVelocity(entity);
         registerMoved(entity);
-		entity.setVelocity(velocity);
+		SafetyUtils.setVelocity(entity, velocity);
 
         if (safetyLength > 0) {
             mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);

@@ -20,6 +20,7 @@
  - Add madscientist mob (example of using player disguises)
  - Nerfed Blessing
  - Added support for color codes in item names
+ - Added safety checks to all velocity calls
 
 ## 5.5.5
 
