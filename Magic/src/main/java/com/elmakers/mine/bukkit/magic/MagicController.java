@@ -4153,7 +4153,9 @@ public class MagicController implements MageController {
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
                 if (wand != null) {
                     ItemStack wandItem = wand.getItem();
-                    wandItem.setAmount(amount);
+                    if (wandItem != null) {
+                        wandItem.setAmount(amount);
+                    }
                     return wandItem;
                 }
                 // Spells may be using the | delimiter for levels

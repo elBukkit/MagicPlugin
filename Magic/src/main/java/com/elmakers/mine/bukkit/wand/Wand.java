@@ -1684,7 +1684,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		inactiveIconDelay = wandConfig.getInt("icon_inactive_delay");
 		randomizeOnActivate = randomizeOnActivate && wandConfig.contains("randomize_icon");
 		if (randomizeOnActivate) {
-			setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
+			String randomizeIcon = wandConfig.getString("randomize_icon");
+			setIcon(new MaterialAndData(randomizeIcon));
+			if (item == null) {
+				controller.getLogger().warning("Invalid randomize_icon in wand '" + template + "' config: " + randomizeIcon);
+			}
 		} else if (wandConfig.contains("icon")) {
 			String iconKey = wandConfig.getString("icon");
 			if (wandTemplate != null) {
@@ -1700,6 +1704,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				iconKey = templateConfig.getString("icon");
 			}
 			setIcon(new MaterialAndData(iconKey));
+			if (item == null) {
+				controller.getLogger().warning("Invalid icon in wand '" + template + "' config: " + iconKey);
+			}
 			updateIcon();
 		} else if (isUpgrade) {
 			setIcon(new MaterialAndData(DefaultUpgradeMaterial));

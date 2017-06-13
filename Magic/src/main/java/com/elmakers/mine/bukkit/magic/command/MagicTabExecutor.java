@@ -100,9 +100,23 @@ public abstract class MagicTabExecutor implements TabExecutor {
 		Wand wand = api.createWand(wandKey);
 		if (wand != null) {
             if (giveItem) {
-                api.giveItemToPlayer(player, wand.getItem());
-                if (sender != player && !quiet) {
-                    sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
+                ItemStack item = wand.getItem();
+                if (item == null) {
+                    if (!quiet) {
+                        if (wandKey == null) {
+                            wandKey = "(default)";
+                        }
+                        sender.sendMessage(api.getMessages().getParameterized("wand.unknown_template", "$name", wandKey));
+                        if (sender != player) {
+                            sender.sendMessage("Wand " + wand.getName() + " has an invalid icon");
+                        }
+                    }
+                    return true;
+                } else {
+                    api.giveItemToPlayer(player, wand.getItem());
+                    if (sender != player && !quiet) {
+                        sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
+                    }
                 }
             }
             if (showWorth) {
