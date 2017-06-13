@@ -8,9 +8,12 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -45,6 +48,10 @@ public class BreakBlockAction extends BaseSpellAction {
         if (breakAmount > 1) {
             if (context.hasBreakPermission(block)) {
                 CompatibilityUtils.setBreaking(block, 10, UndoList.BLOCK_BREAK_RANGE);
+                BlockState blockState = block.getState();
+                if (blockState != null && (blockState instanceof InventoryHolder || blockState.getType() == Material.FLOWER_POT)) {
+                    NMSUtils.clearItems(blockState.getLocation());
+                }
                 block.setType(Material.AIR);
                 context.unregisterBreaking(block);
                 context.playEffects("break");
