@@ -85,6 +85,7 @@ relocate:
       - class: Repeat
         actions:
         - class: ChangeContext
+          requires_entity_target: true
           actions:
           - class: Teleport
   effects:
