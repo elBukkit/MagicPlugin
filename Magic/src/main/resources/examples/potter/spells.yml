@@ -2860,3 +2860,26 @@ patronus:
     costs:
         mana: 130
 
+broomshop:
+    icon: gold_spade
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+        - item: wand|firebolt
+          cost: 10000
+        - item: wand|nimbus
+          cost: 5000
+        - item: wand|comet290
+          cost: 1000
+        - item: wand|cleansweep1
+          cost: 500
+        - item: wand|bluebottle
+          cost: 100
+
