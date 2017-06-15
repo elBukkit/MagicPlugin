@@ -2883,3 +2883,18 @@ broomshop:
         - item: wand|bluebottle
           cost: 100
 
+appearanceshop:
+    icon: wood_hoe
+    inherit: buyshop
+    parameters:
+        auto_close: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        require_wand: true
+        items:
+        - item: wand|skinny_upgrade
+          cost: 1000
+        - item: wand|brown_upgrade
+          cost: 1000
+        - item: wand|black_upgrade
+          cost: 1000
