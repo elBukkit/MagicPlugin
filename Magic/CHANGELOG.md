@@ -13,6 +13,10 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.10
+
+ - Fix some issues with 1.10 compatibility having to do with the Guava version
+
 ## 6.9.9
 
  - Wands can now be put in chests or dropped by dragging them out of the inventory. Set "wand_undroppable: true" in config.yml to change back.

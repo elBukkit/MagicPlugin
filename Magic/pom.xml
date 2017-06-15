@@ -69,14 +69,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- We want a more current version of Guava to work in 1.12+ than the one provided by our Bukkit API version -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>21.0</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<!--
 			Third party plugin integrations. We have added exclusions here to
 			avoid leaking dependencies and improve build times.
