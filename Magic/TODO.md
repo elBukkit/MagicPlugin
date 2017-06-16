@@ -7,7 +7,6 @@
 
 ## 6.9.10
 
- - Shops need to pull default text from somewhere, so translations for shops can be done in one place.
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  - Would be nice to have per-path text, particularly for spell_required (so only Master shows the "what mysteries lay ahead" message)
  - PW would like some custom lore for wand "quiet" and quick cast settings.

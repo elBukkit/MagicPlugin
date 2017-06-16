@@ -49,6 +49,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean								targetInvisible			= true;
     private boolean								targetVanished			= false;
     private boolean								targetUnknown			= true;
+    private String                              targetDisplayName       = null;
     protected Class<?>                          targetEntityType        = null;
     protected Set<EntityType>                   targetEntityTypes       = null;
     protected Set<EntityType>                   ignoreEntityTypes       = null;
@@ -336,6 +337,9 @@ public abstract class TargetingSpell extends BaseSpell {
         if (ignoreEntityTypes != null && ignoreEntityTypes.contains(entity.getType())) {
             return false;
         }
+        if (targetDisplayName != null && (entity.getCustomName() == null || !entity.getCustomName().equals(targetDisplayName))) {
+            return false;
+        }
 
         if (damageResistanceProtection > 0 && entity instanceof LivingEntity)
         {
@@ -587,6 +591,7 @@ public abstract class TargetingSpell extends BaseSpell {
             ignoreEntityTypes = null;
         }
 
+        targetDisplayName = parameters.getString("target_name", null);
         targetContents = ConfigurationUtils.getMaterial(parameters, "target_contents", null);
         originAtTarget = parameters.getBoolean("origin_at_target", false);
 
