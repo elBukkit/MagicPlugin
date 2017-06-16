@@ -103,7 +103,7 @@ public class SpellShopAction extends BaseShopAction
         WandUpgradePath currentPath = wand == null ? null : wand.getPath();
 
         if (!castsSpells && !allowLocked && wand.isLocked()) {
-            context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
+            context.showMessage(context.getMessage("no_path", getDefaultMessage(context, "no_path")).replace("$wand", wand.getName()));
             return null;
         }
 
@@ -116,7 +116,7 @@ public class SpellShopAction extends BaseShopAction
         else
         {
             if (currentPath == null) {
-                context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
+                context.showMessage(context.getMessage("no_path", getDefaultMessage(context, "no_path")).replace("$wand", wand.getName()));
                 return null;
             }
 
@@ -163,7 +163,7 @@ public class SpellShopAction extends BaseShopAction
                     ItemStack spellItem = shopItem.getItem();
                     ItemMeta meta = spellItem.getItemMeta();
                     List<String> itemLore = meta.getLore();
-                    itemLore.add(context.getMessage("extra_spell", "&aNot Required"));
+                    itemLore.add(context.getMessage("extra_spell", getDefaultMessage(context, "extra_spell")));
                     meta.setLore(itemLore);
                     spellItem.setItemMeta(meta);
                     extraItems.add(shopItem);
@@ -181,7 +181,7 @@ public class SpellShopAction extends BaseShopAction
             boolean canUpgrade = autoUpgrade && wand.checkUpgrade(false);
             boolean hasUpgrade = autoUpgrade && wand.hasUpgrade();
             if (!canProgress && !hasUpgrade) {
-                context.showMessage(context.getMessage("no_upgrade", "There is nothing more for you to learn here.").replace("$wand", wand.getName()));
+                context.showMessage(context.getMessage("no_upgrade", getDefaultMessage(context, "no_upgrade")).replace("$wand", wand.getName()));
                 return null;
             } else if (canUpgrade) {
                 wand.upgrade(false);
@@ -259,24 +259,24 @@ public class SpellShopAction extends BaseShopAction
                     || !missingSpells.isEmpty()) {
 
                 if (mageSpell != null && !spell.getName().equals(mageSpell.getName())) {
-                    lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", mageSpell.getName()));
+                    lore.add(context.getMessage("upgrade_name_change", getDefaultMessage(context, "upgrade_name_change")).replace("$name", mageSpell.getName()));
                 }
 
                 if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)) {
                     requiredPathKey = currentPath.translatePath(requiredPathKey);
                     com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
                     if (upgradePath != null) {
-                        unpurchasableMessage = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
+                        unpurchasableMessage = context.getMessage("level_requirement", getDefaultMessage(context, "level_requirement")).replace("$path", upgradePath.getName());
                         InventoryUtils.wrapText(unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
                     }
                 } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                     Set<String> tags = currentPath.getMissingTags(requiredPathTags);
-                    unpurchasableMessage = context.getMessage("tags_requirement", "&r&cRequires: &6$tags").replace("$tags", controller.getMessages().formatList("tags", tags, "name"));
+                    unpurchasableMessage = context.getMessage("tags_requirement", getDefaultMessage(context, "tags_requirement")).replace("$tags", controller.getMessages().formatList("tags", tags, "name"));
                     InventoryUtils.wrapText(unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
                 }
 
                 if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
-                    unpurchasableMessage = ChatColor.RED + context.getMessage("cast_requirement", "&r&cCasts: &6$current&f/&e$required")
+                    unpurchasableMessage = ChatColor.RED + context.getMessage("cast_requirement", getDefaultMessage(context, "cast_requirement"))
                             .replace("$current", Long.toString(castCount))
                             .replace("$required", Long.toString(requiredCastCount));
                     lore.add(unpurchasableMessage);
@@ -286,17 +286,17 @@ public class SpellShopAction extends BaseShopAction
                     List<String> spells = new ArrayList<>(missingSpells.size());
                     for (PrerequisiteSpell s : missingSpells) {
                         SpellTemplate template = context.getController().getSpellTemplate(s.getSpellKey().getKey());
-                        String spellMessage = context.getMessage("prerequisite_spell_level", "&6$name")
+                        String spellMessage = context.getMessage("prerequisite_spell_level", getDefaultMessage(context, "prerequisite_spell_level"))
                                 .replace("$name", template.getName());
                         if (s.getProgressLevel() > 1) {
-                            spellMessage += context.getMessage("prerequisite_spell_progress_level", " (Progress $level/$max_level)")
+                            spellMessage += context.getMessage("prerequisite_spell_progress_level", getDefaultMessage(context, "prerequisite_spell_progress_level"))
                                     .replace("$level", Long.toString(s.getProgressLevel()))
                                     // This max level should never return 0 here but just in case we'll make the min 1.
                                     .replace("$max_level", Long.toString(Math.max(1, template.getMaxProgressLevel())));
                         }
                         spells.add(spellMessage);
                     }
-                    unpurchasableMessage = ChatColor.RED + context.getMessage("required_spells", "&r&cRequires: $spells")
+                    unpurchasableMessage = ChatColor.RED + context.getMessage("required_spells", getDefaultMessage(context, "required_spells"))
                             .replace("$spells", StringUtils.join(spells, ", "));
                     InventoryUtils.wrapText(ChatColor.GOLD + unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
                 }

@@ -16,6 +16,7 @@
 ## 6.9.10
 
  - Fix some issues with 1.10 compatibility having to do with the Guava version
+ - Add "shops" section in messages.yml, for localizing default text in shops
 
 ## 6.9.9
 

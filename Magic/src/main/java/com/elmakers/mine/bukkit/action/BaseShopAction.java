@@ -105,6 +105,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         event.setCancelled(true);
     }
 
+    protected String getDefaultMessage(CastContext context, String key) {
+        return context.getController().getMessages().get("shop." + key);
+    }
+
     public SpellResult checkContext(CastContext context) {
         Mage mage = context.getMage();
         MageController controller = mage.getController();
@@ -120,7 +124,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
         Wand wand = mage.getActiveWand();
         if (wand == null) {
-            context.showMessage("no_wand", "You must be holding a wand!");
+            context.showMessage("no_wand", context.getMessage("shops.no_wand"));
             return SpellResult.FAIL;
         }
 
@@ -129,7 +133,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (requiredTemplate != null) {
             String template = wand.getTemplateKey();
             if (template == null || !template.equals(requiredTemplate)) {
-                context.showMessage(context.getMessage("no_template", "You may not learn with that $wand.").replace("$wand", wand.getName()));
+                context.showMessage(context.getMessage("no_template", getDefaultMessage(context, "no_template")).replace("$wand", wand.getName()));
                 return SpellResult.FAIL;
             }
         }
@@ -137,14 +141,14 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         // Check path requirements
         if (requiredPath != null || exactPath != null) {
             if (path == null) {
-                context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
+                context.showMessage(context.getMessage("no_path", getDefaultMessage(context, "no_path")).replace("$wand", wand.getName()));
                 return SpellResult.FAIL;
             }
 
             if (requiredPath != null && !path.hasPath(requiredPath)) {
                 WandUpgradePath requiresPath = controller.getPath(requiredPath);
                 if (requiresPath != null) {
-                    context.showMessage(context.getMessage("no_required_path", "You must be at least $path!").replace("$path", requiresPath.getName()));
+                    context.showMessage(context.getMessage("no_required_path", getDefaultMessage(context, "no_required_path")).replace("$path", requiresPath.getName()));
                 } else {
                     context.getLogger().warning("Invalid path specified in Shop action: " + requiredPath);
                 }
@@ -153,7 +157,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             if (exactPath != null && !exactPath.equals(path.getKey())) {
                 WandUpgradePath requiresPath = controller.getPath(exactPath);
                 if (requiresPath != null) {
-                    context.showMessage(context.getMessage("no_path_exact", "You must be at $path!").replace("$path", requiresPath.getName()));
+                    context.showMessage(context.getMessage("no_path_exact", getDefaultMessage(context, "no_path_exact")).replace("$path", requiresPath.getName()));
                 } else {
                     context.getLogger().warning("Invalid path specified in Shop action: " + exactPath);
                 }
@@ -161,7 +165,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
             if (requiresCompletedPath != null) {
                 if (path.canEnchant(wand)) {
-                    context.showMessage(context.getMessage("no_path_end", "You must be ready to advance from $path!").replace("$path", path.getName()));
+                    context.showMessage(context.getMessage("no_path_end", getDefaultMessage(context, "no_path_end")).replace("$path", path.getName()));
                     return SpellResult.FAIL;
                 }
             }
@@ -315,7 +319,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
         boolean hasCosts = sell ? hasItem(controller, mage, shopItem.getItem()) : hasItemCosts(context, shopItem);
         if (!hasCosts) {
-            String costString = context.getMessage("insufficient", ChatColor.RED + "Costs $cost");
+            String costString = context.getMessage("insufficient", getDefaultMessage(context, "insufficient"));
             if (sell) {
                 costString = costString.replace("$cost", formatItemAmount(controller, item, shopItem.getItem().getAmount()));
             } else {
@@ -325,7 +329,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         } else {
             String itemName = formatItemAmount(controller, item, item.getAmount());
             if (InventoryUtils.hasMeta(item, "confirm")) {
-                String inventoryTitle = context.getMessage("confirm_title", "Buy $item").replace("$item", itemName);
+                String inventoryTitle = context.getMessage("confirm_title", getDefaultMessage(context, "confirm_title")).replace("$item", itemName);
                 Inventory confirmInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
                 InventoryUtils.removeMeta(item, "confirm");
                 for (int i = 0; i < 9; i++)
@@ -349,7 +353,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 return;
             }
 
-            String costString = context.getMessage("deducted", "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost");
+            String costString = context.getMessage("deducted", getDefaultMessage(context, "deducted"));
             if (sell) {
                 costString = costString.replace("$cost", getItemCost(context, shopItem));
                 removeItems(controller, mage, item, shopItem.getItem().getAmount());
@@ -359,12 +363,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 item = shopItem.getItem();
                 if (requireWand) {
                     if (wand == null) {
-                        context.showMessage("no_wand", "You must be holding a wand!");
+                        context.showMessage("no_wand", getDefaultMessage(context, "no_wand"));
                         mage.deactivateGUI();
                         return;
                     }
                     if (applyToWand && !wand.addItem(item)) {
-                        String inapplicable = context.getMessage("not_applicable", "You can't buy $item").replace("$item", itemName);
+                        String inapplicable = context.getMessage("not_applicable", getDefaultMessage(context, "not_applicable")).replace("$item", itemName);
                         context.showMessage(inapplicable);
                         mage.deactivateGUI();
                         return;
@@ -377,13 +381,13 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     String spellArgs = controller.getSpellArgs(item);
                     spell = mage.getSpell(spellKey);
                     if (spell != null && (spellArgs != null ? !spell.cast(StringUtils.split(spellArgs, ' ')) : !spell.cast())) {
-                        context.showMessage("cast_fail", "Sorry, please try again!");
+                        context.showMessage("cast_fail", getDefaultMessage(context, "cast_fail"));
                         mage.deactivateGUI();
                         return;
                     }
                 }
                 if (!takeCosts(context, shopItem)) {
-                    costString = context.getMessage("insufficient", ChatColor.RED + "Costs $cost");
+                    costString = context.getMessage("insufficient", getDefaultMessage(context, "insufficient"));
                     costString = costString.replace("$cost", getItemCost(context, shopItem));
                     context.showMessage(costString);
                     return;
@@ -592,7 +596,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
 
         if (itemStacks.size() == 0) {
-            context.showMessage("no_items", "There is nothing for you to buy here");
+            context.showMessage("no_items", getDefaultMessage(context, "no_items"));
             return SpellResult.FAIL;
         }
         isActive = true;
@@ -611,7 +615,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (pathName == null) {
             pathName = "";
         }
-        String title = context.getMessage("title", "Shop ($balance)");
+        String title = context.getMessage("title", getDefaultMessage(context, "title"));
         title = title.replace("$path", pathName);
         return title;
     }
