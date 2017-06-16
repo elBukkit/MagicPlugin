@@ -7,8 +7,9 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -43,8 +45,8 @@ public class DisarmAction extends BaseSpellAction
 
 		@Override
 		public void run() {
-			com.elmakers.mine.bukkit.api.wand.Wand activeWand = mage.getActiveWand();
-			if (activeWand != null && activeWand instanceof Wand && ((Wand)activeWand).isInventoryOpen()) return;
+			Wand activeWand = mage.getActiveWand();
+			if (activeWand != null && activeWand instanceof Wand && activeWand.isInventoryOpen()) return;
 
 			Player player = mage.getPlayer();
 			if (player == null) return;
@@ -60,14 +62,16 @@ public class DisarmAction extends BaseSpellAction
     private boolean keepInInventory;
 	private int minSlot;
 	private int maxSlot;
+	private String displayName;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
 		keepInInventory = parameters.getBoolean("keep_in_inventory", false);
-		minSlot = parameters.getInt("min_slot", Wand.HOTBAR_SIZE);
-		maxSlot = parameters.getInt("max_slot", Wand.PLAYER_INVENTORY_SIZE - 1);
+		minSlot = parameters.getInt("min_slot", com.elmakers.mine.bukkit.wand.Wand.HOTBAR_SIZE);
+		maxSlot = parameters.getInt("max_slot", com.elmakers.mine.bukkit.wand.Wand.PLAYER_INVENTORY_SIZE - 1);
+		displayName = parameters.getString("display_name", null);
     }
 
 	@Override
@@ -80,9 +84,34 @@ public class DisarmAction extends BaseSpellAction
 		LivingEntity entity = (LivingEntity)target;
 
 		EntityEquipment equipment = entity.getEquipment();
-		ItemStack stack = equipment.getItemInMainHand();
+		ItemStack stack = null;
 
-		if (stack == null || stack.getType() == Material.AIR)
+		Integer originalSlot = null;
+		if (displayName == null) {
+			stack = equipment.getItemInMainHand();
+		} else {
+			// This is not compatible
+			keepInInventory = false;
+
+			// Must be a player in this case
+			if (!(entity instanceof Player)) {
+				return SpellResult.PLAYER_REQUIRED;
+			}
+			PlayerInventory playerInventory = ((Player)entity).getInventory();
+			for (originalSlot = 0; originalSlot < playerInventory.getSize(); originalSlot++) {
+				ItemStack item = playerInventory.getItem(originalSlot);
+				if (InventoryUtils.isEmpty(item)) continue;
+
+				ItemMeta meta = item.getItemMeta();
+				if (meta == null || !meta.hasDisplayName()) continue;
+				if (meta.getDisplayName().equals(displayName)) {
+					stack = item;
+					break;
+				}
+			}
+		}
+
+		if (InventoryUtils.isEmpty(stack))
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -90,7 +119,7 @@ public class DisarmAction extends BaseSpellAction
 		// Special case for wands
 		MageController controller = context.getController();
 		Mage targetMage = controller.getMage(entity);
-		if (Wand.isWand(stack) && controller.isMage(entity)) {
+		if (com.elmakers.mine.bukkit.wand.Wand.isWand(stack) && controller.isMage(entity)) {
 			Mage mage = context.getMage();
 
 			// Check for protected players (admins, generally...)
@@ -99,14 +128,16 @@ public class DisarmAction extends BaseSpellAction
 				return SpellResult.NO_TARGET;
 			}
 
-			if (targetMage != null && targetMage.getActiveWand() != null) {
-				targetMage.getActiveWand().deactivate();
-				stack = equipment.getItemInMainHand();
+			if (targetMage != null) {
+				Wand activeWand = targetMage.getActiveWand();
+				if (activeWand != null && activeWand.getItem() == stack) {
+					targetMage.getActiveWand().deactivate();
+					stack = equipment.getItemInMainHand();
+				}
 			}
 		}
 
 		Integer targetSlot = null;
-		Integer originalSlot = null;
 		PlayerInventory targetInventory = null;
 		ItemStack swapItem = null;
 		Random random = context.getRandom();
@@ -134,7 +165,11 @@ public class DisarmAction extends BaseSpellAction
 			targetSlot = validSlots.get(chosen);
 		}
 
-		equipment.setItemInMainHand(swapItem);
+		if (displayName != null) {
+			((Player)entity).getInventory().setItem(originalSlot, null);
+		} else {
+			equipment.setItemInMainHand(swapItem);
+		}
 		if (targetSlot != null && targetInventory != null) {
 			targetInventory.setItem(targetSlot, stack);
 			if (originalSlot != null && targetMage != null) {
