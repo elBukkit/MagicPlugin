@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -72,6 +73,9 @@ public class DisarmAction extends BaseSpellAction
 		minSlot = parameters.getInt("min_slot", com.elmakers.mine.bukkit.wand.Wand.HOTBAR_SIZE);
 		maxSlot = parameters.getInt("max_slot", com.elmakers.mine.bukkit.wand.Wand.PLAYER_INVENTORY_SIZE - 1);
 		displayName = parameters.getString("display_name", null);
+		if (displayName != null) {
+			displayName = ChatColor.translateAlternateColorCodes('&', displayName);
+		}
     }
 
 	@Override
