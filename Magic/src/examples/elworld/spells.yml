@@ -1889,3 +1889,236 @@ drainlife:
       amount: 1
       damage: 0.75
 
+corpseexplosion:
+   name: Corpse Explosion
+   icon: diamond_axe:196
+   icon_disabled: diamond_hoe:196
+   icon_url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81
+   category: combat
+   worth: 10000.00
+   actions:
+     cast:
+       - class: ChangeContext
+         source_at_target: true
+         source_is_target: true
+         requires_entity_target: true
+         actions:
+         - class: Firework
+         - class: Mount
+         - class: Delay
+         - class: ChangeContext
+           target_entity: true
+           actions:
+           - class: Explosion
+   effects:
+       cast:
+       -  class: EffectSingle
+          custom_sound: magic.whip
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.protego
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.vanish
+          location: origin
+          effectlib:
+            class: ConeEffect
+            iterations: 16
+            particle: spell_mob
+            color: FE2EF7
+            lengthGrow: 0.4
+       -  class: EffectSingle
+          location: target
+          color: FE2EF7
+          firework: star
+       - class: EffectSingle
+         location: target
+         particle_override: particleOrbital
+         effectlib:
+            class: AtomEffect
+            particleNucleus: spell_instant
+            particleOrbital: spell_instant
+            iterations: 16
+       no_target:
+       -  class: EffectSingle
+          custom_sound: magic.whip
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.protego
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.vanish
+          location: origin
+          effectlib:
+            class: ConeEffect
+            iterations: 16
+            particle: spell_mob
+            color: FE2EF7
+            lengthGrow: 0.4
+       -  class: EffectSingle
+          location: target
+          color: FE2EF7
+          firework: star
+   parameters:
+       range: 24
+       instant_block_effects: true
+       target_name: Skeletal Companion
+       launch: true
+       cooldown: 3000
+       power: 0
+       speed: 0.15
+       expected_lifespan: 30
+       size: 4
+       delay: 1500
+       set_target: true
+       duration: 20000
+   costs:
+       mana: 10
+
+skeletonarmy:
+   icon: diamond_axe:10
+   icon_disabled: diamond_axe:10
+   name: Skeleton Army
+   description: Summon 3 Skeletal Companions, at the sacrifice of 3 hearts.
+   actions:
+       cast:
+       - class: Repeat
+         actions:
+         - class: SpawnEntity
+         - class: Tame
+   effects:
+       cast:
+       -  class: EffectSingle
+          sound: block_portal_travel
+          location: both
+          effectlib:
+            class: WarpEffect
+            particle: portal
+   parameters:
+       target: self
+       type: skeletoncompanion
+       set_target: true
+       track: false
+       repeat: 3
+       cooldown: 20000
+   costs:
+      health: 6
+
+ballsteal:
+    name: Ball Steal
+    description: Attempt to grab the Quaffle!
+    icon: diamond_axe:80
+    icon_disabled: diamond_pickaxe:80
+    worth: 150
+    hidden: true
+    category: Minigames
+    actions:
+        cast:
+        - class: ConeOfEffectAction
+          actions:
+          - class: TakeItem
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: ENTITY_PLAYER_ATTACK_SWEEP
+          sound_pitch: 0.8
+          sound_volume: 2
+          location: origin
+          use_hit_location: false
+          use_wand_location: false
+          target_offset: 0,-1.3,0
+          effectlib:
+            offset: 0,-1.3,0
+            class: AnimatedBall
+            duration: 750
+            particle: sweep_attack
+            color: 62EEFF
+            size: .75
+    parameters:
+        fov: 360
+        range: 3
+        target_type: Player
+        target_count: 10
+        target: other
+        hitbox: false
+        display_name: "&4Quaffle"
+        cooldown: 1000
+
+ballknock:
+    name: Ball Knock
+    description: Knock the quaffle out of your oppenents' hands
+    icon: diamond_axe:80
+    icon_disabled: diamond_pickaxe:80
+    worth: 150
+    hidden: true
+    category: Minigames
+    actions:
+        cast:
+        - class: ConeOfEffectAction
+          actions:
+          - class: Disarm
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: ENTITY_PLAYER_ATTACK_SWEEP
+          sound_pitch: 0.8
+          sound_volume: 2
+          location: origin
+          use_hit_location: false
+          use_wand_location: false
+          target_offset: 0,-1.3,0
+          effectlib:
+            offset: 0,-1.3,0
+            class: AnimatedBall
+            duration: 750
+            particle: sweep_attack
+            color: 62EEFF
+            size: .75
+    parameters:
+        keep_in_inventory: false
+        fov: 360
+        range: 3
+        target_type: Player
+        target_count: 10
+        target: other
+        hitbox: false
+        display_name: "&4Quaffle"
+        cooldown: 1000
+
+ballrecover:
+    name: Ball Recover
+    description: Grab the quaffle off the ground
+    icon: diamond_axe:80
+    icon_disabled: diamond_pickaxe:80
+    worth: 150
+    hidden: true
+    category: Minigames
+    actions:
+      cast:
+      - class: AreaOfEffectAction
+        actions:
+        - class: TakeItem
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: ENTITY_PLAYER_ATTACK_SWEEP
+          sound_pitch: 0.8
+          sound_volume: 2
+          location: origin
+          use_hit_location: false
+          use_wand_location: false
+          target_offset: 0,-1.3,0
+          effectlib:
+            offset: 0,-1.3,0
+            class: AnimatedBall
+            duration: 750
+            particle: sweep_attack
+            color: 62EEFF
+            size: .75
+    parameters:
+        range: 3
+        target_type: Item
+        target_count: 1
+        target: self
+        display_name: "&4Quaffle"
+        cooldown: 100

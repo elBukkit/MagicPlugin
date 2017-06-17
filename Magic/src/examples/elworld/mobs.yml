@@ -31,3 +31,12 @@ madscientist2:
   potion_effects:
   - type: speed
     amplifier: 1
+
+skeletoncompanion:
+   type: wolf
+   name: Skeletal Companion
+   health: 30
+   tamed: true
+   default_drops: false
+   disguise:
+     type: skeleton
