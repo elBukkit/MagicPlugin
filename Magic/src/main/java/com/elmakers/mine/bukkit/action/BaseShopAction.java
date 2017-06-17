@@ -124,7 +124,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
         Wand wand = mage.getActiveWand();
         if (wand == null) {
-            context.showMessage("no_wand", context.getMessage("shops.no_wand"));
+            context.showMessage("no_wand", getDefaultMessage(context,"no_wand"));
             return SpellResult.FAIL;
         }
 
