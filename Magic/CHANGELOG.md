@@ -18,6 +18,7 @@
  - Fix some issues with 1.10 compatibility having to do with the Guava version
  - Add "shops" section in messages.yml, for localizing default text in shops
  - Add "target_name" spell parameter, for only targeting an entity with a specific name.
+ - Added TakeItem action, can be used for stealing or picking up specific items at a distance (for Quidditch, maybe)
 
 ## 6.9.9
 
