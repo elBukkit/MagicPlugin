@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.11
+
 ## 6.9.10
 
  - Fix some issues with 1.10 compatibility having to do with the Guava version
