@@ -15,6 +15,8 @@
 
 ## 6.9.11
 
+ - Fix shop text bugs introduced in 6.9.10
+
 ## 6.9.10
 
  - Fix some issues with 1.10 compatibility having to do with the Guava version

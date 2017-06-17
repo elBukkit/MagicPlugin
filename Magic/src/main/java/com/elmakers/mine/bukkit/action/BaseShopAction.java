@@ -106,7 +106,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     }
 
     protected String getDefaultMessage(CastContext context, String key) {
-        return context.getController().getMessages().get("shop." + key);
+        return context.getController().getMessages().get("shops." + key);
     }
 
     public SpellResult checkContext(CastContext context) {
