@@ -47,7 +47,7 @@ public class DisarmAction extends BaseSpellAction
 		@Override
 		public void run() {
 			Wand activeWand = mage.getActiveWand();
-			if (activeWand != null && activeWand instanceof Wand && activeWand.isInventoryOpen()) return;
+			if (activeWand != null && activeWand.isInventoryOpen()) return;
 
 			Player player = mage.getPlayer();
 			if (player == null) return;
@@ -91,8 +91,10 @@ public class DisarmAction extends BaseSpellAction
 		ItemStack stack = null;
 
 		Integer originalSlot = null;
+		boolean isMainHand = false;
 		if (displayName == null) {
 			stack = equipment.getItemInMainHand();
+			isMainHand = true;
 		} else {
 			// This is not compatible
 			keepInInventory = false;
@@ -110,6 +112,7 @@ public class DisarmAction extends BaseSpellAction
 				if (meta == null || !meta.hasDisplayName()) continue;
 				if (meta.getDisplayName().equals(displayName)) {
 					stack = item;
+					isMainHand = originalSlot == playerInventory.getHeldItemSlot();
 					break;
 				}
 			}
@@ -134,7 +137,7 @@ public class DisarmAction extends BaseSpellAction
 
 			if (targetMage != null) {
 				Wand activeWand = targetMage.getActiveWand();
-				if (activeWand != null && activeWand.getItem() == stack) {
+				if (activeWand != null && isMainHand) {
 					targetMage.getActiveWand().deactivate();
 					stack = equipment.getItemInMainHand();
 				}

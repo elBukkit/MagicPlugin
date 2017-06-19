@@ -16,6 +16,7 @@
 ## 6.9.11
 
  - Fix shop text bugs introduced in 6.9.10
+ - Fix Disarm acting strangely when holding an open wand
 
 ## 6.9.10
 
