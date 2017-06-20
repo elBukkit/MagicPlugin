@@ -80,7 +80,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     // Render method override
     @Override
     public void render(MapView mapView, MapCanvas canvas, Player player) {
-        if (animated && frameTimes != null && frameTimes.size() > 0)
+        if (animated && frameTimes != null && frameTimes.size() > 0 && controller.isAnimationAllowed())
         {
             long now = System.currentTimeMillis();
             long delay = frameTimes.get(frame);

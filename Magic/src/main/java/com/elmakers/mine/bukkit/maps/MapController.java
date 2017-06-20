@@ -23,6 +23,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     private final File cacheFolder;
     private final Plugin plugin;
 
+    private boolean animationAllowed = true;
     private boolean loaded = false;
     private boolean disabled = false;
     private BukkitTask saveTask = null;
@@ -464,5 +465,13 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         }
 
         return false;
+    }
+
+    public boolean isAnimationAllowed() {
+        return animationAllowed;
+    }
+
+    public void setAnimationAllowed(boolean allowed) {
+        animationAllowed = allowed;
     }
 }

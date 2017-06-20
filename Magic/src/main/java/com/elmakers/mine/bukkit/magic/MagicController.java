@@ -2291,6 +2291,7 @@ public class MagicController implements MageController {
             HitboxUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
         }
 
+        maps.setAnimationAllowed(properties.getBoolean("enable_map_animations", true));
         costReduction = (float)properties.getDouble("cost_reduction", costReduction);
 		cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
 		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);

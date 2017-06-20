@@ -15,7 +15,7 @@
 
 ## 6.9.12
 
-
+ - Add enable_map_animations config option for turning off GIF maps for whatever reason
 
 ## 6.9.11
 
