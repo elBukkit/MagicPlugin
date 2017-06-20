@@ -13,6 +13,10 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.12
+
+
+
 ## 6.9.11
 
  - Fix shop text bugs introduced in 6.9.10
