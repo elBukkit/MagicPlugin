@@ -57,6 +57,12 @@ paths:
 wands:
     blaster:
         name: Blaster
+    blaster_red:
+        name: Red Blaster
+    blaster_green:
+        name: Green Blaster
+    blaster_blue:
+        name: Blue Blaster
     detonator:
         name: Thermal Detonator
     lightsaber_red:

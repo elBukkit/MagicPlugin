@@ -198,6 +198,18 @@ blaster:
     mana_regeneration: 10
     active_spell: blaster
     indestructible: true
+    effect_color: 'FF0000'
     spells:
      - blaster
 
+blaster_red:
+    inherit: blaster
+    effect_color: 'FF0000'
+
+blaster_green:
+    inherit: blaster
+    effect_color: '00FF00'
+
+blaster_blue:
+    inherit: blaster
+    effect_color: '0000FF'

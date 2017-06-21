@@ -13,7 +13,11 @@ starshop:
         items:
         - item: detonator
           cost: 100
-        - item: wand|blaster
+        - item: wand|blaster_red
+          cost: 1000
+        - item: wand|blaster_green
+          cost: 1000
+        - item: wand|blaster_blue
           cost: 1000
         - item: lightsaber_blue
           cost: 10000
@@ -46,6 +50,7 @@ blaster:
         tick:
         -  class: EffectSingle
            location: target
+           color_override: color
            effectlib:
              class: LineEffect
              type: instant
