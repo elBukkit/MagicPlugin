@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.data.BrushData;
@@ -450,7 +451,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                         }
                     }
                 } catch (Exception ex) {
-
+                    controller.getLogger().log(Level.WARNING, "Error reading map id " + mapId, ex);
                 }
             }
             isValid = false;
