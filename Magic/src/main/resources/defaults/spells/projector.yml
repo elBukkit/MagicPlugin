@@ -33,4 +33,4 @@ projector:
     orient_snap: 90
     destructible: air,stained_clay
     allow_max_range: true
-    brush: "map:64:http://media.giphy.com/media/jHI82Yz48dVjG/giphy.gif"
+    brush: "map:64:https://s3-us-west-2.amazonaws.com/elmakers/mario.gif"
