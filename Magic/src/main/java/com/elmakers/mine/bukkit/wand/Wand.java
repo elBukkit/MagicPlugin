@@ -1532,35 +1532,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		brushMode = parseWandMode(wandConfig.getString("brush_mode"), controller.getDefaultBrushMode());
 
-		// Backwards compatibility
-		if (wandConfig.getBoolean("mode_drop", false)) {
-			dropAction = WandAction.TOGGLE;
-			swapAction = WandAction.CYCLE_HOTBAR;
-			rightClickAction = WandAction.NONE;
-			quickCast = true;
-			// This is to turn the redundant spell lore off
-			quickCastDisabled = true;
-			manualQuickCastDisabled = false;
-		} else if (mode == WandMode.CAST) {
-			leftClickAction = WandAction.CAST;
-			rightClickAction = WandAction.CAST;
-			swapAction = WandAction.NONE;
-			dropAction = WandAction.NONE;
-		} else if (mode == WandMode.CYCLE) {
-			leftClickAction = WandAction.CAST;
-			rightClickAction = WandAction.NONE;
-			swapAction = WandAction.NONE;
-			dropAction = WandAction.CYCLE;
-		} else {
-			leftClickAction = WandAction.NONE;
-			rightClickAction = WandAction.NONE;
-			dropAction = WandAction.NONE;
-			swapAction = WandAction.NONE;
-			quickCast = false;
-			quickCastDisabled = false;
-			manualQuickCastDisabled = false;
-		}
-
 		String quickCastType = wandConfig.getString("quick_cast", wandConfig.getString("mode_cast"));
 		if (quickCastType != null) {
 			if (quickCastType.equalsIgnoreCase("true")) {

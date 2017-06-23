@@ -8,6 +8,10 @@
    - Default wand configs will use old behavior for actions and flags (per below)
    - Wands aren't class-based and store data as normal
 
+## 6.9.12
+
+ - Removed deprecated "mode_drop" wand property. See mode_drop in wands.defaults.yml to see how to reproduce this behavior
+
 ## 6.9.9
 
  - Wands can now be put in chests or dropped by dragging them out of the inventory. Set "wand_undroppable: true" in config.yml to change back.

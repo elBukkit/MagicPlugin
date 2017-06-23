@@ -5,8 +5,9 @@
  - How to disable RP delay
  - How to let spells target NPCs
 
-## 6.9.10
+## 6.9.12
 
+ - Prevent wands being put in furnaces
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  - Would be nice to have per-path text, particularly for spell_required (so only Master shows the "what mysteries lay ahead" message)
  - PW would like some custom lore for wand "quiet" and quick cast settings.

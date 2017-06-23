@@ -17,6 +17,8 @@
 
  - Add enable_map_animations config option for turning off GIF maps for whatever reason
  - Add different colored blasters to star configs
+ - Fix Projector spell, giphy doesn't like my direct-linking anymore.
+ - Remove deprecated "mode_drop" wand property
 
 ## 6.9.11
 
