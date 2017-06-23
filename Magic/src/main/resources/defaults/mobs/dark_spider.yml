@@ -14,6 +14,4 @@ dark_spider:
   potion_effects:
   - type: speed
     amplifier: 0
-  - type: increase_damage
-    amplifier: 2
     
