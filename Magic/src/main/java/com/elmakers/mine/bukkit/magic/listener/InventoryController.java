@@ -176,6 +176,7 @@ public class InventoryController implements Listener {
             return;
         }
 
+        boolean isFurnace = inventoryType == InventoryType.FURNACE;
         boolean isChest = inventoryType == InventoryType.CHEST || inventoryType == InventoryType.HOPPER || inventoryType == InventoryType.DISPENSER || inventoryType == InventoryType.DROPPER;
         boolean clickedWand = Wand.isWand(clickedItem);
         boolean isContainerSlot = event.getSlot() == event.getRawSlot();
@@ -243,6 +244,20 @@ public class InventoryController implements Listener {
             {
                 mage.checkWand();
                 activeWand = mage.getActiveWand();
+            }
+        }
+
+        // Don't allow smelting wands
+        if (isFurnace && clickedWand) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (isFurnace&& event.getAction() == InventoryAction.HOTBAR_SWAP) {
+            ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
+            if (Wand.isWand(destinationItem)) {
+                event.setCancelled(true);
+                return;
             }
         }
 
