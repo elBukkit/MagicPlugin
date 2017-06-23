@@ -92,5 +92,10 @@ spells:
     cooldown: You may only use this shop once!
     fail: ""
     
-spell:
-    required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
+paths:
+  master:
+    required_spell: "You must find the &b$path &d&oto advance"
+  engineer:
+    required_spell: "You must find the &b$path &d&oto advance"
+  architect:
+    required_spell: "&b$path &d&ois next... but how?"

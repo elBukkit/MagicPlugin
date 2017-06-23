@@ -602,6 +602,12 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return maxLevel.getMaterialProbabilityCount() > 0;
     }
 
+    private String getMessage(Messages messages, String messageKey) {
+        String message = messages.get("spell." + messageKey);
+        message = messages.get("wand." + messageKey, message);
+        return messages.get("paths." + key + "." + messageKey, message);
+    }
+
     @Override
     public boolean checkUpgradeRequirements(com.elmakers.mine.bukkit.api.wand.Wand wand, com.elmakers.mine.bukkit.api.magic.Mage mage) {
         if (requiredSpells == null || requiredSpells.isEmpty()) return true;
@@ -616,7 +622,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 }
                 if (mage != null)
                 {
-                    String message = wand.getController().getMessages().get("spell.required_spell").replace("$spell", spell.getName());
+                    String requiredSpellMessage = getMessage(wand.getController().getMessages(), "required_spell");
+                    String message = requiredSpellMessage.replace("$spell", spell.getName());
                     com.elmakers.mine.bukkit.api.wand.WandUpgradePath upgradePath = getUpgrade();
                     if (upgradePath != null) {
                         message = message.replace("$path", upgradePath.getName());
@@ -628,11 +635,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 Spell spell = wand.getSpell(prereq.getSpellKey().getKey(), mage);
                 if (!PrerequisiteSpell.isSpellSatisfyingPrerequisite(spell, prereq)) {
                     if (spell != null) {
-                        String message = wand.getController().getMessages().get("spell.prerequisite_spell_level")
+                        String message = getMessage(wand.getController().getMessages(), "spell.prerequisite_spell_level")
                                 .replace("$name", spell.getName())
                                 .replace("$level", Integer.toString(prereq.getSpellKey().getLevel()));
                         if (prereq.getProgressLevel() > 1) {
-                            message += wand.getController().getMessages().get("spell.prerequisite_spell_progress_level")
+                            message += getMessage(wand.getController().getMessages(), "spell.prerequisite_spell_progress_level")
                                     .replace("$level", Long.toString(prereq.getProgressLevel()))
                                     // This max level should never return 0 here but just in case we'll make the min 1.
                                     .replace("$max_level", Long.toString(Math.max(1, spell.getMaxProgressLevel())));
@@ -691,7 +698,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         if (mage != null) {
             MageController controller = mage.getController();
-            mage.sendMessage(controller.getMessages().get("wand.level_up").replace("$wand", wand.getName()).replace("$path", newPath.getName()));
+            mage.sendMessage(getMessage(controller.getMessages(), "wand.level_up").replace("$wand", wand.getName()).replace("$path", newPath.getName()));
         }
         this.upgraded(wand, mage);
         if (this.icon != null && this.icon.equals(wand.getIcon())) {

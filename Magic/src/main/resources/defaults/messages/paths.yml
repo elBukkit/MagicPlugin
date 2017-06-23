@@ -11,6 +11,7 @@ paths:
     master:
         name: Wizard
         description: The penultimate wizard
+        required_spell: "&cNothing new to learn for now! &4What mystery lies ahead?"
     engineer:
         name: Engineer
         description: Has engineering spells

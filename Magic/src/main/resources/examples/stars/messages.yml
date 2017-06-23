@@ -25,7 +25,6 @@ spell:
     reactivate: Reactivating $name
     available_path: Available to $paths
     required_path: Required for $path graduation
-    required_spell: "You must learn &r&4$spell &d&oto advance"
 
 categories:
     force:
