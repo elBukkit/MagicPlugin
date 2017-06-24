@@ -698,7 +698,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         if (mage != null) {
             MageController controller = mage.getController();
-            mage.sendMessage(getMessage(controller.getMessages(), "wand.level_up").replace("$wand", wand.getName()).replace("$path", newPath.getName()));
+            mage.sendMessage(getMessage(controller.getMessages(), "level_up").replace("$wand", wand.getName()).replace("$path", newPath.getName()));
         }
         this.upgraded(wand, mage);
         if (this.icon != null && this.icon.equals(wand.getIcon())) {
