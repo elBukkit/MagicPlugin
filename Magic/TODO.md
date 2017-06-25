@@ -7,6 +7,8 @@
 
 ## 6.9.12
 
+ - Test Blast + Push - had some blocks get stuck in the arena?
+
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  - PW would like some custom lore for wand "quiet" and quick cast settings.
  
