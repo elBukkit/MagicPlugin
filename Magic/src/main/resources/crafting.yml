@@ -33,3 +33,6 @@
 # Enable crafting leather from zombie flesh
 # zombie_leather:
 #   enabled: true
+#
+# NOTE: If you add a new crafting recipe or disable an existing one, you will need a complete server restart for it to take effect.
+#
