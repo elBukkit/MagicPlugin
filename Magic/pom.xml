@@ -107,8 +107,9 @@
 		<dependency>
 			<groupId>com.garbagemule</groupId>
 			<artifactId>MobArena</artifactId>
-			<version>0.98.1</version>
-			<scope>provided</scope>
+			<version>0.98.2-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>/Users/nathan/Servers/elWorld/plugins/MobArena_things.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.sk89q</groupId>

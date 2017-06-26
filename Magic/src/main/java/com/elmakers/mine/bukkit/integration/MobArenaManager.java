@@ -2,20 +2,23 @@ package com.elmakers.mine.bukkit.integration;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.events.ArenaPlayerJoinEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerLeaveEvent;
+import com.garbagemule.MobArena.things.Thing;
+import com.garbagemule.MobArena.things.ThingParser;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
 
-public class MobArenaManager implements Listener {
+public class MobArenaManager implements Listener, ThingParser {
     private final MageController controller;
 
-    public MobArenaManager(MageController controller) {
+    public MobArenaManager(MageController controller, Plugin mobArenaPlugin) {
         this.controller = controller;
 
         Set<String> magicMobKeys = controller.getMobKeys();
@@ -25,6 +28,7 @@ public class MobArenaManager implements Listener {
             new MagicMACreature(controller, mobKey, controller.getMob(mob));
         }
 
+        ((MobArena)mobArenaPlugin).getThingManager().register(this);
         Bukkit.getPluginManager().registerEvents(this, controller.getPlugin());
     }
 
@@ -46,10 +50,13 @@ public class MobArenaManager implements Listener {
         }
     }
 
-    // Hopefully can use this again one day for custom item provider
-    public ItemStack getItem(String s) {
+    @Override
+    public Thing parse(String s) {
         if (!s.startsWith("magic:")) return null;
+
+        org.bukkit.Bukkit.getConsoleSender().sendMessage(org.bukkit.ChatColor.RED + "  PARSING: " + s);
+
         s = s.substring(6);
-        return controller.createItem(s);
+        return new MobArenaItemStackThing(s, controller.createItem(s));
     }
 }

@@ -835,9 +835,10 @@ public class MagicController implements MageController {
             getLogger().info("MobArena not found");
         } else {
             try {
-                mobArenaManager = new MobArenaManager(this);
+                mobArenaManager = new MobArenaManager(this, mobArenaPlugin);
                 // getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items, magic mobs can be used in monster configurations");
                 getLogger().info("Integrated with MobArena, magic mobs can be used in monster configurations");
+                getLogger().info("   Magic items can be used in MobArena classes and rewards with the 'magic:' prefix");
             } catch (Throwable ex) {
                 getLogger().warning("MobArena integration failed, you may need to update the MobArena plugin to use Magic items");
             }
