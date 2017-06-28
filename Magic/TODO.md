@@ -7,6 +7,7 @@
 
 ## 6.9.12
 
+ - Fix airglider in offhand
  - Test Blast + Push - had some blocks get stuck in the arena?
 
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
@@ -42,6 +43,7 @@
   
 ## Not so High-Priority
  
+ - Would be cool to have a configurable max # of maps, and start re-using map ids when limit is hit, LRU
  - Ability to alter flower pots and beds (need to tweak TileEntity data.. doable, but messy to track with Material keys)
  - Brush selector on a sub-page for beds says "diamond axe sub-types"?
  - An option on a wand to put all spells at max level (but don't fill)

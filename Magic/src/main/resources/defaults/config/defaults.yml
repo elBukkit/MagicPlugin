@@ -200,7 +200,7 @@ prevent_wand_melee_damage: true
 prevent_melee_damage: false
 
 # A value above 0 here will reduce melee damage from any weapon globally.
-# A value of 1 or high will completely disable all melee damage.
+# A value of 1 or higher will completely disable all melee damage.
 melee_damage_reduction: 0
 
 # You can make a map here of entity (including projectiles) damage reduction by type.
