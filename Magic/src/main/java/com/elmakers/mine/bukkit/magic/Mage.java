@@ -478,7 +478,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void onChangeWorld() {
-        checkWandNextTick();
+        checkWandNextTick(true);
         if (CHANGE_WORLD_EQUIP_COOLDOWN > 0) {
             ignoreItemActivationUntil = System.currentTimeMillis() + CHANGE_WORLD_EQUIP_COOLDOWN;
         }
@@ -1207,6 +1207,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         return offhandWand;
+    }
+
+    public void checkWandNextTick(boolean checkAll) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new CheckWandTask(this, checkAll));
     }
 
     public void checkWandNextTick() {
