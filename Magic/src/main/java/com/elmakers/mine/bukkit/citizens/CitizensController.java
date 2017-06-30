@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.citizens;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.trait.TraitInfo;
 import org.bukkit.plugin.Plugin;
 
 public class CitizensController {
@@ -9,8 +11,8 @@ public class CitizensController {
 	public CitizensController(Plugin plugin) {
         citizensPlugin = (Citizens)plugin;
 
-        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(MagicCitizensTrait.class).withName("magic"));
-        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(CommandCitizensTrait.class).withName("command"));
+        CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MagicCitizensTrait.class).withName("magic"));
+        CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(CommandCitizensTrait.class).withName("command"));
     }
 
     public Citizens getCitizensPlugin() {
