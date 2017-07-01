@@ -478,7 +478,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void onChangeWorld() {
-        sendDebugMessage("Changing worlds");
         checkWandNextTick(true);
         if (CHANGE_WORLD_EQUIP_COOLDOWN > 0) {
             ignoreItemActivationUntil = System.currentTimeMillis() + CHANGE_WORLD_EQUIP_COOLDOWN;
@@ -2822,7 +2821,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void armorUpdated() {
-        sendDebugMessage("Checking armor");
         activeArmor.clear();
         Player player = getPlayer();
         if (player != null)
@@ -2831,7 +2829,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             for (int index = 0; index < armor.length; index++) {
                 ItemStack armorItem = armor[index];
                 if (Wand.isWand(armorItem)) {
-                    sendDebugMessage(" Found magic armor in slot " + index);
                     activeArmor.put(index, controller.getWand(armorItem));
                 }
             }
