@@ -52,7 +52,9 @@ hunter:
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         concurrent: true
-        drop: hunterheart
+        drops:
+        - sp:50
+        - gold_nugget@8
         restricted: restricted_animate
         message_type: evil
     costs:

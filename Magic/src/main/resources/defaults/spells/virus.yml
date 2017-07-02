@@ -45,7 +45,9 @@ virus:
         target_max_range: 12
         target_min_range: 0
         delay: 3000
-        drop: virusheart
+        drops:
+        - sp:200
+        - gold_block
         restricted: restricted_animate
         message_type: evil
         drop_xp: 300

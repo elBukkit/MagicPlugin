@@ -21,6 +21,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
@@ -69,6 +70,7 @@ public class SimulateBatch extends SpellBatch {
 	private String commandName;
 	private AutomatonLevel level;
 	private String dropItem;
+	private Collection<String> dropItems;
 	private int dropXp;
 	private boolean reverseTargetDistanceScore = false;
 	private boolean concurrent = false;
@@ -190,6 +192,14 @@ public class SimulateBatch extends SpellBatch {
 			Wand magicItem = controller.createWand(dropItem);
 			if (magicItem != null) {
 				center.getWorld().dropItemNaturally(center, magicItem.getItem());
+			}
+		}
+		if (dropItems != null && dropItems.size() > 0) {
+			for (String dropItemName : dropItems) {
+				ItemStack drop = controller.createItem(dropItemName);
+				if (drop != null) {
+					center.getWorld().dropItemNaturally(center, drop);
+				}
 			}
 		}
 		
@@ -608,9 +618,10 @@ public class SimulateBatch extends SpellBatch {
 		}
 	}
 	
-	public void setDrop(String dropName, int dropXp) {
+	public void setDrop(String dropName, int dropXp, Collection<String> drops) {
 		this.dropItem = dropName;
 		this.dropXp = dropXp;
+		this.dropItems = drops;
 	}
 	
 	public void setLevel(AutomatonLevel level) {

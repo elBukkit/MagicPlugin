@@ -195,7 +195,7 @@ public class SimulateSpell extends BlockSpell {
 			batch.setTargetType(targetType);
 			batch.setMinHuntRange(parameters.getInt("target_min_range", 4));
 			batch.setMaxHuntRange(parameters.getInt("target_max_range", 128));
-			batch.setDrop(parameters.getString("drop"), parameters.getInt("drop_xp", 0));
+			batch.setDrop(parameters.getString("drop"), parameters.getInt("drop_xp", 0), ConfigurationUtils.getStringList(parameters, "drops"));
 
 			int level = parameters.getInt("level", 1);
 			if (level < 1) level = 1;

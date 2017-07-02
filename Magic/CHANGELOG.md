@@ -22,6 +22,7 @@
  - Removed TNT and creeper auto-rollback from war configs
  - Fix SuperAlter
  - Fix Magic Missile glitching out and duping doors
+ - Automata no longer drop hearts, drop SP and gold instead.
 
 ## 6.9.11
 
