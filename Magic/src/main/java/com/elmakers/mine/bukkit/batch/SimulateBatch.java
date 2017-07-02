@@ -751,6 +751,7 @@ public class SimulateBatch extends SpellBatch {
 				
 				if (direction != null) {
 					center.setDirection(direction);
+					mage.setLocation(center);
 				}
 				
 				// Check for obstruction
