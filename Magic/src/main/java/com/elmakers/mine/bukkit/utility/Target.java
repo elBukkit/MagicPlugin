@@ -98,13 +98,14 @@ public class Target implements Comparable<Target>
         calculateScore();
     }
 
-    public Target(Location sourceLocation, Block block, int minRange, int maxRange, double angle, boolean reverseDistance)
+    public Target(Location sourceLocation, Block block, int minRange, int maxRange, double angle, float fovWeight, boolean reverseDistance)
     {
         this.maxDistanceSquared = maxRange * maxRange;
         this.minDistanceSquared = minRange * minRange;
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
+        this.fovWeight = fovWeight;
         this.setBlock(block);
         this.locationMaterial = new MaterialAndData(block);
         calculateScore();

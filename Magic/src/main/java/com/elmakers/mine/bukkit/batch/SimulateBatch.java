@@ -80,6 +80,7 @@ public class SimulateBatch extends SpellBatch {
 	private int huntMinRange = 4;
 	private int birthRangeSquared = 0;
 	private int liveRangeSquared = 0;
+	private float fovWeight = 100;
 	private double huntFov = Math.PI * 1.8;
 	private boolean commandReload;
 	private boolean commandPowered;
@@ -152,7 +153,7 @@ public class SimulateBatch extends SpellBatch {
 			if (distanceSquared <= commandMoveRangeSquared) {
 				// commandMoveRangeSquared is kind of too big, but it doesn't matter all that much
 				// we still look at targets that end up with a score of 0, it just affects the sort ordering.
-				potentialCommandBlocks.add(new Target(center, block, huntMinRange, huntMaxRange, huntFov, reverseTargetDistanceScore));
+				potentialCommandBlocks.add(new Target(center, block, huntMinRange, huntMaxRange, huntFov, fovWeight, reverseTargetDistanceScore));
 			}
 		}
 	}
