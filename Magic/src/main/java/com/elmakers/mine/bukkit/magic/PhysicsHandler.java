@@ -44,8 +44,7 @@ public class PhysicsHandler implements Listener {
 			return true;
 		}
 		com.elmakers.mine.bukkit.api.block.UndoList registeredList = registered.getUndoList();
-		if (!registeredList.getApplyPhysics()) {
-
+		if (registeredList != null && !registeredList.getApplyPhysics()) {
 			timeout = Math.min(now + timeoutBuffer, timeout);
 			return false;
 		}
