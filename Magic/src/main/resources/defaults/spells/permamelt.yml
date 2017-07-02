@@ -1,0 +1,55 @@
+permamelt:
+    icon: diamond_axe:38
+    icon_disabled: diamond_hoe:38
+    icon_url: http://textures.minecraft.net/texture/872d9b98a6b34a2762aac1af915873c066c43c2b2b8d689d27626cc5afcb11
+    category: engineering
+    tags: noduel
+    worth: 2000
+    earns_sp: 10
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: ChangeBiome
+          - class: ModifyBlock
+          - class: Weather
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+        tick:
+        - location: target
+          particle: snowball
+          particle_count: 4
+          particle_offset_x: 0.01
+          particle_offset_y: 0.01
+          particle_offset_z: 0.01
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: F5EFFB
+           firework: ball
+        - class: EffectSingle
+          location: target
+          target_offset: 0,0.2,0
+          effectlib:
+             class: Shield
+             duration: $undo
+             period: 4
+             particle: snowball
+             radius: $radius
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 48
+        radius: 16
+        transparent: transparent
+        destructible: ice
+        cooldown: 30000
+        freeze_lava: true
+        biome: desert
+        weather: normal
+        brush: stationary_water
+    costs:
+        mana: 200
+

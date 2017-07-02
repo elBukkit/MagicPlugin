@@ -157,6 +157,10 @@ spells:
         name: PermaFrost
         description: Make it permanently snowy!
         cast_finish: Permafrosted $count blocks
+    permamelt:
+        name: PermaMelt
+        description: Raise the temperature
+        cast_finish: Permamelted $count blocks
     frost:
         name: Frost
         description: Freeze water and create snow
