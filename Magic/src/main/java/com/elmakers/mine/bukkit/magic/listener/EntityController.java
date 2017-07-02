@@ -366,7 +366,12 @@ public class EntityController implements Listener {
         ItemStack spawnedItem = itemEntity.getItemStack();
         Block block = itemEntity.getLocation().getBlock();
         BlockData undoData = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
-        if (undoData != null && block.getType() != Material.AIR)
+        boolean isBreaking = block.getType() != Material.AIR;
+        if (!isBreaking) {
+            Set<Material> doubleAttachables = controller.getMaterialSet("attachable_double");
+            isBreaking = doubleAttachables.contains(spawnedItem.getType());
+        }
+        if (undoData != null && isBreaking)
         {
             // if a block just broke via physics, it will not yet have its id changed to air
             // So we can catch this as a one-time event, for blocks we have recorded.

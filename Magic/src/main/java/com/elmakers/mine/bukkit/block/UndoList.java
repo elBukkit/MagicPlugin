@@ -257,10 +257,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                 {
                     if (direction != BlockFace.UP)
                     {
+                        add(newBlock);
                         addAttachable(newBlock, BlockFace.DOWN, materials);
                     }
                     else if (direction != BlockFace.DOWN)
                     {
+                        add(newBlock);
                         addAttachable(newBlock, BlockFace.UP, materials);
                     }
                 }
