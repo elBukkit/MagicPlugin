@@ -372,7 +372,12 @@ public class EntityController implements Listener {
             // So we can catch this as a one-time event, for blocks we have recorded.
             if (undoData.getMaterial() != Material.AIR)
             {
-                undoData.getUndoList().add(block);
+                UndoList undoList = undoData.getUndoList();
+                if (undoList != null) {
+                    undoList.add(block);
+                } else {
+                    controller.getLogger().warning("Block broken into item under undo at " + block + ", but no undo list was assigned");
+                }
                 event.setCancelled(true);
                 return;
             }
