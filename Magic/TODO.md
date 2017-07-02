@@ -7,7 +7,6 @@
 
 ## 6.9.12
  
- - SuperAlter is broken
  - Magic missile on a door undoes into a glitchy door
  - Add "drops" list of any magic item to Simulate for automata to drop SP.
  - Add ModifyGameMode action.

@@ -20,6 +20,7 @@
  - Fix Projector spell, giphy doesn't like my direct-linking anymore.
  - Don't allow placing wands in furnaces
  - Removed TNT and creeper auto-rollback from war configs
+ - Fix SuperAlter
 
 ## 6.9.11
 

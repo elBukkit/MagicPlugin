@@ -22,6 +22,8 @@ superalter:
         range: 64
         depth: 32
         transparent: transparent_to_construction
+        destructible: *
+        replace: true
     costs:
         mana: 40
 
