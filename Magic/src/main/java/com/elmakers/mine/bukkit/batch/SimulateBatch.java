@@ -175,14 +175,15 @@ public class SimulateBatch extends SpellBatch {
                 controller.unregisterAutomata(checkForPower);
             }
             if (checkForPower.getType() == POWER_MATERIAL) {
+            	registerForUndo(checkForPower);
                 BlockData commitBlock = UndoList.register(checkForPower);
                 commitBlock.setMaterial(Material.AIR);
                 commitBlock.modify(checkForPower);
-                commitBlock.commit();
             } else {
                 BlockData commitBlock = UndoList.getBlockData(checkForPower.getLocation());
                 if (commitBlock != null)
                 {
+					registerForUndo(commitBlock.getBlock());
                     commitBlock.setMaterial(Material.AIR);
                 }
             }
@@ -213,12 +214,14 @@ public class SimulateBatch extends SpellBatch {
 			}
 		}
 		if (includeCommands && castCommandBlock != null) {
-            BlockData commitBlock = UndoList.register(castCommandBlock);
+			BlockData commitBlock = new com.elmakers.mine.bukkit.block.BlockData(castCommandBlock);
+			if (undoList != null) {
+				undoList.add(commitBlock);
+			}
             commitBlock.setMaterial(Material.AIR);
             commitBlock.modify(castCommandBlock);
-            commitBlock.commit();
 		}
-		
+
 		if (level != null) {
 			level.onDeath(mage, birthMaterial);
 		}
@@ -363,6 +366,7 @@ public class SimulateBatch extends SpellBatch {
 						if (commandReload) {
 							controller.unregisterAutomata(checkForPower);
 						}
+						registerForUndo(checkForPower);
 						powerSimMaterial.modify(checkForPower);
 						commandPowered = true;
 					}
@@ -376,6 +380,7 @@ public class SimulateBatch extends SpellBatch {
 				
 				// Make this a normal block so the sim will process it
 				// this also serves to reset the command block for the next tick, if it lives.
+				registerForUndo(castCommandBlock);
 				birthMaterial.modify(castCommandBlock);
 			}
 			
