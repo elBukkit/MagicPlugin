@@ -29,13 +29,14 @@ hunter:
         "blast target self radius 7 speed 1^0 destructible $birth,command,redstone_block check_destructible true": 250,200,150
         "blast target self radius 7 speed 1^5 destructible $birth,command,redstone_block check_destructible true": 100,100,200
     cast:
-        "boom transparent air,$birth,command,redstone_block": 20,40,100
         "shrink transparent air,$birth,command,redstone_block": 30,40,50
-        "pull transparent air,$birth,redstone_block,command": 100,100,100
-        "curse transparent air,$birth,redstone_block,command": 100,100,150
+        "pull transparent air,$birth,redstone_block,command": 60,70,80
+        "curse transparent air,$birth,redstone_block,command": 60,100,150
+        "poison transparent air,$birth,redstone_block,command": 100,100,150
         "blob brush stained_glass:15 radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 20,40,80
-        "lava transparent air,$birth,redstone_block,command": 0,10,20
         "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block,command": 20,40,80
+        "homing|2 transparent air,$birth,redstone_block,command": 20,50,90
+        "missile|2 transparent air,$birth,redstone_block,command": 100,150,200
         "none": 300,200,50
     parameters:
         allow_max_range: false

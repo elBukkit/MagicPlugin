@@ -26,6 +26,7 @@
    - No longer drop hearts, drop SP and gold instead
    - Fix targeting, worms no longer run away
    - Will clean up after themselves (WIP)
+   - Improved aim, rebalanced to use more powerful spells, but may be easier to kill
 
 ## 6.9.11
 

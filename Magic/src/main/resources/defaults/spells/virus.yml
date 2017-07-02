@@ -24,16 +24,19 @@ virus:
     delay: 3500,3000,2500
     drop_xp: 200,250,300
     cast:
-        "boom transparent air,$birth,command,redstone_block range 48": 100,100,100
-        "arrowrain transparent air,$birth,command,redstone_block range 48": 50,70,90
-        "arrow|4 transparent air,$birth,command,redstone_block range 48": 50,90,200
-        "neutron transparent air,$birth,command,redstone_block range 48": 5,10,20
-        "mob transparent air,$birth,command,redstone_block range 48": 5,10,10
-        "lightning transparent air,$birth,command,redstone_block range 48": 50,70,90
+        "arrowrain transparent air,$birth,command,redstone_block": 50,70,90
+        "arrow|4 transparent air,$birth,command,redstone_block": 50,90,200
+        "neutron transparent air,$birth,command,redstone_block": 5,10,20
+        "fury transparent air,$birth,command,redstone_block": 20,50,100
+        "homing|4 transparent air,$birth,command,redstone_block": 100,100,100
+        "railgun transparent air,$birth,command,redstone_block": 50,60,150
+        "missile|4 transparent air,$birth,redstone_block,command": 10,20,40
+        "torture|3 transparent air,$birth,redstone_block,command": 10,20,40
+        "kill transparent air,$birth,redstone_block,command": 5,20,30
         "none": 100,80,50
     death_cast:
         neutron: 100,200,300
-        lightning|3: 100,100,100
+        fury: 20,50,100
     parameters:
         allow_max_range: false
         transparent: transparent_to_construction
@@ -58,7 +61,8 @@ virus:
         diagonal_birth_rules: 0,1
         live_rules: 1,2,3
         diagonal_live_rules: 0,1
-        undo: 5000
+        undo: 30000
+        undo_speed: 20
     costs:
         xp: 400
 

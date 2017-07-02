@@ -63,7 +63,7 @@ torture:
         target_type: Damageable
         target_breakables: 1
         target: other
-        duration: 2000
+        duration: 4000
         damage: 2
         effect_slow: 20
         effect_wither: 1
@@ -75,14 +75,14 @@ torture|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        duration: 3000
+        duration: 5000
         effect_wither: 2
         damage: 3
         target_breakables: 2
 
 torture|3:
     parameters:
-        duration: 4000
+        duration: 6000
         effect_wither: 3
         damage: 4
         target_breakables: 3
