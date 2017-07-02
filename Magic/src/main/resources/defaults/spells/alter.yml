@@ -136,8 +136,26 @@ alter:
           - leaves:1
           - leaves:2
           - leaves:3
+          - leaves:4
+          - leaves:5
+          - leaves:6
+          - leaves:7
+          - leaves:8
+          - leaves:9
+          - leaves:10
+          - leaves:11
+          - leaves:12
+          - leaves:13
+          - leaves:14
+          - leaves:15
           - leaves_2
           - leaves_2:1
+          - leaves_2:4
+          - leaves_2:5
+          - leaves_2:8
+          - leaves_2:9
+          - leaves_2:12
+          - leaves_2:13
         - - dispenser:2
           - dispenser:3
           - dispenser:4
