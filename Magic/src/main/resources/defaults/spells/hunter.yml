@@ -24,10 +24,10 @@ hunter:
     delay: 1200,800,500
     drop_xp: 100,125,150
     death_cast:
-        "blast target self commit true radius 7 speed 0^1 destructible $birth,command,redstone_block check_destructible true": 500,300,50
-        "blast target self commit true radius 7 speed 0^5 destructible $birth,command,redstone_block check_destructible true": 300,200,100
-        "blast target self commit true radius 7 speed 1^0 destructible $birth,command,redstone_block check_destructible true": 250,200,150
-        "blast target self commit true radius 7 speed 1^5 destructible $birth,command,redstone_block check_destructible true": 100,100,200
+        "blast target self radius 7 speed 0^1 destructible $birth,command,redstone_block check_destructible true": 500,300,50
+        "blast target self radius 7 speed 0^5 destructible $birth,command,redstone_block check_destructible true": 300,200,100
+        "blast target self radius 7 speed 1^0 destructible $birth,command,redstone_block check_destructible true": 250,200,150
+        "blast target self radius 7 speed 1^5 destructible $birth,command,redstone_block check_destructible true": 100,100,200
     cast:
         "boom transparent air,$birth,command,redstone_block": 20,40,100
         "shrink transparent air,$birth,command,redstone_block": 30,40,50
@@ -38,7 +38,6 @@ hunter:
         "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block,command": 20,40,80
         "none": 300,200,50
     parameters:
-        bypass_undo: true
         allow_max_range: false
         transparent: transparent_to_construction
         check_destructible: false
@@ -57,6 +56,7 @@ hunter:
         - gold_nugget@8
         restricted: restricted_animate
         message_type: evil
+        undo: 30000
     costs:
         xp: 200
 

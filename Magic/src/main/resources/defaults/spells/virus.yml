@@ -36,7 +36,6 @@ virus:
         lightning|3: 100,100,100
     parameters:
         allow_max_range: false
-        bypass_undo: true
         transparent: transparent_to_construction
         check_destructible: false
         range: 32
@@ -59,6 +58,7 @@ virus:
         diagonal_birth_rules: 0,1
         live_rules: 1,2,3
         diagonal_live_rules: 0,1
+        undo: 5000
     costs:
         xp: 400
 

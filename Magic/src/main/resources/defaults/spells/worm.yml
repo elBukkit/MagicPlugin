@@ -24,8 +24,8 @@ worm:
     delay: 1800,1500,1200
     drop_xp: 150,200,250
     death_cast:
-        "blast target self commit true radius 12 speed -0^2 destructible $birth,command,redstone_block check_destructible true": 100,100,100
-        "blast target self commit true radius 12 speed -0^5 destructible $birth,command,redstone_block check_destructible true": 20,50,200
+        "blast target self radius 12 speed -0^2 destructible $birth,command,redstone_block check_destructible true": 100,100,100
+        "blast target self radius 12 speed -0^5 destructible $birth,command,redstone_block check_destructible true": 20,50,200
     cast:
         "blob brush stained_glass:15 radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 50,100,200
         "curse transparent air,$birth,redstone_block,command": 100,100,200
@@ -37,7 +37,6 @@ worm:
         "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block,command": 20,40,80
         "none": 20,10,5
     parameters:
-        bypass_undo: true
         allow_max_range: false
         transparent: transparent_to_construction
         check_destructible: false
@@ -60,6 +59,7 @@ worm:
         move: 4
         restricted: restricted_animate
         message_type: evil
+        undo: 20000
     costs:
         xp: 250
 

@@ -23,6 +23,7 @@
  - Fix SuperAlter
  - Fix Magic Missile glitching out and duping doors
  - Automata no longer drop hearts, drop SP and gold instead.
+ - Automata will clean up after themselves (WIP)
 
 ## 6.9.11
 
