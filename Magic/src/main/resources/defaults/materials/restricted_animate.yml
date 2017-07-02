@@ -101,4 +101,7 @@ restricted_animate:
 - double_plant
 - carpet
 - hard_clay
-
+- diamond_block
+- emerald_block
+- iron_block
+- gold_block
