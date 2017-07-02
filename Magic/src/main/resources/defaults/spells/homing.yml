@@ -11,6 +11,7 @@ homing:
         cast:
         - class: Message
           message: lock_on
+          message_type: action_bar
           message_target: true
         - class: CustomProjectile
           hitbox: true

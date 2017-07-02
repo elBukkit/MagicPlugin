@@ -1122,7 +1122,7 @@ spells:
         name: Homing Missile
         description: Shoot a bolt of energy that will track your target
         cast: You fire a homing missile at $target
-        lock_on: "a:&d&o$player&r&5 has locked on to you!"
+        lock_on: "&d&o$player&r&5 has locked on to you!"
         cast_player_message: "a:&d&o$player&r&5's $spell hit you"
         upgrade_description: "&r&b&bull; &6Faster missile, more damage"
     fury:
