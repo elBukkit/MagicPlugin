@@ -87,6 +87,7 @@ public class AnimateSpell extends SimulateSpell
 					for (int dy = -seedRadius; dy < seedRadius; dy++) {
 						Block seedBlock = targetBlock.getRelative(dx, dy, dz);
 						if (isDestructible(seedBlock)) {
+							registerForUndo(seedBlock);
 							targetMaterial.modify(seedBlock);
 						}
 					}
