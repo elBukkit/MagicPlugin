@@ -27,6 +27,7 @@
    - Fix targeting, worms no longer run away
    - Will clean up after themselves (WIP)
    - Improved aim, rebalanced to use more powerful spells, but may be easier to kill
+   - Naturally spawned automata can use restricted materials
 
 ## 6.9.11
 

@@ -53,13 +53,14 @@ public class AnimateSpell extends SimulateSpell
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+		int seedRadius = parameters.getInt("seed_radius", 0);
 		MaterialAndData targetMaterial = new MaterialAndData(targetBlock);
 		if (parameters.contains("material")) {
 			targetMaterial = ConfigurationUtils.getMaterialAndData(parameters, "material", targetMaterial);
 			addDestructible(targetMaterial.getMaterial());
 		}
 
-        if (!mage.isSuperPowered()) {
+        if (!mage.isSuperPowered() && seedRadius == 0) {
             Set<Material> restricted = controller.getMaterialSet("restricted");
             if (restricted.contains(targetMaterial.getMaterial())) {
                 return SpellResult.FAIL;
@@ -80,7 +81,6 @@ public class AnimateSpell extends SimulateSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		int seedRadius = parameters.getInt("seed_radius", 0);
 		if (seedRadius > 0) {
 			for (int dx = -seedRadius; dx < seedRadius; dx++) {
 				for (int dz = -seedRadius; dz < seedRadius; dz++) {
