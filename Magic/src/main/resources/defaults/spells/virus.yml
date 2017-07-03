@@ -32,7 +32,7 @@ virus:
         "railgun transparent air,$birth,command,redstone_block": 50,60,150
         "missile|4 transparent air,$birth,redstone_block,command": 10,20,40
         "torture|3 transparent air,$birth,redstone_block,command": 10,20,40
-        "kill transparent air,$birth,redstone_block,command": 5,20,30
+        "kill cooldown_mage 0 transparent air,$birth,redstone_block,command": 5,20,30
         "none": 100,80,50
     death_cast:
         neutron: 100,200,300

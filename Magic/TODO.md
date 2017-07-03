@@ -7,7 +7,6 @@
 
 ## 6.9.12
  
- - Add "drops" list of any magic item to Simulate for automata to drop SP.
  - Add ModifyGameMode action.
  - Fix airglider in offhand
  - Test Blast + Push - had some blocks get stuck in the arena?
