@@ -237,7 +237,7 @@ public class SpawnEntityAction extends BaseSpellAction
             for (Villager.Profession profession : Villager.Profession.values()) {
                 examples.add(profession.name().toLowerCase());
             }
-        } else if (parameterKey.equals("rabbity_type")) {
+        } else if (parameterKey.equals("rabbit_type")) {
             for (Rabbit.Type type : Rabbit.Type.values()) {
                 examples.add(type.name().toLowerCase());
             }
