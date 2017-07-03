@@ -40,9 +40,7 @@ public class SpawnEntityAction extends BaseSpellAction
     private final LinkedList<WeightedPair<String>> entityTypeProbability = new LinkedList<>();
 
     private CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
-    private WeakReference<Entity> current = null;
 
-    private boolean track = true;
     private boolean loot = false;
     private boolean setTarget = false;
     private boolean force = false;
@@ -55,7 +53,6 @@ public class SpawnEntityAction extends BaseSpellAction
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
-        track = parameters.getBoolean("track", true);
         loot = parameters.getBoolean("loot", false);
         force = parameters.getBoolean("force", false);
         setTarget = parameters.getBoolean("set_target", false);
@@ -86,12 +83,6 @@ public class SpawnEntityAction extends BaseSpellAction
     @Override
     public SpellResult perform(CastContext context) {
         Block targetBlock = context.getTargetBlock();
-        Entity currentEntity = current == null ? null : current.get();
-        current = null;
-        if (currentEntity != null)
-        {
-            currentEntity.remove();
-        }
 
 		targetBlock = targetBlock.getRelative(BlockFace.UP);
 
@@ -173,10 +164,6 @@ public class SpawnEntityAction extends BaseSpellAction
         }
         context.registerForUndo(spawnedEntity);
 
-        if (track)
-        {
-            current = new WeakReference<>(spawnedEntity);
-        }
         if (setTarget)
         {
             context.setTargetEntity(spawnedEntity);
