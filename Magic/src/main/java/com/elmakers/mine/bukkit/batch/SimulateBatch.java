@@ -35,30 +35,30 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class SimulateBatch extends SpellBatch {
-	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
+	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST,
 		BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
 	};
 	private static BlockFace[] DIAGONAL_FACES = {  BlockFace.SOUTH_EAST, BlockFace.NORTH_EAST, BlockFace.SOUTH_WEST, BlockFace.NORTH_WEST };
 	private static BlockFace[] MAIN_FACES = {  BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST };
 	private static BlockFace[] POWER_FACES = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
-	
+
 	private enum SimulationState {
 		SCANNING_COMMAND, SCANNING, UPDATING, COMMAND_SEARCH, COMMON_RESET_REDSTONE, COMMAND_UPDATE, COMMAND_POWER, FINISHED
 	};
-	
+
 	public enum TargetMode {
 		STABILIZE, WANDER, GLIDE, HUNT, FLEE, DIRECTED
 	};
-	
+
 	public enum TargetType {
 		PLAYER, MAGE, MOB, AUTOMATON, ANY
 	};
-	
+
 	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
 	public static int POWER_DELAY_TICKS = 0;
-	
+
 	public static boolean DEBUG = false;
-	
+
 	private Mage mage;
 	private BlockSpell blockSpell;
 	private Block castCommandBlock;
@@ -108,7 +108,7 @@ public class SimulateBatch extends SpellBatch {
 	private List<Block> deadBlocks = new ArrayList<>();
 	private List<Block> bornBlocks = new ArrayList<>();
 	private List<Target> potentialCommandBlocks = new LinkedList<>();
-	
+
 	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
 		super(spell);
 
@@ -117,22 +117,22 @@ public class SimulateBatch extends SpellBatch {
 		this.yRadius = yRadius;
 		this.radius = radius;
 		this.center = center.clone();
-		
+
 		this.birthMaterial = birth;
 		this.deathMaterial = death;
-		
+
 		this.powerSimMaterial = birthMaterial;
 		this.powerSimMaterialBackup = new MaterialAndData(deathMaterial);
 		mapIntegers(liveCounts, this.liveCounts);
 		mapIntegers(birthCounts, this.birthCounts);
 		this.world = center.getWorld();
 		includeCommands = false;
-		
+
 		x = 0;
 		y = 0;
 		z = 0;
 		r = 0;
-		
+
 		state = SimulationState.SCANNING_COMMAND;
 		updatingIndex = 0;
 	}
@@ -141,13 +141,13 @@ public class SimulateBatch extends SpellBatch {
     public int size() {
 		return radius * radius * radius * 8;
 	}
-	
+
 	@Override
     public int remaining() {
 		if (r >= radius) return 0;
 		return (radius - r) *  (radius - r) *  (radius - r) * 8;
 	}
-	
+
 	protected void checkForPotentialCommand(Block block, int distanceSquared) {
 		if (includeCommands) {
 			if (distanceSquared <= commandMoveRangeSquared) {
@@ -157,13 +157,13 @@ public class SimulateBatch extends SpellBatch {
 			}
 		}
 	}
-	
+
 	protected void die() {
 		String message = spell.getMessage("death_broadcast").replace("$name", commandName);
 		if (message.length() > 0) {
-			controller.sendToMages(message, center);	
+			controller.sendToMages(message, center);
 		}
-		
+
 		// Kill power block
 		if (castCommandBlock == null) {
 			castCommandBlock = center.getBlock();
@@ -204,7 +204,7 @@ public class SimulateBatch extends SpellBatch {
 				}
 			}
 		}
-		
+
 		// Drop Xp
 		if (dropXp > 0) {
 			Entity entity = center.getWorld().spawnEntity(center, EntityType.EXPERIENCE_ORB);
@@ -214,12 +214,8 @@ public class SimulateBatch extends SpellBatch {
 			}
 		}
 		if (includeCommands && castCommandBlock != null) {
-			BlockData commitBlock = new com.elmakers.mine.bukkit.block.BlockData(castCommandBlock);
-			if (undoList != null) {
-				undoList.add(commitBlock);
-			}
-            commitBlock.setMaterial(Material.AIR);
-            commitBlock.modify(castCommandBlock);
+			registerForUndo(castCommandBlock);
+			castCommandBlock.setType(Material.AIR);
 		}
 
 		if (level != null) {
@@ -229,7 +225,7 @@ public class SimulateBatch extends SpellBatch {
 			controller.removeMage(mage);
 		}
 	}
-	
+
 	protected void killBlock(Block block) {
 		if (concurrent) {
 			registerForUndo(block);
@@ -238,7 +234,7 @@ public class SimulateBatch extends SpellBatch {
 			deadBlocks.add(block);
 		}
 	}
-	
+
 	protected void birthBlock(Block block) {
 		if (concurrent) {
 			registerForUndo(block);
@@ -247,7 +243,7 @@ public class SimulateBatch extends SpellBatch {
 			bornBlocks.add(block);
 		}
 	}
-	
+
 	protected boolean simulateBlock(int dx, int dy, int dz) {
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;
@@ -257,10 +253,10 @@ public class SimulateBatch extends SpellBatch {
 			block.getChunk().load();
 			return false;
 		}
-		
+
 		Material blockMaterial = block.getType();
 		if (birthMaterial.is(block)) {
-			int distanceSquared = liveRangeSquared > 0 || includeCommands ? 
+			int distanceSquared = liveRangeSquared > 0 || includeCommands ?
 					(int)Math.ceil(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
 
 			if (liveRangeSquared <= 0 || distanceSquared <= liveRangeSquared) {
@@ -285,10 +281,10 @@ public class SimulateBatch extends SpellBatch {
 				killBlock(block);
 			}
 		} else if (blockMaterial == deathMaterial) {
-			int distanceSquared = birthRangeSquared > 0 || includeCommands ? 
+			int distanceSquared = birthRangeSquared > 0 || includeCommands ?
 					(int)Math.ceil(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
 
-			if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {	
+			if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {
 				if (diagonalBirthCounts.size() > 0) {
 					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial, includeCommands);
 					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial, includeCommands);
@@ -318,10 +314,10 @@ public class SimulateBatch extends SpellBatch {
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	protected boolean simulateBlocks(int x, int y, int z) {
 		boolean success = true;
 		if (y != 0) {
@@ -351,14 +347,14 @@ public class SimulateBatch extends SpellBatch {
 					// Can't really do it without the chunk being loaded though, so hrm.
 					return processedBlocks;
 				}
-				
+
 				// Check for death since activation (e.g. during delay period)
 				if (castCommandBlock.getType() != Material.COMMAND) {
 					die();
 					finish();
 					return processedBlocks;
 				}
-				
+
 				// Check for power blocks
 				for (BlockFace powerFace : POWER_FACES) {
 					Block checkForPower = castCommandBlock.getRelative(powerFace);
@@ -371,28 +367,28 @@ public class SimulateBatch extends SpellBatch {
 						commandPowered = true;
 					}
 				}
-				
+
 				if (!commandPowered) {
 					die();
 					finish();
 					return processedBlocks;
 				}
-				
+
 				// Make this a normal block so the sim will process it
 				// this also serves to reset the command block for the next tick, if it lives.
 				registerForUndo(castCommandBlock);
 				birthMaterial.modify(castCommandBlock);
 			}
-			
+
 			processedBlocks++;
 			state = SimulationState.SCANNING;
 		}
-		
+
 		while (state == SimulationState.SCANNING && processedBlocks <= maxBlocks) {
 			if (!simulateBlocks(x, y, z)) {
 				return processedBlocks;
 			}
-			
+
 			y++;
 			if (y > yRadius) {
 				y = 0;
@@ -407,13 +403,13 @@ public class SimulateBatch extends SpellBatch {
 					}
 				}
 			}
-			
-			if (r > radius) 
+
+			if (r > radius)
 			{
 				state = SimulationState.UPDATING;
 			}
 		}
-		
+
 		while (state == SimulationState.UPDATING && processedBlocks <= maxBlocks) {
 			int deadIndex = updatingIndex;
 			if (deadIndex >= 0 && deadIndex < deadBlocks.size()) {
@@ -422,7 +418,7 @@ public class SimulateBatch extends SpellBatch {
 					killBlock.getChunk().load();
 					return processedBlocks;
 				}
-				
+
 				if (birthMaterial.is(killBlock)) {
 					registerForUndo(killBlock);
 					killBlock.setType(deathMaterial);
@@ -438,7 +434,7 @@ public class SimulateBatch extends SpellBatch {
 				}
 				processedBlocks++;
 			}
-			
+
 			int bornIndex = updatingIndex - deadBlocks.size();
 			if (bornIndex >= 0 && bornIndex < bornBlocks.size()) {
 				Block birthBlock = bornBlocks.get(bornIndex);
@@ -449,16 +445,16 @@ public class SimulateBatch extends SpellBatch {
 				registerForUndo(birthBlock);
 				birthMaterial.modify(birthBlock);
 			}
-			
+
 			updatingIndex++;
 			if (updatingIndex >= deadBlocks.size() + bornBlocks.size()) {
 				state = SimulationState.COMMAND_SEARCH;
-				
+
 				// Wait at least a tick before re-populating the command block.
 				return maxBlocks;
 			}
 		}
-		
+
 		// Each of the following states will end in this tick, to give the
 		// MC sim time to register power updates.
 		if (state == SimulationState.COMMAND_SEARCH) {
@@ -474,7 +470,7 @@ public class SimulateBatch extends SpellBatch {
 					Collections.shuffle(potentialCommandBlocks);
 					break;
 				}
-				
+
 				// Find a valid block for the command
                 powerTargetBlock = null;
 				commandTargetBlock = null;
@@ -494,7 +490,7 @@ public class SimulateBatch extends SpellBatch {
 						}
 					}
 				}
-				
+
 				// If we didn't find any powerable blocks, but we did find at least one valid sim block
 				// just use that one.
 				if (commandTargetBlock == null) commandTargetBlock = backupBlock;
@@ -527,7 +523,11 @@ public class SimulateBatch extends SpellBatch {
                     if (powerDirection != null) {
                         powerTargetBlock = commandTargetBlock.getRelative(powerDirection);
                     }
-                }
+                } else {
+					if (DEBUG) {
+						controller.getLogger().info("Could not find a valid command block location");
+					}
+				}
 			}
 			if (DEBUG) {
 				if (commandTargetBlock != null) {
@@ -548,7 +548,7 @@ public class SimulateBatch extends SpellBatch {
             state = SimulationState.COMMAND_UPDATE;
             return processedBlocks;
         }
-		
+
 		if (state == SimulationState.COMMAND_UPDATE) {
 			if (includeCommands) {
 				if (commandTargetBlock != null) {
@@ -556,7 +556,7 @@ public class SimulateBatch extends SpellBatch {
 						commandTargetBlock.getChunk().load();
 						return processedBlocks;
 					}
-					
+
 					commandTargetBlock.setType(Material.COMMAND);
 					BlockState commandData = commandTargetBlock.getState();
 					if (castCommand != null && commandData != null && commandData instanceof CommandBlock) {
@@ -564,7 +564,7 @@ public class SimulateBatch extends SpellBatch {
 						copyCommand.setCommand(castCommand);
 						copyCommand.setName(commandName);
 						copyCommand.update();
-						
+
 						// Also move the mage
 						Location newLocation = commandTargetBlock.getLocation();
 						newLocation.setPitch(center.getPitch());
@@ -581,7 +581,7 @@ public class SimulateBatch extends SpellBatch {
 			state = SimulationState.COMMAND_POWER;
 			return processedBlocks;
 		}
-		
+
 		if (state == SimulationState.COMMAND_POWER) {
 			// Continue to power the command block
 			if (commandPowered && powerTargetBlock != null && includeCommands) {
@@ -603,11 +603,11 @@ public class SimulateBatch extends SpellBatch {
 			state = SimulationState.FINISHED;
 			return processedBlocks;
 		}
-		
+
 		if (state == SimulationState.FINISHED) {
 			finish();
 		}
-		
+
 		return processedBlocks;
 	}
 
@@ -623,13 +623,13 @@ public class SimulateBatch extends SpellBatch {
 			includeCommands = castCommand != null && castCommand.length() > 0;
 		}
 	}
-	
+
 	public void setDrop(String dropName, int dropXp, Collection<String> drops) {
 		this.dropItem = dropName;
 		this.dropXp = dropXp;
 		this.dropItems = drops;
 	}
-	
+
 	public void setLevel(AutomatonLevel level) {
 		this.level = level;
 		this.commandMoveRangeSquared = level.getMoveRangeSquared(commandMoveRangeSquared);
@@ -639,7 +639,7 @@ public class SimulateBatch extends SpellBatch {
 		this.radius = level.getRadius(radius);
 		this.yRadius = level.getYRadius(yRadius);
 	}
-	
+
 	public void setBirthRange(int range) {
 		birthRangeSquared = range * range;
 	}
@@ -647,11 +647,11 @@ public class SimulateBatch extends SpellBatch {
 	public void setLiveRange(int range) {
 		liveRangeSquared = range * range;
 	}
-	
+
 	public void setMaxHuntRange(int range) {
 		huntMaxRange = range;
 	}
-	
+
 	public void setCastRange(int range) {
 		castRange = range;
 	}
@@ -659,14 +659,14 @@ public class SimulateBatch extends SpellBatch {
 	public void setMinHuntRange(int range) {
 		huntMinRange = range;
 	}
-	
+
 	public void setTargetType(TargetType targetType) {
 		this.targetType = targetType;
 	}
-	
+
 	public void target(TargetMode mode) {
 		targetMode = mode == null ? TargetMode.STABILIZE : mode;
-		switch (targetMode) 
+		switch (targetMode)
 		{
 		case FLEE:
 		case HUNT:
@@ -701,7 +701,7 @@ public class SimulateBatch extends SpellBatch {
 					if (mage.isDead() || !mage.isOnline() || !mage.hasLocation()) continue;
 					if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
 					if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
-					
+
 					if (!mage.isPlayer()) {
 						// Check for automata of the same type, kinda hacky.. ?
 						Block block = mage.getLocation().getBlock();
@@ -719,7 +719,7 @@ public class SimulateBatch extends SpellBatch {
 						Player player = mage.getPlayer();
 						if (player.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 					}
-					
+
 					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, 100, false);
 					int score = newScore.getScore();
 					if (bestTarget == null || score > bestTarget.getScore()) {
@@ -727,18 +727,18 @@ public class SimulateBatch extends SpellBatch {
 					}
 				}
 			}
-			
-			if (bestTarget != null) 
+
+			if (bestTarget != null)
 			{
 				String targetDescription = bestTarget.getEntity() == null ? "NONE" :
 					((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
-				
+
 				if (DEBUG) {
-					controller.getLogger().info(" *Tracking " + targetDescription + 
+					controller.getLogger().info(" *Tracking " + targetDescription +
 				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation() + " move " + commandMoveRangeSquared);
 				}
 				Vector direction = null;
-				
+
 				if (targetMode == TargetMode.DIRECTED) {
 					direction = bestTarget.getLocation().getDirection();
 					if (DEBUG) {
@@ -748,12 +748,12 @@ public class SimulateBatch extends SpellBatch {
 					Location targetLocation = bestTarget.getLocation();
 					direction = targetLocation.toVector().subtract(center.toVector());
 				}
-				
+
 				if (direction != null) {
 					center.setDirection(direction);
 					mage.setLocation(center);
 				}
-				
+
 				// Check for obstruction
 				// TODO Think about this more..
 				/*
@@ -763,11 +763,11 @@ public class SimulateBatch extends SpellBatch {
 					center = CompatibilityUtils.setDirection(center, new Vector(0, 1, 0));
 				}
 				*/
-				
+
 				if (level != null && center.distanceSquared(bestTarget.getLocation()) < castRange * castRange) {
 					level.onTick(mage, birthMaterial);
 				}
-				
+
 				// After ticking, re-position for movement. This way spells still fire towards the target.
 				if (targetMode == TargetMode.FLEE) {
 					direction = direction.multiply(-1);
@@ -785,12 +785,12 @@ public class SimulateBatch extends SpellBatch {
 			reverseTargetDistanceScore = false;
 		}
 	}
-	
+
 	public void setCommandMoveRange(int commandRadius, boolean reload) {
 		commandReload = reload;
 		commandMoveRangeSquared = commandRadius * commandRadius;
 	}
-	
+
 	public static BlockFace findPowerLocation(Block block, MaterialAndData targetMaterial) {
 		for (BlockFace face : POWER_FACES) {
 			if (targetMaterial.is(block.getRelative(face))) {
@@ -799,7 +799,7 @@ public class SimulateBatch extends SpellBatch {
 		}
 		return null;
 	}
-	
+
 	protected int getNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands) {
         return getDiagonalNeighborCount(block, liveMaterial, includeCommands) + getFaceNeighborCount(block, liveMaterial, includeCommands);
 	}
@@ -844,13 +844,13 @@ public class SimulateBatch extends SpellBatch {
 	public void setConcurrent(boolean concurrent) {
 		this.concurrent = concurrent;
 	}
-	
+
 	@Override
 	public void finish() {
 		state = SimulationState.FINISHED;
 		super.finish();
 	}
-	
+
 	protected void mapIntegers(Collection<Integer> flags, List<Boolean> flagMap) {
 		for (Integer flag : flags) {
 			while (flagMap.size() <= flag) {
@@ -859,11 +859,11 @@ public class SimulateBatch extends SpellBatch {
 			flagMap.set(flag, true);
 		}
 	}
-	
+
 	public void setDiagonalLiveRules(Collection<Integer> rules) {
 		mapIntegers(rules, this.diagonalLiveCounts);
 	}
-	
+
 	public void setDiagonalBirthRules(Collection<Integer> rules) {
 		mapIntegers(rules, this.diagonalBirthCounts);
 	}
