@@ -22,6 +22,7 @@
  - Removed TNT and creeper auto-rollback from war configs
  - Fix SuperAlter
  - Fix Magic Missile glitching out and duping doors
+ - Add ModifyGameMode action
  - Automata changes:
    - Drop SP and gold as well as hearts, drop less XP
    - Fix targeting, worms no longer run away

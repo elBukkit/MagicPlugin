@@ -7,8 +7,6 @@
 
 ## 6.9.12
  
- - Add ModifyGameMode action.
- - Fix airglider in offhand
  - Test Blast + Push - had some blocks get stuck in the arena?
 
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)

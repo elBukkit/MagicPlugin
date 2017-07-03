@@ -5,10 +5,10 @@ tocreative:
   icon_disabled: diamond_hoe:79
   actions:
     cast:
-    - class: Command
+    - class: ModifyGameMode
   parameters:
-   op: true
-   command: gm 1
+   target: self
+   game_mode: creative
 
 tosurvival:
  name: Survival
@@ -17,7 +17,7 @@ tosurvival:
  icon_disabled: diamond_hoe:123
  actions:
    cast:
-   - class: Command
+   - class: ModifyGameMode
  parameters:
-  op: true
-  command: gm 0
+  target: self
+  game_mode: survival
