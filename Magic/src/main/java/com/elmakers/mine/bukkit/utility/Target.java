@@ -196,6 +196,19 @@ public class Target implements Comparable<Target>
         calculateScore();
     }
 
+    public Target(Location sourceLocation, Entity entity, int minRange, int maxRange, double angle, int playerWeight, boolean reverseDistance)
+    {
+        this.maxDistanceSquared = maxRange * maxRange;
+        this.minDistanceSquared = minRange * minRange;
+        this.maxAngle = angle;
+        this.reverseDistance = reverseDistance;
+        this.playerWeight = playerWeight;
+        this.source = sourceLocation;
+        this._entity = new WeakReference<>(entity);
+        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        calculateScore();
+    }
+
     public Target(Location sourceLocation, Mage mage, int minRange, int maxRange, double angle, boolean reverseDistance)
     {
         this.maxDistanceSquared = maxRange * maxRange;
@@ -204,6 +217,22 @@ public class Target implements Comparable<Target>
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
         this.mage = mage;
+        if (mage != null) {
+            this._entity = new WeakReference<Entity>(mage.getLivingEntity());
+        }
+        if (mage != null) this.location = mage.getEyeLocation();
+        calculateScore();
+    }
+
+    public Target(Location sourceLocation, Mage mage, int minRange, int maxRange, double angle, int playerWeight, boolean reverseDistance)
+    {
+        this.maxDistanceSquared = maxRange * maxRange;
+        this.minDistanceSquared = minRange * minRange;
+        this.maxAngle = angle;
+        this.reverseDistance = reverseDistance;
+        this.source = sourceLocation;
+        this.mage = mage;
+        this.playerWeight = playerWeight;
         if (mage != null) {
             this._entity = new WeakReference<Entity>(mage.getLivingEntity());
         }
@@ -355,14 +384,14 @@ public class Target implements Comparable<Target>
             score = score + npcWeight;
         }
         else
-        if (mage != null)
-        {
-            score = score + mageWeight;
-        }
-        else
         if (entity instanceof Player)
         {
             score = score + playerWeight;
+        }
+        else
+        if (mage != null)
+        {
+            score = score + mageWeight;
         }
         else  if (entity instanceof LivingEntity)
         {

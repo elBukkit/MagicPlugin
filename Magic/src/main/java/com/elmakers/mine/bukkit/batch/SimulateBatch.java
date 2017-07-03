@@ -720,7 +720,7 @@ public class SimulateBatch extends SpellBatch {
 						if (player.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 					}
 					
-					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, false);
+					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, 100, false);
 					int score = newScore.getScore();
 					if (bestTarget == null || score > bestTarget.getScore()) {
 						bestTarget = newScore;
