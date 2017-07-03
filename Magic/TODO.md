@@ -5,7 +5,7 @@
  - How to disable RP delay
  - How to let spells target NPCs
 
-## 6.9.12
+## 6.9.13
  
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  - PW would like some custom lore for wand "quiet" and quick cast settings.
