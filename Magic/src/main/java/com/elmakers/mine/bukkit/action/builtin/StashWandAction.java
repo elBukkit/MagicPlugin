@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -22,6 +23,7 @@ public class StashWandAction extends BaseSpellAction
     private ItemStack stashedItem;
     private Mage targetMage;
     private int slotNumber;
+    private boolean isOffhand = false;
     private boolean returnOnFinish = true;
 
 	private class StashWandUndoAction implements Runnable
@@ -40,10 +42,20 @@ public class StashWandAction extends BaseSpellAction
         Player player = targetMage.getPlayer();
         if (player == null) return;
 
-        ItemStack existing = player.getInventory().getItem(slotNumber);
-        if (existing == null || existing.getType() == Material.AIR) {
-            player.getInventory().setItem(slotNumber, stashedItem);
+        boolean gave = false;
+        if (isOffhand) {
+            ItemStack existing = player.getInventory().getItemInOffHand();
+            if (InventoryUtils.isEmpty(existing)) {
+                player.getInventory().setItemInOffHand(stashedItem);
+                gave = true;
+            }
         } else {
+            ItemStack existing = player.getInventory().getItem(slotNumber);
+            if (InventoryUtils.isEmpty(existing)) {
+                player.getInventory().setItem(slotNumber, stashedItem);
+            }
+        }
+        if (!gave) {
             targetMage.giveItem(stashedItem);
         }
         targetMage.checkWand();
@@ -68,18 +80,25 @@ public class StashWandAction extends BaseSpellAction
         MageController controller = context.getController();
         Mage mage = controller.getMage(player);
 
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        if (itemInHand == null || itemInHand.getType() == Material.AIR)
-        {
-            return SpellResult.FAIL;
-        }
-
         Wand activeWand = mage.getActiveWand();
+        Wand offhandWand = mage.getOffhandWand();
 
         // Check for trying to stash an item in the offhand slot
-        // Not handling this for now.
-        if (activeWand != context.getWand()) {
+        ItemStack activeItem = null;
+        if (offhandWand == context.getWand()) {
+            isOffhand = true;
+            activeWand = offhandWand;
+            activeItem = player.getInventory().getItemInOffHand();
+        } else if (activeWand != context.getWand()) {
             return SpellResult.NO_TARGET;
+        } else {
+            isOffhand = false;
+            activeItem = player.getInventory().getItemInMainHand();
+        }
+
+        if (InventoryUtils.isEmpty(activeItem))
+        {
+            return SpellResult.FAIL;
         }
 
         if (activeWand != null) {
@@ -87,9 +106,14 @@ public class StashWandAction extends BaseSpellAction
         }
 
         slotNumber = player.getInventory().getHeldItemSlot();
-        stashedItem = player.getInventory().getItemInMainHand();
 
-        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        if (isOffhand) {
+            stashedItem = player.getInventory().getItemInOffHand();
+            player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+        } else {
+            stashedItem = player.getInventory().getItemInMainHand();
+            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        }
 
         targetMage = mage;
         context.registerForUndo(new StashWandUndoAction());
