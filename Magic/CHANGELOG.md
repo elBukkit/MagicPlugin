@@ -21,6 +21,7 @@
  - Don't allow placing wands in furnaces
  - Removed TNT and creeper auto-rollback from war configs
  - Fix SuperAlter
+ - Fix issue with Blast + Push leaving behind permanent blocks
  - Fix Magic Missile glitching out and duping doors
  - Add ModifyGameMode action
  - Automata changes:
