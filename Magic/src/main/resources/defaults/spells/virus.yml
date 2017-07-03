@@ -22,7 +22,7 @@ virus:
     live_range: 20,24,28
     move: 8,10,16
     delay: 3500,3000,2500
-    drop_xp: 200,250,300
+    drop_xp: 100,150,200
     cast:
         "arrowrain transparent air,$birth,command,redstone_block": 50,70,90
         "arrow|4 transparent air,$birth,command,redstone_block": 50,90,200
@@ -48,11 +48,11 @@ virus:
         target_min_range: 0
         delay: 3000
         drops:
-        - sp:200
+        - virusheart
+        - sp:100
         - gold_block
         restricted: restricted_animate
         message_type: evil
-        drop_xp: 300
         concurrent: false
         targets: any
         target_mode: hunt

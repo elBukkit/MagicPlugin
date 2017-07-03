@@ -41,7 +41,8 @@ defender:
         drops:
         - sp:10
         - gold_nugget
-        drop_xp: 30
+        - defenderheart
+        drop_xp: 20
         restricted: restricted_animate
         message_type: good
         undo: 7000

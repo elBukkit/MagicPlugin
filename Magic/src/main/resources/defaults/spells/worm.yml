@@ -22,7 +22,7 @@ worm:
     birth_range: 6,8,10
     live_range: 16,20,28
     delay: 1800,1500,1200
-    drop_xp: 150,200,250
+    drop_xp: 75,100,125
     death_cast:
         "blast target self radius 12 undo_speed 5 speed -0^2 destructible $birth,command,redstone_block check_destructible true": 100,100,100
         "blast target self radius 12 undo_speed 5 speed -0^5 destructible $birth,command,redstone_block check_destructible true": 20,50,200
@@ -55,7 +55,8 @@ worm:
         diagonal_live_rules: 0,1,2,3
         concurrent: true
         drops:
-        - sp:100
+        - wormheart
+        - sp:50
         - gold_ingot
         move: 4
         restricted: restricted_animate
