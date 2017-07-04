@@ -4,6 +4,7 @@ import com.google.common.io.BaseEncoding;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Rotation;
@@ -1264,5 +1265,21 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return 0.0f;
+    }
+
+    public static boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data) {
+        if (class_Block_fromLegacyData == null || class_CraftMagicNumbers_getBlockMethod == null) return false;
+        try {
+            Object chunkHandle = getHandle(chunk);
+            Object nmsBlock = class_CraftMagicNumbers_getBlockMethod.invoke(null, material);
+            nmsBlock = class_Block_fromLegacyData.invoke(nmsBlock, data);
+            Object blockLocation = class_BlockPosition_Constructor.newInstance(x, y, z);
+            class_Chunk_setBlockMethod.invoke(chunkHandle, blockLocation, nmsBlock);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 }

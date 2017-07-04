@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -220,6 +221,8 @@ public class NMSUtils {
     protected static Method class_ItemStack_isEmptyMethod;
     protected static Method class_ItemStack_createStackMethod;
     protected static Method class_CraftMagicNumbers_getBlockMethod;
+    protected static Method class_Block_fromLegacyData;
+    protected static Method class_Chunk_setBlockMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -542,6 +545,14 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+            try {
+                Class<?> class_IBlockData = fixBukkitClass("net.minecraft.server.IBlockData");
+                class_Block_fromLegacyData = class_Block.getMethod("fromLegacyData", Integer.TYPE);
+                class_Chunk_setBlockMethod = class_Chunk.getMethod("a", class_BlockPosition, class_IBlockData);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks may not work (used in MagicWorlds)", ex);
+            }
+
             try {
                 try {
                     // 1.12
