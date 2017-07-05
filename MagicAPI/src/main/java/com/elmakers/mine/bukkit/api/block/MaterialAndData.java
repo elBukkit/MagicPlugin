@@ -46,6 +46,7 @@ public interface MaterialAndData {
     void updateFrom(Block block);
     void modify(Block block);
     void modify(Block block, boolean applyPhysics);
+    void modify(Block block, ModifyType modifyType);
     Short getData();
     Byte getBlockData();
     void setData(Short data);

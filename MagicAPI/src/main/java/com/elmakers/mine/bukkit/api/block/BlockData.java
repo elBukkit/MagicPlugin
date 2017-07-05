@@ -28,6 +28,7 @@ public interface BlockData extends MaterialAndData {
     void commit();
     boolean undo();
     boolean undo(boolean applyPhysics);
+    boolean undo(ModifyType modifyType);
     boolean isDifferent();
 
     void unlink();
