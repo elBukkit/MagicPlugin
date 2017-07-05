@@ -6,3 +6,4 @@ talisman:
   sp_multiplier: 1.5
   color: random
   effect_bubbles: true
+  keep: true
