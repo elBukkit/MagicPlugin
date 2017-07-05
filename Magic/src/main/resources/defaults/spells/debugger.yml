@@ -22,7 +22,7 @@ debugger:
           check: true
         alternate_sneak:
         - class: Debugger
-          level: 10
+          level: 20
           check: true
     effects:
         cast:
