@@ -143,7 +143,11 @@ public interface MageController {
     void removeMage(Mage mage);
     void removeMage(String id);
 
-    @Deprecated
+    /**
+     * This will remove a Mage after their undo queue and pending spell casts have completed.
+     *
+     * @param mage
+     */
     void forgetMage(Mage mage);
 
     String getMessagePrefix();
