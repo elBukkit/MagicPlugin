@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.block;
 
+import com.elmakers.mine.bukkit.api.block.ModifyType;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -27,29 +28,26 @@ import java.util.Set;
  * even when undone out of order.
  * 
  */
-public class BlockData extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.BlockData
-{
-    public static final BlockFace[] FACES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.UP, BlockFace.DOWN };
-    public static final BlockFace[] SIDES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST };
+public class BlockData extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.BlockData {
+    public static final BlockFace[] FACES = new BlockFace[]{BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.UP, BlockFace.DOWN};
+    public static final BlockFace[] SIDES = new BlockFace[]{BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST};
 
     // Transient
-    protected com.elmakers.mine.bukkit.api.block.BlockData	nextState;
-    protected com.elmakers.mine.bukkit.api.block.BlockData	priorState;
+    protected com.elmakers.mine.bukkit.api.block.BlockData nextState;
+    protected com.elmakers.mine.bukkit.api.block.BlockData priorState;
 
     // Persistent
-    protected BlockVector  location;
-    protected String       worldName;
+    protected BlockVector location;
+    protected String worldName;
 
     // Used for UndoList lookups
     protected WeakReference<UndoList> undoList = null;
 
-    public static long getBlockId(Block block)
-    {
+    public static long getBlockId(Block block) {
         return getBlockId(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
     }
 
-    public static long getBlockId(String world, int x, int y, int z)
-    {
+    public static long getBlockId(String world, int x, int y, int z) {
         // Long is 63 bits
         // 15 sets of F's (4-bits)
         // world gets 4 bits
@@ -57,74 +55,65 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         // and x and z get 24 bits each
         long worldHashCode = world == null ? 0 : world.hashCode();
         return ((worldHashCode & 0xF) << 56)
-            | (((long)x & 0xFFFFFF) << 32)
-            | (((long)z & 0xFFFFFF) << 8)
-            | ((long)y & 0xFF);
+                | (((long) x & 0xFFFFFF) << 32)
+                | (((long) z & 0xFFFFFF) << 8)
+                | ((long) y & 0xFF);
     }
 
     @Override
-    public int hashCode()
-    {
-        return (int)getId();
+    public int hashCode() {
+        return (int) getId();
     }
 
     @Override
-    public boolean equals(Object other)
-    {
+    public boolean equals(Object other) {
         if (other instanceof BlockData) {
-            return getId() == ((BlockData)other).getId();
+            return getId() == ((BlockData) other).getId();
         }
         return super.equals(other);
     }
 
     @Override
-    public long getId()
-    {
+    public long getId() {
         if (location == null) return 0;
         return getBlockId(worldName, location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
-    public static BlockFace getReverseFace(BlockFace blockFace)
-    {
-        switch (blockFace)
-        {
-        case NORTH:
-            return BlockFace.SOUTH;
-        case WEST:
-            return BlockFace.EAST;
-        case SOUTH:
-            return BlockFace.NORTH;
-        case EAST:
-            return BlockFace.WEST;
-        case UP:
-            return BlockFace.DOWN;
-        case DOWN:
-            return BlockFace.UP;
-        default:
-            return BlockFace.SELF;
+    public static BlockFace getReverseFace(BlockFace blockFace) {
+        switch (blockFace) {
+            case NORTH:
+                return BlockFace.SOUTH;
+            case WEST:
+                return BlockFace.EAST;
+            case SOUTH:
+                return BlockFace.NORTH;
+            case EAST:
+                return BlockFace.WEST;
+            case UP:
+                return BlockFace.DOWN;
+            case DOWN:
+                return BlockFace.UP;
+            default:
+                return BlockFace.SELF;
         }
     }
 
-    public BlockData()
-    {
+    public BlockData() {
     }
 
-    public BlockData(Block block)
-    {
+    public BlockData(Block block) {
         super(block);
         location = new BlockVector(block.getX(), block.getY(), block.getZ());
         worldName = block.getWorld().getName();
     }
 
-    public BlockData(com.elmakers.mine.bukkit.api.block.BlockData copy)
-    {
+    public BlockData(com.elmakers.mine.bukkit.api.block.BlockData copy) {
         super(copy);
         location = copy.getPosition();
         worldName = copy.getWorldName();
     }
 
-    public BlockData(Location location, Material material, byte data)
-    {
+    public BlockData(Location location, Material material, byte data) {
         super(material, data);
         if (location != null && location.getWorld() != null) {
             this.location = new BlockVector(location.getBlockX(), location.getBlockY(), location.getBlockZ());
@@ -132,8 +121,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         }
     }
 
-    public BlockData(int x, int y, int z, String world, Material material, byte data)
-    {
+    public BlockData(int x, int y, int z, String world, Material material, byte data) {
         super(material, data);
         this.location = new BlockVector(x, y, z);
         this.worldName = world;
@@ -141,9 +129,9 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
     public BlockData(ConfigurationSection node) {
         this(
-            ConfigurationUtils.getLocation(node, "location"),
-            ConfigurationUtils.getMaterial(node, "material"),
-            (byte)node.getInt("data", 0)
+                ConfigurationUtils.getLocation(node, "location"),
+                ConfigurationUtils.getMaterial(node, "material"),
+                (byte) node.getInt("data", 0)
         );
     }
 
@@ -155,19 +143,16 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         node.set("location", ConfigurationUtils.fromLocation(location));
     }
 
-    protected boolean checkBlock()
-    {
+    protected boolean checkBlock() {
         return getBlock() != null;
     }
 
-    public void setPosition(BlockVector location)
-    {
+    public void setPosition(BlockVector location) {
         this.location = location;
     }
 
     @Override
-    public void unlink()
-    {
+    public void unlink() {
         if (priorState != null) {
             priorState.setNextState(nextState);
         }
@@ -182,13 +167,17 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     }
 
     @Override
-    public boolean undo()
-    {
+    public boolean undo() {
         return undo(false);
     }
 
     @Override
-    public boolean undo(boolean applyPhysics)
+    public boolean undo(boolean applyPhysics) {
+        return undo(applyPhysics ? ModifyType.NORMAL : ModifyType.NO_PHYSICS);
+    }
+
+    @Override
+    public boolean undo(ModifyType modifyType)
     {
         Block block = getBlock();
         if (block == null)
@@ -207,7 +196,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         // Otherwise, state will be pushed up in unlink
         if (nextState == null && isDifferent(block))
         {
-            modify(block, applyPhysics);
+            modify(block, modifyType);
         }
         unlink();
 

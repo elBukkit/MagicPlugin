@@ -15,6 +15,8 @@
 
 ## 6.9.13
 
+ - Implement faster block changes, currently in limited use (MagicWorlds, maybe Automata)
+
 ## 6.9.12
 
  - Add enable_map_animations config option for turning off GIF maps for whatever reason

@@ -1267,8 +1267,16 @@ public class CompatibilityUtils extends NMSUtils {
         return 0.0f;
     }
 
+    public static boolean setBlockFast(Block block, Material material, int data) {
+        return setBlockFast(block.getChunk(), block.getX(), block.getY(), block.getZ(), material, data);
+    }
+
+    @SuppressWarnings("deprecation")
     public static boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data) {
-        if (class_Block_fromLegacyData == null || class_CraftMagicNumbers_getBlockMethod == null) return false;
+        if (class_Block_fromLegacyData == null || class_CraftMagicNumbers_getBlockMethod == null || class_Chunk_setBlockMethod == null || class_BlockPosition_Constructor == null) {
+            chunk.getWorld().getBlockAt(x, y, z).setTypeIdAndData(material.getId(), (byte)data, false);
+            return true;
+        }
         try {
             Object chunkHandle = getHandle(chunk);
             Object nmsBlock = class_CraftMagicNumbers_getBlockMethod.invoke(null, material);
@@ -1279,7 +1287,6 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
             return false;
         }
-
         return true;
     }
 }

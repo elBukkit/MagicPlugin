@@ -550,7 +550,7 @@ public class NMSUtils {
                 class_Block_fromLegacyData = class_Block.getMethod("fromLegacyData", Integer.TYPE);
                 class_Chunk_setBlockMethod = class_Chunk.getMethod("a", class_BlockPosition, class_IBlockData);
             } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks may not work (used in MagicWorlds)", ex);
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks will not work", ex);
             }
 
             try {

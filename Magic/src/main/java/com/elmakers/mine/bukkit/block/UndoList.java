@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
+import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -73,7 +74,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     protected boolean               undone              = false;
     protected int                  	timeToLive          = 0;
-    protected boolean               applyPhysics        = false;
+    protected ModifyType            modifyType           = ModifyType.NORMAL;
 
     protected boolean				bypass		 	    = false;
     protected boolean				hasBeenScheduled    = false;
@@ -376,7 +377,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
 
         boolean isTopOfQueue = undoBlock.getNextState() == null;
-        if (undoBlock.undo(applyPhysics)) {
+        if (undoBlock.undo(applyPhysics ? ModifyType.NORMAL : modifyType)) {
             removeFromModified(undoBlock, priorState);
             // Continue watching this block until we completely finish the undo process
             registerWatched(undoBlock);
@@ -522,7 +523,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         loading = false;
         timeToLive = node.getInt("time_to_live", timeToLive);
         name = node.getString("name", name);
-        applyPhysics = node.getBoolean("apply_physics", applyPhysics);
+        String typeName = node.getString("mode", "");
+        if (!typeName.isEmpty()) {
+            try {
+                modifyType = ModifyType.valueOf(typeName);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
         consumed = node.getBoolean("consumed", consumed);
     }
 
@@ -532,7 +540,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         super.save(node);
         node.set("time_to_live", timeToLive);
         node.set("name", name);
-        if (applyPhysics) node.set("apply_physics", true);
+        if (modifyType != ModifyType.NORMAL) {
+            node.set("mode", modifyType.name());
+        }
         if (consumed) node.set("consumed", true);
     }
 
@@ -874,12 +884,24 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     @Override
     public void setApplyPhysics(boolean applyPhysics) {
-        this.applyPhysics = applyPhysics;
+        if (applyPhysics) {
+            this.modifyType = ModifyType.NORMAL;
+        }
     }
 
     @Override
     public boolean getApplyPhysics() {
-        return applyPhysics;
+        return modifyType == ModifyType.NORMAL;
+    }
+
+    @Override
+    public void setModifyType(ModifyType modifyType) {
+        this.modifyType = modifyType;
+    }
+
+    @Override
+    public ModifyType getModifyType() {
+        return modifyType;
     }
 
     public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Entity entity) {

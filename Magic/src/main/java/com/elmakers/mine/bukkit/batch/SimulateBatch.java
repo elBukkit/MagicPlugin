@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
+import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -104,6 +105,7 @@ public class SimulateBatch extends SpellBatch {
 	private ArrayList<Boolean> diagonalBirthCounts = new ArrayList<>();
 	private SimulationState state;
 	private Location center;
+	private ModifyType modifyType = ModifyType.NO_PHYSICS;
 
 	private List<Block> deadBlocks = new ArrayList<>();
 	private List<Block> bornBlocks = new ArrayList<>();
@@ -135,6 +137,7 @@ public class SimulateBatch extends SpellBatch {
 		
 		state = SimulationState.SCANNING_COMMAND;
 		updatingIndex = 0;
+		undoList.setModifyType(modifyType);
 	}
 
 	@Override
@@ -229,11 +232,16 @@ public class SimulateBatch extends SpellBatch {
 			controller.removeMage(mage);
 		}
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	protected void killBlock(Block block) {
 		if (concurrent) {
 			registerForUndo(block);
-			block.setType(deathMaterial);
+			if (modifyType == ModifyType.FAST) {
+				CompatibilityUtils.setBlockFast(block, deathMaterial, 0);
+			} else {
+				block.setTypeIdAndData(deathMaterial.getId(), (byte)0, false);
+			}
 		} else {
 			deadBlocks.add(block);
 		}
@@ -242,7 +250,7 @@ public class SimulateBatch extends SpellBatch {
 	protected void birthBlock(Block block) {
 		if (concurrent) {
 			registerForUndo(block);
-			birthMaterial.modify(block);
+			birthMaterial.modify(block, modifyType);
 		} else {
 			bornBlocks.add(block);
 		}
@@ -447,7 +455,7 @@ public class SimulateBatch extends SpellBatch {
 					return processedBlocks;
 				}
 				registerForUndo(birthBlock);
-				birthMaterial.modify(birthBlock);
+				birthMaterial.modify(birthBlock, modifyType);
 			}
 			
 			updatingIndex++;

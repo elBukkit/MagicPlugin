@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.block;
 
+import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -357,6 +359,27 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public static void clearItems(BlockState block) {
         if (block != null && (block instanceof InventoryHolder || block.getType() == Material.FLOWER_POT)) {
             NMSUtils.clearItems(block.getLocation());
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public void modifyFast(Block block) {
+        Material material = this.material == null ? block.getType() : this.material;
+        int data = this.data == null ? block.getData() : this.data;
+        CompatibilityUtils.setBlockFast(block, material, data);
+    }
+
+    public void modify(Block block, ModifyType modifyType) {
+        switch (modifyType) {
+            case FAST:
+                modifyFast(block);
+                break;
+            case NORMAL:
+                modify(block, true);
+                break;
+            case NO_PHYSICS:
+                modify(block, false);
+                break;
         }
     }
 
