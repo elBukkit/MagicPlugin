@@ -143,6 +143,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Vector velocity = new Vector();
     private long lastBlockTime;
     private long ignoreItemActivationUntil = 0;
+    private boolean forget = false;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     protected float damageReduction = 0;
@@ -2435,6 +2436,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isValid() {
+        if (forget) return false;
         if (!hasEntity) return true;
         Entity entity = getEntity();
 
@@ -3258,6 +3260,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isGlidingAllowed() {
         return glidingAllowed;
+    }
+
+    public boolean isForget() {
+        return forget;
+    }
+
+    public void setForget(boolean forget) {
+        this.forget = forget;
     }
 }
 

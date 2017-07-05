@@ -2768,9 +2768,10 @@ public class MagicController implements MageController {
 	}
 
     @Override
-    @Deprecated
     public void forgetMage(Mage mage) {
-        removeMage(mage);
+        if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+            ((com.elmakers.mine.bukkit.magic.Mage)mage).setForget(true);
+        }
     }
 
     @Override

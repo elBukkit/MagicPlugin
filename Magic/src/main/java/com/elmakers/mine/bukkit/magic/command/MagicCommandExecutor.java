@@ -505,8 +505,12 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			{
 				Entity mageEntity = mage.getEntity();
 				Location location = mage.getLocation();
+				ChatColor mageColor = ChatColor.YELLOW;
+				if (mage instanceof com.elmakers.mine.bukkit.magic.Mage && ((com.elmakers.mine.bukkit.magic.Mage)mage).isForget()) {
+					mageColor = ChatColor.RED;
+				}
 				String mageType = mageEntity == null ? "Non-Entity" : mageEntity.getType().name();
-				String message = ChatColor.AQUA + "Mage " + ChatColor.YELLOW + mage.getId()
+				String message = ChatColor.AQUA + "Mage " + mageColor + mage.getId()
 						+ ChatColor.GRAY + " (" + mage.getName() + ")" + ChatColor.AQUA + " of type "
 						+ ChatColor.DARK_AQUA + mageType + ChatColor.AQUA;
 				if (location != null) {
