@@ -2183,7 +2183,37 @@ architect2:
         orient_snap: 90
         check_destructible: false
 
-virus:
+elevator:
+  icon: stairs
+  actions:
+    cast:
+    - class: ChangeContext
+      target_offset: 0,-1,0
+    - class: Repeat
+      actions:
+      - class: ConeOfEffect
+        actions:
+        - class: Velocity
+      - class: Delay
+        delay: 100
+      - class: Plane
+        actions:
+        - class: ModifyBlock
+      - class: Delay
+        delay: 800
+      - class: ChangeContext
+        target_offset: 0,1,0
   parameters:
-    bypass_undo: true
-    undo: 0
+    speed: 0.5
+    direction: 0,1,0
+    brush: quartz_block
+    radius: 1
+    undo: 8000
+    undo_speed: 2
+    target: self
+    destructible: air
+    persist_target: true
+    repeat: 10
+    source_pitch: 90
+    range: 10
+    fov: 4
