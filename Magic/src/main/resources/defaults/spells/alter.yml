@@ -769,6 +769,13 @@ alter:
           - concrete_powder:13
           - concrete_powder:14
           - concrete_powder:15
+        - - stone
+          - stone:1
+          - stone:2
+          - stone:3
+          - stone:4
+          - stone:5
+          - stone:6
     costs:
         mana: 10
 
