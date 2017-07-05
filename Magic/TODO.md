@@ -5,6 +5,13 @@
  - How to disable RP delay
  - How to let spells target NPCs
 
+## Fast Blocks
+
+ - The easiest way to deal with that is to probably pretend the client doesn't have the chunk yet
+ - just entityplayer.playerConnection.sendPacket(new PacketPlayOutMapChunk(this.chunk, '\uffff')); should work
+ - or even easier .. set the dirtyCount of the player chunk to 64, and update the h field with the chunk sections that you modified
+ - and make sure to call playerChunkMap.a(playerChunk); to schedule an update
+
 ## 6.9.13
  
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
