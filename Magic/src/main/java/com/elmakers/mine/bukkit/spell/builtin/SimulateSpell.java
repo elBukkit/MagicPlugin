@@ -156,7 +156,7 @@ public class SimulateSpell extends BlockSpell {
 			batch.setDiagonalBirthRules(ConfigurationUtils.getIntegerList(parameters, "diagonal_birth_rules"));
 		}
 
-		
+		batch.setReflectChange(parameters.getDouble("reflect_chance", 0));
 		batch.setBirthRange(parameters.getInt("birth_range", 0));
 		batch.setLiveRange(parameters.getInt("live_range", 0));
 		batch.setConcurrent(parameters.getBoolean("concurrent", false));

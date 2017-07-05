@@ -461,7 +461,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 sign.update();
             }
         } catch (Exception ex) {
-            Bukkit.getLogger().warning("Error updating block state: " + ex.getMessage());
+            Bukkit.getLogger().warning("[Magic] Error updating block state");
+            ex.printStackTrace();
         }
     }
 

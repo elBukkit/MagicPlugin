@@ -24,10 +24,10 @@ hunter:
     delay: 1200,800,500
     drop_xp: 50,75,100
     death_cast:
-        "blast target self radius 7 speed 0^1 destructible $birth,command,redstone_block check_destructible true": 500,300,50
-        "blast target self radius 7 speed 0^5 destructible $birth,command,redstone_block check_destructible true": 300,200,100
-        "blast target self radius 7 speed 1^0 destructible $birth,command,redstone_block check_destructible true": 250,200,150
-        "blast target self radius 7 speed 1^5 destructible $birth,command,redstone_block check_destructible true": 100,100,200
+        "hunter_death target self radius 7 speed 0^1 destructible $birth,command,redstone_block check_destructible true": 500,300,50
+        "hunter_death target self radius 7 speed 0^5 destructible $birth,command,redstone_block check_destructible true": 300,200,100
+        "hunter_death target self radius 7 speed 1^0 destructible $birth,command,redstone_block check_destructible true": 250,200,150
+        "hunter_death target self radius 7 speed 1^5 destructible $birth,command,redstone_block check_destructible true": 100,100,200
     cast:
         "shrink transparent air,$birth,command,redstone_block": 30,40,50
         "pull transparent air,$birth,redstone_block,command": 60,70,80
@@ -59,6 +59,31 @@ hunter:
         restricted: restricted_animate
         message_type: evil
         undo: 30000
+        reflect_chance: 0.85
     costs:
         xp: 200
 
+hunter_death:
+    name: Death
+    hidden: true
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FACC2E
+           firework: burst
+           particle: explosion_large
+    parameters:
+        speed: 0.9
+        direction: 0,0.8,0
+        falling: true
+        brush: air
+        radius: 1
+        undo: 15000
+        undo_speed: 0.5

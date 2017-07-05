@@ -63,6 +63,7 @@ virus:
         diagonal_live_rules: 0,1
         undo: 30000
         undo_speed: 20
+        reflect_chance: 0.95
     costs:
         xp: 400
 

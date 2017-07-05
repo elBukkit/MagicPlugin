@@ -106,6 +106,7 @@ public class SimulateBatch extends SpellBatch {
 	private SimulationState state;
 	private Location center;
 	private ModifyType modifyType = ModifyType.NO_PHYSICS;
+	private double reflectChance;
 
 	private List<Block> deadBlocks = new ArrayList<>();
 	private List<Block> bornBlocks = new ArrayList<>();
@@ -242,6 +243,9 @@ public class SimulateBatch extends SpellBatch {
 			} else {
 				block.setTypeIdAndData(deathMaterial.getId(), (byte)0, false);
 			}
+			if (reflectChance > 0) {
+				com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(block);
+			}
 		} else {
 			deadBlocks.add(block);
 		}
@@ -251,6 +255,10 @@ public class SimulateBatch extends SpellBatch {
 		if (concurrent) {
 			registerForUndo(block);
 			birthMaterial.modify(block, modifyType);
+			if (reflectChance > 0) {
+				com.elmakers.mine.bukkit.block.UndoList.getRegistry().registerReflective(block, reflectChance);
+				undoList.setUndoReflective(true);
+			}
 		} else {
 			bornBlocks.add(block);
 		}
@@ -604,6 +612,11 @@ public class SimulateBatch extends SpellBatch {
 				}
 
                 powerTargetBlock.setType(POWER_MATERIAL);
+
+				// Make sure you can actually hit the power block
+				if (reflectChance > 0) {
+					com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(powerTargetBlock);
+				}
                 if (commandReload) {
                     String automataName = commandName;
                     if (automataName == null || automataName.length() <= 1) {
@@ -878,5 +891,9 @@ public class SimulateBatch extends SpellBatch {
 	
 	public void setDiagonalBirthRules(Collection<Integer> rules) {
 		mapIntegers(rules, this.diagonalBirthCounts);
+	}
+
+	public void setReflectChange(double reflectChance) {
+		this.reflectChance = reflectChance;
 	}
 }

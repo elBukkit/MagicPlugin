@@ -9,7 +9,7 @@ worm:
     effects:
         cast:
         -  class: EffectSingle
-           sound: slime_attack
+           sound: entity_slime_attack
         -  class: EffectTrail
            particle: block_crack
     levels:
@@ -24,8 +24,8 @@ worm:
     delay: 1800,1500,1200
     drop_xp: 75,100,125
     death_cast:
-        "blast target self radius 12 undo_speed 5 speed -0^2 destructible $birth,command,redstone_block check_destructible true": 100,100,100
-        "blast target self radius 12 undo_speed 5 speed -0^5 destructible $birth,command,redstone_block check_destructible true": 20,50,200
+        "worm_death target self radius 10 undo_speed 5 speed -0^2 destructible $birth,command,redstone_block check_destructible true": 100,100,100
+        "worm_death target self radius 12 undo_speed 5 speed -0^2 destructible $birth,command,redstone_block check_destructible true": 20,50,200
     cast:
         "blob brush stained_glass:15 radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 20,80,90
         "curse transparent air,$birth,redstone_block,command": 80,90,100
@@ -63,6 +63,34 @@ worm:
         message_type: evil
         undo: 20000
         undo_speed: 10
+        reflect_chance: 0.9
     costs:
         xp: 250
 
+worm_death:
+    name: Death
+    hidden: true
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+           - class: ModifyBlock
+    effects:
+        hit:
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,0.5,0
+           sound: entity_slime_death
+           color: FACC2E
+           firework: burst
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: $radius
+             particle: falling_dust
+    parameters:
+        brush: air
+        falling: true
+        radius: 2
+        undo: 10000
+        undo_speed: 1
