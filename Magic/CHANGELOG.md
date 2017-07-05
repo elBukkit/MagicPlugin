@@ -15,6 +15,7 @@
 
 ## 6.9.13
 
+ - Blast and Collapse are now projectiles
  - Implement faster block changes, currently in limited use (MagicWorlds, maybe Automata)
 
 ## 6.9.12

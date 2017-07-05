@@ -9,13 +9,15 @@ blast:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: AreaOfEffect
+        - class: CustomProjectile
           actions:
-          - class: Damage
-          - class: Velocity
-        - class: Sphere
-          actions:
-          - class: ModifyBlock
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+            - class: Velocity
+          - class: Sphere
+            actions:
+            - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -27,6 +29,10 @@ blast:
              particle: spell_mob
              color: FACC2E
              lengthGrow: 0.4
+        tick:
+        - particle: fireworks_spark
+          location: target
+        hit:
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
@@ -43,6 +49,7 @@ blast:
                particleOrbital: redstone
                iterations: 8
     parameters:
+        velocity: 2000
         allow_max_range: false
         range: 32
         speed: 0.9

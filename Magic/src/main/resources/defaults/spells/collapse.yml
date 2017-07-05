@@ -9,9 +9,11 @@ collapse:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: Sphere
-           actions:
-           -  class: ModifyBlock
+        - class: CustomProjectile
+          actions:
+          - class: Sphere
+            actions:
+             - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -23,6 +25,11 @@ collapse:
              iterations: 10
              particle: spell_witch
              lengthGrow: 0.4
+        tick:
+        - particle: falling_dust
+          location: target
+          material: obsidian
+        hit:
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
@@ -35,7 +42,7 @@ collapse:
              class: HelixEffect
              iterations: 1
              radius: 4
-             particle: flame
+             particle: falling_dust
         undo:
         -  class: EffectSingle
            sound: magic.shimmer
@@ -46,6 +53,7 @@ collapse:
                particleOrbital: redstone
                iterations: 8
     parameters:
+        velocity: 1500
         allow_max_range: false
         range: 16
         brush: air
