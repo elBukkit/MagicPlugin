@@ -366,7 +366,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public void modifyFast(Block block) {
         Material material = this.material == null ? block.getType() : this.material;
         int data = this.data == null ? block.getData() : this.data;
-        CompatibilityUtils.setBlockFast(block, material, data);
+        if (material != block.getType() || data != block.getData()) {
+            CompatibilityUtils.setBlockFast(block, material, data);
+        }
     }
 
     public void modify(Block block, ModifyType modifyType) {
