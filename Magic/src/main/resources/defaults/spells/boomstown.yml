@@ -24,7 +24,7 @@ boomstown:
           custom_sound: magic.whip
           location: origin
        -  class: EffectSingle
-          custom_sound: magic.protego
+          custom_sound: magic.electrify
           location: origin
        -  class: EffectSingle
           custom_sound: magic.vanish
@@ -52,7 +52,7 @@ boomstown:
           custom_sound: magic.whip
           location: origin
        -  class: EffectSingle
-          custom_sound: magic.protego
+          custom_sound: magic.electrify
           location: origin
        -  class: EffectSingle
           custom_sound: magic.vanish
