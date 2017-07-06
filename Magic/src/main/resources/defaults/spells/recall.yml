@@ -27,7 +27,7 @@ recall:
            color_override: color
            effectlib:
             class: WarpEffect
-            duration: $delay
+            duration: $warmup
             period: 1
             particle: redstone
             particleOffsetX: 0.9
@@ -39,7 +39,7 @@ recall:
            source_location: eyes
            effectlib:
             class: WarpEffect
-            duration: $delay
+            duration: $warmup
             period: 2
             particle: portal
             particleCount: 10
