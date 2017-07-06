@@ -16,6 +16,10 @@
 ## 6.9.13
 
  - Blast and Collapse are now projectiles
+ - Automata are reflective
+ - SP Earn Bonus (Mana Talisman) will work on SP item pickups
+ - Mana Talisman set to keep on death
+ - Fix Recall warmup FX
  - Implement faster block changes, currently in limited use (MagicWorlds, maybe Automata)
 
 ## 6.9.12

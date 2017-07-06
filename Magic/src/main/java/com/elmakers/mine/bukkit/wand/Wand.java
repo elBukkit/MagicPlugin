@@ -3242,7 +3242,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (mage != null && !mage.isAtMaxSkillPoints() && controller.skillPointItemsEnabled()) {
 			Integer sp = getSP(item);
 			if (sp != null) {
-				mage.addSkillPoints(sp * item.getAmount());
+				int amount = (int)Math.floor(mage.getSPMultiplier() * sp * item.getAmount());
+				mage.addSkillPoints(amount);
 				return true;
 			}
 		}
