@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.magic.command.CastCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MageCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicConfigCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicGiveCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicItemCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicMapCommandExecutor;
@@ -226,6 +227,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             getCommand("mtrait").setExecutor(magicTraitCommand);
             getCommand("mtrait").setTabCompleter(magicTraitCommand);
         }
+		TabExecutor magicConfigCommand = new MagicConfigCommandExecutor(this);
+		getCommand("mconfig").setExecutor(magicConfigCommand);
+		getCommand("mconfig").setTabCompleter(magicConfigCommand);
 	}
 
 	/* 

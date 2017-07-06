@@ -94,6 +94,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			sender.sendMessage(ChatColor.AQUA + "See help information for Magic commands with /help <command>");
 			sender.sendMessage("wand     Create or modify wand items");
 			sender.sendMessage("mage     Inspect or modify mage data");
+			sender.sendMessage("mconfig  Configure Magic in-game");
 			sender.sendMessage("magic    Reload configs and other admin functions");
 			sender.sendMessage("mitem    Create or modify vanilla items");
 			sender.sendMessage("mmob     Spwan vanilla or magic mobs");

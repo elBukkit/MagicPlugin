@@ -259,6 +259,18 @@ commands:
     description: Show the value of an item
     usage: /mitem worth
     permission: Magic.commands.mitem.worth
+  mconfig:
+    description: Modify Magic configuration in-game
+    permission: Magic.commands.mconfig
+    usage: |
+        Use /help mconfig [subcommand] for more information
+        /mconfig clean     Clean your custom configs, removing default values
+  "mconfig clean":
+    description: This will override your configs in plugins/Magic with collapsed versions.
+    permission: Magic.commands.mconfig.clean
+    usage: |
+        /mconfig clean
+        /mconfig clean spells
   magic:
     description: Administer the Magic plugin
     permission: Magic.commands.magic
@@ -819,6 +831,14 @@ permissions:
     default: op
   Magic.commands.mitem.skull:
     description: Player may create a player skull from a written book
+    type: boolean
+    default: op
+  Magic.commands.mconfig:
+    description: Player may use mconfig commands
+    type: boolean
+    default: op
+  Magic.commands.mconfig.clean:
+    description: Player may auto-clean configs
     type: boolean
     default: op
   Magic.commands.magic:

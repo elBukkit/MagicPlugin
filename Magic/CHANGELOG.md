@@ -21,6 +21,7 @@
  - Mana Talisman set to keep on death
  - Fix Recall warmup FX
  - Implement faster block changes, currently in limited use (MagicWorlds, maybe Automata)
+ - Add "/mconfig clean" command, for cleaning up configs that have had the defaults copy+pasted into them
 
 ## 6.9.12
 
