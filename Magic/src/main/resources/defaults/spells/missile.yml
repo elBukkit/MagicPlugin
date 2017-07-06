@@ -129,7 +129,7 @@ missile|3:
         target_breakables: 2
         break_durability: 4
     costs:
-        mana: 50
+        mana: 30
 
 missile|4:
     parameters:
@@ -139,5 +139,5 @@ missile|4:
         target_breakables: 3
         break_durability: 5
     costs:
-        mana: 80
+        mana: 40
 
