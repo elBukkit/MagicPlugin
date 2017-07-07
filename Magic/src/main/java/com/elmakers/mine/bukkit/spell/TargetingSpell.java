@@ -119,9 +119,11 @@ public abstract class TargetingSpell extends BaseSpell {
         if (targetBreakables > 0 && context.isBreakable(block)) {
             return true;
         }
+        /*
         if (!bypassBackfire && context.isReflective(block)) {
             return true;
         }
+        */
         return isTargetable(block.getType());
     }
 
