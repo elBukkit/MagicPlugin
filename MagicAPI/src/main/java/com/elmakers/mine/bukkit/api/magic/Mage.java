@@ -488,6 +488,11 @@ public interface Mage extends CostReducer {
     @Nullable MageClass unlockClass(@Nonnull String key);
     @Nullable MageClass getClass(@Nonnull String key);
 
+    // Vault integration
+    double getVaultBalance();
+    boolean addVaultCurrency(double delta);
+    boolean removeVaultCurrency(double delta);
+
     /**
      * Sets the active class.
      *

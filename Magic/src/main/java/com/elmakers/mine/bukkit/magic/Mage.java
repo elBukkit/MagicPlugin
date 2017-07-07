@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -3268,6 +3269,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void setForget(boolean forget) {
         this.forget = forget;
+    }
+
+    @Override
+    public double getVaultBalance() {
+        if (!VaultController.hasEconomy() || !isPlayer()) return 0;
+        return VaultController.getInstance().getBalance(getPlayer());
+    }
+
+    @Override
+    public boolean addVaultCurrency(double delta) {
+        if (!VaultController.hasEconomy() || !isPlayer()) return false;
+        VaultController.getInstance().depositPlayer(getPlayer(), delta);
+        return true;
+    }
+
+    @Override
+    public boolean removeVaultCurrency(double delta) {
+        if (!VaultController.hasEconomy() || !isPlayer()) return false;
+        VaultController.getInstance().withdrawPlayer(getPlayer(), delta);
+        return true;
     }
 }
 

@@ -22,6 +22,7 @@
  - Fix Recall warmup FX
  - Implement faster block changes, currently in limited use (MagicWorlds, maybe Automata)
  - Add "/mconfig clean" command, for cleaning up configs that have had the defaults copy+pasted into them
+ - Add Vault integration support for MagicArenas
 
 ## 6.9.12
 
