@@ -2718,6 +2718,17 @@ public class MagicController implements MageController {
         playerQuit(mage, null);
     }
 
+    public void undoScheduled() {
+        int undid = 0;
+        while (!scheduledUndo.isEmpty()) {
+            UndoList undoList = scheduledUndo.poll();
+            undoList.undoScheduled(true);
+        }
+        if (undid > 0) {
+            info("Undid " + undid + " pending spells");
+        }
+    }
+
     protected void mageQuit(final Mage mage, final MageDataCallback callback) {
         com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
         final boolean isOpen = wand != null && wand.isInventoryOpen();
