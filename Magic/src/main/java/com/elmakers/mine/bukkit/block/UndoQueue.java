@@ -6,6 +6,8 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import org.bukkit.block.Block;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
@@ -291,5 +293,16 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         tail = null;
         size = 0;
         return true;
+    }
+
+    @Override
+    public Collection<com.elmakers.mine.bukkit.api.block.UndoList> getAll() {
+        List<com.elmakers.mine.bukkit.api.block.UndoList> list = new ArrayList<>();
+        UndoList current = tail;
+        while (current != null) {
+            list.add(current);
+            current = current.getPrevious();
+        }
+        return list;
     }
 }

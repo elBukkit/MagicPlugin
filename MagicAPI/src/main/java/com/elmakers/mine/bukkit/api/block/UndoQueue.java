@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.api.block;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import org.bukkit.block.Block;
 
+import java.util.Collection;
+
 public interface UndoQueue {
     void add(UndoList blocks);
     UndoList getLast();
@@ -72,4 +74,6 @@ public interface UndoQueue {
      * Check to see if there are any scheduled undo changes pending in this queue.
      */
     boolean hasScheduled();
+
+    Collection<UndoList> getAll();
 }
