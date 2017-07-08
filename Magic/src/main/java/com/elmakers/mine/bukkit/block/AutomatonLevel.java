@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.block;
 
 import java.util.LinkedList;
 
+import com.elmakers.mine.bukkit.batch.SimulateBatch;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -13,6 +14,7 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 public class AutomatonLevel {
 	private final LinkedList<WeightedPair<String>> tickSpells;
 	private final LinkedList<WeightedPair<String>> deathSpells;
+	private final String spellParameters;
 	private final Integer delay;
 	private final Integer moveRange;
 	private final Integer dropXp;
@@ -89,6 +91,7 @@ public class AutomatonLevel {
 		} else {
 			yRadius = null;
 		}
+		spellParameters = template.getString("spell_parameters");
 	}
 	
 	public int getYRadius(int yRadius) {
@@ -139,7 +142,8 @@ public class AutomatonLevel {
 	
 	protected void castSpell(String spellCommand, Mage mage, MaterialAndData birthMaterial) {
 		if (spellCommand == null || spellCommand.length() == 0 || spellCommand.equals("none")) return;
-		
+
+		spellCommand = spellCommand + " " + spellParameters;
 		String[] pieces = null;
 		if (spellCommand.contains(" ")) {
 			pieces = StringUtils.split(spellCommand, ' ');
@@ -150,8 +154,13 @@ public class AutomatonLevel {
 		if (pieces != null && pieces.length > 1) {
 			parameters = new String[pieces.length - 1];
 			for (int i = 1; i < pieces.length; i++) {
-				parameters[i - 1] = pieces[i].replace("$birth", birthMaterial.getMaterial().name().toLowerCase());
+				parameters[i - 1] = pieces[i].replace("$birth", birthMaterial.getMaterial().name().toLowerCase())
+						.replace("$heart", SimulateBatch.POWER_MATERIAL.name().toLowerCase());
 			}
+		}
+
+		if (SimulateBatch.DEBUG) {
+			mage.getController().getLogger().info("Casting " + spellCommand + " " + StringUtils.join(parameters, ' ' ));
 		}
 		
 		Spell spell = mage.getSpell(spellCommand);

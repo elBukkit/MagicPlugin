@@ -14,7 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.command.BlockCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -145,8 +144,10 @@ public class SimulateSpell extends BlockSpell {
 		if (liveCounts.size() == 0 || birthCounts.size() == 0) {
 			return SpellResult.FAIL;
 		}
-		
-		final SimulateBatch batch = new SimulateBatch(this, targetLocation, radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts);
+
+		String automataName = parameters.getString("animate", null);
+		boolean isAutomata = automataName != null;
+		final SimulateBatch batch = new SimulateBatch(this, targetLocation, radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts, automataName);
 		
 		if (parameters.contains("diagonal_live_rules")) {
 			batch.setDiagonalLiveRules(ConfigurationUtils.getIntegerList(parameters, "diagonal_live_rules"));
@@ -162,16 +163,8 @@ public class SimulateSpell extends BlockSpell {
 		batch.setConcurrent(parameters.getBoolean("concurrent", false));
 		batch.setCastRange(parameters.getInt("cast_range", 16));
 		int delay = parameters.getInt("delay", 0);
-		
-		boolean includeCommands = parameters.getBoolean("animate", false);
-		if (includeCommands) {
-			if (mage.getCommandSender() instanceof BlockCommandSender) {
-				BlockCommandSender commandBlock = (BlockCommandSender)mage.getCommandSender();
-				batch.setCommandBlock(commandBlock.getBlock());
-			} else if (target.getType() == Material.COMMAND) {
-				batch.setCommandBlock(target);
-			}
-			
+
+		if (isAutomata) {
 			SimulateBatch.TargetMode targetMode = null;
 			String targetModeString = parameters.getString("target_mode", "");
 			if (targetModeString.length() > 0) {
@@ -181,7 +174,7 @@ public class SimulateSpell extends BlockSpell {
 					controller.getLogger().warning(ex.getMessage());
 				}
 			}
-			batch.setCommandMoveRange(parameters.getInt("move", 3),  parameters.getBoolean("reload", true));
+			batch.setMoveRange(parameters.getInt("move", 3),  parameters.getBoolean("reload", true));
 			
 			SimulateBatch.TargetType targetType = null;
 			String targetTypeString = parameters.getString("targets", "");
@@ -204,30 +197,10 @@ public class SimulateSpell extends BlockSpell {
 				batch.setLevel(automatonLevel);
 				delay = automatonLevel.getDelay(delay);
 			}
-			batch.target(targetMode);
+			batch.setDelay(delay);
+			batch.setTargetMode(targetMode);
 		}
-		
-		// delay is in ms, gets converted.
-		// 1000 ms in a second, 20 ticks in a second - 1000 / 20 = 50.
-		delay /= 50;
-		
-		boolean success = true;
-		if (delay > 0) {
-			Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
-				@Override
-                public void run() {
-					mage.addBatch(batch);
-				}
-			}, delay);
-		} else {
-			success = mage.addBatch(batch);
-		}
-		
-		// This is a bit of a hack, but it forces dynmap to show the spell cast direction
-		// instead of the target (also for effects), which looks cool with Automata
-		// TODO: See how bad the side-effects of removing this are.
-		//clearTarget();
-		
+		boolean success = mage.addBatch(batch);
 		return success ? SpellResult.CAST : SpellResult.FAIL;
 	}
 

@@ -7,16 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
-import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CommandBlock;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
@@ -32,7 +28,6 @@ import com.elmakers.mine.bukkit.block.AutomatonLevel;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class SimulateBatch extends SpellBatch {
@@ -44,7 +39,7 @@ public class SimulateBatch extends SpellBatch {
 	private static BlockFace[] POWER_FACES = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
-		SCANNING_COMMAND, SCANNING, UPDATING, COMMAND_SEARCH, COMMON_RESET_REDSTONE, COMMAND_UPDATE, COMMAND_POWER, FINISHED
+		INITIALIZING, SCANNING, UPDATING, TARGETING, HEART_UPDATE, REGISTER, DELAY, FINISHED
 	};
 	
 	public enum TargetMode {
@@ -56,19 +51,15 @@ public class SimulateBatch extends SpellBatch {
 	};
 	
 	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
-	public static int POWER_DELAY_TICKS = 0;
-	
+
 	public static boolean DEBUG = false;
 	
 	private Mage mage;
-	private BlockSpell blockSpell;
-	private Block castCommandBlock;
-	private Block commandTargetBlock;
-    private Block powerTargetBlock;
+	private Block heartBlock;
+	private Block heartTargetBlock;
 	private TargetMode targetMode = TargetMode.STABILIZE;
 	private TargetType targetType = TargetType.PLAYER;
-	private String castCommand;
-	private String commandName;
+	private String automataName;
 	private AutomatonLevel level;
 	private String dropItem;
 	private Collection<String> dropItems;
@@ -84,13 +75,12 @@ public class SimulateBatch extends SpellBatch {
 	private float fovWeight = 100;
 	private double huntFov = Math.PI * 1.8;
 	private boolean commandReload;
-	private boolean commandPowered;
+	private int delay;
+	private long delayTimeout;
 	private World world;
 	private MaterialAndData birthMaterial;
 	private Material deathMaterial;
-	private MaterialAndData powerSimMaterialBackup;
-	private MaterialAndData powerSimMaterial;
-	private boolean includeCommands;
+	private boolean isAutomata;
 	private int radius;
 	private int x;
 	private int y;
@@ -98,7 +88,6 @@ public class SimulateBatch extends SpellBatch {
 	private int r;
 	private int yRadius;
 	private int updatingIndex;
-	private int powerDelayTicks;
 	private ArrayList<Boolean> liveCounts = new ArrayList<>();
 	private ArrayList<Boolean> birthCounts = new ArrayList<>();
 	private ArrayList<Boolean> diagonalLiveCounts = new ArrayList<>();
@@ -110,12 +99,11 @@ public class SimulateBatch extends SpellBatch {
 
 	private List<Block> deadBlocks = new ArrayList<>();
 	private List<Block> bornBlocks = new ArrayList<>();
-	private List<Target> potentialCommandBlocks = new LinkedList<>();
+	private List<Target> potentialHeartBlocks = new LinkedList<>();
 	
-	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
+	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts, String automataName) {
 		super(spell);
 
-		this.blockSpell = spell;
 		this.mage = spell.getMage();
 		this.yRadius = yRadius;
 		this.radius = radius;
@@ -123,21 +111,17 @@ public class SimulateBatch extends SpellBatch {
 		
 		this.birthMaterial = birth;
 		this.deathMaterial = death;
-		
-		this.powerSimMaterial = birthMaterial;
-		this.powerSimMaterialBackup = new MaterialAndData(deathMaterial);
+
 		mapIntegers(liveCounts, this.liveCounts);
 		mapIntegers(birthCounts, this.birthCounts);
 		this.world = center.getWorld();
-		includeCommands = false;
+		this.automataName = automataName;
+		this.isAutomata = automataName != null;
+		if (isAutomata) {
+			this.heartBlock = center.getBlock();
+		}
 		
-		x = 0;
-		y = 0;
-		z = 0;
-		r = 0;
-		
-		state = SimulationState.SCANNING_COMMAND;
-		updatingIndex = 0;
+		state = SimulationState.INITIALIZING;
 		undoList.setModifyType(modifyType);
 	}
 
@@ -152,46 +136,30 @@ public class SimulateBatch extends SpellBatch {
 		return (radius - r) *  (radius - r) *  (radius - r) * 8;
 	}
 	
-	protected void checkForPotentialCommand(Block block, int distanceSquared) {
-		if (includeCommands) {
+	protected void checkForPotentialHeart(Block block, int distanceSquared) {
+		if (isAutomata) {
 			if (distanceSquared <= commandMoveRangeSquared) {
 				// commandMoveRangeSquared is kind of too big, but it doesn't matter all that much
 				// we still look at targets that end up with a score of 0, it just affects the sort ordering.
-				potentialCommandBlocks.add(new Target(center, block, huntMinRange, huntMaxRange, huntFov, fovWeight, reverseTargetDistanceScore));
+				potentialHeartBlocks.add(new Target(center, block, huntMinRange, huntMaxRange, huntFov, fovWeight, reverseTargetDistanceScore));
 			}
 		}
 	}
 	
 	protected void die() {
-		String message = spell.getMessage("death_broadcast").replace("$name", commandName);
+		String message = spell.getMessage("death_broadcast").replace("$name", automataName);
 		if (message.length() > 0) {
 			controller.sendToMages(message, center);	
 		}
 		
 		// Kill power block
-		if (castCommandBlock == null) {
-			castCommandBlock = center.getBlock();
+		if (heartBlock != null) {
+			if (commandReload) {
+				controller.unregisterAutomata(heartBlock);
+			}
+			registerForUndo(heartBlock);
+			heartBlock.setType(Material.AIR);
 		}
-
-        for (BlockFace powerFace : POWER_FACES) {
-            Block checkForPower = castCommandBlock.getRelative(powerFace);
-            if (commandReload) {
-                controller.unregisterAutomata(checkForPower);
-            }
-            if (checkForPower.getType() == POWER_MATERIAL) {
-            	registerForUndo(checkForPower);
-                BlockData commitBlock = UndoList.register(checkForPower);
-                commitBlock.setMaterial(Material.AIR);
-                commitBlock.modify(checkForPower);
-            } else {
-                BlockData commitBlock = UndoList.getBlockData(checkForPower.getLocation());
-                if (commitBlock != null)
-                {
-					registerForUndo(commitBlock.getBlock());
-                    commitBlock.setMaterial(Material.AIR);
-                }
-            }
-        }
 
 		// Drop item
 		if (dropItem != null && dropItem.length() > 0) {
@@ -217,20 +185,9 @@ public class SimulateBatch extends SpellBatch {
 				orb.setExperience(dropXp);
 			}
 		}
-		if (includeCommands && castCommandBlock != null) {
-			BlockData commitBlock = new com.elmakers.mine.bukkit.block.BlockData(castCommandBlock);
-			if (undoList != null) {
-				undoList.add(commitBlock);
-			}
-            commitBlock.setMaterial(Material.AIR);
-            commitBlock.modify(castCommandBlock);
-		}
 
 		if (level != null) {
 			level.onDeath(mage, birthMaterial);
-		}
-		if (!mage.isPlayer()) {
-			controller.forgetMage(mage);
 		}
 	}
 
@@ -270,66 +227,53 @@ public class SimulateBatch extends SpellBatch {
 		int z = center.getBlockZ() + dz;
 		Block block = world.getBlockAt(x, y, z);
 		if (!block.getChunk().isLoaded()) {
-			block.getChunk().load();
 			return false;
 		}
 		
 		Material blockMaterial = block.getType();
 		if (birthMaterial.is(block)) {
-			int distanceSquared = liveRangeSquared > 0 || includeCommands ? 
-					(int)Math.ceil(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
+			int distanceSquared = liveRangeSquared > 0 || isAutomata ?
+					(int)Math.ceil(block.getLocation().distanceSquared(heartBlock.getLocation())) : 0;
 
 			if (liveRangeSquared <= 0 || distanceSquared <= liveRangeSquared) {
 				if (diagonalLiveCounts.size() > 0) {
-					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial, includeCommands);
-					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial, includeCommands);
+					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial, isAutomata);
+					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial, isAutomata);
 					if (faceNeighborCount >= liveCounts.size() || !liveCounts.get(faceNeighborCount)
 						|| diagonalNeighborCount >= diagonalLiveCounts.size() || !diagonalLiveCounts.get(diagonalNeighborCount)) {
 						killBlock(block);
 					} else {
-						checkForPotentialCommand(block, distanceSquared);
+						checkForPotentialHeart(block, distanceSquared);
 					}
 				} else {
-					int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
+					int neighborCount = getNeighborCount(block, birthMaterial, isAutomata);
 					if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
 						killBlock(block);
 					} else {
-						checkForPotentialCommand(block, distanceSquared);
+						checkForPotentialHeart(block, distanceSquared);
 					}
 				}
 			} else {
 				killBlock(block);
 			}
 		} else if (blockMaterial == deathMaterial) {
-			int distanceSquared = birthRangeSquared > 0 || includeCommands ? 
-					(int)Math.ceil(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
+			int distanceSquared = birthRangeSquared > 0 || isAutomata ?
+					(int)Math.ceil(block.getLocation().distanceSquared(heartBlock.getLocation())) : 0;
 
 			if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {	
 				if (diagonalBirthCounts.size() > 0) {
-					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial, includeCommands);
-					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial, includeCommands);
+					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial, isAutomata);
+					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial, isAutomata);
 					if (faceNeighborCount < birthCounts.size() && birthCounts.get(faceNeighborCount)
 						&& diagonalNeighborCount < diagonalBirthCounts.size() && diagonalBirthCounts.get(diagonalNeighborCount)) {
 						birthBlock(block);
-						checkForPotentialCommand(block, distanceSquared);
+						checkForPotentialHeart(block, distanceSquared);
 					}
 				} else {
-					int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
+					int neighborCount = getNeighborCount(block, birthMaterial, isAutomata);
 					if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
 						birthBlock(block);
-						checkForPotentialCommand(block, distanceSquared);
-					}
-				}
-			}
-		} else if (includeCommands && blockMaterial == Material.COMMAND && commandName != null && commandName.length() > 1) {
-			// Absorb nearby commands of the same name.
-			BlockState commandData = block.getState();
-			if (commandData != null && commandData instanceof CommandBlock) {
-				CommandBlock commandBlock = ((CommandBlock)commandData);
-				if (commandBlock.getName().equals(commandName)) {
-					block.setType(deathMaterial);
-					if (DEBUG) {
-						controller.getLogger().info("CONSUMED clone at " + block.getLocation().toVector());
+						checkForPotentialHeart(block, distanceSquared);
 					}
 				}
 			}
@@ -356,48 +300,38 @@ public class SimulateBatch extends SpellBatch {
 	@Override
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
-		if (state == SimulationState.SCANNING_COMMAND) {
-			// Process the casting command block first, and only if specially configured to do so.
-			if (includeCommands && castCommandBlock != null) {
+		if (state == SimulationState.INITIALIZING) {
+			// Reset state
+			x = 0;
+			y = 0;
+			z = 0;
+			r = 0;
+			updatingIndex = 0;
+
+			// Process the casting first, and only if specially configured to do so.
+			if (isAutomata) {
+				// Look for a target
+				target();
+
 				// We are going to rely on the block toggling to kick this back to life when the chunk
 				// reloads, so for now just bail and hope the timing works out.
-				if (!castCommandBlock.getChunk().isLoaded()) {
+				if (heartBlock == null || !heartBlock.getChunk().isLoaded()) {
 					finish();
-					// TODO: Maybe Scatter-shot and register all 6 surrounding power blocks for reload toggle.
-					// Can't really do it without the chunk being loaded though, so hrm.
 					return processedBlocks;
 				}
 				
 				// Check for death since activation (e.g. during delay period)
-				if (castCommandBlock.getType() != Material.COMMAND) {
-					die();
-					finish();
-					return processedBlocks;
-				}
-				
-				// Check for power blocks
-				for (BlockFace powerFace : POWER_FACES) {
-					Block checkForPower = castCommandBlock.getRelative(powerFace);
-					if (checkForPower.getType() == POWER_MATERIAL) {
-						if (commandReload) {
-							controller.unregisterAutomata(checkForPower);
-						}
-						registerForUndo(checkForPower);
-						powerSimMaterial.modify(checkForPower);
-						commandPowered = true;
+				if (heartBlock.getType() != POWER_MATERIAL) {
+					if (DEBUG) {
+						controller.getLogger().info("DIED, no Heart at : " + heartBlock);
 					}
-				}
-				
-				if (!commandPowered) {
 					die();
 					finish();
 					return processedBlocks;
 				}
-				
-				// Make this a normal block so the sim will process it
-				// this also serves to reset the command block for the next tick, if it lives.
-				registerForUndo(castCommandBlock);
-				birthMaterial.modify(castCommandBlock);
+
+				// Reset potential new locations
+				potentialHeartBlocks.clear();
 			}
 			
 			processedBlocks++;
@@ -405,7 +339,13 @@ public class SimulateBatch extends SpellBatch {
 		}
 		
 		while (state == SimulationState.SCANNING && processedBlocks <= maxBlocks) {
+			// Make the heart a normal block so the sim will process it
+			registerForUndo(heartBlock);
+			birthMaterial.modify(heartBlock);
+
 			if (!simulateBlocks(x, y, z)) {
+				// TODO: Is this the right thing to do?
+				finish();
 				return processedBlocks;
 			}
 			
@@ -468,185 +408,122 @@ public class SimulateBatch extends SpellBatch {
 			
 			updatingIndex++;
 			if (updatingIndex >= deadBlocks.size() + bornBlocks.size()) {
-				state = SimulationState.COMMAND_SEARCH;
+				state = SimulationState.TARGETING;
 				
-				// Wait at least a tick before re-populating the command block.
+				// Wait at least a tick
 				return maxBlocks;
 			}
 		}
 		
-		// Each of the following states will end in this tick, to give the
-		// MC sim time to register power updates.
-		if (state == SimulationState.COMMAND_SEARCH) {
-			if (includeCommands && potentialCommandBlocks.size() > 0) {
+		// Each of the following states will end in this tick
+		if (state == SimulationState.TARGETING) {
+			if (isAutomata && potentialHeartBlocks.size() > 0) {
 				switch (targetMode) {
 				case HUNT:
-					Collections.sort(potentialCommandBlocks);
+					Collections.sort(potentialHeartBlocks);
 					break;
 				case FLEE:
-					Collections.sort(potentialCommandBlocks);
+					Collections.sort(potentialHeartBlocks);
 					break;
 				default:
-					Collections.shuffle(potentialCommandBlocks);
+					Collections.shuffle(potentialHeartBlocks);
 					break;
 				}
 				
 				// Find a valid block for the command
-                powerTargetBlock = null;
-				commandTargetBlock = null;
+				heartTargetBlock = null;
 				Block backupBlock = null;
-				while (commandTargetBlock == null && potentialCommandBlocks.size() > 0) {
-					Block block = potentialCommandBlocks.remove(0).getBlock();
+				while (heartTargetBlock == null && potentialHeartBlocks.size() > 0) {
+					Block block = potentialHeartBlocks.remove(0).getBlock();
 					if (block != null && birthMaterial.is(block)) {
-						// If we're powering the block, look for one with a powerable neighbor.
-						if (!commandPowered) {
-							commandTargetBlock = block;
-						} else {
-							backupBlock = block;
-							BlockFace powerFace = findPowerLocation(block, powerSimMaterial);
-							if (powerFace != null) {
-								commandTargetBlock = block;
-							}
-						}
+						heartTargetBlock = block;
 					}
 				}
 				
 				// If we didn't find any powerable blocks, but we did find at least one valid sim block
 				// just use that one.
-				if (commandTargetBlock == null) commandTargetBlock = backupBlock;
+				if (heartTargetBlock == null) heartTargetBlock = backupBlock;
 
                 // Search for a power block
-                if (commandTargetBlock != null) {
-                    // First try and replace a live cell
-                    BlockFace powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterial);
-                    // Next try to replace a dead cell, which will affect the simulation outcome
-                    // but this is perhaps better than it dying?
-                    if (powerDirection == null) {
-                        if (DEBUG) {
-                            controller.getLogger().info("Had to fall back to backup location, pattern may diverge");
-                        }
-                        powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterialBackup);
-                    }
-                    // If it's *still* not valid, search for something breakable.
-                    if (powerDirection == null) {
-                        for (BlockFace face : POWER_FACES) {
-                            if (blockSpell.isDestructible(commandTargetBlock.getRelative(face))) {
-                                if (DEBUG) {
-                                    controller.getLogger().info("Had to fall back to destructible location, pattern may diverge and may destroy blocks");
-                                }
-                                powerDirection = face;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (powerDirection != null) {
-                        powerTargetBlock = commandTargetBlock.getRelative(powerDirection);
-                    }
-                } else {
-					if (DEBUG) {
-						controller.getLogger().info("Could not find a valid command block location");
-					}
+                if (heartTargetBlock == null && DEBUG) {
+					controller.getLogger().info("Could not find a valid command block location");
                 }
 			}
 			if (DEBUG) {
-				if (commandTargetBlock != null) {
-					controller.getLogger().info("MOVED: " + commandTargetBlock.getLocation().toVector().subtract(center.toVector()));
+				if (heartTargetBlock != null) {
+					controller.getLogger().info("MOVED: " + heartTargetBlock.getLocation().toVector().subtract(center.toVector()));
 				}
 			}
-			state = SimulationState.COMMON_RESET_REDSTONE;
+			state = SimulationState.HEART_UPDATE;
 			return processedBlocks;
 		}
-
-        if (state == SimulationState.COMMON_RESET_REDSTONE) {
-            if (includeCommands && commandTargetBlock != null) {
-                DeprecatedUtils.setData(commandTargetBlock, (byte)0);
-            }
-            if (includeCommands && powerTargetBlock != null) {
-                DeprecatedUtils.setData(powerTargetBlock, (byte)0);
-            }
-            state = SimulationState.COMMAND_UPDATE;
-            return processedBlocks;
-        }
 		
-		if (state == SimulationState.COMMAND_UPDATE) {
-			if (includeCommands) {
-				if (commandTargetBlock != null) {
-					if (!commandTargetBlock.getChunk().isLoaded()) {
-						commandTargetBlock.getChunk().load();
+		if (state == SimulationState.HEART_UPDATE) {
+			if (isAutomata) {
+				if (heartTargetBlock != null) {
+					if (!heartTargetBlock.getChunk().isLoaded()) {
+						heartTargetBlock.getChunk().load();
 						return processedBlocks;
 					}
-					
-					commandTargetBlock.setType(Material.COMMAND);
-					BlockState commandData = commandTargetBlock.getState();
-					if (castCommand != null && commandData != null && commandData instanceof CommandBlock) {
-						CommandBlock copyCommand = (CommandBlock)commandData;
-						copyCommand.setCommand(castCommand);
-						copyCommand.setName(commandName);
-						copyCommand.update();
-						
-						// Also move the mage
-						Location newLocation = commandTargetBlock.getLocation();
-						newLocation.setPitch(center.getPitch());
-						newLocation.setYaw(center.getYaw());
-						mage.setLocation(newLocation);
-					} else {
-						commandTargetBlock = null;
+
+					if (reflectChance > 0) {
+						com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(heartTargetBlock);
 					}
+					registerForUndo(heartTargetBlock);
+					heartTargetBlock.setType(POWER_MATERIAL);
+					heartBlock = heartTargetBlock;
+					Location newLocation = heartTargetBlock.getLocation();
+					newLocation.setPitch(center.getPitch());
+					newLocation.setYaw(center.getYaw());
+					center = newLocation;
+					mage.setLocation(newLocation);
 				} else {
 					die();
 				}
 			}
-			powerDelayTicks = POWER_DELAY_TICKS;
-			state = SimulationState.COMMAND_POWER;
+			state = SimulationState.REGISTER;
 			return processedBlocks;
 		}
 		
-		if (state == SimulationState.COMMAND_POWER) {
-			// Continue to power the command block
-			if (commandPowered && powerTargetBlock != null && includeCommands) {
-				// Wait a bit before powering for redstone signals to reset
-				if (powerDelayTicks > 0) {
-					powerDelayTicks--;
-					return processedBlocks;
+		if (state == SimulationState.REGISTER) {
+			if (commandReload) {
+				String automataName = this.automataName;
+				if (automataName == null || automataName.length() <= 1) {
+					automataName = controller.getMessages().get("automata.default_name");
 				}
-
-                powerTargetBlock.setType(POWER_MATERIAL);
-
-				// Make sure you can actually hit the power block
-				if (reflectChance > 0) {
-					com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(powerTargetBlock);
-				}
-                if (commandReload) {
-                    String automataName = commandName;
-                    if (automataName == null || automataName.length() <= 1) {
-                        automataName = controller.getMessages().get("automata.default_name");
-                    }
-                    controller.registerAutomata(powerTargetBlock, automataName, "automata.awaken");
-                }
+				controller.registerAutomata(heartTargetBlock, automataName, "automata.awaken");
 			}
-			state = SimulationState.FINISHED;
+			delayTimeout = System.currentTimeMillis() + delay;
+			state = delay > 0 ? SimulationState.DELAY : SimulationState.FINISHED;
+			return processedBlocks;
+		}
+
+		if (state == SimulationState.DELAY) {
+			processedBlocks++;
+			if (heartBlock != null && heartBlock.getType() != POWER_MATERIAL) {
+				if (DEBUG) {
+					controller.getLogger().info("DIED, no Heart at : " + heartBlock);
+				}
+				die();
+				finish();
+			} else {
+				if (System.currentTimeMillis() > delayTimeout) {
+					state = SimulationState.FINISHED;
+				}
+			}
+
 			return processedBlocks;
 		}
 		
 		if (state == SimulationState.FINISHED) {
-			finish();
+			if (isAutomata) {
+				state = SimulationState.INITIALIZING;
+			} else {
+				finish();
+			}
 		}
 		
 		return processedBlocks;
-	}
-
-	public void setCommandBlock(Block block) {
-		castCommandBlock = block;
-		if (castCommandBlock.getType() == Material.COMMAND) {
-			BlockState commandData = castCommandBlock.getState();
-			if (commandData != null && commandData instanceof CommandBlock) {
-				CommandBlock commandBlock = ((CommandBlock)commandData);
-				castCommand = commandBlock.getCommand();
-				commandName = commandBlock.getName();
-			}
-			includeCommands = castCommand != null && castCommand.length() > 0;
-		}
 	}
 	
 	public void setDrop(String dropName, int dropXp, Collection<String> drops) {
@@ -689,9 +566,8 @@ public class SimulateBatch extends SpellBatch {
 		this.targetType = targetType;
 	}
 	
-	public void target(TargetMode mode) {
-		targetMode = mode == null ? TargetMode.STABILIZE : mode;
-		switch (targetMode) 
+	public void target() {
+		switch (targetMode)
 		{
 		case FLEE:
 		case HUNT:
@@ -723,27 +599,11 @@ public class SimulateBatch extends SpellBatch {
 					if (mage == this.mage) continue;
 					if (targetType == TargetType.AUTOMATON && mage.getPlayer() != null) continue;
 					if (targetType == TargetType.PLAYER && mage.getPlayer() == null) continue;
-					if (mage.isDead() || !mage.isOnline() || !mage.hasLocation()) continue;
+					if (mage.isDead() || !mage.isOnline() || !mage.hasLocation() || mage.isSuperProtected()) continue;
 					if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
-					if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
-					
-					if (!mage.isPlayer()) {
-						// Check for automata of the same type, kinda hacky.. ?
-						Block block = mage.getLocation().getBlock();
-						if (block.getType() == Material.COMMAND) {
-							BlockState blockState = block.getState();
-							if (blockState != null && blockState instanceof CommandBlock) {
-								CommandBlock command = (CommandBlock)blockState;
-								String commandString = command.getCommand();
-								if (commandString != null && commandString.length() > 0 && commandString.startsWith("cast " + spell.getKey())) {
-									continue;
-								}
-							}
-						}
-					} else {
-						Player player = mage.getPlayer();
-						if (player.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
-					}
+
+					LivingEntity li = mage.getLivingEntity();
+					if (li != null && li.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 					
 					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, 100, false);
 					int score = newScore.getScore();
@@ -811,18 +671,9 @@ public class SimulateBatch extends SpellBatch {
 		}
 	}
 	
-	public void setCommandMoveRange(int commandRadius, boolean reload) {
+	public void setMoveRange(int commandRadius, boolean reload) {
 		commandReload = reload;
 		commandMoveRangeSquared = commandRadius * commandRadius;
-	}
-	
-	public static BlockFace findPowerLocation(Block block, MaterialAndData targetMaterial) {
-		for (BlockFace face : POWER_FACES) {
-			if (targetMaterial.is(block.getRelative(face))) {
-				return face;
-			}
-		}
-		return null;
 	}
 	
 	protected int getNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands) {
@@ -872,6 +723,9 @@ public class SimulateBatch extends SpellBatch {
 	
 	@Override
 	public void finish() {
+		if (isAutomata && !mage.isPlayer()) {
+			controller.forgetMage(mage);
+		}
 		state = SimulationState.FINISHED;
 		super.finish();
 	}
@@ -895,5 +749,13 @@ public class SimulateBatch extends SpellBatch {
 
 	public void setReflectChange(double reflectChance) {
 		this.reflectChance = reflectChance;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+
+	public void setTargetMode(TargetMode mode) {
+		this.targetMode = mode;
 	}
 }

@@ -23,20 +23,21 @@ hunter:
     live_range: 3,4,5
     delay: 1200,800,500
     drop_xp: 50,75,100
+    spell_parameters: "loud true transparent air,$birth,$heart"
     death_cast:
-        "hunter_death target self radius 7 speed 0^1 destructible $birth,command,redstone_block check_destructible true": 500,300,50
-        "hunter_death target self radius 7 speed 0^5 destructible $birth,command,redstone_block check_destructible true": 300,200,100
-        "hunter_death target self radius 7 speed 1^0 destructible $birth,command,redstone_block check_destructible true": 250,200,150
-        "hunter_death target self radius 7 speed 1^5 destructible $birth,command,redstone_block check_destructible true": 100,100,200
+        "hunter_death speed 0^1 destructible $birth,$heart": 500,300,50
+        "hunter_death speed 0^5 destructible $birth,$heart": 300,200,100
+        "hunter_death speed 1^0 destructible $birth,$heart": 250,200,150
+        "hunter_death speed 1^5 destructible $birth,$heart": 100,100,200
     cast:
-        "shrink transparent air,$birth,command,redstone_block": 30,40,50
-        "pull transparent air,$birth,redstone_block,command": 60,70,80
-        "curse transparent air,$birth,redstone_block,command": 60,100,150
-        "poison transparent air,$birth,redstone_block,command": 100,100,150
-        "blob brush stained_glass:15 radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 20,40,80
-        "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block,command": 20,40,80
-        "homing|2 transparent air,$birth,redstone_block,command": 20,50,90
-        "missile|2 transparent air,$birth,redstone_block,command": 100,150,200
+        "shrink": 30,40,50
+        "pull": 60,70,80
+        "curse": 60,100,150
+        "poison": 100,100,150
+        "blob brush stained_glass:15 radius 2 undo 5000": 20,40,80
+        "shell brush stained_glass:15 radius 3 undo 7000": 20,40,80
+        "homing|2": 20,50,90
+        "missile|2": 100,150,200
         "none": 300,200,50
     parameters:
         allow_max_range: false
@@ -58,13 +59,13 @@ hunter:
         - gold_nugget@8
         restricted: restricted_animate
         message_type: evil
-        undo: 30000
+        undo: 5000
         reflect_chance: 0.85
     costs:
         xp: 200
 
 hunter_death:
-    name: Death
+    name: Hunter Death
     hidden: true
     actions:
         cast:
@@ -84,6 +85,8 @@ hunter_death:
         direction: 0,0.8,0
         falling: true
         brush: air
-        radius: 1
+        radius: 7
         undo: 15000
         undo_speed: 0.5
+        target: self
+        check_destructible: true

@@ -8,23 +8,23 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.batch.SimulateBatch;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CommandBlock;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.batch.SimulateBatch;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.AscendingPair;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
+import org.bukkit.configuration.MemoryConfiguration;
 
 public class AnimateSpell extends SimulateSpell 
 {
@@ -39,7 +39,7 @@ public class AnimateSpell extends SimulateSpell
     @Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		if (parameters.getBoolean("animate", false))
+		if (parameters.getString("animate", null) != null)
 		{
 			return super.onCast(parameters);
 		}
@@ -81,6 +81,8 @@ public class AnimateSpell extends SimulateSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
+		registerForUndo(targetBlock);
+
 		if (seedRadius > 0) {
 			for (int dx = -seedRadius; dx < seedRadius; dx++) {
 				for (int dz = -seedRadius; dz < seedRadius; dz++) {
@@ -95,19 +97,8 @@ public class AnimateSpell extends SimulateSpell
 			}
 		}
 
-		BlockFace powerFace = SimulateBatch.findPowerLocation(targetBlock, targetMaterial);
-		if (powerFace == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
-		
-		final Block powerBlock = targetBlock.getRelative(powerFace);
-		registerForUndo(targetBlock);
-		registerForUndo(powerBlock);
-		
-		if (!isDestructible(powerBlock)) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
+		// TODO: Have the batch do this after a few ticks
+		targetBlock.setType(SimulateBatch.POWER_MATERIAL);
 		
 		// Look for randomized levels
 		int level = 0;
@@ -120,55 +111,45 @@ public class AnimateSpell extends SimulateSpell
 		
 		boolean simCheckDestructible = parameters.getBoolean("sim_check_destructible", true);
 		simCheckDestructible = parameters.getBoolean("scd", simCheckDestructible);
-		
-		final String commandLine = "cast " + getKey() + " animate true target self cooldown 0 m "
-				+ targetMaterial.getKey() +
-				" cd " + (simCheckDestructible ? "true" : "false") + " level " + level;
-		String commandName = parameters.getString("name", "Automata");
+
+		final ConfigurationSection automataParameters = new MemoryConfiguration();
+		automataParameters.set("target", "self");
+		automataParameters.set("cooldown", 0);
+		automataParameters.set("m", targetMaterial.getKey());
+		automataParameters.set("cd",  (simCheckDestructible ? true : false));
+		automataParameters.set("level", level);
+		String automataName = parameters.getString("name", "Automata");
 
         Messages messages = controller.getMessages();
 		String automataType = parameters.getString("message_type", "evil");
 		List<String> prefixes = messages.getAll("automata." + automataType + ".prefixes");
 		List<String> suffixes = messages.getAll("automata." + automataType + ".suffixes");
 		
-		commandName = prefixes.get(random.nextInt(prefixes.size())) 
-				+ " " + commandName + " " + suffixes.get(random.nextInt(suffixes.size()));
+		automataName = prefixes.get(random.nextInt(prefixes.size()))
+				+ " " + automataName + " " + suffixes.get(random.nextInt(suffixes.size()));
 
 		if (level > 1) 
 		{
-			commandName += " " + escapeLevel(messages, "automata.level", level);
+			automataName += " " + escapeLevel(messages, "automata.level", level);
 		}
 
-        // Hack to work-around weird issues with redstone blocks not signaling when replacing a variant material.
-        targetBlock.setData((byte)0);
-        powerBlock.setData((byte)0);
-
-		String message = getMessage("cast_broadcast").replace("$name", commandName);
+		String message = getMessage("cast_broadcast").replace("$name", automataName);
 		if (message.length() > 0) {
 			controller.sendToMages(message, targetBlock.getLocation());	
 		}
 
-        final String commandBlockName = commandName;
+		automataParameters.set("animate", automataName);
+
+		final Mage mage = controller.getMage("AUTOMATA-" + automataName, automataName);
+		mage.setLocation(targetBlock.getLocation());
+		mage.setQuiet(true);
+		final Spell spell = mage.getSpell(getKey());
         Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
             @Override
             public void run() {
-                targetBlock.setType(Material.COMMAND);
-                BlockState commandData = targetBlock.getState();
-                if (commandData != null && (commandData instanceof CommandBlock)) {
-                    CommandBlock copyCommand = (CommandBlock) commandData;
-                    copyCommand.setCommand(commandLine);
-                    copyCommand.setName(commandBlockName);
-                    copyCommand.update();
-                }
+                spell.cast(automataParameters);
             }
-        }, SimulateBatch.POWER_DELAY_TICKS + 1);
-		
-		Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
-			@Override
-            public void run() {
-				powerBlock.setType(Material.REDSTONE_BLOCK);
-			}
-		}, SimulateBatch.POWER_DELAY_TICKS + 2);
+        }, 1);
 
         registerForUndo();
 		return SpellResult.CAST;

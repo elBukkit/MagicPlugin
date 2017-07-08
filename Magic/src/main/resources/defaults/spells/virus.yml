@@ -23,16 +23,20 @@ virus:
     move: 8,10,16
     delay: 3500,3000,2500
     drop_xp: 100,150,200
+    spell_parameters: "loud true transparent air,$birth,$heart"
     cast:
-        "arrowrain transparent air,$birth,command,redstone_block": 50,70,90
-        "arrow|4 transparent air,$birth,command,redstone_block": 50,90,200
-        "neutron transparent air,$birth,command,redstone_block": 5,10,20
-        "fury transparent air,$birth,command,redstone_block": 20,50,100
-        "homing|4 transparent air,$birth,command,redstone_block": 100,100,100
-        "railgun transparent air,$birth,command,redstone_block": 50,60,150
-        "missile|4 transparent air,$birth,redstone_block,command": 10,20,40
-        "torture|3 transparent air,$birth,redstone_block,command": 10,20,40
-        "kill cooldown_mage 0 transparent air,$birth,redstone_block,command": 5,20,30
+        neutron: 5,10,20
+        fury: 20,50,100
+        homing: 100,100,100
+        railgun: 50,60,150
+        "missile|4": 10,20,40
+        "torture|3": 10,20,40
+        "petrify|3": 30,50,70
+        "shuriken|3": 30,50,70
+        "kill": 5,20,30
+        "shell|2": 15,40,50
+        "blob|2": 5,20,30
+        "poison": 5,20,30
         "none": 100,80,50
     death_cast:
         neutron: 100,200,300
@@ -61,7 +65,7 @@ virus:
         diagonal_birth_rules: 0,1
         live_rules: 1,2,3
         diagonal_live_rules: 0,1
-        undo: 30000
+        undo: 100000
         undo_speed: 20
         reflect_chance: 0.95
     costs:
