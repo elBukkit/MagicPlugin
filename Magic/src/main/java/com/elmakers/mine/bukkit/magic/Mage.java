@@ -674,9 +674,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             undoList.updateScheduledUndo();
         }
 
-        if (!undoList.hasBeenScheduled() && undoList.isScheduled() && undoList.hasChanges())
+        if (!undoList.hasBeenScheduled() && undoList.isScheduled())
         {
-            controller.scheduleUndo(undoList);
+            if (undoList.hasChanges()) {
+                controller.scheduleUndo(undoList);
+            } else {
+                undoQueue.skippedUndo(undoList);
+            }
         }
 
         return true;

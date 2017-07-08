@@ -305,4 +305,8 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         }
         return list;
     }
+
+    public void skippedUndo(com.elmakers.mine.bukkit.api.block.UndoList undoList) {
+        scheduledSize--;
+    }
 }
