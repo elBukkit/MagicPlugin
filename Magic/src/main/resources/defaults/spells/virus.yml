@@ -28,7 +28,6 @@ virus:
         neutron: 5,10,20
         fury: 20,50,100
         homing: 100,100,100
-        railgun: 50,60,150
         "missile|4": 10,20,40
         "torture|3": 10,20,40
         "petrify|3": 30,50,70
@@ -65,9 +64,10 @@ virus:
         diagonal_birth_rules: 0,1
         live_rules: 1,2,3
         diagonal_live_rules: 0,1
-        undo: 100000
+        undo: 10000
         undo_speed: 20
         reflect_chance: 0.95
+        max_blocks: 5000
     costs:
         xp: 400
 

@@ -14,15 +14,16 @@
    - All other properties are still tied to the wand items
 
 ## 6.9.13
-
+ - More Automata changes:
+   - Automata no longer use command blocks
+   - Automata are reflective, except for the redstone
  - Blast and Collapse are now projectiles
- - Automata are reflective
  - SP Earn Bonus (Mana Talisman) will work on SP item pickups
  - Mana Talisman set to keep on death
  - Fix Recall warmup FX
- - Implement faster block changes, currently in limited use (MagicWorlds, maybe Automata)
  - Add "/mconfig clean" command, for cleaning up configs that have had the defaults copy+pasted into them
  - Add Vault integration support for MagicArenas
+ - Implement faster block changes, currently in limited use (MagicWorlds, maybe Automata)
 
 ## 6.9.12
 

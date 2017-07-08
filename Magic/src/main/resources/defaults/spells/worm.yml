@@ -66,6 +66,7 @@ worm:
         undo: 8000
         undo_speed: 10
         reflect_chance: 0.9
+        max_blocks: 3000
     costs:
         xp: 250
 

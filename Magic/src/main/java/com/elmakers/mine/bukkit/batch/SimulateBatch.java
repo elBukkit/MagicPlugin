@@ -39,7 +39,7 @@ public class SimulateBatch extends SpellBatch {
 	private static BlockFace[] POWER_FACES = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
-		INITIALIZING, SCANNING, UPDATING, TARGETING, HEART_UPDATE, REGISTER, DELAY, FINISHED
+		INITIALIZING, SCANNING, UPDATING, TARGETING, HEART_UPDATE, REGISTER, DELAY, CLEANUP, FINISHED
 	};
 	
 	public enum TargetMode {
@@ -96,6 +96,7 @@ public class SimulateBatch extends SpellBatch {
 	private Location center;
 	private ModifyType modifyType = ModifyType.NO_PHYSICS;
 	private double reflectChance;
+	private int maxBlocks = 0;
 
 	private List<Block> deadBlocks = new ArrayList<>();
 	private List<Block> bornBlocks = new ArrayList<>();
@@ -494,7 +495,7 @@ public class SimulateBatch extends SpellBatch {
 				controller.registerAutomata(heartTargetBlock, automataName, "automata.awaken");
 			}
 			delayTimeout = System.currentTimeMillis() + delay;
-			state = delay > 0 ? SimulationState.DELAY : SimulationState.FINISHED;
+			state = delay > 0 ? SimulationState.DELAY : SimulationState.CLEANUP;
 			return processedBlocks;
 		}
 
@@ -508,11 +509,27 @@ public class SimulateBatch extends SpellBatch {
 				finish();
 			} else {
 				if (System.currentTimeMillis() > delayTimeout) {
-					state = SimulationState.FINISHED;
+					state = SimulationState.CLEANUP;
 				}
 			}
 
 			return processedBlocks;
+		}
+
+		if (state == SimulationState.CLEANUP) {
+			boolean undid = false;
+			while (processedBlocks <= maxBlocks && undoList.size() > this.maxBlocks) {
+				if (undoList.undoNext(false) == null) break;
+				undid = true;
+			}
+			// make sure we didn't undo the heart
+			if (undid && heartBlock != null) {
+				registerForUndo(heartBlock);
+				heartBlock.setType(POWER_MATERIAL);
+			}
+			if (undoList.size() <= this.maxBlocks) {
+				state = SimulationState.FINISHED;
+			}
 		}
 		
 		if (state == SimulationState.FINISHED) {
@@ -757,5 +774,9 @@ public class SimulateBatch extends SpellBatch {
 
 	public void setTargetMode(TargetMode mode) {
 		this.targetMode = mode;
+	}
+
+	public void setMaxBlocks(int maxBlocks) {
+		this.maxBlocks = maxBlocks;
 	}
 }
