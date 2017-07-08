@@ -2217,3 +2217,11 @@ elevator:
     source_pitch: 90
     range: 10
     fov: 4
+
+birth:
+  icon: command
+  actions:
+    cast:
+    - class: Command
+  parameters:
+    command: cast hunter material quartz_block seed_radius 2
