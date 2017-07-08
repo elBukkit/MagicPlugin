@@ -456,7 +456,6 @@ public class SimulateBatch extends SpellBatch {
 				}
 			}
 			state = SimulationState.HEART_UPDATE;
-			return processedBlocks;
 		}
 		
 		if (state == SimulationState.HEART_UPDATE) {
@@ -483,7 +482,6 @@ public class SimulateBatch extends SpellBatch {
 				}
 			}
 			state = SimulationState.REGISTER;
-			return processedBlocks;
 		}
 		
 		if (state == SimulationState.REGISTER) {
@@ -496,7 +494,6 @@ public class SimulateBatch extends SpellBatch {
 			}
 			delayTimeout = System.currentTimeMillis() + delay;
 			state = delay > 0 ? SimulationState.DELAY : SimulationState.CLEANUP;
-			return processedBlocks;
 		}
 
 		if (state == SimulationState.DELAY) {
@@ -517,18 +514,22 @@ public class SimulateBatch extends SpellBatch {
 		}
 
 		if (state == SimulationState.CLEANUP) {
-			boolean undid = false;
-			while (processedBlocks <= maxBlocks && undoList.size() > this.maxBlocks) {
-				if (undoList.undoNext(false) == null) break;
-				undid = true;
-			}
-			// make sure we didn't undo the heart
-			if (undid && heartBlock != null) {
-				registerForUndo(heartBlock);
-				heartBlock.setType(POWER_MATERIAL);
-			}
-			if (undoList.size() <= this.maxBlocks) {
+			if (this.maxBlocks <= 0) {
 				state = SimulationState.FINISHED;
+			} else {
+				boolean undid = false;
+				while (processedBlocks <= maxBlocks && undoList.size() > this.maxBlocks) {
+					if (undoList.undoNext(false) == null) break;
+					undid = true;
+				}
+				// make sure we didn't undo the heart
+				if (undid && heartBlock != null) {
+					registerForUndo(heartBlock);
+					heartBlock.setType(POWER_MATERIAL);
+				}
+				if (undoList.size() <= this.maxBlocks) {
+					state = SimulationState.FINISHED;
+				}
 			}
 		}
 		
