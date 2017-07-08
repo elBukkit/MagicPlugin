@@ -52,8 +52,7 @@ virus:
         delay: 3000
         drops:
         - virusheart
-        - sp:100
-        - gold_block
+        - sp:75
         restricted: restricted_animate
         message_type: evil
         concurrent: false
@@ -70,4 +69,5 @@ virus:
         max_blocks: 5000
     costs:
         xp: 400
+        sp: 150
 

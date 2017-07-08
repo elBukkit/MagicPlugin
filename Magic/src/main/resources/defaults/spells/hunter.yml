@@ -56,13 +56,13 @@ hunter:
         drops:
         - hunterheart
         - sp:40
-        - gold_nugget@8
         restricted: restricted_animate
         message_type: evil
         undo: 5000
         reflect_chance: 0.85
     costs:
         xp: 200
+        sp: 80
 
 hunter_death:
     name: Hunter Death

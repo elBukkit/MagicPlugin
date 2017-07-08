@@ -41,7 +41,6 @@ defender:
         move: 4
         drops:
         - sp:10
-        - gold_nugget
         - defenderheart
         drop_xp: 20
         restricted: restricted_animate
@@ -50,6 +49,7 @@ defender:
         reflect_chance: 0.25
     costs:
         xp: 50
+        sp: 20
 
 defender_death:
     name: Defender Death
