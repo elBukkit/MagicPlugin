@@ -39,7 +39,7 @@ public class SimulateBatch extends SpellBatch {
 	private static BlockFace[] POWER_FACES = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
-		INITIALIZING, SCANNING, UPDATING, TARGETING, HEART_UPDATE, DELAY, CLEANUP, FINISHED
+		INITIALIZING, SCANNING, UPDATING, TARGETING, HEART_UPDATE, DELAY, CLEANUP, PRUNE, FINISHED
 	};
 	
 	public enum TargetMode {
@@ -501,7 +501,7 @@ public class SimulateBatch extends SpellBatch {
 
 		if (state == SimulationState.CLEANUP) {
 			if (this.maxBlocks <= 0) {
-				state = SimulationState.FINISHED;
+				state = SimulationState.PRUNE;
 			} else {
 				boolean undid = false;
 				while (processedBlocks <= maxBlocks && undoList.size() > this.maxBlocks) {
@@ -514,9 +514,16 @@ public class SimulateBatch extends SpellBatch {
 					heartBlock.setType(heartMaterial);
 				}
 				if (undoList.size() <= this.maxBlocks) {
-					state = SimulationState.FINISHED;
+					state = SimulationState.PRUNE;
 				}
 			}
+		}
+
+		if (state == SimulationState.PRUNE) {
+			if (undoList != null) {
+				undoList.prune();
+			}
+			state = SimulationState.FINISHED;
 		}
 		
 		if (state == SimulationState.FINISHED) {

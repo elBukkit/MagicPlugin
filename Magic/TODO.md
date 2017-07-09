@@ -14,9 +14,7 @@
 
 ## Automata
  
- - Single-spell wands should show casting costs, change "Costs" to "Consumes"
  - Don't erase heart block for 1 tick, just include that material in the simulation
- - Prune UndoList
  - Sort UndoList by modified (re-insert on dupe?)
  - Special recursive death mode for Virus, maybe
 
