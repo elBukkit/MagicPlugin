@@ -12,6 +12,8 @@ worm:
            sound: entity_slime_attack
         -  class: EffectTrail
            particle: block_crack
+        tick:
+        - sound: entity_slime_attack
     levels:
         1: 100
         3: 40

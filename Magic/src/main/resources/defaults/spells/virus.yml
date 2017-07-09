@@ -12,6 +12,8 @@ virus:
            sound: entity_enderdragon_growl
         -  class: EffectTrail
            particle: block_crack
+        tick:
+        - sound: entity_enderdragon_growl
     levels:
         1: 100
         3: 40

@@ -12,6 +12,8 @@ hunter:
            sound: entity_endermen_scream
         -  class: EffectTrail
            particle: block_crack
+        tick:
+        - sound: entity_endermen_scream
     levels:
         1: 100
         3: 40
@@ -80,6 +82,7 @@ hunter_death:
            color: FACC2E
            firework: burst
            particle: explosion_large
+           sound: entity_endermen_death,0.3,2
     parameters:
         speed: 0.9
         direction: 0,0.8,0

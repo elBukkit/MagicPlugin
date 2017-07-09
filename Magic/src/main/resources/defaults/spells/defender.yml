@@ -12,6 +12,8 @@ defender:
            sound: entity_endermen_scream
         -  class: EffectTrail
            particle: block_crack
+        tick:
+        - sound: entity_endermen_scream
     spell_parameters: "loud true transparent air,$birth,$heart"
     cast:
         "defender_attack indestructible $birth,$heart": 100

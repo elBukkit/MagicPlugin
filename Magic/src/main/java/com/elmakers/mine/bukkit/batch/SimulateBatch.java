@@ -527,6 +527,7 @@ public class SimulateBatch extends SpellBatch {
 		}
 		
 		if (state == SimulationState.FINISHED) {
+			spell.playEffects("tick");
 			if (isAutomata) {
 				state = SimulationState.INITIALIZING;
 			} else {
