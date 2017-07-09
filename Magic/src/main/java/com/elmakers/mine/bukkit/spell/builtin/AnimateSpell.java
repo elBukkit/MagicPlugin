@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -139,8 +140,8 @@ public class AnimateSpell extends SimulateSpell
 		}
 
 		automataParameters.set("animate", automataName);
-
-		final Mage mage = controller.getMage("AUTOMATA-" + automataName, automataName);
+		String automataId = UUID.randomUUID().toString();
+		final Mage mage = controller.getMage(automataId, automataName);
 		mage.setLocation(targetBlock.getLocation());
 		mage.setQuiet(true);
 		final Spell spell = mage.getSpell(getKey());
