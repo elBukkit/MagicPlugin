@@ -1905,12 +1905,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return entity.isDead();
         }
         // Check for automata
-        CommandSender sender = getCommandSender();
-        if (sender == null || !(sender instanceof BlockCommandSender)) return true;
-        BlockCommandSender commandBlock = (BlockCommandSender) sender;
-        Block block = commandBlock.getBlock();
-        if (!block.getChunk().isLoaded()) return true;
-        return (block.getType() != Material.COMMAND);
+        if (isAutomaton) {
+            return !isValid();
+        }
+        return false;
     }
 
     @Override
