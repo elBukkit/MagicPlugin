@@ -545,4 +545,6 @@ public interface Mage extends CostReducer {
      */
     @Deprecated
     Wand getSoulWand();
+
+    boolean isAutomaton();
 }

@@ -169,6 +169,75 @@
                     "methodName": "playEffects",
                     "elementKind": "method",
                     "justification": "Playing wand FX may fail if no effects are assigned to the given type"
+                },
+                {
+                    "code": "java.method.numberOfParametersChanged",
+                    "old": "method com.elmakers.mine.bukkit.api.magic.Automaton com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(org.bukkit.block.Block)",
+                    "new": "method com.elmakers.mine.bukkit.api.magic.Mage com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(java.lang.String, java.lang.String)",
+                    "package": "com.elmakers.mine.bukkit.api.magic",
+                    "classSimpleName": "MageController",
+                    "methodName": "getAutomaton",
+                    "elementKind": "method",
+                    "justification": "Removing Automata API due to changes in how automata function"
+                },
+                {
+                    "code": "java.method.returnTypeChanged",
+                    "old": "method com.elmakers.mine.bukkit.api.magic.Automaton com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(org.bukkit.block.Block)",
+                    "new": "method com.elmakers.mine.bukkit.api.magic.Mage com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(java.lang.String, java.lang.String)",
+                    "oldType": "com.elmakers.mine.bukkit.api.magic.Automaton",
+                    "newType": "com.elmakers.mine.bukkit.api.magic.Mage",
+                    "package": "com.elmakers.mine.bukkit.api.magic",
+                    "classSimpleName": "MageController",
+                    "methodName": "getAutomaton",
+                    "elementKind": "method",
+                    "justification": "Removing Automata API due to changes in how automata function"
+                },
+                {
+                    "code": "java.method.removed",
+                    "old": "method boolean com.elmakers.mine.bukkit.api.magic.MageController::isAutomata(org.bukkit.block.Block)",
+                    "package": "com.elmakers.mine.bukkit.api.magic",
+                    "classSimpleName": "MageController",
+                    "methodName": "isAutomata",
+                    "elementKind": "method",
+                    "justification": "Removing Automata API due to changes in how automata function"
+                },
+                {
+                    "code": "java.method.removed",
+                    "old": "method void com.elmakers.mine.bukkit.api.magic.MageController::registerAutomata(org.bukkit.block.Block, java.lang.String, java.lang.String)",
+                    "package": "com.elmakers.mine.bukkit.api.magic",
+                    "classSimpleName": "MageController",
+                    "methodName": "registerAutomata",
+                    "elementKind": "method",
+                    "justification": "Removing Automata API due to changes in how automata function"
+                },
+                {
+                    "code": "java.method.removed",
+                    "old": "method boolean com.elmakers.mine.bukkit.api.magic.MageController::unregisterAutomata(org.bukkit.block.Block)",
+                    "package": "com.elmakers.mine.bukkit.api.magic",
+                    "classSimpleName": "MageController",
+                    "methodName": "unregisterAutomata",
+                    "elementKind": "method",
+                    "justification": "Removing Automata API due to changes in how automata function"
+                },
+                {
+                    "code": "java.method.returnTypeTypeParametersChanged",
+                    "old": "method java.util.Collection<com.elmakers.mine.bukkit.api.magic.Automaton> com.elmakers.mine.bukkit.api.magic.MagicAPI::getAutomata()",
+                    "new": "method java.util.Collection<com.elmakers.mine.bukkit.api.magic.Mage> com.elmakers.mine.bukkit.api.magic.MagicAPI::getAutomata()",
+                    "oldType": "java.util.Collection<com.elmakers.mine.bukkit.api.magic.Automaton>",
+                    "newType": "java.util.Collection<com.elmakers.mine.bukkit.api.magic.Mage>",
+                    "package": "com.elmakers.mine.bukkit.api.magic",
+                    "classSimpleName": "MagicAPI",
+                    "methodName": "getAutomata",
+                    "elementKind": "method",
+                    "justification": "Removing Automata API due to changes in how automata function"
+                },
+                {
+                    "code": "java.class.removed",
+                    "old": "interface com.elmakers.mine.bukkit.api.magic.Automaton",
+                    "package": "com.elmakers.mine.bukkit.api.magic",
+                    "classSimpleName": "Automaton",
+                    "elementKind": "interface",
+                    "justification": "Removing Automata API due to changes in how automata function"
                 }
             ]
         }

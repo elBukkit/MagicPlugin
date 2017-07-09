@@ -477,7 +477,7 @@ public interface MagicAPI {
      *
      * @return The list of currently known Automaton blocks.
      */
-    Collection<Automaton> getAutomata();
+    Collection<Mage> getAutomata();
 
     /**
      * Cast a specific Spell, with optional parameters.

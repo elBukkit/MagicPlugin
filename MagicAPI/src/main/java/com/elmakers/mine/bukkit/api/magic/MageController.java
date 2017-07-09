@@ -61,18 +61,6 @@ public interface MageController {
     File getConfigFolder();
 
     /**
-     * Check to see if the given block is part of an Automata.
-     *
-     * This currently only works if you specify the redstone block associated
-     * with the automata, though this will hopefully be improved in the future.
-     *
-     * @param block The block to check.
-     * @return True if this is an Automata's power source.
-     */
-    boolean isAutomata(Block block);
-    Automaton getAutomaton(Block block);
-
-    /**
      * Return a list of all known LostWand records.
      *
      * @return A list of all known LostWand data.
@@ -124,9 +112,6 @@ public interface MageController {
     Set<String> getWandPathKeys();
     WandUpgradePath getPath(String key);
 
-    void registerAutomata(Block block, String name, String message);
-    boolean unregisterAutomata(Block block);
-
     void updateBlock(Block block);
     void updateBlock(String worldName, int x, int y, int z);
     void updateVolume(String worldName, int minx, int miny, int minz, int maxx, int maxy, int maxz);
@@ -171,6 +156,7 @@ public interface MageController {
     Mage getMage(Entity entity);
     Mage getMage(String id, String name);
     Mage getRegisteredMage(String mageId);
+    Mage getAutomaton(String id, String name);
 
     Collection<String> getBrushKeys();
 

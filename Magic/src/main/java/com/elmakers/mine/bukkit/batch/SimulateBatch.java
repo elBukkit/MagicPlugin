@@ -39,7 +39,7 @@ public class SimulateBatch extends SpellBatch {
 	private static BlockFace[] POWER_FACES = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
-		INITIALIZING, SCANNING, UPDATING, TARGETING, HEART_UPDATE, REGISTER, DELAY, CLEANUP, FINISHED
+		INITIALIZING, SCANNING, UPDATING, TARGETING, HEART_UPDATE, DELAY, CLEANUP, FINISHED
 	};
 	
 	public enum TargetMode {
@@ -52,7 +52,7 @@ public class SimulateBatch extends SpellBatch {
 	
 	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
 
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	
 	private Mage mage;
 	private Block heartBlock;
@@ -74,7 +74,6 @@ public class SimulateBatch extends SpellBatch {
 	private int liveRangeSquared = 0;
 	private float fovWeight = 100;
 	private double huntFov = Math.PI * 1.8;
-	private boolean commandReload;
 	private int delay;
 	private long delayTimeout;
 	private World world;
@@ -155,9 +154,6 @@ public class SimulateBatch extends SpellBatch {
 		
 		// Kill power block
 		if (heartBlock != null) {
-			if (commandReload) {
-				controller.unregisterAutomata(heartBlock);
-			}
 			registerForUndo(heartBlock);
 			heartBlock.setType(Material.AIR);
 		}
@@ -481,17 +477,6 @@ public class SimulateBatch extends SpellBatch {
 					die();
 				}
 			}
-			state = SimulationState.REGISTER;
-		}
-		
-		if (state == SimulationState.REGISTER) {
-			if (commandReload) {
-				String automataName = this.automataName;
-				if (automataName == null || automataName.length() <= 1) {
-					automataName = controller.getMessages().get("automata.default_name");
-				}
-				controller.registerAutomata(heartTargetBlock, automataName, "automata.awaken");
-			}
 			delayTimeout = System.currentTimeMillis() + delay;
 			state = delay > 0 ? SimulationState.DELAY : SimulationState.CLEANUP;
 		}
@@ -615,7 +600,7 @@ public class SimulateBatch extends SpellBatch {
 				for (Mage mage : mages)
 				{
 					if (mage == this.mage) continue;
-					if (targetType == TargetType.AUTOMATON && mage.getPlayer() != null) continue;
+					if (targetType == TargetType.AUTOMATON && !mage.isAutomaton()) continue;
 					if (targetType == TargetType.PLAYER && mage.getPlayer() == null) continue;
 					if (mage.isDead() || !mage.isOnline() || !mage.hasLocation() || mage.isSuperProtected()) continue;
 					if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
@@ -689,8 +674,7 @@ public class SimulateBatch extends SpellBatch {
 		}
 	}
 	
-	public void setMoveRange(int commandRadius, boolean reload) {
-		commandReload = reload;
+	public void setMoveRange(int commandRadius) {
 		commandMoveRangeSquared = commandRadius * commandRadius;
 	}
 	

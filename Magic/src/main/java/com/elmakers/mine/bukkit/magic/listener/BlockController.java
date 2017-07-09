@@ -322,10 +322,4 @@ public class BlockController implements Listener {
             }
         }
     }
-
-    @EventHandler
-    public void onChunkLoad(ChunkLoadEvent e) {
-        // Check for any blocks we need to toggle.
-        controller.triggerBlockToggle(e.getChunk());
-    }
 }

@@ -18,6 +18,7 @@
    - Automata no longer use command blocks
    - Automata are reflective, except for the redstone
    - Re-balance automata drops and resurrection costs to avoid abuse
+   - Removed automata.yml, automata now just despawn on chunk onload and server restart
  - Blast and Collapse are now projectiles
  - SP Earn Bonus (Mana Talisman) will work on SP item pickups
  - Mana Talisman set to keep on death

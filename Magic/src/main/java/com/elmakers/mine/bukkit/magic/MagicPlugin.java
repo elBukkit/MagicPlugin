@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -319,8 +318,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 	
 	@Override
-	public Collection<Automaton> getAutomata() {
-		Collection<Automaton> automata = new ArrayList<>();
+	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getAutomata() {
+		Collection<com.elmakers.mine.bukkit.api.magic.Mage> automata = new ArrayList<>();
 		automata.addAll(controller.getAutomata());
 		return automata;
 	}

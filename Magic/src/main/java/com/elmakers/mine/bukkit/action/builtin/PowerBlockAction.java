@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -75,15 +74,9 @@ public class PowerBlockAction extends BaseSpellAction {
             wireData.setData((byte)(15 - wireData.getData()));
             powerBlock = true;
         } else if (material == Material.REDSTONE_BLOCK) {
-            // A work-around for double-powering Automata.
-            // It'd be really cool to maybe find the associated command
-            // block and temporarily disable it, or something.
-            Automaton automaton = controller.getAutomaton(block);
-            if (automaton == null || automaton.getCreatedTime() < System.currentTimeMillis() - 30000) {
-                context.registerForUndo(block);
-                block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
-                controller.getRedstoneReplacement().modify(block, applyPhysics);
-            }
+            context.registerForUndo(block);
+            block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
+            controller.getRedstoneReplacement().modify(block, applyPhysics);
         } else if (material == Material.REDSTONE_TORCH_OFF) {
             context.registerForUndo(block);
             block.setType(Material.REDSTONE_TORCH_ON);

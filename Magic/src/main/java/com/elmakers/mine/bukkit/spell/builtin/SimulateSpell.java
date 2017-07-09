@@ -174,7 +174,7 @@ public class SimulateSpell extends BlockSpell {
 					controller.getLogger().warning(ex.getMessage());
 				}
 			}
-			batch.setMoveRange(parameters.getInt("move", 3),  parameters.getBoolean("reload", true));
+			batch.setMoveRange(parameters.getInt("move", 3));
 			
 			SimulateBatch.TargetType targetType = null;
 			String targetTypeString = parameters.getString("targets", "");

@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Effect;
@@ -440,15 +439,9 @@ public class ConstructBatch extends BrushBatch {
 				wireData.setData((byte)(15 - wireData.getData()));
 				powerBlock = true;
 			} else if (material == Material.REDSTONE_BLOCK) {
-                // A work-around for double-powering Automata.
-                // It'd be really cool to maybe find the associated command
-                // block and temporarily disable it, or something.
-                Automaton automaton = controller.getAutomaton(block);
-                if (automaton == null || automaton.getCreatedTime() < System.currentTimeMillis() - 30000) {
-                    registerForUndo(block);
-                    block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
-                    controller.getRedstoneReplacement().modify(block, applyPhysics);
-                }
+				registerForUndo(block);
+				block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
+				controller.getRedstoneReplacement().modify(block, applyPhysics);
 			} else if (material == Material.REDSTONE_TORCH_OFF) {
 				registerForUndo(block);
 				block.setType(Material.REDSTONE_TORCH_ON);

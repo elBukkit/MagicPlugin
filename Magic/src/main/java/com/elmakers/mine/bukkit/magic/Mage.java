@@ -175,6 +175,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long fallProtection = 0;
     private long fallProtectionCount = 1;
     private BaseSpell fallingSpell = null;
+    private boolean isAutomaton = false;
 
     private boolean gaveWelcomeWand = false;
 
@@ -3293,6 +3294,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!VaultController.hasEconomy() || !isPlayer()) return false;
         VaultController.getInstance().withdrawPlayer(getPlayer(), delta);
         return true;
+    }
+
+    public void setIsAutomaton(boolean automaton) {
+        this.isAutomaton = automaton;
+    }
+
+    @Override
+    public boolean isAutomaton() {
+        return isAutomaton;
     }
 }
 

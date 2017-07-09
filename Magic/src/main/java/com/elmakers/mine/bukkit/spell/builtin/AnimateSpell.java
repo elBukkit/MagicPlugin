@@ -141,7 +141,7 @@ public class AnimateSpell extends SimulateSpell
 
 		automataParameters.set("animate", automataName);
 		String automataId = UUID.randomUUID().toString();
-		final Mage mage = controller.getMage(automataId, automataName);
+		final Mage mage = controller.getAutomaton(automataId, automataName);
 		mage.setLocation(targetBlock.getLocation());
 		mage.setQuiet(true);
 		final Spell spell = mage.getSpell(getKey());

@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.block.BlockData;
-import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -456,10 +455,10 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 		}
 
 		if (listCommand.equalsIgnoreCase("automata")) {
-			Collection<Automaton> automata = api.getAutomata();
-			for (Automaton automaton : automata) {
-				BlockVector location = automaton.getPosition();
-				String worldName = automaton.getWorldName();
+			Collection<Mage> automata = api.getAutomata();
+			for (Mage automaton : automata) {
+				Location location = automaton.getLocation();
+				String worldName = location.getWorld().getName();
 				boolean isOnline = false;
 				World world = Bukkit.getWorld(worldName);
 				if (worldName != null) {
@@ -509,6 +508,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				ChatColor mageColor = ChatColor.YELLOW;
 				if (mage instanceof com.elmakers.mine.bukkit.magic.Mage && ((com.elmakers.mine.bukkit.magic.Mage)mage).isForget()) {
 					mageColor = ChatColor.RED;
+				} else if (mage.isAutomaton()) {
+					mageColor = ChatColor.GOLD;
 				}
 				String mageType = mageEntity == null ? "Non-Entity" : mageEntity.getType().name();
 				String message = ChatColor.AQUA + "Mage " + mageColor + mage.getId()

@@ -24,7 +24,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
-import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -177,6 +176,13 @@ public class MagicController implements MageController {
             return null;
         }
         return mages.get(mageId);
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.magic.Mage getAutomaton(String mageId, String mageName) {
+        com.elmakers.mine.bukkit.magic.Mage mage = getMage(mageId, mageName, null, null);
+        mage.setIsAutomaton(true);
+        return mage;
     }
 
     @Override
@@ -1611,10 +1617,6 @@ public class MagicController implements MageController {
                 getLogger().info("Loading lost wand data");
                 loadLostWands();
 
-                // Load toggle-on-load blocks
-                getLogger().info("Loading automata data");
-                loadAutomata();
-
                 // Load URL Map Data
                 try {
                     maps.resetAll();
@@ -1692,51 +1694,6 @@ public class MagicController implements MageController {
             stores.add(lostWandsConfiguration);
         } catch (Throwable ex) {
             getLogger().warning("Error saving lost wand data for " + lastKey);
-            ex.printStackTrace();
-        }
-    }
-
-    protected void loadAutomata() {
-        int automataCount = 0;
-        try {
-            ConfigurationSection toggleBlockData = loadDataFile(AUTOMATA_FILE);
-            if (toggleBlockData != null) {
-                Set<String> chunkIds = toggleBlockData.getKeys(false);
-                for (String chunkId : chunkIds) {
-                    ConfigurationSection chunkNode = toggleBlockData.getConfigurationSection(chunkId);
-                    Map<Long, Automaton> restoreChunk = new HashMap<>();
-                    automata.put(chunkId, restoreChunk);
-                    Set<String> blockIds = chunkNode.getKeys(false);
-                    for (String blockId : blockIds) {
-                        ConfigurationSection toggleConfig = chunkNode.getConfigurationSection(blockId);
-                        Automaton toggle = new Automaton(toggleConfig);
-                        restoreChunk.put(toggle.getId(), toggle);
-                        automataCount++;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        getLogger().info("Loaded " + automataCount + " automata");
-    }
-
-    protected void saveAutomata(Collection<YamlDataFile> stores) {
-        try {
-            YamlDataFile automataData = createDataFile(AUTOMATA_FILE);
-            for (Entry<String, Map<Long, Automaton>> toggleEntry : automata.entrySet()) {
-                Collection<Automaton> blocks = toggleEntry.getValue().values();
-                if (blocks.size() > 0) {
-                    ConfigurationSection chunkNode = automataData.createSection(toggleEntry.getKey());
-                    for (Automaton block : blocks) {
-                        ConfigurationSection node = chunkNode.createSection(Long.toString(block.getId()));
-                        block.save(node);
-                    }
-                }
-            }
-            stores.add(automataData);
-        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -1861,7 +1818,6 @@ public class MagicController implements MageController {
         info("Saving " + saveMages.size() + " players");
 		saveSpellData(saveData);
 		saveLostWands(saveData);
-		saveAutomata(saveData);
 
         if (mageDataStore != null) {
             if (asynchronous) {
@@ -2925,10 +2881,12 @@ public class MagicController implements MageController {
 		return new ArrayList<com.elmakers.mine.bukkit.api.wand.LostWand>(lostWands.values());
 	}
 	
-	public Collection<Automaton> getAutomata() {
-		Collection<Automaton> all = new ArrayList<>();
-		for (Map<Long, Automaton> chunkList : automata.values()) {
-			all.addAll(chunkList.values());
+	public Collection<Mage> getAutomata() {
+		Collection<Mage> all = new ArrayList<>();
+		for (Mage mage : mages.values()) {
+		    if (mage.isAutomaton()) {
+                all.add(mage);
+            }
 		}
 		return all;
 	}
@@ -3024,46 +2982,6 @@ public class MagicController implements MageController {
         return welcomeWand;
     }
 	
-	public void triggerBlockToggle(final Chunk chunk) {
-		String chunkKey = getChunkKey(chunk);
-		Map<Long, Automaton> chunkData = automata.get(chunkKey);
-		if (chunkData != null) {
-			final List<Automaton> restored = new ArrayList<>();
-			Collection<Long> blockKeys = new ArrayList<>(chunkData.keySet());
-			long timeThreshold = System.currentTimeMillis() - toggleCooldown;
-			for (Long blockKey : blockKeys) {
-				Automaton toggleBlock = chunkData.get(blockKey);
-				
-				// Skip it for now if the chunk was recently loaded
-				if (toggleBlock.getCreatedTime() < timeThreshold) {
-					Block current = toggleBlock.getBlock();
-					// Don't toggle the block if it has changed to something else.
-					if (current.getType() == toggleBlock.getMaterial()) {
-                        redstoneReplacement.modify(current, true);
-						restored.add(toggleBlock);
-					}
-					
-					chunkData.remove(blockKey);
-				}
-			}
-			if (restored.size() > 0) {
-                // Hacky double-hit ...
-				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, 
-					new Runnable() {
-						@Override
-                        public void run() {
-							for (Automaton restoreBlock : restored) {
-								restoreBlock.restore(true);
-							}
-						}
-				}, 5);
-			}
-			if (chunkData.size() == 0) {
-				automata.remove(chunkKey);
-			}
-		}
-	}
-	
 	public void sendToMages(String message, Location location, int range) {
 		int rangeSquared = range * range;
 		if (message != null && message.length() > 0) {
@@ -3076,30 +2994,6 @@ public class MagicController implements MageController {
 				}
 			}
 		}
-	}
-    
-    @Override
-    public Automaton getAutomaton(Block block) {
-        String chunkId = getChunkKey(block);
-        Map<Long, Automaton> toReload = automata.get(chunkId);
-        if (toReload != null) {
-            return toReload.get(BlockData.getBlockId(block));
-        }
-        return null;
-    }
-
-	/*
-	 * API Implementation
-	 */
-	
-	@Override
-	public boolean isAutomata(Block block) {
-		String chunkId = getChunkKey(block);
-		Map<Long, Automaton> toReload = automata.get(chunkId);
-		if (toReload != null) {
-			return toReload.containsKey(BlockData.getBlockId(block));
-		}
-		return false;
 	}
 
     @Override
@@ -3239,37 +3133,6 @@ public class MagicController implements MageController {
 	@Override
 	public void sendToMages(String message, Location location) {
 		sendToMages(message, location, toggleMessageRange);
-	}
-	
-	@Override
-	public void registerAutomata(Block block, String name, String message) {
-		String chunkId = getChunkKey(block);
-        if (chunkId == null) return;
-
-		Map<Long, Automaton> toReload = automata.get(chunkId);
-		if (toReload == null) {
-			toReload = new HashMap<>();
-			automata.put(chunkId, toReload);
-		}
-		Automaton data = new Automaton(block, name, message);
-		toReload.put(data.getId(), data);
-	}
-
-	@Override
-	public boolean unregisterAutomata(Block block) {
-        // Note that we currently don't clean up an empty entry,
-		// purposefully, to prevent thrashing the main map and adding lots
-		// of HashMap creation.
-		String chunkId = getChunkKey(block);
-		Map<Long, Automaton> toReload = automata.get(chunkId);
-		if (toReload != null) {
-			toReload.remove(BlockData.getBlockId(block));
-            if (toReload.size() == 0) {
-                automata.remove(chunkId);
-            }
-		}
-		
-		return toReload != null;
 	}
 	
 	@Override
@@ -5076,7 +4939,6 @@ public class MagicController implements MageController {
     
     private final String						LOST_WANDS_FILE				= "lostwands";
     private final String						SPELLS_DATA_FILE			= "spells";
-    private final String						AUTOMATA_FILE				= "automata";
     private final String						URL_MAPS_FILE				= "imagemaps";
 
     private boolean                             disableDefaultSpells        = false;
@@ -5224,7 +5086,6 @@ public class MagicController implements MageController {
 
     private PhysicsHandler						physicsHandler				= null;
 
-    private Map<String, Map<Long, Automaton>> 	automata			    	= new HashMap<>();
     private Map<String, LostWand>				lostWands					= new HashMap<>();
     private Map<String, Set<String>>		 	lostWandChunks				= new HashMap<>();
 
