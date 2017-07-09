@@ -49,10 +49,8 @@ public class SimulateBatch extends SpellBatch {
 	public enum TargetType {
 		PLAYER, MAGE, MOB, AUTOMATON, ANY
 	};
-	
-	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	
 	private Mage mage;
 	private Block heartBlock;
@@ -79,6 +77,7 @@ public class SimulateBatch extends SpellBatch {
 	private World world;
 	private MaterialAndData birthMaterial;
 	private Material deathMaterial;
+	private Material heartMaterial;
 	private boolean isAutomata;
 	private int radius;
 	private int x;
@@ -184,7 +183,7 @@ public class SimulateBatch extends SpellBatch {
 		}
 
 		if (level != null) {
-			level.onDeath(mage, birthMaterial);
+			level.onDeath(mage, birthMaterial, heartMaterial);
 		}
 	}
 
@@ -320,7 +319,7 @@ public class SimulateBatch extends SpellBatch {
 				}
 				
 				// Check for death since activation (e.g. during delay period)
-				if (heartBlock.getType() != POWER_MATERIAL) {
+				if (heartBlock.getType() != heartMaterial) {
 					if (DEBUG) {
 						controller.getLogger().info("DIED, no Heart at : " + heartBlock);
 					}
@@ -468,7 +467,7 @@ public class SimulateBatch extends SpellBatch {
 						com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(heartTargetBlock);
 					}
 					registerForUndo(heartTargetBlock);
-					heartTargetBlock.setType(POWER_MATERIAL);
+					heartTargetBlock.setType(heartMaterial);
 					heartBlock = heartTargetBlock;
 					Location newLocation = heartTargetBlock.getLocation();
 					newLocation.setPitch(center.getPitch());
@@ -485,7 +484,7 @@ public class SimulateBatch extends SpellBatch {
 
 		if (state == SimulationState.DELAY) {
 			processedBlocks++;
-			if (heartBlock != null && heartBlock.getType() != POWER_MATERIAL) {
+			if (heartBlock != null && heartBlock.getType() != heartMaterial) {
 				if (DEBUG) {
 					controller.getLogger().info("DIED, no Heart at : " + heartBlock);
 				}
@@ -512,7 +511,7 @@ public class SimulateBatch extends SpellBatch {
 				// make sure we didn't undo the heart
 				if (undid && heartBlock != null) {
 					registerForUndo(heartBlock);
-					heartBlock.setType(POWER_MATERIAL);
+					heartBlock.setType(heartMaterial);
 				}
 				if (undoList.size() <= this.maxBlocks) {
 					state = SimulationState.FINISHED;
@@ -655,7 +654,7 @@ public class SimulateBatch extends SpellBatch {
 				*/
 				
 				if (level != null && center.distanceSquared(bestTarget.getLocation()) < castRange * castRange) {
-					level.onTick(mage, birthMaterial);
+					level.onTick(mage, birthMaterial, heartMaterial);
 				}
 				
 				// After ticking, re-position for movement. This way spells still fire towards the target.
@@ -765,5 +764,9 @@ public class SimulateBatch extends SpellBatch {
 
 	public void setMaxBlocks(int maxBlocks) {
 		this.maxBlocks = maxBlocks;
+	}
+
+	public void setHeartMaterial(Material material) {
+		this.heartMaterial = material;
 	}
 }

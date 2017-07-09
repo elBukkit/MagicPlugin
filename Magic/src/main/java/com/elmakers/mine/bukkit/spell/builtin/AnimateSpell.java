@@ -12,7 +12,6 @@ import java.util.UUID;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.batch.SimulateBatch;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -99,7 +98,16 @@ public class AnimateSpell extends SimulateSpell
 		}
 
 		// TODO: Have the batch do this after a few ticks
-		targetBlock.setType(SimulateBatch.POWER_MATERIAL);
+		Material heartMaterial = Material.REDSTONE_BLOCK;
+		String heartMaterialName = parameters.getString("heart_material", "");
+		if (!heartMaterialName.isEmpty()) {
+			try {
+				heartMaterial = Material.valueOf(heartMaterialName.toUpperCase());
+			} catch (Exception ex) {
+				controller.getLogger().warning("Invalid heart material: " + heartMaterialName);
+			}
+		}
+		targetBlock.setType(heartMaterial);
 		
 		// Look for randomized levels
 		int level = 0;

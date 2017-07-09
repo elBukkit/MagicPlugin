@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.elmakers.mine.bukkit.batch.SimulateBatch;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -122,25 +123,25 @@ public class AutomatonLevel {
 		return this.dropXp != null ? this.dropXp : dropXp;
 	}
 	
-	public void onDeath(Mage mage, MaterialAndData birthMaterial) {
+	public void onDeath(Mage mage, MaterialAndData birthMaterial, Material heartMaterial) {
 		if (deathSpells != null && deathSpells.size() > 0) {
 			String deathSpell = RandomUtils.weightedRandom(deathSpells);
 			if (deathSpell != null && deathSpell.length() > 0) {
-				castSpell(deathSpell, mage, birthMaterial);
+				castSpell(deathSpell, mage, birthMaterial, heartMaterial);
 			}
 		}
 	}
 	
-	public void onTick(Mage mage, MaterialAndData birthMaterial) {
+	public void onTick(Mage mage, MaterialAndData birthMaterial, Material heartMaterial) {
 		if (tickSpells != null && tickSpells.size() > 0) {
 			String tickSpell = RandomUtils.weightedRandom(tickSpells);
 			if (tickSpell.length() > 0) {
-				castSpell(tickSpell, mage, birthMaterial);
+				castSpell(tickSpell, mage, birthMaterial, heartMaterial);
 			}
 		}
 	}
 	
-	protected void castSpell(String spellCommand, Mage mage, MaterialAndData birthMaterial) {
+	protected void castSpell(String spellCommand, Mage mage, MaterialAndData birthMaterial, Material heartMaterial) {
 		if (spellCommand == null || spellCommand.length() == 0 || spellCommand.equals("none")) return;
 
 		spellCommand = spellCommand + " " + spellParameters;
@@ -155,7 +156,7 @@ public class AutomatonLevel {
 			parameters = new String[pieces.length - 1];
 			for (int i = 1; i < pieces.length; i++) {
 				parameters[i - 1] = pieces[i].replace("$birth", birthMaterial.getMaterial().name().toLowerCase())
-						.replace("$heart", SimulateBatch.POWER_MATERIAL.name().toLowerCase());
+						.replace("$heart", heartMaterial.name().toLowerCase());
 			}
 		}
 

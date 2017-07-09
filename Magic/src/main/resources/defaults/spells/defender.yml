@@ -29,7 +29,7 @@ defender:
         yradius: 12
         birth_range: 6
         live_range: 6
-        delay: 1000
+        delay: 200
         target_mode: hunt
         targets: automaton
         target_min_range: 0
@@ -45,6 +45,7 @@ defender:
         message_type: good
         undo: 7000
         reflect_chance: 0.25
+        heart_material: lapis_block
     costs:
         xp: 50
         sp: 20
@@ -107,9 +108,11 @@ defender_attack:
         target: block
         allow_max_range: false
         range: 24
-        check_destructible: false
+        check_destructible: true
         radius: 3
         transparent: transparent_to_construction
+        destructible: destructible,destructible2,destructible3
         undo: 5000
-        brush: stained_glass|1
+        brush: stained_glass|9
+        bypass_backfire: true
 

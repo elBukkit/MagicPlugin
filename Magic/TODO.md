@@ -14,13 +14,11 @@
 
 ## Automata
  
- - Defender is broken - fix it! Also improve it.
- - Special recursive death mode for Virus, maybe
+ - Single-spell wands should show casting costs, change "Costs" to "Consumes"
  - Don't erase heart block for 1 tick, just include that material in the simulation
- - Allow custom heart blocks, give defender lapis
  - Prune UndoList
  - Sort UndoList by modified (re-insert on dupe?)
- - Add birth+heart to indestructible list
+ - Special recursive death mode for Virus, maybe
 
 ## 6.9.13
  

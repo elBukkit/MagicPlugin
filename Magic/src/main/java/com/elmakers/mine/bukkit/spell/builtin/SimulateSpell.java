@@ -157,6 +157,16 @@ public class SimulateSpell extends BlockSpell {
 			batch.setDiagonalBirthRules(ConfigurationUtils.getIntegerList(parameters, "diagonal_birth_rules"));
 		}
 
+		Material heartMaterial = Material.REDSTONE_BLOCK;
+		String heartMaterialName = parameters.getString("heart_material", "");
+		if (!heartMaterialName.isEmpty()) {
+			try {
+				heartMaterial = Material.valueOf(heartMaterialName.toUpperCase());
+			} catch (Exception ex) {
+				controller.getLogger().warning("Invalid heart material: " + heartMaterialName);
+			}
+		}
+		batch.setHeartMaterial(heartMaterial);
 		batch.setReflectChange(parameters.getDouble("reflect_chance", 0));
 		batch.setBirthRange(parameters.getInt("birth_range", 0));
 		batch.setLiveRange(parameters.getInt("live_range", 0));
