@@ -1,0 +1,32 @@
+
+birth_hunter:
+  icon: diamond_axe:17
+  actions:
+    cast:
+    - class: Command
+  parameters:
+    command: cast hunter material quartz_block seed_radius 2
+
+birth_defender:
+  icon: diamond_axe:17
+  actions:
+    cast:
+    - class: Command
+  parameters:
+    command: cast defender material pumpkin seed_radius 2
+
+birth_worm:
+  icon: diamond_axe:17
+  actions:
+    cast:
+    - class: Command
+  parameters:
+    command: cast worm material melon_block seed_radius 2
+
+birth_virus:
+  icon: diamond_axe:17
+  actions:
+    cast:
+    - class: Command
+  parameters:
+    command: cast virus material huge_mushroom_1 seed_radius 2

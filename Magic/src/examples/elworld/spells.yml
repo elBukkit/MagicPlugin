@@ -2217,39 +2217,3 @@ elevator:
     source_pitch: 90
     range: 10
     fov: 4
-
-birth_hunter:
-  name: Create Hunter
-  icon: command
-  actions:
-    cast:
-    - class: Command
-  parameters:
-    command: cast hunter material quartz_block seed_radius 2
-
-birth_defender:
-  name: Create Defender
-  icon: command
-  actions:
-    cast:
-    - class: Command
-  parameters:
-    command: cast defender material pumpkin seed_radius 2
-
-birth_worm:
-  name: Create Worm
-  icon: command
-  actions:
-    cast:
-    - class: Command
-  parameters:
-    command: cast worm material melon_block seed_radius 2
-
-birth_virus:
-  name: Create Virus
-  icon: command
-  actions:
-    cast:
-    - class: Command
-  parameters:
-    command: cast virus material huge_mushroom_1 seed_radius 2

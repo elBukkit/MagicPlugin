@@ -1488,3 +1488,11 @@ spells:
       name: Backflip
       descripttion: Quickly move backwards to evade your foes
       fail: "a:There's nowhere to go!"
+    birth_hunter:
+      name: Create Hunter
+    birth_defender:
+      name: Create Defender
+    birth_worm:
+      name: Create Worm
+    birth_virus:
+      name: Create Virus

@@ -1,0 +1,18 @@
+science:
+  inherit: base_wand
+  icon: wood_hoe:6
+  active_spell: levitate|5
+  cost_reduction: 2
+  cooldown_reduction: 2
+  hotbar_count: 2
+  spells:
+  - levitate|5
+  - blink|6
+  - birth_hunter
+  - birth_worm
+  - birth_virus
+  - birth_defender
+  - counterspell|2
+  - blast|4
+  - disintegrate
+  - phase

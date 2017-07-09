@@ -358,3 +358,6 @@ wands:
     extinguisher:
         name: Extinguisher
         description: Puts out fires
+    science:
+        name: For Science!
+        description: For testing automata
