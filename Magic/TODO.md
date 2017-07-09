@@ -12,6 +12,16 @@
  - or even easier .. set the dirtyCount of the player chunk to 64, and update the h field with the chunk sections that you modified
  - and make sure to call playerChunkMap.a(playerChunk); to schedule an update
 
+## Automata
+ 
+ - Defender is broken - fix it! Also improve it.
+ - Special recursive death mode for Virus, maybe
+ - Don't erase heart block for 1 tick, just include that material in the simulation
+ - Allow custom heart blocks, give defender lapis
+ - Prune UndoList
+ - Sort UndoList by modified (re-insert on dupe?)
+ - Add birth+heart to indestructible list
+
 ## 6.9.13
  
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)

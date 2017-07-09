@@ -37,7 +37,8 @@ worm:
         "homing|3": 20,30,50
         "missile|3": 100,150,250
         "petrify|2": 30,50,70
-        "shell stained_glass:15 radius 3 undo 7000": 20,40,80
+        "shell stained_glass:15 radius 3 undo 7000 indestructible $birth,$heart": 20,40,80
+        "railgun indestructible $birth,$heart": 20,40,80
         "none": 20,10,5
     parameters:
         allow_max_range: false

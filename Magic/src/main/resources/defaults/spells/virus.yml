@@ -33,13 +33,15 @@ virus:
         "petrify|3": 30,50,70
         "shuriken|3": 30,50,70
         "kill": 5,20,30
-        "shell|2": 15,40,50
-        "blob|2": 5,20,30
+        "shell|2 indestructible $birth,$heart": 15,40,50
+        "blob|2 indestructible $birth,$heart": 5,20,30
+        "railgun indestructible $birth,$heart": 20,40,80
         "poison": 5,20,30
         "none": 100,80,50
     death_cast:
-        neutron: 100,200,300
-        fury: 20,50,100
+        neutron: 50,80,100
+        fury: 20,150,120
+        meteor: 60,50,90
     parameters:
         allow_max_range: false
         transparent: transparent_to_construction
@@ -55,7 +57,6 @@ virus:
         - sp:75
         restricted: restricted_animate
         message_type: evil
-        concurrent: false
         targets: any
         target_mode: hunt
         concurrent: true

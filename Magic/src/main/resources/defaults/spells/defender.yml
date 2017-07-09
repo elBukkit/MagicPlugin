@@ -14,8 +14,8 @@ defender:
            particle: block_crack
     spell_parameters: "loud true transparent air,$birth,$heart"
     cast:
-        "convert brush stained_glass|1 radius 3 undo 5000": 100
-        "none": 1000
+        "defender_attack indestructible $birth,$heart": 100
+        "none": 500
     death_cast:
         "defender_death destructible $birth,$heart": 100
     parameters:
@@ -29,8 +29,6 @@ defender:
         yradius: 12
         birth_range: 6
         live_range: 6
-        target_min_range: 0
-        target_max_range: 0
         delay: 1000
         target_mode: hunt
         targets: automaton
@@ -81,3 +79,37 @@ defender_death:
         target: self
         radius: 7
         check_destructible: true
+
+defender_attack:
+    name: Defender Attack
+    icon: diamond_axe:112
+    icon_disabled: diamond_hoe:112
+    category: engineering
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_stone_break
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: block_crack
+             particleCount: 3
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 24
+        check_destructible: false
+        radius: 3
+        transparent: transparent_to_construction
+        undo: 5000
+        brush: stained_glass|1
+
