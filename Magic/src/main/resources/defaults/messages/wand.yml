@@ -60,8 +60,8 @@ wand:
     super_powered: "&3Superpowered"
     super_protected: "&3Invulnerability"
     spell_aura: "&bAura: &6$spell"
-    costs_description: Costs $description
-    active_costs_description: Costs $description Per Second
+    costs_description: Consumes $description
+    active_costs_description: Consumes $description Per Second
     range_description: "&9Range: &6$range &9meters"
     owner_description: "&2&o$name's Wand"
     bound_description: "&3&oBound to $name"
