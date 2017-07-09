@@ -32,7 +32,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         this.amount = cost;
         if (key.toLowerCase().equals("xp")) {
             this.type = Type.XP;
-        } if (key.toLowerCase().equals("sp")) {
+        } else if (key.toLowerCase().equals("sp")) {
             this.type = Type.SP;
         } else if (key.toLowerCase().equals("mana")) {
             this.type = Type.MANA;
