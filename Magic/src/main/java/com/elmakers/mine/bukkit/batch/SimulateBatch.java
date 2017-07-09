@@ -304,6 +304,8 @@ public class SimulateBatch extends SpellBatch {
 			z = 0;
 			r = 0;
 			updatingIndex = 0;
+			bornBlocks.clear();
+			deadBlocks.clear();
 
 			// Process the casting first, and only if specially configured to do so.
 			if (isAutomata) {
