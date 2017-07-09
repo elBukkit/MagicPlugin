@@ -361,3 +361,6 @@ wands:
     science:
         name: For Science!
         description: For testing automata
+    potion_sp100:
+        name: SP Potion
+        description: Drink to gain 100 SP

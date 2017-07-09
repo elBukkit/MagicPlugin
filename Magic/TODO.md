@@ -18,11 +18,12 @@
  - Sort UndoList by modified (re-insert on dupe?)
  - Special recursive death mode for Virus, maybe
 
-## 6.9.13
- 
+## High-Priority
+
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  - PW would like some custom lore for wand "quiet" and quick cast settings.
- 
+ - Recall warps don't show up with /mage describe?
+  
 ## 7.0
 
  - Maybe reconsider config-collapsing approach, switch to routing on get/set ?
@@ -46,10 +47,6 @@
 
  - Integration with character attribute modifiers. Would be nice to expand Magic's power system to fit this better
  - Heroes skill configs don't seem to work on first run?
-
-## High-Priority
-
- - Recall warps don't show up with /mage describe?
   
 ## Not so High-Priority
  

@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -39,6 +40,7 @@ import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -732,6 +734,24 @@ public class PlayerController implements Listener {
 
         if (!mage.hasStoredInventory() && isWand) {
             mage.checkWandNextTick();
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onConsume(PlayerItemConsumeEvent event) {
+        ItemStack item = event.getItem();
+        if (!item.hasItemMeta()) return;
+
+        // The item we get passed in this event is a shallow bukkit copy.
+        item = CompatibilityUtils.makeReal(item);
+
+        String consumeSpell = controller.getWandProperty(item, "consume_spell", "");
+        if (!consumeSpell.isEmpty()) {
+            Mage mage = controller.getMage(event.getPlayer());
+            Spell spell = mage.getSpell(consumeSpell);
+            if (spell != null) {
+                spell.cast();
+            }
         }
     }
 }
