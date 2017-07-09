@@ -4166,6 +4166,11 @@ public class MagicController implements MageController {
         if (itemSection == null) {
             return null;
         }
+        // Fix up busted items
+        if (itemSection.getInt("amount", 0) == 0) {
+            itemSection.set("amount", 1);
+        }
+
         ItemStack item = itemSection.getItemStack("item");
         if (item == null) {
             return null;

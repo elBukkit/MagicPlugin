@@ -208,7 +208,11 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             Set<String> keys = wands.getKeys(false);
             for (String key : keys) {
                 ItemStack boundWand = controller.deserialize(wands, key);
-                boundWands.put(key, boundWand);
+                if (boundWand == null) {
+                    controller.getLogger().warning("Error loading bound wand: " + key);
+                } else {
+                    boundWands.put(key, boundWand);
+                }
             }
             data.setBoundWands(boundWands);
         }
