@@ -70,6 +70,7 @@ virus:
         undo_speed: 20
         reflect_chance: 0.95
         max_blocks: 5000
+        command_block_allowed: false
     costs:
         xp: 400
         sp: 150

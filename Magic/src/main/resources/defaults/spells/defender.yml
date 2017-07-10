@@ -48,6 +48,7 @@ defender:
         undo: 7000
         reflect_chance: 0.25
         heart_material: lapis_block
+        command_block_allowed: false
     costs:
         xp: 50
         sp: 20

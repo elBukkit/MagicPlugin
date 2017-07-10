@@ -49,6 +49,7 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -206,6 +207,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean cancellable               = true;
     protected boolean quickCast                 = false;
     protected boolean cancelEffects = false;
+    protected boolean commandBlockAllowed       = true;
     protected int                               verticalSearchDistance  = 8;
 
     private boolean backfired                   = false;
@@ -1051,6 +1053,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
         processParameters(workingParameters);
 
+        // Check to see if this is allowed to be cast by a command block
+        if (!commandBlockAllowed) {
+            CommandSender sender = mage.getCommandSender();
+            if (sender != null && sender instanceof BlockCommandSender) {
+                Block block = mage.getLocation().getBlock();
+                if (block.getType() == Material.COMMAND) {
+                    block.setType(Material.AIR);
+                }
+                return false;
+            }
+        }
+
         // Allow other plugins to cancel this cast
         PreCastEvent preCast = new PreCastEvent(mage, this);
         Bukkit.getPluginManager().callEvent(preCast);
@@ -1584,6 +1598,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
         cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
         cancelOnNoPermission = parameters.getBoolean("cancel_on_no_permission", false);
+        commandBlockAllowed = parameters.getBoolean("command_block_allowed", true);
 
         if (parameters.contains("prevent_passthrough")) {
             preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));

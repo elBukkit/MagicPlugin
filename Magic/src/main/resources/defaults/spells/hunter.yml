@@ -62,6 +62,7 @@ hunter:
         message_type: evil
         undo: 5000
         reflect_chance: 0.85
+        command_block_allowed: false
     costs:
         xp: 200
         sp: 80

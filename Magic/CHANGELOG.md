@@ -14,6 +14,10 @@
    - All other properties are still tied to the wand items
 
 ## 6.9.14
+ - Automata:
+   - Can't be spawned from command blocks, will erase any old command blocks from previous automata
+   - Added some more name suffixes and prefixes
+   - Increase spell attack range
 
 ## 6.9.13
  - More Automata changes:
