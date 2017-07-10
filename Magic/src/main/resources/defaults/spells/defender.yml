@@ -109,12 +109,12 @@ defender_attack:
     parameters:
         target: block
         allow_max_range: false
-        range: 24
+        range: 8
         check_destructible: true
         radius: 3
         transparent: transparent_to_construction
         destructible: destructible,destructible2,destructible3
-        undo: 5000
+        undo: 3000
         brush: stained_glass|9
         bypass_backfire: true
 
