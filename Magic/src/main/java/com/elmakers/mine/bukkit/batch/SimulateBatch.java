@@ -673,6 +673,10 @@ public class SimulateBatch extends SpellBatch {
 						direction.setY(-direction.getY());
 					}
 				}
+			} else {
+				// Make sure we don't fly off into the sunset
+				center.setPitch(-10);
+				mage.setLocation(center);
 			}
 			break;
 		case GLIDE:
