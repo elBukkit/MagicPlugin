@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.14
+
 ## 6.9.13
  - More Automata changes:
    - Automata no longer use command blocks
