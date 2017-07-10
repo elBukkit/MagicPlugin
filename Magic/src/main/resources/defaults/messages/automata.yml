@@ -19,6 +19,7 @@ automata:
            - Magnamous
            - Brave
            - Loyal
+           - Glorious
        suffixes:
            - of Holiness
            - of Honor
@@ -31,7 +32,10 @@ automata:
            - of Forgiveness
            - of Loyalty
            - of Retribution
-           - of Resilliance
+           - of Resilience
+           - of Hope
+           - of Glory
+           - of Absolution
     evil:
        prefixes:
            - Evil
@@ -47,14 +51,40 @@ automata:
            - Infamous
            - Nefarious
            - Distastrous
+           - Eldritch
+           - Disgusting
+           - Retched
+           - Abominable
+           - Horrifying
+           - Calamity
+           - Calamitous
+           - Otherworldly
+           - Deplorable
+           - Apocalyptic
+           - Despicable
+           - Vile
+           - Wretched
+           - Loathsome
+           - Monstrous
+           - Dread
        suffixes:
            - of Darkness
            - of Evil
-           - of The Night
+           - of the Night
            - of Death
            - of Doom
-           - of The Nether
+           - of the Nether
            - of Magic
            - of Destruction
            - of Desolation
            - of Infamy
+           - of Horror
+           - of the Dark
+           - of the End
+           - of Domination
+           - of the Apocalypse
+           - of Devastation
+           - of the Wilds
+           - of Terror
+           - of Blight
+           - of the Plague
