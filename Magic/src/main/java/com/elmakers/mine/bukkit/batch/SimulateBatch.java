@@ -576,6 +576,8 @@ public class SimulateBatch extends SpellBatch {
 		this.birthRangeSquared = level.getBirthRangeSquared(birthRangeSquared);
 		this.radius = level.getRadius(radius);
 		this.yRadius = level.getYRadius(yRadius);
+		this.blockLimit = level.getMaxBlocks(blockLimit);
+		this.minBlocks = level.getMinBlocks(minBlocks);
 	}
 	
 	public void setBirthRange(int range) {

@@ -22,6 +22,8 @@ virus:
         5: 20
     radius: 10,12,16
     yradius: 10,12,16
+    max_blocks: 1000,1500,2000
+    min_blocks: 700,1100,1500
     birth_range: 12,16,18
     live_range: 20,24,28
     move: 8,10,16
@@ -70,8 +72,6 @@ virus:
         diagonal_live_rules: 0,1
         undo: 10000
         undo_speed: 20
-        max_blocks: 2000
-        min_blocks: 700
         command_block_allowed: false
         materials:
         - stained_clay:15

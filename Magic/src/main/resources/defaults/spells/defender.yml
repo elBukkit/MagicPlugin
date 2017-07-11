@@ -52,8 +52,8 @@ defender:
         reflect_chance: 0.25
         heart_material: lapis_block
         command_block_allowed: false
-        max_blocks: 300
-        min_blocks: 100
+        max_blocks: 200
+        min_blocks: 150
         materials:
         - quartz_block
         - quartz_block:1

@@ -23,6 +23,8 @@ worm:
     move: 4,5,6
     radius: 6,8,10
     yradius: 6,8,10
+    max_blocks: 500,700,1000
+    min_blocks: 300,450,700
     birth_range: 6,8,10
     live_range: 16,20,28
     delay: 1800,1500,1200
@@ -69,8 +71,6 @@ worm:
         message_type: evil
         undo: 8000
         undo_speed: 10
-        max_blocks: 1500
-        min_blocks: 500
         command_block_allowed: false
         materials:
         - melon_block

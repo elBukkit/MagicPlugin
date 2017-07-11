@@ -23,6 +23,8 @@ public class AutomatonLevel {
 	private final Integer liveRange;
 	private final Integer radius;
 	private final Integer yRadius;
+	private final Integer maxBlocks;
+	private final Integer minBlocks;
 	
 	public AutomatonLevel(int level, Integer levels[], ConfigurationSection template) {
 		int levelIndex = 0;
@@ -92,6 +94,16 @@ public class AutomatonLevel {
 		} else {
 			yRadius = null;
 		}
+		if (template.contains("min_blocks")) {
+			minBlocks = (int)RandomUtils.lerp(StringUtils.split(template.getString("min_blocks"), ','), levelIndex, nextLevelIndex, distance);
+		} else {
+			minBlocks = null;
+		}
+		if (template.contains("max_blocks")) {
+			maxBlocks = (int)RandomUtils.lerp(StringUtils.split(template.getString("max_blocks"), ','), levelIndex, nextLevelIndex, distance);
+		} else {
+			maxBlocks = null;
+		}
 		spellParameters = template.getString("spell_parameters");
 	}
 	
@@ -101,6 +113,14 @@ public class AutomatonLevel {
 	
 	public int getRadius(int radius) {
 		return this.radius != null ? this.radius : radius;
+	}
+
+	public int getMinBlocks(int minBlocks) {
+		return this.minBlocks != null ? this.minBlocks : minBlocks;
+	}
+
+	public int getMaxBlocks(int maxBlocks) {
+		return this.maxBlocks != null ? this.maxBlocks : maxBlocks;
 	}
 	
 	public int getLiveRangeSquared(int liveRangeSquared) {
