@@ -123,25 +123,25 @@ public class AutomatonLevel {
 		return this.dropXp != null ? this.dropXp : dropXp;
 	}
 	
-	public void onDeath(Mage mage, MaterialAndData birthMaterial, Material heartMaterial) {
+	public void onDeath(Mage mage, MaterialAndData birthMaterial) {
 		if (deathSpells != null && deathSpells.size() > 0) {
 			String deathSpell = RandomUtils.weightedRandom(deathSpells);
 			if (deathSpell != null && deathSpell.length() > 0) {
-				castSpell(deathSpell, mage, birthMaterial, heartMaterial);
+				castSpell(deathSpell, mage, birthMaterial);
 			}
 		}
 	}
 	
-	public void onTick(Mage mage, MaterialAndData birthMaterial, Material heartMaterial) {
+	public void onTick(Mage mage, MaterialAndData birthMaterial) {
 		if (tickSpells != null && tickSpells.size() > 0) {
 			String tickSpell = RandomUtils.weightedRandom(tickSpells);
 			if (tickSpell.length() > 0) {
-				castSpell(tickSpell, mage, birthMaterial, heartMaterial);
+				castSpell(tickSpell, mage, birthMaterial);
 			}
 		}
 	}
 	
-	protected void castSpell(String spellCommand, Mage mage, MaterialAndData birthMaterial, Material heartMaterial) {
+	protected void castSpell(String spellCommand, Mage mage, MaterialAndData birthMaterial) {
 		if (spellCommand == null || spellCommand.length() == 0 || spellCommand.equals("none")) return;
 
 		spellCommand = spellCommand + " " + spellParameters;
@@ -155,8 +155,7 @@ public class AutomatonLevel {
 		if (pieces != null && pieces.length > 1) {
 			parameters = new String[pieces.length - 1];
 			for (int i = 1; i < pieces.length; i++) {
-				parameters[i - 1] = pieces[i].replace("$birth", birthMaterial.getMaterial().name().toLowerCase())
-						.replace("$heart", heartMaterial.name().toLowerCase());
+				parameters[i - 1] = pieces[i].replace("$birth", birthMaterial.getMaterial().name().toLowerCase());
 			}
 		}
 

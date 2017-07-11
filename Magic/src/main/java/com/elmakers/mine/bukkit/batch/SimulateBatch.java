@@ -3,10 +3,13 @@ package com.elmakers.mine.bukkit.batch;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,7 +42,7 @@ public class SimulateBatch extends SpellBatch {
 	private static BlockFace[] POWER_FACES = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
-		INITIALIZING, SCANNING, UPDATING, TARGETING, HEART_UPDATE, DELAY, CLEANUP, PRUNE, FINISHED
+		INITIALIZING, SCANNING, UPDATING, PRUNE, TARGETING, HEART_UPDATE, DELAY, CLEANUP, CHECK, FINISHED
 	};
 	
 	public enum TargetMode {
@@ -77,7 +80,6 @@ public class SimulateBatch extends SpellBatch {
 	private World world;
 	private MaterialAndData birthMaterial;
 	private Material deathMaterial;
-	private Material heartMaterial;
 	private boolean isAutomata;
 	private int radius;
 	private int x;
@@ -94,7 +96,9 @@ public class SimulateBatch extends SpellBatch {
 	private Location center;
 	private ModifyType modifyType = ModifyType.NO_PHYSICS;
 	private double reflectChance;
-	private int maxBlocks = 0;
+	private int blockLimit = 0;
+	private int minBlocks = 5;
+	private Set<Long> liveBlocks = new HashSet<>();
 
 	private List<Block> deadBlocks = new ArrayList<>();
 	private List<Block> bornBlocks = new ArrayList<>();
@@ -136,6 +140,7 @@ public class SimulateBatch extends SpellBatch {
 	}
 	
 	protected void checkForPotentialHeart(Block block, int distanceSquared) {
+		liveBlocks.add(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
 		if (isAutomata) {
 			if (distanceSquared <= commandMoveRangeSquared) {
 				// commandMoveRangeSquared is kind of too big, but it doesn't matter all that much
@@ -149,12 +154,6 @@ public class SimulateBatch extends SpellBatch {
 		String message = spell.getMessage("death_broadcast").replace("$name", automataName);
 		if (message.length() > 0) {
 			controller.sendToMages(message, center);	
-		}
-		
-		// Kill power block
-		if (heartBlock != null) {
-			registerForUndo(heartBlock);
-			heartBlock.setType(Material.AIR);
 		}
 
 		// Drop item
@@ -183,12 +182,15 @@ public class SimulateBatch extends SpellBatch {
 		}
 
 		if (level != null) {
-			level.onDeath(mage, birthMaterial, heartMaterial);
+			level.onDeath(mage, birthMaterial);
 		}
+
+		finish();
 	}
 
 	@SuppressWarnings("deprecation")
 	protected void killBlock(Block block) {
+		liveBlocks.remove(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
 		if (concurrent) {
 			registerForUndo(block);
 			if (modifyType == ModifyType.FAST) {
@@ -205,6 +207,8 @@ public class SimulateBatch extends SpellBatch {
 	}
 	
 	protected void birthBlock(Block block) {
+		if (isAutomata && liveBlocks.size() >= blockLimit) return;
+		liveBlocks.add(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
 		if (concurrent) {
 			registerForUndo(block);
 			birthMaterial.modify(block, modifyType);
@@ -233,8 +237,8 @@ public class SimulateBatch extends SpellBatch {
 
 			if (liveRangeSquared <= 0 || distanceSquared <= liveRangeSquared) {
 				if (diagonalLiveCounts.size() > 0) {
-					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial, isAutomata);
-					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial, isAutomata);
+					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial);
+					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial);
 					if (faceNeighborCount >= liveCounts.size() || !liveCounts.get(faceNeighborCount)
 						|| diagonalNeighborCount >= diagonalLiveCounts.size() || !diagonalLiveCounts.get(diagonalNeighborCount)) {
 						killBlock(block);
@@ -242,7 +246,7 @@ public class SimulateBatch extends SpellBatch {
 						checkForPotentialHeart(block, distanceSquared);
 					}
 				} else {
-					int neighborCount = getNeighborCount(block, birthMaterial, isAutomata);
+					int neighborCount = getNeighborCount(block, birthMaterial);
 					if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
 						killBlock(block);
 					} else {
@@ -258,15 +262,15 @@ public class SimulateBatch extends SpellBatch {
 
 			if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {	
 				if (diagonalBirthCounts.size() > 0) {
-					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial, isAutomata);
-					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial, isAutomata);
+					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial);
+					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial);
 					if (faceNeighborCount < birthCounts.size() && birthCounts.get(faceNeighborCount)
 						&& diagonalNeighborCount < diagonalBirthCounts.size() && diagonalBirthCounts.get(diagonalNeighborCount)) {
 						birthBlock(block);
 						checkForPotentialHeart(block, distanceSquared);
 					}
 				} else {
-					int neighborCount = getNeighborCount(block, birthMaterial, isAutomata);
+					int neighborCount = getNeighborCount(block, birthMaterial);
 					if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
 						birthBlock(block);
 						checkForPotentialHeart(block, distanceSquared);
@@ -305,6 +309,7 @@ public class SimulateBatch extends SpellBatch {
 			updatingIndex = 0;
 			bornBlocks.clear();
 			deadBlocks.clear();
+			liveBlocks.clear();
 
 			// Process the casting first, and only if specially configured to do so.
 			if (isAutomata) {
@@ -319,12 +324,11 @@ public class SimulateBatch extends SpellBatch {
 				}
 				
 				// Check for death since activation (e.g. during delay period)
-				if (heartBlock.getType() != heartMaterial) {
+				if (this.blockLimit < minBlocks) {
 					if (DEBUG) {
-						controller.getLogger().info("DIED, no Heart at : " + heartBlock);
+						controller.getLogger().info("DIED with block count " + liveBlocks.size());
 					}
 					die();
-					finish();
 					return processedBlocks;
 				}
 
@@ -337,10 +341,6 @@ public class SimulateBatch extends SpellBatch {
 		}
 		
 		while (state == SimulationState.SCANNING && processedBlocks <= maxBlocks) {
-			// Make the heart a normal block so the sim will process it
-			registerForUndo(heartBlock);
-			birthMaterial.modify(heartBlock);
-
 			if (!simulateBlocks(x, y, z)) {
 				// TODO: Is this the right thing to do?
 				finish();
@@ -406,11 +406,22 @@ public class SimulateBatch extends SpellBatch {
 			
 			updatingIndex++;
 			if (updatingIndex >= deadBlocks.size() + bornBlocks.size()) {
-				state = SimulationState.TARGETING;
+				state = SimulationState.PRUNE;
 				
 				// Wait at least a tick
 				return maxBlocks;
 			}
+		}
+
+		if (state == SimulationState.PRUNE) {
+			if (liveBlocks.isEmpty()) {
+				die();
+				return processedBlocks;
+			}
+			if (undoList != null) {
+				undoList.prune();
+			}
+			state = SimulationState.TARGETING;
 		}
 		
 		// Each of the following states will end in this tick
@@ -447,10 +458,8 @@ public class SimulateBatch extends SpellBatch {
 					controller.getLogger().info("Could not find a valid command block location");
                 }
 			}
-			if (DEBUG) {
-				if (heartTargetBlock != null) {
-					controller.getLogger().info("MOVED: " + heartTargetBlock.getLocation().toVector().subtract(center.toVector()));
-				}
+			if (DEBUG && heartTargetBlock != null) {
+				controller.getLogger().info("MOVED: " + heartTargetBlock.getLocation().toVector().subtract(center.toVector()));
 			}
 			state = SimulationState.HEART_UPDATE;
 		}
@@ -459,15 +468,13 @@ public class SimulateBatch extends SpellBatch {
 			if (isAutomata) {
 				if (heartTargetBlock != null) {
 					if (!heartTargetBlock.getChunk().isLoaded()) {
-						heartTargetBlock.getChunk().load();
+						finish();
 						return processedBlocks;
 					}
 
 					if (reflectChance > 0) {
 						com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(heartTargetBlock);
 					}
-					registerForUndo(heartTargetBlock);
-					heartTargetBlock.setType(heartMaterial);
 					heartBlock = heartTargetBlock;
 					Location newLocation = heartTargetBlock.getLocation();
 					newLocation.setPitch(center.getPitch());
@@ -476,6 +483,7 @@ public class SimulateBatch extends SpellBatch {
 					mage.setLocation(newLocation);
 				} else {
 					die();
+					return processedBlocks;
 				}
 			}
 			delayTimeout = System.currentTimeMillis() + delay;
@@ -484,48 +492,61 @@ public class SimulateBatch extends SpellBatch {
 
 		if (state == SimulationState.DELAY) {
 			processedBlocks++;
-			if (heartBlock != null && heartBlock.getType() != heartMaterial) {
-				if (DEBUG) {
-					controller.getLogger().info("DIED, no Heart at : " + heartBlock);
-				}
-				die();
-				finish();
-			} else {
-				if (System.currentTimeMillis() > delayTimeout) {
-					state = SimulationState.CLEANUP;
-				}
+			if (System.currentTimeMillis() > delayTimeout) {
+				state = SimulationState.CLEANUP;
 			}
 
 			return processedBlocks;
 		}
-
+		
 		if (state == SimulationState.CLEANUP) {
-			if (this.maxBlocks <= 0) {
-				state = SimulationState.PRUNE;
+			if (this.blockLimit <= 0) {
+				state = SimulationState.CHECK;
 			} else {
-				boolean undid = false;
-				while (processedBlocks <= maxBlocks && undoList.size() > this.maxBlocks) {
-					if (undoList.undoNext(false) == null) break;
-					undid = true;
+				int undidCount = 0;
+				while (processedBlocks <= maxBlocks && undoList.size() > this.blockLimit) {
+					BlockData undid = undoList.undoNext(false);
+					if (undid == null) break;
+					if (liveBlocks.remove(undid.getId())) {
+						undidCount++;
+					}
 				}
-				// make sure we didn't undo the heart
-				if (undid && heartBlock != null) {
-					registerForUndo(heartBlock);
-					heartBlock.setType(heartMaterial);
+				if (DEBUG && undidCount > 0) {
+					controller.getLogger().info("UNDID: " + undidCount + " remaining: " + liveBlocks.size() + "/" + blockLimit);
 				}
-				if (undoList.size() <= this.maxBlocks) {
-					state = SimulationState.PRUNE;
+				if (undoList.size() <= this.blockLimit) {
+					state = SimulationState.CHECK;
 				}
 			}
 		}
 
-		if (state == SimulationState.PRUNE) {
+		if (state == SimulationState.CHECK) {
+			int lostBlocks = 0;
 			if (undoList != null) {
-				undoList.prune();
+				Iterator<BlockData> iterator = undoList.iterator();
+				while (iterator.hasNext()) {
+					BlockData block = iterator.next();
+					long blockId = block.getId();
+					if (block.getMaterial() == deathMaterial && block.getBlock().getType() != birthMaterial.getMaterial()) {
+						liveBlocks.remove(blockId);
+						lostBlocks++;
+						this.blockLimit--;
+					}
+					if (!block.isDifferent()) {
+						undoList.removeFromMap(block);
+						iterator.remove();
+					}
+				}
+			}
+			if (lostBlocks > 0) {
+				if (DEBUG) {
+					controller.getLogger().info(spell.getKey() + " LOST " + lostBlocks + " blocks, remaining: " + this.liveBlocks.size() + "/" + this.blockLimit);
+				}
+				spell.playEffects("hurt");
 			}
 			state = SimulationState.FINISHED;
 		}
-		
+
 		if (state == SimulationState.FINISHED) {
 			spell.playEffects("tick");
 			if (isAutomata) {
@@ -596,7 +617,7 @@ public class SimulateBatch extends SpellBatch {
 					if (!entity.getLocation().getWorld().equals(center.getWorld())) continue;
 					LivingEntity li = (LivingEntity)entity;
 					if (li.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
-					Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, 100, false);
+					Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, 1000, false);
 					int score = newScore.getScore();
 					if (bestTarget == null || score > bestTarget.getScore()) {
 						bestTarget = newScore;
@@ -617,7 +638,7 @@ public class SimulateBatch extends SpellBatch {
 					LivingEntity li = mage.getLivingEntity();
 					if (li != null && li.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 					
-					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, 100, false);
+					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, 1000, false);
 					int score = newScore.getScore();
 					if (bestTarget == null || score > bestTarget.getScore()) {
 						bestTarget = newScore;
@@ -662,7 +683,7 @@ public class SimulateBatch extends SpellBatch {
 				*/
 				
 				if (level != null && center.distanceSquared(bestTarget.getLocation()) < castRange * castRange) {
-					level.onTick(mage, birthMaterial, heartMaterial);
+					level.onTick(mage, birthMaterial);
 				}
 				
 				// After ticking, re-position for movement. This way spells still fire towards the target.
@@ -691,11 +712,11 @@ public class SimulateBatch extends SpellBatch {
 		commandMoveRangeSquared = commandRadius * commandRadius;
 	}
 	
-	protected int getNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands) {
-        return getDiagonalNeighborCount(block, liveMaterial, includeCommands) + getFaceNeighborCount(block, liveMaterial, includeCommands);
+	protected int getNeighborCount(Block block, MaterialAndData liveMaterial) {
+        return getDiagonalNeighborCount(block, liveMaterial) + getFaceNeighborCount(block, liveMaterial);
 	}
 
-    protected int getFaceNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands) {
+    protected int getFaceNeighborCount(Block block, MaterialAndData liveMaterial) {
         int liveCount = 0;
         BlockFace[] faces = yRadius > 0 ? POWER_FACES : MAIN_FACES;
         for (BlockFace face : faces) {
@@ -706,7 +727,7 @@ public class SimulateBatch extends SpellBatch {
         return liveCount;
     }
 
-    protected int getDiagonalNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands) {
+    protected int getDiagonalNeighborCount(Block block, MaterialAndData liveMaterial) {
         int liveCount = 0;
         for (BlockFace face : DIAGONAL_FACES) {
             if (liveMaterial.is(block.getRelative(face))) {
@@ -775,10 +796,10 @@ public class SimulateBatch extends SpellBatch {
 	}
 
 	public void setMaxBlocks(int maxBlocks) {
-		this.maxBlocks = maxBlocks;
+		this.blockLimit = maxBlocks;
 	}
 
-	public void setHeartMaterial(Material material) {
-		this.heartMaterial = material;
+	public void setMinBlocks(int minBlocks) {
+		this.minBlocks = minBlocks;
 	}
 }

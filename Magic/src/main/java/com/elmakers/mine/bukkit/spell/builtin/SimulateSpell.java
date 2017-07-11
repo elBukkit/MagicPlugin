@@ -157,16 +157,6 @@ public class SimulateSpell extends BlockSpell {
 			batch.setDiagonalBirthRules(ConfigurationUtils.getIntegerList(parameters, "diagonal_birth_rules"));
 		}
 
-		Material heartMaterial = Material.REDSTONE_BLOCK;
-		String heartMaterialName = parameters.getString("heart_material", "");
-		if (!heartMaterialName.isEmpty()) {
-			try {
-				heartMaterial = Material.valueOf(heartMaterialName.toUpperCase());
-			} catch (Exception ex) {
-				controller.getLogger().warning("Invalid heart material: " + heartMaterialName);
-			}
-		}
-		batch.setHeartMaterial(heartMaterial);
 		batch.setReflectChange(parameters.getDouble("reflect_chance", 0));
 		batch.setBirthRange(parameters.getInt("birth_range", 0));
 		batch.setLiveRange(parameters.getInt("live_range", 0));
@@ -199,7 +189,9 @@ public class SimulateSpell extends BlockSpell {
 			batch.setMinHuntRange(parameters.getInt("target_min_range", 4));
 			batch.setMaxHuntRange(parameters.getInt("target_max_range", 128));
 			batch.setDrop(parameters.getString("drop"), parameters.getInt("drop_xp", 0), ConfigurationUtils.getStringList(parameters, "drops"));
-			batch.setMaxBlocks(parameters.getInt("max_blocks"));
+			int maxBlocks = parameters.getInt("max_blocks");
+			batch.setMaxBlocks(maxBlocks);
+			batch.setMinBlocks(parameters.getInt("min_blocks", maxBlocks));
 
 			int level = parameters.getInt("level", 1);
 			if (level < 1) level = 1;

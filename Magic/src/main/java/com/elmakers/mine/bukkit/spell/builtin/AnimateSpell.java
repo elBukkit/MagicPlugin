@@ -96,18 +96,6 @@ public class AnimateSpell extends SimulateSpell
 				}
 			}
 		}
-
-		// TODO: Have the batch do this after a few ticks
-		Material heartMaterial = Material.REDSTONE_BLOCK;
-		String heartMaterialName = parameters.getString("heart_material", "");
-		if (!heartMaterialName.isEmpty()) {
-			try {
-				heartMaterial = Material.valueOf(heartMaterialName.toUpperCase());
-			} catch (Exception ex) {
-				controller.getLogger().warning("Invalid heart material: " + heartMaterialName);
-			}
-		}
-		targetBlock.setType(heartMaterial);
 		
 		// Look for randomized levels
 		int level = 0;

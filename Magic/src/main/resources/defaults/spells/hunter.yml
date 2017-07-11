@@ -14,6 +14,8 @@ hunter:
            particle: block_crack
         tick:
         - sound: entity_endermen_scream
+        hurt:
+        - sound: entity_endermen_hurt,0.3,2
     levels:
         1: 100
         3: 40
@@ -25,19 +27,19 @@ hunter:
     live_range: 3,4,5
     delay: 1200,800,500
     drop_xp: 50,75,100
-    spell_parameters: "loud true transparent air,$birth,$heart range 48"
+    spell_parameters: "loud true transparent air,$birth range 48"
     death_cast:
-        "hunter_death speed 0^1 destructible $birth,$heart": 500,300,50
-        "hunter_death speed 0^5 destructible $birth,$heart": 300,200,100
-        "hunter_death speed 1^0 destructible $birth,$heart": 250,200,150
-        "hunter_death speed 1^5 destructible $birth,$heart": 100,100,200
+        "hunter_death speed 0^1 destructible $birth": 500,300,50
+        "hunter_death speed 0^5 destructible $birth": 300,200,100
+        "hunter_death speed 1^0 destructible $birth": 250,200,150
+        "hunter_death speed 1^5 destructible $birth": 100,100,200
     cast:
         "shrink": 30,40,50
         "pull": 60,70,80
         "curse": 60,100,150
         "poison": 100,100,150
-        "blob brush stained_glass:15 radius 2 undo 5000 indestructible $birth,$heart": 20,40,80
-        "shell brush stained_glass:15 radius 3 undo 7000 indestructible $birth,$heart": 20,40,80
+        "blob brush stained_glass:15 radius 2 undo 5000 indestructible $birth": 20,40,80
+        "shell brush stained_glass:15 radius 3 undo 7000 indestructible $birth": 20,40,80
         "homing|2": 20,50,90
         "missile|2": 100,150,200
         "petrify": 50,100,150
@@ -62,8 +64,9 @@ hunter:
         restricted: restricted_animate
         message_type: evil
         undo: 5000
-        reflect_chance: 0.85
         command_block_allowed: false
+        max_blocks: 500
+        min_blocks: 30
     costs:
         xp: 200
         sp: 80

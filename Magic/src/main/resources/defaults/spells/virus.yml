@@ -14,6 +14,8 @@ virus:
            particle: block_crack
         tick:
         - sound: entity_enderdragon_growl
+        hurt:
+        - sound: entity_enderdragon_hurt,0.3,2
     levels:
         1: 100
         3: 40
@@ -25,7 +27,7 @@ virus:
     move: 8,10,16
     delay: 3500,3000,2500
     drop_xp: 100,150,200
-    spell_parameters: "loud true transparent air,$birth,$heart range 64"
+    spell_parameters: "loud true transparent air,$birth range 64"
     cast:
         neutron: 5,10,20
         fury: 20,50,100
@@ -35,9 +37,9 @@ virus:
         "petrify|3": 30,50,70
         "shuriken|3": 30,50,70
         "kill": 5,20,30
-        "shell|2 indestructible $birth,$heart": 15,40,50
-        "blob|2 indestructible $birth,$heart": 5,20,30
-        "railgun indestructible $birth,$heart": 20,40,80
+        "shell|2 indestructible $birth": 15,40,50
+        "blob|2 indestructible $birth": 5,20,30
+        "railgun indestructible $birth": 20,40,80
         "poison": 5,20,30
         "none": 40,30,20
     death_cast:
@@ -68,8 +70,8 @@ virus:
         diagonal_live_rules: 0,1
         undo: 10000
         undo_speed: 20
-        reflect_chance: 0.95
-        max_blocks: 5000
+        max_blocks: 2000
+        min_blocks: 700
         command_block_allowed: false
     costs:
         xp: 400
