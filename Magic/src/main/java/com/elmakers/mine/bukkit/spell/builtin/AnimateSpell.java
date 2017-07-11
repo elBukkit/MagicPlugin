@@ -144,6 +144,7 @@ public class AnimateSpell extends SimulateSpell
 		final Mage mage = controller.getAutomaton(automataId, automataName);
 		mage.setLocation(targetBlock.getLocation());
 		mage.setQuiet(true);
+		mage.addTag(getKey());
 		final Spell spell = mage.getSpell(getKey());
         Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
             @Override

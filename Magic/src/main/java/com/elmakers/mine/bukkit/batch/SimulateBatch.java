@@ -632,6 +632,7 @@ public class SimulateBatch extends SpellBatch {
 					if (mage == this.mage) continue;
 					if (targetType == TargetType.AUTOMATON && !mage.isAutomaton()) continue;
 					if (targetType == TargetType.PLAYER && mage.getPlayer() == null) continue;
+					if (mage.isAutomaton() && mage.hasTag(spell.getKey())) continue;
 					if (mage.isDead() || !mage.isOnline() || !mage.hasLocation() || mage.isSuperProtected()) continue;
 					if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
 
