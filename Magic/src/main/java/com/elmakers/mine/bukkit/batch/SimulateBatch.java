@@ -59,6 +59,7 @@ public class SimulateBatch extends SpellBatch {
 	private Block heartBlock;
 	private Block heartTargetBlock;
 	private TargetMode targetMode = TargetMode.STABILIZE;
+	private TargetMode backupTargetMode = TargetMode.WANDER;
 	private TargetType targetType = TargetType.PLAYER;
 	private String automataName;
 	private AutomatonLevel level;
@@ -598,9 +599,17 @@ public class SimulateBatch extends SpellBatch {
 	public void setTargetType(TargetType targetType) {
 		this.targetType = targetType;
 	}
-	
+
 	public void target() {
-		switch (targetMode)
+		target(targetMode);
+	}
+
+	public void target(TargetMode mode ) {
+		TargetType targetType = this.targetType;
+		if (mode == TargetMode.DIRECTED) {
+			targetType = TargetType.PLAYER;
+		}
+		switch (mode)
 		{
 		case FLEE:
 		case HUNT:
@@ -658,7 +667,7 @@ public class SimulateBatch extends SpellBatch {
 				}
 				Vector direction = null;
 				
-				if (targetMode == TargetMode.DIRECTED) {
+				if (mode == TargetMode.DIRECTED) {
 					direction = bestTarget.getLocation().getDirection();
 					if (DEBUG) {
 						controller.getLogger().info(" *Directed: " + direction);
@@ -688,7 +697,7 @@ public class SimulateBatch extends SpellBatch {
 				}
 				
 				// After ticking, re-position for movement. This way spells still fire towards the target.
-				if (targetMode == TargetMode.FLEE) {
+				if (mode == TargetMode.FLEE) {
 					direction = direction.multiply(-1);
 					// Don't Flee upward
 					if (direction.getY() > 0) {
@@ -697,8 +706,15 @@ public class SimulateBatch extends SpellBatch {
 				}
 			} else {
 				// Make sure we don't fly off into the sunset
-				center.setPitch(-10);
-				mage.setLocation(center);
+				if (backupTargetMode != mode) {
+					if (DEBUG) {
+						controller.getLogger().info("Falling back to target mode: " + backupTargetMode);
+					}
+					target(backupTargetMode);
+				} else {
+					center.setPitch(-10);
+					mage.setLocation(center);
+				}
 			}
 			break;
 		case GLIDE:
@@ -794,6 +810,10 @@ public class SimulateBatch extends SpellBatch {
 
 	public void setTargetMode(TargetMode mode) {
 		this.targetMode = mode;
+	}
+
+	public void setBackupTargetMode(TargetMode mode) {
+		this.backupTargetMode = mode;
 	}
 
 	public void setMaxBlocks(int maxBlocks) {

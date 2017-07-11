@@ -35,6 +35,7 @@ defender:
         live_range: 6
         delay: 200
         target_mode: hunt
+        backup_target_mode: directed
         targets: automaton
         target_min_range: 0
         target_max_range: 128

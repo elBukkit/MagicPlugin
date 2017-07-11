@@ -173,6 +173,15 @@ public class SimulateSpell extends BlockSpell {
 					controller.getLogger().warning(ex.getMessage());
 				}
 			}
+			SimulateBatch.TargetMode backupTargetMode = null;
+			String backupTargetModeString = parameters.getString("backup_target_mode", "");
+			if (backupTargetModeString.length() > 0) {
+				try {
+					backupTargetMode = SimulateBatch.TargetMode.valueOf(backupTargetModeString.toUpperCase());
+				} catch (Exception ex) {
+					controller.getLogger().warning(ex.getMessage());
+				}
+			}
 			batch.setMoveRange(parameters.getInt("move", 3));
 			
 			SimulateBatch.TargetType targetType = null;
@@ -200,7 +209,12 @@ public class SimulateSpell extends BlockSpell {
 				delay = automatonLevel.getDelay(delay);
 			}
 			batch.setDelay(delay);
-			batch.setTargetMode(targetMode);
+			if (targetMode != null) {
+				batch.setTargetMode(targetMode);
+			}
+			if (backupTargetMode != null) {
+				batch.setBackupTargetMode(backupTargetMode);
+			}
 		}
 		boolean success = mage.addBatch(batch);
 		return success ? SpellResult.CAST : SpellResult.FAIL;
