@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -765,19 +766,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         if (blockList == null) return;
 
-        List<BlockData> current = new ArrayList<>(blockList);
-
-        blockList = null;
-        blockIdMap = null;
-        for (BlockData block : current)
-        {
-            if (block.isDifferent()) {
-                super.add(block);
-            } else {
-                removeFromModified(block);
+        Iterator<BlockData> iterator = iterator();
+        while (iterator.hasNext()) {
+            BlockData block = iterator.next();
+            if (!block.isDifferent()) {
+                removeFromMap(block);
+                iterator.remove();
             }
         }
-
         modifiedTime = System.currentTimeMillis();
     }
 
@@ -1002,5 +998,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void setConsumed(boolean consumed) {
         this.consumed = consumed;
+    }
+
+    public void removeFromMap(BlockData blockData) {
+        removeFromModified(blockData);
+        blockIdMap.remove(blockData.getId());
     }
 }
