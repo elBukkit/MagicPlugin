@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -61,6 +62,7 @@ public class SimulateBatch extends SpellBatch {
 	private TargetMode targetMode = TargetMode.STABILIZE;
 	private TargetMode backupTargetMode = TargetMode.WANDER;
 	private TargetType targetType = TargetType.PLAYER;
+	private boolean hasDirection = false;
 	private String automataName;
 	private AutomatonLevel level;
 	private String dropItem;
@@ -658,6 +660,8 @@ public class SimulateBatch extends SpellBatch {
 			
 			if (bestTarget != null) 
 			{
+				// Pick a random direction to move in when we lose the target
+				hasDirection = false;
 				String targetDescription = bestTarget.getEntity() == null ? "NONE" :
 					((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
 				
@@ -679,7 +683,6 @@ public class SimulateBatch extends SpellBatch {
 				
 				if (direction != null) {
 					center.setDirection(direction);
-					mage.setLocation(center);
 				}
 				
 				// Check for obstruction
@@ -705,13 +708,13 @@ public class SimulateBatch extends SpellBatch {
 					}
 				}
 			} else {
-				// Make sure we don't fly off into the sunset
 				if (backupTargetMode != mode) {
 					if (DEBUG) {
 						controller.getLogger().info("Falling back to target mode: " + backupTargetMode);
 					}
 					target(backupTargetMode);
 				} else {
+					// Make sure we don't fly off into the sunset
 					center.setPitch(-10);
 					mage.setLocation(center);
 				}
@@ -723,6 +726,12 @@ public class SimulateBatch extends SpellBatch {
 		default:
 			reverseTargetDistanceScore = false;
 		}
+
+		if (!hasDirection) {
+			hasDirection = true;
+			center.setYaw(RandomUtils.getRandom().nextInt(360));
+		}
+		mage.setLocation(center);
 	}
 	
 	public void setMoveRange(int commandRadius) {

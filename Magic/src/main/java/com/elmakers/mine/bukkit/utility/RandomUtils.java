@@ -204,4 +204,8 @@ public class RandomUtils {
     public static <T> T getRandom(List<T> list) {
         return list.get(random.nextInt(list.size()));
     }
+
+    public static Random getRandom() {
+        return random;
+    }
 }
