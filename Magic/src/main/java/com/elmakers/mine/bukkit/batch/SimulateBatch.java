@@ -72,7 +72,7 @@ public class SimulateBatch extends SpellBatch {
 	private boolean concurrent = false;
 	private int commandMoveRangeSquared = 9;
 	private int huntMaxRange = 128;
-	private int castRange = 32;
+	private int castRange = 48;
 	private int huntMinRange = 4;
 	private int birthRangeSquared = 0;
 	private int liveRangeSquared = 0;
