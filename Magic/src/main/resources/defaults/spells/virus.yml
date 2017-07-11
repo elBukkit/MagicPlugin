@@ -39,7 +39,7 @@ virus:
         "blob|2 indestructible $birth,$heart": 5,20,30
         "railgun indestructible $birth,$heart": 20,40,80
         "poison": 5,20,30
-        "none": 100,80,50
+        "none": 40,30,20
     death_cast:
         neutron: 50,80,100
         fury: 20,150,120

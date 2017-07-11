@@ -7,8 +7,7 @@ automatashop:
         -  class: ItemShop
     parameters:
         quiet: true
-        confirm: true
-        confirm_filler: stained_glass:14
+        auto_close: false
         sell: true
         items:
           wand|hunterheart: 500
