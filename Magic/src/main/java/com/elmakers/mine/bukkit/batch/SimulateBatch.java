@@ -694,11 +694,10 @@ public class SimulateBatch extends SpellBatch {
 					center = CompatibilityUtils.setDirection(center, new Vector(0, 1, 0));
 				}
 				*/
-				
-				if (level != null && center.distanceSquared(bestTarget.getLocation()) < castRange * castRange) {
+				if (mode == TargetMode.HUNT && level != null && center.distanceSquared(bestTarget.getLocation()) < castRange * castRange) {
 					level.onTick(mage, birthMaterial);
 				}
-				
+
 				// After ticking, re-position for movement. This way spells still fire towards the target.
 				if (mode == TargetMode.FLEE) {
 					direction = direction.multiply(-1);
