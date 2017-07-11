@@ -33,7 +33,7 @@ public class ItemShopAction extends BaseShopAction
                 ConfigurationSection itemSection = ConfigurationUtils.getConfigurationSection(parameters, "items");
                 Collection<String> itemKeys = itemSection.getKeys(false);
                 for (String itemKey : itemKeys) {
-                    items.add(parseItemKey(spell.getController(), itemKey, itemSection.getDouble(itemKey, -1)));
+                    items.add(createShopItem(spell.getController(), itemKey, itemSection.getDouble(itemKey, -1)));
                 }
             } else {
                 List<?> itemList = parameters.getList("items");
@@ -41,7 +41,7 @@ public class ItemShopAction extends BaseShopAction
                 {
                     if (itemEntry instanceof String) {
                         String itemKey = (String)itemEntry;
-                        items.add(parseItemKey(spell.getController(), itemKey, -1));
+                        items.add(createShopItem(spell.getController(), itemKey, -1));
                     } else if (itemEntry instanceof ConfigurationSection || itemEntry instanceof Map) {
                         ConfigurationSection itemConfig = (itemEntry instanceof ConfigurationSection) ?
                                 (ConfigurationSection)itemEntry : ConfigUtils.toConfigurationSection((Map<?,?>)itemEntry); 
@@ -49,7 +49,7 @@ public class ItemShopAction extends BaseShopAction
                         if (itemConfig != null) {
                             double cost = itemConfig.getDouble("cost");
                             if (itemConfig.isString("item")) {
-                                shopItem = parseItemKey(spell.getController(), itemConfig.getString("item"), cost);
+                                shopItem = createShopItem(spell.getController(), itemConfig);
                                 if (shopItem != null) {
                                     String name = itemConfig.getString("name");
                                     List<String> lore = ConfigurationUtils.getStringList(itemConfig, "lore");
@@ -86,7 +86,17 @@ public class ItemShopAction extends BaseShopAction
         }
     }
 
-    protected ShopItem parseItemKey(MageController controller, String itemKey, double worth) {
+    protected ShopItem createShopItem(MageController controller, String itemKey, double worth) {
+        ItemStack item = parseItemKey(controller, itemKey);
+        return item == null ? null : new ShopItem(controller, item, worth);
+    }
+
+    protected ShopItem createShopItem(MageController controller, ConfigurationSection configuration) {
+        ItemStack item = parseItemKey(controller, configuration.getString("item"));
+        return item == null ? null : new ShopItem(controller, item, configuration);
+    }
+
+    protected ItemStack parseItemKey(MageController controller, String itemKey) {
         if (itemKey == null || itemKey.isEmpty() || itemKey.equalsIgnoreCase("none"))
         {
             return null;
@@ -111,12 +121,7 @@ public class ItemShopAction extends BaseShopAction
             wand.getIcon().applyToItem(item);
         }
         item.setAmount(amount);
-        if (worth < 0) {
-            Double defaultWorth = controller.getWorth(item);
-            worth = defaultWorth == null ? 0 : defaultWorth;
-        }
-        
-        return new ShopItem(item, worth);
+        return item;
     }
 
     @Override

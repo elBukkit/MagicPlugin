@@ -71,10 +71,35 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     protected class ShopItem implements Comparable<ShopItem> {
         private final ItemStack item;
         private final double worth;
+        private final String permission;
 
         public ShopItem(ItemStack item, double worth) {
             this.item = item;
             this.worth = worth;
+            this.permission = null;
+        }
+
+        public ShopItem(MageController controller, ItemStack item, ConfigurationSection configuration) {
+            double worth = configuration.getDouble("cost", -1);
+            if (worth < 0) {
+                Double defaultWorth = controller.getWorth(item);
+                worth = defaultWorth == null ? 0 : defaultWorth;
+            }
+
+            this.item = item;
+            this.worth = worth;
+            this.permission = configuration.getString("permission");
+        }
+
+        public ShopItem(MageController controller, ItemStack item, double worth) {
+            if (worth < 0) {
+                Double defaultWorth = controller.getWorth(item);
+                worth = defaultWorth == null ? 0 : defaultWorth;
+            }
+
+            this.item = item;
+            this.worth = worth;
+            this.permission = null;
         }
 
         public double getWorth() {
@@ -83,6 +108,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         public ItemStack getItem() {
             return item;
+        }
+
+        public String getPermission() {
+            return permission;
         }
 
         @Override
@@ -572,6 +601,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
             ItemStack item = InventoryUtils.getCopy(shopItem.getItem());
             if (item == null) continue;
+
+            String permission = shopItem.getPermission();
+            org.bukkit.Bukkit.getLogger().info("Player has permission " + permission + "? " + player.hasPermission(permission));
+            if (permission != null && !permission.isEmpty() && !player.hasPermission(permission)) {
+                continue;
+            }
 
             ItemMeta meta = item.getItemMeta();
             if (meta == null) {
