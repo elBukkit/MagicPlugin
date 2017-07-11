@@ -72,6 +72,11 @@ worm:
         max_blocks: 1500
         min_blocks: 500
         command_block_allowed: false
+        materials:
+        - melon_block
+        - huge_mushroom_1
+        - huge_mushroom_2
+        - nether_wart_block
     costs:
         xp: 250
         sp: 100

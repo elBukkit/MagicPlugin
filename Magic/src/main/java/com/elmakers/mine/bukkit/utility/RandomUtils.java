@@ -200,4 +200,8 @@ public class RandomUtils {
         origin.add(random.nextDouble() * xRange - xRange / 2, random.nextDouble() * yRange - yRange / 2, random.nextDouble() * zRange - zRange / 2);
         return origin;
     }
+
+    public static <T> T getRandom(List<T> list) {
+        return list.get(random.nextInt(list.size()));
+    }
 }

@@ -73,6 +73,13 @@ virus:
         max_blocks: 2000
         min_blocks: 700
         command_block_allowed: false
+        materials:
+        - stained_clay:15
+        - prismarine
+        - coal_block
+        - bone_block
+        - magma
+        - soul_sand
     costs:
         xp: 400
         sp: 150

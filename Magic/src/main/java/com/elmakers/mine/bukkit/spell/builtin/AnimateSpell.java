@@ -55,7 +55,11 @@ public class AnimateSpell extends SimulateSpell
 		}
 		int seedRadius = parameters.getInt("seed_radius", 0);
 		MaterialAndData targetMaterial = new MaterialAndData(targetBlock);
-		if (parameters.contains("material")) {
+
+		List<String> materials = ConfigurationUtils.getStringList(parameters, "materials");
+		if (seedRadius > 0 && materials != null && !materials.isEmpty()) {
+			targetMaterial = new MaterialAndData(RandomUtils.getRandom(materials));
+		} else if (parameters.contains("material")) {
 			targetMaterial = ConfigurationUtils.getMaterialAndData(parameters, "material", targetMaterial);
 			addDestructible(targetMaterial.getMaterial());
 		}

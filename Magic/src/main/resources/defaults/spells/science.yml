@@ -5,7 +5,7 @@ birth_hunter:
     cast:
     - class: Command
   parameters:
-    command: cast hunter material quartz_block seed_radius 2
+    command: cast hunter seed_radius 2
 
 birth_defender:
   icon: diamond_axe:17
@@ -13,7 +13,7 @@ birth_defender:
     cast:
     - class: Command
   parameters:
-    command: cast defender material pumpkin seed_radius 2
+    command: cast defender seed_radius 2
 
 birth_worm:
   icon: diamond_axe:17
@@ -21,7 +21,7 @@ birth_worm:
     cast:
     - class: Command
   parameters:
-    command: cast worm material melon_block seed_radius 2
+    command: cast worm seed_radius 2
 
 birth_virus:
   icon: diamond_axe:17
@@ -29,4 +29,4 @@ birth_virus:
     cast:
     - class: Command
   parameters:
-    command: cast virus material huge_mushroom_1 seed_radius 2
+    command: cast virus seed_radius 2
