@@ -662,8 +662,6 @@ public class SimulateBatch extends SpellBatch {
 			
 			if (bestTarget != null) 
 			{
-				// Pick a random direction to move in when we lose the target
-				hasDirection = false;
 				String targetDescription = bestTarget.getEntity() == null ? "NONE" :
 					((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
 				
