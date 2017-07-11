@@ -493,6 +493,9 @@ public interface Mage extends CostReducer {
     boolean addVaultCurrency(double delta);
     boolean removeVaultCurrency(double delta);
 
+    boolean hasTag(String tag);
+    void addTag(String tag);
+
     /**
      * Sets the active class.
      *

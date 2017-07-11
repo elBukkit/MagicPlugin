@@ -194,6 +194,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private float virtualExperienceProgress = 0.0f;
     private int virtualExperienceLevel = 0;
     private boolean glidingAllowed = false;
+    private Set<String> tags = new HashSet<>();
 
     private String destinationWarp;
 
@@ -3301,6 +3302,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isAutomaton() {
         return isAutomaton;
+    }
+
+    @Override
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    @Override
+    public boolean hasTag(String tag) {
+        return tags.contains(tag);
     }
 }
 
