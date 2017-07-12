@@ -1,6 +1,7 @@
 broomstick:
     path: broom
     mode: cast
+    keep: true
     indestructible: true
     active_spell: broom
     migrate_icon: gold_spade
