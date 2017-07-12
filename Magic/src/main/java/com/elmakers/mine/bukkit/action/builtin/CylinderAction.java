@@ -19,7 +19,7 @@ public class CylinderAction extends VolumeAction
 		innerRadiusSquared = (radius - thickness + radiusPadding) * (radius - thickness + radiusPadding);
 
 		if (thickness > 0) {
-			return (int)Math.floor(radius - thickness + radiusPadding);
+			return (int)Math.floor(radius - thickness - radiusPadding);
 		}
 
 		return 0;

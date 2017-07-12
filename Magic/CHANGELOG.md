@@ -21,6 +21,8 @@
    - No longer have hearts, will lose blocks as they are destroyed and eventually die
  - Add support for setting permission nodes on shop items
  - Blast and Sticky Bomb use block cracking effects
+ - Fix hollow Cylinder and Disc casts at larger radii
+ - Add Ring action (hollow Disc)
 
 ## 6.9.13
  - More Automata changes:
