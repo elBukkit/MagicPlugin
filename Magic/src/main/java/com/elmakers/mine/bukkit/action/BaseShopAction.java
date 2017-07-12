@@ -603,7 +603,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             if (item == null) continue;
 
             String permission = shopItem.getPermission();
-            org.bukkit.Bukkit.getLogger().info("Player has permission " + permission + "? " + player.hasPermission(permission));
             if (permission != null && !permission.isEmpty() && !player.hasPermission(permission)) {
                 continue;
             }
