@@ -50,6 +50,7 @@
   
 ## Not so High-Priority
  
+ - spell_inventory on a wand template doesn't work
  - Would be cool to have a configurable max # of maps, and start re-using map ids when limit is hit, LRU
  - Ability to alter flower pots and beds (need to tweak TileEntity data.. doable, but messy to track with Material keys)
  - Brush selector on a sub-page for beds says "diamond axe sub-types"?
