@@ -993,6 +993,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public void setTargetCenterLocation(Location location) {
+        this.targetCenterLocation = location;
+    }
+
+    @Override
     public Set<UUID> getTargetMessagesSent() {
         return targetMessagesSent;
     }

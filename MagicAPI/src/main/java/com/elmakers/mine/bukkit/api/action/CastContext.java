@@ -35,6 +35,7 @@ public interface CastContext {
     Location getLocation();
     Location getTargetLocation();
     Location getTargetCenterLocation();
+    void setTargetCenterLocation(Location location);
     Location getTargetSourceLocation();
     Vector getDirection();
     BlockFace getFacingDirection();
