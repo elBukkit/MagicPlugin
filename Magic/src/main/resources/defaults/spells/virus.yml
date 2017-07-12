@@ -23,7 +23,7 @@ virus:
     radius: 10,12,16
     yradius: 10,12,16
     max_blocks: 8000,9000,10000
-    min_blocks: 7200,8100,9000
+    min_blocks: 6500,7000,7000
     birth_range: 12,16,18
     live_range: 20,24,28
     move: 8,10,16

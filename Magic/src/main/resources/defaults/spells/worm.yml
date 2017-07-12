@@ -24,7 +24,7 @@ worm:
     radius: 6,8,10
     yradius: 6,8,10
     max_blocks: 2000,3500,5000
-    min_blocks: 1500,2500,3500
+    min_blocks: 1000,2000,3000
     birth_range: 6,8,10
     live_range: 16,20,28
     delay: 1800,1500,1200
