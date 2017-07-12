@@ -38,14 +38,12 @@ public class BreakBlockAction extends ModifyBlockAction {
         double scaledAmount = durabilityAmount;
         if (maxDistanceSquared > 0) {
             double distanceSquared = context.getTargetCenterLocation().distanceSquared(block.getLocation());
-            org.bukkit.Bukkit.getLogger().info("Distance^2: " + distanceSquared);
             if (distanceSquared > maxDistanceSquared) {
                 return SpellResult.NO_TARGET;
             }
             if (distanceSquared > 0) {
                 scaledAmount = scaledAmount * (1 - distanceSquared / maxDistanceSquared);
             }
-            org.bukkit.Bukkit.getLogger().info("Break amount: " + scaledAmount + " from " + durabilityAmount);
         }
 
         double breakAmount = 1;

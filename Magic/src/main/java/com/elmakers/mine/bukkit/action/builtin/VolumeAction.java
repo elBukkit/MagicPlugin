@@ -303,6 +303,7 @@ public class VolumeAction extends CompoundAction
 			replaceMaterial = null;
 		}
 		resetCounters();
+		actionContext.setTargetCenterLocation(context.getTargetLocation());
 		return SpellResult.NO_ACTION;
 	}
 
