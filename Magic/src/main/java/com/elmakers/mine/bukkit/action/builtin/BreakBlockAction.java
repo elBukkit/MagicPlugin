@@ -47,7 +47,7 @@ public class BreakBlockAction extends BaseSpellAction {
 
         if (breakAmount > 1) {
             if (context.hasBreakPermission(block)) {
-                CompatibilityUtils.setBreaking(block, 10, UndoList.BLOCK_BREAK_RANGE);
+                CompatibilityUtils.clearBreaking(block);
                 BlockState blockState = block.getState();
                 if (blockState != null && (blockState instanceof InventoryHolder || blockState.getType() == Material.FLOWER_POT)) {
                     NMSUtils.clearItems(blockState.getLocation());
@@ -57,8 +57,7 @@ public class BreakBlockAction extends BaseSpellAction {
                 context.playEffects("break");
             }
         } else {
-            int breakState = (int)Math.floor(9 * breakAmount);
-            CompatibilityUtils.setBreaking(block, breakState, UndoList.BLOCK_BREAK_RANGE);
+            CompatibilityUtils.setBreaking(block, breakAmount);
         }
         return SpellResult.CAST;
     }

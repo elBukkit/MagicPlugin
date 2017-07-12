@@ -52,8 +52,6 @@ import com.elmakers.mine.bukkit.entity.EntityData;
  */
 public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.block.UndoList
 {
-    public static int                  BLOCK_BREAK_RANGE = 64;
-
     public static Set<Material>         attachables;
     public static Set<Material>         attachablesWall;
     public static Set<Material>         attachablesDouble;
@@ -387,7 +385,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             if (undoBreaking && isTopOfQueue) {
                 // This may have been unregistered already, if the block was broken for instance.
                 if (registry.removeBreaking(undoBlock) != null) {
-                    CompatibilityUtils.setBreaking(undoBlock.getBlock(), 10, BLOCK_BREAK_RANGE);
+                    CompatibilityUtils.clearBreaking(undoBlock.getBlock());
                 }
             }
             return true;

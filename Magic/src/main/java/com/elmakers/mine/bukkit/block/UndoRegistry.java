@@ -207,4 +207,8 @@ public class UndoRegistry {
     public Map<Long, Double> getBreaking() {
         return breaking;
     }
+
+    public Double getBreaking(Block block) {
+        return breaking.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+    }
 }

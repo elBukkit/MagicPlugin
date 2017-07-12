@@ -78,6 +78,7 @@ import java.util.logging.Level;
  */
 public class CompatibilityUtils extends NMSUtils {
     public static boolean USE_MAGIC_DAMAGE = true;
+    public static int BLOCK_BREAK_RANGE = 64;
     public static boolean isDamaging = false;
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<World.Environment, Integer> maxHeights = new HashMap<>();
@@ -1218,6 +1219,19 @@ public class CompatibilityUtils extends NMSUtils {
         return   ((block.getX() & 0xFFF) << 20)
                | ((block.getZ() & 0xFFF) << 8)
                | (block.getY() & 0xFF);
+    }
+
+    public static void clearBreaking(Block block) {
+        setBreaking(block, 10, BLOCK_BREAK_RANGE);
+    }
+
+    public static void setBreaking(Block block, double percentage) {
+        int breakState = (int)Math.floor(10 * percentage);
+        setBreaking(block, breakState, BLOCK_BREAK_RANGE);
+    }
+
+    public static void setBreaking(Block block, int breakAmount) {
+        setBreaking(block, breakAmount, BLOCK_BREAK_RANGE);
     }
 
     public static void setBreaking(Block block, int breakAmount, int range) {
