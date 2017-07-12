@@ -18,11 +18,14 @@ import java.util.Collection;
 
 public class BreakBlockAction extends ModifyBlockAction {
     private int durabilityAmount;
+    private double maxDistanceSquared;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         durabilityAmount = parameters.getInt("break_durability", 1);
+        double maxDistance = parameters.getDouble("durability_max_distance");
+        maxDistanceSquared = maxDistance * maxDistance;
     }
 
     @Override
@@ -32,10 +35,23 @@ public class BreakBlockAction extends ModifyBlockAction {
             return SpellResult.NO_TARGET;
         }
         context.registerForUndo(block);
+        double scaledAmount = durabilityAmount;
+        if (maxDistanceSquared > 0) {
+            double distanceSquared = context.getTargetCenterLocation().distanceSquared(block.getLocation());
+            org.bukkit.Bukkit.getLogger().info("Distance^2: " + distanceSquared);
+            if (distanceSquared > maxDistanceSquared) {
+                return SpellResult.NO_TARGET;
+            }
+            if (distanceSquared > 0) {
+                scaledAmount = scaledAmount * (1 - distanceSquared / maxDistanceSquared);
+            }
+            org.bukkit.Bukkit.getLogger().info("Break amount: " + scaledAmount + " from " + durabilityAmount);
+        }
+
         double breakAmount = 1;
         double durability = CompatibilityUtils.getDurability(block.getType());
         if (durability > 0) {
-            double breakPercentage = durabilityAmount / durability;
+            double breakPercentage = scaledAmount / durability;
             breakAmount = context.registerBreaking(block, breakPercentage);
         }
 
@@ -67,11 +83,12 @@ public class BreakBlockAction extends ModifyBlockAction {
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
         parameters.add("durability");
+        parameters.add("durability_max_distance");
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("durability")) {
+        if (parameterKey.equals("durability") || parameterKey.equals("durability_max_distance")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
