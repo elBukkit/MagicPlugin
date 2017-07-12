@@ -57,6 +57,7 @@ blast:
         direction: 0,0.8,0
         falling: true
         radius: 1
+        durability_max_distance: 3
         damage_max_distance: 2
         undo: 15000
         cooldown: 5000
@@ -78,6 +79,7 @@ blast|2:
         destructible_durability: 200
         break_durability: 50
         radius: 2
+        durability_max_distance: 4
         damage_max_distance: 3
         speed: 1.2
         damage: 8
@@ -98,6 +100,7 @@ blast|4:
         break_durability: 1000
         destructible_durability: 5000
         radius: 3
+        durability_max_distance: 5
         damage_max_distance: 4
         undo: 30000
         damage: 12

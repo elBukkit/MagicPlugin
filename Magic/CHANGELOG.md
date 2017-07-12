@@ -20,7 +20,7 @@
    - Increase spell attack range
    - No longer have hearts, will lose blocks as they are destroyed and eventually die
  - Add support for setting permission nodes on shop items
- - Blast uses block cracking effects
+ - Blast and Sticky Bomb use block cracking effects
 
 ## 6.9.13
  - More Automata changes:

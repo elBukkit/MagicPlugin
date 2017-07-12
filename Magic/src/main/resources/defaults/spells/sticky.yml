@@ -18,7 +18,7 @@ sticky:
             - class: Damage
           - class: Sphere
             actions:
-            - class: ModifyBlock
+            - class: BreakBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -59,23 +59,25 @@ sticky:
         allow_max_range: true
         velocity: 20
         gravity: 0.05
-        range: 48
+        range: 120
         target_type: Damageable
-        player_damage: 4
-        entity_damage: 8
+        player_damage: 6
+        entity_damage: 10
         target_breakables: 0
         cooldown: 10000
         target_self_timeout: 2000
         attach_duration: 5000
         radius: 1.5
         speed: 1.2
-        destructible: destructible
-        destructible_override: true
         falling: true
         direction: 0,0.5,0
-        brush: air
         undo: 15000
         physics_blocks: true
+        destructible_durability: 200
+        break_durability: 50
+        radius: 2
+        durability_max_distance: 4
+        damage_max_distance: 3
     costs:
         mana: 80
 
@@ -85,13 +87,17 @@ sticky|2:
   parameters:
       velocity: 25
       radius: 2
-      player_damage: 6
-      entity_damage: 10
+      player_damage: 8
+      entity_damage: 12
+      destructible_durability: 500
+      break_durability: 100
 
 sticky|3:
   parameters:
       velocity: 30
       radius: 2.5
-      player_damage: 8
-      entity_damage: 12
+      player_damage: 10
+      entity_damage: 15
+      break_durability: 1000
+      destructible_durability: 5000
 
