@@ -37,12 +37,13 @@ hunter:
         "hunter_death speed 1^5 destructible $birth": 100,100,200
     cast:
         "shrink": 30,40,50
-        "pull": 60,70,80
-        "curse": 60,100,150
-        "poison": 100,100,150
-        "blob brush stained_glass:15 radius 2 undo 5000 indestructible $birth": 20,40,80
-        "shell brush stained_glass:15 radius 3 undo 7000 indestructible $birth": 20,40,80
-        "homing|2": 20,50,90
+        "pull": 100,120,150
+        "curse": 20,50,70
+        "blind": 60,40,10
+        "poison": 40,50,30
+        "blob brush stained_glass:15 radius 2 undo 5000 indestructible $birth": 20,40,50
+        "shell brush stained_glass:15 radius 3 undo 7000 indestructible $birth": 30,20,10
+        "homing|2": 20,50,150
         "missile|2": 100,150,200
         "petrify": 50,100,150
         "none": 100,75,25
@@ -62,7 +63,7 @@ hunter:
         concurrent: true
         drops:
         - hunterheart
-        - sp:40
+        - sp:50
         restricted: restricted_animate
         message_type: evil
         undo: 5000
@@ -90,7 +91,7 @@ hunter:
         - red_sandstone:2
     costs:
         xp: 200
-        sp: 80
+        sp: 100
 
 hunter_death:
     name: Hunter Death
