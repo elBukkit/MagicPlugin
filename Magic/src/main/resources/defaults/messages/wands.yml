@@ -364,3 +364,6 @@ wands:
     potion_sp100:
         name: SP Potion
         description: Drink to gain 100 SP
+    purger:
+        name: The Purge
+        description: An Automata-Fighting Wand
