@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -41,7 +42,8 @@ public class SimulateBatch extends SpellBatch {
 	private static BlockFace[] DIAGONAL_FACES = {  BlockFace.SOUTH_EAST, BlockFace.NORTH_EAST, BlockFace.SOUTH_WEST, BlockFace.NORTH_WEST };
 	private static BlockFace[] MAIN_FACES = {  BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST };
 	private static BlockFace[] POWER_FACES = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
-	
+	private static double MAX_BREAKING = 0.9;
+
 	private enum SimulationState {
 		INITIALIZING, SCANNING, UPDATING, PRUNE, TARGETING, HEART_UPDATE, DELAY, CLEANUP, CHECK, FINISHED
 	};
@@ -102,6 +104,7 @@ public class SimulateBatch extends SpellBatch {
 	private int blockLimit = 0;
 	private int minBlocks = 5;
 	private Set<Long> liveBlocks = new HashSet<>();
+	private double breakingBlocks = 0;
 
 	private List<Block> deadBlocks = new ArrayList<>();
 	private List<Block> bornBlocks = new ArrayList<>();
@@ -193,8 +196,15 @@ public class SimulateBatch extends SpellBatch {
 
 	@SuppressWarnings("deprecation")
 	protected void killBlock(Block block) {
-		liveBlocks.remove(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+		long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
+		liveBlocks.remove(blockId);
 		if (concurrent) {
+			Double breaking = UndoList.getRegistry().getBreaking(block);
+			if (breaking != null) {
+				breakingBlocks += breaking;
+				UndoList.getRegistry().unregisterBreaking(block);
+				CompatibilityUtils.clearBreaking(block);
+			}
 			registerForUndo(block);
 			if (modifyType == ModifyType.FAST) {
 				CompatibilityUtils.setBlockFast(block, deathMaterial, 0);
@@ -215,8 +225,15 @@ public class SimulateBatch extends SpellBatch {
 		if (concurrent) {
 			registerForUndo(block);
 			birthMaterial.modify(block, modifyType);
+			if (breakingBlocks > 0) {
+				double breaking = Math.min(breakingBlocks, MAX_BREAKING);
+				double blockBreaking = UndoList.getRegistry().registerBreaking(block, breaking);
+				CompatibilityUtils.setBreaking(block, blockBreaking);
+
+				breakingBlocks -= breaking;
+			}
 			if (reflectChance > 0) {
-				com.elmakers.mine.bukkit.block.UndoList.getRegistry().registerReflective(block, reflectChance);
+				UndoList.getRegistry().registerReflective(block, reflectChance);
 				undoList.setUndoReflective(true);
 			}
 		} else {
