@@ -1,11 +1,9 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -18,7 +16,7 @@ import org.bukkit.inventory.InventoryHolder;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class BreakBlockAction extends BaseSpellAction {
+public class BreakBlockAction extends ModifyBlockAction {
     private int durabilityAmount;
 
     @Override
@@ -29,10 +27,6 @@ public class BreakBlockAction extends BaseSpellAction {
 
     @Override
     public SpellResult perform(CastContext context) {
-        MaterialBrush brush = context.getBrush();
-        if (brush == null) {
-            return SpellResult.FAIL;
-        }
         Block block = context.getTargetBlock();
         if (block.getType() == Material.AIR || !context.isDestructible(block)) {
             return SpellResult.NO_TARGET;
@@ -52,7 +46,14 @@ public class BreakBlockAction extends BaseSpellAction {
                 if (blockState != null && (blockState instanceof InventoryHolder || blockState.getType() == Material.FLOWER_POT)) {
                     NMSUtils.clearItems(blockState.getLocation());
                 }
-                block.setType(Material.AIR);
+                MaterialBrush brush = context.getBrush();
+                if (brush == null) {
+                    brush = new com.elmakers.mine.bukkit.block.MaterialBrush(context.getMage(), Material.AIR, (byte)0);
+                    context.setBrush(brush);
+                } else {
+                    brush.setMaterial(Material.AIR);
+                }
+                super.perform(context);
                 context.unregisterBreaking(block);
                 context.playEffects("break");
             }
@@ -78,12 +79,7 @@ public class BreakBlockAction extends BaseSpellAction {
     }
 
     @Override
-    public boolean requiresTarget() {
-        return true;
-    }
-
-    @Override
-    public boolean isUndoable() {
-        return true;
+    public boolean usesBrush() {
+        return false;
     }
 }

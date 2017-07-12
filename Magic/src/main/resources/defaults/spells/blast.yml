@@ -17,7 +17,7 @@ blast:
             - class: Velocity
           - class: Sphere
             actions:
-            - class: ModifyBlock
+            - class: BreakBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -56,14 +56,14 @@ blast:
         living_entity_speed: 0.7
         direction: 0,0.8,0
         falling: true
-        brush: air
         radius: 1
         damage_max_distance: 2
         undo: 15000
         cooldown: 5000
         destructible: solid
         destructible_override: true
-        destructible_durability: 10
+        destructible_durability: 50
+        break_durability: 10
         select_self: false
         physics_blocks: true
         undo_speed: 0.5
@@ -75,7 +75,8 @@ blast|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     parameters:
-        destructible_durability: 50
+        destructible_durability: 200
+        break_durability: 50
         radius: 2
         damage_max_distance: 3
         speed: 1.2
@@ -86,14 +87,16 @@ blast|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        destructible_durability: 100
+        destructible_durability: 500
+        break_durability: 100
         radius: 2
         undo: 20000
         damage: 10
 
 blast|4:
     parameters:
-        destructible_durability: 1000
+        break_durability: 1000
+        destructible_durability: 5000
         radius: 3
         damage_max_distance: 4
         undo: 30000
