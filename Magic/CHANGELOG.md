@@ -18,6 +18,7 @@
    - Can't be spawned from command blocks, will erase any old command blocks from previous automata
    - Added some more name suffixes and prefixes
    - Increase spell attack range
+   - No longer have hearts, will lose blocks as they are destroyed and eventually die
  - Add support for setting permission nodes on shop items
 
 ## 6.9.13
