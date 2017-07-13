@@ -23,6 +23,7 @@
  - Blast and Sticky Bomb use block cracking effects
  - Fix hollow Cylinder and Disc casts at larger radii
  - Add Ring action (hollow Disc)
+ - Fix blink looking broken when casting into the air or out of range
 
 ## 6.9.13
  - More Automata changes:

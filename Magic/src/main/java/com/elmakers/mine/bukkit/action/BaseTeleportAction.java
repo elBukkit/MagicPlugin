@@ -33,6 +33,6 @@ public abstract class BaseTeleportAction extends BaseSpellAction
         if (!context.canCast(targetLocation)) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
-        return context.teleport(entity, targetLocation, verticalSearchDistance, safe) ? SpellResult.CAST : SpellResult.FAIL;
+        return context.teleport(entity, targetLocation, verticalSearchDistance, safe) ? SpellResult.CAST : SpellResult.NO_TARGET;
     }
 }
