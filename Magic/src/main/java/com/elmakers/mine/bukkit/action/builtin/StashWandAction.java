@@ -53,6 +53,7 @@ public class StashWandAction extends BaseSpellAction
             ItemStack existing = player.getInventory().getItem(slotNumber);
             if (InventoryUtils.isEmpty(existing)) {
                 player.getInventory().setItem(slotNumber, stashedItem);
+                gave = true;
             }
         }
         if (!gave) {
