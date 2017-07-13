@@ -53,7 +53,7 @@ virus:
         range: 32
         cooldown: 120000
         name: Virus
-        target_max_range: 12
+        target_max_range: 128
         target_min_range: 0
         delay: 3000
         drops:
