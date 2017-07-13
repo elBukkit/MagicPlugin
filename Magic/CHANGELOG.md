@@ -13,17 +13,19 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.15
+
 ## 6.9.14
  - Automata:
+   - No longer have hearts, will lose blocks as they are destroyed and eventually die
    - Can't be spawned from command blocks, will erase any old command blocks from previous automata
    - Added some more name suffixes and prefixes
    - Increase spell attack range
-   - No longer have hearts, will lose blocks as they are destroyed and eventually die
  - Add support for setting permission nodes on shop items
  - Blast and Sticky Bomb use block cracking effects
  - Fix hollow Cylinder and Disc casts at larger radii
  - Add Ring action (hollow Disc)
- - Fix blink looking broken when casting into the air or out of range
+ - Fix Blink looking broken when casting into the air or out of range
 
 ## 6.9.13
  - More Automata changes:
