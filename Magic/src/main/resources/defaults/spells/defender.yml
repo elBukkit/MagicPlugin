@@ -145,3 +145,7 @@ defender_attack:
         brush: stained_glass|9
         bypass_backfire: true
 
+birth_defender:
+  inherit: defender
+  parameters:
+    seed_radius: 2

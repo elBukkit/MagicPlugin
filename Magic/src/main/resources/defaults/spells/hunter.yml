@@ -120,3 +120,8 @@ hunter_death:
         undo_speed: 0.5
         target: self
         check_destructible: true
+
+birth_hunter:
+  inherit: hunter
+  parameters:
+    seed_radius: 2

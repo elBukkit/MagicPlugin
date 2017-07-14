@@ -226,3 +226,8 @@ virus_death:
         direction: 0,0.75,0
         destructible: destructible,destructible2,destructible3
         undo_speed: 2
+
+birth_virus:
+  inherit: virus
+  parameters:
+    seed_radius: 2

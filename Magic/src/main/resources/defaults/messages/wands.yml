@@ -279,6 +279,9 @@ wands:
     hunterheart:
         name: Heart of Hunter
         description: It wants to be reborn
+    snakeheart:
+        name: Heart of Snake
+        description: Sssssssssave me
     golemheart:
         name: Heart of Golem
         description: Your new best friend

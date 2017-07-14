@@ -26,10 +26,10 @@ life:
         commands:
           life_wiki: msg @p See http://en.wikipedia.org/wiki/Conway%27s_life for more info!
           life_simulate: cast simulate bu true r 64 ty ~-14 tz ~-68 oby 16 obz 68 obcx -1 obcy 16 obcz 68 olcx 1 olcy 16 olcz 68
-          life_clear: castp @p box odmax 10 odmin 1 brush erase cd false tx ~2 ty ~-17 tz ~-68 radius 64 md 300 thickness 0 cooldown 10000
-          life_border: castp @p box odmax 2 odmin 2 tx ~3 ty ~-20 tz ~-68 radius 65 md 300 cd 60000 brush copy obx -3 oby 18 obz 68
-          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-68 radius 64 md 300 thickness 0 cd 60000 brush copy obx -2 oby 18 obz 68
-          life_line: castp @p fill tx ~-16 ty ~-14 tz ~-32 t2x ~32 brush copy cd 10000 obx -15 oby 16 obz 36
+          life_clear: castp @p box odmax 10 odmin 1 brush erase cd false tx ~2 ty ~-17 tz ~-68 radius 64 md 300 thickness 0 cooldown 10000 consume false
+          life_border: castp @p box odmax 2 odmin 2 tx ~3 ty ~-20 tz ~-68 radius 65 md 300 cd 60000 brush copy obx -3 oby 18 obz 68 consume false
+          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-68 radius 64 md 300 thickness 0 cd 60000 brush copy obx -2 oby 18 obz 68 consume false
+          life_line: castp @p fill tx ~-16 ty ~-14 tz ~-32 t2x ~32 brush copy cd 10000 obx -15 oby 16 obz 36 consume false
     costs:
         mana: 1000
 

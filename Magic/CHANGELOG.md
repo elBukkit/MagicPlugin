@@ -15,6 +15,8 @@
 
 ## 6.9.15
 
+ - Add new Snake automata
+
 ## 6.9.14
  - Automata:
    - No longer have hearts, will lose blocks as they are destroyed and eventually die

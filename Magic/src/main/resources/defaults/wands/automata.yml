@@ -56,3 +56,14 @@ golemheart:
     effect_color: '8888FF'
     spells:
         - animate
+
+snakeheart:
+    active_spell: snake
+    icon: 'skull_item:http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0'
+    indestructible: false
+    locked: true
+    uses: 1
+    mode: cast
+    effect_color: 'FF0000'
+    spells:
+        - snake

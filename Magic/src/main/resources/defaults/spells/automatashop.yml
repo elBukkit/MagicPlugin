@@ -11,6 +11,7 @@ automatashop:
         sell: true
         items:
           wand|hunterheart: 500
+          wand|snakeheart: 1000
           wand|wormheart: 1500
           wand|virusheart: 3000
           wand|defenderheart: 100
