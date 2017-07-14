@@ -16,6 +16,7 @@
 ## 6.9.15
 
  - Add new Snake automata
+ - Defenders are a 50% reflective
 
 ## 6.9.14
  - Automata:

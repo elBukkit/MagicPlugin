@@ -195,48 +195,56 @@ public class SimulateBatch extends SpellBatch {
 		finish();
 	}
 
-	@SuppressWarnings("deprecation")
+    @SuppressWarnings("deprecation")
+	protected void removeBlock(Block block) {
+        Double breaking = UndoList.getRegistry().getBreaking(block);
+        if (breaking != null) {
+            breakingBlocks += breaking;
+            UndoList.getRegistry().unregisterBreaking(block);
+            CompatibilityUtils.clearBreaking(block);
+        }
+        registerForUndo(block);
+        if (modifyType == ModifyType.FAST) {
+            CompatibilityUtils.setBlockFast(block, deathMaterial, 0);
+        } else {
+            block.setTypeIdAndData(deathMaterial.getId(), (byte)0, false);
+        }
+        if (reflectChance > 0) {
+            com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(block);
+        }
+    }
+
 	protected void killBlock(Block block) {
 		long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
 		liveBlocks.remove(blockId);
 		if (concurrent) {
-			Double breaking = UndoList.getRegistry().getBreaking(block);
-			if (breaking != null) {
-				breakingBlocks += breaking;
-				UndoList.getRegistry().unregisterBreaking(block);
-				CompatibilityUtils.clearBreaking(block);
-			}
-			registerForUndo(block);
-			if (modifyType == ModifyType.FAST) {
-				CompatibilityUtils.setBlockFast(block, deathMaterial, 0);
-			} else {
-				block.setTypeIdAndData(deathMaterial.getId(), (byte)0, false);
-			}
-			if (reflectChance > 0) {
-				com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(block);
-			}
+		    removeBlock(block);
 		} else {
 			deadBlocks.add(block);
 		}
 	}
+
+	protected void createBlock(Block block) {
+        registerForUndo(block);
+        birthMaterial.modify(block, modifyType);
+        if (breakingBlocks > 0) {
+            double breaking = Math.min(breakingBlocks, MAX_BREAKING);
+            double blockBreaking = UndoList.getRegistry().registerBreaking(block, breaking);
+            CompatibilityUtils.setBreaking(block, blockBreaking);
+
+            breakingBlocks -= breaking;
+        }
+        if (reflectChance > 0) {
+            UndoList.getRegistry().registerReflective(block, reflectChance);
+            undoList.setUndoReflective(true);
+        }
+    }
 	
 	protected void birthBlock(Block block) {
 		if (isAutomata && liveBlocks.size() >= blockLimit) return;
 		liveBlocks.add(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
 		if (concurrent) {
-			registerForUndo(block);
-			birthMaterial.modify(block, modifyType);
-			if (breakingBlocks > 0) {
-				double breaking = Math.min(breakingBlocks, MAX_BREAKING);
-				double blockBreaking = UndoList.getRegistry().registerBreaking(block, breaking);
-				CompatibilityUtils.setBreaking(block, blockBreaking);
-
-				breakingBlocks -= breaking;
-			}
-			if (reflectChance > 0) {
-				UndoList.getRegistry().registerReflective(block, reflectChance);
-				undoList.setUndoReflective(true);
-			}
+		    createBlock(block);
 		} else {
 			bornBlocks.add(block);
 		}
@@ -399,8 +407,7 @@ public class SimulateBatch extends SpellBatch {
 				}
 				
 				if (birthMaterial.is(killBlock)) {
-					registerForUndo(killBlock);
-					killBlock.setType(deathMaterial);
+				    removeBlock(killBlock);
 				} else {
 					// If this block was destroyed while we were processing,
 					// avoid spawning a random birth block.
@@ -421,8 +428,7 @@ public class SimulateBatch extends SpellBatch {
 					birthBlock.getChunk().load();
 					return processedBlocks;
 				}
-				registerForUndo(birthBlock);
-				birthMaterial.modify(birthBlock, modifyType);
+				createBlock(birthBlock);
 			}
 			
 			updatingIndex++;

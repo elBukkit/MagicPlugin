@@ -49,7 +49,7 @@ defender:
         restricted: restricted_animate
         message_type: good
         undo: 7000
-        reflect_chance: 0.25
+        reflect_chance: 0.50
         heart_material: lapis_block
         command_block_allowed: false
         max_blocks: 200
