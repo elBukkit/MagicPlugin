@@ -151,7 +151,8 @@ public class SimulateBatch extends SpellBatch {
 			if (distanceSquared <= commandMoveRangeSquared) {
 				// commandMoveRangeSquared is kind of too big, but it doesn't matter all that much
 				// we still look at targets that end up with a score of 0, it just affects the sort ordering.
-				potentialHeartBlocks.add(new Target(center, block, huntMinRange, huntMaxRange, huntFov, fovWeight, reverseTargetDistanceScore));
+				Target potential = new Target(center, block, 1, commandMoveRangeSquared, huntFov, fovWeight, reverseTargetDistanceScore);
+				potentialHeartBlocks.add(potential);
 			}
 		}
 	}
@@ -346,7 +347,7 @@ public class SimulateBatch extends SpellBatch {
 				// Check for death since activation (e.g. during delay period)
 				if (this.blockLimit < minBlocks) {
 					if (DEBUG) {
-						controller.getLogger().info("DIED with block count " + liveBlocks.size());
+						controller.getLogger().info("DIED with block count " + liveBlocks.size() + ", and block limit " + this.blockLimit);
 					}
 					die();
 					return processedBlocks;
@@ -435,6 +436,9 @@ public class SimulateBatch extends SpellBatch {
 
 		if (state == SimulationState.PRUNE) {
 			if (liveBlocks.isEmpty()) {
+				if (DEBUG) {
+					controller.getLogger().info("Died, no blocks are alive");
+				}
 				die();
 				return processedBlocks;
 			}
@@ -479,7 +483,7 @@ public class SimulateBatch extends SpellBatch {
                 }
 			}
 			if (DEBUG && heartTargetBlock != null) {
-				controller.getLogger().info("MOVED: " + heartTargetBlock.getLocation().toVector().subtract(center.toVector()));
+				controller.getLogger().info("Moved: " + heartTargetBlock.getLocation().toVector().subtract(center.toVector()) + " from " + potentialHeartBlocks.size() + " potential locations");
 			}
 			state = SimulationState.HEART_UPDATE;
 		}
@@ -502,6 +506,9 @@ public class SimulateBatch extends SpellBatch {
 					center = newLocation;
 					mage.setLocation(newLocation);
 				} else {
+					if (DEBUG) {
+						controller.getLogger().info("Died, could not find target heart block");
+					}
 					die();
 					return processedBlocks;
 				}
@@ -683,7 +690,7 @@ public class SimulateBatch extends SpellBatch {
 					((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
 				
 				if (DEBUG) {
-					controller.getLogger().info(" *Tracking " + targetDescription + 
+					controller.getLogger().info(" Tracking " + targetDescription +
 				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation() + " move " + commandMoveRangeSquared);
 				}
 				Vector direction = null;
