@@ -1,0 +1,10 @@
+killer_bunny:
+  type: rabbit
+  rabbit_type: the_killer_bunny
+  name: Killer Bunny
+  health: 100
+  default_drops: false
+  drops:
+  - gold_nugget@10
+  - sp:10
+
