@@ -45,6 +45,7 @@ broom:
            particle_offset_y: 0.1
     parameters:
         target: self
+        mount_name: Broomstick
         mount_wand: true
         start_speed: 0.2
         min_speed: 0.1

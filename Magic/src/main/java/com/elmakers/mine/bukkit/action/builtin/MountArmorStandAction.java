@@ -38,6 +38,7 @@ public class MountArmorStandAction extends RideEntityAction
     private ItemStack item;
     private int slotNumber;
     private boolean mountTarget = false;
+    private String mountName;
 
     @Override
     public void reset(CastContext context)
@@ -62,6 +63,7 @@ public class MountArmorStandAction extends RideEntityAction
         armorStandPitch = parameters.getDouble("armor_stand_pitch", 0.0);
         armorStandRoll = parameters.getDouble("armor_stand_roll", 0.0);
         mountWand = parameters.getBoolean("mount_wand", false);
+        mountName = parameters.getString("mount_name", null);
         if (parameters.contains("armor_stand_reason")) {
             String reasonText = parameters.getString("armor_stand_reason").toUpperCase();
             try {
@@ -190,6 +192,9 @@ public class MountArmorStandAction extends RideEntityAction
             armorStand.setHelmet(item);
         } else if (helmetItem != null) {
             armorStand.setHelmet(helmetItem);
+        }
+        if (mountName != null && !mountName.isEmpty()) {
+            armorStand.setCustomName(mountName);
         }
         context.setTargetEntity(armorStand);
 
