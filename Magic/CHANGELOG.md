@@ -17,6 +17,7 @@
 
  - Add new Snake automata
  - Defenders are a 50% reflective
+ - Add max_velocity config option, defaults to 10 but if you're running Paper you may need to change it to 4.
 
 ## 6.9.14
  - Automata:

@@ -581,3 +581,7 @@ max_height:
 
 # This can be used to disable map animations. Best to just not give /mmap to people you don't trust, though.
 enable_map_animations: true
+
+# The maximum velocity we are allowed to apply to an entity
+# If you're using Paper you may need to change this to 4.
+max_velocity: 10

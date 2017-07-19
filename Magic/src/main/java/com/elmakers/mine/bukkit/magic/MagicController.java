@@ -75,6 +75,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
@@ -2231,6 +2232,7 @@ public class MagicController implements MageController {
             currencyItem = null;
         }
 
+        SafetyUtils.MAX_VELOCITY = properties.getDouble("max_velocity", 10 );
         HitboxUtils.setHitboxScale(properties.getDouble("hitbox_scale", 1.0));
         HitboxUtils.setHitboxScaleY(properties.getDouble("hitbox_scale_y", 1.0));
         HitboxUtils.setHitboxSneakScaleY(properties.getDouble("hitbox_sneaking_scale_y", 0.75));
