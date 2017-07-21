@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.magic.command;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.multiverse.io.FileUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,6 +10,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -122,7 +126,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                         sender.sendMessage(ChatColor.YELLOW + "  Backup file exists, will not overwrite: " + backupFile.getName());
                     } else {
                         sender.sendMessage(ChatColor.DARK_PURPLE + "  Saved backup file to " + backupFile.getName() + ", delete this file if all looks good.");
-                        FileUtils.copyFile(configFile, backupFile);
+                        copyFile(configFile, backupFile);
                     }
                     String[] lines = StringUtils.split(cleanConfig.saveToString(), '\n');
                     PrintWriter out = new PrintWriter(configFile);
@@ -146,6 +150,33 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             }
 
         }
+    }
+
+    private static void copyFile(File srcFile, File destFile) throws IOException {
+        FileInputStream input = new FileInputStream(srcFile);
+        try {
+            FileOutputStream output = new FileOutputStream(destFile);
+            try {
+                copyStream(input, output);
+            } finally {
+                output.close();
+            }
+        } finally {
+            input.close();
+        }
+    }
+
+    public static long copyStream(InputStream input, OutputStream output) throws IOException {
+        byte[] buffer = new byte[4096];
+        long count = 0L;
+
+        int n;
+        while (-1 != (n = input.read(buffer))) {
+            output.write(buffer, 0, n);
+            count += (long)n;
+        }
+
+        return count;
     }
 
     @SuppressWarnings("unchecked")
