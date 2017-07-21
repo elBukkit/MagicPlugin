@@ -609,6 +609,8 @@ boon:
 boon|2:
     enabled: true
 
+### SHOPS and other utilities
+
 upgrades:
     enabled: true
 
@@ -620,3 +622,23 @@ enchantwand:
 
 spellshop:
     enabled: true
+
+bendingshop:
+  inherit: buyshop
+  cast_on_no_target: false
+  parameters:
+      items:
+      - item: airbending
+        cost: 5000
+      - item: waterbending
+        cost: 5000
+      - item: earthbending
+        cost: 5000
+      - item: firebending
+        cost: 5000
+      cooldown: 360000000
+      confirm: true
+      auto_close: true
+      confirm_filler: stained_glass:3
+      quiet: false
+      loud: true

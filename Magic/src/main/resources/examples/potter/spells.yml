@@ -2777,6 +2777,20 @@ ollivander:
         cost: 1
     loud: true
 
+ticketshop:
+  inherit: buyshop
+  cast_on_no_target: false
+  parameters:
+      items:
+      - item: ticket
+        cost: 5000
+      cooldown: 360000000
+      confirm: true
+      auto_close: true
+      confirm_filler: stained_glass:3
+      quiet: false
+      loud: true
+
 upgrades:
     enabled: true
 
