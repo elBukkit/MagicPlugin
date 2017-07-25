@@ -20,6 +20,7 @@
 
 ## High-Priority
 
+ - Allow magic items and wands as crafting ingredients
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  - PW would like some custom lore for wand "quiet" and quick cast settings.
  - Recall warps don't show up with /mage describe?

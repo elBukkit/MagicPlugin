@@ -73,7 +73,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     protected boolean               undone              = false;
     protected int                  	timeToLive          = 0;
-    protected ModifyType            modifyType           = ModifyType.NORMAL;
+    protected ModifyType            modifyType           = ModifyType.NO_PHYSICS;
 
     protected boolean				bypass		 	    = false;
     protected boolean				hasBeenScheduled    = false;
@@ -880,6 +880,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void setApplyPhysics(boolean applyPhysics) {
         if (applyPhysics) {
             this.modifyType = ModifyType.NORMAL;
+        } else if (this.modifyType != ModifyType.FAST) {
+            this.modifyType = ModifyType.NO_PHYSICS;
         }
     }
 
