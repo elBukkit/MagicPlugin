@@ -4650,11 +4650,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         PlayerInventory inventory = player.getInventory();
 		storedInventory = CompatibilityUtils.createInventory(null, PLAYER_INVENTORY_SIZE, "Stored Inventory");
 		for (int i = 0; i < PLAYER_INVENTORY_SIZE; i++) {
-			// Make sure we don't store any spells or magical materials, just in case
 			ItemStack item = inventory.getItem(i);
-			if (!Wand.isSpell(item) || Wand.isSkill(item)) {
-				storedInventory.setItem(i, item);
-			}
+			storedInventory.setItem(i, item);
 			inventory.setItem(i, null);
 		}
 		inventory.setItem(heldSlot, item);
