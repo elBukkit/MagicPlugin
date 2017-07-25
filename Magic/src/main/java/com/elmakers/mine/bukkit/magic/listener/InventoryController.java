@@ -438,6 +438,9 @@ public class InventoryController implements Listener {
                 previousWand.closeInventory();
             }
         } else {
+            if (previousWand != null && !previousWand.wasInventoryOpen()) {
+                previousWand.checkInventoryForUpgrades();
+            }
             mage.checkWand();
         }
     }
