@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.16
+
 ## 6.9.15
 
  - Add new Snake automata
