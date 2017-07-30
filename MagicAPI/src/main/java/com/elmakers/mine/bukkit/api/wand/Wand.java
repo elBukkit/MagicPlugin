@@ -65,6 +65,7 @@ public interface Wand extends CostReducer, MagicConfigurable  {
     boolean hasSpell(SpellKey spellKey);
     boolean hasBrush(String key);
     boolean isLocked();
+    boolean upgradesAllowed();
     boolean canUse(Player player);
     boolean fill(Player player);
     boolean fill(Player player, int maxLevel);
@@ -75,6 +76,13 @@ public interface Wand extends CostReducer, MagicConfigurable  {
     boolean removeProperty(String key);
     boolean addBrush(String key);
     boolean addSpell(String key);
+
+    /**
+     * Adds a spell to a locked wand.
+     * @param key
+     * @return
+     */
+    boolean forceAddSpell(String key);
     boolean removeBrush(String key);
     boolean removeSpell(String key);
     String getActiveBrushKey();

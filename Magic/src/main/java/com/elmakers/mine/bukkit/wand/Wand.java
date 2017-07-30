@@ -173,6 +173,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	private boolean hasInventory = false;
 	private boolean locked = false;
+	private boolean lockedAllowUpgrades = false;
     private boolean forceUpgrade = false;
     private boolean isHeroes = false;
 	private int uses = 0;
@@ -1414,6 +1415,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected void loadProperties(ConfigurationSection wandConfig) {
     	super.loadProperties(wandConfig);
 		locked = wandConfig.getBoolean("locked", locked);
+		lockedAllowUpgrades = wandConfig.getBoolean("locked_allow_upgrades", false);
 		consumeReduction = (float)wandConfig.getDouble("consume_reduction");
 		costReduction = (float)wandConfig.getDouble("cost_reduction");
 		cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction");
@@ -4199,6 +4201,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return this.locked;
 	}
 
+	@Override
+	public boolean upgradesAllowed() {
+    	return !this.locked || this.lockedAllowUpgrades;
+	}
+
     @Override
     public void unlock() {
         locked = false;
@@ -4220,7 +4227,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	@Override
     public boolean addSpell(String spellName) {
 		if (!isModifiable()) return false;
+		return forceAddSpell(spellName);
+	}
 
+	@Override
+	public boolean forceAddSpell(String spellName) {
         SpellKey spellKey = new SpellKey(spellName);
         if (hasSpell(spellKey)) {
             return false;

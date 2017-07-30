@@ -2,6 +2,8 @@ broomstick:
     path: broom
     mode: cast
     keep: true
+    locked: true
+    locked_allow_upgrades: true
     indestructible: true
     active_spell: broom
     migrate_icon: gold_spade
