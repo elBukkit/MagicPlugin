@@ -32,8 +32,6 @@ glide:
         target: self
         duration: 50000
         cooldown: 60000
-        material: elytra
-        armor_slot: 2
         direction: 0,1,0
         speed: 2
         delay: 750

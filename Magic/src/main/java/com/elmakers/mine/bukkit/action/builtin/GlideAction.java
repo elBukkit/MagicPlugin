@@ -29,7 +29,6 @@ public class GlideAction extends BaseSpellAction
 		}
 
 		LivingEntity livingEntity = (LivingEntity)targetEntity;
-
 		Mage mage = context.getController().getMage(livingEntity);
 		if (isGliding) {
 			if (!livingEntity.isGliding()) {
@@ -51,11 +50,14 @@ public class GlideAction extends BaseSpellAction
 			return SpellResult.PENDING;
 		}
 
-		if (!requireElytra) {
-			mage.setGlidingAllowed(false);
-		}
-
 		return SpellResult.CAST;
+	}
+
+	@Override
+	public void finish(CastContext context) {
+		if (!requireElytra) {
+			context.getMage().setGlidingAllowed(false);
+		}
 	}
 
 	@Override
