@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -35,14 +36,11 @@ public class EntityProjectileAction extends CustomProjectileAction {
     private boolean orient = false;
     private Vector velocityOffset;
     private Vector locationOffset;
-    private EntityType entityType;
     protected CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
     private Collection<PotionEffect> projectileEffects;
 
-    // To do .. use EntityData for all of this
-    private String customName;
+    private EntityData entityData;
     protected String variantName;
-    boolean isBaby;
 
     protected Entity entity = null;
     protected Plugin plugin = null;
@@ -66,16 +64,6 @@ public class EntityProjectileAction extends CustomProjectileAction {
         velocityOffset = ConfigurationUtils.getVector(parameters, "velocity_offset");
         locationOffset = ConfigurationUtils.getVector(parameters, "location_offset");
 
-        try {
-            String entityTypeName = parameters.getString("type", "");
-            if (!entityTypeName.isEmpty())
-            {
-                entityType = EntityType.valueOf(entityTypeName.toUpperCase());
-            }
-        } catch(Exception ex) {
-            entityType = null;
-        }
-
         if (parameters.contains("spawn_reason")) {
             String reasonText = parameters.getString("spawn_reason").toUpperCase();
             try {
@@ -85,8 +73,12 @@ public class EntityProjectileAction extends CustomProjectileAction {
             }
         }
 
-        customName = parameters.getString("name");
-        isBaby =  parameters.getBoolean("baby", false);
+        String mobType = parameters.getString("type");
+        entityData = context.getController().getMob(mobType);
+        if (entityData == null) {
+            entityData = new com.elmakers.mine.bukkit.entity.EntityData(context.getController(), parameters);
+        }
+
         variantName = parameters.getString("variant");
         if (variantName != null && variantName.isEmpty()) {
             variantName = null;
@@ -98,10 +90,6 @@ public class EntityProjectileAction extends CustomProjectileAction {
         if (noTarget) {
             entity.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
         }
-        if (customName != null) {
-            entity.setCustomName(customName);
-            entity.setCustomNameVisible(true);
-        }
 
         if (entity instanceof LivingEntity) {
             ((LivingEntity) entity).setMaxHealth(1000.0);
@@ -111,21 +99,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             ((Slime)entity).setSize(1);
         }
 
-        if (entity instanceof Ageable) {
-            if (isBaby) {
-                ((Ageable) entity).setBaby();
-            } else {
-                ((Ageable) entity).setAdult();
-            }
-        } else if (entity instanceof Zombie) {
-            ((Zombie) entity).setBaby(isBaby);
-        } else if (entity instanceof PigZombie) {
-            ((PigZombie) entity).setBaby(isBaby);
-        } else if (entity instanceof Slime && isBaby) {
-            Slime slime = (Slime) entity;
-            slime.setSize(0);
-        }
-
+        // Variant name still used here for backwards compatibility
         if (entity instanceof Ocelot) {
             Ocelot ocelot = (Ocelot) entity;
             Ocelot.Type variant = Ocelot.Type.WILD_OCELOT;
@@ -178,9 +152,9 @@ public class EntityProjectileAction extends CustomProjectileAction {
 
     @Override
     public SpellResult start(CastContext context) {
-        if (entity == null && entityType != null) {
+        if (entity == null) {
             Location location = adjustLocation(sourceLocation.getLocation(context));
-            setEntity(context.getController(), CompatibilityUtils.spawnEntity(location, entityType, spawnReason));
+            setEntity(context.getController(), entityData.spawn(context.getController(), location, spawnReason));
         }
         if (entity == null) {
             return SpellResult.FAIL;
