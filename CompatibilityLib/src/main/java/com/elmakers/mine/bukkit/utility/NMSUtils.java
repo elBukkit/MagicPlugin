@@ -664,8 +664,13 @@ public class NMSUtils {
             }
 
             try {
+                try {
+                    // 1.12.1
+                    class_TileEntity_loadMethod = class_TileEntity.getMethod("load", class_NBTTagCompound);
+                } catch (Throwable ignore) {
+                    class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
+                }
                 class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
-                class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
                 class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
                 class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
             } catch (Throwable ex) {
