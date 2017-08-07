@@ -79,6 +79,16 @@ find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-war-RP-7.zip *
 cd ..
 
+echo "** BUILDING STARS **"
+
+mkdir stars
+cd stars
+cp -R ../../default/* .
+cp -R ../../stars/* .
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-stars-RP-7.zip *
+cd ..
+
 echo "** BUILDING ALL **"
 
 mkdir all
