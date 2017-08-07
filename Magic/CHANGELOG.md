@@ -15,6 +15,8 @@
 
 ## 6.9.16
 
+ - Fix tile entity support ("log spam") in 1.12.1
+
 ## 6.9.15
 
  - Add new Snake automata
