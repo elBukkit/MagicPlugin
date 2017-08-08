@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
-    private static String PARAMETER_PATTERN_STRING = "\\$([^ :]+)";
+    private static String PARAMETER_PATTERN_STRING = "\\$([a-zA-Z0-9]+)";
     private static Pattern PARAMETER_PATTERN = Pattern.compile(PARAMETER_PATTERN_STRING);
     private static Random random = new Random();
 
