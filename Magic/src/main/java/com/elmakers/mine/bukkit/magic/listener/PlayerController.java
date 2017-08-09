@@ -411,7 +411,7 @@ public class PlayerController implements Listener {
     public void onPlayerAnimate(PlayerAnimationEvent event)
     {
         Player player = event.getPlayer();
-        if (player.getGameMode() != GameMode.ADVENTURE || event.getAnimationType() != PlayerAnimationType.ARM_SWING)
+        if (event.getAnimationType() != PlayerAnimationType.ARM_SWING)
         {
             return;
         }
@@ -456,15 +456,15 @@ public class PlayerController implements Listener {
         //if (event.isCancelled()) return;
 
         // Block block = event.getClickedBlock();
-        // controller.getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()));
+        // controller.getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()) + " cancelled: " + event.isCancelled());
 
         Player player = event.getPlayer();
         Action action = event.getAction();
-        boolean isLeftClick = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
-        
-        // GM2 left-click interaction is handled by the animation event, for now.
-        // Might make sense to move all left-click handling there eventually?
-        if (player.getGameMode() == GameMode.ADVENTURE && isLeftClick) return;
+
+        // Left-clicks are handled by the animation event.
+        if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) {
+            return;
+        }
         
         // Don't allow interacting while holding spells, brushes or upgrades
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
@@ -496,13 +496,6 @@ public class PlayerController implements Listener {
             }
         }
         if (!mage.checkLastClick(clickCooldown)) {
-            // We need to be careful about cancelling right-click events since this interferes with offhand
-            // item use and particularly blocking
-            if (wand != null && wand.getRightClickAction() != WandAction.NONE) {
-                event.setCancelled(true);
-            } else if (wand != null && wand.getLeftClickAction() != WandAction.NONE && isLeftClick) {
-                event.setCancelled(true);
-            }
             return;
         }
         
@@ -565,18 +558,6 @@ public class PlayerController implements Listener {
                 event.setCancelled(true);
                 return;
             }
-        }
-        
-        if (isLeftClick) {
-            wand.playEffects("swing");
-        }
-
-        if (isLeftClick && !wand.isUpgrade())
-        {
-            if (wand.performAction(wand.getLeftClickAction()) && cancelInteractOnLeftClick) {
-                event.setCancelled(true);
-            }
-            return;
         }
 
         if (isRightClick && wand.performAction(wand.getRightClickAction()) && cancelInteractOnRightClick)

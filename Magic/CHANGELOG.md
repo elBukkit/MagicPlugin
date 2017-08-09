@@ -15,6 +15,11 @@
 
 ## 6.9.17
 
+ - Some technical changes for performance and anti-glitching:
+   - Remove several calls to Player.updateInventory
+   - Remove unnecessary wand data saving, reducing item bobbing
+   - Change casting to use animate event rather than interact event
+
 ## 6.9.16
 
  - Fix tile entity support ("log spam") in 1.12.1

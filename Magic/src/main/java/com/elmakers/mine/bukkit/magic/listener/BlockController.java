@@ -130,7 +130,7 @@ public class BlockController implements Listener {
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
-        if (mage.hasStoredInventory() || mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
+        if (mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
             event.setCancelled(true);
         }
 
