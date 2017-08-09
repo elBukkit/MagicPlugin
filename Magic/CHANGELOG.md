@@ -15,10 +15,12 @@
 
 ## 6.9.17
 
+ - Wands now use right-click instead of drop by default!
  - Some technical changes for performance and anti-glitching:
    - Remove several calls to Player.updateInventory
    - Remove unnecessary wand data saving, reducing item bobbing
    - Change casting to use animate event rather than interact event
+ - Wand inventory, hotbar and brush instructions will now change to reflect wand controls
 
 ## 6.9.16
 

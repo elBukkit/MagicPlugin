@@ -875,12 +875,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     	String controlKey = null;
 		if (rightClickAction == action) {
 			controlKey = "right_click";
+		} else if (dropAction == action) {
+			controlKey = "drop";
 		} else if (leftClickAction == action) {
 			controlKey = "left_click";
 		} else if (swapAction == action) {
 			controlKey = "swap";
-		} else if (dropAction == action) {
-			controlKey = "drop";
 		}
 
 		return controlKey;

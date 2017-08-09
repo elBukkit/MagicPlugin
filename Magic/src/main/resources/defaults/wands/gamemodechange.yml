@@ -1,18 +1,9 @@
 gamemode:
-  drop: toggle
-  quick_cast: true
+  inherit: base_wand
   icon: diamond_axe:79
-  indestructible: true
-  right_click: toggle
-  version: 2
-  spell_inventory:
-    tosurvival: 1
-    tocreative: 0
-  mode: chest 
-  keep: true
-  name: AJ Mode
-  left_click: none
+  quick_cast: true
+  mode: chest
+  name: Game Mode
   spells:
   - tocreative
   - tosurvival
-  undroppable: true

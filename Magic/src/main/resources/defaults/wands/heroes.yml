@@ -7,7 +7,7 @@ heroes:
     heroes: true
     undroppable: true
     mode: inventory
-    right_click: none
-    drop: toggle
+    right_click: toggle
+    drop: none
     left_click: cast
 
