@@ -2476,7 +2476,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 			updateInventory(inventory);
 			updateName();
-			DeprecatedUtils.updateInventory(player);
 		} else if (wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS) {
 			Inventory inventory = getDisplayInventory();
 			inventory.clear();
@@ -3072,7 +3071,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				}
 				updateInventory();
                 updateHotbarStatus();
-				DeprecatedUtils.updateInventory(mage.getPlayer());
 			}
 		}
 	}
@@ -4686,9 +4684,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		for (int i = 0; i < PLAYER_INVENTORY_SIZE; i++) {
 			ItemStack item = inventory.getItem(i);
 			storedInventory.setItem(i, item);
-			inventory.setItem(i, null);
+			if (i != heldSlot) {
+				inventory.setItem(i, null);
+			}
 		}
-		inventory.setItem(heldSlot, item);
 
         return true;
     }
@@ -4703,16 +4702,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
 		PlayerInventory inventory = player.getInventory();
-
-		// Reset the wand item
-		storedInventory.setItem(heldSlot, item);
-
 		for (int i = 0; i < storedInventory.getSize(); i++) {
-			inventory.setItem(i, storedInventory.getItem(i));
+			if (i != heldSlot) {
+				inventory.setItem(i, storedInventory.getItem(i));
+			}
 		}
         storedInventory = null;
         inventory.setHeldItemSlot(heldSlot);
-		DeprecatedUtils.updateInventory(player);
 
         return true;
     }
