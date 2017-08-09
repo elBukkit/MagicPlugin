@@ -3141,8 +3141,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         controller.enableItemSpawn();
 		inventoryWasOpen = false;
-
-		saveState();
 	}
 
     @Override
