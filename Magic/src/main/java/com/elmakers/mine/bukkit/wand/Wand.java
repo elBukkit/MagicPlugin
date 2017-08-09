@@ -850,7 +850,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             if (spells.size() > 1)
             {
-                mage.sendMessage(getMessage("inventory_instructions", "").replace("$wand", getName()));
+            	String controlKey = getControlKey(WandAction.TOGGLE);
+            	if (controlKey != null) {
+					controlKey = controller.getMessages().get("controls." + controlKey);
+					mage.sendMessage(getMessage("inventory_instructions", "")
+						.replace("$wand", getName()).replace("$toggle", controlKey));
+				}
             }
             com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
             if (path != null)
@@ -864,6 +869,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		setProperty("owner", owner);
 		setProperty("owner_id", ownerId);
 		updateLore();
+	}
+
+	public String getControlKey(WandAction action) {
+    	String controlKey = null;
+		if (rightClickAction == action) {
+			controlKey = "right_click";
+		} else if (leftClickAction == action) {
+			controlKey = "left_click";
+		} else if (swapAction == action) {
+			controlKey = "swap";
+		} else if (dropAction == action) {
+			controlKey = "drop";
+		}
+
+		return controlKey;
 	}
 	
 	@Override
@@ -4329,7 +4349,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 else
                 if (spellCount == 1)
                 {
-                    mage.sendMessage(getMessage("inventory_instructions", "").replace("$wand", getName()));
+					String controlKey = getControlKey(WandAction.TOGGLE);
+					if (controlKey != null) {
+						controlKey = controller.getMessages().get("controls." + controlKey);
+						mage.sendMessage(getMessage("inventory_instructions", "")
+								.replace("$wand", getName()).replace("$toggle", controlKey));
+					}
                 }
                 if (inventoryCount == 1 && inventories.size() > 1)
                 {
@@ -4366,6 +4391,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	protected void sendMessage(String messageKey) {
 		if (mage == null || messageKey == null || messageKey.isEmpty()) return;
 		String message = getMessage(messageKey).replace("$wand", getName());
+
+		// Some special-casing here, not sure how to avoid.
+		if (messageKey.equals("hotbar_count_usage")) {
+			String controlKey = getControlKey(WandAction.CYCLE_HOTBAR);
+			if (controlKey != null) {
+				controlKey = controller.getMessages().get("controls." + controlKey);
+				message = message.replace("$cycle_hotbar", controlKey);
+			}
+		}
+
 		mage.sendMessage(message);
 	}
 
@@ -4455,7 +4490,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
             if (brushCount == 0)
             {
-                mage.sendMessage(getMessage("brush_instructions").replace("$wand", getName()));
+				String controlKey = getControlKey(WandAction.TOGGLE);
+				if (controlKey != null) {
+					controlKey = controller.getMessages().get("controls." + controlKey);
+					mage.sendMessage(getMessage("brush_instructions")
+							.replace("$wand", getName()).replace("$toggle", controlKey));
+				}
             }
             if (inventoryCount == 1 && inventories.size() > 1)
             {

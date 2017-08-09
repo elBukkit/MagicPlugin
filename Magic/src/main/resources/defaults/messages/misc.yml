@@ -91,4 +91,8 @@ resource_pack:
     # Use this if you'd like players to receive a message before getting the resource pack
     # sending: "Sending resource pack, please wait"
 
-
+controls:
+  drop: Drop (Q)
+  right_click: Right-Click
+  left_click: Left-Click
+  swap: Swap (F)
