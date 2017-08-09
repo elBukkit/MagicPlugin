@@ -209,7 +209,10 @@ melee_damage_reduction: 0
 #   arrow: 0.5
 
 # Set this to false to allow block-breaking with a wand
-cancel_interact_on_cast: true
+cancel_interact_on_left_click: true
+
+# Set this to true if something went weird with wand right-clicks
+cancel_interact_on_right_click: false
 
 # Set this to false to disallow casting using an offhand wand
 allow_offhand_casting: true

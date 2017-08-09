@@ -63,7 +63,8 @@ public class PlayerController implements Listener {
     private String enchantClickSpell = "spellshop";
     private String enchantSneakClickSpell = "upgrades";
     private boolean openOnSneakDrop;
-    private boolean cancelInteractOnCast = true;
+    private boolean cancelInteractOnLeftClick = true;
+    private boolean cancelInteractOnRightClick = false;
     private boolean allowOffhandCasting = true;
     private long lastDropWarn = 0;
 
@@ -78,7 +79,8 @@ public class PlayerController implements Listener {
         enchantClickSpell = properties.getString("enchant_click");
         enchantSneakClickSpell = properties.getString("enchant_sneak_click");
         openOnSneakDrop = properties.getBoolean("open_wand_on_sneak_drop");
-        cancelInteractOnCast = properties.getBoolean("cancel_interact_on_cast", true);
+        cancelInteractOnLeftClick = properties.getBoolean("cancel_interact_on_left_click", true);
+        cancelInteractOnRightClick = properties.getBoolean("cancel_interact_on_right_click", false);
         allowOffhandCasting = properties.getBoolean("allow_offhand_casting", true);
     }
 
@@ -508,7 +510,9 @@ public class PlayerController implements Listener {
         if (isRightClick)
         {
             if (allowOffhandCasting && mage.offhandCast()) {
-                if (cancelInteractOnCast) {
+                // Kind of weird but the intention is to avoid normal "left click" actions,
+                // which in the offhand case are right-click actions.
+                if (cancelInteractOnLeftClick) {
                     event.setCancelled(true);
                 }
                 return;
@@ -569,15 +573,15 @@ public class PlayerController implements Listener {
 
         if (isLeftClick && !wand.isUpgrade())
         {
-            if (wand.performAction(wand.getLeftClickAction()) && cancelInteractOnCast) {
+            if (wand.performAction(wand.getLeftClickAction()) && cancelInteractOnLeftClick) {
                 event.setCancelled(true);
             }
             return;
         }
 
-        if (isRightClick && wand.performAction(wand.getRightClickAction()))
+        if (isRightClick && wand.performAction(wand.getRightClickAction()) && cancelInteractOnRightClick)
         {
-            event.setCancelled(true);
+           event.setCancelled(true);
         }
     }
 
