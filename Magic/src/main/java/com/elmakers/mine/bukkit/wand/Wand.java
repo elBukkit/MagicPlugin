@@ -628,10 +628,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         setProperty("id", id);
     }
 
-    public void checkId() {
+    public boolean checkId() {
         if (id == null || id.length() == 0) {
             newId();
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -1262,12 +1264,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         InventoryUtils.hideFlags(itemStack, (byte)63);
         updateBrushItem(controller.getMessages(), itemStack, brushData, wand);
 		return itemStack;
-	}
-	
-	public void checkItem(ItemStack newItem) {
-		if (newItem.getAmount() > item.getAmount()) {
-			item.setAmount(newItem.getAmount());
-		}
 	}
 
 	protected boolean findItem() {
@@ -3963,22 +3959,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return false;
         }
 
-		if (hasId) {
-			this.checkId();
-		} else {
-			setProperty("id", null);
+		if (this.isUpgrade) {
+			controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
+			return false;
 		}
-
-        if (this.isUpgrade) {
-            controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
-            return false;
-        }
 
         WandPreActivateEvent preActivateEvent = new WandPreActivateEvent(mage, this);
         Bukkit.getPluginManager().callEvent(preActivateEvent);
         if (preActivateEvent.isCancelled()) {
             return false;
         }
+
+		boolean needsSave = false;
+		if (hasId) {
+			needsSave = this.checkId() || needsSave;
+		} else {
+			setProperty("id", null);
+		}
 
         this.mage = mage;
         this.isInOffhand = offhand;
@@ -3987,6 +3984,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		// Check for replacement template
 		String replacementTemplate = getProperty("replace_on_activate", "");
 		if (!replacementTemplate.isEmpty() && !replacementTemplate.equals(template)) {
+			needsSave = true;
 			playEffects("replace");
 			setTemplate(replacementTemplate);
 			loadProperties();
@@ -4005,11 +4003,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}, 1);
 		}
 
-        boolean forceUpdate = false;
-
         // Check for an empty wand and auto-fill
         if (!isUpgrade && (controller.fillWands() || autoFill)) {
             fill(mage.getPlayer(), controller.getMaxWandFillLevel());
+			needsSave = true;
         }
 
         if (isHeroes) {
@@ -4041,14 +4038,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Check for auto-organize
         if (autoOrganize && !isUpgrade) {
             organizeInventory(mage);
+			needsSave = true;
         }
 
         // Check for auto-alphabetize
         if (autoAlphabetize && !isUpgrade) {
             alphabetizeInventory();
+			needsSave = true;
         }
 
-		forceUpdate = checkInventoryForUpgrades();
+		boolean forceUpdate = false;
+		if (checkInventoryForUpgrades()) {
+			forceUpdate = true;
+			needsSave = true;
+		}
 
         // Check for auto-bind
         if (bound)
@@ -4060,6 +4063,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (ownerId == null || ownerId.length() == 0 || owner == null || ownerRenamed)
             {
                 takeOwnership(mage.getPlayer());
+				needsSave = true;
             }
         }
 
@@ -4068,6 +4072,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             randomize();
 			randomizeOnActivate = false;
             forceUpdate = true;
+			needsSave = true;
         }
 
 		updateMaxMana(false);
@@ -4077,7 +4082,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 
 		checkActiveMaterial();
-		saveState();
+		if (needsSave) {
+			saveState();
+		}
         updateActiveMaterial();
         updateName();
         updateLore();
