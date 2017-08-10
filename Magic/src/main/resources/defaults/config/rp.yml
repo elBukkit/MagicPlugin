@@ -5,6 +5,7 @@ resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-6-4.z
 # This will delay sending resource packs to players. This can mitigate issues with the vanilla
 # client timing out on connect due to RP processing on potato computers.
 # This value is in milliseconds.
+# Set this to 0 to set resource packs immediately on join.
 resource_pack_delay: 2000
 
 # Set this to false to turn off the player skull-based spell icons

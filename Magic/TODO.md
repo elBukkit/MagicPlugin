@@ -1,10 +1,5 @@
 # TODO
 
-## Add a FAQ on the wiki:
-
- - How to disable RP delay
- - How to let spells target NPCs
-
 ## Fast Blocks
 
  - The easiest way to deal with that is to probably pretend the client doesn't have the chunk yet
