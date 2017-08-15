@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseProjectileAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
@@ -27,6 +28,7 @@ public class ThrowItemAction extends BaseProjectileAction {
     private int ageItems;
     private boolean unbreakable;
     private SourceLocation sourceLocation;
+    private ItemData item;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -38,23 +40,40 @@ public class ThrowItemAction extends BaseProjectileAction {
         ageItems = parameters.getInt("age_items", 5500);
         unbreakable = parameters.getBoolean("unbreakable", false);
         sourceLocation = new SourceLocation(parameters);
+
+        String itemName = parameters.getString("item");
+        if (itemName != null && !itemName.isEmpty()) {
+            item = context.getController().getItem(itemName);
+        }
     }
 
     @Override
     public SpellResult start(CastContext context)
     {
-        MaterialAndData material = context.getBrush();
         Location spawnLocation = sourceLocation.getLocation(context);
-        if (spawnLocation == null || material == null)
+        if (spawnLocation == null)
+        {
+            return SpellResult.NO_TARGET;
+        }
+        ItemStack itemStack = null;
+        if (item != null) {
+            itemStack = item.getItemStack(1);
+        } else {
+            MaterialAndData material = context.getBrush();
+            if (material != null) {
+                itemStack = new ItemStack(material.getMaterial(), 1, material.getData());
+            }
+        }
+
+        if (itemStack == null)
         {
             return SpellResult.NO_TARGET;
         }
         double itemSpeed = context.getRandom().nextDouble() * (itemSpeedMax - itemSpeedMin) + itemSpeedMin;
         Vector velocity = spawnLocation.getDirection().normalize().multiply(itemSpeed);
-        ItemStack itemStack = new ItemStack(material.getMaterial(), 1, material.getData());
         String removedMessage = context.getMessage("removed");
         if (removedMessage != null) {
-            String name = material.getName();
+            String name = context.getController().describeItem(itemStack);
             if (name == null) {
                 name = "";
             }
