@@ -2462,7 +2462,7 @@ public class MagicController implements MageController {
                     this.mageDataStore.initialize(this, mageDataStore);
                 }
             } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "Failed to create player_data_store class from " + dataStoreClassName + " player data saving is disabled!");
+                getLogger().log(Level.WARNING, "Failed to create player_data_store class from " + dataStoreClassName + " player data saving is disabled!", ex);
                 this.mageDataStore = null;
             }
         } else {
