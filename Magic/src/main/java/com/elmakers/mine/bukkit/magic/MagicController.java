@@ -326,7 +326,7 @@ public class MagicController implements MageController {
 
     public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(Entity entity) {
         if (entity == null) return null;
-        String id = entity.getUniqueId().toString();
+        String id = mageIdentifier.fromEntity(entity);
         return mages.get(id);
     }
 
@@ -3190,7 +3190,8 @@ public class MagicController implements MageController {
     @Override
     public boolean isMage(Entity entity) {
         if (entity == null) return false;
-        return mages.containsKey(entity.getUniqueId().toString());
+        String id = mageIdentifier.fromEntity(entity);
+        return mages.containsKey(id);
     }
 
     @Override
