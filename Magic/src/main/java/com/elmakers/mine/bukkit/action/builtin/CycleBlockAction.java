@@ -37,7 +37,6 @@ public class CycleBlockAction extends BaseSpellAction {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();

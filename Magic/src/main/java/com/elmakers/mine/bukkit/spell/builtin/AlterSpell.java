@@ -52,7 +52,6 @@ public class AlterSpell extends BlockSpell
 	}
 	
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
@@ -110,7 +109,6 @@ public class AlterSpell extends BlockSpell
 		return SpellResult.CAST;
 	}
 
-	@SuppressWarnings("deprecation")
 	protected void adjust(Block block, byte dataValue, boolean recursive, int recurseDistance, int rDepth)
 	{
 		registerForUndo(block);

@@ -2,8 +2,6 @@ package com.elmakers.mine.bukkit.api.spell;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.google.common.base.Objects;
-
 public class SpellKey {
     private final String key;
     private final String baseKey;

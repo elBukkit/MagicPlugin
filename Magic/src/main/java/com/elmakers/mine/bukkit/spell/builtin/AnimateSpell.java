@@ -35,7 +35,6 @@ public class AnimateSpell extends SimulateSpell
 		"animate", "sim_check_destructible", "seed_radius", "restricted", "obworld", "btarget"
 	};
 	
-	@SuppressWarnings("deprecation")
     @Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{

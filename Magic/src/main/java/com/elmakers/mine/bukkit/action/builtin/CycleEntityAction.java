@@ -22,7 +22,6 @@ import org.bukkit.map.MapView;
 
 public class CycleEntityAction extends BaseSpellAction {
 
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult perform(CastContext context) {
         Entity entity = context.getTargetEntity();
