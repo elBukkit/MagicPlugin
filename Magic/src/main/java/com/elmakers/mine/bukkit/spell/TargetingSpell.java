@@ -62,7 +62,6 @@ public abstract class TargetingSpell extends BaseSpell {
     private int                                 damageResistanceProtection = 0;
 
     private boolean                             allowMaxRange           = false;
-    private boolean                             bypassBackfire          = false;
 
     private Set<Material>                       targetThroughMaterials  = new HashSet<>();
     private Set<Material>                       targetableMaterials     = null;
@@ -509,7 +508,6 @@ public abstract class TargetingSpell extends BaseSpell {
         targeting.processParameters(parameters);
         processTemplateParameters(parameters);
         allowMaxRange = parameters.getBoolean("allow_max_range", false);
-        bypassBackfire = parameters.getBoolean("bypass_backfire", false);
         checkProtection = parameters.getBoolean("check_protection", false);
         damageResistanceProtection = parameters.getInt("damage_resistance_protection", 0);
         targetBreakables = parameters.getDouble("target_breakables", 1);
