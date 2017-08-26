@@ -371,6 +371,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
     }
 
+    @Override
     public void modify(Block block, ModifyType modifyType) {
         switch (modifyType) {
             case FAST:
