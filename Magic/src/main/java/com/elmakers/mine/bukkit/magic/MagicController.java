@@ -841,7 +841,7 @@ public class MagicController implements MageController {
             getLogger().info("MobArena not found");
         } else {
             try {
-                mobArenaManager = new MobArenaManager(this);
+                new MobArenaManager(this);
                 // getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items, magic mobs can be used in monster configurations");
                 getLogger().info("Integrated with MobArena, magic mobs can be used in monster configurations");
             } catch (Throwable ex) {
@@ -5161,7 +5161,6 @@ public class MagicController implements MageController {
     private BlockPhysicsManager                 blockPhysicsManager         = null;
     private boolean                             useBlockPhysics             = true;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
-    private MobArenaManager                     mobArenaManager             = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();
