@@ -5058,7 +5058,6 @@ public class MagicController implements MageController {
     private final File							dataFolder;
     private final File							defaultsFolder;
 
-    private int								    toggleCooldown				= 1000;
     private int								    toggleMessageRange			= 1024;
 
     private int                                 workFrequency               = 1;
