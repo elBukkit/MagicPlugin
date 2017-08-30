@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.18
+
 ## 6.9.17
 
  - Wands now use right-click instead of drop by default!
