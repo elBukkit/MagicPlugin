@@ -1,5 +1,18 @@
 # TODO
 
+## Higher Priority
+
+ - Wands should still cancel left-click interact, I guess?
+ - Escape color codes when configuring a description (doesn't do that already..?)
+ - Add magic mob option to require a wand for casting spells (make Disarm more useful)
+
+## High-Priority
+
+ - Allow magic items and wands as crafting ingredients
+ - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
+ - PW would like some custom lore for wand "quiet" and quick cast settings.
+ - Recall warps don't show up with /mage describe?
+
 ## Fast Blocks
 
  - The easiest way to deal with that is to probably pretend the client doesn't have the chunk yet
@@ -12,13 +25,6 @@
  - Don't erase heart block for 1 tick, just include that material in the simulation
  - Sort UndoList by modified (re-insert on dupe?)
  - Special recursive death mode for Virus, maybe
-
-## High-Priority
-
- - Allow magic items and wands as crafting ingredients
- - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
- - PW would like some custom lore for wand "quiet" and quick cast settings.
- - Recall warps don't show up with /mage describe?
   
 ## 7.0
 
