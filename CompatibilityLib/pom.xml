@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>com.elmakers.mine.bukkit</groupId>
 		<artifactId>Magic-parent</artifactId>
-		<version>6.9.17-SNAPSHOT</version>
+		<version>6.9.17</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>CompatibilityLib</artifactId>
-	<version>1.9-1.12-3</version>
+	<version>1.9-1.12.1-1</version>
 
 	<name>Magic Compatibility Library</name>
 	<url>http://mine.elmakers.com</url>
