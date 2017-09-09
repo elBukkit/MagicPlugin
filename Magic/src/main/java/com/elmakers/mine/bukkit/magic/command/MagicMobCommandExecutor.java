@@ -193,13 +193,22 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
         List<World> worlds = new ArrayList<>();
         if (worldName != null) {
-            worlds.add(Bukkit.getWorld(worldName));
+            World world = Bukkit.getWorld(worldName);
+            if (world == null) {
+                sender.sendMessage(ChatColor.RED + "Unknownworld: " + ChatColor.WHITE + worldName);
+                return;
+            }
+            worlds.add(world);
         } else {
             worlds.addAll(Bukkit.getWorlds());
         }
         Set<String> mobNames = new HashSet<>();
         if (mobType != null) {
             EntityData mob = api.getController().getMob(mobType);
+            if (mob == null) {
+                sender.sendMessage(ChatColor.RED + "Unknown mob type: " + ChatColor.WHITE + mobType);
+                return;
+            }
             mobNames.add(mob.getName());
         } else {
             Set<String> allKeys = api.getController().getMobKeys();
