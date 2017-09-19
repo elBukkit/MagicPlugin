@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.19
+
 ## 6.9.18
 
  - Fix wands breaking blocks like tools even if cancel_interact_on_cast was true
