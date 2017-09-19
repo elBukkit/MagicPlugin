@@ -16,6 +16,7 @@
 ## 6.9.18
 
  - Fix wands breaking blocks like tools even if cancel_interact_on_cast was true
+ - Fix double-cast bugs: return click_cooldown to previous default value
 
 ## 6.9.17
 
