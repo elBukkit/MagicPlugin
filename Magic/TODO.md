@@ -13,8 +13,6 @@
  3. you break the slime block that appears
  4. when the block reappears, you get a free torch/glowstone/stained clay(by mining it)"
 
- - Wands should still cancel left-click interact, I guess?
- - Escape color codes when configuring a description (doesn't do that already..?)
  - Add magic mob option to require a wand for casting spells (make Disarm more useful)
 
 ## High-Priority

@@ -2158,7 +2158,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (path != null) {
                     pathName = path.getName();
                 }
-                String description = this.description;
+                String description = ChatColor.translateAlternateColorCodes('&', this.description);
                 description = description.replace("$path", pathName);
 				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), MAX_LORE_LENGTH, lore);
             }
@@ -2166,10 +2166,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 String randomDescription = getMessage("randomized_lore");
 				String randomTemplate = controller.getMessages().get(getMessageKey("randomized_description"), "");
 				if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
+					randomDescription = ChatColor.translateAlternateColorCodes('&', randomDescription);
 					InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), MAX_LORE_LENGTH, lore);
 					return lore;
 				}
             } else if (!descriptionTemplate.isEmpty()) {
+				String description = ChatColor.translateAlternateColorCodes('&', this.description);
 				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), MAX_LORE_LENGTH, lore);
             }
         }
