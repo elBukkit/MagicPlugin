@@ -2,17 +2,6 @@
 
 ## Higher Priority
 
- - Block dupe glitch- may be same as on PWMC:
- 
- The glitch is free blocks (stained clay and torches --> you don't get any money off of it) 
- so if you follow these steps you can get the stained clay 
- from wall/blob spell and torches and glowstone from the torch spell
- 
- 1. you cast whatever the spell you want to harvest blocks out of
- 2. you rubberize(another spell) the ghost blocks you have earned through the first spell.
- 3. you break the slime block that appears
- 4. when the block reappears, you get a free torch/glowstone/stained clay(by mining it)"
-
 ## High-Priority
 
  - Allow magic items and wands as crafting ingredients

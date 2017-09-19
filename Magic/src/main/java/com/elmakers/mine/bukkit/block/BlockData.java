@@ -206,6 +206,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     @Override
     public void commit()
     {
+        updateFrom(getBlock());
         if (nextState != null) {
             nextState.setPriorState(null);
             nextState.updateFrom(getBlock());
