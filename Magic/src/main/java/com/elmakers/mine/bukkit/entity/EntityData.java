@@ -127,6 +127,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected long tickInterval;
     protected LinkedList<WeightedPair<String>> spells;
     protected boolean requiresTarget;
+    protected ItemData requiresWand;
     
     protected ConfigurationSection disguise;
     
@@ -332,6 +333,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
         leggings = controller.getOrCreateItem(parameters.getString("leggings"));
         boots = controller.getOrCreateItem(parameters.getString("boots"));
+        requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
 
         canPickupItems = parameters.getBoolean("can_pickup_items", false);
     }
@@ -777,6 +779,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         Entity entity = mage.getLivingEntity();
         Creature creature = (entity instanceof Creature) ? (Creature)entity : null;
         if (requiresTarget && (creature == null || creature.getTarget() == null)) return;
+        if (requiresWand != null && entity instanceof LivingEntity) {
+            LivingEntity li = (LivingEntity)entity;
+            ItemStack itemInHand = li.getEquipment().getItemInMainHand();
+            if (itemInHand == null || itemInHand.getType() != requiresWand.getType()) return;
+        }
         
         String castSpell = RandomUtils.weightedRandom(spells);
         if (castSpell.length() > 0) {

@@ -18,6 +18,7 @@
  - Fix wands breaking blocks like tools even if cancel_interact_on_cast was true
  - Fix double-cast bugs: return click_cooldown to previous default value
  - Allow &4-style color codes in wand descriptions
+ - Warlocks no longer cast spells after being disarmed
 
 ## 6.9.17
 
