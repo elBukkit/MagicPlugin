@@ -2,6 +2,17 @@
 
 ## Higher Priority
 
+ - Block dupe glitch- may be same as on PWMC:
+ 
+ The glitch is free blocks (stained clay and torches --> you don't get any money off of it) 
+ so if you follow these steps you can get the stained clay 
+ from wall/blob spell and torches and glowstone from the torch spell
+ 
+ 1. you cast whatever the spell you want to harvest blocks out of
+ 2. you rubberize(another spell) the ghost blocks you have earned through the first spell.
+ 3. you break the slime block that appears
+ 4. when the block reappears, you get a free torch/glowstone/stained clay(by mining it)"
+
  - Wands should still cancel left-click interact, I guess?
  - Escape color codes when configuring a description (doesn't do that already..?)
  - Add magic mob option to require a wand for casting spells (make Disarm more useful)
@@ -53,7 +64,7 @@
 ## Not so High-Priority
  
  - Skill icons that work as wands (cast via right-click, etc)
- - Per-player language settings
+ - Per-player language settings (See https://www.spigotmc.org/resources/api-languages.22305/)
  - spell_inventory on a wand template doesn't work
  - Would be cool to have a configurable max # of maps, and start re-using map ids when limit is hit, LRU
  - Ability to alter flower pots and beds (need to tweak TileEntity data.. doable, but messy to track with Material keys)

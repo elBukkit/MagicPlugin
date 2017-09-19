@@ -15,6 +15,8 @@
 
 ## 6.9.18
 
+ - Fix wands breaking blocks like tools even if cancel_interact_on_cast was true
+
 ## 6.9.17
 
  - Wands now use right-click instead of drop by default!

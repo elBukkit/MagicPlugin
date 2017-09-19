@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
@@ -459,11 +460,7 @@ public class PlayerController implements Listener {
 
         Player player = event.getPlayer();
         Action action = event.getAction();
-
-        // Left-clicks are handled by the animation event.
-        if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) {
-            return;
-        }
+        boolean isLeftClick = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
         
         // Don't allow interacting while holding spells, brushes or upgrades
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
@@ -494,7 +491,7 @@ public class PlayerController implements Listener {
                 wand.closeInventory();
             }
         }
-        if (!mage.checkLastClick(clickCooldown)) {
+        if (!isLeftClick && !mage.checkLastClick(clickCooldown)) {
             return;
         }
         
@@ -557,6 +554,11 @@ public class PlayerController implements Listener {
                 event.setCancelled(true);
                 return;
             }
+        }
+
+        if (isLeftClick && !wand.isUpgrade() && wand.getLeftClickAction() != WandAction.NONE && cancelInteractOnLeftClick)
+        {
+            event.setCancelled(true);
         }
 
         if (isRightClick && wand.performAction(wand.getRightClickAction()) && cancelInteractOnRightClick)
