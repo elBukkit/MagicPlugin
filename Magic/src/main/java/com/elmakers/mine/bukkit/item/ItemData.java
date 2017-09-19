@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -132,5 +133,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     @Override
     public String getCreatorId() {
         return creatorId;
+    }
+
+    @Override
+    public Material getType() {
+        return item == null ? Material.AIR : item.getType();
     }
 }

@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.item;
 
 import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public interface ItemData {
@@ -11,4 +12,5 @@ public interface ItemData {
     String getCreator();
     String getCreatorId();
     Set<String> getCategories();
+    Material getType();
 }
