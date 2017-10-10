@@ -93,4 +93,18 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+
+	<!-- Blacklisting dead repos so the build doesn't hang forever -->
+	<repositories>
+		<repository>
+			<id>Zach's Dead Things</id>
+			<url>http://files.zachsthings.com/repo</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
