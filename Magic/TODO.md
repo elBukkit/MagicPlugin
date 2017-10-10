@@ -16,6 +16,8 @@
  - or even easier .. set the dirtyCount of the player chunk to 64, and update the h field with the chunk sections that you modified
  - and make sure to call playerChunkMap.a(playerChunk); to schedule an update
 
+  https://github.com/tastybento/askyblock/blob/master/src/com/wasteofplastic/askyblock/nms/v1_12_R1/NMSHandler.java
+
 ## Automata
  
  - Don't erase heart block for 1 tick, just include that material in the simulation

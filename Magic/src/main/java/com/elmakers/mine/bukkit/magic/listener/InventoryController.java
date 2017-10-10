@@ -24,9 +24,11 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Map;
 
@@ -142,9 +144,10 @@ public class InventoryController implements Listener {
 
         // Check for wearing spells
         ItemStack heldItem = event.getCursor();
+        boolean heldSpell = Wand.isSpell(heldItem);
         if (event.getSlotType() == InventoryType.SlotType.ARMOR)
         {
-            if (Wand.isSpell(heldItem)) {
+            if (heldSpell) {
                 event.setCancelled(true);
                 return;
             }
@@ -189,7 +192,14 @@ public class InventoryController implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            
+
+            // Don't allow putting spells in a crafting slot
+            if (event.getSlotType() == InventoryType.SlotType.CRAFTING && heldSpell)
+            {
+                event.setCancelled(true);
+                return;
+            }
+
             if (Wand.isSpell(clickedItem) && clickedItem.getAmount() != 1)
             {
                 clickedItem.setAmount(1);
@@ -418,13 +428,24 @@ public class InventoryController implements Listener {
         if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
+        Wand previousWand = mage.getActiveWand();
+
+        // Prevent spells getting smuggled out via crafting slots
+        Inventory inventory = event.getInventory();
+        if (inventory instanceof CraftingInventory && previousWand.wasInventoryOpen()) {
+            CraftingInventory craftingInventory = (CraftingInventory)inventory;
+            ItemStack[] matrix = craftingInventory.getMatrix();
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i] = new ItemStack(Material.AIR);
+            }
+            craftingInventory.setMatrix(matrix);
+        }
+
         GUIAction gui = mage.getActiveGUI();
         if (gui != null)
         {
             mage.onGUIDeactivate();
         }
-
-        Wand previousWand = mage.getActiveWand();
 
         // Save the inventory state of the current wand if its spell inventory is open
         // This is just to make sure we don't lose changes made to the inventory

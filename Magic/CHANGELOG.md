@@ -15,6 +15,8 @@
 
 ## 6.9.19
 
+ - Fix some potential spell exploit issues revolving around Disarm
+
 ## 6.9.18
 
  - Fix wands breaking blocks like tools even if cancel_interact_on_cast was true
