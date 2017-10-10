@@ -432,7 +432,7 @@ public class InventoryController implements Listener {
 
         // Prevent spells getting smuggled out via crafting slots
         Inventory inventory = event.getInventory();
-        if (inventory instanceof CraftingInventory && previousWand.wasInventoryOpen()) {
+        if (inventory instanceof CraftingInventory && previousWand != null && previousWand.wasInventoryOpen()) {
             CraftingInventory craftingInventory = (CraftingInventory)inventory;
             ItemStack[] matrix = craftingInventory.getMatrix();
             for (int i = 0; i < matrix.length; i++) {
