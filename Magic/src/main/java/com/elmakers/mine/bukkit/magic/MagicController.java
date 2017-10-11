@@ -2266,6 +2266,7 @@ public class MagicController implements MageController {
         dynmapOnlyPlayerSpells = properties.getBoolean("dynmap_only_player_spells", dynmapOnlyPlayerSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
         protectLocked = properties.getBoolean("protected_locked", protectLocked);
+        bindOnGive = properties.getBoolean("bind_on_give", bindOnGive);
 		bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
         bypassBreakPermissions = properties.getBoolean("bypass_break", bypassBreakPermissions);
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
@@ -2659,10 +2660,16 @@ public class MagicController implements MageController {
     
 	@Override
 	public void giveItemToPlayer(Player player, ItemStack itemStack) {
-        // Check for wand inventory
-        Mage apiMage = getMage(player);
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        // Bind item if configured to do so
+        if (bindOnGive && Wand.isWand(itemStack)) {
+            Wand wand = getWand(itemStack);
+            if (wand.isBound()) {
+                wand.tryToOwn(player);
+                itemStack = wand.getItem();
+            }
+        }
+
+        Mage mage = getMage(player);
         mage.giveItem(itemStack);
 	}
     
@@ -5084,6 +5091,7 @@ public class MagicController implements MageController {
     private boolean                             useScoreboardTeams          = false;
     private boolean                             defaultFriendly             = true;
     private boolean							    protectLocked               = true;
+    private boolean                             bindOnGive                  = false;
 
     private String								extraSchematicFilePath		= null;
     private Mailer								mailer						= null;

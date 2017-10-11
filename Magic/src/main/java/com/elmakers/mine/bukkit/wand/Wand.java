@@ -839,14 +839,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	public void takeOwnership(Player player) {
+    	Mage mage = this.mage;
+    	if (mage == null) {
+    		mage = controller.getMage(player);
+		}
         if (mage != null && (ownerId == null || ownerId.length() == 0) && quietLevel < 2)
         {
             mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
-            Spell spell = getActiveSpell();
-            if (spell != null)
+            String spellKey = getActiveSpellKey();
+			SpellTemplate spellTemplate = spellKey != null && !spellKey.isEmpty() ? controller.getSpellTemplate(spellKey) : null;
+            if (spellTemplate != null)
             {
                 String message = getMessage("spell_instructions", "").replace("$wand", getName());
-                mage.sendMessage(message.replace("$spell", spell.getName()));
+                mage.sendMessage(message.replace("$spell", spellTemplate.getName()));
             }
             if (spells.size() > 1)
             {
@@ -869,6 +874,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		setProperty("owner", owner);
 		setProperty("owner_id", ownerId);
 		updateLore();
+		saveState();
 	}
 
 	public String getControlKey(WandAction action) {

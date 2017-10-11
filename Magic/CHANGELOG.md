@@ -16,6 +16,7 @@
 ## 6.9.19
 
  - Fix some potential spell exploit issues revolving around Disarm
+ - Add "bind_on_give" config property, if you want wands to bind when given with /mgive or /wand
 
 ## 6.9.18
 
