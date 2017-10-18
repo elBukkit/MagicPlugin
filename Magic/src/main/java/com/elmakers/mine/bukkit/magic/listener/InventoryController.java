@@ -249,8 +249,7 @@ public class InventoryController implements Listener {
         } else if (activeWand != null) {
             // Check for changes that could have been made to the active wand
             int activeSlot = player.getInventory().getHeldItemSlot();
-            if (event.getSlot() == activeSlot || 
-                    (event.getAction() == InventoryAction.HOTBAR_SWAP && event.getHotbarButton() == activeSlot))
+            if (event.getSlot() == activeSlot || (isHotbar && event.getHotbarButton() == activeSlot))
             {
                 mage.checkWand();
                 activeWand = mage.getActiveWand();
@@ -263,7 +262,7 @@ public class InventoryController implements Listener {
             return;
         }
 
-        if (isFurnace&& event.getAction() == InventoryAction.HOTBAR_SWAP) {
+        if (isFurnace && isHotbar) {
             ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
             if (Wand.isWand(destinationItem)) {
                 event.setCancelled(true);
@@ -271,7 +270,7 @@ public class InventoryController implements Listener {
             }
         }
 
-        if (Wand.Undroppable && event.getAction() == InventoryAction.HOTBAR_SWAP) {
+        if (Wand.Undroppable && isHotbar) {
             ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
             if (controller.getWandProperty(destinationItem, "undroppable", false)) {
                 event.setCancelled(true);

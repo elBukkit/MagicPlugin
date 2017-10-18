@@ -2,6 +2,8 @@
 
 ## Higher Priority
 
+ - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
+
 ## High-Priority
 
  - Allow magic items and wands as crafting ingredients
