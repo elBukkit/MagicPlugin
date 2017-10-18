@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>CompatibilityLib</artifactId>
-	<version>1.9-1.12.1-1</version>
+	<version>1.9-1.12.1-2-SNAPSHOT</version>
 
 	<name>Magic Compatibility Library</name>
 	<url>http://mine.elmakers.com</url>
