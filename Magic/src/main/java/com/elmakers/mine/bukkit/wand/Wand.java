@@ -1347,7 +1347,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
         }
 
-        InventoryUtils.loadAllTagsFromNBT(stateNode, wandNode);
+        ConfigurationUtils.loadAllTagsFromNBT(stateNode, wandNode);
 
         return stateNode;
     }
