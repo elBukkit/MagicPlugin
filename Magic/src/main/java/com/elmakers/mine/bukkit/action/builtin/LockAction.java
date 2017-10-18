@@ -87,7 +87,7 @@ public class LockAction extends BaseSpellAction
                     context.sendMessageKey("already");
                     return SpellResult.NO_TARGET;
                 }
-                if (!override && !InventoryUtils.hasItem(mage, lock))
+                if (!override && !InventoryUtils.hasItem(mage.getInventory(), lock))
                 {
                     // Check for old alternate keys
                     boolean isAlternate = false;
@@ -113,7 +113,7 @@ public class LockAction extends BaseSpellAction
             {
                 return SpellResult.FAIL;
             }
-            if (!keyName.equals(lock) && !override && !InventoryUtils.hasItem(mage, lock))
+            if (!keyName.equals(lock) && !override && !InventoryUtils.hasItem(mage.getInventory(), lock))
             {
                 return SpellResult.FAIL;
             }
@@ -127,7 +127,7 @@ public class LockAction extends BaseSpellAction
 	}
 
     protected void giveKey(Mage mage, String keyName, String keyDescription) {
-        if (!InventoryUtils.hasItem(mage, keyName)) {
+        if (!InventoryUtils.hasItem(mage.getInventory(), keyName)) {
             ItemStack keyItem = null;
             keyItem = iconType.getItemStack(1);
             ItemMeta meta = keyItem.getItemMeta();

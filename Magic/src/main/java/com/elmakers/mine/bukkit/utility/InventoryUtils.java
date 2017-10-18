@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.utility;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.google.common.collect.Multimap;
 
 import org.bukkit.Bukkit;
@@ -494,10 +493,6 @@ public class InventoryUtils extends NMSUtils
         }
 
         list.add(colorPrefix + text);
-    }
-
-    public static boolean hasItem(Mage mage, String itemName) {
-        return hasItem(mage.getInventory(), itemName);
     }
 
     public static boolean hasItem(Inventory inventory, String itemName) {
