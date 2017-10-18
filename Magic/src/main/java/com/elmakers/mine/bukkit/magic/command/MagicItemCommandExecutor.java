@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -311,7 +312,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		MaterialAndData material = new MaterialAndData(item);
 		player.sendMessage(ChatColor.GOLD + material.getKey());
 		YamlConfiguration configuration = new YamlConfiguration();
-		if (InventoryUtils.loadAllTagsFromNBT(configuration, item)) {
+		if (ConfigurationUtils.loadAllTagsFromNBT(configuration, item)) {
 			String itemString = null;
 			if (args.length > 0) {
 				Object target = configuration.get(args[0]);

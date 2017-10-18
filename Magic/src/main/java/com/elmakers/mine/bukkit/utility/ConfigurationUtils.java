@@ -23,6 +23,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -239,6 +240,19 @@ public class ConfigurationUtils extends ConfigUtils {
         }
 
         return true;
+    }
+
+    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, ItemStack item)
+    {
+        if (item == null) {
+            return false;
+        }
+        Object handle = NMSUtils.getHandle(item);
+        if (handle == null) return false;
+        Object tag = NMSUtils.getTag(handle);
+        if (tag == null) return false;
+
+        return loadAllTagsFromNBT(tags, tag);
     }
 
     @SuppressWarnings("unchecked")

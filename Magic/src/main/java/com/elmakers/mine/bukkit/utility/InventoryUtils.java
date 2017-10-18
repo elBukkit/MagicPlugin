@@ -210,19 +210,6 @@ public class InventoryUtils extends NMSUtils
         return value;
     }
 
-    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, ItemStack item)
-    {
-        if (item == null) {
-            return false;
-        }
-        Object handle = getHandle(item);
-        if (handle == null) return false;
-        Object tag = getTag(handle);
-        if (tag == null) return false;
-        
-        return ConfigurationUtils.loadAllTagsFromNBT(tags, tag);
-    }
-
     public static boolean inventorySetItem(Inventory inventory, int index, ItemStack item) {
         try {
             Method setItemMethod = class_CraftInventoryCustom.getMethod("setItem", Integer.TYPE, ItemStack.class);
