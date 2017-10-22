@@ -28,11 +28,17 @@ public class HangingController implements Listener {
         try {
             final BlockFace attachedFace = entity.getAttachedFace();
             Location location = entity.getLocation();
-            location = location.getBlock().getRelative(attachedFace).getLocation();
             UndoList undoList = controller.getPendingUndo(location);
             if (undoList != null) {
                 event.setCancelled(true);
                 undoList.damage(entity);
+            } else {
+                location = location.getBlock().getRelative(attachedFace).getLocation();
+                undoList = controller.getPendingUndo(location);
+                if (undoList != null) {
+                    event.setCancelled(true);
+                    undoList.damage(entity);
+                }
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Failed to handle HangingBreakEvent", ex);

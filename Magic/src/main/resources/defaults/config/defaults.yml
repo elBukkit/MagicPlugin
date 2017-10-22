@@ -348,7 +348,7 @@ particle_range: 48
 # Special materials used to represent icons in the material brush system
 #
 
-# Default disabled icon url. Set to "" to turn off disbabled icons, or override on a per-spell basis.
+# Default disabled icon url. Set to "" to turn off disabled icons, or override on a per-spell basis.
 disabled_icon_url: http://textures.minecraft.net/texture/1c28376acb23cd93322c0a5d569b48b7cd631a6d65dd4f226adb9e9dd7e5c
 
 # Represents erase (fill with air)

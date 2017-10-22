@@ -18,6 +18,7 @@
  - Fix some potential spell exploit issues revolving around Disarm
  - Add "bind_on_give" config property, if you want wands to bind when given with /mgive or /wand
  - Fix ability to sneak a wand into a check with "wand_undroppable: true" via hotbar buttons
+ - Fix issues with item frames and block-creating spells
 
 ## 6.9.18
 
