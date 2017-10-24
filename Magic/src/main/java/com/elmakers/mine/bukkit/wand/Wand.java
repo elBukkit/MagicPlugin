@@ -1308,6 +1308,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 					isInOffhand = true;
 					return true;
 				}
+
+				itemInHand = player.getInventory().getItem(heldSlot);
+				if (itemInHand != null && itemInHand != item && itemInHand.equals(item)) {
+					item = itemInHand;
+					isInOffhand = true;
+					return true;
+				}
+
+
 			}
 		}
 		return false;

@@ -19,6 +19,7 @@
  - Add "bind_on_give" config property, if you want wands to bind when given with /mgive or /wand
  - Fix ability to sneak a wand into a check with "wand_undroppable: true" via hotbar buttons
  - Fix issues with item frames and block-creating spells
+ - Fix an issue with the wand sometimes not saving to item when unequipping
 
 ## 6.9.18
 
