@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.20
+
 ## 6.9.19
 
  - Fix some potential spell exploit issues revolving around Disarm
