@@ -15,6 +15,8 @@
 
 ## 6.9.20
 
+ - Fix some undo issues involving overlapping casts that remove sand blocks
+
 ## 6.9.19
 
  - Fix some potential spell exploit issues revolving around Disarm

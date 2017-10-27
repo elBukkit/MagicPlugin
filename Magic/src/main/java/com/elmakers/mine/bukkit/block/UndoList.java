@@ -910,6 +910,15 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                     blockList = (com.elmakers.mine.bukkit.api.block.UndoList)value;
                 }
             }
+        } else if (entity != null && entity instanceof FallingBlock) {
+            // Falling blocks need to check their location to handle chain reaction effects
+            Location entityLocation = entity.getLocation();
+            blockList = getUndoList(entityLocation);
+            if (blockList == null) {
+                // Check one block down as well, in case a spell removed the block underneath a falling block
+                entityLocation.setY(entityLocation.getY() - 1);
+                blockList = getUndoList(entityLocation);
+            }
         }
 
         return blockList;
