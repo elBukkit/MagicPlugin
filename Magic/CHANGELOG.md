@@ -16,6 +16,8 @@
 ## 6.9.20
 
  - Fix some undo issues involving overlapping casts that remove sand blocks
+ - Optimize large numbers of Magic NPCs
+ - Fix an error in the /magic list entities command
 
 ## 6.9.19
 

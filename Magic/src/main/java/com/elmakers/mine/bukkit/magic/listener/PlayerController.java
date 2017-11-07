@@ -599,6 +599,7 @@ public class PlayerController implements Listener {
     public void onPlayerTeleport(PlayerTeleportEvent event)
     {
         Player player = event.getPlayer();
+        if (controller.isNPC(player)) return;
         Mage mage = controller.getMage(player);
         mage.onTeleport(event);
     }
@@ -607,6 +608,7 @@ public class PlayerController implements Listener {
     public void onPlayerChangeWorld(PlayerChangedWorldEvent event)
     {
         Player player = event.getPlayer();
+        if (controller.isNPC(player)) return;
         Mage mage = controller.getMage(player);
         mage.onChangeWorld();
     }
