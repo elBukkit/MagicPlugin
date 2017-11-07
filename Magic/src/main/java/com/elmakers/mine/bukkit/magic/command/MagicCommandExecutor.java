@@ -611,7 +611,6 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 					{
 						label = label + ChatColor.GRAY + " (Adult)";
 						zombie.setBaby(false);
-						zombie.setVillagerProfession(null);
 					}
 					else if (skeleton != null)
 					{
@@ -634,13 +633,6 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 					else if (zombie != null)
 					{
 						label = entityType.name() + ChatColor.GRAY + " (Baby)";
-						zombie.setBaby(true);
-						showEntityInfo(sender, testEntity, label, formatter);
-						label = entityType.name() + ChatColor.GRAY + " (Villager)";
-						zombie.setBaby(false);
-						zombie.setVillagerProfession(Villager.Profession.FARMER);
-						showEntityInfo(sender, testEntity, label, formatter);
-						label = entityType.name() + ChatColor.GRAY + " (Baby Villager)";
 						zombie.setBaby(true);
 						showEntityInfo(sender, testEntity, label, formatter);
 					}
