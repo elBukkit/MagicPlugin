@@ -33,23 +33,20 @@ boomerang:
     parameters:
         target_type: LivingEntity
         range: 100
-        armor_stand_invisible: false
+        armor_stand_invisible: true
         lifetime: 10000
         hitbox_size: 0.2
         damage: 1
         entity_damage: 2
         cooldown: 0
         right_arm_item: diamond_sword
-        # This won't do anything with teleport: false
-        # But it doesn't seem to do anything either way? Whhuutttt?
-        location_offset: 0,30,0
-        # Turns off teleporting the entity every tick
+        location_offset: 0,-1,0
+        # Turns on teleporting the entity every tick
         teleport: true
-        # Turns off re-orienting, we don't want this since we're animating the armor
+        # Turns off re-orienting, we don't want this since we're animating the arm
         orient: false
-        # This is supposed to account for gravity, maybe not working
+        # Since we're teleporting, no need for velocity
         apply_velocity: false
-        velocity_offset: 0,0.05,0
         armor_stand_gravity: false
         right_arm_transform:
             x: "6.28*sin(0.2*t)"
