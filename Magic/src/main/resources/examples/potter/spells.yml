@@ -2912,3 +2912,22 @@ appearanceshop:
           cost: 1000
         - item: wand|black_upgrade
           cost: 1000
+
+bookshop:
+    icon: book
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: false
+        items:
+        - item: book|charms
+        - item: book|creatures
+        - item: book|herbology
+        - item: book|transfiguration
+        - item: book|elective
+        - item: book|unforgiveable
+

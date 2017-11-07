@@ -565,6 +565,13 @@ spells:
         cast: You exchanged $requires for $item
         insufficient_resources: You must have $requires
         title: "Ollivander"
+    bookshop:
+        name: Spellbook Shop
+        title: "Spell Books"
+        description: Get some spell books
+        cost_lore: "Free!"
+        confirm_title: "Get $item"
+        deducted: "&d&oYou received &r&6$item"
 
 randomized:
    wood:
