@@ -1258,6 +1258,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void tick() {
         if (!isValid()) return;
+        Player player = getPlayer();
+        if (controller.isNPC(player)) return;
 
         long now = System.currentTimeMillis();
         if (entityData != null) {
@@ -1275,8 +1277,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             updateVelocity();
             lastTick = now;
         }
-        
-        Player player = getPlayer();
 
         // We don't tick non-player or offline Mages, except
         // above where entityData is ticked if present.
