@@ -156,6 +156,7 @@ public interface MageController {
     Mage getMage(Entity entity);
     Mage getMage(String id, String name);
     Mage getRegisteredMage(String mageId);
+    Mage getRegisteredMage(Entity entity);
     Mage getAutomaton(String id, String name);
 
     Collection<String> getBrushKeys();

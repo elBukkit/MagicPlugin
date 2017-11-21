@@ -323,6 +323,7 @@ public class MagicController implements MageController {
         return getMage(entity, commandSender);
     }
 
+    @Override
     public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(Entity entity) {
         if (entity == null) return null;
         String id = mageIdentifier.fromEntity(entity);
