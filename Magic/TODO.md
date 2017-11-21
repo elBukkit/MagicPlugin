@@ -4,6 +4,11 @@
 
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
 
+## Suggestions
+
+ - SkillAPI integration for mana (might not really want to do this, but it would probably look a bit like Heroes)
+ - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
+
 ## High-Priority
 
  - Allow magic items and wands as crafting ingredients

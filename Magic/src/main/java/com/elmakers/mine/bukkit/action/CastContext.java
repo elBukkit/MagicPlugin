@@ -860,8 +860,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 {
                     targetMessagesSent.add(targetUUID);
                     playerMessage = playerMessage.replace("$spell", spell.getName());
-                    Mage targetMage = controller.getMage(target);
-                    targetMage.sendMessage(playerMessage);
+                    Mage targetMage = controller.getRegisteredMage(target);
+                    if (targetMage != null) {
+                        targetMage.sendMessage(playerMessage);
+                    }
                 }
             }
         }

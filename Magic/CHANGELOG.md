@@ -18,6 +18,7 @@
  - Fix some undo issues involving overlapping casts that remove sand blocks
  - Optimize large numbers of Magic NPCs
  - Fix an error in the /magic list entities command
+ - Fix a potential error when a player logs out while a spell is being cast on them
 
 ## 6.9.19
 
