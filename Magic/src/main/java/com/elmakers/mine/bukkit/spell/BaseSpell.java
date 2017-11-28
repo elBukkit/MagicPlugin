@@ -237,6 +237,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean                             bypassMageCooldown      = false;
     private int                                 mageCooldown            = 0;
     private int                                 cooldown                = 0;
+    private int                                 displayCooldown         = -1;
     private int                                 warmup                  = 0;
     private int                                 earnCooldown            = 0;
     private int                                 duration                = 0;
@@ -916,6 +917,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             cooldown = parameters.getInt("cooldown", 0);
             cooldown = parameters.getInt("cool", cooldown);
             mageCooldown = parameters.getInt("cooldown_mage", 0);
+            displayCooldown = parameters.getInt("display_cooldown", -1);
             bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
             bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
             bypassPermissions = parameters.getBoolean("bypass_permissions", false);
@@ -1628,6 +1630,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         cooldown = parameters.getInt("cooldown", 0);
         cooldown = parameters.getInt("cool", cooldown);
+        displayCooldown = parameters.getInt("display_cooldown", -1);
         warmup = parameters.getInt("warmup", 0);
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
@@ -2021,7 +2024,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public String getCooldownDescription() {
-        return getCooldownDescription(controller.getMessages(), cooldown,  null);
+        return getCooldownDescription(
+                controller.getMessages(), getDisplayCooldown(),  null);
     }
 
     public String getWarmupDescription() {
@@ -2029,7 +2033,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     public String getCooldownDescription(com.elmakers.mine.bukkit.api.wand.Wand wand) {
-        return getCooldownDescription(controller.getMessages(), cooldown, wand);
+        return getCooldownDescription(
+                controller.getMessages(), getDisplayCooldown(), wand);
+    }
+
+    /**
+     * @return The cooldown to show in UI. Spells can manually set their
+     *         "display_cooldown" if they apply cooldown via an action.
+     */
+    private int getDisplayCooldown() {
+        return displayCooldown != -1 ? displayCooldown : cooldown;
     }
 
     private String getTimeDescription(Messages messages, int time) {
@@ -2062,7 +2075,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return null;
     }
 
-    public String getCooldownDescription(Messages messages, int cooldown, com.elmakers.mine.bukkit.api.wand.Wand wand) {
+    protected String getCooldownDescription(Messages messages, int cooldown, com.elmakers.mine.bukkit.api.wand.Wand wand) {
         if (wand != null) {
             if (wand.isCooldownFree()) {
                 cooldown = 0;
