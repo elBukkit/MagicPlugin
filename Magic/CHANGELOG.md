@@ -13,6 +13,8 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.21
+
 ## 6.9.20
 
  - Fix some undo issues involving overlapping casts that remove sand blocks
