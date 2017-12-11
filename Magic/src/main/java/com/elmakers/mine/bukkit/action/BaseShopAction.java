@@ -17,6 +17,8 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import static com.google.common.base.Preconditions.*;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -35,6 +37,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public abstract class BaseShopAction extends BaseSpellAction implements GUIAction
 {
@@ -69,14 +74,22 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private SpellResult finalResult = null;
 
     protected class ShopItem implements Comparable<ShopItem> {
-        private final ItemStack item;
+        private final @Nonnull ItemStack item;
         private final double worth;
-        private final String permission;
+        private final @Nullable String permission;
+
+        /**
+         * The configuration data attached to this item.
+         *
+         * Only available when the item was created from a configuration section.
+         */
+        private final @Nullable ConfigurationSection configuration;
 
         public ShopItem(ItemStack item, double worth) {
-            this.item = item;
+            this.item = checkNotNull(item);
             this.worth = worth;
             this.permission = null;
+            this.configuration = null;
         }
 
         public ShopItem(MageController controller, ItemStack item, ConfigurationSection configuration) {
@@ -86,9 +99,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 worth = defaultWorth == null ? 0 : defaultWorth;
             }
 
-            this.item = item;
+            this.item = checkNotNull(item);
             this.worth = worth;
             this.permission = configuration.getString("permission");
+            this.configuration = configuration;
         }
 
         public ShopItem(MageController controller, ItemStack item, double worth) {
@@ -100,6 +114,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             this.item = item;
             this.worth = worth;
             this.permission = null;
+            this.configuration = null;
         }
 
         public double getWorth() {
@@ -110,8 +125,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             return item;
         }
 
-        public String getPermission() {
+        public @Nullable String getPermission() {
             return permission;
+        }
+
+        public @Nullable ConfigurationSection getConfiguration() {
+            return configuration;
         }
 
         @Override
