@@ -293,7 +293,7 @@ wands:
         description: Don't even touch it!
     broomstick:
         name: Broomstick
-        description: You can fly!
+        description: "&r&bUse your broom to fly through the air.\n&bDive to speed up, and don't fly too long!"
         enchant_instructions: ""
         spell_instructions: "&r&bUse your broom to fly through the air. Dive to speed up, and don't fly too long!"
     crackedbroomstick:

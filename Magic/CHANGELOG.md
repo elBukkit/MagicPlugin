@@ -15,6 +15,8 @@
 
 ## 6.9.21
 
+ - Add support for "\n" to make multiple lines in wand and spell "description" fields.
+
 ## 6.9.20
 
  - Fix some undo issues involving overlapping casts that remove sand blocks

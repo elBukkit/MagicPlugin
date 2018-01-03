@@ -64,7 +64,6 @@ spells:
         upgrade_description: "&r&b&bull; &6Increased duration, speed and handling"
     superbroom:
         name: SuperBroom
-        description: Powers magic flying wands
         cast: Your wand springs to life!
         deactivate: Your wand quiets down.
         crash: CRASH!

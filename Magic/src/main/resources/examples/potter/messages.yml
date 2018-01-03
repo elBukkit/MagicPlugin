@@ -163,7 +163,6 @@ spells:
         cast: Bombarda!
     broom:
         name: Broom
-        description: Powers magic brooms
         cast: Your broom springs to life!
         deactivate: Your broom quiets down.
         crash: CRASH!
