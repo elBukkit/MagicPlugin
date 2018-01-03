@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility;
 
 import com.google.common.collect.Multimap;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -436,20 +437,23 @@ public class InventoryUtils extends NMSUtils
     public static void wrapText(String text, int maxLength, Collection<String> list)
     {
         String colorPrefix = "";
-        while (text.length() > maxLength)
-        {
-            int spaceIndex = text.lastIndexOf(' ', maxLength);
-            if (spaceIndex <= 0) {
-                list.add(colorPrefix + text);
-                return;
+        String[] lines = StringUtils.split(text, "\n\r");
+        for (String line : lines) {
+            while (line.length() > maxLength)
+            {
+                int spaceIndex = line.lastIndexOf(' ', maxLength);
+                if (spaceIndex <= 0) {
+                    list.add(colorPrefix + line);
+                    return;
+                }
+                String colorText = colorPrefix + line.substring(0, spaceIndex);
+                colorPrefix = ChatColor.getLastColors(colorText);
+                list.add(colorText);
+                line = line.substring(spaceIndex);
             }
-            String colorText = colorPrefix + text.substring(0, spaceIndex);
-            colorPrefix = ChatColor.getLastColors(colorText);
-            list.add(colorText);
-            text = text.substring(spaceIndex);
-        }
 
-        list.add(colorPrefix + text);
+            list.add(colorPrefix + line);
+        }
     }
 
     public static boolean hasItem(Inventory inventory, String itemName) {
