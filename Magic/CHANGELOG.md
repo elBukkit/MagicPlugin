@@ -17,6 +17,7 @@
 
  - Add support for "\n" to make multiple lines in wand and spell "description" fields.
  - Catch the BlockFadeEvent for undo purposes, fixes path blocks not restoring properly when covered by magic blocks
+ - Fix gravity's affect on a projectile's speed. In particular fixes odd behavior with projectiles shot straight up.
 
 ## 6.9.20
 

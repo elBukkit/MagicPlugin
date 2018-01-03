@@ -177,6 +177,10 @@ public class CustomProjectileAction extends CompoundAction
 
         speed = parameters.getDouble("speed", speed);
         speed = parameters.getDouble("velocity", speed * 20);
+
+        // Mainly for legacy purposes, gravity is in terms of original speed.
+        gravity *= speed;
+
         tickSize = parameters.getDouble("tick_size",tickSize);
         ignoreTargeting = parameters.getBoolean("ignore_targeting", ignoreTargeting);
         returnToCaster = parameters.getBoolean("return_to_caster", returnToCaster);
@@ -486,7 +490,11 @@ public class CustomProjectileAction extends CompoundAction
         else
         {
             if (gravity > 0) {
-                velocity.setY(velocity.getY() - gravity * delta / 50).normalize();
+                // Reduce / change speed based on gravity
+                velocity.normalize().multiply(speed);
+                velocity.setY(velocity.getY() - gravity * delta / 50);
+                speed = velocity.length();
+                velocity.normalize();
             }
             if (drag > 0) {
                 speed -= drag * delta / 50;
