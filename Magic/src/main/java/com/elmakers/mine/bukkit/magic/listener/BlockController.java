@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -146,6 +147,16 @@ public class BlockController implements Listener {
             if (block.getType() == Material.MOB_SPAWNER && event.getItemInHand() != null && event.getItemInHand().getType() == Material.MOB_SPAWNER && player.hasPermission("Magic.spawners")) {
                 CompatibilityUtils.applyItemData(event.getItemInHand(), block);
             }
+        }
+    }
+
+    @EventHandler
+    public void onBlockFade(BlockFadeEvent event) {
+        Block block = event.getBlock();
+        UndoList undoList = controller.getPendingUndo(block.getLocation());
+        if (undoList != null)
+        {
+            undoList.add(block);
         }
     }
 
