@@ -16,6 +16,7 @@
 ## 6.9.21
 
  - Add support for "\n" to make multiple lines in wand and spell "description" fields.
+ - Catch the BlockFadeEvent for undo purposes, fixes path blocks not restoring properly when covered by magic blocks
 
 ## 6.9.20
 
