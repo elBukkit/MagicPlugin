@@ -2339,3 +2339,483 @@ scorch:
         warmup: 1000
     costs:
         mana: 40
+
+arrowstorm:
+    icon: diamond_axe:181
+    icon_disabled: diamond_hoe:181
+    icon_url: http://textures.minecraft.net/texture/7d89462020cc12f63d5117d37b52e642536de7fa774d2d96e80c72e1d4ff6
+    category: utility
+    worth: 150
+    earns_sp: 5
+    actions:
+        cast:
+        -  class: ThrowBlock
+           actions:
+           -  class: AreaOfEffect
+              radius: 5
+              actions:
+              -  class: Projectile
+                 actions: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_arrow_shoot
+           sound_pitch: 0.2
+           sound_volume: 1.0
+           location: both
+        -  class: EffectSingle
+           location: both
+           sound: orb_pickup
+           sound_volume: 0.5
+    parameters:
+        target: none
+        brush: dispenser
+        allow_max_range: false
+        range: 15
+        undo: 1000
+        projectile: TippedArrow
+        count: 30
+        fire: false
+        spread: 10
+        speed: 1
+        py: ~4
+        pdy: ~-0.2
+        cooldown: 1000
+        direction: 0,1,0
+        instant_block_effects: true
+        target_self: false
+        duration: 4000
+    costs:
+        mana: 40
+
+
+expelliarmus:
+    alias: expellimo
+    icon: diamond_axe:51
+    icon_disabled: diamond_pickaxe:51
+    ac: 10
+    year: 2
+    upgrade_required_path: year2
+    upgrade_required_casts: 25
+    alias: expel
+    category: cc
+    cast_on_no_target: true
+    actions:
+      cast:
+        - class: ChangeContext
+          ignore_result: true
+          target_caster: true
+          actions:
+          - class: ApplyCooldown
+            spells: expelliarmus,flipendo,levicorpus,ventus,alarte,petrificustotalus,immobulus,blackhole
+            duration: 5000
+        - class: CustomProjectile
+          actions:
+          - class: Cancel
+          - class: DamageAction
+          - class: Random
+            actions:
+            - class: Disarm
+              weight: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.whoosh6
+           location: origin
+           sound_pitch: 2
+           sound_pitch: 1.5
+        -  class: EffectSingle
+           custom_sound: magic.evilwhoosh3
+           location: origin
+           sound_pitch: 1.5
+        tick:
+        - particle: redstone
+          color: FF0000
+          location: target
+        - particle: enchantment_table
+          location: target
+          particle_count: 2
+          particle_offset_x: 0.1
+          particle_offset_y: 0.1
+          particle_offset_z: 0.1
+        hit_block:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: wool:14
+           particle_count: 7
+           particle_offset_x: 0.2
+           particle_offset_y: 0.5
+           particle_offset_z: 0.2
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: wool:14
+           particle_count: 7
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        -  class: EffectSingle
+           location: target
+           particle: crit
+           particle_count: 20
+           particle_offset_x: 0
+           particle_offset_y: 0
+           particle_offset_z: 0
+           particle_data: 1
+        -  location: target
+           use_hit_location: false
+           use_wand_location: false
+           target_offset: 0,-1.3,0
+           effectlib:
+             class: AnimatedBall
+             duration: 2000
+             particle: redstone
+             color: FF0000
+             particles: 100
+             size: .75
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: crit
+           particle_count: 20
+           particle_offset_x: 0
+           particle_offset_y: 0
+           particle_offset_z: 0
+           particle_data: 1
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 10
+           particle_offset_x: 0
+           particle_offset_y: 0
+           particle_offset_z: 0
+           particle_data: 0.2
+        -  class: EffectSingle
+           sound: magic.hit
+           sound_pitch: 1
+           sound_volume: 2
+           location: both
+        -  class: EffectSingle
+           sound: entity_player_hurt
+           sound_pitch: 1
+           location: origin
+           requires_entity_target: true
+        backfire:
+        -  class: EffectSingle
+           sound: entity_player_hurt
+        -  class: EffectRing
+           particle: spell_mob
+           color: FF0000
+           location: self
+        block_fire_extinguishle:
+        -  class: EffectSingle
+           sound: entity_generic_explode
+        -  class: EffectRing
+           particle: redstone
+           color: FF0000
+           location: self
+    parameters:
+        damage: 0
+        target: other
+        speed: 10
+        interval: 1
+        size: 1
+        bypass_weakness: false
+        min_slot: 0
+        max_slot: 8
+        target_type: Player
+        allow_max_range: false
+        range: 30
+        block_fire_extinguishle_chance: 0.1
+        backfire_chance: 0.1
+        keep_in_inventory: true
+        target_breakables: 0
+        cooldown: 26000
+        undo: 1000
+        remove_effects:
+        - speed
+        - jump
+    costs:
+        mana: 60
+
+expelliarmus|2:
+    upgrade_required_path: year3
+    upgrade_required_casts: 50
+    parameters:
+        block_fire_extinguishle_chance: 0
+        backfire_chance: 0
+        cooldown: 25000
+        target_breakables: 0
+    costs:
+        mana: 57
+
+expelliarmus|3:
+    upgrade_required_path: year4
+    upgrade_required_casts: 75
+    parameters:
+        cooldown: 24000
+        target_breakables: 0
+    costs:
+        mana: 60
+
+expelliarmus|4:
+    upgrade_required_path: year5
+    upgrade_required_casts: 100
+    parameters:
+        cooldown: 23000
+        target_breakables: 0
+    costs:
+        mana: 70
+
+expelliarmus|5:
+    upgrade_required_path: year6
+    upgrade_required_casts: 125
+    parameters:
+        cooldown: 22000
+        target_breakables: 0
+    costs:
+        mana: 80
+
+expelliarmus|6:
+    upgrade_required_path: year7
+    upgrade_required_casts: 150
+    parameters:
+        cooldown: 21000
+        target_breakables: 0
+    costs:
+        mana: 90
+
+expelliarmus|7:
+    upgrade_required_path: graduate
+    upgrade_required_casts: 175
+    earns_sp: 12
+    parameters:
+        cooldown: 20000
+        target_breakables: 0
+    costs:
+        mana: 100
+
+earth_cage:
+    actions:
+        cast:
+            -   class: CustomProjectile
+                actions:
+                -   class: ChangeContext
+                    source_at_target: true
+                    actions:
+                    -   class: Brush
+                        brush: stone
+                        actions:
+                        -   class: Sphere
+                            actions:
+                            -   class: ModifyBlock
+                        -   class: Stop
+    effects:
+        projectile:
+        -   class: EffectSingle
+            use_wand_location: false
+            location: origin
+            effectlib:
+                class: SphereEffect
+                radius: 0.5
+                particles: 50
+                duration: 500
+                particle: block_crack
+                material: stone
+    parameters:
+        range: 16
+        target: LivingEntity
+        destructible: destructible_replace
+        transparent: transparent_no_water
+        radius: 5
+        thickness: 1
+        velocity: 16
+        reorient: true
+        undo: 4000
+
+earth_wall:
+    actions:
+        cast:
+        -   class: CheckBlock
+            allowed: earth
+            actions:
+            -   class: ChangeContext
+                source_at_target: true
+                actions:
+                -   class: Brush
+                    brush: stone
+                    actions:
+                    -   class: AreaOfEffect
+                        radius: 2
+                        actions:
+                        -   class: Velocity
+                            living_entity_speed: 0.5
+                            push: 1
+                    -   class: Volume
+                        y_size: 1
+                        x_size: 1
+                        z_size: 0
+                        actions:
+                        -   class: ModifyBlock
+                    -   class: Delay
+                    -   class: Volume
+                        y_size: 2
+                        x_size: 2
+                        z_size: 0
+                        actions:
+                        -   class: ModifyBlock
+                    -   class: Delay
+                    -   class: Volume
+                        y_size: 3
+                        x_size: 2
+                        z_size: 1
+                        actions:
+                        -   class: ModifyBlock
+    parameters:
+        destructible: destructible_replace
+        range: 12
+        undo: 16000
+        delay: 250
+        axis: z
+        orient: true
+
+
+test_cage:
+    icon_url: http://textures.minecraft.net/texture/77c999f4dfd915fc5f1d66120334796687c48189124e6ca944fba1aebd986b
+    icon: skull_item:4
+
+    actions:
+        cast:
+        -   class: CustomProjectile
+            actions:
+            -   class: ChangeContext
+                source_at_target: true
+                actions:
+                -   class: CheckBlock
+                    allowed: earth_full_block
+                    actions:
+                    -   class: Brush
+                        sample: true
+                        actions:
+                        -   class: Sphere
+                            actions:
+                            -   class: ModifyBlock
+                    -   class: Stop
+                -   class: Brush
+                    brush: stone
+                    actions:
+                    -   class: Sphere
+                        actions:
+                        -   class: ModifyBlock
+                    -   class: Stop
+    parameters:
+        range: 16
+        target: LivingEntity
+        destructible: destructible_replace
+        transparent: transparent_no_water
+        radius: 5
+        thickness: 1
+        velocity: 16
+        reorient: true
+        undo: 4000
+
+Berserk:
+    actions:
+        cast:
+        -  class: PotionEffect
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_fire_extinguish
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 70
+             period: .1
+             particle: redstone
+             color: 0A2A0A
+             radius: 2
+             particles: 20
+    parameters:
+        target: self
+
+earth_test:
+    icon: sand
+    actions:
+        cast:
+        -   class: CheckBlock
+            allowed: sand
+            actions:
+            -   class: Cylinder
+                radius: 2
+                actions:
+                -   class: Brush
+                    brush: erase
+                    actions:
+                    -   class: ModifyBlock
+            -   class: Delay
+            -   class: Cylinder
+                radius: 3
+                actions:
+                -   class: Brush
+                    brush: erase
+                    actions:
+                    -   class: ModifyBlock
+            -   class: Delay
+            -   class: Cylinder
+                radius: 4
+                actions:
+                -   class: Brush
+                    brush: erase
+                    actions:
+                    -   class: ModifyBlock
+    parameters:
+        target: block
+        destructible: sand
+        falling: true
+        delay: 50
+        undo: 4000
+
+boomerang:
+  parameters:
+    location_offset: 0,-1,0
+    armor_stand_invisible: true
+
+DGranade:
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: PotionEffect
+              duration: 1000
+              effect_wither: 1
+            - class: PotionEffect
+            - class: ApplyCooldown
+            - class: Deactivate
+            - class: Repeat
+              repeat: 10
+              actions:
+              - class: Damage
+                damage: 2
+              - class: Delay
+                delay: 500
+    parameters:
+        attach_duration: 5000
+        duration: 5000
+        effect_slow: 20
+        effect_wither: 1
+        effect_confusion: 5
+        target: other
+        allow_max_range: true
+        velocity: 40
+        gravity: 0.03
+        range: 120
+        target_type: Damageable
+        player_damage: 6
+        entity_damage: 10
+        attach_duration: 5000
+        radius: 8
