@@ -25,6 +25,7 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.world.WorldSaveEvent;
@@ -157,6 +158,18 @@ public class BlockController implements Listener {
         if (undoList != null)
         {
             undoList.add(block);
+        }
+    }
+
+    @EventHandler
+    public void onPistonExtend(BlockPistonExtendEvent event) {
+        Block piston = event.getBlock();
+        Block block = piston.getRelative(event.getDirection());
+        UndoList undoList = controller.getPendingUndo(block.getLocation());
+        if (undoList != null)
+        {
+            undoList.add(block);
+            undoList.add(piston);
         }
     }
 
