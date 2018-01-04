@@ -2419,10 +2419,9 @@ public class MagicController implements MageController {
 
         // Configure sub-controllers
         explosionController.loadProperties(properties);
+        inventoryController.loadProperties(properties);
         blockController.setUndoOnWorldSave(properties.getBoolean("undo_on_world_save", false));
         blockController.setCreativeBreakFrequency(properties.getInt("prevent_creative_breaking", 0));
-        inventoryController.setEnableItemHacks(properties.getBoolean("enable_custom_item_hacks", false));
-        inventoryController.setDropChangesPages(properties.getBoolean("drop_changes_pages", false));
         entityController.loadProperties(properties);
         playerController.loadProperties(properties);
 

@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -35,16 +36,16 @@ public class InventoryController implements Listener {
     private final MagicController controller;
     private boolean	enableItemHacks	= true;
     private boolean dropChangesPages = false;
+    private long openCooldown = 0;
 
     public InventoryController(MagicController controller) {
         this.controller = controller;
     }
 
-    public void setEnableItemHacks(boolean hack) {
-        enableItemHacks = hack;
-    }
-    public void setDropChangesPages(boolean drop) {
-        dropChangesPages = drop;
+    public void loadProperties(ConfigurationSection properties) {
+        enableItemHacks = properties.getBoolean("enable_custom_item_hacks", false);
+        dropChangesPages = properties.getBoolean("drop_changes_pages", false);
+        openCooldown = properties.getInt("open_cooldown", 0);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -471,6 +472,8 @@ public class InventoryController implements Listener {
 
         if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        mage.setOpenCooldown(openCooldown);
 
         Wand wand = mage.getActiveWand();
         GUIAction gui = mage.getActiveGUI();

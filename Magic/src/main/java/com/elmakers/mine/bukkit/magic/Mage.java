@@ -145,6 +145,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long lastBlockTime;
     private long ignoreItemActivationUntil = 0;
     private boolean forget = false;
+    private long disableWandOpenUntil = 0;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     protected float damageReduction = 0;
@@ -3312,6 +3313,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean hasTag(String tag) {
         return tags.contains(tag);
+    }
+
+    public void setOpenCooldown(long openCooldown) {
+        if (openCooldown > 0) {
+            disableWandOpenUntil = System.currentTimeMillis() + openCooldown;
+        }
+    }
+
+    public long getWandDisableTime() {
+        return disableWandOpenUntil;
     }
 }
 

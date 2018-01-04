@@ -3089,6 +3089,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	public void openInventory() {
 		if (mage == null) return;
+		if (System.currentTimeMillis() < mage.getWandDisableTime()) return;
 		
 		WandMode wandMode = getMode();
 		if (wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS) {
