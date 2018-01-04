@@ -43,17 +43,22 @@ public class StashWandAction extends BaseSpellAction
         if (player == null) return;
 
         boolean gave = false;
-        if (isOffhand) {
-            ItemStack existing = player.getInventory().getItemInOffHand();
-            if (InventoryUtils.isEmpty(existing)) {
-                player.getInventory().setItemInOffHand(stashedItem);
-                gave = true;
-            }
+        Wand activeWand = targetMage.getActiveWand();
+        if (activeWand != null && activeWand.isInventoryOpen()) {
+            gave = targetMage.addToStoredInventory(stashedItem);
         } else {
-            ItemStack existing = player.getInventory().getItem(slotNumber);
-            if (InventoryUtils.isEmpty(existing)) {
-                player.getInventory().setItem(slotNumber, stashedItem);
-                gave = true;
+            if (isOffhand) {
+                ItemStack existing = player.getInventory().getItemInOffHand();
+                if (InventoryUtils.isEmpty(existing)) {
+                    player.getInventory().setItemInOffHand(stashedItem);
+                    gave = true;
+                }
+            } else {
+                ItemStack existing = player.getInventory().getItem(slotNumber);
+                if (InventoryUtils.isEmpty(existing)) {
+                    player.getInventory().setItem(slotNumber, stashedItem);
+                    gave = true;
+                }
             }
         }
         if (!gave) {
