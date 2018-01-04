@@ -276,6 +276,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return activeWand == null ? false : activeWand.usesMana();
     }
 
+    @Override
     public boolean addToStoredInventory(ItemStack item) {
         return (activeWand == null ? false : activeWand.addToStoredInventory(item));
     }

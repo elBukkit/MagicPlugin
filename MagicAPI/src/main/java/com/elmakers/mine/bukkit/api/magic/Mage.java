@@ -432,6 +432,7 @@ public interface Mage extends CostReducer {
     Location getLastDeathLocation();
 
     boolean hasStoredInventory();
+    boolean addToStoredInventory(ItemStack itemStack);
 
     Set<Spell> getActiveSpells();
     void enableFallProtection(int ms);
