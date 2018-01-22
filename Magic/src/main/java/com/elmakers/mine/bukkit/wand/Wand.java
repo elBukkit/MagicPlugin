@@ -843,6 +843,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     	if (mage == null) {
     		mage = controller.getMage(player);
 		}
+
+        // TODO: can mage ever be null here?
         if (mage != null && (ownerId == null || ownerId.length() == 0) && quietLevel < 2)
         {
             mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
@@ -870,7 +872,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
         owner = ChatColor.stripColor(player.getDisplayName());
-        ownerId = player.getUniqueId().toString();
+        ownerId = mage.getId();
 		setProperty("owner", owner);
 		setProperty("owner_id", ownerId);
 		updateLore();
@@ -4091,7 +4093,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (bound)
         {
             String mageName = ChatColor.stripColor(mage.getPlayer().getDisplayName());
-            String mageId = mage.getPlayer().getUniqueId().toString();
+            String mageId = mage.getId();
             boolean ownerRenamed = owner != null && ownerId != null && ownerId.equals(mageId) && !owner.equals(mageName);
 
             if (ownerId == null || ownerId.length() == 0 || owner == null || ownerRenamed)
@@ -4262,7 +4264,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (!bound || ownerId == null || ownerId.length() == 0) return true;
 		if (controller.hasPermission(player, "Magic.wand.override_bind", false)) return true;
 
-		return ownerId.equalsIgnoreCase(player.getUniqueId().toString());
+		String playerId = controller.getMageIdentifier().fromEntity(player);
+		return ownerId.equalsIgnoreCase(playerId);
 	}
 	
 	@Override
