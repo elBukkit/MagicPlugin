@@ -415,11 +415,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                 entities = null;
             }
             if (modifiedEntities != null) {
-                if (undoEntityEffects) {
-                    for (EntityData data : modifiedEntities.values()) {
-                        if (undoEntityTypes != null && !undoEntityTypes.contains(data.getType())) continue;
-                        data.undo();
-                    }
+                for (EntityData data : modifiedEntities.values()) {
+                    if (!undoEntityEffects && undoEntityTypes != null && !undoEntityTypes.contains(data.getType())) continue;
+                    data.undo();
                 }
                 modifiedEntities = null;
             }
