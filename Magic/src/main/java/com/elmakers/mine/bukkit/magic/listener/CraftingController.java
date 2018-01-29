@@ -97,7 +97,7 @@ public class CraftingController implements Listener {
         CraftingInventory inventory = event.getInventory();
         ItemStack[] contents = inventory.getMatrix();
 
-        // Check for wands glitched into the crafting inventor
+        // Check for wands glitched into the crafting inventory
         for (int i = 0; i < 9 && i < contents.length; i++) {
             ItemStack item = contents[i];
             if (Wand.isSpecial(item)) {
@@ -117,18 +117,20 @@ public class CraftingController implements Listener {
         if (candidates == null || candidates.size() == 0) return;
 
         for (MagicRecipe candidate : candidates) {
-            boolean ingredientsMatch = candidate.isMatch(contents);
+            MagicRecipe.MatchType matchType = candidate.getMatchType(contents);
             Material substitute = candidate.getSubstitute();
-            if (ingredientsMatch) {
+            if (matchType != MagicRecipe.MatchType.NONE) {
                 for (HumanEntity human : event.getViewers()) {
-                    if (human instanceof Player && !hasCraftPermission((Player) human, candidate)) {
+                    if (human instanceof Player && (matchType == MagicRecipe.MatchType.PARTIAL || !hasCraftPermission((Player) human, candidate))) {
                         inventory.setResult(new ItemStack(Material.AIR));
                         return;
                     }
                 }
 
-                ItemStack crafted = candidate.craft();
-                inventory.setResult(crafted);
+                if (matchType == MagicRecipe.MatchType.MATCH) {
+                    ItemStack crafted = candidate.craft();
+                    inventory.setResult(crafted);
+                }
                 break;
             } else if (substitute != null) {
                 inventory.setResult(new ItemStack(substitute, 1));

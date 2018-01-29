@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 
 public interface ItemData {
     String getKey();
@@ -13,4 +15,6 @@ public interface ItemData {
     String getCreatorId();
     Set<String> getCategories();
     Material getType();
+    MaterialData getMaterialData();
+    ItemMeta getItemMeta();
 }

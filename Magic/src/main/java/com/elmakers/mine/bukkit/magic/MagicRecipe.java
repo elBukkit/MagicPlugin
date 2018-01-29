@@ -1,17 +1,19 @@
 package com.elmakers.mine.bukkit.magic;
 
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +26,14 @@ import javax.annotation.Nullable;
  * Represents a crafting recipe which will make a wand item.
  */
 public class MagicRecipe {
+    public enum MatchType {NONE, MATCH, PARTIAL};
     private String outputKey;
     private Material outputType;
     private Material substitue;
     private String outputItemType;
     private boolean disableDefaultRecipe;
     private ShapedRecipe recipe;
+    private Map<Character, ItemData> ingredients = new HashMap<>();
     private final MagicController controller;
     private final String key;
 
@@ -90,18 +94,22 @@ public class MagicRecipe {
             if (rows.size() > 0) {
                 shaped = shaped.shape(rows.toArray(new String[0]));
 
-                ConfigurationSection materials = configuration.getConfigurationSection("materials");
+                ConfigurationSection materials = configuration.getConfigurationSection("ingredients");
+                if (materials == null) {
+                    materials = configuration.getConfigurationSection("materials");
+                }
                 Set<String> keys = materials.getKeys(false);
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
-                    MaterialAndData mat = new MaterialAndData(materialKey);
-                    MaterialData material = mat.getMaterialData();
+                    ItemData ingredient = controller.getOrCreateItem(materialKey);
+                    MaterialData material = ingredient == null ? null : ingredient.getMaterialData();
                     if (material == null) {
                         outputType = null;
                         controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);
                         return false;
                     }
                     shaped.setIngredient(key.charAt(0), material);
+                    ingredients.put(key.charAt(0), ingredient);
                 }
 
                 recipe = shaped;
@@ -178,8 +186,8 @@ public class MagicRecipe {
         return item;
     }
 
-    public boolean isMatch(ItemStack[] matrix) {
-        if (recipe == null || matrix.length < 9) return false;
+    public MatchType getMatchType(ItemStack[] matrix) {
+        if (recipe == null || matrix.length < 9) return MatchType.NONE;
         boolean rows[] = new boolean[3];
         boolean columns[] = new boolean[3];
         for (int matrixRow = 0; matrixRow < 3; matrixRow++) {
@@ -204,24 +212,23 @@ public class MagicRecipe {
         }
 
         String[] shape = recipe.getShape();
-        if (shape == null || shape.length < 1) return false;
+        if (shape == null || shape.length < 1) return MatchType.NONE;
 
-        Map<Character, ItemStack> itemMap = recipe.getIngredientMap();
         int shapeRow = 0;
         for (int matrixRow = 0; matrixRow < 3; matrixRow++) {
             if (!rows[matrixRow]) continue;
             int shapeColumn = 0;
             for (int matrixColumn = 0; matrixColumn < 3; matrixColumn++) {
                 if (!columns[matrixColumn]) continue;
-                if (shapeRow >= shape.length) return false;
+                if (shapeRow >= shape.length) return MatchType.NONE;
 
                 String row = shape[shapeRow];
                 char charAt = ' ';
                 if (shapeColumn >= row.length()) {
-                    return false;
+                    return MatchType.NONE;
                 }
                 charAt = row.charAt(shapeColumn);
-                ItemStack item = itemMap.get(charAt);
+                ItemData item = ingredients.get(charAt);
                 int i = matrixRow * 3 + matrixColumn;
                 ItemStack ingredient = matrix[i];
                 if (ingredient != null && ingredient.getType() == Material.AIR) {
@@ -231,16 +238,27 @@ public class MagicRecipe {
                     shapeColumn++;
                     continue;
                 }
-                if (item == null && ingredient != null) return false;
-                if (ingredient == null && item != null) return false;
+                if (item == null && ingredient != null) return MatchType.NONE;
+                if (ingredient == null && item != null) return MatchType.NONE;
                 if (ingredient.getType() != item.getType()) {
-                    return false;
+                    return MatchType.NONE;
+                }
+                ItemMeta meta = item.getItemMeta();
+                if (meta != null) {
+                    ItemMeta ingredientMeta = ingredient.getItemMeta();
+                    if (ingredientMeta == null) {
+                        return MatchType.PARTIAL;
+                    }
+
+                    if (meta.hasDisplayName() && (!ingredientMeta.hasDisplayName() || !meta.getDisplayName().equals(ingredientMeta.getDisplayName()))) {
+                        return MatchType.PARTIAL;
+                    }
                 }
                 shapeColumn++;
             }
             shapeRow++;
         }
-        return true;
+        return MatchType.MATCH;
     }
 
     public String getKey() {

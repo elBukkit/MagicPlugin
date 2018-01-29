@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private String key;
@@ -138,5 +139,17 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     @Override
     public Material getType() {
         return item == null ? Material.AIR : item.getType();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public MaterialData getMaterialData() {
+        if (item == null) return null;
+        return item.getData();
+    }
+
+    @Override
+    public ItemMeta getItemMeta() {
+        return item == null ? null : item.getItemMeta();
     }
 }
