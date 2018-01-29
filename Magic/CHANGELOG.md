@@ -24,6 +24,8 @@
  - Some fixes to the Tag spell
  - Cooldown and "not enough mana" sounds are only heard by the caster.
  - Fix strange undo behavior when players' undo queues are full.
+ - Entities are now modified prior to being spawned. This fixes some issues, such as not being able to take weapons
+   away from pig zombies or vexes.
 
 ## 6.9.20
 

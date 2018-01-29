@@ -411,30 +411,35 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return health;
     }
 
-    protected Entity trySpawn(CreatureSpawnEvent.SpawnReason reason) {
+    protected Entity trySpawn(MageController controller, CreatureSpawnEvent.SpawnReason reason) {
         Entity spawned = null;
+        boolean addedToWorld = false;
         if (type != null && type != EntityType.PLAYER) {
             try {
-                if (reason != null) {
-                    spawned = CompatibilityUtils.spawnEntity(location, type, reason);
-                } else
-                    switch (type) {
-                        case PAINTING:
-                            spawned = CompatibilityUtils.spawnPainting(location, facing, art);
-                            break;
-                        case ITEM_FRAME:
-                            spawned = CompatibilityUtils.spawnItemFrame(location, facing, rotation, item);
-                            break;
-                        case DROPPED_ITEM:
-                            spawned = location.getWorld().dropItem(location, item);
-                            break;
-                        default:
-                            spawned = location.getWorld().spawnEntity(location, type);
+                switch (type) {
+                    case PAINTING:
+                        spawned = CompatibilityUtils.createPainting(location, facing, art);
+                        break;
+                    case ITEM_FRAME:
+                        spawned = CompatibilityUtils.createItemFrame(location, facing, rotation, item);
+                        break;
+                    case DROPPED_ITEM:
+                        spawned = location.getWorld().dropItem(location, item);
+                        addedToWorld = true;
+                        break;
+                    default:
+                        spawned = CompatibilityUtils.createEntity(location, type);
                     }
             } catch (Exception ex) {
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity type " + getType() + " at " + getLocation(), ex);
             }
         }
+        modifyPreSpawn(controller, spawned);
+        if (!addedToWorld) {
+            reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
+            CompatibilityUtils.addToWorld(location.getWorld(), spawned, reason);
+        }
+        modifyPostSpawn(controller, spawned);
         return spawned;
     }
 
@@ -471,12 +476,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
         if (location != null) this.location = location;
         else if (this.location == null) return null;
-        Entity spawned = trySpawn(reason);
-        if (spawned != null) {
-            modify(controller, spawned);
-        }
-
-        return spawned;
+        return trySpawn(controller, reason);
     }
 
     @Override
@@ -490,7 +490,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             if (respawnedEntity != null) {
                 entity = respawnedEntity.get();
             } else {
-                entity = trySpawn(null);
+                entity = trySpawn(null, null);
                 if (entity != null) {
                     respawned.put(uuid, new WeakReference<>(entity));
 
@@ -499,9 +499,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 }
             }
             setEntity(entity);
+        } else {
+            modify(entity);
         }
-
-        modify(entity);
         return entity;
     }
 
@@ -512,6 +512,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Override
     public boolean modify(MageController controller, Entity entity) {
+        boolean modifiedPre = modifyPreSpawn(controller, entity);
+        boolean modifiedPost = modifyPostSpawn(controller, entity);
+        return modifiedPre || modifiedPost;
+    }
+
+    private boolean modifyPreSpawn(MageController controller, Entity entity) {
         if (entity == null || entity.getType() != type) return false;
 
         boolean isPlayer = (entity instanceof Player);
@@ -539,7 +545,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             Set<String> entityTags = CompatibilityUtils.getTags(entity);
             entityTags.addAll(tags);
         }
-
 
         if (entity instanceof Creature) {
             Creature creature = (Creature)entity;
@@ -614,7 +619,20 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             entity.setCustomName(name);
         }
 
-        if (hasMoved && location != null) {
+        if (controller != null && spells != null && tickInterval >= 0) {
+            Mage apiMage = controller.getMage(entity);
+            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
+            }
+        }
+
+        return true;
+    }
+
+    private boolean modifyPostSpawn(MageController controller, Entity entity) {
+        if (entity == null || entity.getType() != type) return false;
+
+        if (hasMoved && location != null && !location.equals(entity.getLocation())) {
             entity.teleport(location);
         }
 
@@ -622,19 +640,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             SafetyUtils.setVelocity(entity, velocity);
         }
 
-        if (controller != null && spells != null && tickInterval >= 0) {
-            Mage apiMage = controller.getMage(entity);
-            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
-            }
-        }
-        
         if (controller != null && disguise != null) {
             if (!controller.disguise(entity, disguise)) {
                 controller.getLogger().warning("Invalid disguise type: " + disguise.getString("type"));
             }
         }
-
         return true;
     }
     
