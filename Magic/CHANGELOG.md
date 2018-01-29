@@ -23,6 +23,7 @@
  - Fix a potential for a stashed wand (e.g. air glider) to disappear when using with a wand inventory open
  - Some fixes to the Tag spell
  - Cooldown and "not enough mana" sounds are only heard by the caster.
+ - Fix strange undo behavior when players' undo queues are full.
 
 ## 6.9.20
 

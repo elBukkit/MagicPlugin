@@ -2,6 +2,7 @@
 
 ## Higher Priority
 
+ - "air" used in mob configs to remove items- see vexes .. looks like maybe a Spigot issue?
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
 
 ## Suggestions
@@ -11,7 +12,6 @@
 
 ## High-Priority
 
- - Allow magic items and wands as crafting ingredients
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  - PW would like some custom lore for wand "quiet" and quick cast settings.
  - Recall warps don't show up with /mage describe?

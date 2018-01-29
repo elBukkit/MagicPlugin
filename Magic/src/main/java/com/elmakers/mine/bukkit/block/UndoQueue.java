@@ -42,7 +42,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             {
                 if (expired.isScheduled())
                 {
-                    expired.undo();
+                    expired.undoScheduled();
                 }
                 else
                 {
