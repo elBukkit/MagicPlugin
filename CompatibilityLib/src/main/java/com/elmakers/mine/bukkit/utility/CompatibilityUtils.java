@@ -251,7 +251,7 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static Painting spawnPainting(Location location, BlockFace facing, Art art)
+    public static Painting createPainting(Location location, BlockFace facing, Art art)
     {
         Painting newPainting = null;
         try {
@@ -269,7 +269,6 @@ public class CompatibilityUtils extends NMSUtils {
                 newPainting = (Painting)bukkitEntity;
                 newPainting.setFacingDirection(facing, true);
                 newPainting.setArt(art, true);
-                class_World_addEntityMethod.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -278,7 +277,7 @@ public class CompatibilityUtils extends NMSUtils {
         return newPainting;
     }
 
-    public static ItemFrame spawnItemFrame(Location location, BlockFace facing, Rotation rotation, ItemStack item)
+    public static ItemFrame createItemFrame(Location location, BlockFace facing, Rotation rotation, ItemStack item)
     {
         ItemFrame newItemFrame = null;
         try {
@@ -296,13 +295,6 @@ public class CompatibilityUtils extends NMSUtils {
                 newItemFrame.setItem(getCopy(item));
                 newItemFrame.setFacingDirection(facing, true);
                 newItemFrame.setRotation(rotation);
-
-                // This will fail sometimes ... the entity is already tracked?
-                try {
-                    class_World_addEntityMethod.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
-                } catch (Exception ex) {
-                    newItemFrame = null;
-                }
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -310,21 +302,25 @@ public class CompatibilityUtils extends NMSUtils {
         return newItemFrame;
     }
 
-    public static ArmorStand spawnArmorStand(Location location)
+    public static ArmorStand createArmorStand(Location location)
     {
-        ArmorStand armorStand = null;
-        try {
-            Object newEntity = class_CraftWorld_createEntityMethod.invoke(location.getWorld(), location, ArmorStand.class);
-            if (newEntity != null) {
-                Entity bukkitEntity = getBukkitEntity(newEntity);
-                if (bukkitEntity == null || !(bukkitEntity instanceof ArmorStand)) return null;
+        return (ArmorStand)createEntity(location, EntityType.ARMOR_STAND);
+    }
 
-                armorStand = (ArmorStand)bukkitEntity;
+    public static Entity createEntity(Location location, EntityType entityType)
+    {
+        Entity bukkitEntity = null;
+        try {
+            Class<? extends Entity> entityClass = entityType.getEntityClass();
+            Object newEntity = class_CraftWorld_createEntityMethod.invoke(location.getWorld(), location, entityClass);
+            if (newEntity != null) {
+                bukkitEntity = getBukkitEntity(newEntity);
+                if (bukkitEntity == null || !entityClass.isAssignableFrom(bukkitEntity.getClass())) return null;
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
-        return armorStand;
+        return bukkitEntity;
     }
 
     public static boolean addToWorld(World world, Entity entity, CreatureSpawnEvent.SpawnReason reason)
