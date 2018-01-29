@@ -12,8 +12,10 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.wand.Wand;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -110,11 +112,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public boolean safe = true;
 
         public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, boolean maintainDirection) {
-            this.name = name;
+            this.name = ChatColor.translateAlternateColorCodes('&', name);
             this.type = type;
             this.location = location;
             this.message = message;
-            this.description = description;
+            this.description = description == null ? null : ChatColor.translateAlternateColorCodes('&', description);
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = null;
@@ -127,11 +129,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
 
         public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
-            this.name = name;
+            this.name = ChatColor.translateAlternateColorCodes('&', name);
             this.type = type;
             this.location = location;
             this.message = message;
-            this.description = description;
+            this.description = description == null ? null : ChatColor.translateAlternateColorCodes('&', description);
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = iconURL;
@@ -144,13 +146,13 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
 
         public Waypoint(RecallType type, String warpName, String serverName, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
-            this.name = name;
+            this.name = ChatColor.translateAlternateColorCodes('&', name);
             this.type = type;
             this.location = null;
             this.warpName = warpName;
             this.serverName = serverName;
             this.message = message;
-            this.description = description;
+            this.description = description == null ? null : ChatColor.translateAlternateColorCodes('&', description);;
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = iconURL;
@@ -161,11 +163,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
 
         public Waypoint(RecallType type, String command, boolean opPlayer, boolean asConsole, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
-            this.name = name;
+            this.name = ChatColor.translateAlternateColorCodes('&', name);
             this.type = type;
             this.location = null;
             this.message = message;
-            this.description = description;
+            this.description = description == null ? null : ChatColor.translateAlternateColorCodes('&', description);;
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = iconURL;
@@ -639,7 +641,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             if (waypoint.description != null && waypoint.description.length() > 0)
             {
                 List<String> lore = new ArrayList<>();
-                lore.add(waypoint.description);
+                InventoryUtils.wrapText(waypoint.description, Wand.MAX_LORE_LENGTH, lore);
                 meta.setLore(lore);
             }
             waypointItem.setItemMeta(meta);

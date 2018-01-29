@@ -13,6 +13,10 @@
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 
+## 6.9.22
+
+ - Color and word wrap support for recall icon descriptions
+
 ## 6.9.21
 
  - Add support for magic items as crafting recipe ingredients. Only display names are checked!
