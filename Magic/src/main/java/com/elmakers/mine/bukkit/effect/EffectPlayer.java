@@ -82,6 +82,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected Integer effectData = null;
 
     protected SoundEffect sound = null;
+    protected boolean broadcastSound = true;
 
     protected boolean hasFirework = false;
     protected FireworkEffect.Type fireworkType;
@@ -131,6 +132,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             effectLibConfig = null;
         }
 
+        broadcastSound = configuration.getBoolean("sound_broadcast", true);
         useParticleOverride = configuration.getString("particle_override", null);
         useColorOverride = configuration.getString("color_override", null);
         originOffset = ConfigurationUtils.getVector(configuration, "origin_offset");
@@ -362,7 +364,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             sourceEntity.playEffect(entityEffect);
         }
         if (sound != null) {
-            sound.play(plugin, sourceLocation);
+            if (broadcastSound) {
+                sound.play(plugin, sourceLocation);
+            } else if (sourceEntity != null) {
+                sound.play(plugin, sourceEntity);
+            }
         }
         if (fireworkEffect != null) {
             EffectUtils.spawnFireworkEffect(plugin.getServer(), sourceLocation, fireworkEffect, fireworkPower);

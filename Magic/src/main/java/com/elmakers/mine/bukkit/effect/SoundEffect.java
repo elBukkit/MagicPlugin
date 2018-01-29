@@ -174,10 +174,10 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
     
             if (sound != null) {
                 try {
-                    if (entity instanceof Player) {
+                    if (entity instanceof Player && range <= 0) {
                         Player player = (Player)entity;
                         player.playSound(sourceLocation, sound, volume, pitch);
-                    } else {
+                    } else if (range > 0) {
                         sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
                     }
                 } catch (Exception ex) {
