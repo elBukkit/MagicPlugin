@@ -162,7 +162,7 @@ public class MountArmorStandAction extends RideEntityAction
 	protected boolean mountNewArmorStand(CastContext context) {
         Mage mage = context.getMage();
         Entity entity = context.getEntity();
-        ArmorStand armorStand = CompatibilityUtils.spawnArmorStand(mage.getLocation());
+        ArmorStand armorStand = CompatibilityUtils.createArmorStand(mage.getLocation());
 
         if (armorStandInvisible) {
             CompatibilityUtils.setInvisible(armorStand, true);

@@ -879,7 +879,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     configureArmorStand(armorStand);
                 }
                 else if (useArmorStand) {
-                    armorStand = CompatibilityUtils.spawnArmorStand(mage.getLocation());
+                    armorStand = CompatibilityUtils.createArmorStand(mage.getLocation());
                     configureArmorStand(armorStand);
                     armorStand.setPassenger(mountEntity);
                     armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
