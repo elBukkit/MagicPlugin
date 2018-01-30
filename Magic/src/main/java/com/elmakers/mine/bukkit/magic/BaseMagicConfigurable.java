@@ -39,6 +39,21 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
                 try {
                     MagicPropertyType propertyType = MagicPropertyType.valueOf(propertyTypeName.toUpperCase());
                     propertyRoutes.put(key, propertyType);
+
+                    // Migrate data if necessary
+                    if (propertyType != type) {
+                        Object value = configuration.get(key);
+                        if (value != null) {
+                            BaseMagicConfigurable holder = getPropertyHolder(propertyType);
+                            if (holder != null) {
+                                configuration.set(key, null);
+                                holder.configuration.set(key, value);
+                            } else {
+                                controller.getLogger().warning("Attempt to migrate property " + key + " on " + type + " which routes to unavailable holder " + propertyType);
+                            }
+
+                        }
+                    }
                 } catch (Exception ex) {
                     controller.getLogger().info("Invalid property type: " + propertyTypeName);
                 }
