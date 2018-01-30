@@ -509,7 +509,8 @@ public class PlayerController implements Listener {
         }
 
         // Check for wearing via right-click
-        if (itemInHand != null && isRightClick && controller.isWearable(itemInHand))
+        // Special-case here for skulls, which actually are not wearable via right-click.
+        if (itemInHand != null && isRightClick && controller.isWearable(itemInHand) && itemInHand.getType() != Material.SKULL_ITEM)
         {
             if (wand != null)
             {
