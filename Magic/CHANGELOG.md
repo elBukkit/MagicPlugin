@@ -16,6 +16,7 @@
 ## 6.9.22
 
  - Color and word wrap support for recall icon descriptions
+ - Fix right-click behaviors with skull wands
 
 ## 6.9.21
 
@@ -30,6 +31,7 @@
  - Fix strange undo behavior when players' undo queues are full.
  - Entities are now modified prior to being spawned. This fixes some issues, such as not being able to take weapons
    away from pig zombies or vexes.
+ - Fix an exploit that may allow players to put spells in chests and duplicate them
 
 ## 6.9.20
 
