@@ -662,7 +662,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean usesMana() {
         if (isCostFree()) return false;
-		return manaMax > 0 || (isHeroes && mage != null);
+		return getManaMax() > 0 || (isHeroes && mage != null);
 	}
 
 	@Override
@@ -1450,7 +1450,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		locked = getBoolean("locked", locked);
 		lockedAllowUpgrades = getBoolean("locked_allow_upgrades", false);
 		consumeReduction = (float)getDouble("consume_reduction");
-		costReduction = (float)getDouble("cost_reduction");
 		cooldownReduction = (float)getDouble("cooldown_reduction");
 		power = (float)getDouble("power");
 		damageReduction = (float)getDouble("protection");
@@ -1494,7 +1493,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // This overrides the value loaded in CasterProperties
         if (!regenWhileInactive) {
-			lastManaRegeneration = System.currentTimeMillis();
+			setProperty("mana_timestamp", System.currentTimeMillis());
         }
 
 		if (hasProperty("effect_color")) {
@@ -2071,12 +2070,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	protected void addPropertyLore(List<String> lore, boolean isSingleSpell)
 	{
 		if (usesMana()) {
+			int manaMax = getManaMax();
             if (effectiveManaMax != manaMax) {
                 String fullMessage = getLevelString("mana_amount_boosted", manaMax, controller.getMaxMana());
                 ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaMax)), lore);
             } else {
 				ConfigurationUtils.addIfNotEmpty(getLevelString("mana_amount", manaMax, controller.getMaxMana()), lore);
             }
+            int manaRegeneration = getManaRegeneration();
             if (manaRegeneration > 0) {
                 if (effectiveManaRegeneration != manaRegeneration) {
                     String fullMessage = getLevelString("mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
@@ -2097,9 +2098,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		} else if (blockChance != 0) {
 			ConfigurationUtils.addIfNotEmpty(getLevelString("block_chance", blockChance), lore);
         }
+        float manaMaxBoost = getManaMaxBoost();
 		if (manaMaxBoost != 0) {
 			ConfigurationUtils.addIfNotEmpty(getPercentageString("mana_boost", manaMaxBoost), lore);
 		}
+		float manaRegenerationBoost = getManaRegenerationBoost();
         if (manaRegenerationBoost != 0) {
 			ConfigurationUtils.addIfNotEmpty(getPercentageString("mana_regeneration_boost", manaRegenerationBoost), lore);
         }
@@ -2115,7 +2118,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
         }
 		if (consumeReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("consume_reduction", consumeReduction), lore);
-		if (costReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cost_reduction", costReduction), lore);
+
+        float costReduction = getCostReduction();
+        if (costReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cost_reduction", costReduction), lore);
 		if (cooldownReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cooldown_reduction", cooldownReduction), lore);
 		if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("power", power), lore);
         if (superProtected) {
@@ -3401,7 +3406,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected void updateDurability() {
         int maxDurability = item.getType().getMaxDurability();
         if (maxDurability > 0 && effectiveManaMax > 0) {
-            int durability = (short)(mana * maxDurability / effectiveManaMax);
+            int durability = (short)(getMana() * maxDurability / effectiveManaMax);
             durability = maxDurability - durability;
             if (durability >= maxDurability) {
                 durability = maxDurability - 1;
@@ -3437,6 +3442,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Player player = mage == null ? null : mage.getPlayer();
         if (player == null) return;
 
+        float mana = getMana();
 		if (usesMana()) {
             if (manaMode.useGlow()) {
                 if (mana == effectiveManaMax) {
@@ -3586,6 +3592,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public void damageDealt(double damage, Entity target) {
+    	int manaMax = getManaMax();
+    	float mana = getMana();
         if (effectiveManaMax == 0 && manaMax > 0) {
             effectiveManaMax = manaMax;
         }
@@ -3709,8 +3717,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             	Player player = mage.getPlayer();
                 effectiveManaMax = heroes.getMaxMana(player);
                 effectiveManaRegeneration = heroes.getManaRegen(player);
-                manaMax = effectiveManaMax;
-                manaRegeneration = effectiveManaRegeneration;
+                setManaMax(effectiveManaMax);
+                setManaRegeneration(effectiveManaRegeneration);
                 setMana(heroes.getMana(player));
                 return true;
             }
@@ -3727,7 +3735,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		Player player = mage.getPlayer();
 		if (player == null) return;
 
-		tickMana();
+		super.tick();
 		if (usesMana() && !isInOffhand) {
 			updateMana();
 		}

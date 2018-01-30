@@ -6,68 +6,64 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import java.util.Collection;
 
 public abstract class CasterProperties extends BaseMagicConfigurable {
-    protected int manaRegeneration = 0;
-    protected int manaMax = 0;
-    protected long lastManaRegeneration = 0;
-    protected float mana = 0;
-
     protected int effectiveManaMax = 0;
     protected int effectiveManaRegeneration = 0;
-
-    protected float manaMaxBoost = 0;
-    protected float manaRegenerationBoost = 0;
-
-    protected float costReduction = 0;
 
     public CasterProperties(MagicPropertyType type, MageController controller) {
         super(type, controller);
     }
 
+    public boolean hasOwnMana() {
+        return hasOwnProperty("mana_max");
+    }
+
     public int getManaRegeneration() {
-        return manaRegeneration;
+        return getInt("mana_regeneration", getInt("xp_regeneration"));
     }
 
     public int getManaMax() {
-        return manaMax;
+        return getInt("mana_max", getInt("xp_max"));
     }
 
     public void setMana(float mana) {
         if (isCostFree()) {
             setProperty("mana", null);
         } else {
-            this.mana = Math.max(0, mana);
-            setProperty("mana", this.mana);
+            setProperty("mana", Math.max(0, mana));
         }
     }
 
     public void setManaMax(int manaMax) {
-        this.manaMax = Math.max(0, manaMax);
-        setProperty("mana_max", this.manaMax);
+        setProperty("mana_max", Math.max(0, manaMax));
+    }
+
+    public void setManaRegeneration(int manaRegeneration) {
+        setProperty("mana_regeneration", Math.max(0, manaRegeneration));
     }
 
     public float getMana() {
-        return mana;
+        return getFloat("mana", getFloat("xp"));
     }
 
     public void removeMana(float amount) {
-        setMana(mana - amount);
+        setMana(getMana() - amount);
     }
 
     public float getManaRegenerationBoost() {
-        return manaRegenerationBoost;
+        return getFloat("mana_regeneration_boost", getFloat("xp_regeneration_boost"));
     }
 
     public float getManaMaxBoost() {
-        return manaMaxBoost;
+        return getFloat("mana_max_boost", getFloat("xp_max_boost"));
     }
 
     public float getCostReduction() {
         if (isCostFree()) return 1.0f;
-        return controller.getCostReduction() + costReduction * controller.getMaxCostReduction();
+        return controller.getCostReduction() + getFloat("cost_reduction") * controller.getMaxCostReduction();
     }
 
     public boolean isCostFree() {
-        return costReduction > 1;
+        return getFloat("cost_reduction") > 1;
     }
 
     public int getEffectiveManaMax() {
@@ -78,15 +74,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
         return effectiveManaRegeneration;
     }
 
+    protected long getLastManaRegeneration() {
+        return getLong("mana_timestamp");
+    }
+
     public void loadProperties() {
-        manaRegeneration = getInt("mana_regeneration", getInt("xp_regeneration"));
-        manaMax = getInt("mana_max", getInt("xp_max"));
-        mana = getInt("mana", getInt("xp"));
-        lastManaRegeneration = getLong("mana_timestamp");
-
-        manaMaxBoost = (float)getDouble("mana_max_boost", getDouble("xp_max_boost"));
-        manaRegenerationBoost = (float)getDouble("mana_regeneration_boost", getDouble("xp_regeneration_boost"));
-
         updateMaxMana(null);
     }
 
@@ -97,8 +89,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
         int currentMana = effectiveManaMax;
         int currentManaRegen = effectiveManaRegeneration;
 
-        float effectiveBoost = manaMaxBoost;
-        float effectiveRegenBoost = manaRegenerationBoost;
+        float effectiveBoost = getManaMaxBoost();
+        float effectiveRegenBoost = getManaRegenerationBoost();
         if (mage != null)
         {
             Collection<Wand> activeArmor = mage.getActiveArmor();
@@ -117,11 +109,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
                 effectiveRegenBoost += offhandWand.getManaRegenerationBoost();
             }
         }
-        effectiveManaMax = manaMax;
+        effectiveManaMax = getManaMax();
         if (effectiveBoost != 0) {
             effectiveManaMax = (int)Math.ceil(effectiveManaMax + effectiveBoost * effectiveManaMax);
         }
-        effectiveManaRegeneration = manaRegeneration;
+        effectiveManaRegeneration = getManaRegeneration();
         if (effectiveRegenBoost != 0) {
             effectiveManaRegeneration = (int)Math.ceil(effectiveManaRegeneration + effectiveRegenBoost * effectiveManaRegeneration);
         }
@@ -131,16 +123,22 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
 
     public boolean usesMana() {
         if (isCostFree()) return false;
-        return manaMax > 0;
+        return getManaMax() > 0;
     }
 
     public boolean tickMana() {
         boolean updated = false;
-        if (usesMana()) {
+        if (usesMana() && hasOwnMana()) {
             long now = System.currentTimeMillis();
+            long lastManaRegeneration = getLastManaRegeneration();
+            int manaRegeneration = getManaRegeneration();
+            int effectiveManaRegeneration = getEffectiveManaRegeneration();
             if (manaRegeneration > 0 && lastManaRegeneration > 0 && effectiveManaRegeneration > 0)
             {
                 long delta = now - lastManaRegeneration;
+                int effectiveManaMax = getEffectiveManaMax();
+                int manaMax = getManaMax();
+                float mana = getMana();
                 if (effectiveManaMax == 0 && manaMax > 0) {
                     effectiveManaMax = manaMax;
                 }

@@ -138,6 +138,15 @@ public class BaseMagicProperties implements MagicProperties {
         return getDouble(key, 0.0);
     }
 
+    public float getFloat(String key, float defaultValue) {
+        Object value = getProperty(key);
+        return value == null || !(value instanceof Number) ? defaultValue : NumberConversions.toFloat(value);
+    }
+
+    public float getFloat(String key) {
+        return getFloat(key, 0.0f);
+    }
+
     public int getInt(String key, int defaultValue) {
         Object value = getProperty(key);
         return value == null || !(value instanceof Number) ? defaultValue : NumberConversions.toInt(value);
