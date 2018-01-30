@@ -21,17 +21,25 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
     }
 
     @Override
-    protected void rebuildEffectiveConfiguration(@Nonnull ConfigurationSection effectiveConfiguration) {
-        ConfigurationSection templateConfiguration = template.getEffectiveConfiguration();
-        ConfigurationUtils.overlayConfigurations(effectiveConfiguration, templateConfiguration);
-        if (parent != null) {
-            ConfigurationSection parentConfiguration = parent.getEffectiveConfiguration();
-            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, parentConfiguration);
-        } else {
-            // If we have a parent, it has already incorporated Mage data
-            ConfigurationSection mageConfiguration = mage.getEffectiveConfiguration();
-            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, mageConfiguration);
+    public boolean hasProperty(String key) {
+        return hasOwnProperty(key) || template.hasProperty(key) || mage.hasProperty(key) || (parent != null && parent.hasProperty(key));
+    }
+
+    @Override
+    public Object getProperty(String key) {
+        Object value = super.getProperty(key);
+        if (value == null) {
+            value = template.getProperty(key);
         }
+        if (value == null && parent != null) {
+            value = parent.getProperty(key);
+        }
+        // Don't need to check the mage if we have a parent, since the parent
+        // checks for us.
+        if (value == null && parent == null) {
+            value = mage.getProperty(key);
+        }
+        return value;
     }
 
     public @Nonnull MageClassTemplate getTemplate() {
@@ -44,7 +52,6 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
 
     public void setParent(@Nonnull MageClass parent) {
         this.parent = parent;
-        this.dirty = true;
     }
 
     @Override
@@ -62,5 +69,20 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
             sender.sendMessage(ChatColor.AQUA + "Parent Class: " + ChatColor.GREEN + parent.getTemplate().getKey());
             parent.describe(sender, hideKeys);
         }
+    }
+
+    public ConfigurationSection getEffectiveConfiguration() {
+        ConfigurationSection effectiveConfiguration = ConfigurationUtils.cloneConfiguration(getConfiguration());
+        ConfigurationSection templateConfiguration = template.getConfiguration();
+        ConfigurationUtils.overlayConfigurations(effectiveConfiguration, templateConfiguration);
+        if (parent != null) {
+            ConfigurationSection parentConfiguration = parent.getEffectiveConfiguration();
+            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, parentConfiguration);
+        } else {
+            // If we have a parent, it has already incorporated Mage data
+            ConfigurationSection mageConfiguration = mage.getConfiguration();
+            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, mageConfiguration);
+        }
+        return effectiveConfiguration;
     }
 }

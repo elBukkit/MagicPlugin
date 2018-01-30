@@ -16,11 +16,6 @@ public class MageProperties extends CasterProperties {
     }
 
     @Override
-    protected void rebuildEffectiveConfiguration(ConfigurationSection effectiveConfiguration) {
-        // Not really doing anything here, this is the root of the tree.
-    }
-
-    @Override
     public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
         sender.sendMessage(ChatColor.AQUA + "Properties for Mage " + ChatColor.GREEN + mage.getName());
 

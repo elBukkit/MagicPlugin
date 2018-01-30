@@ -18,12 +18,10 @@ public class WandProperties extends CasterProperties {
 
     public void setWandTemplate(BaseMagicProperties properties) {
         this.wandTemplate = properties;
-        dirty = true;
     }
 
     public void setMageClass(MageClass mageClass) {
         this.mageClass = mageClass;
-        dirty = true;
     }
 
     @Override
@@ -33,14 +31,35 @@ public class WandProperties extends CasterProperties {
     }
 
     @Override
-    protected void rebuildEffectiveConfiguration(ConfigurationSection effectiveConfiguration) {
+    public boolean hasProperty(String key) {
+        return hasOwnProperty(key) || (wandTemplate != null && wandTemplate.hasProperty(key))
+            || (mageClass != null && mageClass.hasProperty(key));
+    }
+
+    @Override
+    public Object getProperty(String key) {
+        Object value = super.getProperty(key);
+        if (value == null && wandTemplate != null) {
+            value = wandTemplate.getProperty(key);
+        }
+        if (value == null && mageClass != null) {
+            value = mageClass.getProperty(key);
+        }
+        // To preserve behavior of legacy wands, if a wand has no class assigned then it is not linked to Mage
+        // data at all, so no need to check mage directly here.
+        return value;
+    }
+
+    public ConfigurationSection getEffectiveConfiguration() {
+        ConfigurationSection effectiveConfiguration = ConfigurationUtils.cloneConfiguration(getConfiguration());
         if (wandTemplate != null) {
-            ConfigurationSection parentConfiguration = wandTemplate.getEffectiveConfiguration();
+            ConfigurationSection parentConfiguration = wandTemplate.getConfiguration();
             ConfigurationUtils.overlayConfigurations(effectiveConfiguration, parentConfiguration);
         }
         if (mageClass != null) {
-            ConfigurationSection classConfiguration = mageClass.getEffectiveConfiguration();
+            ConfigurationSection classConfiguration = mageClass.getConfiguration();
             ConfigurationUtils.overlayConfigurations(effectiveConfiguration, classConfiguration);
         }
+        return effectiveConfiguration;
     }
 }

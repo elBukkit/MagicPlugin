@@ -51,8 +51,4 @@ public class MageClassTemplate extends BaseMagicProperties {
     public boolean isLocked() {
         return isLocked;
     }
-
-    private void clearProperty(String key) {
-        configuration.set(key, null);
-    }
 }

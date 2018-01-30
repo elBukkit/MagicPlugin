@@ -13,6 +13,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.NumberConversions;
+import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -84,17 +86,17 @@ public class BaseMagicProperties implements MagicProperties {
 
     @Override
     public boolean hasProperty(String key) {
-        return getEffectiveConfiguration().contains(key);
+        return hasOwnProperty(key);
     }
 
     @Override
     public Object getProperty(String key) {
-        return getEffectiveConfiguration().get(key);
+        return configuration.get(key);
     }
 
     @Override
     public <T> Optional<T> getProperty(String key, Class<T> type) {
-        Object value = getEffectiveConfiguration().get(key);
+        Object value = getProperty(key);
         if(value == null || !type.isInstance(value)) {
             return Optional.absent();
         }
@@ -110,7 +112,7 @@ public class BaseMagicProperties implements MagicProperties {
         @SuppressWarnings("unchecked")
         Class<? extends T> clazz = (Class<? extends T>) defaultValue.getClass();
 
-        Object value = getEffectiveConfiguration().get(key);
+        Object value = getProperty(key);
         if (value != null && clazz.isInstance(value)) {
             return clazz.cast(value);
         }
@@ -118,16 +120,80 @@ public class BaseMagicProperties implements MagicProperties {
         return defaultValue;
     }
 
-    public ConfigurationSection getConfiguration() {
-        return configuration;
+    public Object getObject(String key, Object defaultValue) {
+        Object value = getProperty(key);
+        return value == null ? defaultValue :value;
     }
 
-    public ConfigurationSection getEffectiveConfiguration() {
-        return configuration;
+    public Object getObject(String key) {
+        return getProperty(key);
     }
-    
-    public void clear() {
-        configuration = new MemoryConfiguration();
+
+    public double getDouble(String key, double defaultValue) {
+        Object value = getProperty(key);
+        return value == null || !(value instanceof Number) ? defaultValue : NumberConversions.toDouble(value);
+    }
+
+    public double getDouble(String key) {
+        return getDouble(key, 0.0);
+    }
+
+    public int getInt(String key, int defaultValue) {
+        Object value = getProperty(key);
+        return value == null || !(value instanceof Number) ? defaultValue : NumberConversions.toInt(value);
+    }
+
+    public int getInt(String key) {
+        return getInt(key, 0);
+    }
+
+    public long getLong(String key, long defaultValue) {
+        Object value = getProperty(key);
+        return value == null || !(value instanceof Number) ? defaultValue : NumberConversions.toLong(value);
+    }
+
+    public long getLong(String key) {
+        return getLong(key, 0l);
+    }
+
+    public boolean getBoolean(String key, boolean defaultValue) {
+        Object value = getProperty(key);
+        return value == null || !(value instanceof Boolean) ? defaultValue : (boolean)value;
+    }
+
+    public boolean getBoolean(String key) {
+        return getBoolean(key, false);
+    }
+
+    public String getString(String key, String defaultValue) {
+        Object value = getProperty(key);
+        return value == null || !(value instanceof String) ? defaultValue : (String)value;
+    }
+
+    public String getString(String key) {
+        return getString(key, null);
+    }
+
+    public ConfigurationSection getConfigurationSection(String key) {
+        Object value = getProperty(key);
+        return value == null || !(value instanceof ConfigurationSection) ? null : (ConfigurationSection)value;
+    }
+
+    public Vector getVector(String key, Vector def) {
+        String stringData = getString(key, null);
+        if (stringData == null) {
+            return def;
+        }
+
+        return ConfigurationUtils.toVector(stringData);
+    }
+
+    public Vector getVector(String key) {
+        return getVector(key, null);
+    }
+
+    public ConfigurationSection getConfiguration() {
+        return configuration;
     }
 
     protected static String getPotionEffectString(Map<PotionEffectType, Integer> potionEffects) {
@@ -192,5 +258,15 @@ public class BaseMagicProperties implements MagicProperties {
     @Override
     public void describe(CommandSender sender) {
         describe(sender, null);
+    }
+
+    /**
+     * This is used in some very specific cases where properties coming from a config file should not
+     * really be part of the config, and are more meta config.
+     *
+     * @param key
+     */
+    protected void clearProperty(String key) {
+        configuration.set(key, null);
     }
 }

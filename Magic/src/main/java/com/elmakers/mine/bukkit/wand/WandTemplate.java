@@ -235,8 +235,4 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     public String getAttributeSlot() {
         return attributeSlot;
     }
-
-    protected void clearProperty(String key) {
-        configuration.set(key, null);
-    }
 }

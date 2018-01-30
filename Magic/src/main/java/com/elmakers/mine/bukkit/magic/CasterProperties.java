@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.wand.Wand;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Collection;
 
@@ -80,17 +79,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
     }
 
     public void loadProperties() {
-        loadProperties(getEffectiveConfiguration());
-    }
+        manaRegeneration = getInt("mana_regeneration", getInt("xp_regeneration"));
+        manaMax = getInt("mana_max", getInt("xp_max"));
+        mana = getInt("mana", getInt("xp"));
+        lastManaRegeneration = getLong("mana_timestamp");
 
-    protected void loadProperties(ConfigurationSection config) {
-        manaRegeneration = config.getInt("mana_regeneration", config.getInt("xp_regeneration"));
-        manaMax = config.getInt("mana_max", config.getInt("xp_max"));
-        mana = config.getInt("mana", config.getInt("xp"));
-        lastManaRegeneration = config.getLong("mana_timestamp");
-
-        manaMaxBoost = (float)config.getDouble("mana_max_boost", config.getDouble("xp_max_boost"));
-        manaRegenerationBoost = (float)config.getDouble("mana_regeneration_boost", config.getDouble("xp_regeneration_boost"));
+        manaMaxBoost = (float)getDouble("mana_max_boost", getDouble("xp_max_boost"));
+        manaRegenerationBoost = (float)getDouble("mana_regeneration_boost", getDouble("xp_regeneration_boost"));
 
         updateMaxMana(null);
     }

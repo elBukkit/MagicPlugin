@@ -1377,7 +1377,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public void save(ConfigurationSection node, boolean filtered) {
-		ConfigurationUtils.addConfigurations(node, getEffectiveConfiguration());
+		ConfigurationUtils.addConfigurations(node, getConfiguration());
 
         // Filter out some fields
         if (filtered) {
@@ -1445,42 +1445,42 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
     @Override
-    protected void loadProperties(ConfigurationSection wandConfig) {
-    	super.loadProperties(wandConfig);
-		locked = wandConfig.getBoolean("locked", locked);
-		lockedAllowUpgrades = wandConfig.getBoolean("locked_allow_upgrades", false);
-		consumeReduction = (float)wandConfig.getDouble("consume_reduction");
-		costReduction = (float)wandConfig.getDouble("cost_reduction");
-		cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction");
-		power = (float)wandConfig.getDouble("power");
-		damageReduction = (float)wandConfig.getDouble("protection");
-		damageReductionPhysical = (float)wandConfig.getDouble("protection_physical");
-		damageReductionProjectiles = (float)wandConfig.getDouble("protection_projectiles");
-		damageReductionFalling = (float)wandConfig.getDouble("protection_falling");
-		damageReductionFire = (float)wandConfig.getDouble("protection_fire");
-		damageReductionExplosions = (float)wandConfig.getDouble("protection_explosions");
+    public void loadProperties() {
+    	super.loadProperties();
+		locked = getBoolean("locked", locked);
+		lockedAllowUpgrades = getBoolean("locked_allow_upgrades", false);
+		consumeReduction = (float)getDouble("consume_reduction");
+		costReduction = (float)getDouble("cost_reduction");
+		cooldownReduction = (float)getDouble("cooldown_reduction");
+		power = (float)getDouble("power");
+		damageReduction = (float)getDouble("protection");
+		damageReductionPhysical = (float)getDouble("protection_physical");
+		damageReductionProjectiles = (float)getDouble("protection_projectiles");
+		damageReductionFalling = (float)getDouble("protection_falling");
+		damageReductionFire = (float)getDouble("protection_fire");
+		damageReductionExplosions = (float)getDouble("protection_explosions");
 
-		hasId = wandConfig.getBoolean("unique", false);
+		hasId = getBoolean("unique", false);
 
-		blockChance = (float)wandConfig.getDouble("block_chance");
-		blockReflectChance = (float)wandConfig.getDouble("block_reflect_chance");
-		blockFOV = (float)wandConfig.getDouble("block_fov");
-        blockMageCooldown = wandConfig.getInt("block_mage_cooldown");
-        blockCooldown = wandConfig.getInt("block_cooldown");
+		blockChance = (float)getDouble("block_chance");
+		blockReflectChance = (float)getDouble("block_reflect_chance");
+		blockFOV = (float)getDouble("block_fov");
+        blockMageCooldown = getInt("block_mage_cooldown");
+        blockCooldown = getInt("block_cooldown");
 
-        manaPerDamage = (float)wandConfig.getDouble("mana_per_damage");
-		spMultiplier = (float)wandConfig.getDouble("sp_multiplier", 1);
+        manaPerDamage = (float)getDouble("mana_per_damage");
+		spMultiplier = (float)getDouble("sp_multiplier", 1);
 
-		mageClassKey = wandConfig.getString("class");
+		mageClassKey = getString("class");
 
         // Check for single-use wands
-		uses = wandConfig.getInt("uses");
+		uses = getInt("uses");
 		hasUses = uses > 0;
 
         // Convert some legacy properties to potion effects
-        float healthRegeneration = (float)wandConfig.getDouble("health_regeneration", 0);
-		float hungerRegeneration = (float)wandConfig.getDouble("hunger_regeneration", 0);
-		float speedIncrease = (float)wandConfig.getDouble("haste", 0);
+        float healthRegeneration = (float)getDouble("health_regeneration", 0);
+		float hungerRegeneration = (float)getDouble("hunger_regeneration", 0);
+		float speedIncrease = (float)getDouble("haste", 0);
 
         if (speedIncrease > 0) {
             potionEffects.put(PotionEffectType.SPEED, 1);
@@ -1497,60 +1497,60 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			lastManaRegeneration = System.currentTimeMillis();
         }
 
-		if (wandConfig.contains("effect_color")) {
-			setEffectColor(wandConfig.getString("effect_color"));
+		if (hasProperty("effect_color")) {
+			setEffectColor(getString("effect_color"));
 		}
 
-		id = wandConfig.getString("id");
-		isUpgrade = wandConfig.getBoolean("upgrade");
-		quietLevel = wandConfig.getInt("quiet");
-		effectBubbles = wandConfig.getBoolean("effect_bubbles");
-		keep = wandConfig.getBoolean("keep");
-		passive = wandConfig.getBoolean("passive");
-		indestructible = wandConfig.getBoolean("indestructible");
-		superPowered = wandConfig.getBoolean("powered");
-		superProtected = wandConfig.getBoolean("protected");
-		glow = wandConfig.getBoolean("glow");
-		undroppable = wandConfig.getBoolean("undroppable");
-		isHeroes = wandConfig.getBoolean("heroes");
-		bound = wandConfig.getBoolean("bound");
-		forceUpgrade = wandConfig.getBoolean("force");
-		autoOrganize = wandConfig.getBoolean("organize");
-		autoAlphabetize = wandConfig.getBoolean("alphabetize");
-		autoFill = wandConfig.getBoolean("fill");
-		rename = wandConfig.getBoolean("rename");
-		renameDescription = wandConfig.getBoolean("rename_description");
-		enchantCount = wandConfig.getInt("enchant_count");
-		maxEnchantCount = wandConfig.getInt("max_enchant_count");
-		inventoryRows = wandConfig.getInt("inventory_rows", 5);
+		id = getString("id");
+		isUpgrade = getBoolean("upgrade");
+		quietLevel = getInt("quiet");
+		effectBubbles = getBoolean("effect_bubbles");
+		keep = getBoolean("keep");
+		passive = getBoolean("passive");
+		indestructible = getBoolean("indestructible");
+		superPowered = getBoolean("powered");
+		superProtected = getBoolean("protected");
+		glow = getBoolean("glow");
+		undroppable = getBoolean("undroppable");
+		isHeroes = getBoolean("heroes");
+		bound = getBoolean("bound");
+		forceUpgrade = getBoolean("force");
+		autoOrganize = getBoolean("organize");
+		autoAlphabetize = getBoolean("alphabetize");
+		autoFill = getBoolean("fill");
+		rename = getBoolean("rename");
+		renameDescription = getBoolean("rename_description");
+		enchantCount = getInt("enchant_count");
+		maxEnchantCount = getInt("max_enchant_count");
+		inventoryRows = getInt("inventory_rows", 5);
 		if (inventoryRows <= 0) inventoryRows = 1;
 
-		if (wandConfig.contains("effect_particle")) {
-			effectParticle = ConfigurationUtils.toParticleEffect(wandConfig.getString("effect_particle"));
+		if (hasProperty("effect_particle")) {
+			effectParticle = ConfigurationUtils.toParticleEffect(getString("effect_particle"));
 			effectParticleData = 0;
 		} else {
 			effectParticle = null;
 		}
-		if (wandConfig.contains("effect_sound")) {
-			effectSound = ConfigurationUtils.toSoundEffect(wandConfig.getString("effect_sound"));
+		if (hasProperty("effect_sound")) {
+			effectSound = ConfigurationUtils.toSoundEffect(getString("effect_sound"));
 		} else {
 			effectSound = null;
 		}
-		activeEffectsOnly = wandConfig.getBoolean("active_effects");
-		effectParticleData = (float)wandConfig.getDouble("effect_particle_data");
-		effectParticleCount = wandConfig.getInt("effect_particle_count");
-		effectParticleRadius = wandConfig.getDouble("effect_particle_radius");
-		effectParticleOffset = wandConfig.getDouble("effect_particle_offset");
-		effectParticleInterval = wandConfig.getInt("effect_particle_interval");
-		effectParticleMinVelocity = wandConfig.getDouble("effect_particle_min_velocity");
-		effectSoundInterval =  wandConfig.getInt("effect_sound_interval");
-		castLocation = ConfigurationUtils.getVector(wandConfig, "cast_location");
+		activeEffectsOnly = getBoolean("active_effects");
+		effectParticleData = (float)getDouble("effect_particle_data");
+		effectParticleCount = getInt("effect_particle_count");
+		effectParticleRadius = getDouble("effect_particle_radius");
+		effectParticleOffset = getDouble("effect_particle_offset");
+		effectParticleInterval = getInt("effect_particle_interval");
+		effectParticleMinVelocity = getDouble("effect_particle_min_velocity");
+		effectSoundInterval =  getInt("effect_sound_interval");
+		castLocation = getVector("cast_location");
 
-		castInterval = wandConfig.getInt("cast_interval");
-		castMinVelocity = wandConfig.getDouble("cast_min_velocity");
-		castVelocityDirection = ConfigurationUtils.getVector(wandConfig, "cast_velocity_direction");
-		castSpell = wandConfig.getString("cast_spell");
-		String castParameterString = wandConfig.getString("cast_parameters", null);
+		castInterval = getInt("cast_interval");
+		castMinVelocity = getDouble("cast_min_velocity");
+		castVelocityDirection = getVector("cast_velocity_direction");
+		castSpell = getString("cast_spell");
+		String castParameterString = getString("cast_parameters", null);
 		if (castParameterString != null && !castParameterString.isEmpty()) {
 			castParameters = new MemoryConfiguration();
 			ConfigurationUtils.addParameters(StringUtils.split(castParameterString, ' '), castParameters);
@@ -1558,7 +1558,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			castParameters = null;
 		}
 
-		WandMode newMode = parseWandMode(wandConfig.getString("mode"), controller.getDefaultWandMode());
+		WandMode newMode = parseWandMode(getString("mode"), controller.getDefaultWandMode());
 		if (newMode != mode) {
 			if (isInventoryOpen()) {
 				closeInventory();
@@ -1566,10 +1566,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			mode = newMode;
 		}
 
-		brushMode = parseWandMode(wandConfig.getString("brush_mode"), controller.getDefaultBrushMode());
+		brushMode = parseWandMode(getString("brush_mode"), controller.getDefaultBrushMode());
 
 		// Backwards compatibility
-		if (wandConfig.getBoolean("mode_drop", false)) {
+		if (getBoolean("mode_drop", false)) {
 			dropAction = WandAction.TOGGLE;
 			swapAction = WandAction.CYCLE_HOTBAR;
 			rightClickAction = WandAction.NONE;
@@ -1597,7 +1597,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			manualQuickCastDisabled = false;
 		}
 
-		String quickCastType = wandConfig.getString("quick_cast", wandConfig.getString("mode_cast"));
+		String quickCastType = getString("quick_cast", getString("mode_cast"));
 		if (quickCastType != null) {
 			if (quickCastType.equalsIgnoreCase("true")) {
 				quickCast = true;
@@ -1618,28 +1618,28 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				manualQuickCastDisabled = false;
 			}
 		}
-		leftClickAction = parseWandAction(wandConfig.getString("left_click"), leftClickAction);
-		rightClickAction = parseWandAction(wandConfig.getString("right_click"), rightClickAction);
-		dropAction = parseWandAction(wandConfig.getString("drop"), dropAction);
-		swapAction = parseWandAction(wandConfig.getString("swap"), swapAction);
+		leftClickAction = parseWandAction(getString("left_click"), leftClickAction);
+		rightClickAction = parseWandAction(getString("right_click"), rightClickAction);
+		dropAction = parseWandAction(getString("drop"), dropAction);
+		swapAction = parseWandAction(getString("swap"), swapAction);
 
-		owner = wandConfig.getString("owner");
-		ownerId = wandConfig.getString("owner_id");
-		template = wandConfig.getString("template");
-		upgradeTemplate = wandConfig.getString("upgrade_template");
-		path = wandConfig.getString("path");
+		owner = getString("owner");
+		ownerId = getString("owner_id");
+		template = getString("template");
+		upgradeTemplate = getString("upgrade_template");
+		path = getString("path");
 
-		activeSpell = wandConfig.getString("active_spell");
+		activeSpell = getString("active_spell");
 		if (activeSpell != null && activeSpell.contains("|")) {
 			SpellKey activeKey = new SpellKey(activeSpell);
 			activeSpell = activeKey.getBaseKey();
 			setProperty("active_spell", activeSpell);
         }
-		alternateSpell = wandConfig.getString("alternate_spell");
-		activeBrush = wandConfig.getString("active_brush", wandConfig.getString("active_material"));
+		alternateSpell = getString("alternate_spell");
+		activeBrush = getString("active_brush", getString("active_material"));
 
-		if (wandConfig.contains("hotbar_count")) {
-			int newCount = Math.max(1, wandConfig.getInt("hotbar_count"));
+		if (hasProperty("hotbar_count")) {
+			int newCount = Math.max(1, getInt("hotbar_count"));
 			if (newCount != hotbars.size() || newCount > hotbars.size()) {
 				if (isInventoryOpen()) {
 					closeInventory();
@@ -1648,15 +1648,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 		}
 
-		if (wandConfig.contains("hotbar")) {
-			int hotbar = wandConfig.getInt("hotbar");
+		if (hasProperty("hotbar")) {
+			int hotbar = getInt("hotbar");
 			if (hotbar != currentHotbar) {
 				setCurrentHotbar(hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar);
 			}
 		}
 
-		if (wandConfig.contains("page")) {
-			int page = wandConfig.getInt("page");
+		if (hasProperty("page")) {
+			int page = getInt("page");
 			if (page != openInventoryPage) {
                 openInventoryPage = page;
 			}
@@ -1681,16 +1681,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			wandName = controller.getMessages().get("wands." + template + ".name", wandName);
 			description = controller.getMessages().get("wands." + template + ".description", description);
 		}
-		wandName = wandConfig.getString("name", wandName);
-		description = wandConfig.getString("description", description);
+		wandName = getString("name", wandName);
+		description = getString("description", description);
 
 		WandTemplate wandTemplate = getTemplate();
 
 		// Add vanilla attributes
-		InventoryUtils.applyAttributes(item, wandConfig.getConfigurationSection("attributes"), wandConfig.getString("attribute_slot"));
+		InventoryUtils.applyAttributes(item, getConfigurationSection("attributes"), getString("attribute_slot"));
 
 		// Add vanilla enchantments
-		ConfigurationSection enchantments = wandConfig.getConfigurationSection("enchantments");
+		ConfigurationSection enchantments = getConfigurationSection("enchantments");
 		InventoryUtils.applyEnchantments(item, enchantments);
 
 		// Add enchantment glow
@@ -1702,8 +1702,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 		}
 
-		if (wandConfig.contains("icon_inactive")) {
-			String iconKey = wandConfig.getString("icon_inactive");
+		if (hasProperty("icon_inactive")) {
+			String iconKey = getString("icon_inactive");
 			if (wandTemplate != null) {
 				iconKey = wandTemplate.migrateIcon(iconKey);
 			}
@@ -1717,16 +1717,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		{
 			inactiveIcon = null;
 		}
-		inactiveIconDelay = wandConfig.getInt("icon_inactive_delay");
-		randomizeOnActivate = randomizeOnActivate && wandConfig.contains("randomize_icon");
+		inactiveIconDelay = getInt("icon_inactive_delay");
+		randomizeOnActivate = randomizeOnActivate && hasProperty("randomize_icon");
 		if (randomizeOnActivate) {
-			String randomizeIcon = wandConfig.getString("randomize_icon");
+			String randomizeIcon = getString("randomize_icon");
 			setIcon(new MaterialAndData(randomizeIcon));
 			if (item == null) {
 				controller.getLogger().warning("Invalid randomize_icon in wand '" + template + "' config: " + randomizeIcon);
 			}
-		} else if (wandConfig.contains("icon")) {
-			String iconKey = wandConfig.getString("icon");
+		} else if (hasProperty("icon")) {
+			String iconKey = getString("icon");
 			if (wandTemplate != null) {
 				iconKey = wandTemplate.migrateIcon(iconKey);
 			}
@@ -1750,8 +1750,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			setIcon(new MaterialAndData(DefaultWandMaterial));
 		}
 
-		if (wandConfig.contains("upgrade_icon")) {
-			upgradeIcon = new MaterialAndData(wandConfig.getString("upgrade_icon"));
+		if (hasProperty("upgrade_icon")) {
+			upgradeIcon = new MaterialAndData(getString("upgrade_icon"));
 		}
 
 		// Check for path-based migration, may update icons
@@ -1770,7 +1770,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		brushInventory.clear();
 		spellInventory.clear();
-		Object wandSpells = wandConfig.get("spells");
+		Object wandSpells = getObject("spells");
 		if (wandSpells != null) {
 			if (wandSpells instanceof String) {
 				parseSpells((String)wandSpells);
@@ -1786,7 +1786,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 
 		// Load spell levels
-		Object spellLevelsRaw = wandConfig.get("spell_levels");
+		Object spellLevelsRaw = getObject("spell_levels");
 		if (spellLevelsRaw != null) {
 			// Not sure this will ever appear as a Map, but just in case
 			if (spellLevelsRaw instanceof Map) {
@@ -1799,7 +1799,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 
 
-		Object wandBrushes = wandConfig.get("brushes", wandConfig.get("materials"));
+		Object wandBrushes = getObject("brushes", getObject("materials"));
 		if (wandBrushes != null) {
 			if (wandBrushes instanceof String) {
 				parseBrushes((String)wandBrushes);
@@ -1814,7 +1814,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			clearBrushes();
 		}
 
-		Object brushInventoryRaw = wandConfig.get("brush_inventory");
+		Object brushInventoryRaw = getObject("brush_inventory");
 		if (brushInventoryRaw != null) {
 			// Not sure this will ever appear as a Map, but just in case
 			if (brushInventoryRaw instanceof Map) {
@@ -1827,7 +1827,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 		}
 
-		Object spellInventoryRaw = wandConfig.get("spell_inventory");
+		Object spellInventoryRaw = getObject("spell_inventory");
 		if (spellInventoryRaw != null) {
 			// Not sure this will ever appear as a Map, but just in case
 			if (spellInventoryRaw instanceof Map) {
@@ -1845,9 +1845,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		buildInventory();
 
 		castOverrides = null;
-		if (wandConfig.contains("overrides")) {
+		if (hasProperty("overrides")) {
 			castOverrides = null;
-			Object overridesGeneric = wandConfig.get("overrides");
+			Object overridesGeneric = getObject("overrides");
 			if (overridesGeneric != null) {
 				castOverrides = new HashMap<>();
 				if (overridesGeneric instanceof String) {
@@ -1881,8 +1881,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 
 		potionEffects.clear();
-		if (wandConfig.contains("potion_effects")) {
-			addPotionEffects(potionEffects, wandConfig.getString("potion_effects", null));
+		if (hasProperty("potion_effects")) {
+			addPotionEffects(potionEffects, getString("potion_effects", null));
 		}
 
 		// Some cleanup and sanity checks. In theory we don't need to store any non-zero value (as it is with the traders)
@@ -4018,7 +4018,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         this.heldSlot = offhand ? OFFHAND_SLOT : player.getInventory().getHeldItemSlot();
 
 		// Check for replacement template
-		String replacementTemplate = getProperty("replace_on_activate", "");
+		String replacementTemplate = getString("replace_on_activate", "");
 		if (!replacementTemplate.isEmpty() && !replacementTemplate.equals(template)) {
 			needsSave = true;
 			playEffects("replace");

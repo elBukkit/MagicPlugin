@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
 
@@ -20,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-public abstract class BaseMagicConfigurable extends InheritedMagicProperties implements MagicConfigurable {
+public abstract class BaseMagicConfigurable extends BaseMagicProperties implements MagicConfigurable {
     protected final MagicPropertyType type;
 
     public BaseMagicConfigurable(MagicPropertyType type, MageController controller) {
@@ -30,7 +31,6 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties imp
 
     public void setProperty(String key, Object value) {
         configuration.set(key, value);
-        dirty = true;
     }
 
     protected void convertProperties(ConfigurationSection properties) {
@@ -70,7 +70,7 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties imp
 
     protected boolean upgradeProperty(String key, Object value, boolean force) {
         value = convertProperty(value);
-        Object currentValue = getEffectiveConfiguration().get(key);
+        Object currentValue = getProperty(key);
         if (currentValue == value) {
             return false;
         }
@@ -133,7 +133,7 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties imp
     protected boolean upgradePotionEffects(String key, Object value) {
         if (!(value instanceof String)) return false;
         boolean modified = false;
-        String currentValue = getEffectiveConfiguration().getString(key);
+        String currentValue = getProperty(key, "");
         Map<PotionEffectType, Integer> currentEffects = new HashMap<>();
         Map<PotionEffectType, Integer> newEffects = new HashMap<>();
         addPotionEffects(currentEffects, currentValue);
@@ -247,7 +247,6 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties imp
     public void configure(@Nonnull ConfigurationSection configuration) {
         convertProperties(configuration);
         ConfigurationUtils.addConfigurations(this.configuration, configuration);
-        dirty = true;
         updated();
     }
 
@@ -271,7 +270,7 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties imp
                 case "mana_regeneration":
                 case "mana_max":
                 case "mana_per_damage":
-                    double costReduction = getEffectiveConfiguration().getDouble("cost_reduction", 0.0);
+                    double costReduction = getDouble("cost_reduction", 0.0);
                     if (costReduction <= 1) {
                         modified = upgradeProperty(key, value) || modified;
                     }
@@ -317,7 +316,6 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties imp
             }
         }
 
-        dirty = dirty || modified;
         if (modified) {
             updated();
         }
@@ -334,5 +332,9 @@ public abstract class BaseMagicConfigurable extends InheritedMagicProperties imp
         setProperty(key, null);
         updated();
         return true;
+    }
+
+    public void clear() {
+        configuration = new MemoryConfiguration();
     }
 }
