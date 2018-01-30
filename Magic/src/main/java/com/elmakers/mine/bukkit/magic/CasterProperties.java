@@ -78,7 +78,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
         return getLong("mana_timestamp");
     }
 
+    @Override
     public void loadProperties() {
+        super.loadProperties();
         updateMaxMana(null);
     }
 

@@ -50,6 +50,11 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         return parent;
     }
 
+    public MageClass getRoot() {
+        if (parent == null) return this;
+        return parent.getRoot();
+    }
+
     public void setParent(@Nonnull MageClass parent) {
         this.parent = parent;
     }
@@ -84,5 +89,14 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
             ConfigurationUtils.overlayConfigurations(effectiveConfiguration, mageConfiguration);
         }
         return effectiveConfiguration;
+    }
+
+    protected BaseMagicConfigurable getPropertyHolder(MagicPropertyType propertyType) {
+        switch (propertyType) {
+            case SUBCLASS: return this;
+            case CLASS: return getRoot();
+            case MAGE: return mage;
+        }
+        return null;
     }
 }

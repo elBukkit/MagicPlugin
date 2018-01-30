@@ -23,14 +23,45 @@ import java.util.logging.Level;
 
 public abstract class BaseMagicConfigurable extends BaseMagicProperties implements MagicConfigurable {
     protected final MagicPropertyType type;
+    protected final Map<String, MagicPropertyType> propertyRoutes = new HashMap<>();
 
     public BaseMagicConfigurable(MagicPropertyType type, MageController controller) {
         super(controller);
         this.type = type;
     }
 
+    public void loadProperties() {
+        ConfigurationSection routeConfig = getConfigurationSection("property_holders");
+        if (routeConfig != null) {
+            Set<String> keys = routeConfig.getKeys(false);
+            for (String key : keys) {
+                String propertyTypeName = routeConfig.getString(key);
+                try {
+                    MagicPropertyType propertyType = MagicPropertyType.valueOf(propertyTypeName.toUpperCase());
+                    propertyRoutes.put(key, propertyType);
+                } catch (Exception ex) {
+                    controller.getLogger().info("Invalid property type: " + propertyTypeName);
+                }
+            }
+        }
+    }
+
     public void setProperty(String key, Object value) {
-        configuration.set(key, value);
+        MagicPropertyType propertyType = propertyRoutes.get(key);
+        if (propertyType == null || propertyType == type) {
+            configuration.set(key, value);
+        } else {
+            BaseMagicConfigurable holder = getPropertyHolder(propertyType);
+            if (holder != null) {
+                holder.configuration.set(key, value);
+            } else {
+                controller.getLogger().warning("Attempt to set property " + key + " on " + type + " which routes to unavailable holder " + propertyType);
+            }
+        }
+    }
+
+    protected BaseMagicConfigurable getPropertyHolder(MagicPropertyType propertyType) {
+        return null;
     }
 
     protected void convertProperties(ConfigurationSection properties) {

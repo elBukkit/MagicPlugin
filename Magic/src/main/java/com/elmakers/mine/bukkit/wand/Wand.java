@@ -32,10 +32,12 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -5106,5 +5108,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public int getHeldSlot() {
         return heldSlot;
+    }
+
+    protected BaseMagicConfigurable getPropertyHolder(MagicPropertyType propertyType) {
+        switch (propertyType) {
+            case WAND: return this;
+            case SUBCLASS: return mageClass;
+            case CLASS: return mageClass.getRoot();
+            case MAGE: return mage.getProperties();
+        }
+        return null;
     }
 }
