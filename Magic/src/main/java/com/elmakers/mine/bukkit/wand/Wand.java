@@ -4429,6 +4429,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			if (controlKey != null) {
 				controlKey = controller.getMessages().get("controls." + controlKey);
 				message = message.replace("$cycle_hotbar", controlKey);
+			} else {
+				return;
 			}
 		}
 
