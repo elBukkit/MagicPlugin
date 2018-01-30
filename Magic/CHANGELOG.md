@@ -15,6 +15,7 @@
 
 ## 6.9.22
 
+ - Check for lore as well when comparing crafting ingredients
  - Color and word wrap support for recall icon descriptions
  - Fix right-click behaviors with skull wands
 

@@ -253,6 +253,10 @@ public class MagicRecipe {
                     if (meta.hasDisplayName() && (!ingredientMeta.hasDisplayName() || !meta.getDisplayName().equals(ingredientMeta.getDisplayName()))) {
                         return MatchType.PARTIAL;
                     }
+
+                    if (meta.hasLore() && (!ingredientMeta.hasLore() || !meta.getLore().equals(ingredientMeta.getLore()))) {
+                        return MatchType.PARTIAL;
+                    }
                 }
                 shapeColumn++;
             }
