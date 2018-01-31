@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 import java.util.ArrayList;
@@ -176,12 +177,17 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
                 spells.addAll(existingList);
             }
         }
-       boolean modified = spells.add(spellKey);
+        SpellKey key = new SpellKey(spellKey);
+        boolean modified = spells.add(key.getBaseKey());
         if (modified) {
             setProperty("spells", new ArrayList<>(spells));
         }
+        boolean levelModified = false;
+        if (key.getLevel() > 1) {
+            levelModified = upgradeSpellLevel(key.getBaseKey(), key.getLevel());
+        }
 
-        return modified;
+        return modified || levelModified;
     }
 
     @Override

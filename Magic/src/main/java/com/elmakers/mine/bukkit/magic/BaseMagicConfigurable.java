@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -36,26 +37,27 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             Set<String> keys = routeConfig.getKeys(false);
             for (String key : keys) {
                 String propertyTypeName = routeConfig.getString(key);
+                MagicPropertyType propertyType = MagicPropertyType.MAGE;
                 try {
-                    MagicPropertyType propertyType = MagicPropertyType.valueOf(propertyTypeName.toUpperCase());
-                    propertyRoutes.put(key, propertyType);
-
-                    // Migrate data if necessary
-                    if (propertyType != type) {
-                        Object value = configuration.get(key);
-                        if (value != null) {
-                            BaseMagicConfigurable holder = getPropertyHolder(propertyType);
-                            if (holder != null) {
-                                configuration.set(key, null);
-                                holder.upgrade(key, value);
-                            } else {
-                                controller.getLogger().warning("Attempt to migrate property " + key + " on " + type + " which routes to unavailable holder " + propertyType);
-                            }
-
-                        }
-                    }
+                    propertyType = MagicPropertyType.valueOf(propertyTypeName.toUpperCase());
                 } catch (Exception ex) {
                     controller.getLogger().info("Invalid property type: " + propertyTypeName);
+                }
+                propertyRoutes.put(key, propertyType);
+
+                // Migrate data if necessary
+                if (propertyType != type) {
+                    Object value = configuration.get(key);
+                    if (value != null) {
+                        BaseMagicConfigurable holder = getPropertyHolder(propertyType);
+                        if (holder != null) {
+                            configuration.set(key, null);
+                            holder.upgrade(key, value);
+                        } else {
+                            controller.getLogger().warning("Attempt to migrate property " + key + " on " + type + " which routes to unavailable holder " + propertyType);
+                        }
+
+                    }
                 }
             }
         }
@@ -289,6 +291,79 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         return modified;
     }
 
+    @SuppressWarnings("unchecked")
+    protected Map<String, Object> getSpellLevels() {
+        Object existingLevelsRaw = getObject("spell_levels");
+        Map<String, Object> spellLevels = null;
+        if (existingLevelsRaw == null) return null;
+
+        if (existingLevelsRaw instanceof Map) {
+            spellLevels = (Map<String, Object>)existingLevelsRaw;
+        } else if (existingLevelsRaw instanceof ConfigurationSection) {
+            spellLevels = NMSUtils.getMap((ConfigurationSection)existingLevelsRaw);
+        }
+
+        return spellLevels;
+    }
+
+    protected boolean upgradeSpellLevel(String spellKey, int level) {
+        boolean modified = false;
+        Map<String, Object> spellLevels = getSpellLevels();
+        if (spellLevels == null) {
+            modified = true;
+            spellLevels = new HashMap<>();
+        }
+
+        Object existingLevel = spellLevels.get(spellKey);
+        if (existingLevel == null || !(existingLevel instanceof Integer) || level > (Integer)existingLevel) {
+            modified = true;
+            spellLevels.put(spellKey, level);
+        }
+        if (modified) {
+            setProperty("spell_levels", spellLevels);
+        }
+
+        return modified;
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean upgradeSpellLevels(Object value) {
+        if (!(value instanceof Map) && !(value instanceof ConfigurationSection)) return false;
+        boolean modified = false;
+
+        Map<String, Object> spellLevels = getSpellLevels();
+        Map<String, Object> newLevels;
+        if (value instanceof Map) {
+            newLevels = (Map<String, Object>)value;
+        } else {
+            newLevels = NMSUtils.getMap((ConfigurationSection)value);
+        }
+
+        if (spellLevels == null) {
+            modified = true;
+            spellLevels = newLevels;
+            sendDebug("Upgraded spell levels for " + newLevels.size() + " spells");
+        } else {
+            for (Map.Entry<String, ? extends Object> entry : newLevels.entrySet()) {
+                if (entry.getValue() instanceof Integer) {
+                    Integer newLevel = (Integer)entry.getValue();
+                    String key = entry.getKey();
+                    Object existingLevel = spellLevels.get(key);
+                    if (existingLevel == null || !(existingLevel instanceof Integer) || newLevel > (Integer)existingLevel) {
+                        modified = true;
+                        sendDebug("Upgraded spell level for " + key + " from " + existingLevel + " to " + newLevel);
+                        spellLevels.put(key, newLevel);
+                    }
+                }
+            }
+        }
+        if (modified) {
+            setProperty("spell_levels", spellLevels);
+        }
+
+        return modified;
+    }
+
     @Override
     public void configure(@Nonnull ConfigurationSection configuration) {
         convertProperties(configuration);
@@ -343,6 +418,9 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             // Spells, overrides and brushes need merging
             case "spells":
                 modified = upgradeSpells(value);
+                break;
+            case "spell_levels":
+                modified = upgradeSpellLevels(value);
                 break;
             case "materials":
                 modified = upgradeBrushes(value);
