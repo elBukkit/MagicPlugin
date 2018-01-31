@@ -3,7 +3,11 @@ package com.elmakers.mine.bukkit.magic;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.wand.Wand;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public abstract class CasterProperties extends BaseMagicConfigurable {
     protected int effectiveManaMax = 0;
@@ -156,5 +160,49 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
 
     public void tick() {
         tickMana();
+    }
+
+    @Override
+    public boolean addSpell(String spellKey) {
+        Object existingSpells = getObject("spells");
+        Set<String> spells = new HashSet<>();
+        if (existingSpells != null) {
+            if (!(existingSpells instanceof List)) {
+                controller.getLogger().warning("Spell list in " + type + " is " + existingSpells.getClass().getName() + ", expected List");
+                return false;
+            } else {
+                @SuppressWarnings("unchecked")
+                List<String> existingList = (List<String>)existingSpells;
+                spells.addAll(existingList);
+            }
+        }
+       boolean modified = spells.add(spellKey);
+        if (modified) {
+            setProperty("spells", new ArrayList<>(spells));
+        }
+
+        return modified;
+    }
+
+    @Override
+    public boolean addBrush(String brushKey) {
+        Object existingBrushes = getObject("brushes");
+        Set<String> brushes = new HashSet<>();
+        if (existingBrushes != null) {
+            if (!(existingBrushes instanceof List)) {
+                controller.getLogger().warning("Brush list in " + type + " is " + existingBrushes.getClass().getName() + ", expected List");
+                return false;
+            } else {
+                @SuppressWarnings("unchecked")
+                List<String> existingList = (List<String>)existingBrushes;
+                brushes.addAll(existingList);
+            }
+        }
+        boolean modified = brushes.add(brushKey);
+        if (modified) {
+            setProperty("brushes", new ArrayList<>(brushes));
+        }
+
+        return modified;
     }
 }
