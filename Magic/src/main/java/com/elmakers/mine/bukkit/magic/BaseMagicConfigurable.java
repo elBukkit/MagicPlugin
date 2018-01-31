@@ -47,7 +47,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
                             BaseMagicConfigurable holder = getPropertyHolder(propertyType);
                             if (holder != null) {
                                 configuration.set(key, null);
-                                holder.configuration.set(key, value);
+                                holder.upgrade(key, value);
                             } else {
                                 controller.getLogger().warning("Attempt to migrate property " + key + " on " + type + " which routes to unavailable holder " + propertyType);
                             }
@@ -296,70 +296,76 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         updated();
     }
 
+    public boolean upgrade(String key, Object value) {
+        boolean modified = false;
+        switch (key) {
+            // Special-case properties first
+            case "quiet":
+                modified = upgradeProperty(key, value, true);
+                break;
+            case "potion_effects":
+                modified = upgradePotionEffects(key, value);
+                break;
+
+            // Mana modifiers don't need to apply if cost-free
+            case "mana":
+            case "mana_regeneration":
+            case "mana_max":
+            case "mana_per_damage":
+                double costReduction = getDouble("cost_reduction", 0.0);
+                if (costReduction <= 1) {
+                    modified = upgradeProperty(key, value);
+                }
+                break;
+
+            // This may parse as a numeric value, which we don't want.
+            case "effect_color":
+                if (value instanceof String) {
+                    ColorHD newColor = new ColorHD((String)value);
+                    modified = upgradeProperty(key, newColor.toString(), true);
+                }
+                break;
+
+            // Organizing and alphabetizing require special behavior
+            case "organize":
+                if (organizeInventory()) {
+                    modified = true;
+                    sendMessage("reorganized");
+                }
+                break;
+            case "alphabetize":
+                if (alphabetizeInventory()) {
+                    modified = true;
+                    sendMessage("alphabetized");
+                }
+                break;
+
+            // Spells, overrides and brushes need merging
+            case "spells":
+                modified = upgradeSpells(value);
+                break;
+            case "materials":
+                modified = upgradeBrushes(value);
+                break;
+            case "overrides":
+                modified = upgradeOverrides(value);
+                break;
+
+            // Default behavior is to replace any null or string values
+            // And to only increase numeric values
+            default:
+                modified = upgradeProperty(key, value);
+        }
+        return modified;
+    }
+
     @Override
     public boolean upgrade(ConfigurationSection configuration) {
         boolean modified = false;
         Set<String> keys = configuration.getKeys(false);
         for (String key : keys) {
             Object value = configuration.get(key);
-            switch (key) {
-                // Special-case properties first
-                case "quiet":
-                    modified = upgradeProperty(key, value, true) || modified;
-                    break;
-                case "potion_effects":
-                    modified = upgradePotionEffects(key, value);
-                    break;
-
-                // Mana modifiers don't need to apply if cost-free
-                case "mana":
-                case "mana_regeneration":
-                case "mana_max":
-                case "mana_per_damage":
-                    double costReduction = getDouble("cost_reduction", 0.0);
-                    if (costReduction <= 1) {
-                        modified = upgradeProperty(key, value) || modified;
-                    }
-                    break;
-
-                // This may parse as a numeric value, which we don't want.
-                case "effect_color":
-                    if (value instanceof String) {
-                        ColorHD newColor = new ColorHD((String)value);
-                        modified = upgradeProperty(key, newColor.toString(), true) || modified;
-                    }
-                    break;
-
-                // Organizing and alphabetizing require special behavior
-                case "organize":
-                    if (organizeInventory()) {
-                        modified = true;
-                        sendMessage("reorganized");
-                    }
-                    break;
-                case "alphabetize":
-                    if (alphabetizeInventory()) {
-                        modified = true;
-                        sendMessage("alphabetized");
-                    }
-                    break;
-
-                // Spells, overrides and brushes need merging
-                case "spells":
-                    modified = upgradeSpells(value) || modified;
-                    break;
-                case "materials":
-                    modified = upgradeBrushes(value) || modified;
-                    break;
-                case "overrides":
-                    modified = upgradeOverrides(value) || modified;
-                    break;
-
-                // Default behavior is to replace any null or string values
-                // And to only increase numeric values
-                default:
-                    modified = upgradeProperty(key, value) || modified;
-            }
+            modified = upgrade(key, value) || modified;
         }
 
         if (modified) {
