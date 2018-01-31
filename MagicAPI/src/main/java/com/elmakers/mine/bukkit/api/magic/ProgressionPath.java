@@ -10,7 +10,6 @@ public interface ProgressionPath {
     String getName();
     MaterialAndData getIcon();
     boolean requiresSpell(String spellKey);
-    boolean hasSpell(String spellKey);
     boolean hasExtraSpell(String spellKey);
     String getDescription();
     boolean hasPath(String pathName);
@@ -25,4 +24,21 @@ public interface ProgressionPath {
     Collection<String> getExtraSpells();
     Collection<String> getRequiredSpells();
     boolean earnsSP();
+
+    /**
+     * Check to see if a specific spell is available on this exact path.
+     *
+     * @param spellKey
+     * @return
+     */
+    boolean hasSpell(String spellKey);
+
+    /**
+     * Check to see if a specific spell is available on this path or
+     * any path inherited by this path.
+     *
+     * @param spellKey
+     * @return
+     */
+    boolean containsSpell(String spellKey);
 }
