@@ -1,10 +1,11 @@
 base:
   property_holders:
-    mana: subclass
-    mana_max: subclass
-    mana_regeneration: subclass
-    mana_regeneration: subclass
-    mana_timestamp: subclass
+    mana: class
+    mana_max: class
+    mana_regeneration: class
+    mana_regeneration: class
+    mana_timestamp: class
+    spell_levels: class
     spells: class
     brushes: class
     path: subclass
