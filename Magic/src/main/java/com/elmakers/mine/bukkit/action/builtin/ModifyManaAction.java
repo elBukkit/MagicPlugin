@@ -3,11 +3,12 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -27,21 +28,24 @@ public class ModifyManaAction extends BaseSpellAction
 
     @Override
     public SpellResult perform(CastContext context) {
-        Mage mage = context.getMage();
-        Wand wand = context.getWand();
+        Entity target = context.getTargetEntity();
+        if (target == null) {
+            return SpellResult.NO_TARGET;
+        }
+        MageController controller = context.getController();
+        Mage mage = controller.getRegisteredMage(target);
+        if (mage == null) {
+            return SpellResult.NO_TARGET;
+        }
 		Player player = mage.getPlayer();
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-        if (wand == null) {
-            context.showMessage("no_wand", "You must be holding a wand!");
-            return SpellResult.FAIL;
-        }
-        double currentMana = wand.getMana();
+        double currentMana = mage.getMana();
         if (mana < 0 && currentMana <= 0) {
             return SpellResult.NO_TARGET;
         }
-        int manaMax = wand.getManaMax();
+        int manaMax = mage.getManaMax();
         if (mana > 0 && currentMana >= manaMax) {
             return SpellResult.NO_TARGET;
         }
@@ -50,8 +54,8 @@ public class ModifyManaAction extends BaseSpellAction
         } else {
             currentMana = Math.min(Math.max(0, currentMana + mana), manaMax);
         }
-        wand.setMana((float)currentMana);
-        wand.updateMana();
+        mage.setMana((float)currentMana);
+        mage.updateMana();
         return SpellResult.CAST;
 	}
 

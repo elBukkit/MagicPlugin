@@ -8,6 +8,11 @@
    - Default wand configs will use old behavior for actions and flags (per below)
    - Wands aren't class-based and store data as normal
 
+## 6.9.22
+
+ - The ModifyMana action now acts on the target, not just the caster. This may mean your spell configs need changing
+   if you are using this action, it may require "target: self" or a ChangeContext action.
+
 ## 6.9.12
 
  - Removed deprecated "mode_drop" wand property. See mode_drop in wands.defaults.yml to see how to reproduce this behavior

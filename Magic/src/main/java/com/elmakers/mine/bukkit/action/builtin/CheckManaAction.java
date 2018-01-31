@@ -3,8 +3,8 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class CheckManaAction extends CompoundAction {
@@ -21,18 +21,15 @@ public class CheckManaAction extends CompoundAction {
     }
 
     protected boolean isAllowed(CastContext context) {
-        Wand wand = context.getWand();
-        if (wand == null) {
-            return false;
-        }
-        double currentMana = wand.getMana();
+        Mage mage = context.getMage();
+        double currentMana = mage.getMana();
         if (requireAmount > 0 && currentMana < requireAmount) {
             return false;
         }
         if (requireEmpty && currentMana > 0) {
             return false;
         }
-        int manaMax = wand.getManaMax();
+        int manaMax = mage.getManaMax();
         if (requireNotFull && currentMana >= manaMax) {
             return false;
         }
