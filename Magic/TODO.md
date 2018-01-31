@@ -2,7 +2,6 @@
 
 ## Higher Priority
 
- - "air" used in mob configs to remove items- see vexes .. looks like maybe a Spigot issue?
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
 
 ## Suggestions

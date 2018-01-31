@@ -887,9 +887,12 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		Mage mage = api.getMage(player);
 		if (mage == null) return  null;
 		Wand wand = mage.getActiveWand();
+        boolean bypassLocked = (sender instanceof Player) && api.hasPermission(sender, "Magic.wand.override_locked");
 		if (wand == null) {
 			ItemStack item = player.getInventory().getItemInMainHand();
 			if (api.isUpgrade(item)) {
+				wand = api.getWand(item);
+			} else if (bypassLocked && api.isWand(item)) {
 				wand = api.getWand(item);
 			}
 		}
@@ -901,7 +904,6 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			}
 			return null;
 		}
-        boolean bypassLocked = (sender instanceof Player) && api.hasPermission(sender, "Magic.wand.override_locked");
 		if (!skipModifiable && wand.isLocked() && !bypassLocked) {
 			if (!quiet) mage.sendMessage(api.getMessages().get("wand.unmodifiable"));
 			if (sender != player) {
