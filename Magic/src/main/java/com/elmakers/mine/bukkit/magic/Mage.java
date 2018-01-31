@@ -198,6 +198,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Set<String> tags = new HashSet<>();
 
     private String destinationWarp;
+    private Integer lastActivatedSlot;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -3324,6 +3325,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public long getWandDisableTime() {
         return disableWandOpenUntil;
+    }
+
+    public Integer getLastActivatedSlot() {
+        return lastActivatedSlot;
+    }
+
+    public void setLastActivatedSlot(int slot) {
+        this.lastActivatedSlot = slot;
     }
 }
 

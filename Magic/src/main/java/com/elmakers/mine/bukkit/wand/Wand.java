@@ -3980,7 +3980,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (mageClassKey != null && !mageClassKey.isEmpty()) {
 			MageClass mageClass = mage.getClass(mageClassKey);
 			if (mageClass == null) {
-                sendMessage(controller.getMessages().get("mage.no_class").replace("$name", getName()));
+			    Integer lastSlot = mage.getLastActivatedSlot();
+                if (!offhand && (lastSlot == null || lastSlot != player.getInventory().getHeldItemSlot())) {
+                    mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
+                    mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", getName()));
+                }
 				return false;
 			}
 			setMageClass(mageClass);
@@ -3991,6 +3995,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			// Seems hard to prevent without merging Wand construction and activation, though.
 			loadProperties();
 		}
+
+		mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
 
 		InventoryView openInventory = player.getOpenInventory();
 		InventoryType inventoryType = openInventory.getType();
