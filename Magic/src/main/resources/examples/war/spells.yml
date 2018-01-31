@@ -99,6 +99,7 @@ incremental_reload:
         - class: Delay
         - class: ModifyMana
   parameters:
+    target: self
     effects: reload
     cancel_on_cast_other: true
     require_mana_not_full: true
@@ -115,6 +116,7 @@ full_reload:
           - class: Delay
       - class: ModifyMana
   parameters:
+    target: self
     effects: reload
     cancel_on_cast_other: true
     require_mana_not_full: true

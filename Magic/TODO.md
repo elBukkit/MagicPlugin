@@ -7,6 +7,7 @@
 
 ## Suggestions
 
+ - ModifyMana action should work on the target, not the caster
  - SkillAPI integration for mana (might not really want to do this, but it would probably look a bit like Heroes)
  - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
 
