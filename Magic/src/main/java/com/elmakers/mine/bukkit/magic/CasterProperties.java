@@ -211,4 +211,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
 
         return modified;
     }
+
+    public void updateMana() {
+
+    }
 }

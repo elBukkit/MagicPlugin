@@ -2080,6 +2080,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return Math.min(multiplier, maxPowerMultiplierMax);
     }
 
+    protected CasterProperties getCasterProperties() {
+        if (offhandCast && offhandWand != null) {
+            return offhandWand;
+        }
+        if (activeWand != null) {
+            return activeWand;
+        }
+        if (activeClass != null) {
+            return activeClass;
+        }
+        return properties;
+    }
+
     @Override
     public float getMana() {
         if (controller.useHeroesMana() && isPlayer()) {
@@ -2088,16 +2101,46 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return heroes.getMana(getPlayer());
             }
         }
-        if (offhandCast && offhandWand != null) {
-            return offhandWand.getMana();
+        return getCasterProperties().getMana();
+    }
+
+    @Override
+    public int getManaMax() {
+        if (controller.useHeroesMana() && isPlayer()) {
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null) {
+                return heroes.getMaxMana(getPlayer());
+            }
         }
-        if (activeWand != null) {
-            return activeWand.getMana();
+        return getCasterProperties().getManaMax();
+    }
+
+    @Override
+    public int getManaRegeneration() {
+        if (controller.useHeroesMana() && isPlayer()) {
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null) {
+                return heroes.getManaRegen(getPlayer());
+            }
         }
-        if (activeClass != null) {
-            return activeClass.getMana();
+        return getCasterProperties().getManaRegeneration();
+    }
+
+    @Override
+    public void setMana(float mana) {
+        if (controller.useHeroesMana() && isPlayer()) {
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null) {
+                controller.getLogger().warning("Trying to set Heroes mana but can't really do that.");
+                return;
+            }
         }
-        return properties.getMana();
+        getCasterProperties().setMana(mana);
+    }
+
+    @Override
+    public void updateMana() {
+        getCasterProperties().updateMana();
     }
 
     public int getEffectiveManaMax() {

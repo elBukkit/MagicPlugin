@@ -416,6 +416,10 @@ public interface Mage extends CostReducer {
 
     void removeMana(float mana);
     float getMana();
+    int getManaMax();
+    void setMana(float mana);
+    int getManaRegeneration();
+    void updateMana();
 
     int getLevel();
     void setLevel(int level);
