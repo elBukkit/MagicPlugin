@@ -1415,7 +1415,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			setProperty("spells_levels", null);
 		} else {
 			setProperty("spells", new ArrayList<>(spells));
-			setProperty("spell_levels", spellLevels);
+			setProperty("spell_levels", new HashMap<>(spellLevels));
 		}
 	}
 
@@ -1423,7 +1423,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     	if (brushInventory.isEmpty()) {
 			setProperty("brush_inventory", null);
 		} else {
-			setProperty("brush_inventory", brushInventory);
+			setProperty("brush_inventory", new HashMap<>(brushInventory));
 		}
 	}
 
@@ -1431,7 +1431,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (spellInventory.isEmpty()) {
 			setProperty("spell_inventory", null);
 		} else {
-			setProperty("spell_inventory", spellInventory);
+			setProperty("spell_inventory", new HashMap<>(spellInventory));
 		}
 	}
 
