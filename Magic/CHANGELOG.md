@@ -5,6 +5,7 @@
 ### Player Data and Classes! 
 
  - Add /mage configure, upgrade and describe commands for dealing with Mage data
+ - Add /mage add and remove commands for dealing with Mage spells and brushes
  - Add /mage reset (class) option, for resetting a class progress on a player
  - Add /mage activate and unlock commands, for manipulating mage classes
  - Add classes config file, defaults have a basic setup in each example config. Generally:

@@ -2,12 +2,14 @@ package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class CasterProperties extends BaseMagicConfigurable {
@@ -165,18 +167,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
 
     @Override
     public boolean addSpell(String spellKey) {
-        Object existingSpells = getObject("spells");
-        Set<String> spells = new HashSet<>();
-        if (existingSpells != null) {
-            if (!(existingSpells instanceof List)) {
-                controller.getLogger().warning("Spell list in " + type + " is " + existingSpells.getClass().getName() + ", expected List");
-                return false;
-            } else {
-                @SuppressWarnings("unchecked")
-                List<String> existingList = (List<String>)existingSpells;
-                spells.addAll(existingList);
-            }
-        }
+        Set<String> spells = getSpells();
         SpellKey key = new SpellKey(spellKey);
         boolean modified = spells.add(key.getBaseKey());
         if (modified) {
@@ -192,18 +183,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
 
     @Override
     public boolean addBrush(String brushKey) {
-        Object existingBrushes = getObject("brushes");
-        Set<String> brushes = new HashSet<>();
-        if (existingBrushes != null) {
-            if (!(existingBrushes instanceof List)) {
-                controller.getLogger().warning("Brush list in " + type + " is " + existingBrushes.getClass().getName() + ", expected List");
-                return false;
-            } else {
-                @SuppressWarnings("unchecked")
-                List<String> existingList = (List<String>)existingBrushes;
-                brushes.addAll(existingList);
-            }
-        }
+        Set<String> brushes = getBrushes();
         boolean modified = brushes.add(brushKey);
         if (modified) {
             setProperty("brushes", new ArrayList<>(brushes));
@@ -212,7 +192,76 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
         return modified;
     }
 
+    public boolean removeSpell(String spellKey) {
+        Set<String> spells = getSpells();
+        SpellKey key = new SpellKey(spellKey);
+        boolean modified = spells.remove(key.getBaseKey());
+        if (modified) {
+            setProperty("spells", new ArrayList<>(spells));
+            Map<String, Object> spellLevels = getSpellLevels();
+            if (spellLevels.remove(key.getBaseKey()) != null) {
+                setProperty("spell_levels", spellLevels);
+            }
+        }
+
+        return modified;
+    }
+
+    public boolean removeBrush(String brushKey) {
+        Set<String> brushes = getBrushes();
+        boolean modified = brushes.remove(brushKey);
+        if (modified) {
+            setProperty("brushes", new ArrayList<>(brushes));
+        }
+
+        return modified;
+    }
+
+    public int getSpellLevel(String spellKey) {
+        Map<String, Object> spellLevels = getSpellLevels();
+        Object level = spellLevels.get(spellKey);
+        return level == null || !(level instanceof Integer) ? 1 : (Integer)level;
+    }
+
+    public SpellTemplate getBaseSpell(String spellKey) {
+        SpellKey key = new SpellKey(spellKey);
+        Set<String> spells = getSpells();
+        if (!spells.contains(key.getBaseKey())) return null;
+        SpellKey baseKey = new SpellKey(key.getBaseKey(), getSpellLevel(key.getBaseKey()));
+        return controller.getSpellTemplate(baseKey.getKey());
+    }
+
     public void updateMana() {
 
+    }
+
+    public Set<String> getSpells() {
+        Object existingSpells = getObject("spells");
+        Set<String> spells = new HashSet<>();
+        if (existingSpells != null) {
+            if (!(existingSpells instanceof List)) {
+                controller.getLogger().warning("Spell list in " + type + " is " + existingSpells.getClass().getName() + ", expected List");
+            } else {
+                @SuppressWarnings("unchecked")
+                List<String> existingList = (List<String>)existingSpells;
+                spells.addAll(existingList);
+            }
+        }
+        return spells;
+    }
+
+    public Set<String> getBrushes() {
+         Object existingBrushes = getObject("brushes");
+        Set<String> brushes = new HashSet<>();
+        if (existingBrushes != null) {
+            if (!(existingBrushes instanceof List)) {
+                controller.getLogger().warning("Brush list in " + type + " is " + existingBrushes.getClass().getName() + ", expected List");
+            } else {
+                @SuppressWarnings("unchecked")
+                List<String> existingList = (List<String>)existingBrushes;
+                brushes.addAll(existingList);
+            }
+        }
+        return brushes;
     }
 }

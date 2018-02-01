@@ -348,6 +348,8 @@ commands:
         Use /help mage [subcommand] for more information
         /mage configure   Set mage properties
         /mage describe    Show mage properties
+        /wand add         Add spells and brushes to a player
+        /wand remove      Remove spells or brushes from a player
         /mage activate    Set or clear a player's active class
         /mage unlock      Unlock a class for a player
         /mage upgrade     Upgrade properties of a mage
@@ -366,6 +368,20 @@ commands:
        /mage configure xp_max 500
        /mage configure xp_regeneration 50
     permission: Magic.commands.mage.configure
+  "mage add":
+    description: Add a spell or brush to a player
+    usage: |
+
+       /mage add <spellname>
+       /mage add material <materialname>
+    permission: Magic.commands.mage.add
+  "mage remove":
+    description: Remove a spell or brush from a player
+    usage: |
+
+       /mage remove <spellname>
+       /mage remove material <materialname>
+    permission: Magic.commands.mage.remove
   "mage describe":
     description: List mage properties, which can be changed with /mage configure
     permission: Magic.commands.mage.describe
@@ -939,6 +955,14 @@ permissions:
     default: op
   Magic.commands.mage.configure:
     description: Player may configure Mage properties
+    type: boolean
+    default: op
+  Magic.commands.mage.add:
+    description: Player may add spells to players
+    type: boolean
+    default: op
+  Magic.commands.mage.remove:
+    description: Player may remove spells from players
     type: boolean
     default: op
   Magic.commands.mage.upgrade:

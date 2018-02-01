@@ -5,6 +5,8 @@ import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
@@ -124,6 +126,14 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageUnlock(sender, player, args2);
         }
+        if (subCommand.equalsIgnoreCase("add"))
+        {
+            return onMageAdd(sender, player, args2);
+        }
+        if (subCommand.equalsIgnoreCase("remove"))
+        {
+            return onMageRemove(sender, player, args2);
+        }
 
 		sender.sendMessage("Unknown mage command: " + subCommand);
 		return true;
@@ -133,6 +143,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<>();
 		if (args.length == 1) {
+            addIfPermissible(sender, options, "Magic.commands.mage.", "add");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "remove");
             addIfPermissible(sender, options, "Magic.commands.mage.", "configure");
             addIfPermissible(sender, options, "Magic.commands.mage.", "describe");
             addIfPermissible(sender, options, "Magic.commands.mage.", "upgrade");
@@ -145,20 +157,63 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "activate");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unlock");
 		} else if (args.length == 2) {
+			String subCommand = args[0];
+			String subCommandPNode = "Magic.commands.mage." + subCommand;
+
 			options.addAll(api.getPlayerNames());
-            if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe") || args[0].equalsIgnoreCase("upgrade")) {
+            if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
                 for (String key : BaseMagicProperties.PROPERTY_KEYS) {
                     options.add(key);
                 }
             }
+
+            if (subCommand.equalsIgnoreCase("add")) {
+				Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+				for (SpellTemplate spell : spellList) {
+					addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+				}
+				addIfPermissible(sender, options, subCommandPNode, "brush", true);
+			}
+
+			if (subCommand.equalsIgnoreCase("remove")) {
+                Mage mage = api.getMage(sender);
+                MageClass mageClass = mage.getActiveClass();
+                if (mageClass != null) {
+                    options.addAll(mageClass.getSpells());
+                }
+                options.add("brush");
+			}
+
 		} else if (args.length == 3) {
-			if (args[0].equalsIgnoreCase("setdata") || args[0].equalsIgnoreCase("getdata")) {
+		    String subCommand = args[0];
+			String subCommandPNode = "Magic.commands.mage." + subCommand;
+			if (subCommand.equalsIgnoreCase("setdata") || subCommand.equalsIgnoreCase("getdata")) {
                 Player player = DeprecatedUtils.getPlayer(args[1]);
                 if (player != null) {
                     Mage mage = api.getMage(player);
                     ConfigurationSection data = mage.getData();
                     options.addAll(data.getKeys(false));
                 }
+            }
+
+			if (subCommand.equalsIgnoreCase("add")) {
+                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+				for (SpellTemplate spell : spellList) {
+					addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+				}
+				addIfPermissible(sender, options, subCommandPNode, "brush", true);
+            }
+
+            if (subCommand.equalsIgnoreCase("remove")) {
+                Player player = DeprecatedUtils.getPlayer(args[1]);
+                if (player != null) {
+                    Mage mage = api.getMage(player);
+                    MageClass mageClass = mage.getActiveClass();
+                    if (mageClass != null) {
+                        options.addAll(mageClass.getSpells());
+                    }
+                }
+                options.add("brush");
             }
 		} else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("unlock") || args[0].equalsIgnoreCase("activate")) {
@@ -419,4 +474,128 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
         return true;
     }
+
+
+	public boolean onMageAdd(CommandSender sender, Player player, String[] parameters)
+	{
+		if (parameters.length < 1) {
+			sender.sendMessage("Use: /mage add <spell|material> [material:data]");
+			return true;
+		}
+
+		Mage mage = api.getMage(player);
+        MageClass activeClass = mage.getActiveClass();
+		if (activeClass == null) {
+		    sender.sendMessage("Can't modify player " + player.getName());
+			return true;
+		}
+
+		String spellName = parameters[0];
+		if (spellName.equals("material") || spellName.equals("brush")) {
+			if (parameters.length < 2) {
+				sender.sendMessage("Use: /mage add brush <material:data>");
+				return true;
+			}
+
+			String materialKey = parameters[1];
+			if (!MaterialBrush.isValidMaterial(materialKey, false)) {
+				sender.sendMessage(materialKey + " is not a valid brush");
+				return true;
+			}
+
+			if (activeClass.addBrush(materialKey)) {
+				if (sender != player) {
+					sender.sendMessage("Added brush '" + materialKey + "' to " + player.getName());
+				} else {
+                    sender.sendMessage(api.getMessages().get("mage.brush_added").replace("$name", materialKey));
+                }
+			}
+
+			return true;
+		}
+		Spell spell = mage.getSpell(spellName);
+		if (spell == null)
+		{
+			sender.sendMessage("Spell '" + spellName + "' unknown, Use /spells for spell list");
+			return true;
+		}
+
+        SpellTemplate currentSpell = activeClass.getBaseSpell(spellName);
+		if (activeClass.addSpell(spellName)) {
+            if (currentSpell != null) {
+                String levelDescription = spell.getLevelDescription();
+                if (levelDescription == null || levelDescription.isEmpty()) {
+                    levelDescription = spell.getName();
+                }
+                if (sender != player) {
+                    sender.sendMessage(api.getMessages().get("mage.player_spell_upgraded").replace("$player", player.getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                } else {
+                    sender.sendMessage(api.getMessages().get("mage.spell_upgraded").replace("$player", player.getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                }
+            } else {
+                if (sender != player) {
+                    sender.sendMessage("Added '" + spell.getName() + "' to " + player.getName());
+                } else {
+                    sender.sendMessage(api.getMessages().get("mage.spell_added").replace("$name", spell.getName()));
+                }
+            }
+		} else if (sender != player) {
+            sender.sendMessage("Could not add " + spellName + " to " + player.getName());
+        }
+		return true;
+	}
+
+	public boolean onMageRemove(CommandSender sender, Player player, String[] parameters)
+	{
+		if (parameters.length < 1) {
+			sender.sendMessage("Use: /mage remove <spell|material> [material:data]");
+			return true;
+		}
+
+		Mage mage = api.getMage(player);
+        MageClass activeClass = mage.getActiveClass();
+		if (activeClass == null) {
+		    sender.sendMessage("Can't modify player " + player.getName());
+			return true;
+		}
+
+		String spellName = parameters[0];
+		if (spellName.equals("material") || spellName.equals("brush")) {
+			if (parameters.length < 2) {
+				sender.sendMessage("Use: /mage remove brush <material:data>");
+				return true;
+			}
+			String materialKey = parameters[1];
+
+			if (activeClass.removeBrush(materialKey)) {
+				mage.sendMessage("Brush '" + materialKey + "' has been removed");
+				if (sender != player) {
+					sender.sendMessage("Removed brush '" + materialKey + "' from " + player.getName());
+				}
+			} else {
+				if (sender != player) {
+					sender.sendMessage(player.getName() + " does not have brush " + materialKey);
+				}
+			}
+
+			return true;
+		}
+
+		if (activeClass.removeSpell(spellName)) {
+            SpellTemplate template = api.getSpellTemplate(spellName);
+            if (template != null) {
+                spellName = template.getName();
+            }
+			mage.sendMessage("Spell '" + spellName + "' has been removed");
+			if (sender != player) {
+				sender.sendMessage("Removed '" + spellName + "' from " + player.getName());
+			}
+		} else {
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " does not have " + spellName);
+			}
+		}
+
+		return true;
+	}
 }
