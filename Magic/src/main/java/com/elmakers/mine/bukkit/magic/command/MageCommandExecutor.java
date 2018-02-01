@@ -457,7 +457,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     public boolean onMageDescribe(CommandSender sender, Player player, String[] parameters) {
         // Force-save wand data so it is up to date
         Mage mage = api.getMage(player);
-        MagicProperties mageProperties = mage.getProperties();
+        MagicProperties mageProperties = mage.getActiveClass();
+        if (mageProperties == null) {
+            mageProperties = mage.getProperties();
+        }
 
         if (parameters.length == 0) {
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage describe <property>" + ChatColor.BLUE + " for specific properties");
