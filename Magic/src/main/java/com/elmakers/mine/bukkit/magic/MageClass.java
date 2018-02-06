@@ -99,4 +99,20 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         }
         return null;
     }
+
+    public boolean tickMana() {
+        if (!hasOwnMana() && parent != null) {
+            return parent.tickMana();
+        }
+
+        return super.tickMana();
+    }
+
+    @Override
+    public void loadProperties() {
+        if (parent != null) {
+            parent.loadProperties();
+        }
+        super.loadProperties();
+    }
 }

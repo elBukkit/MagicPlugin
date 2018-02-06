@@ -21,7 +21,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
     }
 
     public boolean hasOwnMana() {
-        return hasOwnProperty("mana_max");
+        MagicPropertyType propertyType = propertyRoutes.get("mana");
+        return (propertyType == null || propertyType == type);
     }
 
     public int getManaRegeneration() {
@@ -140,9 +141,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
         if (usesMana() && hasOwnMana()) {
             long now = System.currentTimeMillis();
             long lastManaRegeneration = getLastManaRegeneration();
-            int manaRegeneration = getManaRegeneration();
             int effectiveManaRegeneration = getEffectiveManaRegeneration();
-            if (manaRegeneration > 0 && lastManaRegeneration > 0 && effectiveManaRegeneration > 0)
+            if (lastManaRegeneration > 0 && effectiveManaRegeneration > 0)
             {
                 long delta = now - lastManaRegeneration;
                 int effectiveManaMax = getEffectiveManaMax();
