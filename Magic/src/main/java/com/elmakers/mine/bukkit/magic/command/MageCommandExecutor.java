@@ -455,7 +455,6 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     }
 
     public boolean onMageDescribe(CommandSender sender, Player player, String[] parameters) {
-        // Force-save wand data so it is up to date
         Mage mage = api.getMage(player);
         MagicProperties mageProperties = mage.getActiveClass();
         if (mageProperties == null) {

@@ -8,6 +8,10 @@ sith:
   locked: true
   path: acolyte
 
-soldier:
+rebel:
+  inherit: base
+  locked: false
+
+trooper:
   inherit: base
   locked: false

@@ -296,6 +296,7 @@ ak47:
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: combat
     worth: 9999
+    upgrade_required_casts: 200
     actions:
         cast:
         - class: CustomProjectile
@@ -410,13 +411,23 @@ ak47:
         destructible_durability: 4
         break_durability: 2
         undo: 18000
-        spread: 0.1
-        spread_movement_max: 0.1
+        spread: 0.2
+        spread_movement_max: 0.3
         spread_movement: 5
         magic_damage: false
         target_armor_stand: true
     costs:
       mana: 1
+
+ak47|2:
+  parameters:
+    spread_movement_max: 0.2
+    spread: 0.1
+
+ak47|3:
+  parameters:
+    spread_movement_max: 0.1
+    spread: 0.05
 
 reload_pistol:
   inherit: incremental_reload
@@ -434,6 +445,7 @@ pistol:
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: combat
     worth: 9999
+    upgrade_required_casts: 100
     actions:
         cast:
         - class: CustomProjectile
@@ -553,8 +565,19 @@ pistol:
         target_armor_stand: true
         spread_movement: 5
         spread_movement_max: 0.08
+        spread: 0.05
     costs:
       mana: 1
+
+pistol|2:
+  parameters:
+    spread_movement_max: 0.04
+    spread: 0.01
+
+pistol|3:
+  parameters:
+    spread_movement_max: 0.02
+    spread: 0
 
 reload_shotgun:
   inherit: incremental_reload

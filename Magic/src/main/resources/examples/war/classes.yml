@@ -1,0 +1,4 @@
+soldier:
+  locked: false
+  property_holders:
+    spell_levels: class

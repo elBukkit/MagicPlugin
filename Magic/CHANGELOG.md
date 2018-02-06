@@ -2,6 +2,8 @@
 
 ## 7.0
 
+ - War configs: some weapon skills now upgrade with use
+
 ### Player Data and Classes! 
 
  - Add /mage configure, upgrade and describe commands for dealing with Mage data

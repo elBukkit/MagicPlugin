@@ -37,26 +37,31 @@ spells:
         cast_player_message: ""
         indirect_player_message: ""
     sniper:
+        name: Sniper Rifle Skill
         cast_player_message: ""
         indirect_player_message: ""
         insufficient_resources: "a:Left-click to reload"
         cooldown: ""
     ak47:
+        name: AK-47 Skill
         cast_player_message: ""
         indirect_player_message: ""
         insufficient_resources: "a:Left-click to reload"
         cooldown: ""
     pistol:
+        name: Pistol Skill
         cast_player_message: ""
         indirect_player_message: ""
         insufficient_resources: "a:Left-click to reload"
         cooldown: ""
     shotgun:
+        name: Shotgun Skill
         cast_player_message: ""
         indirect_player_message: ""
         insufficient_resources: "a:Left-click to reload"
         cooldown: ""
     rocketlauncher:
+        name: Rocket Launcher Skill
         cast_player_message: ""
         indirect_player_message: ""
         insufficient_resources: "a:Left-click to reload"
