@@ -52,6 +52,7 @@ import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
@@ -92,6 +93,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Integer airLevel;
     protected boolean isBaby;
     protected boolean isSilent;
+    protected boolean isTamed;
     protected int fireTicks;
     
     protected DyeColor dyeColor;
@@ -180,6 +182,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             boots = getItem(li.getEquipment().getBoots());
         }
 
+        if (entity instanceof Tameable) {
+            isTamed = ((Tameable)entity).isTamed();
+        }
+
         if (entity instanceof Ageable) {
             Ageable ageable = (Ageable)entity;
             this.isBaby = !ageable.isAdult();
@@ -256,6 +262,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
 
+        isTamed = parameters.getBoolean("tamed", false);
         isBaby = parameters.getBoolean("baby", false);
         tickInterval = parameters.getLong("cast_interval", 0);
         if (parameters.contains("cast")) {
@@ -534,6 +541,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             } else {
                 ageable.setAdult();
             }
+        }
+
+        if (entity instanceof Tameable) {
+            ((Tameable)entity).setTamed(isTamed);
         }
 
         if (entity instanceof Colorable && dyeColor != null) {
