@@ -18,6 +18,7 @@
 
 ## 6.9.22
 
+ - Add protection option for magic mobs, warlocks no longer take fall damage
  - The ModifyMana action now acts on the target rather than caster
  - Check for lore as well when comparing crafting ingredients
  - Color and word wrap support for recall icon descriptions

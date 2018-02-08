@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
@@ -101,6 +102,21 @@ public class MobController implements Listener {
         // Kind of hacky to use this flag for it, but seemed easiest
         died.setCustomNameVisible(false);
         died.setCustomName(null);
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        Entity entity = event.getEntity();
+        String name = entity.getCustomName();
+        if (name == null || name.isEmpty())
+        {
+            return;
+        }
+
+        EntityData mob = mobsByName.get(name);
+        if (mob == null) return;
+
+        mob.onDamage(event);
     }
     
     public int getCount() {

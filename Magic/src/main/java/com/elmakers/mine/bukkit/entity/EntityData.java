@@ -57,6 +57,8 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
@@ -130,6 +132,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected LinkedList<WeightedPair<String>> spells;
     protected boolean requiresTarget;
     protected ItemData requiresWand;
+
+    protected Map<DamageCause, Double> protection = null;
     
     protected ConfigurationSection disguise;
     
@@ -257,6 +261,20 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             type = parseEntityType(entityName);
             if (type == null) {
                 controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName);
+            }
+        }
+
+        ConfigurationSection protectionConfig = parameters.getConfigurationSection("protection");
+        if (protectionConfig != null) {
+            protection = new HashMap<>();
+            Set<String> keys = protectionConfig.getKeys(false);
+            for (String key : keys) {
+                try {
+                    DamageCause cause = DamageCause.valueOf(key.toUpperCase());
+                    protection.put(cause, protectionConfig.getDouble(key));
+                } catch (Exception ex) {
+                    controller.getLogger().log(Level.WARNING, " Invalid damage cause: " + key);
+                }
             }
         }
 
@@ -764,6 +782,19 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 }
             }
         }
+    }
+
+    public void onDamage(EntityDamageEvent event) {
+        if (protection == null) return;
+
+        DamageCause cause = event.getCause();
+        Double reduction = protection.get(cause);
+        if (reduction == null || reduction == 0) return;
+        if (reduction > 1) {
+            event.setCancelled(true);
+            return;
+        }
+        event.setDamage(event.getDamage() * reduction);
     }
 
     @Override
