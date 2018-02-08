@@ -1,5 +1,5 @@
 wolf:
-  inherit: conduit
+  inherit: base_wand
   path: staff
   icon: wood_hoe:7
   migrate_icon: gold_hoe

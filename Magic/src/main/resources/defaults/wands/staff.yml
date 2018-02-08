@@ -1,5 +1,5 @@
 staff:
-  inherit: master
+  inherit: base_wand
   path: staff
   hotbar_count: 2
   active_spell: levitate|4

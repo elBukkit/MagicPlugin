@@ -1,5 +1,5 @@
 architectstaff:
-  inherit: conduit
+  inherit: base_wand
   path: staff
   active_spell: pillar
   active_brush: copy
