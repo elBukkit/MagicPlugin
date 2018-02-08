@@ -1804,7 +1804,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				loadSpellLevels(NMSUtils.getMap((ConfigurationSection)spellLevelsRaw));
 			}
 		}
-
+		checkActiveSpell();
 
 		Object wandBrushes = getObject("brushes", getObject("materials"));
 		if (wandBrushes != null) {
@@ -4599,9 +4599,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		} else {
     		this.activeSpell = null;
 		}
+		checkActiveSpell();
 		setProperty("active_spell", this.activeSpell);
         saveState();
 		updateName();
+	}
+
+	protected void checkActiveSpell() {
+    	if (activeSpell != null && !spells.contains(activeSpell)) {
+    		activeSpell = null;
+		}
 	}
 
 	@Override
