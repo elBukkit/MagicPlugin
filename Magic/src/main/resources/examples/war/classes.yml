@@ -1,4 +1,4 @@
 soldier:
   locked: false
-  property_holders:
+  storage:
     spell_levels: class

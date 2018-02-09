@@ -5131,7 +5131,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return heldSlot;
     }
 
-    protected BaseMagicConfigurable getPropertyHolder(MagicPropertyType propertyType) {
+    protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         switch (propertyType) {
             case WAND: return this;
             case SUBCLASS: return mageClass;

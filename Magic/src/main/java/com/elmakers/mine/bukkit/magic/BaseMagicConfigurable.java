@@ -32,7 +32,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     public void loadProperties() {
-        ConfigurationSection routeConfig = getConfigurationSection("property_holders");
+        ConfigurationSection routeConfig = getConfigurationSection("storage");
         if (routeConfig != null) {
             Set<String> keys = routeConfig.getKeys(false);
             for (String key : keys) {
@@ -49,12 +49,12 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
                 if (propertyType != type) {
                     Object value = configuration.get(key);
                     if (value != null) {
-                        BaseMagicConfigurable holder = getPropertyHolder(propertyType);
-                        if (holder != null) {
+                        BaseMagicConfigurable storage = getStorage(propertyType);
+                        if (storage != null) {
                             configuration.set(key, null);
-                            holder.upgrade(key, value);
+                            storage.upgrade(key, value);
                         } else {
-                            controller.getLogger().warning("Attempt to migrate property " + key + " on " + type + " which routes to unavailable holder " + propertyType);
+                            controller.getLogger().warning("Attempt to migrate property " + key + " on " + type + " which routes to unavailable storage " + propertyType);
                         }
 
                     }
@@ -68,16 +68,16 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         if (propertyType == null || propertyType == type) {
             configuration.set(key, value);
         } else {
-            BaseMagicConfigurable holder = getPropertyHolder(propertyType);
-            if (holder != null) {
-                holder.configuration.set(key, value);
+            BaseMagicConfigurable storage = getStorage(propertyType);
+            if (storage != null) {
+                storage.configuration.set(key, value);
             } else {
-                controller.getLogger().warning("Attempt to set property " + key + " on " + type + " which routes to unavailable holder " + propertyType);
+                controller.getLogger().warning("Attempt to set property " + key + " on " + type + " which routes to unavailable storage " + propertyType);
             }
         }
     }
 
-    protected BaseMagicConfigurable getPropertyHolder(MagicPropertyType propertyType) {
+    protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         return null;
     }
 

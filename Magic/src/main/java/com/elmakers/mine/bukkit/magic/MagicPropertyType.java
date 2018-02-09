@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 /**
- * Specifies different types of property holders.
+ * Specifies different types of property storage.
  *
  * Properties in Magic can be configured to save in one of these locations.
  *

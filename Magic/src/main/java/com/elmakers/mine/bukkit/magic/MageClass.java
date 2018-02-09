@@ -91,7 +91,7 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         return effectiveConfiguration;
     }
 
-    protected BaseMagicConfigurable getPropertyHolder(MagicPropertyType propertyType) {
+    protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         switch (propertyType) {
             case SUBCLASS: return this;
             case CLASS: return getRoot();
