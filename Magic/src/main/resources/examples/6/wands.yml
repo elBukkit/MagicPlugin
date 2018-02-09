@@ -11,3 +11,29 @@ defaults:
   track: true
   undroppable: true
   indestructible: true
+
+wand:
+  class: ""
+  path: beginner
+  active_spell: missile
+  mana_max: 50
+  mana: 50
+  mana_regeneration: 5
+  spells:
+   - missile
+
+battle:
+  class: ""
+  path: battle
+  mana_regeneration: 5
+  mana_max: 50
+  mana: 50
+  spells:
+    - missile
+    - arrow
+    - boom
+    - curse
+    - fire
+    - fireball
+    - grenade
+    - push

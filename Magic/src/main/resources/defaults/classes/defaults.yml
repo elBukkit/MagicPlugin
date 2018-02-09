@@ -9,6 +9,7 @@ base:
     spells: class
     brushes: class
     path: subclass
+    hotbar_count: subclass
 
 caster:
   inherit: base
