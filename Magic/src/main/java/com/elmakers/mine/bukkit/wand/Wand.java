@@ -4042,10 +4042,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		// Check for replacement template
 		String replacementTemplate = getString("replace_on_activate", "");
 		if (!replacementTemplate.isEmpty() && !replacementTemplate.equals(template)) {
-			needsSave = true;
 			playEffects("replace");
 			setTemplate(replacementTemplate);
 			loadProperties();
+			saveState();
+			return activate(mage, offhand);
 		}
 
 		// Since these wands can't be opened we will just show them as open when held
