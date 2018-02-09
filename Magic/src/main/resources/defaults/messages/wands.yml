@@ -332,7 +332,7 @@ wands:
         description: Right-click to view skills, drag skill to hotbar to use
     spellbook:
         name: Spell Book
-        description: Press Q to view spells, drag skill to hotbar to use
+        description: Right-click to view spells, drag skill to hotbar to use
     appearance_beginner:
         name: Beginner Wand Appearance
         description: Will change the appearance of your wand
