@@ -459,12 +459,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity type " + getType() + " at " + getLocation(), ex);
             }
         }
-        modifyPreSpawn(controller, spawned);
-        if (!addedToWorld) {
-            reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
-            CompatibilityUtils.addToWorld(location.getWorld(), spawned, reason);
+        if (spawned != null) {
+            modifyPreSpawn(controller, spawned);
+            if (!addedToWorld) {
+                reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
+                CompatibilityUtils.addToWorld(location.getWorld(), spawned, reason);
+            }
+            modifyPostSpawn(controller, spawned);
         }
-        modifyPostSpawn(controller, spawned);
         return spawned;
     }
 
