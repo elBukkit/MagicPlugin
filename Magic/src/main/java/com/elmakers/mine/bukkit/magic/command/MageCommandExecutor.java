@@ -456,7 +456,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
     public boolean onMageDescribe(CommandSender sender, Player player, String[] parameters) {
         Mage mage = api.getMage(player);
-        MagicProperties mageProperties = mage.getActiveClass();
+        MageClass activeClass = mage.getActiveClass();
+        MagicProperties mageProperties = activeClass;
         if (mageProperties == null) {
             mageProperties = mage.getProperties();
         }
@@ -464,6 +465,11 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         if (parameters.length == 0) {
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage describe <property>" + ChatColor.BLUE + " for specific properties");
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage activate" + ChatColor.BLUE + " to change or clear the active class");
+            if (activeClass != null) {
+                sender.sendMessage(ChatColor.AQUA + "Active class: " + ChatColor.GREEN + activeClass.getKey());
+            } else {
+                sender.sendMessage(ChatColor.DARK_GREEN + "No active class");
+            }
             mageProperties.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
         } else {
             Object property = mageProperties.getProperty(parameters[0]);
