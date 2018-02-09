@@ -37,6 +37,7 @@ blaster:
     category: specialty
     hidden: true
     worth: 150
+    upgrade_required_casts: 100
     actions:
         cast:
         - class: CustomProjectile
@@ -81,8 +82,21 @@ blaster:
         velocity: 80
         interval: 250
         reflective: iron_block
+        spread_movement: 5
+        spread_movement_max: 0.08
+        spread: 0.05
     costs:
         mana: 15
+
+blaster|2:
+  parameters:
+    spread_movement_max: 0.04
+    spread: 0.01
+
+blaster|3:
+  parameters:
+    spread_movement_max: 0.02
+    spread: 0
 
 detonator:
   hidden: true

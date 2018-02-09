@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 7.1
+
+ - Potter wands converted to be class-based
+ - Lightsabers converted to be class-based
+ - Blaster skill upgrades with use
+ - Bending powers converted to be class-based and work like the spell book
+
 ## 7.0
 
 ### IMPORTANT NOTE
@@ -34,6 +41,9 @@ their own play style without having to re-earn the same spells over and over.
 
 The war configs also make use of this new setup, allowing players to increase their "skill" with certain weapons.
 
+Potter and stars configs have not yet been converted, but they will be, probably in the next release. 
+Mana and spells will be stored in separate classes, so that configs can still be mixed together and make sense.
+
 In the future I hope to expand on all of this with a class system in the new "rpg" configs. This isn't ready yet, however,
 but I have been working on these changes for so long, now that they seem functional and stable I wanted to get them out there.
 
@@ -55,8 +65,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Add /mage reset (class) option, for resetting a class progress on a player
  - Add /mage activate and unlock commands, for manipulating mage classes
  - Add classes config file, defaults have a basic setup in each example config. Generally:
-   - Spells are held by a base class that may be shared (like by the Master Sword, Wand and Spellbook)
-   - Mana is stored in a sub-class that may be separate, as in Master Sword and Wand, or shared as in Wand and Spellbook
+   - Spells and mana are held by a base class that may be shared (like by the Master Sword, Wand and Spellbook)
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
 

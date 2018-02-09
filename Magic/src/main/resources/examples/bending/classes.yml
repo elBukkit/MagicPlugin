@@ -1,23 +1,70 @@
 bender:
   inherit: base
   locked: false
+  limit_spells_to_path: true
+  mana_max: 50
+  mana: 50
+  mana_regeneration: 5
 
 waterbender:
   parent: bender
   locked: true
   path: waterbending
+  spells:
+    - waterjet
+    - waterball
 
 airbender:
   parent: bender
   locked: true
   path: airbending
+  spells:
+    - airblast
+    - suction
+    - airscooter
 
 firebender:
   parent: bender
   locked: true
   path: firebending
+  spells:
+    - fire
+    - fireball
 
 earthbender:
   parent: bender
   locked: true
   path: earthbending
+  spells:
+    - compression
+    - earthblock
+
+avatar:
+  path: avatar
+  mana_regeneration: 40
+  mana_max: 500
+  mana: 500
+  parent: bender
+  locked: true
+  limit_spells_to_path: false
+  spells:
+    - fling
+    - airblast
+    - suction
+    - force
+    - fireball
+    - compression
+    - fire
+    - lava
+    - lightning
+    - sandspout
+    - breach
+    - breathofice
+    - waterball
+    - airsphere
+    - combustion|2
+    - heal
+    - cure
+    - earthline
+    - airscooter
+

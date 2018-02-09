@@ -10,9 +10,6 @@ base_lightsaber:
     swap: cycle_hotbar
     quick_cast: true
     cast_location: 0,-0.6,0.5
-    mana_max: 50
-    mana: 50
-    mana_regeneration: 5
     protection_physical: 0.5
     block_reflect_chance: 0.5
     block_chance: 1
@@ -131,48 +128,33 @@ lightsaber_hilt:
 
 lightsaber_green:
     inherit: base_lightsaber
-    path: youngling
+    class: jedi
     icon: shield:2
     effect_color: '00FF00'
-    spells:
-        - forcepush
-        - forcepull
 
 lightsaber_blue:
     inherit: base_lightsaber
-    path: youngling
+    class: jedi
     icon: shield:3
     effect_color: '0000FF'
-    spells:
-        - forcepush
-        - forcepull
 
 lightsaber_red:
     inherit: base_lightsaber
-    path: acolyte
+    class: sith
     icon: shield:4
     effect_color: 'FF0000'
-    spells:
-        - forcepush
-        - forceignite
 
 lightsaber_orange:
     inherit: base_lightsaber
-    path: youngling
+    class: jedi
     icon: shield:5
     effect_color: 'FF00FF'
-    spells:
-        - forcepush
-        - forcepull
 
 lightsaber_purple:
     inherit: base_lightsaber
-    path: youngling
+    class: jedi
     icon: shield:6
     effect_color: 'FFFF00'
-    spells:
-        - forcepush
-        - forcepull
 
 detonator:
   icon: tnt
@@ -192,6 +174,7 @@ blaster:
     path: blaster
     mode: cast
     locked: true
+    hidden: true
     quiet: 2
     mana: 100
     mana_max: 100
@@ -203,13 +186,16 @@ blaster:
      - blaster
 
 blaster_red:
+    class: trooper
     inherit: blaster
     effect_color: 'FF0000'
 
 blaster_green:
+    class: rebel
     inherit: blaster
     effect_color: '00FF00'
 
 blaster_blue:
+    class: rebel
     inherit: blaster
     effect_color: '0000FF'
