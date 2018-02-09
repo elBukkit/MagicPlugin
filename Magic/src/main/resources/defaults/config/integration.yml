@@ -105,3 +105,6 @@ heroes_skill_prefix: ""
 # Show all Magic spells the player has permission to cast in the /mskills menu
 # This might make opening the skills menu lag if you have a lot of spells.
 skills_use_permissions: false
+
+### SkillAPI configuration
+skillapi_enabled: true

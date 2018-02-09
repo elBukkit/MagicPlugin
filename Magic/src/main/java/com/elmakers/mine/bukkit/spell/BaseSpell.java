@@ -222,6 +222,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected static Random random            = new Random();
 
+    // Attribute handling
+    protected static Set<String> attributes;
+    protected static Map<String, EquationTransform> attributeTransforms;
+
     /*
      * private data
      */
@@ -910,6 +914,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Preload some parameters
+        // Note that these don't get parameterized via attributes, which may be an issue.
         parameters = node.getConfigurationSection("parameters");
         if (parameters != null) {
             bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
@@ -1053,6 +1058,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         workingParameters = new MemoryConfiguration();
         ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
+        parameterize(workingParameters);
         processParameters(workingParameters);
 
         // Check to see if this is allowed to be cast by a command block
@@ -2736,5 +2742,50 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public ConfigurationSection getSpellParameters() {
         return parameters;
+    }
+
+    public static void initializeAttributes(Set<String> attrs) {
+        attributes = null;
+        attributeTransforms = null;
+        if (attrs == null || attrs.isEmpty()) return;
+
+        attributes = new HashSet<String>();
+        for (String attr : attrs) {
+            attributes.add("_" + attr);
+        }
+        attributeTransforms = new HashMap<>();
+    }
+
+    protected Double evaluateParameter(String parameter) {
+        if (attributes == null) return null;
+        Player player = mage.getPlayer();
+        if (player == null) return null;
+        if (!parameter.contains("_")) return null;
+        Map<String, Integer> playerAttributes = controller.getAttributes(player);
+        EquationTransform transform = attributeTransforms.get(parameter);
+        if (transform == null) {
+            transform = new EquationTransform(parameter, attributes);
+            attributeTransforms.put(parameter, transform);
+        }
+
+        for (Map.Entry<String, Integer> entry : playerAttributes.entrySet()) {
+            transform.setVariable("_" + entry.getKey(), entry.getValue());
+        }
+
+        return transform.get();
+    }
+
+    protected void parameterize(ConfigurationSection section) {
+        if (attributes == null || attributes.isEmpty()) return;
+
+        Set<String> keys = section.getKeys(false);
+        for (String key : keys) {
+            if (section.isString(key)) {
+                Double transformed = evaluateParameter(section.getString(key));
+                if (transformed != null) {
+                    section.set(key, transformed);
+                }
+            }
+        }
     }
 }

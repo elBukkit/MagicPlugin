@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>de.slikey</groupId>
 			<artifactId>EffectLib</artifactId>
-			<version>5.6</version>
+			<version>5.7-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -258,6 +258,12 @@
 			<groupId>ProtocolLib</groupId>
 			<artifactId>ProtocolLib</artifactId>
 			<version>3.7.0-BETA</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sucy</groupId>
+			<artifactId>SkillAPI</artifactId>
+			<version>3.103</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

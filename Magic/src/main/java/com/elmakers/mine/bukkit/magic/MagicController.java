@@ -38,6 +38,7 @@ import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.MobArenaManager;
+import com.elmakers.mine.bukkit.integration.SkillAPIManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
@@ -799,7 +800,7 @@ public class MagicController implements MageController {
     }
 
     protected void finalizeIntegration() {
-        PluginManager pluginManager = plugin.getServer().getPluginManager();
+        final PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         // Check for BlockPhysics
         if (useBlockPhysics) {
@@ -834,6 +835,20 @@ public class MagicController implements MageController {
             }
         } else {
             getLogger().info("LibsDisguises integration disabled");
+        }
+
+        // Check for SkillAPI
+        Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
+        if (skillAPIPlugin != null && skillAPIEnabled) {
+            skillAPIManager = new SkillAPIManager(plugin, skillAPIPlugin);
+            if (skillAPIManager.initialize()) {
+                BaseSpell.initializeAttributes(skillAPIManager.getAttributeKeys());
+                getLogger().info("Integrated with SkillAPI, attributes can be used in spell parameters prefixed with an underscore (e.g. _intelligence)");
+            } else {
+                getLogger().warning("SkillAPI integration failed");
+            }
+        } else {
+            getLogger().info("SkillAPI integration disabled");
         }
 
         // Check for MobArena
@@ -2281,6 +2296,7 @@ public class MagicController implements MageController {
         BaseSpell.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", BaseSpell.MAX_LORE_LENGTH);
         Wand.MAX_LORE_LENGTH = BaseSpell.MAX_LORE_LENGTH;
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
+        skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
@@ -4933,6 +4949,11 @@ public class MagicController implements MageController {
         return skillPointItemsEnabled;
     }
 
+    public Map<String, Integer> getAttributes(Player player) {
+        if (skillAPIManager == null) return null;
+        return skillAPIManager.getAttributes(player);
+    }
+
     /*
 	 * Private data
 	 */
@@ -5146,6 +5167,7 @@ public class MagicController implements MageController {
     private MageIdentifier                      mageIdentifier              = new MageIdentifier();
     private boolean                             citizensEnabled			    = true;
     private boolean                             libsDisguiseEnabled			= true;
+    private boolean                             skillAPIEnabled			    = true;
     private boolean                             enableResourcePackCheck     = true;
     private int                                 resourcePackCheckInterval   = 0;
     private int                                 resourcePackCheckTimer      = 0;
@@ -5169,6 +5191,7 @@ public class MagicController implements MageController {
     private BlockPhysicsManager                 blockPhysicsManager         = null;
     private boolean                             useBlockPhysics             = true;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
+    private SkillAPIManager                     skillAPIManager             = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();
