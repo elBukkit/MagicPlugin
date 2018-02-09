@@ -78,7 +78,7 @@ public class LibsDisguiseManager {
                     break;
                 default:
                     boolean isBaby = configuration.getBoolean("baby", false);
-                    disguise = new MobDisguise(disguiseType, isBaby);
+                    disguise = new MobDisguise(disguiseType, !isBaby);
             }
             DisguiseAPI.disguiseEntity(entity, disguise);
         } catch (Exception ex) {
