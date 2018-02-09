@@ -90,6 +90,25 @@
  ZQuest How to make Extensions: http://zquestwiki.com/index.php?title=APIcreatingExtensions
  ZQuest Page: https://www.spigotmc.org/resources/zquest-feel-the-might-of-creating-1-9-1-10-1-11.18045/
  
+### Suggestions
+
+ - Bonuses to wands:
+   - If you could do this with a command like "/wand configure mana_regen/max_mana <amount in seconds>" would be great as I could make my own shops for this
+   - Also by combining in an anvil with an item that has these buffs that you can add to your wand
+     - Temporary max mana
+     - Temporary faster mana regeneration
+     - Temporary anything else you can think of really, the more we can add, the better :)
+ - Upgrades to Spells
+   - Can only choose 1 of the 3 and only when applicable (actual bonus could be customized)
+   - Bonus to max distance x2
+   - Bonus to travel speed of the spell 40% faster
+   - 10% bonus to damage
+ - Ability to set the max amount of spells that a wand can have
+ - With the ability to add/remove spells to your list
+   - bonus to that would be if you could set a configurable cooldown for being able to change out the spells on your wand
+ - If you add permanent bonuses I think it should work more like rune stones with the ability to add certain bonuses to specific armor pieces in the way you would add an enchant to an item. This would allow you to add the buffs to existing armor that already has enchants on them. This would allow for creating an economy around these buffs as you would need to eventually obtain more rune stones to enchant more armor. You could possibly even have a whitelist/blacklist of items that could/could not be enchanted with the rune stone. Of course these buffs would all have to do with making you a better wand caster that fit with the Magic plugin theme.
+ - Chance to fizzle should only happen if you have been cursed (I saw a spell that say's reduced chance of fizzle)
+ 
 ## Older stuff
 
  - MagicArenas: Doesn't TP players out on a draw.. ?
