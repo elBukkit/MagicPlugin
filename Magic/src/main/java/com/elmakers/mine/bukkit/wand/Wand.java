@@ -4386,17 +4386,34 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (spells.size() != spellCount) {
                 if (spellCount == 0)
                 {
-                    String message = getMessage("spell_instructions", "").replace("$wand", getName());
-                    mage.sendMessage(message.replace("$spell", template.getName()));
+                	if (leftClickAction == WandAction.CAST) {
+						String message = getMessage("spell_instructions", "").replace("$wand", getName());
+						mage.sendMessage(message.replace("$spell", template.getName()));
+					}
                 }
                 else
                 if (spellCount == 1)
                 {
 					String controlKey = getControlKey(WandAction.TOGGLE);
 					if (controlKey != null) {
-						controlKey = controller.getMessages().get("controls." + controlKey);
-						mage.sendMessage(getMessage("inventory_instructions", "")
+						String inventoryMessage = null;
+						switch (getMode()) {
+							case INVENTORY:
+								inventoryMessage = "inventory_instructions";
+								break;
+							case CHEST:
+								inventoryMessage = "chest_instructions";
+								break;
+							case SKILLS:
+								inventoryMessage = "skills_instructions";
+								break;
+						}
+
+						if (inventoryMessage != null) {
+							controlKey = controller.getMessages().get("controls." + controlKey);
+							mage.sendMessage(getMessage(inventoryMessage, "")
 								.replace("$wand", getName()).replace("$toggle", controlKey));
+						}
 					}
                 }
                 if (inventoryCount == 1 && inventories.size() > 1)

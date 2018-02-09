@@ -138,6 +138,8 @@ wand:
     #path_lore: "&o$path"
     hotbar_count_usage: "&ePress $cycle_hotbar while your $wand is active to cycle hotbars"
     inventory_instructions: "&r&eYour $wand now has more than one spell. Press $toggle to open/close the spell inventory. Use the hotbar buttons to select a spell."
+    chest_instructions: "&r&eYour $wand now has more than one spell. Press $toggle to open/close the spell inventory, click a spell to cast."
+    skills_instructions: "&r&eYour $wand now has more than one spell. Press $toggle to open/close the spell inventory, drag a spell to the hotbar to cast."
     page_instructions: "&r&eYour $wand now has more than one page of spells. Click outside the spell inventory to change pages."
     bound_instructions: "&r&3Your $wand is bound to you, and is undroppable."
     spell_instructions: "&r&bSwing your $wand to cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."
