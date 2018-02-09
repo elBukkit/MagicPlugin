@@ -33,21 +33,16 @@ base_wand:
 # This was renamed from wand to support mixing configs with defaults
 potterwand:
     inherit: base_wand
+    class: wizard
     icon: wood_hoe:24,wood_hoe:25,wood_hoe:26
     migrate_icons:
       wood_hoe: wood_hoe:24
       gold_axe: wood_hoe:25
       gold_pickaxe: wood_hoe:26
     active_spell: vermillious
-    path: year1
     quiet: 1
-    mana_max: 50
-    mana: 50
-    mana_regeneration: 6
     effect_color: '888888'
     effect_bubbles: false
-    spells:
-     - vermillious
 
 # This will turn into a potterwand when held
 wandbox:
@@ -61,12 +56,6 @@ wandbox:
        firework: star
        radius: 4
        size: 2
-
-
-# This is here for backwards-compatibility
-# Please use wandbox or potterwand instead, this may be removed in the future.
-wand:
-  inherit: randomizedpotterwand
 
 randomizedpotterwand:
   hidden: true

@@ -1,6 +1,11 @@
 # Migration Notes
 
-## Restoring Previous Behavior
+## 7.1
+
+ - Removed "wand" from potter configs, please use "potterwand" instead.
+
+## 7.0
+### Restoring Previous Behavior
  - You may use "example: 6" in config.yml to undo the following config changes:
    - Skill Points renamed to Spell Points
    - Cast messages go to chat instead of action bar
