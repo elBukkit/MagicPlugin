@@ -2,9 +2,53 @@
 
 ## 7.0
 
- - War configs: some weapon skills now upgrade with use
+### IMPORTANT NOTE
 
-### Player Data and Classes! 
+7.0 Represents a major change for Magic "under the hood", and is hopefully the beginning of a more flexible framework for the future.
+
+However, this means that the initial release of 7.0 could potentially have issues and should be considered semi-experimental.
+I've tried my best to test it as much as I could, but with a plugin as configurable as Magic there is always the possibility
+that I've missed some use-case or that it won't work quite right with your configs.
+
+So please, if at all possible, when upgrading to 7.0 do some testing with your configs in a controlled environment, or at least
+make sure to backup MC player data and Magic player data first. Note that without backups it will be *very difficult* to
+downgrade from 7.0, as wand data will migrate to player data, and older versions won't know what to do with it.
+
+If you are using completely customized configs there shouldn't be much change, I'm hoping everything will work the same as before.
+
+If you are using the default configs or inheriting from them, everything should *appear* the same as before. However, things
+are going to work a little differently behind the scenes.
+
+Magic is evolving past a custom items and spells plugin, and hopefully will become more like the RPG framework that, I think,
+many users have always wanted it to be.
+
+For now what this mainly means is that you can configure how data is stored, instead of it always being stored on the wand items.
+
+The default wands are now set up to store mana, spells and a few other attributes to the owning player. This means that
+player progression is now tied to the player, not the wand. 
+
+If a player were to craft a new wand, they will see it has their mana and spells on it.
+
+Mana and spells are shared between the Wand, Master Sword and Spell Book, so players are free to mix and match and choose
+their own play style without having to re-earn the same spells over and over.
+
+The war configs also make use of this new setup, allowing players to increase their "skill" with certain weapons.
+
+In the future I hope to expand on all of this with a class system in the new "rpg" configs. This isn't ready yet, however,
+but I have been working on these changes for so long, now that they seem functional and stable I wanted to get them out there.
+
+I hope you enjoy! Please let me know if you run into any issues.
+
+### General Changes
+
+ - War configs: some weapon skills now upgrade with use
+ - Add protection option for magic mobs, warlocks no longer take fall damage
+ - The ModifyMana action now acts on the target rather than caster
+ - Check for lore as well when comparing crafting ingredients
+ - Color and word wrap support for recall icon descriptions
+ - Fix right-click behaviors with skull wands
+
+### Player Data and Classes
 
  - Add /mage configure, upgrade and describe commands for dealing with Mage data
  - Add /mage add and remove commands for dealing with Mage spells and brushes
@@ -15,14 +59,6 @@
    - Mana is stored in a sub-class that may be separate, as in Master Sword and Wand, or shared as in Wand and Spellbook
    - Progression path is stored on sub-classes
    - All other properties are still tied to the wand items
-
-## 6.9.22
-
- - Add protection option for magic mobs, warlocks no longer take fall damage
- - The ModifyMana action now acts on the target rather than caster
- - Check for lore as well when comparing crafting ingredients
- - Color and word wrap support for recall icon descriptions
- - Fix right-click behaviors with skull wands
 
 ## 6.9.21
 
