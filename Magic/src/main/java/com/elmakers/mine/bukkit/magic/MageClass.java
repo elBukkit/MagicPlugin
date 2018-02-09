@@ -115,4 +115,9 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         }
         super.loadProperties();
     }
+
+    @Override
+    public String getKey() {
+        return template.getKey();
+    }
 }

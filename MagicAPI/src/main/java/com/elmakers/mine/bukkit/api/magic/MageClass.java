@@ -11,4 +11,5 @@ public interface MageClass extends MagicConfigurable {
     boolean removeSpell(String spellKey);
     boolean removeBrush(String brushKey);
     SpellTemplate getBaseSpell(String spellKey);
+    String getKey();
 }
