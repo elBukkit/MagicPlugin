@@ -55,6 +55,7 @@
   
 ## Not so High-Priority
  
+ - Destroyed a car with someone in it, they stayed in invisible car
  - Skill icons that work as wands (cast via right-click, etc)
  - Per-player language settings (See https://www.spigotmc.org/resources/api-languages.22305/)
  - spell_inventory on a wand template doesn't work

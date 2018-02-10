@@ -4624,7 +4624,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	protected void checkActiveSpell() {
-    	if (activeSpell != null && !spells.contains(activeSpell)) {
+    	// Support wands with just an active spell and no spells list
+    	if (activeSpell != null && !spells.isEmpty() && !spells.contains(activeSpell)) {
     		activeSpell = null;
 		}
 	}
