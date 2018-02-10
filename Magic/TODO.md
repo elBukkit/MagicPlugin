@@ -6,7 +6,6 @@
 
 ## Suggestions
 
- - SkillAPI integration for mana (might not really want to do this, but it would probably look a bit like Heroes)
  - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
 
 ## High-Priority
@@ -72,6 +71,11 @@
  - Paths being able to upgrade blocking/reflect power
 
 ## Reported Issues
+
+Ivan_: [ATTENTION]My wand kept switching hotbars when I cast a spell
+Ivan_: When I casted a spell it would switch to my normal hotbar
+Ivan_: But it got fixed after
+Ivan_: It did it no longer than a minute
 
 ### Requests
 
