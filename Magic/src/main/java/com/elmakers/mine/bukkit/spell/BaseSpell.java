@@ -2760,7 +2760,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (attributes == null) return null;
         Player player = mage.getPlayer();
         if (player == null) return null;
-        if (!parameter.contains("_")) return null;
+        if (!parameter.contains(" _")) return null;
         Map<String, Integer> playerAttributes = controller.getAttributes(player);
         EquationTransform transform = attributeTransforms.get(parameter);
         if (transform == null) {
