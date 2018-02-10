@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.heroes;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.ManaController;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.TreeMultimap;
@@ -24,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class HeroesManager {
+public class HeroesManager implements ManaController {
     private Heroes heroes;
     private CharacterManager characters;
     private SkillManager skills;
@@ -248,28 +249,39 @@ public class HeroesManager {
         return characters.getHero(player);
     }
 
+    @Override
     public int getMaxMana(Player player) {
         Hero hero = getHero(player);
         if (hero == null) return 0;
         return hero.getMaxMana();
     }
 
+    @Override
     public int getManaRegen(Player player) {
         Hero hero = getHero(player);
         if (hero == null) return 0;
         return hero.getManaRegen();
     }
 
-    public int getMana(Player player) {
+    @Override
+    public float getMana(Player player) {
         Hero hero = getHero(player);
         if (hero == null) return 0;
         return hero.getMana();
     }
 
-    public void removeMana(Player player, int amount) {
+    @Override
+    public void removeMana(Player player, float amount) {
         Hero hero = getHero(player);
         if (hero == null) return;
-        hero.setMana(Math.max(0, hero.getMana() - amount));
+        hero.setMana(Math.max(0, hero.getMana() - (int)amount));
+    }
+
+    @Override
+    public void setMana(Player player, float amount) {
+        Hero hero = getHero(player);
+        if (hero == null) return;
+        hero.setMana((int)amount);
     }
 
     public boolean isInParty(Player source, Player check, boolean pvpCheck) {

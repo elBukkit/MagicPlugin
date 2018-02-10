@@ -844,6 +844,9 @@ public class MagicController implements MageController {
             if (skillAPIManager.initialize()) {
                 BaseSpell.initializeAttributes(skillAPIManager.getAttributeKeys());
                 getLogger().info("Integrated with SkillAPI, attributes can be used in spell parameters prefixed with an underscore (e.g. _intelligence)");
+                if (useSkillAPIMana) {
+                    getLogger().info("SkillAPI mana will be used by spells and wands");
+                }
             } else {
                 getLogger().warning("SkillAPI integration failed");
             }
@@ -2297,6 +2300,7 @@ public class MagicController implements MageController {
         Wand.MAX_LORE_LENGTH = BaseSpell.MAX_LORE_LENGTH;
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
+        useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
@@ -4266,6 +4270,12 @@ public class MagicController implements MageController {
         return heroesManager;
     }
 
+    public ManaController getManaController() {
+        if (useHeroesMana && heroesManager != null) return heroesManager;
+        if (useSkillAPIMana && skillAPIManager != null) return skillAPIManager;
+        return null;
+    }
+
     public String getDefaultSkillIcon() {
         return defaultSkillIcon;
     }
@@ -4931,6 +4941,10 @@ public class MagicController implements MageController {
         return useHeroesMana;
     }
 
+    public boolean useSkillAPIMana() {
+        return useSkillAPIMana;
+    }
+
     public @Nonnull MageIdentifier getMageIdentifier() {
         return mageIdentifier;
     }
@@ -5168,6 +5182,7 @@ public class MagicController implements MageController {
     private boolean                             citizensEnabled			    = true;
     private boolean                             libsDisguiseEnabled			= true;
     private boolean                             skillAPIEnabled			    = true;
+    private boolean                             useSkillAPIMana             = false;
     private boolean                             enableResourcePackCheck     = true;
     private int                                 resourcePackCheckInterval   = 0;
     private int                                 resourcePackCheckTimer      = 0;

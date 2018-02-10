@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.magic;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.util.Set;
@@ -34,5 +34,15 @@ public class MageProperties extends CasterProperties {
             sender.sendMessage(ChatColor.AQUA + "Active Class: " + ChatColor.GREEN + activeClass.getTemplate().getKey());
             activeClass.describe(sender, ignoreProperties);
         }
+    }
+
+    @Override
+    public boolean isPlayer() {
+        return mage.isPlayer();
+    }
+
+    @Override
+    public Player getPlayer() {
+        return mage.getPlayer();
     }
 }

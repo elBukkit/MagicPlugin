@@ -8,7 +8,7 @@ import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class WandProperties extends CasterProperties {
+public abstract class WandProperties extends CasterProperties {
     protected BaseMagicProperties wandTemplate;
     protected MageClass mageClass;
 

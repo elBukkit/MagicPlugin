@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -106,6 +107,16 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         }
 
         return super.tickMana();
+    }
+
+    @Override
+    public boolean isPlayer() {
+        return mage.isPlayer();
+    }
+
+    @Override
+    public Player getPlayer() {
+        return mage.getPlayer();
     }
 
     @Override

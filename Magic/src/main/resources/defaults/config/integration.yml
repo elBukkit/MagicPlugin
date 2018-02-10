@@ -108,3 +108,6 @@ skills_use_permissions: false
 
 ### SkillAPI configuration
 skillapi_enabled: true
+
+# Use Skill API mana, if Skill API is present
+use_skillapi_mana: false

@@ -5158,4 +5158,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         return null;
     }
+
+    @Override
+    public boolean isPlayer() {
+        return mage == null ? false : mage.isPlayer();
+    }
+
+    @Override
+    public Player getPlayer() {
+        return mage == null ? null : mage.getPlayer();
+    }
 }

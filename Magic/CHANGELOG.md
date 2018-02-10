@@ -7,6 +7,7 @@
  - Blaster skill upgrades with use
  - Bending powers converted to be class-based and work like the spell book
  - Added support for SkillAPI attributes in spell configs
+ - Added support for spells using SkillAPI mana (this is off by default, see config.yml defaults)
 
 ## 7.0
 

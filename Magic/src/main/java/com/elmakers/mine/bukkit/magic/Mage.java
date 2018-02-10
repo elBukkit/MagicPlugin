@@ -2095,46 +2095,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getMana() {
-        if (controller.useHeroesMana() && isPlayer()) {
-            HeroesManager heroes = controller.getHeroes();
-            if (heroes != null) {
-                return heroes.getMana(getPlayer());
-            }
-        }
         return getCasterProperties().getMana();
     }
 
     @Override
     public int getManaMax() {
-        if (controller.useHeroesMana() && isPlayer()) {
-            HeroesManager heroes = controller.getHeroes();
-            if (heroes != null) {
-                return heroes.getMaxMana(getPlayer());
-            }
-        }
         return getCasterProperties().getManaMax();
     }
 
     @Override
     public int getManaRegeneration() {
-        if (controller.useHeroesMana() && isPlayer()) {
-            HeroesManager heroes = controller.getHeroes();
-            if (heroes != null) {
-                return heroes.getManaRegen(getPlayer());
-            }
-        }
         return getCasterProperties().getManaRegeneration();
     }
 
     @Override
     public void setMana(float mana) {
-        if (controller.useHeroesMana() && isPlayer()) {
-            HeroesManager heroes = controller.getHeroes();
-            if (heroes != null) {
-                controller.getLogger().warning("Trying to set Heroes mana but can't really do that.");
-                return;
-            }
-        }
         getCasterProperties().setMana(mana);
     }
 
@@ -2144,48 +2119,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public int getEffectiveManaMax() {
-        if (controller.useHeroesMana() && isPlayer()) {
-            HeroesManager heroes = controller.getHeroes();
-            if (heroes != null) {
-                return heroes.getMaxMana(getPlayer());
-            }
-        }
-        if (activeWand != null) {
-            return activeWand.getEffectiveManaMax();
-        }
-        if (activeClass != null) {
-            return activeClass.getEffectiveManaMax();
-        }
-        return properties.getEffectiveManaMax();
+        return getCasterProperties().getEffectiveManaMax();
     }
 
     public int getEffectiveManaRegeneration() {
-        if (controller.useHeroesMana() && isPlayer()) {
-            HeroesManager heroes = controller.getHeroes();
-            if (heroes != null) {
-                return heroes.getManaRegen(getPlayer());
-            }
-        }
-        if (activeWand != null) {
-            return activeWand.getEffectiveManaRegeneration();
-        }
-        if (activeClass != null) {
-            return activeClass.getEffectiveManaRegeneration();
-        }
-        return properties.getEffectiveManaRegeneration();
+        return getCasterProperties().getEffectiveManaRegeneration();
     }
 
     @Override
     public void removeMana(float mana) {
-        if (offhandCast && offhandWand != null) {
-            offhandWand.removeMana(mana);
-        } else if (activeWand != null) {
-            activeWand.removeMana(mana);
-        } else if (activeClass != null) {
-            activeClass.removeMana(mana);
-        } else {
-            properties.removeMana(mana);
-        }
+        getCasterProperties().removeMana(mana);
     }
 
     @Override

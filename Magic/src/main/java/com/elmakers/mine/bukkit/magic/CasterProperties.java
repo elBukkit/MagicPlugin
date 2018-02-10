@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.wand.Wand;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,10 +27,18 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
     }
 
     public int getManaRegeneration() {
+        ManaController manaController = controller.getManaController();
+        if (manaController != null && isPlayer()) {
+            return manaController.getManaRegen(getPlayer());
+        }
         return getInt("mana_regeneration", getInt("xp_regeneration"));
     }
 
     public int getManaMax() {
+        ManaController manaController = controller.getManaController();
+        if (manaController != null && isPlayer()) {
+            return manaController.getMaxMana(getPlayer());
+        }
         return getInt("mana_max", getInt("xp_max"));
     }
 
@@ -37,6 +46,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
         if (isCostFree()) {
             setProperty("mana", null);
         } else {
+            ManaController manaController = controller.getManaController();
+            if (manaController != null && isPlayer()) {
+                manaController.setMana(getPlayer(), mana);
+                return;
+            }
             setProperty("mana", Math.max(0, mana));
         }
     }
@@ -50,10 +64,19 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
     }
 
     public float getMana() {
+        ManaController manaController = controller.getManaController();
+        if (manaController != null && isPlayer()) {
+            return manaController.getMana(getPlayer());
+        }
         return getFloat("mana", getFloat("xp"));
     }
 
     public void removeMana(float amount) {
+        ManaController manaController = controller.getManaController();
+        if (manaController != null && isPlayer()) {
+            manaController.removeMana(getPlayer(), amount);
+            return;
+        }
         setMana(getMana() - amount);
     }
 
@@ -75,10 +98,18 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
     }
 
     public int getEffectiveManaMax() {
+        ManaController manaController = controller.getManaController();
+        if (manaController != null && isPlayer()) {
+            return manaController.getMaxMana(getPlayer());
+        }
         return effectiveManaMax;
     }
 
     public int getEffectiveManaRegeneration() {
+        ManaController manaController = controller.getManaController();
+        if (manaController != null && isPlayer()) {
+            return manaController.getManaRegen(getPlayer());
+        }
         return effectiveManaRegeneration;
     }
 
@@ -264,4 +295,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
         }
         return brushes;
     }
+
+    public abstract boolean isPlayer();
+    public abstract Player getPlayer();
 }
