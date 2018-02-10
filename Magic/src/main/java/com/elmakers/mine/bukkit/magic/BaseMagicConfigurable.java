@@ -81,17 +81,6 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         return null;
     }
 
-    protected void convertProperties(ConfigurationSection properties) {
-        Set<String> keys = properties.getKeys(true);
-        for (String key : keys) {
-            Object original = properties.get(key);
-            Object converted = convertProperty(original);
-            if (original != converted) {
-                properties.set(key, converted);
-            }
-        }
-    }
-
     protected Object convertProperty(Object value) {
         Object result = value;
         boolean isTrue = value.equals("true");
@@ -366,8 +355,12 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
 
     @Override
     public void configure(@Nonnull ConfigurationSection configuration) {
-        convertProperties(configuration);
-        ConfigurationUtils.addConfigurations(this.configuration, configuration);
+        Set<String> keys = configuration.getKeys(true);
+        for (String key : keys) {
+            Object value = configuration.get(key);
+            value = convertProperty(value);
+            setProperty(key, value);
+        }
         updated();
     }
 

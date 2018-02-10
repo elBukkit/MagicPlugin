@@ -8,6 +8,7 @@
  - Bending powers converted to be class-based and work like the spell book
  - Added support for SkillAPI attributes in spell configs
  - Added support for spells using SkillAPI mana (this is off by default, see config.yml defaults)
+ - Fix setting properties on base classes (e.g. /mage configure mana_max 30)
 
 ## 7.0
 
