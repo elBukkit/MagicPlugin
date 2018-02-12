@@ -4401,19 +4401,24 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 else
                 if (spellCount == 1)
                 {
-					String controlKey = getControlKey(WandAction.TOGGLE);
-					if (controlKey != null) {
-						String inventoryMessage = null;
-						switch (getMode()) {
-							case INVENTORY:
-								inventoryMessage = "inventory_instructions";
-								break;
-							case CHEST:
-								inventoryMessage = "chest_instructions";
-								break;
-							case SKILLS:
-								inventoryMessage = "skills_instructions";
-								break;
+                    String controlKey = getControlKey(WandAction.TOGGLE);
+                    if (controlKey != null) {
+                        String inventoryMessage = null;
+                        switch (getMode()) {
+                        case INVENTORY:
+                            inventoryMessage = "inventory_instructions";
+                            break;
+                        case CHEST:
+                            inventoryMessage = "chest_instructions";
+                            break;
+                        case SKILLS:
+                            inventoryMessage = "skills_instructions";
+                            break;
+                        case CAST:
+                        case CYCLE:
+                        case NONE:
+                            // Ignore
+                            break;
 						}
 
 						if (inventoryMessage != null) {
@@ -5156,6 +5161,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return heldSlot;
     }
 
+    @Override
     protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         switch (propertyType) {
             case WAND: return this;

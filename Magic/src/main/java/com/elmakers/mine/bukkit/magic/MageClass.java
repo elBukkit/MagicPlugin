@@ -92,15 +92,17 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         return effectiveConfiguration;
     }
 
+    @Override
     protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         switch (propertyType) {
             case SUBCLASS: return this;
             case CLASS: return getRoot();
             case MAGE: return mage;
+            default: return null;
         }
-        return null;
     }
 
+    @Override
     public boolean tickMana() {
         if (!hasOwnMana() && parent != null) {
             return parent.tickMana();
