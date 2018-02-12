@@ -4287,10 +4287,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (!bound || ownerId == null || ownerId.length() == 0) return true;
 		if (controller.hasPermission(player, "Magic.wand.override_bind", false)) return true;
 
-		String playerId = controller.getMageIdentifier().fromEntity(player);
-		return ownerId.equalsIgnoreCase(playerId);
+        String playerId = controller.getMageIdentifier().fromEntity(player);
+        if (ownerId.equalsIgnoreCase(playerId)) {
+            return true;
+        }
+
+        // Fall back to checking the UUID rather than the mage ID
+        // This can be removed when all AMC wands have been migrated
+        return ownerId.equals(player.getUniqueId().toString());
 	}
-	
+
 	@Override
     public boolean addSpell(String spellName) {
 		if (!isModifiable()) return false;
