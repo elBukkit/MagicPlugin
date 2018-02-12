@@ -117,13 +117,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
         return getLong("mana_timestamp");
     }
 
-    @Override
-    public void loadProperties() {
-        super.loadProperties();
-        updateMaxMana(null);
+    public void armorUpdated() {
     }
 
-    protected boolean updateMaxMana(Mage mage) {
+    public boolean updateMaxMana(Mage mage) {
         if (!usesMana()) {
             return false;
         }

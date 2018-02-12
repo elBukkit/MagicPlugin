@@ -125,10 +125,31 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
             parent.loadProperties();
         }
         super.loadProperties();
+        armorUpdated();
     }
 
     @Override
     public String getKey() {
         return template.getKey();
+    }
+
+    public void armorUpdated() {
+        if (hasOwnMana()) {
+            updateMaxMana(mage.getMage());
+        }
+    }
+
+    public boolean updateMaxMana(Mage mage) {
+        if (!hasOwnMana()) {
+            boolean modified = false;
+            if (parent != null) {
+                modified = parent.updateMaxMana(mage);
+                effectiveManaMax = parent.getEffectiveManaMax();
+                effectiveManaRegeneration = parent.getEffectiveManaRegeneration();
+            }
+            return modified;
+        }
+
+        return super.updateMaxMana(mage);
     }
 }

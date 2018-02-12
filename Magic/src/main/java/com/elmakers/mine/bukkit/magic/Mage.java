@@ -2832,6 +2832,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if (activeWand != null) {
             activeWand.armorUpdated();
+        } else if (activeClass != null) {
+            activeClass.armorUpdated();
         }
         updateEquipmentEffects();
     }

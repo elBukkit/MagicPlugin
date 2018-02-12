@@ -3600,15 +3600,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public void damageDealt(double damage, Entity target) {
-    	int manaMax = getManaMax();
-    	float mana = getMana();
-        if (effectiveManaMax == 0 && manaMax > 0) {
-            effectiveManaMax = manaMax;
-        }
-        if (manaPerDamage > 0 && effectiveManaMax > 0 && mana < effectiveManaMax) {
-            setMana(Math.min(effectiveManaMax, mana + (float)damage * manaPerDamage));
-            updateMana();
-        }
+    	if (manaPerDamage > 0) {
+			int manaMax = getEffectiveManaMax();
+			float mana = getMana();
+			if (manaMax > 0 && mana < manaMax) {
+				setMana(Math.min(manaMax, mana + (float)damage * manaPerDamage));
+				updateMana();
+			}
+		}
     }
 
     @Override
@@ -3773,7 +3772,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     protected void updateMaxMana(boolean updateLore) {
 		if (isHeroes) return;
-        if (super.updateMaxMana(mage) && updateLore) {
+		if (!hasOwnMana() && mageClass != null) {
+			if (mageClass.updateMaxMana(mage) && updateLore) {
+				updateLore();
+			}
+
+			effectiveManaMax = mageClass.getEffectiveManaMax();
+			effectiveManaRegeneration = mageClass.getEffectiveManaRegeneration();
+		} else if (super.updateMaxMana(mage) && updateLore) {
 			updateLore();
 		}
     }
@@ -3826,6 +3832,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public void setActiveMage(com.elmakers.mine.bukkit.api.magic.Mage mage) {
     	if (mage instanceof Mage) {
 			this.mage = (Mage)mage;
+			armorUpdated();
 		}
 	}
 
