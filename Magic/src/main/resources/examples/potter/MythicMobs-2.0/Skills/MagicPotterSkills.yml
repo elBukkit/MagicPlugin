@@ -53,42 +53,42 @@ Avada:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid avadakedavra bypass_pvp true player $player "}
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid avadakedavra bypass_pvp true player $player"}
 Flipendo:
   Cooldown: 10
   Conditions:
   - TargetWithin 10
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid flipendo bypass_pvp true "}
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid flipendo bypass_pvp true"}
 Accio:
   Cooldown: 10
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid accio bypass_pvp true "}
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid accio bypass_pvp true"}
 Crucio:
   Cooldown: 15
   Conditions:
   - TargetWithin 20
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid crucio bypass_pvp true "}
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid crucio bypass_pvp true"}
 SectumSempra:
   Cooldown: 10
   Conditions:
   - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid sectumsempra bypass_pvp true "}
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid sectumsempra bypass_pvp true"}
 Stupefy:
   Cooldown: 5
   Conditions:
   - TargetWithin 30
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid stupefy bypass_pvp true "}
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid stupefy bypass_pvp true"}
 DementorApparate:
   Cooldown: 2
   Conditions:
@@ -154,21 +154,21 @@ Dementor:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - "cmd{command="castp $world,$boss_x,$boss_z,$mobuuid dementor bypass_pvp true fov 0 player $player"}
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid dementor bypass_pvp true fov 0 player $player"}
 Locomoto:
   Cooldown: 5
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - "cmd{command="castp $world,$boss_x,$boss_z,$mobuuid locomotomortus bypass_pvp true fov 0 player $player"}
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid locomotomortus bypass_pvp true fov 0 player $player"}
 Glacius:
   Cooldown: 5
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - "cmd{command="castp $world,$boss_x,$boss_z,$mobuuid glacius bypass_pvp true fov 0 player $player"}
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid glacius bypass_pvp true fov 0 player $player"}
 Firebending:
   Cooldown: 5
   Conditions:
