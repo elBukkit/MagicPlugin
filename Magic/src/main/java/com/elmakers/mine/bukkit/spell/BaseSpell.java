@@ -2749,7 +2749,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         attributeTransforms = null;
         if (attrs == null || attrs.isEmpty()) return;
 
-        attributes = new HashSet<String>();
+        attributes = new HashSet<>();
         for (String attr : attrs) {
             attributes.add("_" + attr);
         }

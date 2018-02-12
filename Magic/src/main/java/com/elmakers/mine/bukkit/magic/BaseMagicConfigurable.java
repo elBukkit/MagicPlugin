@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ColorHD;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,6 +12,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -77,6 +78,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         }
     }
 
+    @Nullable
     protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         return null;
     }

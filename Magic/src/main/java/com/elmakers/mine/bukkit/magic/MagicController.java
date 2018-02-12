@@ -4965,6 +4965,7 @@ public class MagicController implements MageController {
         return skillPointItemsEnabled;
     }
 
+    @Override
     public Map<String, Integer> getAttributes(Player player) {
         if (skillAPIManager == null) return null;
         return skillAPIManager.getAttributes(player);
