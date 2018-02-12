@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
@@ -38,8 +40,10 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.entity.EntityData;
+import com.elmakers.mine.bukkit.magic.MaterialSets;
 
 /**
  * Implements a Collection of Blocks, for quick getting/putting while iterating
@@ -52,9 +56,9 @@ import com.elmakers.mine.bukkit.entity.EntityData;
  */
 public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.block.UndoList
 {
-    public static Set<Material>         attachables;
-    public static Set<Material>         attachablesWall;
-    public static Set<Material>         attachablesDouble;
+    public static @Nonnull MaterialSet attachables          = MaterialSets.empty();
+    public static @Nonnull MaterialSet attachablesWall      = MaterialSets.empty();
+    public static @Nonnull MaterialSet attachablesDouble    = MaterialSets.empty();
 
     protected static final UndoRegistry     registry = new UndoRegistry();
     protected static BlockComparator        blockComparator = new BlockComparator();
@@ -177,18 +181,16 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         clearAttachables(block, BlockFace.DOWN, attachables);
     }
 
-    protected boolean clearAttachables(Block block, BlockFace direction, Set<Material> materials)
+    protected boolean clearAttachables(Block block, BlockFace direction, @Nonnull MaterialSet materials)
     {
-        if (materials == null) return false;
-        
         Block testBlock = block.getRelative(direction);
-        Long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(testBlock);
-        
-        if (!materials.contains(testBlock.getType()))
+        long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(testBlock);
+
+        if (!materials.testBlock(testBlock))
         {
             return false;
         }
-        
+
         // Don't clear it if we've already modified it
         if (blockIdMap != null && blockIdMap.contains(blockId))
         {
@@ -231,7 +233,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return true;
     }
 
-    protected boolean addAttachable(BlockData block, BlockFace direction, Set<Material> materials)
+    protected boolean addAttachable(BlockData block, BlockFace direction, @Nonnull MaterialSet materials)
     {
         Block testBlock = block.getBlock().getRelative(direction);
         Long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(testBlock);
@@ -245,15 +247,15 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         {
             return false;
         }
-        Material material = testBlock.getType();
-        if (materials != null && materials.contains(material))
+
+        if (materials.testBlock(testBlock))
         {
             BlockData newBlock = new com.elmakers.mine.bukkit.block.BlockData(testBlock);
             if (contain(newBlock))
             {
                 registerWatched(newBlock);
                 newBlock.setUndoList(this);
-                if (attachablesDouble != null && attachablesDouble.contains(material))
+                if (attachablesDouble.testBlock(testBlock))
                 {
                     if (direction != BlockFace.UP)
                     {
@@ -979,7 +981,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return entities;
     }
 
-    public void sort(Set<Material> attachables) {
+    public void sort(MaterialSet attachables) {
         if (blockList == null) return;
 
         Collections.reverse(blockList);

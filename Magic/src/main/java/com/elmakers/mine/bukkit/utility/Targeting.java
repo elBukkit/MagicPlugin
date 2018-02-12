@@ -412,10 +412,10 @@ public class Targeting {
         {
             if (targetMinOffset <= 0) {
                 if (targetSpaceRequired) {
-                    if (!context.allowPassThrough(block.getType())) {
+                    if (!context.allowPassThrough(block)) {
                         break;
                     }
-                    if (context.isOkToStandIn(block.getType()) && context.isOkToStandIn(block.getRelative(BlockFace.UP).getType())) {
+                    if (context.isOkToStandIn(block) && context.isOkToStandIn(block.getRelative(BlockFace.UP))) {
                         break;
                     }
                 } else if (context.isTargetable(block)) {

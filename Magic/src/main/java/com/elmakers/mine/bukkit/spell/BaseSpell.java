@@ -67,6 +67,8 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -251,35 +253,63 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private float								backfireChance			= 0.0f;
 
     private long 								lastMessageSent 			= 0;
-    private Set<Material>						preventPassThroughMaterials = null;
-    private Set<Material>                       passthroughMaterials = null;
-    private Set<Material>						unsafeMaterials = null;
+    private MaterialSet                         preventPassThroughMaterials = null;
+    private MaterialSet                         passthroughMaterials = null;
+    private MaterialSet                         unsafeMaterials = null;
 
+    @Deprecated // Material
     public boolean allowPassThrough(Material mat)
     {
         if (mage != null && mage.isSuperPowered()) {
             return true;
         }
-        if (passthroughMaterials != null && passthroughMaterials.contains(mat)) {
+        if (passthroughMaterials != null && passthroughMaterials.testMaterial(mat)) {
             return true;
         }
-        return preventPassThroughMaterials == null || !preventPassThroughMaterials.contains(mat);
+        return preventPassThroughMaterials == null || !preventPassThroughMaterials.testMaterial(mat);
     }
 
-    public boolean isPassthrough(Material mat)
-    {
-        return passthroughMaterials != null && passthroughMaterials.contains(mat);
+    public boolean allowPassThrough(Block block) {
+        if (mage != null && mage.isSuperPowered()) {
+            return true;
+        }
+        if (passthroughMaterials != null
+                && passthroughMaterials.testBlock(block)) {
+            return true;
+        }
+        return preventPassThroughMaterials == null
+                || !preventPassThroughMaterials.testBlock(block);
+    }
+
+    @Deprecated // Material
+    public boolean isPassthrough(Material mat) {
+        return passthroughMaterials != null
+                && passthroughMaterials.testMaterial(mat);
+    }
+
+    public boolean isPassthrough(Block block) {
+        return passthroughMaterials != null
+                && passthroughMaterials.testBlock(block);
     }
 
     /*
      * Ground / location search and test functions
      */
+    @Deprecated // Material
     public boolean isOkToStandIn(Material mat)
     {
         if (isHalfBlock(mat)) {
             return false;
         }
-        return passthroughMaterials.contains(mat) && !unsafeMaterials.contains(mat);
+        return passthroughMaterials.testMaterial(mat) && !unsafeMaterials.testMaterial(mat);
+    }
+
+    public boolean isOkToStandIn(Block block) {
+        if (isHalfBlock(block.getType())) {
+            return false;
+        }
+        return passthroughMaterials.testBlock(block)
+                && !unsafeMaterials.testBlock(block);
     }
 
     public boolean isWater(Material mat)
@@ -299,12 +329,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return (mat == Material.STEP || mat == Material.WOOD_STEP);
     }
 
+    @Deprecated // Material
     public boolean isOkToStandOn(Material mat)
     {
         if (isHalfBlock(mat)) {
             return true;
         }
-        return (mat != Material.AIR && !unsafeMaterials.contains(mat) && !passthroughMaterials.contains(mat));
+        return (mat != Material.AIR && !unsafeMaterials.testMaterial(mat) && !passthroughMaterials.testMaterial(mat));
     }
 
     public boolean isSafeLocation(Block block)
@@ -330,8 +361,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         Player player = mage.getPlayer();
         return (
                 (isOkToStandOn(blockOneDown) || (player != null && player.isFlying()))
-                &&	isOkToStandIn(blockOneUp.getType())
-                && 	isOkToStandIn(block.getType())
+                &&	isOkToStandIn(blockOneUp)
+                && 	isOkToStandIn(block)
         );
     }
 
@@ -1597,23 +1628,21 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         cancelOnNoPermission = parameters.getBoolean("cancel_on_no_permission", false);
         commandBlockAllowed = parameters.getBoolean("command_block_allowed", true);
 
-        if (parameters.contains("prevent_passthrough")) {
-            preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));
-        } else {
-            preventPassThroughMaterials = controller.getMaterialSet("indestructible");
-        }
+        MaterialSetManager materials = controller.getMaterialSetManager();
+        preventPassThroughMaterials = materials.getMaterialSetEmpty("indestructible");
+        preventPassThroughMaterials = materials.fromConfig(
+                parameters.getString("prevent_passthrough"),
+                preventPassThroughMaterials);
 
-        if (parameters.contains("passthrough")) {
-            passthroughMaterials = controller.getMaterialSet(parameters.getString("passthrough"));
-        } else {
-            passthroughMaterials = controller.getMaterialSet("passthrough");
-        }
+        passthroughMaterials = materials.getMaterialSetEmpty("passthrough");
+        passthroughMaterials = materials.fromConfig(
+                parameters.getString("passthrough"),
+                passthroughMaterials);
 
-        if (parameters.contains("unsafe")) {
-            unsafeMaterials = controller.getMaterialSet(parameters.getString("unsafe"));
-        } else {
-            unsafeMaterials = controller.getMaterialSet("unsafe");
-        }
+        unsafeMaterials = materials.getMaterialSetEmpty("unsafe");
+        unsafeMaterials = materials.fromConfig(
+                    parameters.getString("unsafe"),
+                    unsafeMaterials);
 
         bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
         quiet = parameters.getBoolean("quiet", false);
@@ -1976,7 +2005,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         } else if (parameterKey.equals("range")) {
             examples.addAll(Arrays.asList(EXAMPLE_SIZES));
         } else if (parameterKey.equals("transparent")) {
-            examples.addAll(controller.getMaterialSets());
+            examples.addAll(controller.getMaterialSetManager().getMaterialSets());
         } else if (parameterKey.equals("player")) {
             examples.addAll(controller.getPlayerNames());
         } else if (parameterKey.equals("target")) {

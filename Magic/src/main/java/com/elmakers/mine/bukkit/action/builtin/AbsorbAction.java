@@ -3,14 +3,13 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-
-import java.util.Set;
 
 public class AbsorbAction extends BaseSpellAction
 {   
@@ -30,13 +29,13 @@ public class AbsorbAction extends BaseSpellAction
 		Material material = target.getType();
 		byte data = target.getData();
 
-		Set<Material> buildingMaterials = controller.getBuildingMaterials();
-        Set<Material> restrictedMaterials = mage.getRestrictedMaterials();
+		MaterialSet buildingMaterials = controller.getBuildingMaterialSet();
+		MaterialSet restrictedMaterials = mage.getRestrictedMaterialSet();
 		if (material == null || material == Material.AIR)
 		{
 			return SpellResult.NO_TARGET;
 		}
-		if (!mage.getCommandSender().hasPermission("Magic.bypass_restricted") && (!buildingMaterials.contains(material) || restrictedMaterials.contains(material)))
+		if (!mage.getCommandSender().hasPermission("Magic.bypass_restricted") && (!buildingMaterials.testBlock(target) || restrictedMaterials.testBlock(target)))
 		{
 			return SpellResult.NO_TARGET;
 		}

@@ -421,7 +421,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         Block facingBlock = source.getBlock();
         Block targetBlock = source.add(threshold).getBlock();
 
-        if (!targetBlock.equals(facingBlock) && !isPassthrough(targetBlock.getType())) {
+        if (!targetBlock.equals(facingBlock) && !isPassthrough(targetBlock)) {
             return true;
         }
 
@@ -600,13 +600,13 @@ public class LevitateSpell extends TargetingSpell implements Listener
             Location testLocation = getEyeLocation();
             for (BlockFace facing : CHECK_FACES) {
                 Block block = testLocation.getBlock().getRelative(facing);
-                if (!isOkToStandIn(block.getType())) {
+                if (!isOkToStandIn(block)) {
                     return SpellResult.FAIL;
                 }
             }
             Block block = testLocation.getBlock();
             for (int i = 0; i < checkHeight; i++) {
-                if (!isOkToStandIn(block.getType())) {
+                if (!isOkToStandIn(block)) {
                     return SpellResult.FAIL;
                 }
                 block = block.getRelative(BlockFace.UP);

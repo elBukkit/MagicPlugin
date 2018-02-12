@@ -35,13 +35,13 @@ public class PillarSpell extends BrushSpell
 		if (!hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		while (isTargetable(targetBlock.getType()) && distance <= MAX_SEARCH_DISTANCE)
+		while (isTargetable(targetBlock) && distance <= MAX_SEARCH_DISTANCE)
 		{
 			distance++;
 			attachBlock = targetBlock;
 			targetBlock = attachBlock.getRelative(direction);
 		}
-		if (isTargetable(targetBlock.getType()))
+		if (isTargetable(targetBlock))
 		{
 			return SpellResult.NO_TARGET;
 		}

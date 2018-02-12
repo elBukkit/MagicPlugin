@@ -256,7 +256,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
     @Override
     public void setMaterial(Material material, Short data) {
-        if (material != null && (mage == null || !mage.isRestricted(material))) {
+        if (material != null && (mage == null || !mage.isRestricted(material, data))) {
             super.setMaterial(material, data);
             isValid = true;
         } else {
@@ -408,7 +408,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 Block block = materialTarget.getBlock();
                 if (!block.getChunk().isLoaded()) return false;
 
-                updateFrom(block, fromMage.getRestrictedMaterials());
+                updateFrom(block, fromMage.getRestrictedMaterialSet());
                 isValid = fillWithAir || material != Material.AIR;
             }
         }
@@ -732,7 +732,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 targetLocation = targetLocation.add(targetOffset);
                 block = targetLocation.getBlock();
             }
-            updateFrom(block, mage.getRestrictedMaterials());
+            updateFrom(block, mage.getRestrictedMaterialSet());
         }
     }
 

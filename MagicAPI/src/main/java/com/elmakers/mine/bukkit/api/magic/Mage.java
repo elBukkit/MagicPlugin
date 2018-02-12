@@ -1,5 +1,26 @@
 package com.elmakers.mine.bukkit.api.magic;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
+
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.UndoBatch;
@@ -17,25 +38,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 /**
  * A Mage represents any entity that may cast spells. This can include:
@@ -388,8 +390,14 @@ public interface Mage extends CostReducer {
      */
     void onCast(Spell spell, SpellResult result);
 
+    @Deprecated
     boolean isRestricted(Material material);
+    // Used for checking if a brush is restricted
+    // TODO: Pass some kind of proper data class instead
+    boolean isRestricted(Material material, @Nullable Short data);
+    @Deprecated
     Set<Material> getRestrictedMaterials();
+    MaterialSet getRestrictedMaterialSet();
 
     MageController getController();
     boolean hasCastPermission(Spell spell);

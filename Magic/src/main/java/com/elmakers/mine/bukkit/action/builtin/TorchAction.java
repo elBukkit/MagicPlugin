@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -13,14 +14,13 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Set;
 
 public class TorchAction extends BaseSpellAction
 {
     private Material torchType;
     private boolean allowLightstone;
     private boolean useLightstone;
-	private Set<Material> slippery;
+	private MaterialSet slippery;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -34,7 +34,8 @@ public class TorchAction extends BaseSpellAction
 	public void initialize(Spell spell, ConfigurationSection parameters)
 	{
 		super.initialize(spell, parameters);
-		slippery = spell.getController().getMaterialSet(parameters.getString("not_attachable", "not_attachable"));
+		slippery = spell.getController().getMaterialSetManager()
+		        .fromConfig(parameters.getString("not_attachable", "not_attachable"));
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class TorchAction extends BaseSpellAction
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		if (slippery != null && slippery.contains(target.getType()))
+		if (slippery != null && slippery.testBlock(target))
 		{
 			return SpellResult.NO_TARGET;
 		}

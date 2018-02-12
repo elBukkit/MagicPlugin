@@ -23,7 +23,7 @@ public class CoverAction extends CompoundAction
         targetBlock = context.findSpaceAbove(targetBlock);
         targetBlock = context.findBlockUnder(targetBlock);
         Block coveringBlock = targetBlock.getRelative(BlockFace.UP);
-        if (context.isTransparent(targetBlock.getType()) || !context.isTransparent(coveringBlock.getType())) {
+        if (context.isTransparent(targetBlock) || !context.isTransparent(coveringBlock)) {
             skippedActions(context);
             return SpellResult.NO_TARGET;
         }

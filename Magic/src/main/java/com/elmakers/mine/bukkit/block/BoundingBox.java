@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.util.List;
-import java.util.Set;
+import javax.annotation.Nullable;
 
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -9,6 +9,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 
 /**
  * Represents a BoundingBox, using two BlockVectors
@@ -167,7 +169,7 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
      * @param destructable
      *            A MaterialList describing which blocks are okay to replace
      */
-    public void fill(World world, Material material, Set<Material> destructable)
+    public void fill(World world, Material material, @Nullable MaterialSet destructable)
     {
         fill(world, material, destructable, null);
     }
@@ -190,7 +192,9 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
      *            A BlockList, which will be filled with the blocks that are
      *            replaced
      */
-    public void fill(World world, Material material, Set<Material> destructable, UndoList affected)
+    public void fill(
+            World world, Material material,
+            @Nullable MaterialSet destructable, @Nullable UndoList affected)
     {
         for (int x = min.getBlockX(); x < max.getBlockX(); x++)
         {
@@ -210,8 +214,7 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
                     }
                     else
                     {
-                        Material blockType = block.getType();
-                        if (destructable.contains(blockType))
+                        if (destructable.testBlock(block))
                         {
                             if (affected != null)
                             {

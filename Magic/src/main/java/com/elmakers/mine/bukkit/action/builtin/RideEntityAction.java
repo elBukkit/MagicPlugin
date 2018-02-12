@@ -233,7 +233,7 @@ public class RideEntityAction extends BaseSpellAction
                 }
             }
         }
-        if (!context.isPassthrough(mounted.getLocation().getBlock().getType())) {
+        if (!context.isPassthrough(mounted.getLocation().getBlock())) {
             if (crash(context)) {
                 return SpellResult.CAST;
             }
@@ -363,7 +363,7 @@ public class RideEntityAction extends BaseSpellAction
             blocksAbove = currentLocation.getY() - maxHeight + 1;
         } else if (maxHeightAboveGround >= 0) {
             Block block = currentLocation.getBlock();
-            while (blocksAbove < maxHeightAboveGround + 5 && context.isPassthrough(block.getType()))
+            while (blocksAbove < maxHeightAboveGround + 5 && context.isPassthrough(block))
             {
                 block = block.getRelative(BlockFace.DOWN);
                 blocksAbove++;
@@ -506,7 +506,7 @@ public class RideEntityAction extends BaseSpellAction
         Block facingBlock = source.getBlock();
         Block targetBlock = source.add(threshold).getBlock();
 
-        if (!targetBlock.equals(facingBlock) && !context.isPassthrough(targetBlock.getType())) {
+        if (!targetBlock.equals(facingBlock) && !context.isPassthrough(targetBlock)) {
             return true;
         }
 

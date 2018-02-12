@@ -17,7 +17,7 @@ public class DescendAction extends BaseTeleportAction
         }
 		Location targetLocation = context.getLocation();
 		for (int i = 0; i < 2; i++) {
-			if (!context.allowPassThrough(targetLocation.getBlock().getType())) return SpellResult.NO_TARGET;
+			if (!context.allowPassThrough(targetLocation.getBlock())) return SpellResult.NO_TARGET;
 			targetLocation.setY(targetLocation.getY() - 1);
 		}
 		Location location = context.findPlaceToStand(targetLocation, verticalSearchDistance, false);

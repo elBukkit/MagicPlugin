@@ -53,7 +53,7 @@ public class TeleportTask implements Runnable {
         if (targetLocation == null && !preventFall) {
             Block block = location.getBlock();
             Block blockOneUp = block.getRelative(BlockFace.UP);
-            if (!safe || (context.isOkToStandIn(blockOneUp.getType()) && context.isOkToStandIn(block.getType())))
+            if (!safe || (context.isOkToStandIn(blockOneUp) && context.isOkToStandIn(block)))
             {
                 targetLocation = location;
             }

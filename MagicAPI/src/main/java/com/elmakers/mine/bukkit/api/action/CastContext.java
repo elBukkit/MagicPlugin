@@ -1,5 +1,24 @@
 package com.elmakers.mine.bukkit.api.action;
 
+import java.util.Collection;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Logger;
+
+import javax.annotation.Nullable;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
+
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
@@ -12,23 +31,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.util.Vector;
-
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Logger;
 
 public interface CastContext {
     Entity getEntity();
@@ -114,8 +116,12 @@ public interface CastContext {
     void setTargetedLocation(Location location);
     Block findBlockUnder(Block block);
     Block findSpaceAbove(Block block);
+    @Deprecated
     boolean isTransparent(Material material);
+    boolean isTransparent(Block block);
+    @Deprecated
     boolean isPassthrough(Material material);
+    boolean isPassthrough(Block block);
     boolean isDestructible(Block block);
     boolean areAnyDestructible(Block block);
     boolean isTargetable(Block block);
@@ -144,11 +150,19 @@ public interface CastContext {
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance);
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall);
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe);
+    @Deprecated
     boolean allowPassThrough(Material material);
+    boolean allowPassThrough(Block block);
     int getVerticalSearchDistance();
+    @Deprecated
     boolean isOkToStandIn(Material mat);
+    boolean isOkToStandIn(Block block);
     boolean isWater(Material mat);
+    @Deprecated
     boolean isOkToStandOn(Material mat);
+    boolean isOkToStandOn(Block block);
+    @Nullable
+    @Deprecated
     Set<Material> getMaterialSet(String key);
     void setSpellParameters(ConfigurationSection parameters);
     SpellResult getResult();

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
@@ -29,6 +31,8 @@ import org.bukkit.material.RedstoneWire;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
@@ -46,10 +50,10 @@ public class ConstructBatch extends BrushBatch {
 	private final Map<Long, BlockData> attachedBlockMap = new HashMap<>();
 	private final List<BlockData> attachedBlockList = new ArrayList<>();
 	private final List<BlockData> delayedBlocks = new ArrayList<>();
-	private final Set<Material> attachables;
-	private final Set<Material> attachablesWall;
-	private final Set<Material> attachablesDouble;
-	private final Set<Material> delayed;
+	private final @Nonnull MaterialSet attachables;
+	private final @Nonnull MaterialSet attachablesWall;
+	private final @Nonnull MaterialSet attachablesDouble;
+	private final @Nonnull MaterialSet delayed;
 	private Set<String> replace;
 	private Map<String, String> commandMap;
 
@@ -83,10 +87,12 @@ public class ConstructBatch extends BrushBatch {
 		this.type = type;
 		this.thickness = thickness;
 		this.spawnFallingBlocks = spawnFallingBlocks;
-		this.attachables = mage.getController().getMaterialSet("attachable");
-		this.attachablesWall = mage.getController().getMaterialSet("attachable_wall");
-		this.attachablesDouble = mage.getController().getMaterialSet("attachable_double");
-		this.delayed = mage.getController().getMaterialSet("delayed");
+
+		MaterialSetManager materials = mage.getController().getMaterialSetManager();
+		this.attachables = materials.getMaterialSetEmpty("attachable");
+		this.attachablesWall = materials.getMaterialSetEmpty("attachable_wall");
+		this.attachablesDouble = materials.getMaterialSetEmpty("attachable_double");
+		this.delayed = materials.getMaterialSetEmpty("delayed");
         this.orient = orientVector == null ? new Vector(0, 1, 0) : orientVector;
 	}
 
@@ -123,6 +129,7 @@ public class ConstructBatch extends BrushBatch {
 		this.minOrientDimension = minDim;
 	}
 
+	@Deprecated // Material
 	protected boolean canAttachTo(Material attachMaterial, Material material, boolean vertical) {
 		// For double-high blocks, a material can always attach to itself.
 		if (vertical && attachMaterial == material) return true;
@@ -131,7 +138,7 @@ public class ConstructBatch extends BrushBatch {
 		if (material.isTransparent()) return false;
 
 		// Can't attach to any attachables either- some of these (like signs) aren't transparent.
-		return !attachables.contains(material) && !attachablesWall.contains(material) && !attachablesDouble.contains(material);
+		return !attachables.testMaterial(material) && !attachablesWall.testMaterial(material) && !attachablesDouble.testMaterial(material);
 	}
 
 	@Override
@@ -180,7 +187,7 @@ public class ConstructBatch extends BrushBatch {
 				Material material = attach.getMaterial();
 				boolean ok = canAttachTo(material, underneath.getType(), true);
 
-				if (!ok && attachablesDouble.contains(material)) {
+				if (!ok && attachablesDouble.testMaterialAndData(attach)) {
 					BlockData attachedUnder = attachedBlockMap.get(BlockData.getBlockId(underneath));
 					ok = (attachedUnder != null && attachedUnder.getMaterial() == material);
 
@@ -196,7 +203,7 @@ public class ConstructBatch extends BrushBatch {
 				if (!ok) {
 					// Check for a wall attachable. These are assumed to also be ok
 					// on the ground.
-					boolean canAttachToWall = attachablesWall.contains(material);
+					boolean canAttachToWall = attachablesWall.testMaterialAndData(attach);
 					if (canAttachToWall) {
 						final BlockFace[] faces = {BlockFace.WEST, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH};
 						for (BlockFace face : faces) {
@@ -470,7 +477,7 @@ public class ConstructBatch extends BrushBatch {
 		}
 
 		// Postpone attachable blocks to a second batch
-		if (attachables.contains(brush.getMaterial()) || attachablesWall.contains(brush.getMaterial()) || attachablesDouble.contains(brush.getMaterial())) {
+		if (attachables.testMaterialAndData(brush) || attachablesWall.testMaterialAndData(brush) || attachablesDouble.testMaterialAndData(brush)) {
 			BlockData attachBlock = new BlockData(block);
 			attachBlock.updateFrom(brush);
 			attachedBlockMap.put(attachBlock.getId(), attachBlock);
@@ -478,7 +485,7 @@ public class ConstructBatch extends BrushBatch {
 			return true;
 		}
 
-		if (delayed.contains(brush.getMaterial())) {
+		if (delayed.testMaterialAndData(brush)) {
 			BlockData delayBlock = new BlockData(block);
 			delayBlock.updateFrom(brush);
 			delayedBlocks.add(delayBlock);

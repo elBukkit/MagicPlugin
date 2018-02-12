@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import com.elmakers.mine.bukkit.api.block.ModifyType;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -32,7 +33,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 
-import java.util.Set;
+import javax.annotation.Nullable;
 
 /**
  * A utility class for presenting a Material in its entirety, including Material variants.
@@ -301,7 +302,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     @SuppressWarnings("deprecation")
-    public void updateFrom(Block block, Set<Material> restrictedMaterials) {
+    public void updateFrom(Block block, @Nullable MaterialSet restrictedMaterials) {
         if (block == null) {
             isValid = false;
             return;
@@ -311,14 +312,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             return;
         }
 
-        Material blockMaterial = block.getType();
-        if (restrictedMaterials != null && restrictedMaterials.contains(blockMaterial)) {
+        if (restrictedMaterials != null && restrictedMaterials.testBlock(block)) {
             isValid = false;
             return;
         }
         // Look for special block states
         extraData = null;
 
+        Material blockMaterial = block.getType();
         material = blockMaterial;
         data = (short)block.getData();
 
