@@ -445,7 +445,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         return modified;
     }
 
-    protected void updated() {
+    public void updated() {
 
     }
 

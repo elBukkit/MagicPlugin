@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,18 +13,20 @@ import java.util.Set;
 
 public class MageClass extends CasterProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
     protected final MageClassTemplate template;
-    protected final MageProperties mage;
+    protected final MageProperties mageProperties;
+    protected final Mage mage;
     private MageClass parent;
 
     public MageClass(@Nonnull Mage mage, @Nonnull MageClassTemplate template) {
         super(template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, mage.getController());
         this.template = template;
-        this.mage = mage.getProperties();
+        this.mageProperties = mage.getProperties();
+        this.mage = mage;
     }
 
     @Override
     public boolean hasProperty(String key) {
-        return hasOwnProperty(key) || template.hasProperty(key) || mage.hasProperty(key) || (parent != null && parent.hasProperty(key));
+        return hasOwnProperty(key) || template.hasProperty(key) || mageProperties.hasProperty(key) || (parent != null && parent.hasProperty(key));
     }
 
     @Override
@@ -38,7 +41,7 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         // Don't need to check the mage if we have a parent, since the parent
         // checks for us.
         if (value == null && parent == null) {
-            value = mage.getProperty(key);
+            value = mageProperties.getProperty(key);
         }
         return value;
     }
@@ -86,7 +89,7 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
             ConfigurationUtils.overlayConfigurations(effectiveConfiguration, parentConfiguration);
         } else {
             // If we have a parent, it has already incorporated Mage data
-            ConfigurationSection mageConfiguration = mage.getConfiguration();
+            ConfigurationSection mageConfiguration = mageProperties.getConfiguration();
             ConfigurationUtils.overlayConfigurations(effectiveConfiguration, mageConfiguration);
         }
         return effectiveConfiguration;
@@ -96,7 +99,7 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         switch (propertyType) {
             case SUBCLASS: return this;
             case CLASS: return getRoot();
-            case MAGE: return mage;
+            case MAGE: return mageProperties;
         }
         return null;
     }
@@ -111,12 +114,12 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
 
     @Override
     public boolean isPlayer() {
-        return mage.isPlayer();
+        return mageProperties.isPlayer();
     }
 
     @Override
     public Player getPlayer() {
-        return mage.getPlayer();
+        return mageProperties.getPlayer();
     }
 
     @Override
@@ -135,7 +138,7 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
 
     public void armorUpdated() {
         if (hasOwnMana()) {
-            updateMaxMana(mage.getMage());
+            updateMaxMana(mage);
         }
     }
 
@@ -151,5 +154,13 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         }
 
         return super.updateMaxMana(mage);
+    }
+
+    public void updated() {
+        updateMaxMana(mage);
+        Wand activeWand = mage.getActiveWand();
+        if (activeWand != null) {
+            activeWand.updated();
+        }
     }
 }

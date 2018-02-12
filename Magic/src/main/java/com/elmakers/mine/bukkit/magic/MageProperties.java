@@ -45,8 +45,4 @@ public class MageProperties extends CasterProperties {
     public Player getPlayer() {
         return mage.getPlayer();
     }
-
-    public Mage getMage() {
-        return mage;
-    }
 }
