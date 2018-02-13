@@ -378,7 +378,6 @@ public interface MageController {
     void managePlayerData(boolean external, boolean backupInventories);
     String getDefaultWandTemplate();
     String getHeroesSkillPrefix();
-    Map<String, Integer> getAttributes(Player player);
 
     Object getWandProperty(ItemStack itemStack, String key);
     @Nonnull <T> T getWandProperty(ItemStack itemStack, @Nonnull String key, @Nonnull T defaultValue);

@@ -555,4 +555,6 @@ public interface Mage extends CostReducer {
     Wand getSoulWand();
 
     boolean isAutomaton();
+
+    Double getAttribute(String attributeKey);
 }
