@@ -2,6 +2,8 @@
 
 ## 7.1
 
+ - SkillAPI attribute parameters no longer use an underscore prefix
+
 ## 7.0.1
 
  - Potter wands converted to be class-based

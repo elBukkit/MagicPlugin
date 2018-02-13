@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.magic.ParameterizedConfiguration;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
@@ -216,15 +217,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected ConfigurationSection progressLevels = null;
     protected ConfigurationSection progressLevelParameters = null;
-    protected ConfigurationSection parameters = null;
+    protected ParameterizedConfiguration parameters = new ParameterizedConfiguration();
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
 
     protected static Random random            = new Random();
-
-    // Attribute handling
-    protected static Set<String> attributes;
-    protected static Map<String, EquationTransform> attributeTransforms;
 
     /*
      * private data
@@ -914,27 +911,25 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Preload some parameters
-        // Note that these don't get parameterized via attributes, which may be an issue.
-        parameters = node.getConfigurationSection("parameters");
-        if (parameters != null) {
-            bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
-            warmup = parameters.getInt("warmup", 0);
-            cooldown = parameters.getInt("cooldown", 0);
-            cooldown = parameters.getInt("cool", cooldown);
-            mageCooldown = parameters.getInt("cooldown_mage", 0);
-            displayCooldown = parameters.getInt("display_cooldown", -1);
-            bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
-            bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
-            bypassPermissions = parameters.getBoolean("bypass_permissions", false);
-            bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
-            bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
-            bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
-            bypassProtection = parameters.getBoolean("bypass_protection", false);
-            bypassProtection = parameters.getBoolean("bp", bypassProtection);
-            bypassAll = parameters.getBoolean("bypass", false);
-            duration = parameters.getInt("duration", 0);
-            totalDuration = parameters.getInt("total_duration", -1);
-        }
+        parameters.setMage(mage);
+        parameters.wrap(node.getConfigurationSection("parameters"));
+        bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
+        warmup = parameters.getInt("warmup", 0);
+        cooldown = parameters.getInt("cooldown", 0);
+        cooldown = parameters.getInt("cool", cooldown);
+        mageCooldown = parameters.getInt("cooldown_mage", 0);
+        displayCooldown = parameters.getInt("display_cooldown", -1);
+        bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
+        bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
+        bypassPermissions = parameters.getBoolean("bypass_permissions", false);
+        bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
+        bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
+        bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
+        bypassProtection = parameters.getBoolean("bypass_protection", false);
+        bypassProtection = parameters.getBoolean("bp", bypassProtection);
+        bypassAll = parameters.getBoolean("bypass", false);
+        duration = parameters.getInt("duration", 0);
+        totalDuration = parameters.getInt("total_duration", -1);
 
         effects.clear();
         if (node.contains("effects")) {
@@ -1049,16 +1044,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             this.currentCast.setSpell(this);
         }
 
-        if (this.parameters == null) {
-            this.parameters = new MemoryConfiguration();
-        }
-
         this.location = defaultLocation;
 
-        workingParameters = new MemoryConfiguration();
+        workingParameters = new ParameterizedConfiguration(mage);
         ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
-        parameterize(workingParameters);
         processParameters(workingParameters);
 
         // Check to see if this is allowed to be cast by a command block
@@ -2742,50 +2732,5 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public ConfigurationSection getSpellParameters() {
         return parameters;
-    }
-
-    public static void initializeAttributes(Set<String> attrs) {
-        attributes = null;
-        attributeTransforms = null;
-        if (attrs == null || attrs.isEmpty()) return;
-
-        attributes = new HashSet<>();
-        for (String attr : attrs) {
-            attributes.add("_" + attr);
-        }
-        attributeTransforms = new HashMap<>();
-    }
-
-    protected Double evaluateParameter(String parameter) {
-        if (attributes == null) return null;
-        Player player = mage.getPlayer();
-        if (player == null) return null;
-        if (!parameter.contains(" _")) return null;
-        Map<String, Integer> playerAttributes = controller.getAttributes(player);
-        EquationTransform transform = attributeTransforms.get(parameter);
-        if (transform == null) {
-            transform = new EquationTransform(parameter, attributes);
-            attributeTransforms.put(parameter, transform);
-        }
-
-        for (Map.Entry<String, Integer> entry : playerAttributes.entrySet()) {
-            transform.setVariable("_" + entry.getKey(), entry.getValue());
-        }
-
-        return transform.get();
-    }
-
-    protected void parameterize(ConfigurationSection section) {
-        if (attributes == null || attributes.isEmpty()) return;
-
-        Set<String> keys = section.getKeys(false);
-        for (String key : keys) {
-            if (section.isString(key)) {
-                Double transformed = evaluateParameter(section.getString(key));
-                if (transformed != null) {
-                    section.set(key, transformed);
-                }
-            }
-        }
     }
 }

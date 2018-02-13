@@ -842,7 +842,7 @@ public class MagicController implements MageController {
         if (skillAPIPlugin != null && skillAPIEnabled) {
             skillAPIManager = new SkillAPIManager(plugin, skillAPIPlugin);
             if (skillAPIManager.initialize()) {
-                BaseSpell.initializeAttributes(skillAPIManager.getAttributeKeys());
+                ParameterizedConfiguration.initializeAttributes(skillAPIManager.getAttributeKeys());
                 getLogger().info("Integrated with SkillAPI, attributes can be used in spell parameters." );
                 getLogger().info("Attributes must prefixed with a space and an underscore e.g.");
                 getLogger().info("   damage: 1 + 3 * _intelligence");
@@ -4965,8 +4965,7 @@ public class MagicController implements MageController {
         return skillPointItemsEnabled;
     }
 
-    @Override
-    public Map<String, Integer> getAttributes(Player player) {
+    public Map<String, Integer> getSkillAPIAttributes(Player player) {
         if (skillAPIManager == null) return null;
         return skillAPIManager.getAttributes(player);
     }

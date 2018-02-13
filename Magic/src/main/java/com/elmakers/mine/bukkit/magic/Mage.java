@@ -3322,5 +3322,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void setLastActivatedSlot(int slot) {
         this.lastActivatedSlot = slot;
     }
+
+    @Override
+    public Double getAttribute(String attributeKey) {
+        Player player = getPlayer();
+        if (player == null) return null;
+        Map<String, Integer> attributes = controller.getSkillAPIAttributes(player);
+        Integer attribute = attributes.get(attributeKey);
+        return attribute == null ? null : (double)attribute;
+    }
 }
 
