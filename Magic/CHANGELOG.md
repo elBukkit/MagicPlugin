@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 7.1
+
 ## 7.0.1
 
  - Potter wands converted to be class-based
