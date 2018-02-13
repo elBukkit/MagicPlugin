@@ -1824,6 +1824,22 @@ public class NMSUtils {
         return map;
     }
 
+    public static boolean setMap(ConfigurationSection section, Map<String, Object> map)
+    {
+        if (section == null) return false;
+        if (section instanceof MemorySection)
+        {
+            try {
+                class_MemorySection_mapField.set(section, map);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static boolean isEmpty(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR) return true;
         if (class_ItemStack_isEmptyMethod == null) return false;
