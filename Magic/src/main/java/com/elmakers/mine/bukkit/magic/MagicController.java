@@ -799,6 +799,29 @@ public class MagicController implements MageController {
         }
     }
 
+    protected void finalizeIntegrationPreSpells() {
+        final PluginManager pluginManager = plugin.getServer().getPluginManager();
+
+        // Check for SkillAPI
+        Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
+        if (skillAPIPlugin != null && skillAPIEnabled) {
+            skillAPIManager = new SkillAPIManager(plugin, skillAPIPlugin);
+            if (skillAPIManager.initialize()) {
+                ParameterizedConfiguration.initializeAttributes(skillAPIManager.getAttributeKeys());
+                getLogger().info("Integrated with SkillAPI, attributes can be used in spell parameters." );
+                getLogger().info("Attributes must prefixed with a space and an underscore e.g.");
+                getLogger().info("   damage: 1 + 3 * _intelligence");
+                if (useSkillAPIMana) {
+                    getLogger().info("SkillAPI mana will be used by spells and wands");
+                }
+            } else {
+                getLogger().warning("SkillAPI integration failed");
+            }
+        } else {
+            getLogger().info("SkillAPI integration disabled");
+        }
+    }
+
     protected void finalizeIntegration() {
         final PluginManager pluginManager = plugin.getServer().getPluginManager();
 
@@ -835,25 +858,6 @@ public class MagicController implements MageController {
             }
         } else {
             getLogger().info("LibsDisguises integration disabled");
-        }
-
-        // Check for SkillAPI
-        Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
-        if (skillAPIPlugin != null && skillAPIEnabled) {
-            skillAPIManager = new SkillAPIManager(plugin, skillAPIPlugin);
-            if (skillAPIManager.initialize()) {
-                ParameterizedConfiguration.initializeAttributes(skillAPIManager.getAttributeKeys());
-                getLogger().info("Integrated with SkillAPI, attributes can be used in spell parameters." );
-                getLogger().info("Attributes must prefixed with a space and an underscore e.g.");
-                getLogger().info("   damage: 1 + 3 * _intelligence");
-                if (useSkillAPIMana) {
-                    getLogger().info("SkillAPI mana will be used by spells and wands");
-                }
-            } else {
-                getLogger().warning("SkillAPI integration failed");
-            }
-        } else {
-            getLogger().info("SkillAPI integration disabled");
         }
 
         // Check for MobArena
@@ -1542,6 +1546,10 @@ public class MagicController implements MageController {
 
         // Main configuration
         loadProperties(loader.configuration);
+
+        if (!initialized) {
+            finalizeIntegrationPreSpells();
+        }
 
         // Sub-configurations
         messages.load(loader.messages);
