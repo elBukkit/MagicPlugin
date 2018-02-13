@@ -2049,7 +2049,7 @@ public class MagicController implements MageController {
 		}
 		catch (Throwable ex)
 		{
-			controller.getLogger().warning("Error loading spell: " + className);
+			controller.getLogger().log(Level.WARNING, "Error loading spell: " + className, ex);
 			return null;
 		}
 
@@ -2061,7 +2061,7 @@ public class MagicController implements MageController {
 		catch (Throwable ex)
 		{
 
-			controller.getLogger().warning("Error loading spell: " + className);
+			controller.getLogger().log(Level.WARNING, "Error loading spell: " + className, ex);
 			return null;
 		}
 
