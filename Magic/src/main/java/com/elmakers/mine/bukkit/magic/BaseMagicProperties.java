@@ -176,7 +176,7 @@ public class BaseMagicProperties implements MagicProperties {
 
     public String getString(String key, String defaultValue) {
         Object value = getProperty(key);
-        return value == null || !(value instanceof String) ? defaultValue : (String)value;
+        return value == null ? defaultValue : value.toString();
     }
 
     public String getString(String key) {

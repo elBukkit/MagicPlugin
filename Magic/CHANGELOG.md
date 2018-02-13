@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 7.1
+## 7.0.1
 
  - Potter wands converted to be class-based
  - Lightsabers converted to be class-based
@@ -10,6 +10,7 @@
  - Added support for spells using SkillAPI mana (this is off by default, see config.yml defaults)
  - Fix setting properties on base classes (e.g. /mage configure mana_max 30)
  - Fix mana buffs on armor (wizard armor)
+ - Fix quick cast wands
 
 ## 7.0
 
