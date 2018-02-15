@@ -1,8 +1,13 @@
 package com.elmakers.mine.bukkit.api.event;
 
+import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * A custom event that fires whenever Magic loads or reloads configurations.
@@ -10,6 +15,7 @@ import org.bukkit.event.HandlerList;
 public class LoadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private MageController controller;
+    private List<AttributeProvider> attributeProviders = new ArrayList<>();
 
     public LoadEvent(MageController controller) {
         this.controller = controller;
@@ -26,5 +32,13 @@ public class LoadEvent extends Event {
     
     public MageController getController() {
         return controller;
+    }
+
+    public void registerAttributeProvider(AttributeProvider provider) {
+        attributeProviders.add(provider);
+    }
+
+    public Collection<AttributeProvider> getAttributeProviders() {
+        return attributeProviders;
     }
 }

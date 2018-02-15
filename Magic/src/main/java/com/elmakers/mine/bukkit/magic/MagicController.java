@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
+import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.Schematic;
@@ -807,7 +808,6 @@ public class MagicController implements MageController {
         if (skillAPIPlugin != null && skillAPIEnabled) {
             skillAPIManager = new SkillAPIManager(plugin, skillAPIPlugin);
             if (skillAPIManager.initialize()) {
-                ParameterizedConfiguration.initializeAttributes(skillAPIManager.getAttributeKeys());
                 getLogger().info("Integrated with SkillAPI, attributes can be used in spell parameters." );
                 if (useSkillAPIMana) {
                     getLogger().info("SkillAPI mana will be used by spells and wands");
@@ -1582,6 +1582,20 @@ public class MagicController implements MageController {
         
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
+
+        // Set up attributes
+        attributeProviders.clear();
+        attributeProviders.addAll(loadEvent.getAttributeProviders());
+        if (skillAPIManager != null) {
+            attributeProviders.add(skillAPIManager);
+        }
+
+        Set<String> attributes = new HashSet<>();
+        for (AttributeProvider provider : attributeProviders) {
+            attributes.addAll(provider.getAllAttributes());
+        }
+
+        ParameterizedConfiguration.initializeAttributes(attributes);
 
         loaded = true;
         if (sender != null) {
@@ -4977,9 +4991,8 @@ public class MagicController implements MageController {
         return skillPointItemsEnabled;
     }
 
-    public Map<String, Integer> getSkillAPIAttributes(Player player) {
-        if (skillAPIManager == null) return null;
-        return skillAPIManager.getAttributes(player);
+    public List<AttributeProvider> getAttributeProviders() {
+        return attributeProviders;
     }
 
     /*
@@ -5225,4 +5238,5 @@ public class MagicController implements MageController {
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();
     private List<PVPManager>                    pvpManagers                 = new ArrayList<>();
+    private List<AttributeProvider>             attributeProviders          = new ArrayList<>();
 }

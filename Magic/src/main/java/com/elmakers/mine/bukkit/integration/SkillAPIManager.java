@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.integration;
 
+import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.magic.ManaController;
 import com.sucy.skill.SkillAPI;
 import com.sucy.skill.api.player.PlayerClass;
@@ -9,12 +10,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class SkillAPIManager implements ManaController {
+public class SkillAPIManager implements ManaController, AttributeProvider {
     private final Plugin skillAPIPlugin;
     private final Plugin owningPlugin;
+    private Set<String> attributes = new HashSet<>();
 
     private AttributeManager attributeManager;
 
@@ -30,22 +33,26 @@ public class SkillAPIManager implements ManaController {
         attributeManager = SkillAPI.getAttributeManager();
 
         if (attributeManager == null) {
+            attributes = null;
             owningPlugin.getLogger().warning("SkillAPI but but attributes are disabled");
         } else {
-            owningPlugin.getLogger().info("SkillAPI Attributes: " + getAttributeKeys());
+            attributes = attributeManager.getKeys();
+            owningPlugin.getLogger().info("SkillAPI Attributes: " + attributes);
         }
 
         return true;
     }
 
-    public Set<String> getAttributeKeys() {
-        return attributeManager == null ? null : attributeManager.getKeys();
+    @Override
+    public Set<String> getAllAttributes() {
+        return attributes;
     }
 
-    public Map<String, Integer> getAttributes(Player player) {
-        if (attributeManager == null) return null;
+    @Override
+    public Double getAttributeValue(String attribute, Player player) {
+        if (attributes == null || !attributes.contains(attribute)) return null;
         PlayerData playerData = SkillAPI.getPlayerData(player);
-        return playerData.getAttributes();
+        return (double)playerData.getAttribute(attribute);
     }
 
     @Override

@@ -16,6 +16,7 @@ import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.action.TeleportTask;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.data.BrushData;
@@ -3343,9 +3344,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Double getAttribute(String attributeKey) {
         Player player = getPlayer();
         if (player == null) return null;
-        Map<String, Integer> attributes = controller.getSkillAPIAttributes(player);
-        Integer attribute = attributes.get(attributeKey);
-        return attribute == null ? null : (double)attribute;
+        List<AttributeProvider> providers = controller.getAttributeProviders();
+        Double attribute = null;
+        for (AttributeProvider provider : providers) {
+            Double value = provider.getAttributeValue(attributeKey, player);
+            if (value != null) {
+                attribute = value;
+                break;
+            }
+        }
+
+        return attribute;
     }
 }
 
