@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
+import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -2165,7 +2166,24 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	{
 		List<String> lore = new ArrayList<>();
 
+		String pathName = null;
 		com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
+		if (path != null) {
+			pathName = path.getName();
+		} else if (mageClassKey != null && !mageClassKey.isEmpty()) {
+			MageClassTemplate classTemplate = controller.getMageClassTemplate(mageClassKey);
+			if (classTemplate != null) {
+				String pathKey = classTemplate.getProperty("path", "");
+				if (!pathKey.isEmpty()) {
+					path = controller.getPath(pathKey);
+				}
+				if (path != null) {
+					pathName = path.getName();
+				} else {
+					pathName = classTemplate.getName();
+				}
+			}
+		}
         if (description.length() > 0) {
 			if (randomizeOnActivate) {
 				String randomDescription = getMessage("randomized_lore");
@@ -2184,12 +2202,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 			String descriptionTemplate = controller.getMessages().get(getMessageKey("description_lore"), "");
             if (description.contains("$path") && !descriptionTemplate.isEmpty()) {
-                String pathName = "Unknown";
-                if (path != null) {
-                    pathName = path.getName();
-                }
                 String description = ChatColor.translateAlternateColorCodes('&', this.description);
-                description = description.replace("$path", pathName);
+                description = description.replace("$path", pathName == null ? "Unknown" : pathName);
 				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), MAX_LORE_LENGTH, lore);
             }
             else if (description.contains("$")) {
@@ -2206,8 +2220,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 		String pathTemplate = getMessage("path_lore", "");
-		if (path != null && !pathTemplate.isEmpty()) {
-			lore.add(pathTemplate.replace("$path", path.getName()));
+		if (pathName != null && !pathTemplate.isEmpty()) {
+			lore.add(pathTemplate.replace("$path", pathName));
 		}
 
 		if (!isUpgrade) {
