@@ -127,6 +127,9 @@ spells:
   airglider:
     name: Air Glider
     description: Use your staff to ride the wind
+  bendingshop:
+    name: Bending Class
+    confirm_title: "Choose $item"
 
 paths:
     airbending:
@@ -140,3 +143,25 @@ paths:
     avatar:
         name: Avatar
         description: Master of all four elements
+
+classes:
+
+  airbender:
+    name: "Airbender"
+    description: "Master of air"
+
+  waterbender:
+    name: "Waterbender"
+    description: "Master of water"
+
+  earthbender:
+    name: "Earthbender"
+    description: "Master of earth"
+
+  firebender:
+    name: "Firebender"
+    description: "Master of fire"
+
+  avatar:
+    name: "Avatar"
+    description: "Master of all four elements"

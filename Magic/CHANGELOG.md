@@ -2,7 +2,10 @@
 
 ## 7.1
 
- - SkillAPI attribute parameters no longer use an underscore prefix
+ - SkillAPI attribute parameters no longer use an underscore prefix.
+   See: https://github.com/elBukkit/MagicPlugin/wiki/SkillAPI
+   
+ - Implement class chooser, used in bending configs
 
 ## 7.0.1
 

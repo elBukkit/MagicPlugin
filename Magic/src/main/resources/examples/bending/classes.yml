@@ -8,7 +8,7 @@ bender:
 
 waterbender:
   parent: bender
-  #locked: true
+  locked: true
   path: waterbending
   spells:
     - waterjet
@@ -16,7 +16,7 @@ waterbender:
 
 airbender:
   parent: bender
-  #locked: true
+  locked: true
   path: airbending
   spells:
     - airblast
@@ -25,7 +25,7 @@ airbender:
 
 firebender:
   parent: bender
-  #locked: true
+  locked: true
   path: firebending
   spells:
     - fire
@@ -33,7 +33,7 @@ firebender:
 
 earthbender:
   parent: bender
-  #locked: true
+  locked: true
   path: earthbending
   spells:
     - compression
@@ -45,7 +45,7 @@ avatar:
   mana_max: 500
   mana: 500
   parent: bender
-  #locked: true
+  locked: true
   limit_spells_to_path: false
   spells:
     - fling

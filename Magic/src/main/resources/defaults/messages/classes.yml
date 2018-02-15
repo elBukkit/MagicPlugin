@@ -1,0 +1,9 @@
+classes:
+
+  battle_mage:
+    name: "Battle Mage"
+    description: "A warrior who wields a magic sword"
+
+  mage:
+    name: "Mage"
+    description: "The ultimate spellcaster"

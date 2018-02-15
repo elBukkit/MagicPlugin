@@ -28,3 +28,18 @@ spells:
   backflip:
     name: Backflip
     description: Jump backwards to avoid attacks
+
+
+classes:
+
+  wizard:
+    name: "Wizard"
+    description: "Use wands to cast spells"
+
+  warrior:
+    name: "Warrior"
+    description: "Use powerful physical attacks"
+
+  rogue:
+    name: "Rogue"
+    description: "Stealth and subversion"

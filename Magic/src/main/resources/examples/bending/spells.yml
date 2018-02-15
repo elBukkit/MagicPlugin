@@ -624,21 +624,34 @@ spellshop:
     enabled: true
 
 bendingshop:
-  inherit: buyshop
-  cast_on_no_target: false
+  icon: sulphur
+  category: shop
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
   parameters:
-      items:
-      - item: airbending
-        cost: 5000
-      - item: waterbending
-        cost: 5000
-      - item: earthbending
-        cost: 5000
-      - item: firebending
-        cost: 5000
-      cooldown: 360000000
-      confirm: true
-      auto_close: true
-      confirm_filler: stained_glass:3
-      quiet: false
-      loud: true
+    options:
+    - unlock_class: airbender
+      item: airstaff
+      cost: 5000
+      icon: wood_hoe:34
+    - unlock_class: waterbender
+      item: airbending
+      cost: 5000
+      icon: wood_hoe:20
+    - unlock_class: earthbender
+      item: earthbending
+      cost: 5000
+      icon: wood_hoe:21
+    - unlock_class: firebender
+      item: firebending
+      cost: 5000
+      icon: wood_hoe:22
+    selected_message: "Became $name for $cost"
+    confirm: true
+    auto_close: true
+    confirm_filler: stained_glass:3
+    quiet: false
+    loud: true
+    limit: 1
