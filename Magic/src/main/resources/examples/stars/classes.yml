@@ -7,7 +7,7 @@ force_user:
 
 jedi:
   parent: force_user
-  #locked: true
+  locked: true
   path: youngling
   spells:
       - forcepush
@@ -15,7 +15,7 @@ jedi:
 
 sith:
   parent: force_user
-  #locked: true
+  locked: true
   path: acolyte
   spells:
       - forcepush

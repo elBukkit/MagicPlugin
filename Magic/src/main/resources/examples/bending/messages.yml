@@ -130,6 +130,7 @@ spells:
   bendingshop:
     name: Bending Class
     confirm_title: "Choose $item"
+    at_limit: "You have already chosen your element!"
 
 paths:
     airbending:

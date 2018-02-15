@@ -3,6 +3,47 @@
 #
 
 starshop:
+  icon: sulphur
+  category: shop
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    options:
+    - unlock_class: jedi
+      items:
+      - lightsaber_hilt
+      - nether_star@2
+      - stained_glass:3@2
+      - stained_glass:1@2
+      - stained_glass:2@2
+      - stained_glass:5@2
+      cost: 5000
+      limit: 1
+    - unlock_class: sith
+      items:
+      - lightsaber_hilt
+      - nether_star@2
+      - stained_glass:14@2
+      cost: 5000
+      limit: 1
+    - item: blaster_blue
+      cost: 1000
+    - item: blaster_green
+      cost: 1000
+    - item: blaster_red
+      cost: 1000
+    - item: detonator
+      cost: 100
+    selected_message: "Became $name for $cost"
+    confirm: true
+    auto_close: true
+    confirm_filler: stained_glass:3
+    quiet: false
+    loud: true
+
+starshopextra:
     icon: wood_hoe:14
     inherit: buyshop
     parameters:

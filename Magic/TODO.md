@@ -2,7 +2,9 @@
 
 ## Higher Priority
 
+ - Fix path-based lore on inactive wands 
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
+ - Spells drop on death with lag (maybe)?
 
 ## Suggestions
 

@@ -123,9 +123,6 @@ base_lightsaber:
              radius: 0.3
              particle: redstone
 
-lightsaber_hilt:
-    icon: wood_hoe:14
-
 lightsaber_green:
     inherit: base_lightsaber
     class: jedi

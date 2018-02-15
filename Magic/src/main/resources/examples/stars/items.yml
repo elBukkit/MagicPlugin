@@ -1,0 +1,16 @@
+lightsaber_hilt:
+  worth: 2000
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 14
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      Unbreakable: true
+      ItemFlags: !!set
+        HIDE_ATTRIBUTES: null
+        HIDE_UNBREAKABLE: null
+      display-name: §aLightsaber Hilt
+      lore:
+      - Used to construct a Lightsaber

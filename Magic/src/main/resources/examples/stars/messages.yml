@@ -79,9 +79,6 @@ wands:
     lightsaber_purple:
         name: Lighsaber
         description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
-    lightsaber_hilt:
-        name: Lighsaber Hilt
-        description: Used to construct a Lightsaber
 
 spells:
     forceignite:
@@ -120,6 +117,10 @@ spells:
     forcelightning:
       name: Force Lightning
       description: Shoot lightning from your fingertips
+    starshop:
+      name: Star Chooser
+      title: "Choose Your Path"
+      confirm_title: "Choose $item"
 
 classes:
 

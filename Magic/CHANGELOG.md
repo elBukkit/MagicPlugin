@@ -5,7 +5,11 @@
  - SkillAPI attribute parameters no longer use an underscore prefix.
    See: https://github.com/elBukkit/MagicPlugin/wiki/SkillAPI
    
- - Implement class chooser, used in bending configs
+ - Crafting recipes can now be added on the fly with /magic load
+   - They can not be modified or removed, however, due to Spigot/Mojang limitations.
+ - Implement class chooser, used in bending configs. Bending classes are now locked by default!
+ - Stars classes are now locked by default. Starshop unlocks classes and gives ingredients for crafting a saber
+ - Fix lightsaber crafting
 
 ## 7.0.1
 

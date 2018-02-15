@@ -15,3 +15,8 @@ This is a *very rough* approximation of where Magic is headed in future versions
 ## 7.3
 
  - Improved mob and spawner support
+
+## 8.0
+ 
+ - 1.13 support
+ - Depending on how much the API changes, it seems likely that this version will *not* be backwards compatible!
