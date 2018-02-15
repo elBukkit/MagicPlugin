@@ -28,7 +28,6 @@ public class SkillAPIManager implements ManaController {
         if (!(skillAPIPlugin instanceof SkillAPI)) return false;
 
         attributeManager = SkillAPI.getAttributeManager();
-        org.bukkit.Bukkit.getLogger().info("man: " + attributeManager);
 
         if (attributeManager == null) {
             owningPlugin.getLogger().warning("SkillAPI but but attributes are disabled");
