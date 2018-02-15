@@ -141,10 +141,13 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         return item == null ? Material.AIR : item.getType();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public MaterialData getMaterialData() {
         if (item == null) return null;
-        return item.getData();
+        MaterialData materialData = item.getData();
+        materialData.setData((byte)item.getDurability());
+        return materialData;
     }
 
     @Override
