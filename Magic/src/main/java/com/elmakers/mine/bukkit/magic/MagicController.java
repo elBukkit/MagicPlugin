@@ -809,8 +809,6 @@ public class MagicController implements MageController {
             if (skillAPIManager.initialize()) {
                 ParameterizedConfiguration.initializeAttributes(skillAPIManager.getAttributeKeys());
                 getLogger().info("Integrated with SkillAPI, attributes can be used in spell parameters." );
-                getLogger().info("Attributes must prefixed with a space and an underscore e.g.");
-                getLogger().info("   damage: 1 + 3 * _intelligence");
                 if (useSkillAPIMana) {
                     getLogger().info("SkillAPI mana will be used by spells and wands");
                 }
@@ -3527,6 +3525,11 @@ public class MagicController implements MageController {
         {
             loadWandTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
         }
+    }
+
+    @Override
+    public MageClassTemplate getMageClassTemplate(String key) {
+        return mageClasses.get(key);
     }
 
     @Override

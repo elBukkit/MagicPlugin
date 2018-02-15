@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -465,6 +466,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         if (parameters.length == 0) {
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage describe <property>" + ChatColor.BLUE + " for specific properties");
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage activate" + ChatColor.BLUE + " to change or clear the active class");
+            Collection<String> classKeys = mage.getClassKeys();
+            if (classKeys.size() > 0) {
+                sender.sendMessage(ChatColor.AQUA + "Classes: " + ChatColor.GREEN + StringUtils.join(classKeys, ","));
+            }
             if (activeClass != null) {
                 sender.sendMessage(ChatColor.AQUA + "Active class: " + ChatColor.GREEN + activeClass.getKey());
             } else {
