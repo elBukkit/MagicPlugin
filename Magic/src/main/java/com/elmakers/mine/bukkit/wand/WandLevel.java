@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import org.bukkit.configuration.ConfigurationSection;
@@ -129,10 +130,11 @@ public class WandLevel {
         return count;
     }
 
-    public LinkedList<WeightedPair<String>> getRemainingSpells(Wand wand) {
+    public LinkedList<WeightedPair<String>> getRemainingSpells(CasterProperties properties) {
+	    Collection<String> spells = properties.getSpells();
         LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<>();
         for (WeightedPair<String> spell : spellProbability) {
-            if (spell.getRawThreshold() >= 1 && !wand.hasSpell(spell.getValue())) {
+            if (spell.getRawThreshold() >= 1 && spells.contains(spell.getValue())) {
                 remainingSpells.add(spell);
             }
         }

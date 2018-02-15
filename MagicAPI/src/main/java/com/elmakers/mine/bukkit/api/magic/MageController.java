@@ -389,4 +389,5 @@ public interface MageController {
     void cleanItem(ItemStack itemStack);
 
     Set<String> getMageClassKeys();
+    MageClassTemplate getMageClassTemplate(String key);
 }

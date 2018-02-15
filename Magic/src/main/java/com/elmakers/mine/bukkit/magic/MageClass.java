@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.ChatColor;
@@ -115,6 +116,11 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
     }
 
     @Override
+    public Mage getMage() {
+        return mage;
+    }
+
+    @Override
     public boolean isPlayer() {
         return mageProperties.isPlayer();
     }
@@ -164,5 +170,14 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         if (activeWand != null) {
             activeWand.updated();
         }
+    }
+
+    @Override
+    public ProgressionPath getPath() {
+        String pathKey = getString("path");
+        if (pathKey == null || pathKey.length() == 0) {
+            pathKey = controller.getDefaultWandPath();
+        }
+        return controller.getPath(pathKey);
     }
 }

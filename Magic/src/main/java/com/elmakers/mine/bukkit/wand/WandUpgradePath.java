@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.wand;
 
 import com.elmakers.mine.bukkit.api.event.PathUpgradeEvent;
 import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -580,21 +581,23 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     }
 
     @Override
-    public boolean canEnchant(com.elmakers.mine.bukkit.api.wand.Wand apiWand) {
-        // First check to see if the path has more spells available
-        if (!(apiWand instanceof Wand)) return false;
-        Wand wand = (Wand)apiWand;
+    public boolean canProgress(CasterProperties properties) {
         if (levelMap == null) return false;
 
         WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
-        LinkedList<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(wand);
+        LinkedList<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(properties);
 
-        Mage mage = wand.getActiveMage();
+        Mage mage = properties.getMage();
         if (mage != null && mage.getDebugLevel() > 0) {
             mage.sendDebugMessage("Spells remaining: " + remainingSpells.size());
         }
 
         return (remainingSpells.size() > 0);
+    }
+
+    @Override
+    public boolean canEnchant(com.elmakers.mine.bukkit.api.wand.Wand apiWand) {
+        return canProgress(apiWand);
     }
 
     public boolean hasSpells() {

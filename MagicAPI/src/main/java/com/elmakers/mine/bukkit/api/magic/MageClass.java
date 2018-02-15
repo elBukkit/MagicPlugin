@@ -4,7 +4,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
 import java.util.Collection;
 
-public interface MageClass extends MagicConfigurable {
+public interface MageClass extends CasterProperties {
     Collection<String> getSpells();
     boolean addSpell(String spellKey);
     boolean addBrush(String brushKey);
@@ -12,4 +12,5 @@ public interface MageClass extends MagicConfigurable {
     boolean removeBrush(String brushKey);
     SpellTemplate getBaseSpell(String spellKey);
     String getKey();
+    ProgressionPath getPath();
 }

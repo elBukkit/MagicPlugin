@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -36,7 +37,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
  * via a tracked LostWand record, if the ItemStack can be found.
  *
  */
-public interface Wand extends CostReducer, MagicConfigurable  {
+public interface Wand extends CostReducer, CasterProperties {
     String getName();
     String getId();
     long getWorth();

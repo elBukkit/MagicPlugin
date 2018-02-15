@@ -989,6 +989,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public @Nonnull Collection<com.elmakers.mine.bukkit.api.magic.MageClass> getClasses() {
+       List<com.elmakers.mine.bukkit.api.magic.MageClass> mageClasses = new ArrayList<>();
+       mageClasses.addAll(classes.values());
+       return mageClasses;
+    }
+
+    @Override
+    public @Nonnull Collection<String> getClassKeys() {
+        return classes.keySet();
+    }
+
+    @Override
     public @Nullable MageClass getClass(@Nonnull String key) {
         return getClass(key, false);
     }
@@ -1004,6 +1016,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         return mageClass;
+    }
+
+    public boolean hasClassUnlocked(@Nonnull String key) {
+        return classes.containsKey(key);
     }
 
     private void assignParent(MageClass mageClass) {

@@ -24,6 +24,7 @@ public interface ProgressionPath {
     Collection<String> getExtraSpells();
     Collection<String> getRequiredSpells();
     boolean earnsSP();
+    boolean canProgress(CasterProperties properties);
 
     /**
      * Check to see if a specific spell is available on this exact path.

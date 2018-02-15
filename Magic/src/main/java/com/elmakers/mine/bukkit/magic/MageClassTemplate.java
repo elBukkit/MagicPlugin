@@ -8,10 +8,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class MageClassTemplate extends BaseMagicProperties {
+public class MageClassTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.magic.MageClassTemplate {
     private MageClassTemplate parent;
     private final String key;
     private boolean isLocked = false;
+    private String name;
+    private String description;
 
     public MageClassTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         super(controller);
@@ -30,6 +32,12 @@ public class MageClassTemplate extends BaseMagicProperties {
         clearProperty("hidden");
         clearProperty("enabled");
         clearProperty("inherit");
+
+        name = controller.getMessages().get("classes." + key + ".name", "");
+        description = controller.getMessages().get("classes." + key + ".description", "");
+
+        name = configuration.getString("name", name);
+        description = configuration.getString("description", description);
     }
 
     public @Nonnull String getKey() {
@@ -50,5 +58,15 @@ public class MageClassTemplate extends BaseMagicProperties {
 
     public boolean isLocked() {
         return isLocked;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 }

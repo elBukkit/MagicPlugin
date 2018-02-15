@@ -45,4 +45,9 @@ public class MageProperties extends CasterProperties {
     public Player getPlayer() {
         return mage.getPlayer();
     }
+    
+    @Override
+    public Mage getMage() {
+        return mage;
+    }
 }

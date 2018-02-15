@@ -489,9 +489,12 @@ public interface Mage extends CostReducer {
     boolean isBlocked(double angle);
     int getLastHeldMapId();
     float getSPMultiplier();
+    @Nonnull Collection<MageClass> getClasses();
+    @Nonnull Collection<String> getClassKeys();
     @Nullable MageClass getActiveClass();
     @Nullable MageClass unlockClass(@Nonnull String key);
     @Nullable MageClass getClass(@Nonnull String key);
+    boolean hasClassUnlocked(@Nonnull String key);
 
     // Vault integration
     double getVaultBalance();

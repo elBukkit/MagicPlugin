@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class CasterProperties extends BaseMagicConfigurable {
+public abstract class CasterProperties extends BaseMagicConfigurable implements com.elmakers.mine.bukkit.api.magic.CasterProperties {
     protected int effectiveManaMax = 0;
     protected int effectiveManaRegeneration = 0;
 
@@ -195,7 +195,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
 
     @Override
     public boolean addSpell(String spellKey) {
-        Set<String> spells = getSpells();
+        Collection<String> spells = getSpells();
         SpellKey key = new SpellKey(spellKey);
         boolean modified = spells.add(key.getBaseKey());
         if (modified) {
@@ -211,7 +211,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
 
     @Override
     public boolean addBrush(String brushKey) {
-        Set<String> brushes = getBrushes();
+        Collection<String> brushes = getBrushes();
         boolean modified = brushes.add(brushKey);
         if (modified) {
             setProperty("brushes", new ArrayList<>(brushes));
@@ -221,7 +221,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
     }
 
     public boolean removeSpell(String spellKey) {
-        Set<String> spells = getSpells();
+        Collection<String> spells = getSpells();
         SpellKey key = new SpellKey(spellKey);
         boolean modified = spells.remove(key.getBaseKey());
         if (modified) {
@@ -236,7 +236,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
     }
 
     public boolean removeBrush(String brushKey) {
-        Set<String> brushes = getBrushes();
+        Collection<String> brushes = getBrushes();
         boolean modified = brushes.remove(brushKey);
         if (modified) {
             setProperty("brushes", new ArrayList<>(brushes));
@@ -253,7 +253,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
 
     public SpellTemplate getBaseSpell(String spellKey) {
         SpellKey key = new SpellKey(spellKey);
-        Set<String> spells = getSpells();
+        Collection<String> spells = getSpells();
         if (!spells.contains(key.getBaseKey())) return null;
         SpellKey baseKey = new SpellKey(key.getBaseKey(), getSpellLevel(key.getBaseKey()));
         return controller.getSpellTemplate(baseKey.getKey());
@@ -263,7 +263,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
 
     }
 
-    public Set<String> getSpells() {
+    @Override
+    public boolean hasSpell(String spellKey) {
+        return getSpells().contains(spellKey);
+    }
+
+    @Override
+    public Collection<String> getSpells() {
         Object existingSpells = getObject("spells");
         Set<String> spells = new HashSet<>();
         if (existingSpells != null) {
@@ -278,7 +284,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
         return spells;
     }
 
-    public Set<String> getBrushes() {
+    public Collection<String> getBrushes() {
          Object existingBrushes = getObject("brushes");
         Set<String> brushes = new HashSet<>();
         if (existingBrushes != null) {
@@ -295,4 +301,5 @@ public abstract class CasterProperties extends BaseMagicConfigurable {
 
     public abstract boolean isPlayer();
     public abstract Player getPlayer();
+    public abstract Mage getMage();
 }
