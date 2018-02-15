@@ -1076,9 +1076,6 @@ public class MagicController implements MageController {
             getMage(player);
         }
 
-        // Register crafting recipes
-        crafting.register(plugin);
-
         // Set up Break/Build/PVP Managers
         blockBreakManagers.clear();
         blockBuildManagers.clear();
@@ -1578,6 +1575,10 @@ public class MagicController implements MageController {
         if (!initialized) {
             finalizeIntegration();
         }
+
+        // Register crafting recipes
+        crafting.register(plugin);
+        MagicRecipe.FIRST_REGISTER = false;
         
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);

@@ -37,6 +37,8 @@ public class MagicRecipe {
     private final MagicController controller;
     private final String key;
 
+    public static boolean FIRST_REGISTER = true;
+
     public MagicRecipe(String key, MagicController controller) {
         this.key = key;
         this.controller = controller;
@@ -120,22 +122,32 @@ public class MagicRecipe {
 
     public void register(Plugin plugin)
     {
-        if (disableDefaultRecipe)
-        {
-            Iterator<Recipe> it = plugin.getServer().recipeIterator();
-            while (it.hasNext())
+        // I think we can only do this once..
+        if (FIRST_REGISTER) {
+            if (disableDefaultRecipe)
             {
-                Recipe defaultRecipe = it.next();
-                if (defaultRecipe != null && defaultRecipe.getResult().getType() == outputType && defaultRecipe.getResult().getDurability() == 0)
+                Iterator<Recipe> it = plugin.getServer().recipeIterator();
+                while (it.hasNext())
                 {
-                    plugin.getLogger().info("Disabled default crafting recipe for " + outputType);
-                    it.remove();
+                    Recipe defaultRecipe = it.next();
+                    if (defaultRecipe != null && defaultRecipe.getResult().getType() == outputType && defaultRecipe.getResult().getDurability() == 0)
+                    {
+                        plugin.getLogger().info("Disabled default crafting recipe for " + outputType);
+                        it.remove();
+                    }
                 }
             }
         }
         // Add our custom recipe if crafting is enabled
         if (recipe != null)
         {
+            if (!FIRST_REGISTER) {
+               List<Recipe> existing = plugin.getServer().getRecipesFor(craft());
+                if (existing.size() > 0) {
+                    return;
+                }
+            }
+
             plugin.getLogger().info("Adding crafting recipe for " + outputKey);
             try {
                 plugin.getServer().addRecipe(recipe);
