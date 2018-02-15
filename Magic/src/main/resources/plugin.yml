@@ -997,7 +997,7 @@ permissions:
     description: Player may toggle debug
     type: boolean
     default: op
-  Magic.commands.mage.delete:
+  Magic.commands.mage.reset:
     description: Player may delete player data
     type: boolean
     default: op

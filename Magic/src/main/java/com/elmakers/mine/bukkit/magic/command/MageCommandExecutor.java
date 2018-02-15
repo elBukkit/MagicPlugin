@@ -239,9 +239,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         } else {
             Mage mage = api.getMage(player);
             if (mage.removeClass(args[0])) {
-                sender.sendMessage(ChatColor.RED + "Reset class " + args[0] + " for player " + player.getName());
+                sender.sendMessage(ChatColor.RED + "Reset " + ChatColor.GOLD + "class " + args[0] + " for player " + player.getName());
             } else {
-                sender.sendMessage(ChatColor.RED + "player " + player.getName() + " does not have class " + args[0] + " unlocked");
+                sender.sendMessage(ChatColor.RED + "Player " + player.getName() + " does not have class " + args[0] + " unlocked");
             }
         }
         return true;
