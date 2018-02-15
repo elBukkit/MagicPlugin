@@ -198,6 +198,7 @@ public class MagicRecipe {
         return item;
     }
 
+    @SuppressWarnings("deprecation")
     public MatchType getMatchType(ItemStack[] matrix) {
         if (recipe == null || matrix.length < 9) return MatchType.NONE;
         boolean rows[] = new boolean[3];
@@ -253,6 +254,9 @@ public class MagicRecipe {
                 if (item == null && ingredient != null) return MatchType.NONE;
                 if (ingredient == null && item != null) return MatchType.NONE;
                 if (ingredient.getType() != item.getType()) {
+                    return MatchType.NONE;
+                }
+                if (ingredient.getDurability() != item.getMaterialData().getData()) {
                     return MatchType.NONE;
                 }
                 ItemMeta meta = item.getItemMeta();
