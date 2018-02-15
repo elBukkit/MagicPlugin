@@ -22,7 +22,6 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -52,7 +51,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
     protected CastContext context;
     private Map<Integer, SelectorOption> showingItems;
     private int numSlots;
-    private int limit = 0;
     private int has = 0;
     private String title;
     private String confirmTitle;
@@ -63,7 +61,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
     protected class SelectorConfiguration {
         protected @Nonnull ItemStack icon;
-        protected @Nullable ItemStack item;
+        protected @Nullable List<ItemStack> items;
         protected @Nullable List<Cost> costs = null;
         protected @Nullable String permissionNode = null;
         protected @Nullable String requiredPath = null;
@@ -78,6 +76,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         protected int experience;
         protected int sp;
         protected int currency = 0;
+        protected int limit = 0;
 
         public SelectorConfiguration(ConfigurationSection configuration) {
             parse(configuration);
@@ -99,15 +98,28 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             currency = configuration.getInt("currency", currency);
             experience = configuration.getInt("experience", experience);
             sp = configuration.getInt("sp", sp);
+            limit = configuration.getInt("limit", limit);
             selectedMessage = configuration.getString("selected_message", selectedMessage);
             if (selectedMessage == null) {
                selectedMessage = context.getMessage("deducted", getDefaultMessage(context, "deducted"));
             }
-
-            item = parseItem(configuration.getString("item"));
+            if (configuration.contains("item")) {
+                items = new ArrayList<>();
+                ItemStack item = parseItem(configuration.getString("item"));
+                items.add(item);
+            }
+            if (configuration.contains("items")) {
+                List<String> itemList = configuration.getStringList("items");
+                if (itemList.size() > 0) {
+                    items = new ArrayList<>();
+                    for (String itemKey : itemList) {
+                        items.add(parseItem(itemKey));
+                    }
+                }
+            }
             icon = parseItem(configuration.getString("icon"));
-            if (icon == null) {
-                icon = item;
+            if (icon == null && items != null) {
+                icon = InventoryUtils.getCopy(items.get(0));
             }
             if (icon == null && castSpell != null && !castSpell.isEmpty()) {
                 SpellTemplate spellTemplate = context.getController().getSpellTemplate(castSpell);
@@ -144,6 +156,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
 
             return costs;
+        }
+
+        public boolean hasLimit() {
+            return limit > 0;
         }
 
         public boolean has(CastContext context) {
@@ -237,6 +253,14 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 }
             }
 
+            if (limit > 0 && has >= limit) {
+                if (!quiet) {
+                    String limitMessage = context.getMessage("at_limit", getDefaultMessage(context, "at_limit")).replace("$limit", Integer.toString(limit));
+                    context.showMessage(limitMessage);
+                }
+                return SpellResult.NO_TARGET;
+            }
+
             return SpellResult.CAST;
         }
     }
@@ -250,7 +274,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             super();
 
             this.selectedMessage = defaults.selectedMessage;
-            this.item = defaults.item;
+            this.items = defaults.items;
             this.permissionNode = defaults.permissionNode;
             this.costs = defaults.costs;
             this.requiredPath = defaults.requiredPath;
@@ -264,6 +288,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             this.currency = defaults.currency;
             this.sp = defaults.sp;
             this.experience = defaults.experience;
+            this.limit = defaults.limit;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : null;
 
             parse(configuration);
@@ -282,23 +307,25 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
             MageController controller = context.getController();
             name = configuration.getString("name", "");
-            if (name.isEmpty() && item != null) {
-                name = controller.describeItem(item);
-            } else if (castSpell != null && !castSpell.isEmpty()) {
-                SpellTemplate spell = controller.getSpellTemplate(castSpell);
-                name = context.getMessage("cast_spell", getDefaultMessage(context, "cast_spell"));
-                if (spell != null) {
-                    name = name.replace("$spell", spell.getName());
-                } else {
-                    controller.getLogger().warning("Unknown spell in selector config: " + castSpell);
-                }
-            } else if (unlockClass != null && !unlockClass.isEmpty()) {
+            if (name.isEmpty() && unlockClass != null && !unlockClass.isEmpty()) {
                 MageClassTemplate mageClass = controller.getMageClassTemplate(unlockClass);
                 name = context.getMessage("unlock_class", getDefaultMessage(context, "unlock_class"));
                 if (mageClass != null) {
                     name = name.replace("$class", mageClass.getName());
                 } else {
                     controller.getLogger().warning("Unknown class in selector config: " + unlockClass);
+                }
+            }
+            if (name.isEmpty() && items != null) {
+                name = controller.describeItem(items.get(0));
+            }
+            if (name.isEmpty() && castSpell != null && !castSpell.isEmpty()) {
+                SpellTemplate spell = controller.getSpellTemplate(castSpell);
+                name = context.getMessage("cast_spell", getDefaultMessage(context, "cast_spell"));
+                if (spell != null) {
+                    name = name.replace("$spell", spell.getName());
+                } else {
+                    controller.getLogger().warning("Unknown spell in selector config: " + castSpell);
                 }
             }
 
@@ -328,6 +355,14 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 for (Cost cost : costs) {
                     lore.add(costString.replace("$cost", cost.getFullDescription(context.getController().getMessages(), reducer)));
                 }
+            }
+
+            String description = configuration.getString("description");
+            if (description != null && !description.isEmpty()) {
+                if (lore == null) {
+                    lore = new ArrayList<>();
+                }
+                lore.add(0, description);
             }
 
             // Prepare icon
@@ -390,20 +425,25 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                     context.showMessage("no_wand", getDefaultMessage(context, "no_wand"));
                     return SpellResult.NO_TARGET;
                 }
-                if (applyToWand && !wand.addItem(item)) {
-                    String inapplicable = context.getMessage("not_applicable", getDefaultMessage(context, "not_applicable")).replace("$item", name);
-                    context.showMessage(inapplicable);
-                    return SpellResult.NO_TARGET;
+                if (applyToWand && items != null) {
+                    boolean anyApplied = false;
+                    for (ItemStack item : items) {
+                        anyApplied = wand.addItem(item) || anyApplied;
+                    }
+                    if (!anyApplied) {
+                        String inapplicable = context.getMessage("not_applicable", getDefaultMessage(context, "not_applicable")).replace("$item", name);
+                        context.showMessage(inapplicable);
+                        return SpellResult.NO_TARGET;
+                    }
                 }
             }
 
             MageController controller = context.getController();
             if (castSpell != null && !castSpell.isEmpty()) {
                 Spell spell = null;
-                String spellKey = controller.getSpell(item);
-                String spellArgs = controller.getSpellArgs(item);
-                spell = mage.getSpell(spellKey);
-                if (spell != null && (spellArgs != null ? !spell.cast(StringUtils.split(spellArgs, ' ')) : !spell.cast())) {
+                spell = mage.getSpell(castSpell);
+                // TODO: Arg support? Target clicker?
+                if (spell == null || !spell.cast()) {
                     context.showMessage("cast_fail", getDefaultMessage(context, "cast_fail"));
                     return SpellResult.NO_TARGET;
                 }
@@ -416,9 +456,11 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 mage.addSkillPoints(sp);
             }
 
-            if (item != null && !applyToWand) {
-                ItemStack copy = InventoryUtils.getCopy(item);
-                mage.giveItem(copy);
+            if (items != null && !applyToWand) {
+                for (ItemStack item : items) {
+                    ItemStack copy = InventoryUtils.getCopy(item);
+                    mage.giveItem(copy);
+                }
             }
 
             if (experience != 0) {
@@ -573,7 +615,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         autoClose = parameters.getBoolean("auto_close", true);
         costScale = parameters.getDouble("scale", 1);
         title = parameters.getString("title");
-        limit = parameters.getInt("limit");
         confirmTitle = parameters.getString("confirm_title");
         if (!autoClose) {
             showConfirmation = false;
@@ -584,19 +625,25 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         numSlots = 0;
         showingItems = new HashMap<>();
         has = 0;
-        Collection<ConfigurationSection> options = ConfigurationUtils.getNodeList(parameters, "options");
-        if (options != null) {
-            for (ConfigurationSection option : options) {
+        Collection<ConfigurationSection> optionConfigs = ConfigurationUtils.getNodeList(parameters, "options");
+        if (optionConfigs != null) {
+            // Gather list of selector options first, to compute limits
+            List<SelectorOption> options = new ArrayList<>();
+
+            for (ConfigurationSection option : optionConfigs) {
                 SelectorOption newOption = new SelectorOption(defaultConfiguration, option, this);
-                if (newOption.has(context)) {
+                if (newOption.hasLimit() && newOption.has(context)) {
                     has++;
                 }
-                if (!newOption.checkContext(context, true).isSuccess()) {
+                options.add(newOption);
+            }
+            for (SelectorOption option : options) {
+                if (!option.checkContext(context, true).isSuccess()) {
                     continue;
                 }
-                Integer targetSlot = newOption.getSlot();
+                Integer targetSlot = option.getSlot();
                 int slot = targetSlot == null ? numSlots : targetSlot;
-                showingItems.put(slot, newOption);
+                showingItems.put(slot, option);
                 numSlots = Math.max(slot + 1, numSlots);
             }
         }
@@ -691,11 +738,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         }
         if (finalResult != null) {
             return finalResult;
-        }
-        if (limit > 0 && has >= limit) {
-            String limitMessage = context.getMessage("at_limit", getDefaultMessage(context, "at_limit")).replace("$limit", Integer.toString(limit));
-            context.showMessage(limitMessage);
-            return SpellResult.NO_TARGET;
         }
         SpellResult contextResult = checkContext(context);
         if (!contextResult.isSuccess()) {
