@@ -131,10 +131,9 @@ public class WandLevel {
     }
 
     public LinkedList<WeightedPair<String>> getRemainingSpells(CasterProperties properties) {
-	    Collection<String> spells = properties.getSpells();
         LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<>();
         for (WeightedPair<String> spell : spellProbability) {
-            if (spell.getRawThreshold() >= 1 && !spells.contains(spell.getValue())) {
+            if (spell.getRawThreshold() >= 1 && !properties.hasSpell(spell.getValue())) {
                 remainingSpells.add(spell);
             }
         }

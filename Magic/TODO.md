@@ -2,6 +2,8 @@
 
 ## Higher Priority
 
+ - Engineer shop broken ... /wand enchant XX broken ... only on elWorld??
+
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
  - Spells drop on death with lag (maybe)?
 

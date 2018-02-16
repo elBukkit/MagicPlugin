@@ -11,6 +11,7 @@ This is a *very rough* approximation of where Magic is headed in future versions
 
  - First draft of RPG-style configs with a variety of classes to choose from
  - Players may choose one class, and then add more classes as they max out (up to some limit)
+ - Internal attribute system
  
 ## 7.3
 
