@@ -19,6 +19,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -69,8 +70,10 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private boolean matchSpellMana = true;
 
     private int maxUses = 500;
-    private int maxMaxMana = 1500;
-    private int maxManaRegeneration = 150;
+    private int maxMaxMana = 0;
+    private int maxManaRegeneration = 0;
+    private int maxMana = 0;
+    private int manaRegeneration = 0;
     private float maxDamageReduction = 0.4f;
     private float maxDamageReductionExplosions = 0.3f;
     private float maxDamageReductionFalling = 0.9f;
@@ -107,6 +110,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.levelMap = new TreeMap<>(inherit.levelMap);
         this.icon = inherit.icon;
         this.migrateIcon = inherit.migrateIcon;
+        this.maxMana = inherit.maxMana;
+        this.manaRegeneration = inherit.manaRegeneration;
         effects.putAll(inherit.effects);
         allRequiredSpells.addAll(inherit.allRequiredSpells);
         allSpells.addAll(inherit.allSpells);
@@ -210,6 +215,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         maxUses = template.getInt("max_uses", maxUses);
         maxMaxMana = template.getInt("max_mana", maxMaxMana);
         maxManaRegeneration = template.getInt("max_mana_regeneration", maxManaRegeneration);
+        maxMana = template.getInt("mana_max", maxMana);
+        manaRegeneration = template.getInt("mana_regeneration", manaRegeneration);
 
         minLevel = template.getInt("min_enchant_level", minLevel);
         maxLevel = template.getInt("max_enchant_level", maxLevel);
@@ -511,12 +518,19 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public void checkMigration(com.elmakers.mine.bukkit.api.wand.Wand wand) {
-        if (icon != null && migrateIcon != null && migrateIcon.equals(wand.getIcon()))
-        {
+        if (icon != null && migrateIcon != null && migrateIcon.equals(wand.getIcon())) {
             wand.setIcon(icon);
-        }
-        else if (parent != null) {
+        } else if (parent != null) {
             parent.checkMigration(wand);
+        }
+
+        int manaRegeneration = wand.getManaRegeneration();
+        if (this.manaRegeneration > 0 && maxManaRegeneration == 0 && this.manaRegeneration  > manaRegeneration) {
+            wand.setManaRegeneration(this.manaRegeneration);
+        }
+        int manaMax = wand.getManaMax();
+        if (this.maxMana > 0 && maxMaxMana == 0 && this.maxMaxMana > manaMax) {
+            wand.setManaMax(this.maxMana);
         }
     }
 
@@ -695,9 +709,30 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return pathKey;
     }
 
+    protected void upgradeTo(com.elmakers.mine.bukkit.api.wand.Wand wand) {
+        wand.setPath(getKey());
+
+        boolean addedProperties = false;
+        ConfigurationSection wandProperties = new MemoryConfiguration();
+        int manaRegeneration = wand.getManaRegeneration();
+        if (this.manaRegeneration > 0 && maxManaRegeneration == 0 && this.manaRegeneration  > manaRegeneration) {
+            addedProperties = true;
+            wandProperties.set("mana_regeneration", this.manaRegeneration);
+        }
+        int manaMax = wand.getManaMax();
+        if (this.maxMana > 0 && maxMaxMana == 0 && this.maxMana > manaMax) {
+            addedProperties = true;
+            wandProperties.set("mana_max", this.maxMana);
+        }
+
+        if (addedProperties) {
+            wand.upgrade(wandProperties);
+        }
+    }
+
     @Override
     public void upgrade(com.elmakers.mine.bukkit.api.wand.Wand wand, com.elmakers.mine.bukkit.api.magic.Mage mage) {
-        com.elmakers.mine.bukkit.api.wand.WandUpgradePath newPath = getUpgrade();
+        WandUpgradePath newPath = getUpgrade();
         if (newPath == null) {
             if (mage != null) mage.sendMessage("Configuration issue, please check logs");
             wand.getController().getLogger().warning("Invalid upgrade path: " + this.getUpgrade());
@@ -715,7 +750,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 wand.setIcon(newIcon);
             }
         }
-        wand.setPath(newPath.getKey());
+        newPath.upgradeTo(wand);
 
         // Don't do events without a mage
         if(mage == null) {

@@ -38,23 +38,8 @@ beginner:
     upgrade: student
     upgrade_item: student_upgrade
     inherit: default
-    # The limit for mana progression on this path
-    max_mana: 100
-    max_mana_regeneration: 10
     # For the old randomized enchanting system, a wand will gain 1 spell per enchant
     spell_count: 1
-    # Wands have a chance of gaining 1 or 2 mana regen points per spell
-    # Note that relative probability don't need to sum to 100%. Bigger numbers just mean that option is more likely.
-    mana_regeneration:
-      1: 100
-      2: 20
-    # Wands gain some amount of max mana
-    mana_max:
-      1: 100
-      2: 80
-      3: 70
-      4: 50
-      5: 10
     # These are spells that are optional, appear in the spell shop but are not required for progression.
     extra_spells:
       - flare
@@ -89,20 +74,9 @@ student:
     upgrade: apprentice
     upgrade_item: apprentice_upgrade
     inherit: beginner
-    property_count:
-      0: 100
-      1: 50
-      2: 10
-    max_mana_regeneration: 30
-    mana_regeneration:
-      1: 100
-      2: 30
-      3: 10
-    max_mana: 150
-    mana_max:
-      5: 100
-      7: 20
-      10: 5
+    # Mana will be upgraded when ranking up
+    mana_regeneration: 30
+    mana_max: 150
     extra_spells:
       - familiar
       - monster
@@ -139,8 +113,8 @@ apprentice:
     upgrade: master
     upgrade_item: master_upgrade
     inherit: student
-    max_mana_regeneration: 40
-    max_mana: 200
+    mana_regeneration: 40
+    mana_max: 200
     extra_spells:
       - emp
       - music
@@ -183,18 +157,8 @@ master:
     upgrade: engineer
     upgrade_item: engineer_upgrade
     inherit: apprentice
-    max_mana_regeneration: 50
-    mana_regeneration:
-      1: 100
-      2: 60
-      3: 30
-      5: 10
-    max_mana: 250
-    mana_max:
-      5:  100
-      10: 60
-      15: 20
-      20: 5
+    mana_regeneration: 50
+    mana_max: 250
     extra_spells:
       - mount
       - cage
@@ -245,13 +209,8 @@ engineer:
     upgrade: architect
     upgrade_item: architect_upgrade
     inherit: master
-    max_mana_regeneration: 55
-    max_mana: 300
-    mana_max:
-      5: 100
-      8: 50
-      10: 20
-      15: 10
+    mana_regeneration: 55
+    mana_max: 300
     spells:
       - rollback
       - alter
@@ -294,8 +253,8 @@ architect:
       - backup
     upgrade: conduit
     upgrade_item: conduit_upgrade
-    max_mana_regeneration: 60
-    max_mana: 400
+    mana_regeneration: 60
+    mana_max: 400
     extra_spells:
       - projector
     spells:

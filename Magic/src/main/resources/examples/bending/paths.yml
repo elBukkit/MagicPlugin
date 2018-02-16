@@ -5,10 +5,6 @@
 default:
   match_spell_mana: false
   hidden: true
-  mana_regeneration: 4
-  mana_max: 20
-  max_mana: 200
-  max_mana_regeneration: 20
   spell_count: 1
   upgrade_commands:
     - broadcast §6@pd §3has progressed to §b$path§3!
@@ -35,6 +31,10 @@ default:
          size: 3
 
 airbending:
+    mana_regeneration: 4
+    mana_max: 20
+    max_mana: 200
+    max_mana_regeneration: 20
     inherit: default
     spells:
       - airblast
@@ -47,6 +47,10 @@ airbending:
       - tornado
 
 waterbending:
+    mana_regeneration: 4
+    mana_max: 20
+    max_mana: 200
+    max_mana_regeneration: 20
     inherit: default
     spells:
       - breathofice
@@ -59,6 +63,10 @@ waterbending:
       - iceshield
 
 earthbending:
+    mana_regeneration: 4
+    mana_max: 20
+    max_mana: 200
+    max_mana_regeneration: 20
     inherit: default
     spells:
       - earthblock
@@ -71,6 +79,10 @@ earthbending:
       - earthline
 
 firebending:
+    mana_regeneration: 4
+    mana_max: 20
+    max_mana: 200
+    max_mana_regeneration: 20
     inherit: default
     spells:
       - fireball

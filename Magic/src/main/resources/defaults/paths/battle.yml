@@ -13,10 +13,6 @@ battle:
     upgrade_item: squire_upgrade
     follows: beginner
     inherit: default
-    max_mana_regeneration: 10
-    max_mana: 100
-    mana_regeneration: 1
-    mana_max: 2
     spell_count: 1
     spells:
       - missile
@@ -37,10 +33,8 @@ squire:
     upgrade_item: soldier_upgrade
     follows: student
     inherit: battle
-    max_mana_regeneration: 30
-    max_mana: 150
-    mana_regeneration: 1
-    mana_max: 2
+    mana_regeneration: 30
+    mana_max: 150
     spells:
       - arrowrain
       - boom
@@ -62,10 +56,8 @@ soldier:
     upgrade_item: knight_upgrade
     inherit: squire
     follows: apprentice
-    max_mana_regeneration: 40
-    max_mana: 200
-    mana_regeneration: 1
-    mana_max: 2
+    mana_regeneration: 40
+    mana_max: 200
     spells:
       - breach
       - disintegrate
@@ -86,10 +78,8 @@ soldier:
 knight:
     inherit: soldier
     follows: master
-    max_mana_regeneration: 50
-    max_mana: 250
-    mana_regeneration: 1
-    mana_max: 2
+    mana_regeneration: 50
+    mana_max: 250
     spells:
       - cluster
       - bomb

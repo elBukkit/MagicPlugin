@@ -4,6 +4,9 @@
 
  - Protection progression removed from wands.
    Old wands will still have protection on them if they earned it.
+   
+ - Mana progression changed to only happen on rank up
+ - Fix ranking up (was only happening after getting all spells then using an enchant table again)
 
  - SkillAPI attribute parameters no longer use an underscore prefix.
    See: https://github.com/elBukkit/MagicPlugin/wiki/SkillAPI

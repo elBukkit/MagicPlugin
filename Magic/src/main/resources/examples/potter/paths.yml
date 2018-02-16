@@ -6,8 +6,6 @@
 default:
   match_spell_mana: false
   hidden: true
-  max_mana: 50
-  max_mana_regeneration: 5
   spell_count: 1
   upgrade_commands:
     - broadcast §6@pd §3has graduated to §b$path§3!

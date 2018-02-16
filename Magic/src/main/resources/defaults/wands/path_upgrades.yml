@@ -8,31 +8,23 @@ student_upgrade:
     hidden: true
     indestructible: false
     hotbar_count: 2
-    mana_max: 100
-    mana_regeneration: 10
 apprentice_upgrade:
     icon: wood_hoe:3
     upgrade: true
     hidden: true
     indestructible: false
     hotbar_count: 2
-    mana_max: 150
-    mana_regeneration: 30
 master_upgrade:
     icon: wood_hoe:4
     upgrade: true
     hidden: true
     indestructible: false
-    mana_max: 200
-    mana_regeneration: 40
     hotbar_count: 3
 engineer_upgrade:
     icon: wood_hoe:5
     upgrade: true
     hidden: true
     indestructible: false
-    mana_max: 250
-    mana_regeneration: 50
     spells:
     - brushselect
     - place
@@ -44,8 +36,6 @@ architect_upgrade:
     upgrade: true
     hidden: true
     indestructible: false
-    mana_max: 350
-    mana_regeneration: 70
 conduit_upgrade:
     icon: wood_hoe:6
     upgrade: true
@@ -58,19 +48,13 @@ squire_upgrade:
     hidden: true
     indestructible: false
     hotbar_count: 2
-    mana_max: 100
-    mana_regeneration: 10
 soldier_upgrade:
     upgrade: true
     hidden: true
     indestructible: false
     hotbar_count: 2
-    mana_max: 150
-    mana_regeneration: 30
 knight_upgrade:
     upgrade: true
     hidden: true
     indestructible: false
-    mana_max: 200
-    mana_regeneration: 40
     hotbar_count: 3
