@@ -4406,7 +4406,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, template);
                 Bukkit.getPluginManager().callEvent(upgradeEvent);
             } else {
-                sendAddMessage("spell_added", template.getName());
+            	// This is a little hacky, but it is here to fix duplicate spell messages from the spellshop.
+            	if (mage.getActiveGUI() == null)
+                	sendAddMessage("spell_added", template.getName());
 
                 AddSpellEvent addEvent = new AddSpellEvent(mage, this, template);
                 Bukkit.getPluginManager().callEvent(addEvent);
