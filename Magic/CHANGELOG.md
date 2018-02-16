@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 7.2
+
 ## 7.1
 
  - Protection progression removed from wands.
