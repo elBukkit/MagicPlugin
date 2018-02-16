@@ -35,14 +35,14 @@ wand:
     material_count: Has $count Materials
     upgrade_spell_count: Adds $count Spells
     upgrade_material_count: Adds $count Materials
-    mana_max: "Mana: $amount"
-    mana_amount: "&d&oMana: $amount"
-    mana_amount_boosted: "&d&oMana: $amount &f(&b$mana&f)"
-    mana_regeneration: "&d&oMana Regeneration: $amount/s"
-    mana_per_damage: "&4&oMana Rage: $amount/HP"
-    mana_regeneration_boosted: "&d&oMana Regeneration: $amount &f(&b$mana&f)&d/s"
-    mana_boost: "&d&oMana Boost: $amount%"
-    mana_regeneration_boost: "&d&oMana Regeneration Boost: $amount%"
+    mana_max: "&eMana: $amount"
+    mana_amount: "&eMana: $amount"
+    mana_amount_boosted: "&eMana: $amount &f(&b$mana&f)"
+    mana_regeneration: "&eMana Regeneration: $amount/s"
+    mana_per_damage: "&eMana Rage: $amount/HP"
+    mana_regeneration_boosted: "&eMana Regeneration: $amount &f(&b$mana&f)&d/s"
+    mana_boost: "&eMana Boost: $amount%"
+    mana_regeneration_boost: "&eMana Regeneration Boost: $amount%"
     sp_multiplier: "&6SP Earn Boost: $amount%"
     block_chance: "&bBlocking $roman"
     reflect_chance: "&bReflective $roman"
@@ -69,14 +69,14 @@ wand:
     player_unmodifiable: $name's wand can not be modified
     bound_to_other: That wand is not bound to you
     bound: That wand is bound to $name
-    spell_added: "The &r&6$name &d&ospell has been added to your $wand"
-    brush_added: "The &r&7$name &d&obrush has been added to your $wand"
+    spell_added: "You have learned the &r&6$name &d&ospell"
+    brush_added: "You have learned the &r&7$name &d&obrush"
     player_spell_upgraded: "$players's &r&6$name &d&ohas been upgraded to &3$level"
     spell_upgraded: "&r&6$name &d&ohas been upgraded to &3$level"
     spell_override_upgraded: "&r&6$name &d&ohas been upgraded"
-    upgraded_property: "&r&dYour $wand has been upgraded to &r&b$name"
+    upgraded_property: "&r&dYou have been upgraded to &r&b$name"
     spell_progression: "&r&6$name &d&ohas progressed to &3$level&d&o/&3$max_level"
-    mana_added: "&r&dYour $wand now has $value mana"
+    mana_added: "&r&dYou now have $value mana"
     hotbar_count: "$amount hotbars"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
@@ -95,7 +95,7 @@ wand:
     player_unenchanted: $name's wand has been turned into a normal item
     no_path: "&r&4Your $wand can not be enchanted"
     max_enchanted: "&r&4Your $wand can not be enchanted any further"
-    level_up: "&r&bYour $wand has been upgraded to &r&5$path"
+    level_up: "&r&bYou have progressed to to &r&5$path"
     duplicated: Your wand has been duplicated
     player_duplicated: $name's wand has been duplicated
     restored: Your wands have been restored
@@ -126,7 +126,7 @@ wand:
     self_destruct: The ancient artifact crumbles in your hands
     no_permission: "&r&4You may not use that $wand &r&4here."
     single_spell: Wand of $spell
-    fully_enchanted: "&cThis $wand is fully enchanted &4(for now)"
+    fully_enchanted: "&cYou cannot progress any further &4(for now)"
     need_more_levels: "You need at least &r&4$levels &d&olevels to enchant"
     require_more_levels: "You must enchant at a higher level"
     randomized_lore: What kind of wand will you get?

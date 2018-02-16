@@ -1295,8 +1295,8 @@ spells:
         no_path_end: You must be ready to advance from $path!
         no_wand: You must be holding a wand!
         insufficient: "&4Costs &c$cost"
-        confirm_title: "Buy $item"
-        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+        confirm_title: "Learn $item"
+        deducted: "&d&oYou learned &r&6$item &r&d&ofor &r&a$cost"
         fail: ""
     engineershop:
         name: Engineer Shop
