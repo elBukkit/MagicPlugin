@@ -1589,6 +1589,9 @@ public class MagicController implements MageController {
         if (skillAPIManager != null) {
             attributeProviders.add(skillAPIManager);
         }
+        if (heroesManager != null) {
+            attributeProviders.add(heroesManager);
+        }
 
         Set<String> attributes = new HashSet<>();
         for (AttributeProvider provider : attributeProviders) {

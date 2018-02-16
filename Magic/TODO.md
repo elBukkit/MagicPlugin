@@ -16,6 +16,24 @@
  - PW would like some custom lore for wand "quiet" and quick cast settings.
  - Recall warps don't show up with /mage describe?
 
+## Attributes
+
+ - Add internal attribute system.
+ - Attributes can improve with rankup (spell purchase? need new progression mechanism...)
+ - Attributes can be used in spell configs
+ - Also allow classes to define attribute global effects
+   - Physical damage
+   - Speed
+   - Magic damage (physical versus magic- maybe allow other damage classes?)
+   - Cooldowns
+   - Max mana / regen
+   - Mana costs
+   - SP costs or SP earn bonuses
+   - Attack speed
+   - Damage protection
+   - Anti-hunger
+   
+
 ## Fast Blocks
 
  - The easiest way to deal with that is to probably pretend the client doesn't have the chunk yet

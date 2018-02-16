@@ -5,6 +5,8 @@
  - SkillAPI attribute parameters no longer use an underscore prefix.
    See: https://github.com/elBukkit/MagicPlugin/wiki/SkillAPI
    
+ - Heroes attributes can now also be used in spell parameters
+   
  - Crafting recipes can now be added on the fly with /magic load
    - They can not be modified or removed, however, due to Spigot/Mojang limitations.
  - Implement class chooser, used in bending configs. Bending classes are now locked by default!

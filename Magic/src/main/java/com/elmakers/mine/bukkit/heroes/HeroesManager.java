@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.heroes;
 
+import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -18,24 +19,35 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class HeroesManager implements ManaController {
+public class HeroesManager implements ManaController, AttributeProvider {
     private Heroes heroes;
     private CharacterManager characters;
     private SkillManager skills;
     private final static Set<String> emptySkills = new HashSet<>();
     private final static List<String> emptySkillList = new ArrayList<>();
+    private final Logger log;
+
+    private Method getHeroAttributeMethod;
+    private final static Map<String, Enum<?>> attributes = new HashMap<>();
 
     public HeroesManager(Plugin plugin, Plugin heroesPlugin) {
+        log = plugin.getLogger();
         if (!(heroesPlugin instanceof Heroes))
         {
-            plugin.getLogger().warning("Heroes found, but is not instance of Heroes plugin!");
+            log.warning("Heroes found, but is not instance of Heroes plugin!");
             return;
         }
         heroes = (Heroes)heroesPlugin;
@@ -43,20 +55,37 @@ public class HeroesManager implements ManaController {
         skills = heroes.getSkillManager();
         if (characters != null && skills != null)
         {
-            plugin.getLogger().info("Heroes found, skills available for wand and hotbar use.");
-            plugin.getLogger().info("Give Magic.commands.mskills permission for /mskills command");
-            plugin.getLogger().info("Use \"/wand heroes\" for a wand that uses Heroes skills");
+            log.info("Heroes found, skills available for wand and hotbar use.");
+            log.info("Give Magic.commands.mskills permission for /mskills command");
+            log.info("Use \"/wand heroes\" for a wand that uses Heroes skills");
         }
         else
         {
-            plugin.getLogger().warning("Heroes found, but failed to integrate!");
+            log.warning("Heroes found, but failed to integrate!");
             if (characters == null) {
-                plugin.getLogger().warning(" CharacterManager is null");
+                log.warning(" CharacterManager is null");
             }
             if (skills == null) {
-                plugin.getLogger().warning(" SkillManager is null");
+                log.warning(" SkillManager is null");
             }
         }
+
+        try {
+            @SuppressWarnings("unchecked")
+            Class<Enum<?>> class_AttributeType = (Class<Enum<?>>)Class.forName("com.herocraftonline.heroes.attributes.AttributeType");
+            Enum<?>[] values = class_AttributeType.getEnumConstants();
+            for (Enum<?> value : values) {
+                attributes.put(value.name().toLowerCase(), value);
+            }
+            getHeroAttributeMethod = Hero.class.getMethod("getAttributeValue", class_AttributeType);
+            log.info("Registered Heroes attributes for use in spell parameters: " + getAllAttributes());
+        } catch (Exception ex) {
+            attributes.clear();
+            getHeroAttributeMethod = null;
+            log.info("Could not register Heroes attributes, you may need to update Heroes");
+        }
+
+
     }
 
     public boolean canUseSkill(Player player, String skillName) {
@@ -293,5 +322,26 @@ public class HeroesManager implements ManaController {
         if (party == null || (pvpCheck && !party.isNoPvp())) return false;
 
         return party.getMembers().contains(checkHero);
+    }
+
+    @Override
+    public Set<String> getAllAttributes() {
+        return attributes.keySet();
+    }
+
+    @Override
+    public Double getAttributeValue(String attribute, Player player) {
+        Double result = null;
+        try {
+            if (getHeroAttributeMethod != null) {
+                Enum<?> attributeType = attributes.get(attribute);
+                if (attributeType != null) {
+                    result = (double)(int)getHeroAttributeMethod.invoke(getHero(player), attributeType);
+                }
+            }
+        } catch (Exception ex) {
+            log.log(Level.WARNING, "Failed read Hero attribute", ex);
+        }
+        return result;
     }
 }
