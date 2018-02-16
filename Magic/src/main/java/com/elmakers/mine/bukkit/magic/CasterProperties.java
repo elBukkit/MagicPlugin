@@ -55,10 +55,12 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
     }
 
+    @Override
     public void setManaMax(int manaMax) {
         setProperty("mana_max", Math.max(0, manaMax));
     }
 
+    @Override
     public void setManaRegeneration(int manaRegeneration) {
         setProperty("mana_regeneration", Math.max(0, manaRegeneration));
     }
