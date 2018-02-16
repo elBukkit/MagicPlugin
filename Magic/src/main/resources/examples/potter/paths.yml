@@ -8,18 +8,6 @@ default:
   hidden: true
   max_mana: 50
   max_mana_regeneration: 5
-  max_health_regeneration: 1.0
-  max_hunger_regeneration: 1.0
-  max_damage_reduction: 1.0
-  max_damage_reduction_explosions: 1.0
-  max_damage_reduction_falling: 1.0
-  max_damage_reduction_fire: 1.0
-  max_damage_reduction_physical: 1.0
-  max_damage_reduction_projectiles: 1.0
-  max_cost_reduction: 1.0
-  max_cooldown_reduction: 1.0
-  max_haste: 1.0
-  max_power: 1.0
   spell_count: 1
   upgrade_commands:
     - broadcast §6@pd §3has graduated to §b$path§3!

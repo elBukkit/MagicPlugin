@@ -5,21 +5,6 @@
 default:
   match_spell_mana: false
   hidden: true
-  max_uses: 500
-  max_mana: 1500
-  max_mana_regeneration: 150
-  max_health_regeneration: 0.1
-  max_hunger_regeneration: 0.1
-  max_damage_reduction: 0.1
-  max_damage_reduction_explosions: 0.1
-  max_damage_reduction_falling: 0.1
-  max_damage_reduction_fire: 0.1
-  max_damage_reduction_physical: 0.1
-  max_damage_reduction_projectiles: 0.1
-  max_cost_reduction: 0.5
-  max_cooldown_reduction: 0.5
-  max_haste: 0.5
-  max_power: 0.5
   mana_regeneration: 4
   mana_max: 20
   max_mana: 200
