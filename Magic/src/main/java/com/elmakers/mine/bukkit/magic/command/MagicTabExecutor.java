@@ -48,24 +48,8 @@ public abstract class MagicTabExecutor implements TabExecutor {
 		return options;
 	}
 
-	
-	public static String getMagicVersion() {
-        String result = "Unknown-Version";
-
-        InputStream stream = MagicTabExecutor.class.getClassLoader().getResourceAsStream("META-INF/maven/com.elmakers.mine.bukkit.plugins/Magic/pom.properties");
-        Properties properties = new Properties();
-
-        if (stream != null) {
-            try {
-                properties.load(stream);
-
-                result = properties.getProperty("version");
-            } catch (IOException ex) {
-                Bukkit.getLogger().warning("Could not get Magic version");
-            }
-        }
-
-        return result;
+	public String getMagicVersion() {
+        return api.getPlugin().getDescription().getVersion();
     }
 	
 	protected void sendNoPermission(CommandSender sender)

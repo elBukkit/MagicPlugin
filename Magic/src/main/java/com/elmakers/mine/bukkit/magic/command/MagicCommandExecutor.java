@@ -74,7 +74,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				sendNoPermission(sender);
 				return true;
 			}
-			sender.sendMessage("Magic " + getMagicVersion());
+			sender.sendMessage("Magic " + getMagicVersion( ));
 			sender.sendMessage("Use /magic help for more info");
 			return true;
 		}
