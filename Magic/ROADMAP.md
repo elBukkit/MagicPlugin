@@ -2,16 +2,14 @@
 
 This is a *very rough* approximation of where Magic is headed in future versions.
 
-## 7.1
-
- - Adding class selector for players to choose classes
- - Stars and Bending configs will change to use a class selection mechanism
- 
 ## 7.2
 
  - First draft of RPG-style configs with a variety of classes to choose from
  - Players may choose one class, and then add more classes as they max out (up to some limit)
  - Internal attribute system
+   - Including damage reduction
+   - Mana bonuses
+   - Maybe others, see TODO
  
 ## 7.3
 
