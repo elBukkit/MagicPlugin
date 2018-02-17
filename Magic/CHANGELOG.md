@@ -2,6 +2,8 @@
 
 ## 7.2
 
+ - Fix /wand save so that the saved template inherits from the one you're editing
+
 ## 7.1.1
 
  - Hotfix for a startup crash that would occur if using SkillAPI with attributes disabled

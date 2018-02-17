@@ -1400,6 +1400,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (isUpgrade) {
             node.set("upgrade", true);
         }
+
+        if (template != null && !template.isEmpty()) {
+        	node.set("template", null);
+        	node.set("inherit", template);
+		}
     }
 
     public void updateBrushes() {
