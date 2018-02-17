@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -1051,6 +1052,11 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			ex.printStackTrace();
 			sender.sendMessage(ChatColor.RED + "Can't write to file " + wandFile.getName());
 			return true;
+		}
+		String inherit = wandSection.getString("inherit", "");
+		if (!inherit.isEmpty()) {
+			WandTemplate inheritConfiguration = controller.getWandTemplate(inherit);
+			ConfigurationUtils.addConfigurations(wandSection, inheritConfiguration.getConfiguration(), false);
 		}
 		controller.loadWandTemplate(template, wandSection);
 		String message = "Wand saved as " + template;
