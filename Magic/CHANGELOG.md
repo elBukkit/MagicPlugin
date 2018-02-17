@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## 7.2
+## 7.1.1
+
+ - Hotfix for a startup crash that would occur if using SkillAPI with attributes disabled
 
 ## 7.1
 

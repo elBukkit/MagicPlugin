@@ -1595,7 +1595,10 @@ public class MagicController implements MageController {
 
         Set<String> attributes = new HashSet<>();
         for (AttributeProvider provider : attributeProviders) {
-            attributes.addAll(provider.getAllAttributes());
+            Set<String> providerAttributes = provider.getAllAttributes();
+            if (providerAttributes != null) {
+                attributes.addAll(providerAttributes);
+            }
         }
 
         ParameterizedConfiguration.initializeAttributes(attributes);
