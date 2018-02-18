@@ -26,13 +26,25 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
     }
 
     @Override
+    protected void migrateProperty(String key, MagicPropertyType propertyType) {
+        super.migrateProperty(key, propertyType, template);
+    }
+
+    @Override
     public boolean hasProperty(String key) {
         return hasOwnProperty(key) || template.hasProperty(key) || mageProperties.hasProperty(key) || (parent != null && parent.hasProperty(key));
     }
 
     @Override
     public Object getProperty(String key) {
-        Object value = super.getProperty(key);
+        Object value = null;
+        BaseMagicProperties storage = getStorage(key);
+        if (storage != null) {
+            value = storage.getProperty(key);
+        }
+        if (value == null) {
+            value = super.getProperty(key);
+        }
         if (value == null) {
             value = template.getProperty(key);
         }

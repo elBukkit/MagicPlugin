@@ -3,6 +3,7 @@
 ## 7.2
 
  - Fix /wand save so that the saved template inherits from the one you're editing
+ - Fix stars and bending class progression
 
 ## 7.1.1
 

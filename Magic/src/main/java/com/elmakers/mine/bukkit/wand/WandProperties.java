@@ -37,8 +37,20 @@ public abstract class WandProperties extends CasterProperties {
     }
 
     @Override
+    protected void migrateProperty(String key, MagicPropertyType propertyType) {
+        super.migrateProperty(key, propertyType, wandTemplate);
+    }
+
+    @Override
     public Object getProperty(String key) {
-        Object value = super.getProperty(key);
+        Object value = null;
+        BaseMagicProperties storage = getStorage(key);
+        if (storage != null) {
+            value = storage.getProperty(key);
+        }
+        if (value == null) {
+            value = super.getProperty(key);
+        }
         if (value == null && wandTemplate != null) {
             value = wandTemplate.getProperty(key);
         }

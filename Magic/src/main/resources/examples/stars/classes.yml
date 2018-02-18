@@ -10,16 +10,16 @@ jedi:
   locked: true
   path: youngling
   spells:
-      - forcepush
-      - forcepull
+    - forcepush
+    - forcepull
 
 sith:
   parent: force_user
   locked: true
   path: acolyte
   spells:
-      - forcepush
-      - forceignite
+    - forcepush
+    - forceignite
 
 stars_soldier:
   storage:

@@ -2,6 +2,8 @@
 
 ## Higher Priority
 
+ - /mage reset seems to unload player data so that the next spell cast fails
+
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
  - Spells drop on death with lag (maybe)?
 

@@ -38,28 +38,42 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             Set<String> keys = routeConfig.getKeys(false);
             for (String key : keys) {
                 String propertyTypeName = routeConfig.getString(key);
-                MagicPropertyType propertyType = MagicPropertyType.MAGE;
+                MagicPropertyType propertyType = null;
                 try {
                     propertyType = MagicPropertyType.valueOf(propertyTypeName.toUpperCase());
                 } catch (Exception ex) {
                     controller.getLogger().info("Invalid property type: " + propertyTypeName);
+                    continue;
                 }
                 propertyRoutes.put(key, propertyType);
 
                 // Migrate data if necessary
                 if (propertyType != type) {
-                    Object value = configuration.get(key);
-                    if (value != null) {
-                        BaseMagicConfigurable storage = getStorage(propertyType);
-                        if (storage != null) {
-                            configuration.set(key, null);
-                            storage.upgrade(key, value);
-                        } else {
-                            controller.getLogger().warning("Attempt to migrate property " + key + " on " + type + " which routes to unavailable storage " + propertyType);
-                        }
-
-                    }
+                    migrateProperty(key, propertyType);
                 }
+            }
+        }
+    }
+
+    protected void migrateProperty(String key, MagicPropertyType propertyType) {
+        migrateProperty(key, propertyType, null);
+    }
+
+    protected void migrateProperty(String key, MagicPropertyType propertyType, BaseMagicProperties template) {
+        Object ownValue = configuration.get(key);
+        Object value = ownValue;
+        if (value == null && template != null) {
+            value = template.getConfiguration().get(key);
+        }
+        if (value != null) {
+            BaseMagicConfigurable storage = getStorage(propertyType);
+            if (storage != null) {
+                if (ownValue != null) {
+                    configuration.set(key, null);
+                }
+                storage.upgrade(key, value);
+            } else {
+                controller.getLogger().warning("Attempt to migrate property " + key + " on " + type + " which routes to unavailable storage " + propertyType);
             }
         }
     }
@@ -76,6 +90,15 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
                 controller.getLogger().warning("Attempt to set property " + key + " on " + type + " which routes to unavailable storage " + propertyType);
             }
         }
+    }
+
+    @Nullable
+    protected BaseMagicConfigurable getStorage(String key) {
+        MagicPropertyType propertyType = propertyRoutes.get(key);
+        if (propertyType == null || propertyType == type) {
+            return null;
+        }
+        return getStorage(propertyType);
     }
 
     @Nullable
