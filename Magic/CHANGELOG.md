@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 7.2
+
 ## 7.1.2
 
  - Fix stars and bending class progression
