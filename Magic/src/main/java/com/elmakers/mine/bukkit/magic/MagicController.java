@@ -2221,6 +2221,9 @@ public class MagicController implements MageController {
         {
             defaultResourcePack = properties.getString("add_resource_pack", defaultResourcePack);
         }
+        if (!properties.getBoolean("enable_resource_pack")) {
+            defaultResourcePack = null;
+        }
 
         // For reloading after disabling the RP
         if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
@@ -4703,15 +4706,17 @@ public class MagicController implements MageController {
         resourcePack = null;
         resourcePackHash = null;
         final boolean initialLoad = !checkedResourcePack;
+
+        if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
+            if (!quiet) sender.sendMessage("Resource pack in config.yml has been disabled, Magic skipping RP check");
+            return false;
+        }
+
         String serverResourcePack = CompatibilityUtils.getResourcePack(server);
         if (serverResourcePack != null) serverResourcePack = serverResourcePack.trim();
         
         if (serverResourcePack != null && !serverResourcePack.isEmpty()) {
             if (!quiet) sender.sendMessage("Resource pack configured in server.properties, Magic not using RP from config.yml");
-            return false;
-        }
-        if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
-            if (!quiet) sender.sendMessage("Resource pack in config.yml has been cleared- Magic skipping RP check");
             return false;
         }
         resourcePack = defaultResourcePack;

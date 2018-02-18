@@ -2,6 +2,9 @@
 # Set this to "" if you have some other plugin or Bungee managing resource packs.
 resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-6-4.zip"
 
+# Use this to turn off all resource pack functionality
+enable_resource_pack: true
+
 # This will delay sending resource packs to players. This can mitigate issues with the vanilla
 # client timing out on connect due to RP processing on potato computers.
 # This value is in milliseconds.
