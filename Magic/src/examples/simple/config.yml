@@ -3,6 +3,7 @@
 #
 
 load_default_configs: false
+resource_pack: ""
 
 wands:
   handbag:
