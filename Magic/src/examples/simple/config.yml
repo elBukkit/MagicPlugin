@@ -1,0 +1,42 @@
+#
+# Example configs showing how to turn off all default features and add in just one specific item
+#
+
+load_default_configs: false
+
+wands:
+  handbag:
+    name: "Beaded Handbag"
+    mode: cast
+    quiet: 2
+    active_spell: stash
+    icon: glass_bottle
+    indestructible: false
+    locked: true
+
+spells:
+  stash:
+      icon: diamond_axe:106
+      icon_disabled: diamond_hoe:106
+      show_undoable: false
+      quick_cast: true
+      actions:
+          cast:
+          - class: Inventory
+      effects:
+          cast:
+          -  class: EffectSingle
+             sound: entity_endermen_hurt
+             effectlib:
+              class: WarpEffect
+              particle: block_crack
+              material: obsidian
+              duration: 1000
+              particleCount: 10
+              particleOffsetX: 1
+              particleOffsetZ: 1
+              particleOffsetY: 1
+      parameters:
+          target: self
+          type: ender_chest
+          cooldown: 2000

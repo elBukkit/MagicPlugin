@@ -2,6 +2,10 @@
 
 ## 7.2
 
+ - Make it easier to create one-off simple configs
+   - Add load_default_configs option
+   - Allow adding wands, spells, etc directly in config.yml sections
+
 ## 7.1.2
 
  - Fix stars and bending class progression

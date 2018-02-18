@@ -54,7 +54,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load messages
         try {
-            messages = controller.loadMessageConfiguration();
+            messages = controller.loadMessageConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading messages.yml", ex);
             success = false;
@@ -62,7 +62,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load materials configuration
         try {
-            materials = controller.loadMaterialsConfiguration();
+            materials = controller.loadMaterialsConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading material.yml", ex);
             success = false;
@@ -70,7 +70,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load spells, and map their inherited configs
         try {
-            spells = controller.loadAndMapSpells();
+            spells = controller.loadAndMapSpells(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading spells.yml", ex);
             success = false;
@@ -78,7 +78,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load enchanting paths
         try {
-            paths = controller.loadPathConfiguration();
+            paths = controller.loadPathConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading paths.yml", ex);
             success = false;
@@ -86,7 +86,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load wand templates
         try {
-            wands = controller.loadWandConfiguration();
+            wands = controller.loadWandConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading wands.yml", ex);
             success = false;
@@ -94,7 +94,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load crafting recipes
         try {
-            crafting = controller.loadCraftingConfiguration();
+            crafting = controller.loadCraftingConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading crafting.yml", ex);
             success = false;
@@ -103,7 +103,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load classes
         try {
-            classes = controller.loadClassConfiguration();
+            classes = controller.loadClassConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading classes.yml", ex);
             success = false;
@@ -111,7 +111,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load mobs
         try {
-            mobs = controller.loadMobsConfiguration();
+            mobs = controller.loadMobsConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading mobs.yml", ex);
             success = false;
@@ -119,7 +119,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load items
         try {
-            items = controller.loadItemsConfiguration();
+            items = controller.loadItemsConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading items.yml", ex);
             success = false;

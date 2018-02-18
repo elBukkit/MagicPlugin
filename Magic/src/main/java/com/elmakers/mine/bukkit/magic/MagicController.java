@@ -1288,6 +1288,11 @@ public class MagicController implements MageController {
         return configuration;
     }
 
+    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, ConfigurationSection mainConfiguration)
+        throws IOException, InvalidConfigurationException {
+        return loadConfigFile(fileName, loadDefaults, false, mainConfiguration);
+    }
+
     protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults)
         throws IOException, InvalidConfigurationException {
         return loadConfigFile(fileName, loadDefaults, false);
@@ -1306,10 +1311,16 @@ public class MagicController implements MageController {
 
     protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults)
         throws IOException, InvalidConfigurationException {
-        return loadConfigFile(fileName, loadDefaults, disableDefaults, false);
+        return loadConfigFile(fileName, loadDefaults, disableDefaults, null);
     }
 
-    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults, boolean filesReplace)
+
+    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults, ConfigurationSection mainConfiguration)
+        throws IOException, InvalidConfigurationException {
+        return loadConfigFile(fileName, loadDefaults, disableDefaults, false, mainConfiguration);
+    }
+
+    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults, boolean filesReplace, ConfigurationSection mainConfiguration)
         throws IOException, InvalidConfigurationException {
         String configFileName = fileName + ".yml";
         File configFile = new File(configFolder, configFileName);
@@ -1347,6 +1358,10 @@ public class MagicController implements MageController {
                 enableAll(overrides);
             }
             config = ConfigurationUtils.addConfigurations(config, defaultConfig);
+        }
+
+        if (mainConfiguration != null) {
+            config = ConfigurationUtils.addConfigurations(config, mainConfiguration);
         }
 
         if (usingExample) {
@@ -1452,6 +1467,7 @@ public class MagicController implements MageController {
             loadDefaultPaths = false;
             loadDefaultMobs = false;
             loadDefaultItems = false;
+            loadDefaultSpells = false;
         }
 
         return properties;
@@ -1463,41 +1479,41 @@ public class MagicController implements MageController {
         return configuration;
     }
 
-    protected ConfigurationSection loadMessageConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(MESSAGES_FILE, true);
+    protected ConfigurationSection loadMessageConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(MESSAGES_FILE, true, mainConfiguration.getConfigurationSection("messages"));
     }
 
-    protected ConfigurationSection loadMaterialsConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(MATERIALS_FILE, true);
+    protected ConfigurationSection loadMaterialsConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(MATERIALS_FILE, true, mainConfiguration.getConfigurationSection("materials"));
     }
 
-    protected ConfigurationSection loadWandConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(WANDS_FILE, loadDefaultWands, disableDefaultWands, true);
+    protected ConfigurationSection loadWandConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(WANDS_FILE, loadDefaultWands, disableDefaultWands, true, mainConfiguration.getConfigurationSection("wands"));
     }
 
-    protected ConfigurationSection loadPathConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(PATHS_FILE, loadDefaultPaths);
+    protected ConfigurationSection loadPathConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(PATHS_FILE, loadDefaultPaths, mainConfiguration.getConfigurationSection("paths"));
     }
 
-    protected ConfigurationSection loadCraftingConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(CRAFTING_FILE, loadDefaultCrafting);
+    protected ConfigurationSection loadCraftingConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(CRAFTING_FILE, loadDefaultCrafting, mainConfiguration.getConfigurationSection("crafting"));
     }
 
-    protected ConfigurationSection loadClassConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(CLASSES_FILE, loadDefaultClasses);
+    protected ConfigurationSection loadClassConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(CLASSES_FILE, loadDefaultClasses, mainConfiguration.getConfigurationSection("classes"));
     }
 
-    protected ConfigurationSection loadMobsConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(MOBS_FILE, loadDefaultMobs);
+    protected ConfigurationSection loadMobsConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(MOBS_FILE, loadDefaultMobs, mainConfiguration.getConfigurationSection("mobs"));
     }
 
-    protected ConfigurationSection loadItemsConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(ITEMS_FILE, loadDefaultItems);
+    protected ConfigurationSection loadItemsConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(ITEMS_FILE, loadDefaultItems, mainConfiguration.getConfigurationSection("items"));
     }
 
-    protected Map<String, ConfigurationSection> loadAndMapSpells() throws InvalidConfigurationException, IOException {
+    protected Map<String, ConfigurationSection> loadAndMapSpells(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
         Map<String, ConfigurationSection> spellConfigs = new HashMap<>();
-        ConfigurationSection config = loadConfigFile(SPELLS_FILE, loadDefaultSpells, disableDefaultSpells);
+        ConfigurationSection config = loadConfigFile(SPELLS_FILE, loadDefaultSpells, disableDefaultSpells, mainConfiguration.getConfigurationSection("spells"));
         if (config == null) return spellConfigs;
 
         // Reset cached spell configs
