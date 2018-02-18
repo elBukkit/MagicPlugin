@@ -1,9 +1,9 @@
 # CHANGELOG
 
-## 7.2
+## 7.1.2
 
- - Fix /wand save so that the saved template inherits from the one you're editing
  - Fix stars and bending class progression
+ - Fix /wand save so that the saved template inherits from the one you're editing
 
 ## 7.1.1
 
