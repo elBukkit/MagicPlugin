@@ -39,7 +39,7 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
     public Object getProperty(String key) {
         Object value = null;
         BaseMagicProperties storage = getStorage(key);
-        if (storage != null) {
+        if (storage != null && storage != this) {
             value = storage.getProperty(key);
         }
         if (value == null) {
