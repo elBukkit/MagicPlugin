@@ -1445,6 +1445,15 @@ public class MagicController implements MageController {
         loadDefaultMobs = properties.getBoolean("load_default_mobs", loadDefaultMobs);
         loadDefaultItems = properties.getBoolean("load_default_items", loadDefaultItems);
 
+        if (!properties.getBoolean("load_default_configs")) {
+            loadDefaultWands = false;
+            loadDefaultCrafting = false;
+            loadDefaultClasses = false;
+            loadDefaultPaths = false;
+            loadDefaultMobs = false;
+            loadDefaultItems = false;
+        }
+
         return properties;
     }
 
