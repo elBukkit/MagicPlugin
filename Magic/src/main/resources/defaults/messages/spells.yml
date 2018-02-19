@@ -1245,6 +1245,18 @@ spells:
         level_requirement: "&r&cRequires: &6$path"
         cast_requirement: "&r&cCasts: &6$current&f/&e$required"
         tags_requirement: "&r&cRequires: &6$tags"
+        confirm_title: "Change to $item"
+    progressmenu:
+        name: Magic Progress
+        title: "Magic Progress"
+        deducted: ""
+        cast_fail: ""
+    appearanceshop:
+        name: Change Wand Appearance
+        title: "Wand Appearance"
+        deducted: "You changed to $item"
+        not_applicable: "Your wand already looks like $item"
+        cost_lore: "&6Unlock Cost: &e$cost"
     brushselect:
         name: Brush Selector
         descriptions: Chooses your active brush

@@ -2897,7 +2897,7 @@ broomshop:
         - item: wand|bluebottle
           cost: 100
 
-appearanceshop:
+potterappearanceshop:
     icon: wood_hoe
     inherit: buyshop
     parameters:

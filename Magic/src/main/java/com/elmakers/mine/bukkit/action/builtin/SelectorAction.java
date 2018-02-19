@@ -45,7 +45,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 {
     protected double costScale = 1;
     protected boolean autoClose = true;
-    protected boolean showConfirmation = true;
     protected SelectorConfiguration defaultConfiguration;
     protected MaterialAndData confirmFillMaterial;
     protected CastContext context;
@@ -71,8 +70,11 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         protected @Nullable String castSpell = null;
         protected @Nullable String unlockClass = null;
         protected @Nullable String selectedMessage = null;
+        protected @Nullable String unlockKey = null;
+        protected @Nonnull String unlockSection = "unlocked";
         protected boolean requireWand = false;
         protected boolean applyToWand = false;
+        protected boolean showConfirmation = false;
         protected int experience;
         protected int sp;
         protected int currency = 0;
@@ -99,6 +101,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             experience = configuration.getInt("experience", experience);
             sp = configuration.getInt("sp", sp);
             limit = configuration.getInt("limit", limit);
+            unlockKey = configuration.getString("unlock", unlockKey);
+            unlockSection = configuration.getString("unlock_section", unlockSection);
+            showConfirmation = configuration.getBoolean("confirm", showConfirmation);
+
             selectedMessage = configuration.getString("selected_message", selectedMessage);
             if (selectedMessage == null) {
                selectedMessage = context.getMessage("deducted", getDefaultMessage(context, "deducted"));
@@ -140,9 +146,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 requiredPath = requiresCompletedPath;
                 exactPath = requiresCompletedPath;
             }
-            if (requiredPath != null || exactPath != null || requiredTemplate != null) {
-                requireWand = true;
-            }
         }
 
         protected List<Cost> parseCosts(ConfigurationSection node) {
@@ -183,7 +186,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             if (permissionNode != null && !player.hasPermission(permissionNode)) {
                 return SpellResult.INSUFFICIENT_PERMISSION;
             }
-            Wand wand = mage.getActiveWand();
+            Wand wand = context.getWand();
             if (wand == null && requireWand) {
                 if (!quiet) context.showMessage("no_wand", getDefaultMessage(context,"no_wand"));
                 return SpellResult.FAIL;
@@ -197,16 +200,8 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 }
             }
 
-            CasterProperties checkProperties = null;
-            MageClass activeClass = mage.getActiveClass();
-            ProgressionPath path = null;
-            if (wand !=  null) {
-                path = wand.getPath();
-                checkProperties = wand;
-            } else if (activeClass != null) {
-                path = activeClass.getPath();
-                checkProperties = activeClass;
-            }
+            CasterProperties checkProperties = context.getActiveProperties();
+            ProgressionPath path = checkProperties.getPath();
 
             if (unlockClass != null && !unlockClass.isEmpty()) {
                 if (mage.hasClassUnlocked(unlockClass)) {
@@ -246,7 +241,16 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                     return SpellResult.FAIL;
                 }
                 if (requiresCompletedPath != null) {
-                    if (path.canProgress(checkProperties)) {
+                    boolean hasPathCompleted = false;
+                    if (path.hasPath(requiresCompletedPath)) {
+                        if (path.getKey().equals(requiresCompletedPath)) {
+                            hasPathCompleted = !path.canProgress(checkProperties);
+                        } else {
+                            hasPathCompleted = true;
+                        }
+                    }
+
+                    if (hasPathCompleted) {
                         if (!quiet) context.showMessage(context.getMessage("no_path_end", getDefaultMessage(context, "no_path_end")).replace("$path", path.getName()));
                         return SpellResult.FAIL;
                     }
@@ -270,7 +274,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         protected String name = null;
         protected List<String> lore = null;
 
-        public SelectorOption(SelectorConfiguration defaults, ConfigurationSection configuration, CostReducer reducer) {
+        public SelectorOption(SelectorConfiguration defaults, ConfigurationSection configuration, CastContext context, CostReducer reducer) {
             super();
 
             this.selectedMessage = defaults.selectedMessage;
@@ -289,7 +293,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             this.sp = defaults.sp;
             this.experience = defaults.experience;
             this.limit = defaults.limit;
-            this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : null;
+            this.unlockKey = defaults.unlockKey;
+            this.unlockSection = defaults.unlockSection;
+            this.showConfirmation = defaults.showConfirmation;
+            this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<String>();
 
             parse(configuration);
 
@@ -330,7 +337,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
 
             String description = configuration.getString("description");
-            if (lore == null && description == null) {
+            if (description == null) {
                 if (unlockClass != null && !unlockClass.isEmpty()) {
                     MageClassTemplate mageClass = controller.getMageClassTemplate(unlockClass);
                     description = mageClass.getDescription();
@@ -341,17 +348,67 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
 
             if (description != null && !description.isEmpty()) {
-                if (lore == null) {
-                    lore = new ArrayList<>();
-                }
                 InventoryUtils.wrapText(description, lore);
+            }
+
+            // Check path requirements
+            if (requiredPath != null || exactPath != null || requiresCompletedPath != null) {
+                CasterProperties checkProperties = context.getActiveProperties();
+                ProgressionPath path = checkProperties.getPath();
+
+                if (requiresCompletedPath != null && !requiresCompletedPath.isEmpty()) {
+                    boolean hasPathCompleted = false;
+                    if (path.hasPath(requiresCompletedPath)) {
+                        if (path.getKey().equals(requiresCompletedPath)) {
+                            hasPathCompleted = path.canProgress(checkProperties);
+                        } else {
+                            hasPathCompleted = true;
+                        }
+                    }
+                    if (!hasPathCompleted) {
+                        ProgressionPath required = controller.getPath(requiresCompletedPath);
+                        String pathName = required != null ? required.getName() : requiresCompletedPath;
+                        String hasPathLore = context.getMessage("path_end_lore", getDefaultMessage(context, "path_end_lore")).replace("$path", pathName);
+                        if (!hasPathLore.isEmpty()) {
+                            lore.add(hasPathLore);
+                        }
+                    }
+                } else {
+                    boolean hasPath = true;
+                    String pathName = "";
+                    if (exactPath != null && !exactPath.isEmpty()) {
+                        hasPath = path.getKey().equals(exactPath);
+                        pathName = exactPath;
+                    } else if (requiredPath != null && !requiredPath.isEmpty()) {
+                        hasPath = path.hasPath(requiredPath);
+                        pathName = requiredPath;
+                    }
+                    if (!hasPath) {
+                        ProgressionPath required = controller.getPath(requiresCompletedPath);
+                        if (required != null) {
+                            pathName = required.getName();
+                        }
+                        String hasPathLore = context.getMessage("path_lore", getDefaultMessage(context, "path_lore")).replace("$path", pathName);
+                        if (!hasPathLore.isEmpty()) {
+                            lore.add(hasPathLore);
+                        }
+                    }
+                }
+            }
+
+            if (unlockKey != null && !unlockKey.isEmpty()) {
+                Mage mage = context.getMage();
+                ConfigurationSection unlocks = mage.getData().getConfigurationSection(unlockSection);
+                if (unlocks != null && unlocks.getBoolean(unlockKey, false)) {
+                    costs = null;
+                    showConfirmation = false;
+                    String unlockedMessage = context.getMessage("unlocked_lore", getDefaultMessage(context, "unlocked_lore"));
+                    lore.add(unlockedMessage);
+                }
             }
 
             if (costs != null) {
                 String costString = context.getMessage("cost_lore", getDefaultMessage(context, "cost_lore"));
-                if (lore == null) {
-                    lore = new ArrayList<>();
-                }
                 for (Cost cost : costs) {
                     lore.add(costString.replace("$cost", cost.getFullDescription(context.getController().getMessages(), reducer)));
                 }
@@ -360,11 +417,15 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             // Prepare icon
             ItemMeta meta = icon.getItemMeta();
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-            if (lore != null) {
-                for (int i = 0; i < lore.size(); i++) {
-                    lore.set(i, ChatColor.translateAlternateColorCodes('&', lore.get(i)));
+            if (!lore.isEmpty()) {
+                List<String> itemLore = meta.getLore();
+                if (itemLore == null) {
+                    itemLore = new ArrayList<>();
                 }
-                meta.setLore(lore);
+                for (String line : lore) {
+                    itemLore.add(ChatColor.translateAlternateColorCodes('&', line));
+                }
+                meta.setLore(itemLore);
             }
             icon.setItemMeta(meta);
             icon = InventoryUtils.makeReal(icon);
@@ -446,6 +507,18 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 }
             }
 
+            if (unlockKey != null && !unlockKey.isEmpty()) {
+                ConfigurationSection unlocks = mage.getData().getConfigurationSection(unlockSection);
+                if (unlocks != null && !unlocks.getBoolean(unlockKey)) {
+                    String unlockMessage = context.getMessage("unlocked", getDefaultMessage(context, "unlocked"));;
+                    context.showMessage(getCostsMessage(reducer, unlockMessage));
+                }
+                if (unlocks == null) {
+                    unlocks = mage.getData().createSection(unlockSection);
+                }
+                unlocks.set(unlockKey, true);
+            }
+
             if (sp != 0) {
                 if (mage.isAtMaxSkillPoints()) {
                     return SpellResult.NO_TARGET;
@@ -485,6 +558,9 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         }
 
         public ItemStack getIcon() {
+            if (showConfirmation) {
+                InventoryUtils.setMeta(icon, "confirm", "true");
+            }
             return icon;
         }
 
@@ -493,6 +569,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         }
 
         public String getSelectedMessage(CostReducer reducer) {
+            return getCostsMessage(reducer, selectedMessage);
+        }
+
+        public String getCostsMessage(CostReducer reducer, String baseMessage) {
             String costString = "";
 
             if (costs != null) {
@@ -506,9 +586,9 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
 
             if (costString.isEmpty()) {
-                costString = context.getMessage("shops.nothing");
+                costString = context.getMessage("nothing", getDefaultMessage(context, "nothing"));
             }
-            return selectedMessage.replace("$name", name).replace("$cost", costString);
+            return baseMessage.replace("$item", name).replace("$cost", costString);
         }
     }
 
@@ -585,7 +665,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
 
             finalResult = option.give(this, context);
-            if (finalResult.isSuccess()) {
+            if (finalResult.isSuccess() && finalResult != SpellResult.NO_TARGET) {
                 context.showMessage(option.getSelectedMessage(this));
             }
         }
@@ -605,15 +685,11 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         this.context = context;
 
         defaultConfiguration = new SelectorConfiguration(parameters);
-        showConfirmation = parameters.getBoolean("confirm", false);
         confirmFillMaterial = ConfigurationUtils.getMaterialAndData(parameters, "confirm_filler", new MaterialAndData(Material.AIR));
         autoClose = parameters.getBoolean("auto_close", true);
         costScale = parameters.getDouble("scale", 1);
         title = parameters.getString("title");
         confirmTitle = parameters.getString("confirm_title");
-        if (!autoClose) {
-            showConfirmation = false;
-        }
         finalResult = null;
         isActive = false;
 
@@ -626,7 +702,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             List<SelectorOption> options = new ArrayList<>();
 
             for (ConfigurationSection option : optionConfigs) {
-                SelectorOption newOption = new SelectorOption(defaultConfiguration, option, this);
+                SelectorOption newOption = new SelectorOption(defaultConfiguration, option, context, this);
                 if (newOption.hasLimit() && newOption.has(context)) {
                     has++;
                 }
@@ -692,9 +768,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         for (Map.Entry<Integer, SelectorOption> entry : showingItems.entrySet()) {
             ItemStack icon = entry.getValue().getIcon();
             InventoryUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));
-            if (showConfirmation) {
-                InventoryUtils.setMeta(icon, "confirm", "true");
-            }
             displayInventory.setItem(entry.getKey(), icon);
         }
 

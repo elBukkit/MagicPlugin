@@ -1,21 +1,33 @@
 appearanceshop:
-    icon: wood_hoe
-    inherit: buyshop
+    icon: diamond_axe:233
+    icon_disabled: diamond_hoe:233
+    actions:
+        cast:
+        -  class: Selector
     parameters:
         auto_close: true
-        confirm: true
         confirm_filler: stained_glass:3
         require_wand: true
-        items:
+        require_template: wand
+        unlock_section: wand_appearances
+        options:
         - item: wand|appearance_beginner
-          cost: 100
+          path: beginner
         - item: wand|appearance_student
-          cost: 1000
+          path: student
         - item: wand|appearance_apprentice
-          cost: 5000
+          path: apprentice
         - item: wand|appearance_master
-          cost: 10000
+          path: master
         - item: wand|appearance_engineer
-          cost: 100000
+          path: engineer
         - item: wand|appearance_conduit
-          cost: 1000000
+          path: conduit
+        - item: wand|appearance_moon
+          unlock: moon
+          confirm: true
+          cost: 10000
+        - item: wand|appearance_magicka
+          unlock: magicka
+          confirm: true
+          cost: 10000

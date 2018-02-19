@@ -32,3 +32,13 @@ appearance_conduit:
     upgrade: true
     icon: wood_hoe:6
     upgrade_icon: wood_hoe:6
+
+appearance_magicka:
+    upgrade: true
+    icon: wood_hoe:9
+    upgrade_icon: wood_hoe:9
+
+appearance_moon:
+    upgrade: true
+    icon: wood_hoe:10
+    upgrade_icon: wood_hoe:10

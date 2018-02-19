@@ -6,8 +6,7 @@ progressmenu:
       cast:
       -  class: Selector
   parameters:
-    title: "Magic Progress"
     options:
     - cast_spell: spellshop
     - cast_spell: upgrades
-    selected_message: ""
+    - cast_spell: appearanceshop

@@ -6,6 +6,7 @@
    - Add load_default_configs option
    - Allow adding wands, spells, etc directly in config.yml sections
  - Added progressmenu, which is now the default enchantment table spell
+ - Re-work appearanceshop to allow for unlocking wand appearances and changing wands at will
 
 ## 7.1.2
 

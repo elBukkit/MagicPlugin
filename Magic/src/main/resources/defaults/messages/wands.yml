@@ -343,7 +343,6 @@ wands:
         name: Apprentice Wand Appearance
         description: Will change the appearance of your wand
     appearance_master:
-        upgrade: true
         name: Wizard Wand Appearance
         description: Will change the appearance of your wand
     appearance_engineer:
@@ -354,6 +353,12 @@ wands:
         description: Will change the appearance of your wand
     appearance_conduit:
         name: Conduit Wand Appearance
+        description: Will change the appearance of your wand
+    appearance_magicka:
+        name: Magicka Wand Appearance
+        description: Will change the appearance of your wand
+    appearance_moon:
+        name: Moon Wand Appearance
         description: Will change the appearance of your wand
     uberwand:
         name: "Überwand"
