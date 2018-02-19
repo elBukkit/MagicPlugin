@@ -1,49 +1,68 @@
 colorshop:
-    icon: ink_sack
+    icon: diamond_axe:125
+    icon_disabled: diamond_hoe:125
     category: npc
     hidden: true
     actions:
         cast:
-        -  class: ItemShop
+        -  class: Selector
     parameters:
         quiet: true
         confirm_filler: stained_glass:9
         confirm: true
         require_wand: true
-        items:
-        - item: wand|redeffects
-          cost: 10
-        - item: wand|greeneffects
-          cost: 10
-        - item: wand|blueeffects
-          cost: 10
-        - item: wand|lightblueeffects
-          cost: 10
-        - item: wand|aquaeffects
-          cost: 10
-        - item: wand|whiteeffects
-          cost: 10
-        - item: wand|blackeffects
-          cost: 10
-        - item: wand|purpleeffects
-          cost: 10
-        - item: wand|yelloweffects
-          cost: 10
-        - item: wand|orangeeffects
-          cost: 10
-        - item: wand|pinkeffects
-          cost: 10
-        - item: wand|magentaeffects
-          cost: 10
-        - item: wand|grayeffects
-          cost: 10
-        - item: wand|lightgrayeffects
-          cost: 10
-        - item: wand|browneffects
-          cost: 10
-        - item: wand|darkgreeneffects
-          cost: 10
+        cost_type: sp
+        unlock_section: wand_colors
+        options:
+        - item: redeffects
+          cost: 200
+          unlock: "red"
+        - item: greeneffects
+          cost: 200
+          unlock: "green"
+        - item: blueeffects
+          cost: 200
+          unlock: "blue"
+        - item: lightblueeffects
+          cost: 200
+          unlock: "lightblue"
+        - item: aquaeffects
+          cost: 200
+          unlock: "aqua"
+        - item: whiteeffects
+          cost: 200
+          unlock: "white"
+        - item: blackeffects
+          cost: 200
+          unlock: "black"
+        - item: purpleeffects
+          cost: 200
+          unlock: "purple"
+        - item: yelloweffects
+          cost: 200
+          unlock: "yellow"
+        - item: orangeeffects
+          cost: 200
+          unlock: "orange"
+        - item: pinkeffects
+          cost: 200
+          unlock: "pink"
+        - item: magentaeffects
+          cost: 200
+          unlock: "magenta"
+        - item: grayeffects
+          cost: 200
+          unlock: "gray"
+        - item: lightgrayeffects
+          cost: 200
+          unlock: "lightgray"
+        - item: browneffects
+          cost: 200
+          unlock: "grown"
+        - item: darkgreeneffects
+          cost: 200
+          unlock: "darkgreen"
         - item: none
-        - item: wand|randomeffects
-          cost: 5
+        - item: randomeffects
+          cost: 20
 

@@ -5,9 +5,9 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -53,6 +53,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
     private int has = 0;
     private String title;
     private String confirmTitle;
+    private String confirmUnlockTitle;
 
     // State
     private boolean isActive = false;
@@ -62,6 +63,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         protected @Nonnull ItemStack icon;
         protected @Nullable List<ItemStack> items;
         protected @Nullable List<Cost> costs = null;
+        protected @Nonnull String costType = "currency";
         protected @Nullable String permissionNode = null;
         protected @Nullable String requiredPath = null;
         protected @Nullable String requiredTemplate = null;
@@ -104,6 +106,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             unlockKey = configuration.getString("unlock", unlockKey);
             unlockSection = configuration.getString("unlock_section", unlockSection);
             showConfirmation = configuration.getBoolean("confirm", showConfirmation);
+            costType = configuration.getString("cost_type", costType);
 
             selectedMessage = configuration.getString("selected_message", selectedMessage);
             if (selectedMessage == null) {
@@ -112,7 +115,9 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             if (configuration.contains("item")) {
                 items = new ArrayList<>();
                 ItemStack item = parseItem(configuration.getString("item"));
-                items.add(item);
+                if (item != null) {
+                    items.add(item);
+                }
             }
             if (configuration.contains("items")) {
                 List<String> itemList = configuration.getStringList("items");
@@ -134,12 +139,12 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 }
             }
             costs = parseCosts(configuration.getConfigurationSection("costs"));
-            int currencyCost = configuration.getInt("cost");
-            if (currencyCost > 0) {
+            int cost = configuration.getInt("cost");
+            if (cost > 0) {
                 if (costs == null) {
                     costs = new ArrayList<>();
                 }
-                costs.add(new Cost(context.getController(), "currency", currencyCost));
+                costs.add(new Cost(context.getController(), costType, cost));
             }
 
             if (requiresCompletedPath != null) {
@@ -163,6 +168,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
         public boolean hasLimit() {
             return limit > 0;
+        }
+
+        public String getCostType() {
+            return costType;
         }
 
         public boolean has(CastContext context) {
@@ -267,12 +276,17 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
             return SpellResult.CAST;
         }
+
+        public boolean isUnlock() {
+            return unlockKey != null && !unlockKey.isEmpty();
+        }
     }
 
     protected class SelectorOption extends SelectorConfiguration {
         protected Integer slot = null;
         protected String name = null;
         protected List<String> lore = null;
+        protected boolean placeholder;
 
         public SelectorOption(SelectorConfiguration defaults, ConfigurationSection configuration, CastContext context, CostReducer reducer) {
             super();
@@ -296,7 +310,14 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             this.unlockKey = defaults.unlockKey;
             this.unlockSection = defaults.unlockSection;
             this.showConfirmation = defaults.showConfirmation;
+            this.costType = defaults.costType;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<String>();
+
+            placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "") .equals("none");
+            if (placeholder) {
+                this.icon = new ItemStack(Material.AIR);
+                return;
+            }
 
             parse(configuration);
 
@@ -408,7 +429,8 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
 
             if (costs != null) {
-                String costString = context.getMessage("cost_lore", getDefaultMessage(context, "cost_lore"));
+                String costKey = unlockKey != null && !unlockKey.isEmpty() ? "unlock_cost_lore" : "cost_lore";
+                String costString = context.getMessage(costKey, getDefaultMessage(context, costKey));
                 for (Cost cost : costs) {
                     lore.add(costString.replace("$cost", cost.getFullDescription(context.getController().getMessages(), reducer)));
                 }
@@ -463,6 +485,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         public SpellResult give(CostReducer reducer, CastContext context) {
             Mage mage = context.getMage();
             Wand wand = context.getWand();
+
+            if (placeholder) {
+                return SpellResult.NO_ACTION;
+            }
 
             if (unlockClass != null && !unlockClass.isEmpty()) {
                 if (mage.hasClassUnlocked(unlockClass)) {
@@ -557,6 +583,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             return slot;
         }
 
+        public boolean isPlaceholder() {
+            return placeholder;
+        }
+
         public ItemStack getIcon() {
             if (showConfirmation) {
                 InventoryUtils.setMeta(icon, "confirm", "true");
@@ -627,7 +657,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         MageController controller = context.getController();
 
         SelectorOption option = showingItems.get(slotIndex);
-        if (option == null) {
+        if (option == null || option.isPlaceholder()) {
             return;
         }
 
@@ -640,7 +670,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         } else {
             String itemName = option.getName();
             if (InventoryUtils.hasMeta(item, "confirm")) {
-                String inventoryTitle = getConfirmTitle(context).replace("$item", itemName);
+                String inventoryTitle = getConfirmTitle(option, context).replace("$item", itemName);
                 Inventory confirmInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
                 InventoryUtils.removeMeta(item, "confirm");
                 for (int i = 0; i < 9; i++)
@@ -690,6 +720,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         costScale = parameters.getDouble("scale", 1);
         title = parameters.getString("title");
         confirmTitle = parameters.getString("confirm_title");
+        confirmUnlockTitle = parameters.getString("unlock_confirm_title");
         finalResult = null;
         isActive = false;
 
@@ -743,8 +774,14 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         return context.getMessage("title", getDefaultMessage(context, "title"));
     }
 
-    protected String getConfirmTitle(CastContext context)
+    protected String getConfirmTitle(SelectorOption option, CastContext context)
     {
+        if (option.isUnlock() ) {
+            if (confirmUnlockTitle != null && !confirmUnlockTitle.isEmpty()) {
+                return confirmUnlockTitle;
+            }
+            return context.getMessage("unlock_confirm_title", getDefaultMessage(context, "unlock_confirm_title"));
+        }
         if (confirmTitle != null && !confirmTitle.isEmpty()) {
             return confirmTitle;
         }
@@ -753,8 +790,29 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
     protected String getBalanceDescription(CastContext context) {
         Mage mage = context.getMage();
-        double balance = VaultController.getInstance().getBalance(mage.getPlayer());
-        return VaultController.getInstance().format(balance);
+        Player player = mage.getPlayer();
+        Messages messages = context.getController().getMessages();
+        String description = "";
+        switch (defaultConfiguration.getCostType()) {
+            case "xp":
+                String xpAmount = Integer.toString(mage.getExperience());
+                description = messages.get("costs.xp_amount").replace("$amount", xpAmount);
+                break;
+            case "sp":
+                String spAmount = Integer.toString(mage.getSkillPoints());
+                description = messages.get("costs.sp_amount").replace("$amount", spAmount);
+                break;
+            case "levels":
+                int levels = player == null ? 0 : player.getLevel();
+                String levelAmount = Integer.toString(levels);
+                description = messages.get("costs.levels_amount").replace("$amount", levelAmount);
+                break;
+            default:
+                double balance = VaultController.getInstance().getBalance(mage.getPlayer());
+                description = VaultController.getInstance().format(balance);
+        }
+
+        return description;
     }
 
     protected Inventory getInventory(CastContext context)
@@ -836,7 +894,11 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             return null;
         }
 
-        return context.getController().createItem(itemKey);
+        ItemStack item = context.getController().createItem(itemKey);
+        if (item == null) {
+           context.getLogger().warning("Failed to create item in selector: " + itemKey);
+        }
+        return item;
     }
 
     @Override

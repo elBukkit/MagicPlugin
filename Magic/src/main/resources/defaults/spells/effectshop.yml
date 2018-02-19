@@ -1,27 +1,31 @@
 effectshop:
-    icon: ink_sack
+    icon: diamond_axe:126
+    icon_disabled: diamond_hoe:126
     category: npc
     hidden: true
     actions:
         cast:
-        -  class: ItemShop
+        -  class: Selector
     parameters:
-        quiet: true
         confirm_filler: stained_glass:9
         confirm: true
         require_wand: true
-        items:
-        - item: wand|bubbleeffects
-          cost: 100
-        - item: wand|haloeffects
+        unlock_section: wand_effects
+        cost_type: sp
+        options:
+        - item: bubbleeffects
+          unlock: bubble
           cost: 500
-        - item: wand|rainboweffects
-          cost: 500
+        - item: haloeffects
+          unlock: halo
+          cost: 1000
+        - item: rainboweffects
+          unlock: rainbow
+          cost: 2000
         - item: none
         - item: none
         - item: none
         - item: none
         - item: none
-        - item: wand|cleareffects
-          cost: 0
+        - item: cleareffects
 

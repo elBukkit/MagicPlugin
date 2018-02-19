@@ -1246,17 +1246,6 @@ spells:
         cast_requirement: "&r&cCasts: &6$current&f/&e$required"
         tags_requirement: "&r&cRequires: &6$tags"
         confirm_title: "Change to $item"
-    progressmenu:
-        name: Magic Progress
-        title: "Magic Progress"
-        deducted: ""
-        cast_fail: ""
-    appearanceshop:
-        name: Change Wand Appearance
-        title: "Wand Appearance"
-        deducted: "You changed to $item"
-        not_applicable: "Your wand already looks like $item"
-        cost_lore: "&6Unlock Cost: &e$cost"
     brushselect:
         name: Brush Selector
         descriptions: Chooses your active brush
@@ -1335,6 +1324,16 @@ spells:
         cost_lore: "Free!"
         confirm_title: "Get $item"
         deducted: "&d&oYou received &r&6$item"
+    progressmenu:
+        name: Magic Progress
+        title: "Magic Progress"
+        deducted: ""
+        cast_fail: ""
+    appearanceshop:
+        name: Change Wand Appearance
+        title: "Wand Appearance ($balance)"
+        deducted: "You changed to $item"
+        not_applicable: "Your wand already looks like $item"
     tweakshop:
         name: Wand Tweak Shop
         title: "Wand Tweaks"
@@ -1344,9 +1343,15 @@ spells:
         confirm_title: "Get $item"
         deducted: "&d&oYou received &r&6$item"
     colorshop:
-        name: Wand Color Shop
-        title: "Wand Color ($balance)"
+        name: Effect Colors
+        title: "Effect Color ($balance)"
         description: Colorize Your Wand
+        deducted: "You changed to $item"
+    effectshop:
+        name: Wand Effects
+        title: "Wand Effects ($balance)"
+        description: Add particle effects to your wand
+        deducted: "You changed to $item"
     upgradeshop:
         name: Wand Upgrade Shop
         title: "Wand Upgrades ($balance)"

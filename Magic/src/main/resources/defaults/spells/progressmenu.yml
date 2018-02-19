@@ -10,3 +10,5 @@ progressmenu:
     - cast_spell: spellshop
     - cast_spell: upgrades
     - cast_spell: appearanceshop
+    - cast_spell: colorshop
+    - cast_spell: effectshop

@@ -10,24 +10,25 @@ appearanceshop:
         require_wand: true
         require_template: wand
         unlock_section: wand_appearances
+        cost_type: sp
         options:
-        - item: wand|appearance_beginner
+        - item: appearance_beginner
           path: beginner
-        - item: wand|appearance_student
+        - item: appearance_student
           path: student
-        - item: wand|appearance_apprentice
+        - item: appearance_apprentice
           path: apprentice
-        - item: wand|appearance_master
+        - item: appearance_master
           path: master
-        - item: wand|appearance_engineer
+        - item: appearance_engineer
           path: engineer
-        - item: wand|appearance_conduit
+        - item: appearance_conduit
           path: conduit
-        - item: wand|appearance_moon
+        - item: appearance_moon
           unlock: moon
           confirm: true
-          cost: 10000
-        - item: wand|appearance_magicka
+          cost: 2500
+        - item: appearance_magicka
           unlock: magicka
           confirm: true
-          cost: 10000
+          cost: 5000
