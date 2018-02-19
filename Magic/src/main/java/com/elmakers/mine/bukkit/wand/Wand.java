@@ -2075,10 +2075,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		
 		return "<div style=\"background-color: black; margin: 8px; padding: 8px\">" + StringUtils.join(lore, "<br/>") + "</div>";
 	}
-
-	protected List<String> getLore() {
-		return getLore(getSpells().size(), getBrushes().size());
-	}
 	
 	protected void addPropertyLore(List<String> lore, boolean isSingleSpell)
 	{
@@ -2165,12 +2161,95 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     {
         return controller.getMessages().getPercentageString(getMessageKey(templateName), amount);
     }
-	
-	protected List<String> getLore(int spellCount, int materialCount) 
-	{
-		List<String> lore = new ArrayList<>();
 
-		String pathName = null;
+    protected List<String> getCustomLore(Collection<String> loreTemplate) {
+		List<String> lore = new ArrayList<>();
+		for (String line : loreTemplate) {
+			if (line.startsWith("$")) {
+				switch (line) {
+					case "$description":
+						addDescriptionLore(lore);
+						break;
+					case "$path":
+						String pathTemplate = getMessage("path_lore", "");
+						String pathName = getPathName();
+						if (pathName != null && !pathTemplate.isEmpty()) {
+							lore.add(pathTemplate.replace("$path", pathName));
+						}
+						break;
+					case "$owner":
+						addOwnerDescription(lore);
+						break;
+					case "$spells":
+						int spellCount = getSpells().size();
+						if (spellCount > 0) {
+							ConfigurationUtils.addIfNotEmpty(getMessage("spell_count").replace("$count", ((Integer)spellCount).toString()), lore);
+            			}
+            			break;
+					case "$brushes":
+						int materialCount = getBrushes().size();
+						if (materialCount > 0) {
+							ConfigurationUtils.addIfNotEmpty(getMessage("material_count").replace("$count", ((Integer)materialCount).toString()), lore);
+						}
+						break;
+					case "$uses":
+						int remaining = getRemainingUses();
+						if (!isSingleUse && remaining > 0) {
+							String message = (remaining == 1) ? getMessage("uses_remaining_singular") : getMessage("uses_remaining_brief");
+							ConfigurationUtils.addIfNotEmpty(message.replace("$count", ((Integer)remaining).toString()), lore);
+						}
+						break;
+					case "$mana_max":
+						if (usesMana()) {
+							int manaMax = getManaMax();
+							if (effectiveManaMax != manaMax) {
+								String fullMessage = getLevelString("mana_amount_boosted", manaMax, controller.getMaxMana());
+								ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaMax)), lore);
+							} else {
+								ConfigurationUtils.addIfNotEmpty(getLevelString("mana_amount", manaMax, controller.getMaxMana()), lore);
+							}
+						}
+						break;
+					case "$mana_regeneration":
+						if (usesMana()) {
+							int manaRegeneration = getManaRegeneration();
+							if (manaRegeneration > 0) {
+								if (effectiveManaRegeneration != manaRegeneration) {
+									String fullMessage = getLevelString("mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
+									ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaRegeneration)), lore);
+								} else {
+									ConfigurationUtils.addIfNotEmpty(getLevelString("mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()), lore);
+								}
+							}
+						}
+						break;
+					default:
+						lore.add(ChatColor.translateAlternateColorCodes('&', line));
+				}
+			} else {
+				lore.add(ChatColor.translateAlternateColorCodes('&', line));
+			}
+		}
+		return lore;
+	}
+
+	protected void addDescriptionLore(List<String> lore) {
+		String descriptionTemplate = controller.getMessages().get(getMessageKey("description_lore"), "");
+		if (!description.isEmpty() && !descriptionTemplate.isEmpty()) {
+            if (description.contains("$path")) {
+            	String pathName = getPathName();
+                String description = ChatColor.translateAlternateColorCodes('&', this.description);
+                description = description.replace("$path", pathName == null ? "Unknown" : pathName);
+				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
+            } else {
+				String description = ChatColor.translateAlternateColorCodes('&', this.description);
+				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
+            }
+		}
+	}
+
+	protected String getPathName() {
+    	String pathName = null;
 		com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
 		if (path != null) {
 			pathName = path.getName();
@@ -2188,6 +2267,35 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				}
 			}
 		}
+
+		return pathName;
+	}
+
+	protected void addOwnerDescription(List<String> lore) {
+		if (owner != null && owner.length() > 0) {
+			if (bound) {
+				String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
+				ConfigurationUtils.addIfNotEmpty(ownerDescription, lore);
+			} else {
+				String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
+				ConfigurationUtils.addIfNotEmpty(ownerDescription, lore);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected List<String> getLore()
+	{
+		Object customLore = getProperty("lore");
+		if (customLore != null && customLore instanceof Collection) {
+			return getCustomLore((Collection<String>)customLore);
+		}
+		List<String> lore = new ArrayList<>();
+
+		int spellCount = getSpells().size();
+		int materialCount = getBrushes().size();
+
+		String pathName = getPathName();
         if (description.length() > 0) {
 			if (randomizeOnActivate) {
 				String randomDescription = getMessage("randomized_lore");
@@ -2209,8 +2317,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 String description = ChatColor.translateAlternateColorCodes('&', this.description);
                 description = description.replace("$path", pathName == null ? "Unknown" : pathName);
 				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
-            }
-            else if (description.contains("$")) {
+            } else if (description.contains("$")) {
                 String randomDescription = getMessage("randomized_lore");
 				String randomTemplate = controller.getMessages().get(getMessageKey("randomized_description"), "");
 				if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
@@ -2229,15 +2336,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 
 		if (!isUpgrade) {
-			if (owner != null && owner.length() > 0) {
-				if (bound) {
-                    String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
-                    ConfigurationUtils.addIfNotEmpty(ownerDescription, lore);
-				} else {
-					String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
-					ConfigurationUtils.addIfNotEmpty(ownerDescription, lore);
-				}
-			}
+			addOwnerDescription(lore);
 		}
 
 		SpellTemplate spell = controller.getSpellTemplate(getActiveSpellKey());

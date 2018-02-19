@@ -143,3 +143,19 @@ quaffle:
   mode: cast
   spells:
   - quafflepower
+
+customlore:
+  inherit: wand
+  lore:
+  - This wand has
+  - completely
+  - custom
+  - lore
+  - $owner
+  - You can add variables like so
+  - $description
+  - $spells
+  - $brushes
+  - $mana_regeneration
+  - $path
+  - $mana_max

@@ -10,6 +10,7 @@
  - Added progressmenu, which is now the default enchantment table spell
    - Provides access to the spellshop and spell upgrades progress menu
    - Allows access to appearanceshop, colorshop and effectshop
+ - Add support for completely custom wand lore (WIP, supports a limited set of wand data)
 
 ## 7.1.2
 
