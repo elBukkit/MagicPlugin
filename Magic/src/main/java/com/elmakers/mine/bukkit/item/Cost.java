@@ -19,7 +19,8 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         MANA,
         CURRENCY,
         HEALTH,
-        HUNGER
+        HUNGER,
+        LEVELS
     };
     
     protected ItemStack item;
@@ -42,6 +43,8 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             this.type = Type.HEALTH;
         } else if (key.toLowerCase().equals("hunger")) {
             this.type = Type.HUNGER;
+        } else if (key.toLowerCase().equals("levels")) {
+            this.type = Type.LEVELS;
         } else {
             if (key.endsWith(":*")) {
                 key = key.substring(0,key.length() - 2);
@@ -62,6 +65,8 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         switch (this.type) {
             case ITEM:
                 return item == null || getReducedCost(item.getAmount(), reducer) == 0;
+            case LEVELS:
+                return getLevels(reducer) == 0;
             case XP:
                 return getXP(reducer) == 0;
             case MANA:
@@ -77,11 +82,14 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     
     @Override
     public boolean has(Mage mage, Wand wand, CostReducer reducer) {
+        Player player = mage.getPlayer();
         switch (type) {
             case ITEM:
                 return isConsumeFree(reducer) || mage.hasItem(getItemStack(reducer), itemWildcard);
             case XP:
                 return mage.getExperience() >= getXP(reducer);
+            case LEVELS:
+                return player != null && player.getLevel() >= getLevels(reducer);
             case MANA:
                 return wand == null ? mage.getMana() >= getMana(reducer) : wand.getMana() >= getMana(reducer);
             case CURRENCY:
@@ -93,7 +101,6 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 LivingEntity living = mage.getLivingEntity();
                 return living != null && living.getHealth() >= getReducedCost(amount, reducer);
             case HUNGER:
-                Player player = mage.getPlayer();
                 return player != null && player.getFoodLevel() >= getReducedCost(amount, reducer);
         }
         
@@ -107,6 +114,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public void deduct(Mage mage, Wand wand, CostReducer reducer) {
+        Player player = mage.getPlayer();
         switch (type) {
             case ITEM:
                 if (!isConsumeFree(reducer)) {
@@ -116,6 +124,12 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 break;
             case XP:
                 mage.removeExperience(getXP(reducer));
+                break;
+            case LEVELS:
+                if (player != null) {
+                    int newLevel = Math.max(0, player.getLevel() - getLevels(reducer));
+                    player.setLevel(newLevel);
+                }
                 break;
             case MANA:
                 if (wand != null) {
@@ -138,7 +152,6 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 }
                 break;
             case HUNGER:
-                Player player = mage.getPlayer();
                 if (player != null) {
                     player.setFoodLevel(Math.max(0, player.getFoodLevel() - getRoundedCost(amount, reducer)));
                 }
@@ -205,6 +218,8 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 break;
             case XP:
                 return messages.get("costs.xp");
+            case LEVELS:
+                return messages.get("costs.levels");
             case SP:
                 return messages.get("costs.sp");
             case MANA:
@@ -232,6 +247,8 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 break;
             case XP:
                 return messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
+            case LEVELS:
+                return messages.get("costs.levels_amount").replace("$amount", ((Integer)getLevels(reducer)).toString());
             case SP:
                 return messages.get("costs.sp_amount").replace("$amount", Integer.toString(getSkillPoints(reducer)));
             case MANA:
@@ -269,6 +286,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     public int getXP(CostReducer reducer)
     {
         return type == Type.XP ? getRoundedCost(amount, reducer) : 0;
+    }
+
+    public int getLevels(CostReducer reducer)
+    {
+        return type == Type.LEVELS ? getRoundedCost(amount, reducer) : 0;
     }
     
     public int getSkillPoints(CostReducer reducer)
