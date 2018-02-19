@@ -310,6 +310,12 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return null;
     }
 
+	@Override
+	public boolean canProgress() {
+		ProgressionPath path = getPath();
+		return (path != null && path.canProgress(this));
+	}
+
     public abstract boolean isPlayer();
     public abstract Player getPlayer();
     public abstract Mage getMage();

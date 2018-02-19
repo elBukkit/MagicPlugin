@@ -1,7 +1,7 @@
 shops:
   no_wand: "You must be holding a wand!"
   no_template: "You may not learn with that $wand."
-  no_path: "You may not learn with that $wand."
+  no_path: "You may not learn here."
   no_required_path: "You must be at least $path!"
   no_path_exact: "You must be at $path!"
   no_path_end: "You must be ready to advance from $path!"

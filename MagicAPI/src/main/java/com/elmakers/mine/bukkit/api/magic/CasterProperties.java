@@ -13,4 +13,5 @@ public interface CasterProperties extends MagicConfigurable {
     int getManaRegeneration();
     void setManaRegeneration(int manaRegeneration);
     ProgressionPath getPath();
+    boolean canProgress();
 }
