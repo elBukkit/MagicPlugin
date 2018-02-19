@@ -3,16 +3,16 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.ChatColor;
@@ -64,16 +64,19 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
     @Override
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
-        Wand wand = context.getWand();
+        CasterProperties casterProperties = context.getWand();
         this.context = context;
 		Player player = mage.getPlayer();
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-        if (wand == null) {
-            return SpellResult.FAIL;
+        if (casterProperties == null) {
+		    casterProperties = mage.getActiveClass();
+		    if (casterProperties == null) {
+                return SpellResult.FAIL;
+            }
         }
-        Collection<String> spells = wand.getSpells();
+        Collection<String> spells = casterProperties.getSpells();
         Collection<ItemStack> upgrades = new ArrayList<>();
         Messages messages = context.getController().getMessages();
         for (String spellKey : spells) {
@@ -98,7 +101,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
                         InventoryUtils.wrapText(upgradeDescription, lore);
                     }
-                    WandUpgradePath currentPath = wand.getPath();
+                    ProgressionPath currentPath = casterProperties.getProgressionPath();
                     if (requiredPathKey != null && currentPath == null) {
                         continue;
                     }
