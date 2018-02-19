@@ -2,6 +2,7 @@
 
 ## 7.2
 
+ - Default RP changed to Magic-7
  - Make it easier to create one-off simple configs
    - Add load_default_configs option
    - Allow adding wands, spells, etc directly in config.yml sections
