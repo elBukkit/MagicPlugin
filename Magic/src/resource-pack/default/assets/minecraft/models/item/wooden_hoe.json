@@ -1,4 +1,5 @@
 {
+  "__comment": "Max wood durability is 60",
   "parent": "item/handheld",
   "textures": {
     "layer0": "items/wood_hoe"

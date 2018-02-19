@@ -1,4 +1,5 @@
 {
+  "__comment": "Max shield durability is 337",
     "parent": "builtin/entity",
     "display": {
         "thirdperson_righthand": {
