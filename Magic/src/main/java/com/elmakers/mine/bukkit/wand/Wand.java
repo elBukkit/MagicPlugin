@@ -4430,30 +4430,32 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (spellCount == 1)
                 {
                     String controlKey = getControlKey(WandAction.TOGGLE);
-                    if (controlKey != null) {
-                        String inventoryMessage = null;
-                        switch (getMode()) {
-                        case INVENTORY:
-                            inventoryMessage = "inventory_instructions";
-                            break;
-                        case CHEST:
-                            inventoryMessage = "chest_instructions";
-                            break;
-                        case SKILLS:
-                            inventoryMessage = "skills_instructions";
-                            break;
-                        case CAST:
-                        case CYCLE:
-                        case NONE:
-                            // Ignore
-                            break;
+					String inventoryMessage = null;
+					switch (getMode()) {
+					case INVENTORY:
+						inventoryMessage = "inventory_instructions";
+						break;
+					case CHEST:
+						inventoryMessage = "chest_instructions";
+						break;
+					case SKILLS:
+						inventoryMessage = "skills_instructions";
+						break;
+					case CYCLE:
+						inventoryMessage = "cycle_instructions";
+						if (controlKey == null) {
+							controlKey = getControlKey(WandAction.CYCLE);
 						}
-
-						if (inventoryMessage != null) {
-							controlKey = controller.getMessages().get("controls." + controlKey);
-							mage.sendMessage(getMessage(inventoryMessage, "")
-								.replace("$wand", getName()).replace("$toggle", controlKey));
-						}
+						break;
+					case CAST:
+					case NONE:
+						// Ignore
+						break;
+					}
+                    if (controlKey != null && inventoryMessage != null) {
+						controlKey = controller.getMessages().get("controls." + controlKey);
+						mage.sendMessage(getMessage(inventoryMessage, "")
+							.replace("$wand", getName()).replace("$toggle", controlKey).replace("$cycle", controlKey));
 					}
                 }
                 if (inventoryCount == 1 && inventories.size() > 1)
@@ -5031,6 +5033,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				alternateCast();
 				break;
 			case TOGGLE:
+				if (mode == WandMode.CYCLE) {
+					cycleActive(1);
+					return true;
+				}
 				if (mode != WandMode.CHEST && mode != WandMode.INVENTORY && mode != WandMode.SKILLS) return false;
 				toggleInventory();
 				break;

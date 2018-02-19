@@ -18,6 +18,7 @@ quickcast_normal:
     upgrade: true
     force: true
     quick_cast: normal
+
 mode_drop:
     icon: diamond_axe:210
     upgrade: true
@@ -54,26 +55,23 @@ mode_swap:
     left_click: cast
     swap: toggle
     quick_cast: false
+
 chestmode:
     icon: diamond_axe:205
     upgrade: true
     indestructible: false
     mode: chest
-    drop: toggle
-    swap: none
 inventorymode:
     icon: diamond_axe:214
     upgrade: true
     indestructible: false
     mode: inventory
-    drop: toggle
-    swap: cycle_hotbar
 cyclemode:
     icon: diamond_axe:215
     upgrade: true
     indestructible: false
     mode: cycle
-    drop: cycle
+
 organizer:
     icon: diamond_axe:216
     upgrade: true
