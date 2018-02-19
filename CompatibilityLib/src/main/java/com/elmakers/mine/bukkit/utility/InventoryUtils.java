@@ -32,6 +32,8 @@ import java.util.logging.Level;
 
 public class InventoryUtils extends NMSUtils
 {
+	public static int MAX_LORE_LENGTH = 24;
+
     public static boolean saveTagsToItem(ConfigurationSection tags, ItemStack item)
     {
         Object handle = getHandle(item);
@@ -432,6 +434,11 @@ public class InventoryUtils extends NMSUtils
     public static boolean setSkullOwner(Skull state, Player owner)
     {
         return setSkullOwner(state, owner.getName(), owner.getUniqueId());
+    }
+
+    public static void wrapText(String text, Collection<String> list)
+    {
+        wrapText(text, MAX_LORE_LENGTH, list);
     }
 
     public static void wrapText(String text, int maxLength, Collection<String> list)

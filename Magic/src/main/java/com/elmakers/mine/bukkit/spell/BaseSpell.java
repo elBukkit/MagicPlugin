@@ -74,7 +74,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public abstract class BaseSpell implements MageSpell, Cloneable {
-    public static int MAX_LORE_LENGTH = 24;
     public static String DEFAULT_DISABLED_ICON_URL = "";
 
     protected static final double LOOK_THRESHOLD_RADIANS = 0.9;
@@ -2437,17 +2436,17 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (levelDescription != null && levelDescription.length() > 0) {
             String descriptionTemplate = messages.get("spell.level_lore", "");
             if (!descriptionTemplate.isEmpty()) {
-                InventoryUtils.wrapText(descriptionTemplate.replace("$level", levelDescription), MAX_LORE_LENGTH, lore);
+                InventoryUtils.wrapText(descriptionTemplate.replace("$level", levelDescription), lore);
             }
         }
         if (description != null && description.length() > 0) {
             String descriptionTemplate = messages.get("spell.description_lore", "");
             if (!descriptionTemplate.isEmpty()) {
-                InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), MAX_LORE_LENGTH, lore);
+                InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
             }
         }
         if (usage != null && usage.length() > 0) {
-            InventoryUtils.wrapText(usage, MAX_LORE_LENGTH, lore);
+            InventoryUtils.wrapText(usage, lore);
         }
         if (category != null) {
             String categoryLore = messages.get("spell.category", "");
@@ -2545,7 +2544,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             InventoryUtils.wrapText(progressDescription
                     .replace("$level", Long.toString(Math.max(0, getProgressLevel())))
                     .replace("$max_level", Long.toString(maxLevels)),
-                    MAX_LORE_LENGTH, lore);
+                    lore);
         }
     }
 

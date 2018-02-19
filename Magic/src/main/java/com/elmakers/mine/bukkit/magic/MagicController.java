@@ -2353,8 +2353,7 @@ public class MagicController implements MageController {
 		createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
         defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
         skillInventoryRows = properties.getInt("skill_inventory_max_rows", skillInventoryRows);
-        BaseSpell.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", BaseSpell.MAX_LORE_LENGTH);
-        Wand.MAX_LORE_LENGTH = BaseSpell.MAX_LORE_LENGTH;
+        InventoryUtils.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", InventoryUtils.MAX_LORE_LENGTH);
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
         useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);

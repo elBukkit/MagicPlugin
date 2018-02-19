@@ -248,7 +248,7 @@ public class SpellShopAction extends BaseShopAction
             }
             String upgradeDescription = spell.getUpgradeDescription();
             if (showUpgrades && upgradeDescription != null && !upgradeDescription.isEmpty()) {
-                InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
+                InventoryUtils.wrapText(upgradeDescription,  lore);
             }
 
             String unpurchasableMessage = null;
@@ -267,12 +267,12 @@ public class SpellShopAction extends BaseShopAction
                     com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
                     if (upgradePath != null) {
                         unpurchasableMessage = context.getMessage("level_requirement", getDefaultMessage(context, "level_requirement")).replace("$path", upgradePath.getName());
-                        InventoryUtils.wrapText(unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
+                        InventoryUtils.wrapText(unpurchasableMessage, lore);
                     }
                 } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                     Set<String> tags = currentPath.getMissingTags(requiredPathTags);
                     unpurchasableMessage = context.getMessage("tags_requirement", getDefaultMessage(context, "tags_requirement")).replace("$tags", controller.getMessages().formatList("tags", tags, "name"));
-                    InventoryUtils.wrapText(unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
+                    InventoryUtils.wrapText(unpurchasableMessage, lore);
                 }
 
                 if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
@@ -298,7 +298,7 @@ public class SpellShopAction extends BaseShopAction
                     }
                     unpurchasableMessage = ChatColor.RED + context.getMessage("required_spells", getDefaultMessage(context, "required_spells"))
                             .replace("$spells", StringUtils.join(spells, ", "));
-                    InventoryUtils.wrapText(ChatColor.GOLD + unpurchasableMessage, BaseSpell.MAX_LORE_LENGTH, lore);
+                    InventoryUtils.wrapText(ChatColor.GOLD + unpurchasableMessage, lore);
                 }
             }
 

@@ -96,7 +96,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     lore.add(levelDescription);
                     String upgradeDescription = upgradeSpell.getUpgradeDescription();
                     if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
-                        InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
+                        InventoryUtils.wrapText(upgradeDescription, lore);
                     }
                     WandUpgradePath currentPath = wand.getPath();
                     if (requiredPathKey != null && currentPath == null) {

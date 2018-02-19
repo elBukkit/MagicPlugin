@@ -79,7 +79,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public static Vector DEFAULT_CAST_OFFSET = new Vector(0, 0, 0.5);
-	public static int MAX_LORE_LENGTH = 24;
 	public static String DEFAULT_WAND_TEMPLATE = "default";
 	private static int WAND_VERSION = 5;
 
@@ -2194,7 +2193,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				String randomDescription = getMessage("randomized_lore");
 				String randomTemplate = controller.getMessages().get(getMessageKey("randomized_description"), "");
 				if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
-					InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), MAX_LORE_LENGTH, lore);
+					InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), lore);
 					return lore;
 				}
 			}
@@ -2209,19 +2208,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (description.contains("$path") && !descriptionTemplate.isEmpty()) {
                 String description = ChatColor.translateAlternateColorCodes('&', this.description);
                 description = description.replace("$path", pathName == null ? "Unknown" : pathName);
-				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), MAX_LORE_LENGTH, lore);
+				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
             }
             else if (description.contains("$")) {
                 String randomDescription = getMessage("randomized_lore");
 				String randomTemplate = controller.getMessages().get(getMessageKey("randomized_description"), "");
 				if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
 					randomDescription = ChatColor.translateAlternateColorCodes('&', randomDescription);
-					InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), MAX_LORE_LENGTH, lore);
+					InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), lore);
 					return lore;
 				}
             } else if (!descriptionTemplate.isEmpty()) {
 				String description = ChatColor.translateAlternateColorCodes('&', this.description);
-				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), MAX_LORE_LENGTH, lore);
+				InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
             }
         }
 		String pathTemplate = getMessage("path_lore", "");

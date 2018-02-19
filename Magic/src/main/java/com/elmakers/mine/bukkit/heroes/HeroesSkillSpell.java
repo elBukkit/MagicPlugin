@@ -94,7 +94,7 @@ public class HeroesSkillSpell extends BaseSpell {
         }
 
         if (description != null && description.length() > 0) {
-            InventoryUtils.wrapText(description, MAX_LORE_LENGTH, lore);
+            InventoryUtils.wrapText(description, lore);
         }
 
         int cooldown = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN, 0, true);

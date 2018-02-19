@@ -641,7 +641,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             if (waypoint.description != null && waypoint.description.length() > 0)
             {
                 List<String> lore = new ArrayList<>();
-                InventoryUtils.wrapText(waypoint.description, Wand.MAX_LORE_LENGTH, lore);
+                InventoryUtils.wrapText(waypoint.description, lore);
                 meta.setLore(lore);
             }
             waypointItem.setItemMeta(meta);
