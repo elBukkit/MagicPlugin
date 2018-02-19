@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -321,6 +322,14 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public Wand getWand() {
         return wand;
+    }
+
+    @Override
+    public CasterProperties getActiveProperties() {
+        if (wand != null) {
+            return wand;
+        }
+        return mage.getActiveProperties();
     }
 
     @Override

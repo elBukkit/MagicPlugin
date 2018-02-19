@@ -64,17 +64,11 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
     @Override
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
-        CasterProperties casterProperties = context.getWand();
+        CasterProperties casterProperties = context.getActiveProperties();
         this.context = context;
 		Player player = mage.getPlayer();
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
-        }
-        if (casterProperties == null) {
-		    casterProperties = mage.getActiveClass();
-		    if (casterProperties == null) {
-                return SpellResult.FAIL;
-            }
         }
         Collection<String> spells = casterProperties.getSpells();
         Collection<ItemStack> upgrades = new ArrayList<>();

@@ -2097,7 +2097,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return Math.min(multiplier, maxPowerMultiplierMax);
     }
 
-    protected CasterProperties getCasterProperties() {
+    @Override
+    public CasterProperties getActiveProperties() {
         if (offhandCast && offhandWand != null) {
             return offhandWand;
         }
@@ -2112,40 +2113,40 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getMana() {
-        return getCasterProperties().getMana();
+        return getActiveProperties().getMana();
     }
 
     @Override
     public int getManaMax() {
-        return getCasterProperties().getManaMax();
+        return getActiveProperties().getManaMax();
     }
 
     @Override
     public int getManaRegeneration() {
-        return getCasterProperties().getManaRegeneration();
+        return getActiveProperties().getManaRegeneration();
     }
 
     @Override
     public void setMana(float mana) {
-        getCasterProperties().setMana(mana);
+        getActiveProperties().setMana(mana);
     }
 
     @Override
     public void updateMana() {
-        getCasterProperties().updateMana();
+        getActiveProperties().updateMana();
     }
 
     public int getEffectiveManaMax() {
-        return getCasterProperties().getEffectiveManaMax();
+        return getActiveProperties().getEffectiveManaMax();
     }
 
     public int getEffectiveManaRegeneration() {
-        return getCasterProperties().getEffectiveManaRegeneration();
+        return getActiveProperties().getEffectiveManaRegeneration();
     }
 
     @Override
     public void removeMana(float mana) {
-        getCasterProperties().removeMana(mana);
+        getActiveProperties().removeMana(mana);
     }
 
     @Override

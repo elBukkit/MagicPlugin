@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -162,4 +163,5 @@ public interface CastContext {
     void addHandler(ActionHandler handler);
     SpellResult processHandlers();
     boolean hasHandlers();
+    CasterProperties getActiveProperties();
 }

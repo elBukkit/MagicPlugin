@@ -496,6 +496,15 @@ public interface Mage extends CostReducer {
     @Nullable MageClass getClass(@Nonnull String key);
     boolean hasClassUnlocked(@Nonnull String key);
 
+    /**
+     * This will return properties for the mage's active wand, if holding one, or if not then the active class.
+     *
+     * If the mage has no active class, then mage properties are returned.
+     *
+     * @return
+     */
+    CasterProperties getActiveProperties();
+
     // Vault integration
     double getVaultBalance();
     boolean addVaultCurrency(double delta);
