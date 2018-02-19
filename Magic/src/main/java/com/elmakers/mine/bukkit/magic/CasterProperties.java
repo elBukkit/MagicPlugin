@@ -302,7 +302,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return brushes;
     }
 
-    public ProgressionPath getProgressionPath() {
+    public ProgressionPath getPath() {
         String pathKey = getString("path");
         if (pathKey != null && !pathKey.isEmpty()) {
             return controller.getPath(pathKey);

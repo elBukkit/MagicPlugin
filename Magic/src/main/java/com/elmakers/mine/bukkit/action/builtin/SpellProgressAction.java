@@ -101,7 +101,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
                         InventoryUtils.wrapText(upgradeDescription, lore);
                     }
-                    ProgressionPath currentPath = casterProperties.getProgressionPath();
+                    ProgressionPath currentPath = casterProperties.getPath();
                     if (requiredPathKey != null && currentPath == null) {
                         continue;
                     }
