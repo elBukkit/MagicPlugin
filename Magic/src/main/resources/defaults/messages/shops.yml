@@ -21,7 +21,7 @@ shops:
   prerequisite_spell_level: "&6$name"
   prerequisite_spell_progress_level: " (Progress $level/$max_level)"
   required_spells: "&r&cRequires: $spells"
-  cast_spell: "Cast $spell on you"
+  cast_spell: "$spell"
   unlock_class: "$class"
   nothing: "Nothing"
   cost_lore: "&6Costs: &e$cost"

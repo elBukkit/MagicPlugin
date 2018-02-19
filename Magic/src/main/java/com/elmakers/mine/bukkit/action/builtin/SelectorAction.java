@@ -329,22 +329,22 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 }
             }
 
-            if (lore == null) {
+            String description = configuration.getString("description");
+            if (lore == null && description == null) {
                 if (unlockClass != null && !unlockClass.isEmpty()) {
                     MageClassTemplate mageClass = controller.getMageClassTemplate(unlockClass);
-                    String description = mageClass.getDescription();
-                    if (description != null && !description.isEmpty()) {
-                        lore = new ArrayList<>();
-                        lore.add(description);
-                    }
+                    description = mageClass.getDescription();
                 } else if (castSpell != null && !castSpell.isEmpty()) {
                     SpellTemplate spell = controller.getSpellTemplate(castSpell);
-                    String description = spell.getDescription();
-                    if (description != null && !description.isEmpty()) {
-                        lore = new ArrayList<>();
-                        lore.add(description);
-                    }
+                    description = spell.getDescription();
                 }
+            }
+
+            if (description != null && !description.isEmpty()) {
+                if (lore == null) {
+                    lore = new ArrayList<>();
+                }
+                InventoryUtils.wrapText(description, lore);
             }
 
             if (costs != null) {
@@ -355,14 +355,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 for (Cost cost : costs) {
                     lore.add(costString.replace("$cost", cost.getFullDescription(context.getController().getMessages(), reducer)));
                 }
-            }
-
-            String description = configuration.getString("description");
-            if (description != null && !description.isEmpty()) {
-                if (lore == null) {
-                    lore = new ArrayList<>();
-                }
-                lore.add(0, description);
             }
 
             // Prepare icon
@@ -442,7 +434,12 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             if (castSpell != null && !castSpell.isEmpty()) {
                 Spell spell = null;
                 spell = mage.getSpell(castSpell);
-                // TODO: Arg support? Target clicker?
+
+                // Close before casting, to support sub-menus
+                if (autoClose) {
+                    mage.deactivateGUI();
+                }
+
                 if (spell == null || !spell.cast()) {
                     context.showMessage("cast_fail", getDefaultMessage(context, "cast_fail"));
                     return SpellResult.NO_TARGET;
@@ -533,10 +530,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         return context.getController().getMessages().get("shops." + key);
     }
 
-    protected String getDefaultMessage(CastContext context, String key, String defaultValue) {
-        return context.getController().getMessages().get("shops." + key, defaultValue);
-    }
-
     @Override
     public void clicked(InventoryClickEvent event)
     {
@@ -567,7 +560,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         } else {
             String itemName = option.getName();
             if (InventoryUtils.hasMeta(item, "confirm")) {
-                String inventoryTitle = context.getMessage("confirm_title", getDefaultMessage(context, "confirm_title", confirmTitle)).replace("$item", itemName);
+                String inventoryTitle = getConfirmTitle(context).replace("$item", itemName);
                 Inventory confirmInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
                 InventoryUtils.removeMeta(item, "confirm");
                 for (int i = 0; i < 9; i++)
@@ -597,7 +590,9 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
         }
         if (autoClose || finalResult != SpellResult.CAST) {
-            mage.deactivateGUI();
+            if (isActive) {
+                mage.deactivateGUI();
+            }
         } else {
             // update title
             mage.continueGUI(this, getInventory(context));
@@ -610,7 +605,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         this.context = context;
 
         defaultConfiguration = new SelectorConfiguration(parameters);
-        showConfirmation = parameters.getBoolean("confirm", true);
+        showConfirmation = parameters.getBoolean("confirm", false);
         confirmFillMaterial = ConfigurationUtils.getMaterialAndData(parameters, "confirm_filler", new MaterialAndData(Material.AIR));
         autoClose = parameters.getBoolean("auto_close", true);
         costScale = parameters.getDouble("scale", 1);
@@ -666,7 +661,18 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
     protected String getInventoryTitle(CastContext context)
     {
-        return context.getMessage("title", getDefaultMessage(context, "title", title));
+        if (title != null && !title.isEmpty()) {
+            return title;
+        }
+        return context.getMessage("title", getDefaultMessage(context, "title"));
+    }
+
+    protected String getConfirmTitle(CastContext context)
+    {
+        if (confirmTitle != null && !confirmTitle.isEmpty()) {
+            return confirmTitle;
+        }
+        return context.getMessage("confirm_title", getDefaultMessage(context, "confirm_title"));
     }
 
     protected String getBalanceDescription(CastContext context) {

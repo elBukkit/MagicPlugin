@@ -5,6 +5,7 @@
  - Make it easier to create one-off simple configs
    - Add load_default_configs option
    - Allow adding wands, spells, etc directly in config.yml sections
+ - Added progressmenu, which is now the default enchantment table spell
 
 ## 7.1.2
 

@@ -1,5 +1,5 @@
 spellshop:
-    icon: iron_hoe
+    icon: diamond_axe:160
     category: npc
     hidden: true
     actions:

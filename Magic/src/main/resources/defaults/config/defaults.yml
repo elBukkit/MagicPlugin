@@ -303,8 +303,8 @@ sp_max: 9999
 sp_default: 0
 
 # This controls what players will see when interacting with an enchantment table
-enchant_click: spellshop
-enchant_sneak_click: upgrades
+enchant_click: progressmenu
+enchant_sneak_click: spellshop
 
 # Set this to empty to prevent the enchantment table from showing players the spell shop defined above
 # enchant_block: ""

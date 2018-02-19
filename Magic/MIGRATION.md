@@ -1,5 +1,9 @@
 # Migration Notes
 
+## 7.2
+
+ - Default spell used for enchant table changed from spellshop to progressmenu
+
 ## 7.1
 
  - Removed "wand" from potter configs, please use "potterwand" instead.

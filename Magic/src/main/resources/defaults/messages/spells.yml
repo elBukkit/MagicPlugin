@@ -1239,7 +1239,7 @@ spells:
         descriptions: Shows available skills, drag a skill to the hotbar to use it
     upgrades:
         name: Spell Progress
-        descriptions: Shows available upgrades
+        description: Shows progress in upgrading your current spells
         fail: You must be holding a wand!
         upgrade_name_change: "&r&4Upgrades: &r$name"
         level_requirement: "&r&cRequires: &6$path"
@@ -1286,7 +1286,7 @@ spells:
     spellshop:
         name: Spell Shop
         title: "$path Spells ($balance)"
-        description: Buy spells for your current level
+        description: Learn new spells
         cost_lore: "Costs: $cost"
         no_items: There are no spells for you to buy here
         no_path: You may not learn with that $wand.
