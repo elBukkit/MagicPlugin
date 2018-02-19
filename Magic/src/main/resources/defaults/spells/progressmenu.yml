@@ -9,6 +9,10 @@ progressmenu:
     options:
     - cast_spell: spellshop
     - cast_spell: upgrades
+    - placeholder: true
+    - placeholder: true
+    - placeholder: true
     - cast_spell: appearanceshop
     - cast_spell: colorshop
     - cast_spell: effectshop
+    - cast_spell: controlsmenu

@@ -1,0 +1,23 @@
+controlsmenu:
+    icon: diamond_axe:214
+    disabled_icon: diamond_hoe:214
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: Selector
+    parameters:
+        require_wand: true
+        options:
+          - item: inventorymode
+          - item: chestmode
+          - item: cyclemode
+          - item: mode_drop
+          - item: mode_rightclick
+          - item: mode_swap
+          - item: none
+          - item: organizer
+            selected: "You organized your spell inventory"
+          - item: alphabetizer
+            selected: "You alphabetized your spell inventory"
+
