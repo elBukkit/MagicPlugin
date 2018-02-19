@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -287,7 +288,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     public Collection<String> getBrushes() {
-         Object existingBrushes = getObject("brushes");
+        Object existingBrushes = getObject("brushes");
         Set<String> brushes = new HashSet<>();
         if (existingBrushes != null) {
             if (!(existingBrushes instanceof List)) {
@@ -299,6 +300,14 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             }
         }
         return brushes;
+    }
+
+    public ProgressionPath getProgressionPath() {
+        String pathKey = getString("path");
+        if (pathKey != null && !pathKey.isEmpty()) {
+            return controller.getPath(pathKey);
+        }
+        return null;
     }
 
     public abstract boolean isPlayer();
