@@ -648,7 +648,7 @@ bendingshop:
       item: firebending
       cost: 5000
       icon: wood_hoe:22
-    selected_message: "Became $name for $cost"
+    selected: "Became $name for $cost"
     confirm: true
     auto_close: true
     confirm_filler: stained_glass:3

@@ -36,7 +36,7 @@ starshop:
       cost: 1000
     - item: detonator
       cost: 100
-    selected_message: "Became $name for $cost"
+    selected: "Became $name for $cost"
     confirm: true
     auto_close: true
     confirm_filler: stained_glass:3

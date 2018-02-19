@@ -64,5 +64,6 @@ colorshop:
           unlock: "darkgreen"
         - item: none
         - item: randomeffects
+          selected: "You randomized your effect color"
           cost: 20
 

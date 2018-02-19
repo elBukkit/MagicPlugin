@@ -1324,16 +1324,6 @@ spells:
         cost_lore: "Free!"
         confirm_title: "Get $item"
         deducted: "&d&oYou received &r&6$item"
-    progressmenu:
-        name: Magic Progress
-        title: "Magic Progress"
-        deducted: ""
-        cast_fail: ""
-    appearanceshop:
-        name: Change Wand Appearance
-        title: "Wand Appearance ($balance)"
-        deducted: "You changed to $item"
-        not_applicable: "Your wand already looks like $item"
     tweakshop:
         name: Wand Tweak Shop
         title: "Wand Tweaks"
@@ -1342,16 +1332,34 @@ spells:
         not_applicable: Your wand already has $item
         confirm_title: "Get $item"
         deducted: "&d&oYou received &r&6$item"
+    progressmenu:
+        name: Magic Progress
+        title: "Magic Progress"
+        selected: ""
+        cast_fail: ""
+    appearanceshop:
+        name: Wand Appearances
+        description: Change the look of your wand
+        title: "Wand Appearance ($balance)"
+        selected: "You changed to $item"
+        not_applicable: "Your wand already looks like $item"
+    controlsmenu:
+        name: Wand Controls
+        description: Change how your wand works
+        title: Wand Controls
+        confirm_title: "Change to $item"
+        selected: "&d&oYou changed to &r&6$item"
     colorshop:
         name: Effect Colors
+        description: Colorize your spell effects
         title: "Effect Color ($balance)"
-        description: Colorize Your Wand
-        deducted: "You changed to $item"
+        selected: "You changed to $item"
     effectshop:
         name: Wand Effects
-        title: "Wand Effects ($balance)"
         description: Add particle effects to your wand
-        deducted: "You changed to $item"
+        title: "Wand Effects ($balance)"
+        selected: "You changed to $item"
+        confirm_title: "$item"
     upgradeshop:
         name: Wand Upgrade Shop
         title: "Wand Upgrades ($balance)"

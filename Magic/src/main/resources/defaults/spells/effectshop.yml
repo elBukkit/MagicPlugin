@@ -28,4 +28,5 @@ effectshop:
         - item: none
         - item: none
         - item: cleareffects
+          selected: "You removed all particle effects from your wand"
 

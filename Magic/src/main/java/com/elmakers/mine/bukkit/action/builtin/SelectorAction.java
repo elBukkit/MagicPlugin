@@ -108,9 +108,9 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             showConfirmation = configuration.getBoolean("confirm", showConfirmation);
             costType = configuration.getString("cost_type", costType);
 
-            selectedMessage = configuration.getString("selected_message", selectedMessage);
+            selectedMessage = configuration.getString("selected", selectedMessage);
             if (selectedMessage == null) {
-               selectedMessage = context.getMessage("deducted", getDefaultMessage(context, "deducted"));
+               selectedMessage = context.getMessage("selected", getDefaultMessage(context, "selected"));
             }
             if (configuration.contains("item")) {
                 items = new ArrayList<>();
