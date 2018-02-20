@@ -31,7 +31,7 @@ public class MagicSaveCommandExecutor extends MagicTabExecutor {
         if (sender instanceof Player)
         {
             player = (Player)sender;
-            if (!player.hasPermission("Magic.commands.server"))
+            if (!player.hasPermission("Magic.commands.msave"))
             {
                 return false;
             }

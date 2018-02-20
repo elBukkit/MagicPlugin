@@ -572,6 +572,35 @@ commands:
     usage: /msave <Player> [command to run]
     permission: Magic.commands.msave
 permissions:
+  Magic.commands.*:
+    description: Player may use all Magic commands
+    default: op
+    children:
+    - Magic.commands.spells
+    - Magic.commands.mgive
+    - Magic.commands.mgive.others
+    - Magic.commands.mtrait
+    - Magic.commands.mmob
+    - Magic.commands.cast
+    - Magic.commands.castp
+    - Magic.commands.cast.parameters
+    - Magic.commands.wand
+    - Magic.commands.wand.*
+    - Magic.commands.wandp
+    - Magic.commands.wandp.*
+    - Magic.commands.mitem
+    - Magic.commands.mitem.*
+    - Magic.commands.mconfig
+    - Magic.commands.mconfig.*
+    - Magic.commands.magic
+    - Magic.commands.magic.*
+    - Magic.commands.mmap
+    - Magic.commands.mmap.*
+    - Magic.commands.mage
+    - Magic.commands.mage.*
+    - Magic.commands.mskills
+    - Magic.commands.msave
+    - Magic.commands.mserver
   Magic.commands.spells:
     description: Player may list spells
     type: boolean
@@ -608,6 +637,34 @@ permissions:
     description: Player may use the /wand command to create a wand
     type: boolean
     default: op
+  Magic.commands.wand.*:
+    description: Player may use all /wand commands
+    default: op
+    children:
+    - Magic.commands.wand.override
+    - Magic.commands.wand.list
+    - Magic.commands.wand.describe
+    - Magic.commands.wand.save
+    - Magic.commands.wand.delete
+    - Magic.commands.wand.enchant
+    - Magic.commands.wand.create
+    - Magic.commands.wand.destroy
+    - Magic.commands.wand.add
+    - Magic.commands.wand.add.spell
+    - Magic.commands.wand.add.material
+    - Magic.commands.wand.add.brush
+    - Magic.commands.wand.organize
+    - Magic.commands.wand.configure
+    - Magic.commands.wand.combine
+    - Magic.commands.wand.upgrade
+    - Magic.commands.wand.fill
+    - Magic.commands.wand.remove
+    - Magic.commands.wand.name
+    - Magic.commands.wand.duplicate
+    - Magic.commands.wand.restore
+    - Magic.commands.wand.unlock
+    - Magic.commands.wand.bind
+    - Magic.commands.wand.unbind
   Magic.commands.wand.override:
     description: Player may configure wand overrides
     type: boolean
@@ -707,6 +764,34 @@ permissions:
     description: Player may use the wandp commands
     type: boolean
     default: op
+  Magic.commands.wandp.*:
+    description: Player may use all /wandp commands
+    default: op
+    children:
+    - Magic.commands.wandp.override
+    - Magic.commands.wandp.list
+    - Magic.commands.wandp.describe
+    - Magic.commands.wandp.save
+    - Magic.commands.wandp.delete
+    - Magic.commands.wandp.enchant
+    - Magic.commands.wandp.create
+    - Magic.commands.wandp.destroy
+    - Magic.commands.wandp.add
+    - Magic.commands.wandp.add.spell
+    - Magic.commands.wandp.add.material
+    - Magic.commands.wandp.add.brush
+    - Magic.commands.wandp.organize
+    - Magic.commands.wandp.configure
+    - Magic.commands.wandp.combine
+    - Magic.commands.wandp.upgrade
+    - Magic.commands.wandp.fill
+    - Magic.commands.wandp.remove
+    - Magic.commands.wandp.name
+    - Magic.commands.wandp.duplicate
+    - Magic.commands.wandp.restore
+    - Magic.commands.wandp.unlock
+    - Magic.commands.wandp.bind
+    - Magic.commands.wandp.unbind
   Magic.commands.wandp.create:
     description: Player may create a wand for another player
     type: boolean
@@ -793,6 +878,25 @@ permissions:
     description: Player may use the mitem command
     type: boolean
     default: op
+  Magic.commands.mitem:
+    description: Player may use any mitem sub-command
+    default: op
+    children:
+    - Magic.commands.mitem.add
+    - Magic.commands.mitem.remove
+    - Magic.commands.mitem.save
+    - Magic.commands.mitem.export
+    - Magic.commands.mitem.delete
+    - Magic.commands.mitem.duplicate
+    - Magic.commands.mitem.destroy
+    - Magic.commands.mitem.clean
+    - Magic.commands.mitem.name
+    - Magic.commands.mitem.describe
+    - Magic.commands.mitem.configure
+    - Magic.commands.mitem.worth
+    - Magic.commands.mitem.type
+    - Magic.commands.mitem.damage
+    - Magic.commands.mitem.skull
   Magic.commands.mitem.add:
     description: Player may add enchantments, attributes and lore to an item
     type: boolean
@@ -857,14 +961,37 @@ permissions:
     description: Player may use mconfig commands
     type: boolean
     default: op
+  Magic.commands.mconfig.*:
+    description: Player may use all mconfig sub-commands
+    default: op
+    children:
+    - Magic.commands.mconfig.clean
   Magic.commands.mconfig.clean:
     description: Player may auto-clean configs
     type: boolean
     default: op
   Magic.commands.magic:
-    description: Player may reload the configuration
+    description: Player may use the /magic command
     type: boolean
     default: op
+  Magic.commands.magic:
+    description: Player may use any /magic sub-commands
+    default: op
+    children:
+    - Magic.commands.magic.help
+    - Magic.commands.magic.load
+    - Magic.commands.magic.reload
+    - Magic.commands.magic.save
+    - Magic.commands.magic.clearcache
+    - Magic.commands.magic.cancel
+    - Magic.commands.magic.commit
+    - Magic.commands.magic.rpcheck
+    - Magic.commands.magic.list
+    - Magic.commands.magic.list.*
+    - Magic.commands.magic.clean
+    - Magic.commands.magic.give
+    - Magic.commands.magic.sell
+    - Magic.commands.magic.worth
   Magic.commands.magic.help:
     description: Player may show command help
     type: boolean
@@ -905,6 +1032,18 @@ permissions:
     description: Player may list general Magic info
     type: boolean
     default: op
+  Magic.commands.magic.list.*:
+    description: Player may list all Magic info
+    default: op
+    children:
+    - Magic.commands.magic.list.wands
+    - Magic.commands.magic.list.maps
+    - Magic.commands.magic.list.automata
+    - Magic.commands.magic.list.tasks
+    - Magic.commands.magic.list.entities
+    - Magic.commands.magic.list.schematics
+    - Magic.commands.magic.list.blocks
+    - Magic.commands.magic.list.mages
   Magic.commands.magic.list.wands:
     description: Player may list lost wands
     type: boolean
@@ -957,6 +1096,23 @@ permissions:
     description: Allows use of /mage commands
     type: boolean
     default: op
+  Magic.commands.mage.*:
+    description: Allows use of all /mage sub-commands
+    default: op
+    children:
+    - Magic.commands.mage.configure
+    - Magic.commands.mage.add
+    - Magic.commands.mage.remove
+    - Magic.commands.mage.upgrade
+    - Magic.commands.mage.describe
+    - Magic.commands.mage.getdata
+    - Magic.commands.mage.setdata
+    - Magic.commands.mage.unlock
+    - Magic.commands.mage.activate
+    - Magic.commands.mage.check
+    - Magic.commands.mage.debug
+    - Magic.commands.mage.reset
+    - Magic.commands.mage.unbind
   Magic.commands.mage.configure:
     description: Player may configure Mage properties
     type: boolean
@@ -1017,6 +1173,20 @@ permissions:
     description: Player may use the /mmap command
     type: boolean
     default: op
+  Magic.commands.mmap:
+    description: Player may use all /mmap sub-commands
+    default: op
+    children:
+    - Magic.commands.mmap.list
+    - Magic.commands.mmap.give
+    - Magic.commands.mmap.load
+    - Magic.commands.mmap.import
+    - Magic.commands.mmap.remove
+    - Magic.commands.mmap.player
+    - Magic.commands.mmap.fix
+    - Magic.commands.mmap.restore
+    - Magic.commands.mmap.unnamed
+    - Magic.commands.mmap.name
   Magic.commands.mmap.list:
     description: Player may use the /mmap list command
     type: boolean
