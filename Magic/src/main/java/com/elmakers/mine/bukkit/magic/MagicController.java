@@ -1621,11 +1621,30 @@ public class MagicController implements MageController {
         // Register crafting recipes
         crafting.register(plugin);
         MagicRecipe.FIRST_REGISTER = false;
-        
+
+        // Set up attributes
+        // Delay this by 1 tick on first load to give other plugins a chance to load and prepare for the LoadEvent
+        if (loaded) {
+            initializeAttributes();;
+        } else {
+            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    initializeAttributes();;
+                }
+            }, 1);
+        }
+
+        loaded = true;
+        if (sender != null) {
+            sender.sendMessage(ChatColor.AQUA + "Configuration reloaded.");
+        }
+    }
+
+    private void initializeAttributes() {
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
 
-        // Set up attributes
         attributeProviders.clear();
         attributeProviders.addAll(loadEvent.getAttributeProviders());
         if (skillAPIManager != null) {
@@ -1644,11 +1663,6 @@ public class MagicController implements MageController {
         }
 
         ParameterizedConfiguration.initializeAttributes(attributes);
-
-        loaded = true;
-        if (sender != null) {
-            sender.sendMessage(ChatColor.AQUA + "Configuration reloaded.");
-        }
     }
 
     private int getPathCount() {
