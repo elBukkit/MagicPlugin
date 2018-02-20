@@ -816,7 +816,7 @@ public class MagicController implements MageController {
             } else {
                 getLogger().warning("SkillAPI integration failed");
             }
-        } else {
+        } else if (skillAPIEnabled) {
             getLogger().info("SkillAPI integration disabled");
         }
     }
