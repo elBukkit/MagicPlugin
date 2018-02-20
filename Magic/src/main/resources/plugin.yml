@@ -638,9 +638,10 @@ permissions:
     type: boolean
     default: op
   Magic.commands.wand.*:
-    description: Player may use all /wand commands
+    description: Player may use all /wand sub-commands
     default: op
     children:
+    - Magic.commands.wand
     - Magic.commands.wand.override
     - Magic.commands.wand.list
     - Magic.commands.wand.describe
@@ -765,9 +766,10 @@ permissions:
     type: boolean
     default: op
   Magic.commands.wandp.*:
-    description: Player may use all /wandp commands
+    description: Player may use all /wandp sub-commands
     default: op
     children:
+    - Magic.commands.wandp
     - Magic.commands.wandp.override
     - Magic.commands.wandp.list
     - Magic.commands.wandp.describe
@@ -878,10 +880,11 @@ permissions:
     description: Player may use the mitem command
     type: boolean
     default: op
-  Magic.commands.mitem:
-    description: Player may use any mitem sub-command
+  Magic.commands.mitem.*:
+    description: Player may use any mitem sub-commands
     default: op
     children:
+    - Magic.commands.mitem
     - Magic.commands.mitem.add
     - Magic.commands.mitem.remove
     - Magic.commands.mitem.save
@@ -965,6 +968,7 @@ permissions:
     description: Player may use all mconfig sub-commands
     default: op
     children:
+    - Magic.commands.mconfig
     - Magic.commands.mconfig.clean
   Magic.commands.mconfig.clean:
     description: Player may auto-clean configs
@@ -974,10 +978,11 @@ permissions:
     description: Player may use the /magic command
     type: boolean
     default: op
-  Magic.commands.magic:
+  Magic.commands.magic.*:
     description: Player may use any /magic sub-commands
     default: op
     children:
+    - Magic.commands.magic
     - Magic.commands.magic.help
     - Magic.commands.magic.load
     - Magic.commands.magic.reload
@@ -1036,6 +1041,7 @@ permissions:
     description: Player may list all Magic info
     default: op
     children:
+    - Magic.commands.magic.list
     - Magic.commands.magic.list.wands
     - Magic.commands.magic.list.maps
     - Magic.commands.magic.list.automata
@@ -1100,6 +1106,7 @@ permissions:
     description: Allows use of all /mage sub-commands
     default: op
     children:
+    - Magic.commands.mage
     - Magic.commands.mage.configure
     - Magic.commands.mage.add
     - Magic.commands.mage.remove
@@ -1173,10 +1180,11 @@ permissions:
     description: Player may use the /mmap command
     type: boolean
     default: op
-  Magic.commands.mmap:
+  Magic.commands.mmap.*:
     description: Player may use all /mmap sub-commands
     default: op
     children:
+    - Magic.commands.mmap
     - Magic.commands.mmap.list
     - Magic.commands.mmap.give
     - Magic.commands.mmap.load
