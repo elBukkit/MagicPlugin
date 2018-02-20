@@ -3305,7 +3305,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
 				// This is kind of a hack :(
 				testItem = inventory.getItemInOffHand();
-				if (isSpell(testItem) || isBrush(testItem)) {
+				if ((isSpell(testItem) && !isSkill(testItem)) || isBrush(testItem)) {
 					inventory.setItemInOffHand(new ItemStack(Material.AIR));
 					DeprecatedUtils.updateInventory(mage.getPlayer());
 				}
