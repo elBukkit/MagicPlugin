@@ -3,6 +3,7 @@
 ## 7.2
 
  - Default RP changed to Magic-7
+ - Added Snoop spell for peeking inside chests, staff-only
  - Make it easier to create one-off simple configs
    - Add load_default_configs option
    - Allow adding wands, spells, etc directly in config.yml sections
@@ -15,6 +16,7 @@
  - Add PlaceholderAPI integration. Supported placeholders: magic.path, class, wand, spell
  - Added Magic.commands.mgive.others permission, now required to give items to other players
  - Add wildcard permissions to plugin.yml to support perm plugins that don't handle wildcards (looking at you, zperms :P)
+ 
 ## 7.1.2
 
  - Fix stars and bending class progression

@@ -8,12 +8,15 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.util.Collection;
 
@@ -54,30 +57,43 @@ public class InventoryAction extends BaseSpellAction
 		if (activeWand != null) {
 			activeWand.closeInventory();
 		}
-		
-		if (inventoryType == InventoryType.CRAFTING) {
-			if (targetEntity == null || !(targetEntity instanceof Player)) {
-				return SpellResult.NO_TARGET;
-			}
-			Mage mage = controller.getMage(targetEntity);
-			Inventory inventory = mage.getInventory();
-			showPlayer.openInventory(inventory);
-		} else if (inventoryType == InventoryType.ENDER_CHEST) {
-			if (targetEntity == null || !(targetEntity instanceof HumanEntity)) {
-				return SpellResult.NO_TARGET;
-			}
-			HumanEntity humanTarget = (HumanEntity)targetEntity;
-			Inventory enderInventory = humanTarget.getEnderChest();
-			showPlayer.openInventory(enderInventory);
-		} else if (inventoryType == InventoryType.WORKBENCH) {
-			showPlayer.openWorkbench(null, true);
-		} else {
-			// Probably wont' work very well, but sure why not.
-			Inventory inventory = title != null && !title.isEmpty() ?
-					Bukkit.createInventory(showPlayer, inventoryType, title)
-					: Bukkit.createInventory(showPlayer, inventoryType);
-			showPlayer.openInventory(inventory);
-		} 
+
+		switch (inventoryType) {
+			case CRAFTING:
+				if (targetEntity == null || !(targetEntity instanceof Player)) {
+					return SpellResult.NO_TARGET;
+				}
+				Mage mage = controller.getMage(targetEntity);
+				Inventory craftingInventory = mage.getInventory();
+				showPlayer.openInventory(craftingInventory);
+				break;
+			case ENDER_CHEST:
+				if (targetEntity == null || !(targetEntity instanceof HumanEntity)) {
+					return SpellResult.NO_TARGET;
+				}
+				HumanEntity humanTarget = (HumanEntity)targetEntity;
+				Inventory enderInventory = humanTarget.getEnderChest();
+				showPlayer.openInventory(enderInventory);
+				break;
+			case WORKBENCH:
+				showPlayer.openWorkbench(null, true);
+				break;
+			case CHEST:
+				Block targetBlock = context.getTargetBlock();
+				if (targetBlock == null) return SpellResult.NO_TARGET;
+				BlockState state = targetBlock.getState();
+				if (!(state instanceof InventoryHolder)) return SpellResult.NO_TARGET;
+				InventoryHolder holder = (InventoryHolder)state;
+				showPlayer.openInventory(holder.getInventory());
+				break;
+			default:
+				// Probably wont' work very well, but sure why not.
+				Inventory inventory = title != null && !title.isEmpty() ?
+						Bukkit.createInventory(showPlayer, inventoryType, title)
+						: Bukkit.createInventory(showPlayer, inventoryType);
+				showPlayer.openInventory(inventory);
+				break;
+		}
 
 		return SpellResult.CAST;
 	}

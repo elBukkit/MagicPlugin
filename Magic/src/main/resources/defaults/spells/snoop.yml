@@ -1,0 +1,44 @@
+snoop:
+    icon: diamond_axe:107
+    icon_disabled: diamond_hoe:107
+    icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
+    hidden: true
+    category: staff
+    worth: 2000
+    show_undoable: false
+    actions:
+        cast:
+        - class: Inventory
+    effects:
+        cast:
+         - class: EffectSingle
+           location: origin
+           sound: magic.hit
+           sound_volume: 0.5
+         - class: EffectSingle
+           location: target
+           use_block_location: true
+           color_override: color
+           effectlib:
+             class: CubeEffect
+             iterations: 15
+             particle: redstone
+             color: "00FFAA"
+             edgeLength: 1.2
+             enableRotation: false
+             offset: 0.5,0.5,0.5
+         - class: EffectTrail
+           particle: spell_mob
+    alternate_sneak_parameters:
+        type: ender_chest
+    parameters:
+        target: block
+        type: chest
+        range: 32
+        bypass_backfire: true
+        check_protection: true
+        bypass_pvp: true
+        bypass_friendly_fire: true
+    costs:
+        mana: 75
+

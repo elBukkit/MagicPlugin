@@ -41,6 +41,11 @@ spells:
         description: Unlocks locked containers
         cast: Open Sesame!
         fail: You can't unlock that!
+    snoop:
+        name: Snoop
+        description: Peek inside of a chest
+        cast: Let's see what's in there
+        no_target: "You must target a chest"
     anvil:
         name: Anvil
         description: Spawn an anvil

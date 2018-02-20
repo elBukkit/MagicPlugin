@@ -18,6 +18,7 @@ staff:
     - missile|4
     - pickpocket
     - lockpick
+    - snoop
     - time
     - torch|4
     - fling|4
