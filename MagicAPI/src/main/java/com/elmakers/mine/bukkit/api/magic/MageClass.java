@@ -13,4 +13,5 @@ public interface MageClass extends CasterProperties {
     SpellTemplate getBaseSpell(String spellKey);
     String getKey();
     ProgressionPath getPath();
+    String getName();
 }
