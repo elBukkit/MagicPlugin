@@ -500,6 +500,12 @@ public class PlayerController implements Listener {
             return;
         }
 
+        // Prefer wand right-click if wand is active
+        if (isOffhandSkill && wand != null) {
+            if (wand.getRightClickAction() != WandAction.NONE) {
+                isOffhandSkill = false;
+            }
+        }
         if (isRightClick && (isOffhandSkill || isSkill)) {
             if (isSkill) {
                 mage.useSkill(itemInHand);
