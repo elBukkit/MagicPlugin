@@ -30,6 +30,11 @@ public class ParameterizedConfiguration extends ParameterizedConfigurationSectio
         this.mage = mage;
     }
 
+    public ParameterizedConfiguration(ParameterizedConfiguration copy) {
+        super();
+        this.mage = copy.mage;
+    }
+
     protected MageController getController() {
         return mage == null ? null : mage.getController();
     }

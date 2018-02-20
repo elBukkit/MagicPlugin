@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
+import com.elmakers.mine.bukkit.magic.ParameterizedConfiguration;
 import de.slikey.effectlib.util.ConfigUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 
@@ -273,7 +274,10 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static ConfigurationSection cloneConfiguration(ConfigurationSection section)
     {
-        return addConfigurations(new MemoryConfiguration(), section);
+        ConfigurationSection copy = section instanceof ParameterizedConfiguration ?
+                new ParameterizedConfiguration((ParameterizedConfiguration)section) :
+                new MemoryConfiguration();
+        return addConfigurations(copy, section);
     }
     
     private static Map<String, Object> replaceParameters(Map<String, Object> configuration, ConfigurationSection parameters)

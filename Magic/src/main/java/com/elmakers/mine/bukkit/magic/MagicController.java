@@ -1966,7 +1966,7 @@ public class MagicController implements MageController {
             getLogger().warning("Spell " + key + " not known");
             return null;
         }
-        spellNode = ConfigurationUtils.addConfigurations(new MemoryConfiguration(), spellNode);
+        spellNode = ConfigurationUtils.cloneConfiguration(spellNode);
 
         SpellKey spellKey = new SpellKey(key);
         String inheritFrom = spellNode.getString("inherit");
@@ -3523,8 +3523,7 @@ public class MagicController implements MageController {
             if (inherits != null) {
                 ConfigurationSection baseConfiguration = resolveConfiguration(inherits, properties, configurations);
                 if (baseConfiguration != null) {
-                    ConfigurationSection newConfiguration = new MemoryConfiguration();
-                    ConfigurationUtils.addConfigurations(newConfiguration, baseConfiguration);
+                    ConfigurationSection newConfiguration = ConfigurationUtils.cloneConfiguration(baseConfiguration);
                     ConfigurationUtils.addConfigurations(newConfiguration, configuration);
                     
                     // Some properties don't inherit, this is kind of hacky.

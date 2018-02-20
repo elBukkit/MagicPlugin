@@ -191,8 +191,7 @@ public class ActionSpell extends BrushSpell
             {
                 if (templateKey.endsWith("_parameters"))
                 {
-                    ConfigurationSection overrides = new MemoryConfiguration();
-                    ConfigurationUtils.addConfigurations(overrides, template.getConfigurationSection(templateKey));
+                    ConfigurationSection overrides = ConfigurationUtils.cloneConfiguration(template.getConfigurationSection(templateKey));
                     String handlerKey = templateKey.substring(0, templateKey.length() - 11);
                     handlerParameters.put(handlerKey, overrides);
 
