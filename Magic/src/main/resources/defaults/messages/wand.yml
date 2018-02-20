@@ -148,6 +148,13 @@ wand:
     brush_instructions: "&r&eMaterial brushes have been added to your $wand. Shift+$toggle to select a brush."
     sp_instructions: "&r&6You have earned some Spell Points! SP's are displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn fewer SP's, try mixing it up once you have more spells!"
     hotbar_changed: ""
+    spell_activated: "$spell"
+    upgrade_prefix: "&6"
+    single_use_prefix: "&4"
+    bound_prefix: "&3"
+    unbound_prefix: "&b"
+    has_path_prefix: "&d"
+    unmodifiable_prefix: "&6"
     # You can use this to show an action bar message whenever the player cycles their hotbar
     #hotbar_changed: "a:Switched hotbars"
     # Messages can also be sent as simple titles with default fade in/out

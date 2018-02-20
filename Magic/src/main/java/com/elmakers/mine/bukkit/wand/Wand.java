@@ -1984,10 +1984,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	private String getActiveWandName(SpellTemplate spell, com.elmakers.mine.bukkit.api.block.MaterialBrush brush) {
 		// Build wand name
         int remaining = getRemainingUses();
-		ChatColor wandColor = (hasUses && remaining <= 1) ? ChatColor.DARK_RED : isModifiable()
-                ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) :
-                  (path != null && path.length() > 0 ? ChatColor.LIGHT_PURPLE : ChatColor.GOLD);
-		String name = wandColor + getDisplayName();
+		String wandColorPrefix = (hasUses && remaining <= 1) ? "single_use_prefix" : isModifiable()
+                ? (bound ? "bound_prefix" : "unbound_prefix") :
+                  (path != null && path.length() > 0 ? "has_path_prefix" : "unmodifiable_prefix");
+		String name = ChatColor.translateAlternateColorCodes('&', getMessage(wandColorPrefix)) + getDisplayName();
         if (randomizeOnActivate) return name;
 
         Set<String> spells = getSpells();
@@ -2033,7 +2033,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	public void updateName(boolean isActive) {
 		if (isActive) {
-			CompatibilityUtils.setDisplayName(item, !isUpgrade ? getActiveWandName() : ChatColor.GOLD + getDisplayName());
+			CompatibilityUtils.setDisplayName(item, !isUpgrade ? getActiveWandName() :
+					ChatColor.translateAlternateColorCodes('&', getMessage("upgrade_prefix")) + getDisplayName());
 		} else {
 			CompatibilityUtils.setDisplayName(item, ChatColor.stripColor(getDisplayName()));
 		}
