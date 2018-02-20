@@ -13,6 +13,8 @@ progressmenu:
     - placeholder: true
     - placeholder: true
     - cast_spell: appearanceshop
+      require_template: wand
     - cast_spell: colorshop
     - cast_spell: effectshop
     - cast_spell: controlsmenu
+      require_template: wand

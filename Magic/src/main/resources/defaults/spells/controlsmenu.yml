@@ -8,6 +8,7 @@ controlsmenu:
         -  class: Selector
     parameters:
         require_wand: true
+        require_template: wand
         options:
           - item: inventorymode
           - item: chestmode

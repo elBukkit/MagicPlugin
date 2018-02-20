@@ -1343,12 +1343,14 @@ spells:
         title: "Wand Appearance ($balance)"
         selected: "You changed to $item"
         not_applicable: "Your wand already looks like $item"
+        no_template: "You may not modify the appearance of $wand."
     controlsmenu:
         name: Wand Controls
         description: Change how your wand works
         title: Wand Controls
         confirm_title: "Change to $item"
         selected: "&d&oYou changed to &r&6$item"
+        no_template: "You may not modify controls on $wand."
     colorshop:
         name: Effect Colors
         description: Colorize your spell effects
