@@ -577,7 +577,11 @@ permissions:
     type: boolean
     default: op
   Magic.commands.mgive:
-    description: Player may give out magic items
+    description: Player may give themselves magic items
+    type: boolean
+    default: op
+  Magic.commands.mgive.others:
+    description: Player may give magic items to other players.
     type: boolean
     default: op
   Magic.commands.mtrait:

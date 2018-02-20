@@ -3,6 +3,7 @@
 ## 7.2
 
  - Default spell used for enchant table changed from spellshop to progressmenu
+ - Permission "Magic.commands.mgive.others" is now required to give items to other players
 
 ## 7.1
 

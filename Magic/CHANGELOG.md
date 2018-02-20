@@ -13,6 +13,7 @@
  - Add support for completely custom wand lore (WIP, supports a limited set of wand data)
  - Add option for non-quick-cast skill items
  - Add PlaceholderAPI integration. Supported placeholders: magic.path, class, wand, spell
+ - Added Magic.commands.mgive.others permission, now required to give items to other players
 
 ## 7.1.2
 

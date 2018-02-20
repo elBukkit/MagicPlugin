@@ -67,7 +67,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
         }
 
         Player player = null;
-        if (playerName != null) {
+        if (playerName != null && sender.hasPermission("Magic.commands.mgive.others")) {
             player = DeprecatedUtils.getPlayer(playerName);
         }
 
@@ -114,7 +114,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
 		Set<String> options = new HashSet<>();
         if (!sender.hasPermission("Magic.commands.mgive")) return options;
 
-		if (args.length == 1) {
+		if (args.length == 1 && sender.hasPermission("Magic.commands.mgive.others")) {
             options.addAll(api.getPlayerNames());
 		}
 
