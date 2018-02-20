@@ -12,6 +12,7 @@
    - Allows access to appearanceshop, colorshop and effectshop
  - Add support for completely custom wand lore (WIP, supports a limited set of wand data)
  - Add option for non-quick-cast skill items
+ - Add PlaceholderAPI integration. Supported placeholders: magic.path, class, wand, spell
 
 ## 7.1.2
 

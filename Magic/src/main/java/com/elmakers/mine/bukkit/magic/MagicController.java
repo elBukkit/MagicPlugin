@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.MobArenaManager;
+import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
 import com.elmakers.mine.bukkit.integration.SkillAPIManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
@@ -1052,6 +1053,22 @@ public class MagicController implements MageController {
         } else {
             citizens = null;
             getLogger().info("Citizens integration disabled.");
+        }
+
+        // Placeholder API
+        if (placeholdersEnabled) {
+            if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+               try {
+                   // Can only register this once
+                   if (placeholderAPIManager == null) {
+                       placeholderAPIManager = new PlaceholderAPIManager(this);
+                   }
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with PlaceholderAPI", ex);
+                }
+            }
+        } else {
+            getLogger().info("PlaceholderAPI integration disabled.");
         }
 
         // Activate Metrics
@@ -2357,6 +2374,7 @@ public class MagicController implements MageController {
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
         useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);
+        placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
@@ -5245,6 +5263,7 @@ public class MagicController implements MageController {
     private boolean                             libsDisguiseEnabled			= true;
     private boolean                             skillAPIEnabled			    = true;
     private boolean                             useSkillAPIMana             = false;
+    private boolean                             placeholdersEnabled         = true;
     private boolean                             enableResourcePackCheck     = true;
     private int                                 resourcePackCheckInterval   = 0;
     private int                                 resourcePackCheckTimer      = 0;
@@ -5269,6 +5288,7 @@ public class MagicController implements MageController {
     private boolean                             useBlockPhysics             = true;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
     private SkillAPIManager                     skillAPIManager             = null;
+    private PlaceholderAPIManager               placeholderAPIManager       = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();

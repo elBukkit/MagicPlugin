@@ -111,3 +111,6 @@ skillapi_enabled: true
 
 # Use Skill API mana, if Skill API is present
 use_skillapi_mana: false
+
+# Allow magic placeholders in PlacerHolder API
+placeholder_api_enabled: true
