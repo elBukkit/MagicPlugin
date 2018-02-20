@@ -11,6 +11,7 @@
    - Provides access to the spellshop and spell upgrades progress menu
    - Allows access to appearanceshop, colorshop and effectshop
  - Add support for completely custom wand lore (WIP, supports a limited set of wand data)
+ - Add option for non-quick-cast skill items
 
 ## 7.1.2
 

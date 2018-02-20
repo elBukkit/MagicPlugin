@@ -132,7 +132,7 @@ public class PlayerController implements Listener {
 
         Wand activeWand = mage.getActiveWand();
         boolean isSkill = Wand.isSkill(next);
-        if (isSkill)
+        if (isSkill && Wand.isQuickCastSkill(next))
         {
             mage.useSkill(next);
             event.setCancelled(true);
@@ -464,15 +464,20 @@ public class PlayerController implements Listener {
         
         // Don't allow interacting while holding spells, brushes or upgrades
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        if (Wand.isSpell(itemInHand) || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
+        boolean isSkill = Wand.isSkill(itemInHand);
+        boolean isSpell = !isSkill && Wand.isSpell(itemInHand);
+        if (isSpell || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
             event.setCancelled(true);
             return;
         }
         
         boolean isRightClick = (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
+        boolean isOffhandSkill = false;
+        ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
         if (isRightClick) {
-            ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
-            if (Wand.isSpell(itemInOffhand) || Wand.isBrush(itemInOffhand) || Wand.isUpgrade(itemInOffhand)) {
+            isOffhandSkill = Wand.isSkill(itemInOffhand);
+            boolean isOffhandSpell = !isOffhandSkill && Wand.isSpell(itemInOffhand);
+            if (isOffhandSpell || Wand.isBrush(itemInOffhand) || Wand.isUpgrade(itemInOffhand)) {
                 event.setCancelled(true);
                 return;
             }
@@ -492,6 +497,16 @@ public class PlayerController implements Listener {
             }
         }
         if (!isLeftClick && !mage.checkLastClick(clickCooldown)) {
+            return;
+        }
+
+        if (isRightClick && (isOffhandSkill || isSkill)) {
+            if (isSkill) {
+                mage.useSkill(itemInHand);
+            } else {
+                mage.useSkill(itemInOffhand);
+            }
+            event.setCancelled(true);
             return;
         }
         

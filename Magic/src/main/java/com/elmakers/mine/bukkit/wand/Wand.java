@@ -1277,6 +1277,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     InventoryUtils.setMeta(spellNode, "class", mageClassKey);
                 }
             }
+            if (wand != null && !wand.quickCast) {
+                Object spellNode = InventoryUtils.getNode(itemStack, "spell");
+                if (spellNode != null) {
+            		InventoryUtils.setMetaBoolean(spellNode, "quick_cast", false);
+				}
+			}
         }
 
 		return itemStack;
@@ -2525,6 +2531,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
         return InventoryUtils.getMetaString(spellNode, "class");
+    }
+
+    public static boolean isQuickCastSkill(ItemStack item) {
+        if (InventoryUtils.isEmpty(item)) return false;
+        Object spellNode = InventoryUtils.getNode(item, "spell");
+        if (spellNode == null) return false;
+        Boolean quickCast = InventoryUtils.containsNode(spellNode, "quick_cast") ? InventoryUtils.getMetaBoolean(spellNode, "quick_cast") : null;
+        return quickCast == null ? true : quickCast;
     }
 
     public static String getSpellArgs(ItemStack item) {
