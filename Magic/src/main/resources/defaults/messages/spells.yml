@@ -437,6 +437,9 @@ spells:
         description: Poison your target
         cast: You poison $target
         upgrade_description: "&r&b&bull; &6Increased poison duration"
+    light:
+        name: Light
+        description: Light up the dark
     lightning:
         name: Lightning
         description: Strike lighting at your target

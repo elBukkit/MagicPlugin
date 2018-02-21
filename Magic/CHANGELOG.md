@@ -16,6 +16,7 @@
  - Add PlaceholderAPI integration. Supported placeholders: magic.path, class, wand, spell
  - Added Magic.commands.mgive.others permission, now required to give items to other players
  - Add wildcard permissions to plugin.yml to support perm plugins that don't handle wildcards (looking at you, zperms :P)
+ - Add Light spell, not obtainable, requires LightAPI
  
 ## 7.1.2
 

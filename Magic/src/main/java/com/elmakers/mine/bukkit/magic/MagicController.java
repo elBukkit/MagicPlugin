@@ -38,6 +38,7 @@ import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
+import com.elmakers.mine.bukkit.integration.LightAPIManager;
 import com.elmakers.mine.bukkit.integration.MobArenaManager;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
 import com.elmakers.mine.bukkit.integration.SkillAPIManager;
@@ -809,14 +810,16 @@ public class MagicController implements MageController {
         if (skillAPIPlugin != null && skillAPIEnabled) {
             skillAPIManager = new SkillAPIManager(plugin, skillAPIPlugin);
             if (skillAPIManager.initialize()) {
-                getLogger().info("Integrated with SkillAPI, attributes can be used in spell parameters." );
+                getLogger().info("SkillAPI found, attributes can be used in spell parameters." );
                 if (useSkillAPIMana) {
                     getLogger().info("SkillAPI mana will be used by spells and wands");
                 }
             } else {
+                skillAPIManager = null;
                 getLogger().warning("SkillAPI integration failed");
             }
-        } else if (skillAPIEnabled) {
+        } else if (!skillAPIEnabled) {
+            skillAPIManager = null;
             getLogger().info("SkillAPI integration disabled");
         }
     }
@@ -830,7 +833,7 @@ public class MagicController implements MageController {
             if (blockPhysicsPlugin != null) {
                 blockPhysicsManager = new BlockPhysicsManager(plugin, blockPhysicsPlugin);
                 if (blockPhysicsManager.isEnabled()) {
-                    getLogger().info("Integrated with BlockPhysics, some spells will now use physics-based block effects");
+                    getLogger().info("BlockPhysics found, some spells will now use physics-based block effects");
                 } else {
                     getLogger().warning("Error integrating with BlockPhysics, you may want to set 'enable_block_physics: false' in config.yml");
                 }
@@ -841,7 +844,7 @@ public class MagicController implements MageController {
         Plugin minigamesPlugin = pluginManager.getPlugin("Minigames");
         if (minigamesPlugin != null) {
             pluginManager.registerEvents(new MinigamesListener(this), plugin);
-            getLogger().info("Integrated with Minigames plugin, wands will deactivate before joining a minigame");
+            getLogger().info("Minigames found, wands will deactivate before joining a minigame");
         }
 
         // Check for LibsDisguise
@@ -851,11 +854,12 @@ public class MagicController implements MageController {
         } else if (libsDisguiseEnabled) {
             libsDisguiseManager = new LibsDisguiseManager(plugin, libsDisguisePlugin);
             if (libsDisguiseManager.initialize()) {
-                getLogger().info("Integrated with LibsDisguises, mob disguises and disguise_restricted features enabled");
+                getLogger().info("LibsDisguises found, mob disguises and disguise_restricted features enabled");
             } else {
                 getLogger().warning("LibsDisguises integration failed");
             }
         } else {
+            libsDisguiseManager = null;
             getLogger().info("LibsDisguises integration disabled");
         }
 
@@ -867,7 +871,7 @@ public class MagicController implements MageController {
             try {
                 new MobArenaManager(this);
                 // getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items, magic mobs can be used in monster configurations");
-                getLogger().info("Integrated with MobArena, magic mobs can be used in monster configurations");
+                getLogger().info("MobArena found, magic mobs can be used in monster configurations");
             } catch (Throwable ex) {
                 getLogger().warning("MobArena integration failed, you may need to update the MobArena plugin to use Magic items");
             }
@@ -879,7 +883,7 @@ public class MagicController implements MageController {
             getLogger().info("Vault not found, virtual economy unavailable");
         } else {
             if (VaultController.initialize(plugin, vaultPlugin)) {
-                getLogger().info("Integrated with Vault, virtual economy and descriptive item names available");
+                getLogger().info("Vault found, virtual economy and descriptive item names available");
             } else {
                 getLogger().warning("Vault integration failed");
             }
@@ -1069,6 +1073,22 @@ public class MagicController implements MageController {
             }
         } else {
             getLogger().info("PlaceholderAPI integration disabled.");
+        }
+        
+        // Light API
+        if (lightAPIEnabled) {
+            if (Bukkit.getPluginManager().isPluginEnabled("LightAPI")) {
+                try {
+                    lightAPIManager = new LightAPIManager(plugin);
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with LightAPI", ex);
+                }
+            } else {
+                getLogger().info("LightAPI not found, Light action will not work");
+            }
+        } else {
+            lightAPIManager = null;
+            getLogger().info("LightAPI integration disabled.");
         }
 
         // Activate Metrics
@@ -2389,6 +2409,7 @@ public class MagicController implements MageController {
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
         useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
+        lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
@@ -5061,6 +5082,24 @@ public class MagicController implements MageController {
         return attributeProviders;
     }
 
+    @Override
+    public boolean createLight(Location location, int lightLevel, boolean async) {
+        if (lightAPIManager == null) return false;
+        return lightAPIManager.createLight(location, lightLevel, async);
+    }
+    
+    @Override
+    public boolean deleteLight(Location location, boolean async) {
+        if (lightAPIManager == null) return false;
+        return lightAPIManager.deleteLight(location, async);
+    }
+
+    @Override
+    public boolean updateLight(Location location) {
+        if (lightAPIManager == null) return false;
+        return lightAPIManager.updateChunks(location);
+    }
+
     /*
 	 * Private data
 	 */
@@ -5277,6 +5316,7 @@ public class MagicController implements MageController {
     private boolean                             skillAPIEnabled			    = true;
     private boolean                             useSkillAPIMana             = false;
     private boolean                             placeholdersEnabled         = true;
+    private boolean                             lightAPIEnabled			    = true;
     private boolean                             enableResourcePackCheck     = true;
     private int                                 resourcePackCheckInterval   = 0;
     private int                                 resourcePackCheckTimer      = 0;
@@ -5302,6 +5342,7 @@ public class MagicController implements MageController {
     private LibsDisguiseManager                 libsDisguiseManager         = null;
     private SkillAPIManager                     skillAPIManager             = null;
     private PlaceholderAPIManager               placeholderAPIManager       = null;
+    private LightAPIManager                     lightAPIManager             = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();

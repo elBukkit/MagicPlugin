@@ -114,3 +114,6 @@ use_skillapi_mana: false
 
 # Allow magic placeholders in PlacerHolder API
 placeholder_api_enabled: true
+
+# Enable the Light action using Light API
+light_api_enabled: true
