@@ -18,6 +18,7 @@
  - Add wildcard permissions to plugin.yml to support perm plugins that don't handle wildcards (looking at you, zperms :P)
  - Add Light spell, not obtainable, requires LightAPI
  - Sort-of fix the Camera, courtesy (sort of) of mcskinsearch.com
+ - Added "equation" spell for easily testing the equation system and attributes
  
 ## 7.1.2
 
