@@ -306,10 +306,10 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     @SuppressWarnings("unchecked")
-    protected Map<String, Object> getSpellLevels() {
+    protected @Nonnull Map<String, Object> getSpellLevels() {
         Object existingLevelsRaw = getObject("spell_levels");
+        if (existingLevelsRaw == null) return new HashMap<>();
         Map<String, Object> spellLevels = null;
-        if (existingLevelsRaw == null) return null;
 
         if (existingLevelsRaw instanceof Map) {
             spellLevels = (Map<String, Object>)existingLevelsRaw;
@@ -323,11 +323,6 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     protected boolean upgradeSpellLevel(String spellKey, int level) {
         boolean modified = false;
         Map<String, Object> spellLevels = getSpellLevels();
-        if (spellLevels == null) {
-            modified = true;
-            spellLevels = new HashMap<>();
-        }
-
         Object existingLevel = spellLevels.get(spellKey);
         if (existingLevel == null || !(existingLevel instanceof Integer) || level > (Integer)existingLevel) {
             modified = true;
@@ -353,21 +348,15 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             newLevels = NMSUtils.getMap((ConfigurationSection)value);
         }
 
-        if (spellLevels == null) {
-            modified = true;
-            spellLevels = newLevels;
-            sendDebug("Upgraded spell levels for " + newLevels.size() + " spells");
-        } else {
-            for (Map.Entry<String, ? extends Object> entry : newLevels.entrySet()) {
-                if (entry.getValue() instanceof Integer) {
-                    Integer newLevel = (Integer)entry.getValue();
-                    String key = entry.getKey();
-                    Object existingLevel = spellLevels.get(key);
-                    if (existingLevel == null || !(existingLevel instanceof Integer) || newLevel > (Integer)existingLevel) {
-                        modified = true;
-                        sendDebug("Upgraded spell level for " + key + " from " + existingLevel + " to " + newLevel);
-                        spellLevels.put(key, newLevel);
-                    }
+        for (Map.Entry<String, ? extends Object> entry : newLevels.entrySet()) {
+            if (entry.getValue() instanceof Integer) {
+                Integer newLevel = (Integer)entry.getValue();
+                String key = entry.getKey();
+                Object existingLevel = spellLevels.get(key);
+                if (existingLevel == null || !(existingLevel instanceof Integer) || newLevel > (Integer)existingLevel) {
+                    modified = true;
+                    sendDebug("Upgraded spell level for " + key + " from " + existingLevel + " to " + newLevel);
+                    spellLevels.put(key, newLevel);
                 }
             }
         }
