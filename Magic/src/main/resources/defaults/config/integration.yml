@@ -117,3 +117,15 @@ placeholder_api_enabled: true
 
 # Enable the Light action using Light API
 light_api_enabled: true
+
+# MobArena integration
+mobarena:
+  # Use this to disable all MobArena integration
+  enabled: true
+  # Set this to true for magic build/break permissions to respect protected arenas
+  protect: false
+  # This can be used to protect specific arenas by name
+  # protected:
+  # - arena1
+  # - arena2
+  

@@ -867,14 +867,16 @@ public class MagicController implements MageController {
         Plugin mobArenaPlugin = pluginManager.getPlugin("MobArena");
         if (mobArenaPlugin == null) {
             getLogger().info("MobArena not found");
-        } else {
+        } else if (mobArenaConfiguration.getBoolean("enabled", true)) {
             try {
-                new MobArenaManager(this);
+                mobArenaManager = new MobArenaManager(this, mobArenaPlugin, mobArenaConfiguration);
                 // getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items, magic mobs can be used in monster configurations");
                 getLogger().info("MobArena found, magic mobs can be used in monster configurations");
             } catch (Throwable ex) {
                 getLogger().warning("MobArena integration failed, you may need to update the MobArena plugin to use Magic items");
             }
+        } else {
+            getLogger().info("MobArena integration disabled");
         }
 
         // Vault integration is handled internally in MagicLib
@@ -1133,6 +1135,7 @@ public class MagicController implements MageController {
         if (preciousStonesManager.isEnabled()) blockBuildManagers.add(preciousStonesManager);
         if (townyManager.isEnabled()) blockBuildManagers.add(townyManager);
         if (griefPreventionManager.isEnabled()) blockBuildManagers.add(griefPreventionManager);
+        if (mobArenaManager != null && mobArenaManager.isProtected()) blockBuildManagers.add(mobArenaManager);
 
         // Break Managers
         if (worldGuardManager.isEnabled()) blockBreakManagers.add(worldGuardManager);
@@ -1141,6 +1144,7 @@ public class MagicController implements MageController {
         if (preciousStonesManager.isEnabled()) blockBreakManagers.add(preciousStonesManager);
         if (townyManager.isEnabled()) blockBreakManagers.add(townyManager);
         if (griefPreventionManager.isEnabled()) blockBreakManagers.add(griefPreventionManager);
+        if (mobArenaManager != null && mobArenaManager.isProtected()) blockBreakManagers.add(mobArenaManager);
 
         initialized = true;
     }
@@ -2410,6 +2414,10 @@ public class MagicController implements MageController {
         useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
         lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
+        mobArenaConfiguration = properties.getConfigurationSection("mobarena");
+        if (mobArenaManager != null) {
+            mobArenaManager.configure(mobArenaConfiguration);
+        }
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
@@ -5317,6 +5325,7 @@ public class MagicController implements MageController {
     private boolean                             useSkillAPIMana             = false;
     private boolean                             placeholdersEnabled         = true;
     private boolean                             lightAPIEnabled			    = true;
+    private ConfigurationSection                mobArenaConfiguration       = null;
     private boolean                             enableResourcePackCheck     = true;
     private int                                 resourcePackCheckInterval   = 0;
     private int                                 resourcePackCheckTimer      = 0;
@@ -5343,6 +5352,7 @@ public class MagicController implements MageController {
     private SkillAPIManager                     skillAPIManager             = null;
     private PlaceholderAPIManager               placeholderAPIManager       = null;
     private LightAPIManager                     lightAPIManager             = null;
+    private MobArenaManager                     mobArenaManager             = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();

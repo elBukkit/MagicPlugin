@@ -20,6 +20,7 @@
  - Sort-of fix the Camera, courtesy (sort of) of mcskinsearch.com
  - Added "equation" spell for easily testing the equation system and attributes
  - The configure commands now support equations, e.g. "/wand configure cooldown_reduction x*2+1"
+ - Add MobArena integration to optionally respect arena protection, globally based on protected status or per-arena
  
 ## 7.1.2
 
