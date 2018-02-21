@@ -19,6 +19,7 @@
  - Add Light spell, not obtainable, requires LightAPI
  - Sort-of fix the Camera, courtesy (sort of) of mcskinsearch.com
  - Added "equation" spell for easily testing the equation system and attributes
+ - The configure commands now support equations, e.g. "/wand configure cooldown_reduction x*2+1"
  
 ## 7.1.2
 
