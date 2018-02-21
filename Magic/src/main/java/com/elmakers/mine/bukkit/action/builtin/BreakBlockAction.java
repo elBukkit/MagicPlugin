@@ -97,4 +97,9 @@ public class BreakBlockAction extends ModifyBlockAction {
     public boolean usesBrush() {
         return false;
     }
+
+    @Override
+    public boolean requiresBuildPermission() {
+        return false;
+    }
 }
