@@ -277,7 +277,17 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     @Override
     public ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoLabel) {
         photoLabel = photoLabel == null ? playerName : photoLabel;
-        MapView mapView = getURL(worldName, "http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png", photoLabel, 8, 8, 40, 8, 8, 8, priority);
+        // Mojang apparently can't afford to host a simple skin texture DB with all that phat M$ money??
+        // String url = "http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png";
+        // So we'll use some rando one instead. I'm sure nothing will possibly go wrong with that.
+        // TODO: Really should just switch to using the API, I guess, but two things are lame about that:
+        // 1. It's an extra hop to get the texture URL from here, and this method is not really set up to be async like that.
+        // So we'd need to refactor URLMap to support looking up skins directly, I think.
+        // 2. The API is rate-limited, so it's very likely someone will take "too many" pictures "too quickly"
+        // with a camera and they will start to break. So now we need some kind of queue where we throttle ourselves
+        // and retry periodically and generally it's a pain in the butt.
+        String url = "https://mcskinsearch.com/api/download/" + playerName;
+        MapView mapView = getURL(worldName, url, photoLabel, 8, 8, 40, 8, 8, 8, priority);
         return getMapItem(photoLabel, mapView);
     }
 
