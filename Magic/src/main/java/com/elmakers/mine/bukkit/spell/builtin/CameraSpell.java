@@ -22,6 +22,7 @@ public class CameraSpell extends TargetingSpell
 	{
 		ItemStack newMapItem = null;
 		Integer priority = ConfigurationUtils.getInteger(parameters, "priority", null);
+		boolean selfie = false;
 		
 		// Check for special case id
 		if (parameters.contains("id"))
@@ -59,6 +60,7 @@ public class CameraSpell extends TargetingSpell
 				{
 					if (target.hasEntity()) {
 						Entity targetEntity = target.getEntity();
+						selfie = (targetEntity == mage.getEntity());
 						if (targetEntity instanceof Player) {
 							playerName = ((Player)targetEntity).getName();
 						} else {
@@ -78,15 +80,15 @@ public class CameraSpell extends TargetingSpell
 						}
 					}
 				}
-
-				if (playerName == null)
-				{
-					Player player = mage.getPlayer();
-					if (player == null) {
-						return SpellResult.NO_TARGET;
-					}
-					playerName = player.getName();
+			}
+			if (playerName == null)
+			{
+				Player player = mage.getPlayer();
+				if (player == null) {
+					return SpellResult.NO_TARGET;
 				}
+				playerName = player.getName();
+				selfie = true;
 			}
 			if (parameters.contains("reload")) {
 				maps.forceReloadPlayerPortrait(getWorld().getName(), playerName);
@@ -99,6 +101,6 @@ public class CameraSpell extends TargetingSpell
 		}
 		getWorld().dropItemNaturally(getLocation(), newMapItem);
 		
-		return SpellResult.CAST;
+		return selfie ? SpellResult.CAST_SELF : SpellResult.CAST;
 	}
 }
