@@ -174,3 +174,11 @@ ak:
   alternate_spell: reload_ak47
   mana: 70
   mana_max: 70
+  
+testing:
+  inherit: base_wand
+  class: testing
+  mana_max: 50
+  mana: 50
+  mana_regeneration: 5
+  

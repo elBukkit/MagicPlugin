@@ -1,0 +1,14 @@
+testing:
+  storage:
+    mana: class
+    mana_max: class
+    mana_regeneration: class
+    mana_regeneration: class
+    mana_timestamp: class
+    spell_levels: class
+    spells: class
+    brushes: class
+    path: subclass
+    hotbar_count: subclass
+  mana_max: 1000
+  mana_regeneration: 100
