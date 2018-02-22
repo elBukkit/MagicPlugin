@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.SkinUtils;
 import com.google.common.base.Objects;
 
 import org.apache.commons.lang.StringUtils;
@@ -494,7 +495,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } else {
             // Some special keys
             if (material == Material.SKULL_ITEM && extraData != null && extraData instanceof BlockSkull) {
-                materialKey += ":" + InventoryUtils.getProfileURL(((BlockSkull) extraData).profile);
+                materialKey += ":" + SkinUtils.getProfileURL(((BlockSkull) extraData).profile);
             }
             else if (material == Material.MOB_SPAWNER && extraData != null && extraData instanceof BlockMobSpawner) {
                 BlockMobSpawner spawnerData = (BlockMobSpawner)extraData;

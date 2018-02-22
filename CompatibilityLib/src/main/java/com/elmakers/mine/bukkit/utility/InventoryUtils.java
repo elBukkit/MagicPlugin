@@ -307,7 +307,7 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static String getSkullURL(ItemStack skull) {
-        return getProfileURL(getSkullProfile(skull.getItemMeta()));
+        return SkinUtils.getProfileURL(getSkullProfile(skull.getItemMeta()));
     }
 
     public static ItemStack getPlayerSkull(String playerName)
@@ -327,12 +327,13 @@ public class InventoryUtils extends NMSUtils
 
     public static ItemStack getPlayerSkull(String playerName, UUID uuid, String itemName)
     {
-        return getURLSkull(getPlayerSkullURL(playerName), playerName, uuid, itemName);
+        String playerURL = getPlayerSkullURL(playerName);
+        return playerURL == null ? null : getURLSkull(playerURL, playerName, uuid, itemName);
     }
     
     public static String getPlayerSkullURL(String playerName)
     {
-        return "http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png";
+        return SkinUtils.getOnlineSkinURL(playerName);
     }
 
     public static ItemStack getPlayerSkull(Player player)
