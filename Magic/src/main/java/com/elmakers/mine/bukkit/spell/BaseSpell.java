@@ -1446,7 +1446,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     message = getMessage("cast_player", message);
                 } else if (targetEntity instanceof LivingEntity) {
                     message = getMessage("cast_livingentity", message);
-                } else {
+                } else if (targetEntity != null) {
                     message = getMessage("cast_entity", message);
                 }
                 if (loud) {
