@@ -10,4 +10,6 @@ camera:
     effect_color: '888888'
     spells:
         - camera
+    lore:
+    - $description
 
