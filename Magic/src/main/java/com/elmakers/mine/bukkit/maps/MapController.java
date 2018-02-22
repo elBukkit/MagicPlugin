@@ -1,12 +1,11 @@
 package com.elmakers.mine.bukkit.maps;
 
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.SkinUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
@@ -151,6 +150,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                     mapConfig.set("height", map.height);
                     mapConfig.set("enabled", map.isEnabled());
                     mapConfig.set("name", map.name);
+                    mapConfig.set("player", map.playerName);
                     if (map.priority != null) {
                         mapConfig.set("priority", map.priority);
                     }
@@ -284,16 +284,11 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     @Override
     public ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoLabel) {
         photoLabel = photoLabel == null ? playerName : photoLabel;
-        @SuppressWarnings("deprecation") 
-        Player player = Bukkit.getPlayer(playerName);
-        if (player != null) {
-            String url = NMSUtils.getSkinURL(player);
-            if (url != null) {
-                MapView mapView = getURL(worldName, url, photoLabel, 8, 8, 40, 8, 8, 8, priority, playerName);
-                return getMapItem(photoLabel, mapView);
-            }
+        String url = SkinUtils.getOnlineSkinURL(playerName);
+        if (url != null) {
+            MapView mapView = getURL(worldName, url, photoLabel, 8, 8, 40, 8, 8, 8, priority, playerName);
+            return getMapItem(photoLabel, mapView);
         }
-        
         MapView mapView = getURL(worldName, null, photoLabel, 8, 8, 40, 8, 8, 8, priority, playerName);
         return getMapItem(photoLabel, mapView);
     }

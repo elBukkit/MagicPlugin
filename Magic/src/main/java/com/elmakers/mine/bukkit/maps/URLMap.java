@@ -24,6 +24,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
 
+import com.elmakers.mine.bukkit.utility.SkinUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -353,7 +354,19 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         }
         if (url == null) {
             if (playerName != null) {
-                // TODO: Mojang skin API
+                loading = true;
+                SkinUtils.fetchProfile(controller.getPlugin(), playerName, new SkinUtils.ProfileCallback() {
+                    @Override
+                    public void result(SkinUtils.ProfileResponse response) {
+                        if (response == null) {
+                            enabled = false;
+                        } else {
+                            url = response.getSkinURL();
+                            controller.save();
+                        }
+                        loading = false;
+                    }
+                });
             }
             return null;
         }
