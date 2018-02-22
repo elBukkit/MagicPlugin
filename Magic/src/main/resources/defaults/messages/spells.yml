@@ -1081,7 +1081,7 @@ spells:
     camera:
         name: Camera
         description: Take a portrait of yourself or others
-        cast_entity: You took a photo of $target
+        cast_target: You took a photo of $target
         fail: Failed to load photo
         cast: CLICK!
         cast_self: Selfie!
