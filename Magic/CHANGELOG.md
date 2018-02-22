@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## 7.2
+## 7.1.4
+
+ - Really fix Camera, use online player game profiles and fallback to Mojang API. No more mcskinsearch hackiness.
+
+## 7.1.3
 
  - Default RP changed to Magic-7
  - Added Snoop spell for peeking inside chests, staff-only
@@ -14,7 +18,7 @@
  - Add support for completely custom wand lore (WIP, supports a limited set of wand data)
  - Add option for non-quick-cast skill items
  - Add PlaceholderAPI integration. Supported placeholders: magic.path, class, wand, spell
- - Added Magic.commands.mgive.others permission, now required to give items to other players
+ - Added Magic.commands.mgive.others permission
  - Add wildcard permissions to plugin.yml to support perm plugins that don't handle wildcards (looking at you, zperms :P)
  - Add Light spell, not obtainable, requires LightAPI
  - Sort-of fix the Camera, courtesy (sort of) of mcskinsearch.com

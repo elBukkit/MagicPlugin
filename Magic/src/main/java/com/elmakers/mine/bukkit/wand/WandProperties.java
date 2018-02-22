@@ -32,8 +32,11 @@ public abstract class WandProperties extends CasterProperties {
 
     @Override
     public boolean hasProperty(String key) {
-        return hasOwnProperty(key) || (wandTemplate != null && wandTemplate.hasProperty(key))
-            || (mageClass != null && mageClass.hasProperty(key));
+        BaseMagicProperties storage = getStorage(key);
+        if (storage != null) {
+            return storage.hasOwnProperty(key);
+        }
+        return hasOwnProperty(key) || (wandTemplate != null && wandTemplate.hasProperty(key));
     }
 
     @Override
@@ -42,7 +45,7 @@ public abstract class WandProperties extends CasterProperties {
     }
 
     @Override
-    public Object getProperty(String key) {
+    public Object getInheritedProperty(String key) {
         Object value = null;
         BaseMagicProperties storage = getStorage(key);
         if (storage != null) {
@@ -57,8 +60,22 @@ public abstract class WandProperties extends CasterProperties {
         if (value == null && mageClass != null) {
             value = mageClass.getProperty(key);
         }
-        // To preserve behavior of legacy wands, if a wand has no class assigned then it is not linked to Mage
-        // data at all, so no need to check mage directly here.
+        return value;
+    }
+
+    @Override
+    public Object getProperty(String key) {
+        Object value = null;
+        BaseMagicProperties storage = getStorage(key);
+        if (storage != null && storage != this) {
+            value = storage.getProperty(key);
+        }
+        if (value == null) {
+            value = super.getProperty(key);
+        }
+        if (value == null && wandTemplate != null) {
+            value = wandTemplate.getProperty(key);
+        }
         return value;
     }
 
