@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.utility;
 
+import com.google.common.collect.Multimap;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -210,6 +210,7 @@ public class NMSUtils {
     protected static Method class_ArmorStand_setGravity;
     protected static Method class_Entity_setNoGravity;
     protected static Method class_CraftPlayer_getHandleMethod;
+    protected static Method class_CraftPlayer_getProfileMethod;
     protected static Method class_CraftChunk_getHandleMethod;
     protected static Method class_CraftEntity_getHandleMethod;
     protected static Method class_CraftLivingEntity_getHandleMethod;
@@ -545,6 +546,12 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+            try {
+                class_CraftPlayer_getProfileMethod = class_CraftPlayer.getMethod("getProfile");
+            } catch (Throwable ex) {
+                class_CraftPlayer_getProfileMethod = null;
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Player.getProfile, player portrait maps may not work as well", ex);
+            }
             try {
                 Class<?> class_IBlockData = fixBukkitClass("net.minecraft.server.IBlockData");
                 class_Block_fromLegacyData = class_Block.getMethod("fromLegacyData", Integer.TYPE);
@@ -1851,6 +1858,60 @@ public class NMSUtils {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public static String getProfileURL(Object profile)
+    {
+        String url = null;
+        if (profile == null) {
+            return null;
+        }
+        try {
+            @SuppressWarnings("unchecked")
+            Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(profile);
+            Collection<Object> textures = properties.get("textures");
+            if (textures != null && textures.size() > 0)
+            {
+                Object textureProperty = textures.iterator().next();
+                String texture = (String)class_GameProfileProperty_value.get(textureProperty);
+                String decoded = Base64Coder.decodeString(texture);
+                
+                // Probably should just use gson here .... 
+                String token1 = "textures:{SKIN:{url:\"";
+                String token2 = "\"textures\":{\"SKIN\":{\"url\":\"";
+                
+                int start = decoded.indexOf(token1);
+                int length = token1.length();
+                if (start < 0) {
+                    start = decoded.indexOf(token2);
+                    length = token2.length();
+                    if (start < 0) {
+                        return null;
+                    }
+                }
+                decoded = decoded.substring(start + length);
+                int end = decoded.indexOf("\"}");
+                if (end < 0) {
+                    return null;
+                }
+                url = decoded.substring(0, end).trim();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return url;
+    }
+    
+    public static String getSkinURL(Player player) {
+        if (class_CraftPlayer_getProfileMethod == null) return null;
+        try {
+            Object profile = class_CraftPlayer_getProfileMethod.invoke(player);
+            if (profile == null) return null;
+            return getProfileURL(profile);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
 

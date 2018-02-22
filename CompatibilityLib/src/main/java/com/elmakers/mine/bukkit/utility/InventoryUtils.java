@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.utility;
 
-import com.google.common.collect.Multimap;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -306,29 +304,6 @@ public class InventoryUtils extends NMSUtils
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    public static String getProfileURL(Object profile)
-    {
-        String url = null;
-        if (profile == null) {
-            return null;
-        }
-        try {
-            @SuppressWarnings("unchecked")
-            Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(profile);
-            Collection<Object> textures = properties.get("textures");
-            if (textures != null && textures.size() > 0)
-            {
-                Object textureProperty = textures.iterator().next();
-                String texture = (String)class_GameProfileProperty_value.get(textureProperty);
-                String decoded = Base64Coder.decodeString(texture);
-                url = decoded.replace("{textures:{SKIN:{url:\"", "").replace("\"}}}", "").trim();
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return url;
     }
 
     public static String getSkullURL(ItemStack skull) {
