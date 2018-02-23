@@ -310,6 +310,7 @@ public class InventoryUtils extends NMSUtils
         return SkinUtils.getProfileURL(getSkullProfile(skull.getItemMeta()));
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(String playerName)
     {
         return getPlayerSkull(playerName, UUID.randomUUID(), null);
@@ -321,27 +322,32 @@ public class InventoryUtils extends NMSUtils
         return getPlayerSkull(playerName, UUID.randomUUID(), itemName);
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(String playerName, UUID uuid)
     {
         return getPlayerSkull(playerName, uuid, null);
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(String playerName, UUID uuid, String itemName)
     {
         String playerURL = getPlayerSkullURL(playerName);
         return playerURL == null ? null : getURLSkull(playerURL, playerName, uuid, itemName);
     }
     
+    @Deprecated
     public static String getPlayerSkullURL(String playerName)
     {
         return SkinUtils.getOnlineSkinURL(playerName);
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(Player player)
     {
         return getPlayerSkull(player, null);
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(Player player, String itemName)
     {
         return getPlayerSkull(player.getName(), player.getUniqueId(), itemName);
@@ -396,6 +402,7 @@ public class InventoryUtils extends NMSUtils
         return false;
     }
 
+    @Deprecated
     public static boolean setSkullOwner(Skull state, String playerName, UUID playerId)
     {
         // TODO: This could be done directly, but is kind of tricky.
@@ -408,6 +415,7 @@ public class InventoryUtils extends NMSUtils
 
     }
 
+    @Deprecated
     public static boolean setSkullOwner(Skull state, Player owner)
     {
         return setSkullOwner(state, owner.getName(), owner.getUniqueId());
