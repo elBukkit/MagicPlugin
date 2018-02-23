@@ -3,6 +3,7 @@
 ## 7.1.4
 
  - Really fix Camera, use online player game profiles and fallback to Mojang API. No more mcskinsearch hackiness.
+ - Fix Automata not respecting region permissions
 
 ## 7.1.3
 
