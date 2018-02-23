@@ -42,11 +42,13 @@ public class LightAction extends BaseSpellAction {
     public SpellResult perform(CastContext context)
     {
         location = context.getTargetLocation();
+        context.addWork(5);
         if (!controller.createLight(location, level, async)) {
             return SpellResult.FAIL;
         }
         if (update) {
             controller.updateLight(location);
+            context.addWork(10);
         }
         return SpellResult.CAST;
     }
