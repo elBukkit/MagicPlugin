@@ -82,7 +82,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected static final int MIN_Y = 1;
 
     // TODO: Configurable default? this does look cool, though.
-    protected final static Material DEFAULT_EFFECT_MATERIAL = Material.STATIONARY_WATER;
+    protected final static Material DEFAULT_EFFECT_MATERIAL = Material.WATER;
 
     public final static String[] EXAMPLE_VECTOR_COMPONENTS = {"-1", "-0.5", "0", "0.5", "1", "~-1", "~-0.5", "~0", "~0.5", "*1", "*-1", "*-0.5", "*0.5", "*1"};
     public final static String[] EXAMPLE_SIZES = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "12", "16", "32", "64"};
