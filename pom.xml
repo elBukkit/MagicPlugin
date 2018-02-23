@@ -12,12 +12,12 @@
 
     <packaging>pom</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.java>1.7</version.java>
-        <findbugs.version>1.3.9</findbugs.version>
-        <bukkit.version>1.9.2-R0.1-SNAPSHOT</bukkit.version>
-    </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.java>1.8</version.java>
+		<findbugs.version>1.3.9</findbugs.version>
+		<bukkit.version>18w03b-R0.1-SNAPSHOT</bukkit.version>
+	</properties>
 
     <modules>
         <module>MagicAPI</module>
