@@ -22,7 +22,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -173,8 +172,7 @@ public class ShrinkSpell extends BlockSpell
 	}
 
     protected void dropPlayerHead(Location location, Player player, String itemName) {
-        ItemStack shrunkenHead = InventoryUtils.getPlayerSkull(player, itemName);
-        location.getWorld().dropItemNaturally(location, shrunkenHead);
+		dropPlayerHead(location, player.getName(), itemName);
     }
 
     protected void dropPlayerHead(Location location, String playerName, String itemName) {

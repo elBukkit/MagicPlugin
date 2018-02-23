@@ -13,6 +13,7 @@
    - placeholders for path, class, wand, spell .. ?
  - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
  - /mmob clear with a radius, world/coords
+ - SkillAPI : Class or attribute requirements for casting a spell
 
 ## High-Priority
 

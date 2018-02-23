@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -18,6 +18,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffectType;
 
 import java.lang.ref.WeakReference;
@@ -141,15 +142,22 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
 
             String name = targetPlayer.getName();
             String displayName = targetPlayer.getDisplayName();
-            ItemStack playerItem = InventoryUtils.getPlayerSkull(targetPlayer, displayName);
+
+            @SuppressWarnings("deprecation") 
+            ItemStack playerItem = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+            ItemMeta meta = playerItem.getItemMeta();
+            meta.setDisplayName(displayName);
+            if (meta instanceof SkullMeta) {
+                SkullMeta skullData = (SkullMeta)meta;
+                skullData.setOwner(name);
+            }
             if (!name.equals(displayName))
             {
-                ItemMeta meta = playerItem.getItemMeta();
                 List<String> lore = new ArrayList<>();
                 lore.add(name);
                 meta.setLore(lore);
-                playerItem.setItemMeta(meta);
             }
+            playerItem.setItemMeta(meta);
             displayInventory.setItem(entry.getKey(), playerItem);
         }
         active = true;

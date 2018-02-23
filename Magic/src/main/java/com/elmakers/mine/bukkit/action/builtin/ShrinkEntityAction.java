@@ -7,7 +7,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -138,8 +137,7 @@ public class ShrinkEntityAction extends DamageAction
 	}
 
     protected void dropPlayerHead(Location location, Player player, String itemName) {
-        ItemStack shrunkenHead = InventoryUtils.getPlayerSkull(player, itemName);
-        location.getWorld().dropItemNaturally(location, shrunkenHead);
+		dropHead(location, player.getName(), itemName, (byte)3);
     }
 	
 	@SuppressWarnings("deprecation")
