@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 7.2
+
 ## 7.1.4
 
  - Really fix Camera, use online player game profiles and fallback to Mojang API. No more mcskinsearch hackiness.
