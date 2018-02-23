@@ -87,5 +87,10 @@ public class FlowerAction extends BaseSpellAction {
     public boolean requiresBuildPermission() {
         return true;
     }
+    
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
 
 }
