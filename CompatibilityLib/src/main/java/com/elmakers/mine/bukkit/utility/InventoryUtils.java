@@ -315,6 +315,7 @@ public class InventoryUtils extends NMSUtils
         return getPlayerSkull(playerName, UUID.randomUUID(), null);
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(String playerName, String itemName)
     {
         return getPlayerSkull(playerName, UUID.randomUUID(), itemName);

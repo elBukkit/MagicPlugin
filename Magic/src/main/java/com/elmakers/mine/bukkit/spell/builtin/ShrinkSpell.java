@@ -178,8 +178,7 @@ public class ShrinkSpell extends BlockSpell
     }
 
     protected void dropPlayerHead(Location location, String playerName, String itemName) {
-        ItemStack shrunkenHead = InventoryUtils.getPlayerSkull(playerName, itemName);
-        location.getWorld().dropItemNaturally(location, shrunkenHead);
+		dropHead(location, playerName, itemName, (byte)3);
     }
 	
 	protected void dropHead(Location location, String ownerName, String itemName, byte data) {
