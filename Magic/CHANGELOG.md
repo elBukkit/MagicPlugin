@@ -2,6 +2,8 @@
 
 ## 7.2
 
+ - Add CheckEntity action and Holy Light example spell (currently unobtainable)
+
 ## 7.1.4
 
  - Really fix Camera, use online player game profiles and fallback to Mojang API. No more mcskinsearch hackiness.
