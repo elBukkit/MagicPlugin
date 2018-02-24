@@ -1,8 +1,10 @@
 # CHANGELOG
 
-## 7.2
+## 7.1.5
 
+ - Unbreak wands broken in 7.1.4 (your data should be fine)
  - Add CheckEntity action and Holy Light example spell (currently unobtainable)
+ - Add ModifyProperties action, WIP- can be used to modify wand or class properties
 
 ## 7.1.4
 
