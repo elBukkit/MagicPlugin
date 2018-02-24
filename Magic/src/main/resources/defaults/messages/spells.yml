@@ -1539,3 +1539,6 @@ spells:
     equation:
       name: Equation Tester
       description: "Edit spells.yml to test your equations, by adding\nequation:\n  parameters:\n    equation: \"attribute * 5\""
+    add_protection:
+      name: Add Protection
+      description: "Adds protection from all damage types to your wand.\nThis protection is only active while you are holding your wand."

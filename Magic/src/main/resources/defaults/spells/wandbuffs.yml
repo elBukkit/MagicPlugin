@@ -1,0 +1,14 @@
+add_protection:
+  icon: diamond_axe:110
+  icon_disabled: diamond_hoe:110
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+      protection: "x + 0.1"
+  costs:
+    sp: 500
