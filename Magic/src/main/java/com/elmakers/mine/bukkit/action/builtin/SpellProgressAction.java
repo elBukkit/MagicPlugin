@@ -81,6 +81,11 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                 if (spellItem != null) {
                     long requiredCastCount = spell.getRequiredUpgradeCasts();
                     String requiredPathKey = spell.getRequiredUpgradePath();
+
+                    //ToDo:for skillAPI
+                    String requiredSkillapiClass = spell.getRequiredSkillapiClass();
+                    String requiredSkillapiSkill = spell.getRequiredSkillapiSkill();
+
                     Set<String> requiredPathTags = spell.getRequiredUpgradeTags();
                     ItemMeta meta = spellItem.getItemMeta();
                     List<String> lore = new ArrayList<>();
@@ -99,6 +104,15 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     if (requiredPathKey != null && currentPath == null) {
                         continue;
                     }
+
+                    //SkillAPI
+                    if(requiredSkillapiClass != null && !mage.hasSkillAPIClass(requiredSkillapiClass)){
+                        lore.add(ChatColor.RED + context.getMessage("skillapi_class_requirement").replace("$skillapiclass", requiredSkillapiClass));
+                    }
+                    if(requiredSkillapiSkill != null && !mage.hasSkillAPISkill(requiredSkillapiSkill)){
+                        lore.add(ChatColor.RED + context.getMessage("skillapi_skill_requirement").replace("$skillapiskill", requiredSkillapiSkill));
+                    }
+
                     if (!upgradeSpell.getName().equals(spell.getName())) {
                         lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", spell.getName()));
                     }

@@ -194,6 +194,7 @@ public class SpellShopAction extends BaseShopAction
         return shopItems;
 	}
 
+	//creates the shop item which is shown in the shop GUI
     private ShopItem createShopItem(String key, Double worth, CastContext context) {
         Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
@@ -242,10 +243,12 @@ public class SpellShopAction extends BaseShopAction
                 mage.sendDebugMessage(ChatColor.RED + " Skipping " + spellKey + ", spell item is invalid", 0);
                 return null;
             }
+
             List<String> lore = new ArrayList<>();
             if (spell.getSpellKey().getLevel() > 1 && itemLore.size() > 0) {
                 lore.add(itemLore.get(0));
             }
+
             String upgradeDescription = spell.getUpgradeDescription();
             if (showUpgrades && upgradeDescription != null && !upgradeDescription.isEmpty()) {
                 InventoryUtils.wrapText(upgradeDescription,  lore);
@@ -305,6 +308,7 @@ public class SpellShopAction extends BaseShopAction
             for (int i = (spell.getSpellKey().getLevel() > 1 ? 1 : 0); i < itemLore.size(); i++) {
                 lore.add(itemLore.get(i));
             }
+
             meta.setLore(lore);
             spellItem.setItemMeta(meta);
 
