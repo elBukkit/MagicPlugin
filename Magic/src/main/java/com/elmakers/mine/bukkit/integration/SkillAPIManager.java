@@ -107,6 +107,4 @@ public class SkillAPIManager implements ManaController, AttributeProvider {
 
         return playerData.hasClass(name);
     }
-
-
 }
