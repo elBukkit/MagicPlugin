@@ -63,6 +63,6 @@ public class CheckBlockAction extends CompoundAction {
 
     @Override
     public boolean requiresTarget() {
-        return false;
+        return true;
     }
 }

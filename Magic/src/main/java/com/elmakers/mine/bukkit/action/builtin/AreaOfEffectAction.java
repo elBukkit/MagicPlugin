@@ -60,7 +60,9 @@ public class AreaOfEffectAction extends CompoundEntityAction
             mage.sendDebugMessage(ChatColor.GREEN + "AOE Targeting from " + ChatColor.GRAY + sourceLocation.getBlockX() +
                     ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + sourceLocation.getBlockY() +
                     ChatColor.DARK_GRAY + "," + ChatColor.GRAY + sourceLocation.getBlockZ() +
-                    ChatColor.DARK_GREEN + " with radius of " + ChatColor.GREEN + radius);
+                    ChatColor.DARK_GREEN + " with radius of " + ChatColor.GREEN + radius +
+                    ChatColor.GRAY + " self? " + ChatColor.DARK_GRAY + context.getTargetsCaster()
+            );
         }
         List<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, yRadius, radius);
         if (targetCount > 0)
@@ -69,7 +71,10 @@ public class AreaOfEffectAction extends CompoundEntityAction
             Entity targetEntity = context.getTargetEntity();
             for (Entity entity : candidates)
             {
-                if ((context.getTargetsCaster() || entity != sourceEntity) && (targetSource || entity != targetEntity) && context.canTarget(entity))
+                boolean canTarget = true;
+                if (entity == sourceEntity && !context.getTargetsCaster()) canTarget = false;
+                if (entity == targetEntity && !targetSource) canTarget = false;
+                if (canTarget && context.canTarget(entity))
                 {
                     Target target = new Target(sourceLocation, entity, radius, 0);
                     targets.add(target);

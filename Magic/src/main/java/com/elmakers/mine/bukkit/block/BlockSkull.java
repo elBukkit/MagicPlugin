@@ -7,6 +7,11 @@ public class BlockSkull extends BlockExtraData {
     protected BlockFace rotation = null;
     protected SkullType skullType = null;
     protected Object profile = null;
+    protected String playerName = null;
+    
+    public BlockSkull(String playerName) {
+        this(null, playerName, SkullType.PLAYER, BlockFace.SELF);
+    }
 
     public BlockSkull(Object profile, SkullType type) {
         this(profile, type, BlockFace.SELF);
@@ -17,9 +22,16 @@ public class BlockSkull extends BlockExtraData {
         this.profile = profile;
         this.rotation = rotation;
     }
+    
+    private BlockSkull(Object profile, String playerName, SkullType skullType, BlockFace rotation) {
+        this.skullType = skullType;
+        this.profile = profile;
+        this.rotation = rotation;
+        this.playerName = playerName;
+    }
 
     @Override
     public BlockExtraData clone() {
-        return new BlockSkull(profile, skullType, rotation);
+        return new BlockSkull(profile, playerName, skullType, rotation);
     }
 }

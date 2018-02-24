@@ -258,6 +258,7 @@ public class SimulateBatch extends SpellBatch {
 		if (!block.getChunk().isLoaded()) {
 			return false;
 		}
+		if (!context.hasBuildPermission(block)) return false;
 		
 		Material blockMaterial = block.getType();
 		if (birthMaterial.is(block)) {
@@ -370,11 +371,7 @@ public class SimulateBatch extends SpellBatch {
 		}
 		
 		while (state == SimulationState.SCANNING && processedBlocks <= maxBlocks) {
-			if (!simulateBlocks(x, y, z)) {
-				// TODO: Is this the right thing to do?
-				finish();
-				return processedBlocks;
-			}
+			simulateBlocks(x, y, z);
 			
 			y++;
 			if (y > yRadius) {

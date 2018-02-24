@@ -12,7 +12,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.utility.SkinUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -705,7 +705,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String castMessage = context.getMessage("cast_friend").replace("$name", playerName);
         String failMessage = context.getMessage("no_target_friend").replace("$name", playerName);
         String title = context.getMessage("title_friend").replace("$name", playerName);
-        String iconURL = InventoryUtils.getPlayerSkullURL(onlinePlayer.getName());
+        String iconURL = SkinUtils.getOnlineSkinURL(onlinePlayer);
 
         return new Waypoint(RecallType.WARP, onlinePlayer.getLocation(), title, castMessage, failMessage, "", null, iconURL);
     }

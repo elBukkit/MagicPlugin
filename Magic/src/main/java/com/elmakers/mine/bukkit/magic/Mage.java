@@ -387,8 +387,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             case FIRE:
             case FIRE_TICK:
             case LAVA:
-                // Also put out fire if they have fire protection of any kind.
-                if (damageReductionFire > 0 && player.getFireTicks() > 0) {
+                // Also put out fire if they have maxed out fire protection.
+                if (damageReductionFire > 1 && player.getFireTicks() > 0) {
                     player.setFireTicks(0);
                 }
                 reduction += damageReductionFire * controller.getMaxDamageReductionFire();
@@ -1302,6 +1302,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             properties.tick();
             
+            if (damageReductionFire > 1 && player.getFireTicks() > 0) {
+                player.setFireTicks(0);
+            }
+
             if (Wand.LiveHotbarSkills && (activeWand == null || !activeWand.isInventoryOpen())) {
                 updateHotbarStatus();
             }

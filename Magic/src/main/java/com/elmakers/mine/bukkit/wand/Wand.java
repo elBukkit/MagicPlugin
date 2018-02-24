@@ -3890,10 +3890,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         if (!passive)
         {
-            if (damageReductionFire > 0 && player.getFireTicks() > 0) {
-                player.setFireTicks(0);
-            }
-
             updateEffects();
         }
     }

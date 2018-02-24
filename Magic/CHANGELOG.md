@@ -2,6 +2,19 @@
 
 ## 7.2
 
+## 7.1.5
+
+ - Unbreak wands broken in 7.1.4 (your data should be fine)
+ - Add CheckEntity action and Holy Light example spell (currently unobtainable)
+ - Add ModifyProperties action, WIP- can be used to modify wand or class properties
+
+## 7.1.4
+
+ - Really fix Camera, use online player game profiles and fallback to Mojang API. No more mcskinsearch hackiness.
+ - Fix Automata not respecting region permissions
+
+## 7.1.3
+
  - Default RP changed to Magic-7
  - Added Snoop spell for peeking inside chests, staff-only
  - Make it easier to create one-off simple configs
@@ -14,7 +27,7 @@
  - Add support for completely custom wand lore (WIP, supports a limited set of wand data)
  - Add option for non-quick-cast skill items
  - Add PlaceholderAPI integration. Supported placeholders: magic.path, class, wand, spell
- - Added Magic.commands.mgive.others permission, now required to give items to other players
+ - Added Magic.commands.mgive.others permission
  - Add wildcard permissions to plugin.yml to support perm plugins that don't handle wildcards (looking at you, zperms :P)
  - Add Light spell, not obtainable, requires LightAPI
  - Sort-of fix the Camera, courtesy (sort of) of mcskinsearch.com

@@ -134,6 +134,6 @@ public class FireworkAction extends BaseProjectileAction
 
     @Override
     public boolean isUndoable() {
-        return true;
+        return false;
     }
 }

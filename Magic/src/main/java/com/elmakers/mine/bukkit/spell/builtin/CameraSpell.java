@@ -76,7 +76,7 @@ public class CameraSpell extends TargetingSpell
 						}
 						playerName = getBlockSkin(targetBlock.getType());
 						if (playerName != null) {
-							metaName = target.getBlock().getType().name();
+							metaName = target.getBlock().getType().name().toLowerCase();
 						}
 					}
 				}
@@ -101,6 +101,6 @@ public class CameraSpell extends TargetingSpell
 		}
 		getWorld().dropItemNaturally(getLocation(), newMapItem);
 		
-		return selfie ? SpellResult.CAST_SELF : SpellResult.CAST;
+		return selfie ? SpellResult.CAST_SELF : SpellResult.CAST_TARGET;
 	}
 }

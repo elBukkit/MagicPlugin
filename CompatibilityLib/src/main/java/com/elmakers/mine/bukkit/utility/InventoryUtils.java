@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.utility;
 
-import com.google.common.collect.Multimap;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -308,63 +306,48 @@ public class InventoryUtils extends NMSUtils
         }
     }
 
-    public static String getProfileURL(Object profile)
-    {
-        String url = null;
-        if (profile == null) {
-            return null;
-        }
-        try {
-            @SuppressWarnings("unchecked")
-            Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(profile);
-            Collection<Object> textures = properties.get("textures");
-            if (textures != null && textures.size() > 0)
-            {
-                Object textureProperty = textures.iterator().next();
-                String texture = (String)class_GameProfileProperty_value.get(textureProperty);
-                String decoded = Base64Coder.decodeString(texture);
-                url = decoded.replace("{textures:{SKIN:{url:\"", "").replace("\"}}}", "").trim();
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return url;
-    }
-
     public static String getSkullURL(ItemStack skull) {
-        return getProfileURL(getSkullProfile(skull.getItemMeta()));
+        return SkinUtils.getProfileURL(getSkullProfile(skull.getItemMeta()));
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(String playerName)
     {
         return getPlayerSkull(playerName, UUID.randomUUID(), null);
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(String playerName, String itemName)
     {
         return getPlayerSkull(playerName, UUID.randomUUID(), itemName);
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(String playerName, UUID uuid)
     {
         return getPlayerSkull(playerName, uuid, null);
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(String playerName, UUID uuid, String itemName)
     {
-        return getURLSkull(getPlayerSkullURL(playerName), playerName, uuid, itemName);
+        String playerURL = getPlayerSkullURL(playerName);
+        return playerURL == null ? null : getURLSkull(playerURL, playerName, uuid, itemName);
     }
     
+    @Deprecated
     public static String getPlayerSkullURL(String playerName)
     {
-        return "http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png";
+        return SkinUtils.getOnlineSkinURL(playerName);
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(Player player)
     {
         return getPlayerSkull(player, null);
     }
 
+    @Deprecated
     public static ItemStack getPlayerSkull(Player player, String itemName)
     {
         return getPlayerSkull(player.getName(), player.getUniqueId(), itemName);
@@ -419,6 +402,7 @@ public class InventoryUtils extends NMSUtils
         return false;
     }
 
+    @Deprecated
     public static boolean setSkullOwner(Skull state, String playerName, UUID playerId)
     {
         // TODO: This could be done directly, but is kind of tricky.
@@ -431,6 +415,7 @@ public class InventoryUtils extends NMSUtils
 
     }
 
+    @Deprecated
     public static boolean setSkullOwner(Skull state, Player owner)
     {
         return setSkullOwner(state, owner.getName(), owner.getUniqueId());

@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.maps;
 
+import com.elmakers.mine.bukkit.utility.SkinUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -29,6 +30,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     private BukkitTask saveTask = null;
 
     private HashMap<String, URLMap> keyMap = new HashMap<>();
+    private HashMap<String, URLMap> playerMap = new HashMap<>();
     private HashMap<Short, URLMap> idMap = new HashMap<>();
 
     public MapController(Plugin plugin, File configFile, File cache) {
@@ -74,19 +76,23 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                         if (mapConfig.contains("world")) {
                             world = mapConfig.getString("world");
                         }
+                        String playerName = null;
+                        if (mapConfig.contains("player")) {
+                            playerName = mapConfig.getString("player");
+                        }
                         try {
                             mapId = Short.parseShort(mapIdString);
                         } catch (Exception ex) {
                             map = get(world, mapConfig.getString("url"), mapConfig.getString("name"),
                                     mapConfig.getInt("x"), mapConfig.getInt("y"), xOverlay, yOverlay,
-                                    mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
+                                    mapConfig.getInt("width"), mapConfig.getInt("height"), priority, playerName);
                             info("Created new map id " + map.id + " for config id " + mapIdString);
                             needsUpdate = true;
                         }
                         if (map == null && mapId != null) {
                             map = get(world, mapId, mapConfig.getString("url"), mapConfig.getString("name"),
                                     mapConfig.getInt("x"), mapConfig.getInt("y"),
-                                    xOverlay, yOverlay, mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
+                                    xOverlay, yOverlay, mapConfig.getInt("width"), mapConfig.getInt("height"), priority, playerName);
                         }
 
                         if (map == null) {
@@ -144,6 +150,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                     mapConfig.set("height", map.height);
                     mapConfig.set("enabled", map.isEnabled());
                     mapConfig.set("name", map.name);
+                    mapConfig.set("player", map.playerName);
                     if (map.priority != null) {
                         mapConfig.set("priority", map.priority);
                     }
@@ -277,22 +284,22 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     @Override
     public ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoLabel) {
         photoLabel = photoLabel == null ? playerName : photoLabel;
-        // Mojang apparently can't afford to host a simple skin texture DB with all that phat M$ money??
-        // String url = "http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png";
-        // So we'll use some rando one instead. I'm sure nothing will possibly go wrong with that.
-        // TODO: Really should just switch to using the API, I guess, but two things are lame about that:
-        // 1. It's an extra hop to get the texture URL from here, and this method is not really set up to be async like that.
-        // So we'd need to refactor URLMap to support looking up skins directly, I think.
-        // 2. The API is rate-limited, so it's very likely someone will take "too many" pictures "too quickly"
-        // with a camera and they will start to break. So now we need some kind of queue where we throttle ourselves
-        // and retry periodically and generally it's a pain in the butt.
-        String url = "https://mcskinsearch.com/api/download/" + playerName;
-        MapView mapView = getURL(worldName, url, photoLabel, 8, 8, 40, 8, 8, 8, priority);
+        String url = SkinUtils.getOnlineSkinURL(playerName);
+        if (url != null) {
+            MapView mapView = getURL(worldName, url, photoLabel, 8, 8, 40, 8, 8, 8, priority, playerName);
+            return getMapItem(photoLabel, mapView);
+        }
+        MapView mapView = getURL(worldName, null, photoLabel, 8, 8, 40, 8, 8, 8, priority, playerName);
         return getMapItem(photoLabel, mapView);
     }
 
     public MapView getURL(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
         URLMap map = get(worldName, url, name, x, y, xOverlay, yOverlay, width, height, priority);
+        return map.getMapView();
+    }
+
+    public MapView getURL(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
+        URLMap map = get(worldName, url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName);
         return map.getMapView();
     }
 
@@ -384,7 +391,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     @Override
     public void loadMap(String world, short id, String url, String name, int x, int y, int width, int height, Integer priority)
     {
-        URLMap map = get(world, id, url, name, x, y, null, null, width, height, priority);
+        URLMap map = get(world, id, url, name, x, y, null, null, width, height, priority, null);
         map.getMapView();
     }
 
@@ -400,7 +407,11 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     }
 
     public URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
-        String key = URLMap.getKey(world, url, x, y, width, height);
+        return get(world, mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority, null);
+    }
+        
+    public URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
+        String key = URLMap.getKey(world, url, playerName, x, y, width, height);
         URLMap map = idMap.get(mapId);
         if (map != null) {
             if (!map.getKey().equals(key)) {
@@ -416,9 +427,12 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
             return map;
         }
 
-        map = new URLMap(this, world, mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority);
+        map = new URLMap(this, world, mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName);
         keyMap.put(key, map);
         idMap.put(mapId, map);
+        if (playerName != null) {
+            playerMap.put(playerName, map);
+        }
         return map;
     }
 
@@ -426,34 +440,43 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return get(worldName, url, x, y, width, height, null);
     }
 
-    @SuppressWarnings("deprecation")
     private URLMap get(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
-        String key = URLMap.getKey(worldName, url, x, y, width, height);
-        if (keyMap.containsKey(key)) {
-            URLMap map = keyMap.get(key);
-            map.priority = priority;
-            map.name = name;
-            map.xOverlay = xOverlay;
-            map.yOverlay = yOverlay;
-            return map;
+        return get(worldName, url, name, x, y, xOverlay, yOverlay, width, height, priority, null);
+    }
+
+    @SuppressWarnings("deprecation")
+    private URLMap get(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
+        URLMap existing = null;
+        if (url == null) {
+            existing = playerMap.get(playerName);
+        } else {
+            String key = URLMap.getKey(worldName, url, playerName, x, y, width, height);
+            existing = keyMap.get(key);
+        }
+        if (existing != null) {
+            existing.priority = priority;
+            existing.name = name;
+            existing.xOverlay = xOverlay;
+            existing.yOverlay = yOverlay;
+            return existing;
         }
         World world = Bukkit.getWorld(worldName);
         MapView mapView = Bukkit.createMap(world);
         if (mapView == null) {
-            warning("Unable to create new map for url key " + key);
+            if (url == null) {
+                warning("Unable to create new map for player " + playerName);
+            } else {
+                warning("Unable to create new map for url " + url);
+            }
             return null;
         }
-        URLMap newMap = get(worldName, mapView.getId(), url, name, x, y, xOverlay, yOverlay, width, height, priority);
+        URLMap newMap = get(worldName, mapView.getId(), url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName);
         save();
         return newMap;
     }
 
     private URLMap get(String worldName, String url, int x, int y, int width, int height, Integer priority) {
         return get(worldName, url, null, x, y, null, null, width, height, priority);
-    }
-
-    protected void remove(String key) {
-        keyMap.remove(key);
     }
 
     protected Plugin getPlugin() {
@@ -470,6 +493,10 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         if (map != null) {
             map.enabled = false;
             keyMap.remove(map.getKey());
+            String playerName = map.getPlayerName();
+            if (playerName != null) {
+                playerMap.remove(playerName);
+            }
             idMap.remove(id);
             return true;
         }

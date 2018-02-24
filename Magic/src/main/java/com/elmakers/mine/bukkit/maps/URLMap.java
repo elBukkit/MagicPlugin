@@ -24,6 +24,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
 
+import com.elmakers.mine.bukkit.utility.SkinUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -49,6 +50,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     protected Short id;
 
     protected String url;
+    protected String playerName;
     protected int x;
     protected int y;
     protected int width;
@@ -62,7 +64,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     protected Set<String> sentToPlayers = new HashSet<>();
     protected Integer priority;
 
-    protected URLMap(MapController controller, String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
+    protected URLMap(MapController controller, String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
         this.controller = controller;
         this.world = world;
         this.url = url;
@@ -75,6 +77,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         this.height = height;
         this.id = mapId;
         this.priority = priority;
+        this.playerName = playerName;
     }
 
     // Render method override
@@ -131,6 +134,10 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     @Override
     public String getName() {
         return name;
+    }
+    
+    public String getPlayerName() {
+        return playerName;
     }
 
     @Override
@@ -208,10 +215,13 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     }
 
     protected String getKey() {
-        return getKey(world, url, x, y, width, height);
+        return getKey(world, url, playerName, x, y, width, height);
     }
 
-    protected static String getKey(String world, String url, int x, int y, int width, int height) {
+    protected static String getKey(String world, String url, String playerName, int x, int y, int width, int height) {
+        if (url == null) {
+            url = playerName;
+        }
         return world + "|" + x + "," + y + "|" + width + "," + height + "|" + url;
     }
 
@@ -340,6 +350,24 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
 
     protected BufferedImage getImage() {
         if (loading || !enabled) {
+            return null;
+        }
+        if (url == null) {
+            if (playerName != null) {
+                loading = true;
+                SkinUtils.fetchProfile(controller.getPlugin(), playerName, new SkinUtils.ProfileCallback() {
+                    @Override
+                    public void result(SkinUtils.ProfileResponse response) {
+                        if (response == null) {
+                            enabled = false;
+                        } else {
+                            url = response.getSkinURL();
+                            controller.save();
+                        }
+                        loading = false;
+                    }
+                });
+            }
             return null;
         }
         if (frames == null) {

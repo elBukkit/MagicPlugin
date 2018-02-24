@@ -11,6 +11,7 @@ public enum SpellResult {
     PENDING(true, false, false, false, true),
     CAST(true, false, false),
     CAST_SELF(true, false, false),
+    CAST_TARGET(true, false, false),
     ALTERNATE(true, false, false, true),
     ALTERNATE_UP(true, false, false, true),
     ALTERNATE_DOWN(true, false, false, true),

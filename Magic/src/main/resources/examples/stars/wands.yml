@@ -181,6 +181,9 @@ blaster:
     effect_color: 'FF0000'
     spells:
      - blaster
+    lore:
+    - Fire powerful bolts of energy
+    - "&7Reflects off of iron blocks"
 
 blaster_red:
     class: trooper

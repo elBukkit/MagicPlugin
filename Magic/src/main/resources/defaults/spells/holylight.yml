@@ -1,0 +1,40 @@
+holylight:
+    icon: diamond_axe:10
+    icon_disabled: diamond_hoe:10
+    icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
+    category: master
+    worth: 700
+    earns_sp: 8
+    actions:
+        cast:
+         -  class: AreaOfEffect
+            actions:
+            -  class: CheckEntity
+               allowed_entities: player
+               actions:
+               - class: Heal
+            -  class: CheckEntity
+               denied_entities: player
+               actions:
+               - class: Damage
+    effects:
+        targets:
+        -  class: EffectSingle
+           sound: entity_villager_yes
+           location: origin
+           effectlib:
+             class: HelixEffect
+             particle: heart
+             iterations: 2
+    parameters:
+        target: self
+        target_caster: true
+        target_type: LivingEntity
+        amount: 10
+        damage: 10
+        radius: 16
+        cooldown: 30000
+        bypass_friendly_fire: true
+    costs:
+        mana: 150
+

@@ -120,7 +120,7 @@ public class ApplyCooldownAction extends BaseSpellAction
 	@Override
 	public boolean isUndoable()
 	{
-		return true;
+		return false;
 	}
 
     @Override

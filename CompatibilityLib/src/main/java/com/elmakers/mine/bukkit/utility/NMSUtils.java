@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -210,6 +209,7 @@ public class NMSUtils {
     protected static Method class_ArmorStand_setGravity;
     protected static Method class_Entity_setNoGravity;
     protected static Method class_CraftPlayer_getHandleMethod;
+    protected static Method class_CraftPlayer_getProfileMethod;
     protected static Method class_CraftChunk_getHandleMethod;
     protected static Method class_CraftEntity_getHandleMethod;
     protected static Method class_CraftLivingEntity_getHandleMethod;
@@ -545,6 +545,12 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+            try {
+                class_CraftPlayer_getProfileMethod = class_CraftPlayer.getMethod("getProfile");
+            } catch (Throwable ex) {
+                class_CraftPlayer_getProfileMethod = null;
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Player.getProfile, player portrait maps may not work as well", ex);
+            }
             try {
                 Class<?> class_IBlockData = fixBukkitClass("net.minecraft.server.IBlockData");
                 class_Block_fromLegacyData = class_Block.getMethod("fromLegacyData", Integer.TYPE);

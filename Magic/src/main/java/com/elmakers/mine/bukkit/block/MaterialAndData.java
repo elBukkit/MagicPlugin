@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.SkinUtils;
 import com.google.common.base.Objects;
 
 import org.apache.commons.lang.StringUtils;
@@ -180,8 +181,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             data = Short.parseShort(pieces[1]);
                         } catch (Exception ex) {
                             data = 3;
-                            ItemStack item = InventoryUtils.getPlayerSkull(pieces[1]);
-                            extraData = new BlockSkull(InventoryUtils.getSkullProfile(item.getItemMeta()), SkullType.PLAYER);
+                            extraData = new BlockSkull(pieces[1]);
                         }
                     }
                 }
@@ -443,6 +443,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
                 if (skullData.profile != null) {
                     InventoryUtils.setSkullProfile(skull, skullData.profile);
+                } else if (skullData.playerName != null) {
+                    skull.setOwner(skullData.playerName);
                 }
                 skull.update(true, false);
             } else if (blockState != null && blockState instanceof CreatureSpawner && extraData != null && extraData instanceof BlockMobSpawner) {
@@ -494,7 +496,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } else {
             // Some special keys
             if (material == Material.SKULL_ITEM && extraData != null && extraData instanceof BlockSkull) {
-                materialKey += ":" + InventoryUtils.getProfileURL(((BlockSkull) extraData).profile);
+                BlockSkull skullData = (BlockSkull)extraData;
+                if (skullData.playerName != null) {
+                    materialKey += ":" + skullData.playerName;
+                } else {
+                    materialKey += ":" + SkinUtils.getProfileURL(skullData.profile);
+                }
             }
             else if (material == Material.MOB_SPAWNER && extraData != null && extraData instanceof BlockMobSpawner) {
                 BlockMobSpawner spawnerData = (BlockMobSpawner)extraData;
@@ -608,9 +615,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             {
                 BlockSkull skullData = (BlockSkull)extraData;
                 if (skullData.skullType == SkullType.PLAYER && skullData.profile != null) {
-
                     SkullMeta skullMeta = (SkullMeta)meta;
                     InventoryUtils.setSkullProfile(skullMeta, ((BlockSkull)extraData).profile);
+                    stack.setItemMeta(meta);
+                } else if (skullData.skullType == SkullType.PLAYER && skullData.playerName != null) {
+                    SkullMeta skullMeta = (SkullMeta)meta;
+                    skullMeta.setOwner(skullData.playerName);
                     stack.setItemMeta(meta);
                 }
             }

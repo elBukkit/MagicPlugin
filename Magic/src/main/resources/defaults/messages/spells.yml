@@ -85,6 +85,10 @@ spells:
         name: Blessing
         description: Bless a large area of followers
         cast: You bless the area
+    holylight:
+        name: Holy Light
+        description: Heal players in the area, harm mobs
+        cast: You shine the Holy Light
     mount:
         name: Mount
         description: Mount your target
@@ -1081,10 +1085,11 @@ spells:
     camera:
         name: Camera
         description: Take a portrait of yourself or others
-        cast_entity: You took a photo of $target
+        cast_target: You took a photo of $target
         fail: Failed to load photo
         cast: CLICK!
         cast_self: Selfie!
+        insufficient_resources: Camera is charging up
     tornado:
         name: Tornado
         description: Spawn a destructive whirlwind
@@ -1095,10 +1100,6 @@ spells:
         description: Convert your last construction
         no_target: Nothing to transmute
         cast: You transmute your structure to $material
-    blaster:
-        name: Blaster
-        description: Fire powerful bolts of energy
-        usage: Reflects off of iron blocks
     missile:
         name: Magic Missile
         description: Fire a bolt of pure magic
@@ -1538,3 +1539,6 @@ spells:
     equation:
       name: Equation Tester
       description: "Edit spells.yml to test your equations, by adding\nequation:\n  parameters:\n    equation: \"attribute * 5\""
+    add_protection:
+      name: Add Protection
+      description: "Adds protection from all damage types to your wand.\nThis protection is only active while you are holding your wand."
