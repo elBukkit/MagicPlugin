@@ -32,11 +32,7 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
 
     @Override
     public boolean hasProperty(String key) {
-        BaseMagicProperties storage = getStorage(key);
-        if (storage != null) {
-            return storage.hasOwnProperty(key);
-        }
-        return hasOwnProperty(key) || template.hasProperty(key);
+        return hasOwnProperty(key) || template.hasProperty(key) || mageProperties.hasProperty(key) || (parent != null && parent.hasProperty(key));
     }
 
     @Override
@@ -52,24 +48,13 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         if (value == null) {
             value = template.getProperty(key);
         }
-        return value;
-    }
-
-    @Override
-    public Object getInheritedProperty(String key) {
-        Object value = null;
-        BaseMagicProperties storage = getStorage(key);
-        if (storage != null && storage != this) {
-            value = storage.getProperty(key);
-        }
-        if (value == null) {
-            value = super.getProperty(key);
-        }
-        if (value == null) {
-            value = template.getProperty(key);
-        }
         if (value == null && parent != null) {
             value = parent.getProperty(key);
+        }
+        // Don't need to check the mage if we have a parent, since the parent
+        // checks for us.
+        if (value == null && parent == null) {
+            value = mageProperties.getProperty(key);
         }
         return value;
     }
