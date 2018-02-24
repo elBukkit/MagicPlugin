@@ -521,7 +521,7 @@ public interface Mage extends CostReducer {
      */
     boolean setActiveClass(@Nullable String key);
     boolean removeClass(@Nonnull String key);
-    @Nonnull MagicConfigurable getProperties();
+    @Nonnull CasterProperties getProperties();
 
     /**
      * This method returns a positive number if the player is moving
