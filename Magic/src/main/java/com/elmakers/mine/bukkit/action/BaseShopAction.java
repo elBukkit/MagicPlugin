@@ -31,7 +31,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -189,9 +195,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 return SpellResult.FAIL;
             }
         }
-
-        //ToDO: maybe add check for skillAPI here too, I think here is where they check to cast spells
-        // Check path requirements
 
         if (requiredPath != null || exactPath != null) {
             if (path == null) {
@@ -544,7 +547,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         costScale = parameters.getDouble("scale", 1);
         filterBound = parameters.getBoolean("filter_bound", false);
         putInHand = parameters.getBoolean("put_in_hand", true);
-        //requiredSkillapiClass = parameters.getString("skillapi_class", null);
         String worthItemKey = parameters.getString("worth_item", "");
         if (!worthItemKey.isEmpty()) {
             worthItem = context.getController().createItem(worthItemKey);

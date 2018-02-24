@@ -106,10 +106,10 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     }
 
                     //SkillAPI
-                    if(requiredSkillapiClass != null && !mage.hasSkillAPIClass(requiredSkillapiClass)){
+                    if (requiredSkillapiClass != null && !mage.hasSkillAPIClass(requiredSkillapiClass)) {
                         lore.add(ChatColor.RED + context.getMessage("skillapi_class_requirement").replace("$skillapiclass", requiredSkillapiClass));
                     }
-                    if(requiredSkillapiSkill != null && !mage.hasSkillAPISkill(requiredSkillapiSkill)){
+                    if (requiredSkillapiSkill != null && !mage.hasSkillAPISkill(requiredSkillapiSkill)) {
                         lore.add(ChatColor.RED + context.getMessage("skillapi_skill_requirement").replace("$skillapiskill", requiredSkillapiSkill));
                     }
 
