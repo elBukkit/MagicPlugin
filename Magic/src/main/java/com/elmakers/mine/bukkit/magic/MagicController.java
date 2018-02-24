@@ -1686,7 +1686,7 @@ public class MagicController implements MageController {
             }
         }
 
-        ParameterizedConfiguration.initializeAttributes(attributes);
+        AttributableConfiguration.initializeAttributes(attributes);
     }
 
     private int getPathCount() {

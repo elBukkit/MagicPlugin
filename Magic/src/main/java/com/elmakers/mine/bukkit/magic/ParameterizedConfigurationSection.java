@@ -69,7 +69,7 @@ public class ParameterizedConfigurationSection extends MemorySection {
     public int getInt(String path, int def) {
         Object val = get(path, def);
         if (val instanceof String && getRoot() instanceof ParameterizedConfiguration) {
-            val = ((ParameterizedConfiguration)getRoot()).evaluateParameter((String)val);
+            val = ((ParameterizedConfiguration)getRoot()).evaluate((String)val);
         }
         return (val instanceof Number) ? NumberConversions.toInt(val) : def;
     }
@@ -77,7 +77,7 @@ public class ParameterizedConfigurationSection extends MemorySection {
     public double getDouble(String path, double def) {
         Object val = get(path, def);
         if (val instanceof String && getRoot() instanceof ParameterizedConfiguration) {
-            val = ((ParameterizedConfiguration)getRoot()).evaluateParameter((String)val);
+            val = ((ParameterizedConfiguration)getRoot()).evaluate((String)val);
         }
         return (val instanceof Number) ? NumberConversions.toDouble(val) : def;
     }
@@ -85,7 +85,7 @@ public class ParameterizedConfigurationSection extends MemorySection {
     public long getLong(String path, long def) {
         Object val = get(path, def);
         if (val instanceof String && getRoot() instanceof ParameterizedConfiguration) {
-            val = ((ParameterizedConfiguration)getRoot()).evaluateParameter((String)val);
+            val = ((ParameterizedConfiguration)getRoot()).evaluate((String)val);
         }
         return (val instanceof Number) ? toLong(val) : def;
     }

@@ -5,46 +5,68 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ParameterizedConfiguration extends ParameterizedConfigurationSection implements Configuration {
-    private Mage mage;
+public abstract class ParameterizedConfiguration extends ParameterizedConfigurationSection implements Configuration {
+    protected static class ParameterStore {
+        protected Set<String> parameters;
+        protected Map<String, EquationTransform> transforms;
+        
+        public void initialize(Set<String> newParameters) {
+            parameters = null;
+            transforms = null;
+            if (newParameters == null || newParameters.isEmpty()) return;
+            parameters = new HashSet<>();
+            for (String parameter : newParameters) {
+                parameters.add(parameter);
+            }
+            transforms = new HashMap<>();
+        }
+        
+        public boolean isEmpty() {
+            return parameters == null;
+        }
+        
+        public EquationTransform getTransform(String expression) {
+            EquationTransform transform = transforms.get(expression);
+            if (transform == null) {
+                transform = new EquationTransform(expression, parameters);
+                transforms.put(expression, transform);
+            }
+            return transform;
+        }
+        
+        public Set<String> getParameters() {
+            return parameters;
+        }
+    }
+    
+    private class Options extends ConfigurationOptions {
+        protected Options(Configuration configuration) {
+            super(configuration);
+        }
+    }
+    
+    private static Map<String, ParameterStore> stores = new HashMap<>();
+    protected final ParameterStore store;
+    
     private Options options;
-
-    // Attribute handling
-    protected static Set<String> attributes;
-    protected static Map<String, EquationTransform> attributeTransforms;
     
-    public ParameterizedConfiguration() {
+    public ParameterizedConfiguration(String storeKey) {
         super();
-    }
-
-    public ParameterizedConfiguration(Mage mage) {
-        super();
-        this.mage = mage;
-    }
-
-    public ParameterizedConfiguration(ParameterizedConfiguration copy) {
-        super();
-        this.mage = copy.mage;
-    }
-
-    protected MageController getController() {
-        return mage == null ? null : mage.getController();
-    }
-
-    protected Mage getMage() {
-        return mage;
+        store = getStore(storeKey);
     }
     
-    public void setMage(Mage mage) {
-        this.mage = mage;
+    protected static ParameterStore getStore(String storeKey) {
+        ParameterStore targetStore = stores.get(storeKey);
+        if (targetStore == null) {
+            targetStore = new ParameterStore();
+            stores.put(storeKey, targetStore);
+        }
+        return targetStore;
     }
     
     @Override
@@ -81,38 +103,29 @@ public class ParameterizedConfiguration extends ParameterizedConfigurationSectio
         return options;
     }
 
-    private class Options extends ConfigurationOptions {
-        protected Options(Configuration configuration) {
-            super(configuration);
+    public static void initializeParameters(String storeKey, Set<String> parameters) {
+        ParameterStore store = getStore(storeKey);
+        store.initialize(parameters);
+    }
+
+    public static void checkParameters(String storeKey, Set<String> parameters) {
+        ParameterStore store = getStore(storeKey);
+        if (store.isEmpty()) {
+            store.initialize(parameters);
         }
     }
 
-    public static void initializeAttributes(Set<String> attrs) {
-        attributes = null;
-        attributeTransforms = null;
-        if (attrs == null || attrs.isEmpty()) return;
+    protected Double evaluate(String expression) {
+        if (store.isEmpty()) return null;
 
-        attributes = new HashSet<>();
-        for (String attr : attrs) {
-            attributes.add(attr);
-        }
-        attributeTransforms = new HashMap<>();
-    }
-
-    protected Double evaluateParameter(String parameter) {
-        if (attributes == null) return null;
-
-        EquationTransform transform = attributeTransforms.get(parameter);
-        if (transform == null) {
-            transform = new EquationTransform(parameter, attributes);
-            attributeTransforms.put(parameter, transform);
-        }
-
-        for (String attribute : attributes) {
-            Double value = mage == null ? null : mage.getAttribute(attribute);
-            transform.setVariable(attribute, value == null ? 0 : value);
+        EquationTransform transform = store.getTransform(expression);
+        for (String parameter : store.getParameters()) {
+            double value = getParameter(parameter);
+            transform.setVariable(parameter, value);
         }
 
         return transform.get();
     }
+    
+    protected abstract double getParameter(String parameter);
 }

@@ -33,7 +33,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
-import com.elmakers.mine.bukkit.magic.ParameterizedConfiguration;
+import com.elmakers.mine.bukkit.magic.AttributableConfiguration;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
@@ -216,7 +216,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected ConfigurationSection progressLevels = null;
     protected ConfigurationSection progressLevelParameters = null;
-    protected ParameterizedConfiguration parameters = new ParameterizedConfiguration();
+    protected AttributableConfiguration parameters = new AttributableConfiguration();
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
 
@@ -1045,7 +1045,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         this.location = defaultLocation;
 
-        workingParameters = new ParameterizedConfiguration(mage);
+        workingParameters = new AttributableConfiguration(mage);
         ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
         processParameters(workingParameters);
