@@ -5,8 +5,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.elmakers.mine.bukkit.api.magic.CasterProperties;
-import com.elmakers.mine.bukkit.api.magic.MageClass;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -16,7 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -52,6 +52,7 @@ public interface Wand extends CostReducer, CasterProperties {
     void setIcon(MaterialAndData icon);
     void setInactiveIcon(MaterialAndData icon);
     void makeUpgrade();
+    @Override
     Collection<String> getSpells();
     Collection<String> getBrushes();
     @Override
@@ -62,6 +63,7 @@ public interface Wand extends CostReducer, CasterProperties {
     Spell getSpell(String key);
     Spell getSpell(String key, Mage mage);
     SpellTemplate getSpellTemplate(String key);
+    @Override
     boolean hasSpell(String key);
     boolean hasSpell(SpellKey spellKey);
     boolean hasBrush(String key);
@@ -119,12 +121,18 @@ public interface Wand extends CostReducer, CasterProperties {
     @Override
     float getCostReduction();
     void removeMana(float mana);
+    @Override
     float getMana();
+    @Override
     int getManaMax();
+    @Override
     void setMana(float mana);
+    @Override
     void setManaMax(int manaMax);
+    @Override
     int getManaRegeneration();
     void updateMana();
+    @Override
     WandUpgradePath getPath();
     MageController getController();
     boolean showCastMessages();
@@ -193,6 +201,7 @@ public interface Wand extends CostReducer, CasterProperties {
      *
      * @return true if the wand can progress
      */
+    @Override
     boolean canProgress();
 
     /**
@@ -215,6 +224,7 @@ public interface Wand extends CostReducer, CasterProperties {
     Color getEffectColor();
     String getEffectParticleName();
     Location getLocation();
+    @Override
     Mage getMage();
     @Nullable MageClass getMageClass();
     @Nullable String getMageClassKey();
