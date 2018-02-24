@@ -569,4 +569,8 @@ public interface Mage extends CostReducer {
     boolean isAutomaton();
 
     Double getAttribute(String attributeKey);
+
+    boolean hasSkillAPIClass(String className);
+
+    boolean hasSkillAPISkill(String skillName);
 }
