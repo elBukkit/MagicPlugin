@@ -320,6 +320,8 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             spellLevels = (Map<String, Object>)existingLevelsRaw;
         } else if (existingLevelsRaw instanceof ConfigurationSection) {
             spellLevels = NMSUtils.getMap((ConfigurationSection)existingLevelsRaw);
+        } else {
+            spellLevels = new HashMap<>();
         }
 
         return spellLevels;
