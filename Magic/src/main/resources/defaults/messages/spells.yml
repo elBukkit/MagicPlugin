@@ -1542,3 +1542,5 @@ spells:
     add_protection:
       name: Add Protection
       description: "Adds protection from all damage types to your wand.\nThis protection is only active while you are holding your wand."
+    magictorch:
+      name: Magic Torch

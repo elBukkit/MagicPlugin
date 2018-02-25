@@ -2,6 +2,8 @@
 
 ## 7.2
 
+ - Add Magic Torch (magictorch) item, not craftable, requires LightAPI
+
 ## 7.1.5
 
  - Unbreak wands broken in 7.1.4 (your data should be fine)

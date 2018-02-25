@@ -375,3 +375,6 @@ wands:
     purger:
         name: The Purge
         description: An Automata-Fighting Wand
+    magictorch:
+      name: Magic Torch
+      description: Creates light as you hold it

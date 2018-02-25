@@ -1,0 +1,8 @@
+magictorch:
+    icon: torch
+    locked: true
+    cast_spell: magictorch
+    cast_interval: 500
+    lore:
+    - $description
+
