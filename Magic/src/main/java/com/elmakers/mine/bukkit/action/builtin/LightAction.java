@@ -50,6 +50,7 @@ public class LightAction extends BaseSpellAction {
             controller.updateLight(location);
             context.addWork(10);
         }
+        context.registerForUndo(new LightUndoAction());
         return SpellResult.CAST;
     }
 
