@@ -69,7 +69,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             allowMaxRange           = false;
 
     private @Nonnull MaterialSet                targetThroughMaterials  = MaterialSets.empty();
-    private @Nonnull MaterialSet                targetableMaterials     = MaterialSets.empty();
+    private @Nonnull MaterialSet                targetableMaterials     = MaterialSets.wildcard();
     private @Nonnull MaterialSet                reflectiveMaterials     = MaterialSets.empty();
     private boolean                             reverseTargeting        = false;
     private boolean                             originAtTarget          = false;
@@ -523,7 +523,7 @@ public abstract class TargetingSpell extends BaseSpell {
         targetThroughMaterials = materials.getMaterialSet("transparent", targetThroughMaterials);
         targetThroughMaterials = materials.fromConfig(parameters.getString("transparent"), targetThroughMaterials);
 
-        targetableMaterials = MaterialSets.empty();
+        targetableMaterials = MaterialSets.wildcard();
         targetableMaterials = materials.fromConfig(parameters.getString("targetable"), targetableMaterials);
 
         reflectiveMaterials = MaterialSets.empty();
