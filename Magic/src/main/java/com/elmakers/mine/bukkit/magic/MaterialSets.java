@@ -61,6 +61,11 @@ public class MaterialSets {
         public boolean testMaterialAndData(MaterialAndData targetMaterial) {
             return true;
         }
+
+        @Override
+        public String toString() {
+            return "(*)";
+        }
     };
 
     /**
@@ -102,6 +107,15 @@ public class MaterialSets {
         public boolean testMaterialAndData(MaterialAndData targetMaterial) {
             return false;
         }
+
+        @Override
+        public String toString() {
+            return "()";
+        }
+    }
+
+    public static MaterialSet empty() {
+        return EmptyMaterialSet.INSTANCE;
     }
 
     private static final class NegatedMaterialSet implements MaterialSet {
@@ -139,6 +153,11 @@ public class MaterialSets {
         @Override
         public boolean testMaterialAndData(MaterialAndData targetMaterial) {
             return !delegate.testMaterialAndData(targetMaterial);
+        }
+
+        @Override
+        public String toString() {
+            return "!(" + delegate + ")";
         }
     }
 
@@ -257,10 +276,44 @@ public class MaterialSets {
 
             return false;
         }
-    }
 
-    public static MaterialSet empty() {
-        return EmptyMaterialSet.INSTANCE;
+        @Override
+        public String toString() {
+            boolean first = true;
+            StringBuilder sb = new StringBuilder().append('(');
+
+            for (MaterialSet parent : parents) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append(", ");
+                }
+
+                sb.append(parent);
+            }
+
+            for (Material material : materials) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append(", ");
+                }
+
+                sb.append(material.name().toLowerCase());
+            }
+
+            for (MaterialAndData material : materialAndDatas) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append(", ");
+                }
+
+                sb.append(material.getKey());
+            }
+
+            return sb.append(')').toString();
+        }
     }
 
     public static MaterialSet union(MaterialSet left, MaterialSet right) {
