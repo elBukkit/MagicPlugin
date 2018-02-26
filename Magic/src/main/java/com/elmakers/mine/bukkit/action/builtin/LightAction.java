@@ -11,11 +11,18 @@ public class LightAction extends BaseSpellAction {
     private int level;
     private boolean async;
     private boolean update;
-    private Location location;
     private MageController controller;
     
     private class LightUndoAction implements Runnable
     {
+        private final Location location;
+        private final boolean update;
+        
+        public LightUndoAction(Location location, boolean update) {
+            this.location = location;
+            this.update = update;
+        }
+        
         @Override
         public void run() {
             if (location != null) {
@@ -23,7 +30,6 @@ public class LightAction extends BaseSpellAction {
                 if (update) {
                     controller.updateLight(location);
                 }
-                location = null;
             }
         }
     }
@@ -41,7 +47,7 @@ public class LightAction extends BaseSpellAction {
     @Override
     public SpellResult perform(CastContext context)
     {
-        location = context.getTargetLocation();
+        Location location = context.getTargetLocation();
         context.addWork(5);
         if (!controller.createLight(location, level, async)) {
             return SpellResult.FAIL;
@@ -50,7 +56,7 @@ public class LightAction extends BaseSpellAction {
             controller.updateLight(location);
             context.addWork(10);
         }
-        context.registerForUndo(new LightUndoAction());
+        context.registerForUndo(new LightUndoAction(location, update));
         return SpellResult.CAST;
     }
 
