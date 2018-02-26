@@ -39,7 +39,7 @@ public class LightAction extends BaseSpellAction {
     {
         super.prepare(context, parameters);
         controller = context.getController();
-        async = parameters.getBoolean("async", true);
+        async = parameters.getBoolean("async", false);
         update = parameters.getBoolean("update", true);
         level = parameters.getInt("level", 15);
     }
