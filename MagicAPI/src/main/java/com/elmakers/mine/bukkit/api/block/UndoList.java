@@ -86,4 +86,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
      * @return true if this list has changes to undo
      */
     boolean hasChanges();
+    
+    int getRunnableCount();
+    Runnable undoNextRunnable();
 }

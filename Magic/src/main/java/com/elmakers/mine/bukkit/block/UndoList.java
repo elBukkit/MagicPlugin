@@ -63,7 +63,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     private boolean                         loading = false;
 
     protected Set<Entity> 	                entities;
-    protected List<Runnable>				runnables;
+    protected LinkedList<Runnable>			runnables;
     protected HashMap<UUID, EntityData> 	modifiedEntities;
 
     protected WeakReference<CastContext>    context;
@@ -1012,5 +1012,20 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void removeFromMap(BlockData blockData) {
         removeFromModified(blockData);
         blockIdMap.remove(blockData.getId());
+    }
+
+    @Override
+    public int getRunnableCount() {
+        return runnables == null ? 0 : runnables.size();
+    }
+    
+    @Override
+    public Runnable undoNextRunnable() {
+        Runnable undone = null;
+        if (runnables != null && !runnables.isEmpty()) {
+            undone = runnables.pop();
+            undone.run();
+        }
+        return undone;
     }
 }
