@@ -94,4 +94,14 @@ public class SkillAPIManager implements ManaController, AttributeProvider {
         PlayerData playerData = SkillAPI.getPlayerData(player);
         playerData.setMana(amount);
     }
+
+    public boolean hasSkill(Player player, String name){
+        PlayerData playerData = SkillAPI.getPlayerData(player);
+        return playerData.hasSkill(name);
+    }
+
+    public boolean hasClass(Player player, String name){
+        PlayerData playerData = SkillAPI.getPlayerData(player);
+        return playerData.hasClass(name);
+    }
 }
