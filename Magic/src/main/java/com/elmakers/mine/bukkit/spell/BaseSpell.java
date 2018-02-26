@@ -1,53 +1,30 @@
 package com.elmakers.mine.bukkit.spell;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.logging.Level;
-
 import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
-import com.elmakers.mine.bukkit.api.spell.CostReducer;
-import com.elmakers.mine.bukkit.api.spell.MageSpell;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellKey;
-import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.api.spell.*;
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
-import com.elmakers.mine.bukkit.magic.AttributableConfiguration;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.magic.ParameterizedConfiguration;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-
 import de.slikey.effectlib.math.EquationTransform;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.WorldBorder;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
@@ -65,13 +42,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.SpellCategory;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
 
 public abstract class BaseSpell implements MageSpell, Cloneable {
     public static String DEFAULT_DISABLED_ICON_URL = "";
@@ -167,6 +141,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private BaseSpell template;
     private long requiredUpgradeCasts;
     private String requiredUpgradePath;
+    private String requiredSkillapiClass;
+    private String requiredSkillapiSkill;
     private Set<String> requiredUpgradeTags;
     private Collection<PrerequisiteSpell> requiredSpells;
     private List<SpellKey> removesSpells;
@@ -216,7 +192,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected ConfigurationSection progressLevels = null;
     protected ConfigurationSection progressLevelParameters = null;
-    protected AttributableConfiguration parameters = new AttributableConfiguration();
+    protected ParameterizedConfiguration parameters = new ParameterizedConfiguration();
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
 
@@ -806,6 +782,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             removesSpells = new ArrayList<>(0);
         }
 
+        //required skillAPI stuff
+        requiredSkillapiClass = node.getString( "upgrade_required_skillapi_class", "");
+        requiredSkillapiSkill = node.getString( "upgrade_required_skillapi_skill", "");
+
         // Inheritance, currently only used to look up messages, and only goes one level deep
         inheritKey = node.getString("inherit");
 
@@ -895,6 +875,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     requiredCastsPerLevel = requiredUpgradeCasts / maxLevels;
                 }
             }
+
+
 
             progressLevelParameters = progressLevels.getConfigurationSection("parameters");
             if (progressLevelParameters != null) {
@@ -1045,7 +1027,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         this.location = defaultLocation;
 
-        workingParameters = new AttributableConfiguration(mage);
+        workingParameters = new ParameterizedConfiguration(mage);
         ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
         processParameters(workingParameters);
@@ -1446,7 +1428,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     message = getMessage("cast_player", message);
                 } else if (targetEntity instanceof LivingEntity) {
                     message = getMessage("cast_livingentity", message);
-                } else if (targetEntity != null) {
+                } else {
                     message = getMessage("cast_entity", message);
                 }
                 if (loud) {
@@ -2732,4 +2714,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public ConfigurationSection getSpellParameters() {
         return parameters;
     }
+
+    @Override
+    public String getRequiredSkillapiClass() {
+        return requiredSkillapiClass;
+    }
+
+    @Override
+    public String getRequiredSkillapiSkill() {
+        return requiredSkillapiSkill;
+    }
+
 }

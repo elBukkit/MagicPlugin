@@ -11,7 +11,6 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class SkillAPIManager implements ManaController, AttributeProvider {
@@ -93,5 +92,19 @@ public class SkillAPIManager implements ManaController, AttributeProvider {
     public void setMana(Player player, float amount) {
         PlayerData playerData = SkillAPI.getPlayerData(player);
         playerData.setMana(amount);
+    }
+
+    @Override
+    public boolean hasSkill(Player player, String name){
+        PlayerData playerData = SkillAPI.getPlayerData(player);
+
+        return playerData.hasSkill(name);
+    }
+
+    @Override
+    public boolean hasClass(Player player, String name){
+        PlayerData playerData = SkillAPI.getPlayerData(player);
+
+        return playerData.hasClass(name);
     }
 }

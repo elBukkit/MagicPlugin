@@ -17,8 +17,6 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import static com.google.common.base.Preconditions.*;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -31,6 +29,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,8 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class BaseShopAction extends BaseSpellAction implements GUIAction
 {
@@ -48,6 +48,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private String requiredPath = null;
     private String requiredTemplate = null;
     private String requiresCompletedPath = null;
+    private String requiredSkillapiClass = null;
     private String exactPath = null;
     protected boolean filterBound = false;
     protected int upgradeLevels = 0;
@@ -73,10 +74,19 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private boolean isActive = false;
     private SpellResult finalResult = null;
 
+    public String getRequiredSkillapiClass() {
+        return requiredSkillapiClass;
+    }
+
+    public void setRequiredSkillapiClass(String requiredSkillapiClass) {
+        this.requiredSkillapiClass = requiredSkillapiClass;
+    }
+
     protected class ShopItem implements Comparable<ShopItem> {
         private final @Nonnull ItemStack item;
         private final double worth;
         private final @Nullable String permission;
+
 
         /**
          * The configuration data attached to this item.
@@ -186,7 +196,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
         }
 
-        // Check path requirements
         if (requiredPath != null || exactPath != null) {
             if (path == null) {
                 context.showMessage(context.getMessage("no_path", getDefaultMessage(context, "no_path")).replace("$wand", wand.getName()));
@@ -202,6 +211,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 }
                 return SpellResult.FAIL;
             }
+
             if (exactPath != null && !exactPath.equals(path.getKey())) {
                 WandUpgradePath requiresPath = controller.getPath(exactPath);
                 if (requiresPath != null) {
@@ -211,6 +221,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 }
                 return SpellResult.FAIL;
             }
+
             if (requiresCompletedPath != null) {
                 if (path.canEnchant(wand)) {
                     context.showMessage(context.getMessage("no_path_end", getDefaultMessage(context, "no_path_end")).replace("$path", path.getName()));
@@ -221,6 +232,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         return SpellResult.CAST;
     }
+
 
     protected boolean hasItemCosts(CastContext context, ShopItem shopItem) {
         Mage mage = context.getMage();
@@ -365,7 +377,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             mage.deactivateGUI();
             return;
         }
+
+        //here is where it checks for if the players has the required costs. Can also check here if player has required class
         boolean hasCosts = sell ? hasItem(controller, mage, shopItem.getItem()) : hasItemCosts(context, shopItem);
+
         if (!hasCosts) {
             String costString = context.getMessage("insufficient", getDefaultMessage(context, "insufficient"));
             if (sell) {
