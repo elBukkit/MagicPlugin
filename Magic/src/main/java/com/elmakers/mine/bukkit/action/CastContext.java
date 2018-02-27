@@ -866,6 +866,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         String playerMessage = getMessage(messageKey);
         if (playerMessage.length() > 0)
         {
+            playerMessage = playerMessage.replace("$spell", spell.getName());
             for (Entity target : targets)
             {
                 UUID targetUUID = target.getUniqueId();
