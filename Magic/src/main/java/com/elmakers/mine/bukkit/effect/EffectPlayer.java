@@ -88,6 +88,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected FireworkEffect.Type fireworkType;
     protected int fireworkPower = 1;
     protected Boolean fireworkFlicker;
+    protected boolean fireworkSilent;
 
     protected FireworkEffect fireworkEffect;
 
@@ -193,6 +194,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
             fireworkPower = configuration.getInt("firework_power", fireworkPower);
             fireworkFlicker = ConfigurationUtils.getBoolean(configuration, "firework_flicker", fireworkFlicker);
+            fireworkSilent = configuration.getBoolean("firework_silent", true);
         }
         if (configuration.contains("particle")) {
             String typeName = configuration.getString("particle");
@@ -371,7 +373,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             }
         }
         if (fireworkEffect != null) {
-            EffectUtils.spawnFireworkEffect(plugin.getServer(), sourceLocation, fireworkEffect, fireworkPower);
+            EffectUtils.spawnFireworkEffect(plugin.getServer(), sourceLocation, fireworkEffect, fireworkPower, fireworkSilent);
         }
 
         if (particleType != null) {

@@ -30,6 +30,7 @@ public class FireworkAction extends BaseProjectileAction
     private int startDistance;
     private double speed;
     private double dyOffset;
+    private boolean silent;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -55,6 +56,7 @@ public class FireworkAction extends BaseProjectileAction
         trail = parameters.getBoolean("trail");
 
         launch = parameters.getBoolean("launch", false);
+        silent = parameters.getBoolean("silent", false);
         startDistance = parameters.getInt("start", 0);
         speed = parameters.getDouble("speed", 0.1);
         dyOffset = parameters.getDouble("dy_offset", 0);
@@ -93,7 +95,7 @@ public class FireworkAction extends BaseProjectileAction
         }
 	     
         FireworkEffect effect = EffectUtils.getFireworkEffect(context, color1, color2, fireworkType, flicker, trail);
-        Entity firework = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown);
+        Entity firework = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown, silent);
 
         if (firework == null) {
             if (direction != null) {
