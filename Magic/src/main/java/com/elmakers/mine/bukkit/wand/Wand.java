@@ -1104,7 +1104,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 
 		updateHasInventory();
-		if (openInventoryPage >= inventories.size() && openInventoryPage != 0) {
+		if (openInventoryPage >= inventories.size() && openInventoryPage != 0 && hasInventory) {
 			setOpenInventoryPage(0);
 		}
 	}
