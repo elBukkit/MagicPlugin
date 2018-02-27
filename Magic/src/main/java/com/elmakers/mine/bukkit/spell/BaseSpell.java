@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -219,6 +220,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected AttributableConfiguration parameters = new AttributableConfiguration();
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
+    protected Collection<Requirement> requirements = null;
 
     protected static Random random            = new Random();
 
@@ -883,6 +885,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         cancellable = node.getBoolean("cancellable", true);
         cancelEffects = node.getBoolean("cancel_effects", false);
 
+        Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(node, "requirements");
+        if (requirementConfigurations != null) {
+            requirements = new ArrayList<>();
+            for (ConfigurationSection requirementConfiguration : requirementConfigurations) {
+                requirements.add(new Requirement(requirementConfiguration));
+            }
+        }
         progressLevels = node.getConfigurationSection("progress_levels");
         if (progressLevels != null) {
             requiredCastsPerLevel = progressLevels.getLong("required_casts_per_level");
@@ -2734,5 +2743,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public ConfigurationSection getSpellParameters() {
         return parameters;
+    }
+    
+    @Override
+    public Collection<Requirement> getRequirements() {
+        return requirements;
     }
 }

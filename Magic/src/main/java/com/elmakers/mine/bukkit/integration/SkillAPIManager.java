@@ -1,11 +1,16 @@
 package com.elmakers.mine.bukkit.integration;
 
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 import com.elmakers.mine.bukkit.magic.ManaController;
 import com.sucy.skill.SkillAPI;
 import com.sucy.skill.api.player.PlayerClass;
 import com.sucy.skill.api.player.PlayerData;
 import com.sucy.skill.manager.AttributeManager;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -14,15 +19,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class SkillAPIManager implements ManaController, AttributeProvider {
+public class SkillAPIManager implements ManaController, AttributeProvider, RequirementsProcessor {
     private final Plugin skillAPIPlugin;
-    private final Plugin owningPlugin;
+    private final MageController controller;
     private Set<String> attributes = new HashSet<>();
 
     private AttributeManager attributeManager;
 
-    public SkillAPIManager(Plugin owningPlugin, Plugin skillAPIPlugin) {
-        this.owningPlugin = owningPlugin;
+    public SkillAPIManager(MageController controller, Plugin skillAPIPlugin) {
+        this.controller = controller;
         this.skillAPIPlugin = skillAPIPlugin;
     }
 
@@ -34,10 +39,10 @@ public class SkillAPIManager implements ManaController, AttributeProvider {
 
         if (attributeManager == null) {
             attributes = null;
-            owningPlugin.getLogger().warning("SkillAPI but but attributes are disabled");
+            controller.getLogger().info("SkillAPI found but but attributes are disabled");
         } else {
             attributes = attributeManager.getKeys();
-            owningPlugin.getLogger().info("SkillAPI Attributes: " + attributes);
+            controller.getLogger().info("SkillAPI Attributes: " + attributes);
         }
 
         return true;
@@ -103,5 +108,32 @@ public class SkillAPIManager implements ManaController, AttributeProvider {
     public boolean hasClass(Player player, String name){
         PlayerData playerData = SkillAPI.getPlayerData(player);
         return playerData.hasClass(name);
+    }
+
+    @Override
+    public boolean checkRequirement(Mage mage, Requirement requirement) {
+        if (!mage.isPlayer()) return false;
+        ConfigurationSection configuration = requirement.getConfiguration();
+        if (configuration.contains("skill")) {
+            String skillKey = configuration.getString("skill");
+            return hasSkill(mage.getPlayer(), skillKey);
+        }
+        if (configuration.contains("class")) {
+            String classKey = configuration.getString("class");
+            return hasClass(mage.getPlayer(), classKey);
+        }
+        return true;
+    }
+
+    @Override
+    public String getRequirementDescription(Mage mage, Requirement requirement) {
+        ConfigurationSection configuration = requirement.getConfiguration();
+        if (configuration.contains("skill")) {
+            return controller.getMessages().get("skillapi.required_skill").replace("$skill", configuration.getString("skill"));   
+        }
+        if (configuration.contains("class")) {
+            return controller.getMessages().get("skillapi.required_class").replace("$class", configuration.getString("class"));
+        }
+        return null;
     }
 }

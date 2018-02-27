@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
@@ -103,4 +104,6 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
      * @param parameterKey The parameter for which to retrieve example options.
      */
     void getParameterOptions(Collection<String> examples, String parameterKey);
+    
+    Collection<Requirement> getRequirements();
 }

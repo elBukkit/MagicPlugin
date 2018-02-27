@@ -8,7 +8,9 @@ import org.bukkit.event.HandlerList;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A custom event that fires whenever Magic loads or reloads configurations.
@@ -17,6 +19,7 @@ public class LoadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private MageController controller;
     private List<AttributeProvider> attributeProviders = new ArrayList<>();
+    private Map<String, RequirementsProcessor> requirementProcessors = new HashMap<>();
 
     public LoadEvent(MageController controller) {
         this.controller = controller;
@@ -63,6 +66,13 @@ public class LoadEvent extends Event {
      * @param processor The processor to register
      */
     public void registerRequirementsProcessor(String requirementType, RequirementsProcessor processor) {
-        // TODO
+        if (requirementProcessors.containsKey(requirementType)) {
+            controller.getLogger().warning("Tried to register RequiremensProcessor twice for same type: " + requirementType);
+        }
+        requirementProcessors.put(requirementType, processor);
+    }
+    
+    public Map<String, RequirementsProcessor> getRequirementProcessors() {
+        return requirementProcessors;
     }
 }

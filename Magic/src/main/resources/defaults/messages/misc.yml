@@ -98,3 +98,7 @@ controls:
   right_click: Right-Click
   left_click: Left-Click
   swap: Swap (F)
+  
+skillapi:
+  required_skill: "&cRequired Skill: &4$skill"
+  required_class: "&cRequired Class: &4$class"

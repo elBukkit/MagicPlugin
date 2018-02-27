@@ -17,6 +17,8 @@ import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -159,6 +161,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class MagicController implements MageController {
     public MagicController(final MagicPlugin plugin) {
@@ -808,9 +811,9 @@ public class MagicController implements MageController {
         // Check for SkillAPI
         Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
         if (skillAPIPlugin != null && skillAPIEnabled) {
-            skillAPIManager = new SkillAPIManager(plugin, skillAPIPlugin);
+            skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
             if (skillAPIManager.initialize()) {
-                getLogger().info("SkillAPI found, attributes can be used in spell parameters." );
+                getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements." );
                 if (useSkillAPIMana) {
                     getLogger().info("SkillAPI mana will be used by spells and wands");
                 }
@@ -1676,6 +1679,12 @@ public class MagicController implements MageController {
         }
         if (heroesManager != null) {
             attributeProviders.add(heroesManager);
+        }
+
+        requirementProcessors.clear();
+        requirementProcessors.putAll(loadEvent.getRequirementProcessors());
+        if (skillAPIManager != null) {
+            requirementProcessors.put("skillapi", skillAPIManager);
         }
 
         Set<String> attributes = new HashSet<>();
@@ -5108,6 +5117,22 @@ public class MagicController implements MageController {
         return lightAPIManager.updateChunks(location);
     }
 
+    @Override
+    public @Nullable String checkRequirements(@Nonnull Mage mage, @Nullable Collection<Requirement> requirements) {
+        if (requirements == null) return null;
+        
+        for (Requirement requirement : requirements) {
+            String type = requirement.getType();
+            RequirementsProcessor processor = requirementProcessors.get(type);
+            if (processor != null) {
+                if (!processor.checkRequirement(mage, requirement)) {
+                    return processor.getRequirementDescription(mage, requirement);
+                }
+            }
+        }
+        return null;
+    }
+    
     /*
 	 * Private data
 	 */
@@ -5358,4 +5383,5 @@ public class MagicController implements MageController {
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();
     private List<PVPManager>                    pvpManagers                 = new ArrayList<>();
     private List<AttributeProvider>             attributeProviders          = new ArrayList<>();
+    private Map<String, RequirementsProcessor>  requirementProcessors       = new HashMap<>();
 }

@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.maps.MapController;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import org.bukkit.Location;
@@ -34,6 +35,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * The controller is used for more advanced plugin interaction, and is
@@ -395,4 +397,6 @@ public interface MageController {
     boolean createLight(Location location, int lightlevel, boolean async);
     boolean deleteLight(Location location, boolean async);
     boolean updateLight(Location location);
+
+    @Nullable String checkRequirements(@Nonnull Mage mage, @Nullable Collection<Requirement> requirements);
 }
