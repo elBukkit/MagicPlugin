@@ -1,15 +1,23 @@
 # TODO
 
+## Requirements
+
+ - Collapse requirements in selector into native requirements checker
+
 ## Higher Priority
 
- - Wand active inventory page not saving
+ - "Lasts for 1 seconds"
+ - "duration" parameter not working for lore anymore?
+ - PerWorldInventory logout issues, can't reproduce
 
- - /mage reset seems to unload player data so that the next spell cast fails
+ - Wand active inventory page not saving
 
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
  - Spells drop on death with lag (maybe)?
 
 ## Suggestions
+
+ - Add support for sized slimes
 
  - Placeholder API integration: https://www.spigotmc.org/wiki/hooking-into-placeholderapi/
    - Allow placeholder-driven attributes

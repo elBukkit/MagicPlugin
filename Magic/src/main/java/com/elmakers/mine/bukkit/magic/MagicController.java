@@ -4561,13 +4561,18 @@ public class MagicController implements MageController {
 
     @Override
     public void deleteMage(final String id) {
-        Mage mage = getRegisteredMage(id);
+        final Mage mage = getRegisteredMage(id);
         if (mage != null) {
             playerQuit(mage, new MageDataCallback() {
                 @Override
                 public void run(MageData data) {
-                    info("Deleted player id " + id);
+                    info("Deleted mage id " + id);
                     mageDataStore.delete(id);
+                    
+                    // If this was a player and that player is online, reload them so they function normally.
+                    if (mage.isPlayer() && mage.isOnline()) {
+                        getMage(mage.getPlayer());
+                    }
                 }
             });
         }
