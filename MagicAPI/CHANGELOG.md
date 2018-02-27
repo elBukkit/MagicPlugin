@@ -4,8 +4,6 @@
 
  - MagicAPI is now integrated with the Magic plugin, please check Magic's changelog,
    or just look at the git history for API changes.
- - Added support for spells requiring SkillAPI classes or skills. 
-   Thanks @robotnikman and my other helpful contributors!
 
 ## 3.0
 

@@ -3,7 +3,9 @@
 ## 7.2
 
  - Add Magic Torch (magictorch) item, not craftable, requires LightAPI
-
+ - Added support for spells requiring SkillAPI classes or skills. 
+   Thanks @robotnikthingy and my other helpful contributors!
+   
 ## 7.1.5
 
  - Unbreak wands broken in 7.1.4 (your data should be fine)
