@@ -423,6 +423,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             }
         }
     }
+    
+    @Override
+    public boolean isUndone()
+    {
+        return undone;
+    }
 
     @Override
     public void undo()

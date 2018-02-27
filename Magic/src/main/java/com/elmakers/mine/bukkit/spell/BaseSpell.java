@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
@@ -202,6 +203,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassAll                   = false;
     protected boolean quiet                       = false;
     protected boolean loud                        = false;
+    protected boolean toggle                      = false;
     protected boolean messageTargets              = true;
     protected boolean targetSelf                  = false;
     protected boolean showUndoable              = true;
@@ -884,6 +886,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         showUndoable = node.getBoolean("show_undoable", true);
         cancellable = node.getBoolean("cancellable", true);
         cancelEffects = node.getBoolean("cancel_effects", false);
+        toggle = node.getBoolean("toggle", false);
 
         Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(node, "requirements");
         if (requirementConfigurations != null) {
@@ -1012,6 +1015,21 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             return false;
         }
+        
+        if (toggle && currentCast != null) {
+            UndoList undoList = currentCast.getUndoList();
+            boolean undone = false;
+            if (undoList != null && !undoList.isUndone()) {
+                undoList.undo();
+                undone = true;
+            }
+            Batch batch = mage.cancelPending(getKey(), true);
+            if (batch != null || undone) {
+                processResult(SpellResult.DEACTIVATE, parameters);
+                return true;
+            }
+        }
+        
         if (mage.getDebugLevel() > 5 && extraParameters != null) {
             Collection<String> keys = extraParameters.getKeys(false);
             if (keys.size() > 0) {
