@@ -321,7 +321,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         protected String name = null;
         protected List<String> lore = null;
         protected boolean placeholder;
-        protected String unavailableMessage;
+        protected boolean unavailable;
 
         public SelectorOption(SelectorConfiguration defaults, ConfigurationSection configuration, CastContext context, CostReducer reducer) {
             super();
@@ -428,7 +428,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                         String pathName = required != null ? required.getName() : requiresCompletedPath;
                         String hasPathLore = context.getMessage("path_end_lore", getDefaultMessage(context, "path_end_lore")).replace("$path", pathName);
                         if (!hasPathLore.isEmpty()) {
-                            lore.add(hasPathLore);
+                            InventoryUtils.wrapText(hasPathLore, lore);
                         }
                     }
                 } else {
@@ -448,7 +448,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                         }
                         String hasPathLore = context.getMessage("path_lore", getDefaultMessage(context, "path_lore")).replace("$path", pathName);
                         if (!hasPathLore.isEmpty()) {
-                            lore.add(hasPathLore);
+                            InventoryUtils.wrapText(hasPathLore, lore);
                         }
                     }
                 }
@@ -461,18 +461,33 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                     costs = null;
                     showConfirmation = false;
                     String unlockedMessage = context.getMessage("unlocked_lore", getDefaultMessage(context, "unlocked_lore"));
-                    lore.add(unlockedMessage);
+                    InventoryUtils.wrapText(unlockedMessage, lore);
                 }
             }
 
             if (costs != null) {
                 String costKey = unlockKey != null && !unlockKey.isEmpty() ? "unlock_cost_lore" : "cost_lore";
-                String costString = context.getMessage(costKey, getDefaultMessage(context, costKey));
+                String requiredKey = unlockKey != null && !unlockKey.isEmpty() ? "required_unlock_cost_lore" : "required_cost_lore";
+                String costString = getMessage(costKey);
+                String requiredCostString = getMessage(requiredKey);
                 for (Cost cost : costs) {
-                    lore.add(costString.replace("$cost", cost.getFullDescription(context.getController().getMessages(), reducer)));
+                    String costDescription = cost.has(context.getMage(), context.getWand(), reducer) ? costString : requiredCostString;
+                    costDescription = costDescription.replace("$cost", cost.getFullDescription(context.getController().getMessages(), reducer));
+                    InventoryUtils.wrapText(costDescription, lore);
                 }
             }
 
+            RequirementsResult check = checkRequirements(context);
+            if (!check.result.isSuccess()) {
+                unavailable = true;
+                if (check.message != null && !check.message.isEmpty()) {
+                    InventoryUtils.setMeta(icon, "unpurchasable", check.message);
+                    InventoryUtils.wrapText(check.message, lore);
+                } else {
+                    showUnavailable = false;
+                }
+            }
+            
             // Prepare icon
             ItemMeta meta = icon.getItemMeta();
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
@@ -491,6 +506,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
             InventoryUtils.makeUnbreakable(icon);
             InventoryUtils.hideFlags(icon, (byte)63);
+
+            if (showConfirmation) {
+                InventoryUtils.setMeta(icon, "confirm", "true");
+            }
         }
 
         protected Cost takeCosts(CostReducer reducer, CastContext context) {
@@ -624,27 +643,11 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             return placeholder;
         }
 
-        public void setUnavailableMessage(String message) {
-            this.unavailableMessage = message;
+        public boolean isUnavailable() {
+            return unavailable;
         }
 
         public ItemStack getIcon() {
-            if (showConfirmation) {
-                InventoryUtils.setMeta(icon, "confirm", "true");
-            }
-            if (unavailableMessage != null) {
-                InventoryUtils.setMeta(icon, "unpurchasable", unavailableMessage);
-                ItemMeta meta = icon.getItemMeta();
-                if (meta != null) {
-                    List<String> lore = meta.getLore();
-                    if (lore == null) {
-                        lore = new ArrayList<>();
-                    }
-                    lore.add(unavailableMessage);
-                }
-                meta.setLore(lore);
-                icon.setItemMeta(meta);
-            }
             return icon;
         }
 
@@ -716,6 +719,13 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
         SelectorOption option = showingItems.get(slotIndex);
         if (option == null || option.isPlaceholder()) {
+            return;
+        }
+
+        String unpurchasableMessage = InventoryUtils.getMetaString(item, "unpurchasable");
+        if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
+            context.showMessage(unpurchasableMessage);
+            mage.deactivateGUI();
             return;
         }
 
@@ -798,11 +808,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 options.add(newOption);
             }
             for (SelectorOption option : options) {
-                RequirementsResult check = option.checkRequirements(context);
-                if (!check.result.isSuccess()) {
-                    if (!option.showIfUnavailable() || check.message == null || check.message.isEmpty()) continue;
-                    option.setUnavailableMessage(check.message);
+                if (option.isUnavailable() && !option.showIfUnavailable()) {
+                    continue;
                 }
+                
                 Integer targetSlot = option.getSlot();
                 int slot = targetSlot == null ? numSlots : targetSlot;
                 showingItems.put(slot, option);
