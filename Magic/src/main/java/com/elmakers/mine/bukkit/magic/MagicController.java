@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
@@ -5118,15 +5119,15 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public @Nullable String checkRequirements(@Nonnull Mage mage, @Nullable Collection<Requirement> requirements) {
+    public @Nullable String checkRequirements(@Nonnull CastContext context, @Nullable Collection<Requirement> requirements) {
         if (requirements == null) return null;
         
         for (Requirement requirement : requirements) {
             String type = requirement.getType();
             RequirementsProcessor processor = requirementProcessors.get(type);
             if (processor != null) {
-                if (!processor.checkRequirement(mage, requirement)) {
-                    return processor.getRequirementDescription(mage, requirement);
+                if (!processor.checkRequirement(context, requirement)) {
+                    return processor.getRequirementDescription(context, requirement);
                 }
             }
         }

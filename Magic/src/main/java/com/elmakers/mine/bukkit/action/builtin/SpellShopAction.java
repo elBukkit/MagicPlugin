@@ -255,7 +255,7 @@ public class SpellShopAction extends BaseShopAction
             String unpurchasableMessage = null;
             
             Collection<Requirement> requirements = spell.getRequirements();
-            String requirementMissing = controller.checkRequirements(mage, requirements);
+            String requirementMissing = controller.checkRequirements(context, requirements);
             if (requirementMissing != null) {
                 unpurchasableMessage = requirementMissing;
                 InventoryUtils.wrapText(unpurchasableMessage, lore);

@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.integration;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -14,9 +15,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class SkillAPIManager implements ManaController, AttributeProvider, RequirementsProcessor {
@@ -111,7 +113,8 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
     }
 
     @Override
-    public boolean checkRequirement(Mage mage, Requirement requirement) {
+    public boolean checkRequirement(@Nonnull CastContext castContext, @Nonnull Requirement requirement) {
+        Mage mage = castContext.getMage();
         if (!mage.isPlayer()) return false;
         ConfigurationSection configuration = requirement.getConfiguration();
         if (configuration.contains("skill")) {
@@ -124,15 +127,19 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
         }
         return true;
     }
+    
+    protected String getMessage(CastContext context, String key) {
+        return context.getMessage(key, context.getController().getMessages().get("skillapi." + key));
+    }
 
     @Override
-    public String getRequirementDescription(Mage mage, Requirement requirement) {
+    public @Nullable String getRequirementDescription(@Nonnull CastContext context, @Nonnull Requirement requirement) {
         ConfigurationSection configuration = requirement.getConfiguration();
         if (configuration.contains("skill")) {
-            return controller.getMessages().get("skillapi.required_skill").replace("$skill", configuration.getString("skill"));   
+            return getMessage(context, "required_skill").replace("$skill", configuration.getString("skill"));   
         }
         if (configuration.contains("class")) {
-            return controller.getMessages().get("skillapi.required_class").replace("$class", configuration.getString("class"));
+            return getMessage(context, "required_class").replace("$class", configuration.getString("class"));
         }
         return null;
     }

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
@@ -398,5 +399,5 @@ public interface MageController {
     boolean deleteLight(Location location, boolean async);
     boolean updateLight(Location location);
 
-    @Nullable String checkRequirements(@Nonnull Mage mage, @Nullable Collection<Requirement> requirements);
+    @Nullable String checkRequirements(@Nonnull CastContext context, @Nullable Collection<Requirement> requirements);
 }
