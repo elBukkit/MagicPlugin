@@ -76,6 +76,9 @@ duration:
     lasts_seconds: Lasts for $seconds seconds
     lasts_minutes: Lasts for $minutes minutes
     lasts_hours: Lasts for $hours hours
+    lasts_second: Lasts for $seconds second
+    lasts_minute: Lasts for $minutes minute
+    lasts_hour: Lasts for $hours hour
 
 skills:
     inventory_title: "Skills"

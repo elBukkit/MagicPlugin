@@ -3949,18 +3949,9 @@ public class MagicController implements MageController {
                     }
                 }
 
-                long duration = spell.getDuration();
-                if (duration > 0) {
-                    long seconds = duration / 1000;
-                    if (seconds > 60 * 60) {
-                        long hours = seconds / (60 * 60);
-                        lines.add(ChatColor.DARK_GREEN + messages.get("duration.lasts_hours").replace("$hours", ((Long) hours).toString()));
-                    } else if (seconds > 60) {
-                        long minutes = seconds / 60;
-                        lines.add(ChatColor.DARK_GREEN + messages.get("duration.lasts_minutes").replace("$minutes", ((Long) minutes).toString()));
-                    } else {
-                        lines.add(ChatColor.DARK_GREEN + messages.get("duration.lasts_seconds").replace("$seconds", ((Long) seconds).toString()));
-                    }
+                String duration = spell.getDurationDescription(messages);
+                if (duration != null) {
+                    lines.add(ChatColor.DARK_GREEN + duration);
                 }
                 else if (spell.showUndoable())
                 {

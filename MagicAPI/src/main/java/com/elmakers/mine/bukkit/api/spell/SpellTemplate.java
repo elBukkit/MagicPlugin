@@ -47,6 +47,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     Collection<EffectPlayer> getEffects(SpellResult result);
     Collection<EffectPlayer> getEffects(String effectsKey);
     long getDuration();
+    String getDurationDescription(Messages messages);
     long getCooldown();
     Spell createSpell();
     void loadTemplate(String key, ConfigurationSection node);

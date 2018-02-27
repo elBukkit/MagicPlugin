@@ -2,8 +2,6 @@
 
 ## Higher Priority
 
- - "Lasts for 1 seconds"
- - "duration" parameter not working for lore anymore?
  - PerWorldInventory logout issues, can't reproduce
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
  - Spells drop on death with lag (maybe)?

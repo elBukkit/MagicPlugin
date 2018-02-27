@@ -2507,20 +2507,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             lore.add(ChatColor.GRAY + messages.get("wand.range_description").replace("$range", RANGE_FORMATTER.format(range)));
         }
 
-        long effectiveDuration = this.getDuration();
-        if (effectiveDuration > 0) {
-            long seconds = effectiveDuration / 1000;
-            if (seconds > 60 * 60 ) {
-                long hours = seconds / (60 * 60);
-                lore.add(ChatColor.GRAY + messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
-            } else if (seconds > 60) {
-                long minutes = seconds / 60;
-                lore.add(ChatColor.GRAY + messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
-            } else {
-                lore.add(ChatColor.GRAY + messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
-            }
-        }
-        else if (showUndoable()) {
+        String effectiveDuration = this.getDurationDescription(messages);
+        if (effectiveDuration != null) {
+            lore.add(ChatColor.GRAY + effectiveDuration);
+        } else if (showUndoable()) {
             if (isUndoable()) {
                 String undoableText = messages.get("spell.undoable", "");
                 if (!undoableText.isEmpty()) {
@@ -2750,5 +2740,31 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public Collection<Requirement> getRequirements() {
         return requirements;
+    }
+    
+    @Override
+    public String getDurationDescription(Messages messages) {
+        String description = null;
+        long effectiveDuration = this.getDuration();
+        if (effectiveDuration > 0) {
+            long seconds = effectiveDuration / 1000;
+            if (seconds > 60 * 60 ) {
+                long hours = seconds / (60 * 60);
+                description = messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString());
+            } else if (seconds == 60 * 60 ) {
+                description = messages.get("duration.lasts_hour").replace("$hours", "1");
+            } else if (seconds > 60) {
+                long minutes = seconds / 60;
+                description = messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString());
+            } else if (seconds == 60) {
+                description = messages.get("duration.lasts_minute").replace("$minutes", "1");
+            } else if (seconds == 1) {
+                description = messages.get("duration.lasts_second").replace("$seconds", ((Long)seconds).toString());
+            } else {
+                description = messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString());
+            }
+        }
+        
+        return description;
     }
 }
