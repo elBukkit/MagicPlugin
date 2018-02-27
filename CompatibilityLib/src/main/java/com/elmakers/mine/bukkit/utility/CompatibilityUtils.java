@@ -181,6 +181,15 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
+    public static void setSilent(Object nmsEntity, boolean flag) {
+        if (class_Entity_setSilentMethod == null) return;
+        try {
+            class_Entity_setSilentMethod.invoke(nmsEntity, flag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     /**
      * Thanks you, Chilinot!
      * @param loc

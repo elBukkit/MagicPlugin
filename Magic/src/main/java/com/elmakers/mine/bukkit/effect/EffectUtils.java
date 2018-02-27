@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.effect;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -37,7 +38,8 @@ public class EffectUtils extends NMSUtils {
 
             Object item = getHandle(makeReal(itemStack));
             final Object fireworkHandle = class_EntityFireworkConstructor.newInstance(world, location.getX(), location.getY(), location.getZ(), item);
-
+            CompatibilityUtils.setSilent(fireworkHandle, true);
+            
             if (direction != null) {
                 class_Entity_motXField.set(fireworkHandle, direction.getX());
                 class_Entity_motYField.set(fireworkHandle, direction.getY());
