@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -90,6 +91,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         protected @Nullable String unlockKey = null;
         protected @Nonnull String unlockSection = "unlocked";
         protected @Nullable Collection<Requirement> requirements;
+        protected @Nullable List<String> commands;
         protected boolean requireWand = false;
         protected boolean applyToWand = false;
         protected boolean showConfirmation = false;
@@ -125,6 +127,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             showConfirmation = configuration.getBoolean("confirm", showConfirmation);
             costType = configuration.getString("cost_type", costType);
             showUnavailable = configuration.getBoolean("show_unavailable", showUnavailable);
+            commands = ConfigurationUtils.getStringList(configuration, "commands");
 
             selectedMessage = configuration.getString("selected", selectedMessage);
             if (selectedMessage == null) {
@@ -348,6 +351,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             this.costType = defaults.costType;
             this.requirements = defaults.requirements;
             this.showUnavailable = defaults.showUnavailable;
+            this.commands = defaults.commands;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<String>();
 
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "") .equals("none");
@@ -612,6 +616,13 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 for (ItemStack item : items) {
                     ItemStack copy = InventoryUtils.getCopy(item);
                     mage.giveItem(copy);
+                }
+            }
+            
+            if (commands != null && !commands.isEmpty()) {
+                for (String command : commands) {
+                    String execute = context.parameterize(command);
+                    controller.getPlugin().getServer().dispatchCommand(Bukkit.getConsoleSender(), execute);
                 }
             }
 
