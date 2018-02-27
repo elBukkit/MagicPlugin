@@ -1404,6 +1404,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             // Escape some common parameters
             String playerName = mage.getName();
             message = message.replace("$player", playerName);
+            message = message.replace("$spell", getName());
 
             if (message.contains("$material"))
             {
@@ -1413,6 +1414,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 materialName = materialName == null ? "None" : materialName;
                 message = message.replace("$material", materialName);
             }
+            
+            message = currentCast.parameterizeMessage(message);
         }
         return message;
     }

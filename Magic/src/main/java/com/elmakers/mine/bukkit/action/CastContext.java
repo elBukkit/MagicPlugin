@@ -62,8 +62,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private Vector direction = null;
     private Boolean targetCaster = null;
 
-    private Set<UUID> targetMessagesSent = new HashSet<>();
-    private Collection<EffectPlay> currentEffects = new ArrayList<>();
+    private Set<UUID> targetMessagesSent = null;
+    private Collection<EffectPlay> currentEffects = null;
 
     private Spell spell;
     private BaseSpell baseSpell;
@@ -79,6 +79,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     private List<ActionHandlerContext> handlers = null;
     private List<ActionHandlerContext> finishedHandlers = null;
+    private Map<String, String> messageParameters = null;
 
     // Base Context
     private int workAllowed = 500;
@@ -92,6 +93,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.result = SpellResult.NO_ACTION;
         targetMessagesSent = new HashSet<>();
         currentEffects = new ArrayList<>();
+        messageParameters = new HashMap<>();
     }
 
     public CastContext(Mage mage) {
@@ -102,6 +104,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.result = SpellResult.NO_ACTION;
         targetMessagesSent = new HashSet<>();
         currentEffects = new ArrayList<>();
+        messageParameters = new HashMap<>();
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
@@ -141,6 +144,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             this.base = ((CastContext)copy).base;
             this.initialResult = ((CastContext)copy).initialResult;
             this.direction = ((CastContext)copy).direction;
+            this.messageParameters = ((CastContext)copy).messageParameters;
         }
         else
         {
@@ -868,7 +872,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 if (target instanceof Player && target != sourceEntity && !targetMessagesSent.contains(targetUUID))
                 {
                     targetMessagesSent.add(targetUUID);
-                    playerMessage = playerMessage.replace("$spell", spell.getName());
                     Mage targetMage = controller.getRegisteredMage(target);
                     if (targetMage != null) {
                         targetMage.sendMessage(playerMessage);
@@ -876,6 +879,13 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 }
             }
         }
+    }
+    
+    public String parameterizeMessage(String message) {
+        for (Map.Entry<String, String> entry : messageParameters.entrySet()) {
+            message = message.replace("$" + entry.getKey(), entry.getValue());
+        }
+        return message;
     }
 
     @Override
@@ -1273,5 +1283,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
 
         return SpellResult.PENDING;
+    }
+
+    public void addMessageParameter(String key, String value) {
+        messageParameters.put(key, value);
     }
 }

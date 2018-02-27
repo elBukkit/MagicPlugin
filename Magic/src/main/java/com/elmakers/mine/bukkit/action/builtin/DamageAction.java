@@ -116,6 +116,12 @@ public class DamageAction extends BaseSpellAction
 					mage.sendDebugMessage(ChatColor.RED + "Damaging " + targetEntity.getType() + ": " + damage, 20);
 					CompatibilityUtils.damage(targetEntity, damage, mage.getEntity());
 				}
+				
+				if (damage == (int)damage) {
+					context.addMessageParameter("damage", Integer.toString((int)damage));
+				} else {
+					context.addMessageParameter("damage", Double.toString(damage));
+				}
 			}
 		} finally {
 			if (knockbackResistance != null && livingTarget != null) {
