@@ -1199,7 +1199,6 @@ drive:
         mount_target: true
         controllable: true
         pitch_controllable: false
-        rider_untargetable: true
         sound: war.engine
         sound_interval: 100
         sound_max_volume: 1
@@ -1222,11 +1221,16 @@ drive:
         crash_dismount_speed: 0.75
         crash_effects:
           confusion: 120,3
-        riding_effects:
-          invisibility: 1
+
+drive_inside:
+  inherit: drive
+  parameters:
+    rider_untargetable: true
+    riding_effects:
+      invisibility: 1
 
 steal:
-    inherit: drive
+    inherit: drive_inside
     actions:
       cast:
       - class: AreaOfEffect
