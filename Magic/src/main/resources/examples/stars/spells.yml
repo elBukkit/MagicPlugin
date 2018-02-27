@@ -12,6 +12,7 @@ starshop:
   parameters:
     options:
     - unlock_class: jedi
+      selected: "You became $name for $cost"
       items:
       - lightsaber_hilt
       - nether_star@2
@@ -22,6 +23,7 @@ starshop:
       cost: 5000
       limit: 1
     - unlock_class: sith
+      selected: "You gave in to the darkside as a $name for $cost"
       items:
       - lightsaber_hilt
       - nether_star@2
@@ -36,12 +38,12 @@ starshop:
       cost: 1000
     - item: detonator
       cost: 100
-    selected: "Became $name for $cost"
     confirm: true
     auto_close: true
     confirm_filler: stained_glass:3
     quiet: false
     loud: true
+    selected: "You bought $item for $cost"
 
 starshopextra:
     icon: wood_hoe:14

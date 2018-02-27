@@ -675,7 +675,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             if (costString.isEmpty()) {
                 costString = context.getMessage("nothing", getDefaultMessage(context, "nothing"));
             }
-            return baseMessage.replace("$item", name).replace("$cost", costString);
+            return baseMessage.replace("$item", name).replace("$name", name).replace("$cost", costString);
         }
     }
 
