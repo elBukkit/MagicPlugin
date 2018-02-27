@@ -6,6 +6,7 @@
  - Added support for spells requiring SkillAPI classes or skills. 
    Thanks @robotnikthingy and my other helpful contributors!
  - Add commands and generic requirements support to Selector action
+ - Sniper scope is now toggleable
    
 ## 7.1.5
 

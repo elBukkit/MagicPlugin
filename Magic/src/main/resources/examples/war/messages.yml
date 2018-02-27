@@ -5,6 +5,7 @@ wands:
   sniper:
     name: Sniper Rifle
     mana_amount: "Ammo: $amount"
+    description: "Use swap button for scope"
   pistol:
     name: Pistol
     mana_amount: "Ammo: $amount"

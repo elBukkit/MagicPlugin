@@ -132,6 +132,21 @@ reload_sniper:
     delay: 1000
     cooldown: 3500
 
+sniper_scope:
+    icon: ghast_tear
+    category: combat
+    toggle: true
+    actions:
+        cast:
+          - class: PotionEffect
+          - class: Wear
+    parameters:
+        target: self
+        effect_slow: 20
+        duration: 30000
+        undo: 30000
+        item: pumpkin
+
 sniper:
     icon: ghast_tear
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
@@ -141,24 +156,13 @@ sniper:
     require_build: false
     actions:
         cast:
-        - class: ChangeContext
-          target_caster: true
-          ignore_result: true
-          actions:
-          - class: PotionEffect
-          - class: Wear
-            item: pumpkin
-        - class: Delay
-        - class: Retarget
-        - class: PlayEffects
-          effect: launch
         - class: CustomProjectile
           actions:
           - class: Damage
           - class: ModifyBlock
             ignore_result: true
     effects:
-        launch:
+        cast:
         -  class: EffectSingle
            sound: war.sniperrifle
            sound_pitch: 0.7
@@ -260,13 +264,9 @@ sniper:
         cooldown_mage: 2500
         velocity: 3000
         range: 100
-        effect_slow: 20
         hitbox: true
         entity_hit_count: 5
         block_hit_count: 4
-        duration: 2000
-        undo: 1200
-        delay: 1000
         hitbox: true
         player_damage: 8
         entity_damage: 10

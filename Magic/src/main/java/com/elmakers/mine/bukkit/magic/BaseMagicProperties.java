@@ -30,7 +30,7 @@ public class BaseMagicProperties implements MagicProperties {
 
     private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
     public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
-            "active_spell", "active_brush",
+            "active_spell", "active_brush", "alternate_spell", "alternate_spell2",
             "path", "template", "passive",
             "mana", "mana_regeneration", "mana_max", "mana_max_boost",
             "mana_regeneration_boost",

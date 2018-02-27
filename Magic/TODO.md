@@ -1,8 +1,30 @@
 # TODO
 
+
+## 7.2
+
+ - Finish up ModifyProperty action
+   - Handle limits, case where property isn't set yet (need default value?)
+ - More Selector options
+   - Ability to scale prices based on attributes or wand/mage properties
+ - Implement wand buff GUI for increasing protection on wands
+ - Re-work protection
+   - Flexible maps instead of separate properties
+   - Wand protection_ properties will need to migrate ... might just break old progression systems?
+   - Pre-define damage types in config.yml
+   - Add damage type option to Damage action
+     - How to respect that via protection? 
+     - Does Damage action need to deal with protection directly now, or can we pass along the
+       custom damage type somehow? Maybe entity metadata?
+ - Status effect system
+   - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
+   - Invoke via action, similar to ModifyProperties (maybe extend from it)
+   
+
 ## Higher Priority
 
  - PerWorldInventory logout issues, can't reproduce
+ - Broom issues when in creative mode
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
  - Spells drop on death with lag (maybe)?
 
