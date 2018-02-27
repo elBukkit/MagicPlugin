@@ -6,6 +6,7 @@ progressmenu:
       cast:
       -  class: Selector
   parameters:
+    show_unavailable: true
     options:
     - cast_spell: spellshop
     - cast_spell: upgrades
@@ -13,8 +14,14 @@ progressmenu:
     - placeholder: true
     - placeholder: true
     - cast_spell: appearanceshop
-      require_template: wand
+      requirements: 
+      - wand: wand
     - cast_spell: colorshop
+      requirements: 
+      - holding_wand: true
     - cast_spell: effectshop
+      requirements: 
+      - holding_wand: true
     - cast_spell: controlsmenu
-      require_template: wand
+      requirements: 
+      - holding_wand: true

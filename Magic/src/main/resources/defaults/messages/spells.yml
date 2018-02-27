@@ -1347,6 +1347,7 @@ spells:
         title: "Magic Progress"
         selected: ""
         cast_fail: ""
+        no_template: "&cYou may not customize that $wand."
     appearanceshop:
         name: Wand Appearances
         description: Change the look of your wand

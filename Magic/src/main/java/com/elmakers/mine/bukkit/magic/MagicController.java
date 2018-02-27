@@ -73,6 +73,7 @@ import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
+import com.elmakers.mine.bukkit.requirements.RequirementsController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
@@ -766,6 +767,7 @@ public class MagicController implements MageController {
         playerController = new PlayerController(this);
         inventoryController = new InventoryController(this);
         explosionController = new ExplosionController(this);
+        requirementsController = new RequirementsController();
         messages = new Messages();
 
         File urlMapFile = getDataFile(URL_MAPS_FILE);
@@ -1687,6 +1689,10 @@ public class MagicController implements MageController {
         if (skillAPIManager != null) {
             requirementProcessors.put("skillapi", skillAPIManager);
         }
+        if (requirementProcessors.containsKey(Requirement.DEFAULT_TYPE)) {
+            getLogger().warning("Something tried to register requirements for the " + Requirement.DEFAULT_TYPE + " type, but that is Magic's job.");
+        }
+        requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
 
         Set<String> attributes = new HashSet<>();
         for (AttributeProvider provider : attributeProviders) {
@@ -5376,6 +5382,7 @@ public class MagicController implements MageController {
     private TownyManager						townyManager				= new TownyManager();
     private GriefPreventionManager              griefPreventionManager		= new GriefPreventionManager();
     private NCPManager                          ncpManager       		    = new NCPManager();
+    private RequirementsController              requirementsController      = null;
     private HeroesManager                       heroesManager       		= null;
     private BlockPhysicsManager                 blockPhysicsManager         = null;
     private boolean                             useBlockPhysics             = true;

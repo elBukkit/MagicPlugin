@@ -1,9 +1,5 @@
 # TODO
 
-## Requirements
-
- - Collapse requirements in selector into native requirements checker
-
 ## Higher Priority
 
  - "Lasts for 1 seconds"
