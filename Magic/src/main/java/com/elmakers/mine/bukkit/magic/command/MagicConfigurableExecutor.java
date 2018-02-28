@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
+import com.elmakers.mine.bukkit.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -46,11 +47,9 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
         } else {
             ConfigurationSection node = new MemoryConfiguration();
 
-            EquationTransform transform = new EquationTransform();
-            transform.setQuiet(true);
-            transform.addVariable("x");
+            EquationTransform transform = EquationStore.getInstance().getTransform(value);
             double transformed = Double.NaN;
-            if (transform.setEquation(value)) {
+            if (transform.getException() == null) {
                 double property = target.getProperty(parameters[0], Double.NaN);
                 if (!Double.isNaN(property)) {
                     transform.setVariable("x", property);

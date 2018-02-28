@@ -36,6 +36,7 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.magic.AttributableConfiguration;
+import com.elmakers.mine.bukkit.math.EquationStore;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
@@ -915,7 +916,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 for (String key : keys) {
                     if (progressLevelParameters.isString(key)) {
                         String value = progressLevelParameters.getString(key, "");
-                        progressLevelEquations.put(key, new EquationTransform(value, "x"));
+                        progressLevelEquations.put(key, EquationStore.getInstance().getTransform(value));
                     }
                 }
             }
