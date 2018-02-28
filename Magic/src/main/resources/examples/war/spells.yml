@@ -262,6 +262,7 @@ sniper:
     headshot_parameters:
       damage_multiplier: 4
     parameters:
+        cooldown: 2000
         velocity: 3000
         range: 100
         hitbox: true
@@ -308,6 +309,7 @@ rifle:
            updateLocations: false
            updateDirections: false
   parameters:
+    cooldown: 3000
     entity_hit_count: 3
     block_hit_count: 2
     velocity: 5000
