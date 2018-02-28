@@ -43,7 +43,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
         modifyTarget = parameters.getString("modify_target", "wand");
         ConfigurationSection modifyProperties = parameters.getConfigurationSection("modify");
         if (modifyProperties != null) {
-            modify = new SingleParameterConfiguration("ModifyProperty", "x");
+            modify = new SingleParameterConfiguration();
             modify.wrap(modifyProperties);
         }
         upgrade = parameters.getBoolean("upgrade", false);
@@ -78,6 +78,9 @@ public class ModifyPropertiesAction extends BaseSpellAction
         ConfigurationSection original = new MemoryConfiguration();
         ConfigurationSection changed = new MemoryConfiguration();
         for (String key : modify.getKeys(false)) {
+            // TODO: instead of SingleParameterConfiguration here,
+            // just fetch equations as needed.
+            // Add min/max/default options to modify block
             Object originalValue = properties.getProperty(key);
             original.set(key, originalValue);
             if (originalValue instanceof Double) {
