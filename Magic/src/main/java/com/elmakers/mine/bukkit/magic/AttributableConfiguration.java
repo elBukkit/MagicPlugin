@@ -6,20 +6,20 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import java.util.Set;
 
 public class AttributableConfiguration extends ParameterizedConfiguration {
-    private static final String STORE_KEY = "attributes";
+    private static Set<String> attributes;
     private Mage mage;
     
     public AttributableConfiguration() {
-        super(STORE_KEY);
+        super();
     }
 
     public AttributableConfiguration(Mage mage) {
-        super(STORE_KEY);
+        super();
         this.mage = mage;
     }
 
     public AttributableConfiguration(AttributableConfiguration copy) {
-        super(STORE_KEY);
+        super();
         this.mage = copy.mage;
     }
 
@@ -36,11 +36,17 @@ public class AttributableConfiguration extends ParameterizedConfiguration {
     }
 
     public static void initializeAttributes(Set<String> attrs) {
-        initializeParameters(STORE_KEY, attrs);
+        attributes = attrs;
     }
 
+    @Override
     protected double getParameter(String parameter) {
         Double value = mage == null ? null : mage.getAttribute(parameter);
         return value == null ? 0 : value;
+    }
+
+    @Override
+    protected Set<String> getParameters() {
+        return attributes;
     }
 }
