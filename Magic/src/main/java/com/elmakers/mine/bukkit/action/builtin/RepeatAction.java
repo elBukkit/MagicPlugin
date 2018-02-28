@@ -13,13 +13,18 @@ import java.util.Collection;
 
 public class RepeatAction extends CompoundAction
 {
+    private boolean infinite;
     private int count;
     private int current;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        count = ConfigurationUtils.getInteger(parameters, "repeat", 2);
+        if (parameters.getString("repeat", "").equals("infinite")) {
+            infinite = true;
+        } else {
+            count = ConfigurationUtils.getInteger(parameters, "repeat", 2);
+        }
     }
 
     @Override
@@ -37,7 +42,7 @@ public class RepeatAction extends CompoundAction
     @Override
     public boolean next(CastContext context) {
         current++;
-        return current < count;
+        return infinite || current < count;
     }
 
     @Override
@@ -53,6 +58,7 @@ public class RepeatAction extends CompoundAction
         super.getParameterOptions(spell, parameterKey, examples);
 
         if (parameterKey.equals("repeat")) {
+            examples.add("infinite");
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         }
     }

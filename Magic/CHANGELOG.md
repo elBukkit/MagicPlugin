@@ -9,6 +9,7 @@
  - Sniper scope is now toggleable
  - Added 4 new guns to war configs, and rebalanced existing guns a bit.
    Thanks to Sidewalk and NavalClash.net!
+ - Add "infinite" option for repeat and delay parameters
  
    
 ## 7.1.5
