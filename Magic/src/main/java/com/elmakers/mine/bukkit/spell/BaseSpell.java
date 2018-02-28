@@ -1017,15 +1017,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return false;
         }
         
-        if (toggle && currentCast != null) {
-            UndoList undoList = currentCast.getUndoList();
-            boolean undone = false;
-            if (undoList != null && !undoList.isUndone()) {
-                undoList.undo();
-                undone = true;
-            }
-            Batch batch = mage.cancelPending(getKey(), true);
-            if (batch != null || undone) {
+        if (toggle) {
+            if (toggleOff()) {
                 processResult(SpellResult.DEACTIVATE, parameters);
                 return true;
             }
@@ -2506,20 +2499,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (mageCooldownDescription != null && !mageCooldownDescription.isEmpty()) {
             lore.add(messages.get("cooldown.mage_description").replace("$time", mageCooldownDescription));
         }
-        if (costs != null) {
-            for (CastingCost cost : costs) {
-                if (!cost.isEmpty(reducer)) {
-                    lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
-                }
-            }
-        }
-        if (activeCosts != null) {
-            for (CastingCost cost : activeCosts) {
-                if (!cost.isEmpty(reducer)) {
-                    lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
-                }
-            }
-        }
 
         double range = getRange();
         if (range > 0) {
@@ -2547,6 +2526,26 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             String brushText = messages.get("spell.brush");
             if (!brushText.isEmpty()) {
                 lore.add(ChatColor.GOLD + brushText);
+            }
+        }
+        if (costs != null) {
+            for (CastingCost cost : costs) {
+                if (!cost.isEmpty(reducer)) {
+                    lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
+                }
+            }
+        }
+        if (activeCosts != null) {
+            for (CastingCost cost : activeCosts) {
+                if (!cost.isEmpty(reducer)) {
+                    lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
+                }
+            }
+        }
+        if (toggle) {
+            String toggleText = messages.get("spell.toggle", "");
+            if (!toggleText.isEmpty()) {
+                lore.add(toggleText);
             }
         }
 
@@ -2785,5 +2784,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         
         return description;
+    }
+    
+    protected boolean toggleOff() {
+        if (currentCast == null) return false;
+        
+        UndoList undoList = currentCast.getUndoList();
+        boolean undone = false;
+        if (undoList != null && !undoList.isUndone()) {
+            undoList.undo();
+            undone = true;
+        }
+        Batch batch = mage.cancelPending(getKey(), true);
+        return (batch != null || undone);
     }
 }

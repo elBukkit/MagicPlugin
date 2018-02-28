@@ -16,3 +16,4 @@ spell:
     earns: "&2Earns up to &6$earns &eSP"
     description_lore: "&b$description"
     level_lore: "&6$level"
+    toggle: "&aCast to toggle on and off"
