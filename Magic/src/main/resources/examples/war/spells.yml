@@ -162,6 +162,7 @@ sniper:
           - class: ModifyBlock
             ignore_result: true
     effects:
+        cooldown: []
         cast:
         -  class: EffectSingle
            sound: war.sniperrifle
@@ -261,15 +262,14 @@ sniper:
     headshot_parameters:
       damage_multiplier: 4
     parameters:
-        cooldown_mage: 2500
         velocity: 3000
         range: 100
         hitbox: true
         entity_hit_count: 5
         block_hit_count: 4
         hitbox: true
-        player_damage: 8
-        entity_damage: 10
+        player_damage: 5
+        entity_damage: 7
         target_breakables: 1
         destructible: solid
         destructible_durability: 100
@@ -280,6 +280,39 @@ sniper:
         spread_movement: 5
     costs:
       mana: 1
+      
+reload_rifle:
+  inherit: incremental_reload
+  effects:
+    reload:
+    - sound: war.sniperrifle-reload
+  parameters:
+    repeat: 10
+    delay: 800
+    cooldown: 5000
+    
+rifle:
+  inherit: sniper
+  effects:
+      cast:
+      -  class: EffectSingle
+         sound: war.sniperrifle
+         sound_pitch: 0.2
+         location: origin
+         effectlib:
+           class: VortexEffect
+           iterations: 100
+           particle: smoke_normal
+           radius: 0.1
+           grow: 0.8
+           updateLocations: false
+           updateDirections: false
+  parameters:
+    entity_hit_count: 3
+    block_hit_count: 2
+    velocity: 5000
+    player_damage: 10
+    entity_damage: 15
 
 reload_ak47:
   inherit: full_reload
@@ -288,7 +321,7 @@ reload_ak47:
     - sound: war.ak47-reload
   parameters:
     delay: 700
-    repeat: 4
+    repeat: 3
     cooldown: 3000
 
 ak47:
@@ -305,6 +338,7 @@ ak47:
           - class: BreakBlock
             ignore_result: true
     effects:
+        cooldown: []
         cast:
         -  class: EffectSingle
            sound: war.ak47
@@ -402,17 +436,18 @@ ak47:
       damage_multiplier: 1.5
     parameters:
         velocity: 2000
-        range: 60
+        cooldown: 100
+        range: 32
         hitbox: true
         player_damage: 3
-        entity_damage: 6
+        entity_damage: 5
         target_breakables: 1
         destructible: solid
         destructible_durability: 4
         break_durability: 2
         undo: 18000
         spread: 0.2
-        spread_movement_max: 0.3
+        spread_movement_max: 0.5
         spread_movement: 5
         magic_damage: false
         target_armor_stand: true
@@ -429,6 +464,50 @@ ak47|3:
     spread_movement_max: 0.1
     spread: 0.05
 
+reload_pkp:
+  inherit: full_reload
+  effects:
+    reload:
+    - sound: war.ak47-reload
+      sound_pitch: 1.2
+  parameters:
+    delay: 700
+    repeat: 4
+    cooldown: 3000
+    
+pkp:
+  inherit: ak47
+  parameters:
+    cooldown: 300
+    player_damage: 2
+    entity_damage: 4
+    range: 40
+    spread: 0.15
+    spread_movement_max: 0.4
+    velocity: 3000
+
+reload_thompson:
+  inherit: full_reload
+  effects:
+    reload:
+    - sound: war.ak47-reload
+      sound_pitch: 0.6
+  parameters:
+    delay: 700
+    repeat: 5
+    cooldown: 3000
+    
+thompson:
+  inherit: ak47
+  parameters:
+    cooldown: 500
+    player_damage: 2
+    entity_damage: 4
+    range: 64
+    spread: 0.1
+    spread_movement_max: 0.3
+    velocity: 1500
+  
 reload_pistol:
   inherit: incremental_reload
   effects:
@@ -454,6 +533,7 @@ pistol:
           - class: BreakBlock
             ignore_result: true
     effects:
+        cooldown: []
         cast:
         -  class: EffectSingle
            sound: war.deserteagle
@@ -605,6 +685,7 @@ shotgun:
             - class: BreakBlock
               ignore_result: true
     effects:
+        cooldown: []
         cast:
         -  class: EffectSingle
            sound: war.shotgun
@@ -704,10 +785,10 @@ shotgun:
       damage_multiplier: 2
     parameters:
         velocity: 1500
-        spread: 0.2
+        spread: 0.3
         spread_movement_max: 0.1
         spread_movement: 5
-        range: 20
+        range: 16
         multiply: 8
         hitbox: true
         player_damage: 2
@@ -725,6 +806,26 @@ shotgun:
         target_armor_stand: true
     costs:
       mana: 1
+
+reload_hawk_shotgun:
+  inherit: incremental_reload
+  effects:
+    reload:
+    - sound: war.shotgun-reload
+      sound_pitch: 1.5
+  parameters:
+    delay: 500
+    repeat: 6
+    cooldown: 3500
+      
+hawk_shotgun:
+  inherit: shotgun
+  parameters:
+    spread: 0.2
+    range: 24
+    player_damage: 3
+    entity_damage: 5
+    cooldown: 1200
 
 reload_rocketlauncher:
   inherit: full_reload
@@ -759,6 +860,7 @@ rocketlauncher:
             - class: ModifyBlock
               ignore_result: true
     effects:
+        cooldown: []
         cast:
         -  class: EffectSingle
            sound: war.rocketlauncher
@@ -1303,10 +1405,18 @@ gunshop:
           cost: 2000
         - item: ak47
           cost: 5000
+        - item: pkp
+          cost: 7000
+        - item: thompson
+          cost: 4000
         - item: shotgun
+          cost: 6000
+        - item: hawk_shotgun
           cost: 5000
         - item: sniper
           cost: 8000
+        - item: rifle
+          cost: 10000
         - item: rocketlauncher
           cost: 10000
         - item: riotshield

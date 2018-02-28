@@ -7,6 +7,9 @@
    Thanks @robotnikthingy and my other helpful contributors!
  - Add commands and generic requirements support to Selector action
  - Sniper scope is now toggleable
+ - Added 4 new guns to war configs, and rebalanced existing guns a bit.
+   Thanks to Sidewalk and NavalClash.net!
+ 
    
 ## 7.1.5
 
