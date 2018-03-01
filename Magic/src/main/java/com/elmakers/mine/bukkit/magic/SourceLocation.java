@@ -84,7 +84,7 @@ public class SourceLocation {
             location = context.getLocation();
         }
         Location targetLocation = context.getTargetLocation();
-        if (useTargetLocation && targetLocation != null) {
+        if (useTargetLocation && targetLocation != null && location != null) {
             Vector direction = targetLocation.toVector().subtract(location.toVector()).normalize();
             if (MathUtils.isFinite(direction.getX()) && MathUtils.isFinite(direction.getY()) && MathUtils.isFinite(direction.getZ())) {
                 location.setDirection(direction);
