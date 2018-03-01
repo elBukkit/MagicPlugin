@@ -379,6 +379,9 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         Set<String> keys = configuration.getKeys(true);
         for (String key : keys) {
             Object value = configuration.get(key);
+            // Only configure leaf nodes
+            if (value instanceof ConfigurationSection) continue;
+
             value = convertProperty(value);
             setProperty(key, value);
         }
@@ -454,9 +457,12 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     @Override
     public boolean upgrade(ConfigurationSection configuration) {
         boolean modified = false;
-        Set<String> keys = configuration.getKeys(false);
+        Set<String> keys = configuration.getKeys(true);
         for (String key : keys) {
             Object value = configuration.get(key);
+            // Only configure leaf nodes
+            if (value instanceof ConfigurationSection) continue;
+
             modified = upgrade(key, value) || modified;
         }
 
