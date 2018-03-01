@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class MageCommandExecutor extends MagicConfigurableExecutor {
 	public MageCommandExecutor(MagicAPI api) {
@@ -474,6 +475,14 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 sender.sendMessage(ChatColor.AQUA + "Active class: " + ChatColor.GREEN + activeClass.getKey());
             } else {
                 sender.sendMessage(ChatColor.DARK_GREEN + "No active class");
+            }
+            Set<Spell> activeSpells = mage.getActiveSpells();
+            if (activeSpells != null && !activeSpells.isEmpty()) {
+                Collection<String> spellNames = new ArrayList<>();
+                for (Spell spell : activeSpells) {
+                    spellNames.add(spell.getName());
+                }
+                sender.sendMessage(ChatColor.AQUA + "Active spells: " + ChatColor.DARK_AQUA + StringUtils.join(spellNames, ","));
             }
             mageProperties.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
         } else {
