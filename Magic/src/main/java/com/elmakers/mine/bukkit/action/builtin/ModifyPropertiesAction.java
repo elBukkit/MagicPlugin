@@ -6,18 +6,47 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.magic.SingleParameterConfiguration;
+import com.elmakers.mine.bukkit.math.EquationStore;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import de.slikey.effectlib.math.EquationTransform;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 public class ModifyPropertiesAction extends BaseSpellAction
 {
-    private SingleParameterConfiguration modify;
+    private class ModifyProperty {
+        public String path;
+        public Object value;
+        public Double min;
+        public Double max;
+        public Double defaultValue;
+
+        public ModifyProperty(String path, Object value) {
+            this.path = path;
+            this.value = value;
+        }
+
+        public ModifyProperty(ConfigurationSection configuration) {
+            path = configuration.getString("path");
+            value = configuration.get("value");
+            if (configuration.isDouble("min"))
+                min = configuration.getDouble("min");
+            if (configuration.isDouble("max"))
+                max = configuration.getDouble("max");
+            if (configuration.isDouble("default"))
+                defaultValue = configuration.getDouble("default");
+        }
+    };
+
+    private List<ModifyProperty> modify;
     private String modifyTarget;
     private boolean upgrade;
 
@@ -41,12 +70,24 @@ public class ModifyPropertiesAction extends BaseSpellAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         modifyTarget = parameters.getString("modify_target", "wand");
-        ConfigurationSection modifyProperties = parameters.getConfigurationSection("modify");
-        if (modifyProperties != null) {
-            modify = new SingleParameterConfiguration();
-            modify.wrap(modifyProperties);
-        }
         upgrade = parameters.getBoolean("upgrade", false);
+
+        modify = new ArrayList<>();
+        Object modifyObject = parameters.get("modify");
+        if (modifyObject instanceof ConfigurationSection) {
+            ConfigurationSection simple = (ConfigurationSection)modifyObject;
+            Set<String> keys = simple.getKeys(true);
+            for (String key : keys) {
+                ModifyProperty property = new ModifyProperty(key, simple.get(key));
+                modify.add(property);
+            }
+        } else {
+            Collection<ConfigurationSection> complex = ConfigurationUtils.getNodeList(parameters, "modify");
+            for (ConfigurationSection section : complex) {
+                ModifyProperty property = new ModifyProperty(section);
+                modify.add(property);
+            }
+        }
     }
 
 	@Override
@@ -63,6 +104,8 @@ public class ModifyPropertiesAction extends BaseSpellAction
         CasterProperties properties = null;
         if (modifyTarget.equals("wand")) {
             properties = mage.getActiveWand();
+        } else if (modifyTarget.equals("player")) {
+            properties = mage.getProperties();
         } else {
             properties = mage.getClass(modifyTarget);
         }
@@ -77,22 +120,39 @@ public class ModifyPropertiesAction extends BaseSpellAction
         }
         ConfigurationSection original = new MemoryConfiguration();
         ConfigurationSection changed = new MemoryConfiguration();
-        for (String key : modify.getKeys(false)) {
-            // TODO: instead of SingleParameterConfiguration here,
-            // just fetch equations as needed.
-            // Add min/max/default options to modify block
-            Object originalValue = properties.getProperty(key);
-            original.set(key, originalValue);
-            if (originalValue instanceof Double) {
-                modify.setValue((Double)originalValue);
-                changed.set(key, modify.getDouble(key));
-            } else if (originalValue instanceof Integer) {
-                modify.setValue((Integer)originalValue);
-                changed.set(key, modify.getInt(key));
-            } else {
-                changed.set(key, modify.get(key));
+        for (ModifyProperty property : modify) {
+            Object originalValue = properties.getProperty(property.path);
+            Object newValue = property.value;
+            if ((originalValue == null || originalValue instanceof Number) && property.value instanceof String) {
+                EquationTransform transform = EquationStore.getInstance().getTransform((String)property.value);
+                double defaultValue = property.defaultValue == null ? 0 : property.defaultValue;
+                if (transform.isValid()) {
+                    if (originalValue == null) {
+                        originalValue = defaultValue;
+                    } else if (property.max != null && (Double)originalValue >= property.max) {
+                        continue;
+                    } else if (property.min != null && (Double)originalValue <= property.min) {
+                        continue;
+                    }
+                    transform.setVariable("x", (Double)originalValue);
+                    double transformedValue = transform.get();
+                    if (!Double.isNaN(transformedValue)) {
+                        if (property.max != null) {
+                            transformedValue = Math.min(transformedValue, property.max);
+                        }
+                        if (property.min != null) {
+                            transformedValue = Math.max(transformedValue, property.min);
+                        }
+                        newValue = transformedValue;
+                    }
+                }
             }
+
+            changed.set(property.path, newValue);
+            original.set(property.path, originalValue);
         }
+
+        if (changed.getKeys(false).isEmpty()) return SpellResult.NO_TARGET;
         if (upgrade)
             properties.upgrade(changed);
         else
@@ -116,7 +176,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
         if (parameterKey.equals("upgrade")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else  if (parameterKey.equals("modify_target")) {
-            examples.add("mage");
+            examples.add("player");
             examples.add("wand");
             examples.addAll(spell.getController().getMageClassKeys());
         } else {
