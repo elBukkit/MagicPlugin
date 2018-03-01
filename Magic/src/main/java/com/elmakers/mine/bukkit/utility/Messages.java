@@ -194,16 +194,29 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     }
 
     @Override
-    public  String getLevelString(String templateName, float amount, float max)
+    public String formatLevelString(String message, float amount)
     {
-        String templateString = get(templateName, "");
-        if (templateString.contains("$roman")) {
+        return formatLevelString(message, amount, 1);
+    }
+
+
+    @Override
+    public String formatLevelString(String message, float amount, float max)
+    {
+        if (message.contains("$roman")) {
             if (max != 1) {
                 amount = amount / max;
             }
-            templateString = templateString.replace("$roman", getRomanString(amount));
+            message = message.replace("$roman", getRomanString(amount));
         }
-        return templateString.replace("$amount", Integer.toString((int) amount));
+        return message.replace("$amount", Integer.toString((int) amount));
+    }
+
+    @Override
+    public String getLevelString(String templateName, float amount, float max)
+    {
+        String templateString = get(templateName, "");
+        return formatLevelString(templateString, amount, max);
     }
 
     @Override
