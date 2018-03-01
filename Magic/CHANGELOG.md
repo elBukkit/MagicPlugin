@@ -10,6 +10,7 @@
  - Added 4 new guns to war configs, and rebalanced existing guns a bit.
    Thanks to Sidewalk and NavalClash.net!
  - Add "infinite" option for repeat and delay parameters
+ - The Boon spell has been changed, it now toggles on and off and gains additional effects as it levels
  
    
 ## 7.1.5

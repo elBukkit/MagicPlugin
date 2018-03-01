@@ -78,9 +78,12 @@ spells:
         description: Makes you temporarily superpowered
         cast_self: You give yourself a boon
         cast: You give $target a boon
-        upgrade_description: "&r&b&bull; &6Increased duration"
+    boon|2:
+        upgrade_description: "&r&b&bull; &6Gives a jump boost"
+    boon|3:
+        upgrade_description: "&r&b&bull; &6Increases speed effect"
     boon|4:
-        upgrade_description: "&r&b&bull; &6Adds resistance and saturation"
+        upgrade_description: "&r&b&bull; &6Adds night vision"
     blessing:
         name: Blessing
         description: Bless a large area of followers

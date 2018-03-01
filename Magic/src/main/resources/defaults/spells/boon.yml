@@ -9,9 +9,10 @@ boon:
     upgrade_required_path: beginner
     upgrade_required_casts: 40
     quick_cast: true
+    toggle: undo
     actions:
         cast:
-        -  class: PotionEffect
+        - class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -28,36 +29,32 @@ boon:
     parameters:
         target: any_entity
         range: 32
-        duration: 5000
         target_type: Player
         effect_speed: 1
         bypass_friendly_fire: true
         only_friendly: true
         bypass_pvp: true
-        cooldown: 20000
+        cooldown: 200
+        undo: 600000
+        duration: 600000
     costs:
-        mana: 50
+        mana: 20
+    active_costs:
+        mana: 5
 
 boon|2:
     upgrade_required_path: student
     upgrade_required_casts: 50
     parameters:
-        duration: 10000
-        cooldown: 40000
+        effect_jump: 2
 
 boon|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        duration: 20000
-        cooldown: 40000
+        effect_speed: 2
 
 boon|4:
     parameters:
-        duration: 45000
-        cooldown: 60000
-        effect_speed: 2
         effect_night_vision: 5
-    costs:
-        mana: 100
 

@@ -135,7 +135,7 @@ reload_sniper:
 sniper_scope:
     icon: ghast_tear
     category: combat
-    toggle: true
+    toggle: undo
     actions:
         cast:
           - class: PotionEffect
