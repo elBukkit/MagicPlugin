@@ -12,7 +12,9 @@ progressmenu:
     - cast_spell: upgrades
     - placeholder: true
     - placeholder: true
-    - placeholder: true
+    - cast_spell: wandbuffshop
+      requirements:
+      - wand: wand
     - cast_spell: appearanceshop
       requirements: 
       - wand: wand

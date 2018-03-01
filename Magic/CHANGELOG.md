@@ -11,7 +11,7 @@
    Thanks to Sidewalk and NavalClash.net!
  - Add "infinite" option for repeat and delay parameters
  - The Boon spell has been changed, it now toggles on and off and gains additional effects as it levels
- 
+ - Add wand buff shop to progressmenu, the new way to get protection on your wand
    
 ## 7.1.5
 

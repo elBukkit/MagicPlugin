@@ -1,3 +1,27 @@
+wandbuffshop:
+  icon: diamond_axe:110
+  icon_disabled: diamond_hoe:110
+  category: npc
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    show_unavailable: true
+    cost_type: sp
+    requirements:
+    - holding_wand: true
+    options:
+    - placeholder: true
+    - placeholder: true
+    - placeholder: true
+    - cast_spell: add_protection
+      cost: 1000
+    - cast_spell: add_fall_protection
+      cost: 500
+    - cast_spell: add_fire_protection
+      cost: 500
+
 add_protection:
   icon: diamond_axe:110
   icon_disabled: diamond_hoe:110
@@ -9,6 +33,36 @@ add_protection:
     target: self
     modify_target: "wand"
     modify:
-      protection: "x + 0.1"
-  costs:
-    sp: 500
+    - path: "protection"
+      value: "x + 0.2"
+      max: 1
+
+add_fall_protection:
+  icon: diamond_axe:110
+  icon_disabled: diamond_hoe:110
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - path: "protection_falling"
+      value: "x + 0.2"
+      max: 1
+
+add_fire_protection:
+  icon: diamond_axe:110
+  icon_disabled: diamond_hoe:110
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - path: "protection_fire"
+      value: "x + 0.2"
+      max: 1

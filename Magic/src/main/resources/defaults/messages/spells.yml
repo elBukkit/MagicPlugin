@@ -1548,5 +1548,16 @@ spells:
     add_protection:
       name: Add Protection
       description: "Adds protection from all damage types to your wand.\nThis protection is only active while you are holding your wand."
+    add_fall_protection:
+      name: Add Fall Protection
+      description: "Adds protection from falling to your wand.\nThis protection is only active while you are holding your wand."
+    add_fire_protection:
+      name: Add Fire Protection
+      description: "Adds protection from fire to your wand.\nThis protection is only active while you are holding your wand."
     magictorch:
       name: Magic Torch
+    wandbuffshop:
+      name: Wand Buffs
+      description: "Add buffs to your wand.\nThese are only active while you are holding your wand."
+      cast_fail: "&cYou are maxed out on that buff!"
+      selected: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"

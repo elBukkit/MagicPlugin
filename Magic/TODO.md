@@ -3,11 +3,8 @@
 
 ## 7.2
 
- - Finish up ModifyProperty action
-   - Handle limits, case where property isn't set yet (need default value?)
  - More Selector options
    - Ability to scale prices based on attributes or wand/mage properties
- - Implement wand buff GUI for increasing protection on wands
  - Re-work protection
    - Flexible maps instead of separate properties
    - Wand protection_ properties will need to migrate ... might just break old progression systems?
