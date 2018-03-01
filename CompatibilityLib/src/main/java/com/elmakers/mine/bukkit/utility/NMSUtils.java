@@ -256,7 +256,6 @@ public class NMSUtils {
     protected static Field class_Entity_motZField;
     protected static Field class_WorldServer_entitiesByUUIDField;
     protected static Field class_ItemStack_tagField;
-    protected static Field class_DamageSource_MagicField;
     protected static Field class_Firework_ticksFlownField;
     protected static Field class_Firework_expectedLifespanField;
     protected static Field class_CraftSkull_profile;
@@ -294,6 +293,9 @@ public class NMSUtils {
     protected static Field class_Entity_jumpingField;
     protected static Field class_Entity_moveStrafingField;
     protected static Field class_Entity_moveForwardField;
+
+    protected static Object object_magicSource;
+    protected static Map<String, Object> damageSources;
 
     static
     {
@@ -695,12 +697,26 @@ public class NMSUtils {
             try {
                 class_EntityLiving_damageEntityMethod = class_EntityLiving.getMethod("damageEntity", class_DamageSource, Float.TYPE);
                 class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
-                class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
+                Field damageSource_MagicField = class_DamageSource.getField("MAGIC");
+                object_magicSource = damageSource_MagicField.get(null);
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, magic damage will not work, using normal damage instead", ex);
                 class_EntityLiving_damageEntityMethod = null;
                 class_DamageSource_getMagicSourceMethod = null;
-                class_DamageSource_MagicField = null;
+                object_magicSource = null;
+            }
+
+            try {
+                damageSources = new HashMap<>();
+                Field[] fields = class_DamageSource.getFields();
+                for (Field field : fields) {
+                    if (class_DamageSource.isAssignableFrom(field.getType())) {
+                        damageSources.put(field.getName(), field.get(null));
+                    }
+                }
+            } catch (Throwable ex) {
+                damageSources = null;
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, using specific damage types will not work, will use normal damage instead", ex);
             }
 
             try {

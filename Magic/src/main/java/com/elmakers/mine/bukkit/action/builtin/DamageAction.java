@@ -31,6 +31,7 @@ public class DamageAction extends BaseSpellAction
 	private Double knockbackResistance;
 	private Double damageMultiplier;
 	private double maxDistanceSquared;
+	private String damageType;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -59,6 +60,7 @@ public class DamageAction extends BaseSpellAction
         }
 		double maxDistance = parameters.getDouble("damage_max_distance");
 		maxDistanceSquared = maxDistance * maxDistance;
+		damageType = parameters.getString("damage_type");
     }
 
 	@Override
@@ -109,7 +111,10 @@ public class DamageAction extends BaseSpellAction
 				if (damageMultiplier != null) {
 					damage *= damageMultiplier;
 				}
-				if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
+				if (damageType != null) {
+					mage.sendDebugMessage(ChatColor.RED + "Damaging (" + damageType + ") " + targetEntity.getType() + ": " + damage, 20);
+					CompatibilityUtils.damage(targetEntity, damage, mage.getEntity(), damageType);
+				} else if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
 					mage.sendDebugMessage(ChatColor.RED + "Damaging (Magic) " + targetEntity.getType() + ": " + damage, 20);
 					CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
 				} else {

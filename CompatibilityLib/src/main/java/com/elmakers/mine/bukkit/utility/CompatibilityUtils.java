@@ -489,11 +489,35 @@ public class CompatibilityUtils extends NMSUtils {
         isDamaging = false;
     }
 
+    public static void damage(Damageable target, double amount, Entity source, String damageType) {
+        if (target == null || target.isDead()) return;
+        if (damageType.equalsIgnoreCase("magic")) {
+            magicDamage(target, amount, source);
+            return;
+        }
+        Object damageSource = (damageSources == null) ? null : damageSources.get(damageType.toUpperCase());
+        if (damageSource == null || class_EntityLiving_damageEntityMethod == null) {
+            damage(target, amount, source);
+            return;
+        }
+
+        try {
+            Object targetHandle = getHandle(target);
+            if (targetHandle == null) return;
+
+            isDamaging = true;
+            class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float) amount);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        isDamaging = false;
+    }
+
     public static void magicDamage(Damageable target, double amount, Entity source) {
         try {
             if (target == null || target.isDead()) return;
 
-            if (class_EntityLiving_damageEntityMethod == null || class_DamageSource_MagicField == null || class_DamageSource_getMagicSourceMethod == null) {
+            if (class_EntityLiving_damageEntityMethod == null || object_magicSource == null || class_DamageSource_getMagicSourceMethod == null) {
                 damage(target, amount, source);
                 return;
             }
@@ -536,8 +560,7 @@ public class CompatibilityUtils extends NMSUtils {
 
                 class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
             } else {
-                Object magicSource = class_DamageSource_MagicField.get(null);
-                class_EntityLiving_damageEntityMethod.invoke(targetHandle, magicSource, (float) amount);
+                class_EntityLiving_damageEntityMethod.invoke(targetHandle, object_magicSource, (float) amount);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
