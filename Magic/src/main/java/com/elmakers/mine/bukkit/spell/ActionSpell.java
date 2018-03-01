@@ -6,7 +6,6 @@ import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -280,6 +279,10 @@ public class ActionSpell extends BrushSpell
     public boolean isActive()
     {
         if (mage == null) return false;
+        if (toggle == ToggleType.UNDO && toggleUndo != null && !toggleUndo.isUndone()) {
+            return true;
+        }
+
         Collection<Batch> pendingBatches = mage.getPendingBatches();
         for (Batch batch : pendingBatches) {
             if (batch instanceof SpellBatch && ((SpellBatch)batch).getSpell() == this) {

@@ -78,6 +78,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public abstract class BaseSpell implements MageSpell, Cloneable {
     public static String DEFAULT_DISABLED_ICON_URL = "";
+    protected enum ToggleType {NONE, CANCEL, UNDO};
 
     protected static final double LOOK_THRESHOLD_RADIANS = 0.9;
 
@@ -145,7 +146,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected MageController				controller;
     protected Mage 							mage;
     protected Location    					location;
-    protected CastContext currentCast;
+    protected CastContext                   currentCast;
+    protected UndoList                      toggleUndo;
 
     /*
      * Variant properties
@@ -204,7 +206,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassAll                   = false;
     protected boolean quiet                       = false;
     protected boolean loud                        = false;
-    protected boolean toggle                      = false;
+    protected ToggleType toggle                   = ToggleType.NONE;
     protected boolean messageTargets              = true;
     protected boolean targetSelf                  = false;
     protected boolean showUndoable              = true;
@@ -887,7 +889,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         showUndoable = node.getBoolean("show_undoable", true);
         cancellable = node.getBoolean("cancellable", true);
         cancelEffects = node.getBoolean("cancel_effects", false);
-        toggle = node.getBoolean("toggle", false);
+
+        String toggleString = node.getString("toggle", "NONE");
+        try {
+            toggle = ToggleType.valueOf(toggleString.toUpperCase());
+        } catch (Exception ex) {
+            controller.getLogger().warning("Invalid toggle type: " + toggleString);
+        }
 
         Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(node, "requirements");
         if (requirementConfigurations != null) {
@@ -1016,12 +1024,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             return false;
         }
-        
-        if (toggle) {
-            if (toggleOff()) {
-                processResult(SpellResult.DEACTIVATE, parameters);
-                return true;
-            }
+
+        if (toggle != ToggleType.NONE && isActive()) {
+            mage.sendDebugMessage(ChatColor.DARK_BLUE + "Deactivating " + ChatColor.GOLD + getName());
+            deactivate(true, true);
+            processResult(SpellResult.DEACTIVATE, parameters);
+            return true;
         }
         
         if (mage.getDebugLevel() > 5 && extraParameters != null) {
@@ -1367,6 +1375,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 }
             }
             updateCooldown();
+        }
+        if (success && toggle != ToggleType.NONE) {
+            activate();
         }
 
         sendCastMessage(result, " (" + success + ")");
@@ -2222,6 +2233,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (!spellData.isActive()) {
             mage.activateSpell(this);
         }
+        if (currentCast != null) {
+            toggleUndo = currentCast.getUndoList();
+        }
     }
 
     @Override
@@ -2245,6 +2259,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             if (currentCast != null) {
                 currentCast.cancelEffects();
+                if (toggle == ToggleType.UNDO && toggleUndo != null && !toggleUndo.isUndone()) {
+                    toggleUndo.undo();
+                }
+                toggleUndo = null;
+            }
+            if (toggle != ToggleType.NONE) {
+                 mage.cancelPending(getKey(), true);
             }
         }
 
@@ -2542,7 +2563,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 }
             }
         }
-        if (toggle) {
+        if (toggle != ToggleType.NONE) {
             String toggleText = messages.get("spell.toggle", "");
             if (!toggleText.isEmpty()) {
                 lore.add(toggleText);
@@ -2784,18 +2805,5 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         
         return description;
-    }
-    
-    protected boolean toggleOff() {
-        if (currentCast == null) return false;
-        
-        UndoList undoList = currentCast.getUndoList();
-        boolean undone = false;
-        if (undoList != null && !undoList.isUndone()) {
-            undoList.undo();
-            undone = true;
-        }
-        Batch batch = mage.cancelPending(getKey(), true);
-        return (batch != null || undone);
     }
 }
