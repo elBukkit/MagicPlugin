@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
@@ -35,7 +36,6 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -652,11 +652,11 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event)
+    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerPickupItem(EntityPickupItemEvent event)
     {
-        Player player = event.getPlayer();
-        Mage mage = controller.getMage(player);
+        Entity entity = event.getEntity();
+        Mage mage = controller.getRegisteredMage(entity);
 
         // If a wand's inventory is active, add the item there
         if (mage.hasStoredInventory()) {
@@ -667,8 +667,8 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerPrePickupItem(PlayerPickupItemEvent event)
+    @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerPrePickupItem(EntityPickupItemEvent event)
     {
         Item item = event.getItem();
         ItemStack pickup = item.getItemStack();
@@ -682,8 +682,12 @@ public class PlayerController implements Listener {
 
         boolean isWand = Wand.isWand(pickup);
 
+        Entity entity = event.getEntity();
+        if (!(entity instanceof Player)) return;
+
+        Player player = (Player)entity;
         // Creative mode inventory hacky work-around :\
-        if (event.getPlayer().getGameMode() == GameMode.CREATIVE && isWand && enableCreativeModeEjecting) {
+        if (player.getGameMode() == GameMode.CREATIVE && isWand && enableCreativeModeEjecting) {
             event.setCancelled(true);
             return;
         }
@@ -693,8 +697,7 @@ public class PlayerController implements Listener {
         if (undoList != null) {
             undoList.remove(item);
         }
-
-        Player player = event.getPlayer();
+        
         Mage mage = controller.getMage(player);
         // Remove lost wands from records
         Messages messages = controller.getMessages();
