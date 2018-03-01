@@ -1,6 +1,6 @@
 wandbuffshop:
-  icon: diamond_axe:110
-  icon_disabled: diamond_hoe:110
+  icon: diamond_axe:234
+  icon_disabled: diamond_hoe:234
   category: npc
   hidden: true
   actions:
@@ -23,8 +23,8 @@ wandbuffshop:
       cost: 500
 
 add_protection:
-  icon: diamond_axe:110
-  icon_disabled: diamond_hoe:110
+  icon: diamond_axe:234
+  icon_disabled: diamond_hoe:234
   actions:
     cast:
     - class: ModifyProperties
@@ -37,9 +37,24 @@ add_protection:
       value: "x + 0.2"
       max: 1
 
+add_explosion_protection:
+  icon: diamond_axe:235
+  icon_disabled: diamond_hoe:235
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - path: "protection_explosions"
+      value: "x + 0.2"
+      max: 1
+
 add_fall_protection:
-  icon: diamond_axe:110
-  icon_disabled: diamond_hoe:110
+  icon: diamond_axe:236
+  icon_disabled: diamond_hoe:236
   actions:
     cast:
     - class: ModifyProperties
@@ -53,8 +68,8 @@ add_fall_protection:
       max: 1
 
 add_fire_protection:
-  icon: diamond_axe:110
-  icon_disabled: diamond_hoe:110
+  icon: diamond_axe:237
+  icon_disabled: diamond_hoe:237
   actions:
     cast:
     - class: ModifyProperties
@@ -64,5 +79,35 @@ add_fire_protection:
     modify_target: "wand"
     modify:
     - path: "protection_fire"
+      value: "x + 0.2"
+      max: 1
+
+add_physical_protection:
+  icon: diamond_axe:238
+  icon_disabled: diamond_hoe:238
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - path: "protection_physical"
+      value: "x + 0.2"
+      max: 1
+
+add_projectile_protection:
+  icon: diamond_axe:239
+  icon_disabled: diamond_hoe:239
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - path: "protection_projectiles"
       value: "x + 0.2"
       max: 1

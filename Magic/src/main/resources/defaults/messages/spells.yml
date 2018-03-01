@@ -1252,7 +1252,7 @@ spells:
         name: Skills
         descriptions: Shows available skills, drag a skill to the hotbar to use it
     upgrades:
-        name: Spell Progress
+        name: Check Spell Progress
         description: Shows progress in upgrading your current spells
         fail: You must be holding a wand!
         upgrade_name_change: "&r&4Upgrades: &r$name"
@@ -1299,7 +1299,7 @@ spells:
         no_wand: You must be holding a wand!
         fail: ""
     spellshop:
-        name: Spell Shop
+        name: Learn Spells
         title: "$path Spells ($balance)"
         description: Learn new spells
         cost_lore: "Costs: $cost"
@@ -1554,6 +1554,15 @@ spells:
     add_fire_protection:
       name: Add Fire Protection
       description: "Adds protection from fire to your wand.\nThis protection is only active while you are holding your wand."
+    add_physical_protection:
+      name: Add Physical Protection
+      description: "Adds protection from physical attacks to your wand.\nThis protection is only active while you are holding your wand."
+    add_projectile_protection:
+      name: Add Projectile Protection
+      description: "Adds protection from physical projectiles to your wand.\nThis protection is only active while you are holding your wand."
+    add_explosion_protection:
+      name: Add Explosion Protection
+      description: "Adds protection from explosions to your wand.\nThis protection is only active while you are holding your wand."
     magictorch:
       name: Magic Torch
     wandbuffshop:
