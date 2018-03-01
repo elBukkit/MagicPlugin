@@ -1301,7 +1301,7 @@ spells:
     spellshop:
         name: Learn Spells
         title: "$path Spells ($balance)"
-        description: Learn new spells
+        description: "Spend Spell Points to learn new spells.\nWhen you have learned all the required spells on your current path, you will rank up to the next path!"
         cost_lore: "Costs: $cost"
         no_items: There are no spells for you to buy here
         no_path: You may not learn with that $wand.

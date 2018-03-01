@@ -313,7 +313,8 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 } else if (castSpell != null && !castSpell.isEmpty()) {
                     SpellTemplate spell = controller.getSpellTemplate(castSpell);
                     if (spell == null) {
-                        controller.getLogger().warning("Invalid spell in selector: " + castSpell);
+                        controller.getLogger().warning("Unknown spell in selector config: " + castSpell);
+                    } else {
                         description = spell.getDescription();
                     }
                 }
