@@ -1177,6 +1177,9 @@ spells:
         name: SuperKill
         description: Kills your target, no questions asked
         cast: SUPER DIE!
+    damage:
+        name: Damage
+        description: "A spell for testing different damage types.\nNote that the caster will not get credit for kills made with alternate vanilla damage types from other plugins since the damage source is lost."
     torture:
         name: Torture
         description: Mercilessly torture your enemy

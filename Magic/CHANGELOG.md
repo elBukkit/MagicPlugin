@@ -12,6 +12,9 @@
  - Add "infinite" option for repeat and delay parameters
  - The Boon spell has been changed, it now toggles on and off and gains additional effects as it levels
  - Add wand buff shop to progressmenu, the new way to get protection on your wand
+ - Add "damage_type" parameter to Damage action which can be used to fake any vanilla damage type.
+   Note that the damage source is lost, so other plugins (like quest plugins, etc) won't see the caster as the
+   source of damage and give credit for kills. This is a vanilla limitation.
    
 ## 7.1.5
 
