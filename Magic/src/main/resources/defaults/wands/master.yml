@@ -7,10 +7,6 @@ master:
     mana_max: 250
     mana: 250
     hotbar_count: 3
-    protection_falling: 1
-    protection_physical: 0.8
-    protection_fire: 0.8
-    protection_explosions: 0.8
     spells:
       - missile
       - blink

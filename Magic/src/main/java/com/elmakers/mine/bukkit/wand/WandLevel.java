@@ -2,19 +2,21 @@ package com.elmakers.mine.bukkit.wand;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.bukkit.configuration.MemoryConfiguration;
 
@@ -29,14 +31,7 @@ public class WandLevel {
 	private LinkedList<WeightedPair<Integer>> addUseProbability = new LinkedList<>();
 
 	private LinkedList<WeightedPair<Integer>> propertyCountProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Float>> costReductionProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Float>> powerProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Float>> damageReductionProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Float>> damageReductionPhysicalProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Float>> damageReductionProjectilesProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Float>> damageReductionFallingProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Float>> damageReductionFireProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Float>> damageReductionExplosionsProbability = new LinkedList<>();
+	private Map<String, LinkedList<WeightedPair<Float>>> propertiesProbability = new HashMap<>();
 	
 	private LinkedList<WeightedPair<Integer>> manaRegenerationProbability = new LinkedList<>();
 	private LinkedList<WeightedPair<Integer>> manaMaxProbability = new LinkedList<>();
@@ -46,7 +41,7 @@ public class WandLevel {
 
 		// Fetch spell probabilities, and filter out invalid/unknown spells
         LinkedList<WeightedPair<String>> spells = new LinkedList<>();
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(spells, template, "spells", levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateStringProbabilityMap(spells, template, "spells", levelIndex, nextLevelIndex, distance);
 
         for (WeightedPair<String> spellValue : spells) {
             if (controller.getSpellTemplate(spellValue.getValue()) != null) {
@@ -55,36 +50,35 @@ public class WandLevel {
         }
 
 		// Fetch spell count probabilities
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template, "spell_count", levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template, "spell_count", levelIndex, nextLevelIndex, distance);
 		
 		// Fetch material probabilities
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(materialProbability, template, "materials", levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateStringProbabilityMap(materialProbability, template, "materials", levelIndex, nextLevelIndex, distance);
 		
 		// Fetch material count probabilities
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getConfigurationSection("material_count"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getConfigurationSection("material_count"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch uses
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(useProbability, template, "uses", levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(addUseProbability, template, "add_uses", levelIndex, nextLevelIndex, distance);
-		
-		// Fetch property count probability
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(propertyCountProbability, template, "property_count", levelIndex, nextLevelIndex, distance);
-		
-		// Fetch cost and damage reduction
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(costReductionProbability, template, "cost_reduction", levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionProbability, template, "protection", levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionPhysicalProbability, template, "protection_physical", levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionFallingProbability, template, "protection_falling", levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionProjectilesProbability, template, "protection_projectiles", levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionFireProbability, template, "protection_fire", levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionExplosionsProbability, template, "protection_explosions", levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(useProbability, template, "uses", levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(addUseProbability, template, "add_uses", levelIndex, nextLevelIndex, distance);
 
+		// Fetch property count probability
+		RandomUtils.populateIntegerProbabilityMap(propertyCountProbability, template, "property_count", levelIndex, nextLevelIndex, distance);
+
+		// Fetch properties
+		ConfigurationSection propertiesConfig = template.getConfigurationSection("properties");
+		if (propertiesConfig != null) {
+		    for (String propertyKey : propertiesConfig.getKeys(false)) {
+		        LinkedList<WeightedPair<Float>> propertyProbability = new LinkedList<>();
+		        RandomUtils.populateFloatProbabilityMap(propertyProbability, propertiesConfig, propertyKey, levelIndex, nextLevelIndex, distance);
+		        propertyKey = propertyKey.replace("|", ".");
+		        propertiesProbability.put(propertyKey, propertyProbability);
+            }
+        }
+        
 		// Fetch regeneration
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(manaRegenerationProbability, template, "mana_regeneration", levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(manaMaxProbability, template, "mana_max", levelIndex, nextLevelIndex, distance);
-		
-		// Fetch power
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(powerProbability, template, "power", levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(manaRegenerationProbability, template, "mana_regeneration", levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(manaMaxProbability, template, "mana_max", levelIndex, nextLevelIndex, distance);
 	}
 
     public void add(WandLevel other) {
@@ -96,14 +90,12 @@ public class WandLevel {
         this.useProbability = useProbability.isEmpty() ? other.useProbability : useProbability;
         this.addUseProbability = addUseProbability.isEmpty() ? other.addUseProbability : addUseProbability;
         this.propertyCountProbability = propertyCountProbability.isEmpty() ? other.propertyCountProbability : propertyCountProbability;
-        this.costReductionProbability = costReductionProbability.isEmpty() ? other.costReductionProbability : costReductionProbability;
-        this.powerProbability = powerProbability.isEmpty() ? other.powerProbability : powerProbability;
-        this.damageReductionProbability = damageReductionProbability.isEmpty() ? other.damageReductionProbability : damageReductionProbability;
-        this.damageReductionPhysicalProbability = damageReductionPhysicalProbability.isEmpty() ? other.damageReductionPhysicalProbability : damageReductionPhysicalProbability;
-        this.damageReductionProjectilesProbability = damageReductionProjectilesProbability.isEmpty() ? other.damageReductionProjectilesProbability : damageReductionProjectilesProbability;
-        this.damageReductionFallingProbability = damageReductionFallingProbability.isEmpty() ? other.damageReductionFallingProbability : damageReductionFallingProbability;
-        this.damageReductionFireProbability = damageReductionFireProbability.isEmpty() ? other.damageReductionFireProbability : damageReductionFireProbability;
-        this.damageReductionExplosionsProbability = damageReductionExplosionsProbability.isEmpty() ? other.damageReductionExplosionsProbability : damageReductionExplosionsProbability;
+        for (Map.Entry<String, LinkedList<WeightedPair<Float>>> entry : other.propertiesProbability.entrySet()) {
+            LinkedList<WeightedPair<Float>> thisOne = propertiesProbability.get(entry.getKey());
+            if (thisOne == null || thisOne.isEmpty()) {
+                propertiesProbability.put(entry.getKey(), entry.getValue());
+            }
+        }
         this.manaRegenerationProbability = manaRegenerationProbability.isEmpty() ? other.manaRegenerationProbability : manaRegenerationProbability;
         this.manaMaxProbability = manaMaxProbability.isEmpty() ? other.manaMaxProbability : manaMaxProbability;
     }
@@ -243,39 +235,15 @@ public class WandLevel {
 		ConfigurationSection wandProperties = new MemoryConfiguration();
 		double costReduction = wand.getCostReduction();
 
-        List<Integer> propertiesAvailable = new ArrayList<>();
+		List<String> propertyKeys = new ArrayList<>(propertiesProbability.keySet());
+        List<String> propertiesAvailable = new ArrayList<>();
 
-        double power = wand.getPower();
-        double damageReduction = wand.damageReduction;
-        double damageReductionPhysical = wand.damageReductionPhysical;
-        double damageReductionProjectiles = wand.damageReductionProjectiles;
-        double damageReductionFalling = wand.damageReductionFalling;
-        double damageReductionFire = wand.damageReductionFire;
-        double damageReductionExplosions = wand.damageReductionExplosions;
-
-        if (costReductionProbability.size() > 0 && costReduction < path.getMaxCostReduction()) {
-            propertiesAvailable.add(0);
-        }
-        if (powerProbability.size() > 0 && power < path.getMaxPower()) {
-            propertiesAvailable.add(1);
-        }
-        if (damageReductionProbability.size() > 0 && damageReduction < path.getMaxDamageReduction()) {
-            propertiesAvailable.add(2);
-        }
-        if (damageReductionPhysicalProbability.size() > 0 && damageReductionPhysical < path.getMaxDamageReductionPhysical()) {
-            propertiesAvailable.add(3);
-        }
-        if (damageReductionProjectilesProbability.size() > 0 && damageReductionProjectiles < path.getMaxDamageReductionProjectiles()) {
-            propertiesAvailable.add(4);
-        }
-        if (damageReductionFallingProbability.size() > 0 && damageReductionFalling < path.getMaxDamageReductionFalling()) {
-            propertiesAvailable.add(5);
-        }
-        if (damageReductionFireProbability.size() > 0 && damageReductionFire < path.getMaxDamageReductionFire()) {
-            propertiesAvailable.add(6);
-        }
-        if (damageReductionExplosionsProbability.size() > 0 && damageReductionExplosions < path.getMaxDamageReductionExplosions()) {
-            propertiesAvailable.add(7);
+        for (String propertyKey : propertyKeys) {
+            double currentValue = wand.getDouble(propertyKey);
+            double maxValue = path.getMaxProperty(propertyKey);
+            if (currentValue < maxValue) {
+                propertiesAvailable.add(propertyKey);
+            }
         }
 
         // Make sure we give them *something* if something is available
@@ -286,65 +254,15 @@ public class WandLevel {
         while (propertyCount != null && propertyCount-- > 0 && propertiesAvailable.size() > 0)
         {
 			int randomPropertyIndex = (int)(Math.random() * propertiesAvailable.size());
-            int randomProperty = propertiesAvailable.get(randomPropertyIndex);
-			switch (randomProperty) {
-			case 0: 
-				if (costReductionProbability.size() > 0 && costReduction < path.getMaxCostReduction()) {
-					addedProperties = true;
-					costReduction = Math.min(path.getMaxCostReduction(), costReduction + RandomUtils.weightedRandom(costReductionProbability));
-					wandProperties.set("cost_reduction", costReduction);
-				}
-				break;
-			case 1:
-				if (powerProbability.size() > 0 && power < path.getMaxPower()) {
-					addedProperties = true;
-                    power = Math.min(path.getMaxPower(), power + RandomUtils.weightedRandom(powerProbability));
-					wandProperties.set("power", power);
-				}
-				break;
-			case 2:
-				if (damageReductionProbability.size() > 0 && damageReduction < path.getMaxDamageReduction()) {
-					addedProperties = true;
-                    damageReduction = Math.min(path.getMaxDamageReduction(), damageReduction + RandomUtils.weightedRandom(damageReductionProbability));
-					wandProperties.set("protection", damageReduction);
-				}
-				break;
-			case 3:
-				if (damageReductionPhysicalProbability.size() > 0 && damageReductionPhysical < path.getMaxDamageReductionPhysical()) {
-					addedProperties = true;
-                    damageReductionPhysical = Math.min(path.getMaxDamageReductionPhysical(), damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability));
-					wandProperties.set("protection_physical", damageReductionPhysical);
-                }
-				break;
-			case 4:
-				if (damageReductionProjectilesProbability.size() > 0 && damageReductionProjectiles < path.getMaxDamageReductionProjectiles()) {
-					addedProperties = true;
-                    damageReductionProjectiles = Math.min(path.getMaxDamageReductionProjectiles(), damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability));
-					wandProperties.set("protection_projectiles", damageReductionProjectiles);
-				}
-				break;
-			case 5:
-				if (damageReductionFallingProbability.size() > 0 && damageReductionFalling < path.getMaxDamageReductionFalling()) {
-					addedProperties = true;
-                    damageReductionFalling = Math.min(path.getMaxDamageReductionFalling(), damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability));
-					wandProperties.set("protection_falling", damageReductionFalling);
-				}
-				break;
-			case 6:
-				if (damageReductionFireProbability.size() > 0 && damageReductionFire < path.getMaxDamageReductionFire()) {
-					addedProperties = true;
-                    damageReductionFire = Math.min(path.getMaxDamageReductionFire(), damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability));
-					wandProperties.set("protection_fire", damageReductionFire);
-				}
-				break;
-			case 7:
-				if (damageReductionExplosionsProbability.size() > 0 && damageReductionExplosions < path.getMaxDamageReductionExplosions()) {
-					addedProperties = true;
-                    damageReductionExplosions = Math.min(path.getMaxDamageReductionExplosions(), damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability));
-					wandProperties.set("protection_explosions", damageReductionExplosions);
-				}
-				break;
-			}
+            String randomProperty = propertiesAvailable.get(randomPropertyIndex);
+            LinkedList<WeightedPair<Float>> probabilities = propertiesProbability.get(randomProperty);
+            double current = wand.getDouble(randomProperty);
+            double maxValue = path.getMaxProperty(randomProperty);
+            if (probabilities.size() > 0 && current < maxValue) {
+                addedProperties = true;
+                current = Math.min(maxValue, costReduction + RandomUtils.weightedRandom(probabilities));
+                wandProperties.set(randomProperty, current);
+            }
 		}
 		
 		// The mana system is considered separate from other properties

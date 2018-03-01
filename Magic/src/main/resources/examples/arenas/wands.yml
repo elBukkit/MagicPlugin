@@ -150,7 +150,8 @@ mage2:
     mana_max: 300
     mana: 300
     mana_regeneration: 40
-    protection: 0.8
+    protection:
+      overall: 0.8
     hotbar_count: 2
     spells:
      - missile|4
@@ -178,8 +179,9 @@ demolitions2:
     mana_max: 80
     mana: 80
     mana_regeneration: 9
-    protection: 0.7
-    protection_fire: 1
+    protection:
+      fire: 1
+      overall: 0.7
     spells:
      - fire|3
      - grenade
@@ -196,7 +198,8 @@ healer2:
     mana_max: 75
     mana: 75
     mana_regeneration: 8
-    protection: 0.7
+    protection:
+      overall: 0.7
     hotbar_count: 2
     spells:
      - heal|3
@@ -219,7 +222,8 @@ rogue2:
     mana_max: 80
     mana: 80
     mana_regeneration: 8
-    protection: 0.5
+    protection:
+      overall: 0.5
     enchantments:
       arrow_infinite: 1
       arrow_damage: 5
@@ -243,7 +247,8 @@ warrior2:
     mana_max: 70
     mana: 70
     mana_regeneration: 7
-    protection: 1
+    protection:
+      overall: 1
     spells:
      - wound|3
      - throwsword
@@ -256,7 +261,8 @@ jedi2:
     inherit: base_arena_lightsaber
     icon: shield:3
     effect_color: '0000FF'
-    protection: 1
+    protection:
+      overall: 1
     mana_regeneration: 15
     mana_max: 200
     mana: 200
@@ -271,7 +277,8 @@ sith2:
     inherit: base_arena_lightsaber
     icon: shield:4
     effect_color: 'FF0000'
-    protection: 1
+    protection:
+      overall: 1
     mana_regeneration: 15
     mana_max: 200
     mana: 200
@@ -290,7 +297,8 @@ bender2:
     mana_regeneration: 15
     mana_max: 200
     mana: 200
-    protection: 0.8
+    protection:
+      overall: 0.8
     hotbar_count: 2
     spells:
       - airblast

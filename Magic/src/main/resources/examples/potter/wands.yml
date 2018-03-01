@@ -77,7 +77,6 @@ elder:
     path: graduate
     organize: true
     cost_reduction: 2
-    protection_falling: 2
     quiet: 1
     power: 0
     haste: 0
@@ -114,7 +113,6 @@ unspeakable:
     organize: true
     cost_reduction: 2
     cooldown_reduction: 2
-    protection: 1
     quiet: 0
     power: 0
     haste: 0.1
@@ -137,7 +135,6 @@ slytherinwand:
     organize: true
     cost_reduction: 2
     cooldown_reduction: 2
-    protection: 1
     quiet: 0
     power: 0
     haste: 0

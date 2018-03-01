@@ -18,14 +18,16 @@ airbending:
     class: airbender
     migrate_icon: gold_axe
     icon: wood_hoe:19
-    protection_falling: 0.7
+    protection:
+      fall: 0.7
     effect_color: 'FFFFFF'
 
 airstaff:
     inherit: base_bending
     class: airbender
     icon: wood_hoe:34
-    protection_falling: 0.7
+    protection:
+      fall: 0.7
     effect_color: 'FFFFFF'
     alternate_spell: airglider
     drop: alt_cast
@@ -42,8 +44,9 @@ earthbending:
     class: earthbender
     migrate_icon: gold_hoe
     icon: wood_hoe:21
-    protection_physical: 0.3
-    protection_blast: 0.2
+    protection:
+      physical: 0.3
+      explosion: 0.2
     mana_regeneration: 2
     effect_color: 'CD853F'
 
@@ -52,7 +55,8 @@ firebending:
     class: firebender
     migrate_icon: gold_pickaxe
     icon: wood_hoe:22
-    protection_fire: 0.9
+    protection:
+      fire: 0.9
     effect_color: '880000'
 
 avatar:
@@ -61,9 +65,10 @@ avatar:
     migrate_icon: gold_pickaxe
     icon: wood_hoe:23
     migrate_icon: wood_hoe
-    protection: 0.9
-    protection_fire: 0.9
-    protection_falling: 1
+    protection:
+      overall: 0.9
+      fire: 0.9
+      fall: 1
     power: 0.5
     effect_color: 'FFFFFF'
     effect_bubbles: true

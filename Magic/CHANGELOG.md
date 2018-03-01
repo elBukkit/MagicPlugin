@@ -15,7 +15,8 @@
  - Add "damage_type" parameter to Damage action which can be used to fake any vanilla damage type.
    Note that the damage source is lost, so other plugins (like quest plugins, etc) won't see the caster as the
    source of damage and give credit for kills. This is a vanilla limitation.
-   
+ - Wand protection format changed to a map (e.g. protection.fall) for greater flexibility. See MIGRATION.md
+  
 ## 7.1.5
 
  - Unbreak wands broken in 7.1.4 (your data should be fine)

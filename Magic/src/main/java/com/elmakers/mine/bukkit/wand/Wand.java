@@ -156,12 +156,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	protected float consumeReduction = 0;
     protected float cooldownReduction = 0;
-    protected float damageReduction = 0;
-    protected float damageReductionPhysical = 0;
-    protected float damageReductionProjectiles = 0;
-    protected float damageReductionFalling = 0;
-    protected float damageReductionFire = 0;
-    protected float damageReductionExplosions = 0;
+    protected Map<String, Double> protection;
     private float power = 0;
     private float spMultiplier = 1;
 	
@@ -731,28 +726,33 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return cooldownReduction > 1;
 	}
 
-	public float getDamageReduction() {
-		return damageReduction;
+	public double getProtection(String protectionType) {
+    	Double amount = protection == null ? null : protection.get(protectionType);
+    	return amount == null ? 0.0f : amount;
 	}
 
-	public float getDamageReductionPhysical() {
-		return damageReductionPhysical;
+	public double getDamageReduction() {
+		return getProtection("overall");
+	}
+
+	public double getDamageReductionPhysical() {
+		return getProtection("physical");
 	}
 	
-	public float getDamageReductionProjectiles() {
-		return damageReductionProjectiles;
+	public double getDamageReductionProjectiles() {
+		return getProtection("projectile");
 	}
 
-	public float getDamageReductionFalling() {
-		return damageReductionFalling;
+	public double getDamageReductionFalling() {
+		return getProtection("fall");
 	}
 
-	public float getDamageReductionFire() {
-		return damageReductionFire;
+	public double getDamageReductionFire() {
+		return getProtection("fire");
 	}
 
-	public float getDamageReductionExplosions() {
-		return damageReductionExplosions;
+	public double getDamageReductionExplosions() {
+		return getProtection("explosion");
 	}
 	
 	@Override
@@ -1463,6 +1463,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 	}
 
+	private void migrateProtection(String legacy, String migrateTo) {
+    	if (hasOwnProperty(legacy)) {
+
+    		org.bukkit.Bukkit.getLogger().info("Migrating protection: " + legacy + " to " + migrateTo);
+
+    		setProperty("protection." + migrateTo, getDouble(legacy));
+    		removeProperty(legacy);
+		}
+	}
+
     @Override
     public void loadProperties() {
     	super.loadProperties();
@@ -1471,12 +1481,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		consumeReduction = (float)getDouble("consume_reduction");
 		cooldownReduction = (float)getDouble("cooldown_reduction");
 		power = (float)getDouble("power");
-		damageReduction = (float)getDouble("protection");
-		damageReductionPhysical = (float)getDouble("protection_physical");
-		damageReductionProjectiles = (float)getDouble("protection_projectiles");
-		damageReductionFalling = (float)getDouble("protection_falling");
-		damageReductionFire = (float)getDouble("protection_fire");
-		damageReductionExplosions = (float)getDouble("protection_explosions");
+
+		if (!configuration.isConfigurationSection("protection")) {
+			migrateProtection("protection", "overall");
+			migrateProtection("protection_physical", "physical");
+			migrateProtection("protection_projectiles", "projectile");
+			migrateProtection("protection_falling", "fall");
+			migrateProtection("protection_fire", "fire");
+			migrateProtection("protection_explosions", "protection_explosion");
+		}
+
+		ConfigurationSection protectionConfig = configuration.getConfigurationSection("protection");
+		if (protectionConfig != null) {
+			protection = new HashMap<>();
+			for (String protectionKey : protectionConfig.getKeys(false)) {
+				protection.put(protectionKey, protectionConfig.getDouble(protectionKey));
+			}
+		}
 
 		hasId = getBoolean("unique", false);
 
@@ -2143,13 +2164,25 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("power", power), lore);
         if (superProtected) {
             ConfigurationUtils.addIfNotEmpty(getMessage("super_protected"), lore);
-        } else {
-            if (damageReduction > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection", damageReduction), lore);
-            if (damageReductionPhysical > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_physical", damageReductionPhysical), lore);
-            if (damageReductionProjectiles > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_projectile", damageReductionProjectiles), lore);
-            if (damageReductionFalling > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_falling", damageReductionFalling), lore);
-            if (damageReductionFire > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_fire", damageReductionFire), lore);
-            if (damageReductionExplosions > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_explosions", damageReductionExplosions), lore);
+        } else if (protection != null) {
+			for (Map.Entry<String, Double> entry : protection.entrySet()) {
+				String protectionType = entry.getKey();
+				double amount = entry.getValue();
+				if (amount > 0) {
+					String templateKey = getMessageKey("protection." + protectionType);
+					String template;
+					if (controller.getMessages().containsKey(templateKey)) {
+						template = controller.getMessages().get(templateKey);
+					} else {
+						templateKey = getMessageKey("protection.unknown");
+						template = controller.getMessages().get(templateKey);
+						String pretty = protectionType.substring(0, 1).toUpperCase() + protectionType.substring(1);
+						template = template.replace("$type", pretty);
+					}
+					template = controller.getMessages().formatLevelString(template, (float)amount);
+					ConfigurationUtils.addIfNotEmpty(template, lore);
+				}
+			}
         }
         if (spMultiplier > 1) {
 			ConfigurationUtils.addIfNotEmpty(getPercentageString("sp_multiplier", spMultiplier - 1), lore);

@@ -149,12 +149,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long disableWandOpenUntil = 0;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
-    protected float damageReduction = 0;
-    protected float damageReductionPhysical = 0;
-    protected float damageReductionProjectiles = 0;
-    protected float damageReductionFalling = 0;
-    protected float damageReductionFire = 0;
-    protected float damageReductionExplosions = 0;
+    protected double damageReduction = 0;
+    protected double damageReductionPhysical = 0;
+    protected double damageReductionProjectiles = 0;
+    protected double damageReductionFalling = 0;
+    protected double damageReductionFire = 0;
+    protected double damageReductionExplosions = 0;
 
     protected boolean isVanished = false;
     protected long superProtectionExpiration = 0;
@@ -389,7 +389,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (event.isCancelled()) return;
 
         // First check for damage reduction
-        float reduction = 0;
+        double reduction = 0;
         reduction = damageReduction * controller.getMaxDamageReduction();
         switch (cause) {
             case CONTACT:
@@ -424,7 +424,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         double damage = event.getDamage();
         if (reduction > 0) {
-            damage = (1.0f - reduction) * damage;
+            damage = (1.0 - reduction) * damage;
             if (damage <= 0) damage = 0.1;
             event.setDamage(damage);
         }

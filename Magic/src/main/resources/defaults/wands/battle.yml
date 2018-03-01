@@ -7,5 +7,6 @@ battle:
     icon: gold_sword:1
     migrate_icon: gold_sword
     effect_color: '11FF11'
-    protection_physical: 0.3
+    protection:
+      physical: 0.3
 

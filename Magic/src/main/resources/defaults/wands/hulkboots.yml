@@ -6,7 +6,8 @@ hulkboots:
     passive: true
     mana_regeneration_boost: -0.3
     glow: true
-    protection_falling: 1
+    protection:
+      fall: 1
     cast_spell: fling
     cast_parameters: min_speed 5 max_speed 5
     cast_interval: 5000
