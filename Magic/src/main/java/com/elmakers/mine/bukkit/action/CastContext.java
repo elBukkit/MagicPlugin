@@ -107,6 +107,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         messageParameters = new HashMap<>();
     }
 
+    public CastContext(Mage mage, Wand wand) {
+        this(mage);
+        this.wand = wand;
+    }
+
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
         this(copy, copy.getEntity(), copy instanceof CastContext ? ((CastContext) copy).location : null);
     }
@@ -572,16 +577,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 }
                 Location target = targetLocation;
                 if (target == null) {
-                    target = getTargetLocation();
-                    if (player.shouldUseBlockLocation() && target != null) {
-                        target = target.getBlock().getLocation();
-                    } else if (!player.shouldUseHitLocation() && targetEntity != null) {
-                        if (targetEntity instanceof LivingEntity) {
-                            target = ((LivingEntity)targetEntity).getEyeLocation();
-                        } else {
-                            target = targetEntity.getLocation();
-                        }
-                    }
+                    target = player.getTargetLocation(this);
                 }
                 if (sourceBlock != null) {
                     player.setMaterial(sourceBlock);

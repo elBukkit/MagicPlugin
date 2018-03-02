@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
@@ -98,6 +99,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
      * used for off-hand casting.
      */
     protected @Nullable Mage mage;
+    protected @Nullable CastContext effectsContext;
 	
 	// Cached state
 	private String id = "";
@@ -5342,5 +5344,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public Player getPlayer() {
         return mage == null ? null : mage.getPlayer();
+    }
+
+    @Override
+    public @Nonnull CastContext getEffectsContext() {
+        if (effectsContext == null || (effectsContext.getMage() != mage)) {
+            effectsContext = new com.elmakers.mine.bukkit.action.CastContext(mage, this);
+        }
+        return effectsContext;
     }
 }

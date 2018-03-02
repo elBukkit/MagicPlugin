@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
+import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
@@ -160,12 +161,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             String overrideParticle = wand == null ? mage.getEffectParticleName() : wand.getEffectParticleName();
             player.setParticleOverride(overrideParticle);
 
-            Location source = null;
-            if (player.shouldUseWandLocation()) {
-                source = wand == null ? mage.getCastLocation() : wand.getLocation();
-            } else if (player.shouldUseEyeLocation()) {
-                source = mage.getEyeLocation();
-            }
+            Location source = player.getSourceLocation(wand.getEffectsContext());
             if (source == null) {
                 source = mage.getLocation();
             }
