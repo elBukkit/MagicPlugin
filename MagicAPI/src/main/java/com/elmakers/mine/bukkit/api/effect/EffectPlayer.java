@@ -29,12 +29,8 @@ public interface EffectPlayer {
     void setMaterial(MaterialAndData material);
     void setMaterial(Block block);
     void setColor(Color color);
-    boolean shouldUseHitLocation();
-    boolean shouldUseWandLocation();
-    boolean shouldUseCastLocation();
-    boolean shouldUseEyeLocation();
-    boolean shouldUseBlockLocation();
     Location getSourceLocation(CastContext context);
+    Location getTargetLocation(CastContext context);
 
     boolean playsAtOrigin();
     boolean playsAtTarget();
@@ -44,4 +40,10 @@ public interface EffectPlayer {
     void start(Entity origin, Entity target);
     void start(Location origin, Entity originEntity, Location target, Entity targetEntity);
     void start(Location origin, Entity originEntity, Location target, Entity targetEntity, Collection<Entity> targets);
+
+    @Deprecated boolean shouldUseHitLocation();
+    @Deprecated boolean shouldUseWandLocation();
+    @Deprecated boolean shouldUseCastLocation();
+    @Deprecated boolean shouldUseEyeLocation();
+    @Deprecated boolean shouldUseBlockLocation();
 }
