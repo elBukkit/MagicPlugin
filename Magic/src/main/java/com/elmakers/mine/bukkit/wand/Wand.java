@@ -1440,10 +1440,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	private void migrateProtection(String legacy, String migrateTo) {
-    	if (hasOwnProperty(legacy)) {
-
-    		org.bukkit.Bukkit.getLogger().info("Migrating protection: " + legacy + " to " + migrateTo);
-
+    	if (hasProperty(legacy)) {
     		setProperty("protection." + migrateTo, getDouble(legacy));
     		removeProperty(legacy);
 		}
@@ -1458,16 +1455,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		cooldownReduction = (float)getDouble("cooldown_reduction");
 		power = (float)getDouble("power");
 
-		if (!configuration.isConfigurationSection("protection")) {
+		ConfigurationSection protectionConfig = getConfigurationSection("protection");
+		if (protectionConfig == null && hasProperty("protection")) {
 			migrateProtection("protection", "overall");
 			migrateProtection("protection_physical", "physical");
 			migrateProtection("protection_projectiles", "projectile");
 			migrateProtection("protection_falling", "fall");
 			migrateProtection("protection_fire", "fire");
 			migrateProtection("protection_explosions", "protection_explosion");
+			protectionConfig = getConfigurationSection("protection");
 		}
 
-		ConfigurationSection protectionConfig = configuration.getConfigurationSection("protection");
 		if (protectionConfig != null) {
 			protection = new HashMap<>();
 			for (String protectionKey : protectionConfig.getKeys(false)) {
@@ -3531,15 +3529,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 							castParameters = new MemoryConfiguration();
 						}
 						castParameters.set("passive", true);
-						mage.setCostMultiplier(0);
+						mage.setCostFree(true);
 						mage.setQuiet(true);
 						try {
 							spell.cast(castParameters);
 						} catch (Exception ex) {
 							controller.getLogger().log(Level.WARNING, "Error casting aura spell " + spell.getKey(), ex);
 						}
+						mage.setCostFree(false);
 						mage.setQuiet(false);
-						mage.setCostMultiplier(1);
 					}
 				}
             }

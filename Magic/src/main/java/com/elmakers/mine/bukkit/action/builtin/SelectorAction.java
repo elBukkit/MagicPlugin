@@ -263,7 +263,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 if (requirements == null ) {
                     requirements = defaults.requirements;
                 } else {
-                    requirements = new ArrayList<>();
                     requirements.addAll(defaults.requirements);
                 }
             }
