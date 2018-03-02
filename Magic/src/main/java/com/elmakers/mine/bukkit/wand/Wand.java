@@ -678,7 +678,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	@Override
     public float getCooldownReduction() {
-		return controller.getCooldownReduction() + cooldownReduction * controller.getMaxCooldownReduction();
+		return cooldownReduction;
 	}
 
 	@Override
@@ -729,30 +729,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public double getProtection(String protectionType) {
     	Double amount = protection == null ? null : protection.get(protectionType);
     	return amount == null ? 0.0f : amount;
-	}
-
-	public double getDamageReduction() {
-		return getProtection("overall");
-	}
-
-	public double getDamageReductionPhysical() {
-		return getProtection("physical");
-	}
-	
-	public double getDamageReductionProjectiles() {
-		return getProtection("projectile");
-	}
-
-	public double getDamageReductionFalling() {
-		return getProtection("fall");
-	}
-
-	public double getDamageReductionFire() {
-		return getProtection("fire");
-	}
-
-	public double getDamageReductionExplosions() {
-		return getProtection("explosion");
 	}
 	
 	@Override
@@ -1883,7 +1859,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			// Spells may have contained an inventory from migration or templates with a spell@slot format.
 			updateSpellInventory();
 		}
-		buildInventory();
 
 		castOverrides = null;
 		if (hasProperty("overrides")) {
@@ -3556,7 +3531,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 							castParameters = new MemoryConfiguration();
 						}
 						castParameters.set("passive", true);
-						mage.setCostReduction(100);
+						mage.setCostMultiplier(0);
 						mage.setQuiet(true);
 						try {
 							spell.cast(castParameters);
@@ -3564,7 +3539,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 							controller.getLogger().log(Level.WARNING, "Error casting aura spell " + spell.getKey(), ex);
 						}
 						mage.setQuiet(false);
-						mage.setCostReduction(0);
+						mage.setCostMultiplier(1);
 					}
 				}
             }
@@ -4312,6 +4287,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             forceUpdate = true;
 			needsSave = true;
         }
+
+		// Don't build the inventory until activated so we can take Mage boosts into account
+		mage.setActiveWand(this);
+		buildInventory();
 
 		updateMaxMana(false);
 		tick();

@@ -14,6 +14,7 @@
    protection_explosions -> protection.explosion
  - The format for giving protection, cost_reduction and power via path upgrades has changed. They now need to be
    enclosed in a "properties" block. Ask for help if you need it!
+ - The format for max damage reduction based on protection in config.yml has changed to allow for custom damage types.
 
 ## 7.1
 

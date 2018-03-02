@@ -149,12 +149,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long disableWandOpenUntil = 0;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
-    protected double damageReduction = 0;
-    protected double damageReductionPhysical = 0;
-    protected double damageReductionProjectiles = 0;
-    protected double damageReductionFalling = 0;
-    protected double damageReductionFire = 0;
-    protected double damageReductionExplosions = 0;
+    private Map<String, Double> protection = new HashMap<>();
+    private float costReduction = 0;
+    private float cooldownReduction = 0;
+    private float consumeReduction = 0;
+    private float powerMultiplier = 1;
+    private float spMultiplier = 1;
+
+    private float costMultiplier = 1;
+    private float cooldownMultiplier = 1;
 
     protected boolean isVanished = false;
     protected long superProtectionExpiration = 0;
@@ -162,12 +165,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Map<Integer, Wand> activeArmor = new HashMap<>();
 
     private Location location;
-    private float costReduction = 0;
-    private float cooldownReduction = 0;
     private long cooldownExpiration = 0;
-    private float powerMultiplier = 1;
     private float magePowerBonus = 0;
-    private float spMultiplier = 1;
     private long lastClick = 0;
     private long lastCast = 0;
     private long lastOffhandCast = 0;
@@ -210,10 +209,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         _entity = new WeakReference<>(null);
         _commandSender = new WeakReference<>(null);
         hasEntity = false;
-    }
-
-    public void setCostReduction(float reduction) {
-        costReduction = reduction;
     }
 
     @Override
@@ -260,8 +255,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    public void setCooldownReduction(float reduction) {
-        cooldownReduction = reduction;
+    public void setCostMultiplier(float reduction) {
+        costMultiplier = reduction;
+    }
+
+    public void setCooldownMultiplier(float reduction) {
+        cooldownMultiplier = reduction;
     }
 
     @Override
@@ -321,7 +320,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void onPlayerCombust(EntityCombustEvent event) {
-        if (activeWand != null && activeWand.getDamageReductionFire() > 0) {
+        if (getProtection("fire") >= 1) {
             event.getEntity().setFireTicks(0);
             event.setCancelled(true);
         }
@@ -390,33 +389,39 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         // First check for damage reduction
         double reduction = 0;
-        reduction = damageReduction * controller.getMaxDamageReduction();
+        Double overallProtection = protection.get("overall");
+        if (overallProtection != null) {
+            reduction = overallProtection * controller.getMaxDamageReduction("overall");
+        }
+        String damageType = "";
         switch (cause) {
             case CONTACT:
             case ENTITY_ATTACK:
-                reduction += damageReductionPhysical * controller.getMaxDamageReductionPhysical();
-                break;
-            case PROJECTILE:
-                reduction += damageReductionProjectiles * controller.getMaxDamageReductionProjectiles();
-                break;
-            case FALL:
-                reduction += damageReductionFalling * controller.getMaxDamageReductionFalling();
+                damageType = "physical";
                 break;
             case FIRE:
             case FIRE_TICK:
             case LAVA:
+                damageType = "fire";
                 // Also put out fire if they have maxed out fire protection.
-                if (damageReductionFire > 1 && player.getFireTicks() > 0) {
+                double damageReductionFire = getProtection("fire");
+                if (damageReductionFire >= 1 && player.getFireTicks() > 0) {
                     player.setFireTicks(0);
                 }
-                reduction += damageReductionFire * controller.getMaxDamageReductionFire();
                 break;
             case BLOCK_EXPLOSION:
             case ENTITY_EXPLOSION:
-                reduction += damageReductionExplosions * controller.getMaxDamageReductionExplosions();
+                damageType = "explosion";
+                break;
             default:
+                damageType = cause.name().toLowerCase();
                 break;
         }
+
+        double protection = getProtection(damageType);
+        double maxReduction = controller.getMaxDamageReduction(damageType);
+        reduction += protection * maxReduction;
+
         if (reduction >= 1) {
             event.setCancelled(true);
             return;
@@ -424,6 +429,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         double damage = event.getDamage();
         if (reduction > 0) {
+            sendDebugMessage("Damage type " + damageType + " reduced by " + reduction, 18);
             damage = (1.0 - reduction) * damage;
             if (damage <= 0) damage = 0.1;
             event.setDamage(damage);
@@ -444,6 +450,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
+    }
+
+    public double getProtection(String damageType) {
+        Double value = protection.get(damageType);
+        return value == null ? 0 : value;
     }
     
     @Override
@@ -517,7 +528,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         DeprecatedUtils.updateInventory(getPlayer());
     }
 
-    private void setActiveWand(Wand activeWand) {
+    public void setActiveWand(Wand activeWand) {
         // Avoid deactivating a wand by mistake, and avoid infinite recursion on null!
         if (this.activeWand == activeWand) return;
         this.activeWand = activeWand;
@@ -525,7 +536,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             addBound(activeWand);
         }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
-        updateEquipmentEffects();
+        updatePassiveEffects();
 
         if (activeWand != null) {
             WandActivatedEvent activatedEvent = new WandActivatedEvent(this, activeWand);
@@ -541,7 +552,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             addBound(offhandWand);
         }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
-        updateEquipmentEffects();
+        updatePassiveEffects();
 
         if (offhandWand != null) {
             WandActivatedEvent activatedEvent = new WandActivatedEvent(this, offhandWand);
@@ -946,6 +957,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         // TODO: Is this the best place to do this?
         activeClass.loadProperties();
+        updatePassiveEffects();
         return true;
     }
 
@@ -1148,9 +1160,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             if (itemInHand != null && controller.hasWandPermission(player)) {
                 Wand newActiveWand = controller.getWand(itemInHand);
-                if (newActiveWand.activate(this)) {
-                    setActiveWand(newActiveWand);
-                } else {
+                if (!newActiveWand.activate(this)) {
                     setActiveWand(null);
                 }
             }
@@ -1319,10 +1329,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 activeClass.tick();
             }
             properties.tick();
-            
-            if (damageReductionFire > 1 && player.getFireTicks() > 0) {
-                player.setFireTicks(0);
-            }
 
             if (Wand.LiveHotbarSkills && (activeWand == null || !activeWand.isInventoryOpen())) {
                 updateHotbarStatus();
@@ -1762,18 +1768,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getCostReduction() {
-        if (offhandCast && offhandWand != null) {
-            return offhandWand.getCostReduction() + costReduction;
-        }
-        return activeWand == null ? costReduction + controller.getCostReduction() : activeWand.getCostReduction() + costReduction;
+        return (costReduction * costMultiplier) * controller.getMaxCostReduction() + controller.getCostReduction();
     }
 
     @Override
     public float getConsumeReduction() {
-        if (offhandCast && offhandWand != null) {
-            return offhandWand.getConsumeReduction();
-        }
-        return activeWand == null ? 0 : activeWand.getConsumeReduction();
+        return consumeReduction;
     }
 
     @Override
@@ -1783,10 +1783,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getCooldownReduction() {
-        if (offhandCast && offhandWand != null) {
-            return offhandWand.getCooldownReduction() + cooldownReduction;
-        }
-        return activeWand == null ? cooldownReduction + controller.getCooldownReduction() : activeWand.getCooldownReduction() + cooldownReduction;
+        return (cooldownReduction * cooldownMultiplier) * controller.getMaxCooldownReduction() + controller.getCooldownReduction();
     }
 
     @Override
@@ -2857,42 +2854,77 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         } else if (activeClass != null) {
             activeClass.armorUpdated();
         }
-        updateEquipmentEffects();
+        updatePassiveEffects();
     }
 
-    protected void updateEquipmentEffects() {
-        damageReduction = 0;
-        damageReductionPhysical = 0;
-        damageReductionProjectiles = 0;
-        damageReductionFalling = 0;
-        damageReductionFire = 0;
-        damageReductionExplosions = 0;
+    protected void addPassiveEffects(CasterProperties properties) {
+        spMultiplier *= properties.getDouble("sp_multiplier", 1.0);
+
+       ConfigurationSection addProtection = properties.getConfigurationSection("protection");
+       boolean stack = properties.getBoolean("stack", false);
+       if (addProtection != null) {
+           Set<String> protectionTypes = addProtection.getKeys(false);
+            for (String protectionType : protectionTypes) {
+                Double existing = protection.get(protectionType);
+                if (existing == null) {
+                    existing = 0.0;
+                }
+                double addValue = addProtection.getDouble(protectionType);
+                if (stack && addValue < 1) {
+                    existing = Math.min(1, existing + addValue);
+                } else {
+                    existing = Math.max(existing, addValue);
+                }
+                protection.put(protectionType, existing);
+            }
+       }
+
+       if (stack) {
+           cooldownReduction = stackValue(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
+           costReduction = stackValue(costReduction, properties.getFloat("cost_reduction", 0));
+           consumeReduction = stackValue(consumeReduction, properties.getFloat("consume_reduction", 0));
+       } else {
+           cooldownReduction = Math.max(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
+           costReduction = Math.max(costReduction, properties.getFloat("cost_reduction", 0));
+           consumeReduction = Math.max(consumeReduction, properties.getFloat("consume_reduction", 0));
+       }
+    }
+
+    protected float stackValue(float currentValue, float stackValue) {
+        if (stackValue > 1) {
+            return Math.max(currentValue, stackValue);
+        }
+
+        return Math.min(1, stackValue + currentValue);
+    }
+
+    protected void updatePassiveEffects() {
+        protection.clear();
+
         spMultiplier = 1;
+        cooldownReduction = 0;
+        costReduction = 0;
+        consumeReduction = 0;
         
         List<PotionEffectType> currentEffects = new ArrayList<>(effectivePotionEffects.keySet());
         LivingEntity entity = getLivingEntity();
         effectivePotionEffects.clear();
+
+        addPassiveEffects(properties);
+        if (activeClass != null)
+        {
+            addPassiveEffects(activeClass);
+            spMultiplier *= activeClass.getDouble("sp_multiplier", 1.0);
+        }
         if (activeWand != null && !activeWand.isPassive())
         {
-            damageReduction += activeWand.getDamageReduction();
-            damageReductionPhysical += activeWand.getDamageReductionPhysical();
-            damageReductionProjectiles += activeWand.getDamageReductionProjectiles();
-            damageReductionFalling += activeWand.getDamageReductionFalling();
-            damageReductionFire += activeWand.getDamageReductionFire();
-            damageReductionExplosions += activeWand.getDamageReductionExplosions();
+            addPassiveEffects(activeWand);
             effectivePotionEffects.putAll(activeWand.getPotionEffects());
-
-            spMultiplier *= activeWand.getSPMultiplier();
         }
         // Don't add these together so things stay balanced!
         if (offhandWand != null && !offhandWand.isPassive())
         {
-            damageReduction = Math.max(damageReduction, offhandWand.getDamageReduction());
-            damageReductionPhysical += Math.max(damageReductionPhysical, offhandWand.getDamageReductionPhysical());
-            damageReductionProjectiles += Math.max(damageReductionProjectiles, offhandWand.getDamageReductionProjectiles());
-            damageReductionFalling += Math.max(damageReductionFalling, offhandWand.getDamageReductionFalling());
-            damageReductionFire += Math.max(damageReductionFire, offhandWand.getDamageReductionFire());
-            damageReductionExplosions += Math.max(damageReductionExplosions, offhandWand.getDamageReductionExplosions());
+            addPassiveEffects(offhandWand);
             effectivePotionEffects.putAll(offhandWand.getPotionEffects());
 
             spMultiplier *= offhandWand.getSPMultiplier();
@@ -2900,23 +2932,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (Wand armorWand : activeArmor.values())
         {
             if (armorWand != null) {
-                damageReduction += armorWand.getDamageReduction();
-                damageReductionPhysical += armorWand.getDamageReductionPhysical();
-                damageReductionProjectiles += armorWand.getDamageReductionProjectiles();
-                damageReductionFalling += armorWand.getDamageReductionFalling();
-                damageReductionFire += armorWand.getDamageReductionFire();
-                damageReductionExplosions += armorWand.getDamageReductionExplosions();
+                addPassiveEffects(armorWand);
                 effectivePotionEffects.putAll(armorWand.getPotionEffects());
-
-                spMultiplier *= armorWand.getSPMultiplier();
             }
         }
-        damageReduction = Math.min(damageReduction, 1);
-        damageReductionPhysical = Math.min(damageReductionPhysical, 1);
-        damageReductionProjectiles = Math.min(damageReductionProjectiles, 1);
-        damageReductionFalling = Math.min(damageReductionFalling, 1);
-        damageReductionFire = Math.min(damageReductionFire, 1);
-        damageReductionExplosions = Math.min(damageReductionExplosions, 1);
 
         if (entity != null)
         {

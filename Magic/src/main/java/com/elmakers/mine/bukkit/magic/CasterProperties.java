@@ -92,8 +92,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     public float getCostReduction() {
-        if (isCostFree()) return 1.0f;
-        return controller.getCostReduction() + getFloat("cost_reduction") * controller.getMaxCostReduction();
+        return getFloat("cost_reduction");
     }
 
     public boolean isCostFree() {

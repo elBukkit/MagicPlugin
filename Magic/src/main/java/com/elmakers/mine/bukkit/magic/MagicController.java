@@ -408,28 +408,13 @@ public class MagicController implements MageController {
         return maxPower;
     }
 
-    public float getMaxDamageReduction() {
-        return maxDamageReduction;
+    public double getMaxDamageReduction(String protectionType) {
+        Double maxValue = protectionDamageReduction.get(protectionType);
+        return maxValue == null ? 0 : maxValue;
     }
 
-    public float getMaxDamageReductionExplosions() {
-        return maxDamageReductionExplosions;
-    }
-
-    public float getMaxDamageReductionFalling() {
-        return maxDamageReductionFalling;
-    }
-
-    public float getMaxDamageReductionFire() {
-        return maxDamageReductionFire;
-    }
-
-    public float getMaxDamageReductionPhysical() {
-        return maxDamageReductionPhysical;
-    }
-
-    public float getMaxDamageReductionProjectiles() {
-        return maxDamageReductionProjectiles;
+    public Set<String> getDamageTypes() {
+        return protectionDamageReduction.keySet();
     }
 
     public float getMaxCostReduction() {
@@ -2342,12 +2327,14 @@ public class MagicController implements MageController {
 		maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
 
         maxPower = (float)properties.getDouble("max_power", maxPower);
-        maxDamageReduction = (float)properties.getDouble("max_damage_reduction", maxDamageReduction);
-        maxDamageReductionExplosions = (float)properties.getDouble("max_damage_reduction_explosions", maxDamageReductionExplosions);
-        maxDamageReductionFalling = (float)properties.getDouble("max_damage_reduction_falling", maxDamageReductionFalling);
-        maxDamageReductionFire = (float)properties.getDouble("max_damage_reduction_fire", maxDamageReductionFire);
-        maxDamageReductionPhysical = (float)properties.getDouble("max_damage_reduction_physical", maxDamageReductionPhysical);
-        maxDamageReductionProjectiles = (float)properties.getDouble("max_damage_reduction_projectiles", maxDamageReductionProjectiles);
+        ConfigurationSection damageTypes = properties.getConfigurationSection("damage_types");
+        if (damageTypes != null) {
+            Set<String> typeKeys = damageTypes.getKeys(false);
+            for (String typeKey : typeKeys) {
+                ConfigurationSection damageType = damageTypes.getConfigurationSection(typeKey);
+                protectionDamageReduction.put(typeKey, damageType.getDouble("max_reduction"));
+            }
+        }
         maxCostReduction = (float)properties.getDouble("max_cost_reduction", maxCostReduction);
         maxCooldownReduction = (float)properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
         maxMana = properties.getInt("max_mana", maxMana);
@@ -2395,15 +2382,42 @@ public class MagicController implements MageController {
             HitboxUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
         }
 
+        // These were changed from set values to multipliers, we're going to translate for backwards compatibility.
+        // The default configs used to have these set to either 0 or 100, where 100 indicated that we should be
+        // turning off the costs/cooldowns.
+
+        if (properties.contains("cast_command_cost_reduction")) {
+            double reduction = properties.getDouble("cast_command_cost_reduction") / 100.0;
+            castCommandCostMultiplier = (float)(1 - Math.min(1, reduction));
+        } else {
+            castCommandCostMultiplier =  (float)properties.getDouble("cast_command_cost_multiplier", castCommandCostMultiplier);
+        }
+        if (properties.contains("cast_command_cooldown_reduction")) {
+            double reduction = properties.getDouble("cast_command_cooldown_reduction") / 100.0;
+            castCommandCooldownMultiplier = (float)(1 - Math.min(1, reduction));
+        } else {
+            castCommandCooldownMultiplier =  (float)properties.getDouble("cast_command_cooldown_multiplier", castCommandCooldownMultiplier);
+        }
+        if (properties.contains("cast_console_cost_reduction")) {
+            double reduction = properties.getDouble("cast_console_cost_reduction") / 100.0;
+            castConsoleCostMultiplier = (float)(1 - Math.min(1, reduction));
+        } else {
+            castConsoleCostMultiplier =  (float)properties.getDouble("cast_console_cost_multiplier", castConsoleCostMultiplier);
+        }
+        if (properties.contains("cast_console_cooldown_reduction")) {
+            double reduction = properties.getDouble("cast_console_cooldown_reduction") / 100.0;
+            castConsoleCooldownMultiplier = (float)(1 - Math.min(1, reduction));
+        } else {
+            castConsoleCooldownMultiplier =  (float)properties.getDouble("cast_console_cooldown_multiplier", castConsoleCooldownMultiplier);
+        }
+
+		castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
+        castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
+
+
         maps.setAnimationAllowed(properties.getBoolean("enable_map_animations", true));
         costReduction = (float)properties.getDouble("cost_reduction", costReduction);
 		cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
-		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);
-		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
-		castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
-        castConsoleCostReduction = (float)properties.getDouble("cast_console_cost_reduction", castConsoleCostReduction);
-        castConsoleCooldownReduction = (float)properties.getDouble("cast_console_cooldown_reduction", castConsoleCooldownReduction);
-        castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
 		autoUndo = properties.getInt("auto_undo", autoUndo);
         spellDroppingEnabled = properties.getBoolean("allow_spell_dropping", spellDroppingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
@@ -3012,14 +3026,14 @@ public class MagicController implements MageController {
             com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 			if (sender instanceof BlockCommandSender)
             {
-                mage.setCostReduction(override ? castCommandCostReduction : 0);
-                mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
+                mage.setCostMultiplier(override ? castCommandCostMultiplier : 1);
+                mage.setCooldownMultiplier(override ? castCommandCooldownMultiplier : 1);
                 mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);
             }
             else
             {
-                mage.setCostReduction(override ? castConsoleCostReduction : 0);
-                mage.setCooldownReduction(override ? castConsoleCooldownReduction : 0);
+                mage.setCostMultiplier(override ? castConsoleCostMultiplier : 1);
+                mage.setCooldownMultiplier(override ? castConsoleCooldownMultiplier : 1);
                 mage.setPowerMultiplier(override ? castConsolePowerMultiplier : 1);
             }
 		}
@@ -5213,12 +5227,7 @@ public class MagicController implements MageController {
     private float								maxRangePowerMultiplierMax 	    = 5.0f;
 
     private float								maxPower						= 100.0f;
-    private float								maxDamageReduction 			    = 0.2f;
-    private float								maxDamageReductionExplosions 	= 0.2f;
-    private float								maxDamageReductionFalling   	= 0.2f;
-    private float								maxDamageReductionFire 	        = 0.2f;
-    private float								maxDamageReductionPhysical 	    = 0.2f;
-    private float								maxDamageReductionProjectiles 	= 0.2f;
+    private Map<String, Double>                 protectionDamageReduction       = new HashMap<>();
     private float								maxCostReduction 	            = 0.5f;
     private float								maxCooldownReduction        	= 0.5f;
     private int								    maxMana        	                = 1000;
@@ -5233,11 +5242,11 @@ public class MagicController implements MageController {
     private boolean                             spEarnEnabled                   = true;
     private int                                 spMaximum                       = 0;
 
-    private float							 	castCommandCostReduction	    = 1.0f;
-    private float							 	castCommandCooldownReduction	= 1.0f;
+    private float                               castCommandCostMultiplier       = 1.0f;
+    private float                               castCommandCooldownMultiplier   = 1.0f;
     private float								castCommandPowerMultiplier      = 0.0f;
-    private float							 	castConsoleCostReduction	    = 1.0f;
-    private float							 	castConsoleCooldownReduction	= 1.0f;
+    private float                               castConsoleCostMultiplier       = 1.0f;
+    private float                               castConsoleCooldownMultiplier = 1.0f;
     private float								castConsolePowerMultiplier      = 0.0f;
     private float							 	costReduction	    			= 0.0f;
     private float							 	cooldownReduction				= 0.0f;

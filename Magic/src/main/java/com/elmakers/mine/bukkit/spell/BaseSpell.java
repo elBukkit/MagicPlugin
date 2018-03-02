@@ -1385,9 +1385,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected void updateCooldown() {
-        Wand wand = currentCast != null ? currentCast.getWand() : null;
-        boolean isCooldownFree = wand != null ? wand.isCooldownFree() : mage.isCooldownFree();
-        double cooldownReduction = wand != null ? wand.getCooldownReduction() : mage.getCooldownReduction();
+        boolean isCooldownFree = mage.isCooldownFree();
+        double cooldownReduction = mage.getCooldownReduction();
         cooldownReduction += this.cooldownReduction;
         spellData.setLastCast(System.currentTimeMillis());
         if (!isCooldownFree && cooldown > 0) {
@@ -1793,27 +1792,19 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public float getConsumeReduction()
     {
-        CostReducer reducer = currentCast != null ? currentCast.getWand() : mage;
-        if (reducer == null) {
-            reducer = mage;
-        }
-        if (reducer == null) {
+        if (mage == null) {
             return consumeReduction;
         }
-        return consumeReduction + reducer.getConsumeReduction();
+        return consumeReduction + mage.getConsumeReduction();
     }
 
     @Override
     public float getCostReduction()
     {
-        CostReducer reducer = currentCast != null ? currentCast.getWand() : mage;
-        if (reducer == null) {
-            reducer = mage;
-        }
-        if (reducer == null) {
+        if (mage == null) {
             return costReduction;
         }
-        return costReduction + reducer.getCostReduction();
+        return costReduction + mage.getCostReduction();
     }
 
     @Override
@@ -2047,26 +2038,26 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public String getMageCooldownDescription() {
-        return getCooldownDescription(controller.getMessages(), mageCooldown, null);
+        return getCooldownDescription(controller.getMessages(), mageCooldown, mage);
     }
 
-    public String getMageCooldownDescription(com.elmakers.mine.bukkit.api.wand.Wand wand) {
-        return getCooldownDescription(controller.getMessages(), mageCooldown, wand);
+    public String getMageCooldownDescription(Mage mage) {
+        return getCooldownDescription(controller.getMessages(), mageCooldown, mage);
     }
 
     @Override
     public String getCooldownDescription() {
         return getCooldownDescription(
-                controller.getMessages(), getDisplayCooldown(),  null);
+                controller.getMessages(), getDisplayCooldown(),  mage);
     }
 
     public String getWarmupDescription() {
         return getTimeDescription(controller.getMessages(), warmup);
     }
 
-    public String getCooldownDescription(com.elmakers.mine.bukkit.api.wand.Wand wand) {
+    public String getCooldownDescription(Mage mage) {
         return getCooldownDescription(
-                controller.getMessages(), getDisplayCooldown(), wand);
+                controller.getMessages(), getDisplayCooldown(), mage);
     }
 
     /**
@@ -2107,12 +2098,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return null;
     }
 
-    protected String getCooldownDescription(Messages messages, int cooldown, com.elmakers.mine.bukkit.api.wand.Wand wand) {
-        if (wand != null) {
-            if (wand.isCooldownFree()) {
+    protected String getCooldownDescription(Messages messages, int cooldown, Mage mage) {
+        if (mage != null) {
+            if (mage.isCooldownFree()) {
                 cooldown = 0;
             }
-            double cooldownReduction = wand.getCooldownReduction();
+            double cooldownReduction = mage.getCooldownReduction();
             cooldownReduction += this.cooldownReduction;
             if (cooldown > 0 && cooldownReduction < 1) {
                 cooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
@@ -2479,7 +2470,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore) {
-        CostReducer reducer = wand == null ? mage : wand;
+        CostReducer reducer = mage == null ? wand : mage;
+        if (reducer == null) {
+            reducer = this;
+        }
         if (levelDescription != null && levelDescription.length() > 0) {
             String descriptionTemplate = messages.get("spell.level_lore", "");
             if (!descriptionTemplate.isEmpty()) {
@@ -2512,11 +2506,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (warmupDescription != null && !warmupDescription.isEmpty()) {
             lore.add(messages.get("warmup.description").replace("$time", warmupDescription));
         }
-        String cooldownDescription = getCooldownDescription(wand);
+        String cooldownDescription = getCooldownDescription(mage);
         if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
             lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
         }
-        String mageCooldownDescription = getMageCooldownDescription(wand);
+        String mageCooldownDescription = getMageCooldownDescription(mage);
         if (mageCooldownDescription != null && !mageCooldownDescription.isEmpty()) {
             lore.add(messages.get("cooldown.mage_description").replace("$time", mageCooldownDescription));
         }

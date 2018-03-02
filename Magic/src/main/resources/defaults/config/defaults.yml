@@ -94,14 +94,18 @@ cost_reduction: 0.0
 # that can hurt the server via spamming- as in by creating too many entities or explosions.
 cooldown_reduction: 0.0
 
-# How much to reduce costs and cooldowns when using /cast (versus a wand)
+# Whether or not to respect cooldowns and costs when casting from the console or command blocks.
+# Set the to 1.0 to use normal costs/cooldowns, 0.0 to them.
+
+# By default console and command block casting skips costs but still respects cooldowns.
+
 # From a command block
-cast_command_cost_reduction: 100.0
-cast_command_cooldown_reduction: 0.0
+cast_command_cost_multiplier: 0.0
+cast_command_cooldown_multiplier: 1.0
 
 # From NPCs, /cast commands or other console-routed places
-cast_console_cost_reduction: 100.0
-cast_console_cooldown_reduction: 0.0
+cast_console_cost_multiplier: 0.0
+cast_console_cooldown_multiplier: 1.0
 
 # Whether or not to respect wand power for the held wand when using /cast
 # Set the to 1.0 to use normal wand power, 0.0 to ignore wand power.
@@ -530,14 +534,41 @@ max_power_radius_multiplier_max: 2.0
 max_power_range_multiplier: 2.0
 max_power_range_multiplier_max: 5.0
 max_power: 100.0
-max_damage_reduction: 0.3
-max_damage_reduction_explosions: 0.2
-max_damage_reduction_falling: 1
-max_damage_reduction_fire: 0.5
-max_damage_reduction_physical: 0.75
-max_damage_reduction_projectiles: 0.2
 max_cost_reduction: 0.5
 max_cooldown_reduction: 0.75
+
+#
+# Here you can specify custom damage types.
+# There are several builtin damage types that correspond to vanilla damage sources. You can add your own types, for
+# use in protection and damage bonuses, and by the Damage action damage_type parameter.
+#
+# For each damage type you can specify a max reduction % allowed. This is by how much damage is reduced for a player
+# that has maxed out protection for that source.
+#
+# For instance, if you have fire damage set to max_reduction of 0.5, a player with a protection.fire of 1.0 (100%, maxed out)
+# will take 50% damage from all fire sources. A player with protection.fire of 0.5 will take 25% damage.
+#
+# Protection will never be allowed to go above 100% of the values specified here. Even if using stacking items, if a player
+# has armor with protection.fire of 0.7 and holding a wand with protection.fire of 0.5, they will stack but cap at 1.0
+#
+# However, "overall" protection does stack with the other amounts, so take care with that. If the protection values
+# add up to over 1.0 the player is completely immune to that type of damage.
+#
+# The "overall" type is special, it applies to the "overall" protection which will be used for any type of damage.
+#
+damage_types:
+  overall:
+    max_reduction: 0.2
+  explosion:
+    max_reduction: 0.2
+  fall:
+    max_reduction: 1.0
+  fire:
+    max_reduction: 0.5
+  physical:
+    max_reduction: 0.6
+  projectile:
+    max_reduction: 0.2
 
 # These are used only for "Roman" display mode for mana on wand lore
 max_mana: 1000
