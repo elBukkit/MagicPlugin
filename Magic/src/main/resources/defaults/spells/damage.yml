@@ -20,8 +20,8 @@
 # DRAGON_BREATH
 
 damage:
-    icon: diamond_axe:171
-    icon_disabled: diamond_hoe:171
+    icon: diamond_axe:172
+    icon_disabled: diamond_hoe:172
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: staff
     worth: 50000
@@ -30,33 +30,24 @@ damage:
       - class: Damage
     effects:
         cast:
-        - class: EffectSingle
-          sound: magic.electrify
-          sound_volume: 5
-          sound_pitch: -0.25
-          location: origin
-          effectlib:
-             class: AtomEffect
-             particleNucleus: spell_mob
-             colorNucleus: "FF0000"
-             particleOrbital: redstone
-             colorOrbital: "88FF22"
-             iterations: 16
-             radius: 5
-        - class: EffectSingle
-          sound: magic.zap_big
+        - sound: magic.zap_big
           sound_volume: 1
           location: origin
+          source_location: cast
           effectlib:
              class: ConeEffect
              iterations: 16
-             particle: spell_mob
+             particle: redstone
              color: 00FF00
              lengthGrow: 0.4
-        - class: EffectSingle
-          location: targets
-          color: "FF0000"
-          firework: ball_large
+        - location: target
+          target_location: hit
+          effectlib:
+             class: SphereEffect
+             iterations: 16
+             particle: redstone
+             color: FF0000
+             radius: 0.2
     parameters:
         target: other
         target_type: Damageable
@@ -68,5 +59,6 @@ damage:
         damage_type: OUT_OF_WORLD
         damage: 10
     costs:
-        mana: 300
+        mana: 100
+
 

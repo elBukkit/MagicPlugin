@@ -104,10 +104,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected boolean requireEntity = false;
     protected boolean requireTargetEntity = false;
-    protected boolean useHitLocation = true;
-    protected boolean useBlockLocation = true;
     protected boolean sampleTarget = false;
     protected SourceLocation sourceLocation = null;
+    protected SourceLocation targetLocation = null;
 
     protected float scale = 1.0f;
 
@@ -218,8 +217,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         requireEntity = configuration.getBoolean("requires_entity", false);
         requireTargetEntity = configuration.getBoolean("requires_entity_target", false);
         sourceLocation = new SourceLocation(configuration);
-        useHitLocation = configuration.getBoolean("use_hit_location", true);
-        useBlockLocation = configuration.getBoolean("use_block_location", false);
+        targetLocation = new SourceLocation(configuration, "target_location", false);
         sampleTarget = configuration.getString("sample", "").equalsIgnoreCase("target");
     }
 
@@ -669,33 +667,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     @Override
-    public boolean shouldUseBlockLocation() {
-        return useBlockLocation;
-    }
-
-    @Override
-    public boolean shouldUseHitLocation() {
-        return useHitLocation;
-    }
-
-    @Override
-    public boolean shouldUseWandLocation() {
-        return sourceLocation.shouldUseWandLocation();
-    }
-
-    @Override
-    public boolean shouldUseCastLocation() {
-        return sourceLocation.shouldUseCastLocation();
-    }
-
-    @Override
-    public boolean shouldUseEyeLocation() {
-        return sourceLocation.shouldUseEyeLocation();
-    }
-
-    @Override
     public Location getSourceLocation(CastContext context)  {
         return sourceLocation.getLocation(context);
+    }
+
+    @Override
+    public Location getTargetLocation(CastContext context)  {
+        return targetLocation.getLocation(context);
     }
 
     @Override
@@ -716,5 +694,35 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     @Override
     public boolean playsAtAllTargets() {
         return playAtAllTargets;
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldUseBlockLocation() {
+        return targetLocation.shouldUseBlockLocation();
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldUseHitLocation() {
+        return targetLocation.shouldUseHitLocation();
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldUseWandLocation() {
+        return sourceLocation.shouldUseWandLocation();
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldUseCastLocation() {
+        return sourceLocation.shouldUseCastLocation();
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldUseEyeLocation() {
+        return sourceLocation.shouldUseEyeLocation();
     }
 }
