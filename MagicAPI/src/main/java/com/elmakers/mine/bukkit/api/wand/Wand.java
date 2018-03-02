@@ -3,8 +3,10 @@ package com.elmakers.mine.bukkit.api.wand;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -261,4 +263,5 @@ public interface Wand extends CostReducer, CasterProperties {
     WandAction getLeftClickAction();
     WandAction getSwapAction();
     boolean performAction(WandAction action);
+    @Nonnull CastContext getEffectsContext();
 }
