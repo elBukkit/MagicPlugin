@@ -10,11 +10,14 @@ import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RequirementsController implements RequirementsProcessor {
     
@@ -22,6 +25,7 @@ public class RequirementsController implements RequirementsProcessor {
         public @Nullable String permissionNode = null;
         public @Nullable String requiredPath = null;
         public @Nullable String requiredTemplate = null;
+        public @Nullable Set<String> requiredTemplates = null;
         public @Nullable String requiresCompletedPath = null;
         public @Nullable String exactPath = null;
         public @Nullable String mageClass = null;
@@ -38,12 +42,16 @@ public class RequirementsController implements RequirementsProcessor {
             requireWand = configuration.getBoolean("holding_wand");
             mageClass = configuration.getString("class");
 
+            if (configuration.contains("wands")) {
+                requiredTemplates = new HashSet<>(ConfigurationUtils.getStringList(configuration, "wands"));
+            }
+
             if (requiresCompletedPath != null) {
                 requiredPath = requiresCompletedPath;
                 exactPath = requiresCompletedPath;
             }
             
-            if (requiredTemplate != null) {
+            if (requiredTemplate != null || requiredTemplates != null) {
                 requireWand = true;
             }
         }
@@ -68,6 +76,13 @@ public class RequirementsController implements RequirementsProcessor {
         if (check.requiredTemplate != null) {
             String template = wand.getTemplateKey();
             if (template == null || !template.equals(check.requiredTemplate)) {
+                return false;
+            }
+        }
+
+        if (check.requiredTemplates != null) {
+            String template = wand.getTemplateKey();
+            if (template == null || !check.requiredTemplates.contains(template)) {
                 return false;
             }
         }
@@ -140,6 +155,13 @@ public class RequirementsController implements RequirementsProcessor {
         if (check.requiredTemplate != null) {
             String template = wand.getTemplateKey();
             if (template == null || !template.equals(check.requiredTemplate)) {
+                return getMessage(context, "no_template").replace("$wand", wand.getName());
+            }
+        }
+
+        if (check.requiredTemplates != null) {
+            String template = wand.getTemplateKey();
+            if (template == null || check.requiredTemplates.contains(template)) {
                 return getMessage(context, "no_template").replace("$wand", wand.getName());
             }
         }

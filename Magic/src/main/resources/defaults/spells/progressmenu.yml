@@ -14,7 +14,7 @@ progressmenu:
     - placeholder: true
     - cast_spell: wandbuffshop
       requirements:
-      - wand: wand
+      - wands: wand,battle
     - cast_spell: appearanceshop
       requirements: 
       - wand: wand
@@ -23,7 +23,7 @@ progressmenu:
       - holding_wand: true
     - cast_spell: effectshop
       requirements: 
-      - holding_wand: true
+      - wands: true,wand
     - cast_spell: controlsmenu
       requirements: 
       - holding_wand: true
