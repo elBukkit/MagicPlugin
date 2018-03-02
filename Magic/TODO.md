@@ -6,9 +6,6 @@
  - More Selector options
    - Ability to scale prices based on attributes or wand/mage properties
  - Re-work protection
-   - Flexible maps instead of separate properties
-   - Wand protection_ properties will need to migrate ... might just break old progression systems?
-   - Pre-define damage types in config.yml
    - Add damage type option to Damage action
      - How to respect that via protection? 
      - Does Damage action need to deal with protection directly now, or can we pass along the
@@ -17,7 +14,6 @@
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
    
-
 ## Higher Priority
 
  - Mobs removed by MagicWorlds still drop loot... ? 
@@ -28,14 +24,11 @@
 
 ## Suggestions
 
- - Add support for sized slimes
-
  - Placeholder API integration: https://www.spigotmc.org/wiki/hooking-into-placeholderapi/
    - Allow placeholder-driven attributes
  
  - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
  - /mmob clear with a radius, world/coords
- - SkillAPI : Class or attribute requirements for casting a spell
 
 ## High-Priority
 

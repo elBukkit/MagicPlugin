@@ -6,7 +6,6 @@ cowlock:
   disguise:
     type: cow
     
-    
 madscientist2:
   name: Mad Scientist
   type: pig_zombie
@@ -40,3 +39,12 @@ skeletoncompanion:
    default_drops: false
    disguise:
      type: skeleton
+
+kingslime:
+  name: "King Slime"
+  type: slime
+  size: 20
+  cast_interval: 5000
+  cast:
+    none: 100
+    rubberize: 20

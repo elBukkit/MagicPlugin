@@ -52,6 +52,7 @@ import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.Slime;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
@@ -231,6 +232,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityZombieData((Zombie)entity);
         } else if (entity instanceof AreaEffectCloud) {
             extraData = new EntityAreaEffectCloudData((AreaEffectCloud)entity);
+        } else if (entity instanceof Slime) {
+            extraData = new EntitySlimeData((Slime)entity);
         }
     }
     
@@ -329,6 +332,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
             else if (type == EntityType.ARMOR_STAND) {
                 extraData = new EntityArmorStandData(parameters);
+            }
+            else if (type == EntityType.SLIME || type == EntityType.MAGMA_CUBE) {
+                EntitySlimeData slimeData = new EntitySlimeData();
+                slimeData.size = parameters.getInt("size", 16);
+                extraData = slimeData;
             }
 
         } catch (Exception ex) {

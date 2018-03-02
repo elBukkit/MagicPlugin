@@ -16,6 +16,7 @@
    Note that the damage source is lost, so other plugins (like quest plugins, etc) won't see the caster as the
    source of damage and give credit for kills. This is a vanilla limitation.
  - Wand protection format changed to a map (e.g. protection.fall) for greater flexibility. See MIGRATION.md
+ - Add "size" parameter for slimes to magic mobs
   
 ## 7.1.5
 
