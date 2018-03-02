@@ -144,15 +144,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 }
             }
             icon = parseItem(configuration.getString("icon"));
-            if (icon == null && items != null) {
-                icon = InventoryUtils.getCopy(items.get(0));
-            }
-            if (icon == null && castSpell != null && !castSpell.isEmpty()) {
-                SpellTemplate spellTemplate = context.getController().getSpellTemplate(castSpell);
-                if (spellTemplate != null && spellTemplate.getIcon() != null) {
-                    icon = spellTemplate.getIcon().getItemStack(1);
-                }
-            }
             costs = parseCosts(configuration.getConfigurationSection("costs"));
             int cost = configuration.getInt("cost");
             if (cost > 0) {
@@ -269,14 +260,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
             parse(configuration);
 
-            if (icon == null && defaults.icon != null) {
-                this.icon = InventoryUtils.getCopy(defaults.icon);
-            }
-            if (icon == null) {
-                // Show a question mark
-                this.icon = InventoryUtils.getURLSkull("http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d");
-            }
-
             if (configuration.contains("slot")) {
                 slot = configuration.getInt("slot");
             }
@@ -356,6 +339,30 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 } else {
                     showUnavailable = false;
                 }
+            }
+
+            // Choose icon if none was set in config
+            if (icon == null && items != null) {
+                icon = InventoryUtils.getCopy(items.get(0));
+            }
+            if (icon == null && castSpell != null && !castSpell.isEmpty()) {
+                SpellTemplate spellTemplate = context.getController().getSpellTemplate(castSpell);
+                if (spellTemplate != null) {
+                    if (unavailable && spellTemplate.getDisabledIcon() != null) {
+                        icon = spellTemplate.getDisabledIcon().getItemStack(1);
+                    }
+                    if (icon == null && spellTemplate.getIcon() != null) {
+                        icon = spellTemplate.getIcon().getItemStack(1);
+                    }
+                }
+            }
+
+            if (icon == null && defaults.icon != null) {
+                this.icon = InventoryUtils.getCopy(defaults.icon);
+            }
+            if (icon == null) {
+                // Show a question mark if nothing else worked
+                this.icon = InventoryUtils.getURLSkull("http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d");
             }
             
             // Prepare icon
