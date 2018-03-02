@@ -247,7 +247,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             this.unlockSection = defaults.unlockSection;
             this.showConfirmation = defaults.showConfirmation;
             this.costType = defaults.costType;
-            this.requirements = defaults.requirements;
             this.showUnavailable = defaults.showUnavailable;
             this.commands = defaults.commands;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<String>();
@@ -259,6 +258,15 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
 
             parse(configuration);
+
+            if (defaults.requirements != null) {
+                if (requirements == null ) {
+                    requirements = defaults.requirements;
+                } else {
+                    requirements = new ArrayList<>();
+                    requirements.addAll(defaults.requirements);
+                }
+            }
 
             if (configuration.contains("slot")) {
                 slot = configuration.getInt("slot");
