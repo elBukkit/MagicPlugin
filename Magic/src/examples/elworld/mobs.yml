@@ -43,8 +43,9 @@ skeletoncompanion:
 kingslime:
   name: "King Slime"
   type: slime
-  size: 20
-  cast_interval: 5000
+  size: 18
+  cast_interval: 3000
+  cast_requires_target: false
   cast:
     none: 100
-    rubberize: 20
+    "rubberize pdy -1 pdx 0 pdz 0": 50
