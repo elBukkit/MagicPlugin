@@ -400,4 +400,5 @@ public interface MageController {
     boolean updateLight(Location location);
 
     @Nullable String checkRequirements(@Nonnull CastContext context, @Nullable Collection<Requirement> requirements);
+    @Nonnull Set<String> getDamageTypes();
 }

@@ -177,6 +177,10 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 				for (String key : BaseMagicProperties.PROPERTY_KEYS) {
 					options.add(key);
 				}
+
+				for (String protection : api.getController().getDamageTypes()) {
+					options.add("protection." + protection);
+				}
 			}
 
 			if (subCommand.equalsIgnoreCase("override")) {

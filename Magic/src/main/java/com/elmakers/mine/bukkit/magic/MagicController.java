@@ -413,7 +413,8 @@ public class MagicController implements MageController {
         return maxValue == null ? 0 : maxValue;
     }
 
-    public Set<String> getDamageTypes() {
+    @Override
+    public @Nonnull Set<String> getDamageTypes() {
         return protectionDamageReduction.keySet();
     }
 
@@ -752,7 +753,7 @@ public class MagicController implements MageController {
         playerController = new PlayerController(this);
         inventoryController = new InventoryController(this);
         explosionController = new ExplosionController(this);
-        requirementsController = new RequirementsController();
+        requirementsController = new RequirementsController(this);
         messages = new Messages();
 
         File urlMapFile = getDataFile(URL_MAPS_FILE);
