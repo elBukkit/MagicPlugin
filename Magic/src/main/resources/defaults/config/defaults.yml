@@ -95,17 +95,16 @@ cost_reduction: 0.0
 cooldown_reduction: 0.0
 
 # Whether or not to respect cooldowns and costs when casting from the console or command blocks.
-# Set the to 1.0 to use normal costs/cooldowns, 0.0 to them.
 
 # By default console and command block casting skips costs but still respects cooldowns.
 
 # From a command block
-cast_command_cost_multiplier: 0.0
-cast_command_cooldown_multiplier: 1.0
+cast_command_cost_free: true
+cast_command_cooldown_free: false
 
 # From NPCs, /cast commands or other console-routed places
-cast_console_cost_multiplier: 0.0
-cast_console_cooldown_multiplier: 1.0
+cast_console_cost_free: true
+cast_console_cooldown_free: false
 
 # Whether or not to respect wand power for the held wand when using /cast
 # Set the to 1.0 to use normal wand power, 0.0 to ignore wand power.

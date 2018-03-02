@@ -2387,28 +2387,24 @@ public class MagicController implements MageController {
         // turning off the costs/cooldowns.
 
         if (properties.contains("cast_command_cost_reduction")) {
-            double reduction = properties.getDouble("cast_command_cost_reduction") / 100.0;
-            castCommandCostMultiplier = (float)(1 - Math.min(1, reduction));
+            castCommandCostFree = (properties.getDouble("cast_command_cost_reduction") > 0);
         } else {
-            castCommandCostMultiplier =  (float)properties.getDouble("cast_command_cost_multiplier", castCommandCostMultiplier);
+            castCommandCostFree = properties.getBoolean("cast_command_cost_free", castCommandCostFree);
         }
         if (properties.contains("cast_command_cooldown_reduction")) {
-            double reduction = properties.getDouble("cast_command_cooldown_reduction") / 100.0;
-            castCommandCooldownMultiplier = (float)(1 - Math.min(1, reduction));
+            castCommandCooldownFree = (properties.getDouble("cast_command_cooldown_reduction") > 0);
         } else {
-            castCommandCooldownMultiplier =  (float)properties.getDouble("cast_command_cooldown_multiplier", castCommandCooldownMultiplier);
+            castCommandCooldownFree =  properties.getBoolean("cast_command_cooldown_free", castCommandCooldownFree);
         }
         if (properties.contains("cast_console_cost_reduction")) {
-            double reduction = properties.getDouble("cast_console_cost_reduction") / 100.0;
-            castConsoleCostMultiplier = (float)(1 - Math.min(1, reduction));
+            castConsoleCostFree = (properties.getDouble("cast_console_cost_reduction") > 0);
         } else {
-            castConsoleCostMultiplier =  (float)properties.getDouble("cast_console_cost_multiplier", castConsoleCostMultiplier);
+            castConsoleCostFree = properties.getBoolean("cast_console_cost_free", castConsoleCostFree);
         }
         if (properties.contains("cast_console_cooldown_reduction")) {
-            double reduction = properties.getDouble("cast_console_cooldown_reduction") / 100.0;
-            castConsoleCooldownMultiplier = (float)(1 - Math.min(1, reduction));
+            castConsoleCooldownFree = (properties.getDouble("cast_console_cooldown_reduction") > 0);
         } else {
-            castConsoleCooldownMultiplier =  (float)properties.getDouble("cast_console_cooldown_multiplier", castConsoleCooldownMultiplier);
+            castConsoleCooldownFree = properties.getBoolean("cast_console_cooldown_free", castConsoleCooldownFree);
         }
 
 		castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
@@ -3026,14 +3022,14 @@ public class MagicController implements MageController {
             com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 			if (sender instanceof BlockCommandSender)
             {
-                mage.setCostMultiplier(override ? castCommandCostMultiplier : 1);
-                mage.setCooldownMultiplier(override ? castCommandCooldownMultiplier : 1);
+                mage.setCostFree(override);
+                mage.setCostFree(override);
                 mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);
             }
             else
             {
-                mage.setCostMultiplier(override ? castConsoleCostMultiplier : 1);
-                mage.setCooldownMultiplier(override ? castConsoleCooldownMultiplier : 1);
+                mage.setCostFree(override);
+                mage.setCooldownFree(override);
                 mage.setPowerMultiplier(override ? castConsolePowerMultiplier : 1);
             }
 		}
@@ -5242,11 +5238,11 @@ public class MagicController implements MageController {
     private boolean                             spEarnEnabled                   = true;
     private int                                 spMaximum                       = 0;
 
-    private float                               castCommandCostMultiplier       = 1.0f;
-    private float                               castCommandCooldownMultiplier   = 1.0f;
+    private boolean                             castCommandCostFree             = false;
+    private boolean                             castCommandCooldownFree         = false;
     private float								castCommandPowerMultiplier      = 0.0f;
-    private float                               castConsoleCostMultiplier       = 1.0f;
-    private float                               castConsoleCooldownMultiplier = 1.0f;
+    private boolean                             castConsoleCostFree             = false;
+    private boolean                             castConsoleCooldownFree         = false;
     private float								castConsolePowerMultiplier      = 0.0f;
     private float							 	costReduction	    			= 0.0f;
     private float							 	cooldownReduction				= 0.0f;

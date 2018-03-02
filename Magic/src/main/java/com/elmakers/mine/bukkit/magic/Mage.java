@@ -156,8 +156,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private float powerMultiplier = 1;
     private float spMultiplier = 1;
 
-    private float costMultiplier = 1;
-    private float cooldownMultiplier = 1;
+    private boolean costFree = false;
+    private boolean cooldownFree = false;
 
     protected boolean isVanished = false;
     protected long superProtectionExpiration = 0;
@@ -255,12 +255,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    public void setCostMultiplier(float reduction) {
-        costMultiplier = reduction;
+    public void setCostFree(boolean free) {
+        costFree = free;
     }
 
-    public void setCooldownMultiplier(float reduction) {
-        cooldownMultiplier = reduction;
+    public void setCooldownFree(boolean free) {
+        cooldownFree = free;
     }
 
     @Override
@@ -1733,8 +1733,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isCostFree() {
-        // Special case for command blocks and Automata
-        if (getPlayer() == null) return true;
+        // Special case for command blocks, Automata and magic mobs
+        if (costFree || getPlayer() == null) return true;
         return getCostReduction() > 1;
     }
 
@@ -1768,7 +1768,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getCostReduction() {
-        return (costReduction * costMultiplier) * controller.getMaxCostReduction() + controller.getCostReduction();
+        if (costFree) {
+            return 1;
+        }
+        return costReduction * controller.getMaxCostReduction() + controller.getCostReduction();
     }
 
     @Override
@@ -1783,12 +1786,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getCooldownReduction() {
-        return (cooldownReduction * cooldownMultiplier) * controller.getMaxCooldownReduction() + controller.getCooldownReduction();
+        if (cooldownFree) {
+            return 1;
+        }
+        return cooldownReduction * controller.getMaxCooldownReduction() + controller.getCooldownReduction();
     }
 
     @Override
     public boolean isCooldownFree() {
-        return getCooldownReduction() > 1;
+        return cooldownFree || getCooldownReduction() > 1;
     }
 
     @Override
