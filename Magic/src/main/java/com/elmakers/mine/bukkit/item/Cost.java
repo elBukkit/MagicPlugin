@@ -310,5 +310,12 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     public void setAmount(double amount) {
         this.amount = amount;
+        if (type == Type.ITEM && item != null) {
+            item.setAmount((int)Math.max(1, Math.ceil(amount)));
+        }
+    }
+
+    public void scale(double scale) {
+        setAmount(amount * scale);
     }
 }

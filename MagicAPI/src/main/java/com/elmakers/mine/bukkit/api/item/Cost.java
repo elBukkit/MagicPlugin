@@ -128,4 +128,11 @@ public interface Cost {
      * @return true if this cost is an item
      */
     boolean isItem();
+
+    /**
+     * Multiply this cost by a scale value.
+     *
+     * @param scale The cost multiplier.
+     */
+    void scale(double scale);
 }
