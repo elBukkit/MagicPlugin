@@ -1,7 +1,7 @@
 # TODO
 
 
-## 7.2
+## 7.3
 
  - Re-work protection
    - Add damage type option to Damage action

@@ -17,6 +17,7 @@
    source of damage and give credit for kills. This is a vanilla limitation.
  - Wand protection format changed to a map (e.g. protection.fall) for greater flexibility. See MIGRATION.md
  - Add "size" parameter for slimes to magic mobs
+ - Add requirement, cost scaling, and many other features to Selector action
   
 ## 7.1.5
 

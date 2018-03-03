@@ -2,14 +2,15 @@
 
 This is a *very rough* approximation of where Magic is headed in future versions.
 
-## 7.2
-
- - Ability to specify damage protection (and other properties like cooldown reduction) at the class level
- - Above should be able to include attribute equations
- - Custom damage types, for use with Damage action and in protection
- - A system to earn protection and other bonuses (separate from attributes) in survival configs
-
 ## 7.3
+
+ - Ability to apply attribute equations to properties like protection
+ - Custom damage types, for use with Damage action and in protection/weakness/damage bonuses
+ - Support for protection/weakness/damage bonuses on magic mobs
+ - Status effect system for temporary (timed) property changes
+
+## 7.4
+
  - Internal attribute system
    - Including damage reduction
    - Mana bonuses
