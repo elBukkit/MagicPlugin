@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
 
-public class MageClass extends CasterProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
+public class MageClass extends TemplatedProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
     protected final MageClassTemplate template;
     protected final MageProperties mageProperties;
     protected final Mage mage;
@@ -67,6 +67,7 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         return value;
     }
 
+    @Override
     public @Nonnull MageClassTemplate getTemplate() {
         return template;
     }

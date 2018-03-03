@@ -193,7 +193,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.wand.WandTemplate getMigrateTemplate() {
+    public WandTemplate getMigrateTemplate() {
         return migrateTemplate == null ? null : controller.getWandTemplate(migrateTemplate);
     }
     

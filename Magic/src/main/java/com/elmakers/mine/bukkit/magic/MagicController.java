@@ -27,7 +27,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.NegatedHashSet;
@@ -87,6 +86,7 @@ import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
+import com.elmakers.mine.bukkit.wand.WandTemplate;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
 import com.google.common.base.Preconditions;
@@ -3578,8 +3578,8 @@ public class MagicController implements MageController {
     }
     
     @Override
-    public Collection<WandTemplate> getWandTemplates() {
-        return wandTemplates.values();
+    public Collection<com.elmakers.mine.bukkit.api.wand.WandTemplate> getWandTemplates() {
+        return new ArrayList<com.elmakers.mine.bukkit.api.wand.WandTemplate>(wandTemplates.values());
     }
 
     protected ConfigurationSection resolveConfiguration(String key, ConfigurationSection properties, Map<String, ConfigurationSection> configurations) {

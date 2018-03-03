@@ -10,12 +10,17 @@
      - How to respect that via protection? 
      - Does Damage action need to deal with protection directly now, or can we pass along the
        custom damage type somehow? Maybe entity metadata?
+ - Add weakness and damage_bonus properties per-damage type
+ - Magic mob support for protection, damage buffs and weakness
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
    
 ## Higher Priority
 
+ - Cancel action on a spell doesn't cancel FX?
+ - Spellbook shouldn't show spell name
+ - Spells can be worn .. ?  Skill icons maybe?
  - Mobs removed by MagicWorlds still drop loot... ? 
  - PerWorldInventory logout issues, can't reproduce
  - Broom issues when in creative mode
