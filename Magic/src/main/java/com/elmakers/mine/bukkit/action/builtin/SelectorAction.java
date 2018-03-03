@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -16,10 +17,12 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.item.Cost;
+import com.elmakers.mine.bukkit.math.EquationStore;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import de.slikey.effectlib.math.EquationTransform;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -37,8 +40,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SelectorAction extends BaseSpellAction implements GUIAction, CostReducer
 {
@@ -72,6 +77,68 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         }
     }
 
+    protected enum ModifierType { WAND, MAGE, CLASS, ATTRIBUTE };
+
+    protected class CostModifier {
+        private ModifierType type;
+        private String equation;
+        private String property;
+        private double defaultValue;
+
+        public CostModifier(ConfigurationSection configuration) {
+            String typeString = configuration.getString("type");
+            try {
+                type = ModifierType.valueOf(typeString.toUpperCase());
+            } catch (Exception ex) {
+                context.getLogger().warning("Invalid modifier type in selector config: " + typeString);
+                type = null;
+                return;
+            }
+
+            defaultValue = configuration.getDouble("default");
+            equation = configuration.getString("scale");
+            if (type == ModifierType.ATTRIBUTE) {
+                property = configuration.getString("attribute");
+            } else {
+                property = configuration.getString("property");
+            }
+        }
+
+        public void modify(Cost cost) {
+            if (type == null) return;
+
+            Mage mage = context.getMage();
+            double value = defaultValue;
+            switch (type) {
+                case MAGE:
+                    value = mage.getProperties().getProperty(property, value);
+                    break;
+                case ATTRIBUTE:
+                    Double attribute = mage.getAttribute(property);
+                    if (attribute != null) {
+                        value = attribute;
+                    }
+                    break;
+                case CLASS:
+                    CasterProperties activeClass = mage.getActiveClass();
+                    if (activeClass != null) {
+                        value = activeClass.getProperty(property, value);
+                    }
+                    break;
+                case WAND:
+                    Wand wand = mage.getActiveWand();
+                    if (wand != null) {
+                        value = wand.getProperty(property, value);
+                    }
+                    break;
+            }
+            EquationTransform transform = EquationStore.getInstance().getTransform(equation);
+            transform.setVariable("x", value);
+            double scale = transform.get();
+            cost.scale(scale);
+        }
+    }
+
     protected class SelectorConfiguration {
         protected @Nonnull ItemStack icon;
         protected @Nullable List<ItemStack> items;
@@ -84,6 +151,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         protected @Nonnull String unlockSection = "unlocked";
         protected @Nullable Collection<Requirement> requirements;
         protected @Nullable List<String> commands;
+        protected @Nullable List<CostModifier> costModifiers;
         protected boolean applyToWand = false;
         protected boolean showConfirmation = false;
         protected boolean showUnavailable = false;
@@ -144,6 +212,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 }
             }
             icon = parseItem(configuration.getString("icon"));
+            costModifiers = parseCostModifiers(configuration, "cost_modifiers");
             costs = parseCosts(configuration.getConfigurationSection("costs"));
             int cost = configuration.getInt("cost");
             if (cost > 0) {
@@ -165,6 +234,19 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
 
             return costs;
+        }
+
+        protected List<CostModifier> parseCostModifiers(ConfigurationSection configuration, String section) {
+            Collection<ConfigurationSection> modifierConfigs = ConfigurationUtils.getNodeList(configuration, section);
+            if (modifierConfigs == null) {
+                return null;
+            }
+            List<CostModifier> modifiers = new ArrayList<>();
+            for (ConfigurationSection modifierConfig : modifierConfigs) {
+                modifiers.add(new CostModifier(modifierConfig));
+            }
+
+            return modifiers;
         }
 
         public boolean hasLimit() {
@@ -314,10 +396,12 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 InventoryUtils.wrapText(description, lore);
             }
 
+            boolean unlocked = false;
             if (unlockKey != null && !unlockKey.isEmpty()) {
                 Mage mage = context.getMage();
                 ConfigurationSection unlocks = mage.getData().getConfigurationSection(unlockSection);
                 if (unlocks != null && unlocks.getBoolean(unlockKey, false)) {
+                    unlocked = true;
                     costs = null;
                     showConfirmation = false;
                     String unlockedMessage = getMessage("unlocked_lore");
@@ -325,26 +409,36 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 }
             }
 
-            if (costs != null) {
+            // Unlocked options skip requirements and costs
+            if (!unlocked) {
+                RequirementsResult check = checkRequirements(context);
+                if (!check.result.isSuccess()) {
+                    unavailable = true;
+                    if (check.message != null && !check.message.isEmpty()) {
+                        InventoryUtils.setMeta(icon, "unpurchasable", check.message);
+                        InventoryUtils.wrapText(check.message, lore);
+                    } else {
+                        showUnavailable = false;
+                    }
+                }
+            }
+
+            // Don't show costs if unavailable
+            if (costs != null && !unavailable) {
                 String costKey = unlockKey != null && !unlockKey.isEmpty() ? "unlock_cost_lore" : "cost_lore";
                 String requiredKey = unlockKey != null && !unlockKey.isEmpty() ? "required_unlock_cost_lore" : "required_cost_lore";
                 String costString = getMessage(costKey);
                 String requiredCostString = getMessage(requiredKey);
                 for (Cost cost : costs) {
+                    if (costModifiers != null) {
+                        for (CostModifier modifier : costModifiers) {
+                            modifier.modify(cost);
+                        }
+                    }
+
                     String costDescription = cost.has(context.getMage(), context.getWand(), reducer) ? costString : requiredCostString;
                     costDescription = costDescription.replace("$cost", cost.getFullDescription(context.getController().getMessages(), reducer));
                     InventoryUtils.wrapText(costDescription, lore);
-                }
-            }
-
-            RequirementsResult check = checkRequirements(context);
-            if (!check.result.isSuccess()) {
-                unavailable = true;
-                if (check.message != null && !check.message.isEmpty()) {
-                    InventoryUtils.setMeta(icon, "unpurchasable", check.message);
-                    InventoryUtils.wrapText(check.message, lore);
-                } else {
-                    showUnavailable = false;
                 }
             }
 

@@ -3,8 +3,6 @@
 
 ## 7.2
 
- - More Selector options
-   - Ability to scale prices based on attributes or wand/mage properties
  - Re-work protection
    - Add damage type option to Damage action
      - How to respect that via protection? 

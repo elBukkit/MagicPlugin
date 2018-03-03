@@ -19,18 +19,30 @@ wandbuffshop:
     - placeholder: true
     - cast_spell: add_protection
       cost: 1000
+      cost_modifiers:
+        - scale: "1 + 9 * (x ^ 3)"
+          type: wand
+          property: protection.overall
       requirements:
         - wand_properties:
           - property: protection.overall
             max: 1
     - cast_spell: add_fall_protection
       cost: 500
+      cost_modifiers:
+        - scale: "1 + 15 * (x ^ 3)"
+          type: wand
+          property: protection.fall
       requirements:
         - wand_properties:
           - property: protection.fall
             max: 1
     - cast_spell: add_fire_protection
       cost: 500
+      cost_modifiers:
+        - scale: "1 + 15 * (x ^ 3)"
+          type: wand
+          property: protection.fire
       requirements:
         - wand_properties:
           - property: protection.fire
