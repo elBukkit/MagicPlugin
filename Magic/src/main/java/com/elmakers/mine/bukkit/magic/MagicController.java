@@ -2411,7 +2411,6 @@ public class MagicController implements MageController {
 		castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
         castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
 
-
         maps.setAnimationAllowed(properties.getBoolean("enable_map_animations", true));
         costReduction = (float)properties.getDouble("cost_reduction", costReduction);
 		cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
@@ -3023,14 +3022,14 @@ public class MagicController implements MageController {
             com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 			if (sender instanceof BlockCommandSender)
             {
-                mage.setCostFree(override);
-                mage.setCostFree(override);
+                mage.setCostFree(override ? castCommandCostFree : false);
+                mage.setCooldownFree(override ? castCommandCooldownFree : false);
                 mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);
             }
             else
             {
-                mage.setCostFree(override);
-                mage.setCooldownFree(override);
+                mage.setCostFree(override ? castConsoleCostFree : false);
+                mage.setCooldownFree(override ? castConsoleCooldownFree : false);
                 mage.setPowerMultiplier(override ? castConsolePowerMultiplier : 1);
             }
 		}

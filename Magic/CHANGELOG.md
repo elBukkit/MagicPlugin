@@ -3,6 +3,7 @@
 ## 7.3
 
  - Fix painterly resource pack
+ - Fix cooldowns on NPCs, console and command block casting
 
 ## 7.2.2
 
