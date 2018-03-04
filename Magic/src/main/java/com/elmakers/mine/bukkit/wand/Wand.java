@@ -1463,7 +1463,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			migrateProtection("protection_projectiles", "projectile");
 			migrateProtection("protection_falling", "fall");
 			migrateProtection("protection_fire", "fire");
-			migrateProtection("protection_explosions", "protection_explosion");
+			migrateProtection("protection_explosions", "explosion");
 			protectionConfig = getConfigurationSection("protection");
 		}
 
