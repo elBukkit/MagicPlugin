@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 7.3
+
+ - Fix painterly resource pack
+
 ## 7.2.2
 
  - Another hotfix for weird behavior with offhand wands
