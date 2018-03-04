@@ -1992,7 +1992,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Add active spell to description
         Messages messages = controller.getMessages();
         boolean showSpell = isModifiable() && hasSpellProgression();
-        showSpell = !quickCast && (spells.size() > 1 || showSpell);
+        showSpell = !quickCast && (spells.size() > 1 || showSpell) && getMode() != WandMode.SKILLS;
         if (spell != null && showSpell) {
             name = getSpellDisplayName(messages, spell, brush) + " (" + name + ChatColor.WHITE + ")";
         }

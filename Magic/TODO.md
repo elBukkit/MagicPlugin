@@ -3,6 +3,8 @@
 
 ## 7.3
 
+ - describe commands shouldn't hide template properties, just color them if overridden
+
  - Re-work protection
    - Add damage type option to Damage action
      - How to respect that via protection? 
@@ -17,7 +19,6 @@
 ## Higher Priority
 
  - Cancel action on a spell doesn't cancel FX?
- - Spellbook shouldn't show spell name
  - Spells can be worn .. ?  Skill icons maybe?
  - Mobs removed by MagicWorlds still drop loot... ? 
  - PerWorldInventory logout issues, can't reproduce
