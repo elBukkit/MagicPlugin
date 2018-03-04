@@ -6,12 +6,12 @@
  - Wand protection properties have changed, they are now grouped into a "protection" map.
    Properties will migrate initially, but if you have anything (paths, commands, etc) that modifies or
    upgrades wand protection, you will need to adjust it accordingly!
-   protection -> protection.overall
-   protection_physical -> protection.physical
-   protection_projectiles -> protection.projectile
-   protection_falling -> protection.fall
-   protection_fire -> protection.fire
-   protection_explosions -> protection.explosion
+   - protection -> protection.overall
+   - protection_physical -> protection.physical
+   - protection_projectiles -> protection.projectile
+   - protection_falling -> protection.fall
+   - protection_fire -> protection.fire
+   - protection_explosions -> protection.explosion
  - The format for giving protection, cost_reduction and power via path upgrades has changed. They now need to be
    enclosed in a "properties" block. Ask for help if you need it!
  - The format for max damage reduction based on protection in config.yml has changed to allow for custom damage types.
