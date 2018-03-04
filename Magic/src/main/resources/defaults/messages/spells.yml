@@ -60,7 +60,7 @@ spells:
         cast: You curse $target
         upgrade_description: "&r&b&bull; &6Now confuses as well"
     broom:
-        name: Broom
+        name: Broom Skill
         cast: Your broom springs to life!
         deactivate: Your broom quiets down.
         crash: CRASH!

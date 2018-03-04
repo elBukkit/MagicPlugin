@@ -1,4 +1,5 @@
 broomstick:
+    class: broomrider
     path: broom
     mode: cast
     keep: true
