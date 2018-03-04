@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 7.2.1
+
+ - Hotfix for infinite recursion error when migrating legacy protection
+ - Make sure spellbooks don't put the spell name in their title
+ - Some improvements to /describe commands
+
 ## 7.2
 
  - Add Magic Torch (magictorch) item, not craftable, requires LightAPI

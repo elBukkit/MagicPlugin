@@ -1950,10 +1950,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration:");
 			ConfigurationSection itemConfig = getConfiguration();
 			Set<String> ownKeys = itemConfig.getKeys(false);
-			if (ignoreProperties != null) {
-				ownKeys.addAll(ignoreProperties);
-			}
-			template.describe(sender, ownKeys);
+			template.describe(sender, ignoreProperties, ownKeys);
 		}
 	}
 

@@ -250,17 +250,25 @@ public class BaseMagicProperties implements MagicProperties {
         return InventoryUtils.describeProperty(property, MAX_PROPERTY_DISPLAY_LENGTH);
     }
 
-    @Override
-    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {
         ConfigurationSection itemConfig = getConfiguration();
         Set<String> keys = itemConfig.getKeys(false);
         for (String key : keys) {
             Object value = itemConfig.get(key);
             if (value != null && (ignoreProperties == null || !ignoreProperties.contains(key))) {
-                String propertyColor = PROPERTY_KEYS.contains(key) ? ChatColor.DARK_AQUA.toString() : ChatColor.DARK_GREEN.toString();
-                sender.sendMessage(propertyColor + key + ChatColor.GRAY + ": " + ChatColor.WHITE + describeProperty(value));
+                ChatColor propertyColor = ChatColor.GRAY;
+                if (overriddenProperties == null || !overriddenProperties.contains(key)) {
+                    propertyColor = PROPERTY_KEYS.contains(key) ? ChatColor.DARK_AQUA : ChatColor.DARK_GREEN;
+                }
+
+                sender.sendMessage(propertyColor.toString() + key + ChatColor.GRAY + ": " + ChatColor.WHITE + describeProperty(value));
             }
         }
+    }
+
+    @Override
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
+        describe(sender, ignoreProperties, null);
     }
 
     @Override

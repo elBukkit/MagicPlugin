@@ -88,17 +88,14 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     @Override
     public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
         super.describe(sender, ignoreProperties);
-        Set<String> hideKeys = getConfiguration().getKeys(false);
-        if (ignoreProperties != null) {
-            hideKeys.addAll(ignoreProperties);
-        }
-        template.describe(sender, hideKeys);
-        hideKeys.addAll(template.getConfiguration().getKeys(false));
+        Set<String> ownKeys = getConfiguration().getKeys(false);
+        template.describe(sender, ignoreProperties, ownKeys);
+        ownKeys.addAll(template.getConfiguration().getKeys(false));
 
         MageClass parent = getParent();
         if (parent != null) {
             sender.sendMessage(ChatColor.AQUA + "Parent Class: " + ChatColor.GREEN + parent.getTemplate().getKey());
-            parent.describe(sender, hideKeys);
+            parent.describe(sender, ignoreProperties, ownKeys);
         }
     }
 

@@ -3,8 +3,6 @@
 
 ## 7.3
 
- - describe commands shouldn't hide template properties, just color them if overridden
-
  - Re-work protection
    - Add damage type option to Damage action
      - How to respect that via protection? 
