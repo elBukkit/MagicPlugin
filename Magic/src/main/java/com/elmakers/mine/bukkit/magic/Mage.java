@@ -544,7 +544,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    private void setOffhandWand(Wand offhandWand) {
+    public void setOffhandWand(Wand offhandWand) {
         // Avoid deactivating a wand by mistake, and avoid infinite recursion on null!
         if (this.offhandWand == offhandWand) return;
         this.offhandWand = offhandWand;
@@ -1237,9 +1237,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             if (itemInHand != null && controller.hasWandPermission(player)) {
                 Wand newActiveWand = controller.getWand(itemInHand);
-                if (newActiveWand.activateOffhand(this)) {
-                    setOffhandWand(newActiveWand);
-                } else {
+                if (!newActiveWand.activateOffhand(this)) {
                     setOffhandWand(null);
                 }
             }

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 7.2.2
+
+ - Another hotfix for weird behavior with offhand wands
+ - Broomstick progress gets stored on a new class instead of the broom item
+
 ## 7.2.1
 
  - Hotfix for infinite recursion error when migrating legacy protection

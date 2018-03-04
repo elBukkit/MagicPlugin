@@ -3171,7 +3171,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				return;
 			}
 		}
-		
+
 		if (!hasInventory) {
 			if (activeSpell == null || activeSpell.length() == 0) {
 				// Sanity check, so it'll switch to inventory next time
@@ -4285,7 +4285,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
 		// Don't build the inventory until activated so we can take Mage boosts into account
-		mage.setActiveWand(this);
+		if (offhand) {
+			mage.setOffhandWand(this);
+		} else {
+			mage.setActiveWand(this);
+		}
 		buildInventory();
 
 		updateMaxMana(false);
@@ -4318,7 +4322,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public boolean checkInventoryForUpgrades() {
 		boolean updated = false;
 		Player player = mage == null ? null : mage.getPlayer();
-		if (player == null) return false;
+		if (player == null || mage.hasStoredInventory()) return false;
 
 		// Check for spell or other special icons in the player's inventory
 		Inventory inventory = player.getInventory();
