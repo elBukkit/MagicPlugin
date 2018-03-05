@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 7.3
+
 ## 7.2.3
 
  - Fix painterly resource pack
