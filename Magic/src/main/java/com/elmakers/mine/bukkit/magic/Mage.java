@@ -2889,7 +2889,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     existing = 0.0;
                 }
                 double addValue = addProtection.getDouble(protectionType);
-                if (stack && addValue < 1) {
+                if (stack) {
                     existing = Math.min(1, existing + addValue);
                 } else {
                     existing = Math.max(existing, addValue);
@@ -2910,10 +2910,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     protected float stackValue(float currentValue, float stackValue) {
-        if (stackValue > 1) {
-            return Math.max(currentValue, stackValue);
-        }
-
         return Math.min(1, stackValue + currentValue);
     }
 
