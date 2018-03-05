@@ -1,13 +1,7 @@
 # TODO
 
-
 ## 7.3
 
- - Re-work protection
-   - Add damage type option to Damage action
-     - How to respect that via protection? 
-     - Does Damage action need to deal with protection directly now, or can we pass along the
-       custom damage type somehow? Maybe entity metadata?
  - Add weakness and damage_bonus properties per-damage type
  - Magic mob support for protection, damage buffs and weakness
  - Status effect system

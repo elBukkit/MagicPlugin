@@ -569,4 +569,14 @@ public interface Mage extends CostReducer {
     boolean isAutomaton();
 
     Double getAttribute(String attributeKey);
+
+    /**
+     *
+     * Set the damage type that was last given to a Mage.
+     *
+     * Set this prior to damaging a mage for custom weakness/protection to work properly.
+     *
+     * @param damageType A damage type as defined in config.yml
+     */
+    void setLastDamageType(String damageType);
 }

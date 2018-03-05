@@ -2,6 +2,10 @@
 
 ## 7.3
 
+ - Add "damage_type" parameter to Damage action, for using custom damage types.
+ - Change bending configs to define earth/air/fire/water damage types, each bending class has protection against
+   its own elements.
+
 ## 7.2.3
 
  - Fix painterly resource pack

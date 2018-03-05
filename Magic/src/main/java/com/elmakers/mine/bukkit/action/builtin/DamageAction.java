@@ -112,8 +112,22 @@ public class DamageAction extends BaseSpellAction
 					damage *= damageMultiplier;
 				}
 				if (damageType != null) {
-					mage.sendDebugMessage(ChatColor.RED + "Damaging (" + damageType + ") " + targetEntity.getType() + ": " + damage, 20);
-					CompatibilityUtils.damage(targetEntity, damage, mage.getEntity(), damageType);
+					Mage targetMage = controller.getRegisteredMage(targetEntity);
+					String targetAnnotation = "";
+					if (targetMage != null) {
+						targetMage.setLastDamageType(damageType);
+					} else  {
+						targetAnnotation = "*";
+					}
+					mage.sendDebugMessage(ChatColor.RED + "Damaging (" + damageType + ") " + targetEntity.getType() + targetAnnotation + ": " + damage, 20);
+
+					// Have to do magic damage to preserve the source, it seems like this is only important for player
+					// mages since other plugins may be tracking kills.
+					if (mage.isPlayer() && controller.getDamageTypes().contains(damageType)) {
+						CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
+					} else {
+						CompatibilityUtils.damage(targetEntity, damage, mage.getEntity(), damageType);
+					}
 				} else if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
 					mage.sendDebugMessage(ChatColor.RED + "Damaging (Magic) " + targetEntity.getType() + ": " + damage, 20);
 					CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());

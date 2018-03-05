@@ -199,6 +199,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private String destinationWarp;
     private Integer lastActivatedSlot;
+    private String lastDamageType;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -341,9 +342,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    public void onPlayerDamage(EntityDamageEvent event) {
-        Player player = getPlayer();
-        if (player == null) {
+    public void onDamage(EntityDamageEvent event) {
+        String damageType = lastDamageType;
+        lastDamageType = null;
+        LivingEntity entity = getLivingEntity();
+        if (entity == null) {
             return;
         }
 
@@ -365,7 +368,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     if (li != null) {
                         scale = event.getDamage() / li.getMaxHealth();
                     }
-                    fallingSpell.playEffects("land", (float)scale, player.getLocation().getBlock().getRelative(BlockFace.DOWN));
+                    fallingSpell.playEffects("land", (float)scale, getLocation().getBlock().getRelative(BlockFace.DOWN));
                 }
                 if (fallProtectionCount <= 0) {
                     fallProtection = 0;
@@ -379,13 +382,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if (isSuperProtected()) {
             event.setCancelled(true);
-            if (player.getFireTicks() > 0) {
-                player.setFireTicks(0);
+            if (entity.getFireTicks() > 0) {
+                entity.setFireTicks(0);
             }
             return;
         }
 
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) {
+            return;
+        }
 
         // First check for damage reduction
         double reduction = 0;
@@ -393,29 +398,34 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (overallProtection != null) {
             reduction = overallProtection * controller.getMaxDamageReduction("overall");
         }
-        String damageType = "";
-        switch (cause) {
-            case CONTACT:
-            case ENTITY_ATTACK:
-                damageType = "physical";
-                break;
-            case FIRE:
-            case FIRE_TICK:
-            case LAVA:
-                damageType = "fire";
-                // Also put out fire if they have maxed out fire protection.
-                double damageReductionFire = getProtection("fire");
-                if (damageReductionFire >= 1 && player.getFireTicks() > 0) {
-                    player.setFireTicks(0);
-                }
-                break;
-            case BLOCK_EXPLOSION:
-            case ENTITY_EXPLOSION:
-                damageType = "explosion";
-                break;
-            default:
-                damageType = cause.name().toLowerCase();
-                break;
+
+        if (cause == EntityDamageEvent.DamageCause.FIRE_TICK) {
+            // Also put out fire if they have maxed out fire protection.
+            double damageReductionFire = getProtection("fire");
+            if (damageReductionFire >= 1 && entity.getFireTicks() > 0) {
+                entity.setFireTicks(0);
+            }
+        }
+
+        if (damageType == null) {
+            switch (cause) {
+                case CONTACT:
+                case ENTITY_ATTACK:
+                    damageType = "physical";
+                    break;
+                case FIRE:
+                case FIRE_TICK:
+                case LAVA:
+                    damageType = "fire";
+                    break;
+                case BLOCK_EXPLOSION:
+                case ENTITY_EXPLOSION:
+                    damageType = "explosion";
+                    break;
+                default:
+                    damageType = cause.name().toLowerCase();
+                    break;
+            }
         }
 
         double protection = getProtection(damageType);
@@ -428,10 +438,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         double damage = event.getDamage();
+        sendDebugMessage(ChatColor.RED + "Damaged by " + ChatColor.BLUE + damageType + ChatColor.RED + " for " +
+                ChatColor.DARK_RED + damage, 15);
         if (reduction > 0) {
-            sendDebugMessage("Damage type " + damageType + " reduced by " + reduction, 18);
             damage = (1.0 - reduction) * damage;
             if (damage <= 0) damage = 0.1;
+            sendDebugMessage(ChatColor.DARK_RED + "Damage type " + ChatColor.BLUE + damageType +
+                    " reduced by " + ChatColor.AQUA + reduction + ChatColor.DARK_RED + " to " + ChatColor.RED + damage, 18);
             event.setDamage(damage);
         }
 
@@ -3383,6 +3396,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         return attribute;
+    }
+
+    @Override
+    public void setLastDamageType(String damageType) {
+        lastDamageType = damageType;
     }
 }
 

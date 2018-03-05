@@ -441,7 +441,7 @@ public class EntityController implements Listener {
                 if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
                 com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
 
-                mage.onPlayerDamage(event);
+                mage.onDamage(event);
             }
             else
             {
@@ -450,7 +450,7 @@ public class EntityController implements Listener {
                 if (apiMountMage != null) {
                     if (!(apiMountMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
                     com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMountMage;
-                    mage.onPlayerDamage(event);
+                    mage.onDamage(event);
                 }
             }
             if (entity instanceof Item)
