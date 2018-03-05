@@ -5,6 +5,8 @@
  - Add "damage_type" parameter to Damage action, for using custom damage types.
  - Change bending configs to define earth/air/fire/water damage types, each bending class has protection against
    its own elements.
+ - Implement "weakness" and "strength" properties, which can be applied to classes or mobs for type-specific or overall
+   damage weaknesses or bonuses.
 
 ## 7.2.3
 

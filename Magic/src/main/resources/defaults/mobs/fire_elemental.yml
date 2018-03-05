@@ -5,6 +5,8 @@ fire_elemental:
   default_drops: false
   protection:
     fire: 2
+  weakness:
+    water: 1
   cast_interval: 5000
   cast:
     fire: 100

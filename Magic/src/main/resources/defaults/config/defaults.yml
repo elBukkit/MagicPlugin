@@ -544,6 +544,11 @@ max_cooldown_reduction: 0.75
 # For each damage type you can specify a max reduction % allowed. This is by how much damage is reduced for a player
 # that has maxed out protection for that source.
 #
+# You can also specify max_strength- this is the damage multiplier that an attacker will receive if they have a "strength"
+# of 1.
+#
+# And max_weakness is the damage multiplier that a defender will receive if they have a "weakness" of 1.
+#
 # For instance, if you have fire damage set to max_reduction of 0.5, a player with a protection.fire of 1.0 (100%, maxed out)
 # will take 50% damage from all fire sources. A player with protection.fire of 0.5 will take 25% damage.
 #
@@ -558,16 +563,28 @@ max_cooldown_reduction: 0.75
 damage_types:
   overall:
     max_reduction: 0.2
+    max_strength: 5
+    max_weakness: 10
   explosion:
     max_reduction: 0.2
+    max_strength: 5
+    max_weakness: 10
   fall:
     max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
   fire:
     max_reduction: 0.5
+    max_strength: 5
+    max_weakness: 10
   physical:
     max_reduction: 0.6
+    max_strength: 5
+    max_weakness: 10
   projectile:
     max_reduction: 0.2
+    max_strength: 5
+    max_weakness: 10
 
 # These are used only for "Roman" display mode for mana on wand lore
 max_mana: 1000

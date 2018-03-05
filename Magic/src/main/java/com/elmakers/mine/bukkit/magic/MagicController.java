@@ -409,13 +409,23 @@ public class MagicController implements MageController {
     }
 
     public double getMaxDamageReduction(String protectionType) {
-        Double maxValue = protectionDamageReduction.get(protectionType);
-        return maxValue == null ? 0 : maxValue;
+        DamageType damageType = damageTypes.get(protectionType);
+        return damageType == null ? 0 : damageType.getMaxReduction();
+    }
+
+    public double getMaxAttackMultiplier(String protectionType) {
+        DamageType damageType = damageTypes.get(protectionType);
+        return damageType == null ? 1 : damageType.getMaxAttackMultiplier();
+    }
+
+    public double getMaxDefendMultiplier(String protectionType) {
+        DamageType damageType = damageTypes.get(protectionType);
+        return damageType == null ? 1 : damageType.getMaxDefendMultiplier();
     }
 
     @Override
     public @Nonnull Set<String> getDamageTypes() {
-        return protectionDamageReduction.keySet();
+        return damageTypes.keySet();
     }
 
     public float getMaxCostReduction() {
@@ -2333,7 +2343,7 @@ public class MagicController implements MageController {
             Set<String> typeKeys = damageTypes.getKeys(false);
             for (String typeKey : typeKeys) {
                 ConfigurationSection damageType = damageTypes.getConfigurationSection(typeKey);
-                protectionDamageReduction.put(typeKey, damageType.getDouble("max_reduction"));
+                this.damageTypes.put(typeKey, new DamageType(damageType));
             }
         }
         maxCostReduction = (float)properties.getDouble("max_cost_reduction", maxCostReduction);
@@ -5223,7 +5233,7 @@ public class MagicController implements MageController {
     private float								maxRangePowerMultiplierMax 	    = 5.0f;
 
     private float								maxPower						= 100.0f;
-    private Map<String, Double>                 protectionDamageReduction       = new HashMap<>();
+    private Map<String, DamageType>             damageTypes                     = new HashMap<>();
     private float								maxCostReduction 	            = 0.5f;
     private float								maxCooldownReduction        	= 0.5f;
     private int								    maxMana        	                = 1000;

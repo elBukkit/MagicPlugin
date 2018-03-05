@@ -73,6 +73,9 @@ import org.bukkit.util.Vector;
 public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData, Cloneable {
     protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<>();
 
+    // These properties will get copied directly to mage data, as if they were in the "mage" section.
+    private static final String[] MAGE_PROPERTIES = {"protection", "weakness", "strength"};
+
     protected String key;
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
@@ -267,12 +270,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         mageProperties = parameters.getConfigurationSection("mage");
 
-        ConfigurationSection protectionConfig = parameters.getConfigurationSection("protection");
-        if (protectionConfig != null) {
-            if (mageProperties == null) {
-                mageProperties = new MemoryConfiguration();
+        for (String mageProperty : MAGE_PROPERTIES) {
+            ConfigurationSection mageConfig = parameters.getConfigurationSection(mageProperty);
+            if (mageConfig != null) {
+                if (mageProperties == null) {
+                    mageProperties = new MemoryConfiguration();
+                }
+                mageProperties.set(mageProperty, mageConfig);
             }
-            mageProperties.set("protection", protectionConfig);
         }
 
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");

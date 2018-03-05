@@ -151,6 +151,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     private Map<String, Double> protection = new HashMap<>();
+    private Map<String, Double> weakness = new HashMap<>();
+    private Map<String, Double> strength = new HashMap<>();
     private float costReduction = 0;
     private float cooldownReduction = 0;
     private float consumeReduction = 0;
@@ -400,6 +402,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             reduction = overallProtection * controller.getMaxDamageReduction("overall");
         }
 
+        // Apply weaknesses
+        double multiplier = 1;
+        Double overallWeakness = weakness.get("overall");
+        if (overallWeakness != null && overallWeakness > 0) {
+            double defendMultiplier = controller.getMaxDefendMultiplier("overall");
+            if (defendMultiplier > 1) {
+                defendMultiplier = 1 + (defendMultiplier - 1) * overallWeakness;
+                multiplier *= defendMultiplier;
+            }
+        }
+
         if (cause == EntityDamageEvent.DamageCause.FIRE_TICK) {
             // Also put out fire if they have maxed out fire protection.
             double damageReductionFire = getProtection("fire");
@@ -435,18 +448,31 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if (reduction >= 1) {
             event.setCancelled(true);
-            sendDebugMessage(ChatColor.RED + "Damage nullified by " + ChatColor.BLUE + damageType, 19);
+            sendDebugMessage(ChatColor.RED + "Damage nullified by " + ChatColor.BLUE + damageType, 8);
             return;
         }
 
         double damage = event.getDamage();
-        sendDebugMessage(ChatColor.RED + "Damaged by " + ChatColor.BLUE + damageType + ChatColor.RED + " for " +
-                ChatColor.DARK_RED + damage, 15);
+        sendDebugMessage(ChatColor.RED + "Damaged by " + ChatColor.BLUE + (damageType == null ? "generic" : damageType) + ChatColor.RED + " for " +
+                ChatColor.DARK_RED + damage, 10);
         if (reduction > 0) {
             damage = (1.0 - reduction) * damage;
-            if (damage <= 0) damage = 0.1;
             sendDebugMessage(ChatColor.DARK_RED + "Damage type " + ChatColor.BLUE + damageType +
-                    " reduced by " + ChatColor.AQUA + reduction + ChatColor.DARK_RED + " to " + ChatColor.RED + damage, 18);
+                    " reduced by " + ChatColor.AQUA + reduction + ChatColor.DARK_RED + " to " + ChatColor.RED + damage, 9);
+            event.setDamage(damage);
+        }
+
+        double weakness = getWeakness(damageType);
+        double maxMultiplier = controller.getMaxDefendMultiplier(damageType);
+        if (maxMultiplier > 1 && weakness > 0) {
+            weakness = 1 + (maxMultiplier - 1) * weakness;
+            multiplier *= weakness;
+        }
+
+        if (multiplier > 1) {
+            damage = multiplier * damage;
+            sendDebugMessage(ChatColor.DARK_RED + "Damage type " + ChatColor.BLUE + damageType +
+                    " multiplied by " + ChatColor.AQUA + multiplier + ChatColor.DARK_RED + " to " + ChatColor.RED + damage, 9);
             event.setDamage(damage);
         }
 
@@ -469,6 +495,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public double getProtection(String damageType) {
         Double value = protection.get(damageType);
+        return value == null ? 0 : value;
+    }
+
+    public double getWeakness(String damageType) {
+        Double value = weakness.get(damageType);
         return value == null ? 0 : value;
     }
     
@@ -2087,8 +2118,34 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getDamageMultiplier() {
+        float multiplier = 1.0f;
         float maxPowerMultiplier = controller.getMaxDamagePowerMultiplier() - 1;
-        return 1 + (maxPowerMultiplier * getPower());
+        if (maxPowerMultiplier > 0) {
+            multiplier = 1 + (maxPowerMultiplier * getPower());
+        }
+        Double overallMultiplier = strength.get("overall");
+        if (overallMultiplier != null && overallMultiplier > 0) {
+            double attackMultiplier = controller.getMaxAttackMultiplier("overall");
+            if (attackMultiplier > 1) {
+                attackMultiplier = 1 + (attackMultiplier - 1) * overallMultiplier;
+                multiplier *= attackMultiplier;
+            }
+        }
+        return multiplier;
+    }
+
+    @Override
+    public double getDamageMultiplier(String damageType) {
+        double multiplier = getDamageMultiplier();
+        Double overallMultiplier = damageType == null || damageType.isEmpty() ? null : strength.get(damageType);
+        if (overallMultiplier != null && overallMultiplier > 0) {
+            double attackMultiplier = controller.getMaxAttackMultiplier("overall");
+            if (attackMultiplier > 1) {
+                attackMultiplier = 1 + (attackMultiplier - 1) * overallMultiplier;
+                multiplier *= attackMultiplier;
+            }
+        }
+        return multiplier;
     }
 
     @Override
@@ -2876,27 +2933,33 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         updatePassiveEffects();
     }
 
-    protected void addPassiveEffects(CasterProperties properties) {
-        spMultiplier *= properties.getDouble("sp_multiplier", 1.0);
-
-       ConfigurationSection addProtection = properties.getConfigurationSection("protection");
-       boolean stack = properties.getBoolean("stack", false);
-       if (addProtection != null) {
-           Set<String> protectionTypes = addProtection.getKeys(false);
-            for (String protectionType : protectionTypes) {
-                Double existing = protection.get(protectionType);
+    protected void addPassiveEffectsGroup(Map<String, Double> properties, CasterProperties addProperties, String section, boolean stack) {
+       ConfigurationSection addSection = addProperties.getConfigurationSection(section);
+       if (addSection != null) {
+           Set<String> sectionTypes = addSection.getKeys(false);
+            for (String sectionType : sectionTypes) {
+                Double existing = properties.get(sectionType);
                 if (existing == null) {
                     existing = 0.0;
                 }
-                double addValue = addProtection.getDouble(protectionType);
+                double addValue = addSection.getDouble(sectionType);
                 if (stack) {
                     existing = Math.min(1, existing + addValue);
                 } else {
                     existing = Math.max(existing, addValue);
                 }
-                protection.put(protectionType, existing);
+                properties.put(sectionType, existing);
             }
        }
+    }
+
+    protected void addPassiveEffects(CasterProperties properties) {
+        spMultiplier *= properties.getDouble("sp_multiplier", 1.0);
+
+       boolean stack = properties.getBoolean("stack", false);
+       addPassiveEffectsGroup(protection, properties, "protection", stack);
+       addPassiveEffectsGroup(weakness, properties, "weakness", stack);
+       addPassiveEffectsGroup(strength, properties, "strength", stack);
 
        if (stack) {
            cooldownReduction = stackValue(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
@@ -2915,6 +2978,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     protected void updatePassiveEffects() {
         protection.clear();
+        strength.clear();
+        weakness.clear();
 
         spMultiplier = 1;
         cooldownReduction = 0;

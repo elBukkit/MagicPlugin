@@ -726,11 +726,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public boolean isCooldownFree() {
 		return cooldownReduction > 1;
 	}
-
-	public double getProtection(String protectionType) {
-    	Double amount = protection == null ? null : protection.get(protectionType);
-    	return amount == null ? 0.0f : amount;
-	}
 	
 	@Override
     public String getName() {

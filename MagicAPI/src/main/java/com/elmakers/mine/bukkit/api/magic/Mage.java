@@ -357,9 +357,22 @@ public interface Mage extends CostReducer {
     boolean isSuperProtected();
 
     float getRangeMultiplier();
-    float getDamageMultiplier();
     float getRadiusMultiplier();
     float getConstructionMultiplier();
+
+    /**
+     * Returns the combination of power-based damage multiplier, overall damage multiplier, and type-specific damage
+     * multiplier.
+     *
+     * @return
+     */
+    double getDamageMultiplier(String damageType);
+
+    /**
+     * Returns power-based damage combined with overall damage multipliers.
+     * @return
+     */
+    float getDamageMultiplier();
 
     Color getEffectColor();
     String getEffectParticleName();

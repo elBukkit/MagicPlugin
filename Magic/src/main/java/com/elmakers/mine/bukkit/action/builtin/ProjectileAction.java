@@ -89,9 +89,13 @@ public class ProjectileAction  extends BaseProjectileAction
 		// int count = this.count * mage.getRadiusMultiplier();
         // int speed = this.speed * damageMultiplier;
 		int size = (int)(mage.getRadiusMultiplier() * this.size);
-		float damageMultiplier = mage.getDamageMultiplier();
+		double damageMultiplier = mage.getDamageMultiplier("projectile");
         double damage = damageMultiplier * this.damage;
-		float spread = this.spread / damageMultiplier;
+        float radiusMultiplier = mage.getRadiusMultiplier();
+		float spread = this.spread;
+		if (radiusMultiplier > 1) {
+			 spread = spread / radiusMultiplier;
+		}
         Random random = context.getRandom();
 		
 		Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);

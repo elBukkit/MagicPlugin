@@ -98,7 +98,8 @@ public class DamageAction extends BaseSpellAction
 				} else {
 					damage = entityDamage;
 				}
-				damage *= mage.getDamageMultiplier();
+				double mageMultiplier = mage.getDamageMultiplier(damageType);
+				damage *= mageMultiplier;
 				if (maxDistanceSquared > 0) {
 					double distanceSquared = context.getLocation().distanceSquared(entity.getLocation());
 					if (distanceSquared > maxDistanceSquared) {
@@ -110,6 +111,7 @@ public class DamageAction extends BaseSpellAction
 				}
 				if (damageMultiplier != null) {
 					damage *= damageMultiplier;
+					mageMultiplier *= damageMultiplier;
 				}
 				if (damageType != null) {
 					Mage targetMage = controller.getRegisteredMage(targetEntity);
@@ -119,7 +121,7 @@ public class DamageAction extends BaseSpellAction
 					} else  {
 						targetAnnotation = "*";
 					}
-					mage.sendDebugMessage(ChatColor.RED + "Damaging (" + damageType + ") " + targetEntity.getType() + targetAnnotation + ": " + damage, 20);
+					mage.sendDebugMessage(ChatColor.RED + "Damaging (" + ChatColor.DARK_RED + damageType + ChatColor.RED + ") x " + ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + targetAnnotation + ": " + ChatColor.RED + damage, 5);
 
 					// Have to do magic damage to preserve the source, it seems like this is only important for player
 					// mages since other plugins may be tracking kills.
@@ -129,10 +131,10 @@ public class DamageAction extends BaseSpellAction
 						CompatibilityUtils.damage(targetEntity, damage, mage.getEntity(), damageType);
 					}
 				} else if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
-					mage.sendDebugMessage(ChatColor.RED + "Damaging (Magic) " + targetEntity.getType() + ": " + damage, 20);
+					mage.sendDebugMessage(ChatColor.RED + "Damaging (Magic) x " +  ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + ": " + damage, 5);
 					CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
 				} else {
-					mage.sendDebugMessage(ChatColor.RED + "Damaging " + targetEntity.getType() + ": " + damage, 20);
+					mage.sendDebugMessage(ChatColor.RED + "Damaging x " + ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + ": " + damage, 5);
 					CompatibilityUtils.damage(targetEntity, damage, mage.getEntity());
 				}
 				
