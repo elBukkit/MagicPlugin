@@ -50,10 +50,6 @@ public class HealAction extends BaseSpellAction
         {
             healAmount = targetEntity.getMaxHealth() * percentage;
         }
-        else
-        {
-            healAmount *= mage.getDamageMultiplier();
-        }
 
         EntityRegainHealthEvent event = new EntityRegainHealthEvent(targetEntity, healAmount, RegainReason.CUSTOM);
         Bukkit.getServer().getPluginManager().callEvent(event);
