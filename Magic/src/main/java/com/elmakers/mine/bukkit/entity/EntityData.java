@@ -35,6 +35,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.ArmorStand;
@@ -58,8 +59,6 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
@@ -133,8 +132,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected LinkedList<WeightedPair<String>> spells;
     protected boolean requiresTarget;
     protected ItemData requiresWand;
-
-    protected Map<DamageCause, Double> protection = null;
+    protected ConfigurationSection mageProperties;
     
     protected ConfigurationSection disguise;
     
@@ -267,18 +265,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
+        mageProperties = parameters.getConfigurationSection("mage");
+
         ConfigurationSection protectionConfig = parameters.getConfigurationSection("protection");
         if (protectionConfig != null) {
-            protection = new HashMap<>();
-            Set<String> keys = protectionConfig.getKeys(false);
-            for (String key : keys) {
-                try {
-                    DamageCause cause = DamageCause.valueOf(key.toUpperCase());
-                    protection.put(cause, protectionConfig.getDouble(key));
-                } catch (Exception ex) {
-                    controller.getLogger().log(Level.WARNING, " Invalid damage cause: " + key);
-                }
+            if (mageProperties == null) {
+                mageProperties = new MemoryConfiguration();
             }
+            mageProperties.set("protection", protectionConfig);
         }
 
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
@@ -658,7 +652,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             entity.setCustomName(name);
         }
 
-        if (controller != null && spells != null && tickInterval >= 0) {
+        boolean hasSpells = spells != null && tickInterval >= 0;
+        boolean hasProperties = mageProperties != null;
+        boolean needsMage = controller != null && (!hasSpells || hasProperties);
+        if (needsMage) {
             Mage apiMage = controller.getMage(entity);
             if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
@@ -666,6 +663,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         return true;
+    }
+
+    public ConfigurationSection getMageProperties() {
+        return mageProperties;
     }
 
     private boolean modifyPostSpawn(MageController controller, Entity entity) {
@@ -792,19 +793,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 }
             }
         }
-    }
-
-    public void onDamage(EntityDamageEvent event) {
-        if (protection == null) return;
-
-        DamageCause cause = event.getCause();
-        Double reduction = protection.get(cause);
-        if (reduction == null || reduction == 0) return;
-        if (reduction > 1) {
-            event.setCancelled(true);
-            return;
-        }
-        event.setDamage(event.getDamage() * reduction);
     }
 
     @Override

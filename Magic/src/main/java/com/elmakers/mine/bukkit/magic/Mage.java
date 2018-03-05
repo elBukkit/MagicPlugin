@@ -37,6 +37,7 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
@@ -434,6 +435,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if (reduction >= 1) {
             event.setCancelled(true);
+            sendDebugMessage(ChatColor.RED + "Damage nullified by " + ChatColor.BLUE + damageType, 19);
             return;
         }
 
@@ -1306,7 +1308,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (entityData != null) {
             if (lastTick != 0) {
                 long tickInterval = entityData.getTickInterval();
-                if (now - lastTick > tickInterval) {
+                if (tickInterval > 0 && now - lastTick > tickInterval) {
                     updateVelocity();
                     entityData.tick(this);
                     lastTick = now;
@@ -3128,6 +3130,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     
     public void setEntityData(EntityData entityData) {
         this.entityData = entityData;
+
+        ConfigurationSection mageProperties = entityData.getMageProperties();
+        if (mageProperties != null) {
+            ConfigurationUtils.addConfigurations(properties.getConfiguration(), mageProperties);
+            updatePassiveEffects();
+        }
     }
 
     @Override

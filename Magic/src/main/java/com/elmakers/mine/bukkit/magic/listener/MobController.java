@@ -103,21 +103,6 @@ public class MobController implements Listener {
         died.setCustomNameVisible(false);
         died.setCustomName(null);
     }
-
-    @EventHandler
-    public void onEntityDamage(EntityDamageEvent event) {
-        Entity entity = event.getEntity();
-        String name = entity.getCustomName();
-        if (name == null || name.isEmpty())
-        {
-            return;
-        }
-
-        EntityData mob = mobsByName.get(name);
-        if (mob == null) return;
-
-        mob.onDamage(event);
-    }
     
     public int getCount() {
         return mobs.size();
