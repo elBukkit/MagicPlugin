@@ -73,6 +73,9 @@ spells:
   firestream:
     name: Fire Stream
     description: Shoot a continuous stream of fire
+  fire_dagger:
+    name: Fire Dagger
+    description: Form a deadly weapon out of pure fire
   combustion:
     name: Combustion
     description: Cause objects to explode

@@ -5,24 +5,30 @@
 ### FIREBENDING
 
 fireball:
-     category: firebending
-     enabled: true
+  category: firebending
+  enabled: true
 
 fire:
-     category: firebending
-     enabled: true
+  category: firebending
+  enabled: true
 
 lightning:
-     category: firebending
-     enabled: true
+  category: firebending
+  enabled: true
+  parameters:
+     damage_type: fire
 
 firestream:
   inherit: flamethrower
   category: firebending
+  parameters:
+     damage_type: fire
 
 combustion:
   inherit: boom
   category: firebending
+  parameters:
+     damage_type: fire
 
 combustion|2:
   inherit: boom|2
@@ -33,6 +39,11 @@ combustion|2:
 lava:
      category: firebending
      enabled: true
+
+fire_dagger:
+  inherit: wound
+  parameters:
+    damage_type: fire
 
 ### AIRBENDING
 
@@ -226,6 +237,8 @@ breathofwind:
         velocity: 40
         interval: 250
         hitbox_size: 3
+        damage_type: air
+        pull: -1
     costs:
         mana: 40
 
@@ -337,6 +350,7 @@ waterjet:
     entity_damage: 6
     range: 6
     speed: 1
+    damage_type: water
 
 waterwhip:
   category: waterbending
@@ -372,6 +386,7 @@ waterwhip:
       entity_damage: 2
       cooldown: 5000
       delay: 250
+      damage_type: water
   costs:
       mana: 50
 
@@ -419,16 +434,18 @@ bloodbending:
   category: waterbending
 
 heal:
-     category: waterbending
-     enabled: true
+  category: waterbending
+  enabled: true
 
 cure:
-     category: waterbending
-     enabled: true
+  category: waterbending
+  enabled: true
 
 breathofice:
   inherit: frost
   category: waterbending
+  parameters:
+    damage_type: water
 
 ## EARTHBENDING
 
@@ -452,25 +469,29 @@ sandspout:
 earthsmash:
   inherit: blast
   category: earthbending
+  parameters:
+    damage_type: earth
 
 harden:
-     category: earthbending
-     enabled: true
+  category: earthbending
+  enabled: true
 
 earthquake:
-     category: earthbending
-     enabled: true
+  category: earthbending
+  enabled: true
+  parameters:
+    damage_type: earth
 
 collapse:
-     category: earthbending
-     enabled: true
+  category: earthbending
+  enabled: true
 
 earthtoss:
-     inherit: toss
-     category: earthbending
-     parameters:
-       undo: 5000
-       brush: dirt
+  inherit: toss
+  category: earthbending
+  parameters:
+   undo: 5000
+   brush: dirt
 
 earthblock:
     icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
@@ -556,6 +577,7 @@ earthblock:
         speed: 1.5
         item_speed: 0.3
         living_entity_speed: 0.8
+        damage_type: earth
     costs:
         mana: 40
 
@@ -590,6 +612,7 @@ earthline:
       entity_damage: 4
       cooldown: 8000
       delay: 100
+      damage_type: earth
   costs:
       mana: 50
 
