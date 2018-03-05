@@ -1,5 +1,6 @@
 # Disable the resource pack.
 resource_pack: ""
+add_resource_pack: ""
 
 # Turn back on skull-based icons
 # They will look like cubes without any RP though.
