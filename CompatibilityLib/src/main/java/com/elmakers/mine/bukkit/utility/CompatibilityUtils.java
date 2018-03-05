@@ -497,7 +497,7 @@ public class CompatibilityUtils extends NMSUtils {
         }
         Object damageSource = (damageSources == null) ? null : damageSources.get(damageType.toUpperCase());
         if (damageSource == null || class_EntityLiving_damageEntityMethod == null) {
-            damage(target, amount, source);
+            magicDamage(target, amount, source);
             return;
         }
 
