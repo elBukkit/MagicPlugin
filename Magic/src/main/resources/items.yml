@@ -25,7 +25,7 @@
 #
 
 # Examples:
-# Note that a "#" chararacter means the line is commented out and has no effect.
+# Note that a "#" character means the line is commented out and has no effect.
 # Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
 # Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
 # 
