@@ -2,11 +2,9 @@
 
 ## 7.3
 
- - Add weakness and damage_bonus properties per-damage type
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
- - Add Skript integration, cast event and effect
    
 ## Higher Priority
 

@@ -7,6 +7,8 @@
    its own elements.
  - Implement "weakness" and "strength" properties, which can be applied to classes or mobs for type-specific or overall
    damage weaknesses or bonuses.
+ - Add optional count parameter to /mmob spawn command
+ - Add Skript integration, cast event and effect
 
 ## 7.2.3
 

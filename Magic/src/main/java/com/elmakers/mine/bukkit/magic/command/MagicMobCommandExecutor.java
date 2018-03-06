@@ -43,7 +43,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 0)
 		{
-            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list] <type>");
+            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list] <type> [count]");
 			return true;
 		}
         
@@ -67,7 +67,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
 
         if (!(sender instanceof Player) && !(sender instanceof BlockCommandSender) && args.length < 6) {
-            sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world>");
+            sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world> [count]");
             return true;
         }
         
@@ -125,14 +125,35 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
         
         if (targetLocation == null || targetLocation.getWorld() == null) {
-            sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world>");
+            sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world> [count]");
             return true;
         }
         
         String mobKey = args[1];
+        int count = 1;
+        String countString = null;
+        if (args.length == 7) {
+            countString = args[6];
+        } else if (args.length == 3) {
+            countString = args[2];
+        }
+        if (countString != null) {
+            try {
+                count = Integer.parseInt(countString);
+            } catch (Exception ex) {
+                sender.sendMessage(ChatColor.RED + "Invalid count: " + countString);
+                return true;
+            }
+        }
+
+        if (count <= 0) return true;
 
         MageController controller = api.getController();
-        Entity spawned = controller.spawnMob(mobKey, targetLocation);
+        Entity spawned = null;
+
+        for (int i = 0; i < count; i++) {
+            spawned = controller.spawnMob(mobKey, targetLocation);
+        }
         if (spawned == null) {
             sender.sendMessage(ChatColor.RED + "Unknown mob type " + mobKey);
             return true;
