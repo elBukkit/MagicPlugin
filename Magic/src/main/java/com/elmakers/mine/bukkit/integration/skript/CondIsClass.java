@@ -23,7 +23,9 @@ public class CondIsClass extends Condition {
     private Expression<String> classes;
 
     public static void register() {
-		Skript.registerCondition(CondIsClass.class, "%entities% (is|are) class %strings%", "%entities% (isn't|is not|aren't|are not) class %strings%");
+		Skript.registerCondition(CondIsClass.class,
+        "%entities% (is|are) class[es] %strings%",
+        "%entities% (isn't|is not|aren't|are not) class[es] %strings%");
     }
 
     @SuppressWarnings({"unchecked"})

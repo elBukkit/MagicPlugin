@@ -24,6 +24,7 @@ public class SkriptManager {
         SkriptCastEvent.register();
         SkriptCastEffect.register();
         CondIsClass.register();
+        CondHasPath.register();
         CondHasItem.register();
         ExprCaster.register();
         ExprTargets.register();
