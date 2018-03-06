@@ -128,4 +128,6 @@ mobarena:
   # protected:
   # - arena1
   # - arena2
-  
+
+# Skript integration will add cast events and effect
+skript_enabled: true;

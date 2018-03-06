@@ -6,6 +6,7 @@
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
+ - Add Skript integration, cast event and effect
    
 ## Higher Priority
 
@@ -18,6 +19,11 @@
  - Spells drop on death with lag (maybe)?
 
 ## Suggestions
+
+ - Skript integration
+   - https://dev.bukkit.org/projects/skript
+   - Example: https://github.com/RealGatt/SkExtras/tree/master/src/me/Funnygatt/SkExtras
+   - Builtins: https://github.com/bensku/Skript/blob/master/src/main/java/ch/njol/skript/events/EvtWeatherChange.java
 
  - Placeholder API integration: https://www.spigotmc.org/wiki/hooking-into-placeholderapi/
    - Allow placeholder-driven attributes

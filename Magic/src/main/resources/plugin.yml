@@ -22,7 +22,8 @@ softdepend:
   - LibsDisguises
   - Minigames
   - SkillAPI
-  - PlaceholderAPI]
+  - PlaceholderAPI
+  - Skript
 loadbefore:
   - Scavenger
   - SilkSpawners

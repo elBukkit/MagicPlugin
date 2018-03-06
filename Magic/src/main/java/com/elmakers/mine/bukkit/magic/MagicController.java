@@ -44,6 +44,7 @@ import com.elmakers.mine.bukkit.integration.LightAPIManager;
 import com.elmakers.mine.bukkit.integration.MobArenaManager;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
 import com.elmakers.mine.bukkit.integration.SkillAPIManager;
+import com.elmakers.mine.bukkit.integration.SkriptManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
@@ -1093,6 +1094,20 @@ public class MagicController implements MageController {
         } else {
             lightAPIManager = null;
             getLogger().info("LightAPI integration disabled.");
+        }
+
+        // Skript
+        if (skriptEnabled) {
+            if (Bukkit.getPluginManager().isPluginEnabled("Skript")) {
+                try {
+                    skriptManager = new SkriptManager(this);
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with LighSkripttAPI", ex);
+                }
+            }
+        } else {
+            skriptManager = null;
+            getLogger().info("Skript integration disabled.");
         }
 
         // Activate Metrics
@@ -2450,6 +2465,7 @@ public class MagicController implements MageController {
         useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
         lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
+        skriptEnabled = properties.getBoolean("skript_enabled", skriptEnabled);
         mobArenaConfiguration = properties.getConfigurationSection("mobarena");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);
@@ -5368,6 +5384,7 @@ public class MagicController implements MageController {
     private boolean                             useSkillAPIMana             = false;
     private boolean                             placeholdersEnabled         = true;
     private boolean                             lightAPIEnabled			    = true;
+    private boolean                             skriptEnabled			    = true;
     private ConfigurationSection                mobArenaConfiguration       = null;
     private boolean                             enableResourcePackCheck     = true;
     private int                                 resourcePackCheckInterval   = 0;
@@ -5397,6 +5414,7 @@ public class MagicController implements MageController {
     private PlaceholderAPIManager               placeholderAPIManager       = null;
     private LightAPIManager                     lightAPIManager             = null;
     private MobArenaManager                     mobArenaManager             = null;
+    private SkriptManager                       skriptManager               = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();

@@ -9,6 +9,16 @@ dash:
         cast:
         - class: Repeat
           actions:
+          - class: Retarget
+            range: 1
+            actions:
+            - class: CheckBlock
+              allowed: solid
+              actions:
+              - class: ChangeContext
+                target_caster: true
+                actions:
+                - class: Damage
           - class: ConeOfEffect
             actions:
             - class: Damage
