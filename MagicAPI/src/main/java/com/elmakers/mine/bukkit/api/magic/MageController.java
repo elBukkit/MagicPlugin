@@ -104,6 +104,7 @@ public interface MageController {
 
     String describeItem(ItemStack item);
     String getItemKey(ItemStack item);
+    String getWandKey(ItemStack item);
     boolean takeItem(Player player, ItemStack item);
     boolean hasItem(Player player, ItemStack item);
 

@@ -7,7 +7,7 @@ import ch.njol.skript.util.Getter;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.integration.skript.CondHasWand;
+import com.elmakers.mine.bukkit.integration.skript.CondHasItem;
 import com.elmakers.mine.bukkit.integration.skript.CondIsClass;
 import com.elmakers.mine.bukkit.integration.skript.ExprCaster;
 import com.elmakers.mine.bukkit.integration.skript.ExprTargets;
@@ -35,15 +35,17 @@ public class SkriptManager {
 				"(let|make) %commandsenders% cast [[the] spell] %string% [with %-string%]");
 
 		Skript.registerCondition(CondIsClass.class, "%entities% (is|are) class %strings%", "%entities% (isn't|is not|aren't|are not) class %strings%");
-		Skript.registerCondition(CondHasWand.class,
-	"[%entities%] ha(s|ve) wand [%-strings%] in [main] hand",
-			"[%entities%] (is|are) holding wand [%-strings%] [in main hand]",
-			"[%entities%] ha(s|ve) wand [%-strings%] in off[(-| )]hand",
-			"[%entities%] (is|are) holding wand [%-strings%] in off[(-| )]hand",
-			"[%entities%] (ha(s|ve) not|do[es]n't have) wand [%-strings%] in [main] hand",
-			"[%entities%] (is not|isn't) holding wand [%-strings%] [in main hand]",
-			"[%entities%] (ha(s|ve) not|do[es]n't have) wand [%-strings%] in off[(-| )]hand",
-			"[%entities%] (is not|isn't) holding wand [%-strings%] in off[(-| )]hand"
+		Skript.registerCondition(CondHasItem.class,
+	"[%entities%] ha(s|ve) [wand] [%-strings%] in [main] hand",
+			"[%entities%] [(is|are)] holding [wand] [%-strings%] [in main hand]",
+			"[%entities%] ha(s|ve) [wand] [%-strings%] in off[(-| )]hand",
+			"[%entities%] [(is|are)] holding [wand] [%-strings%] in off[(-| )]hand",
+			"[%entities%] (ha(s|ve) not|do[es]n't have) [wand] [%-strings%] in [main] hand",
+			"[%entities%] [(is|are)] wearing [wand] [%-strings%]",
+			"[%entities%] (is not|isn't) holding [wand] [%-strings%] [in main hand]",
+			"[%entities%] (ha(s|ve) not|do[es]n't have) [wand] [%-strings%] in off[(-| )]hand",
+			"[%entities%] (is not|isn't) holding [wand] [%-strings%] in off[(-| )]hand",
+			"[%entities%] (is not|isn't) wearing [wand] [%-strings%]"
 		);
 
 		EventValues.registerEventValue(CastEvent.class, Player.class, new Getter<Player, CastEvent>() {
