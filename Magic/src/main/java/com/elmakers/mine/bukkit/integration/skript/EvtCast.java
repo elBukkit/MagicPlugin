@@ -9,15 +9,15 @@ import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 
-public class SkriptCastEvent extends SkriptEvent {
+public class EvtCast extends SkriptEvent {
 	private Literal<String> spells;
 
 	public static void register() {
-        Skript.registerEvent("Cast Spell", SkriptCastEvent.class, CastEvent.class, "cast [[of] [spell] %-string%]")
+        Skript.registerEvent("Cast Spell", EvtCast.class, CastEvent.class, "cast [[of] [spell] %-string%]")
             .description("Called when a player or magic mob casts a spell")
             .examples("on cast", "on cast of missile", "on cast of spell blink");
 
-        Skript.registerEvent("Casting Spell", SkriptCastEvent.class, PreCastEvent.class, "casting [[of] [spell] %-string%]")
+        Skript.registerEvent("Casting Spell", EvtCast.class, PreCastEvent.class, "casting [[of] [spell] %-string%]")
             .description("Called when a player or magic mob is about to cast a spell")
             .examples("on cast", "on casting of missile", "on casting of spell blink");
     }

@@ -18,11 +18,6 @@
 
 ## Suggestions
 
- - Skript integration
-   - https://dev.bukkit.org/projects/skript
-   - Example: https://github.com/RealGatt/SkExtras/tree/master/src/me/Funnygatt/SkExtras
-   - Builtins: https://github.com/bensku/Skript/blob/master/src/main/java/ch/njol/skript/events/EvtWeatherChange.java
-
  - Placeholder API integration: https://www.spigotmc.org/wiki/hooking-into-placeholderapi/
    - Allow placeholder-driven attributes
  

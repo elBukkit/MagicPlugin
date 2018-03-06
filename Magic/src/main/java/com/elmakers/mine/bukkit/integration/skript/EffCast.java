@@ -12,13 +12,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 
-public class SkriptCastEffect extends Effect {
+public class EffCast extends Effect {
 	private Expression<CommandSender> senders;
 	private Expression<String> spell;
 	private Expression<String> arguments;
 
     public static void register() {
-        Skript.registerEffect(SkriptCastEffect.class,
+        Skript.registerEffect(EffCast.class,
             "cast [the] [spell] %string% [by %-commandsenders%] [with %-string%]",
             "(let|make) %commandsenders% cast [[the] spell] %string% [with %-string%]");
     }

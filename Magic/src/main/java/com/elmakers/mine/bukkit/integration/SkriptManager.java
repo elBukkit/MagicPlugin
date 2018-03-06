@@ -11,8 +11,8 @@ import com.elmakers.mine.bukkit.integration.skript.CondHasSpell;
 import com.elmakers.mine.bukkit.integration.skript.CondIsClass;
 import com.elmakers.mine.bukkit.integration.skript.ExprCaster;
 import com.elmakers.mine.bukkit.integration.skript.ExprTargets;
-import com.elmakers.mine.bukkit.integration.skript.SkriptCastEffect;
-import com.elmakers.mine.bukkit.integration.skript.SkriptCastEvent;
+import com.elmakers.mine.bukkit.integration.skript.EffCast;
+import com.elmakers.mine.bukkit.integration.skript.EvtCast;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -22,8 +22,8 @@ public class SkriptManager {
     public SkriptManager(MageController controller) {
         Plugin plugin = controller.getPlugin();
 
-        SkriptCastEvent.register();
-        SkriptCastEffect.register();
+        EvtCast.register();
+        EffCast.register();
         CondIsClass.register();
         CondHasPath.register();
         CondHasSpell.register();
