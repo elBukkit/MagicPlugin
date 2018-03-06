@@ -1,15 +1,20 @@
 # CHANGELOG
 
-## 7.3
+## 7.2.4
 
- - Add "damage_type" parameter to Damage action, for using custom damage types.
- - Change bending configs to define earth/air/fire/water damage types, each bending class has protection against
+ - Added "damage_type" parameter to Damage action, for using custom damage types.
+ - Changed bending configs to define earth/air/fire/water damage types, each bending class has protection against
    its own elements.
- - Implement "weakness" and "strength" properties, which can be applied to classes or mobs for type-specific or overall
+ - Implemented "weakness" and "strength" properties, which can be applied to classes or mobs for type-specific or overall
    damage weaknesses or bonuses.
- - Add optional count parameter to /mmob spawn command
- - Add Skript integration, cast event and effect
-
+ - Added optional count parameter to /mmob spawn command
+ - Added Skript integration: https://github.com/elBukkit/MagicPlugin/wiki/Skript
+ - Some changes/fixes to how cost/cooldown reductions work
+   - They are mostly back to only applying to spells cast with the wand that has the reduction
+   - Passive wands (armor, generally) can have reductions that stack and apply to the mage, but I don't have anything
+     like that in configs.
+   - This was done to prevent possible exploits with certain cost-free wands by holding them in the offhand.
+   
 ## 7.2.3
 
  - Fix painterly resource pack

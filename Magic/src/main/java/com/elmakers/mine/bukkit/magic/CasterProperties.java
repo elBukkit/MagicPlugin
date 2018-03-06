@@ -91,10 +91,6 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return getFloat("mana_max_boost", getFloat("xp_max_boost"));
     }
 
-    public float getCostReduction() {
-        return getFloat("cost_reduction");
-    }
-
     public boolean isCostFree() {
         return getFloat("cost_reduction") > 1;
     }

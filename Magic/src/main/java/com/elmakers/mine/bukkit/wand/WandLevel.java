@@ -233,7 +233,6 @@ public class WandLevel {
 		boolean addedProperties = false;
         Integer propertyCount = propertyCountProbability.size() == 0 ? Integer.valueOf(0) : RandomUtils.weightedRandom(propertyCountProbability);
 		ConfigurationSection wandProperties = new MemoryConfiguration();
-		double costReduction = wand.getCostReduction();
 
 		List<String> propertyKeys = new ArrayList<>(propertiesProbability.keySet());
         List<String> propertiesAvailable = new ArrayList<>();
@@ -260,14 +259,14 @@ public class WandLevel {
             double maxValue = path.getMaxProperty(randomProperty);
             if (probabilities.size() > 0 && current < maxValue) {
                 addedProperties = true;
-                current = Math.min(maxValue, costReduction + RandomUtils.weightedRandom(probabilities));
+                current = Math.min(maxValue, current + RandomUtils.weightedRandom(probabilities));
                 wandProperties.set(randomProperty, current);
             }
 		}
 		
 		// The mana system is considered separate from other properties
 
-		if (costReduction >= 1) {
+		if (wand.isCostFree()) {
 			// Cost-Free wands don't need mana.
 			wandProperties.set("mana_regeneration", 0);
 			wandProperties.set("mana_max", 0);

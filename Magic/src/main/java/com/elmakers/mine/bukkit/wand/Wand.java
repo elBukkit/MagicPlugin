@@ -157,6 +157,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	protected float consumeReduction = 0;
     protected float cooldownReduction = 0;
+    protected float costReduction = 0;
     protected Map<String, Double> protection;
     private float power = 0;
     private float spMultiplier = 1;
@@ -677,13 +678,42 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		updateMana();
 	}
 
+	private float stackPassiveProperty(float property, float stackProperty) {
+    	if (!passive) {
+			boolean stack = getBoolean("stack");
+			if (stack) {
+				property += stackProperty;
+			} else {
+				property = Math.max(property, stackProperty);
+			}
+		}
+		return property;
+	}
+
+	@Override
+    public float getCostReduction() {
+    	if (mage != null) {
+    		float reduction = mage.getCostReduction();
+    		return stackPassiveProperty(reduction, costReduction);
+		}
+        return costReduction;
+    }
+
 	@Override
     public float getCooldownReduction() {
+    	if (mage != null) {
+    		float reduction = mage.getCooldownReduction();
+    		return stackPassiveProperty(reduction, cooldownReduction);
+		}
 		return cooldownReduction;
 	}
 
 	@Override
 	public float getConsumeReduction() {
+    	if (mage != null) {
+    		float reduction = mage.getConsumeReduction();
+    		return stackPassiveProperty(reduction, consumeReduction);
+		}
 		return consumeReduction;
 	}
 
@@ -691,11 +721,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public float getCostScale() {
         return 1;
     }
-	
-	public void setCooldownReduction(float reduction) {
-		cooldownReduction = reduction;
-		setProperty("cooldown_reduction", cooldownReduction);
-	}
 
 	@Override
 	public boolean hasInventory() {
@@ -1447,9 +1472,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     	super.loadProperties();
 		locked = getBoolean("locked", locked);
 		lockedAllowUpgrades = getBoolean("locked_allow_upgrades", false);
-		consumeReduction = (float)getDouble("consume_reduction");
-		cooldownReduction = (float)getDouble("cooldown_reduction");
-		power = (float)getDouble("power");
+		consumeReduction = getFloat("consume_reduction");
+		cooldownReduction = getFloat("cooldown_reduction");
+		costReduction = getFloat("cost_reduction");
+		power = getFloat("power");
 
 		ConfigurationSection protectionConfig = getConfigurationSection("protection");
 		if (protectionConfig == null && hasProperty("protection")) {
@@ -1471,14 +1497,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		hasId = getBoolean("unique", false);
 
-		blockChance = (float)getDouble("block_chance");
-		blockReflectChance = (float)getDouble("block_reflect_chance");
-		blockFOV = (float)getDouble("block_fov");
+		blockChance = getFloat("block_chance");
+		blockReflectChance = getFloat("block_reflect_chance");
+		blockFOV = getFloat("block_fov");
         blockMageCooldown = getInt("block_mage_cooldown");
         blockCooldown = getInt("block_cooldown");
 
-        manaPerDamage = (float)getDouble("mana_per_damage");
-		spMultiplier = (float)getDouble("sp_multiplier", 1);
+        manaPerDamage = getFloat("mana_per_damage");
+		spMultiplier = getFloat("sp_multiplier", 1);
 
 		mageClassKey = getString("class");
 
@@ -1487,9 +1513,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		hasUses = uses > 0;
 
         // Convert some legacy properties to potion effects
-        float healthRegeneration = (float)getDouble("health_regeneration", 0);
-		float hungerRegeneration = (float)getDouble("hunger_regeneration", 0);
-		float speedIncrease = (float)getDouble("haste", 0);
+        float healthRegeneration = getFloat("health_regeneration", 0);
+		float hungerRegeneration = getFloat("hunger_regeneration", 0);
+		float speedIncrease = getFloat("haste", 0);
 
         if (speedIncrease > 0) {
             potionEffects.put(PotionEffectType.SPEED, 1);
@@ -1546,7 +1572,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			effectSound = null;
 		}
 		activeEffectsOnly = getBoolean("active_effects");
-		effectParticleData = (float)getDouble("effect_particle_data");
+		effectParticleData = getFloat("effect_particle_data");
 		effectParticleCount = getInt("effect_particle_count");
 		effectParticleRadius = getDouble("effect_particle_radius");
 		effectParticleOffset = getDouble("effect_particle_offset");
@@ -2122,9 +2148,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
 			ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
         }
+
+        // If this is a passive wand, then reduction properties stack onto the mage when worn.
+		// In this case we should show it as such in the lore.
+		if (passive) isSingleSpell = false;
+
 		if (consumeReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("consume_reduction", consumeReduction), lore);
 
-        float costReduction = getCostReduction();
         if (costReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cost_reduction", costReduction), lore);
 		if (cooldownReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cooldown_reduction", cooldownReduction), lore);
 		if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("power", power), lore);

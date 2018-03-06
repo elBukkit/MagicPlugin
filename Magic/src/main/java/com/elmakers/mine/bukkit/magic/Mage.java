@@ -1828,7 +1828,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public float getCostReduction() {
         if (costFree) {
-            return 1;
+            return 2;
         }
         return costReduction * controller.getMaxCostReduction() + controller.getCostReduction();
     }
@@ -2968,7 +2968,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
        }
     }
 
-    protected void addPassiveEffects(CasterProperties properties) {
+    protected void addPassiveEffects(CasterProperties properties, boolean activeReduction) {
         spMultiplier *= properties.getDouble("sp_multiplier", 1.0);
 
        boolean stack = properties.getBoolean("stack", false);
@@ -2976,14 +2976,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
        addPassiveEffectsGroup(weakness, properties, "weakness", stack);
        addPassiveEffectsGroup(strength, properties, "strength", stack);
 
-       if (stack) {
-           cooldownReduction = stackValue(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
-           costReduction = stackValue(costReduction, properties.getFloat("cost_reduction", 0));
-           consumeReduction = stackValue(consumeReduction, properties.getFloat("consume_reduction", 0));
-       } else {
-           cooldownReduction = Math.max(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
-           costReduction = Math.max(costReduction, properties.getFloat("cost_reduction", 0));
-           consumeReduction = Math.max(consumeReduction, properties.getFloat("consume_reduction", 0));
+       if (activeReduction || properties.getBoolean("passive")) {
+           if (stack) {
+               cooldownReduction = stackValue(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
+               costReduction = stackValue(costReduction, properties.getFloat("cost_reduction", 0));
+               consumeReduction = stackValue(consumeReduction, properties.getFloat("consume_reduction", 0));
+           } else {
+               cooldownReduction = Math.max(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
+               costReduction = Math.max(costReduction, properties.getFloat("cost_reduction", 0));
+               consumeReduction = Math.max(consumeReduction, properties.getFloat("consume_reduction", 0));
+           }
        }
     }
 
@@ -3005,21 +3007,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         LivingEntity entity = getLivingEntity();
         effectivePotionEffects.clear();
 
-        addPassiveEffects(properties);
+        addPassiveEffects(properties, true);
         if (activeClass != null)
         {
-            addPassiveEffects(activeClass);
+            addPassiveEffects(activeClass, true);
             spMultiplier *= activeClass.getDouble("sp_multiplier", 1.0);
         }
         if (activeWand != null && !activeWand.isPassive())
         {
-            addPassiveEffects(activeWand);
+            addPassiveEffects(activeWand, false);
             effectivePotionEffects.putAll(activeWand.getPotionEffects());
         }
         // Don't add these together so things stay balanced!
         if (offhandWand != null && !offhandWand.isPassive())
         {
-            addPassiveEffects(offhandWand);
+            addPassiveEffects(offhandWand, false);
             effectivePotionEffects.putAll(offhandWand.getPotionEffects());
 
             spMultiplier *= offhandWand.getSPMultiplier();
@@ -3027,7 +3029,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (Wand armorWand : activeArmor.values())
         {
             if (armorWand != null) {
-                addPassiveEffects(armorWand);
+                addPassiveEffects(armorWand, false);
                 effectivePotionEffects.putAll(armorWand.getPotionEffects());
             }
         }
