@@ -3433,36 +3433,23 @@ public class MagicController implements MageController {
     @Override
     public boolean canTarget(Entity attacker, Entity entity)
     {
-        if (useHeroesParties && heroesManager != null && attacker instanceof Player && entity instanceof Player)
-        {
-            if (heroesManager.isInParty((Player)attacker, (Player)entity, true))
-            {
-                return false;
-            }
-        }
-        if (useScoreboardTeams && attacker instanceof Player && entity instanceof Player)
-        {
-            Player player1 = (Player)attacker;
-            Player player2 = (Player)entity;
+        // We can always target ourselves at this level
+        if (attacker == entity) return true;
 
-            Scoreboard scoreboard1 = player1.getScoreboard();
-            Scoreboard scoreboard2 = player2.getScoreboard();
-
-            if (scoreboard1 != null && scoreboard2 != null)
-            {
-                Team team1 = scoreboard1.getEntryTeam(player1.getName());
-                Team team2 = scoreboard2.getEntryTeam(player2.getName());
-                if (team1 != null && team2 != null && team1.equals(team2))
-                {
-                    return false;
-                }
-            }
+        // We can't target our friends (bypassing happens at a higher level)
+        if (isFriendly(attacker, entity, false))
+        {
+            return false;
         }
         return preciousStonesManager.canTarget(attacker, entity) && townyManager.canTarget(attacker, entity);
     }
 
     @Override
-    public boolean isFriendly(Entity attacker, Entity entity)
+    public boolean isFriendly(Entity attacker, Entity entity) {
+        return isFriendly(attacker, entity, defaultFriendly);
+    }
+
+    public boolean isFriendly(Entity attacker, Entity entity, boolean friendlyByDefault)
     {
         // We are always friends with ourselves
         if (attacker == entity) return true;
@@ -3470,7 +3457,7 @@ public class MagicController implements MageController {
         // Check to see if we are not using a team or party system
         if (!useScoreboardTeams && (!useHeroesParties || heroesManager == null))
         {
-            return defaultFriendly;
+            return friendlyByDefault;
         }
 
         // Check for Heroes party
