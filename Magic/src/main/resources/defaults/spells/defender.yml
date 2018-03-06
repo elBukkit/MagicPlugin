@@ -59,7 +59,7 @@ defender:
         - quartz_block:1
         - quartz_block:2
         - mossy_cobblestone
-        - bricks
+        - brick
         - wool
         - wool:1
         - wool:2
