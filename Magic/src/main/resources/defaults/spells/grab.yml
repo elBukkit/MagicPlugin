@@ -10,12 +10,18 @@ grab:
           actions:
           - class: Velocity
             direction: 0,1,0
-            item_speed: 0.5
+            item_speed: 0.3
         - class: Delay
-          delay: 500
-        - class: AreaOfEffect
+          delay: 300
+        - class: Repeat
           actions:
-          - class: Velocity
+          - class: AreaOfEffect
+            actions:
+            - class: Velocity
+              push: -1
+              item_speed: 0.3
+          - class: Delay
+            delay: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -32,8 +38,7 @@ grab:
         target_types: dropped_item,experience_orb
         count: 16
         radius: 8
-        item_speed: 2
-        push: -1
+        repeat: 4
         bypass_undo: true
     costs:
         mana: 50
