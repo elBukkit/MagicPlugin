@@ -6,6 +6,7 @@ import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.log.ErrorQuality;
@@ -20,6 +21,10 @@ import org.bukkit.event.Event;
 @Examples({"on cast:", "  damage targets by 1 heart"})
 public class ExprTargets extends SimpleExpression<Entity> {
 	private static final Entity[] templateArray = new Entity[] {};
+
+    public static void register() {
+		Skript.registerExpression(ExprTargets.class, Entity.class, ExpressionType.SIMPLE, "[the] (targets)");
+    }
 
 	@Override
 	public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parser) {

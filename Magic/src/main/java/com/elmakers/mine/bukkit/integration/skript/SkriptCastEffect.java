@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -15,6 +16,12 @@ public class SkriptCastEffect extends Effect {
 	private Expression<CommandSender> senders;
 	private Expression<String> spell;
 	private Expression<String> arguments;
+
+    public static void register() {
+        Skript.registerEffect(SkriptCastEffect.class,
+            "cast [the] [spell] %string% [by %-commandsenders%] [with %-string%]",
+            "(let|make) %commandsenders% cast [[the] spell] %string% [with %-string%]");
+    }
 
     @Override
     protected void execute(Event event) {

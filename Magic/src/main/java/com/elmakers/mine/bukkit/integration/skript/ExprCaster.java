@@ -6,6 +6,7 @@ import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.log.ErrorQuality;
@@ -24,6 +25,10 @@ import org.bukkit.event.Event;
 		"	health of caster is less than or equal to 2",
 		"	damage targets by 1 heart"})
 public class ExprCaster extends SimpleExpression<Entity> {
+    public static void register() {
+		Skript.registerExpression(ExprCaster.class, Entity.class, ExpressionType.SIMPLE, "[the] (caster)");
+    }
+
 	@Override
 	public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parser) {
 		if (!ScriptLoader.isCurrentEvent(CastEvent.class) && !ScriptLoader.isCurrentEvent(PreCastEvent.class)) {

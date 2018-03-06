@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
@@ -20,6 +21,10 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondIsClass extends Condition {
     private Expression<Entity> entities;
     private Expression<String> classes;
+
+    public static void register() {
+		Skript.registerCondition(CondIsClass.class, "%entities% (is|are) class %strings%", "%entities% (isn't|is not|aren't|are not) class %strings%");
+    }
 
     @SuppressWarnings({"unchecked"})
 	@Override
@@ -51,6 +56,6 @@ public class CondIsClass extends Condition {
 
 	@Override
 	public String toString(final @Nullable Event e, final boolean debug) {
-		return entities.toString(e, debug) + (entities.isSingle() ? " is" : " are") + (isNegated() ? " not " : "") + " class " + classes;
+		return entities.toString(e, debug) + (entities.isSingle() ? " is" : " are") + (isNegated() ? " not" : "") + " class " + classes;
 	}
 }

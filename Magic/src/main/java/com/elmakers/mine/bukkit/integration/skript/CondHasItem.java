@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
@@ -26,6 +27,21 @@ public class CondHasItem extends Condition {
     private Expression<String> itemKeys;
     private boolean offhand;
     private boolean armor;
+
+    public static void register() {
+		Skript.registerCondition(CondHasItem.class,
+                "[%entities%] ha(s|ve) [wand] [%-strings%] in [main] hand",
+			"[%entities%] [(is|are)] holding [wand] [%-strings%] [in main hand]",
+			"[%entities%] ha(s|ve) [wand] [%-strings%] in off[(-| )]hand",
+			"[%entities%] [(is|are)] holding [wand] [%-strings%] in off[(-| )]hand",
+			"[%entities%] (ha(s|ve) not|do[es]n't have) [wand] [%-strings%] in [main] hand",
+			"[%entities%] [(is|are)] wearing [wand] [%-strings%]",
+			"[%entities%] (is not|isn't) holding [wand] [%-strings%] [in main hand]",
+			"[%entities%] (ha(s|ve) not|do[es]n't have) [wand] [%-strings%] in off[(-| )]hand",
+			"[%entities%] (is not|isn't) holding [wand] [%-strings%] in off[(-| )]hand",
+			"[%entities%] (is not|isn't) wearing [wand] [%-strings%]"
+		);
+    }
 
     @SuppressWarnings({"unchecked"})
 	@Override
@@ -90,6 +106,6 @@ public class CondHasItem extends Condition {
 	@Override
 	public String toString(final @Nullable Event e, final boolean debug) {
         String itemTypes = itemKeys == null ? "" : itemKeys.toString();
-		return entities.toString(e, debug) + (entities.isSingle() ? " has" : " have") + (isNegated() ? " not " : "") + (armor ? "wearing " : "") + itemTypes;
+		return entities.toString(e, debug) + (entities.isSingle() ? " has" : " have") + (isNegated() ? " not" : "") + (armor ? " wearing " : " ") + itemTypes;
 	}
 }
