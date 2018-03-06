@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.integration.skript.CondHasItem;
 import com.elmakers.mine.bukkit.integration.skript.CondHasPath;
 import com.elmakers.mine.bukkit.integration.skript.CondHasSpell;
 import com.elmakers.mine.bukkit.integration.skript.CondIsClass;
+import com.elmakers.mine.bukkit.integration.skript.EffSpawn;
 import com.elmakers.mine.bukkit.integration.skript.ExprCaster;
 import com.elmakers.mine.bukkit.integration.skript.ExprTargets;
 import com.elmakers.mine.bukkit.integration.skript.EffCast;
@@ -24,6 +25,7 @@ public class SkriptManager {
 
         EvtCast.register();
         EffCast.register();
+        EffSpawn.register();
         CondIsClass.register();
         CondHasPath.register();
         CondHasSpell.register();
