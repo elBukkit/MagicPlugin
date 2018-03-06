@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Set;
 
 public class CheckEntityAction extends CompoundAction {
+    private boolean allowCaster;
+    private boolean onlyCaster;
     private Set<EntityType> allowedTypes;
     private Set<EntityType> deniedTypes;
     
@@ -21,6 +23,9 @@ public class CheckEntityAction extends CompoundAction {
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        allowCaster = parameters.getBoolean("allow_caster", true);
+        onlyCaster = parameters.getBoolean("only_caster", false);
+
         if (parameters.contains("allowed_entities")) {
             List<String> keys = ConfigurationUtils.getStringList(parameters, "allowed_entities");
             allowedTypes = new HashSet<>();
@@ -50,6 +55,13 @@ public class CheckEntityAction extends CompoundAction {
     protected boolean isAllowed(CastContext context) {
         Entity targetEntity = context.getTargetEntity();
         if (targetEntity == null) return false;
+        boolean isCaster = targetEntity == context.getEntity();
+        if (!allowCaster && isCaster) {
+            return false;
+        }
+        if (onlyCaster && !isCaster) {
+            return false;
+        }
         if (allowedTypes != null && !allowedTypes.contains(targetEntity.getType())) {
             return false;
         }
