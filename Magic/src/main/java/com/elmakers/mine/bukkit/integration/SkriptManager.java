@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.integration.skript.CondHasItem;
 import com.elmakers.mine.bukkit.integration.skript.CondHasPath;
+import com.elmakers.mine.bukkit.integration.skript.CondHasSpell;
 import com.elmakers.mine.bukkit.integration.skript.CondIsClass;
 import com.elmakers.mine.bukkit.integration.skript.ExprCaster;
 import com.elmakers.mine.bukkit.integration.skript.ExprTargets;
@@ -25,6 +26,7 @@ public class SkriptManager {
         SkriptCastEffect.register();
         CondIsClass.register();
         CondHasPath.register();
+        CondHasSpell.register();
         CondHasItem.register();
         ExprCaster.register();
         ExprTargets.register();

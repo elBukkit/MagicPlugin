@@ -54,9 +54,6 @@ public class CondHasPath extends Condition {
         ProgressionPath path = properties.getPath();
 		if (path == null) return false;
 
-		        	org.bukkit.Bukkit.getLogger().info("Checking " + finished + "/" + exact + " " + pathKey + " " + path.hasPath(pathKey) + " " + path.getKey() + " " + path.canProgress(properties));
-
-
         if (finished) {
             if (path.hasPath(pathKey)) {
                 if (path.getKey().equals(pathKey)) {
