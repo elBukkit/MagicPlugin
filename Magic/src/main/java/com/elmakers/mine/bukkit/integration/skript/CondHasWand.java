@@ -58,6 +58,7 @@ public class CondHasWand extends Condition {
 
 	@Override
 	public String toString(final @Nullable Event e, final boolean debug) {
-		return entities.toString(e, debug) + (entities.isSingle() ? " has" : " have") + (isNegated() ? " not " : "") + " wand " + wands;
+        String wandTypes = wands == null ? "" : wands.toString();
+		return entities.toString(e, debug) + (entities.isSingle() ? " has" : " have") + (isNegated() ? " not " : "") + " wand " + wandTypes;
 	}
 }
