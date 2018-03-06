@@ -14,6 +14,7 @@
    - Passive wands (armor, generally) can have reductions that stack and apply to the mage, but I don't have anything
      like that in configs.
    - This was done to prevent possible exploits with certain cost-free wands by holding them in the offhand.
+ - Add "boostable" wand property for making wands that aren't affected by mana boosts
    
 ## 7.2.3
 

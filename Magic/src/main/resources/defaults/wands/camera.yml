@@ -4,6 +4,7 @@ camera:
     icon: skull_item:http://textures.minecraft.net/texture/e49b4f3261328c05350ee4031212d2fc7555f211af91c0f0278a5aaf9cec65
     indestructible: false
     locked: true
+    boostable: false
     mana: 5
     mana_max: 5
     mana_regeneration: 2

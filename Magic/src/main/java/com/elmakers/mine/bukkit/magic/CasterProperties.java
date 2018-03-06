@@ -145,12 +145,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                 effectiveRegenBoost += offhandWand.getManaRegenerationBoost();
             }
         }
+        boolean boostable = getBoolean("boostable", true);
         effectiveManaMax = getManaMax();
-        if (effectiveBoost != 0) {
+        if (boostable && effectiveBoost != 0) {
             effectiveManaMax = (int)Math.ceil(effectiveManaMax + effectiveBoost * effectiveManaMax);
         }
         effectiveManaRegeneration = getManaRegeneration();
-        if (effectiveRegenBoost != 0) {
+        if (boostable && effectiveRegenBoost != 0) {
             effectiveManaRegeneration = (int)Math.ceil(effectiveManaRegeneration + effectiveRegenBoost * effectiveManaRegeneration);
         }
 
