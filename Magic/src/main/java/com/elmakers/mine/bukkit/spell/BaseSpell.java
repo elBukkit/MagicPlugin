@@ -185,6 +185,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected double cancelOnDamage             = 0;
     protected boolean cancelOnCastOther         = false;
     protected boolean cancelOnNoPermission      = false;
+    protected boolean cancelOnNoWand            = false;
     protected boolean pvpRestricted           	= false;
     protected boolean disguiseRestricted        = false;
     protected boolean worldBorderRestricted     = true;
@@ -1631,6 +1632,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
         cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
         cancelOnNoPermission = parameters.getBoolean("cancel_on_no_permission", false);
+        cancelOnNoWand = parameters.getBoolean("cancel_on_no_wand", false);
         commandBlockAllowed = parameters.getBoolean("command_block_allowed", true);
 
         if (parameters.contains("prevent_passthrough")) {
@@ -2740,6 +2742,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean cancelOnNoPermission() {
         return cancelOnNoPermission;
+    }
+
+    @Override
+    public boolean cancelOnNoWand() {
+        return cancelOnNoWand;
     }
 
     @Override

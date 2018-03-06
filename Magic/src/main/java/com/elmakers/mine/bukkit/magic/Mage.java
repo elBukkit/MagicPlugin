@@ -521,11 +521,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return false;
     }
 
+    public void checkActiveSpells(Wand wand) {
+        if (activeSpells.isEmpty()) return;
+
+        ArrayList<MageSpell> active = new ArrayList<>(activeSpells);
+        for (MageSpell spell : active) {
+            if (spell.cancelOnNoWand() && spell.getCurrentCast().getWand() == wand) {
+                spell.deactivate();
+            }
+        }
+    }
+
     public void deactivateWand(Wand wand) {
+        if (wand == null) return;
+
         if (wand == activeWand) {
+            checkActiveSpells(activeWand);
             setActiveWand(null);
         }
         if (wand == offhandWand) {
+            checkActiveSpells(activeWand);
             setOffhandWand(null);
         }
     }
