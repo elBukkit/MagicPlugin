@@ -146,6 +146,7 @@ sniper_scope:
         duration: 30000
         undo: 30000
         item: pumpkin
+        cancel_on_no_wand: true
 
 sniper:
     icon: ghast_tear
