@@ -2,8 +2,7 @@
 
 ## 7.3
  
- - Cooldown reduction not working on wands, nor is the cooldown_reduction parameter working
- - Fix shop "no costs" message, has no cost listed (see wandbuffs)
+ - Cooldown reduction not working on wands, nor is the cooldown_reduction parameter working (could not reproduce.. ??)
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)

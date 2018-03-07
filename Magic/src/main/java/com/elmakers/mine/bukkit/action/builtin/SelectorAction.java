@@ -609,7 +609,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             Cost required = takeCosts(reducer, context);
             if (required != null) {
                 String baseMessage = getMessage("insufficient");
-                String costDescription = required.getFullDescription(controller.getMessages(), mage);
+                String costDescription = required.getFullDescription(controller.getMessages(), reducer);
                 costDescription = baseMessage.replace("$cost", costDescription);
                 context.showMessage(costDescription);
                 return SpellResult.INSUFFICIENT_RESOURCES;
@@ -715,7 +715,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         Cost required = option.getRequiredCost(this, context);
         if (required != null) {
             String baseMessage = getMessage("insufficient");
-            String costDescription = required.getFullDescription(controller.getMessages(), mage);
+            String costDescription = required.getFullDescription(controller.getMessages(), this);
             costDescription = baseMessage.replace("$cost", costDescription);
             context.showMessage(costDescription);
         } else {
