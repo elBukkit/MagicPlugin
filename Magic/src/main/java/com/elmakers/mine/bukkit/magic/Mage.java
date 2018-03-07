@@ -442,6 +442,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     break;
             }
         }
+        lastDamageType = damageType;
 
         double protection = getProtection(damageType);
         double maxReduction = controller.getMaxDamageReduction(damageType);
