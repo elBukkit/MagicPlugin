@@ -3,6 +3,7 @@
 ## 7.3
 
  - Add a physical damage increase option to the wand buff shop for the Master Sword
+ - Add physical protection option to buff shop
  - Add support for clearing magic mobs from a specific location
    Examples: 
     /mmob clear warlock 20                Clear all warlocks within 20 blocks of your location

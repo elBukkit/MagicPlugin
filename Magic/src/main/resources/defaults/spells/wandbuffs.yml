@@ -16,7 +16,6 @@ wandbuffshop:
     options:
     - placeholder: true
     - placeholder: true
-    - placeholder: true
     - cast_spell: add_protection
       cost: 1000
       cost_modifiers:
@@ -27,8 +26,18 @@ wandbuffshop:
         - wand_properties:
           - property: protection.overall
             max: 1
+    - cast_spell: add_physical_protection
+      cost: 200
+      cost_modifiers:
+        - scale: "1 + 15 * (x ^ 3)"
+          type: wand
+          property: protection.physical
+      requirements:
+        - wand_properties:
+          - property: protection.physical
+            max: 1
     - cast_spell: add_fall_protection
-      cost: 500
+      cost: 300
       cost_modifiers:
         - scale: "1 + 15 * (x ^ 3)"
           type: wand

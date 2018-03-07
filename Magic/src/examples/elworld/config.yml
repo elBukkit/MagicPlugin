@@ -8,8 +8,10 @@ prevent_creative_breaking: 0
 # Turn on /mskills menu for testing purposes
 skills_use_permissions: true
 
-# Turn on auto-rollback for creeper explosions ad TNT
+# Don't reduce melee damage anymore, it makes testing item attributes and damage too difficult!
 melee_damage_reduction: 0.5
+
+# Turn on auto-rollback for creeper explosions and TNT
 auto_rollback_duration: 10000
 auto_rollback_speed: 0.5
 auto_rollback_explosions:
