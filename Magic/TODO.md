@@ -8,7 +8,6 @@
    
 ## Higher Priority
 
- - Cancel action on a spell doesn't cancel FX?
  - Spells can be worn .. ?  Skill icons maybe?
  - Mobs removed by MagicWorlds still drop loot... ? 
  - PerWorldInventory logout issues, can't reproduce

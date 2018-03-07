@@ -1666,7 +1666,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
 
                 if (!(batch instanceof UndoBatch)) {
-                    if (force && batch instanceof SpellBatch)
+                    if (batch instanceof SpellBatch)
                     {
                         SpellBatch spellBatch = (SpellBatch)batch;
                         Spell spell = spellBatch.getSpell();
