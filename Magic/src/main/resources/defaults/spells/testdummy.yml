@@ -26,8 +26,7 @@ testdummy:
     parameters:
         target: block
         track: false
-        type: villager
-        health: 1000
+        type: dummy
         allow_max_range: true
         range: 24
 
