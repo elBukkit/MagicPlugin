@@ -596,6 +596,9 @@ public interface Mage extends CostReducer {
     /**
      * Get the last damage type done to this Mage.
      *
+     * This field is persistent, if the Mage receives typeless damage it will not be resent, but continue
+     * to show the last typed damage received.
+     *
      * @return the last damage type this Mage received.
      */
     @Nullable String getLastDamageType();
