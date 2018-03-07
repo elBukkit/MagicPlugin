@@ -160,7 +160,7 @@ add_projectile_protection:
 
 add_damage:
   icon: diamond_axe:178
-  icon_disabled: diamond_axe:178
+  icon_disabled: diamond_hoe:178
   actions:
     cast:
     - class: ModifyProperties

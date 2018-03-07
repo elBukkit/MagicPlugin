@@ -309,6 +309,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         protected Integer slot = null;
         protected String name = null;
         protected List<String> lore = null;
+        protected String unavailableMessage;
         protected boolean placeholder;
         protected boolean unavailable;
 
@@ -414,11 +415,9 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 RequirementsResult check = checkRequirements(context);
                 if (!check.result.isSuccess()) {
                     unavailable = true;
-                    if (check.message != null && !check.message.isEmpty()) {
-                        InventoryUtils.setMeta(icon, "unpurchasable", check.message);
+                    unavailableMessage = check.message;
+                    if (unavailableMessage != null && !unavailableMessage.isEmpty()) {
                         InventoryUtils.wrapText(check.message, lore);
-                    } else {
-                        showUnavailable = false;
                     }
                 }
             }
@@ -484,6 +483,15 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
             InventoryUtils.makeUnbreakable(icon);
             InventoryUtils.hideFlags(icon, (byte)63);
+
+            if (unavailable) {
+                if (unavailableMessage != null && !unavailableMessage.isEmpty()) {
+                    InventoryUtils.setMeta(icon, "unpurchasable", unavailableMessage);
+                } else {
+                    // We're not going to show unavailable items without a reason.
+                    showUnavailable = false;
+                }
+            }
 
             if (showConfirmation) {
                 InventoryUtils.setMeta(icon, "confirm", "true");
