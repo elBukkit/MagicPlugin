@@ -2,6 +2,11 @@
 
 ## 7.3
 
+ - Add support for clearing magic mobs from a specific location
+   Examples: 
+    /mmob clear warlock 20                Clear all warlocks within 20 blocks of your location
+    /mmob clear all 20 0 64 0 world   Clear all magic mobs within 20 blocks of a specific location
+
 ## 7.2.4
 
  - Added "damage_type" parameter to Damage action, for using custom damage types.

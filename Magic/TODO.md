@@ -21,7 +21,6 @@
    - Allow placeholder-driven attributes
  
  - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
- - /mmob clear with a radius, world/coords
 
 ## High-Priority
 
