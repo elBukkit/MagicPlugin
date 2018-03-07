@@ -50,6 +50,8 @@ wand:
     consume_reduction: "&6Manifestation"
     cooldown_reduction: "&6Cooldown Reduction $roman"
     power: "&6Power $roman"
+    attributes:
+      GENERIC_ATTACK_DAMAGE: "Attack Damage"
     protection:
       overall: "&2Protection $roman"
       physical: "&2Physical Protection $roman"

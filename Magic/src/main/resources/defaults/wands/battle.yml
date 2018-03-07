@@ -9,4 +9,6 @@ battle:
     effect_color: '11FF11'
     protection:
       physical: 0.4
+    attributes:
+      GENERIC_ATTACK_DAMAGE: 6
 
