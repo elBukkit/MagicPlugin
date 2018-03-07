@@ -182,7 +182,6 @@ snowball:
            effectlib:
              class: SmokeEffect
              iterations: 1
-             particles: 15
              particle: snowball
     parameters:
       target: other
