@@ -100,7 +100,7 @@ public class HeroesSkillSpell extends BaseSpell {
         int cooldown = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN, 0, true);
         if (cooldown > 0)
         {
-            String cooldownDescription = getCooldownDescription(messages, cooldown, mage);
+            String cooldownDescription = getCooldownDescription(messages, cooldown, mage, wand);
             if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
                 lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
             }
