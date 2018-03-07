@@ -104,6 +104,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getProperty(String key, T defaultValue) {
         Preconditions.checkNotNull(key, "key");
         Preconditions.checkNotNull(defaultValue, "defaultValue");
@@ -114,6 +115,21 @@ public class BaseMagicProperties implements MagicProperties {
         Object value = getProperty(key);
         if (value != null && clazz.isInstance(value)) {
             return clazz.cast(value);
+        }
+        if (value != null && value instanceof Number && defaultValue instanceof Number) {
+            if (defaultValue instanceof Double) {
+                return (T)(Double)NumberConversions.toDouble(value);
+            } else if (defaultValue instanceof Integer) {
+                return (T)(Integer)NumberConversions.toInt(value);
+            } else if (defaultValue instanceof Byte) {
+                return (T)(Byte)NumberConversions.toByte(value);
+            } else if (defaultValue instanceof Float) {
+                return (T)(Float)NumberConversions.toFloat(value);
+            } else if (defaultValue instanceof Long) {
+                return (T)(Long)NumberConversions.toLong(value);
+            } else if (defaultValue instanceof Short) {
+                return (T)(Short)NumberConversions.toShort(value);
+            }
         }
 
         return defaultValue;
