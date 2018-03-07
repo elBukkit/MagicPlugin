@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 7.3
+
 ## 7.2.4
 
  - Added "damage_type" parameter to Damage action, for using custom damage types.
