@@ -202,6 +202,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private String destinationWarp;
     private Integer lastActivatedSlot;
+    private String currentDamageType;
     private String lastDamageType;
 
     public Mage(String id, MagicController controller) {
@@ -346,8 +347,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void onDamage(EntityDamageEvent event) {
-        String damageType = lastDamageType;
-        lastDamageType = null;
+        String damageType = currentDamageType;
+        currentDamageType = null;
         LivingEntity entity = getLivingEntity();
         if (entity == null) {
             return;
@@ -3486,7 +3487,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void setLastDamageType(String damageType) {
+        currentDamageType = damageType;
         lastDamageType = damageType;
+    }
+
+    @Override
+    public String getLastDamageType() {
+        return lastDamageType;
     }
 }
 

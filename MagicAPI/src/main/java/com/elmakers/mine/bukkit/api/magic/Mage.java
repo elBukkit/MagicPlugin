@@ -592,4 +592,11 @@ public interface Mage extends CostReducer {
      * @param damageType A damage type as defined in config.yml
      */
     void setLastDamageType(String damageType);
+
+    /**
+     * Get the last damage type done to this Mage.
+     *
+     * @return the last damage type this Mage received.
+     */
+    @Nullable String getLastDamageType();
 }
