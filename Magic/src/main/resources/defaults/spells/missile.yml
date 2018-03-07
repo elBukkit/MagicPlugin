@@ -43,8 +43,7 @@ missile:
         hit_entity:
         -  class: EffectSingle
            location: target
-           particle: block_crack
-           material: redstone_block
+           particle: redstone
            particle_count: 30
            particle_offset_x: 0.2
            particle_offset_y: 0.2
@@ -53,38 +52,33 @@ missile:
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
-           particle_count: 20
+           particle_count: 10
            particle_offset_x: 0.3
-           particle_offset_y: 0.5
+           particle_offset_y: 0.3
            particle_offset_z: 0.3
            sound: magic.zap
            sound_volume: .3
-           particle_data: 0.3
+           particle_data: 0.1
         headshot:
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
-           particle_count: 15
+           particle_count: 20
            particle_offset_y: 0.2
            particle_offset_x: 0.2
            particle_offset_z: 0.2
            particle_data: 0.1
            sound: magic.zap
            sound_volume: .3
-        -  class: EffectSingle
-           sound: entity_slime_attack
+        -  sound: entity_player_attack_crit
            sound_pitch: 0.8
            location: target
-           effectlib:
-            class: AnimatedBallEffect
-            particles: 50
-            particlesPerIteration: 4
-            iterations: 10
-            particle: block_crack
-            particleCount: 20
-            material: redstone_block
-            size: 0.1
-            yOffset: 0
+           particle: crit_magic
+           particle_count: 30
+           particle_offset_y: 1
+           particle_offset_x: 1
+           particle_offset_z: 1
+           particle_data: 0.5
     headshot_parameters:
       damage_multiplier: 1.5
     parameters:

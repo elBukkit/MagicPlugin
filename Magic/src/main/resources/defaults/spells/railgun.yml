@@ -39,8 +39,7 @@ railgun:
         hit_entity:
         -  class: EffectSingle
            location: target
-           particle: block_crack
-           material: redstone_block
+           particle: redstone
            particle_count: 40
            particle_offset_x: 0.3
            particle_offset_y: 0.3
@@ -49,10 +48,10 @@ railgun:
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
-           particle_count: 20
-           particle_offset_x: 0.4
-           particle_offset_y: 0.5
-           particle_offset_z: 0.4
+           particle_count: 10
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
            particle_data: 0.4
            sound: magic.zap
            sound_pitch: 1.2
@@ -72,27 +71,22 @@ railgun:
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
-           particle_count: 15
+           particle_count: 20
            particle_offset_y: 0.5
            particle_offset_x: 0.5
            particle_offset_z: 0.5
            sound: magic.zap
            sound_volume: .3
            particle_data: 0.4
-        -  class: EffectSingle
-           sound: entity_slime_attack
+        -  sound: entity_player_attack_crit
            sound_pitch: 0.8
            location: target
-           effectlib:
-            class: AnimatedBallEffect
-            particles: 50
-            particlesPerIteration: 8
-            iterations: 15
-            particle: block_crack
-            particleCount: 20
-            material: redstone_block
-            size: 0.3
-            yOffset: 0
+           particle: crit_magic
+           particle_count: 30
+           particle_offset_y: 1
+           particle_offset_x: 1
+           particle_offset_z: 1
+           particle_data: 0.5
     headshot_parameters:
       damage_multiplier: 2
     parameters:
