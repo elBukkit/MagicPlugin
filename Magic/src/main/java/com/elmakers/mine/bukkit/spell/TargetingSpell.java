@@ -22,6 +22,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -49,6 +50,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean								targetInvisible			= true;
     private boolean								targetVanished			= false;
     private boolean								targetUnknown			= true;
+    private boolean                             targetTamed             = true;
     private String                              targetDisplayName       = null;
     protected Class<?>                          targetEntityType        = null;
     protected Set<EntityType>                   targetEntityTypes       = null;
@@ -332,6 +334,7 @@ public abstract class TargetingSpell extends BaseSpell {
         if (!targetUnknown && entity.getType() == EntityType.UNKNOWN) {
             return false;
         }
+        if (!targetTamed && entity instanceof Tameable && ((Tameable)entity).isTamed()) return false;
         if (entity.hasMetadata("notarget")) return false;
         if (!targetNPCs && controller.isNPC(entity)) return false;
         if (!targetArmorStands && entity instanceof ArmorStand) return false;
@@ -551,6 +554,7 @@ public abstract class TargetingSpell extends BaseSpell {
         targetInvisible = parameters.getBoolean("target_invisible", true);
         targetVanished = parameters.getBoolean("target_vanished", false);
         targetUnknown = parameters.getBoolean("target_unknown", true);
+        targetTamed = parameters.getBoolean("target_tamed", true);
 
         if (parameters.contains("target_type")) {
             String entityTypeName = parameters.getString("target_type");
