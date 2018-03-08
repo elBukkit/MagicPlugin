@@ -79,7 +79,7 @@ add_protection:
     target: self
     modify_target: "wand"
     modify:
-    - path: "protection.overall"
+    - property: "protection.overall"
       value: "x + 0.2"
       max: 1
 
@@ -94,7 +94,7 @@ add_explosion_protection:
     target: self
     modify_target: "wand"
     modify:
-    - path: "protection.explosion"
+    - property: "protection.explosion"
       value: "x + 0.2"
       max: 1
 
@@ -109,7 +109,7 @@ add_fall_protection:
     target: self
     modify_target: "wand"
     modify:
-    - path: "protection.fall"
+    - property: "protection.fall"
       value: "x + 0.2"
       max: 1
 
@@ -124,7 +124,7 @@ add_fire_protection:
     target: self
     modify_target: "wand"
     modify:
-    - path: "protection.fire"
+    - property: "protection.fire"
       value: "x + 0.2"
       max: 1
 
@@ -139,7 +139,7 @@ add_physical_protection:
     target: self
     modify_target: "wand"
     modify:
-    - path: "protection.physical"
+    - property: "protection.physical"
       value: "x + 0.2"
       max: 1
 
@@ -154,7 +154,7 @@ add_projectile_protection:
     target: self
     modify_target: "wand"
     modify:
-    - path: "protection.projectile"
+    - property: "protection.projectile"
       value: "x + 0.2"
       max: 1
 
@@ -169,6 +169,6 @@ add_damage:
     target: self
     modify_target: "wand"
     modify:
-    - path: "attributes.GENERIC_ATTACK_DAMAGE"
+    - property: "attributes.GENERIC_ATTACK_DAMAGE"
       value: "x + 1"
       max: 10

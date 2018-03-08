@@ -36,7 +36,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
         }
 
         public ModifyProperty(ConfigurationSection configuration) {
-            path = configuration.getString("path");
+            path = configuration.getString("property", configuration.getString("path"));
             value = configuration.get("value");
             if (configuration.isDouble("min"))
                 min = configuration.getDouble("min");
