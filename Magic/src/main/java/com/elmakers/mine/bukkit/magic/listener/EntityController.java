@@ -240,20 +240,20 @@ public class EntityController implements Listener {
             event.getDrops().clear();
             entity.removeMetadata("nodrops", controller.getPlugin());
         }
-
-        if (!(entity instanceof Player)) {
-            return;
-        }
-        final Player player = (Player)entity;
-
         Mage apiMage = controller.getRegisteredMage(entity);
         if (apiMage == null) return;
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
-        mage.onPlayerDeath(event);
         mage.deactivateAllSpells();
+        mage.onDeath(event);
+
+        if (!(entity instanceof Player)) {
+            return;
+        }
+        final Player player = (Player)entity;
+
         String rule = entity.getWorld().getGameRuleValue("keepInventory");
         if (rule.equals("true")) return;
 

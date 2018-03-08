@@ -133,6 +133,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     // Spellcasting
     protected long tickInterval;
     protected LinkedList<WeightedPair<String>> spells;
+    protected LinkedList<WeightedPair<String>> deathSpells;
     protected boolean requiresTarget;
     protected ItemData requiresWand;
     protected ConfigurationSection mageProperties;
@@ -288,6 +289,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (parameters.contains("cast")) {
             spells = new LinkedList<>();
             RandomUtils.populateStringProbabilityMap(spells, parameters.getConfigurationSection("cast"));
+        }
+        if (parameters.contains("death_cast")) {
+            deathSpells = new LinkedList<>();
+            RandomUtils.populateStringProbabilityMap(deathSpells, parameters.getConfigurationSection("death_cast"));
         }
         requiresTarget = parameters.getBoolean("cast_requires_target", true);
 
@@ -658,8 +663,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         boolean hasSpells = spells != null && tickInterval >= 0;
+        hasSpells = hasSpells || deathSpells != null;
         boolean hasProperties = mageProperties != null;
-        boolean needsMage = controller != null && (!hasSpells || hasProperties);
+        boolean needsMage = controller != null && (hasSpells || hasProperties);
         if (needsMage) {
             Mage apiMage = controller.getMage(entity);
             if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
@@ -828,21 +834,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public long getTickInterval() {
         return tickInterval;
     }
-    
-    public void tick(Mage mage) {
-        if (spells == null) return;
-        Entity entity = mage.getLivingEntity();
-        Creature creature = (entity instanceof Creature) ? (Creature)entity : null;
-        if (requiresTarget && (creature == null || creature.getTarget() == null)) return;
-        if (requiresWand != null && entity instanceof LivingEntity) {
-            LivingEntity li = (LivingEntity)entity;
-            ItemStack itemInHand = li.getEquipment().getItemInMainHand();
-            if (itemInHand == null || itemInHand.getType() != requiresWand.getType()) return;
-        }
-        
-        String castSpell = RandomUtils.weightedRandom(spells);
-        if (castSpell.length() > 0) {
 
+    private void cast(Mage mage, String castSpell) {
+        if (castSpell.length() > 0) {
             String[] parameters = null;
             Spell spell = null;
             if (!castSpell.equalsIgnoreCase("none"))
@@ -858,6 +852,28 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 spell.cast(parameters);
             }
         }
+    }
+
+    public void onDeath(Mage mage) {
+        if (deathSpells == null || deathSpells.isEmpty()) return;
+
+        String deathSpell = RandomUtils.weightedRandom(deathSpells);
+        cast(mage, deathSpell);
+    }
+    
+    public void tick(Mage mage) {
+        if (spells == null || spells.isEmpty()) return;
+        Entity entity = mage.getLivingEntity();
+        Creature creature = (entity instanceof Creature) ? (Creature)entity : null;
+        if (requiresTarget && (creature == null || creature.getTarget() == null)) return;
+        if (requiresWand != null && entity instanceof LivingEntity) {
+            LivingEntity li = (LivingEntity)entity;
+            ItemStack itemInHand = li.getEquipment().getItemInMainHand();
+            if (itemInHand == null || itemInHand.getType() != requiresWand.getType()) return;
+        }
+        
+        String castSpell = RandomUtils.weightedRandom(spells);
+        cast(mage, castSpell);
     }
 
     @Override
