@@ -201,7 +201,6 @@ public class SpawnEntityAction extends BaseSpellAction
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
-        parameters.add("track");
         parameters.add("loot");
         parameters.add("baby");
         parameters.add("name");
@@ -261,7 +260,7 @@ public class SpawnEntityAction extends BaseSpellAction
             for (DyeColor type : DyeColor.values()) {
                 examples.add(type.name().toLowerCase());
             }
-        } else if (parameterKey.equals("track") || parameterKey.equals("loot") || parameterKey.equals("baby") || parameterKey.equals("repeat_random")) {
+        } else if (parameterKey.equals("loot") || parameterKey.equals("baby") || parameterKey.equals("repeat_random")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else if (parameterKey.equals("name")) {
             examples.add("Philbert");

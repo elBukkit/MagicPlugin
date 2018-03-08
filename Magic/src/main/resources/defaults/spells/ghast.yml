@@ -25,7 +25,6 @@ ghast:
              particleNucleus: drip_water
     parameters:
         target: block
-        track: false
         type: ghast
         allow_max_range: true
         cooldown: 30000
