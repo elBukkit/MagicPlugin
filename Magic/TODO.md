@@ -17,6 +17,9 @@
 
 ## Suggestions
 
+ - Magic mobs drop skill API XP and/or run commands on death
+ - MythicMob integration to add protection/strength/etc
+
  - Placeholder API integration: https://www.spigotmc.org/wiki/hooking-into-placeholderapi/
    - Allow placeholder-driven attributes
  

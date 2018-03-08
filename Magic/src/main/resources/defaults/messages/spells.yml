@@ -1201,7 +1201,7 @@ spells:
         cast: Debugging $target
         deactivate: Disabled debug on $target
         alternate_up: Disabled debug on all entities
-        alternate_up: Debugging yourself
+        alternate_down: Debugging yourself
     superfly:
         name: SuperFly
         description: For videographers

@@ -24,6 +24,7 @@ wolf:
   active_brush: erase
   active_spell: missile|4
   spells:
+    - debugger@7
     - absorb@8
     - alter@90
     - animate@51
@@ -38,7 +39,7 @@ wolf:
     - boon|2@135
     - box@92
     - bridge@29
-    - superbroom@7
+    - superbroom@23
     - camera@133
     - collapse@58
     - commit@93
@@ -91,7 +92,7 @@ wolf:
     - portal@119
     - pull@25
     - push@24
-    - recall@23
+    - recall@22
     - recurse@97
     - regenerate@98
     - repair@99
