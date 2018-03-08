@@ -238,6 +238,7 @@ public class EntityController implements Listener {
         if (entity.hasMetadata("nodrops")) {
             event.setDroppedExp(0);
             event.getDrops().clear();
+            entity.removeMetadata("nodrops", controller.getPlugin());
         }
 
         if (!(entity instanceof Player)) {

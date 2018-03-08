@@ -10,7 +10,6 @@
 ## Higher Priority
 
  - Spells can be worn .. ?  Skill icons maybe?
- - Mobs removed by MagicWorlds still drop loot... ? 
  - PerWorldInventory logout issues, can't reproduce
  - Broom issues when in creative mode
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.

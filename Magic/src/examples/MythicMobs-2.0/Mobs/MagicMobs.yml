@@ -160,3 +160,9 @@ Earthbender:
     KnockbackResistance: 1
   Skills:
   - skill{skill=Earthbending} @Target ~onTimer:20 >0 0.9
+
+# Example of a linked mythic mob + magic mob
+FireElemental:
+  Mobtype: blaze
+  Display: Fire Elemental
+  Health: 100
