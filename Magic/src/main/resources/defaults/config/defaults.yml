@@ -605,7 +605,11 @@ head_sizes:
   player: 0.2
   villager: 0.2
   skeleton: 0.2
+  husk: 0.2
   zombie: 0.2
+  vindicator: 0.2
+  illusioner: 0.2
+  evoker: 0.2
   enderman: 0.2
   giant: 4
   pig_zombie: 0.2
