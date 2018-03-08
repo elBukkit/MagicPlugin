@@ -1,31 +1,13 @@
 package com.elmakers.mine.bukkit.entity;
 
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
-
-import javax.annotation.Nonnull;
-
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -35,7 +17,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.ArmorStand;
@@ -66,15 +47,23 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nonnull;
+import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Level;
+
 /**
  * This class stores information about an Entity.
  *
  */
 public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData, Cloneable {
     protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<>();
-
-    // These properties will get copied directly to mage data, as if they were in the "mage" section.
-    private static final String[] MAGE_PROPERTIES = {"protection", "weakness", "strength"};
 
     protected String key;
     protected WeakReference<Entity> entity = null;
@@ -129,17 +118,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected List<String> drops;
     protected Set<String> tags;
     protected String interactSpell;
-
-    // Spellcasting
-    protected long tickInterval;
-    protected LinkedList<WeightedPair<String>> spells;
-    protected LinkedList<WeightedPair<String>> deathSpells;
-    protected boolean requiresTarget;
-    protected ItemData requiresWand;
-    protected ConfigurationSection mageProperties;
-    
     protected ConfigurationSection disguise;
-    
+
+    protected EntityMageData mageData;
+
     public EntityData(Entity entity) {
         this(entity.getLocation(), entity);
     }
@@ -269,32 +251,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
-        mageProperties = parameters.getConfigurationSection("mage");
-
-        for (String mageProperty : MAGE_PROPERTIES) {
-            ConfigurationSection mageConfig = parameters.getConfigurationSection(mageProperty);
-            if (mageConfig != null) {
-                if (mageProperties == null) {
-                    mageProperties = new MemoryConfiguration();
-                }
-                mageProperties.set(mageProperty, mageConfig);
-            }
-        }
-
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
 
         isTamed = parameters.getBoolean("tamed", false);
         isBaby = parameters.getBoolean("baby", false);
-        tickInterval = parameters.getLong("cast_interval", 0);
-        if (parameters.contains("cast")) {
-            spells = new LinkedList<>();
-            RandomUtils.populateStringProbabilityMap(spells, parameters.getConfigurationSection("cast"));
-        }
-        if (parameters.contains("death_cast")) {
-            deathSpells = new LinkedList<>();
-            RandomUtils.populateStringProbabilityMap(deathSpells, parameters.getConfigurationSection("death_cast"));
-        }
-        requiresTarget = parameters.getBoolean("cast_requires_target", true);
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
@@ -370,9 +330,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
         leggings = controller.getOrCreateItem(parameters.getString("leggings"));
         boots = controller.getOrCreateItem(parameters.getString("boots"));
-        requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
 
         canPickupItems = parameters.getBoolean("can_pickup_items", false);
+
+        EntityMageData mageData = new EntityMageData(controller, parameters);
+        if (!mageData.isEmpty()) {
+            this.mageData = mageData;
+        }
     }
 
     public static EntityData loadPainting(Vector location, Art art, BlockFace direction) {
@@ -661,11 +625,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (!isPlayer && name != null && name.length() > 0) {
             entity.setCustomName(name);
         }
-
-        boolean hasSpells = spells != null && tickInterval >= 0;
-        hasSpells = hasSpells || deathSpells != null;
-        boolean hasProperties = mageProperties != null;
-        boolean needsMage = controller != null && (hasSpells || hasProperties);
+        boolean needsMage = controller != null && mageData != null;
         if (needsMage) {
             Mage apiMage = controller.getMage(entity);
             if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
@@ -677,7 +637,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     public ConfigurationSection getMageProperties() {
-        return mageProperties;
+        return mageData != null ? mageData.mageProperties : null;
     }
 
     private boolean modifyPostSpawn(MageController controller, Entity entity) {
@@ -832,48 +792,19 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
     
     public long getTickInterval() {
-        return tickInterval;
-    }
-
-    private void cast(Mage mage, String castSpell) {
-        if (castSpell.length() > 0) {
-            String[] parameters = null;
-            Spell spell = null;
-            if (!castSpell.equalsIgnoreCase("none"))
-            {
-                if (castSpell.contains(" ")) {
-                    parameters = StringUtils.split(castSpell, ' ');
-                    castSpell = parameters[0];
-                    parameters = Arrays.copyOfRange(parameters, 1, parameters.length);
-                }
-                spell = mage.getSpell(castSpell);
-            }
-            if (spell != null) {
-                spell.cast(parameters);
-            }
-        }
+        return mageData == null ? 0 : mageData.tickInterval;
     }
 
     public void onDeath(Mage mage) {
-        if (deathSpells == null || deathSpells.isEmpty()) return;
-
-        String deathSpell = RandomUtils.weightedRandom(deathSpells);
-        cast(mage, deathSpell);
+        if (mageData != null) {
+            mageData.onDeath(mage);
+        }
     }
     
     public void tick(Mage mage) {
-        if (spells == null || spells.isEmpty()) return;
-        Entity entity = mage.getLivingEntity();
-        Creature creature = (entity instanceof Creature) ? (Creature)entity : null;
-        if (requiresTarget && (creature == null || creature.getTarget() == null)) return;
-        if (requiresWand != null && entity instanceof LivingEntity) {
-            LivingEntity li = (LivingEntity)entity;
-            ItemStack itemInHand = li.getEquipment().getItemInMainHand();
-            if (itemInHand == null || itemInHand.getType() != requiresWand.getType()) return;
+        if (mageData != null) {
+            mageData.tick(mage);
         }
-        
-        String castSpell = RandomUtils.weightedRandom(spells);
-        cast(mage, castSpell);
     }
 
     @Override
