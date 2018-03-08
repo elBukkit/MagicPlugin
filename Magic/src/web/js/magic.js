@@ -67,7 +67,7 @@ function getWorth(worth)
             worthSpan.append(currencySpan);
         }
     }
-    worthSpan.append(jQuery('<span> ($' + worth + ')</span>'));
+    worthSpan.append(jQuery('<span> ($' + worth.toFixed(2) + ')</span>'));
     return worthSpan;
 }
 
