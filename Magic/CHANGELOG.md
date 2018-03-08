@@ -4,6 +4,7 @@
 
  - Add a physical damage increase option to the wand buff shop for the Master Sword
  - Add physical protection option to buff shop
+ - Add Aggro action, to force a mob to target the caster (or the target, via some ChangeContext trickery.. see mob and monster)
  - Add target_tamed property to allow spells to ignore tamed mobs
  - Add death_spells option for magic mobs to cast a random spell on death
  - Enable headshots on husks, vindicators, evokers and illusioners
