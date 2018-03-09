@@ -23,10 +23,10 @@ healing:
         target: self
         target_self: false
         radius: 5
+        heal_max_distance: 10
         amount: 1
         bypass_pvp: true
         bypass_undo: true
         bypass_friendly_fire: true
         only_friendly: true
         bypass_undo: true
-

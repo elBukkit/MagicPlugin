@@ -9,6 +9,7 @@
  - Add physical protection option to buff shop
  - Add Aggro action, to force a mob to target the caster (or the target, via some ChangeContext trickery.. see mob and monster)
  - Add target_tamed property to allow spells to ignore tamed mobs
+ - The Cleric Chestplate now heals more the closer players are to the wearer
  - Enable headshots on husks, vindicators, evokers and illusioners
    Examples: 
     /mmob clear warlock 20                Clear all warlocks within 20 blocks of your location

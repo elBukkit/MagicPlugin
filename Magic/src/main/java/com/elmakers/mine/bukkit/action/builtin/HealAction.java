@@ -20,6 +20,7 @@ public class HealAction extends BaseSpellAction
 {
     private double percentage;
     private double amount;
+	private double maxDistanceSquared;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -27,6 +28,8 @@ public class HealAction extends BaseSpellAction
         super.prepare(context, parameters);
         percentage = parameters.getDouble("percentage", 0);
         amount = parameters.getDouble("amount", 20);
+		double maxDistance = parameters.getDouble("heal_max_distance");
+		maxDistanceSquared = maxDistance * maxDistance;
     }
 
 	@Override
@@ -49,6 +52,16 @@ public class HealAction extends BaseSpellAction
         if (percentage > 0)
         {
             healAmount = targetEntity.getMaxHealth() * percentage;
+        }
+
+        if (maxDistanceSquared > 0) {
+            double distanceSquared = context.getLocation().distanceSquared(entity.getLocation());
+            if (distanceSquared > maxDistanceSquared) {
+                return SpellResult.NO_TARGET;
+            }
+            if (distanceSquared > 0) {
+                healAmount = healAmount * (1 - distanceSquared / maxDistanceSquared);
+            }
         }
 
         EntityRegainHealthEvent event = new EntityRegainHealthEvent(targetEntity, healAmount, RegainReason.CUSTOM);
