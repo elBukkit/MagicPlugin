@@ -48,7 +48,6 @@ public class HealAction extends BaseSpellAction
         }
 
         double healAmount = amount;
-        Mage mage = context.getMage();
         if (percentage > 0)
         {
             healAmount = targetEntity.getMaxHealth() * percentage;
