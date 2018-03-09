@@ -155,14 +155,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long disableWandOpenUntil = 0;
 
     private class DamagedBy {
-        public WeakReference<Player> player;
+        private WeakReference<Player> player;
         public double damage;
         public DamagedBy(Player player, double damage) {
             this.player = new WeakReference<>(player);
             this.damage = damage;
         }
+
+        public Entity getEntity() {
+            return player.get();
+        }
     };
     private DamagedBy topDamager;
+    private DamagedBy lastDamager;
     private Map<UUID, DamagedBy> damagedBy;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
@@ -381,8 +386,28 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    public @Nullable Collection<Entity> getDamagers() {
+        if (damagedBy == null) return null;
+        Collection<Entity> damagers = new ArrayList<>();
+        for (DamagedBy damager : damagedBy.values()) {
+            Entity entity = damager.getEntity();
+            if (entity != null) {
+                damagers.add(entity);
+            }
+        }
+        return damagers;
+    }
+
+    public @Nullable Entity getLastDamager() {
+        return lastDamager == null ? null : lastDamager.getEntity();
+    }
+
+    public @Nullable Entity getTopDamager() {
+        return topDamager == null ? null : topDamager.getEntity();
+    }
+
     @Override
-    public void damagedBy(Entity damager, double damage) {
+    public void damagedBy(@Nonnull Entity damager, double damage) {
         if (damagedBy == null) return;
 
         if (damager instanceof Projectile) {
@@ -395,21 +420,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!(damager instanceof Player)) return;
         Player damagingPlayer = (Player)damager;
 
-        DamagedBy damaged = damagedBy.get(damagingPlayer.getUniqueId());
-        if (damaged == null) {
-            damaged = new DamagedBy(damagingPlayer, damage);
-            damagedBy.put(damagingPlayer.getUniqueId(), damaged);
+        lastDamager = damagedBy.get(damagingPlayer.getUniqueId());
+        if (lastDamager == null) {
+            lastDamager = new DamagedBy(damagingPlayer, damage);
+            damagedBy.put(damagingPlayer.getUniqueId(), lastDamager);
         } else {
-            damaged.damage += damage;
+            lastDamager.damage += damage;
         }
 
         if (topDamager != null) {
-            if (topDamager.player.get() == null || topDamager.damage < damaged.damage) {
-                topDamager = damaged;
+            if (topDamager.getEntity() == null || topDamager.damage < lastDamager.damage) {
+                topDamager = lastDamager;
                 setTarget(damagingPlayer);
             }
         } else {
-            topDamager = damaged;
+            topDamager = lastDamager;
             setTarget(damagingPlayer);
         }
     }

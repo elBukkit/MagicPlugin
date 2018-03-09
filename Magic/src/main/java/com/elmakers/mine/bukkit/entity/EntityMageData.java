@@ -4,9 +4,12 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Creature;
@@ -16,7 +19,9 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 public class EntityMageData {
     // These properties will get copied directly to mage data, as if they were in the "mage" section.
@@ -25,6 +30,7 @@ public class EntityMageData {
     protected long tickInterval;
     protected LinkedList<WeightedPair<String>> spells;
     protected LinkedList<WeightedPair<String>> deathSpells;
+    protected List<String> deathCommands;
     protected ConfigurationSection mageProperties;
     protected boolean requiresTarget;
     protected ItemData requiresWand;
@@ -54,6 +60,7 @@ public class EntityMageData {
             deathSpells = new LinkedList<>();
             RandomUtils.populateStringProbabilityMap(deathSpells, parameters.getConfigurationSection("death_cast"));
         }
+        deathCommands = ConfigurationUtils.getStringList(parameters, "death_commands");
         requiresTarget = parameters.getBoolean("cast_requires_target", true);
         aggro = parameters.getBoolean("aggro", !isEmpty());
     }
@@ -62,7 +69,7 @@ public class EntityMageData {
         boolean hasSpells = spells != null && tickInterval >= 0;
         hasSpells = hasSpells || deathSpells != null;
         boolean hasProperties = mageProperties != null;
-        return !hasProperties && !hasSpells && !aggro;
+        return !hasProperties && !hasSpells && !aggro && deathCommands == null;
     }
 
     private void cast(Mage mage, String castSpell) {
@@ -85,10 +92,47 @@ public class EntityMageData {
     }
 
     public void onDeath(Mage mage) {
-        if (deathSpells == null || deathSpells.isEmpty()) return;
+        if (deathSpells != null && !deathSpells.isEmpty()) {
+            String deathSpell = RandomUtils.weightedRandom(deathSpells);
+            cast(mage, deathSpell);
+        }
+        if (deathCommands != null) {
+            Entity topDamager = mage.getTopDamager();
+            Entity killer = mage.getLastDamager();
+            Collection<Entity> damagers = mage.getDamagers();
+            Location location = mage.getLocation();
+            for (String command : deathCommands) {
+                if (command.contains("@killer")) {
+                    if (killer == null) continue;
+                    command.replace("@killer", killer.getName());
+                }
+                if (command.contains("@damager")) {
+                    if (topDamager == null) continue;
+                    command.replace("@damager", topDamager.getName());
+                }
 
-        String deathSpell = RandomUtils.weightedRandom(deathSpells);
-        cast(mage, deathSpell);
+                boolean allDamagers = command.contains("@damagers");
+                if (allDamagers && damagers == null) {
+                    continue;
+                }
+
+                command = command
+                    .replace("@name", mage.getName())
+                    .replace("@world", location.getWorld().getName())
+                    .replace("@x", Double.toString(location.getX()))
+                    .replace("@y", Double.toString(location.getY()))
+                    .replace("@z", Double.toString(location.getZ()));
+
+                if (allDamagers) {
+                    for (Entity damager : damagers) {
+                        String damagerCommand = command.replace("@damagers", damager.getName());
+                        mage.getController().getPlugin().getServer().dispatchCommand(Bukkit.getConsoleSender(), damagerCommand);
+                    }
+                } else {
+                    mage.getController().getPlugin().getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+                }
+            }
+        }
     }
 
     public void tick(Mage mage) {

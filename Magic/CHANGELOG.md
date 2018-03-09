@@ -9,6 +9,7 @@
  - Add death_spells option for magic mobs to cast a random spell on death
  - Enable headshots on husks, vindicators, evokers and illusioners
  - Magic mobs will now focus on the player that has damaged them the most
+ - Added death_commands parameter to Magic Mobs
  - Add support for clearing magic mobs from a specific location
    Examples: 
     /mmob clear warlock 20                Clear all warlocks within 20 blocks of your location
