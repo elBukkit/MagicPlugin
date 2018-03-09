@@ -417,7 +417,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 DamagedBy damaged = damagedBy.get(uuid);
                 Entity entity = damaged.getEntity();
                 if (entity != null) {
-                    if (damaged.damage > topDamage) {
+                    boolean withinRange = withinRange(entity);
+                    if (withinRange && damaged.damage > topDamage) {
                         topEntity = entity;
                         topDamage = damaged.damage;
                         topDamager = damaged;
@@ -429,6 +430,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         return topEntity;
+    }
+
+    private boolean withinRange(Entity entity) {
+        boolean withinRange = getLocation().getWorld().getName().equals(entity.getLocation().getWorld().getName());
+        double rangeSquared = entityData == null ? 0 : entityData.getTrackRadiusSquared();
+        if (rangeSquared > 0 && withinRange) {
+            withinRange = getLocation().distanceSquared(entity.getLocation()) <= rangeSquared;
+        }
+        return withinRange;
     }
 
     @Override
@@ -454,7 +464,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         if (topDamager != null) {
-            if (topDamager.getEntity() == null || topDamager.damage < lastDamager.damage) {
+            if (topDamager.getEntity() == null || topDamager.damage < lastDamager.damage || !withinRange(topDamager.getEntity())) {
                 topDamager = lastDamager;
                 setTarget(damagingPlayer);
             }

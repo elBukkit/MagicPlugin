@@ -821,4 +821,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public boolean shouldFocusOnDamager() {
         return mageData == null ? false : mageData.aggro;
     }
+
+    public double getTrackRadiusSquared() {
+        return mageData == null ? 0 : mageData.getTrackRadiusSquared();
+    }
 }

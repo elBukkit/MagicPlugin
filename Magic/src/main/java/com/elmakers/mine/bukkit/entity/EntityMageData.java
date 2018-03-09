@@ -29,6 +29,7 @@ public class EntityMageData {
     protected boolean requiresTarget;
     protected ItemData requiresWand;
     protected boolean aggro;
+    protected double trackRadiusSquared;
 
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
         requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
@@ -47,6 +48,8 @@ public class EntityMageData {
 
         tickInterval = parameters.getLong("interval", parameters.getLong("cast_interval", 0));
         requiresTarget = parameters.getBoolean("cast_requires_target", true);
+        trackRadiusSquared = parameters.getDouble("track_radius", 128);
+        trackRadiusSquared = trackRadiusSquared * trackRadiusSquared;
 
         ConfigurationSection triggerConfig = parameters.getConfigurationSection("triggers");
 
@@ -125,5 +128,9 @@ public class EntityMageData {
         for (MageTrigger trigger : intervalTriggers) {
             trigger.execute(mage);
         }
+    }
+
+    public double getTrackRadiusSquared() {
+        return trackRadiusSquared;
     }
 }
