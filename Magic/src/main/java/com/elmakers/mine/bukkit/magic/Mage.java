@@ -382,7 +382,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         LivingEntity li = getLivingEntity();
         if (li != null && li instanceof Creature && target instanceof LivingEntity) {
-            ((Creature)li).setTarget((LivingEntity)target);
+            Creature creature = ((Creature)li);
+            if (creature.getTarget() != target) {
+                sendDebugMessage("Now targeting " + target.getName(), 6);
+            }
+
+            creature.setTarget((LivingEntity)target);
         }
     }
 
@@ -403,7 +408,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public @Nullable Entity getTopDamager() {
-        return topDamager == null ? null : topDamager.getEntity();
+        if (topDamager == null) return null;
+        Entity topEntity = topDamager.getEntity();
+        if (topEntity == null && damagedBy != null) {
+            Set<UUID> damageIds = damagedBy.keySet();
+            double topDamage = 0;
+            for (UUID uuid : damageIds) {
+                DamagedBy damaged = damagedBy.get(uuid);
+                Entity entity = damaged.getEntity();
+                if (entity != null) {
+                    if (damaged.damage > topDamage) {
+                        topEntity = entity;
+                        topDamage = damaged.damage;
+                        topDamager = damaged;
+                    }
+                } else {
+                    damagedBy.remove(uuid);
+                }
+            }
+        }
+
+        return topEntity;
     }
 
     @Override

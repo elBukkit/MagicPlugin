@@ -1,18 +1,21 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
 import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +69,22 @@ public class MobController implements Listener {
         }
 
         if (event.getReason() == EntityTargetEvent.TargetReason.CLOSEST_PLAYER ) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onEntityTargetEnttiy(EntityTargetLivingEntityEvent event)
+    {
+        Entity source = event.getEntity();
+        if (source instanceof Player || event.isCancelled()) return;
+
+        Entity target = event.getTarget();
+        Mage mage = controller.getRegisteredMage(source);
+        if (mage == null) return;
+
+        Entity currentTarget = mage.getTopDamager();
+        if (currentTarget != null && currentTarget != target) {
             event.setCancelled(true);
         }
     }
