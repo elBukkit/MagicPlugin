@@ -56,17 +56,17 @@ wandbuffshop:
         - wand_properties:
           - property: protection.fire
             max: 1
-    - cast_spell: add_damage
+    - cast_spell: add_sharpness
       cost: 1000
       cost_modifiers:
-        - scale: "1 + (x / 6) * 2"
+        - scale: "1 + 9 * ((x / 5) ^ 3)"
           type: wand
-          property: attributes.GENERIC_ATTACK_DAMAGE
+          property: enchantments.DAMAGE_ALL
       requirements:
         - wand: battle
         - wand_properties:
-          - property: attributes.GENERIC_ATTACK_DAMAGE
-            max: 10
+          - property: enchantments.DAMAGE_ALL
+            max: 5
 
 add_protection:
   icon: diamond_axe:234
@@ -172,3 +172,18 @@ add_damage:
     - property: "attributes.GENERIC_ATTACK_DAMAGE"
       value: "x + 1"
       max: 10
+
+add_sharpness:
+  icon: diamond_axe:178
+  icon_disabled: diamond_hoe:178
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - property: "enchantments.DAMAGE_ALL"
+      value: "x + 1"
+      max: 5

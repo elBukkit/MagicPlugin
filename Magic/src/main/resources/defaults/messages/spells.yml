@@ -1569,6 +1569,9 @@ spells:
     add_damage:
       name: Increase Damage
       description: "Increases the amount of damage done when hitting something with your weapon (not spell casting)."
+    add_sharpness:
+      name: Sharpen Sword
+      description: "Add the sharpness enchantment to your magic sword."
     magictorch:
       name: Magic Torch
     wandbuffshop:
