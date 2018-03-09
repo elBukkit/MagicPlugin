@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 7.3
+## 7.2.5
 
  - Magic mobs can now have a list of triggers, can cast spells or run commands on death/interval/damage.
  - Magic mobs will now focus on the player that has damaged them the most

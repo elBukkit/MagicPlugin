@@ -2,35 +2,10 @@
 
 ## 7.3
  
- - Cooldown reduction not working on wands, nor is the cooldown_reduction parameter working (could not reproduce.. ??)
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
    
-## Higher Priority
-
- - Spells can be worn .. ?  Skill icons maybe?
- - PerWorldInventory logout issues, can't reproduce
- - Broom issues when in creative mode
- - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
- - Spells drop on death with lag (maybe)?
-
-## Suggestions
-
- - Magic mobs drop skill API XP and/or run commands on death
- - MythicMob integration to add protection/strength/etc
-
- - Placeholder API integration: https://www.spigotmc.org/wiki/hooking-into-placeholderapi/
-   - Allow placeholder-driven attributes
- 
- - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
-
-## High-Priority
-
- - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
- - PW would like some custom lore for wand "quiet" and quick cast settings.
- - Recall warps don't show up with /mage describe?
-
 ## Attributes
 
  - Add internal attribute system.
@@ -48,7 +23,27 @@
    - Damage protection
    - Anti-hunger
    
+## Suggestions
 
+ - MythicMob integration to add protection/strength/etc
+
+ - Placeholder API integration: https://www.spigotmc.org/wiki/hooking-into-placeholderapi/
+   - Allow placeholder-driven attributes
+ 
+ - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
+
+## On Hold
+
+ - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
+ - Spells drop on death with lag (maybe)?
+ - Spells can be worn .. ?  Skill icons maybe?
+ - PerWorldInventory logout issues, can't reproduce
+ - Broom issues when in creative mode
+ - Cooldown reduction not working on wands, nor is the cooldown_reduction parameter working (could not reproduce.. ??)
+ - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
+ - PW would like some custom lore for wand "quiet" and quick cast settings.
+ - Recall warps don't show up with /mage describe?
+   
 ## Fast Blocks
 
  - The easiest way to deal with that is to probably pretend the client doesn't have the chunk yet
@@ -57,49 +52,17 @@
  - and make sure to call playerChunkMap.a(playerChunk); to schedule an update
 
   https://github.com/tastybento/askyblock/blob/master/src/com/wasteofplastic/askyblock/nms/v1_12_R1/NMSHandler.java
-
-## Automata
- 
- - Don't erase heart block for 1 tick, just include that material in the simulation
- - Sort UndoList by modified (re-insert on dupe?)
- - Special recursive death mode for Virus, maybe
-  
-## 7.0
-
- - Maybe reconsider config-collapsing approach, switch to routing on get/set ?
-
- - Move property holder configs to wands (? How to handle /mage configure? Maybe not...)
- 
- - Rename WandUpgradePath to Progression path, Deprecate old API classes (can't do this without breaking API changes?)
- - Wand templates will specify properties that come from the Mage versus item data. 
- - Need a default class option?
- - Handle migration for the above.
- - How to handle /wand commands used for Mage properties- just transfer to mage, probably?
- - Implement /mage add, remove
- - Option to filter spells that show on wand by what's available on its current path
- - Might need to add yet another category of spells to paths, those that are allowed but never appear in the spell shop
-
- - Things to check when it's all ready:
-   - What happens if configs fail to load, or classes get messed up? Do we lose data?
-   - Should we lose data when a class is intentionally removed? (Hard to tell the difference)
-
-## Heroes
-
- - Integration with character attribute modifiers. Would be nice to expand Magic's power system to fit this better
- - Heroes skill configs don't seem to work on first run?
   
 ## Not so High-Priority
  
+ - Don't refund item costs when a spell goes through auto-undo
  - Destroyed a car with someone in it, they stayed in invisible car
- - Skill icons that work as wands (cast via right-click, etc)
  - Per-player language settings (See https://www.spigotmc.org/resources/api-languages.22305/)
- - spell_inventory on a wand template doesn't work
  - Would be cool to have a configurable max # of maps, and start re-using map ids when limit is hit, LRU
  - Ability to alter flower pots and beds (need to tweak TileEntity data.. doable, but messy to track with Material keys)
  - Brush selector on a sub-page for beds says "diamond axe sub-types"?
  - An option on a wand to put all spells at max level (but don't fill)
  - Aliases don't work with levels 
- - Don't refund item costs when a spell goes through auto-undo
  - Ability to specify map dimensions/offset in percentage
 
 ## Sabers
@@ -107,11 +70,6 @@
  - Paths being able to upgrade blocking/reflect power
 
 ## Reported Issues
-
-Ivan_: [ATTENTION]My wand kept switching hotbars when I cast a spell
-Ivan_: When I casted a spell it would switch to my normal hotbar
-Ivan_: But it got fixed after
-Ivan_: It did it no longer than a minute
 
 ### Requests
 
