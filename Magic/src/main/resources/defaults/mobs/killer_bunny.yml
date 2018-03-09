@@ -9,6 +9,12 @@ killer_bunny:
   # Normally this behavior is only present for spellcasting mobs.
   aggro: true
 
+  triggers:
+    death:
+      commands:
+      - broadcast A bomb went off!
+      - kill @damagers
+
   drops:
   - gold_nugget@10
   - sp:10

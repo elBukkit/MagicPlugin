@@ -3,13 +3,8 @@ package com.elmakers.mine.bukkit.entity;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import com.elmakers.mine.bukkit.magic.MageTrigger;
+import com.elmakers.mine.bukkit.magic.MageTrigger.MageTriggerType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Creature;
@@ -18,19 +13,18 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class EntityMageData {
     // These properties will get copied directly to mage data, as if they were in the "mage" section.
     private static final String[] MAGE_PROPERTIES = {"protection", "weakness", "strength"};
 
     protected long tickInterval;
-    protected LinkedList<WeightedPair<String>> spells;
-    protected LinkedList<WeightedPair<String>> deathSpells;
-    protected List<String> deathCommands;
+    protected Map<MageTriggerType, List<MageTrigger>> triggers;
     protected ConfigurationSection mageProperties;
     protected boolean requiresTarget;
     protected ItemData requiresWand;
@@ -51,92 +45,65 @@ public class EntityMageData {
             }
         }
 
-        tickInterval = parameters.getLong("cast_interval", 0);
-        if (parameters.contains("cast")) {
-            spells = new LinkedList<>();
-            RandomUtils.populateStringProbabilityMap(spells, parameters.getConfigurationSection("cast"));
-        }
-        if (parameters.contains("death_cast")) {
-            deathSpells = new LinkedList<>();
-            RandomUtils.populateStringProbabilityMap(deathSpells, parameters.getConfigurationSection("death_cast"));
-        }
-        deathCommands = ConfigurationUtils.getStringList(parameters, "death_commands");
+        tickInterval = parameters.getLong("interval", parameters.getLong("cast_interval", 0));
         requiresTarget = parameters.getBoolean("cast_requires_target", true);
         aggro = parameters.getBoolean("aggro", !isEmpty());
+
+        ConfigurationSection triggerConfig = parameters.getConfigurationSection("triggers");
+
+        // Support legacy "cast" format
+        if (parameters.contains("cast")) {
+            if (triggerConfig == null) {
+                triggerConfig = new MemoryConfiguration();
+            }
+            ConfigurationSection castSection = triggerConfig.createSection("interval");
+            castSection.set("cast", parameters.getConfigurationSection("cast"));
+        }
+
+        Set<String> triggerKeys = triggerConfig == null ? null : triggerConfig.getKeys(false);
+        if (triggerKeys != null) {
+            triggers = new HashMap<>();
+            for (String triggerKey : triggerKeys) {
+                MageTrigger trigger = new MageTrigger(controller, triggerKey, triggerConfig.getConfigurationSection(triggerKey));
+                if (trigger.isValid()) {
+                    List<MageTrigger> typeTriggers = triggers.get(trigger.getType());
+                    if (typeTriggers == null) {
+                        typeTriggers = new ArrayList<>();
+                        triggers.put(trigger.getType(), typeTriggers);
+                    }
+                    typeTriggers.add(trigger);
+                }
+            }
+        }
+
+        // Default to 1-second interval if any interval triggers are set but no interval was specified
+        if (triggers != null && tickInterval <= 0 && triggers.containsKey(MageTriggerType.INTERVAL)) {
+            tickInterval = 1000;
+        }
     }
 
     public boolean isEmpty() {
-        boolean hasSpells = spells != null && tickInterval >= 0;
-        hasSpells = hasSpells || deathSpells != null;
+        boolean hasTriggers = triggers != null;
         boolean hasProperties = mageProperties != null;
-        return !hasProperties && !hasSpells && !aggro && deathCommands == null;
+        return !hasProperties && !hasTriggers && !aggro;
     }
 
-    private void cast(Mage mage, String castSpell) {
-        if (castSpell.length() > 0) {
-            String[] parameters = null;
-            Spell spell = null;
-            if (!castSpell.equalsIgnoreCase("none"))
-            {
-                if (castSpell.contains(" ")) {
-                    parameters = StringUtils.split(castSpell, ' ');
-                    castSpell = parameters[0];
-                    parameters = Arrays.copyOfRange(parameters, 1, parameters.length);
-                }
-                spell = mage.getSpell(castSpell);
-            }
-            if (spell != null) {
-                spell.cast(parameters);
-            }
-        }
+    private List<MageTrigger> getTriggers(MageTriggerType type) {
+        return triggers == null ? null : triggers.get(type);
     }
 
     public void onDeath(Mage mage) {
-        if (deathSpells != null && !deathSpells.isEmpty()) {
-            String deathSpell = RandomUtils.weightedRandom(deathSpells);
-            cast(mage, deathSpell);
-        }
-        if (deathCommands != null) {
-            Entity topDamager = mage.getTopDamager();
-            Entity killer = mage.getLastDamager();
-            Collection<Entity> damagers = mage.getDamagers();
-            Location location = mage.getLocation();
-            for (String command : deathCommands) {
-                if (command.contains("@killer")) {
-                    if (killer == null) continue;
-                    command.replace("@killer", killer.getName());
-                }
-                if (command.contains("@damager")) {
-                    if (topDamager == null) continue;
-                    command.replace("@damager", topDamager.getName());
-                }
-
-                boolean allDamagers = command.contains("@damagers");
-                if (allDamagers && damagers == null) {
-                    continue;
-                }
-
-                command = command
-                    .replace("@name", mage.getName())
-                    .replace("@world", location.getWorld().getName())
-                    .replace("@x", Double.toString(location.getX()))
-                    .replace("@y", Double.toString(location.getY()))
-                    .replace("@z", Double.toString(location.getZ()));
-
-                if (allDamagers) {
-                    for (Entity damager : damagers) {
-                        String damagerCommand = command.replace("@damagers", damager.getName());
-                        mage.getController().getPlugin().getServer().dispatchCommand(Bukkit.getConsoleSender(), damagerCommand);
-                    }
-                } else {
-                    mage.getController().getPlugin().getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
-                }
-            }
+        List<MageTrigger> deathTriggers = getTriggers(MageTriggerType.DEATH);
+        if (deathTriggers == null) return;
+        for (MageTrigger trigger : deathTriggers) {
+            trigger.execute(mage);
         }
     }
 
     public void tick(Mage mage) {
-        if (spells == null || spells.isEmpty()) return;
+        List<MageTrigger> intervalTriggers = getTriggers(MageTriggerType.INTERVAL);
+        if (intervalTriggers == null) return;
+
         Entity entity = mage.getLivingEntity();
         Creature creature = (entity instanceof Creature) ? (Creature)entity : null;
         if (requiresTarget && (creature == null || creature.getTarget() == null)) return;
@@ -146,7 +113,8 @@ public class EntityMageData {
             if (itemInHand == null || itemInHand.getType() != requiresWand.getType()) return;
         }
 
-        String castSpell = RandomUtils.weightedRandom(spells);
-        cast(mage, castSpell);
+        for (MageTrigger trigger : intervalTriggers) {
+            trigger.execute(mage);
+        }
     }
 }

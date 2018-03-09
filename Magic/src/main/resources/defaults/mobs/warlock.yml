@@ -10,18 +10,20 @@ warlock:
   name: Warlock
   health: 200
   default_drops: false
-  cast_interval: 1000
   protection:
     fall: 1
-  cast:
-    missile: 20
-    poison: 30
-    pull: 100
-    curse: 100
-    blob: 20
-    lava: 10
-    shell: 20
-    none: 300
+  interval: 1000
+  triggers:
+    interval:
+      cast:
+        missile: 20
+        poison: 30
+        pull: 100
+        curse: 100
+        blob: 20
+        lava: 10
+        shell: 20
+        none: 300
   drops:
   - gold_nugget@16
   - sp:16

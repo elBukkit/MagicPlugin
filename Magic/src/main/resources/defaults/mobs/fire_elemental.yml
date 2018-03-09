@@ -7,11 +7,13 @@ fire_elemental:
     fire: 2
   weakness:
     water: 1
-  cast_interval: 5000
-  cast:
-    fire: 100
-    flamethrower: 100
-    none: 50
+  interval: 5000
+  triggers:
+    interval:
+      cast:
+        fire: 100
+        flamethrower: 100
+        none: 50
   drops:
   - gold_nugget@8
   - sp:10
