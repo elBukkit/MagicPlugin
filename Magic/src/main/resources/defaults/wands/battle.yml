@@ -7,6 +7,7 @@ battle:
     icon: gold_sword:1
     migrate_icon: gold_sword
     effect_color: '11FF11'
+    hide_flags: 62
     protection:
       physical: 0.4
     attributes:

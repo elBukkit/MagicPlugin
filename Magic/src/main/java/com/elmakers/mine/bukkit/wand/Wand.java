@@ -600,7 +600,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		} else {
 			CompatibilityUtils.removeUnbreakable(item);
 		}
-		CompatibilityUtils.hideFlags(item, HIDE_FLAGS);
+		CompatibilityUtils.hideFlags(item, getProperty("hide_flags", HIDE_FLAGS));
 	}
 	
 	@Override

@@ -6,11 +6,12 @@
  - Magic mobs will now focus on the player that has damaged them the most
  - Non-trivial magic mobs will despawn on chunk unload and shutdown
  - Add support for clearing magic mobs from a specific location
- - Add a physical damage increase option to the wand buff shop for the Master Sword
+ - Add option to the wand buff shop to sharpen the the Master Sword
  - Add physical protection option to buff shop
  - Add Aggro action, to force a mob to target the caster (or the target, via some ChangeContext trickery.. see mob and monster)
  - Add target_tamed property to allow spells to ignore tamed mobs
  - The Cleric Chestplate now heals more the closer players are to the wearer
+ - Add hide_flags wand attribute for specific flag visibility per wand
  - Enable headshots on husks, vindicators, evokers and illusioners
    Examples: 
     /mmob clear warlock 20                Clear all warlocks within 20 blocks of your location
