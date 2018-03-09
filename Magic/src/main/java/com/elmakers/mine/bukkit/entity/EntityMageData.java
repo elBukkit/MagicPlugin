@@ -28,6 +28,7 @@ public class EntityMageData {
     protected ConfigurationSection mageProperties;
     protected boolean requiresTarget;
     protected ItemData requiresWand;
+    protected boolean aggro;
 
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
         requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
@@ -54,13 +55,14 @@ public class EntityMageData {
             RandomUtils.populateStringProbabilityMap(deathSpells, parameters.getConfigurationSection("death_cast"));
         }
         requiresTarget = parameters.getBoolean("cast_requires_target", true);
+        aggro = parameters.getBoolean("aggro", !isEmpty());
     }
 
     public boolean isEmpty() {
         boolean hasSpells = spells != null && tickInterval >= 0;
         hasSpells = hasSpells || deathSpells != null;
         boolean hasProperties = mageProperties != null;
-        return !hasProperties && !hasSpells;
+        return !hasProperties && !hasSpells && !aggro;
     }
 
     private void cast(Mage mage, String castSpell) {

@@ -4,6 +4,11 @@ killer_bunny:
   name: Killer Bunny
   health: 100
   default_drops: false
+
+  # This will force this mob to target the player who is damaging it.
+  # Normally this behavior is only present for spellcasting mobs.
+  aggro: true
+
   drops:
   - gold_nugget@10
   - sp:10

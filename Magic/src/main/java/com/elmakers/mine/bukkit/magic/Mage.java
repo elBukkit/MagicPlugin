@@ -373,6 +373,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     private void setTarget(Entity target) {
+        if (entityData != null && !entityData.shouldFocusOnDamager()) return;
+
         LivingEntity li = getLivingEntity();
         if (li != null && li instanceof Creature && target instanceof LivingEntity) {
             ((Creature)li).setTarget((LivingEntity)target);

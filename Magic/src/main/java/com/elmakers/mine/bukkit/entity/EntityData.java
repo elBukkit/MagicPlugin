@@ -811,4 +811,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public String getInteractSpell() {
         return interactSpell;
     }
+
+    public boolean shouldFocusOnDamager() {
+        return mageData == null ? false : mageData.aggro;
+    }
 }
