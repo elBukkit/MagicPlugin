@@ -165,6 +165,7 @@ public class EntityController implements Listener {
         if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
         Mage entityMage = controller.getRegisteredMage(entity);
         if (entityMage != null) {
+            entityMage.damagedBy(event.getDamager(), event.getDamage());
             if (entity instanceof Player) {
                 Player damaged = (Player)entity;
                 if (damaged.isBlocking()) {

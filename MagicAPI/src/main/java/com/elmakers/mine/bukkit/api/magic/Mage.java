@@ -508,6 +508,7 @@ public interface Mage extends CostReducer {
     @Nullable MageClass unlockClass(@Nonnull String key);
     @Nullable MageClass getClass(@Nonnull String key);
     boolean hasClassUnlocked(@Nonnull String key);
+    void damagedBy(Entity enity, double damage);
 
     /**
      * This will return properties for the mage's active wand, if holding one, or if not then the active class.

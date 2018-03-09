@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.action.TeleportTask;
@@ -54,10 +55,13 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -73,6 +77,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
@@ -148,6 +153,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long ignoreItemActivationUntil = 0;
     private boolean forget = false;
     private long disableWandOpenUntil = 0;
+
+    private class DamagedBy {
+        public WeakReference<Player> player;
+        public double damage;
+        public DamagedBy(Player player, double damage) {
+            this.player = new WeakReference<>(player);
+            this.damage = damage;
+        }
+    };
+    private DamagedBy topDamager;
+    private Map<UUID, DamagedBy> damagedBy;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     private Map<String, Double> protection = new HashMap<>();
@@ -353,6 +369,46 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     }
                 }
             }
+        }
+    }
+
+    private void setTarget(Entity target) {
+        LivingEntity li = getLivingEntity();
+        if (li != null && li instanceof Creature && target instanceof LivingEntity) {
+            ((Creature)li).setTarget((LivingEntity)target);
+        }
+    }
+
+    @Override
+    public void damagedBy(Entity damager, double damage) {
+        if (damagedBy == null) return;
+
+        if (damager instanceof Projectile) {
+            ProjectileSource source = ((Projectile) damager).getShooter();
+            if (!(source instanceof Entity)) return;
+            damager = (Entity)source;
+        }
+
+        // Only tracking players for now.
+        if (!(damager instanceof Player)) return;
+        Player damagingPlayer = (Player)damager;
+
+        DamagedBy damaged = damagedBy.get(damagingPlayer.getUniqueId());
+        if (damaged == null) {
+            damaged = new DamagedBy(damagingPlayer, damage);
+            damagedBy.put(damagingPlayer.getUniqueId(), damaged);
+        } else {
+            damaged.damage += damage;
+        }
+
+        if (topDamager != null) {
+            if (topDamager.player.get() == null || topDamager.damage < damaged.damage) {
+                topDamager = damaged;
+                setTarget(damagingPlayer);
+            }
+        } else {
+            topDamager = damaged;
+            setTarget(damagingPlayer);
         }
     }
 
@@ -3226,6 +3282,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             ConfigurationUtils.addConfigurations(properties.getConfiguration(), mageProperties);
             updatePassiveEffects();
         }
+
+        // Only Magic Mobs tracks damage by player, for now
+        damagedBy = new HashMap<>();
     }
 
     @Override
