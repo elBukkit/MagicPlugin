@@ -47,7 +47,6 @@ public class EntityMageData {
 
         tickInterval = parameters.getLong("interval", parameters.getLong("cast_interval", 0));
         requiresTarget = parameters.getBoolean("cast_requires_target", true);
-        aggro = parameters.getBoolean("aggro", !isEmpty());
 
         ConfigurationSection triggerConfig = parameters.getConfigurationSection("triggers");
 
@@ -80,6 +79,8 @@ public class EntityMageData {
         if (triggers != null && tickInterval <= 0 && triggers.containsKey(MageTriggerType.INTERVAL)) {
             tickInterval = 1000;
         }
+
+        aggro = parameters.getBoolean("aggro", !isEmpty());
     }
 
     public boolean isEmpty() {
