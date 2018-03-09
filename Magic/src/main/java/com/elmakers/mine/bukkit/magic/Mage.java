@@ -3342,6 +3342,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     
     public void setEntityData(EntityData entityData) {
         this.entityData = entityData;
+        controller.registerMagicMob(this);
 
         ConfigurationSection mageProperties = entityData.getMageProperties();
         if (mageProperties != null) {

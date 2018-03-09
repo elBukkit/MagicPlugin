@@ -129,6 +129,7 @@ public interface MageController {
 
     void sendToMages(String message, Location location);
     Collection<Mage> getMages();
+    Collection<Mage> getMobMages();
     void removeMage(Mage mage);
     void removeMage(String id);
 

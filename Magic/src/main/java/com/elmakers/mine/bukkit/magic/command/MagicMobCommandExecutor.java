@@ -170,7 +170,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
     protected void onListMobs(CommandSender sender) {
         Map<String, Integer> mobCounts = new HashMap<>();
 
-        Collection<Mage> mages = new ArrayList<>(api.getController().getMages());
+        Collection<Mage> mages = new ArrayList<>(api.getController().getMobMages());
         for (Mage mage : mages) {
             EntityData entityData = mage.getEntityData();
             if (entityData == null) continue;
@@ -272,7 +272,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        Collection<Mage> mages = new ArrayList<>(api.getController().getMages());
+        Collection<Mage> mages = new ArrayList<>(api.getController().getMobMages());
         int removed = 0;
         for (Mage mage : mages) {
             EntityData entityData = mage.getEntityData();

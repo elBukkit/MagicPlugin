@@ -2871,6 +2871,16 @@ public class MagicController implements MageController {
         playerQuit(mage, null);
     }
 
+    public void onShutdown() {
+        for (Mage mobMage : mobMages.values()) {
+            Entity entity = mobMage.getEntity();
+            if (entity != null) {
+                entity.remove();
+            }
+        }
+        mobMages.clear();
+    }
+
     public void undoScheduled() {
         int undid = 0;
         while (!scheduledUndo.isEmpty()) {
@@ -2940,12 +2950,13 @@ public class MagicController implements MageController {
 
     @Override
     public void removeMage(Mage mage) {
-        mages.remove(mage.getId());
+        removeMage(mage.getId());
     }
 
     @Override
     public void removeMage(String id) {
         mages.remove(id);
+        mobMages.remove(id);
     }
 
     public void saveMage(Mage mage, boolean asynchronous)
@@ -3355,6 +3366,12 @@ public class MagicController implements MageController {
     @Override
     public Collection<Mage> getMages() {
         Collection<? extends Mage> values = mages.values();
+        return Collections.unmodifiableCollection(values);
+    }
+
+    @Override
+    public Collection<Mage> getMobMages() {
+        Collection<? extends Mage> values = mobMages.values();
         return Collections.unmodifiableCollection(values);
     }
 
@@ -5166,6 +5183,10 @@ public class MagicController implements MageController {
         }
         return null;
     }
+
+    public void registerMagicMob(com.elmakers.mine.bukkit.magic.Mage mage) {
+        mobMages.put(mage.getId(), mage);
+    }
     
     /*
 	 * Private data
@@ -5283,6 +5304,7 @@ public class MagicController implements MageController {
     private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<>();
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<>();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
+    private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mobMages = new HashMap<>();
     private final Set<Mage>		 	            pendingConstruction			= new HashSet<>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<>();
     private final Map<String, WeakReference<Schematic>> schematics	= new HashMap<>();

@@ -240,6 +240,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	{
         if (controller != null) {
         	// Safety fallback in case we've missed some pending batches from logged out mages
+			controller.onShutdown();
         	controller.undoScheduled();
             controller.clear();
             controller.save();

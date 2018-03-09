@@ -5,6 +5,9 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -16,7 +19,9 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -136,5 +141,25 @@ public class MobController implements Listener {
 
     public EntityData getByName(String name) {
         return mobsByName.get(name);
+    }
+
+    @EventHandler
+    public void onChunkUnload(ChunkUnloadEvent event) {
+        Chunk chunk = event.getChunk();
+        Collection<Mage> magicMobs = controller.getMobMages();
+
+        for (Mage mage : magicMobs) {
+            Entity entity = mage.getEntity();
+            if (entity == null) continue;
+            Location location = entity.getLocation();
+            if (!chunk.getWorld().getName().equals(location.getWorld().getName())) continue;
+
+            int chunkX = chunk.getX();
+            int chunkZ = chunk.getZ();
+            if (chunkZ != location.getBlockZ() >> 4 || chunkX != location.getBlockX() >> 4) continue;
+
+            mage.sendDebugMessage(ChatColor.RED + "Despawned", 4);
+            entity.remove();
+        }
     }
 }
