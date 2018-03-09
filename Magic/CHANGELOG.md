@@ -2,15 +2,14 @@
 
 ## 7.3
 
+ - Magic mobs can now have a list of triggers, can cast spells or run commands on death/interval/damage.
+ - Magic mobs will now focus on the player that has damaged them the most
+ - Add support for clearing magic mobs from a specific location
  - Add a physical damage increase option to the wand buff shop for the Master Sword
  - Add physical protection option to buff shop
  - Add Aggro action, to force a mob to target the caster (or the target, via some ChangeContext trickery.. see mob and monster)
  - Add target_tamed property to allow spells to ignore tamed mobs
- - Add death_spells option for magic mobs to cast a random spell on death
  - Enable headshots on husks, vindicators, evokers and illusioners
- - Magic mobs will now focus on the player that has damaged them the most
- - Added death_commands parameter to Magic Mobs
- - Add support for clearing magic mobs from a specific location
    Examples: 
     /mmob clear warlock 20                Clear all warlocks within 20 blocks of your location
     /mmob clear all 20 0 64 0 world   Clear all magic mobs within 20 blocks of a specific location

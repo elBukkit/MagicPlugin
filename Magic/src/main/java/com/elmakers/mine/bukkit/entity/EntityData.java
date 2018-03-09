@@ -800,6 +800,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             mageData.onDeath(mage);
         }
     }
+
+    public void onDamage(Mage mage, double damage) {
+        if (mageData != null) {
+            mageData.onDamage(mage, damage);
+        }
+    }
     
     public void tick(Mage mage) {
         if (mageData != null) {

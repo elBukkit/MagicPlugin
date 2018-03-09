@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -27,6 +28,13 @@ public class MageTrigger {
     protected LinkedList<WeightedPair<String>> spells;
     protected List<String> commands;
 
+    protected double maxHealth;
+    protected double minHealth;
+    protected double maxHealthPercentage;
+    protected double minHealthPercentage;
+    protected double maxDamage;
+    protected double minDamage;
+
     public MageTrigger(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         String typeString = configuration.getString("type", key);
         try {
@@ -41,6 +49,13 @@ public class MageTrigger {
             RandomUtils.populateStringProbabilityMap(spells, configuration.getConfigurationSection("cast"));
         }
         commands = ConfigurationUtils.getStringList(configuration, "commands");
+
+        maxHealth = configuration.getDouble("max_health");
+        minHealth = configuration.getDouble("min_health");
+        maxHealthPercentage = configuration.getDouble("max_health_percentage");
+        minHealthPercentage = configuration.getDouble("min_health_percentage");
+        maxDamage = configuration.getDouble("max_damage");
+        minDamage = configuration.getDouble("min_damage");
     }
 
     public boolean isValid() {
@@ -71,6 +86,19 @@ public class MageTrigger {
     }
 
     public void execute(Mage mage) {
+        execute(mage, 0);
+    }
+
+    public void execute(Mage mage, double damage) {
+        if (minDamage > 0 && damage < minDamage) return;
+        if (maxDamage > 0 && damage > maxDamage) return;
+
+        LivingEntity li = mage.getLivingEntity();
+        if (minHealth > 0 && (li == null || li.getHealth() < minHealth)) return;
+        if (maxHealth > 0 && (li == null || li.getHealth() > maxHealth)) return;
+        if (minHealthPercentage > 0 && (li == null || li.getHealth() * 100 / li.getMaxHealth() < minHealthPercentage)) return;
+        if (maxHealthPercentage > 0 && (li == null || li.getHealth() * 100 / li.getMaxHealth() > maxHealthPercentage)) return;
+
         if (spells != null && !spells.isEmpty()) {
             String deathSpell = RandomUtils.weightedRandom(spells);
             cast(mage, deathSpell);

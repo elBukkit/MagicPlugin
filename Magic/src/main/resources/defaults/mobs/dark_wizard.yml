@@ -11,6 +11,22 @@ dark_wizard:
   default_drops: false
   interval: 1000
   triggers:
+    damage1:
+      type: damage
+      min_health: 100
+      cast:
+        push|4: 150
+        push|3: 100
+        none: 50
+    damage2:
+      type: damage
+      max_health: 100
+      cast:
+        missile|4: 150
+        railgun: 100
+        push|4: 70
+        shell: 20
+        none: 20
     death:
       cast:
         neutron: 10

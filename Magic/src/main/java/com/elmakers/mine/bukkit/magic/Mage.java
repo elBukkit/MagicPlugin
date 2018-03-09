@@ -437,6 +437,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             topDamager = lastDamager;
             setTarget(damagingPlayer);
         }
+
+        if (entityData != null) {
+            entityData.onDamage(this, damage);
+        }
     }
 
     public void onDamage(EntityDamageEvent event) {

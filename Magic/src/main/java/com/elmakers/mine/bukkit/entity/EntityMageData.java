@@ -100,6 +100,14 @@ public class EntityMageData {
         }
     }
 
+    public void onDamage(Mage mage, double damage) {
+        List<MageTrigger> damageTriggers = getTriggers(MageTriggerType.DAMAGE);
+        if (damageTriggers == null) return;
+        for (MageTrigger trigger : damageTriggers) {
+            trigger.execute(mage, damage);
+        }
+    }
+
     public void tick(Mage mage) {
         List<MageTrigger> intervalTriggers = getTriggers(MageTriggerType.INTERVAL);
         if (intervalTriggers == null) return;
