@@ -2,6 +2,8 @@
 
 ## 7.3
 
+ - Add MP5 to war configs (Thanks again to Sidewalk and NavalClash.net)
+
 ## 7.2.5
 
  - Magic mobs can now have a list of triggers, can cast spells or run commands on death/interval/damage.

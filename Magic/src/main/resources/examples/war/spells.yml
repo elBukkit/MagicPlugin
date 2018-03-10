@@ -489,6 +489,29 @@ pkp:
     spread_movement_max: 0.4
     velocity: 3000
 
+
+reload_mp5:
+  inherit: full_reload
+  effects:
+    reload:
+    - sound: war.ak47-reload
+      sound_pitch: 2
+  parameters:
+    delay: 700
+    repeat: 2
+    cooldown: 3000
+
+mp5:
+  inherit: ak47
+  parameters:
+    cooldown: 500
+    player_damage: 3
+    entity_damage: 6
+    range: 50
+    spread: 0.1
+    spread_movement_max: 0.4
+    velocity: 3500
+
 reload_thompson:
   inherit: full_reload
   effects:
@@ -1406,6 +1429,8 @@ gunshop:
         items:
         - item: pistol
           cost: 2000
+        - item: mp5
+          cost: 4000
         - item: ak47
           cost: 5000
         - item: pkp

@@ -28,6 +28,9 @@ wands:
   thompson:
     name: Thompson
     mana_amount: "Ammo: $amount"
+  mp5:
+    name: MP5
+    mana_amount: "Ammo: $amount"
   riotshield:
     name: Riot Shield
     block_chance: ""
@@ -64,6 +67,12 @@ spells:
         cooldown: ""
     ak47:
         name: AK-47 Skill
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
+    mp5:
+        name: MP5 Skill
         cast_player_message: ""
         indirect_player_message: ""
         insufficient_resources: "a:Left-click to reload"
@@ -107,6 +116,8 @@ spells:
     reload_sniper:
         cooldown: ""
     reload_ak47:
+        cooldown: ""
+    reload_mp5:
         cooldown: ""
     reload_pistol:
         cooldown: ""

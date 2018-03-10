@@ -160,25 +160,11 @@ customlore:
   - $path
   - $mana_max
   
-ak:
-  hidden: true
-  right_click: cast
-  left_click: alt_cast
-  indestructible: true
-  cast_location: 0.5,-0.4,0.5
-  attributes:
-    GENERIC_ATTACK_SPEED: 10
-  icon: diamond_pickaxe:1
-  inherit: base_gun
-  active_spell: ak47
-  alternate_spell: reload_ak47
-  mana: 70
-  mana_max: 70
-  
 testing:
   inherit: base_wand
   class: testing
   mana_max: 50
   mana: 50
   mana_regeneration: 5
-  
+
+
