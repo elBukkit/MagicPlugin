@@ -9,7 +9,7 @@ prevent_creative_breaking: 0
 skills_use_permissions: true
 
 # Don't reduce melee damage anymore, it makes testing item attributes and damage too difficult!
-melee_damage_reduction: 0.5
+# melee_damage_reduction: 0.5
 
 # Turn on auto-rollback for creeper explosions and TNT
 auto_rollback_duration: 10000
