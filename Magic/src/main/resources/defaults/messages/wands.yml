@@ -335,7 +335,9 @@ wands:
         description: Right-click to view skills, drag skill to hotbar to use
     spellbook:
         name: Spell Book
-        description: Right-click to view spells, drag skill to hotbar to use
+        description: $path spellbook
+        spell_instructions: "&r&bUse the hotbar button to cast spells that you have put on your hotbar."
+        inventory_instructions: "&r&bRight-click to open the spell inventory and drag spells to your hotbar to cast them."
     appearance_beginner:
         name: Beginner Wand Appearance
         description: Will change the appearance of your wand

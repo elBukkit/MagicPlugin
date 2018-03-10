@@ -1,7 +1,8 @@
 # TODO
 
 ## 7.3
- 
+
+ - Why do hotbar spells show as uncastable while holding a wand of the wrong class? 
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)

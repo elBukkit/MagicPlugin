@@ -14,8 +14,10 @@ wandshop:
           cost: 3000
         - item: wand|spellbook
           cost: 3000
-        - item: wand|mastersword
-          cost: 4000
-        - item: wand|magicsword
+        - item: wand|talisman
           cost: 5000
+        - item: wand|mastersword
+          cost: 8000
+        - item: wand|magicsword
+          cost: 9000
 
