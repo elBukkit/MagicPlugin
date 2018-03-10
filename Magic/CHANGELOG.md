@@ -3,6 +3,8 @@
 ## 7.3
 
  - Add MP5 to war configs (Thanks again to Sidewalk and NavalClash.net)
+ - Master Sword changed to Magic Sword.
+ - New Master Sword item that works more like the Zelda equivalent.
 
 ## 7.2.5
 

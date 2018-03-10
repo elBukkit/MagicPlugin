@@ -14,7 +14,7 @@ progressmenu:
     - placeholder: true
     - cast_spell: wandbuffshop
       requirements:
-      - wands: wand,battle
+      - wands: wand,magicsword,mastersword
     - cast_spell: appearanceshop
       requirements: 
       - wand: wand

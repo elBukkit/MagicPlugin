@@ -179,6 +179,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private MaterialAndData disabledIcon = null;
     private String iconURL = null;
     private String iconDisabledURL = null;
+    private double requiredHealth;
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
 
@@ -876,6 +877,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             tags = null;
         }
 
+        requiredHealth = node.getDouble("require_health_percentage", 0);
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", false);
@@ -1204,6 +1206,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
             sendCastMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
             return false;
+        }
+
+        if (requiredHealth > 0) {
+            LivingEntity li = mage.getLivingEntity();
+            double healthPercentage = li == null ? 0 : 100 * li.getHealth() / li.getMaxHealth();
+            if (healthPercentage < requiredHealth) {
+                processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
+                sendCastMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
+                return false;
+            }
         }
 
         if (controller.isSpellProgressionEnabled()) {

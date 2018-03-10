@@ -1,0 +1,15 @@
+#
+# The legendary sword that seals the darkness
+#
+mastersword:
+    inherit: base_bound
+    icon: gold_sword:1
+    effect_color: '11FF88'
+    hide_flags: 62
+    alternate_spell: masterattack
+    drop: alt_cast
+    protection:
+      physical: 0.5
+    attributes:
+      GENERIC_ATTACK_DAMAGE: 10
+

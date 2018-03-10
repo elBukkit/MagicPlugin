@@ -20,6 +20,8 @@ wandshop:
           cost: 150000
         - item: wand|architect
           cost: 330000
-        - item: wand|battle
+        - item: wand|magicsword
+          cost: 24000
+        - item: wand|mastersword
           cost: 24000
 

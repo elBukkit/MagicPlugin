@@ -63,7 +63,7 @@ wandbuffshop:
           type: wand
           property: enchantments.DAMAGE_ALL
       requirements:
-        - wand: battle
+        - wands: magicsword,mastersword
         - wand_properties:
           - property: enchantments.DAMAGE_ALL
             max: 5

@@ -1,9 +1,10 @@
-battle:
-  output: magicsword
+mastersword:
+  enabled: false
+  output: mastersword
   output_type: wand
   materials:
     o: nether_star
-    i: stick
+    i: blaze_rod
   row_1: o
   row_2: o
   row_3: i

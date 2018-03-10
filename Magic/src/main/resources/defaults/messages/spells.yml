@@ -1103,6 +1103,10 @@ spells:
         description: Convert your last construction
         no_target: Nothing to transmute
         cast: You transmute your structure to $material
+    masterattack:
+        name: Master Blast
+        insufficient_resources: ""
+        cooldown: ""
     missile:
         name: Magic Missile
         description: Fire a bolt of pure magic
