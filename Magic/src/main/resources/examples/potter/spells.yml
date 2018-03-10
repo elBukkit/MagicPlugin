@@ -1542,16 +1542,21 @@ morsmordre:
         -  class: EffectSingle
            sound: wither_hurt
         -  class: EffectTrail
-           particle: flame
-        -  class: EffectRing
+           particle: redstone
+           color: 00FF00
+        -  class: EffectSingle
            location: target
-           firework: creeper
-           radius: 12
-           target_offset: 0,16,0
-           color: '00FF00'
-           color2: '88FF88'
+           target_offset: 0,3,0
+           effectlib:
+             enableRotation: false
+             class: ColoredImageEffect
+             fileName: https://i.imgur.com/47aVrwT.gif
+             stepX: 1
+             stepY: 1
+             size: 0.2
+             transparency: true
     parameters:
-        target: any
+        target: block
         allow_max_range: true
         range: 16
         cooldown: 60000
