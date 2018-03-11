@@ -36,7 +36,7 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.magic.AttributableConfiguration;
-import com.elmakers.mine.bukkit.math.EquationStore;
+import de.slikey.effectlib.math.EquationStore;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 

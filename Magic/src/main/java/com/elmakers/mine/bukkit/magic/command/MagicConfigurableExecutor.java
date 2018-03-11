@@ -4,7 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
-import com.elmakers.mine.bukkit.math.EquationStore;
+import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;

@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
-import com.elmakers.mine.bukkit.math.EquationStore;
+import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationOptions;
