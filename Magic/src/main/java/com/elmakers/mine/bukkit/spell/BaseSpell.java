@@ -1449,7 +1449,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             // Escape some common parameters
             String playerName = mage.getName();
             message = message.replace("$player", playerName);
-            message = message.replace("$name", playerName);
+            message = message.replace("$caster", playerName);
 
             if (message.contains("$material"))
             {

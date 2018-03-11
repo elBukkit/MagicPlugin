@@ -1111,7 +1111,7 @@ spells:
         name: Magic Missile
         description: Fire a bolt of pure magic
         cast_target: "Your missile deals $damage damage to $target"
-        cast_player_message: "$name did $damage damage to you with $spell"
+        cast_player_message: "$caster did $damage damage to you with $spell"
         cast: You fire a missile
         no_target: You fire a missile
         upgrade_description: "&r&b&bull; &6Increased damage and range"
