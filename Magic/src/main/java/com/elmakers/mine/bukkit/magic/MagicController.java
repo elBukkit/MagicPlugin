@@ -150,6 +150,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -3612,6 +3613,18 @@ public class MagicController implements MageController {
     }
 
     protected ConfigurationSection resolveConfiguration(String key, ConfigurationSection properties, Map<String, ConfigurationSection> configurations) {
+        resolvingKeys.clear();
+        return resolveConfiguration(key, properties, configurations, resolvingKeys);
+    }
+
+    protected ConfigurationSection resolveConfiguration(String key, ConfigurationSection properties, Map<String, ConfigurationSection> configurations, Set<String> resolving) {
+        // Catch circular dependencies
+        if (resolvingKeys.contains(key)) {
+            getLogger().log(Level.WARNING, "Circular dependency detected: " + StringUtils.join(resolvingKeys, " -> ") + " -> " + key);
+            return properties;
+        }
+        resolvingKeys.add(key);
+
         ConfigurationSection configuration = configurations.get(key);
         if (configuration == null) {
             configuration = properties.getConfigurationSection(key);
@@ -3620,7 +3633,7 @@ public class MagicController implements MageController {
             }
             String inherits = configuration.getString("inherit");
             if (inherits != null) {
-                ConfigurationSection baseConfiguration = resolveConfiguration(inherits, properties, configurations);
+                ConfigurationSection baseConfiguration = resolveConfiguration(inherits, properties, configurations, resolving);
                 if (baseConfiguration != null) {
                     ConfigurationSection newConfiguration = ConfigurationUtils.cloneConfiguration(baseConfiguration);
                     ConfigurationUtils.addConfigurations(newConfiguration, configuration);
@@ -5412,6 +5425,7 @@ public class MagicController implements MageController {
     private byte[]                              resourcePackHash            = null;
     private boolean                             saveDefaultConfigs          = true;
     private long                                resourcePackDelay           = 0;
+    private Set<String>                         resolvingKeys               = new LinkedHashSet<>();
 
     private FactionsManager					    factionsManager				= new FactionsManager();
     private LocketteManager                     locketteManager				= new LocketteManager();
