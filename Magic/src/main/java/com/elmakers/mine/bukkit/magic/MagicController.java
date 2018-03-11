@@ -2013,8 +2013,20 @@ public class MagicController implements MageController {
         return getSpellConfig(key, config, true);
     }
 
-    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config, boolean addInherited)
+    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config, boolean addInherited) {
+        resolvingKeys.clear();
+        return getSpellConfig(key, config, addInherited, resolvingKeys);
+    }
+
+    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config, boolean addInherited, Set<String> resolving)
     {
+        // Catch circular dependencies
+        if (resolvingKeys.contains(key)) {
+            getLogger().log(Level.WARNING, "Circular dependency detected in spell configs: " + StringUtils.join(resolvingKeys, " -> ") + " -> " + key);
+            return config;
+        }
+        resolvingKeys.add(key);
+
         if (addInherited) {
             ConfigurationSection built = spellConfigurations.get(key);
             if (built != null) {
@@ -2061,7 +2073,7 @@ public class MagicController implements MageController {
             }
             else if (processInherited)
             {
-                ConfigurationSection inheritConfig = getSpellConfig(inheritFrom, config);
+                ConfigurationSection inheritConfig = getSpellConfig(inheritFrom, config, true, resolving);
                 if (inheritConfig != null)
                 {
                     spellNode = ConfigurationUtils.addConfigurations(spellNode, inheritConfig, false);
@@ -2076,7 +2088,7 @@ public class MagicController implements MageController {
             {
                 if (config.contains(upgradeInheritsFrom))
                 {
-                    ConfigurationSection baseInheritConfig = getSpellConfig(upgradeInheritsFrom, config, inheritFrom == null);
+                    ConfigurationSection baseInheritConfig = getSpellConfig(upgradeInheritsFrom, config, inheritFrom == null, resolving);
                     spellNode = ConfigurationUtils.addConfigurations(spellNode, baseInheritConfig, inheritFrom != null);
                 } else {
                     getLogger().warning("Spell upgrade " + key + " inherits from unknown level " + upgradeInheritsFrom);
