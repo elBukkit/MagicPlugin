@@ -479,6 +479,33 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         playEffects(key, 1.0f);
     }
 
+    private void multiplyParameter(String key, Map<String, String> parameterMap, ConfigurationSection configuration, ConfigurationSection baseConfiguration) {
+        String multiplyKey = key + "_multiplier";
+        if (configuration.contains(multiplyKey)) {
+            double baseValue = baseConfiguration != null ? baseConfiguration.getInt(key) : 0;
+            double value = configuration.getDouble(key, baseValue);
+            double multiplier = configuration.getDouble(multiplyKey, 1);
+            if (multiplier != 1) {
+                value = multiplier * value;
+            }
+            // Double-formatting strings won't work as integer parameters in EffectLib, so to be safe we're
+            // storing them as ints.
+            parameterMap.put("$duration", Integer.toString((int)Math.ceil(value)));
+        }
+    }
+
+    private void addParameters(Map<String, String> parameterMap, ConfigurationSection configuration, ConfigurationSection baseConfiguration) {
+        if (configuration == null) return;
+        Collection<String> keys = configuration.getKeys(false);
+        for (String key : keys) {
+            parameterMap.put("$" + key, configuration.getString(key));
+        }
+
+        // Some specific special cases in here to support multipliers used in headshots and upgrades
+        multiplyParameter("duration", parameterMap, configuration, baseConfiguration);
+        multiplyParameter("damage", parameterMap, configuration, baseConfiguration);
+    }
+
     @Override
     public Collection<EffectPlayer> getEffects(String effectKey) {
         Collection<EffectPlayer> effects = spell.getEffects(effectKey);
@@ -487,12 +514,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         // Create parameter map
         Map<String, String> parameterMap = null;
         ConfigurationSection workingParameters = spell.getWorkingParameters();
-        if (workingParameters != null) {
-            Collection<String> keys = workingParameters.getKeys(false);
+        ConfigurationSection handlerParameters = spell.getHandlerParameters(effectKey);
+        if (handlerParameters != null || workingParameters != null) {
             parameterMap = new HashMap<>();
-            for (String key : keys) {
-                parameterMap.put("$" + key, workingParameters.getString(key));
-            }
+            addParameters(parameterMap, workingParameters, null);
+            addParameters(parameterMap, handlerParameters, workingParameters);
         }
 
         for (EffectPlayer player : effects)
