@@ -37,6 +37,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     private Map<String, String> migrateIcons;
     private ConfigurationSection attributes;
     private String attributeSlot;
+    private String parentKey;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         super(controller);
@@ -52,6 +53,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         icon = node.getString("icon");
         attributes = node.getConfigurationSection("attributes");
         attributeSlot = node.getString("attribute_slot");
+        parentKey = node.getString("inherit");
 
         // Remove some properties that should not transfer to wands
         clearProperty("creator");
@@ -230,5 +232,13 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     @Override
     public String getAttributeSlot() {
         return attributeSlot;
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.WandTemplate getParent() {
+        if (parentKey != null && !parentKey.isEmpty() && !parentKey.equalsIgnoreCase("false")) {
+            return controller.getWandTemplate(parentKey);
+        }
+        return null;
     }
 }
