@@ -7,29 +7,55 @@ pull:
     earns_sp: 4
     actions:
         cast:
-        -  class: Velocity
-        -  class: FallProtection
-        alternate_down:
         - class: Velocity
-          fov: 3
-          range: 16
-          count: 16
+        - class: FallProtection
+        alternate_down:
+        - class: ChangeContext
+          target_caster: true
+          actions:
+          - class: Repeat
+            repeat: 2
+            actions:
+            - class: AreaOfEffect
+              radius: 12
+              actions:
+              - class: Velocity
+                push: -1
+                living_entity_speed: 1
+              - class: FallProtection
+              - class: Delay
+                delay: 200
     effects:
         cast:
-        -  class: EffectSingle
-           sound: block_fire_extinguish
-        -  class: EffectTrail
-           particle: spell
-           reverse: true
-           length: 16
-           particle_count: 6
+        - class: EffectSingle
+          sound: block_fire_extinguish
+        - class: EffectTrail
+          particle: spell
+          reverse: true
+          length: 16
+          particle_count: 20
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+        - location: target
+          effectlib:
+            class: Sphere
+            particle: spell
+            particles: 20
+            iterations: 20
+            particleCount: 5
+            particleOffsetX: 0.5
+            particleOffsetY: 0.5
+            particleOffsetZ: 0.5
+            radius: 1.5
         alternate_down:
-        -  class: EffectSingle
-           sound: block_fire_extinguish
-           effectlib:
+        - class: EffectSingle
+          sound: block_fire_extinguish
+          effectlib:
              class: HelixEffect
              particle: spell
              iterations: 2
+             offset: 0, -1.6, 0
     parameters:
         target_type: Entity
         range: 48

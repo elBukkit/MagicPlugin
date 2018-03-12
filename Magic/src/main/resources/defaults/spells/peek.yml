@@ -18,6 +18,10 @@ peek:
            sound: block_fire_extinguish
         -  class: EffectTrail
            particle: block_crack
+           particle_count: 20
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
     parameters:
         target: block
         allow_max_range: false

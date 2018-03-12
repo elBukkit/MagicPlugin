@@ -17,6 +17,14 @@ reflect:
         -  class: EffectSingle
            sound: magic.shield_boom
            location: origin
+        -  location: target
+           target_location: block
+           effectlib:
+             class: SphereEffect
+             particle: block_crack
+             radius: $radius
+             duration: 500
+             offset: 0.5,0.5,0.5
     parameters:
         allow_max_range: true
         range: 3

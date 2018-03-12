@@ -3220,25 +3220,39 @@ testmodifiedeffect:
     upgrade_required_path: student
     upgrade_required_casts: 50
     effects:
-        cast:
+      cast:
         - location: target
-          target_offset: 0,3,0
+          use_block_location: true
           effectlib:
             class: Modified
+            period: 3
+            iterations: 10
+            parameters:
+              radius: "(1 - (t / i)) * 3 + 0.9"
             effect:
               class: Sphere
-            parameters:
-              radius: "t * 0.2"
+              particle: block_crack
+              yOffset: 0
+              offset: 0,0.7,0
+              particleCount: 4
+              particles: 30
+              particleOffsetX: 0.1
+              particleOffsetY: 0.1
+              particleOffsetZ: 0.1
     parameters:
         target: block
         allow_max_range: true
         range: 16
 
 implosion:
+    parameters:
+      target: block
+      range: 32
+      allow_max_range: true
     effects:
         cast:
         - class: EffectSingle
-          location: origin
+          location: target
           effectlib:
             class: Modified
             effect:
@@ -3267,3 +3281,22 @@ plotter:
             #yEquation: "select(t - 10, t * 5, 50, select(i - t - 10, 50, 50, (i - t - 10) * 5))"
             # yEquation: "select(t - 10, t * 5, 50, select(t - i + 10, 50, 50, abs(t - i) * 5))"
             yEquation: "select(t - 10, (10 - t) * 0.3 + 0.5, 0.5, select(t - i + 10, 0.5, 0.5, (t - i + 10) * 0.3 + 0.5))"
+
+Image:
+    parameters:
+      range: 10
+      allow_max_range: true
+    effects:
+        cast:
+        - class: EffectSingle
+          location: target
+          effectlib:
+            enableRotation: false
+            class: ColoredImageEffect
+            fileName: https://i.imgur.com/kL4Jvq5.gif
+            stepX: 2
+            stepY: 2
+            size: 0.1
+            period: 1
+            frameDelay: 1
+            transparency: true

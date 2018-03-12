@@ -12,6 +12,7 @@
    - Added "transparency" option to ColoredImageEffect and ImageEffect
    - Image effects can now load files from a URL
    - Add ModifiedEffect, which allows you to parameterized any existing effect.
+ - Update visual FX for many default spells
  
 ## 7.2.5
 

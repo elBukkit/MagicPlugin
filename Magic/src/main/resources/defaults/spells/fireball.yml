@@ -13,28 +13,23 @@ fireball:
         -  class: Projectile
     effects:
         cast:
-        -  class: EffectSingle
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: lava
-             lengthGrow: 0.4
-           sound: magic.burn
-           sound_volume: 1
-           sound_pitch: -.25
+        - sound: magic.burn
+          sound_volume: 1
+          sound_pitch: -.25
         projectile:
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: SmokeEffect
-             iterations: 4
-             period: 5
+        - class: EffectSingle
+          location: origin
+          effectlib:
+             class: Sphere
+             iterations: 10
+             period: 2
+             particles: 5
              particle: lava
         hit:
-        -  class: EffectSingle
-           location: target
-           color: FE642E
-           firework: ball
+        - class: EffectSingle
+          location: target
+          color: FE642E
+          firework: ball
     parameters:
         projectile: LargeFireball
         fire: false

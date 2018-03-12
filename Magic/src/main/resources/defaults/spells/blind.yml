@@ -18,15 +18,25 @@ blind:
              class: ConeEffect
              iterations: 15
              particle: smoke_normal
-             lengthGrow: 0.01
+             lengthGrow: 0.05
+             radiusGrow: 0.002
+             particleCount: 4
+             particleOffsetX: 0.2
+             particleOffsetY: 0.2
+             particleOffsetZ: 0.2
         tick:
         - location: target
           particle: smoke_normal
+          particle_count: 20
+          particle_offset_x: 0.1
+          particle_offset_y: 0.1
+          particle_offset_z: 0.1
         hit:
         -  class: EffectSingle
            location: target
            use_hit_location: false
            requires_entity_target: true
+           sound: magic.shimmer
            effectlib:
              class: Modified
              effect:
