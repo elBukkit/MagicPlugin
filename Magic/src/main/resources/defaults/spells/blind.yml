@@ -25,37 +25,18 @@ blind:
         hit:
         -  class: EffectSingle
            location: target
-           color: 2E2E2E
-           firework: ball
-        -  class: EffectSingle
-           location: target
            use_hit_location: false
            requires_entity_target: true
            effectlib:
-             class: SphereEffect
-             iterations: 17
-             period: 4
-             particle: smoke_normal
-             radius: 0.5
-             particles: 20
-        headshot:
-        -  class: EffectSingle
-           location: target
-           color: 2E2E2E
-           firework: ball
-        -  class: EffectSingle
-           location: target
-           use_hit_location: false
-           requires_entity_target: true
-           effectlib:
-             class: SphereEffect
-             iterations: 30
-             period: 4
-             particle: smoke_normal
-             radius: 0.75
-             particles: 30
-    costs:
-        mana: 45
+             class: Modified
+             effect:
+               class: SphereEffect
+               particle: smoke_normal
+               particleCount: 5
+             duration: $duration
+             parameters:
+               particles: "select(t - 10, t * 5, 50, select(t - i + 10, 50, 50, abs(t - i) * 5))"
+               radius: "select(t - 10, (10 - t) * 0.3 + 0.5, 0.5, select(t - i + 10, 0.5, 0.5, (t - i + 10) * 0.3 + 0.5))"
     headshot_parameters:
       duration_multiplier: 3
     parameters:
@@ -68,4 +49,6 @@ blind:
         cooldown: 10000
         effect_blindness: 5
         hitbox: true
+    costs:
+        mana: 45
 
