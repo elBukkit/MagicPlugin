@@ -55,12 +55,16 @@ public class SourceLocation {
                         locationType = LocationType.HIT;
                     } else if (configuration.getBoolean("use_wand_location", true)) {
                         locationType = LocationType.WAND;
+                    } else if (configuration.getBoolean("use_eye_location", true)) {
+                        locationType = LocationType.EYES;
                     }
                 } else {
                     if (configuration.getBoolean("use_wand_location", false)) {
                         locationType = LocationType.WAND;
                     } else if (configuration.getBoolean("use_hit_location", true)) {
                         locationType = LocationType.HIT;
+                    } else if (configuration.getBoolean("use_eye_location", true)) {
+                        locationType = LocationType.EYES;
                     }
                 }
             }

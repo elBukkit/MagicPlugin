@@ -6,6 +6,7 @@
  - Master Sword changed to Magic Sword.
  - New Master Sword item that works more like the Zelda equivalent.
  - Fix issues using /wand save to override an existing wand with a modified version of that wand.
+ - Fix for FX that should go on a targets' eyes but use the old "use_hit_location: false" method. (See: Blind)
  - EffectLib updates:
    - Added "transparency" option to ColoredImageEffect and ImageEffect
    - Image effects can now load files from a URL
