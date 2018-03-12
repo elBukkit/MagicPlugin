@@ -923,4 +923,23 @@ public class ConfigurationUtils extends ConfigUtils {
         }
         return potionEffects;
     }
+
+    public static ConfigurationSection subtractConfiguration(ConfigurationSection base, ConfigurationSection subtract) {
+         Set<String> keys = subtract.getKeys(false);
+         for (String key : keys) {
+             Object baseObject = base.get(key);
+             if (baseObject == null) continue;
+             Object subtractObject = subtract.get(key);
+             if (subtractObject == null) continue;
+             if (subtractObject instanceof ConfigurationSection && baseObject instanceof ConfigurationSection) {
+                 ConfigurationSection baseConfig = (ConfigurationSection)baseObject;
+                 ConfigurationSection subtractConfig = (ConfigurationSection)subtractObject;
+                 baseConfig = subtractConfiguration(baseConfig, subtractConfig);
+                 if (!baseConfig.getKeys(false).isEmpty()) continue;
+             } else if (!subtractObject.equals(baseObject)) continue;
+             base.set(key, null);
+         }
+
+         return base;
+    }
 }

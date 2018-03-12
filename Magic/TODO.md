@@ -2,6 +2,8 @@
 
 ## 7.3
 
+ - Undoing a wolf house leaves diodes and redstone behind
+ - Brushette requests damage reduction (as in subtract an amount)
  - Why do hotbar spells show as uncastable while holding a wand of the wrong class? 
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo

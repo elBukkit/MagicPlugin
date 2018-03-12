@@ -5,7 +5,12 @@
  - Add MP5 to war configs (Thanks again to Sidewalk and NavalClash.net)
  - Master Sword changed to Magic Sword.
  - New Master Sword item that works more like the Zelda equivalent.
-
+ - Fix issues using /wand save to override an existing wand with a modified version of that wand.
+ - EffectLib updates:
+   - Added "transparency" option to ColoredImageEffect and ImageEffect
+   - Image effects can now load files from a URL
+   - Add ModifiedEffect, which allows you to parameterized any existing effect.
+ 
 ## 7.2.5
 
  - Magic mobs can now have a list of triggers, can cast spells or run commands on death/interval/damage.

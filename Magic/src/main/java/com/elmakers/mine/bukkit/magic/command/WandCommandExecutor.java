@@ -1041,11 +1041,32 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			}
 		}
 
+		String inheritTemplate = wand.getTemplateKey();
 		YamlConfiguration wandConfig = new YamlConfiguration();
 		ConfigurationSection wandSection = wandConfig.createSection(template);
 		wand.save(wandSection, true);
 		wandSection.set("creator_id", player.getUniqueId().toString());
 		wandSection.set("creator", player.getName());
+
+		// Handle the case of overwriting a template, which requires special behavior to avoid the new template
+		// inheriting from itself.
+		if (inheritTemplate != null && inheritTemplate.equals(template)) {
+			String oldTemplate = null;
+			if (existing != null) {
+				// This gives us the collapsed configuration, including inherited values.
+				// We just want the ones changed by the template we are replacing, though.
+				ConfigurationSection templateConfig = existing.getConfiguration();
+				WandTemplate parent = existing.getParent();
+				if (parent != null) {
+					oldTemplate = parent.getKey();
+					ConfigurationSection parentConfig = parent.getConfiguration();
+					templateConfig = ConfigurationUtils.subtractConfiguration(templateConfig, parentConfig);
+				}
+
+				ConfigurationUtils.addConfigurations(wandSection, templateConfig, false);
+			}
+			wandSection.set("inherit", oldTemplate);
+		}
 
 		File wandFolder = new File(controller.getConfigFolder(), "wands");
 		File wandFile = new File(wandFolder, template + ".yml");
