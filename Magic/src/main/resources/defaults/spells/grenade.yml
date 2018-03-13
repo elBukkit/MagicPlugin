@@ -14,8 +14,19 @@ grenade:
         -  class: TNT
     effects:
         cast:
-        -  class: EffectSingle
-           sound: block_lava_pop
+        - class: EffectSingle
+          sound: block_lava_pop
+        projectile:
+        - location: origin
+          effectlib:
+            class: Modified
+            iterations: 60
+            parameters:
+              size: "max(1, (t / i) * 5 - 2)"
+            effect:
+              class: AnimatedBall
+              particle: smoke_large
+              xFactor: 2
     parameters:
         target: none
         allow_max_range: true

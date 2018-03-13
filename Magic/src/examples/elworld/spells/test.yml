@@ -1,9 +1,0 @@
-test1:
-  actions: 
-    cast:
-    - class: CheckBlock
-    - class: Message
-  parameters:
-    allowed: grass
-    message: You hit grass!
-    range: 32

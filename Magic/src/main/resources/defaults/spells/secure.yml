@@ -12,13 +12,98 @@ secure:
        - class: Lock
     effects:
         cast:
-        -  class: EffectSingle
-           sound: magic.shimmer
-           location: origin
-        -  class: EffectTrail
-           particle: smoke_normal
-           particle_data: 1
-           particle_count: 5
+        - class: EffectSingle
+          sound: magic.shimmer
+          location: origin
+        - class: EffectTrail
+          particle: smoke_normal
+          particle_data: 0
+          particle_count: 8
+          particle_offset_x: 0.1
+          particle_offset_y: 0.2
+          particle_offset_z: 0.1
+        - class: EffectSingle
+          location: target
+          sound: magic.hit
+          sound_volume: 0.5
+        - class: EffectSingle
+          location: target
+          use_block_location: true
+          effectlib:
+           class: Modified
+           iterations: 30
+           parameters:
+            edgeLength: "max(1, (1 - (t / i)) * 5 - 2)"
+           effect:
+             class: CubeEffect
+             particle: redstone
+             color: "C0C0C0"
+             enableRotation: false
+             offset: 0.5,0.5,0.5
+        no_target:
+        - class: EffectSingle
+          sound: magic.shimmer
+          location: origin
+        - class: EffectTrail
+          particle: smoke_normal
+          particle_data: 0
+          particle_count: 8
+          particle_offset_x: 0.2
+          particle_offset_y: 0.4
+          particle_offset_z: 0.2
+        - class: EffectSingle
+          location: target
+          use_block_location: true
+          effectlib:
+           class: CubeEffect
+           iterations: 2
+           particle: redstone
+           color: "660000"
+           edgeLength: 1
+           enableRotation: false
+           offset: 0.5,0.5,0.5
+        alternate_up:
+        - class: EffectSingle
+          sound: magic.shimmer
+          location: origin
+          effectlib:
+           class: Modified
+           iterations: 30
+           parameters:
+            radius: "(1 - (t / i)) * 5"
+           effect:
+             class: Sphere
+             particle: redstone
+             color: "C0C0C0"
+        alternate_sneak:
+        - class: EffectSingle
+          sound: magic.shimmer
+          location: origin
+        - class: EffectTrail
+          particle: smoke_normal
+          particle_data: 0
+          particle_count: 8
+          particle_offset_x: 0.1
+          particle_offset_y: 0.2
+          particle_offset_z: 0.1
+        - class: EffectSingle
+          location: target
+          sound: magic.bonk
+          sound_volume: 0.5
+        - class: EffectSingle
+          location: target
+          use_block_location: true
+          effectlib:
+           class: Modified
+           iterations: 30
+           parameters:
+            edgeLength: "max(1, (t / i) * 5 - 2)"
+           effect:
+             class: CubeEffect
+             particle: redstone
+             color: "C0C0C0"
+             enableRotation: false
+             offset: 0.5,0.5,0.5
     alternate_up_parameters:
       type: key
     alternate_sneak_parameters:
@@ -26,6 +111,7 @@ secure:
     parameters:
         range: 8
         loud: true
+        allow_max_range: true
         transparent: air,attachable_wall
         check_destructible: true
         destructible: chest,trapped_chest
@@ -37,4 +123,3 @@ secure:
 secure|2:
     parameters:
         destructible: containers
-

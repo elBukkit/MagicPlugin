@@ -15,19 +15,20 @@ cure:
         - class: EffectSingle
           sound: magic.shimmer
           location: target
-          particle_override: particleOrbital
+          source_location: body
           effectlib:
-             class: AtomEffect
-             particleNucleus: heart
-             particleOrbital: crit
-             iterations: 5
-        -  class: EffectSingle
-           location: target
-           use_hit_location: false
-           effectlib:
-             class: LoveEffect
-             iterations: 5
+             class: Modified
+             iterations: 40
              period: 2
+             parameters:
+                 radius: "(t/i) * 3 + 0.5"
+                 radiusNucleus: "(t/i) * 0.5 + 0.4"
+             effect:
+                 class: AtomEffect
+                 particleNucleus: heart
+                 particleOrbital: crit
+                 particlesNucleus: 1
+                 particlesOrbital: 30
     parameters:
         bypass_mage_cooldown: true
         target_type: LivingEntity

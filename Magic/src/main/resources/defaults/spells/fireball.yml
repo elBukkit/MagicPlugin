@@ -17,8 +17,7 @@ fireball:
           sound_volume: 1
           sound_pitch: -.25
         projectile:
-        - class: EffectSingle
-          location: origin
+        - location: origin
           effectlib:
              class: Sphere
              iterations: 10

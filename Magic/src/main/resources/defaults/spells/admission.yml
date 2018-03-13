@@ -12,16 +12,47 @@ admission:
         - class: Door
     effects:
         cast:
-        -  class: EffectSingle
-           sound: magic.shimmer
-        -  class: EffectTrail
-           particle: redstone
-           color: FFFF00
-           particle_data: 2
-           particle_count: 5
+        - sound: magic.shimmer
+        - class: EffectTrail
+          particle: redstone
+          color: false
+          particle_data: 2
+          particle_count: 20
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+        - class: EffectSingle
+          location: target
+          sound: magic.bonk
+          sound_volume: 0.5
+        - class: EffectSingle
+          location: target
+          use_block_location: true
+          effectlib:
+           class: Modified
+           iterations: 30
+           parameters:
+            edgeLength: "max(1, (t / i) * 5 - 2)"
+           effect:
+             class: CubeEffect
+             particle: redstone
+             speed: 2
+             enableRotation: false
+             offset: 0.5,0.5,0.5
+        no_target:
+        - sound: magic.shimmer
+        - class: EffectTrail
+          particle: redstone
+          color: false
+          particle_data: 2
+          particle_count: 10
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
     parameters:
         range: 16
         radius: 3
+        allow_max_range: true
         destructible: unlocked_doors
         transparent: transparent_to_construction
         undo: 8000

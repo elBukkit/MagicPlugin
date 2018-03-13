@@ -6,6 +6,8 @@ lava:
     pvp_restricted: true
     worth: 250
     earns_sp: 5
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     actions:
       cast:
       - class: DisablePhysics
@@ -15,17 +17,21 @@ lava:
         - class: Delay
     effects:
         cast:
-        -  class: EffectSingle
-           sound: block_lava_ambient
+        - class: EffectSingle
+          sound: block_lava_ambient
         iterate:
-        -  class: EffectSingle
-           particle: lava
+        - location: target
+          particle: lava
+          particle_count: 8
+          particle_offset_x: 0.5
+          particle_offset_z: 0.5
+          particle_offset_y: 0.2
     parameters:
         target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
-        range: 8
-        size: 8
+        range: 6
+        size: 6
         brush: stationary_lava
         increment_data: true
         undo: 200
@@ -34,4 +40,20 @@ lava:
         delay: 1
     costs:
         mana: 65
+
+lava|2:
+  parameters:
+    range: 8
+    size: 8
+
+lava|3:
+  parameters:
+    range: 12
+    size: 12
+
+lava|3:
+  parameters:
+    range: 16
+    size: 16
+
 

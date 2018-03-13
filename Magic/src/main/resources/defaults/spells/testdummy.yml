@@ -12,11 +12,6 @@ testdummy:
         cast:
         -  class: EffectSingle
            sound: entity_villager_yes
-           effectlib:
-             class: DnaEffect
-             particleHelix: drip_lava
-             iterations: 24
-             particleBase1: drip_water
     parameters:
         target: block
         track: false

@@ -28,29 +28,58 @@ blink:
           source_location: eyes
           effectlib:
              class: AtomEffect
-             particleNucleus: dragon_breath
+             particleNucleus: fireworks_spark
              particleOrbital: redstone
-             iterations: 8
+             iterations: 16
              offset: 0,-1,0
+        - class: EffectSingle
+          location: target
+          source_location: body
+          color_override: colorNucleus
+          effectlib:
+             class: AtomEffect
+             particleNucleus: redstone
+             particleOrbital: fireworks_spark
+             iterations: 8
         precast:
          - class: EffectSingle
            sound: magic.teleport
            location: origin
            particle_override: particleNucleus
            color_override: colorOrbital
-           source_location: eyes
+           source_location: body
            effectlib:
                class: AtomEffect
                updateLocations: false
-               particleNucleus: dragon_breath
+               particleNucleus: fireworks_spark
                particleOrbital: redstone
+               iterations: 16
+         - class: EffectSingle
+           location: origin
+           source_location: body
+           color_override: colorNucleus
+           effectlib:
+               class: AtomEffect
+               updateLocations: false
+               particleNucleus: redstone
+               particleOrbital: fireworks_spark
                iterations: 8
-               offset: 0,-1,0
          - class: EffectSingle
            color_override: color
            effectlib:
                class: LineEffect
                particle: redstone
+               updateLocations: false
+               particles: 200
+         - class: EffectSingle
+           effectlib:
+               class: LineEffect
+               particle: fireworks_spark
+               particles: 50
+               particleCount: 5
+               particleOffsetX: 0.5
+               particleOffsetY: 0.5
+               particleOffsetZ: 0.5
                updateLocations: false
     parameters:
         target: block

@@ -20,13 +20,20 @@ lightning:
            sound: entity_firework_large_blast
         -  class: EffectTrail
            particle: smoke_normal
-           particle_count: 2
+           particle_count: 30
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
         -  class: EffectSingle
            location: target
            effectlib:
              class: HelixEffect
-             particle: smoke_normal
-             iterations: 3
+             particle: smoke_large
+             iterations: 1
+             particleCount: 10
+             particleOffsetX: 1
+             particleOffsetY: 0.1
+             particleOffsetZ: 1
     parameters:
         target_type: LivingEntity
         allow_max_range: true

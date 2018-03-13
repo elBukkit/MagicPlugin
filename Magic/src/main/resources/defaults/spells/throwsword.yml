@@ -16,7 +16,7 @@ throwsword:
                 duration: 30000
     parameters:
       velocity: 10
-      held_item: gold_sword:1
+      right_arm_item: gold_sword:1
       location_offset: 0,4,0
       armor_stand_invisible: true
       armor_stand_marker: true

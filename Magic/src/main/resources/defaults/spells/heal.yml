@@ -27,13 +27,16 @@ heal:
           location: target
           target_offset: 0,-2,0
           effectlib:
-            class: WarpEffect
-            duration: $total_duration
+            class: Modified
             period: 2
-            particle: heart
-            particles: 7
-            iterations: 40
-            radius: 1
+            duration: $total_duration
+            parameters:
+              radius: "(t/i) * 0.5 + 1"
+              rings: "(1 - (t/i)) * 11 + 1"
+            effect:
+              class: WarpEffect
+              particle: heart
+              particles: 7
         - class: EffectSingle
           target_offset: 0,-1.5,0
           effectlib:
@@ -41,20 +44,23 @@ heal:
             particle: heart
             duration: 5000
             particles: 10
-            period: 5
+            period: 20
         cast_self:
         - class: EffectSingle
           sound: magic.shimmer
           location: target
           target_offset: 0,-2,0
           effectlib:
-            class: WarpEffect
-            duration: $total_duration
+            class: Modified
             period: 2
-            particle: heart
-            particles: 7
-            iterations: 40
-            radius: 1
+            duration: $total_duration
+            parameters:
+              radius: "(t/i) * 0.5 + 1"
+              rings: "(1 - (t/i)) * 11 + 1"
+            effect:
+              class: WarpEffect
+              particle: heart
+              particles: 7
         cast_finish:
         -  class: EffectSingle
            custom_sound: magic.shimmer_quiet
@@ -74,7 +80,7 @@ heal:
         target_type: LivingEntity
         target: any_entity
         allow_max_range: false
-        range: 5
+        range: 8
         cooldown: 20000
         bypass_pvp: true
         bypass_friendly_fire: true

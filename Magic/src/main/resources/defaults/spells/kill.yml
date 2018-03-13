@@ -60,6 +60,22 @@ kill:
           location: target
           color: "00FF00"
           firework: ball_large
+        hit_entity:
+        - class: EffectSingle
+          location: target
+          target_offset: 0,3,0
+          effectlib:
+             class: Modified
+             iterations: 75
+             parameters:
+              size: "max(0, (t / i) * 5 - 3) + 0.2"
+             effect:
+               enableRotation: false
+               class: ColoredImageEffect
+               fileName: https://i.imgur.com/47aVrwT.gif
+               stepX: 1
+               stepY: 1
+               transparency: true
     parameters:
         target: none
         target_type: Damageable
