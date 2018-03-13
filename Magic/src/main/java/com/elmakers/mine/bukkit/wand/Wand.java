@@ -4563,7 +4563,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
                 sendLevelMessage("spell_upgraded", currentSpell.getName(), levelDescription);
 
-                mage.sendMessage(template.getUpgradeDescription().replace("$name", currentSpell.getName()));
+                String upgradeDescription = template.getUpgradeDescription().replace("$name", currentSpell.getName());
+                if (!upgradeDescription.isEmpty()) {
+                	mage.sendMessage(controller.getMessages().get("spell.upgrade_description_prefix") + upgradeDescription);
+				}
 
                 SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, template);
                 Bukkit.getPluginManager().callEvent(upgradeEvent);

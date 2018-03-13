@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 7.3
+
+ - Spell upgrade prefix made global. If you have customized upgrade descriptions and would like to keep them unique, set
+   spell.upgrade_description_prefix to "" in messages.yml
+
 ## 7.2
 
  - Default spell used for enchant table changed from spellshop to progressmenu

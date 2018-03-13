@@ -249,6 +249,7 @@ public class SpellShopAction extends BaseShopAction
             }
             String upgradeDescription = spell.getUpgradeDescription();
             if (showUpgrades && upgradeDescription != null && !upgradeDescription.isEmpty()) {
+                upgradeDescription = controller.getMessages().get("spell.upgrade_description_prefix") + upgradeDescription;
                 InventoryUtils.wrapText(upgradeDescription,  lore);
             }
 

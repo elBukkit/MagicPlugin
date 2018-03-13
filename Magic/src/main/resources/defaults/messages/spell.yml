@@ -17,3 +17,4 @@ spell:
     description_lore: "&b$description"
     level_lore: "&6$level"
     toggle: "&aCast to toggle on and off"
+    upgrade_description_prefix: "&r&b&bull; &6"
