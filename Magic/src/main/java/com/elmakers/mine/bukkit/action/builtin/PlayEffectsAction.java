@@ -15,7 +15,7 @@ public class PlayEffectsAction extends BaseSpellAction
         if (effectKey == null || effectKey.isEmpty()) {
             return SpellResult.FAIL;
         }
-        context.playEffects(effectKey);
+        context.playEffects(effectKey, 1.0f, context.getTargetBlock());
 		return SpellResult.CAST;
 	}
 
