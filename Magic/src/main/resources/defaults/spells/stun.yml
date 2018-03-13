@@ -28,9 +28,9 @@ stun:
            location: origin
            color_override: color
            effectlib:
-             class: SmokeEffect
+             class: Sphere
              iterations: 16
-             particle: spell
+             particle: redstone
     parameters:
         target_type: Damageable
         radius: 4

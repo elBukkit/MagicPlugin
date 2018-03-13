@@ -13,6 +13,15 @@ workbench:
         cast:
         -  class: EffectSingle
            sound: block_piston_extend
+           effectlib:
+            class: WarpEffect
+            particle: block_crack
+            material: workbench
+            duration: 1000
+            particleCount: 10
+            particleOffsetX: 1
+            particleOffsetZ: 1
+            particleOffsetY: 1
     parameters:
         target: none
         cooldown: 5000

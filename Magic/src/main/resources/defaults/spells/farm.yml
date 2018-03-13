@@ -3,36 +3,59 @@ farm:
     icon_disabled: diamond_hoe:68
     icon_url: http://textures.minecraft.net/texture/5d6c6eda942f7f5f71c3161c7306f4aed307d82895f9d2b07ab4525718edc5
     category: elemental
-    class: FamiliarSpell
     worth: 300
-    entity_types:
-        chicken: 30
-        cow: 100
-        pig: 100
-        mushroom_cow: 15
-        horse: 5
+    actions:
+      cast:
+        - class: Repeat
+          actions:
+          - class: Spread
+            actions:
+            - class: SpawnEntity
+            - class: PlayEffects
+              effects: spawned
     effects:
         cast:
         -  class: EffectSingle
            sound: entity_sheep_ambient
            effectlib:
-             class: DnaEffect
-             particleHelix: drip_lava
-             iterations: 24
-             particleBase1: drip_water
+             class: Modified
+             iterations: 60
+             parameters:
+               radius: "(t / i) * 5 + 0.1"
+             effect:
+               class: DnaEffect
+               grow: 0.1
+               particlesHelix: 5
+               length: 50
+               particleHelix: drip_water
+               particleBase1: drip_water
+               particleBase2: drip_water
+        spawned:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: AtomEffect
-             iterations: 32
-             particleNucleus: drip_water
+              class: Modified
+              iterations: 32
+              parameters:
+                radius: "(t / i) * 4 + 1"
+              effect:
+               class: AtomEffect
+               particleNucleus: drip_water
+               particleOrbital: drip_water
     parameters:
         target_type: LivingEntity
         allow_max_range: false
         range: 64
-        count: 10
+        repeat: 10
         cooldown: 45000
         undo: 30000
+        radius: 24
+        entity_types:
+            chicken: 30
+            cow: 100
+            pig: 100
+            mushroom_cow: 15
+            horse: 5
     costs:
         mana: 50
 

@@ -10,11 +10,23 @@ flare:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: Firework
+        - class: CustomProjectile
+          actions:
+          - class: Firework
+          miss:
+          - class: Firework
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_firework_launch
+        - sound: entity_firework_launch
+        tick:
+        - location: target
+          particle: fireworks_spark
+          particle_count: 8
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+        - location: target
+          particle: redstone
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -22,16 +34,23 @@ flare:
         ticks_flown: 2
         expected_lifespan: 1
         cooldown: 2000
+        miss_effects: hit
     costs:
         mana: 10
 
 flare|2:
   effects:
-    cast:
-    -  class: EffectRing
-       location: target
-       firework: star
-       radius: 8
-       target_offset: 0,4,0
-       size: 6
-
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Firework
+          miss:
+          - class: Firework
+    hit:
+    - class: EffectRing
+      location: target
+      firework: star
+      radius: 8
+      target_offset: 0,4,0
+      size: 6

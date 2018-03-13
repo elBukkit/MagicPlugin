@@ -28,6 +28,11 @@
    
 ## Suggestions
 
+ - Check knockback resistance in Velocity action, or add Mage knockback resistance.
+ 
+ - Add an action to simulate the red screen you get while out of bounds. See:
+   https://gist.github.com/leonardosnt/ffa8e72b60df197c762d1f2e903cc67f
+
  - MythicMob integration to add protection/strength/etc
 
  - Placeholder API integration: https://www.spigotmc.org/wiki/hooking-into-placeholderapi/
