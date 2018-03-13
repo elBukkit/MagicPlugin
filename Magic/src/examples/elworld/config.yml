@@ -32,3 +32,5 @@ add_examples:
 # sp_enabled: false
 # enchant_click: ""
 # wand_item_enchantable: wood_sword
+
+resource_pack_prompt: true

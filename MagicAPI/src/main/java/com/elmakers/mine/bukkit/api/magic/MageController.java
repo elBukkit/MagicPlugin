@@ -370,6 +370,7 @@ public interface MageController {
     void checkResourcePack(CommandSender sender);
     boolean sendResourcePackToAllPlayers(CommandSender sender);
     boolean sendResourcePack(Player player);
+    boolean promptResourcePack(Player player);
     boolean commitOnQuit();
     
     Set<String> getItemKeys();

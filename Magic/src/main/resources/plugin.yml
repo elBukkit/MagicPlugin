@@ -31,6 +31,10 @@ loadbefore:
   - Heroes
   - MobArena
 commands:
+  getrp:
+    description: Download the Magic resource pack
+    usage: getrp
+    permission: Magic.commands.getrp
   cast:
     aliases: [mcast]
     description: Cast a spell directly
@@ -627,6 +631,11 @@ permissions:
     - Magic.commands.mskills
     - Magic.commands.msave
     - Magic.commands.mserver
+    - Magic.commands.getrp
+  Magic.commands.getrp:
+    description: Player may download the resource pack
+    type: boolean
+    default: true
   Magic.commands.spells:
     description: Player may list spells
     type: boolean

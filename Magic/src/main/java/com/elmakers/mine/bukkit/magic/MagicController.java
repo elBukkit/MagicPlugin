@@ -2306,6 +2306,7 @@ public class MagicController implements MageController {
         CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
         EffectPlayer.setParticleRange(properties.getInt("particle_range", EffectPlayer.PARTICLE_RANGE));
 
+        resourcePackPrompt = properties.getBoolean("resource_pack_prompt", false);
         enableResourcePackCheck = properties.getBoolean("enable_resource_pack_check", true);
         resourcePackCheckInterval = properties.getInt("resource_pack_check_interval", 0);
         defaultResourcePack = properties.getString("resource_pack", null);
@@ -4820,6 +4821,23 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean promptResourcePack(final Player player) {
+        if (resourcePack == null || resourcePackHash == null) {
+            return false;
+        }
+
+        if (resourcePackPrompt) {
+            String message = messages.get("resource_pack.prompt");
+            if (message != null && !message.isEmpty()) {
+                player.sendMessage(message);
+            }
+            return false;
+        }
+
+        return sendResourcePack(player);
+    }
+
+    @Override
     public boolean sendResourcePack(final Player player) {
         if (resourcePack == null || resourcePackHash == null) {
             return false;
@@ -5429,6 +5447,7 @@ public class MagicController implements MageController {
     private boolean                             skriptEnabled			    = true;
     private ConfigurationSection                mobArenaConfiguration       = null;
     private boolean                             enableResourcePackCheck     = true;
+    private boolean                             resourcePackPrompt          = false;
     private int                                 resourcePackCheckInterval   = 0;
     private int                                 resourcePackCheckTimer      = 0;
     private String                              defaultResourcePack         = null;

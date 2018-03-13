@@ -13,6 +13,7 @@
    - Image effects can now load files from a URL
    - Add ModifiedEffect, which allows you to parameterized any existing effect.
  - Update visual FX for many default spells
+ - Add "resource_pack_prompt" option to config.yml, and /getrp command for players to use to get the RP when they want it.
  
 ## 7.2.5
 
