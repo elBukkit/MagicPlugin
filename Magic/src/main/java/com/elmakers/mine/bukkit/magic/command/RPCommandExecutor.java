@@ -22,7 +22,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!api.hasPermission(sender, "Magic.commands.rp")) {
+		if (!api.hasPermission(sender, "Magic.commands.getrp")) {
 			sendNoPermission(sender);
 			return true;
 		}
