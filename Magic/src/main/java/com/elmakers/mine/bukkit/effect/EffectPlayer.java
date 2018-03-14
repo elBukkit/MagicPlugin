@@ -61,6 +61,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     private DynamicLocation target;
     private Vector originOffset;
     private Vector targetOffset;
+    private Vector originRelativeOffset;
+    private Vector targetRelativeOffset;
 
     // These are ignored by the Trail type, need multi-inheritance :\
     protected boolean playAtOrigin = true;
@@ -138,6 +140,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         useColorOverride = configuration.getString("color_override", null);
         originOffset = ConfigurationUtils.getVector(configuration, "origin_offset");
         targetOffset = ConfigurationUtils.getVector(configuration, "target_offset");
+        originRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_offset");
+        targetRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_target_offset");
         delayTicks = configuration.getInt("delay", delayTicks) * 20 / 1000;
         material1 = ConfigurationUtils.getMaterialAndData(configuration, "material");
         if (configuration.isBoolean("color") && !configuration.getBoolean("color")) {
@@ -501,6 +505,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         this.origin = origin;
         this.target = target;
+
+        if (originRelativeOffset != null && this.origin != null) {
+            this.origin.addRelativeOffset(originRelativeOffset);
+        }
+        if (targetRelativeOffset != null && this.target != null) {
+            this.target.addRelativeOffset(targetRelativeOffset);
+        }
 
         if (hasFirework) {
             fireworkEffect = getFireworkEffect(getColor1(), getColor2(), fireworkType, fireworkFlicker, false);
