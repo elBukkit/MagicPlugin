@@ -107,3 +107,10 @@ controls:
 skillapi:
   required_skill: "&cRequired Skill: &4$skill"
   required_class: "&cRequired Class: &4$class"
+
+damage_types:
+  explosion: "Explosion"
+  fall: "Fall"
+  fire: "Fire"
+  physical: "Physical"
+  projectile: "Projectile"

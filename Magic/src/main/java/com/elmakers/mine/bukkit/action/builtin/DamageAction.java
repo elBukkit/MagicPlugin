@@ -143,6 +143,10 @@ public class DamageAction extends BaseSpellAction
 				} else {
 					context.addMessageParameter("damage", Double.toString(damage));
 				}
+				if (damageType != null && !damageType.isEmpty()) {
+					String typeDescription = context.getController().getMessages().get("damage_types." + damageType, damageType);
+					context.addMessageParameter("damage_type", typeDescription);
+				}
 			}
 		} finally {
 			if (knockbackResistance != null && livingTarget != null) {
