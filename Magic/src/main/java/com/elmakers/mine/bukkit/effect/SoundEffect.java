@@ -149,40 +149,44 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
         if (entity == null || plugin == null) return;
 
         Location sourceLocation = entity.getLocation();
-            if (customSound != null) {
-                try {
-                    if (range > 0) {
-                        int rangeSquared = range * range;
-                        Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
-                        for (Player player : players) {
-                            Location location = player.getLocation();
-                            if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= rangeSquared) {
-                                // player.playSound(sourceLocation, customSound, volume, pitch);
-                                NMSUtils.playCustomSound(player, sourceLocation, customSound, volume, pitch);
-                            }
+        if (customSound != null) {
+            try {
+                if (range > 0) {
+                    int rangeSquared = range * range;
+                    Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
+                    for (Player player : players) {
+                        Location location = player.getLocation();
+                        if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= rangeSquared) {
+                            // player.playSound(sourceLocation, customSound, volume, pitch);
+                            NMSUtils.playCustomSound(player, sourceLocation, customSound, volume, pitch);
                         }
-                    } else if (entity instanceof Player) {
-                        Player player = (Player)entity;
-                        // player.playSound(sourceLocation, customSound, volume, pitch);
-                        NMSUtils.playCustomSound(player, sourceLocation, customSound, volume, pitch);
+                    }
+                } else if (entity instanceof Player) {
+                    Player player = (Player)entity;
+                    // player.playSound(sourceLocation, customSound, volume, pitch);
+                    NMSUtils.playCustomSound(player, sourceLocation, customSound, volume, pitch);
 
-                    }
-                } catch (Exception ex) {
-                    plugin.getLogger().warning("Failed to play custom sound: " + customSound);
                 }
+            } catch (Exception ex) {
+                plugin.getLogger().warning("Failed to play custom sound: " + customSound);
             }
-    
-            if (sound != null) {
-                try {
-                    if (entity instanceof Player && range <= 0) {
-                        Player player = (Player)entity;
-                        player.playSound(sourceLocation, sound, volume, pitch);
-                    } else if (range > 0) {
-                        sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
-                    }
-                } catch (Exception ex) {
-                    plugin.getLogger().warning("Failed to play sound: " + sound);
+        }
+
+        if (sound != null) {
+            try {
+                if (entity instanceof Player && range <= 0) {
+                    Player player = (Player)entity;
+                    player.playSound(sourceLocation, sound, volume, pitch);
+                } else if (range > 0) {
+                    sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
                 }
+            } catch (Exception ex) {
+                plugin.getLogger().warning("Failed to play sound: " + sound);
             }
+        }
+    }
+
+    public void setRange(int range) {
+        this.range = range;
     }
 }
