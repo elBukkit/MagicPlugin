@@ -75,9 +75,9 @@ public class SourceLocation {
             }
         }
 
-        orientToTarget = configuration.getBoolean("use_target_location", true);
+        orientToTarget = configuration.getBoolean("use_target_location", configuration.getBoolean("orient", isSource));
         // This is a special-case here for CustomProjectile
-        if (!isSource || configuration.getBoolean("reorient", false)) {
+        if (configuration.getBoolean("reorient", false)) {
             orientToTarget = false;
         }
     }
@@ -145,7 +145,7 @@ public class SourceLocation {
         if (location == null) {
             location = feetLocation;
         }
-        Location targetLocation = context.getTargetLocation();
+        Location targetLocation = isSource ? context.getTargetLocation() : context.getLocation();
         if (orientToTarget && targetLocation != null && location != null) {
             Vector direction = targetLocation.toVector().subtract(location.toVector()).normalize();
             if (MathUtils.isFinite(direction.getX()) && MathUtils.isFinite(direction.getY()) && MathUtils.isFinite(direction.getZ())) {
