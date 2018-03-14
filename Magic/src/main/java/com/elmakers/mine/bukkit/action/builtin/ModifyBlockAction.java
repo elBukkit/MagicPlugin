@@ -134,7 +134,10 @@ public class ModifyBlockAction extends BaseSpellAction {
                 context.clearAttachables(block);
             }
         }
-
+        UndoList undoList = context.getUndoList();
+        if (undoList != null) {
+            undoList.setApplyPhysics(applyPhysics);
+        }
         brush.modify(block, applyPhysics);
 
         boolean spawnFalling = spawnFallingBlocks && previousMaterial != Material.AIR;
