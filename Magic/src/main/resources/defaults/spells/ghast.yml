@@ -16,16 +16,31 @@ ghast:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: drip_water
+             particleBase1: redstone
+             radius: 0.2
+        -  location: origin
+           use_target_location: false
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             color: "FFFFFF"
+             particle: redstone
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
         -  class: EffectSingle
            location: target
            effectlib:
-             class: AtomEffect
-             iterations: 32
-             particleNucleus: drip_water
+             class: Sphere
+             duration: 20000
+             particle: drip_lava
+             radius: 2
+             particles: 20
     parameters:
         target: block
         type: ghast
+        set_target: true
         allow_max_range: true
         cooldown: 30000
         range: 24

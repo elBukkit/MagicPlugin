@@ -23,21 +23,24 @@ bubble:
            location: both
         tick:
         -  location: target
-           particle: drip_water
-           particle_count: 4
-           particle_offset_x: 0.5
-           particle_offset_y: 0.5
-           particle_offset_z: 0.5
+           particle: water_splash
+           particle_count: 8
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
         hit:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: SphereEffect
+             class: Shield
              iterations: 10
-             period: .1
-             particle: drip_water
+             particle: water_splash
              radius: 1.8
-             particles: 20
+             particles: 30
+             particleCount: 20
+             particleOffsetX: 0.2
+             particleOffsetY: 0.2
+             particleOffsetZ: 0.2
     parameters:
         velocity: 250
         target_type: LivingEntity

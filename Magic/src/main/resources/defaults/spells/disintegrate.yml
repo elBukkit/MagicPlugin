@@ -10,6 +10,8 @@ disintegrate:
         - class: CustomProjectile
           actions:
           - class: Damage
+          - class: PlayEffects
+            effects: removed
           - class: ModifyBlock
             ignore_result: true
     effects:
@@ -20,16 +22,49 @@ disintegrate:
         -  location: target
            particle: drip_lava
            particle_data: 1
+           particle_count: 20
+           particle_offset_x: 0.1
+           particle_offset_y: 0.1
+           particle_offset_z: 0.1
+        -  location: target
+           particle: smoke_normal
+           particle_count: 10
+           particle_offset_x: 0.05
+           particle_offset_y: 0.05
+           particle_offset_z: 0.05
         hit:
         -  location: target
+           particle: smoke_large
+           particle_count: 5
+           particle_offset_x: 0.5
+           particle_offset_y: 0.5
+           particle_offset_z: 0.5
+           particle_data: 1
            effectlib:
-            class: AtomEffect
-            particleNucleus: smoke_large
-            iterations: 20
-            particlesNucleus: 5
-            particlesOrbital: 5
-            orbitals: 2
-            radius: 0.9
+            class: Modified
+            iterations: 50
+            parameters:
+              radius: "(t/i)*2 + 0.2"
+            effect:
+                class: AtomEffect
+                particleNucleus: smoke_large
+                particlesNucleus: 5
+                particlesOrbital: 5
+                orbitals: 2
+        removed:
+        - location: target
+          particle: block_crack
+          particle_count: 40
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
+          offset: 0.5,0.75,0.5
+        - location: target
+          particle: smoke_large
+          particle_count: 20
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
     parameters:
         velocity: 30
         range: 5

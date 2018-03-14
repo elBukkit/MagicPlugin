@@ -1193,6 +1193,31 @@ flash_bang:
           - class: AreaOfEffect
             actions:
             - class: PotionEffect
+            - class: Repeat
+              repeat: 5
+              actions:
+              - class: PlaySound
+                sound: "war.ringing"
+                volume: 0.7
+                range: 0
+              - class: Delay
+                delay: 700
+            - class: PlaySound
+              sound: "war.ringing"
+              volume: 0.5
+              range: 0
+            - class: Delay
+              delay: 700
+            - class: PlaySound
+              sound: "war.ringing"
+              volume: 0.2
+              range: 0
+            - class: Delay
+              delay: 700
+            - class: PlaySound
+              sound: "war.ringing"
+              volume: 0.1
+              range: 0
     effects:
         cast:
         -  class: EffectSingle

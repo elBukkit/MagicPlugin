@@ -44,10 +44,24 @@ chainlightning:
              isZigZag: true
              zigZags: 2
              zigZagOffset: 0,0.05,0
-             length: 6
+             length: 10
              particles: 50
              particle: redstone
              color: "FFF000"
+             duration: 2000
+        - location: source
+          effectlib:
+             class: LineEffect
+             isZigZag: true
+             zigZags: 2
+             zigZagOffset: 0,0.05,0
+             length: 10
+             particles: 20
+             particle: fireworks_spark
+             particleCount: 4
+             particleOffsetX: 0.1
+             particleOffsetY: 0.1
+             particleOffsetZ: 0.1
              duration: 2000
         tick:
         - particle: fireworks_spark
@@ -73,7 +87,7 @@ chainlightning:
         target_self: false
         target_source: false
         range: 48
-        velocity: 175
+        velocity: 100
         radius: 8
         target_count: 3
         target_type: Damageable

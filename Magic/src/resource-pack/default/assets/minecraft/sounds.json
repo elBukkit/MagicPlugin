@@ -1043,5 +1043,11 @@
       "saber/saberswing7",
       "saber/saberswing8"
     ]
-  }
+  },
+  "magic.ringing": {
+    "sounds": [
+      "magic/ringing1"
+    ],
+    "category": "player"
+  },
 }

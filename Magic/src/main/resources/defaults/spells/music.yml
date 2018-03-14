@@ -13,12 +13,28 @@ music:
         cast:
         -  class: EffectTrail
            particle: note
-        -  class: EffectSingle
+           particle_offset_x: 0.1
+           particle_offset_y: 0.1
+           particle_offset_z: 0.1
+           particle_count: 10
+        -  class: EffectRing
+           size: 4
+           radius: 5
            location: target
            effectlib:
-             class: HelixEffect
-             particle: note
-             iterations: 2
+             class: Modified
+             duration: 8000
+             period: 2
+             parameters:
+               yFactor: "(t/i)*0.5"
+               size: "(t/i)*2 + 0.5"
+             effect:
+               class: AnimatedBall
+               particle: note
+               particles: 100
+               particlesPerIteration: 20
+               offset: 0,3,0
+               updateLocations: false
     parameters:
         target_type: Player
         target: any

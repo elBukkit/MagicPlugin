@@ -16,16 +16,30 @@ emp:
            sound: magic.electrify
         -  class: EffectTrail
            particle: redstone
-           particle_count: 5
+           color: false
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+           particle_count: 10
         -  class: EffectRing
-           particle: redstone
-           particle_count: 3
+           size: 6
+           radius: 5
            location: target
+           effectlib:
+             class: Modified
+             duration: 2000
+             parameters:
+               yFactor: "(t/i)*1.5"
+               size: "(t/i)*2 + 0.5"
+             effect:
+               class: AnimatedBall
+               particle: redstone
+               yOffset: 0
     parameters:
         target_type: LivingEntity
         allow_max_range: true
         range: 8
-        radius: 5
+        radius: 8
         cooldown: 5000
         check_destructible: true
         destructible: powerable

@@ -7,15 +7,34 @@ walls:
     earns_sp: 5
     actions:
         cast:
-        -  class: Cylinder
-           actions:
-           -  class: ModifyBlock
+        - class: Cylinder
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 4
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.shield
         -  class: EffectTrail
            particle: block_crack
+           particle_count: 20
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        column:
+        -  location: target
+           particle: block_crack
+           particle_count: 100
+           particle_offset_x: 0.2
+           particle_offset_y: 5
+           particle_offset_z: 0.2
+           offset: 0,-2,0
     parameters:
         target_type: LivingEntity
         allow_max_range: true

@@ -12,13 +12,26 @@ platform:
         cast:
         -  class: Disc
            actions:
-           -  class: ModifyBlock
+           - class: ModifyBlock
+           - class: PlayEffects
+             effects: build
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.shield
         -  class: EffectTrail
            particle: block_crack
+           particle_count: 20
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        build:
+        -  location: target
+           particle: block_crack
+           particle_count: 20
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
     parameters:
         allow_max_range: true
         range: 8

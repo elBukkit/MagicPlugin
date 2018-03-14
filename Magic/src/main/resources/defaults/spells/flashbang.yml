@@ -10,11 +10,36 @@ flashbang:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: ThrowBlock
+        - class: CustomProjectile
           actions:
           - class: AreaOfEffect
             actions:
             - class: PotionEffect
+            - class: Repeat
+              repeat: 5
+              actions:
+              - class: PlaySound
+                sound: "magic.ringing"
+                volume: 0.7
+                range: 0
+              - class: Delay
+                delay: 700
+            - class: PlaySound
+              sound: "magic.ringing"
+              volume: 0.5
+              range: 0
+            - class: Delay
+              delay: 700
+            - class: PlaySound
+              sound: "magic.ringing"
+              volume: 0.2
+              range: 0
+            - class: Delay
+              delay: 700
+            - class: PlaySound
+              sound: "magic.ringing"
+              volume: 0.1
+              range: 0
     effects:
         cast:
         -  class: EffectSingle
@@ -22,46 +47,65 @@ flashbang:
            sound_pitch: 0.2
            sound_volume: 0.3
            location: origin
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 8
-             lengthGrow: 1
-             particle: smoke_normal
+        tick:
+        - location: target
+          particle_count: 10
+          particle: end_rod
+          particle_offset_x: 0.1
+          particle_offset_y: 0.1
+          particle_offset_z: 0.1
         hit:
         -  class: EffectSingle
-           location: origin
+           location: target
            color: CC9933
            firework: burst
            sound: entity_generic_explode
-           sound: magic.hit
            effectlib:
              class: SphereEffect
              iterations: 70
-             period: .1
              particle: redstone
              color: 0A2A0A
              radius: 2
              particles: 20
-        projectile:
-        -  class: EffectSingle
-           location: origin
+        -  location: target
            effectlib:
-             class: SmokeEffect
-             iterations: 16
-             particle: smoke_normal
+             class: Modified
+             duration: $duration
+             parameters:
+               radius: "(t/i)*6"
+             effect:
+               class: SphereEffect
+               particle: smoke_large
+               particles: 20
+               particleCount: 10
+               particleOffsetX: 0.5
+               particleOffsetY: 0.5
+               particleOffsetZ: 0.5
+        reflect:
+        - class: EffectSingle
+          location: target
+          particle: fireworks_spark
+          particle_count: 3
+          particle_offset_x: 0.1
+          particle_offset_y: 0.1
+          particle_offset_z: 0.1
+          sound: magic.bonk
+          sound_volume: 0.3
     parameters:
-      target: none
-      brush: sea_lantern
       undo: 10000
       duration: 8000
       effect_blindness: 1
       effect_night_vision: 1
       radius: 5
       target_self: true
+      target_self_timeout: 2000
       cooldown: 10000
       speed: 1
+      lifetime: 3000
+      velocity: 10
+      reflective: solid
+      gravity: 0.05
+      hit_on_miss: true
     costs:
         mana: 50
 

@@ -429,8 +429,7 @@ spells:
     gatling:
         name: Gatling Gun
         description: Fire a stream of arrows
-    gatling|2:
-        upgrade_description: "Arrows do more damage"
+        upgrade_description: "Longer fire time, shorter warmup"
     meteor:
         name: Meteor Shower
         description: Fire death from above

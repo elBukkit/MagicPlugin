@@ -10,13 +10,52 @@ sponge:
       cast:
       - class: Sphere
         actions:
-        - class: ModifyBlock
+        - class: CheckBlock
+          actions:
+          - class: ModifyBlock
+          - class: PlayEffects
+            effects: sponge
+          - class: Delay
+            delay: 10
     effects:
+      sponge:
+      - location: target
+        effectlib:
+          class: Cube
+          edgeLength: 0.5
+          particleCount: 2
+          particles: 4
+          particleOffsetX: 0.5
+          particleOffsetY: 0.5
+          particleOffsetZ: 0.5
+          particle: drip_water
+          enableRotation: false
+          iterations: 4
       cast:
-      - class: EffectSingle
-        sound: entity_player_levelup
+      - sound: magic.shimmer
+      - sound: entity_generic_drink
+        sound_pitch: 0.8
       - class: EffectTrail
+        reverse: true
         particle: block_crack
+        material: water
+        particle_count: 20
+        particle_offset_x: 0.2
+        particle_offset_y: 0.2
+        particle_offset_z: 0.2
+      - location: source
+        material: water
+        effectlib:
+          class: Line
+          particle: block_crack
+          duration: 4000
+          particles: 5
+          period: 1
+          particleCount: 10
+          particleOffsetX: 0.01
+          particleOffsetY: 0.01
+          particleOffsetZ: 0.01
+          delay: 10
     parameters:
       allow_max_range: false
       range: 32

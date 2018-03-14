@@ -16,7 +16,19 @@ hat:
            sound: entity_generic_drink
         -  class: EffectTrail
            particle: block_crack
+           particle_count: 20
+           particle_offset_x: 0.05
+           particle_offset_y: 0.05
+           particle_offset_z: 0.05
            reverse: true
+        -  location: origin
+           source_location: eyes
+           effectlib:
+             class: Sphere
+             duration: 1000
+             particle: block_crack
+             particles: 10
+             delay: 10
     parameters:
         target_self: true
         target: block

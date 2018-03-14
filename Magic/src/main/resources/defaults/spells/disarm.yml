@@ -28,7 +28,7 @@ disarm:
              particle: redstone
              color: FF0000
              lengthGrow: 0.05
-        hit:
+        hit_entity:
         -  class: EffectSingle
            location: target
            color: DF0101

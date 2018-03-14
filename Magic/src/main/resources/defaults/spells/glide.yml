@@ -26,7 +26,7 @@ glide:
              particleOffsetX: 1
              particleOffsetY: 1
              particleOffsetZ: 1
-             particleCount: 10
+             particleCount: 40
              yOffset: 0
     parameters:
         target: self

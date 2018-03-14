@@ -1539,14 +1539,13 @@ morsmordre:
         - class: CommandAction
     effects:
         cast:
-        -  class: EffectSingle
-           sound: wither_hurt
+        -  sound: wither_hurt
         -  class: EffectTrail
            particle: redstone
            color: 00FF00
-        -  class: EffectSingle
-           location: target
+        -  location: target
            target_offset: 0,3,0
+           orient: true
            effectlib:
              enableRotation: false
              class: ColoredImageEffect

@@ -17,11 +17,25 @@ airscooter:
              location: origin
              source_location: eyes
              effectlib:
+                 duration: $duration
                  class: SphereEffect
                  particle: redstone
                  radius: 1.0
                  offset: 0,-2.5,0
                  color: FFFFFF
+           - effectlib:
+                 class: AnimatedBall
+                 duration: $duration
+                 particle: spell
+                 particleCount: 10
+                 particles: 50
+                 particleOffsetX: 0.05
+                 particleOffsetY: 0.05
+                 particleOffsetZ: 0.05
+                 yOffset: 0
+                 yFactor: 1
+                 radius: 1.0
+                 offset: 0,-2.5,0
         deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
@@ -34,6 +48,7 @@ airscooter:
         liftoff_duration: 600
         liftoff_thrust: 0.6
         direction_y: 0.5
+        duration: 120000
     costs:
         mana: 20
     active_costs:
