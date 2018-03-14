@@ -138,7 +138,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         broadcastSound = configuration.getBoolean("sound_broadcast", true);
         useParticleOverride = configuration.getString("particle_override", null);
         useColorOverride = configuration.getString("color_override", null);
-        originOffset = ConfigurationUtils.getVector(configuration, "origin_offset");
+        originOffset = ConfigurationUtils.getVector(configuration, "origin_offset",  ConfigurationUtils.getVector(configuration, "offset"));
         targetOffset = ConfigurationUtils.getVector(configuration, "target_offset");
         originRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_offset");
         targetRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_target_offset");
