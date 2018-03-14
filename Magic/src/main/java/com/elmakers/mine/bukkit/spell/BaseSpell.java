@@ -1500,11 +1500,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 } else if (targetEntity != null) {
                     message = getMessage("cast_entity", message);
                 }
-                if (loud) {
-                    sendMessage(message);
-                } else {
-                    castMessage(message);
-                }
+                castMessage(message);
             } else
             // Special cases where messaging is handled elsewhere
             if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN)
