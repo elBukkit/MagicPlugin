@@ -1,6 +1,7 @@
 tocreative:
   name: Creative
   show_undoable: false
+  hidden: true
   icon: diamond_axe:79
   icon_disabled: diamond_hoe:79
   actions:
@@ -13,6 +14,7 @@ tocreative:
 tosurvival:
  name: Survival
  show_undoable: false
+  hidden: true
  icon: diamond_axe:123
  icon_disabled: diamond_hoe:123
  actions:

@@ -112,6 +112,7 @@ defender_death:
 
 defender_attack:
     name: Defender Attack
+    hidden: true
     icon: diamond_axe:112
     icon_disabled: diamond_hoe:112
     category: engineering

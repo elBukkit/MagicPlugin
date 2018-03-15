@@ -1,6 +1,7 @@
 appearanceshop:
     icon: diamond_axe:233
     icon_disabled: diamond_hoe:233
+    hide: true
     actions:
         cast:
         -  class: Selector
