@@ -527,7 +527,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             player.setEffectPlayList(currentEffects);
 
             // Set material and color
-            player.setMaterial(spell.getEffectMaterial());
+            player.setMaterial(brush != null ? brush : spell.getEffectMaterial());
             player.setColor(getEffectColor());
             player.setParticleOverride(getEffectParticle());
 
@@ -607,6 +607,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 }
                 if (sourceBlock != null) {
                     player.setMaterial(sourceBlock);
+                } else if (brush != null) {
+                    player.setMaterial(brush);
                 }
                 player.start(source, sourceEntity, target, targetEntity, targeted);
             }
