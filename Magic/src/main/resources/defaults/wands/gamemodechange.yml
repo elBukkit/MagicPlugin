@@ -1,4 +1,5 @@
 gamemode:
+  hidden: true
   inherit: base_wand
   icon: diamond_axe:79
   quick_cast: true
