@@ -3,6 +3,8 @@ sponge:
     icon_disabled: diamond_hoe:186
     alias: gasp
     icon_url: http://textures.minecraft.net/texture/c28bdd34810f866527daaf283da71826a8378286b2a43a626615fa1b3639e
+    example_thumbnail: https://thumbs.gfycat.com/EcstaticVictoriousBunny-size_restricted.gif
+    example_link: https://thumbs.gfycat.com/EcstaticVictoriousBunny
     category: utility
     worth: 100
     earns_sp: 4
@@ -15,6 +17,7 @@ sponge:
           - class: ModifyBlock
           - class: PlayEffects
             effects: sponge
+            ignore_result: true
           - class: Delay
             delay: 10
     effects:

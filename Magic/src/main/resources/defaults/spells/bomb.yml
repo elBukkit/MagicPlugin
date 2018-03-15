@@ -1,33 +1,82 @@
 bomb:
+    inherit: false
     icon: diamond_axe:93
     icon_disabled: diamond_hoe:93
     icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     category: demolition
     pvp_restricted: true
+    upgrade_required_casts: 30
     worth: 500
     earns_sp: 8
     actions:
         cast:
-        -  class: TNT
+        - class: Delay
+          delay: 2000
+        - class: Multiply
+          actions:
+          - class: Spread
+            radius: 5
+            actions:
+            - class: Delay
+              delay: "rand(10,5000)"
+            - class: ChangeContext
+              actions:
+              - class: TNT
     effects:
         cast:
         -  class: EffectSingle
            sound: entity_creeper_primed
-        -  class: EffectRing
-           particle: drip_lava
-           location: target
-           particle_count: 4
+        -  location: target
+           effectlib:
+             class: Modified
+             duration: 3000
+             period: 3
+             parameters:
+               radius: "(t/i)*10"
+             effect:
+               class: Helix
+               particle: spell_witch
+               particleCount: 2
+               particleOffsetX: 0.2
+               particleOffsetY: 0.01
+               particleOffsetZ: 0.2
+               updateLocations: false
+               particles: 20
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SphereEffect
+             particle: lava
+             duration: 2000
+             particles: 5
+             radius: 0.5
     parameters:
-        target: none
-        size: 1
+        target: block
+        allow_max_range: false
+        range: 20
+        size: 2
         fuse: 60
         fire: true
-        count: 12
-        py: ~20
-        pdy: -0.75
+        multiply: 8
+        source_at_target: true
+        target_offset: 0,20,0
+        source_pitch: 90
+        source_yaw: 0
         undo: 20000
         cooldown: 12000
         undo_speed: 0.2
     costs:
         mana: 175
 
+bomb|2:
+  parameters:
+    multiply: 10
+
+bomb|3:
+  parameters:
+    multiply: 12
+
+bomb|4:
+  parameters:
+    multiply: 15

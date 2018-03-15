@@ -71,6 +71,7 @@ wandbuffshop:
 add_protection:
   icon: diamond_axe:234
   icon_disabled: diamond_hoe:234
+  hidden: true
   actions:
     cast:
     - class: ModifyProperties
@@ -86,6 +87,7 @@ add_protection:
 add_explosion_protection:
   icon: diamond_axe:235
   icon_disabled: diamond_hoe:235
+  hidden: true
   actions:
     cast:
     - class: ModifyProperties
@@ -101,6 +103,7 @@ add_explosion_protection:
 add_fall_protection:
   icon: diamond_axe:236
   icon_disabled: diamond_hoe:236
+  hidden: true
   actions:
     cast:
     - class: ModifyProperties
@@ -116,6 +119,7 @@ add_fall_protection:
 add_fire_protection:
   icon: diamond_axe:237
   icon_disabled: diamond_hoe:237
+  hidden: true
   actions:
     cast:
     - class: ModifyProperties
@@ -131,6 +135,7 @@ add_fire_protection:
 add_physical_protection:
   icon: diamond_axe:238
   icon_disabled: diamond_hoe:238
+  hidden: true
   actions:
     cast:
     - class: ModifyProperties
@@ -146,6 +151,7 @@ add_physical_protection:
 add_projectile_protection:
   icon: diamond_axe:239
   icon_disabled: diamond_hoe:239
+  hidden: true
   actions:
     cast:
     - class: ModifyProperties
@@ -161,6 +167,7 @@ add_projectile_protection:
 add_damage:
   icon: diamond_axe:178
   icon_disabled: diamond_hoe:178
+  hidden: true
   actions:
     cast:
     - class: ModifyProperties
@@ -176,6 +183,7 @@ add_damage:
 add_sharpness:
   icon: diamond_axe:178
   icon_disabled: diamond_hoe:178
+  hidden: true
   actions:
     cast:
     - class: ModifyProperties

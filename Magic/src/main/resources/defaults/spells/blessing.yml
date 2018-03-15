@@ -1,4 +1,5 @@
 blessing:
+    inherit: false
     icon: diamond_axe:10
     icon_disabled: diamond_hoe:10
     icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
@@ -7,40 +8,54 @@ blessing:
     earns_sp: 8
     actions:
         cast:
-        -  class: Projectile
+        -  class: CustomProjectile
            actions:
            -  class: AreaOfEffect
               actions:
               -  class: PotionEffect
     effects:
-        projectile:
-        -  class: EffectSingle
-           location: origin
-           sound: entity_villager_yes
-           effectlib:
-             class: SmokeEffect
-             iterations: 8
-             particle: heart
+        cast:
+        - sound: entity_villager_yes
+        tick:
+        - location: target
+          particle: end_rod
+          particle_count: 20
+          particle_offset_x: 0.1
+          particle_offset_y: 0.1
+          particle_offset_z: 0.1
         hit:
-        -  class: EffectSingle
-           sound: entity_villager_yes
-           location: origin
-           effectlib:
+        - class: EffectSingle
+          sound: entity_villager_yes
+          location: target
+          effectlib:
              class: HelixEffect
-             particle: heart
-             iterations: 2
+             particle: end_rod
+             iterations: 1
+             particles: 40
+             particleCount: 4
+             particleOffsetX: 0.2
+             particleOffsetY: 0.01
+             particleOffsetZ: 0.2
+             offset: 0,0.1,0
+             radius: $radius
+        cast_finish:
+        - location: targets
+          effectlib:
+             class: Love
+             iterations: 20
     parameters:
-        target_type: Player
+        #target_type: Player
         projectile: Snowball
         effect_heal: 6
         effect_damage_resistance: 1
         effect_fire_resistance: 1
         duration: 5000
         radius: 8
-        target_self: true
+        target_self_timeout: 100
         cooldown: 30000
-        bypass_friendly_fire: true
-        only_friendly: true
+        #bypass_friendly_fire: true
+        #only_friendly: true
+        gravity: 0.05
+        velocity: 15
     costs:
         mana: 200
-

@@ -16,6 +16,7 @@ push:
           - class: Delay
           - class: PlayEffects
             effects: iterate
+            ignore_result: true
           - class: ConeOfEffectAction
             actions:
             - class: VelocityAction

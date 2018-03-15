@@ -2,6 +2,8 @@ laser:
     icon: diamond_axe:145
     icon_disabled: diamond_hoe:145
     icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
+    example_thumbnail: https://thumbs.gfycat.com/SnivelingDependentHuman-size_restricted.gif
+    example_link: https://thumbs.gfycat.com/SnivelingDependentHuman
     category: demolition
     worth: 450
     earns_sp: 8
@@ -12,6 +14,7 @@ laser:
         cast:
         - class: PlayEffects
           effect: beam
+          ignore_result: true
         -  class: Line
            ignore_result: true
            actions:
@@ -22,6 +25,7 @@ laser:
                 - class: BreakBlock
                 - class: PlayEffects
                   effects: burn
+                  ignore_result: true
         -  class: Repeat
            actions:
            - class: Delay
@@ -40,6 +44,7 @@ laser:
                      - class: BreakBlock
                      - class: PlayEffects
                        effects: burn
+                       ignore_result: true
               - class: ConeOfEffect
                 actions:
                 -  class: Damage
@@ -49,6 +54,7 @@ laser:
            sound: magic.zap
            location: origin
            sound_volume: 0.1
+           color_override: color
            effectlib:
              class: LineEffect
              particle: redstone

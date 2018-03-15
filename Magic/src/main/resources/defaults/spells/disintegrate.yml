@@ -12,6 +12,7 @@ disintegrate:
           - class: Damage
           - class: PlayEffects
             effects: removed
+            ignore_result: true
           - class: ModifyBlock
             ignore_result: true
     effects:

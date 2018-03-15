@@ -13,6 +13,7 @@ sticky:
           actions:
           - class: PlayEffects
             effects: explode
+            ignore_result: true
           - class: AreaOfEffect
             actions:
             - class: Damage

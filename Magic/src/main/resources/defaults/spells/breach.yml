@@ -15,6 +15,7 @@ breach:
             actions:
             - class: PlayEffects
               effects: removed
+              ignore_result: true
             - class: Delay
               delay: 1
             - class: ModifyBlock

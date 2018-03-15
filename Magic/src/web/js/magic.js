@@ -91,6 +91,23 @@ function createSpellDetails(spell, showTitle, useMana, costReduction, probabilit
 		var title = $('<div class="spellTitleBanner"/>').text(spell.name);
         spellDiv.append(title);
 	}
+
+	if (spell.hasOwnProperty('example_thumbnail')) {
+		var thumbnail = "https://thumbs.gfycat.com/VillainousInfantileEmeraldtreeskink-size_restricted.gif";
+		var link = "https://thumbs.gfycat.com/VillainousInfantileEmeraldtreeskink";
+
+		var thumbnailDiv = $('<div class="thumbnailContainer"/>');
+		var thumbnailImage = $('<img>').prop('src', spell['example_thumbnail']);
+		if (spell.hasOwnProperty('example_link')) {
+			var thumbnailLink = $('<a target="_blank"/>').prop('href', spell['example_link']);
+			thumbnailLink.append(thumbnailImage);
+			thumbnailDiv.append(thumbnailLink);
+		} else {
+			thumbnailDiv.append(thumbnailImage);
+		}
+		spellDiv.append(thumbnailDiv);
+	}
+
     var detailsDiv = $('<div class="spellContainer"/>');
     spellDiv.append(detailsDiv);
 	var description = $('<div class="spellDescription"/>').text(spell.description);
@@ -257,12 +274,10 @@ function appendSpellDetails(detailsDiv, spell, useMana, costReduction)
 				if (costReduction > 1) costReduction = 1;
 				amount = amount * (1 - costReduction);
 			}
-			if (costKey == 'xp') {
-				if (useMana) {
-					costList.append($('<li/>').text("Mana: " + amount));
-				} else {
-					costList.append($('<li/>').text("XP: " + amount));
-				}
+			if (costKey == 'mana') {
+				costList.append($('<li/>').text("Mana: " + amount));
+            } else if (costKey == 'xp') {
+				costList.append($('<li/>').text("XP: " + amount));
 			} else {
 				costList.append($('<li/>').append(getMaterial(costKey, true)).append($('<span/>').text(': ' + amount)));
 			}

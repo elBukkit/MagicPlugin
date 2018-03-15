@@ -438,6 +438,7 @@ spells:
         name: Carpet Bomb
         description: Rain death from above
         cast: You call in an air strike
+        upgrade_description: "More bombs!"
     poison:
         name: Poison
         description: Poison your target
@@ -491,6 +492,7 @@ spells:
         name: Cluster Bomb
         description: Toss a splitting grenade
         cast: You toss a cluster bomb
+        upgrade_description: "Cluster bomb splits into more bombs"
     convert:
         name: Convert
         description: Convert a spherical area of blocks

@@ -19,6 +19,7 @@ lift:
              set_target: true
            - class: PlayEffects
              effects: float
+             ignore_result: true
            - class: Delay
              delay: 100
            - class: Skip
@@ -26,6 +27,7 @@ lift:
              actions:
              - class: PlayEffects
                effects: floating
+               ignore_result: true
     effects:
         floating:
         -  class: EffectSingle

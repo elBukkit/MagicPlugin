@@ -2,6 +2,8 @@ icbm:
     icon: diamond_axe:51
     icon_disabled: diamond_hoe:51
     icon_url: http://textures.minecraft.net/texture/9c2e9d8395cacd9922869c15373cf7cb16da0a5ce5f3c632b19ceb3929c9a11
+    example_thumbnail: https://thumbs.gfycat.com/RipeUnluckyFruitbat-size_restricted.gif
+    example_link: https://thumbs.gfycat.com/RipeUnluckyFruitbat
     category: demolition
     pvp_restricted: true
     worth: 1500
@@ -16,12 +18,58 @@ icbm:
             - class: ModifyBlock
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_ghast_shoot
+        - class: EffectSingle
+          sound: entity_ghast_shoot
+        projectile:
+        - location: origin
+          effectlib:
+            class: Sphere
+            particle: smoke_large
+            particles: 4
+            particleCount: 8
+            particleOffsetX: 0.1
+            particleOffsetY: 0.1
+            particleOffsetZ: 0.1
+            radius: 0.3
+            duration: 2000
+            delay: 6
+        - location: origin
+          effectlib:
+            class: Sphere
+            particle: lava
+            particles: 2
+            particleCount: 2
+            particleOffsetX: 0.2
+            particleOffsetY: 0.2
+            particleOffsetZ: 0.2
+            radius: 0.2
+            duration: 2000
         hit:
         - class: EffectSingle
           particle: explosion_huge
           sound: entity_generic_explode
+          effectlib:
+            class: Helix
+            particles: 10
+            particle: lava
+            particleCount: 4
+            particleOffsetX: 0.2
+            particleOffsetY: 0.2
+            particleOffsetZ: 0.2
+            radius: $radius
+            iterations: 1
+        - class: EffectSingle
+          particle: explosion_huge
+          effectlib:
+            class: Helix
+            particles: 10
+            particle: smoke_large
+            particleCount: 4
+            particleOffsetX: 0.2
+            particleOffsetY: 0.2
+            particleOffsetZ: 0.2
+            radius: $radius
+            iterations: 1
     parameters:
         target: none
         size: 1
@@ -37,6 +85,7 @@ icbm:
         brush: air
         radius: 3
         direction: 0,0.5,0
+        spread: 0
     costs:
         mana: 150
 

@@ -15,12 +15,14 @@ holylight:
                - class: Heal
                - class: PlayEffects
                  effects: heal
+                 ignore_result: true
             -  class: CheckEntity
                denied_entities: player
                actions:
                - class: Damage
                - class: PlayEffects
                  effects: hurt
+                 ignore_result: true
     effects:
         heal:
         -  class: EffectSingle
