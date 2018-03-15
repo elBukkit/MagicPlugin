@@ -20,6 +20,7 @@ import java.util.Set;
 public abstract class BaseProjectileAction extends CompoundAction {
     private long lifetime;
     private boolean setTarget;
+    private String projectileEffectsKey;
 
     protected boolean track = false;
 
@@ -32,6 +33,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
         lifetime = parameters.getLong("lifetime", 10000);
         setTarget = parameters.getBoolean("set_target", false);
         track = parameters.getBoolean("track_projectile", track);
+        projectileEffectsKey = parameters.getString("projectile_effects", "projectile");
     }
 
     @Override
@@ -121,7 +123,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
         if (setTarget) {
             context.setTargetEntity(entity);
         }
-        Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
+        Collection<EffectPlayer> projectileEffects = context.getEffects(projectileEffectsKey);
         for (EffectPlayer effectPlayer : projectileEffects) {
             effectPlayer.start(entity.getLocation(), entity, null, null);
         }
