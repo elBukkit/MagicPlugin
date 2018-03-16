@@ -5,7 +5,7 @@ magicbow:
   inherit: base_bow
   class: archer_mage
   icon: bow:1
-  cast_min_projectile_speed: 2
+  cast_min_bowpull: 0.5
   protection:
     projectile: 0.5
 

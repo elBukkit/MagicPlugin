@@ -64,13 +64,10 @@ arrow_bomb:
       target: none
       projectile: TippedArrow
       damage: 0.75
-      speed: 2
-      spread: 1
       fire: false
       tick_increase: 1180
       entity_undo: false
       undo: 5000
-      speed: 0.9
       living_entity_speed: 0.7
       direction: 0,0.8,0
       falling: true
@@ -83,6 +80,8 @@ arrow_bomb:
       break_durability: 10
       physics_blocks: true
       undo_speed: 0.5
+      speed: "bowpull * 3"
+      spread: "1 - bowpull"
     costs:
       arrow: 1
 

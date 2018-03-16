@@ -9,8 +9,8 @@ arrow_regular:
     parameters:
       target: none
       projectile: TippedArrow
-      speed: 2
-      spread: 0
+      speed: "bowpull * 3"
+      spread: "1 - bowpull"
       tick_increase: 0
     costs:
       arrow: 1

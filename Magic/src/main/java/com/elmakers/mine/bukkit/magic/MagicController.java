@@ -1707,6 +1707,7 @@ public class MagicController implements MageController {
         requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
 
         Set<String> attributes = new HashSet<>();
+        attributes.add("bowpull");
         for (AttributeProvider provider : attributeProviders) {
             Set<String> providerAttributes = provider.getAllAttributes();
             if (providerAttributes != null) {
@@ -1714,7 +1715,7 @@ public class MagicController implements MageController {
             }
         }
 
-        AttributableConfiguration.initializeAttributes(attributes);
+        SpellParameters.initializeAttributes(attributes);
     }
 
     private int getPathCount() {

@@ -61,6 +61,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.logging.Level;
 
 public class PlayerController implements Listener {
+    private final static double MAX_ARROW_SPEED = 3;
     private final MagicController controller;
     private int clickCooldown = 150;
     private boolean enableCreativeModeEjecting = true;
@@ -787,15 +788,16 @@ public class PlayerController implements Listener {
         if (wand == null) return;
 
         if (wand.getIcon().getMaterial() != Material.BOW) return;
-        double minSpeed = wand.getDouble("cast_min_projectile_speed");
-        double speed = projectile.getVelocity().length();
-        if (minSpeed > 0 && speed < minSpeed) return;
+        double minPull = wand.getDouble("cast_min_bowpull");
+        double pull = Math.min(1.0, projectile.getVelocity().length() / MAX_ARROW_SPEED);
+
+        if (minPull > 0 && pull < minPull) return;
 
         Spell spell = wand.getActiveSpell();
         if (spell == null) return;
 
         event.setCancelled(true);
-        String[] parameters = {"speed", Double.toString(speed)};
+        String[] parameters = {"bowpull", Double.toString(pull)};
 
         // prevent recursion!
         launching = true;
