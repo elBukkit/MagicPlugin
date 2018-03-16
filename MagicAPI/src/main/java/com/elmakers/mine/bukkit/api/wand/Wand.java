@@ -144,6 +144,7 @@ public interface Wand extends CostReducer, CasterProperties {
     boolean isIndestructible();
     boolean playEffects(String key);
     boolean cast();
+    boolean cast(String[] parameters);
     boolean isBound();
     boolean isUndroppable();
     boolean isQuickCastDisabled();

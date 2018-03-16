@@ -3780,7 +3780,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
 	public boolean cast() {
-		return cast(getActiveSpell());
+		return cast(getActiveSpell(), null);
+	}
+
+	@Override
+	public boolean cast(String[] parameters) {
+		return cast(getActiveSpell(), parameters);
 	}
 
 	public boolean alternateCast() {
@@ -3792,6 +3797,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	public boolean cast(Spell spell) {
+    	return cast(spell, null);
+	}
+
+	public boolean cast(Spell spell, String[] parameters) {
 		if (spell != null) {
             Collection<String> castParameters = null;
             if (castOverrides != null && castOverrides.size() > 0) {
@@ -3806,6 +3815,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     castParameters.add(entry.getValue());
                 }
             }
+            if (parameters != null) {
+            	if (castParameters == null) {
+            		castParameters = new ArrayList<>();
+				}
+				for (String parameter : parameters) {
+            		castParameters.add(parameter);
+				}
+			}
 			if (spell.cast(castParameters == null ? null : castParameters.toArray(EMPTY_PARAMETERS))) {
 				Color spellColor = spell.getColor();
                 use();

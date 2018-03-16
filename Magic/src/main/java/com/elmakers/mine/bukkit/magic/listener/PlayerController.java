@@ -800,7 +800,7 @@ public class PlayerController implements Listener {
         // prevent recursion!
         launching = true;
         try {
-            spell.cast(parameters);
+            wand.cast(parameters);
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error casting bow spell", ex);
         }
