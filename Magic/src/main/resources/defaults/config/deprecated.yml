@@ -51,7 +51,7 @@ enable_combining: false
 anvil_rename_clears_description: false
 
 # Whether or not using a wand on an anvil will organize its inventory
-enable_organizing: true
+enable_organizing: false
 
 # Players keep their wands when they die
 # This is better confrolled via the "keep" property on wand configs.

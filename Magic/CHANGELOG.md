@@ -2,6 +2,8 @@
 
 ## 7.3
 
+ - All new high-res spell icons! Thanks to my generous donators!
+ - Added 3 new wand appearances, courtesy of lix3nn
  - Add MP5 to war configs (Thanks again to Sidewalk and NavalClash.net)
  - Master Sword changed to Magic Sword, new appearance added courtesy of lix3nn.
  - New Master Sword item that works more like the Zelda equivalent.
@@ -15,7 +17,7 @@
  - Update visual FX for many default spells
  - Add "resource_pack_prompt" option to config.yml, and /getrp command for players to use to get the RP when they want it.
  - Fixed sandblast
- - Added 3 new wand appearances, courtesy of lix3nn
+ - Renaming a wand on an anvil no longer organizes its inventory (changed default option to false)
  
 ## 7.2.5
 
