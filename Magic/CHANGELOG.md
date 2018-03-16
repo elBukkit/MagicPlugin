@@ -20,6 +20,7 @@
  - Renaming a wand on an anvil no longer organizes its inventory (changed default option to false)
  - Add active spell expression
  - Add basic support for magic bows
+ - Fix wand_undroppable behavior with shulker boxes
  
 ## 7.2.5
 
