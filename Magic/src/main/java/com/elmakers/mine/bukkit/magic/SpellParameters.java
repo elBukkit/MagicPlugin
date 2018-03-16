@@ -2,37 +2,33 @@ package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 
+import javax.annotation.Nonnull;
 import java.util.Set;
 
-public class AttributableConfiguration extends ParameterizedConfiguration {
+public class SpellParameters extends ParameterizedConfiguration {
     private static Set<String> attributes;
-    private Mage mage;
-    
-    public AttributableConfiguration() {
+    private final @Nonnull
+    MageSpell spell;
+
+    public SpellParameters(MageSpell spell) {
         super();
+        this.spell = spell;
     }
 
-    public AttributableConfiguration(Mage mage) {
+    public SpellParameters(SpellParameters copy) {
         super();
-        this.mage = mage;
-    }
-
-    public AttributableConfiguration(AttributableConfiguration copy) {
-        super();
-        this.mage = copy.mage;
+        this.spell = copy.spell;
     }
 
     protected MageController getController() {
-        return mage == null ? null : mage.getController();
+        return spell.getController();
     }
 
     protected Mage getMage() {
-        return mage;
-    }
-    
-    public void setMage(Mage mage) {
-        this.mage = mage;
+        return spell.getMage();
     }
 
     public static void initializeAttributes(Set<String> attrs) {
@@ -41,7 +37,7 @@ public class AttributableConfiguration extends ParameterizedConfiguration {
 
     @Override
     protected double getParameter(String parameter) {
-        Double value = mage == null ? null : mage.getAttribute(parameter);
+        Double value = spell.getAttribute(parameter);
         return value == null ? 0 : value;
     }
 

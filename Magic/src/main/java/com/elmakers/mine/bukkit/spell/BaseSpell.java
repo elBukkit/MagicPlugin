@@ -35,7 +35,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
-import com.elmakers.mine.bukkit.magic.AttributableConfiguration;
+import com.elmakers.mine.bukkit.magic.SpellParameters;
 import de.slikey.effectlib.math.EquationStore;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -224,7 +224,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected ConfigurationSection progressLevels = null;
     protected ConfigurationSection progressLevelParameters = null;
-    protected AttributableConfiguration parameters = new AttributableConfiguration();
+    protected SpellParameters parameters = new SpellParameters(this);
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
     protected Collection<Requirement> requirements = null;
@@ -934,7 +934,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Preload some parameters
-        parameters.setMage(mage);
         parameters.wrap(node.getConfigurationSection("parameters"));
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         warmup = parameters.getInt("warmup", 0);
@@ -1077,7 +1076,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         this.location = defaultLocation;
 
-        workingParameters = new AttributableConfiguration(mage);
+        workingParameters = new SpellParameters(this);
         ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
         processParameters(workingParameters);
@@ -2833,5 +2832,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         
         return description;
+    }
+
+    @Override
+    public Double getAttribute(String attributeKey) {
+        Double data = mage.getAttribute(attributeKey);
+        if (data == null && workingParameters != null && workingParameters.contains(attributeKey)) {
+            data = workingParameters.getDouble(attributeKey);
+        }
+
+        return data;
     }
 }
