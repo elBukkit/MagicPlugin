@@ -45,7 +45,7 @@ public class BaseMagicProperties implements MagicProperties {
             "effect_particle_radius", "effect_particle_offset",
             "effect_sound", "effect_sound_interval",
             "cast_spell", "cast_parameters", "cast_interval",
-            "cast_min_velocity", "cast_velocity_direction",
+            "cast_min_velocity", "cast_velocity_direction", "cast_min_projectile_speed",
             "hotbar_count", "hotbar",
             "icon", "icon_inactive", "icon_inactive_delay", "mode",
             "active_effects",

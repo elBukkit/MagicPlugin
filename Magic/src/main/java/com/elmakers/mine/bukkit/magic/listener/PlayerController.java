@@ -24,11 +24,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -53,7 +55,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.logging.Level;
 
 public class PlayerController implements Listener {
     private final MagicController controller;
@@ -66,6 +71,7 @@ public class PlayerController implements Listener {
     private boolean cancelInteractOnLeftClick = true;
     private boolean cancelInteractOnRightClick = false;
     private boolean allowOffhandCasting = true;
+    private boolean launching = false;
     private long lastDropWarn = 0;
 
     public PlayerController(MagicController controller) {
@@ -763,5 +769,41 @@ public class PlayerController implements Listener {
                 spell.cast();
             }
         }
+    }
+
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+        if (launching || event.isCancelled()) return;
+
+        Projectile projectile = event.getEntity();
+        ProjectileSource shooter = projectile.getShooter();
+        // Not really handling magic mobs with magic bows...
+        if (!(shooter instanceof Player)) return;
+
+        Player player = (Player)shooter;
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) return;
+        Wand wand = mage.getActiveWand();
+        if (wand == null) return;
+
+        if (wand.getIcon().getMaterial() != Material.BOW) return;
+        double minSpeed = wand.getDouble("cast_min_projectile_speed");
+        double speed = projectile.getVelocity().length();
+        if (minSpeed > 0 && speed < minSpeed) return;
+
+        Spell spell = wand.getActiveSpell();
+        if (spell == null) return;
+
+        event.setCancelled(true);
+        String[] parameters = {"speed", Double.toString(speed)};
+
+        // prevent recursion!
+        launching = true;
+        try {
+            spell.cast(parameters);
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.SEVERE, "Error casting bow spell", ex);
+        }
+        launching = false;
     }
 }
