@@ -248,7 +248,7 @@ public  class MagicRequirement {
 
         if (requiredTemplates != null) {
             String template = wand.getTemplateKey();
-            if (template == null || requiredTemplates.contains(template)) {
+            if (template == null || !requiredTemplates.contains(template)) {
                 return getMessage(context, "no_template").replace("$wand", wand.getName());
             }
         }
