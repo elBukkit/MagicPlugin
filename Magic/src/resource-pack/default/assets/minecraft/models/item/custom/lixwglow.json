@@ -3,7 +3,7 @@
 	"textures": {
 		"texture1": "items/custom/redpurple",
 		"texture2": "items/spells/iceshards",
-		"particle": "items/spells/smash",
+		"particle": "items/spells/breach",
 		"texture": "items/custom/lightningred",
 		"texture3": "items/custom/blazepurple"
 	},
