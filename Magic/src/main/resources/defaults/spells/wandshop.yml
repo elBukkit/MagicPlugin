@@ -20,4 +20,6 @@ wandshop:
           cost: 8000
         - item: wand|magicsword
           cost: 9000
+        - item: wand|magicbow
+          cost: 2500
 
