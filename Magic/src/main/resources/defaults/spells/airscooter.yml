@@ -1,7 +1,7 @@
 airscooter:
     icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
-    icon: diamond_axe:226
-    icon_disabled: diamond_hoe:226
+    icon: diamond_axe:241
+    icon_disabled: diamond_hoe:241
     category: utility
     worth: 200
     show_undoable: false
@@ -34,7 +34,7 @@ airscooter:
                  particleOffsetZ: 0.05
                  yOffset: 0
                  yFactor: 1
-                 radius: 1.0
+                 size: 1.0
                  offset: 0,-2.5,0
         deactivate:
         -  class: EffectSingle
