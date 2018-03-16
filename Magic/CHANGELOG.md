@@ -21,6 +21,7 @@
  - Add active spell expression
  - Add basic support for magic bows
  - Fix wand_undroppable behavior with shulker boxes
+ - Fix sexist camera (wasn't working with alex skins)
  
 ## 7.2.5
 
