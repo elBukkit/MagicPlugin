@@ -582,12 +582,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if (reduction >= 1) {
             event.setCancelled(true);
-            sendDebugMessage(ChatColor.RED + "Damage nullified by " + ChatColor.BLUE + damageType, 8);
+            sendDebugMessage(ChatColor.RED + "Damage nullified by " + ChatColor.BLUE + damageType + " (" + cause + ")", 8);
             return;
         }
 
         double damage = event.getDamage();
-        sendDebugMessage(ChatColor.RED + "Damaged by " + ChatColor.BLUE + (damageType == null ? "generic" : damageType) + ChatColor.RED + " for " +
+        sendDebugMessage(ChatColor.RED + "Damaged by " + ChatColor.BLUE + (damageType == null ? "generic" : damageType) + " (" + cause + ")" + ChatColor.RED + " for " +
                 ChatColor.DARK_RED + damage, 10);
         if (reduction > 0) {
             damage = (1.0 - reduction) * damage;
