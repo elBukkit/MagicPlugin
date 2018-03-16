@@ -5220,7 +5220,11 @@ public class MagicController implements MageController {
             RequirementsProcessor processor = requirementProcessors.get(type);
             if (processor != null) {
                 if (!processor.checkRequirement(context, requirement)) {
-                    return processor.getRequirementDescription(context, requirement);
+                    String message = processor.getRequirementDescription(context, requirement);
+                    if (message == null || message.isEmpty()) {
+                        message = messages.get("requirements.unknown");
+                    }
+                    return message;
                 }
             }
         }
