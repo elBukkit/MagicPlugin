@@ -37,3 +37,13 @@ base_sword:
     quick_cast: true
     quiet: 1
 
+base_bow:
+    hidden: true
+    inherit: base_bound
+    mode: inventory
+    drop: toggle
+    left_click: none
+    right_click: none
+    swap: cycle_hotbar
+    quiet: 1
+

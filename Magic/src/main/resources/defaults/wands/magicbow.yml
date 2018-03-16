@@ -1,0 +1,11 @@
+#
+# A spellcasting bow
+#
+magicbow:
+  inherit: base_bow
+  class: archer_mage
+  icon: bow:1
+  cast_min_projectile_speed: 2
+  protection:
+    projectile: 0.5
+

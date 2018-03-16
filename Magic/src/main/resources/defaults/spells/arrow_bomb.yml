@@ -1,0 +1,90 @@
+arrow_bomb:
+    icon: diamond_axe:247
+    icon_disabled: diamond_hoe:247
+    icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
+    category: combat
+    worth: 70
+    earns_sp: 8
+    actions:
+        cast:
+        - class: Projectile
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: PotionEffect
+            - class: Velocity
+          - class: Sphere
+            actions:
+            - class: BreakBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_arrow_shoot
+           sound_pitch: 0.2
+           sound_volume: 0.3
+           location: origin
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             lengthGrow: 1
+             particle: smoke_normal
+        hit:
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FACC2E
+           firework: burst
+           particle: explosion_large
+        undo:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           location: target
+        undo_block:
+        - location: target
+          use_block_location: true
+          effectlib:
+            class: Modified
+            period: 2
+            iterations: 8
+            parameters:
+              radius: "(1 - (t / i)) * 5 + 0.2"
+              particles: "(t / i) * 40"
+            effect:
+              class: Sphere
+              particle: block_crack
+              yOffset: 0
+              offset: 0,0.7,0
+              particleCount: 4
+              particleOffsetX: 0.1
+              particleOffsetY: 0.1
+              particleOffsetZ: 0.1
+    parameters:
+      target: none
+      projectile: TippedArrow
+      damage: 0.75
+      speed: 2
+      spread: 1
+      fire: false
+      tick_increase: 1180
+      entity_undo: false
+      undo: 5000
+      speed: 0.9
+      living_entity_speed: 0.7
+      direction: 0,0.8,0
+      falling: true
+      radius: 2
+      durability_max_distance: 3
+      damage_max_distance: 2
+      destructible: solid
+      destructible_override: true
+      destructible_durability: 50
+      break_durability: 10
+      physics_blocks: true
+      undo_speed: 0.5
+
+
+
+
+

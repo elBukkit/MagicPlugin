@@ -41,3 +41,11 @@ mage:
   parent: caster
   locked: false
   path: beginner
+
+archer_mage:
+  parent: base
+  locked: false
+  path: archer
+  active_spell: arrow_bomb
+  spells:
+  - arrow_bomb

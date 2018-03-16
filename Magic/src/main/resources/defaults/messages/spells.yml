@@ -142,6 +142,12 @@ spells:
         name: Arrow
         description: Fire a magic arrow
         upgrade_description: "Increased damage and accuracy"
+    arrow_bomb:
+        name: Bomb Arrow
+        description: Fire an exploding arrow
+    arrow_poison:
+        name: Poison Arrow
+        description: Fire a arrow that bursts into a poison cloud
     toss:
         name: Toss
         description: Toss a block
