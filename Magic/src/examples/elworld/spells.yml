@@ -3300,3 +3300,18 @@ Image:
             period: 1
             frameDelay: 1
             transparency: true
+
+magicbowshop:
+    icon: wooden_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+        - item: wand|magicbow
+          cost: 2500
