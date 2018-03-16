@@ -188,6 +188,7 @@ master:
       - levitate
       - shrink
       - dragonball
+      - neutron
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
