@@ -365,6 +365,15 @@ wands:
     appearance_moon:
         name: Moon Wand Appearance
         description: Will change the appearance of your wand
+    appearance_spire:
+        name: Spire Wand Appearance
+        description: Will change the appearance of your wand
+    appearance_claw:
+        name: Claw Wand Appearance
+        description: Will change the appearance of your wand
+    appearance_orb:
+        name: Orb Wand Appearance
+        description: Will change the appearance of your wand
     uberwand:
         name: "Überwand"
         description: The Ultimate Wand

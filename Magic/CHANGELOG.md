@@ -3,7 +3,7 @@
 ## 7.3
 
  - Add MP5 to war configs (Thanks again to Sidewalk and NavalClash.net)
- - Master Sword changed to Magic Sword.
+ - Master Sword changed to Magic Sword, new appearance added courtesy of lix3nn.
  - New Master Sword item that works more like the Zelda equivalent.
  - Fix issues using /wand save to override an existing wand with a modified version of that wand.
  - Fix for FX that should go on a targets' eyes but use the old "use_hit_location: false" method. (See: Blind)
@@ -15,6 +15,7 @@
  - Update visual FX for many default spells
  - Add "resource_pack_prompt" option to config.yml, and /getrp command for players to use to get the RP when they want it.
  - Fixed sandblast
+ - Added 3 new wand appearances, courtesy of lix3nn
  
 ## 7.2.5
 

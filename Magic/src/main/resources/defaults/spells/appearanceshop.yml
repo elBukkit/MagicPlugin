@@ -14,6 +14,7 @@ appearanceshop:
         unlock_section: wand_appearances
         cost_type: sp
         options:
+        - item: none
         - item: appearance_beginner
           requirements:
           - path: beginner
@@ -32,6 +33,7 @@ appearanceshop:
         - item: appearance_conduit
           requirements:
           - path: conduit
+        - item: none
         - item: appearance_moon
           unlock: moon
           confirm: true
