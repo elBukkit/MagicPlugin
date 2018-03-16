@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.integration.skript.CondHasPath;
 import com.elmakers.mine.bukkit.integration.skript.CondHasSpell;
 import com.elmakers.mine.bukkit.integration.skript.CondIsClass;
 import com.elmakers.mine.bukkit.integration.skript.EffSpawn;
+import com.elmakers.mine.bukkit.integration.skript.ExprActiveSpell;
 import com.elmakers.mine.bukkit.integration.skript.ExprCaster;
 import com.elmakers.mine.bukkit.integration.skript.ExprTargets;
 import com.elmakers.mine.bukkit.integration.skript.EffCast;
@@ -32,6 +33,7 @@ public class SkriptManager {
         CondHasItem.register();
         ExprCaster.register();
         ExprTargets.register();
+        ExprActiveSpell.register();
 
 		EventValues.registerEventValue(CastEvent.class, Player.class, new Getter<Player, CastEvent>() {
 			@Override
@@ -63,7 +65,7 @@ public class SkriptManager {
 
         plugin.getLogger().info("Skript found:");
         plugin.getLogger().info("  Added events: cast, casting");
-        plugin.getLogger().info("  Added expressions: caster, targets");
+        plugin.getLogger().info("  Added expressions: caster, targets, active spell");
         plugin.getLogger().info("  Added conditionals: has wand, is class");
         plugin.getLogger().info("  Added effect: cast");
     }

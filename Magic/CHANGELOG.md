@@ -18,6 +18,7 @@
  - Add "resource_pack_prompt" option to config.yml, and /getrp command for players to use to get the RP when they want it.
  - Fixed sandblast
  - Renaming a wand on an anvil no longer organizes its inventory (changed default option to false)
+ - Add active spell expression
  
 ## 7.2.5
 

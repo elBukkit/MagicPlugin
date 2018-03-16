@@ -38,6 +38,10 @@
 
  - Check knockback resistance in Velocity action, or add Mage knockback resistance.
  
+ - Some way to reference spells from other spells without having to use a Command
+   actions. Maybe a Cast action, or just some way to reference a set of actions
+   instead of a whole spell.
+ 
  - Add an action to simulate the red screen you get while out of bounds. See:
    https://gist.github.com/leonardosnt/ffa8e72b60df197c762d1f2e903cc67f
 
