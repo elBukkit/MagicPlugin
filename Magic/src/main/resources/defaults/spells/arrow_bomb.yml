@@ -3,7 +3,7 @@ arrow_bomb:
     icon_disabled: diamond_hoe:247
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
     category: combat
-    worth: 70
+    worth: 200
     earns_sp: 8
     actions:
         cast:
@@ -83,6 +83,8 @@ arrow_bomb:
       break_durability: 10
       physics_blocks: true
       undo_speed: 0.5
+    costs:
+      arrow: 1
 
 
 
