@@ -33,6 +33,7 @@ icbm:
             radius: 0.3
             duration: 2000
             delay: 6
+            disappearWithOriginEntity: true
         - location: origin
           effectlib:
             class: Sphere
@@ -44,6 +45,7 @@ icbm:
             particleOffsetZ: 0.2
             radius: 0.2
             duration: 2000
+            disappearWithOriginEntity: true
         hit:
         - class: EffectSingle
           particle: explosion_huge

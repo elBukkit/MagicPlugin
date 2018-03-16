@@ -62,6 +62,7 @@ curse:
                  particle: spell_mob
                  color: 210B61
                  particles: 20
+                 disappearWithOriginEntity: true
         -  location: target
            source_location: body
            effectlib:
@@ -74,6 +75,7 @@ curse:
              particleOffsetX: 0.2
              particleOffsetY: 0.2
              particleOffsetZ: 0.2
+             disappearWithOriginEntity: true
     costs:
         mana: 50
     parameters:

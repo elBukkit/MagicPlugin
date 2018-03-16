@@ -29,6 +29,7 @@ wither:
              particles: 5
              particle: redstone
              color: "010101"
+             disappearWithOriginEntity: true
         hit:
         - location: target
           sound: entity_wither_break_block

@@ -23,13 +23,6 @@ torture:
         -  class: EffectSingle
            sound: magic.electrify
            sound_volume: .5
-        -  class: EffectSingle
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: spell_mob
-             lengthGrow: 0.001
-             radiusGrow: 0.001
         projectile:
         - location: origin
           effectlib:
@@ -40,20 +33,38 @@ torture:
         tick:
         -  location: target
            particle: spell_mob
+           particleCount: 4
+           particleOffsetX: 0.2
+           particleOffsetY: 0.2
+           particleOffsetZ: 0.2
+        -  location: target
+           particle: spell_mob
+           color: "010101"
         hit:
         -  class: EffectSingle
-           sound: entity_irongolem_death
-           sound_volume: 1
            location: target
            color: 19070B
            firework: ball
+           target_location: feet
+           effectlib:
+             class: Modified
+             duration: $duration
+             parameters:
+               radius: "sin(t/20)"
+             effect:
+               class: Sphere
+               particle: mob_spell
+               color: "010101"
+               disappearWithOriginEntity: true
         -  class: EffectSingle
            requires_entity_target: true
-           particle: town_aura
            location: target
+           sound: entity_irongolem_death
+           sound_volume: 1
            effectlib:
              class: BleedEffect
              duration: 500
+             disappearWithOriginEntity: true
     costs:
         mana: 100
     parameters:

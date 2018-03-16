@@ -24,6 +24,7 @@ fireball:
              period: 2
              particles: 5
              particle: lava
+             disappearWithOriginEntity: true
         hit:
         - class: EffectSingle
           location: target
