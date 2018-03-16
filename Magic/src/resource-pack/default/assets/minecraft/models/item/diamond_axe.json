@@ -244,6 +244,7 @@
     {"predicate": {"damaged": 0, "damage": 0.151728553137004}, "model": "item/spells/protection_fire"},
     {"predicate": {"damaged": 0, "damage": 0.152368758002561}, "model": "item/spells/protection_physical"},
     {"predicate": {"damaged": 0, "damage": 0.153008962868118}, "model": "item/spells/protection_projectiles"},
+    {"predicate": {"damaged": 0, "damage": 0.153649167733675}, "model": "item/spells/sharpen_sword"},
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/diamond_axe"}
   ]
 }

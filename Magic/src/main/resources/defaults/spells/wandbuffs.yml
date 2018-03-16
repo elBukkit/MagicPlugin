@@ -181,8 +181,8 @@ add_damage:
       max: 10
 
 add_sharpness:
-  icon: diamond_axe:178
-  icon_disabled: diamond_hoe:178
+  icon: diamond_axe:240
+  icon_disabled: diamond_hoe:240
   hidden: true
   actions:
     cast:

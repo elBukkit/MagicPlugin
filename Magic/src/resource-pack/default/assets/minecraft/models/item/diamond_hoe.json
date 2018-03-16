@@ -244,6 +244,7 @@
     {"predicate": {"damaged": 0, "damage": 0.151728553137004}, "model": "item/spells_disabled/protection_fire"},
     {"predicate": {"damaged": 0, "damage": 0.152368758002561}, "model": "item/spells_disabled/protection_physical"},
     {"predicate": {"damaged": 0, "damage": 0.153008962868118}, "model": "item/spells_disabled/protection_projectiles"},
+    {"predicate": {"damaged": 0, "damage": 0.153649167733675}, "model": "item/spells_disabled/sharpen_sword"},
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/diamond_hoe"}
   ]
 }
