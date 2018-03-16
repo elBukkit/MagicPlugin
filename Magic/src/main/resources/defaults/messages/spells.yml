@@ -148,6 +148,9 @@ spells:
     arrow_poison:
         name: Poison Arrow
         description: Fire a arrow that bursts into a poison cloud
+    arrow_regular:
+        name: Normal Arrow
+        description: Fire a normal arrow
     toss:
         name: Toss
         description: Toss a block

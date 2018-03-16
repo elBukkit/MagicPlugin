@@ -46,6 +46,7 @@ archer_mage:
   parent: base
   locked: false
   path: archer
-  active_spell: arrow_poison
+  active_spell: arrow_regular
   spells:
+  - arrow_regular
   - arrow_poison

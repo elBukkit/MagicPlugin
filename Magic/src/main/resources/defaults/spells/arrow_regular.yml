@@ -1,0 +1,15 @@
+arrow_regular:
+    icon: arrow
+    category: combat
+    worth: 20
+    earns_sp: 2
+    actions:
+        cast:
+        - class: Projectile
+    parameters:
+      target: none
+      projectile: TippedArrow
+      speed: 2
+      spread: 0
+    costs:
+      arrow: 1
