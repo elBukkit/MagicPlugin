@@ -222,9 +222,7 @@ public  class MagicRequirement {
     }
 
     protected String getDefaultMessage(CastContext context, String key) {
-        // This borrows messages from shops
-        // TODO: Divorce this in some way that doesn't break peoples' localizations.
-        return context.getController().getMessages().get("shops." + key);
+        return context.getController().getMessages().get("requirements." + key);
     }
     
     @Nullable

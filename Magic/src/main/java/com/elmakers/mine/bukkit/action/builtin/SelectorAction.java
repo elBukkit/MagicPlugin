@@ -332,7 +332,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             this.commands = defaults.commands;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<String>();
 
-            placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "") .equals("none");
+            placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
             if (placeholder) {
                 this.icon = new ItemStack(Material.AIR);
                 return;
