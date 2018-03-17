@@ -2,6 +2,7 @@
 
 ## 7.3
 
+ - Update visual FX for nearly all default spells
  - All new high-res spell icons! Thanks to my generous donators!
  - Added 3 new wand appearances, courtesy of lix3nn
  - Add MP5 to war configs (Thanks again to Sidewalk and NavalClash.net)
@@ -14,11 +15,10 @@
    - Added "transparency" option to ColoredImageEffect and ImageEffect
    - Image effects can now load files from a URL
    - Add ModifiedEffect, which allows you to parameterized any existing effect.
- - Update visual FX for many default spells
  - Add "resource_pack_prompt" option to config.yml, and /getrp command for players to use to get the RP when they want it.
  - Fixed sandblast
  - Renaming a wand on an anvil no longer organizes its inventory (changed default option to false)
- - Add active spell expression
+ - Add active spell expression to Skript
  - Add basic support for magic bows
  - Fix wand_undroppable behavior with shulker boxes
  - Fix sexist camera (wasn't working with alex skins)
