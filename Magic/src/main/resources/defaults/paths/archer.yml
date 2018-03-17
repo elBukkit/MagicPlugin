@@ -4,3 +4,4 @@ archer:
     spells:
       - arrow_bomb
       - arrow_poison
+      - arrow_blink

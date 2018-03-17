@@ -151,6 +151,9 @@ spells:
     arrow_regular:
         name: Normal Arrow
         description: Fire a normal arrow
+    arrow_blink:
+        name: Blink Arrow
+        description: Teleport to the location where your arrow lands
     toss:
         name: Toss
         description: Toss a block

@@ -11,7 +11,7 @@ arrow_bomb:
           actions:
           - class: AreaOfEffect
             actions:
-            - class: PotionEffect
+            - class: Damage
             - class: Velocity
           - class: Sphere
             actions:
@@ -30,6 +30,19 @@ arrow_bomb:
              iterations: 8
              lengthGrow: 1
              particle: smoke_normal
+        projectile:
+        - location: origin
+          effectlib:
+             class: Sphere
+             iterations: 10
+             period: 2
+             particles: 5
+             particleCount: 5
+             particleOffsetX: 0.2
+             particleOffsetY: 0.2
+             particleOffsetZ: 0.2
+             particle: lava
+             disappearWithOriginEntity: true
         hit:
         -  class: EffectSingle
            target_offset: 0,0.5,0
@@ -63,7 +76,6 @@ arrow_bomb:
     parameters:
       target: none
       projectile: TippedArrow
-      damage: 0.75
       fire: false
       tick_increase: 1180
       entity_undo: false
@@ -71,17 +83,20 @@ arrow_bomb:
       living_entity_speed: 0.7
       direction: 0,0.8,0
       falling: true
-      radius: 2
-      durability_max_distance: 3
-      damage_max_distance: 2
       destructible: solid
       destructible_override: true
-      destructible_durability: 50
       break_durability: 10
       physics_blocks: true
       undo_speed: 0.5
       speed: "bowpull * 3"
       spread: "1 - bowpull"
+      break_durability: 1000
+      destructible_durability: 5000
+      radius: 3
+      durability_max_distance: 5
+      damage_max_distance: 4
+      undo: 30000
+      damage: 10
     costs:
       arrow: 1
 

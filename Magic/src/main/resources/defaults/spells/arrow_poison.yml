@@ -17,13 +17,19 @@ arrow_poison:
            sound_pitch: 0.2
            sound_volume: 0.3
            location: origin
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 8
-             lengthGrow: 1
-             particle: smoke_normal
+        projectile:
+        - location: origin
+          effectlib:
+             class: Sphere
+             iterations: 10
+             period: 2
+             particles: 5
+             particleCount: 5
+             particleOffsetX: 0.2
+             particleOffsetY: 0.2
+             particleOffsetZ: 0.2
+             particle: slime
+             disappearWithOriginEntity: true
         hit:
         -  class: EffectSingle
            target_offset: 0,0.5,0
