@@ -265,6 +265,7 @@ sniper:
     parameters:
         cooldown: 2000
         velocity: 3000
+        undo: 30000
         range: 100
         hitbox: true
         entity_hit_count: 5
