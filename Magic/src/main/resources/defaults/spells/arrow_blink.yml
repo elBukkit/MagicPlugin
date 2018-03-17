@@ -72,6 +72,6 @@ arrow_blink:
       projectile: TippedArrow
       speed: "bowpull * 3"
       spread: "1 - bowpull"
-      vertical_range: 2
+      vertical_range: 8
     costs:
       arrow: 1
