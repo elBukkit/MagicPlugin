@@ -3,6 +3,7 @@
 ## 7.4
 
  - Tag spell auto-undo broken?
+ - Flag to prevent putting SP in chests
 
  - Auto show skull icons for players that haven't got the RP? (optionally)
  - Undoing a wolf house leaves diodes and redstone behind
