@@ -73,7 +73,7 @@ public class ProjectileAction  extends BaseProjectileAction
         spread = (float)parameters.getDouble("spread", 12);
         useFire = parameters.getBoolean("fire", false);
         tickIncrease = parameters.getInt("tick_increase", 1180);
-        projectileTypeName = parameters.getString("projectile", "Arrow");
+        projectileTypeName = parameters.getString("projectile", "TippedArrow");
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
         pickupStatus = parameters.getString("pickup");
