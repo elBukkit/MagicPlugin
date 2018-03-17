@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -87,6 +88,7 @@ public class NMSUtils {
     protected static Class<?> class_WorldServer;
     protected static Class<?> class_Packet;
     protected static Class<Enum> class_EnumSkyBlock;
+    protected static Class<Enum> class_PickupStatus;
     protected static Class<?> class_EntityPainting;
     protected static Class<?> class_EntityItemFrame;
     protected static Class<?> class_EntityMinecartRideable;
@@ -223,6 +225,7 @@ public class NMSUtils {
     protected static Method class_CraftMagicNumbers_getBlockMethod;
     protected static Method class_Block_fromLegacyData;
     protected static Method class_Chunk_setBlockMethod;
+    protected static Method class_Arrow_setPickupStatusMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -547,6 +550,14 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+            try {
+                class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.Arrow$PickupStatus");
+                class_Arrow_setPickupStatusMethod = Arrow.class.getMethod("setPickupStatus", class_PickupStatus);
+            } catch (Throwable ex) {
+                class_PickupStatus = null;
+                class_Arrow_setPickupStatusMethod = null;
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Arrow.PickupStatus, arrows can not be made to be picked up", ex);
+            }
             try {
                 class_CraftPlayer_getProfileMethod = class_CraftPlayer.getMethod("getProfile");
             } catch (Throwable ex) {

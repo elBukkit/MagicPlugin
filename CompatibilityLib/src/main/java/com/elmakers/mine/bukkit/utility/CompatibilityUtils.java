@@ -18,6 +18,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.ComplexLivingEntity;
 import org.bukkit.entity.Damageable;
@@ -1325,6 +1326,20 @@ public class CompatibilityUtils extends NMSUtils {
             nmsBlock = class_Block_fromLegacyData.invoke(nmsBlock, data);
             Object blockLocation = class_BlockPosition_Constructor.newInstance(x, y, z);
             class_Chunk_setBlockMethod.invoke(chunkHandle, blockLocation, nmsBlock);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static boolean setPickupStatus(Arrow arrow, String pickupStatus) {
+        if (arrow == null || pickupStatus == null || class_Arrow_setPickupStatusMethod == null || class_PickupStatus == null) return false;
+
+        try {
+            Enum enumValue = Enum.valueOf(class_PickupStatus, pickupStatus.toUpperCase());
+            class_Arrow_setPickupStatusMethod.invoke(arrow, enumValue);
         } catch (Throwable ex) {
             ex.printStackTrace();
             return false;
