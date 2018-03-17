@@ -1,7 +1,8 @@
 # TODO
 
-## 7.3
+## 7.4
 
+ - Auto show skull icons for players that haven't got the RP? (optionally)
  - Undoing a wolf house leaves diodes and redstone behind
  - Brushette requests damage reduction (as in subtract an amount)
  - Why do hotbar spells show as uncastable while holding a wand of the wrong class? 
@@ -9,7 +10,7 @@
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
    
-## For akr
+### For akr
 
  - /mskills menu works with active class spells
  - A way to lock a class without removing it
