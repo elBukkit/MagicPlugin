@@ -10,16 +10,16 @@ wands:
         description: A Wand with Limited Potential
     beginner:
         name: Beginner Wand
-        description: $path Magic Wand\nFor demonstration purposes
+        description: "$path Magic Wand\nFor demonstration purposes"
     master:
         name: Master Wand
-        description: $path Magic Wand\nFor demonstration purposes
+        description: "$path Magic Wand\nFor demonstration purposes"
     student:
         name: Student Wand
-        description: $path Magic Wand\nFor demonstration purposes
+        description: "$path Magic Wand\nFor demonstration purposes"
     apprentice:
         name: Apprentice Wand
-        description: $path Magic Wand\nFor demonstration purposes
+        description: "$path Magic Wand\nFor demonstration purposes"
     rage:
         name: Rage Sword
         description: Gathers energy when hitting an enemy

@@ -2,6 +2,8 @@
 
 ## 7.4
 
+ - Beginner, Apprentice, Student, and Master wands are now for demo purposes only and not tied to player progression.
+
 ## 7.3
 
  - Update visual FX for nearly all default spells
