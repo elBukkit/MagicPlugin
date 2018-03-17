@@ -37,7 +37,7 @@ load_default_mobs: true
 load_default_items: true
 
 # Give new players a wand when they join.
-# e.g. welcome_wand: beginner
+# e.g. welcome_wand: wand
 welcome_wand: ""
 
 # Whether or not to show any messages (in chat)
