@@ -2,6 +2,8 @@
 
 ## 7.4
 
+ - Tag spell auto-undo broken?
+
  - Auto show skull icons for players that haven't got the RP? (optionally)
  - Undoing a wolf house leaves diodes and redstone behind
  - Brushette requests damage reduction (as in subtract an amount)
@@ -76,7 +78,6 @@
   
 ## Not so High-Priority
  
- - Don't refund item costs when a spell goes through auto-undo
  - Destroyed a car with someone in it, they stayed in invisible car
  - Per-player language settings (See https://www.spigotmc.org/resources/api-languages.22305/)
  - Would be cool to have a configurable max # of maps, and start re-using map ids when limit is hit, LRU

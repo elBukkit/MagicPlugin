@@ -353,7 +353,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         BlockState currentState = blockData.getBlock().getState();
         if (undo(blockData, applyPhysics)) {
             blockIdMap.remove(blockData.getId());
-            if (consumed && currentState.getType() != Material.AIR && owner != null) {
+            if (consumed && !isScheduled() && currentState.getType() != Material.AIR && owner != null) {
                 owner.giveItem(new ItemStack(currentState.getType(), 1, DeprecatedUtils.getRawData(currentState)));
             }
 

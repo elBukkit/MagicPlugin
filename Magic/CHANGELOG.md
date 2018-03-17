@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 7.3.1
+
+ - Fix bomb arrows giving the player the blocks they exploded. :(
+
 ## 7.3
 
  - Update visual FX for nearly all default spells
