@@ -33,4 +33,7 @@ add_examples:
 # enchant_click: ""
 # wand_item_enchantable: wood_sword
 
-resource_pack_prompt: true
+# resource_pack_prompt: true
+
+# resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-TESTING.zip"
+# add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-TESTING.zip"
