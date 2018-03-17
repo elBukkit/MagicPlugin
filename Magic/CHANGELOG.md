@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 7.4
+
 ## 7.3
 
  - Update visual FX for nearly all default spells
