@@ -4132,6 +4132,16 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean isWand(ItemStack item) {
+        return Wand.isWand(item);
+    }
+
+    @Override
+    public boolean isSkill(ItemStack item) {
+        return Wand.isSkill(item);
+    }
+
+    @Override
     public String getWandKey(ItemStack item) {
         if (Wand.isWand(item)) {
             return Wand.getWandTemplate(item);
