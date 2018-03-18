@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -77,6 +78,18 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
                 if (key.getBaseKey().startsWith("heroes*")) continue;
                 if (!spell.hasCastPermission(player)) continue;
                 allSkills.add(new SkillDescription(spell));
+            }
+        } else {
+            Mage mage = controller.getMage(player);
+            MageClass activeClass = mage.getActiveClass();
+            if (activeClass != null) {
+                Collection<String> spells = activeClass.getSpells();
+                for (String spellKey : spells) {
+                    SpellTemplate spell = controller.getSpellTemplate(spellKey);
+                    if (spell != null) {
+                        allSkills.add(new SkillDescription(spell));
+                    }
+                }
             }
         }
 
