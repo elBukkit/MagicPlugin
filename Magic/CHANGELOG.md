@@ -5,6 +5,7 @@
  - Beginner, Apprentice, Student, and Master wands are now for demo purposes only and not tied to player progression.
  - Fix sniper rifle damage not undoing
  - The /mskills menu will now work with a player's class skills
+ - Add quick_cast and skill_limit properties for classes to control /mskills behavior
 
 ## 7.3
 

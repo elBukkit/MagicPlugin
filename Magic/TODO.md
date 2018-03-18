@@ -14,7 +14,6 @@
 
  - A way to lock a class without removing it
  - As part of above, probably should clear out any skill items the player has that go along with the locked class
- - Limit on # of skills a player can have out at a time for /mskills, probably determined by class
    
 ## Attributes
 
