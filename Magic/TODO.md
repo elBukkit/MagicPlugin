@@ -2,9 +2,6 @@
 
 ## 7.4
 
- - Tag spell auto-undo broken?
- - Flag to prevent putting SP in chests
-
  - Auto show skull icons for players that haven't got the RP? (optionally)
  - Undoing a wolf house leaves diodes and redstone behind
  - Brushette requests damage reduction (as in subtract an amount)
@@ -40,6 +37,7 @@
    
 ## Suggestions
 
+ - Flag to prevent putting SP in chests
  - Check knockback resistance in Velocity action, or add Mage knockback resistance.
  
  - Some way to reference spells from other spells without having to use a Command

@@ -54,6 +54,8 @@ public class SignSpell extends BlockSpell
 			if (targetBlock == null || !hasBuildPermission(targetBlock)) {
 				return SpellResult.INSUFFICIENT_PERMISSION;
 			}
+			registerForUndo(targetBlock);
+			registerForUndo();
 			if (targetBlock.getRelative(BlockFace.DOWN).getType() == Material.AIR)
 			{
 				targetBlock.setType(Material.WALL_SIGN);
@@ -101,9 +103,7 @@ public class SignSpell extends BlockSpell
 				sign.setLine(2, dateFormat.format(currentDate));
 				sign.setLine(3, timeFormat.format(currentDate));
 				sign.update();
-				
-				registerForUndo(targetBlock);
-				registerForUndo();
+
 				controller.updateBlock(targetBlock);
 
 				if (editSign && sourceEntity instanceof Player) {
