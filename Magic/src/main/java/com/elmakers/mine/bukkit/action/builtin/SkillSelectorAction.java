@@ -35,6 +35,7 @@ import javax.annotation.Nonnull;
 public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     private int page;
     private List<SkillDescription> allSkills = new ArrayList<>();
+    private boolean quickCast = true;
     private String inventoryTitle;
     private CastContext context;
 
@@ -83,6 +84,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             Mage mage = controller.getMage(player);
             MageClass activeClass = mage.getActiveClass();
             if (activeClass != null) {
+                quickCast = activeClass.getProperty("quick_cast", true);
                 Collection<String> spells = activeClass.getSpells();
                 for (String spellKey : spells) {
                     SpellTemplate spell = controller.getSpellTemplate(spellKey);
@@ -197,6 +199,12 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         {
             ItemStack skillItem = controller.getAPI().createItem(skill.getSkillKey(), mage);
             if (skillItem == null) continue;
+            if (!quickCast) {
+                Object spellNode = InventoryUtils.getNode(skillItem, "spell");
+                if (spellNode != null) {
+            		InventoryUtils.setMetaBoolean(spellNode, "quick_cast", false);
+				}
+            }
             if (skill.isHeroes() && heroes != null && !heroes.canUseSkill(player, skill.heroesSkill))
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
