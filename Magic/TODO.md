@@ -10,10 +10,18 @@
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
    
+### Post-Migration Bugs
+
+1) Wand will appear with correct lore for 1-2 seconds
+2) Wand resets to "Wand" with year1 knowing 2 spells
+3) When i hold the wand, it will load the data and re-configure the lore and title of the wand
+   
 ### For akr
 
  - A way to lock a class without removing it
- - As part of above, probably should clear out any skill items the player has that go along with the locked class
+ - Classbound items that are given on unlock and taken away on lock
+ - Wand "unstashable tag", sets a generic item tag
+ - "Unmoveable" tag, for use with classbound items that go in a specific slot
    
 ## Attributes
 
