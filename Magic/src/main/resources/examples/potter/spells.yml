@@ -337,7 +337,7 @@ avis:
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleOrbital: water_bubble
+             particleOrbital: spell
     parameters:
         allow_max_range: true
         range: 2
