@@ -8,6 +8,7 @@
  - Add quick_cast and skill_limit properties for classes to control /mskills behavior
  - Add auto undo to the Lightning spell
  - Fix flashbang, singularity and earthquake detonating when hitting the caster
+ - Fix the Disposal spell
 
 ## 7.3
 

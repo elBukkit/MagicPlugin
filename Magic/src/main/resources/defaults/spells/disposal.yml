@@ -25,7 +25,7 @@ disposal:
             particleOffsetY: 1
     parameters:
         target: self
-        type: chest
+        type: disposal
         cooldown: 2000
         title: Disposal
 
