@@ -12,6 +12,7 @@
  - Add /mage lock command, for locking a class without removing its progress
  - Add /wand levelspells command, for levelling up player or wand spells
  - Default sword controls changed to right-click instead of Q
+ - Fix normal arrows disappearing from magic bow temporarily
 
 ## 7.3
 

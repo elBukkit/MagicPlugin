@@ -791,10 +791,16 @@ public class PlayerController implements Listener {
         double minPull = wand.getDouble("cast_min_bowpull");
         double pull = Math.min(1.0, projectile.getVelocity().length() / MAX_ARROW_SPEED);
 
-        if (minPull > 0 && pull < minPull) return;
+        if (minPull > 0 && pull < minPull) {
+            if (wand.isInventoryOpen()) event.setCancelled(true);
+            return;
+        }
 
         Spell spell = wand.getActiveSpell();
-        if (spell == null) return;
+        if (spell == null) {
+            if (wand.isInventoryOpen()) event.setCancelled(true);
+            return;
+        }
 
         event.setCancelled(true);
         String[] parameters = {"bowpull", Double.toString(pull)};
