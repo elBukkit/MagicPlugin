@@ -148,15 +148,15 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             try {
                 if (currentValue.equals(value)) {
                     return false;
-                } else if (value instanceof String) {
-                    String stringValue = (String) value;
-                    String stringCurrent = (String) currentValue;
-                    if (stringValue.equalsIgnoreCase(stringCurrent)) return false;
-                } else if (value instanceof Number) {
+                } else if (value instanceof Number || currentValue instanceof Number) {
                     float floatValue = NumberConversions.toFloat(value);
                     float floatCurrent = NumberConversions.toFloat(currentValue);
                     // TODO: What about properties (see: block_cooldown) where less is better?
                     if (floatCurrent >= floatValue) return false;
+                } else if (value instanceof String) {
+                    String stringValue = value.toString();
+                    String stringCurrent = currentValue.toString();
+                    if (stringValue.equalsIgnoreCase(stringCurrent)) return false;
                 }
             } catch (Exception ex) {
                 controller.getLogger().log(Level.WARNING, "Error migrating property " + key, ex);
