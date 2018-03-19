@@ -380,6 +380,7 @@ commands:
         /wand remove      Remove spells or brushes from a player
         /mage activate    Set or clear a player's active class
         /mage unlock      Unlock a class for a player
+        /mage lock        Lock a class for a player
         /mage upgrade     Upgrade properties of a mage
         /mage setdata     Modify Mage data
         /mage getdata     Describe Mage data
@@ -454,6 +455,14 @@ commands:
         /mage unlock <Player> <Class>
         /mage unlock NathanWolf jedi
         /mage unlock NathanWolf waterbender
+  "mage lock":
+    description: Lock a class for a player
+    permission: Magic.commands.mage.lock
+    usage: |
+
+        /mage lock <Player> <Class>
+        /mage lock NathanWolf jedi
+        /mage lock NathanWolf waterbender
   "mage reset":
     description: Completely reset player data
     permission: Magic.commands.mage.reset
@@ -1150,6 +1159,7 @@ permissions:
     - Magic.commands.mage.getdata
     - Magic.commands.mage.setdata
     - Magic.commands.mage.unlock
+    - Magic.commands.mage.lock
     - Magic.commands.mage.activate
     - Magic.commands.mage.check
     - Magic.commands.mage.debug
@@ -1181,6 +1191,10 @@ permissions:
     default: op
   Magic.commands.mage.unlock:
     description: Player may unlock mage classes
+    type: boolean
+    default: op
+  Magic.commands.mage.lock:
+    description: Player may lock mage classes
     type: boolean
     default: op
   Magic.commands.mage.activate:

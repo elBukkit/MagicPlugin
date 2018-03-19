@@ -128,6 +128,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageUnlock(sender, player, args2);
         }
+        if (subCommand.equalsIgnoreCase("lock"))
+        {
+            return onMageLock(sender, player, args2);
+        }
         if (subCommand.equalsIgnoreCase("add"))
         {
             return onMageAdd(sender, player, args2);
@@ -158,6 +162,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "unbind");
             addIfPermissible(sender, options, "Magic.commands.mage.", "activate");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unlock");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "lock");
 		} else if (args.length == 2) {
 			String subCommand = args[0];
 			String subCommandPNode = "Magic.commands.mage." + subCommand;
@@ -222,7 +227,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 options.add("brush");
             }
 		} else if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("unlock") || args[0].equalsIgnoreCase("activate")) {
+            if (args[0].equalsIgnoreCase("lock") ||
+                args[0].equalsIgnoreCase("unlock") ||
+                args[0].equalsIgnoreCase("activate")) {
                 options.addAll(api.getController().getMageClassKeys());
             }
         }
@@ -440,6 +447,23 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             sender.sendMessage(ChatColor.RED + "Invalid class: " + ChatColor.WHITE + classKey);
         } else {
             sender.sendMessage("Unlocked class " + classKey + " for " + player.getName());
+        }
+        return true;
+    }
+
+    public boolean onMageLock(CommandSender sender, Player player, String[] parameters)
+    {
+        if (parameters.length < 1) {
+            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mage lock [player] <class>");
+            return true;
+        }
+        Mage mage = api.getMage(player);
+        String classKey = parameters[0];
+        boolean locked = mage.lockClass(classKey);
+        if (!locked) {
+            sender.sendMessage(ChatColor.RED + "No unlocked class: " + ChatColor.WHITE + classKey + ChatColor.RED + " for " + ChatColor.WHITE + player.getName());
+        } else {
+            sender.sendMessage("Locked class " + classKey + " for " + player.getName());
         }
         return true;
     }

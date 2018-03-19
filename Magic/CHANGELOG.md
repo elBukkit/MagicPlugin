@@ -9,6 +9,7 @@
  - Add auto undo to the Lightning spell
  - Fix flashbang, singularity and earthquake detonating when hitting the caster
  - Fix the Disposal spell
+ - Add /mage lock command, for locking a class without removing its progress
 
 ## 7.3
 
