@@ -150,6 +150,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             this.initialResult = ((CastContext)copy).initialResult;
             this.direction = ((CastContext)copy).direction;
             this.messageParameters = ((CastContext)copy).messageParameters;
+            this.targetCaster = ((CastContext)copy).targetCaster;
         }
         else
         {
