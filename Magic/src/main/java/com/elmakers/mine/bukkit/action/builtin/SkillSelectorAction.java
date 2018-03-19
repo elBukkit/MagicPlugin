@@ -36,6 +36,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     private int page;
     private List<SkillDescription> allSkills = new ArrayList<>();
     private boolean quickCast = true;
+    private String classKey;
     private int inventoryLimit = 0;
     private String inventoryTitle;
     private CastContext context;
@@ -85,6 +86,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             Mage mage = controller.getMage(player);
             MageClass activeClass = mage.getActiveClass();
             if (activeClass != null) {
+                classKey = activeClass.getKey();
                 quickCast = activeClass.getProperty("quick_cast", true);
                 inventoryLimit = activeClass.getProperty("skill_limit", 0);
                 Collection<String> spells = activeClass.getSpells();
@@ -206,6 +208,12 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
                 if (spellNode != null) {
             		InventoryUtils.setMetaBoolean(spellNode, "quick_cast", false);
 				}
+            }
+            if (classKey != null) {
+                Object spellNode = InventoryUtils.getNode(skillItem, "spell");
+                if (spellNode != null) {
+                    InventoryUtils.setMeta(spellNode, "class", classKey);
+                }
             }
             if (skill.isHeroes() && heroes != null && !heroes.canUseSkill(player, skill.heroesSkill))
             {
