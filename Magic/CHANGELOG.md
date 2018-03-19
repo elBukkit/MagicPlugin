@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 7.4
+
 ## 7.3.1
 
  - Beginner, Apprentice, Student, and Master wands are now for demo purposes only and not tied to player progression.
