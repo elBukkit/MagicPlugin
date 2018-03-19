@@ -1238,7 +1238,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 classes.put(key, mageClass);
             }
         }
-        if (mageClass.isLocked()) {
+        if (mageClass != null && mageClass.isLocked()) {
             if (unlock) {
                 mageClass.unlock();
             } else {
@@ -1249,7 +1249,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public boolean hasClassUnlocked(@Nonnull String key) {
-        return classes.containsKey(key);
+        MageClass mageClass = classes.get(key);
+        return mageClass != null && !mageClass.isLocked();
     }
 
     private void assignParent(MageClass mageClass) {
@@ -2002,7 +2003,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public float getCooldownReduction() {
         if (cooldownFree) {
-            return 1;
+            return 2;
         }
         return cooldownReduction * controller.getMaxCooldownReduction() + controller.getCooldownReduction();
     }
@@ -3388,13 +3389,30 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             for (int i = 0; i < Wand.HOTBAR_SIZE; i++) {
                 ItemStack spellItem = player.getInventory().getItem(i);
                 String spellKey = Wand.getSpell(spellItem);
+                String classKey = Wand.getSpellClass(spellItem);
                 if (spellKey != null) {
                     Spell spell = getSpell(spellKey);
                     if (spell != null) {
                         int targetAmount = 1;
-                        long remainingCooldown = spell.getRemainingCooldown();
-                        CastingCost requiredCost = spell.getRequiredCost();
-                        boolean canCast = spell.canCast(location);
+                        long remainingCooldown = 0;
+                        CastingCost requiredCost = null;
+                        boolean canCast = false;
+                        if (classKey != null && !classKey.isEmpty()) {
+                            MageClass mageClass = getClass(classKey);
+                            if (mageClass != null && spell instanceof BaseSpell) {
+                                BaseSpell baseSpell = (BaseSpell)spell;
+                                baseSpell.setMageClass(mageClass);
+                                remainingCooldown = spell.getRemainingCooldown();
+                                requiredCost = spell.getRequiredCost();
+                                canCast = spell.canCast(location);
+                                baseSpell.setMageClass(null);
+                            }
+                        } else {
+                            remainingCooldown = spell.getRemainingCooldown();
+                            requiredCost = spell.getRequiredCost();
+                            canCast = spell.canCast(location);
+                        }
+
                         if (canCast && remainingCooldown == 0 && requiredCost == null) {
                             targetAmount = 1;
                         } else if (!canCast) {

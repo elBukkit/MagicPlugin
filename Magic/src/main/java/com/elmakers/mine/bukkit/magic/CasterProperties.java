@@ -66,6 +66,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         setProperty("mana_regeneration", Math.max(0, manaRegeneration));
     }
 
+    @Override
     public float getMana() {
         ManaController manaController = controller.getManaController();
         if (manaController != null && isPlayer()) {
@@ -74,6 +75,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return getFloat("mana", getFloat("xp"));
     }
 
+    @Override
     public void removeMana(float amount) {
         ManaController manaController = controller.getManaController();
         if (manaController != null && isPlayer()) {
@@ -93,6 +95,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     public boolean isCostFree() {
         return getFloat("cost_reduction") > 1;
+    }
+
+    public boolean isCooldownFree() {
+        return getFloat("cooldown_reduction") > 1;
     }
 
     public int getEffectiveManaMax() {
@@ -310,6 +316,16 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 	public boolean canProgress() {
 		ProgressionPath path = getPath();
 		return (path != null && path.canProgress(this));
+	}
+
+	protected float stackPassiveProperty(float property, float stackProperty) {
+        boolean stack = getBoolean("stack");
+        if (stack) {
+            property += stackProperty;
+        } else {
+            property = Math.max(property, stackProperty);
+        }
+		return property;
 	}
 
     public abstract boolean isPlayer();

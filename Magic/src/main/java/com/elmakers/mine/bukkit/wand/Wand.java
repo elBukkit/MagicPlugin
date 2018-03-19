@@ -678,23 +678,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		updateMana();
 	}
 
-	private float stackPassiveProperty(float property, float stackProperty) {
-    	if (!passive) {
-			boolean stack = getBoolean("stack");
-			if (stack) {
-				property += stackProperty;
-			} else {
-				property = Math.max(property, stackProperty);
-			}
-		}
-		return property;
-	}
-
 	@Override
     public float getCostReduction() {
     	if (mage != null) {
     		float reduction = mage.getCostReduction();
-    		return stackPassiveProperty(reduction, costReduction);
+    		return passive ? reduction : stackPassiveProperty(reduction, costReduction);
 		}
         return costReduction;
     }
@@ -703,7 +691,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public float getCooldownReduction() {
     	if (mage != null) {
     		float reduction = mage.getCooldownReduction();
-    		return stackPassiveProperty(reduction, cooldownReduction);
+    		return passive ? reduction : stackPassiveProperty(reduction, cooldownReduction);
 		}
 		return cooldownReduction;
 	}
@@ -712,7 +700,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public float getConsumeReduction() {
     	if (mage != null) {
     		float reduction = mage.getConsumeReduction();
-    		return stackPassiveProperty(reduction, consumeReduction);
+    		return passive ? reduction : stackPassiveProperty(reduction, consumeReduction);
 		}
 		return consumeReduction;
 	}

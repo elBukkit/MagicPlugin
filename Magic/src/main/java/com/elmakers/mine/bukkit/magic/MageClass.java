@@ -224,4 +224,43 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     public void lock() {
         configuration.set("locked", true);
     }
+
+    @Override
+    public float getCostReduction() {
+        float costReduction = getFloat("cost_reduction");
+    	if (mage != null) {
+    		float reduction = mage.getCostReduction();
+    		return stackPassiveProperty(reduction, costReduction);
+		}
+        return costReduction;
+    }
+
+    public float getCooldownReduction() {
+        float cooldownReduction = getFloat("cooldown_reduction");
+    	if (mage != null) {
+    		float reduction = mage.getCooldownReduction();
+    		return stackPassiveProperty(reduction, cooldownReduction);
+		}
+		return cooldownReduction;
+	}
+
+	@Override
+    public boolean isCooldownFree() {
+		return getFloat("cooldown_reduction") > 1;
+	}
+
+	@Override
+	public float getConsumeReduction() {
+        float consumeReduction = getFloat("consume_reduction");
+    	if (mage != null) {
+    		float reduction = mage.getConsumeReduction();
+    		return stackPassiveProperty(reduction, consumeReduction);
+		}
+		return consumeReduction;
+	}
+
+    @Override
+    public float getCostScale() {
+        return 1.0f;
+    }
 }

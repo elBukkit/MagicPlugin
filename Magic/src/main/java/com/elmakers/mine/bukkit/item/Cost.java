@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.item;
 
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -79,9 +80,10 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 return getReducedCost(amount, reducer) == 0;
         }
     }
-    
+
     @Override
-    public boolean has(Mage mage, Wand wand, CostReducer reducer) {
+    public boolean has(Mage mage, CasterProperties caster, CostReducer reducer) {
+
         Player player = mage.getPlayer();
         switch (type) {
             case ITEM:
@@ -91,7 +93,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case LEVELS:
                 return player != null && player.getLevel() >= getLevels(reducer);
             case MANA:
-                return wand == null ? mage.getMana() >= getMana(reducer) : wand.getMana() >= getMana(reducer);
+                return caster == null ? mage.getMana() >= getMana(reducer) : caster.getMana() >= getMana(reducer);
             case CURRENCY:
                 VaultController vault = VaultController.getInstance();
                 return vault.has(mage.getPlayer(), getCurrency(reducer));
@@ -103,8 +105,13 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case HUNGER:
                 return player != null && player.getFoodLevel() >= getReducedCost(amount, reducer);
         }
-        
+
         return false;
+    }
+
+    @Override
+    public boolean has(Mage mage, Wand wand, CostReducer reducer) {
+        return has(mage, (CasterProperties)wand, reducer);
     }
 
     @Override
@@ -113,7 +120,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     }
 
     @Override
-    public void deduct(Mage mage, Wand wand, CostReducer reducer) {
+    public void deduct(Mage mage, CasterProperties caster, CostReducer reducer) {
         Player player = mage.getPlayer();
         switch (type) {
             case ITEM:
@@ -132,8 +139,8 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 }
                 break;
             case MANA:
-                if (wand != null) {
-                    wand.removeMana(getMana(reducer));
+                if (caster != null) {
+                    caster.removeMana(getMana(reducer));
                 } else {
                     mage.removeMana(getMana(reducer));
                 }
@@ -157,6 +164,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void deduct(Mage mage, Wand wand, CostReducer reducer) {
+        deduct(mage, (CasterProperties)wand, reducer);
     }
 
     @Override

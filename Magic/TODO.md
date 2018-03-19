@@ -2,10 +2,10 @@
 
 ## 7.4
 
+ - /mage and /wand level commands to max out levels for all spells, or set to specific level
  - Auto show skull icons for players that haven't got the RP? (optionally)
  - Undoing a wolf house leaves diodes and redstone behind
  - Brushette requests damage reduction (as in subtract an amount)
- - Why do hotbar spells show as uncastable while holding a wand of the wrong class? 
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)

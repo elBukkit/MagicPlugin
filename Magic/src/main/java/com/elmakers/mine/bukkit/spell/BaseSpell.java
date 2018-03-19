@@ -22,9 +22,11 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
+import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -35,6 +37,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.SpellParameters;
 import de.slikey.effectlib.math.EquationStore;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -145,6 +148,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      */
     protected MageController				controller;
     protected Mage 							mage;
+    protected MageClass                     mageClass;
     protected Location    					location;
     protected CastContext                   currentCast;
     protected UndoList                      toggleUndo;
@@ -744,15 +748,22 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         activeCostScale = (float)((double)(now - lastActiveCost) / 1000);
         lastActiveCost = now;
 
+        CasterProperties caster = null;
+        if (currentCast != null) {
+            caster = currentCast.getWand();
+            if (caster == null) {
+                caster = currentCast.getMageClass();
+            }
+        }
         for (CastingCost cost : activeCosts)
         {
-            if (!cost.has(this))
+            if (!cost.has(mage, caster, this))
             {
                 deactivate();
                 break;
             }
 
-            cost.use(this);
+            cost.deduct(mage, caster, this);
         }
 
         activeCostScale = 1;
@@ -1803,7 +1814,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public float getConsumeReduction()
     {
-        CostReducer reducer = currentCast != null ? currentCast.getWand() : mage;
+        CostReducer reducer = mageClass != null ? mageClass : (currentCast != null ? currentCast.getWand() : mage);
         if (reducer == null) {
             reducer = mage;
         }
@@ -1816,7 +1827,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public float getCostReduction()
     {
-        CostReducer reducer = currentCast != null ? currentCast.getWand() : mage;
+        CostReducer reducer = mageClass != null ? mageClass : (currentCast != null ? currentCast.getWand() : mage);
         if (reducer == null) {
             reducer = mage;
         }
@@ -2118,20 +2129,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected String getCooldownDescription(Messages messages, int cooldown, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
-        if (wand != null) {
-            if (wand.isCooldownFree()) {
+        CooldownReducer reducer = mageClass != null ? mageClass : (wand != null ? wand : mage);
+        if (reducer != null) {
+            if (reducer.isCooldownFree()) {
                 cooldown = 0;
             }
-            double cooldownReduction = wand.getCooldownReduction();
-            cooldownReduction += this.cooldownReduction;
-            if (cooldown > 0 && cooldownReduction < 1) {
-                cooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
-            }
-        } else if (mage != null) {
-            if (mage.isCooldownFree()) {
-                cooldown = 0;
-            }
-            double cooldownReduction = mage.getCooldownReduction();
+            double cooldownReduction = reducer.getCooldownReduction();
             cooldownReduction += this.cooldownReduction;
             if (cooldown > 0 && cooldownReduction < 1) {
                 cooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
@@ -2149,13 +2152,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public CastingCost getRequiredCost() {
-        if (!mage.isCostFree())
+        if (!mage.isCostFree() && (mageClass == null || !mageClass.isCostFree()))
         {
+            CasterProperties caster = mageClass != null ? mageClass : getCurrentCast().getWand();
             if (costs != null && !spellData.isActive())
             {
                 for (CastingCost cost : costs)
                 {
-                    if (!cost.has(this))
+                    if (!cost.has(mage, caster, this))
                     {
                         return cost;
                     }
@@ -2180,6 +2184,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public long getRemainingCooldown() {
         long remaining = 0;
         if (mage.isCooldownFree()) return 0;
+        if (mageClass != null && mageClass.isCooldownFree()) return 0;
         if (spellData.getCooldownExpiration() > 0)
         {
             long now = System.currentTimeMillis();
@@ -2842,5 +2847,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         return data;
+    }
+
+    public void setMageClass(MageClass mageClass) {
+        this.mageClass = mageClass;
     }
 }
