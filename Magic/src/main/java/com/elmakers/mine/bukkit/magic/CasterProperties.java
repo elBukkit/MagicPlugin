@@ -349,6 +349,20 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 		return property;
 	}
 
+	@Override
+	public boolean upgrade(String key, Object value) {
+        if (key.equals("path")) {
+            ProgressionPath path = getPath();
+            if (path != null && path.hasPath(value.toString())) {
+                return false;
+            }
+            setProperty(key, value);
+            return true;
+        }
+
+        return super.upgrade(key, value);
+    }
+
     public abstract boolean isPlayer();
     public abstract Player getPlayer();
     public abstract Mage getMage();
