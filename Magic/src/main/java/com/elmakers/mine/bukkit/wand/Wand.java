@@ -1450,8 +1450,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	private void migrateProtection(String legacy, String migrateTo) {
     	if (hasProperty(legacy)) {
-    		setProperty("protection." + migrateTo, getDouble(legacy));
+    		double protection = getDouble(legacy);
     		clearProperty(legacy);
+    		setProperty("protection." + migrateTo, protection);
 		}
 	}
 

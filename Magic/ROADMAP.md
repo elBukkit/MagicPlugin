@@ -8,6 +8,7 @@ This is a *very rough* approximation of where Magic is headed in future versions
      - Classbound items that are given on unlock and taken away on lock
      - Wand "unstashable tag", sets a generic item tag
      - "Unmoveable" tag, for use with classbound items that go in a specific slot
+     - ModifyMage action to lock/unlock/activate classes, for building a class selection GUI
  - Status effect system for temporary (timed) property changes
 
 ## 7.5
