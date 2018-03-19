@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -39,7 +40,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
  * via a tracked LostWand record, if the ItemStack can be found.
  *
  */
-public interface Wand extends CostReducer, CasterProperties {
+public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     String getName();
     String getId();
     long getWorth();
@@ -115,13 +116,16 @@ public interface Wand extends CostReducer, CasterProperties {
     boolean isSuperPowered();
     boolean isCostFree();
     boolean isConsumeFree();
+    @Override
     boolean isCooldownFree();
     float getPower();
     float getHealthRegeneration();
     float getHungerRegeneration();
+    @Override
     float getCooldownReduction();
     @Override
     float getCostReduction();
+    @Override
     void removeMana(float mana);
     @Override
     float getMana();

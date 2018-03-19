@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -61,7 +62,7 @@ import java.util.Set;
  * Some Spell implementations will absolutely require a Player (such as StashSpell),
  * and so will always fail unless cast by a player or with "castp".
  */
-public interface Mage extends CostReducer {
+public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Return the list of pending construction batches for this Mage
      *
@@ -343,7 +344,9 @@ public interface Mage extends CostReducer {
 
     ConfigurationSection getData();
 
+    @Override
     boolean isCooldownFree();
+    @Override
     float getCooldownReduction();
     boolean isCostFree();
     boolean isConsumeFree();
