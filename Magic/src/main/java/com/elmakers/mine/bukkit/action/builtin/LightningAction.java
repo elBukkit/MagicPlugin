@@ -27,6 +27,16 @@ public class LightningAction extends BaseSpellAction {
             {
                 return SpellResult.INSUFFICIENT_PERMISSION;
             }
+
+            // Lightning can start fires randomly within 1 block of the target
+            for (int x = -1; x <= 1; x++) {
+                for (int y = -1; y <= 1; y++) {
+                    for (int z = -1; z <= 1; z++) {
+                        context.registerForUndo(block.getRelative(x, y, z));
+                    }
+                }
+            }
+
             block.getWorld().strikeLightning(block.getLocation());
         }
         return SpellResult.CAST;
@@ -35,7 +45,7 @@ public class LightningAction extends BaseSpellAction {
     @Override
     public boolean isUndoable()
     {
-        return false;
+        return !effectOnly;
     }
 
     @Override

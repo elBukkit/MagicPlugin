@@ -40,6 +40,7 @@ lightning:
         range: 32
         radius: 8
         cooldown: 10000
+        undo: 8000
     costs:
         mana: 80
 
