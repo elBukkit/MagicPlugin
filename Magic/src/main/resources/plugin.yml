@@ -54,24 +54,25 @@ commands:
     description: Create and modify wands
     usage: |
         Use /help wand [subcommand] for more information
-        /wand add        Add spells and brushes to a wand
-        /wand remove     Remove spells or brushes from a wand
-        /wand restore    Restore a player's lost wands
-        /wand configure  Set wand properties
-        /wand describe   Show information about a wand
-        /wand name       Change the display name of a wand
-        /wand organize   Re-organize a wand's spell inventory
-        /wand enchant    Upgrade a wand
-        /wand create     Turn an item into a wand
-        /wand destroy    Turn a wand into a normal item
-        /wand duplicate  Create a copy of a wand
-        /wand unlock     Allow a locked wand to be modified
-        /wand override   Set or check cast overrides on a wand
-        /wand upgrade    Upgrade properties of a wand
-        /wand bind       Bind a wand to the person holding it
-        /wand unbind     Unbind a wand, including backups
-        /wand save       Save a wand as a new template
-        /wand delete     Delete a saved wand
+        /wand add         Add spells and brushes to a wand
+        /wand remove      Remove spells or brushes from a wand
+        /wand restore     Restore a player's lost wands
+        /wand configure   Set wand properties
+        /wand describe    Show information about a wand
+        /wand name        Change the display name of a wand
+        /wand organize    Re-organize a wand's spell inventory
+        /wand enchant     Upgrade a wand
+        /wand create      Turn an item into a wand
+        /wand destroy     Turn a wand into a normal item
+        /wand duplicate   Create a copy of a wand
+        /wand unlock      Allow a locked wand to be modified
+        /wand override    Set or check cast overrides on a wand
+        /wand upgrade     Upgrade properties of a wand
+        /wand bind        Bind a wand to the person holding it
+        /wand unbind      Unbind a wand, including backups
+        /wand save        Save a wand as a new template
+        /wand delete      Delete a saved wand
+        /wand levelspells Level up all spells for a wand
     permission: Magic.commands.wand
   "wand add":
     description: Add a spell or brush to a wand
@@ -173,9 +174,21 @@ commands:
        /wand upgrade xp_max 500
        /wand upgrade xp_regeneration 50
     permission: Magic.commands.wand.upgrade
+  "wand levelspells":
+    description: Level up all spells on a wand
+    usage: |
+
+       To level up all spells on a wand to max level
+       /wand levelspells
+       Or to a specific level
+       /wand levelspells 3
+    permission: Magic.commands.wand.levelspells
   wandp:
     description: Create and modify wands for another player
-    usage: /wandp <player> [add|remove|upgrade|configure|describe|organize|enchant|unenchant|duplicate|unlock|override|bind|unbind] [<spellname>|material] <materialname>
+    usage: |
+
+        /wandp <player> [command] [<spellname>|material] <materialname>
+        See /wand command help for details.
     permission: Magic.commands.wandp
   mitem:
     description: Create and modify custom items
@@ -388,6 +401,7 @@ commands:
         /mage debug       Enable/disable debug for a player
         /mage reset       Reset all data for a Mage, or for a specific class
         /mage unbind      Delete specific bound wands for a mage
+        /mage levelspells Level up all spells for a mage
   "mage configure":
     description: Configure mage properties, configures the active class
     usage: |
@@ -493,6 +507,15 @@ commands:
         /mage unbind
         /mage unbind wand
         /mage unbind battle
+  "mage levelspells":
+    description: Level up all spells on a player
+    permission: Magic.commands.mage.levelspells
+    usage: |
+
+       To level up all spells on a player's current class to max level
+       /mage levelspells
+       Or to a specific level
+       /mage levelspells 3
   mgive:
     description: Give players items
     permission: Magic.commands.mgive
@@ -702,6 +725,7 @@ permissions:
     - Magic.commands.wand.configure
     - Magic.commands.wand.combine
     - Magic.commands.wand.upgrade
+    - Magic.commands.wand.levelspells
     - Magic.commands.wand.fill
     - Magic.commands.wand.remove
     - Magic.commands.wand.name
@@ -773,6 +797,10 @@ permissions:
     description: Player may upgrade wand properties
     type: boolean
     default: op
+  Magic.commands.wand.levelspells:
+    description: Player may upgrade all of a wand's spells
+    type: boolean
+    default: op
   Magic.commands.wand.fill:
     description: Player may fill a wand with all spells
     type: boolean
@@ -830,6 +858,7 @@ permissions:
     - Magic.commands.wandp.configure
     - Magic.commands.wandp.combine
     - Magic.commands.wandp.upgrade
+    - Magic.commands.wandp.levelspells
     - Magic.commands.wandp.fill
     - Magic.commands.wandp.remove
     - Magic.commands.wandp.name
@@ -878,6 +907,10 @@ permissions:
     default: op
   Magic.commands.wandp.upgrade:
     description: Player may upgrade wand properties for another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.levelspells:
+    description: Player may upgrade all of another player's wand's spells
     type: boolean
     default: op
   Magic.commands.wandp.fill:
@@ -1165,6 +1198,7 @@ permissions:
     - Magic.commands.mage.debug
     - Magic.commands.mage.reset
     - Magic.commands.mage.unbind
+    - Magic.commands.mage.levelspells
   Magic.commands.mage.configure:
     description: Player may configure Mage properties
     type: boolean
@@ -1219,6 +1253,10 @@ permissions:
     default: op
   Magic.commands.mage.unbind:
     description: Player may unbind all of a player's stored wands
+    type: boolean
+    default: op
+  Magic.commands.mage.levelspells:
+    description: Player may upgrade all of a player's spells
     type: boolean
     default: op
   Magic.commands.mskills:

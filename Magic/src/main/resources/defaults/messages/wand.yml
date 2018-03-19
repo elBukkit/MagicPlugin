@@ -84,6 +84,10 @@ wand:
     hotbar_count: "$amount hotbars"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
+    player_spells_levelled: "Levelled up $count of $name's spells"
+    player_spells_not_levelled: "Did not level up any of $name's spells"
+    spells_levelled: "Levelled up $count of your spells"
+    spells_not_levelled: "Did not level up any of your spells"
     no_wand: You must be holding a wand
     player_no_wand: $name is not holding a wand
     no_item: You must be holding an item

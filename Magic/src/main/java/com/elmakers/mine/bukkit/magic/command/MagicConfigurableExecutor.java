@@ -1,8 +1,12 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -11,6 +15,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
+
+import java.util.Collection;
 
 public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
     public MagicConfigurableExecutor(MagicAPI api) {
@@ -82,6 +88,47 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
                 sender.sendMessage(api.getMessages().getParameterized(command + ".player_not_reconfigured", "$name", player.getName()));
             }
         }
+        return true;
+    }
+
+    protected boolean onLevelSpells(String command, CommandSender sender, Player player, CasterProperties caster, Integer maxLevel) {
+        Collection<String> spells = caster.getSpells();
+        MageController controller = api.getController();
+        int levelledCount = 0;
+        for (String spellKey : spells) {
+            SpellTemplate spellTemplate = controller.getSpellTemplate(spellKey);
+            if (spellTemplate == null) continue;
+            SpellKey key = spellTemplate.getSpellKey();
+            if (maxLevel != null && key.getLevel() >= maxLevel) continue;
+
+            int targetLevel = key.getLevel();
+            while (spellTemplate != null && (maxLevel == null || targetLevel < maxLevel)) {
+                key = new SpellKey(key.getBaseKey(), targetLevel + 1);
+                spellTemplate = controller.getSpellTemplate(key.getKey());
+                if (spellTemplate != null) {
+                    targetLevel++;
+                }
+            }
+            key = new SpellKey(key.getBaseKey(), targetLevel);
+            caster.addSpell(key.getKey());
+
+            levelledCount++;
+        }
+
+        if (sender != player) {
+            if (levelledCount > 0) {
+                sender.sendMessage(api.getMessages().getParameterized(command + ".player_spells_levelled", "$name", player.getName(), "$count", Integer.toString(levelledCount)));
+            } else {
+                sender.sendMessage(api.getMessages().getParameterized(command + ".player_spells_not_levelled", "$name", player.getName()));
+            }
+        } else {
+            if (levelledCount > 0) {
+                sender.sendMessage(api.getMessages().getParameterized(command + ".spells_levelled", "$name", player.getName(), "$count", Integer.toString(levelledCount)));
+            } else {
+                sender.sendMessage(api.getMessages().getParameterized(command + ".spells_not_levelled", "$name", player.getName()));
+            }
+        }
+
         return true;
     }
 }

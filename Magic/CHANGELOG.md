@@ -10,6 +10,7 @@
  - Fix flashbang, singularity and earthquake detonating when hitting the caster
  - Fix the Disposal spell
  - Add /mage lock command, for locking a class without removing its progress
+ - Add /wand levelspells command, for levelling up player or wand spells
 
 ## 7.3
 

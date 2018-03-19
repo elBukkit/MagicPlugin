@@ -141,6 +141,11 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             return onMageRemove(sender, player, args2);
         }
 
+		if (subCommand.equalsIgnoreCase("levelspells"))
+		{
+			return onMageLevelSpells(sender, player, args2);
+		}
+
 		sender.sendMessage("Unknown mage command: " + subCommand);
 		return true;
 	}
@@ -163,6 +168,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "activate");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unlock");
             addIfPermissible(sender, options, "Magic.commands.mage.", "lock");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "levelspells");
 		} else if (args.length == 2) {
 			String subCommand = args[0];
 			String subCommandPNode = "Magic.commands.mage." + subCommand;
@@ -234,6 +240,23 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             }
         }
 		return options;
+	}
+
+	public boolean onMageLevelSpells(CommandSender sender, Player player, String[] parameters)
+	{
+		Integer maxLevel = null;
+		if (parameters.length > 0) {
+			try {
+				maxLevel = Integer.parseInt(parameters[0]);
+			} catch (Exception ex) {
+				sender.sendMessage("Usage: /wand levelspells <level>");
+				return true;
+			}
+		}
+
+		Mage mage = api.getMage(player);
+        MageClass activeClass = mage.getActiveClass();
+		return onLevelSpells("mage", sender, player, activeClass == null ? mage.getProperties() : activeClass, maxLevel);
 	}
 
     public boolean onMageCheck(CommandSender sender, Player player, String[] args)
@@ -524,7 +547,6 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
         return true;
     }
-
 
 	public boolean onMageAdd(CommandSender sender, Player player, String[] parameters)
 	{
