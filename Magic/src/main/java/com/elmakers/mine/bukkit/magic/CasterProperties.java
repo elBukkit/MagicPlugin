@@ -200,7 +200,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public boolean addSpell(String spellKey) {
-        Collection<String> spells = getSpells();
+        Collection<String> spells = getBaseSpells();
         SpellKey key = new SpellKey(spellKey);
         boolean modified = spells.add(key.getBaseKey());
         if (modified) {
@@ -226,7 +226,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     public boolean removeSpell(String spellKey) {
-        Collection<String> spells = getSpells();
+        Collection<String> spells = getBaseSpells();
         SpellKey key = new SpellKey(spellKey);
         boolean modified = spells.remove(key.getBaseKey());
         if (modified) {
@@ -269,12 +269,15 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
-    public boolean hasSpell(String spellKey) {
-        return getSpells().contains(spellKey);
+    public boolean hasSpell(String key) {
+        SpellKey spellKey = new SpellKey(key);
+
+    	if (!getBaseSpells().contains(spellKey.getBaseKey())) return false;
+        int level = getSpellLevel(spellKey.getBaseKey());
+        return (level >= spellKey.getLevel());
     }
 
-    @Override
-    public Collection<String> getSpells() {
+    public Collection<String> getBaseSpells() {
         Object existingSpells = getObject("spells");
         Set<String> spells = new HashSet<>();
         if (existingSpells != null) {
@@ -287,6 +290,24 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             }
         }
         return spells;
+    }
+
+    @Override
+    public Collection<String> getSpells() {
+        Set<String> spellSet = new HashSet<>();
+        Collection<String> spells = getBaseSpells();
+        Map<String, Object> spellLevels = getSpellLevels();
+
+        for (String key : spells) {
+            Object levelObject = spellLevels.get(key);
+            Integer level = levelObject != null && levelObject instanceof Integer ? (Integer)levelObject : null;
+            if (level != null) {
+                spellSet.add(new SpellKey(key, level).getKey());
+            } else {
+            	spellSet.add(key);
+			}
+        }
+		return spellSet;
     }
 
     public Collection<String> getBrushes() {
