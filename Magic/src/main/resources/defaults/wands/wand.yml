@@ -7,4 +7,5 @@ wand:
     icon: wood_hoe:1
     migrate_icon: wood_hoe
     effect_color: random
+    active_spell: missile
 

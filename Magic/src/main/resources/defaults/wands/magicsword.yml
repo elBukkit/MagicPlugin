@@ -8,6 +8,7 @@ magicsword:
     migrate_icon: gold_sword
     effect_color: '11FF11'
     hide_flags: 62
+    active_spell: missile
     protection:
       physical: 0.4
     attributes:

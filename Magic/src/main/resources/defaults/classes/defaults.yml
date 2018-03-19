@@ -21,9 +21,6 @@ caster:
   mana_max: 50
   mana: 50
   mana_regeneration: 5
-  active_spell: missile
-  spells:
-   - missile
 
 battle_mage:
   parent: caster
@@ -41,6 +38,8 @@ mage:
   parent: caster
   locked: false
   path: beginner
+  spells:
+   - missile
 
 archer_mage:
   parent: base
