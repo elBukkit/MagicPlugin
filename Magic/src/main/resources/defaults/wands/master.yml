@@ -1,6 +1,5 @@
 master:
     inherit: apprentice
-    path: master
     icon: wood_hoe:4
     migrate_icon: gold_axe
     mana_regeneration: 50

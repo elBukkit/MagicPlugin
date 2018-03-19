@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 7.4
+
+ - The wands named "beginner", "student", "apprentice" and "master" no longer have any progression.
+   They should really not be used except for demonstration purposes, and are now labelled as such.
+
 ## 7.3
 
  - Spell upgrade prefix made global. If you have customized upgrade descriptions and would like to keep them unique, set

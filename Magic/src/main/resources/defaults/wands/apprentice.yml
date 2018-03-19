@@ -3,7 +3,6 @@ apprentice:
     icon: wood_hoe:3
     migrate_icon: wood_hoe
     effect_color: '22FF22'
-    path: apprentice
     hotbar_count: 2
     mana_regeneration: 40
     mana_max: 200
