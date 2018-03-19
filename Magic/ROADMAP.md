@@ -4,6 +4,11 @@ This is a *very rough* approximation of where Magic is headed in future versions
 
 ## 7.4
 
+ - Class improvements and additions:
+     - A way to lock a class without removing it
+     - Classbound items that are given on unlock and taken away on lock
+     - Wand "unstashable tag", sets a generic item tag
+     - "Unmoveable" tag, for use with classbound items that go in a specific slot
  - Status effect system for temporary (timed) property changes
 
 ## 7.5

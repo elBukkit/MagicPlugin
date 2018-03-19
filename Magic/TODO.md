@@ -16,13 +16,6 @@
 2) Wand resets to "Wand" with year1 knowing 2 spells
 3) When i hold the wand, it will load the data and re-configure the lore and title of the wand
    
-### For akr
-
- - A way to lock a class without removing it
- - Classbound items that are given on unlock and taken away on lock
- - Wand "unstashable tag", sets a generic item tag
- - "Unmoveable" tag, for use with classbound items that go in a specific slot
-   
 ## Attributes
 
  - Add internal attribute system.
