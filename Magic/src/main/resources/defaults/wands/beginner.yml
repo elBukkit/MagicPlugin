@@ -15,8 +15,10 @@
 # Unless your intention is a wand that levels on its own, apart from player progression.
 #
 beginner:
-  inherit: wand
-  class: ""
+  inherit: base_wand
+  icon: wood_hoe:1
+  migrate_icon: wood_hoe
+  effect_color: random
   mana_max: 50
   mana: 50
   mana_regeneration: 5
