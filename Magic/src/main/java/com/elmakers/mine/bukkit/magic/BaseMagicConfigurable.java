@@ -68,10 +68,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         Object ownValue = configuration.get(key);
         Object value = ownValue;
         if (value == null && template != null) {
-            Object templateValue = template.getConfiguration().get(key);
-            if (templateValue != null) {
-                controller.getLogger().warning("Migrating property " + key + " on " + type + " to " + propertyType + " but there is a value set on the template. This is probably an error and should be corrected. Please check that any properties in your mage class 'storage' mapping do not exist in your wand templates. (One possible reason)");
-            }
+            value = template.getConfiguration().get(key);
         }
         if (value != null) {
             BaseMagicConfigurable storage = getStorage(propertyType);
