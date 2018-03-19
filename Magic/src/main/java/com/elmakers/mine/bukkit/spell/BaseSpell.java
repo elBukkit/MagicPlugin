@@ -2185,6 +2185,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         long remaining = 0;
         if (mage.isCooldownFree()) return 0;
         if (mageClass != null && mageClass.isCooldownFree()) return 0;
+        if (mageClass == null) {
+            Wand wand = mage.getActiveWand();
+            if (wand != null && wand.isCooldownFree()) return 0;
+        }
         if (spellData.getCooldownExpiration() > 0)
         {
             long now = System.currentTimeMillis();
