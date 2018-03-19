@@ -2,19 +2,12 @@
 
 ## 7.4
 
- - /mage and /wand level commands to max out levels for all spells, or set to specific level
  - Auto show skull icons for players that haven't got the RP? (optionally)
  - Undoing a wolf house leaves diodes and redstone behind
  - Brushette requests damage reduction (as in subtract an amount)
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
-   
-### Post-Migration Bugs
-
-1) Wand will appear with correct lore for 1-2 seconds
-2) Wand resets to "Wand" with year1 knowing 2 spells
-3) When i hold the wand, it will load the data and re-configure the lore and title of the wand
    
 ## Attributes
 

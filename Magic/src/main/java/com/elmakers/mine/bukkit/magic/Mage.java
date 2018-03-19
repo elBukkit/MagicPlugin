@@ -3428,7 +3428,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                         int targetManaTime = (int)Math.min(Math.ceil(remainingMana / getEffectiveManaRegeneration()), 99);
                                         targetAmount = Math.max(targetManaTime, targetAmount);
                                     } else {
-                                        targetAmount = 99;
+                                        canCastSpell = false;
                                         canCast = false;
                                     }
                                 }
