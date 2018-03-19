@@ -99,7 +99,8 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
             SpellTemplate spellTemplate = controller.getSpellTemplate(spellKey);
             if (spellTemplate == null) continue;
             SpellKey key = spellTemplate.getSpellKey();
-            if (maxLevel != null && key.getLevel() >= maxLevel) continue;
+            int currentLevel = key.getLevel();
+            if (maxLevel != null && currentLevel >= maxLevel) continue;
 
             int targetLevel = key.getLevel();
             while (spellTemplate != null && (maxLevel == null || targetLevel < maxLevel)) {
@@ -109,6 +110,7 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
                     targetLevel++;
                 }
             }
+            if (currentLevel >= targetLevel) continue;
             key = new SpellKey(key.getBaseKey(), targetLevel);
             caster.addSpell(key.getKey());
 
