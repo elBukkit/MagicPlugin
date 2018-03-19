@@ -1197,6 +1197,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public boolean lockClass(@Nonnull String key) {
+        MageClass mageClass = getClass(key);
+        if (mageClass == null) {
+            return false;
+        }
+        mageClass.lock();
+        if (activeClass != null && activeClass.isLocked()) {
+            setActiveClass(null);
+        }
+        checkWand();
+        checkOffhandWand();
+        return true;
+    }
+
+    @Override
     public @Nonnull Collection<com.elmakers.mine.bukkit.api.magic.MageClass> getClasses() {
        List<com.elmakers.mine.bukkit.api.magic.MageClass> mageClasses = new ArrayList<>();
        mageClasses.addAll(classes.values());
@@ -1213,14 +1228,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return getClass(key, false);
     }
 
-    private @Nullable MageClass getClass(@Nonnull String key, boolean forceCreate) {
+    private @Nullable MageClass getClass(@Nonnull String key, boolean unlock) {
         MageClass mageClass = classes.get(key);
         if (mageClass == null) {
             MageClassTemplate template = controller.getMageClass(key);
-            if (template != null && (forceCreate || !template.isLocked())) {
+            if (template != null && (unlock || !template.isLocked())) {
                 mageClass = new MageClass(this, template);
                 assignParent(mageClass);
                 classes.put(key, mageClass);
+            }
+        }
+        if (mageClass.isLocked()) {
+            if (unlock) {
+                mageClass.unlock();
+            } else {
+                mageClass = null;
             }
         }
         return mageClass;

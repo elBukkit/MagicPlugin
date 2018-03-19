@@ -209,4 +209,19 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     public String getName() {
         return template.getName();
     }
+
+    public boolean isLocked() {
+        if (super.getProperty("locked", false)) return true;
+        if (parent != null) return parent.isLocked();
+        return false;
+    }
+
+    public void unlock() {
+        configuration.set("locked", null);
+        if (parent != null) parent.unlock();
+    }
+
+    public void lock() {
+        configuration.set("locked", true);
+    }
 }

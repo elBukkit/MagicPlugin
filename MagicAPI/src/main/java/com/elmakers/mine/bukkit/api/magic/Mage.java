@@ -506,6 +506,7 @@ public interface Mage extends CostReducer {
     @Nonnull Collection<String> getClassKeys();
     @Nullable MageClass getActiveClass();
     @Nullable MageClass unlockClass(@Nonnull String key);
+    boolean lockClass(@Nonnull String key);
     @Nullable MageClass getClass(@Nonnull String key);
     boolean hasClassUnlocked(@Nonnull String key);
     void damagedBy(@Nonnull Entity enity, double damage);
