@@ -5,6 +5,7 @@ import java.util.Collection;
 public interface CasterProperties extends MagicConfigurable {
     boolean hasSpell(String spellKey);
     Collection<String> getSpells();
+    boolean addSpell(String spellKey);
     Mage getMage();
     void removeMana(float mana);
     float getMana();

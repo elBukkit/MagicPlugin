@@ -81,6 +81,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     @Override
     boolean removeProperty(String key);
     boolean addBrush(String key);
+    @Override
     boolean addSpell(String key);
 
     /**

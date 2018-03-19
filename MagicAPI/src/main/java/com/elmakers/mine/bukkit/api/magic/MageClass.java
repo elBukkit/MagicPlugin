@@ -9,6 +9,7 @@ import java.util.Collection;
 public interface MageClass extends CasterProperties, CostReducer, CooldownReducer {
     @Override
     Collection<String> getSpells();
+    @Override
     boolean addSpell(String spellKey);
     boolean addBrush(String brushKey);
     boolean removeSpell(String spellKey);
