@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class MageClass extends TemplatedProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
@@ -86,16 +87,21 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     }
 
     @Override
-    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
-        super.describe(sender, ignoreProperties);
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {
+        super.describe(sender, ignoreProperties, overriddenProperties);
+        if (overriddenProperties == null) {
+            overriddenProperties = new HashSet<>();
+        }
         Set<String> ownKeys = getConfiguration().getKeys(false);
-        template.describe(sender, ignoreProperties, ownKeys);
-        ownKeys.addAll(template.getConfiguration().getKeys(false));
+        overriddenProperties.addAll(ownKeys);
+        sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration for (" + ChatColor.DARK_GREEN + getKey() + ChatColor.GREEN + "):");
+        template.describe(sender, ignoreProperties, overriddenProperties);
+        overriddenProperties.addAll(template.getConfiguration().getKeys(false));
 
         MageClass parent = getParent();
         if (parent != null) {
             sender.sendMessage(ChatColor.AQUA + "Parent Class: " + ChatColor.GREEN + parent.getTemplate().getKey());
-            parent.describe(sender, ignoreProperties, ownKeys);
+            parent.describe(sender, ignoreProperties, overriddenProperties);
         }
     }
 
