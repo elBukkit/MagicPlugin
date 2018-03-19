@@ -35,7 +35,7 @@ earthquake:
                 actions:
                 - class: Damage
                 - class: Velocity
-                  speed: 0.2
+                  speed: 0.4
             # Create a disc, do this in parallel with the Repeating
             # AOE above
             - class: Disc
@@ -117,7 +117,7 @@ earthquake:
         target_self_timeout: 2000
         cooldown: 20000
         undo_speed: 0.5
-        damage: 1
+        damage: 3
     costs:
         mana: 150
 

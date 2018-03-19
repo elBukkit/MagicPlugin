@@ -90,7 +90,7 @@ wave:
         brush: air
         falling: true
         undo: 15000
-        damage: 0.5
+        damage: 2
         undo_speed: 0.5
     costs:
         mana: 150

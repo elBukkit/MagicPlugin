@@ -147,7 +147,7 @@ nuke:
         skip: 16
         delay: 1
         undo_speed: 2
-        damage: 1.5
+        damage: 4
         target_self_timeout: 2000
     costs:
         mana: 200
