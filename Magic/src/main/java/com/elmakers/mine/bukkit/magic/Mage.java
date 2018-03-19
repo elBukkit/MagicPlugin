@@ -3396,7 +3396,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         int targetAmount = 1;
                         long remainingCooldown = 0;
                         CastingCost requiredCost = null;
-                        boolean canCast = false;
+                        boolean canCastSpell = false;
                         if (classKey != null && !classKey.isEmpty()) {
                             MageClass mageClass = getClass(classKey);
                             if (mageClass != null && spell instanceof BaseSpell) {
@@ -3404,20 +3404,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                 baseSpell.setMageClass(mageClass);
                                 remainingCooldown = spell.getRemainingCooldown();
                                 requiredCost = spell.getRequiredCost();
-                                canCast = spell.canCast(location);
+                                canCastSpell = spell.canCast(location);
                                 baseSpell.setMageClass(null);
                             }
                         } else {
                             remainingCooldown = spell.getRemainingCooldown();
                             requiredCost = spell.getRequiredCost();
-                            canCast = spell.canCast(location);
+                            canCastSpell = spell.canCast(location);
                         }
 
-                        if (canCast && remainingCooldown == 0 && requiredCost == null) {
+                        boolean canCast = canCastSpell;
+                        if (canCastSpell && remainingCooldown == 0 && requiredCost == null) {
                             targetAmount = 1;
-                        } else if (!canCast) {
-                            targetAmount = 99;
-                        } else {
+                        } else if (canCastSpell ){
                             canCast = remainingCooldown == 0;
                             targetAmount = Wand.LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
                             if (Wand.LiveHotbarCooldown && requiredCost != null) {
@@ -3448,7 +3447,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                 if (disabledIcon.isValid() && (disabledIcon.getMaterial() != spellItem.getType() || disabledIcon.getData() != spellItem.getDurability())) {
                                     disabledIcon.applyToItem(spellItem);
                                 }
-                                if (targetAmount == 99) {
+                                if (!canCastSpell) {
                                     if (spellItem.getAmount() != 1) {
                                         spellItem.setAmount(1);
                                     }
@@ -3466,7 +3465,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                     InventoryUtils.setNewSkullURL(spellItem, disabledUrlIcon);
                                     player.getInventory().setItem(i, spellItem);
                                 }
-                                if (targetAmount == 99) {
+                                if (!canCastSpell) {
                                     if (spellItem.getAmount() != 1) {
                                         spellItem.setAmount(1);
                                     }
