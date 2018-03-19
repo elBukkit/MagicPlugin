@@ -119,7 +119,7 @@ singularity:
       repeat: 10
       delay: 250
       damage: 1
-      target_self: true
+      target_self_timeout: 2000
       speed: 0.5
       item_speed: 0.5
       entity_speed: 0.5

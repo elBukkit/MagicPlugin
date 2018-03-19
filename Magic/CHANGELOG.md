@@ -7,6 +7,7 @@
  - The /mskills menu will now work with a player's class skills
  - Add quick_cast and skill_limit properties for classes to control /mskills behavior
  - Add auto undo to the Lightning spell
+ - Fix flashbang, singularity and earthquake detonating when hitting the caster
 
 ## 7.3
 

@@ -114,7 +114,7 @@ earthquake:
         destructible: destructible_mining
         undo: 10000
         skip: 8
-        target_self: true
+        target_self_timeout: 2000
         cooldown: 20000
         undo_speed: 0.5
         damage: 1

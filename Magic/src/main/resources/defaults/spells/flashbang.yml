@@ -99,7 +99,6 @@ flashbang:
       effect_blindness: 1
       effect_night_vision: 1
       radius: 5
-      target_self: true
       target_self_timeout: 2000
       cooldown: 10000
       speed: 1
