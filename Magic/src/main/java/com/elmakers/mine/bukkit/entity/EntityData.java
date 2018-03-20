@@ -229,7 +229,16 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.type = type;
     }
 
+    public EntityData(@Nonnull MageController controller, @Nonnull String key, ConfigurationSection parameters) {
+        this.key = key;
+        load(controller, parameters);
+    }
+
     public EntityData(@Nonnull MageController controller, ConfigurationSection parameters) {
+        load(controller, parameters);
+    }
+
+    protected void load(@Nonnull MageController controller, ConfigurationSection parameters) {
         name = parameters.getString("name");
         if (name != null) {
             name = ChatColor.translateAlternateColorCodes('&', name);
@@ -306,7 +315,33 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
         }
-        ConfigurationSection attributeConfiguration = ConfigurationUtils.getConfigurationSection(parameters, "attributes");
+
+        ConfigurationSection attributeConfiguration = ConfigurationUtils.getConfigurationSection(parameters, "entity_attributes");
+        // Migrate old attributes
+        ConfigurationSection migrateAttributes = ConfigurationUtils.getConfigurationSection(parameters, "attributes");
+        if (migrateAttributes != null) {
+            boolean nagged = false;
+            Set<String> keys = migrateAttributes.getKeys(false);
+            for (String attributeKey : keys) {
+                try {
+                    Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
+                    if (attribute != null) {
+                        if (attributeConfiguration == null) {
+                            attributeConfiguration = parameters.createSection("entity_attributes");
+                        }
+                        attributeConfiguration.set(attributeKey, migrateAttributes.get(attributeKey));
+                        parameters.set("attributes", null);
+                        if (key != null && !nagged) {
+                            controller.getLogger().warning("You have vanilla entity attributes in the 'attributes' property of mob template '" + key + "', please rename that to entity_attributes.");
+                            nagged = true;
+                        }
+                    }
+                } catch (Exception ex) {
+
+                }
+            }
+        }
+
         if (attributeConfiguration != null) {
             Set<String> keys = attributeConfiguration.getKeys(false);
             if (keys.size() > 0) {

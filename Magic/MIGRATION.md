@@ -6,6 +6,7 @@
    They should really not be used except for demonstration purposes, and are now labelled as such.
  - The Magic.wand.override_drop permission changed to Magic.wand.override_stash
  - The wand property "attributes" has been renamed to "item_attributes"
+ - The mob property "attributes" has been renamed to "entity_attributes"
 
 ## 7.3
 

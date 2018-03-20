@@ -47,6 +47,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         attributes = node.getConfigurationSection("item_attributes");
         ConfigurationSection migrateAttributes = node.getConfigurationSection("attributes");
         if (migrateAttributes != null) {
+            boolean nagged = false;
             Set<String> keys = migrateAttributes.getKeys(false);
             for (String attributeKey : keys) {
                 try {
@@ -57,7 +58,10 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
                         }
                         attributes.set(attributeKey, migrateAttributes.get(attributeKey));
                         node.set("attributes", null);
-                        controller.getLogger().warning("You have vanilla item attributes in the 'attributes' property of wand template '" + key + "', please rename that to item_attributes.");
+                        if (!nagged) {
+                            nagged = true;
+                            controller.getLogger().warning("You have vanilla item attributes in the 'attributes' property of wand template '" + key + "', please rename that to item_attributes.");
+                        }
                     }
                 } catch (Exception ex) {
 

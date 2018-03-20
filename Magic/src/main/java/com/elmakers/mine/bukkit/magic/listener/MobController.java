@@ -40,8 +40,7 @@ public class MobController implements Listener {
         for (String mobKey : mobKeys) {
             ConfigurationSection mobConfiguration = configuration.getConfigurationSection(mobKey);
             if (!mobConfiguration.getBoolean("enabled", true)) continue;
-            EntityData mob = new EntityData(controller, mobConfiguration);
-            mob.setKey(mobKey);
+            EntityData mob = new EntityData(controller, mobKey, mobConfiguration);
             mobs.put(mobKey, mob);
             
             // TODO Remove the name map
