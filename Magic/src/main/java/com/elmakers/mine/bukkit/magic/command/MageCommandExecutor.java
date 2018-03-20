@@ -138,6 +138,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageLock(sender, player, args2);
         }
+        if (subCommand.equalsIgnoreCase("switch"))
+        {
+            return onMageSwitch(sender, player, args2);
+        }
         if (subCommand.equalsIgnoreCase("add"))
         {
             return onMageAdd(sender, player, args2);
@@ -557,6 +561,34 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         return true;
     }
 
+    public boolean onMageSwitch(CommandSender sender, Player player, String[] parameters)
+    {
+        if (parameters.length < 1) {
+            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mage switch [player] <class>");
+            return true;
+        }
+        String classKey = parameters[0];
+        Mage mage = api.getMage(player);
+        MageClass activeClass = mage.getActiveClass();
+        if (activeClass != null && activeClass.getKey().equals(classKey)) {
+            sender.sendMessage(ChatColor.RED + "Player "  + ChatColor.WHITE + player.getName() + ChatColor.RED + " already has class active: " + ChatColor.WHITE + classKey);
+            return true;
+        }
+        MageClass targetClass = mage.unlockClass(classKey);
+        if (targetClass == null) {
+            sender.sendMessage(ChatColor.RED + "Invalid class: " + ChatColor.WHITE + classKey);
+            return true;
+        }
+
+        if (activeClass != null) {
+            mage.lockClass(activeClass.getKey());
+        }
+        mage.setActiveClass(targetClass.getKey());
+        sender.sendMessage("Switched class to " + classKey + " for " + player.getName());
+
+        return true;
+    }
+
     public boolean onMageActivate(CommandSender sender, Player player, String[] parameters)
     {
         Mage mage = api.getMage(player);
@@ -586,7 +618,12 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage activate" + ChatColor.BLUE + " to change or clear the active class");
             Collection<String> classKeys = mage.getClassKeys();
             if (classKeys.size() > 0) {
-                sender.sendMessage(ChatColor.AQUA + "Classes: " + ChatColor.GREEN + StringUtils.join(classKeys, ","));
+                Collection<String> coloredClasses = new ArrayList<String>();
+                for (String classKey : classKeys) {
+                    ChatColor color = mage.hasClassUnlocked(classKey) ? ChatColor.GREEN : ChatColor.GRAY;
+                    coloredClasses.add(color + classKey);
+                }
+                sender.sendMessage(ChatColor.AQUA + "Classes: " + ChatColor.GREEN + StringUtils.join(coloredClasses, ","));
             }
             if (activeClass != null) {
                 sender.sendMessage(ChatColor.AQUA + "Active class: " + ChatColor.GREEN + activeClass.getKey());
