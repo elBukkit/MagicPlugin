@@ -3347,6 +3347,7 @@ public class MagicController implements MageController {
         return MaterialSets.toLegacy(buildingMaterials);
     }
 
+    @Override
     public Collection<Mage> getMobMages() {
         Collection<? extends Mage> values = mobMages.values();
         return Collections.unmodifiableCollection(values);
@@ -5480,6 +5481,7 @@ public class MagicController implements MageController {
     private PlaceholderAPIManager               placeholderAPIManager       = null;
     private LightAPIManager                     lightAPIManager             = null;
     private MobArenaManager                     mobArenaManager             = null;
+    @SuppressWarnings("unused")
     private SkriptManager                       skriptManager               = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();

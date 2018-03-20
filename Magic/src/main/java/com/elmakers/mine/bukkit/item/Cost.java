@@ -327,10 +327,12 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         }
     }
 
+    @Override
     public void scale(double scale) {
         setAmount(amount * scale);
     }
 
+    @Override
     public String toString() {
         return type + ":" + amount;
     }

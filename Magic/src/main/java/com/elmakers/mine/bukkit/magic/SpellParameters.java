@@ -3,8 +3,6 @@ package com.elmakers.mine.bukkit.magic;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-
 import javax.annotation.Nonnull;
 import java.util.Set;
 

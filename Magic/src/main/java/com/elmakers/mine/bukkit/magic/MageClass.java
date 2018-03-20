@@ -168,12 +168,14 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         return template.getKey();
     }
 
+    @Override
     public void armorUpdated() {
         if (hasOwnMana()) {
             updateMaxMana(mage);
         }
     }
 
+    @Override
     public boolean updateMaxMana(Mage mage) {
         if (!hasOwnMana()) {
             boolean modified = false;
@@ -188,6 +190,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         return super.updateMaxMana(mage);
     }
 
+    @Override
     public void updated() {
         updateMaxMana(mage);
         Wand activeWand = mage.getActiveWand();
@@ -235,6 +238,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         return costReduction;
     }
 
+    @Override
     public float getCooldownReduction() {
         float cooldownReduction = getFloat("cooldown_reduction");
     	if (mage != null) {

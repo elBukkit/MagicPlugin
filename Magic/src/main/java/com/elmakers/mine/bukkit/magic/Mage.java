@@ -61,7 +61,6 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -392,6 +391,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Override
     public @Nullable Collection<Entity> getDamagers() {
         if (damagedBy == null) return null;
         Collection<Entity> damagers = new ArrayList<>();
@@ -404,10 +404,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return damagers;
     }
 
+    @Override
     public @Nullable Entity getLastDamager() {
         return lastDamager == null ? null : lastDamager.getEntity();
     }
 
+    @Override
     public @Nullable Entity getTopDamager() {
         if (topDamager == null) return null;
         Entity topEntity = topDamager.getEntity();
@@ -1252,6 +1254,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return mageClass;
     }
 
+    @Override
     public boolean hasClassUnlocked(@Nonnull String key) {
         MageClass mageClass = classes.get(key);
         return mageClass != null && !mageClass.isLocked();
@@ -3693,6 +3696,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return attribute;
     }
 
+    @Override
     public void setAttribute(String attributeKey, Double value) {
         attributes.put(attributeKey, value);
     }
