@@ -15,7 +15,8 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
+
+import javax.annotation.Nullable;
 
 @Name("Knows Spell")
 @Description("Checks whether a player knows a specific spell, or has it on their wand.")

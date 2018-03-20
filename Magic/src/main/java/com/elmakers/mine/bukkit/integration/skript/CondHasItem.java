@@ -17,7 +17,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
-import org.eclipse.jdt.annotation.Nullable;
+
+import javax.annotation.Nullable;
 
 @Name("Has Magic Item")
 @Description("Checks whether a player has a specific magc item or wand.")

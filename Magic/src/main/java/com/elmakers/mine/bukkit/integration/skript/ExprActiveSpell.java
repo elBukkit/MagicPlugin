@@ -14,7 +14,8 @@ import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.eclipse.jdt.annotation.Nullable;
+
+import javax.annotation.Nullable;
 
 @Name("Active Spell")
 @Description({"The active spell for a player"})
