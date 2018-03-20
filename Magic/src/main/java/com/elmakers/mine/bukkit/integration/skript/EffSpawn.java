@@ -30,9 +30,13 @@ public class EffSpawn extends Effect {
 
     @Override
     protected void execute(Event event) {
-		final Number count = amount != null ? amount.getSingle(event) : 1;
-		if (count == null)
-			return;
+		Number count = null;
+		if (amount != null) {
+			count = amount.getSingle(event);
+		};
+		if (count == null) {
+			count = 1;
+		}
 		MageController controller = MagicPlugin.getAPI().getController();
 		final String[] keys = mobKeys.getArray(event);
 		for (final Location location : locations.getArray(event)) {
