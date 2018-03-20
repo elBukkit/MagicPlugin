@@ -53,7 +53,7 @@ torture:
                radius: "sin(t/20)"
              effect:
                class: Sphere
-               particle: mob_spell
+               particle: spell_mob
                color: "010101"
                disappearWithOriginEntity: true
         -  class: EffectSingle
