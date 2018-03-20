@@ -1,0 +1,40 @@
+#
+# Wand progression
+# beginner -> student -> apprentice -> master
+#
+beginner:
+    icon: wood_hoe:1
+    migrate_icon: wood_hoe
+    upgrade: student
+    upgrade_item: student_upgrade
+    inherit: default
+    # For the old randomized enchanting system, a wand will gain 1 spell per enchant
+    spell_count: 1
+    # These are spells that are optional, appear in the spell shop but are not required for progression.
+    extra_spells:
+      - flare
+      - stun
+      - gather
+      - workbench
+    # These spells appear in the spell shop and are required to progress to the next path.
+    spells:
+      - missile
+      - arrow
+      - blast
+      - boon
+      - cloak
+      - collapse
+      - cure
+      - bubble
+      - fireball
+      - torch
+      - push
+      - pull
+      - peek
+      - recall
+      - blind
+      - reflect
+      - poison
+      - fire
+      - frost
+

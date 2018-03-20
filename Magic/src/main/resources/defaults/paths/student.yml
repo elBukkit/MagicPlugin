@@ -1,0 +1,39 @@
+student:
+    icon: wood_hoe:2
+    migrate_icon: wood_hoe
+    upgrade: apprentice
+    upgrade_item: apprentice_upgrade
+    inherit: beginner
+    # Mana will be upgraded when ranking up
+    mana_regeneration: 30
+    mana_max: 150
+    extra_spells:
+      - familiar
+      - monster
+      - tracking
+      - rocket
+      - secure
+      - admission
+      - tag
+      - phase
+      - grow
+    spells:
+      - blink
+      - arrowrain
+      - boom
+      - fling
+      - grenade
+      - heal
+      - lightning
+      - lava
+      - stream
+      - flamethrower
+      - wither
+      - mine
+      - chop
+      - shell
+      - blob
+      - entangle
+      - whip
+      - curse
+

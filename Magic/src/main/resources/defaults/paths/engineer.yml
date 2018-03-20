@@ -1,0 +1,53 @@
+#
+# The move from "master" to engineer requires the player to acquire some basic
+# engineering spells first.
+#
+# In this way, it is up to the server owner whether or not players get access to
+# engineering magic.
+#
+# Similarly, the move to "Architect" requires that the player acquire a few high-level
+# engineering spells first.
+#
+engineer:
+    icon: wood_hoe:5
+    migrate_icon: gold_axe
+    # The architectshop is required to proceed to Architect
+    required_spells:
+      - absorb
+    upgrade: architect
+    upgrade_item: architect_upgrade
+    inherit: master
+    mana_regeneration: 55
+    mana_max: 300
+    spells:
+      - rollback
+      - alter
+      - bridge
+      - toss
+      - convert
+      - recurse
+      - paint
+      - pillar
+      - place
+      - tree
+      - supertorch
+      - brushselect
+    # Engineer wands can gain material brushes, they get some number of them per spell purchase as below
+    material_count:
+      2: 100
+      3: 50
+      4: 20
+      5: 10
+    materials:
+      - erase
+      - stone
+      - dirt
+      - sand
+      - grass
+      - gravel
+      - glass
+      - glowstone
+      - stained_clay
+      - stained_glass
+      - stained_glass_pane
+

@@ -1,0 +1,32 @@
+conduit:
+    icon: wood_hoe:6
+    migrate_icon: gold_pickaxe
+    inherit: architect
+    spells:
+      - portal
+      - backup
+      - repair
+      - superrepair
+      - paste
+      - anvil
+      - day
+      - night
+      - weather
+      - capture
+      - commit
+    materials:
+      - clone
+      - replicate
+      - lava
+      - water
+      - schematic|rainbow_blocks
+      - schematic|lantern
+      - schematic|creeper_rug
+      - schematic|elder_tree
+      - schematic|church
+      - schematic|blacksmith
+      - schematic|garden_house
+      - schematic|compact_house
+      - schematic|small_house
+      - schematic|nathanwolf
+

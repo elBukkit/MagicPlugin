@@ -1,0 +1,38 @@
+apprentice:
+    icon: wood_hoe:3
+    migrate_icon: wood_hoe
+    upgrade: master
+    upgrade_item: master_upgrade
+    inherit: student
+    mana_regeneration: 40
+    mana_max: 200
+    extra_spells:
+      - emp
+      - music
+      - disarm
+      - ghast
+      - glide
+    spells:
+      - breach
+      - disintegrate
+      - hat
+      - sandblast
+      - counterspell
+      - platform
+      - rubberize
+      - wound
+      - harden
+      - sponge
+      - flashbang
+      - gatling
+      - walls
+      - smite
+      - shuriken
+      - sticky
+      - homing
+      - lift
+      - laser
+      - wave
+      - chainlightning
+      - airscooter
+
