@@ -10,6 +10,8 @@
  - Add /mage switch command to switch classes for a player (combo of lock, unlock and activate)
  - The Magic.wand.override_drop permission changed to Magic.wand.override_stash
  - Added "unstashable" and "unmoveable" wand properties
+ - Fix active costs for Air Scooter, also Levitate/Air Scooter and Boon will prevent mana regen while active.
+ - Fix wand organizing and alphabetizing
 
 ## 7.3.1
 

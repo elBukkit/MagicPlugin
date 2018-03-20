@@ -4411,10 +4411,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		autoOrganize = false;
 		updateSpellInventory();
 		updateBrushInventory();
-		if (mage != null) {
-			saveState();
-			loadProperties();
-			updateInventory();
+		if (this.mage != null) {
+			buildInventory();
 		}
         return true;
     }
@@ -4431,9 +4429,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		updateSpellInventory();
 		updateBrushInventory();
 		if (mage != null) {
-			saveState();
-			loadProperties();
-			updateInventory();
+			buildInventory();
 		}
         return true;
     }
