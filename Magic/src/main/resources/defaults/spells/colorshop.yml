@@ -14,6 +14,7 @@ colorshop:
         - holding_wand: true
         cost_type: sp
         unlock_section: wand_colors
+        apply_to_wand: true
         options:
         - item: redeffects
           cost: 200

@@ -12,6 +12,7 @@ appearanceshop:
         requirements:
         - wand: wand
         unlock_section: wand_appearances
+        apply_to_wand: true
         cost_type: sp
         options:
         - item: none

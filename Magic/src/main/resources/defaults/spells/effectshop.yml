@@ -12,6 +12,7 @@ effectshop:
         requirements:
         - holding_wand: true
         unlock_section: wand_effects
+        apply_to_wand: true
         cost_type: sp
         options:
         - item: bubbleeffects
