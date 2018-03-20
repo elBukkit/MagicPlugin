@@ -57,7 +57,9 @@ public class MageClassTemplate extends BaseMagicProperties implements com.elmake
     }
 
     public boolean isLocked() {
-        return isLocked;
+        if (isLocked) return true;
+        if (parent != null) return parent.isLocked();
+        return false;
     }
 
     @Override

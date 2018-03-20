@@ -10,7 +10,8 @@ colorshop:
         quiet: true
         confirm_filler: stained_glass:9
         confirm: true
-        require_wand: true
+        requirements:
+        - holding_wand: true
         cost_type: sp
         unlock_section: wand_colors
         options:

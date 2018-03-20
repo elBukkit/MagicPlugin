@@ -12,11 +12,18 @@ rocket:
         - class: Mount
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_firework_launch
+        -  sound: entity_firework_launch
            sound_pitch: 0.1
-           sound_volume: 0.5
+           sound_volume: 1.2
+        -  sound: entity_generic_explode
+           sound_pitch: 0.4
+           sound_volume: 0.8
            location: origin
+           particle: explosion_large
+           particle_count: 50
+           particle_offset_x: 3
+           particle_offset_y: 3
+           particle_offset_z: 3
     parameters:
         target: self
         launch: true

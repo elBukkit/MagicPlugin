@@ -1,7 +1,10 @@
 nuke:
+    inherit: false
     icon: diamond_axe:36
     icon_disabled: diamond_hoe:36
     icon_url: http://textures.minecraft.net/texture/f27c497b89fdcbf754b59aaadcc7e49c5217f1677bf9f8803c4cca519b3a2
+    example_thumbnail: https://thumbs.gfycat.com/QuerulousWealthyAmericanavocet-size_restricted.gif
+    example_link: https://gfycat.com/gifs/detail/QuerulousWealthyAmericanavocet
     category: master
     worth: 2000
     earns_sp: 10
@@ -10,107 +13,127 @@ nuke:
     upgrade_required_casts: 20
     actions:
         cast:
-        - class: Parallel
+        - class: CustomProjectile
           actions:
-          - class: Serial
+          - class: Parallel
             actions:
-            - class: Repeat
-              repeat: 4
+            - class: Serial
               actions:
-              - class: Delay
-                delay: 1000
-              - class: PlayEffects
-                ignore_result: true
-                effect: burst
-              - class: AreaOfEffect
-                radius: 4
-                actions:
-                - class: Damage
-                - class: Velocity
-                  ignore_result: true
-            - class: Repeat
-              repeat: 4
-              actions:
-              - class: Delay
-                delay: 1000
-              - class: PlayEffects
-                ignore_result: true
-                effect: burst
-              - class: AreaOfEffect
-                radius: 10
-                actions:
-                - class: Damage
-                - class: Velocity
-                  ignore_result: true
-          - class: Serial
-            ignore_result: true
-            actions:
-            - class: Sphere
-              actions:
-              - class: Skip
+              - class: Repeat
+                repeat: 4
                 actions:
                 - class: Delay
-              - class: ModifyBlock
-            - class: PlayEffects
-              effect: cloud
+                  delay: 1000
+                - class: PlayEffects
+                  ignore_result: true
+                  effect: explode
+                - class: AreaOfEffect
+                  radius: 4
+                  actions:
+                  - class: Damage
+                  - class: Velocity
+                    ignore_result: true
+              - class: Repeat
+                repeat: 4
+                actions:
+                - class: Delay
+                  delay: 1000
+                - class: PlayEffects
+                  ignore_result: true
+                  effect: explode
+                - class: AreaOfEffect
+                  radius: 10
+                  actions:
+                  - class: Damage
+                  - class: Velocity
+                    ignore_result: true
+            - class: Serial
+              ignore_result: true
+              actions:
+              - class: Sphere
+                actions:
+                - class: Skip
+                  actions:
+                  - class: Delay
+                - class: ModifyBlock
+              - class: PlayEffects
+                effect: explode
     effects:
-        burst:
-        -  class: EffectSingle
-           location: target
-           sound: entity_generic_explode
-           sound_volume: 2
-           effectlib:
-             class: SphereEffect
-             particle: explosion_huge
-             radius: 6
-             particles: 4
-             iterations: 4
-        cloud:
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: FountainEffect
-             particle: explosion_huge
-             strands: 4
-             particlesStrand: 4
-             particlesSpout: 2
-             height: 30
-             heightSpout: 28
-             iterations: 2
-             radius: 8
-             period: 4
-             radiusSpout: 0.1
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: SphereEffect
-             particle: explosion_huge
-             iterations: 30
-             radius: 8
-             particles: 10
-             offset: 0,24,0
+        explode:
+        - location: target
+          sound: entity_generic_explode
+          sound_volume: 10
         cast:
         -  class: EffectSingle
-           sound: entity_generic_explode
+           sound: entity_firework_launch
            location: both
-        -  class: EffectTrail
-           particle: explosion_large
-           iterations: 3
-        -  class: EffectSingle
-           location: target
+        tick:
+        -  location: target
+           particle: smoke_large
+           particle_count: 6
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        -  location: target
+           particle: fireworks_spark
+           particle_count: 2
+           particle_offset_x: 0.01
+           particle_offset_y: 0.01
+           particle_offset_z: 0.01
+        -  location: target
+           particle: end_rod
+           particle_count: 4
+           particle_offset_x: 0.5
+           particle_offset_y: 0.5
+           particle_offset_z: 0.5
+        hit:
+        -  location: target
+           sound: entity_generic_explode
+           sound_volume: 10
+        -  location: target
            effectlib:
-             class: FountainEffect
-             particle: explosion_huge
-             strands: 4
-             particlesStrand: 4
-             particlesSpout: 2
-             height: 30
-             heightSpout: 28
-             iterations: 20
-             radius: 2
-             radiusSpout: 1
-             period: 10
+             class: Modified
+             duration: 8000
+             parameters:
+               radius: "min(8, (t/i) * 15)"
+             effect:
+               class: Helix
+               particles: 20
+               strands: 4
+               particle: explosion_large
+               particleCount: 2
+               particleOffsetX: 1
+               particleOffsetY: 0
+               particleOffsetZ: 1
+               period: 4
+        -  location: target
+           effectlib:
+             class: Modified
+             duration: 8000
+             parameters:
+               yFactor: "min(20, (t/i) * 30)"
+             effect:
+               class: AnimatedBall
+               particles: 20
+               particle: explosion_huge
+               size: 1
+               period: 4
+        -  location: target
+           effectlib:
+             class: Modified
+             duration: 8000
+             yEquation: "min(20, (t/i)*30)"
+             parameters:
+               size: "min(10, (t/i) * 20)"
+             effect:
+               class: AnimatedBall
+               particles: 20
+               particle: explosion_huge
+               size: 1
+               period: 4
+               yFactor: 0.3
     parameters:
+        velocity: 20
         target: block
         allow_max_range: true
         range: 64
@@ -124,7 +147,8 @@ nuke:
         skip: 16
         delay: 1
         undo_speed: 2
-        damage: 1.5
+        damage: 4
+        target_self_timeout: 2000
     costs:
         mana: 200
 

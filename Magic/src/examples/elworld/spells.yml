@@ -2933,7 +2933,7 @@ equation:
   parameters:
     #equation: "rand(20*intelligence/7,30*intelligence/5)"
     equation: "((((intelligence * (1 + (10 / 150)) - 1) + 0 + 0) ^ 1.05) + 10) * 1"
-    
+
 shrink2:
     icon: diamond_axe:146
     icon_disabled: diamond_hoe:146
@@ -2986,3 +2986,351 @@ shrink2:
     costs:
         mana: 75
 
+lumos:
+    icon: diamond_axe:228
+    icon_disabled: diamond_hoe:228
+    category: charms
+    icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
+    worth: 10
+    actions:
+        cast:
+        - class: Repeat
+          actions:
+           - class: Retarget
+             actions:
+             - class: Light
+           - class: Delay
+           - class: Undo
+             undo_to: 1
+        - class: Delay
+        - class: Undo
+    effects:
+        cast:
+        -  class: EffectSingle
+           particle: smoke_normal
+           particle_count: 10
+           sound: creeper_death
+    parameters:
+        target: self
+        async: false
+        delay: 100
+        repeat: 100
+        duration: 10000
+
+rasengan:
+    name: Rasengan
+    description: Crea una bola de chakra que impulse tu objetivo hacia adelante
+    icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
+    icon: rails
+    category: elemental
+    worth: 50
+    earns_sp: 3
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
+    actions:
+        cast:
+        - class: VelocityAction
+          y_offset: 1
+          speed: 0.3
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: PlayEffects
+            effects: iterate
+          - class: Damage
+          - class: VelocityAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           sound_volume: 1
+           sound_pitch: -0.1
+           location: origin
+           effectlib:
+             class: SphereEffect
+             particle: firework
+             color: 00FFFF
+             iterations: 5
+             radius: 0.25
+             particles: 15
+             period: 1
+             visibleRange: 100
+             firework: ball
+        iterate:
+        -  class: EffectSingle
+           location: targets
+           color: 00FFFF
+           firework: ball
+    parameters:
+        target_type: LivingEntity
+        range: 8
+        fov: 1
+        target_count: 2
+        repeat: 10
+        speed: 1.2
+        delay: 250
+        y_offset: 0.3
+        cooldown: 5000
+        damage: 2
+
+CrownOfGod:
+    icon: diamond_axe:10
+    icon_disabled: diamond_hoe:10
+    actions:
+        cast:
+        - class: Repeat
+          actions:
+          - class: PotionEffect
+          - class: PlayEffects
+            effects: effected
+          - class: Delay
+    effects:
+        effected:
+        -  class: EffectSingle
+           sound: entity_villager_yes
+           location: origin
+           target_offset: 0,1,0
+           particle_count: 20
+           effectlib:
+             class: HelixEffect
+             particle: redstone
+             iterations: 3
+             color: 00FF00
+             radius: 0.5
+    parameters:
+        target: self
+        duration: 1000
+        repeat: 10000000
+        delay: 900
+        effect_regeneration: 1
+
+CancelCrown:
+    icon: diamond_axe:10
+    icon_disabled: diamond_hoe:10
+    actions:
+        cast:
+        - class: Cancel
+    parameters:
+      target: self
+      spell: CrownOfGod
+
+Vampiricdisappearance:
+    icon_url: http://textures.minecraft.net/texture/74e9c6e98582ffd8ff8feb3322cd1849c43fb16b158abb11ca7b42eda7743eb
+    icon: jack_o_lantern
+    category: dark
+    actions:
+        cast:
+        - class: PotionEffect
+        - class: Vanish
+        - class: Repeat
+          actions:
+          - class: SpawnEntity
+    pvp_restricted: true
+    worth: 300
+    effects:
+        cast:
+        - particle: explosion_large
+          particle_count: 10
+          particle_offset_x: 1
+          particle_offset_y: 1
+          particle_offset_z: 1
+        - particle: smoke_large
+          particle_count: 50
+          particle_offset_x: 5
+          particle_offset_y: 5
+          particle_offset_z: 5
+    parameters:
+        target: self
+        cooldown: 45000
+        undo: 30000
+        repeat: 20
+        duration: 8000
+        cooldown: 30000
+        effect_invisibility: 5
+        type: bat
+
+fuzzytp:
+    icon_url: http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2
+    category: utility
+    cast_on_no_target: true
+    actions:
+        cast:
+        - class: ChangeContext
+          target_caster: true
+          ignore_result: true
+          actions:
+          - class: FallProtectionAction
+        - class: ChangeContext
+          target_offset:
+        - class: Teleport
+    effects:
+        teleport:
+        - class: EffectSingle
+          sound: magic.teleport
+          location: target
+          particle_override: particleNucleus
+          color_override: colorOrbital
+          source_location: eyes
+          effectlib:
+             class: AtomEffect
+             particleNucleus: dragon_breath
+             particleOrbital: redstone
+             iterations: 8
+             offset: 0,-1,0
+        precast:
+         - class: EffectSingle
+           sound: magic.teleport
+           location: origin
+           particle_override: particleNucleus
+           color_override: colorOrbital
+           source_location: eyes
+           effectlib:
+               class: AtomEffect
+               updateLocations: false
+               particleNucleus: dragon_breath
+               particleOrbital: redstone
+               iterations: 8
+               offset: 0,-1,0
+         - class: EffectSingle
+           color_override: color
+           effectlib:
+               class: LineEffect
+               particle: redstone
+               updateLocations: false
+    parameters:
+        target: block
+        allow_max_range: true
+        allow_passthrough: false
+        range: 12
+        cooldown: 10000
+        prevent_passthrough: nopassthrough
+        bypass_confusion: true
+        vertical_range: 8
+    costs:
+        mana: 50
+
+testmodifiedeffect:
+    icon: diamond_axe:148
+    icon_disabled: diamond_hoe:148
+    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+    category: light
+    worth: 20
+    earns_sp: 1
+    show_undoable: false
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    effects:
+      cast:
+        - location: target
+          use_block_location: true
+          effectlib:
+            class: Modified
+            period: 3
+            iterations: 10
+            parameters:
+              radius: "(1 - (t / i)) * 3 + 0.9"
+            effect:
+              class: Sphere
+              particle: block_crack
+              yOffset: 0
+              offset: 0,0.7,0
+              particleCount: 4
+              particles: 30
+              particleOffsetX: 0.1
+              particleOffsetY: 0.1
+              particleOffsetZ: 0.1
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 16
+
+implosion:
+    parameters:
+      target: block
+      range: 32
+      allow_max_range: true
+    effects:
+        cast:
+        - class: EffectSingle
+          location: target
+          effectlib:
+            class: Modified
+            effect:
+              class: Sphere
+            parameters:
+              # for 100 iterations, go from radius 10 to 0
+              # 10 / 100 = 0.1
+              radius: "10 - t * 0.1"
+
+plotter:
+    icon: compass
+    parameters:
+      range: 5
+      allow_max_range: true
+      target: block
+    effects:
+        cast:
+        - class: EffectSingle
+          location: target
+          effectlib:
+            class: Plot
+            # 5 blocks wide
+            xEquation: "5 * t / i"
+            #yEquation: "5 * t / i"
+            yScale: 1
+            #yEquation: "select(t - 10, t * 5, 50, select(i - t - 10, 50, 50, (i - t - 10) * 5))"
+            # yEquation: "select(t - 10, t * 5, 50, select(t - i + 10, 50, 50, abs(t - i) * 5))"
+            yEquation: "select(t - 10, (10 - t) * 0.3 + 0.5, 0.5, select(t - i + 10, 0.5, 0.5, (t - i + 10) * 0.3 + 0.5))"
+
+Image:
+    parameters:
+      range: 10
+      allow_max_range: true
+    effects:
+        cast:
+        - class: EffectSingle
+          location: target
+          effectlib:
+            enableRotation: false
+            class: ColoredImageEffect
+            fileName: https://i.imgur.com/kL4Jvq5.gif
+            stepX: 2
+            stepY: 2
+            size: 0.1
+            period: 1
+            frameDelay: 1
+            transparency: true
+
+magicbowshop:
+    icon: wooden_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+        - item: wand|magicbow
+          cost: 2500
+
+warps:
+  icon: sulphur
+  category: npc
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    title: "Warp"
+    selected: ""
+    show_unavailable: true
+    options:
+    - placeholder: true
+    - placeholder: true
+    - name: Warp Somewhere
+      icon: diamond_axe:66
+      commands:
+      - warp somewhere @p

@@ -61,6 +61,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     private DynamicLocation target;
     private Vector originOffset;
     private Vector targetOffset;
+    private Vector originRelativeOffset;
+    private Vector targetRelativeOffset;
 
     // These are ignored by the Trail type, need multi-inheritance :\
     protected boolean playAtOrigin = true;
@@ -75,6 +77,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected MaterialAndData material1;
     protected Color color1 = null;
     protected Color color2 = null;
+    protected boolean useColor = true;
 
     protected EntityEffect entityEffect = null;
 
@@ -88,6 +91,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected FireworkEffect.Type fireworkType;
     protected int fireworkPower = 1;
     protected Boolean fireworkFlicker;
+    protected boolean fireworkSilent;
 
     protected FireworkEffect fireworkEffect;
 
@@ -103,10 +107,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected boolean requireEntity = false;
     protected boolean requireTargetEntity = false;
-    protected boolean useHitLocation = true;
-    protected boolean useBlockLocation = true;
     protected boolean sampleTarget = false;
     protected SourceLocation sourceLocation = null;
+    protected SourceLocation targetLocation = null;
 
     protected float scale = 1.0f;
 
@@ -135,12 +138,18 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         broadcastSound = configuration.getBoolean("sound_broadcast", true);
         useParticleOverride = configuration.getString("particle_override", null);
         useColorOverride = configuration.getString("color_override", null);
-        originOffset = ConfigurationUtils.getVector(configuration, "origin_offset");
+        originOffset = ConfigurationUtils.getVector(configuration, "origin_offset",  ConfigurationUtils.getVector(configuration, "offset"));
         targetOffset = ConfigurationUtils.getVector(configuration, "target_offset");
+        originRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_offset");
+        targetRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_target_offset");
         delayTicks = configuration.getInt("delay", delayTicks) * 20 / 1000;
         material1 = ConfigurationUtils.getMaterialAndData(configuration, "material");
-        color1 = ConfigurationUtils.getColor(configuration, "color", null);
-        color2 = ConfigurationUtils.getColor(configuration, "color2", null);
+        if (configuration.isBoolean("color") && !configuration.getBoolean("color")) {
+            useColor = false;
+        } else {
+            color1 = ConfigurationUtils.getColor(configuration, "color", null);
+            color2 = ConfigurationUtils.getColor(configuration, "color2", null);
+        }
 
         if (configuration.contains("effect")) {
             String effectName = configuration.getString("effect");
@@ -193,6 +202,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
             fireworkPower = configuration.getInt("firework_power", fireworkPower);
             fireworkFlicker = ConfigurationUtils.getBoolean(configuration, "firework_flicker", fireworkFlicker);
+            fireworkSilent = configuration.getBoolean("firework_silent", true);
         }
         if (configuration.contains("particle")) {
             String typeName = configuration.getString("particle");
@@ -216,8 +226,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         requireEntity = configuration.getBoolean("requires_entity", false);
         requireTargetEntity = configuration.getBoolean("requires_entity_target", false);
         sourceLocation = new SourceLocation(configuration);
-        useHitLocation = configuration.getBoolean("use_hit_location", true);
-        useBlockLocation = configuration.getBoolean("use_block_location", false);
+        targetLocation = new SourceLocation(configuration, "target_location", false);
         sampleTarget = configuration.getString("sample", "").equalsIgnoreCase("target");
     }
 
@@ -371,7 +380,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             }
         }
         if (fireworkEffect != null) {
-            EffectUtils.spawnFireworkEffect(plugin.getServer(), sourceLocation, fireworkEffect, fireworkPower);
+            EffectUtils.spawnFireworkEffect(plugin.getServer(), sourceLocation, fireworkEffect, fireworkPower, fireworkSilent);
         }
 
         if (particleType != null) {
@@ -497,6 +506,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.origin = origin;
         this.target = target;
 
+        if (originRelativeOffset != null && this.origin != null) {
+            this.origin.addRelativeOffset(originRelativeOffset);
+        }
+        if (targetRelativeOffset != null && this.target != null) {
+            this.target.addRelativeOffset(targetRelativeOffset);
+        }
+
         if (hasFirework) {
             fireworkEffect = getFireworkEffect(getColor1(), getColor2(), fireworkType, fireworkFlicker, false);
         } else {
@@ -564,11 +580,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public Color getColor1() {
-        return color1 != null ? color1 : color;
+        return useColor ? (color1 != null ? color1 : color) : null;
     }
 
     public Color getColor2() {
-        return color2 != null ? color2 : color;
+        return useColor ? (color2 != null ? color2 : color) : null;
     }
 
     public abstract void play();
@@ -667,33 +683,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     @Override
-    public boolean shouldUseBlockLocation() {
-        return useBlockLocation;
-    }
-
-    @Override
-    public boolean shouldUseHitLocation() {
-        return useHitLocation;
-    }
-
-    @Override
-    public boolean shouldUseWandLocation() {
-        return sourceLocation.shouldUseWandLocation();
-    }
-
-    @Override
-    public boolean shouldUseCastLocation() {
-        return sourceLocation.shouldUseCastLocation();
-    }
-
-    @Override
-    public boolean shouldUseEyeLocation() {
-        return sourceLocation.shouldUseEyeLocation();
-    }
-
-    @Override
     public Location getSourceLocation(CastContext context)  {
         return sourceLocation.getLocation(context);
+    }
+
+    @Override
+    public Location getTargetLocation(CastContext context)  {
+        return targetLocation.getLocation(context);
     }
 
     @Override
@@ -714,5 +710,35 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     @Override
     public boolean playsAtAllTargets() {
         return playAtAllTargets;
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldUseBlockLocation() {
+        return targetLocation.shouldUseBlockLocation();
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldUseHitLocation() {
+        return targetLocation.shouldUseHitLocation();
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldUseWandLocation() {
+        return sourceLocation.shouldUseWandLocation();
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldUseCastLocation() {
+        return sourceLocation.shouldUseCastLocation();
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldUseEyeLocation() {
+        return sourceLocation.shouldUseEyeLocation();
     }
 }

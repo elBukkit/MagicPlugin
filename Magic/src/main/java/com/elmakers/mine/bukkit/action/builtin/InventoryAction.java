@@ -24,6 +24,7 @@ public class InventoryAction extends BaseSpellAction
 {
     private InventoryType inventoryType;
 	private String title;
+	private boolean disposal = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -34,7 +35,16 @@ public class InventoryAction extends BaseSpellAction
 			inventoryTypeString = "ENDER_CHEST";
 		} else if (inventoryTypeString.equals("INVENTORY")) {
 			inventoryTypeString = "CRAFTING";
+		} else if (inventoryTypeString.equals("DISPOSAL")) {
+			disposal = true;
+			inventoryTypeString = "CHEST";
 		}
+
+		// For backwards-compatibility with disposal spell
+		if (inventoryTypeString.equals("CHEST") && parameters.getString("target", "").equals("self")) {
+			disposal = true;
+		}
+
 		title = parameters.getString("title");
         try {
 			inventoryType = InventoryType.valueOf(inventoryTypeString);
@@ -79,6 +89,10 @@ public class InventoryAction extends BaseSpellAction
 				showPlayer.openWorkbench(null, true);
 				break;
 			case CHEST:
+				if (disposal) {
+					showGenericInventory(showPlayer);
+					break;
+				}
 				Block targetBlock = context.getTargetBlock();
 				if (targetBlock == null) return SpellResult.NO_TARGET;
 				BlockState state = targetBlock.getState();
@@ -88,14 +102,18 @@ public class InventoryAction extends BaseSpellAction
 				break;
 			default:
 				// Probably wont' work very well, but sure why not.
-				Inventory inventory = title != null && !title.isEmpty() ?
-						Bukkit.createInventory(showPlayer, inventoryType, title)
-						: Bukkit.createInventory(showPlayer, inventoryType);
-				showPlayer.openInventory(inventory);
+				showGenericInventory(showPlayer);
 				break;
 		}
 
 		return SpellResult.CAST;
+	}
+
+	private void showGenericInventory(Player showPlayer) {
+		Inventory inventory = title != null && !title.isEmpty() ?
+				Bukkit.createInventory(showPlayer, inventoryType, title)
+				: Bukkit.createInventory(showPlayer, inventoryType);
+		showPlayer.openInventory(inventory);
 	}
 
 	@Override

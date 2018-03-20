@@ -72,6 +72,7 @@ public class CustomProjectileAction extends CompoundAction
     private int targetBreakableSize;
     private boolean bypassBackfire;
     private boolean reverseDirection;
+    private boolean hitOnMiss;
     private int blockHitLimit;
     private int entityHitLimit;
     private int reflectLimit;
@@ -255,6 +256,7 @@ public class CustomProjectileAction extends CompoundAction
         reflectTargetCaster = parameters.getBoolean("reflect_target_caster", true);
         reflectTrackEntity = parameters.getBoolean("reflect_track_target", false);
         reflectTrackCursorRange = parameters.getDouble("reflect_track_range", 0D);
+        hitOnMiss = parameters.getBoolean("hit_on_miss", false);
 
         returnOffset = ConfigurationUtils.getVector(parameters, "return_offset");
         returnRelativeOffset = ConfigurationUtils.getVector(parameters, "return_relative_offset");
@@ -894,6 +896,9 @@ public class CustomProjectileAction extends CompoundAction
 
     protected SpellResult miss() {
         missed = true;
+        if (hitOnMiss) {
+            return hit();
+        }
         finishEffects();
         if (actionContext == null) {
             return SpellResult.NO_ACTION;

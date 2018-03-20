@@ -6,8 +6,6 @@ conway:
     effect_particle: portal
     effect_particle_count: 3
     icon: sapling:2
-    protection_falling: 1.0
-    protection: 0.8
     spells:
         - fly
         - simulate

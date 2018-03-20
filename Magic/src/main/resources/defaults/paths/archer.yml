@@ -1,0 +1,7 @@
+archer:
+    inherit: default
+    spell_count: 1
+    spells:
+      - arrow_bomb
+      - arrow_poison
+      - arrow_blink

@@ -42,3 +42,6 @@ paths:
     staff:
         name: Staff
         description: Staff-only spells
+    archer:
+        name: Archer
+        description: Archer spells

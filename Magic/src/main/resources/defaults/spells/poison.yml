@@ -22,29 +22,26 @@ poison:
           particle_count: 4
           particle_offset_x: 0.5
           particle_offset_z: 0.5
-          particle_offset_y: 0
+          particle_offset_y: 0.5
         hit:
         -  class: EffectSingle
            location: target
-           color: 088A08
-           firework: ball
-        -  class: EffectSingle
-           location: target
            requires_entity_target: true
+           target_location: body
            effectlib:
-             class: WarpEffect
-             particle: slime
-             iterations: 1
-        -  class: EffectSingle
-           location: target
-           requires_entity_target: true
-           effectlib:
-             class: SphereEffect
-             iterations: 60
-             period: .1
-             particle: slime
-             radius: .75
-             particles: 20
+             class: Modified
+             duration: $duration
+             parameters:
+              radius: "sin(t/10)*1.5 + 0.1"
+             effect:
+               class: SphereEffect
+               period: 0.1
+               particle: slime
+               particles: 10
+               particleCount: 10
+               particleOffsetX: 0.1
+               particleOffsetY: 0.1
+               particleOffsetZ: 0.1
     costs:
         mana: 50
     parameters:

@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon_disabled",
+    "textures": {
+        "particle": "items/spells/protection_fire",
+        "texture": "items/spells/protection_fire"
+    }
+}

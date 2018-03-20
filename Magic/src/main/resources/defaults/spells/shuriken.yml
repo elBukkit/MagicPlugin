@@ -16,41 +16,44 @@ shuriken:
               - class: Damage
     effects:
         tick:
-        -  particle: redstone
+        -  particle: block_crack
+           material: iron_block
+           particle_count: 4
+           particle_offset_x: 0.01
+           particle_offset_y: 0.01
+           particle_offset_z: 0.01
            location: target
-        projectile:
-        -  class: EffectSingle
-           location: origin
-           sound: magic.shimmer_quiet
-           color_override: color
-           effectlib:
-             class: HelixEffect
-             duration: 2000
-             period: 1
-             radius: 0.5
-             strands: 3
-             particles: 10
-             particle: spell_mob
+        cast:
+        -  sound: magic.shimmer_quiet
         hit:
         -  class: EffectSingle
            sound: magic.shimmer_big
            location: target
-           color_override: color
+           material: stained_clay:15
            effectlib:
-             class: HelixEffect
-             particle: redstone
-             radius: $radius
-             iterations: 1
+             class: Modified
+             iterations: 10
+             parameters:
+              radius: "(t/i)*5"
+             effect:
+               class: HelixEffect
+               particle: block_crack
+               particles: 20
+               particleCount: 4
+               particleOffsetX: 1
+               particleOffsetY: 0.05
+               particleOffsetZ: 1
     parameters:
         range: 32
         target_type: Damageable
-        reflective: building
+        reflective: solid
         cooldown: 8000
-        velocity: 100
-        gravity: .05
+        velocity: 20
+        gravity: 0.05
         damage: 2
         radius: 3
         lifetime: 10000
+        hit_on_miss: true
     costs:
         mana: 80
 

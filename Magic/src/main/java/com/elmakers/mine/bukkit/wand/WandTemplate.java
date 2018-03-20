@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
+import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
@@ -36,6 +37,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     private Map<String, String> migrateIcons;
     private ConfigurationSection attributes;
     private String attributeSlot;
+    private String parentKey;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         super(controller);
@@ -51,6 +53,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         icon = node.getString("icon");
         attributes = node.getConfigurationSection("attributes");
         attributeSlot = node.getString("attribute_slot");
+        parentKey = node.getString("inherit");
 
         // Remove some properties that should not transfer to wands
         clearProperty("creator");
@@ -160,12 +163,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             String overrideParticle = wand == null ? mage.getEffectParticleName() : wand.getEffectParticleName();
             player.setParticleOverride(overrideParticle);
 
-            Location source = null;
-            if (player.shouldUseWandLocation()) {
-                source = wand == null ? mage.getCastLocation() : wand.getLocation();
-            } else if (player.shouldUseEyeLocation()) {
-                source = mage.getEyeLocation();
-            }
+            Location source = player.getSourceLocation(wand.getEffectsContext());
             if (source == null) {
                 source = mage.getLocation();
             }
@@ -197,7 +195,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.wand.WandTemplate getMigrateTemplate() {
+    public WandTemplate getMigrateTemplate() {
         return migrateTemplate == null ? null : controller.getWandTemplate(migrateTemplate);
     }
     
@@ -234,5 +232,13 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     @Override
     public String getAttributeSlot() {
         return attributeSlot;
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.WandTemplate getParent() {
+        if (parentKey != null && !parentKey.isEmpty() && !parentKey.equalsIgnoreCase("false")) {
+            return controller.getWandTemplate(parentKey);
+        }
+        return null;
     }
 }

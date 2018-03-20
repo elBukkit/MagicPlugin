@@ -65,8 +65,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private Vector direction = null;
     private Boolean targetCaster = null;
 
-    private Set<UUID> targetMessagesSent = new HashSet<>();
-    private Collection<EffectPlay> currentEffects = new ArrayList<>();
+    private Set<UUID> targetMessagesSent = null;
+    private Collection<EffectPlay> currentEffects = null;
 
     private Spell spell;
     private BaseSpell baseSpell;
@@ -82,6 +82,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     private List<ActionHandlerContext> handlers = null;
     private List<ActionHandlerContext> finishedHandlers = null;
+    private Map<String, String> messageParameters = null;
 
     // Base Context
     private int workAllowed = 500;
@@ -95,6 +96,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.result = SpellResult.NO_ACTION;
         targetMessagesSent = new HashSet<>();
         currentEffects = new ArrayList<>();
+        messageParameters = new HashMap<>();
     }
 
     public CastContext(Mage mage) {
@@ -105,6 +107,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.result = SpellResult.NO_ACTION;
         targetMessagesSent = new HashSet<>();
         currentEffects = new ArrayList<>();
+        messageParameters = new HashMap<>();
+    }
+
+    public CastContext(Mage mage, Wand wand) {
+        this(mage);
+        this.wand = wand;
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
@@ -144,6 +152,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             this.base = ((CastContext)copy).base;
             this.initialResult = ((CastContext)copy).initialResult;
             this.direction = ((CastContext)copy).direction;
+            this.messageParameters = ((CastContext)copy).messageParameters;
+            this.targetCaster = ((CastContext)copy).targetCaster;
         }
         else
         {
@@ -473,6 +483,33 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         playEffects(key, 1.0f);
     }
 
+    private void multiplyParameter(String key, Map<String, String> parameterMap, ConfigurationSection configuration, ConfigurationSection baseConfiguration) {
+        String multiplyKey = key + "_multiplier";
+        if (configuration.contains(multiplyKey)) {
+            double baseValue = baseConfiguration != null ? baseConfiguration.getInt(key) : 0;
+            double value = configuration.getDouble(key, baseValue);
+            double multiplier = configuration.getDouble(multiplyKey, 1);
+            if (multiplier != 1) {
+                value = multiplier * value;
+            }
+            // Double-formatting strings won't work as integer parameters in EffectLib, so to be safe we're
+            // storing them as ints.
+            parameterMap.put("$duration", Integer.toString((int)Math.ceil(value)));
+        }
+    }
+
+    private void addParameters(Map<String, String> parameterMap, ConfigurationSection configuration, ConfigurationSection baseConfiguration) {
+        if (configuration == null) return;
+        Collection<String> keys = configuration.getKeys(false);
+        for (String key : keys) {
+            parameterMap.put("$" + key, configuration.getString(key));
+        }
+
+        // Some specific special cases in here to support multipliers used in headshots and upgrades
+        multiplyParameter("duration", parameterMap, configuration, baseConfiguration);
+        multiplyParameter("damage", parameterMap, configuration, baseConfiguration);
+    }
+
     @Override
     public Collection<EffectPlayer> getEffects(String effectKey) {
         Collection<EffectPlayer> effects = spell.getEffects(effectKey);
@@ -481,12 +518,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         // Create parameter map
         Map<String, String> parameterMap = null;
         ConfigurationSection workingParameters = spell.getWorkingParameters();
-        if (workingParameters != null) {
-            Collection<String> keys = workingParameters.getKeys(false);
+        ConfigurationSection handlerParameters = spell.getHandlerParameters(effectKey);
+        if (handlerParameters != null || workingParameters != null) {
             parameterMap = new HashMap<>();
-            for (String key : keys) {
-                parameterMap.put("$" + key, workingParameters.getString(key));
-            }
+            addParameters(parameterMap, workingParameters, null);
+            addParameters(parameterMap, handlerParameters, workingParameters);
         }
 
         for (EffectPlayer player : effects)
@@ -495,7 +531,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             player.setEffectPlayList(currentEffects);
 
             // Set material and color
-            player.setMaterial(spell.getEffectMaterial());
+            player.setMaterial(brush != null ? brush : spell.getEffectMaterial());
             player.setColor(getEffectColor());
             player.setParticleOverride(getEffectParticle());
 
@@ -571,19 +607,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 }
                 Location target = targetLocation;
                 if (target == null) {
-                    target = getTargetLocation();
-                    if (player.shouldUseBlockLocation() && target != null) {
-                        target = target.getBlock().getLocation();
-                    } else if (!player.shouldUseHitLocation() && targetEntity != null) {
-                        if (targetEntity instanceof LivingEntity) {
-                            target = ((LivingEntity)targetEntity).getEyeLocation();
-                        } else {
-                            target = targetEntity.getLocation();
-                        }
-                    }
+                    target = player.getTargetLocation(this);
                 }
                 if (sourceBlock != null) {
                     player.setMaterial(sourceBlock);
+                } else if (brush != null) {
+                    player.setMaterial(brush);
                 }
                 player.start(source, sourceEntity, target, targetEntity, targeted);
             }
@@ -906,13 +935,13 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         String playerMessage = getMessage(messageKey);
         if (playerMessage.length() > 0)
         {
+            playerMessage = playerMessage.replace("$spell", spell.getName());
             for (Entity target : targets)
             {
                 UUID targetUUID = target.getUniqueId();
                 if (target instanceof Player && target != sourceEntity && !targetMessagesSent.contains(targetUUID))
                 {
                     targetMessagesSent.add(targetUUID);
-                    playerMessage = playerMessage.replace("$spell", spell.getName());
                     Mage targetMage = controller.getRegisteredMage(target);
                     if (targetMage != null) {
                         targetMage.sendMessage(playerMessage);
@@ -920,6 +949,13 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 }
             }
         }
+    }
+    
+    public String parameterizeMessage(String message) {
+        for (Map.Entry<String, String> entry : messageParameters.entrySet()) {
+            message = message.replace("$" + entry.getKey(), entry.getValue());
+        }
+        return message;
     }
 
     @Override
@@ -1319,5 +1355,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
 
         return SpellResult.PENDING;
+    }
+
+    public void addMessageParameter(String key, String value) {
+        messageParameters.put(key, value);
     }
 }

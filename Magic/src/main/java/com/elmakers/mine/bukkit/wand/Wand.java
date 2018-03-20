@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
@@ -29,7 +30,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
-import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
@@ -99,6 +99,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
      * used for off-hand casting.
      */
     protected @Nullable Mage mage;
+    protected @Nullable CastContext effectsContext;
 	
 	// Cached state
 	private String id = "";
@@ -112,6 +113,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	private String activeSpell = "";
 	private String alternateSpell = "";
+	private String alternateSpell2 = "";
 	private String activeBrush = "";
 	protected String wandName = "";
 	protected String description = "";
@@ -156,12 +158,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	protected float consumeReduction = 0;
     protected float cooldownReduction = 0;
-    protected float damageReduction = 0;
-    protected float damageReductionPhysical = 0;
-    protected float damageReductionProjectiles = 0;
-    protected float damageReductionFalling = 0;
-    protected float damageReductionFire = 0;
-    protected float damageReductionExplosions = 0;
+    protected float costReduction = 0;
+    protected Map<String, Double> protection;
     private float power = 0;
     private float spMultiplier = 1;
 	
@@ -603,7 +601,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		} else {
 			CompatibilityUtils.removeUnbreakable(item);
 		}
-		CompatibilityUtils.hideFlags(item, HIDE_FLAGS);
+		CompatibilityUtils.hideFlags(item, getProperty("hide_flags", HIDE_FLAGS));
 	}
 	
 	@Override
@@ -682,12 +680,29 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	@Override
+    public float getCostReduction() {
+    	if (mage != null) {
+    		float reduction = mage.getCostReduction();
+    		return passive ? reduction : stackPassiveProperty(reduction, costReduction);
+		}
+        return costReduction;
+    }
+
+	@Override
     public float getCooldownReduction() {
-		return controller.getCooldownReduction() + cooldownReduction * controller.getMaxCooldownReduction();
+    	if (mage != null) {
+    		float reduction = mage.getCooldownReduction();
+    		return passive ? reduction : stackPassiveProperty(reduction, cooldownReduction);
+		}
+		return cooldownReduction;
 	}
 
 	@Override
 	public float getConsumeReduction() {
+    	if (mage != null) {
+    		float reduction = mage.getConsumeReduction();
+    		return passive ? reduction : stackPassiveProperty(reduction, consumeReduction);
+		}
 		return consumeReduction;
 	}
 
@@ -695,11 +710,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public float getCostScale() {
         return 1;
     }
-	
-	public void setCooldownReduction(float reduction) {
-		cooldownReduction = reduction;
-		setProperty("cooldown_reduction", cooldownReduction);
-	}
 
 	@Override
 	public boolean hasInventory() {
@@ -729,30 +739,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	@Override
     public boolean isCooldownFree() {
 		return cooldownReduction > 1;
-	}
-
-	public float getDamageReduction() {
-		return damageReduction;
-	}
-
-	public float getDamageReductionPhysical() {
-		return damageReductionPhysical;
-	}
-	
-	public float getDamageReductionProjectiles() {
-		return damageReductionProjectiles;
-	}
-
-	public float getDamageReductionFalling() {
-		return damageReductionFalling;
-	}
-
-	public float getDamageReductionFire() {
-		return damageReductionFire;
-	}
-
-	public float getDamageReductionExplosions() {
-		return damageReductionExplosions;
 	}
 	
 	@Override
@@ -1105,7 +1091,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 
 		updateHasInventory();
-		if (openInventoryPage >= inventories.size() && openInventoryPage != 0) {
+		if (openInventoryPage >= inventories.size() && openInventoryPage != 0 && hasInventory) {
 			setOpenInventoryPage(0);
 		}
 	}
@@ -1463,31 +1449,52 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 	}
 
+	private void migrateProtection(String legacy, String migrateTo) {
+    	if (hasProperty(legacy)) {
+    		double protection = getDouble(legacy);
+    		clearProperty(legacy);
+    		setProperty("protection." + migrateTo, protection);
+		}
+	}
+
     @Override
     public void loadProperties() {
     	super.loadProperties();
 		locked = getBoolean("locked", locked);
 		lockedAllowUpgrades = getBoolean("locked_allow_upgrades", false);
-		consumeReduction = (float)getDouble("consume_reduction");
-		cooldownReduction = (float)getDouble("cooldown_reduction");
-		power = (float)getDouble("power");
-		damageReduction = (float)getDouble("protection");
-		damageReductionPhysical = (float)getDouble("protection_physical");
-		damageReductionProjectiles = (float)getDouble("protection_projectiles");
-		damageReductionFalling = (float)getDouble("protection_falling");
-		damageReductionFire = (float)getDouble("protection_fire");
-		damageReductionExplosions = (float)getDouble("protection_explosions");
+		consumeReduction = getFloat("consume_reduction");
+		cooldownReduction = getFloat("cooldown_reduction");
+		costReduction = getFloat("cost_reduction");
+		power = getFloat("power");
+
+		ConfigurationSection protectionConfig = getConfigurationSection("protection");
+		if (protectionConfig == null && hasProperty("protection")) {
+			migrateProtection("protection", "overall");
+			migrateProtection("protection_physical", "physical");
+			migrateProtection("protection_projectiles", "projectile");
+			migrateProtection("protection_falling", "fall");
+			migrateProtection("protection_fire", "fire");
+			migrateProtection("protection_explosions", "explosion");
+			protectionConfig = getConfigurationSection("protection");
+		}
+
+		if (protectionConfig != null) {
+			protection = new HashMap<>();
+			for (String protectionKey : protectionConfig.getKeys(false)) {
+				protection.put(protectionKey, protectionConfig.getDouble(protectionKey));
+			}
+		}
 
 		hasId = getBoolean("unique", false);
 
-		blockChance = (float)getDouble("block_chance");
-		blockReflectChance = (float)getDouble("block_reflect_chance");
-		blockFOV = (float)getDouble("block_fov");
+		blockChance = getFloat("block_chance");
+		blockReflectChance = getFloat("block_reflect_chance");
+		blockFOV = getFloat("block_fov");
         blockMageCooldown = getInt("block_mage_cooldown");
         blockCooldown = getInt("block_cooldown");
 
-        manaPerDamage = (float)getDouble("mana_per_damage");
-		spMultiplier = (float)getDouble("sp_multiplier", 1);
+        manaPerDamage = getFloat("mana_per_damage");
+		spMultiplier = getFloat("sp_multiplier", 1);
 
 		mageClassKey = getString("class");
 
@@ -1496,9 +1503,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		hasUses = uses > 0;
 
         // Convert some legacy properties to potion effects
-        float healthRegeneration = (float)getDouble("health_regeneration", 0);
-		float hungerRegeneration = (float)getDouble("hunger_regeneration", 0);
-		float speedIncrease = (float)getDouble("haste", 0);
+        float healthRegeneration = getFloat("health_regeneration", 0);
+		float hungerRegeneration = getFloat("hunger_regeneration", 0);
+		float speedIncrease = getFloat("haste", 0);
 
         if (speedIncrease > 0) {
             potionEffects.put(PotionEffectType.SPEED, 1);
@@ -1555,7 +1562,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			effectSound = null;
 		}
 		activeEffectsOnly = getBoolean("active_effects");
-		effectParticleData = (float)getDouble("effect_particle_data");
+		effectParticleData = getFloat("effect_particle_data");
 		effectParticleCount = getInt("effect_particle_count");
 		effectParticleRadius = getDouble("effect_particle_radius");
 		effectParticleOffset = getDouble("effect_particle_offset");
@@ -1654,6 +1661,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			setProperty("active_spell", activeSpell);
         }
 		alternateSpell = getString("alternate_spell");
+		alternateSpell2 = getString("alternate_spell2");
 		activeBrush = getString("active_brush", getString("active_material"));
 
 		if (hasProperty("hotbar_count")) {
@@ -1861,7 +1869,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			// Spells may have contained an inventory from migration or templates with a spell@slot format.
 			updateSpellInventory();
 		}
-		buildInventory();
 
 		castOverrides = null;
 		if (hasProperty("overrides")) {
@@ -1954,10 +1961,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration:");
 			ConfigurationSection itemConfig = getConfiguration();
 			Set<String> ownKeys = itemConfig.getKeys(false);
-			if (ignoreProperties != null) {
-				ownKeys.addAll(ignoreProperties);
-			}
-			template.describe(sender, ownKeys);
+			template.describe(sender, ignoreProperties, ownKeys);
 		}
 	}
 
@@ -1996,7 +2000,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Add active spell to description
         Messages messages = controller.getMessages();
         boolean showSpell = isModifiable() && hasSpellProgression();
-        showSpell = !quickCast && (spells.size() > 1 || showSpell);
+        showSpell = !quickCast && (spells.size() > 1 || showSpell) && getMode() != WandMode.SKILLS;
         if (spell != null && showSpell) {
             name = getSpellDisplayName(messages, spell, brush) + " (" + name + ChatColor.WHITE + ")";
         }
@@ -2134,21 +2138,37 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
 			ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
         }
+
+        // If this is a passive wand, then reduction properties stack onto the mage when worn.
+		// In this case we should show it as such in the lore.
+		if (passive) isSingleSpell = false;
+
 		if (consumeReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("consume_reduction", consumeReduction), lore);
 
-        float costReduction = getCostReduction();
         if (costReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cost_reduction", costReduction), lore);
 		if (cooldownReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cooldown_reduction", cooldownReduction), lore);
 		if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("power", power), lore);
         if (superProtected) {
             ConfigurationUtils.addIfNotEmpty(getMessage("super_protected"), lore);
-        } else {
-            if (damageReduction > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection", damageReduction), lore);
-            if (damageReductionPhysical > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_physical", damageReductionPhysical), lore);
-            if (damageReductionProjectiles > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_projectile", damageReductionProjectiles), lore);
-            if (damageReductionFalling > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_falling", damageReductionFalling), lore);
-            if (damageReductionFire > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_fire", damageReductionFire), lore);
-            if (damageReductionExplosions > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("protection_explosions", damageReductionExplosions), lore);
+        } else if (protection != null) {
+			for (Map.Entry<String, Double> entry : protection.entrySet()) {
+				String protectionType = entry.getKey();
+				double amount = entry.getValue();
+				if (amount > 0) {
+					String templateKey = getMessageKey("protection." + protectionType);
+					String template;
+					if (controller.getMessages().containsKey(templateKey)) {
+						template = controller.getMessages().get(templateKey);
+					} else {
+						templateKey = getMessageKey("protection.unknown");
+						template = controller.getMessages().get(templateKey);
+						String pretty = protectionType.substring(0, 1).toUpperCase() + protectionType.substring(1);
+						template = template.replace("$type", pretty);
+					}
+					template = controller.getMessages().formatLevelString(template, (float)amount);
+					ConfigurationUtils.addIfNotEmpty(template, lore);
+				}
+			}
         }
         if (spMultiplier > 1) {
 			ConfigurationUtils.addIfNotEmpty(getPercentageString("sp_multiplier", spMultiplier - 1), lore);
@@ -3166,7 +3186,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				return;
 			}
 		}
-		
+
 		if (!hasInventory) {
 			if (activeSpell == null || activeSpell.length() == 0) {
 				// Sanity check, so it'll switch to inventory next time
@@ -3522,15 +3542,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 							castParameters = new MemoryConfiguration();
 						}
 						castParameters.set("passive", true);
-						mage.setCostReduction(100);
+						mage.setCostFree(true);
 						mage.setQuiet(true);
 						try {
 							spell.cast(castParameters);
 						} catch (Exception ex) {
 							controller.getLogger().log(Level.WARNING, "Error casting aura spell " + spell.getKey(), ex);
 						}
+						mage.setCostFree(false);
 						mage.setQuiet(false);
-						mage.setCostReduction(0);
 					}
 				}
             }
@@ -3705,6 +3725,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return mage.getSpell(alternateSpell);
 	}
 
+	public Spell getAlternateSpell2() {
+		if (mage == null || alternateSpell2 == null || alternateSpell2.length() == 0) return null;
+		return mage.getSpell(alternateSpell2);
+	}
+
     @Override
     public SpellTemplate getBaseSpell(String spellName) {
         return getBaseSpell(new SpellKey(spellName));
@@ -3745,14 +3770,27 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
 	public boolean cast() {
-		return cast(getActiveSpell());
+		return cast(getActiveSpell(), null);
+	}
+
+	@Override
+	public boolean cast(String[] parameters) {
+		return cast(getActiveSpell(), parameters);
 	}
 
 	public boolean alternateCast() {
 		return cast(getAlternateSpell());
 	}
 
+	public boolean alternateCast2() {
+		return cast(getAlternateSpell2());
+	}
+
 	public boolean cast(Spell spell) {
+    	return cast(spell, null);
+	}
+
+	public boolean cast(Spell spell, String[] parameters) {
 		if (spell != null) {
             Collection<String> castParameters = null;
             if (castOverrides != null && castOverrides.size() > 0) {
@@ -3767,6 +3805,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     castParameters.add(entry.getValue());
                 }
             }
+            if (parameters != null) {
+            	if (castParameters == null) {
+            		castParameters = new ArrayList<>();
+				}
+				for (String parameter : parameters) {
+            		castParameters.add(parameter);
+				}
+			}
 			if (spell.cast(castParameters == null ? null : castParameters.toArray(EMPTY_PARAMETERS))) {
 				Color spellColor = spell.getColor();
                 use();
@@ -4270,6 +4316,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			needsSave = true;
         }
 
+		// Don't build the inventory until activated so we can take Mage boosts into account
+		if (offhand) {
+			mage.setOffhandWand(this);
+		} else {
+			mage.setActiveWand(this);
+		}
+		buildInventory();
+
 		updateMaxMana(false);
 		tick();
 		if (!isInOffhand) {
@@ -4300,7 +4354,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public boolean checkInventoryForUpgrades() {
 		boolean updated = false;
 		Player player = mage == null ? null : mage.getPlayer();
-		if (player == null) return false;
+		if (player == null || mage.hasStoredInventory()) return false;
 
 		// Check for spell or other special icons in the player's inventory
 		Inventory inventory = player.getInventory();
@@ -4516,7 +4570,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
                 sendLevelMessage("spell_upgraded", currentSpell.getName(), levelDescription);
 
-                mage.sendMessage(template.getUpgradeDescription().replace("$name", currentSpell.getName()));
+                String upgradeDescription = template.getUpgradeDescription().replace("$name", currentSpell.getName());
+                if (!upgradeDescription.isEmpty()) {
+                	mage.sendMessage(controller.getMessages().get("spell.upgrade_description_prefix") + upgradeDescription);
+				}
 
                 SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, template);
                 Bukkit.getPluginManager().callEvent(upgradeEvent);
@@ -5143,6 +5200,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			case ALT_CAST:
 				alternateCast();
 				break;
+			case ALT_CAST2:
+				alternateCast2();
+				break;
 			case TOGGLE:
 				if (mode == WandMode.CYCLE) {
 					cycleActive(1);
@@ -5319,5 +5379,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public Player getPlayer() {
         return mage == null ? null : mage.getPlayer();
+    }
+
+    @Override
+    public @Nonnull CastContext getEffectsContext() {
+        if (effectsContext == null || (effectsContext.getMage() != mage)) {
+            effectsContext = new com.elmakers.mine.bukkit.action.CastContext(mage, this);
+        }
+        return effectsContext;
     }
 }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class MageCommandExecutor extends MagicConfigurableExecutor {
 	public MageCommandExecutor(MagicAPI api) {
@@ -127,6 +128,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageUnlock(sender, player, args2);
         }
+        if (subCommand.equalsIgnoreCase("lock"))
+        {
+            return onMageLock(sender, player, args2);
+        }
         if (subCommand.equalsIgnoreCase("add"))
         {
             return onMageAdd(sender, player, args2);
@@ -135,6 +140,11 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageRemove(sender, player, args2);
         }
+
+		if (subCommand.equalsIgnoreCase("levelspells"))
+		{
+			return onMageLevelSpells(sender, player, args2);
+		}
 
 		sender.sendMessage("Unknown mage command: " + subCommand);
 		return true;
@@ -157,6 +167,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "unbind");
             addIfPermissible(sender, options, "Magic.commands.mage.", "activate");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unlock");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "lock");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "levelspells");
 		} else if (args.length == 2) {
 			String subCommand = args[0];
 			String subCommandPNode = "Magic.commands.mage." + subCommand;
@@ -166,6 +178,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 for (String key : BaseMagicProperties.PROPERTY_KEYS) {
                     options.add(key);
                 }
+
+				for (String protection : api.getController().getDamageTypes()) {
+					options.add("protection." + protection);
+				}
             }
 
             if (subCommand.equalsIgnoreCase("add")) {
@@ -217,11 +233,30 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 options.add("brush");
             }
 		} else if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("unlock") || args[0].equalsIgnoreCase("activate")) {
+            if (args[0].equalsIgnoreCase("lock") ||
+                args[0].equalsIgnoreCase("unlock") ||
+                args[0].equalsIgnoreCase("activate")) {
                 options.addAll(api.getController().getMageClassKeys());
             }
         }
 		return options;
+	}
+
+	public boolean onMageLevelSpells(CommandSender sender, Player player, String[] parameters)
+	{
+		Integer maxLevel = null;
+		if (parameters.length > 0) {
+			try {
+				maxLevel = Integer.parseInt(parameters[0]);
+			} catch (Exception ex) {
+				sender.sendMessage("Usage: /wand levelspells <level>");
+				return true;
+			}
+		}
+
+		Mage mage = api.getMage(player);
+        MageClass activeClass = mage.getActiveClass();
+		return onLevelSpells("mage", sender, player, activeClass == null ? mage.getProperties() : activeClass, maxLevel);
 	}
 
     public boolean onMageCheck(CommandSender sender, Player player, String[] args)
@@ -439,6 +474,23 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         return true;
     }
 
+    public boolean onMageLock(CommandSender sender, Player player, String[] parameters)
+    {
+        if (parameters.length < 1) {
+            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mage lock [player] <class>");
+            return true;
+        }
+        Mage mage = api.getMage(player);
+        String classKey = parameters[0];
+        boolean locked = mage.lockClass(classKey);
+        if (!locked) {
+            sender.sendMessage(ChatColor.RED + "No unlocked class: " + ChatColor.WHITE + classKey + ChatColor.RED + " for " + ChatColor.WHITE + player.getName());
+        } else {
+            sender.sendMessage("Locked class " + classKey + " for " + player.getName());
+        }
+        return true;
+    }
+
     public boolean onMageActivate(CommandSender sender, Player player, String[] parameters)
     {
         Mage mage = api.getMage(player);
@@ -475,6 +527,14 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             } else {
                 sender.sendMessage(ChatColor.DARK_GREEN + "No active class");
             }
+            Set<Spell> activeSpells = mage.getActiveSpells();
+            if (activeSpells != null && !activeSpells.isEmpty()) {
+                Collection<String> spellNames = new ArrayList<>();
+                for (Spell spell : activeSpells) {
+                    spellNames.add(spell.getName());
+                }
+                sender.sendMessage(ChatColor.AQUA + "Active spells: " + ChatColor.DARK_AQUA + StringUtils.join(spellNames, ","));
+            }
             mageProperties.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
         } else {
             Object property = mageProperties.getProperty(parameters[0]);
@@ -487,7 +547,6 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
         return true;
     }
-
 
 	public boolean onMageAdd(CommandSender sender, Player player, String[] parameters)
 	{

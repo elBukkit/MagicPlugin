@@ -14,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,7 @@ public class EffectLibManager {
     public static EffectLibManager initialize(Plugin plugin) {
         if (effectManager == null) {
             effectManager = new EffectManager(plugin);
+            effectManager.setImageCacheFolder(new File(plugin.getDataFolder(), "data/imagemapcache"));
         }
 
         return new EffectLibManager();

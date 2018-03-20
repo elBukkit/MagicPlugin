@@ -6,7 +6,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.annotation.Nonnull;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.CurrencyItem;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.maps.MapController;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.api.wand.WandTemplate;
+import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,8 +40,10 @@ import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.api.wand.WandTemplate;
-import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import org.bukkit.util.Vector;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * The controller is used for more advanced plugin interaction, and is
@@ -101,6 +111,7 @@ public interface MageController {
 
     String describeItem(ItemStack item);
     String getItemKey(ItemStack item);
+    String getWandKey(ItemStack item);
     boolean takeItem(Player player, ItemStack item);
     boolean hasItem(Player player, ItemStack item);
 
@@ -133,6 +144,7 @@ public interface MageController {
 
     void sendToMages(String message, Location location);
     Collection<Mage> getMages();
+    Collection<Mage> getMobMages();
     void removeMage(Mage mage);
     void removeMage(String id);
 
@@ -375,6 +387,7 @@ public interface MageController {
     void checkResourcePack(CommandSender sender);
     boolean sendResourcePackToAllPlayers(CommandSender sender);
     boolean sendResourcePack(Player player);
+    boolean promptResourcePack(Player player);
     boolean commitOnQuit();
     
     Set<String> getItemKeys();
@@ -405,4 +418,10 @@ public interface MageController {
     boolean createLight(Location location, int lightlevel, boolean async);
     boolean deleteLight(Location location, boolean async);
     boolean updateLight(Location location);
+
+    @Nullable String checkRequirements(@Nonnull CastContext context, @Nullable Collection<Requirement> requirements);
+    @Nonnull Set<String> getDamageTypes();
+
+    boolean isWand(ItemStack item);
+    boolean isSkill(ItemStack item);
 }

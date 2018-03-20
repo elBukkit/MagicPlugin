@@ -44,6 +44,13 @@ pollinate:
               colorNucleus: "0000FF"
               iterations: 16
               radius: 4
+        projectile:
+        - location: origin
+          effectlib:
+            class: Sphere
+            particle: item_crack
+            particles: 10
+            iterations: 60
     parameters:
         target: none
         radius: 3

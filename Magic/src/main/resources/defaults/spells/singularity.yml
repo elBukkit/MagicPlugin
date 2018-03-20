@@ -10,9 +10,8 @@ singularity:
     upgrade_required_casts: 50
     actions:
         cast:
-        # Throw a block, and attach actions to block hit
-        # TNT, Projectile and ThrowItem can all work the same way
-        - class: ThrowBlock
+        # Start with a custom projectile
+        - class: CustomProjectile
           actions:
             # This switches the "brush" to erase
             # Needed since the original brush was obsidian for ThrowBlock
@@ -68,37 +67,59 @@ singularity:
            sound_pitch: 0.2
            sound_volume: 0.3
            location: origin
+        tick:
+        - location: target
+          particle: smoke_normal
+          particle_count: 20
+          particle_offset_x: 0.4
+          particle_offset_y: 0.4
+          particle_offset_z: 0.4
+        - location: target
+          particle: block_crack
+          material: obsidian
+          particle_count: 50
+          particle_offset_x: 0.6
+          particle_offset_y: 0.6
+          particle_offset_z: 0.6
         hit:
         -  class: EffectSingle
-           location: origin
-           color: CC9933
-           firework: burst
+           location: target
            sound: entity_generic_explode
            sound: magic.hit
            effectlib:
              class: SphereEffect
-             iterations: 70
-             period: .1
+             duration: 2500
              particle: redstone
              color: 010101
-             radius: 2
+             radius: 1
              particles: 20
-        projectile:
-        -  class: EffectSingle
-           location: origin
+        -  location: target
+           material: obsidian
            effectlib:
-             class: SmokeEffect
-             iterations: 16
-             particle: smoke_normal
+             class: Modified
+             duration: 2500
+             parameters:
+               radius: "sin(t/50)*5"
+             effect:
+               class: Sphere
+               particle: block_crack
+               color: 010101
+               particles: 100
+               particleCount: 20
+               particleOffsetX: 1
+               particleOffsetY: 1
+               particleOffsetZ: 1
     parameters:
       target_type: Entity
-      brush: obsidian
+      velocity: 10
+      gravity: 0.02
+      hitbox_size: 2
       undo: 15000
       radius: 5
       repeat: 10
       delay: 250
-      damage: 1
-      target_self: true
+      damage: 3
+      target_self_timeout: 2000
       speed: 0.5
       item_speed: 0.5
       entity_speed: 0.5

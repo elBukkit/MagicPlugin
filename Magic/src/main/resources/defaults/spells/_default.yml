@@ -106,6 +106,7 @@ default:
          particle_offset_y: 0.1
          particle_offset_z: 0.1
          sound: magic.shimmer_quiet
+       headshot: hit
        cast_self: cast
        no_target: cast
        no_action: cast

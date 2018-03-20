@@ -1,0 +1,17 @@
+arrow_regular:
+    icon: arrow
+    category: combat
+    worth: 20
+    earns_sp: 2
+    actions:
+        cast:
+        - class: Projectile
+    parameters:
+      target: none
+      projectile: TippedArrow
+      speed: "bowpull * 3"
+      spread: "1 - bowpull"
+      tick_increase: 0
+      pickup: allowed
+    costs:
+      arrow: 1

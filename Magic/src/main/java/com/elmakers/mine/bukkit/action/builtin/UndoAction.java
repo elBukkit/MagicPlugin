@@ -59,16 +59,20 @@ public class UndoAction extends BaseSpellAction
     protected SpellResult performNew(CastContext context)
     {
         UndoList undoList = context.getUndoList();
-        if (undoList.size() == 0)
+        int totalSize = undoList.size() + undoList.getRunnableCount();
+        if (totalSize == 0)
         {
             return SpellResult.NO_ACTION;
         }
 
         boolean undid = false;
         while (context.getWorkAllowed() > 0) {
-            if (undoToSize > 0 && undoList.size() <= undoToSize) break;
-
-            if (undoList.undoNext(false) == null) break;
+            if (undoToSize > 0 && totalSize <= undoToSize) break;
+            if (undoList.size() == 0) {
+                if (undoList.undoNextRunnable() == null) break; 
+            } else {
+                if (undoList.undoNext(false) == null) break;
+            }
             undid = true;
             undone++;
 

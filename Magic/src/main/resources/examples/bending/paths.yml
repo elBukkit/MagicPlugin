@@ -90,6 +90,7 @@ firebending:
       - lava
       - firestream
       - combustion
+      - fire_dagger
 
 avatar:
     max_mana: 500

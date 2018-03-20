@@ -3,15 +3,10 @@ apprentice:
     icon: wood_hoe:3
     migrate_icon: wood_hoe
     effect_color: '22FF22'
-    path: apprentice
     hotbar_count: 2
     mana_regeneration: 40
     mana_max: 200
     mana: 200
-    protection_falling: 0.8
-    protection_physical: 0.8
-    protection_fire: 0.5
-    protection_explosions: 0.5
     spells:
       - missile
       - blink

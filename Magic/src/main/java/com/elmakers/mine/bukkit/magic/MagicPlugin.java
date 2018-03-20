@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.magic.command.MagicSaveCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicServerCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicSkillsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicTraitCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.RPCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -219,6 +220,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		getCommand("wandp").setTabCompleter(wandCommand);
 		TabExecutor spellsCommand = new SpellsCommandExecutor(this);
 		getCommand("spells").setExecutor(spellsCommand);
+		TabExecutor rpCommand = new RPCommandExecutor(this);
+		getCommand("getrp").setExecutor(rpCommand);
         CitizensController citizens = controller.getCitizens();
         if (citizens != null)
         {
@@ -240,6 +243,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	{
         if (controller != null) {
         	// Safety fallback in case we've missed some pending batches from logged out mages
+			controller.onShutdown();
         	controller.undoScheduled();
             controller.clear();
             controller.save();

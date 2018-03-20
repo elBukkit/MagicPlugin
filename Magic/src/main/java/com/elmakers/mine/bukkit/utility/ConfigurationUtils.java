@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
-import com.elmakers.mine.bukkit.magic.AttributableConfiguration;
+import com.elmakers.mine.bukkit.magic.SpellParameters;
 import de.slikey.effectlib.util.ConfigUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 
@@ -274,8 +274,8 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static ConfigurationSection cloneConfiguration(ConfigurationSection section)
     {
-        ConfigurationSection copy = section instanceof AttributableConfiguration ?
-                new AttributableConfiguration((AttributableConfiguration)section) :
+        ConfigurationSection copy = section instanceof SpellParameters ?
+                new SpellParameters((SpellParameters)section) :
                 new MemoryConfiguration();
         return addConfigurations(copy, section);
     }
@@ -922,5 +922,24 @@ public class ConfigurationUtils extends ConfigUtils {
             }
         }
         return potionEffects;
+    }
+
+    public static ConfigurationSection subtractConfiguration(ConfigurationSection base, ConfigurationSection subtract) {
+         Set<String> keys = subtract.getKeys(false);
+         for (String key : keys) {
+             Object baseObject = base.get(key);
+             if (baseObject == null) continue;
+             Object subtractObject = subtract.get(key);
+             if (subtractObject == null) continue;
+             if (subtractObject instanceof ConfigurationSection && baseObject instanceof ConfigurationSection) {
+                 ConfigurationSection baseConfig = (ConfigurationSection)baseObject;
+                 ConfigurationSection subtractConfig = (ConfigurationSection)subtractObject;
+                 baseConfig = subtractConfiguration(baseConfig, subtractConfig);
+                 if (!baseConfig.getKeys(false).isEmpty()) continue;
+             } else if (!subtractObject.equals(baseObject)) continue;
+             base.set(key, null);
+         }
+
+         return base;
     }
 }

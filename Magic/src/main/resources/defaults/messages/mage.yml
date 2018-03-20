@@ -3,6 +3,10 @@ mage:
     no_property: Mage has no property $name
     player_reconfigured: $name mage data reconfigured
     player_not_reconfigured: $name mage data not reconfigured
+    player_spells_levelled: "Levelled up $count of $name's spells"
+    player_spells_not_levelled: "Did not level up any of $name's spells"
+    spells_levelled: "Levelled up $count of your spells"
+    spells_not_levelled: "Did not level up any of your spells"
     reconfigured: Mage reconfigured
     not_reconfigured: Mage not reconfigured
     earned_sp: "a:&6+&e$amount &6SP"

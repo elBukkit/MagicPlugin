@@ -8,6 +8,7 @@ https://github.com/elBukkit/MagicPlugin/wiki
 
 - 3D Artist: 
   - SOPhorrific
+  - NavalClash (NavalClash.net)
   - Droobledore
   - BlueYoshi68
   - NathanWolf (lolz)

@@ -1,5 +1,4 @@
 snake:
-    inherit: false
     hidden: true
     icon: diamond_axe:16
     icon_disabled: diamond_hoe:16

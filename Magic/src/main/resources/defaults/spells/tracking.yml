@@ -17,10 +17,13 @@ tracking:
            sound: magic.zap
            location: origin
         -  class: EffectSingle
-           location: target
            effectlib:
-               class: LineEffect
-               particle: redstone
+             class: LineEffect
+             particle: redstone
+             particleCount: 5
+             particleOffsetX: 0.1
+             particleOffsetY: 0.1
+             particleOffsetZ: 0.1
     parameters:
         range: 32
         fov: 3

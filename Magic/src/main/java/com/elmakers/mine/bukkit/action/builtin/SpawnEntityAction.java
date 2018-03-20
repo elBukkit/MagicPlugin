@@ -36,13 +36,14 @@ import java.util.LinkedList;
 
 public class SpawnEntityAction extends BaseSpellAction
 {
-    private final LinkedList<WeightedPair<String>> entityTypeProbability = new LinkedList<>();
+    private LinkedList<WeightedPair<String>> entityTypeProbability;
 
     private CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
 
     private boolean loot = false;
     private boolean setTarget = false;
     private boolean force = false;
+    private boolean repeatRandomize = true;
     
     private Vector direction = null;
     private double speed;
@@ -55,6 +56,7 @@ public class SpawnEntityAction extends BaseSpellAction
         loot = parameters.getBoolean("loot", false);
         force = parameters.getBoolean("force", false);
         setTarget = parameters.getBoolean("set_target", false);
+        repeatRandomize = parameters.getBoolean("repeat_random", true);
         speed = parameters.getDouble("speed", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
         dyOffset = parameters.getDouble("dy_offset", 0);
@@ -91,16 +93,19 @@ public class SpawnEntityAction extends BaseSpellAction
         spawnLocation.setYaw(sourceLocation.getYaw());
 
         MageController controller = context.getController();
-        if (entityData == null)
+        if (entityTypeProbability != null && !entityTypeProbability.isEmpty())
         {
-            String randomType = RandomUtils.weightedRandom(entityTypeProbability);
-            try {
-                entityData = controller.getMob(randomType);
-                if (entityData == null) {
-                    entityData = new com.elmakers.mine.bukkit.entity.EntityData(EntityType.valueOf(randomType.toUpperCase()));
+            if (repeatRandomize || entityData == null)
+            {
+                String randomType = RandomUtils.weightedRandom(entityTypeProbability);
+                try {
+                    entityData = controller.getMob(randomType);
+                    if (entityData == null) {
+                        entityData = new com.elmakers.mine.bukkit.entity.EntityData(EntityType.valueOf(randomType.toUpperCase()));
+                    }
+                } catch (Throwable ex) {
+                    entityData = null;
                 }
-            } catch (Throwable ex) {
-                entityData = null;
             }
         }
         if (entityData == null)
@@ -178,9 +183,8 @@ public class SpawnEntityAction extends BaseSpellAction
 
         if (parameters.contains("entity_types"))
         {
+            entityTypeProbability = new LinkedList<>();
             RandomUtils.populateStringProbabilityMap(entityTypeProbability, ConfigurationUtils.getConfigurationSection(parameters, "entity_types"), 0, 0, 0);
-        } else {
-            entityTypeProbability.add(new WeightedPair<>(100.0f, "pig"));
         }
     }
 
@@ -197,7 +201,6 @@ public class SpawnEntityAction extends BaseSpellAction
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
-        parameters.add("track");
         parameters.add("loot");
         parameters.add("baby");
         parameters.add("name");
@@ -212,6 +215,7 @@ public class SpawnEntityAction extends BaseSpellAction
         parameters.add("horse_style");
         parameters.add("horse_color");
         parameters.add("color");
+        parameters.add("repeat_random");
     }
 
     @Override
@@ -256,7 +260,7 @@ public class SpawnEntityAction extends BaseSpellAction
             for (DyeColor type : DyeColor.values()) {
                 examples.add(type.name().toLowerCase());
             }
-        } else if (parameterKey.equals("track") || parameterKey.equals("loot") || parameterKey.equals("baby")) {
+        } else if (parameterKey.equals("loot") || parameterKey.equals("baby") || parameterKey.equals("repeat_random")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else if (parameterKey.equals("name")) {
             examples.add("Philbert");

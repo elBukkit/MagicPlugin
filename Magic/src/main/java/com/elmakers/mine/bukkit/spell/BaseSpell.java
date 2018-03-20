@@ -18,11 +18,15 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
+import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -33,7 +37,9 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
-import com.elmakers.mine.bukkit.magic.AttributableConfiguration;
+import com.elmakers.mine.bukkit.magic.MageClass;
+import com.elmakers.mine.bukkit.magic.SpellParameters;
+import de.slikey.effectlib.math.EquationStore;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
@@ -77,6 +83,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public abstract class BaseSpell implements MageSpell, Cloneable {
     public static String DEFAULT_DISABLED_ICON_URL = "";
+    protected enum ToggleType {NONE, CANCEL, UNDO};
 
     protected static final double LOOK_THRESHOLD_RADIANS = 0.9;
 
@@ -143,8 +150,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      */
     protected MageController				controller;
     protected Mage 							mage;
+    protected MageClass                     mageClass;
     protected Location    					location;
-    protected CastContext currentCast;
+    protected CastContext                   currentCast;
+    protected UndoList                      toggleUndo;
 
     /*
      * Variant properties
@@ -176,12 +185,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private MaterialAndData disabledIcon = null;
     private String iconURL = null;
     private String iconDisabledURL = null;
+    private double requiredHealth;
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
 
     protected double cancelOnDamage             = 0;
     protected boolean cancelOnCastOther         = false;
     protected boolean cancelOnNoPermission      = false;
+    protected boolean cancelOnNoWand            = false;
     protected boolean pvpRestricted           	= false;
     protected boolean disguiseRestricted        = false;
     protected boolean worldBorderRestricted     = true;
@@ -203,6 +214,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassAll                   = false;
     protected boolean quiet                       = false;
     protected boolean loud                        = false;
+    protected ToggleType toggle                   = ToggleType.NONE;
     protected boolean messageTargets              = true;
     protected boolean targetSelf                  = false;
     protected boolean showUndoable              = true;
@@ -218,9 +230,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected ConfigurationSection progressLevels = null;
     protected ConfigurationSection progressLevelParameters = null;
-    protected AttributableConfiguration parameters = new AttributableConfiguration();
+    protected SpellParameters parameters = new SpellParameters(this);
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
+    protected Collection<Requirement> requirements = null;
 
     protected static Random random            = new Random();
 
@@ -766,15 +779,22 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         activeCostScale = (float)((double)(now - lastActiveCost) / 1000);
         lastActiveCost = now;
 
+        CasterProperties caster = null;
+        if (currentCast != null) {
+            caster = currentCast.getWand();
+            if (caster == null) {
+                caster = currentCast.getMageClass();
+            }
+        }
         for (CastingCost cost : activeCosts)
         {
-            if (!cost.has(this))
+            if (!cost.has(mage, caster, this))
             {
                 deactivate();
                 break;
             }
 
-            cost.use(this);
+            cost.deduct(mage, caster, this);
         }
 
         activeCostScale = 1;
@@ -899,6 +919,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             tags = null;
         }
 
+        requiredHealth = node.getDouble("require_health_percentage", 0);
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", false);
@@ -914,6 +935,20 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         cancellable = node.getBoolean("cancellable", true);
         cancelEffects = node.getBoolean("cancel_effects", false);
 
+        String toggleString = node.getString("toggle", "NONE");
+        try {
+            toggle = ToggleType.valueOf(toggleString.toUpperCase());
+        } catch (Exception ex) {
+            controller.getLogger().warning("Invalid toggle type: " + toggleString);
+        }
+
+        Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(node, "requirements");
+        if (requirementConfigurations != null) {
+            requirements = new ArrayList<>();
+            for (ConfigurationSection requirementConfiguration : requirementConfigurations) {
+                requirements.add(new Requirement(requirementConfiguration));
+            }
+        }
         progressLevels = node.getConfigurationSection("progress_levels");
         if (progressLevels != null) {
             requiredCastsPerLevel = progressLevels.getLong("required_casts_per_level");
@@ -934,14 +969,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 for (String key : keys) {
                     if (progressLevelParameters.isString(key)) {
                         String value = progressLevelParameters.getString(key, "");
-                        progressLevelEquations.put(key, new EquationTransform(value, "x"));
+                        progressLevelEquations.put(key, EquationStore.getInstance().getTransform(value));
                     }
                 }
             }
         }
 
         // Preload some parameters
-        parameters.setMage(mage);
         parameters.wrap(node.getConfigurationSection("parameters"));
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         warmup = parameters.getInt("warmup", 0);
@@ -1034,6 +1068,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             return false;
         }
+
+        if (toggle != ToggleType.NONE && isActive()) {
+            mage.sendDebugMessage(ChatColor.DARK_BLUE + "Deactivating " + ChatColor.GOLD + getName());
+            deactivate(true, true);
+            processResult(SpellResult.DEACTIVATE, parameters);
+            return true;
+        }
+        
         if (mage.getDebugLevel() > 5 && extraParameters != null) {
             Collection<String> keys = extraParameters.getKeys(false);
             if (keys.size() > 0) {
@@ -1076,7 +1118,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         this.location = defaultLocation;
 
-        workingParameters = new AttributableConfiguration(mage);
+        workingParameters = new SpellParameters(this);
         ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
         processParameters(workingParameters);
@@ -1205,6 +1247,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
             sendCastMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
             return false;
+        }
+
+        if (requiredHealth > 0) {
+            LivingEntity li = mage.getLivingEntity();
+            double healthPercentage = li == null ? 0 : 100 * li.getHealth() / li.getMaxHealth();
+            if (healthPercentage < requiredHealth) {
+                processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
+                sendCastMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
+                return false;
+            }
         }
 
         if (controller.isSpellProgressionEnabled()) {
@@ -1378,6 +1430,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             updateCooldown();
         }
+        if (success && toggle != ToggleType.NONE) {
+            activate();
+        }
 
         sendCastMessage(result, " (" + success + ")");
         return success;
@@ -1435,6 +1490,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             // Escape some common parameters
             String playerName = mage.getName();
             message = message.replace("$player", playerName);
+            message = message.replace("$caster", playerName);
 
             if (message.contains("$material"))
             {
@@ -1444,6 +1500,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 materialName = materialName == null ? "None" : materialName;
                 message = message.replace("$material", materialName);
             }
+            
+            message = currentCast.parameterizeMessage(message);
         }
         return message;
     }
@@ -1469,6 +1527,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     message = getMessage("alternate", message);
                 }
                 message = getMessage(resultName, message);
+                if (!currentCast.getTargetedEntities().isEmpty()) {
+                    message = getMessage("cast_target", message);
+                }
                 LivingEntity sourceEntity = mage.getLivingEntity();
                 Entity targetEntity = getTargetEntity();
                 if (targetEntity == sourceEntity) {
@@ -1480,11 +1541,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 } else if (targetEntity != null) {
                     message = getMessage("cast_entity", message);
                 }
-                if (loud) {
-                    sendMessage(message);
-                } else {
-                    castMessage(message);
-                }
+                castMessage(message);
             } else
             // Special cases where messaging is handled elsewhere
             if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN)
@@ -1626,6 +1683,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
         cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
         cancelOnNoPermission = parameters.getBoolean("cancel_on_no_permission", false);
+        cancelOnNoWand = parameters.getBoolean("cancel_on_no_wand", false);
         commandBlockAllowed = parameters.getBoolean("command_block_allowed", true);
 
         MaterialSetManager materials = controller.getMaterialSetManager();
@@ -1785,7 +1843,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public float getConsumeReduction()
     {
-        CostReducer reducer = currentCast != null ? currentCast.getWand() : mage;
+        CostReducer reducer = mageClass != null ? mageClass : (currentCast != null ? currentCast.getWand() : mage);
         if (reducer == null) {
             reducer = mage;
         }
@@ -1798,7 +1856,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public float getCostReduction()
     {
-        CostReducer reducer = currentCast != null ? currentCast.getWand() : mage;
+        CostReducer reducer = mageClass != null ? mageClass : (currentCast != null ? currentCast.getWand() : mage);
         if (reducer == null) {
             reducer = mage;
         }
@@ -2039,26 +2097,26 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public String getMageCooldownDescription() {
-        return getCooldownDescription(controller.getMessages(), mageCooldown, null);
+        return getCooldownDescription(controller.getMessages(), mageCooldown, mage, null);
     }
 
-    public String getMageCooldownDescription(com.elmakers.mine.bukkit.api.wand.Wand wand) {
-        return getCooldownDescription(controller.getMessages(), mageCooldown, wand);
+    public String getMageCooldownDescription(Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
+        return getCooldownDescription(controller.getMessages(), mageCooldown, mage, wand);
     }
 
     @Override
     public String getCooldownDescription() {
         return getCooldownDescription(
-                controller.getMessages(), getDisplayCooldown(),  null);
+                controller.getMessages(), getDisplayCooldown(),  mage, null);
     }
 
     public String getWarmupDescription() {
         return getTimeDescription(controller.getMessages(), warmup);
     }
 
-    public String getCooldownDescription(com.elmakers.mine.bukkit.api.wand.Wand wand) {
+    public String getCooldownDescription(Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
         return getCooldownDescription(
-                controller.getMessages(), getDisplayCooldown(), wand);
+                controller.getMessages(), getDisplayCooldown(), mage, wand);
     }
 
     /**
@@ -2099,12 +2157,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return null;
     }
 
-    protected String getCooldownDescription(Messages messages, int cooldown, com.elmakers.mine.bukkit.api.wand.Wand wand) {
-        if (wand != null) {
-            if (wand.isCooldownFree()) {
+    protected String getCooldownDescription(Messages messages, int cooldown, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
+        CooldownReducer reducer = mageClass != null ? mageClass : (wand != null ? wand : mage);
+        if (reducer != null) {
+            if (reducer.isCooldownFree()) {
                 cooldown = 0;
             }
-            double cooldownReduction = wand.getCooldownReduction();
+            double cooldownReduction = reducer.getCooldownReduction();
             cooldownReduction += this.cooldownReduction;
             if (cooldown > 0 && cooldownReduction < 1) {
                 cooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
@@ -2122,13 +2181,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public CastingCost getRequiredCost() {
-        if (!mage.isCostFree())
+        if (!mage.isCostFree() && (mageClass == null || !mageClass.isCostFree()))
         {
+            CasterProperties caster = mageClass != null ? mageClass : getCurrentCast().getWand();
             if (costs != null && !spellData.isActive())
             {
                 for (CastingCost cost : costs)
                 {
-                    if (!cost.has(this))
+                    if (!cost.has(mage, caster, this))
                     {
                         return cost;
                     }
@@ -2153,6 +2213,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public long getRemainingCooldown() {
         long remaining = 0;
         if (mage.isCooldownFree()) return 0;
+        if (mageClass != null && mageClass.isCooldownFree()) return 0;
+        if (mageClass == null) {
+            Wand wand = mage.getActiveWand();
+            if (wand != null && wand.isCooldownFree()) return 0;
+        }
         if (spellData.getCooldownExpiration() > 0)
         {
             long now = System.currentTimeMillis();
@@ -2225,6 +2290,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (!spellData.isActive()) {
             mage.activateSpell(this);
         }
+        if (currentCast != null) {
+            toggleUndo = currentCast.getUndoList();
+        }
     }
 
     @Override
@@ -2248,6 +2316,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             if (currentCast != null) {
                 currentCast.cancelEffects();
+                if (toggle == ToggleType.UNDO && toggleUndo != null && !toggleUndo.isUndone()) {
+                    toggleUndo.undo();
+                }
+                toggleUndo = null;
+            }
+            if (toggle != ToggleType.NONE) {
+                 mage.cancelPending(getKey(), true);
             }
         }
 
@@ -2462,6 +2537,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore) {
         CostReducer reducer = wand == null ? mage : wand;
+        if (reducer == null) {
+            reducer = this;
+        }
         if (levelDescription != null && levelDescription.length() > 0) {
             String descriptionTemplate = messages.get("spell.level_lore", "");
             if (!descriptionTemplate.isEmpty()) {
@@ -2494,27 +2572,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (warmupDescription != null && !warmupDescription.isEmpty()) {
             lore.add(messages.get("warmup.description").replace("$time", warmupDescription));
         }
-        String cooldownDescription = getCooldownDescription(wand);
+        String cooldownDescription = getCooldownDescription(mage, wand);
         if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
             lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
         }
-        String mageCooldownDescription = getMageCooldownDescription(wand);
+        String mageCooldownDescription = getMageCooldownDescription(mage, wand);
         if (mageCooldownDescription != null && !mageCooldownDescription.isEmpty()) {
             lore.add(messages.get("cooldown.mage_description").replace("$time", mageCooldownDescription));
-        }
-        if (costs != null) {
-            for (CastingCost cost : costs) {
-                if (!cost.isEmpty(reducer)) {
-                    lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
-                }
-            }
-        }
-        if (activeCosts != null) {
-            for (CastingCost cost : activeCosts) {
-                if (!cost.isEmpty(reducer)) {
-                    lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
-                }
-            }
         }
 
         double range = getRange();
@@ -2522,20 +2586,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             lore.add(ChatColor.GRAY + messages.get("wand.range_description").replace("$range", RANGE_FORMATTER.format(range)));
         }
 
-        long effectiveDuration = this.getDuration();
-        if (effectiveDuration > 0) {
-            long seconds = effectiveDuration / 1000;
-            if (seconds > 60 * 60 ) {
-                long hours = seconds / (60 * 60);
-                lore.add(ChatColor.GRAY + messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
-            } else if (seconds > 60) {
-                long minutes = seconds / 60;
-                lore.add(ChatColor.GRAY + messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
-            } else {
-                lore.add(ChatColor.GRAY + messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
-            }
-        }
-        else if (showUndoable()) {
+        String effectiveDuration = this.getDurationDescription(messages);
+        if (effectiveDuration != null) {
+            lore.add(ChatColor.GRAY + effectiveDuration);
+        } else if (showUndoable()) {
             if (isUndoable()) {
                 String undoableText = messages.get("spell.undoable", "");
                 if (!undoableText.isEmpty()) {
@@ -2553,6 +2607,26 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             String brushText = messages.get("spell.brush");
             if (!brushText.isEmpty()) {
                 lore.add(ChatColor.GOLD + brushText);
+            }
+        }
+        if (costs != null) {
+            for (CastingCost cost : costs) {
+                if (!cost.isEmpty(reducer)) {
+                    lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
+                }
+            }
+        }
+        if (activeCosts != null) {
+            for (CastingCost cost : activeCosts) {
+                if (!cost.isEmpty(reducer)) {
+                    lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
+                }
+            }
+        }
+        if (toggle != ToggleType.NONE) {
+            String toggleText = messages.get("spell.toggle", "");
+            if (!toggleText.isEmpty()) {
+                lore.add(toggleText);
             }
         }
 
@@ -2735,6 +2809,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public boolean cancelOnNoWand() {
+        return cancelOnNoWand;
+    }
+
+    @Override
     public ConfigurationSection getHandlerParameters(String handlerKey)
     {
         return null;
@@ -2760,5 +2839,50 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public ConfigurationSection getSpellParameters() {
         return parameters;
+    }
+    
+    @Override
+    public Collection<Requirement> getRequirements() {
+        return requirements;
+    }
+    
+    @Override
+    public String getDurationDescription(Messages messages) {
+        String description = null;
+        long effectiveDuration = this.getDuration();
+        if (effectiveDuration > 0) {
+            long seconds = effectiveDuration / 1000;
+            if (seconds > 60 * 60 ) {
+                long hours = seconds / (60 * 60);
+                description = messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString());
+            } else if (seconds == 60 * 60 ) {
+                description = messages.get("duration.lasts_hour").replace("$hours", "1");
+            } else if (seconds > 60) {
+                long minutes = seconds / 60;
+                description = messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString());
+            } else if (seconds == 60) {
+                description = messages.get("duration.lasts_minute").replace("$minutes", "1");
+            } else if (seconds == 1) {
+                description = messages.get("duration.lasts_second").replace("$seconds", ((Long)seconds).toString());
+            } else {
+                description = messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString());
+            }
+        }
+        
+        return description;
+    }
+
+    @Override
+    public Double getAttribute(String attributeKey) {
+        Double data = mage.getAttribute(attributeKey);
+        if (data == null && workingParameters != null && workingParameters.contains(attributeKey)) {
+            data = workingParameters.getDouble(attributeKey);
+        }
+
+        return data;
+    }
+
+    public void setMageClass(MageClass mageClass) {
+        this.mageClass = mageClass;
     }
 }

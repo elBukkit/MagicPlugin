@@ -2,27 +2,35 @@
 
 This is a *very rough* approximation of where Magic is headed in future versions.
 
-## 7.2
+## 7.4
 
- - Ability to specify damage protection (and other properties like cooldown reduction) at the class level
- - Above should be able to include attribute equations
- - Custom damage types, for use with Damage action and in protection
- - A system to earn protection and other bonuses (separate from attributes) in survival configs
+ - Class improvements and additions:
+     - Classbound items that are given on unlock and taken away on lock
+     - Wand "unstashable tag", sets a generic item tag
+     - "Unmoveable" tag, for use with classbound items that go in a specific slot
+     - ModifyMage action to lock/unlock/activate classes, for building a class selection GUI
+ - Status effect system for temporary (timed) property changes
 
-## 7.3
+## 7.5
+
+ - Ability to apply attribute equations to properties like protection
  - Internal attribute system
    - Including damage reduction
    - Mana bonuses
    - Maybe others, see TODO
  
-## 7.5
+## 7.6
 
  - First draft of RPG-style configs with a variety of classes to choose from
  - Players may choose one class, and then add more classes as they max out (up to some limit)
  
-## 7.6
+## 7.7
 
- - Improved mob and spawner support
+ - Persistent effect support
+   - Replacing old automata tracking
+   - Ability to have spells cast on chunk load and cancel on unload
+   - Also support for mob spawners
+   - Configured locations with support for adding locations in-game
 
 ## 8.0
  

@@ -1,0 +1,64 @@
+{
+  "__comment": "Max bow durability is 385",
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "items/bow_standby"
+  },
+  "overrides": [
+    {
+        "predicate": {
+            "pulling": 1
+        },
+        "model": "item/bow_pulling_0"
+    },
+    {
+        "predicate": {
+            "pulling": 1,
+            "pull": 0.65
+        },
+        "model": "item/bow_pulling_1"
+    },
+    {
+        "predicate": {
+            "pulling": 1,
+            "pull": 0.9
+        },
+        "model": "item/bow_pulling_2"
+    },
+
+    {"predicate": {"damaged": 0, "damage": 0.002597402597403}, "model": "item/custom/bow/egypt"},
+
+    {"predicate": {"damaged": 1, "damage": 0}, "model": "item/bow"},
+
+    {"predicate": {"damaged": 0, "pulling": 1, "damage":0.002597402597403}, "model": "item/custom/bow/egypt_pulling_0"},
+    {"predicate": {"damaged": 0, "pulling": 1, "pull": 0.65, "damage":0.002597402597403}, "model": "item/custom/bow/egypt_pulling_1"},
+    {"predicate": {"damaged": 0, "pulling": 1, "pull": 0.9, "damage":0.002597402597403}, "model": "item/custom/bow/egypt_pulling_2"},
+
+    {
+        "predicate": {
+            "pulling": 1,
+            "damaged": 1,
+            "damage": 0
+        },
+        "model": "item/bow_pulling_0"
+    },
+    {
+        "predicate": {
+            "pulling": 1,
+            "pull": 0.65,
+            "damaged": 1,
+            "damage": 0
+        },
+        "model": "item/bow_pulling_1"
+    },
+    {
+        "predicate": {
+            "pulling": 1,
+            "pull": 0.9,
+            "damaged": 1,
+            "damage": 0
+        },
+        "model": "item/bow_pulling_2"
+    }
+  ]
+}

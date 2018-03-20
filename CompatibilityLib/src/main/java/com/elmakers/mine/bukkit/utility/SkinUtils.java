@@ -76,9 +76,13 @@ public class SkinUtils extends NMSUtils {
                     }
                 }
                 decoded = decoded.substring(start + length);
-                int end = decoded.indexOf("\"}");
+
+                int end = decoded.indexOf("\",");
                 if (end < 0) {
-                    return null;
+                    end = decoded.indexOf("\"}");
+                    if (end < 0) {
+                        return null;
+                    }
                 }
                 url = decoded.substring(0, end).trim();
             }

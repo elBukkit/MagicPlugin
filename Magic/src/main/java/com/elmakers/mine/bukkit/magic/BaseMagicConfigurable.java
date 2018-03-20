@@ -142,17 +142,22 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             return false;
         }
         if (currentValue != null && value != null && !force) {
-            if (currentValue.equals(value)) {
+            try {
+                if (currentValue.equals(value)) {
+                    return false;
+                } else if (value instanceof Number || currentValue instanceof Number) {
+                    float floatValue = NumberConversions.toFloat(value);
+                    float floatCurrent = NumberConversions.toFloat(currentValue);
+                    // TODO: What about properties (see: block_cooldown) where less is better?
+                    if (floatCurrent >= floatValue) return false;
+                } else if (value instanceof String) {
+                    String stringValue = value.toString();
+                    String stringCurrent = currentValue.toString();
+                    if (stringValue.equalsIgnoreCase(stringCurrent)) return false;
+                }
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Error migrating property " + key, ex);
                 return false;
-            } else if (value instanceof String) {
-                String stringValue = (String) value;
-                String stringCurrent = (String) currentValue;
-                if (stringValue.equalsIgnoreCase(stringCurrent)) return false;
-            } else if (value instanceof Number) {
-                float floatValue = NumberConversions.toFloat(value);
-                float floatCurrent = NumberConversions.toFloat(currentValue);
-                // TODO: What about properties (see: block_cooldown) where less is better?
-                if (floatCurrent >= floatValue) return false;
             }
         }
 
@@ -379,6 +384,9 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         Set<String> keys = configuration.getKeys(true);
         for (String key : keys) {
             Object value = configuration.get(key);
+            // Only configure leaf nodes
+            if (value instanceof ConfigurationSection) continue;
+
             value = convertProperty(value);
             setProperty(key, value);
         }
@@ -454,9 +462,12 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     @Override
     public boolean upgrade(ConfigurationSection configuration) {
         boolean modified = false;
-        Set<String> keys = configuration.getKeys(false);
+        Set<String> keys = configuration.getKeys(true);
         for (String key : keys) {
             Object value = configuration.get(key);
+            // Only configure leaf nodes
+            if (value instanceof ConfigurationSection) continue;
+
             modified = upgrade(key, value) || modified;
         }
 

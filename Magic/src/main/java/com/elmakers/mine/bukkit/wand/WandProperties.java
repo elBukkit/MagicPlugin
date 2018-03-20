@@ -1,14 +1,14 @@
 package com.elmakers.mine.bukkit.wand;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.magic.CasterProperties;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
+import com.elmakers.mine.bukkit.magic.TemplatedProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
-public abstract class WandProperties extends CasterProperties {
+public abstract class WandProperties extends TemplatedProperties {
     protected BaseMagicProperties wandTemplate;
     protected MageClass mageClass;
 

@@ -182,7 +182,6 @@ snowball:
            effectlib:
              class: SmokeEffect
              iterations: 1
-             particles: 15
              particle: snowball
     parameters:
       target: other
@@ -338,7 +337,7 @@ avis:
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleOrbital: water_bubble
+             particleOrbital: spell
     parameters:
         allow_max_range: true
         range: 2
@@ -1540,19 +1539,23 @@ morsmordre:
         - class: CommandAction
     effects:
         cast:
-        -  class: EffectSingle
-           sound: wither_hurt
+        -  sound: wither_hurt
         -  class: EffectTrail
-           particle: flame
-        -  class: EffectRing
-           location: target
-           firework: creeper
-           radius: 12
-           target_offset: 0,16,0
-           color: '00FF00'
-           color2: '88FF88'
+           particle: redstone
+           color: 00FF00
+        -  location: target
+           target_offset: 0,3,0
+           orient: true
+           effectlib:
+             enableRotation: false
+             class: ColoredImageEffect
+             fileName: https://i.imgur.com/47aVrwT.gif
+             stepX: 1
+             stepY: 1
+             size: 0.2
+             transparency: true
     parameters:
-        target: any
+        target: block
         allow_max_range: true
         range: 16
         cooldown: 60000

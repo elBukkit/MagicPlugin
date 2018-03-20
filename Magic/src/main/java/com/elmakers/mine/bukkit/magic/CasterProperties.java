@@ -66,6 +66,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         setProperty("mana_regeneration", Math.max(0, manaRegeneration));
     }
 
+    @Override
     public float getMana() {
         ManaController manaController = controller.getManaController();
         if (manaController != null && isPlayer()) {
@@ -74,6 +75,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return getFloat("mana", getFloat("xp"));
     }
 
+    @Override
     public void removeMana(float amount) {
         ManaController manaController = controller.getManaController();
         if (manaController != null && isPlayer()) {
@@ -91,13 +93,12 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return getFloat("mana_max_boost", getFloat("xp_max_boost"));
     }
 
-    public float getCostReduction() {
-        if (isCostFree()) return 1.0f;
-        return controller.getCostReduction() + getFloat("cost_reduction") * controller.getMaxCostReduction();
-    }
-
     public boolean isCostFree() {
         return getFloat("cost_reduction") > 1;
+    }
+
+    public boolean isCooldownFree() {
+        return getFloat("cooldown_reduction") > 1;
     }
 
     public int getEffectiveManaMax() {
@@ -150,12 +151,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                 effectiveRegenBoost += offhandWand.getManaRegenerationBoost();
             }
         }
+        boolean boostable = getBoolean("boostable", true);
         effectiveManaMax = getManaMax();
-        if (effectiveBoost != 0) {
+        if (boostable && effectiveBoost != 0) {
             effectiveManaMax = (int)Math.ceil(effectiveManaMax + effectiveBoost * effectiveManaMax);
         }
         effectiveManaRegeneration = getManaRegeneration();
-        if (effectiveRegenBoost != 0) {
+        if (boostable && effectiveRegenBoost != 0) {
             effectiveManaRegeneration = (int)Math.ceil(effectiveManaRegeneration + effectiveRegenBoost * effectiveManaRegeneration);
         }
 
@@ -198,7 +200,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public boolean addSpell(String spellKey) {
-        Collection<String> spells = getSpells();
+        Collection<String> spells = getBaseSpells();
         SpellKey key = new SpellKey(spellKey);
         boolean modified = spells.add(key.getBaseKey());
         if (modified) {
@@ -224,7 +226,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     public boolean removeSpell(String spellKey) {
-        Collection<String> spells = getSpells();
+        Collection<String> spells = getBaseSpells();
         SpellKey key = new SpellKey(spellKey);
         boolean modified = spells.remove(key.getBaseKey());
         if (modified) {
@@ -267,12 +269,15 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
-    public boolean hasSpell(String spellKey) {
-        return getSpells().contains(spellKey);
+    public boolean hasSpell(String key) {
+        SpellKey spellKey = new SpellKey(key);
+
+    	if (!getBaseSpells().contains(spellKey.getBaseKey())) return false;
+        int level = getSpellLevel(spellKey.getBaseKey());
+        return (level >= spellKey.getLevel());
     }
 
-    @Override
-    public Collection<String> getSpells() {
+    public Collection<String> getBaseSpells() {
         Object existingSpells = getObject("spells");
         Set<String> spells = new HashSet<>();
         if (existingSpells != null) {
@@ -285,6 +290,24 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             }
         }
         return spells;
+    }
+
+    @Override
+    public Collection<String> getSpells() {
+        Set<String> spellSet = new HashSet<>();
+        Collection<String> spells = getBaseSpells();
+        Map<String, Object> spellLevels = getSpellLevels();
+
+        for (String key : spells) {
+            Object levelObject = spellLevels.get(key);
+            Integer level = levelObject != null && levelObject instanceof Integer ? (Integer)levelObject : null;
+            if (level != null) {
+                spellSet.add(new SpellKey(key, level).getKey());
+            } else {
+            	spellSet.add(key);
+			}
+        }
+		return spellSet;
     }
 
     public Collection<String> getBrushes() {
@@ -315,6 +338,30 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 		ProgressionPath path = getPath();
 		return (path != null && path.canProgress(this));
 	}
+
+	protected float stackPassiveProperty(float property, float stackProperty) {
+        boolean stack = getBoolean("stack");
+        if (stack) {
+            property += stackProperty;
+        } else {
+            property = Math.max(property, stackProperty);
+        }
+		return property;
+	}
+
+	@Override
+	public boolean upgrade(String key, Object value) {
+        if (key.equals("path")) {
+            ProgressionPath path = getPath();
+            if (path != null && path.hasPath(value.toString())) {
+                return false;
+            }
+            setProperty(key, value);
+            return true;
+        }
+
+        return super.upgrade(key, value);
+    }
 
     public abstract boolean isPlayer();
     public abstract Player getPlayer();

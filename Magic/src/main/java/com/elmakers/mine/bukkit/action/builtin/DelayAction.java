@@ -13,6 +13,7 @@ import java.util.Collection;
 
 public class DelayAction extends BaseSpellAction
 {
+    private boolean infinite;
     private int delay;
     private Long targetTime;
 
@@ -21,6 +22,8 @@ public class DelayAction extends BaseSpellAction
         super.prepare(context, parameters);
         delay = ConfigurationUtils.getInteger(parameters, "warmup", 1);
         delay = ConfigurationUtils.getInteger(parameters, "delay", delay);
+
+        infinite = parameters.getString("delay", "").equals("infinite");
     }
 
     @Override
@@ -36,7 +39,7 @@ public class DelayAction extends BaseSpellAction
             targetTime = System.currentTimeMillis() + delay;
             return SpellResult.PENDING;
         }
-        if (System.currentTimeMillis() < targetTime)
+        if (infinite || System.currentTimeMillis() < targetTime)
         {
             return SpellResult.PENDING;
         }
@@ -54,6 +57,7 @@ public class DelayAction extends BaseSpellAction
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
     {
         if (parameterKey.equals("delay")) {
+            examples.add("infinite");
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);

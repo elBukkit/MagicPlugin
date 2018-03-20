@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.item;
 
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -21,7 +22,18 @@ public interface Cost {
      * @return False if this has any non-zero costs.
      */
     boolean isEmpty(CostReducer reducer);
-    
+
+    /**
+     * Whether or not this record has any costs associated with it,
+     * after being reduced
+     *
+     * @param mage The mage to check for costs
+     * @param caster A optional caster, to be used for mana costs
+     * @param reducer An optional scale for costs
+     * @return True if this has any non-zero costs.
+     */
+    boolean has(Mage mage, CasterProperties caster, CostReducer reducer);
+
     /**
      * Whether or not this record has any costs associated with it,
      * after being reduced
@@ -41,6 +53,15 @@ public interface Cost {
      * @return True if this has any non-zero costs.
      */
     boolean has(Mage mage);
+
+    /**
+     * Deduct these costs from the specified Mage
+     *
+     * @param mage The mage to check for costs
+     * @param caster A optional caster, to be used for mana costs
+     * @param reducer An optional scale for costs
+     */
+    void deduct(Mage mage, CasterProperties caster, CostReducer reducer);
 
     /**
      * Deduct these costs from the specified Mage
@@ -128,4 +149,11 @@ public interface Cost {
      * @return true if this cost is an item
      */
     boolean isItem();
+
+    /**
+     * Multiply this cost by a scale value.
+     *
+     * @param scale The cost multiplier.
+     */
+    void scale(double scale);
 }

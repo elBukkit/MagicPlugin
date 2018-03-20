@@ -5,6 +5,7 @@ base_gun:
   indestructible: true
   cast_location: 0.5,-0.4,0.5
   class: soldier
+  boostable: false
   attributes:
     GENERIC_ATTACK_SPEED: 10
 
@@ -13,14 +14,24 @@ ak47:
   inherit: base_gun
   active_spell: ak47
   alternate_spell: reload_ak47
-  mana: 70
-  mana_max: 70
+  mana: 30
+  mana_max: 30
+
+mp5:
+  icon: diamond_pickaxe:21
+  inherit: base_gun
+  active_spell: mp5
+  alternate_spell: reload_mp5
+  mana: 15
+  mana_max: 15
 
 sniper:
   icon: diamond_pickaxe:2
   inherit: base_gun
   active_spell: sniper
+  swap: alt_cast2
   alternate_spell: reload_sniper
+  alternate_spell2: sniper_scope
   mana: 3
   mana_max: 3
 
@@ -39,6 +50,42 @@ shotgun:
   alternate_spell: reload_shotgun
   mana: 6
   mana_max: 6
+
+rifle:
+  icon: diamond_pickaxe:17
+  inherit: base_gun
+  active_spell: rifle
+  alternate_spell: reload_rifle
+  alternate_spell2: sniper_scope
+  swap: alt_cast2
+  mana: 10
+  mana_max: 30
+
+hawk_shotgun:
+  icon: diamond_pickaxe:18
+  inherit: base_gun
+  active_spell: hawk_shotgun
+  alternate_spell: reload_hawk_shotgun
+  mana: 5
+  mana_max: 5
+
+pkp:
+  icon: diamond_pickaxe:19
+  inherit: base_gun
+  active_spell: pkp
+  alternate_spell: reload_pkp
+  mana: 75
+  mana_max: 75
+  potion_effects:
+    - SLOW:2
+
+thompson:
+  icon: diamond_pickaxe:20
+  inherit: base_gun
+  active_spell: thompson
+  alternate_spell: reload_thompson
+  mana: 50
+  mana_max: 50
 
 rocketlauncher:
   icon: diamond_pickaxe:5

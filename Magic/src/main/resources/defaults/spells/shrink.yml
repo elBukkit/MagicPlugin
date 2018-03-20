@@ -7,7 +7,9 @@ shrink:
     earns_sp: 8
     actions:
       cast:
-      - class: ShrinkEntity
+      - class: CustomProjectile
+        actions:
+        - class: ShrinkEntity
     effects:
         cast:
         -  class: EffectSingle
@@ -20,26 +22,27 @@ shrink:
              iterations: 11
              particle: spell_instant
              lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: "81F7D8"
-           firework: star
-        no_target:
-        -  class: EffectSingle
-           sound: entity_endermen_teleport
-           sound_pitch: 0.1
-           sound_volume: 0.5
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 11
-             particle: spell_instant
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: "FFFFFF"
-           firework: burst
+             particleCount: 10
+             particleOffsetX: 0.2
+             particleOffsetY: 0.2
+             particleOffsetZ: 0.2
+        hit:
+        - class: EffectSingle
+          location: target
+          sound: entity_endermen_teleport
+          sound_pitch: 0.2
+          sound_volume: 0.8
+          effectlib:
+           class: Modified
+           iterations: 30
+           parameters:
+            radius: "max(1, (1 - (t / i)) * 5 - 2)"
+           effect:
+             class: Sphere
+             particle: redstone
+             color: "F0C0F0"
     parameters:
+        velocity: 500
         hitbox: true
         target_type: LivingEntity
         target: other_entity

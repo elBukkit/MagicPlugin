@@ -22,4 +22,7 @@ public interface Messages {
     String getLevelString(String templateName, float amount);
     String getLevelString(String templateName, float amount, float max);
     String getPercentageString(String templateName, float amount);
+
+    String formatLevelString(String message, float amount);
+    String formatLevelString(String message, float amount, float max);
 }

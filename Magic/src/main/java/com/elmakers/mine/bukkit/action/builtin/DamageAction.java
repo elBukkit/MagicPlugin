@@ -31,6 +31,7 @@ public class DamageAction extends BaseSpellAction
 	private Double knockbackResistance;
 	private Double damageMultiplier;
 	private double maxDistanceSquared;
+	private String damageType;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -59,6 +60,7 @@ public class DamageAction extends BaseSpellAction
         }
 		double maxDistance = parameters.getDouble("damage_max_distance");
 		maxDistanceSquared = maxDistance * maxDistance;
+		damageType = parameters.getString("damage_type");
     }
 
 	@Override
@@ -96,7 +98,8 @@ public class DamageAction extends BaseSpellAction
 				} else {
 					damage = entityDamage;
 				}
-				damage *= mage.getDamageMultiplier();
+				double mageMultiplier = mage.getDamageMultiplier(damageType);
+				damage *= mageMultiplier;
 				if (maxDistanceSquared > 0) {
 					double distanceSquared = context.getLocation().distanceSquared(entity.getLocation());
 					if (distanceSquared > maxDistanceSquared) {
@@ -108,13 +111,41 @@ public class DamageAction extends BaseSpellAction
 				}
 				if (damageMultiplier != null) {
 					damage *= damageMultiplier;
+					mageMultiplier *= damageMultiplier;
 				}
-				if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
-					mage.sendDebugMessage(ChatColor.RED + "Damaging (Magic) " + targetEntity.getType() + ": " + damage, 20);
+				if (damageType != null) {
+					Mage targetMage = controller.getRegisteredMage(targetEntity);
+					String targetAnnotation = "";
+					if (targetMage != null) {
+						targetMage.setLastDamageType(damageType);
+					} else  {
+						targetAnnotation = "*";
+					}
+					mage.sendDebugMessage(ChatColor.RED + "Damaging (" + ChatColor.DARK_RED + damageType + ChatColor.RED + ") x " + ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + targetAnnotation + ": " + ChatColor.RED + damage, 5);
+
+					// Have to do magic damage to preserve the source, it seems like this is only important for player
+					// mages since other plugins may be tracking kills.
+					if (mage.isPlayer() && controller.getDamageTypes().contains(damageType)) {
+						CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
+					} else {
+						CompatibilityUtils.damage(targetEntity, damage, mage.getEntity(), damageType);
+					}
+				} else if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
+					mage.sendDebugMessage(ChatColor.RED + "Damaging (Magic) x " +  ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + ": " + damage, 5);
 					CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
 				} else {
-					mage.sendDebugMessage(ChatColor.RED + "Damaging " + targetEntity.getType() + ": " + damage, 20);
+					mage.sendDebugMessage(ChatColor.RED + "Damaging x " + ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + ": " + damage, 5);
 					CompatibilityUtils.damage(targetEntity, damage, mage.getEntity());
+				}
+				
+				if (damage == (int)damage) {
+					context.addMessageParameter("damage", Integer.toString((int)damage));
+				} else {
+					context.addMessageParameter("damage", Double.toString(damage));
+				}
+				if (damageType != null && !damageType.isEmpty()) {
+					String typeDescription = context.getController().getMessages().get("damage_types." + damageType, damageType);
+					context.addMessageParameter("damage_type", typeDescription);
 				}
 			}
 		} finally {

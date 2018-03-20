@@ -19,8 +19,13 @@ fling:
            sound: entity_enderdragon_flap
            sound_volume: 1
            effectlib:
-             class: TraceEffect
+             class: Trace
              iterations: 30
+             particleOffsetX: 1
+             particleOffsetY: 1
+             particleOffsetZ: 1
+             particleCount: 10
+             speed: 2
              particle: spell
         land:
         -  sound: block_stone_step

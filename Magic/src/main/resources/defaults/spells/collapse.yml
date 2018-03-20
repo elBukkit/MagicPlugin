@@ -47,11 +47,25 @@ collapse:
         -  class: EffectSingle
            sound: magic.shimmer
            location: target
-           effectlib:
-               class: AtomEffect
-               particleNucleus: smoke_large
-               particleOrbital: redstone
-               iterations: 8
+        undo_block:
+        - location: target
+          use_block_location: true
+          effectlib:
+            class: Modified
+            period: 2
+            iterations: 8
+            parameters:
+              radius: "(1 - (t / i)) * 5 + 0.2"
+              particles: "(t / i) * 40"
+            effect:
+              class: Sphere
+              particle: block_crack
+              yOffset: 0
+              offset: 0,0.7,0
+              particleCount: 4
+              particleOffsetX: 0.1
+              particleOffsetY: 0.1
+              particleOffsetZ: 0.1
     parameters:
         velocity: 1500
         allow_max_range: false

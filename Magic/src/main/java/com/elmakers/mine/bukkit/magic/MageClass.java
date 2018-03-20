@@ -10,9 +10,10 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.Set;
 
-public class MageClass extends CasterProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
+public class MageClass extends TemplatedProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
     protected final MageClassTemplate template;
     protected final MageProperties mageProperties;
     protected final Mage mage;
@@ -67,6 +68,7 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
         return value;
     }
 
+    @Override
     public @Nonnull MageClassTemplate getTemplate() {
         return template;
     }
@@ -85,19 +87,21 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
     }
 
     @Override
-    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
-        super.describe(sender, ignoreProperties);
-        Set<String> hideKeys = getConfiguration().getKeys(false);
-        if (ignoreProperties != null) {
-            hideKeys.addAll(ignoreProperties);
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {
+        super.describe(sender, ignoreProperties, overriddenProperties);
+        if (overriddenProperties == null) {
+            overriddenProperties = new HashSet<>();
         }
-        template.describe(sender, hideKeys);
-        hideKeys.addAll(template.getConfiguration().getKeys(false));
+        Set<String> ownKeys = getConfiguration().getKeys(false);
+        overriddenProperties.addAll(ownKeys);
+        sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration for (" + ChatColor.DARK_GREEN + getKey() + ChatColor.GREEN + "):");
+        template.describe(sender, ignoreProperties, overriddenProperties);
+        overriddenProperties.addAll(template.getConfiguration().getKeys(false));
 
         MageClass parent = getParent();
         if (parent != null) {
             sender.sendMessage(ChatColor.AQUA + "Parent Class: " + ChatColor.GREEN + parent.getTemplate().getKey());
-            parent.describe(sender, hideKeys);
+            parent.describe(sender, ignoreProperties, overriddenProperties);
         }
     }
 
@@ -204,5 +208,59 @@ public class MageClass extends CasterProperties implements com.elmakers.mine.buk
     @Override
     public String getName() {
         return template.getName();
+    }
+
+    public boolean isLocked() {
+        if (super.getProperty("locked", false)) return true;
+        if (parent != null) return parent.isLocked();
+        return false;
+    }
+
+    public void unlock() {
+        configuration.set("locked", null);
+        if (parent != null) parent.unlock();
+    }
+
+    public void lock() {
+        configuration.set("locked", true);
+    }
+
+    @Override
+    public float getCostReduction() {
+        float costReduction = getFloat("cost_reduction");
+    	if (mage != null) {
+    		float reduction = mage.getCostReduction();
+    		return stackPassiveProperty(reduction, costReduction);
+		}
+        return costReduction;
+    }
+
+    public float getCooldownReduction() {
+        float cooldownReduction = getFloat("cooldown_reduction");
+    	if (mage != null) {
+    		float reduction = mage.getCooldownReduction();
+    		return stackPassiveProperty(reduction, cooldownReduction);
+		}
+		return cooldownReduction;
+	}
+
+	@Override
+    public boolean isCooldownFree() {
+		return getFloat("cooldown_reduction") > 1;
+	}
+
+	@Override
+	public float getConsumeReduction() {
+        float consumeReduction = getFloat("consume_reduction");
+    	if (mage != null) {
+    		float reduction = mage.getConsumeReduction();
+    		return stackPassiveProperty(reduction, consumeReduction);
+		}
+		return consumeReduction;
+	}
+
+    @Override
+    public float getCostScale() {
+        return 1.0f;
     }
 }

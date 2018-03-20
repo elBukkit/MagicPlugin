@@ -148,6 +148,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unbind");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "save");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "delete");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "levelspells");
 
 			Collection<String> allWands = api.getWandKeys();
 			for (String wandKey : allWands) {
@@ -176,6 +177,10 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
 				for (String key : BaseMagicProperties.PROPERTY_KEYS) {
 					options.add(key);
+				}
+
+				for (String protection : api.getController().getDamageTypes()) {
+					options.add("protection." + protection);
 				}
 			}
 
@@ -460,6 +465,13 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandOrganize(sender, player);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("levelspells"))
+		{
+			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+			onWandLevelSpells(sender, player, args2);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("fill"))
@@ -1037,11 +1049,32 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			}
 		}
 
+		String inheritTemplate = wand.getTemplateKey();
 		YamlConfiguration wandConfig = new YamlConfiguration();
 		ConfigurationSection wandSection = wandConfig.createSection(template);
 		wand.save(wandSection, true);
 		wandSection.set("creator_id", player.getUniqueId().toString());
 		wandSection.set("creator", player.getName());
+
+		// Handle the case of overwriting a template, which requires special behavior to avoid the new template
+		// inheriting from itself.
+		if (inheritTemplate != null && inheritTemplate.equals(template)) {
+			String oldTemplate = null;
+			if (existing != null) {
+				// This gives us the collapsed configuration, including inherited values.
+				// We just want the ones changed by the template we are replacing, though.
+				ConfigurationSection templateConfig = existing.getConfiguration();
+				WandTemplate parent = existing.getParent();
+				if (parent != null) {
+					oldTemplate = parent.getKey();
+					ConfigurationSection parentConfig = parent.getConfiguration();
+					templateConfig = ConfigurationUtils.subtractConfiguration(templateConfig, parentConfig);
+				}
+
+				ConfigurationUtils.addConfigurations(wandSection, templateConfig, false);
+			}
+			wandSection.set("inherit", oldTemplate);
+		}
 
 		File wandFolder = new File(controller.getConfigFolder(), "wands");
 		File wandFile = new File(wandFolder, template + ".yml");
@@ -1066,11 +1099,31 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		sender.sendMessage(message);
 		return true;
 	}
+
+	public boolean onWandLevelSpells(CommandSender sender, Player player, String[] parameters)
+	{
+		Integer maxLevel = null;
+		if (parameters.length > 0) {
+			try {
+				maxLevel = Integer.parseInt(parameters[0]);
+			} catch (Exception ex) {
+				sender.sendMessage("Usage: /wand levelspells <level>");
+				return true;
+			}
+		}
+
+		Wand wand = checkWand(sender, player);
+		if (wand == null) {
+			return true;
+		}
+
+		return onLevelSpells("wand", sender, player, wand, maxLevel);
+	}
 	
 	public boolean onWandAdd(CommandSender sender, Player player, String[] parameters)
 	{
 		if (parameters.length < 1) {
-			sender.sendMessage("Use: /wand add <spell|material> [material:data]");
+			sender.sendMessage("Usage: /wand add <spell|material> [material:data]");
 			return true;
 		}
 

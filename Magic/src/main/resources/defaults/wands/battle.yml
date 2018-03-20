@@ -2,10 +2,5 @@
 # A starter battle wand
 #
 battle:
-    inherit: base_sword
-    class: battle_mage
-    icon: gold_sword:1
-    migrate_icon: gold_sword
-    effect_color: '11FF11'
-    protection_physical: 0.3
-
+  hidden: true
+  migrate_to: magicsword

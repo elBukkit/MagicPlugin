@@ -29,8 +29,8 @@ stream:
       projectile:
        - location: origin
          effectlib:
-           class: SphereEffect
-           particle: drip_water
+           class: Sphere
+           particle: water_splash
            radius: 1
            particles: 10
     parameters:

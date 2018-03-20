@@ -17,12 +17,42 @@ wither:
             - class: PotionEffect
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_wither_shoot
+        - sound: entity_wither_shoot
+          sound_pitch: 0.9
+        projectile:
+        - class: EffectSingle
+          location: origin
+          effectlib:
+             class: Sphere
+             iterations: 10
+             period: 2
+             particles: 5
+             particle: redstone
+             color: "010101"
+             disappearWithOriginEntity: true
+        hit:
+        - location: target
+          sound: entity_wither_break_block
+          sound_pitch: 0.8
+          source_location: body
+          effectlib:
+           class: Modified
+           duration: $duration
+           parameters:
+            size: "(1 - (t / i)) * 1.5 + 0.5"
+           effect:
+             class: AnimatedBall
+             particle: smoke_normal
+             particleCount: 20
+             particleOffsetX: 0.05
+             particleOffsetY: 0.05
+             particleOffsetZ: 0.05
+             yFactor: 1
     parameters:
         target: none
         projectile: WitherSkull
-        effect_wither: 160,2
+        effect_wither: 2
+        duration: 5000
         radius: 2
         count: 1
         undo: 15000
@@ -38,9 +68,11 @@ wither|2:
     parameters:
        count: 3
        radius: 3
+       duration: 8000
 
 wither|3:
     parameters:
        count: 4
        radius: 4
+       duration: 10000
 

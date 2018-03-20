@@ -4,8 +4,6 @@ architect:
     icon: wood_hoe:5
     migrate_icon: gold_pickaxe
     effect_color: '8B008B'
-    protection_falling: 1
-    protection: 1
     mana_max: 500
     mana: 500
     mana_regeneration: 100

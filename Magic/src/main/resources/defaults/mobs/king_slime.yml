@@ -1,0 +1,11 @@
+kingslime:
+  name: "King Slime"
+  type: slime
+  size: 18
+  interval: 3000
+  cast_requires_target: false
+  triggers:
+    interval:
+      cast:
+        none: 100
+        "rubberize pdy -1 pdx 0 pdz 0": 50

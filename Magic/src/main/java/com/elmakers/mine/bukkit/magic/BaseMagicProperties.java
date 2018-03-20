@@ -30,13 +30,13 @@ public class BaseMagicProperties implements MagicProperties {
 
     private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
     public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
-            "active_spell", "active_brush",
+            "active_spell", "active_brush", "alternate_spell", "alternate_spell2",
             "path", "template", "passive",
             "mana", "mana_regeneration", "mana_max", "mana_max_boost",
             "mana_regeneration_boost",
             "mana_per_damage",
             "bound", "soul", "has_uses", "uses", "upgrade", "indestructible",
-            "undroppable",
+            "undroppable", "boostable",
             "consume_reduction", "cost_reduction", "cooldown_reduction",
             "effect_bubbles", "effect_color",
             "effect_particle", "effect_particle_count", "effect_particle_data",
@@ -45,7 +45,7 @@ public class BaseMagicProperties implements MagicProperties {
             "effect_particle_radius", "effect_particle_offset",
             "effect_sound", "effect_sound_interval",
             "cast_spell", "cast_parameters", "cast_interval",
-            "cast_min_velocity", "cast_velocity_direction",
+            "cast_min_velocity", "cast_velocity_direction", "cast_min_bowpull",
             "hotbar_count", "hotbar",
             "icon", "icon_inactive", "icon_inactive_delay", "mode",
             "active_effects",
@@ -53,8 +53,7 @@ public class BaseMagicProperties implements MagicProperties {
             "keep", "locked", "quiet", "force", "rename",
             "rename_description",
             "power", "overrides",
-            "protection", "protection_physical", "protection_projectiles",
-            "protection_falling", "protection_fire", "protection_explosions",
+            "protection",
             "potion_effects",
             "brushes", "brush_inventory", "spells", "spell_inventory", "spell_levels",
             "powered", "protected", "heroes",
@@ -62,7 +61,7 @@ public class BaseMagicProperties implements MagicProperties {
             "quick_cast", "left_click", "right_click", "drop", "swap",
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
             "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
-            "sp_multiplier", "class", "consume_spell"
+            "sp_multiplier", "class", "consume_spell", "stack"
     );
 
     public final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
@@ -105,6 +104,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getProperty(String key, T defaultValue) {
         Preconditions.checkNotNull(key, "key");
         Preconditions.checkNotNull(defaultValue, "defaultValue");
@@ -115,6 +115,21 @@ public class BaseMagicProperties implements MagicProperties {
         Object value = getProperty(key);
         if (value != null && clazz.isInstance(value)) {
             return clazz.cast(value);
+        }
+        if (value != null && value instanceof Number && defaultValue instanceof Number) {
+            if (defaultValue instanceof Double) {
+                return (T)(Double)NumberConversions.toDouble(value);
+            } else if (defaultValue instanceof Integer) {
+                return (T)(Integer)NumberConversions.toInt(value);
+            } else if (defaultValue instanceof Byte) {
+                return (T)(Byte)NumberConversions.toByte(value);
+            } else if (defaultValue instanceof Float) {
+                return (T)(Float)NumberConversions.toFloat(value);
+            } else if (defaultValue instanceof Long) {
+                return (T)(Long)NumberConversions.toLong(value);
+            } else if (defaultValue instanceof Short) {
+                return (T)(Short)NumberConversions.toShort(value);
+            }
         }
 
         return defaultValue;
@@ -251,17 +266,25 @@ public class BaseMagicProperties implements MagicProperties {
         return InventoryUtils.describeProperty(property, MAX_PROPERTY_DISPLAY_LENGTH);
     }
 
-    @Override
-    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {
         ConfigurationSection itemConfig = getConfiguration();
         Set<String> keys = itemConfig.getKeys(false);
         for (String key : keys) {
             Object value = itemConfig.get(key);
             if (value != null && (ignoreProperties == null || !ignoreProperties.contains(key))) {
-                String propertyColor = PROPERTY_KEYS.contains(key) ? ChatColor.DARK_AQUA.toString() : ChatColor.DARK_GREEN.toString();
-                sender.sendMessage(propertyColor + key + ChatColor.GRAY + ": " + ChatColor.WHITE + describeProperty(value));
+                ChatColor propertyColor = ChatColor.GRAY;
+                if (overriddenProperties == null || !overriddenProperties.contains(key)) {
+                    propertyColor = PROPERTY_KEYS.contains(key) ? ChatColor.DARK_AQUA : ChatColor.DARK_GREEN;
+                }
+
+                sender.sendMessage(propertyColor.toString() + key + ChatColor.GRAY + ": " + ChatColor.WHITE + describeProperty(value));
             }
         }
+    }
+
+    @Override
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
+        describe(sender, ignoreProperties, null);
     }
 
     @Override

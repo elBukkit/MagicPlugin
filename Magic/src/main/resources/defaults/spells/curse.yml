@@ -30,6 +30,12 @@ curse:
         - particle: redstone
           color: 380B61
           location: target
+        - particle: smoke_normal
+          particle_count: 10
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+          location: target
         hit:
         -  class: EffectSingle
            location: target
@@ -43,17 +49,33 @@ curse:
              iterations: 16
              particle: spell_mob
              color: 210B61
-        -  class: EffectSingle
-           location: target
-           requires_entity_target: true
+        hit_entity:
+        -  location: target
+           source_location: body
+           effectlib:
+             class: Modified
+             duration: $duration
+             parameters:
+                 radius: "1.5 * sin(t) + 0.5"
+             effect:
+                 class: SphereEffect
+                 particle: spell_mob
+                 color: 210B61
+                 particles: 20
+                 disappearWithOriginEntity: true
+        -  location: target
+           source_location: body
            effectlib:
              class: SphereEffect
-             iterations: 45
-             period: .1
-             particle: spell_mob
-             color: 210B61
-             radius: 1
-             particles: 20
+             iterations: 4
+             particle: villager_happy
+             radius: 0.8
+             particles: 2
+             particleCount: 10
+             particleOffsetX: 0.2
+             particleOffsetY: 0.2
+             particleOffsetZ: 0.2
+             disappearWithOriginEntity: true
     costs:
         mana: 50
     parameters:

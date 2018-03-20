@@ -1,6 +1,5 @@
-# Other default craftable items
 battle:
-  output: battle
+  output: magicsword
   output_type: wand
   materials:
     o: nether_star

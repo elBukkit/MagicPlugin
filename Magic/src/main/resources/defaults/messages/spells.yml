@@ -21,7 +21,7 @@ spells:
         description: Opens the target door
         cast: Let me in!
     admission|2:
-        upgrade_description: "&r&b&bull; &6Now opens iron doors"
+        upgrade_description: "Now opens iron doors"
     secure:
         name: Secure
         description: Secures containers
@@ -35,7 +35,7 @@ spells:
         key_name_alternate: "&6$name's &eKey"
         key_description: "&6$name's &eKey\nNeeded to open your locked containers"
         fail: You can't lock that!
-        upgrade_description: "&r&b&bull; &6Now locks furnaces and other containers"
+        upgrade_description: "Now locks furnaces and other containers"
     lockpick:
         name: Lockpick
         description: Unlocks locked containers
@@ -58,15 +58,15 @@ spells:
         name: Curse
         description: Slows down and weakens the target
         cast: You curse $target
-        upgrade_description: "&r&b&bull; &6Now confuses as well"
+        upgrade_description: "Now confuses as well"
     broom:
-        name: Broom
+        name: Broom Skill
         cast: Your broom springs to life!
         deactivate: Your broom quiets down.
         crash: CRASH!
         fail: Not enough room to take off!
         cursed: You are too stunned to fly!
-        upgrade_description: "&r&b&bull; &6Increased duration, speed and handling"
+        upgrade_description: "Increased duration, speed and handling"
     superbroom:
         name: SuperBroom
         cast: Your wand springs to life!
@@ -78,9 +78,12 @@ spells:
         description: Makes you temporarily superpowered
         cast_self: You give yourself a boon
         cast: You give $target a boon
-        upgrade_description: "&r&b&bull; &6Increased duration"
+    boon|2:
+        upgrade_description: "Gives a jump boost"
+    boon|3:
+        upgrade_description: "Increases speed effect"
     boon|4:
-        upgrade_description: "&r&b&bull; &6Adds resistance and saturation"
+        upgrade_description: "Adds night vision"
     blessing:
         name: Blessing
         description: Bless a large area of followers
@@ -106,17 +109,17 @@ spells:
         description: Create a platform in front of you
         cast_finish: Filled $count blocks with $material
     platform|2:
-        upgrade_description: "&r&b&bull; &6Increased size"
+        upgrade_description: "Increased size"
     platform|4:
-        upgrade_description: "&r&b&bull; &6Now builds with your brush"
+        upgrade_description: "Now builds with your brush"
     reflect:
         name: Reflect
         description: Reflect spells cast against you
-        upgrade_description: "&r&b&bull; &6Increased size and reflectivity"
+        upgrade_description: "Increased size and reflectivity"
     shell:
         name: Shell
         description: Create a reflective shell
-        upgrade_description: "&r&b&bull; &6Increased durability and reflectivity"
+        upgrade_description: "Increased durability and reflectivity"
     tag:
         name: Tag
         description: Leave a sign with your name
@@ -138,7 +141,19 @@ spells:
     arrow:
         name: Arrow
         description: Fire a magic arrow
-        upgrade_description: "&r&b&bull; &6Increased damage and accuracy"
+        upgrade_description: "Increased damage and accuracy"
+    arrow_bomb:
+        name: Bomb Arrow
+        description: Fire an exploding arrow
+    arrow_poison:
+        name: Poison Arrow
+        description: Fire a arrow that bursts into a poison cloud
+    arrow_regular:
+        name: Normal Arrow
+        description: Fire a normal arrow
+    arrow_blink:
+        name: Blink Arrow
+        description: Teleport to the location where your arrow lands
     toss:
         name: Toss
         description: Toss a block
@@ -173,13 +188,13 @@ spells:
         name: Frost
         description: Freeze water and create snow
         cast_finish: Frosted $count blocks
-        upgrade_description: "&r&b&bull; &6Larger radius, increased slow duration"
+        upgrade_description: "Larger radius, increased slow duration"
     harden:
         name: Harden
         description: Make the target blocks stronger
         cast: Hardened $count blocks
     harden|2:
-        upgrade_description: "&r&b&bull; &6Now converts to obsidian"
+        upgrade_description: "Now converts to obsidian"
     tree:
         name: Tree
         description: Instantly grow a tree
@@ -195,16 +210,16 @@ spells:
         description: Disarm your opponent
         cast: You disarm your target
         cast_self: You disarm yourself
-        upgrade_description: "&r&b&bull; &6Descreased chance of backfire and fizzle"
+        upgrade_description: "Descreased chance of backfire and fizzle"
     disarm|3:
-        upgrade_description: "&r&b&bull; &6No chance of backfire and fizzle"
+        upgrade_description: "No chance of backfire and fizzle"
     heal:
         name: Heal
         description: Heal yourself or others
         usage: Can be interrupted by damage!
         cast: You heal $target
         cast_self: You heal yourself
-        upgrade_description: "&r&b&bull; &6Cooldown decreased"
+        upgrade_description: "Cooldown decreased"
     healing:
         name: Healing
         description: Heal everyone around you
@@ -214,13 +229,13 @@ spells:
         description: Remove negative effects
         cast: You cure $target
         cast_self: You cure yourself
-        upgrade_description: "&r&b&bull; &6Now cures hunger"
+        upgrade_description: "Now cures hunger"
     cure|2:
-        upgrade_description: "&r&b&bull; &6Now removes wither and weakness"
+        upgrade_description: "Now removes wither and weakness"
     cure|3:
-        upgrade_description: "&r&b&bull; &6Now negates Silence"
+        upgrade_description: "Now negates Silence"
     cure|4:
-        upgrade_description: "&r&b&bull; &6Now cures hunger"
+        upgrade_description: "Now cures hunger"
     music:
         name: Music
         description: Play some tunes
@@ -234,7 +249,7 @@ spells:
         cast_player_message: "a:&d&o$player &r&5folded space"
         target_selected: You captured $target
         cancel: Released target
-        upgrade_description: "&r&b&bull; &6Aim down and cast to gather players to you"
+        upgrade_description: "Aim down and cast to gather players to you"
     supergather:
         name: SuperGather
         description: Capture players and teleport them
@@ -252,15 +267,15 @@ spells:
         name: Neutron Bomb
         description: Damage and stun all entities in a wide radius
         cast: Kill all the things!
-        upgrade_description: "&r&b&bull; &6Increased radius"
+        upgrade_description: "Increased radius"
     shuriken:
         name: Shuriken
         description: Throw a bouncing projectile
-        upgrade_description: "&r&b&bull; &6Increased damage"
+        upgrade_description: "Increased damage"
     wave:
         name: Wave
         description: Unleash a concussive wave
-        upgrade_description: "&r&b&bull; &6Increased size and force"
+        upgrade_description: "Increased size and force"
     weather:
         name: Weather
         description: Change the weather
@@ -269,7 +284,7 @@ spells:
     fling:
         name: Fling
         description: Sends you flying in the target direction
-        upgrade_description: "&r&b&bull; &6Increased speed, reduced cooldown"
+        upgrade_description: "Increased speed, reduced cooldown"
     leap:
         name: Leap
         description: Take a big leap
@@ -343,7 +358,7 @@ spells:
         description: Creates a torch or glowstone
         no_target: Can't put a torch there
         cast: Flame on!
-        upgrade_description: "&r&b&bull; &6Reduced cooldown"
+        upgrade_description: "Reduced cooldown"
     supertorch:
         name: SuperTorch
         description: Creates a permanent torch
@@ -402,7 +417,7 @@ spells:
         description: Create a safety bubble
         usage: Cast underneath yourself while falling
         cast: Sploosh
-        upgrade_description: "&r&b&bull; &6Larger water bubble"
+        upgrade_description: "Larger water bubble"
     paint:
         name: Paint
         description: Fill a single block
@@ -422,12 +437,11 @@ spells:
         name: Arrow Rain
         description: Fire a volley of arrows
     arrowrain|2:
-        upgrade_description: "&r&b&bull; &6More, flaming arrows"
+        upgrade_description: "More, flaming arrows"
     gatling:
         name: Gatling Gun
         description: Fire a stream of arrows
-    gatling|2:
-        upgrade_description: "&r&b&bull; &6Arrows do more damage"
+        upgrade_description: "Longer fire time, shorter warmup"
     meteor:
         name: Meteor Shower
         description: Fire death from above
@@ -436,11 +450,12 @@ spells:
         name: Carpet Bomb
         description: Rain death from above
         cast: You call in an air strike
+        upgrade_description: "More bombs!"
     poison:
         name: Poison
         description: Poison your target
         cast: You poison $target
-        upgrade_description: "&r&b&bull; &6Increased poison duration"
+        upgrade_description: "Increased poison duration"
     light:
         name: Light
         description: Light up the dark
@@ -449,9 +464,9 @@ spells:
         description: Strike lighting at your target
         cast: Ka-Zap!
     lightning|2:
-        upgrade_description: "&r&b&bull; &6Increased accuracy"
+        upgrade_description: "Increased accuracy"
     lightning|3:
-        upgrade_description: "&r&b&bull; &6More lightning"
+        upgrade_description: "More lightning"
         cast: Ka-POW!
     smite:
         name: Smite
@@ -461,7 +476,7 @@ spells:
         name: Nuke
         description: Create a huge explosion
         cast: YIKES!
-        upgrade_description: "&r&b&bull; &6Larger radius, more destruction"
+        upgrade_description: "Larger radius, more destruction"
     day:
         name: Sunny Day
         description: Make it a lovely day
@@ -484,11 +499,12 @@ spells:
         name: Grenade
         description: Toss a primed grenade
     grenade|2:
-        upgrade_description: "&r&b&bull; &6Increased damage and fire"
+        upgrade_description: "Increased damage and fire"
     cluster:
         name: Cluster Bomb
         description: Toss a splitting grenade
         cast: You toss a cluster bomb
+        upgrade_description: "Cluster bomb splits into more bombs"
     convert:
         name: Convert
         description: Convert a spherical area of blocks
@@ -498,7 +514,7 @@ spells:
         name: Collapse
         description: Collapse a spherical area of blocks
         cast_finish: Collapsed $count blocks
-        upgrade_description: "&r&b&bull; &6Increased radius, breaks more types of blocks"
+        upgrade_description: "Increased radius, breaks more types of blocks"
     superconvert:
         name: SuperConvert
         description: Convert a large sphere of blocks
@@ -642,7 +658,7 @@ spells:
         name: Blast
         description: Explode weaker objects
         cast_finish: Blasted $count blocks
-        upgrade_description: "&r&b&bull; &6Increased radius, breaks stronger blocks"
+        upgrade_description: "Increased radius, breaks stronger blocks"
     earthquake:
         name: Earthquake
         description: Create an earthquake
@@ -677,14 +693,14 @@ spells:
         cast_player_message: "a:&d&o$player &r&5countered your &3&o$spell &r&5cast!"
         fail: Nothing to counter
     counterspell|2:
-        upgrade_description: "&r&b&bull; &6No chance of fizzle"
+        upgrade_description: "No chance of fizzle"
     push:
         name: Push
         description: Push things away from you
         alternate: Get away!
-        upgrade_description: "&r&b&bull; &6Pushes with more force"
+        upgrade_description: "Pushes with more force"
     push|4:
-        upgrade_description: "&r&b&bull; &6Aim down and cast for area of effect alternate"
+        upgrade_description: "Aim down and cast for area of effect alternate"
     farm:
         name: Herd
         description: Create a herd
@@ -694,7 +710,7 @@ spells:
         name: Breach
         description: Temporarily destroy the target surface
         cast_finish: Breached $count blocks
-        upgrade_description: "&r&b&bull; &6Size increased"
+        upgrade_description: "Size increased"
     tesseract:
         name: Tesseract
         description: Blink a short distance
@@ -703,24 +719,24 @@ spells:
         name: Mine
         description: Mines and drops the targeted ores
         cast_finish: Mined some ore
-        upgrade_description: "&r&b&bull; &6Mines more blocks"
+        upgrade_description: "Mines more blocks"
     mine|4:
-        upgrade_description: "&r&b&bull; &6Now mines full blocks"
+        upgrade_description: "Now mines full blocks"
     chop:
         name: Chop
         description: Fell a tree in one cast
         cast_finish: TIMBER!
-        upgrade_description: "&r&b&bull; &6Chops more blocks"
+        upgrade_description: "Chops more blocks"
     peek:
         name: Peek
         description: Temporarily glass the target surface
         cast_finish: Glassed $count blocks
-        upgrade_description: "&r&b&bull; &6Window size increased"
+        upgrade_description: "Window size increased"
     sandblast:
         name: Sandblast
         description: Drop a big block of sand
         cast_finish: Created $count falling sand blocks
-        upgrade_description: "&r&b&bull; &6Drops more sand"
+        upgrade_description: "Drops more sand"
     fill:
         name: Fill
         description: Fill a selected cuboid area
@@ -759,7 +775,7 @@ spells:
         name: Fire
         description: Light fires from a distance
         cast: You start a fire
-        upgrade_description: "&r&b&bull; &6Increased radius, longer burn time"
+        upgrade_description: "Increased radius, longer burn time"
     alter:
         name: Alter
         description: Alter certain objects
@@ -785,11 +801,11 @@ spells:
         description: Create a solid blob
         cast_finish: Blobbed $count blocks with $material
     blob|2:
-        upgrade_description: "&r&b&bull; &6Now builds with clay"
+        upgrade_description: "Now builds with clay"
     blob|3:
-        upgrade_description: "&r&b&bull; &6Now builds with obsidian"
+        upgrade_description: "Now builds with obsidian"
     blob|4:
-        upgrade_description: "&r&b&bull; &6Now builds with your brush"
+        upgrade_description: "Now builds with your brush"
     walls:
         name: Walls
         description: Create some walls around your target
@@ -827,15 +843,15 @@ spells:
         teleport: Blink!
         cast: ""
     blink|2:
-        upgrade_description: "&r&b&bull; &6Increased range"
+        upgrade_description: "Increased range"
     blink|3:
-        upgrade_description: "&r&b&bull; &6Increased range, can ascend up to the surface"
+        upgrade_description: "Increased range, can ascend up to the surface"
     blink|4:
-        upgrade_description: "&r&b&bull; &6Increased range, can descend through the ground"
+        upgrade_description: "Increased range, can descend through the ground"
     blink|5:
-        upgrade_description: "&r&b&bull; &6Increased range, will pass through solid objects"
+        upgrade_description: "Increased range, will pass through solid objects"
     blink|6:
-        upgrade_description: "&r&b&bull; &6You can now Blink up into the air"
+        upgrade_description: "You can now Blink up into the air"
     absorb:
         name: Absorb
         description: Absorb some of the target
@@ -849,7 +865,7 @@ spells:
         removed: You remove your magical hat
         hat_name: Hat of $hat
         hat_lore: Will disappear if clicked
-        upgrade_description: "&r&b&bull; &6Increased duration"
+        upgrade_description: "Increased duration"
     wear:
         name: Wear
         description: Right-click to wear
@@ -874,6 +890,7 @@ spells:
         name: Lava
         description: Fire a stream of lava
         cast: You fire a stream of lava
+        upgrade_description: "More lava"
     earth:
         name: Earth
         description: Construct a temporary line of blocks
@@ -891,6 +908,7 @@ spells:
         name: Flamethrower
         description: Burn, baby, burn!
         cast: You fire a stream of flame
+        upgrade_description: "Longer fire stream"
     stash:
         name: Stash
         description: A place to keep your stuff
@@ -909,17 +927,17 @@ spells:
         name: SuperLaser
         description: Permanently destroy a line of blocks
         cast_finish: Lasered $count blocks
-        upgrade_description: "&r&b&bull; &6Longer beam duration, breaks more types of blocks"
+        upgrade_description: "Longer beam duration, breaks more types of blocks"
     laser:
         name: Laser
         description: Destroy a line of blocks
         cast_finish: Lasered $count blocks
-        upgrade_description: "&r&b&bull; &6Larger radius, increased damage"
+        upgrade_description: "Larger radius, increased damage"
     stream:
         name: Stream
         description: Spray a stream of water
         cast: You spray a stream of water
-        upgrade_description: "&r&b&bull; &6Increased damage and range"
+        upgrade_description: "Increased damage and range"
     wolf:
         name: Wolf
         description: Create some wolf familiars
@@ -1018,9 +1036,9 @@ spells:
         add_friend: "&bYou have added &5$name &bas a &6Recall &bdestination!"
         remove_friend: "&cYou have removed &5$name &cas a &6Recall &cdestination!"
     recall|2:
-        upgrade_description: "&r&b&bull; &6Unlock last death location"
+        upgrade_description: "Unlock last death location"
     recall|3:
-        upgrade_description: "&r&b&bull; &6Unlock marker, aim down to set location."
+        upgrade_description: "Unlock marker, aim down to set location."
         usage: Has a 5-second warmup. Cast down to set a marker
     warpunlock:
       name: Unlock Warp
@@ -1034,13 +1052,13 @@ spells:
         description: Levitate yourself up into the air
         cast: You feel lighter
         cancel: You feel heavier
-        upgrade_description: "&r&b&bull; &6Fly faster, reduced cooldown"
+        upgrade_description: "Fly faster, reduced cooldown"
     boom:
         name: Boom
         description: Create an explosion
         cast: Boom!
     boom|2:
-        upgrade_description: "&r&b&bull; &6Greater damage, breaks blocks"
+        upgrade_description: "Greater damage, breaks blocks"
     box:
         name: Box
         description: Create a large hollow box
@@ -1069,15 +1087,15 @@ spells:
         name: Fireball
         description: Cast an exploding fireball
     fireball|2:
-        upgrade_description: "&r&b&bull; &6Increased accuracy"
+        upgrade_description: "Increased accuracy"
     fireball|3:
-        upgrade_description: "&r&b&bull; &6Pinpoint accuracy and speed"
+        upgrade_description: "Pinpoint accuracy and speed"
     fireball|4:
-        upgrade_description: "&r&b&bull; &6Now starts fires"
+        upgrade_description: "Now starts fires"
     wither:
         name: Wither
         description: Shoot wither skulls
-        upgrade_description: "&r&b&bull; &6More wither skulls"
+        upgrade_description: "More wither skulls"
     map:
         name: Map
         description: Generate a map
@@ -1094,18 +1112,24 @@ spells:
         name: Tornado
         description: Spawn a destructive whirlwind
         cast: Duck and cover!
-        upgrade_description: "&r&b&bull; &6Now destroys structures"
+        upgrade_description: "Now destroys structures"
     transmute:
         name: Transmute
         description: Convert your last construction
         no_target: Nothing to transmute
         cast: You transmute your structure to $material
+    masterattack:
+        name: Master Blast
+        insufficient_resources: ""
+        cooldown: ""
     missile:
         name: Magic Missile
         description: Fire a bolt of pure magic
-        cast: You fire a missile at $target
+        cast_target: "Your missile deals $damage damage to $target"
+        cast_player_message: "$caster did $damage damage to you with $spell"
+        cast: You fire a missile
         no_target: You fire a missile
-        upgrade_description: "&r&b&bull; &6Increased damage and range"
+        upgrade_description: "Increased damage and range"
     railgun:
         name: Railgun
         description: Blast through blocks and multiple targets
@@ -1128,26 +1152,26 @@ spells:
         name: Sticky Bomb
         description: Toss a sticky bomb that explodes after 5 seconds
         cast: You toss a sticky bomb
-        upgrade_description: "&r&b&bull; &6More accurate, larger blast"
+        upgrade_description: "More accurate, larger blast"
     homing:
         name: Homing Missile
         description: Shoot a bolt of energy that will track your target
         cast: You fire a homing missile at $target
         lock_on: "&d&o$player&r&5 has locked on to you!"
         cast_player_message: "a:&d&o$player&r&5's $spell hit you"
-        upgrade_description: "&r&b&bull; &6Faster missile, more damage"
+        upgrade_description: "Faster missile, more damage"
     fury:
         name: Fury
         description: Launch several homing missiles into the air
         cast: You launch of a fury of missiles
         cast_player_message: "a:&d&o$player&r&5's $spell hit you"
-        upgrade_description: "&r&b&bull; &6More missiles"
+        upgrade_description: "More missiles"
     chainlightning:
         name: Chain Lightning
         description: Shoot a bolt of electricity that splits to hit multiple targets
         cast: You create some chain lightning
         cast_player_message: "a:&d&o$player&r&5's $spell hit you"
-        upgrade_description: "&r&b&bull; &6Chains to more targets"
+        upgrade_description: "Chains to more targets"
     blind:
         name: Blind
         description: Blind your target
@@ -1167,16 +1191,19 @@ spells:
         description: Deal lethal damage to your target
         cast_player_message: ""
         cast: DIE!
-        upgrade_description: "&r&b&bull; &6Faster, larger projectile and shorter warmup"
+        upgrade_description: "Faster, larger projectile and shorter warmup"
     superkill:
         name: SuperKill
         description: Kills your target, no questions asked
         cast: SUPER DIE!
+    damage:
+        name: Damage
+        description: "A spell for testing different damage types.\nNote that the caster will not get credit for kills made with alternate vanilla damage types from other plugins since the damage source is lost."
     torture:
         name: Torture
         description: Mercilessly torture your enemy
         cast: Feel my wrath!
-        upgrade_description: "&r&b&bull; &6Increased damage and duration"
+        upgrade_description: "Increased damage and duration"
     boomstown:
         name: One-Way Ticket to Boomstown
         description: Send your target packing to an explosive destination
@@ -1193,7 +1220,7 @@ spells:
         cast: Debugging $target
         deactivate: Disabled debug on $target
         alternate_up: Disabled debug on all entities
-        alternate_up: Debugging yourself
+        alternate_down: Debugging yourself
     superfly:
         name: SuperFly
         description: For videographers
@@ -1203,12 +1230,12 @@ spells:
         name: Petrify
         description: Immobilize your target
         cast: You petrify $target.
-        upgrade_description: "&r&b&bull; &6Increased duration"
+        upgrade_description: "Increased duration"
     polymorph:
         name: Polymorph
         description: Turn your target into a sheep
         cast: You polymorph $target.
-        upgrade_description: "&r&b&bull; &6Increased duration"
+        upgrade_description: "Increased duration"
     entangle:
         name: Entangle
         description: Trap your target with ropes
@@ -1217,12 +1244,12 @@ spells:
         name: Wound
         description: Physically damage your target
         cast: You slash $target.
-        upgrade_description: "&r&b&bull; &6Increased damage"
+        upgrade_description: "Increased damage"
     stun:
         name: Stun
         description: Stun and damage your target
         cast: You throw a stun ball
-        upgrade_description: "&r&b&bull; &6Increased damage and stun duration"
+        upgrade_description: "Increased damage and stun duration"
     webbing:
         name: Web Attack
         description: An annoying spider attack
@@ -1247,7 +1274,7 @@ spells:
         name: Skills
         descriptions: Shows available skills, drag a skill to the hotbar to use it
     upgrades:
-        name: Spell Progress
+        name: Check Spell Progress
         description: Shows progress in upgrading your current spells
         fail: You must be holding a wand!
         upgrade_name_change: "&r&4Upgrades: &r$name"
@@ -1265,9 +1292,9 @@ spells:
         description: Find nearby life
         cast: You sense $target nearby
         no_target: It's quiet ... too quiet!
-        upgrade_description: "&r&b&bull; &6Larger search radius"
+        upgrade_description: "Larger search radius"
     tracking|4:
-        upgrade_description: "&r&b&bull; &6Sneak-cast to look only for players"
+        upgrade_description: "Sneak-cast to look only for players"
     enchantwand:
         name: Upgrade Wand
         description: Add levels to your wand
@@ -1294,9 +1321,9 @@ spells:
         no_wand: You must be holding a wand!
         fail: ""
     spellshop:
-        name: Spell Shop
+        name: Learn Spells
         title: "$path Spells ($balance)"
-        description: Learn new spells
+        description: "Spend Spell Points to learn new spells.\nWhen you have learned all the required spells on your current path, you will rank up to the next path!"
         cost_lore: "Costs: $cost"
         no_items: There are no spells for you to buy here
         no_path: You may not learn with that $wand.
@@ -1346,6 +1373,7 @@ spells:
         title: "Magic Progress"
         selected: ""
         cast_fail: ""
+        no_template: "&cYou may not customize that $wand."
     appearanceshop:
         name: Wand Appearances
         description: Change the look of your wand
@@ -1542,3 +1570,32 @@ spells:
     add_protection:
       name: Add Protection
       description: "Adds protection from all damage types to your wand.\nThis protection is only active while you are holding your wand."
+    add_fall_protection:
+      name: Add Fall Protection
+      description: "Adds protection from falling to your wand.\nThis protection is only active while you are holding your wand."
+    add_fire_protection:
+      name: Add Fire Protection
+      description: "Adds protection from fire to your wand.\nThis protection is only active while you are holding your wand."
+    add_physical_protection:
+      name: Add Physical Protection
+      description: "Adds protection from physical attacks to your wand.\nThis protection is only active while you are holding your wand."
+    add_projectile_protection:
+      name: Add Projectile Protection
+      description: "Adds protection from physical projectiles to your wand.\nThis protection is only active while you are holding your wand."
+    add_explosion_protection:
+      name: Add Explosion Protection
+      description: "Adds protection from explosions to your wand.\nThis protection is only active while you are holding your wand."
+    add_damage:
+      name: Increase Damage
+      description: "Increases the amount of damage done when hitting something with your weapon (not spell casting)."
+    add_sharpness:
+      name: Sharpen Sword
+      description: "Add the sharpness enchantment to your magic sword."
+    magictorch:
+      name: Magic Torch
+    wandbuffshop:
+      name: Wand Buffs
+      description: "Add buffs to your wand.\nThese are only active while you are holding your wand."
+      cast_fail: "&cYou are maxed out on that buff!"
+      selected: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+      no_template: "&cYou may not add this buff to your $wand."

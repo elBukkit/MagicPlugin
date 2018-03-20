@@ -28,6 +28,10 @@ mine:
               duration: 1000
               particles: 15
               period: 1
+              particleCount: 4
+              particleOffsetX: 0.1
+              particleOffsetY: 0.1
+              particleOffsetZ: 0.1
         no_target:
         -  class: EffectSingle
            sound: vanish,1,0.5

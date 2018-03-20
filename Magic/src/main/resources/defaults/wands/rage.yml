@@ -2,7 +2,6 @@ rage:
     inherit: base_sword
     icon: diamond_sword
     effect_color: '11FF11'
-    protection_physical: 0.3
     path: battle
     locked: true
     mana_regeneration: 0

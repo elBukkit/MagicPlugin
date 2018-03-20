@@ -1,5 +1,6 @@
 donatorshop:
     inherit: appearanceshop
+    hidden: true
     parameters:
         items:
         - item: wand|appearance_beginner

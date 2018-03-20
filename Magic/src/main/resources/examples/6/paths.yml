@@ -13,12 +13,15 @@ beginner:
       0: 75
       1: 25
     # If gaining a property, one of the following will be chosen, unless the wand is already at the specified limit
-    max_protection: 0.2
-    protection: 0.01
-    max_protection_falling: 0.4
-    protection_falling: 0.1
-    max_protection_physical: 0.4
-    protection_physical: 0.05
+    max_properties:
+      protection|overall: 0.2
+      protection|fall: 0.4
+      protection|physical: 0.4
+    properties:
+      protection|overall: 0.01
+      protection|fall: 0.1
+      protection|physical: 0.05
+
     # The limit for mana progression on this path
     max_mana: 100
     max_mana_regeneration: 10
@@ -40,16 +43,15 @@ student:
       0: 100
       1: 50
       2: 10
-    max_protection: 0.4
-    protection: 0.01
-    max_protection_falling: 0.5
-    protection_falling: 0.1
-    max_protection_physical: 0.5
-    protection_physical: 0.05
-    max_protection_fire: 0.3
-    protection_fire: 0.05
-    max_protection_explosions: 0.3
-    protection_explosions: 0.05
+    max_properties:
+      protection|overall: 0.4
+      protection|fall: 0.5
+      protection|physical: 0.5
+      protection|fire: 0.3
+      protection|explosion: 0.3
+    properties:
+      protection|fire: 0.05
+      protection|explosion: 0.5
     max_mana_regeneration: 30
     mana_regeneration:
       1: 100
@@ -62,20 +64,22 @@ student:
       10: 5
 
 apprentice:
-    max_protection: 0.5
-    max_protection_falling: 0.75
-    max_protection_physical: 0.75
-    max_protection_fire: 0.5
-    max_protection_explosions: 0.5
+    max_properties:
+      protection|overall: 0.5
+      protection|fall: 0.75
+      protection|physical: 0.75
+      protection|fire: 0.5
+      protection|explosion: 0.5
     max_mana_regeneration: 40
     max_mana: 200
 
 master:
-    max_protection: 0.75
-    max_protection_falling: 1
-    max_protection_physical: 0.9
-    max_protection_fire: 0.75
-    max_protection_explosions: 0.75
+    max_properties:
+      protection|overall: 0.75
+      protection|fall: 1
+      protection|physical: 0.9
+      protection|fire: 0.75
+      protection|explosion: 0.75
     max_mana_regeneration: 50
     mana_regeneration:
       1: 100
@@ -90,10 +94,11 @@ master:
       20: 5
 
 engineer:
-    max_protection: 0.9
-    max_protection_falling: 1
-    max_protection_fire: 0.9
-    max_protection_explosions: 0.9
+    max_properties:
+      protection|overall: 0.9
+      protection|fall: 1
+      protection|fire: 0.9
+      protection|explosion: 0.9
     max_mana_regeneration: 55
     max_mana: 300
     mana_max:
@@ -103,9 +108,11 @@ engineer:
       15: 10
 
 architect:
-    max_protection: 1
-    max_protection_falling: 1
-    max_protection_fire: 1
-    max_protection_explosions: 1
+    max_properties:
+      protection|overall: 1
+      protection|fall: 1
+      protection|physical: 1
+      protection|fire: 1
+      protection|explosion: 1
     max_mana_regeneration: 60
     max_mana: 400

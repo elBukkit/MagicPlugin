@@ -28,6 +28,7 @@ public class TNTAction extends BaseProjectileAction
     private int fuse;
     private boolean useFire;
     private boolean breakBlocks;
+    private double velocity;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -38,6 +39,7 @@ public class TNTAction extends BaseProjectileAction
         fuse = parameters.getInt("fuse", 80);
         useFire = parameters.getBoolean("fire", false);
         breakBlocks = parameters.getBoolean("break_blocks", true);
+        velocity = parameters.getDouble("tnt_velocity", 1.0);
     }
 
 	@Override
@@ -71,8 +73,10 @@ public class TNTAction extends BaseProjectileAction
             if (living != null) {
                 CompatibilityUtils.setTNTSource(grenade, living);
             }
-			Vector aim = context.getDirection();
-			SafetyUtils.setVelocity(grenade, aim);
+			if (velocity > 0) {
+				Vector aim = context.getDirection();
+				SafetyUtils.setVelocity(grenade, aim.multiply(velocity));
+			}
 			grenade.setYield(size);
 			grenade.setFuseTicks(fuse);
 			grenade.setIsIncendiary(useFire);

@@ -11,13 +11,39 @@ breach:
         cast:
         - class: Sphere
           actions:
-          - class: ModifyBlock
+          - class: CheckBlock
+            actions:
+            - class: PlayEffects
+              effects: removed
+              ignore_result: true
+            - class: Delay
+              delay: 1
+            - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
            sound: block_fire_extinguish
         -  class: EffectTrail
            particle: smoke_normal
+           particle_count: 20
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        removed:
+        - location: target
+          particle: block_crack
+          particle_count: 40
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
+          offset: 0.5,0.75,0.5
+        - location: target
+          particle: smoke_large
+          particle_count: 20
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
+          particle_data: 1
     parameters:
         allow_max_range: false
         destructible: destructible_mining

@@ -10,7 +10,8 @@ base_lightsaber:
     swap: cycle_hotbar
     quick_cast: true
     cast_location: 0,-0.6,0.5
-    protection_physical: 0.5
+    protection:
+      physical: 0.5
     block_reflect_chance: 0.5
     block_chance: 1
     block_fov: 0.5

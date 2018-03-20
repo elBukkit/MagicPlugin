@@ -17,13 +17,24 @@ rollback:
         -  class: Undo
            target_down: true
     effects:
-        no_target: 
-        -  class: EffectSingle
-           sound: magic.bonk
-           sound_volume: 1
-           effectlib:
-             class: SmokeEffect
-             duration: 1000
+        no_target:
+        - class: EffectSingle
+          sound: magic.bonk
+          sound_volume: 1
+          use_target_location: false
+          effectlib:
+            class: Equation
+            iterations: 10
+            xEquation: "t/10"
+            yEquation: "sin(t) * (t/50)"
+            zEquation: "cos(t) * (t/50) + 1"
+            particle: crit
+            particleCount: 10
+            particleOffsetX: 0.1
+            particleOffsetY: 0.1
+            particleOffsetZ: 0.1
+            updateDirections: false
+            particles: 20
         alternate_up:
         - class: EffectSingle
           sound: magic.shimmer
@@ -37,26 +48,41 @@ rollback:
                particleOrbital: redstone
                iterations: 8
         cast:
-        -  class: EffectSingle
-           sound: magic.shimmer
-           sound_volume: 1
-           location: both
-        -  class: EffectSingle
-           particle_override: particleBase2
-           color_override: colorHelix
-           effectlib:
-             class: DnaEffect
-             particlesBase: 0
-             particlesHelix: 7
-             particleHelix: redstone
-             particleBase1: drip_lava
-             particleBase2: enchantment_table
-             iterations: 10
-             radius: 0.5
-             grow: 0.2
-             baseInterval: 5
-             length: 16
-             particlesBase: 5
+        - sound: magic.shimmer
+          sound_volume: 1
+          location: both
+        - location: source
+          use_target_location: false
+          effectlib:
+            class: Equation
+            iterations: 30
+            xEquation: t
+            yEquation: "sin(t)"
+            zEquation: "cos(t)"
+            particle: enchantment_table
+            particleCount: 20
+            speed: 1
+            particleOffsetX: 0.2
+            particleOffsetY: 0.2
+            particleOffsetZ: 0.2
+            updateDirections: false
+        - location: source
+          use_target_location: false
+          effectlib:
+            class: Equation
+            iterations: 10
+            xEquation: "t/10"
+            yEquation: "sin(t) * (t/50)"
+            zEquation: "cos(t) * (t/50) + 1"
+            particle: crit
+            particleCount: 10
+            particleOffsetX: 0.1
+            particleOffsetY: 0.1
+            particleOffsetZ: 0.1
+            updateDirections: false
+            particles: 20
+        - location: target
+          firework: star
     parameters:
         target: block
         allow_max_range: true

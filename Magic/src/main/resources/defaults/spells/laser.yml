@@ -2,6 +2,8 @@ laser:
     icon: diamond_axe:145
     icon_disabled: diamond_hoe:145
     icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
+    example_thumbnail: https://thumbs.gfycat.com/SnivelingDependentHuman-size_restricted.gif
+    example_link: https://thumbs.gfycat.com/SnivelingDependentHuman
     category: demolition
     worth: 450
     earns_sp: 8
@@ -10,12 +12,20 @@ laser:
     pvp_restricted: true
     actions:
         cast:
+        - class: PlayEffects
+          effect: beam
+          ignore_result: true
         -  class: Line
            ignore_result: true
            actions:
            -  class: Disc
               actions:
-              -  class: BreakBlock
+              - class: CheckBlock
+                actions:
+                - class: BreakBlock
+                - class: PlayEffects
+                  effects: burn
+                  ignore_result: true
         -  class: Repeat
            actions:
            - class: Delay
@@ -29,7 +39,12 @@ laser:
                 actions:
                 -  class: Disc
                    actions:
-                   -  class: BreakBlock
+                   - class: CheckBlock
+                     actions:
+                     - class: BreakBlock
+                     - class: PlayEffects
+                       effects: burn
+                       ignore_result: true
               - class: ConeOfEffect
                 actions:
                 -  class: Damage
@@ -39,20 +54,20 @@ laser:
            sound: magic.zap
            location: origin
            sound_volume: 0.1
-           color_override: colorHelix
+           color_override: color
            effectlib:
-             class: DnaEffect
-             particlesBase: 0
-             particlesHelix: 7
-             particleHelix: redstone
-             particleBase1: drip_lava
-             particleBase2: smoke_normal
-             iterations: 10
-             radius: 0.5
-             grow: 0.2
-             baseInterval: 5
-             length: 16
-             particlesBase: 5
+             class: LineEffect
+             particle: redstone
+             iterations: 2
+             color: ff0000
+        burn:
+        - location: target
+          particle: smoke_large
+          particle_count: 4
+          particle_offset_x: 0.1
+          particle_offset_y: 0.1
+          particle_offset_z: 0.1
+          target_offset: 0.5,0.5,0.5
         cast:
         -  class: EffectSingle
            sound: magic.zap_crack
@@ -80,8 +95,8 @@ laser:
         radius: 0
         undo: 15000
         cooldown: 10000
-        delay: 250
-        repeat: 10
+        delay: 100
+        repeat: 12
         undo_speed: 1
         orient: true
         axis: z
@@ -97,7 +112,7 @@ laser|2:
         destructible: destructible,destructible2,transparent
         player_damage: 1
         entity_damage: 2
-        repeat: 11
+        repeat: 13
         break_durability: 6
 
 laser|3:
@@ -107,6 +122,6 @@ laser|3:
         size: 2
         player_damage: 1
         entity_damage: 3
-        repeat: 12
+        repeat: 15
         break_durability: 8
 

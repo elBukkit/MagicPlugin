@@ -13,6 +13,26 @@ entangle:
            sound: magic.crack
         -  class: EffectTrail
            particle: block_crack
+           particle_count: 25
+           particle_offset_x: 0.25
+           particle_offset_y: 0.25
+           particle_offset_z: 0.25
+        -  location: target
+           effectlib:
+             class: Modified
+             duration: $undo
+             parameters:
+               size: "(1 - (t / i)) * 2 + 1.2"
+             effect:
+               class: AnimatedBall
+               particle: block_crack
+               particles: 50
+               particleCount: 5
+               particleOffsetX: 0.05
+               particleOffsetY: 0.05
+               particleOffsetZ: 0.05
+               yFactor: 0.2
+
     parameters:
         target: other
         target_type: LivingEntity

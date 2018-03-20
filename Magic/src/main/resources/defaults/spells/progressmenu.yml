@@ -6,15 +6,24 @@ progressmenu:
       cast:
       -  class: Selector
   parameters:
+    show_unavailable: true
     options:
     - cast_spell: spellshop
     - cast_spell: upgrades
     - placeholder: true
     - placeholder: true
-    - placeholder: true
+    - cast_spell: wandbuffshop
+      requirements:
+      - wands: wand,magicsword,mastersword
     - cast_spell: appearanceshop
-      require_template: wand
+      requirements: 
+      - wand: wand
     - cast_spell: colorshop
+      requirements: 
+      - holding_wand: true
     - cast_spell: effectshop
+      requirements: 
+      - wands: true,wand
     - cast_spell: controlsmenu
-      require_template: wand
+      requirements: 
+      - holding_wand: true

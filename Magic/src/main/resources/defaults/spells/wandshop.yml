@@ -11,15 +11,15 @@ wandshop:
         confirm_filler: stained_glass:3
         items:
         - item: wand|default
-          cost: 4000
-        - item: wand|student
-          cost: 80000
-        - item: wand|apprentice
-          cost: 135000
-        - item: wand|master
-          cost: 150000
-        - item: wand|architect
-          cost: 330000
-        - item: wand|battle
-          cost: 24000
+          cost: 3000
+        - item: wand|spellbook
+          cost: 3000
+        - item: wand|talisman
+          cost: 5000
+        - item: wand|mastersword
+          cost: 8000
+        - item: wand|magicsword
+          cost: 9000
+        - item: wand|magicbow
+          cost: 2500
 

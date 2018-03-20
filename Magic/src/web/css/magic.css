@@ -93,7 +93,14 @@
 	left: 320px;
 	bottom: 30px;
 	top: 60px;
-    width: 600px;
+    width: 500px;
+}
+
+.thumbnailContainer
+{
+	position:absolute;
+	left: 500px;
+	top: 50px;
 }
 
 .titleBanner

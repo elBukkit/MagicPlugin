@@ -21,6 +21,7 @@ public interface WandTemplate extends MagicProperties {
     Set<String> getCategories();
     ConfigurationSection getAttributes();
     String getAttributeSlot();
+    WandTemplate getParent();
 
     boolean playEffects(Wand wand, String key);
     boolean playEffects(Wand wand, String key, float scale);

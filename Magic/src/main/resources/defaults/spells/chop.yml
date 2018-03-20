@@ -10,25 +10,43 @@ chop:
     upgrade_required_casts: 30
     actions:
         cast:
-        - class: Recurse
+        - class: ArmorStandProjectile
           actions:
-          - class: Drop
+          - class: Recurse
+            actions:
+            - class: Drop
     effects:
         cast:
         -  class: EffectSingle
            sound: block_wood_step
-        -  class: EffectTrail
-           particle: block_crack
-           material: log
+        projectile:
+        - location: origin
+          material: log
+          effectlib:
+             class: Sphere
+             duration: 5000
+             period: 2
+             particles: 2
+             particle: block_crack
+             particleCount: 3
+             particleOffsetX: 0.1
+             particleOffsetY: 0.1
+             particleOffsetZ: 0.1
     parameters:
+        velocity: 10
+        right_arm_item: iron_axe
         bypass_undo: true
-        allow_max_range: false
+        allow_max_range: true
         range: 32
         faces: all
         recursion_depth: 64
         drop_count: 8
         destructible: trees
         cooldown: 5000
+        right_arm_transform:
+            x: 0
+            y: "6.28*sin(2*t)"
+            z: 0
     costs:
         mana: 80
 

@@ -50,12 +50,16 @@ wand:
     consume_reduction: "&6Manifestation"
     cooldown_reduction: "&6Cooldown Reduction $roman"
     power: "&6Power $roman"
-    protection: "&2Protection $roman"
-    protection_physical: "&2Physical Protection $roman"
-    protection_projectile: "&2Projectile Protection $roman"
-    protection_falling: "&2Fall Protection $roman"
-    protection_fire: "&2Fire Protection $roman"
-    protection_explosions: "&2Blast Protection $roman"
+    attributes:
+      GENERIC_ATTACK_DAMAGE: "Attack Damage"
+    protection:
+      overall: "&2Protection $roman"
+      physical: "&2Physical Protection $roman"
+      projectile: "&2Projectile Protection $roman"
+      fall: "&2Fall Protection $roman"
+      fire: "&2Fire Protection $roman"
+      explosion: "&2Blast Protection $roman"
+      unknown: "&2$type Protection $roman"
     potion_effect: "&b$effect $roman"
     super_powered: "&3Superpowered"
     super_protected: "&3Invulnerability"
@@ -80,6 +84,10 @@ wand:
     hotbar_count: "$amount hotbars"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
+    player_spells_levelled: "Levelled up $count of $name's spells"
+    player_spells_not_levelled: "Did not level up any of $name's spells"
+    spells_levelled: "Levelled up $count of your spells"
+    spells_not_levelled: "Did not level up any of your spells"
     no_wand: You must be holding a wand
     player_no_wand: $name is not holding a wand
     no_item: You must be holding an item

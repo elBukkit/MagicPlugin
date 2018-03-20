@@ -5,6 +5,7 @@ wands:
   sniper:
     name: Sniper Rifle
     mana_amount: "Ammo: $amount"
+    description: "Use swap button for scope"
   pistol:
     name: Pistol
     mana_amount: "Ammo: $amount"
@@ -12,7 +13,23 @@ wands:
     name: Rocket Launcher
     mana_amount: "Ammo: $amount"
   shotgun:
-    name: Shotgun
+    name: Combat Shotgun
+    mana_amount: "Ammo: $amount"
+  hawk_shotgun:
+    name: Hawk Shotgun
+    mana_amount: "Ammo: $amount"
+  rifle:
+    name: Marksman Rifle
+    mana_amount: "Ammo: $amount"
+    description: "Use swap button for scope"
+  pkp:
+    name: Pecheneg
+    mana_amount: "Ammo: $amount"
+  thompson:
+    name: Thompson
+    mana_amount: "Ammo: $amount"
+  mp5:
+    name: MP5
     mana_amount: "Ammo: $amount"
   riotshield:
     name: Riot Shield
@@ -42,8 +59,32 @@ spells:
         indirect_player_message: ""
         insufficient_resources: "a:Left-click to reload"
         cooldown: ""
+    rifle:
+        name: Marksman Rifle Skill
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
     ak47:
         name: AK-47 Skill
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
+    mp5:
+        name: MP5 Skill
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
+    pkp:
+        name: Pecheneg Skill
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
+    thompson:
+        name: Thompson Skill
         cast_player_message: ""
         indirect_player_message: ""
         insufficient_resources: "a:Left-click to reload"
@@ -55,7 +96,13 @@ spells:
         insufficient_resources: "a:Left-click to reload"
         cooldown: ""
     shotgun:
-        name: Shotgun Skill
+        name: Combat Shotgun Skill
+        cast_player_message: ""
+        indirect_player_message: ""
+        insufficient_resources: "a:Left-click to reload"
+        cooldown: ""
+    hawk_shotgun:
+        name: Hawk Shotgun Skill
         cast_player_message: ""
         indirect_player_message: ""
         insufficient_resources: "a:Left-click to reload"
@@ -70,11 +117,21 @@ spells:
         cooldown: ""
     reload_ak47:
         cooldown: ""
+    reload_mp5:
+        cooldown: ""
     reload_pistol:
         cooldown: ""
     reload_shotgun:
         cooldown: ""
     reload_rocketlauncher:
+        cooldown: ""
+    reload_pkp:
+        cooldown: ""
+    reload_thompson:
+        cooldown: ""
+    reload_hawk_shotgun:
+        cooldown: ""
+    reload_rifle:
         cooldown: ""
     c4:
         cast_player_message: ""

@@ -43,4 +43,6 @@ public interface MageSpell extends Spell, CostReducer {
 
     void tick();
     void initialize(MageController controller);
+
+    Double getAttribute(String attributeKey);
 }

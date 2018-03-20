@@ -7,5 +7,6 @@ rocketboots:
     mana_regeneration_boost: -0.1
     potion_effects: speed:2,jump:20
     glow: true
-    protection_falling: 1
+    protection:
+      fall: 1
 

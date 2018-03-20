@@ -26,14 +26,22 @@ sandblast:
         tick:
         -  location: target
            particle: block_crack
+           particle_count: 20
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
         hit:
         -  location: target
            effectlib:
-             class: SphereEffect
-             particle: block_crack
-             radius: $radius
+             class: Modified
+             parameters:
+               radius: "(t/i)*3"
              duration: 2000
+             effect:
+                 class: Helix
+                 particle: block_crack
     parameters:
+        physics: true
         velocity: 20
         gravity: 0.05
         allow_max_range: true

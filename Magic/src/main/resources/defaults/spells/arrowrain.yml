@@ -4,6 +4,8 @@ arrowrain:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/7d89462020cc12f63d5117d37b52e642536de7fa774d2d96e80c72e1d4ff6
+    example_thumbnail: https://thumbs.gfycat.com/SpeedyPlainIaerismetalmark-size_restricted.gif
+    example_link: https://thumbs.gfycat.com/SpeedyPlainIaerismetalmark
     category: combat
     worth: 100
     earns_sp: 5
@@ -14,6 +16,41 @@ arrowrain:
         cast:
         -  class: EffectSingle
            sound: entity_arrow_shoot
+           pitch: 0.8
+        -  class: EffectSingle
+           sound: entity_arrow_shoot
+           pitch: 0.5
+        -  class: EffectSingle
+           sound: entity_arrow_shoot
+           pitch: 1.2
+        hit:
+        - location: target
+          effectlib:
+            class: Modified
+            period: 2
+            iterations: 10
+            parameters:
+                radius: "(t / i) * 3"
+                particleOffsetY: "(t / i) * 2"
+            effect:
+                class: Shield
+                particles: 20
+                particleCount: 10
+                particleOffsetX: 0.5
+                particleOffsetZ: 0.5
+                particle: water_drop
+        projectile:
+        - location: origin
+          effectlib:
+             class: Sphere
+             iterations: 10
+             period: 2
+             particles: 5
+             particleCount: 5
+             particleOffsetX: 0.2
+             particleOffsetY: 0.2
+             particleOffsetZ: 0.2
+             particle: water_drop
     parameters:
         target: none
         projectile: TippedArrow

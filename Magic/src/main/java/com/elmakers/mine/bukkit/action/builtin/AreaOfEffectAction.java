@@ -61,7 +61,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
                     ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + sourceLocation.getBlockY() +
                     ChatColor.DARK_GRAY + "," + ChatColor.GRAY + sourceLocation.getBlockZ() +
                     ChatColor.DARK_GREEN + " with radius of " + ChatColor.GREEN + radius +
-                    ChatColor.GRAY + " self? " + ChatColor.DARK_GRAY + context.getTargetsCaster()
+                    ChatColor.GRAY + " self? " + ChatColor.DARK_GRAY + context.getTargetsCaster(), 14
             );
         }
         List<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, yRadius, radius);
@@ -78,11 +78,11 @@ public class AreaOfEffectAction extends CompoundEntityAction
                 {
                     Target target = new Target(sourceLocation, entity, radius, 0);
                     targets.add(target);
-                    mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN + ": " + ChatColor.YELLOW + target.getScore(), 6);
+                    mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN + ": " + ChatColor.YELLOW + target.getScore(), 12);
                 }
                 else if (mage.getDebugLevel() > 7)
                 {
-                    mage.sendDebugMessage(ChatColor.DARK_RED + "Skipped Target " + ChatColor.GREEN + entity.getType());
+                    mage.sendDebugMessage(ChatColor.DARK_RED + "Skipped Target " + ChatColor.GREEN + entity.getType(), 16);
                 }
             }
             Collections.sort(targets);
@@ -99,11 +99,11 @@ public class AreaOfEffectAction extends CompoundEntityAction
                 if ((context.getTargetsCaster() || !entity.equals(sourceEntity)) && context.canTarget(entity))
                 {
                     entities.add(new WeakReference<>(entity));
-                    mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType(), 6);
+                    mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType(), 12);
                 }
                 else if (mage.getDebugLevel() > 7)
                 {
-                    mage.sendDebugMessage(ChatColor.DARK_RED + "Skipped Target " + ChatColor.GREEN + entity.getType());
+                    mage.sendDebugMessage(ChatColor.DARK_RED + "Skipped Target " + ChatColor.GREEN + entity.getType(), 16);
                 }
             }
         }

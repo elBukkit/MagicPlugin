@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -87,6 +88,7 @@ public class NMSUtils {
     protected static Class<?> class_WorldServer;
     protected static Class<?> class_Packet;
     protected static Class<Enum> class_EnumSkyBlock;
+    protected static Class<Enum> class_PickupStatus;
     protected static Class<?> class_EntityPainting;
     protected static Class<?> class_EntityItemFrame;
     protected static Class<?> class_EntityMinecartRideable;
@@ -223,6 +225,7 @@ public class NMSUtils {
     protected static Method class_CraftMagicNumbers_getBlockMethod;
     protected static Method class_Block_fromLegacyData;
     protected static Method class_Chunk_setBlockMethod;
+    protected static Method class_Arrow_setPickupStatusMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -256,7 +259,6 @@ public class NMSUtils {
     protected static Field class_Entity_motZField;
     protected static Field class_WorldServer_entitiesByUUIDField;
     protected static Field class_ItemStack_tagField;
-    protected static Field class_DamageSource_MagicField;
     protected static Field class_Firework_ticksFlownField;
     protected static Field class_Firework_expectedLifespanField;
     protected static Field class_CraftSkull_profile;
@@ -294,6 +296,9 @@ public class NMSUtils {
     protected static Field class_Entity_jumpingField;
     protected static Field class_Entity_moveStrafingField;
     protected static Field class_Entity_moveForwardField;
+
+    protected static Object object_magicSource;
+    protected static Map<String, Object> damageSources;
 
     static
     {
@@ -546,6 +551,14 @@ public class NMSUtils {
 
             // Particularly volatile methods that we can live without
             try {
+                class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.Arrow$PickupStatus");
+                class_Arrow_setPickupStatusMethod = Arrow.class.getMethod("setPickupStatus", class_PickupStatus);
+            } catch (Throwable ex) {
+                class_PickupStatus = null;
+                class_Arrow_setPickupStatusMethod = null;
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Arrow.PickupStatus, arrows can not be made to be picked up", ex);
+            }
+            try {
                 class_CraftPlayer_getProfileMethod = class_CraftPlayer.getMethod("getProfile");
             } catch (Throwable ex) {
                 class_CraftPlayer_getProfileMethod = null;
@@ -695,12 +708,26 @@ public class NMSUtils {
             try {
                 class_EntityLiving_damageEntityMethod = class_EntityLiving.getMethod("damageEntity", class_DamageSource, Float.TYPE);
                 class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
-                class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
+                Field damageSource_MagicField = class_DamageSource.getField("MAGIC");
+                object_magicSource = damageSource_MagicField.get(null);
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, magic damage will not work, using normal damage instead", ex);
                 class_EntityLiving_damageEntityMethod = null;
                 class_DamageSource_getMagicSourceMethod = null;
-                class_DamageSource_MagicField = null;
+                object_magicSource = null;
+            }
+
+            try {
+                damageSources = new HashMap<>();
+                Field[] fields = class_DamageSource.getFields();
+                for (Field field : fields) {
+                    if (class_DamageSource.isAssignableFrom(field.getType())) {
+                        damageSources.put(field.getName(), field.get(null));
+                    }
+                }
+            } catch (Throwable ex) {
+                damageSources = null;
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, using specific damage types will not work, will use normal damage instead", ex);
             }
 
             try {

@@ -67,7 +67,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     private boolean                         loading = false;
 
     protected Set<Entity> 	                entities;
-    protected List<Runnable>				runnables;
+    protected LinkedList<Runnable>			runnables;
     protected HashMap<UUID, EntityData> 	modifiedEntities;
 
     protected WeakReference<CastContext>    context;
@@ -355,9 +355,18 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         BlockState currentState = blockData.getBlock().getState();
         if (undo(blockData, applyPhysics)) {
             blockIdMap.remove(blockData.getId());
-            if (consumed && currentState.getType() != Material.AIR && owner != null) {
+            if (consumed && !isScheduled() && currentState.getType() != Material.AIR && owner != null) {
                 owner.giveItem(new ItemStack(currentState.getType(), 1, DeprecatedUtils.getRawData(currentState)));
             }
+
+            CastContext context = getContext();
+            if (context != null && context.hasEffects("undo_block")) {
+                Block block = blockData.getBlock();
+                if (block.getType() != currentState.getType()) {
+                    context.playEffects("undo_block", 1.0f, null, null, block.getLocation(), null, block);
+                }
+            }
+
             return blockData;
         }
         blockList.addFirst(blockData);
@@ -424,6 +433,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                 modifiedEntities = null;
             }
         }
+    }
+    
+    @Override
+    public boolean isUndone()
+    {
+        return undone;
     }
 
     @Override
@@ -1014,5 +1029,20 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void removeFromMap(BlockData blockData) {
         removeFromModified(blockData);
         blockIdMap.remove(blockData.getId());
+    }
+
+    @Override
+    public int getRunnableCount() {
+        return runnables == null ? 0 : runnables.size();
+    }
+    
+    @Override
+    public Runnable undoNextRunnable() {
+        Runnable undone = null;
+        if (runnables != null && !runnables.isEmpty()) {
+            undone = runnables.pop();
+            undone.run();
+        }
+        return undone;
     }
 }

@@ -30,6 +30,7 @@ public class ThrowBlockAction extends BaseProjectileAction
     private float fallDamage;
     private int maxDamage;
     private boolean consumeBlocks = false;
+    private boolean hurts = true;
     private boolean consumeVariants = true;
     private SourceLocation sourceLocation;
 
@@ -44,6 +45,7 @@ public class ThrowBlockAction extends BaseProjectileAction
         fallDamage = (float)parameters.getDouble("fall_damage", damage);
         maxDamage = parameters.getInt("max_damage", damage);
         consumeBlocks = parameters.getBoolean("consume", false);
+        hurts = parameters.getBoolean("hurts", true);
         consumeVariants = parameters.getBoolean("consume_variants", true);
         sourceLocation = new SourceLocation(parameters);
     }
@@ -103,6 +105,8 @@ public class ThrowBlockAction extends BaseProjectileAction
         SafetyUtils.setVelocity(falling, direction);
         if (maxDamage > 0 && fallDamage > 0) {
             CompatibilityUtils.setFallingBlockDamage(falling, fallDamage, maxDamage);
+        } else {
+            falling.setHurtEntities(hurts);
         }
 
         return checkTracking(context);
@@ -132,6 +136,7 @@ public class ThrowBlockAction extends BaseProjectileAction
         parameters.add("damage");
         parameters.add("max_damage");
         parameters.add("fall_damage");
+        parameters.add("hurts");
     }
 
     @Override
@@ -139,6 +144,8 @@ public class ThrowBlockAction extends BaseProjectileAction
         if (parameterKey.equals("speed") || parameterKey.equals("speed_max") || parameterKey.equals("speed_min")
             || parameterKey.equals("damage") || parameterKey.equals("max_damage") || parameterKey.equals("fall_damage")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else if (parameterKey.equals("hurts")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

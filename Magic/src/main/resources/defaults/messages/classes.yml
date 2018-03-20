@@ -7,3 +7,7 @@ classes:
   mage:
     name: "Mage"
     description: "The ultimate spellcaster"
+
+  archer_mage:
+    name: "Archer Mage"
+    description: "Skilled with magic bows"

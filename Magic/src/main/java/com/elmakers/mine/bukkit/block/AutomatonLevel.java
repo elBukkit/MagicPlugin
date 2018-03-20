@@ -171,7 +171,7 @@ public class AutomatonLevel {
 		}
 
 		String[] parameters = null;
-		if (pieces != null && pieces.length > 1) {
+		if (pieces != null && pieces.length > 1 && birthMaterial != null && birthMaterial.getMaterial() != null) {
 			parameters = new String[pieces.length - 1];
 			for (int i = 1; i < pieces.length; i++) {
 				parameters[i - 1] = pieces[i].replace("$birth", birthMaterial.getMaterial().name().toLowerCase());

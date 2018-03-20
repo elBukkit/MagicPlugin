@@ -6,7 +6,6 @@ cowlock:
   disguise:
     type: cow
     
-    
 madscientist2:
   name: Mad Scientist
   type: pig_zombie
@@ -40,3 +39,30 @@ skeletoncompanion:
    default_drops: false
    disguise:
      type: skeleton
+
+basher:
+  type: zombie
+  villager_profession: butcher
+  item: warlock_wand
+  cast_requires_item: warlock_wand
+  chestplate: warlock_chestplate
+  leggings: warlock_leggings
+  helmet: chainmail_helmet
+  boots: warlock_boots
+  name: Basher
+  health: 200
+  default_drops: false
+  protection:
+    fall: 1
+  interval: 1000
+  triggers:
+    interval:
+      cast:
+        wound: 100
+        none: 10
+  drops:
+  - gold_nugget@16
+  - sp:16
+
+
+

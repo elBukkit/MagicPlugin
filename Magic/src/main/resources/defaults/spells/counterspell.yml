@@ -12,37 +12,64 @@ counterspell:
         -  class: Undo
     effects:
         cast:
-        -  class: EffectVariable
-           brightness:
-             '0.5':
-             - class: EffectSingle
-               sound: magic.shimmer
-               sound_volume: 1
-               location: both
-               particle_override: particleOrbital
-               effectlib:
-                   class: AtomEffect
-                   particleNucleus: smoke_normal
-                   particleOrbital: spell_instant
-                   iterations: 8
-             '5':
-             - class: EffectSingle
-               sound: magic.shimmer
-               sound_volume: 1
-               location: both
-               particle_override: particleOrbital
-               effectlib:
-                   class: AtomEffect
-                   particleNucleus: spell_instant
-                   particleOrbital: spell
-                   iterations: 8
-        -  class: EffectSingle
-           location: target
-           firework: star
+        - sound: magic.shimmer
+          sound_volume: 1
+          location: both
+        - location: source
+          use_target_location: false
+          effectlib:
+            class: Equation
+            iterations: 30
+            xEquation: t
+            yEquation: "sin(t)"
+            zEquation: "cos(t)"
+            particle: enchantment_table
+            particleCount: 20
+            speed: 1
+            particleOffsetX: 0.2
+            particleOffsetY: 0.2
+            particleOffsetZ: 0.2
+            updateDirections: false
+        - location: source
+          use_target_location: false
+          effectlib:
+            class: Equation
+            iterations: 10
+            xEquation: "t/10"
+            yEquation: "sin(t) * (t/50)"
+            zEquation: "cos(t) * (t/50) + 1"
+            particle: crit
+            particleCount: 10
+            particleOffsetX: 0.1
+            particleOffsetY: 0.1
+            particleOffsetZ: 0.1
+            updateDirections: false
+            particles: 20
+        - location: target
+          firework: star
+        no_target:
+        - sound: magic.shimmer
+          sound_volume: 1
+          location: source
+        - location: source
+          use_target_location: false
+          effectlib:
+            class: Equation
+            iterations: 10
+            xEquation: "t/10"
+            yEquation: "sin(t) * (t/50)"
+            zEquation: "cos(t) * (t/50) + 1"
+            particle: crit
+            particleCount: 10
+            particleOffsetX: 0.1
+            particleOffsetY: 0.1
+            particleOffsetZ: 0.1
+            updateDirections: false
+            particles: 20
     parameters:
         hitbox: false
         transparent: air
-        allow_max_range: false
+        allow_max_range: true
         target: other
         target_type: LivingEntity
         target_blocks: true
@@ -58,6 +85,7 @@ counterspell:
         bypass_backfire: true
         cooldown: 5000
         fizzle_chance: 0.3
+        loud: true
     costs:
         mana: 70
 

@@ -76,6 +76,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
 
     boolean isConsumed();
     void setConsumed(boolean consumed);
+    boolean isUndone();
 
     /**
      * Check to see if this list has any changes that would get normally auto-undone (e.g. by scheduled undo)
@@ -86,4 +87,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
      * @return true if this list has changes to undo
      */
     boolean hasChanges();
+    
+    int getRunnableCount();
+    Runnable undoNextRunnable();
 }

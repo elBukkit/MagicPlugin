@@ -54,6 +54,11 @@ public class MagicRecipe {
         substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
 
+        if (disableDefaultRecipe) {
+            controller.getLogger().warning("Recipe " + key + " has disable_default: true, ignoring because trying to remove a recipe now throws an error.");
+            disableDefaultRecipe = false;
+        }
+
         outputItemType = configuration.getString("output_type", "item");
         ItemStack item = null;
 

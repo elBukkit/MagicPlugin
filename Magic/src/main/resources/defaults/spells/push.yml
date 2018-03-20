@@ -16,35 +16,66 @@ push:
           - class: Delay
           - class: PlayEffects
             effects: iterate
+            ignore_result: true
           - class: ConeOfEffectAction
             actions:
             - class: VelocityAction
     effects:
         cast:
-        -  class: EffectSingle
-           sound: block_fire_extinguish
-           sound_volume: 1
-           sound_pitch: -0.1
-           location: origin
-           effectlib:
-             class: DnaEffect
-             particlesBase: 0
-             particlesHelix: 7
-             particleHelix: spell
-             particleBase1: spell
-             particleBase2: spell
-             iterations: 10
+        - class: EffectSingle
+          sound: block_fire_extinguish
+          sound_volume: 1
+          sound_pitch: -0.1
+          location: origin
+          effectlib:
+               class: Modified
+               iterations: 20
+               parameters:
+                radius: "(t/i) * 4 + 0.2"
+               effect:
+                 class: DnaEffect
+                 particlesBase: 0
+                 particlesHelix: 7
+                 particleHelix: spell
+                 particleBase1: spell
+                 particleBase2: spell
+        - location: target
+          effectlib:
+            class: Sphere
+            particle: spell
+            particles: 5
+            iterations: 20
+            particleCount: 10
+            particleOffsetX: 0.5
+            particleOffsetY: 0.5
+            particleOffsetZ: 0.5
+            radius: 1.5
         iterate:
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: DnaEffect
-             particlesBase: 0
-             particlesHelix: 7
-             particleHelix: spell
-             particleBase1: spell
-             particleBase2: spell
-             iterations: 4
+        - class: EffectSingle
+          location: origin
+          effectlib:
+               class: Modified
+               iterations: 10
+               parameters:
+                radius: "(t/i) * 4 + 0.2"
+               effect:
+                 class: DnaEffect
+                 particlesBase: 0
+                 particlesHelix: 7
+                 particleHelix: spell
+                 particleBase1: spell
+                 particleBase2: spell
+        - location: target
+          effectlib:
+            class: Sphere
+            particle: spell
+            particles: 5
+            iterations: 20
+            particleCount: 10
+            particleOffsetX: 0.5
+            particleOffsetY: 0.5
+            particleOffsetZ: 0.5
+            radius: 1.5
     parameters:
         target_type: Entity
         range: 8
@@ -85,7 +116,21 @@ push|4:
             radius: 8
             actions:
             - class: Velocity
-              push: 1
+              direction: 0,1,0
+              living_entity_speed: 0.2
+          - class: Delay
+            delay: 100
+          - class: Repeat
+            repeat: 2
+            actions:
+            - class: AreaOfEffect
+              radius: 12
+              actions:
+              - class: Velocity
+                push: 1
+                living_entity_speed: 1
+              - class: Delay
+                delay: 200
     effects:
         alternate_down:
         -  class: EffectSingle
@@ -97,6 +142,7 @@ push|4:
              class: HelixEffect
              iterations: 1
              particle: spell
+             offset: 0, -1.6, 0
     parameters:
         living_entity_speed: 0.75
         range: 16

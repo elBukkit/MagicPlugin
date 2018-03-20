@@ -70,7 +70,7 @@ public interface Spell extends SpellTemplate {
     ConfigurationSection getHandlerParameters(String handlerKey);
     long getProgressLevel();
     boolean cancelOnNoPermission();
-
+    boolean cancelOnNoWand();
 
     /**
      * Signal that this spell was cancelled. Will send cancel messages

@@ -7,3 +7,4 @@ talisman:
   color: random
   effect_bubbles: true
   keep: true
+  locked: true

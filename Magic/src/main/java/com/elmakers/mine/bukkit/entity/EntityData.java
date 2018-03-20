@@ -1,31 +1,13 @@
 package com.elmakers.mine.bukkit.entity;
 
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
-
-import javax.annotation.Nonnull;
-
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -52,19 +34,29 @@ import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.Slime;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
+
+import javax.annotation.Nonnull;
+import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * This class stores information about an Entity.
@@ -126,17 +118,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected List<String> drops;
     protected Set<String> tags;
     protected String interactSpell;
-
-    // Spellcasting
-    protected long tickInterval;
-    protected LinkedList<WeightedPair<String>> spells;
-    protected boolean requiresTarget;
-    protected ItemData requiresWand;
-
-    protected Map<DamageCause, Double> protection = null;
-    
     protected ConfigurationSection disguise;
-    
+
+    protected EntityMageData mageData;
+
     public EntityData(Entity entity) {
         this(entity.getLocation(), entity);
     }
@@ -231,6 +216,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityZombieData((Zombie)entity);
         } else if (entity instanceof AreaEffectCloud) {
             extraData = new EntityAreaEffectCloudData((AreaEffectCloud)entity);
+        } else if (entity instanceof Slime) {
+            extraData = new EntitySlimeData((Slime)entity);
         }
     }
     
@@ -264,30 +251,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
-        ConfigurationSection protectionConfig = parameters.getConfigurationSection("protection");
-        if (protectionConfig != null) {
-            protection = new HashMap<>();
-            Set<String> keys = protectionConfig.getKeys(false);
-            for (String key : keys) {
-                try {
-                    DamageCause cause = DamageCause.valueOf(key.toUpperCase());
-                    protection.put(cause, protectionConfig.getDouble(key));
-                } catch (Exception ex) {
-                    controller.getLogger().log(Level.WARNING, " Invalid damage cause: " + key);
-                }
-            }
-        }
-
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
 
         isTamed = parameters.getBoolean("tamed", false);
         isBaby = parameters.getBoolean("baby", false);
-        tickInterval = parameters.getLong("cast_interval", 0);
-        if (parameters.contains("cast")) {
-            spells = new LinkedList<>();
-            RandomUtils.populateStringProbabilityMap(spells, parameters.getConfigurationSection("cast"));
-        }
-        requiresTarget = parameters.getBoolean("cast_requires_target", true);
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
@@ -330,6 +297,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             else if (type == EntityType.ARMOR_STAND) {
                 extraData = new EntityArmorStandData(parameters);
             }
+            else if (type == EntityType.SLIME || type == EntityType.MAGMA_CUBE) {
+                EntitySlimeData slimeData = new EntitySlimeData();
+                slimeData.size = parameters.getInt("size", 16);
+                extraData = slimeData;
+            }
 
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
@@ -358,9 +330,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
         leggings = controller.getOrCreateItem(parameters.getString("leggings"));
         boots = controller.getOrCreateItem(parameters.getString("boots"));
-        requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
 
         canPickupItems = parameters.getBoolean("can_pickup_items", false);
+
+        EntityMageData mageData = new EntityMageData(controller, parameters);
+        if (!mageData.isEmpty()) {
+            this.mageData = mageData;
+        }
     }
 
     public static EntityData loadPainting(Vector location, Art art, BlockFace direction) {
@@ -649,8 +625,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (!isPlayer && name != null && name.length() > 0) {
             entity.setCustomName(name);
         }
-
-        if (controller != null && spells != null && tickInterval >= 0) {
+        boolean needsMage = controller != null && mageData != null;
+        if (needsMage) {
             Mage apiMage = controller.getMage(entity);
             if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
@@ -658,6 +634,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         return true;
+    }
+
+    public ConfigurationSection getMageProperties() {
+        return mageData != null ? mageData.mageProperties : null;
     }
 
     private boolean modifyPostSpawn(MageController controller, Entity entity) {
@@ -786,19 +766,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
-    public void onDamage(EntityDamageEvent event) {
-        if (protection == null) return;
-
-        DamageCause cause = event.getCause();
-        Double reduction = protection.get(cause);
-        if (reduction == null || reduction == 0) return;
-        if (reduction > 1) {
-            event.setCancelled(true);
-            return;
-        }
-        event.setDamage(event.getDamage() * reduction);
-    }
-
     @Override
     public String describe() {
         if (name != null && !name.isEmpty()) {
@@ -825,42 +792,37 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
     
     public long getTickInterval() {
-        return tickInterval;
+        return mageData == null ? 0 : mageData.tickInterval;
+    }
+
+    public void onDeath(Mage mage) {
+        if (mageData != null) {
+            mageData.onDeath(mage);
+        }
+    }
+
+    public void onDamage(Mage mage, double damage) {
+        if (mageData != null) {
+            mageData.onDamage(mage, damage);
+        }
     }
     
     public void tick(Mage mage) {
-        if (spells == null) return;
-        Entity entity = mage.getLivingEntity();
-        Creature creature = (entity instanceof Creature) ? (Creature)entity : null;
-        if (requiresTarget && (creature == null || creature.getTarget() == null)) return;
-        if (requiresWand != null && entity instanceof LivingEntity) {
-            LivingEntity li = (LivingEntity)entity;
-            ItemStack itemInHand = li.getEquipment().getItemInMainHand();
-            if (itemInHand == null || itemInHand.getType() != requiresWand.getType()) return;
-        }
-        
-        String castSpell = RandomUtils.weightedRandom(spells);
-        if (castSpell.length() > 0) {
-
-            String[] parameters = null;
-            Spell spell = null;
-            if (!castSpell.equalsIgnoreCase("none"))
-            {
-                if (castSpell.contains(" ")) {
-                    parameters = StringUtils.split(castSpell, ' ');
-                    castSpell = parameters[0];
-                    parameters = Arrays.copyOfRange(parameters, 1, parameters.length);
-                }
-                spell = mage.getSpell(castSpell);
-            }
-            if (spell != null) {
-                spell.cast(parameters);
-            }
+        if (mageData != null) {
+            mageData.tick(mage);
         }
     }
 
     @Override
     public String getInteractSpell() {
         return interactSpell;
+    }
+
+    public boolean shouldFocusOnDamager() {
+        return mageData == null ? false : mageData.aggro;
+    }
+
+    public double getTrackRadiusSquared() {
+        return mageData == null ? 0 : mageData.getTrackRadiusSquared();
     }
 }

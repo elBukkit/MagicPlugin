@@ -2,6 +2,7 @@ superbroom:
   inherit: broom
   hidden: true
   quick_cast: true
+  show_undoable: false
   parameters:
     bypass_confusion: true
     steer_speed: 0

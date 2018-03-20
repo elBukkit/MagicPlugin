@@ -3,45 +3,68 @@ monster:
     icon_disabled: diamond_hoe:64
     icon_url: http://textures.minecraft.net/texture/cd541541daaff50896cd258bdbdd4cf80c3ba816735726078bfe393927e57f1
     category: dark
-    class: FamiliarSpell
     pvp_restricted: true
     worth: 150
-    entity_types:
-        zombie: 100
-        skeleton: 100
-        spider: 110
-        creeper: 30
-        witch: 20
-        blaze: 15
-        bat: 15
-        magma_cube: 10
-        pig_zombie: 10
-        cave_spider: 10
-        silverfish: 8
-        ghast: 5
-        enderman: 5
-        giant: 1
+    actions:
+      cast:
+      # We are going to force the spawned mob to target the entity we originally targeted
+      # This is done by making the current target the source, since the Aggro action makes the target
+      # target the source.
+      - class: ChangeContext
+        source_is_target: true
+        actions:
+        - class: SpawnEntity
+          set_target: true
+        - class: Aggro
     effects:
         cast:
         -  class: EffectSingle
            sound: entity_ghast_warn
            effectlib:
-             class: DnaEffect
-             particleHelix: drip_lava
-             iterations: 24
-             particleBase1: drip_water
+             class: Modified
+             iterations: 40
+             parameters:
+               radius: "(t / i) * 3 + 0.1"
+             effect:
+               class: DnaEffect
+               grow: 0.1
+               particlesHelix: 5
+               length: 50
+               particleHelix: drip_lava
+               particleBase1: drip_lava
+               particleBase2: drip_lava
         -  class: EffectSingle
            location: target
            effectlib:
-             class: AtomEffect
-             iterations: 32
-             particleNucleus: drip_water
+              class: Modified
+              iterations: 32
+              parameters:
+                radius: "(t / i) * 4 + 1"
+              effect:
+               class: AtomEffect
+               particleNucleus: drip_lava
+               particleOrbital: drip_lava
     parameters:
         target_type: LivingEntity
         allow_max_range: false
         cooldown: 30000
         range: 32
         undo: 20000
+        entity_types:
+            zombie: 100
+            skeleton: 100
+            spider: 110
+            creeper: 30
+            witch: 20
+            blaze: 15
+            bat: 15
+            magma_cube: 10
+            pig_zombie: 10
+            cave_spider: 10
+            silverfish: 8
+            ghast: 5
+            enderman: 5
+            giant: 1
     costs:
         mana: 40
 

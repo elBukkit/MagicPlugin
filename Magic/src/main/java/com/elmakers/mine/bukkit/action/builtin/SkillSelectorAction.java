@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -34,6 +35,9 @@ import javax.annotation.Nonnull;
 public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     private int page;
     private List<SkillDescription> allSkills = new ArrayList<>();
+    private boolean quickCast = true;
+    private String classKey;
+    private int inventoryLimit = 0;
     private String inventoryTitle;
     private CastContext context;
 
@@ -77,6 +81,21 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
                 if (key.getBaseKey().startsWith("heroes*")) continue;
                 if (!spell.hasCastPermission(player)) continue;
                 allSkills.add(new SkillDescription(spell));
+            }
+        } else {
+            Mage mage = controller.getMage(player);
+            MageClass activeClass = mage.getActiveClass();
+            if (activeClass != null) {
+                classKey = activeClass.getKey();
+                quickCast = activeClass.getProperty("quick_cast", true);
+                inventoryLimit = activeClass.getProperty("skill_limit", 0);
+                Collection<String> spells = activeClass.getSpells();
+                for (String spellKey : spells) {
+                    SpellTemplate spell = controller.getSpellTemplate(spellKey);
+                    if (spell != null) {
+                        allSkills.add(new SkillDescription(spell));
+                    }
+                }
             }
         }
 
@@ -184,6 +203,18 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         {
             ItemStack skillItem = controller.getAPI().createItem(skill.getSkillKey(), mage);
             if (skillItem == null) continue;
+            if (!quickCast) {
+                Object spellNode = InventoryUtils.getNode(skillItem, "spell");
+                if (spellNode != null) {
+            		InventoryUtils.setMetaBoolean(spellNode, "quick_cast", false);
+				}
+            }
+            if (classKey != null) {
+                Object spellNode = InventoryUtils.getNode(skillItem, "spell");
+                if (spellNode != null) {
+                    InventoryUtils.setMeta(spellNode, "class", classKey);
+                }
+            }
             if (skill.isHeroes() && heroes != null && !heroes.canUseSkill(player, skill.heroesSkill))
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
@@ -232,6 +263,39 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         }
 
         Mage mage = context.getMage();
+        MageController controller = mage.getController();
+        Inventory inventory = mage.getInventory();
+        boolean isContainerSlot = event.getSlot() == event.getRawSlot();
+        boolean isDrop = action == InventoryAction.DROP_ALL_CURSOR || action == InventoryAction.DROP_ALL_SLOT
+                || action == InventoryAction.DROP_ONE_CURSOR || action == InventoryAction.DROP_ONE_SLOT;
+
+        if (!isContainerSlot && isDrop && controller.isSkill(clickedItem)) {
+            inventory.setItem(event.getSlot(), null);
+            return;
+        }
+
+        if (inventoryLimit > 0) {
+            boolean isHotbar = event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD;
+            if (isHotbar) {
+                ItemStack destinationItem = inventory.getItem(event.getHotbarButton());
+                if (controller.isSkill(destinationItem)) return;
+                isHotbar = controller.isSkill(clickedItem);
+            }
+
+            if (!isContainerSlot && !isHotbar) return;
+
+            int skillCount = 0;
+            for (int i = 0; i < inventory.getSize(); i++) {
+                ItemStack item = inventory.getItem(i);
+                if (controller.isSkill(item)) skillCount++;
+            }
+            if (skillCount >= inventoryLimit) {
+                event.setCancelled(true);
+            }
+            return;
+        }
+
+        // We don't allow quick-casting here if there is an inventory limit.
         if (action == InventoryAction.PICKUP_HALF && mage != null)
         {
             Spell spell = mage.getSpell(Wand.getSpell(clickedItem));

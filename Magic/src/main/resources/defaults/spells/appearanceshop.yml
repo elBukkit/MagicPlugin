@@ -1,29 +1,39 @@
 appearanceshop:
     icon: diamond_axe:233
     icon_disabled: diamond_hoe:233
+    hide: true
     actions:
         cast:
         -  class: Selector
     parameters:
         auto_close: true
         confirm_filler: stained_glass:3
-        require_wand: true
-        require_template: wand
+        show_unavailable: true
+        requirements:
+        - wand: wand
         unlock_section: wand_appearances
         cost_type: sp
         options:
+        - item: none
         - item: appearance_beginner
-          path: beginner
+          requirements:
+          - path: beginner
         - item: appearance_student
-          path: student
+          requirements:
+          - path: student
         - item: appearance_apprentice
-          path: apprentice
+          requirements:
+          - path: apprentice
         - item: appearance_master
-          path: master
+          requirements:
+          - path: master
         - item: appearance_engineer
-          path: engineer
+          requirements:
+          - path: engineer
         - item: appearance_conduit
-          path: conduit
+          requirements:
+          - path: conduit
+        - item: none
         - item: appearance_moon
           unlock: moon
           confirm: true
@@ -32,3 +42,15 @@ appearanceshop:
           unlock: magicka
           confirm: true
           cost: 5000
+        - item: appearance_spire
+          unlock: spire
+          confirm: true
+          cost: 6000
+        - item: appearance_claw
+          unlock: claw
+          confirm: true
+          cost: 7000
+        - item: appearance_orb
+          unlock: orb
+          confirm: true
+          cost: 8000

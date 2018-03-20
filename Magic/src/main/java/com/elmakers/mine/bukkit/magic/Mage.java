@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.action.TeleportTask;
@@ -37,6 +38,7 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
@@ -53,10 +55,13 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -72,6 +77,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
@@ -148,13 +154,34 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean forget = false;
     private long disableWandOpenUntil = 0;
 
+    private class DamagedBy {
+        private WeakReference<Player> player;
+        public double damage;
+        public DamagedBy(Player player, double damage) {
+            this.player = new WeakReference<>(player);
+            this.damage = damage;
+        }
+
+        public Entity getEntity() {
+            return player.get();
+        }
+    };
+    private DamagedBy topDamager;
+    private DamagedBy lastDamager;
+    private Map<UUID, DamagedBy> damagedBy;
+
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
-    protected float damageReduction = 0;
-    protected float damageReductionPhysical = 0;
-    protected float damageReductionProjectiles = 0;
-    protected float damageReductionFalling = 0;
-    protected float damageReductionFire = 0;
-    protected float damageReductionExplosions = 0;
+    private Map<String, Double> protection = new HashMap<>();
+    private Map<String, Double> weakness = new HashMap<>();
+    private Map<String, Double> strength = new HashMap<>();
+    private float costReduction = 0;
+    private float cooldownReduction = 0;
+    private float consumeReduction = 0;
+    private float powerMultiplier = 1;
+    private float spMultiplier = 1;
+
+    private boolean costFree = false;
+    private boolean cooldownFree = false;
 
     protected boolean isVanished = false;
     protected long superProtectionExpiration = 0;
@@ -162,12 +189,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Map<Integer, Wand> activeArmor = new HashMap<>();
 
     private Location location;
-    private float costReduction = 0;
-    private float cooldownReduction = 0;
     private long cooldownExpiration = 0;
-    private float powerMultiplier = 1;
     private float magePowerBonus = 0;
-    private float spMultiplier = 1;
     private long lastClick = 0;
     private long lastCast = 0;
     private long lastOffhandCast = 0;
@@ -200,6 +223,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private String destinationWarp;
     private Integer lastActivatedSlot;
+    private String currentDamageType;
+    private String lastDamageType;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -210,10 +235,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         _entity = new WeakReference<>(null);
         _commandSender = new WeakReference<>(null);
         hasEntity = false;
-    }
-
-    public void setCostReduction(float reduction) {
-        costReduction = reduction;
     }
 
     @Override
@@ -260,8 +281,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    public void setCooldownReduction(float reduction) {
-        cooldownReduction = reduction;
+    public void setCostFree(boolean free) {
+        costFree = free;
+    }
+
+    public void setCooldownFree(boolean free) {
+        cooldownFree = free;
     }
 
     @Override
@@ -308,9 +333,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void onPlayerDeath(EntityDeathEvent event) {
         Player player = getPlayer();
-        if (player == null || player != event.getEntity()) {
-            return;
-        }
+
         if (!player.hasMetadata("arena")) {
             lastDeathLocation = player.getLocation();
         }
@@ -320,8 +343,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    public void onDeath(EntityDeathEvent event) {
+        Player player = getPlayer();
+        if (player != null && player != event.getEntity()) {
+            onPlayerDeath(event);
+            return;
+        }
+
+        if (entityData != null && getEntity() == event.getEntity()) {
+            entityData.onDeath(this);
+        }
+    }
+
     public void onPlayerCombust(EntityCombustEvent event) {
-        if (activeWand != null && activeWand.getDamageReductionFire() > 0) {
+        if (getProtection("fire") >= 1) {
             event.getEntity().setFireTicks(0);
             event.setCancelled(true);
         }
@@ -342,9 +377,112 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    public void onPlayerDamage(EntityDamageEvent event) {
-        Player player = getPlayer();
-        if (player == null) {
+    private void setTarget(Entity target) {
+        if (entityData != null && !entityData.shouldFocusOnDamager()) return;
+
+        LivingEntity li = getLivingEntity();
+        if (li != null && li instanceof Creature && target instanceof LivingEntity) {
+            Creature creature = ((Creature)li);
+            if (creature.getTarget() != target) {
+                sendDebugMessage("Now targeting " + target.getName(), 6);
+            }
+
+            creature.setTarget((LivingEntity)target);
+        }
+    }
+
+    public @Nullable Collection<Entity> getDamagers() {
+        if (damagedBy == null) return null;
+        Collection<Entity> damagers = new ArrayList<>();
+        for (DamagedBy damager : damagedBy.values()) {
+            Entity entity = damager.getEntity();
+            if (entity != null) {
+                damagers.add(entity);
+            }
+        }
+        return damagers;
+    }
+
+    public @Nullable Entity getLastDamager() {
+        return lastDamager == null ? null : lastDamager.getEntity();
+    }
+
+    public @Nullable Entity getTopDamager() {
+        if (topDamager == null) return null;
+        Entity topEntity = topDamager.getEntity();
+        if (topEntity == null && damagedBy != null) {
+            Set<UUID> damageIds = damagedBy.keySet();
+            double topDamage = 0;
+            for (UUID uuid : damageIds) {
+                DamagedBy damaged = damagedBy.get(uuid);
+                Entity entity = damaged.getEntity();
+                if (entity != null) {
+                    boolean withinRange = withinRange(entity);
+                    if (withinRange && damaged.damage > topDamage) {
+                        topEntity = entity;
+                        topDamage = damaged.damage;
+                        topDamager = damaged;
+                    }
+                } else {
+                    damagedBy.remove(uuid);
+                }
+            }
+        }
+
+        return topEntity;
+    }
+
+    private boolean withinRange(Entity entity) {
+        boolean withinRange = getLocation().getWorld().getName().equals(entity.getLocation().getWorld().getName());
+        double rangeSquared = entityData == null ? 0 : entityData.getTrackRadiusSquared();
+        if (rangeSquared > 0 && withinRange) {
+            withinRange = getLocation().distanceSquared(entity.getLocation()) <= rangeSquared;
+        }
+        return withinRange;
+    }
+
+    @Override
+    public void damagedBy(@Nonnull Entity damager, double damage) {
+        if (damagedBy == null) return;
+
+        if (damager instanceof Projectile) {
+            ProjectileSource source = ((Projectile) damager).getShooter();
+            if (!(source instanceof Entity)) return;
+            damager = (Entity)source;
+        }
+
+        // Only tracking players for now.
+        if (!(damager instanceof Player)) return;
+        Player damagingPlayer = (Player)damager;
+
+        lastDamager = damagedBy.get(damagingPlayer.getUniqueId());
+        if (lastDamager == null) {
+            lastDamager = new DamagedBy(damagingPlayer, damage);
+            damagedBy.put(damagingPlayer.getUniqueId(), lastDamager);
+        } else {
+            lastDamager.damage += damage;
+        }
+
+        if (topDamager != null) {
+            if (topDamager.getEntity() == null || topDamager.damage < lastDamager.damage || !withinRange(topDamager.getEntity())) {
+                topDamager = lastDamager;
+                setTarget(damagingPlayer);
+            }
+        } else {
+            topDamager = lastDamager;
+            setTarget(damagingPlayer);
+        }
+
+        if (entityData != null) {
+            entityData.onDamage(this, damage);
+        }
+    }
+
+    public void onDamage(EntityDamageEvent event) {
+        String damageType = currentDamageType;
+        currentDamageType = null;
+        LivingEntity entity = getLivingEntity();
+        if (entity == null) {
             return;
         }
 
@@ -366,7 +504,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     if (li != null) {
                         scale = event.getDamage() / li.getMaxHealth();
                     }
-                    fallingSpell.playEffects("land", (float)scale, player.getLocation().getBlock().getRelative(BlockFace.DOWN));
+                    fallingSpell.playEffects("land", (float)scale, getLocation().getBlock().getRelative(BlockFace.DOWN));
                 }
                 if (fallProtectionCount <= 0) {
                     fallProtection = 0;
@@ -380,52 +518,95 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if (isSuperProtected()) {
             event.setCancelled(true);
-            if (player.getFireTicks() > 0) {
-                player.setFireTicks(0);
+            if (entity.getFireTicks() > 0) {
+                entity.setFireTicks(0);
             }
             return;
         }
 
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) {
+            return;
+        }
 
         // First check for damage reduction
-        float reduction = 0;
-        reduction = damageReduction * controller.getMaxDamageReduction();
-        switch (cause) {
-            case CONTACT:
-            case ENTITY_ATTACK:
-                reduction += damageReductionPhysical * controller.getMaxDamageReductionPhysical();
-                break;
-            case PROJECTILE:
-                reduction += damageReductionProjectiles * controller.getMaxDamageReductionProjectiles();
-                break;
-            case FALL:
-                reduction += damageReductionFalling * controller.getMaxDamageReductionFalling();
-                break;
-            case FIRE:
-            case FIRE_TICK:
-            case LAVA:
-                // Also put out fire if they have maxed out fire protection.
-                if (damageReductionFire > 1 && player.getFireTicks() > 0) {
-                    player.setFireTicks(0);
-                }
-                reduction += damageReductionFire * controller.getMaxDamageReductionFire();
-                break;
-            case BLOCK_EXPLOSION:
-            case ENTITY_EXPLOSION:
-                reduction += damageReductionExplosions * controller.getMaxDamageReductionExplosions();
-            default:
-                break;
+        double reduction = 0;
+        Double overallProtection = protection.get("overall");
+        if (overallProtection != null) {
+            reduction = overallProtection * controller.getMaxDamageReduction("overall");
         }
+
+        // Apply weaknesses
+        double multiplier = 1;
+        Double overallWeakness = weakness.get("overall");
+        if (overallWeakness != null && overallWeakness > 0) {
+            double defendMultiplier = controller.getMaxDefendMultiplier("overall");
+            if (defendMultiplier > 1) {
+                defendMultiplier = 1 + (defendMultiplier - 1) * overallWeakness;
+                multiplier *= defendMultiplier;
+            }
+        }
+
+        if (cause == EntityDamageEvent.DamageCause.FIRE_TICK) {
+            // Also put out fire if they have maxed out fire protection.
+            double damageReductionFire = getProtection("fire");
+            if (damageReductionFire >= 1 && entity.getFireTicks() > 0) {
+                entity.setFireTicks(0);
+            }
+        }
+
+        if (damageType == null) {
+            switch (cause) {
+                case CONTACT:
+                case ENTITY_ATTACK:
+                    damageType = "physical";
+                    break;
+                case FIRE:
+                case FIRE_TICK:
+                case LAVA:
+                    damageType = "fire";
+                    break;
+                case BLOCK_EXPLOSION:
+                case ENTITY_EXPLOSION:
+                    damageType = "explosion";
+                    break;
+                default:
+                    damageType = cause.name().toLowerCase();
+                    break;
+            }
+        }
+        lastDamageType = damageType;
+
+        double protection = getProtection(damageType);
+        double maxReduction = controller.getMaxDamageReduction(damageType);
+        reduction += protection * maxReduction;
+
         if (reduction >= 1) {
             event.setCancelled(true);
+            sendDebugMessage(ChatColor.RED + "Damage nullified by " + ChatColor.BLUE + damageType + " (" + cause + ")", 8);
             return;
         }
 
         double damage = event.getDamage();
+        sendDebugMessage(ChatColor.RED + "Damaged by " + ChatColor.BLUE + (damageType == null ? "generic" : damageType) + " (" + cause + ")" + ChatColor.RED + " for " +
+                ChatColor.DARK_RED + damage, 10);
         if (reduction > 0) {
-            damage = (1.0f - reduction) * damage;
-            if (damage <= 0) damage = 0.1;
+            damage = (1.0 - reduction) * damage;
+            sendDebugMessage(ChatColor.DARK_RED + "Damage type " + ChatColor.BLUE + damageType +
+                    " reduced by " + ChatColor.AQUA + reduction + ChatColor.DARK_RED + " to " + ChatColor.RED + damage, 9);
+            event.setDamage(damage);
+        }
+
+        double weakness = getWeakness(damageType);
+        double maxMultiplier = controller.getMaxDefendMultiplier(damageType);
+        if (maxMultiplier > 1 && weakness > 0) {
+            weakness = 1 + (maxMultiplier - 1) * weakness;
+            multiplier *= weakness;
+        }
+
+        if (multiplier > 1) {
+            damage = multiplier * damage;
+            sendDebugMessage(ChatColor.DARK_RED + "Damage type " + ChatColor.BLUE + damageType +
+                    " multiplied by " + ChatColor.AQUA + multiplier + ChatColor.DARK_RED + " to " + ChatColor.RED + damage, 9);
             event.setDamage(damage);
         }
 
@@ -444,6 +625,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
+    }
+
+    public double getProtection(String damageType) {
+        Double value = protection.get(damageType);
+        return value == null ? 0 : value;
+    }
+
+    public double getWeakness(String damageType) {
+        Double value = weakness.get(damageType);
+        return value == null ? 0 : value;
     }
     
     @Override
@@ -464,11 +655,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return false;
     }
 
+    public void checkActiveSpells(Wand wand) {
+        if (activeSpells.isEmpty()) return;
+
+        ArrayList<MageSpell> active = new ArrayList<>(activeSpells);
+        for (MageSpell spell : active) {
+            if (spell.cancelOnNoWand() && spell.getCurrentCast().getWand() == wand) {
+                spell.deactivate();
+            }
+        }
+    }
+
     public void deactivateWand(Wand wand) {
+        if (wand == null) return;
+
         if (wand == activeWand) {
+            checkActiveSpells(activeWand);
             setActiveWand(null);
         }
         if (wand == offhandWand) {
+            checkActiveSpells(activeWand);
             setOffhandWand(null);
         }
     }
@@ -517,7 +723,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         DeprecatedUtils.updateInventory(getPlayer());
     }
 
-    private void setActiveWand(Wand activeWand) {
+    public void setActiveWand(Wand activeWand) {
         // Avoid deactivating a wand by mistake, and avoid infinite recursion on null!
         if (this.activeWand == activeWand) return;
         this.activeWand = activeWand;
@@ -525,7 +731,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             addBound(activeWand);
         }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
-        updateEquipmentEffects();
+        updatePassiveEffects();
 
         if (activeWand != null) {
             WandActivatedEvent activatedEvent = new WandActivatedEvent(this, activeWand);
@@ -533,7 +739,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    private void setOffhandWand(Wand offhandWand) {
+    public void setOffhandWand(Wand offhandWand) {
         // Avoid deactivating a wand by mistake, and avoid infinite recursion on null!
         if (this.offhandWand == offhandWand) return;
         this.offhandWand = offhandWand;
@@ -541,7 +747,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             addBound(offhandWand);
         }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
-        updateEquipmentEffects();
+        updatePassiveEffects();
 
         if (offhandWand != null) {
             WandActivatedEvent activatedEvent = new WandActivatedEvent(this, offhandWand);
@@ -946,6 +1152,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         // TODO: Is this the best place to do this?
         activeClass.loadProperties();
+        updatePassiveEffects();
         return true;
     }
 
@@ -990,6 +1197,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public boolean lockClass(@Nonnull String key) {
+        MageClass mageClass = getClass(key);
+        if (mageClass == null) {
+            return false;
+        }
+        mageClass.lock();
+        if (activeClass != null && activeClass.isLocked()) {
+            setActiveClass(null);
+        }
+        checkWand();
+        checkOffhandWand();
+        return true;
+    }
+
+    @Override
     public @Nonnull Collection<com.elmakers.mine.bukkit.api.magic.MageClass> getClasses() {
        List<com.elmakers.mine.bukkit.api.magic.MageClass> mageClasses = new ArrayList<>();
        mageClasses.addAll(classes.values());
@@ -1006,21 +1228,29 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return getClass(key, false);
     }
 
-    private @Nullable MageClass getClass(@Nonnull String key, boolean forceCreate) {
+    private @Nullable MageClass getClass(@Nonnull String key, boolean unlock) {
         MageClass mageClass = classes.get(key);
         if (mageClass == null) {
             MageClassTemplate template = controller.getMageClass(key);
-            if (template != null && (forceCreate || !template.isLocked())) {
+            if (template != null && (unlock || !template.isLocked())) {
                 mageClass = new MageClass(this, template);
                 assignParent(mageClass);
                 classes.put(key, mageClass);
+            }
+        }
+        if (mageClass != null && mageClass.isLocked()) {
+            if (unlock) {
+                mageClass.unlock();
+            } else {
+                mageClass = null;
             }
         }
         return mageClass;
     }
 
     public boolean hasClassUnlocked(@Nonnull String key) {
-        return classes.containsKey(key);
+        MageClass mageClass = classes.get(key);
+        return mageClass != null && !mageClass.isLocked();
     }
 
     private void assignParent(MageClass mageClass) {
@@ -1148,9 +1378,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             if (itemInHand != null && controller.hasWandPermission(player)) {
                 Wand newActiveWand = controller.getWand(itemInHand);
-                if (newActiveWand.activate(this)) {
-                    setActiveWand(newActiveWand);
-                } else {
+                if (!newActiveWand.activate(this)) {
                     setActiveWand(null);
                 }
             }
@@ -1227,9 +1455,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             if (itemInHand != null && controller.hasWandPermission(player)) {
                 Wand newActiveWand = controller.getWand(itemInHand);
-                if (newActiveWand.activateOffhand(this)) {
-                    setOffhandWand(newActiveWand);
-                } else {
+                if (!newActiveWand.activateOffhand(this)) {
                     setOffhandWand(null);
                 }
             }
@@ -1285,7 +1511,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (entityData != null) {
             if (lastTick != 0) {
                 long tickInterval = entityData.getTickInterval();
-                if (now - lastTick > tickInterval) {
+                if (tickInterval > 0 && now - lastTick > tickInterval) {
                     updateVelocity();
                     entityData.tick(this);
                     lastTick = now;
@@ -1319,10 +1545,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 activeClass.tick();
             }
             properties.tick();
-            
-            if (damageReductionFire > 1 && player.getFireTicks() > 0) {
-                player.setFireTicks(0);
-            }
 
             if (Wand.LiveHotbarSkills && (activeWand == null || !activeWand.isInventoryOpen())) {
                 updateHotbarStatus();
@@ -1601,7 +1823,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
 
                 if (!(batch instanceof UndoBatch)) {
-                    if (force && batch instanceof SpellBatch)
+                    if (batch instanceof SpellBatch)
                     {
                         SpellBatch spellBatch = (SpellBatch)batch;
                         Spell spell = spellBatch.getSpell();
@@ -1727,8 +1949,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isCostFree() {
-        // Special case for command blocks and Automata
-        if (getPlayer() == null) return true;
+        // Special case for command blocks, Automata and magic mobs
+        if (costFree || getPlayer() == null) return true;
         return getCostReduction() > 1;
     }
 
@@ -1762,18 +1984,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getCostReduction() {
-        if (offhandCast && offhandWand != null) {
-            return offhandWand.getCostReduction() + costReduction;
+        if (costFree) {
+            return 2;
         }
-        return activeWand == null ? costReduction + controller.getCostReduction() : activeWand.getCostReduction() + costReduction;
+        return costReduction * controller.getMaxCostReduction() + controller.getCostReduction();
     }
 
     @Override
     public float getConsumeReduction() {
-        if (offhandCast && offhandWand != null) {
-            return offhandWand.getConsumeReduction();
-        }
-        return activeWand == null ? 0 : activeWand.getConsumeReduction();
+        return consumeReduction;
     }
 
     @Override
@@ -1783,15 +2002,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getCooldownReduction() {
-        if (offhandCast && offhandWand != null) {
-            return offhandWand.getCooldownReduction() + cooldownReduction;
+        if (cooldownFree) {
+            return 2;
         }
-        return activeWand == null ? cooldownReduction + controller.getCooldownReduction() : activeWand.getCooldownReduction() + cooldownReduction;
+        return cooldownReduction * controller.getMaxCooldownReduction() + controller.getCooldownReduction();
     }
 
     @Override
     public boolean isCooldownFree() {
-        return getCooldownReduction() > 1;
+        return cooldownFree || getCooldownReduction() > 1;
     }
 
     @Override
@@ -2087,8 +2306,34 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getDamageMultiplier() {
+        float multiplier = 1.0f;
         float maxPowerMultiplier = controller.getMaxDamagePowerMultiplier() - 1;
-        return 1 + (maxPowerMultiplier * getPower());
+        if (maxPowerMultiplier > 0) {
+            multiplier = 1 + (maxPowerMultiplier * getPower());
+        }
+        Double overallMultiplier = strength.get("overall");
+        if (overallMultiplier != null && overallMultiplier > 0) {
+            double attackMultiplier = controller.getMaxAttackMultiplier("overall");
+            if (attackMultiplier > 1) {
+                attackMultiplier = 1 + (attackMultiplier - 1) * overallMultiplier;
+                multiplier *= attackMultiplier;
+            }
+        }
+        return multiplier;
+    }
+
+    @Override
+    public double getDamageMultiplier(String damageType) {
+        double multiplier = getDamageMultiplier();
+        Double overallMultiplier = damageType == null || damageType.isEmpty() ? null : strength.get(damageType);
+        if (overallMultiplier != null && overallMultiplier > 0) {
+            double attackMultiplier = controller.getMaxAttackMultiplier("overall");
+            if (attackMultiplier > 1) {
+                attackMultiplier = 1 + (attackMultiplier - 1) * overallMultiplier;
+                multiplier *= attackMultiplier;
+            }
+        }
+        return multiplier;
     }
 
     @Override
@@ -2873,42 +3118,83 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         } else if (activeClass != null) {
             activeClass.armorUpdated();
         }
-        updateEquipmentEffects();
+        updatePassiveEffects();
     }
 
-    protected void updateEquipmentEffects() {
-        damageReduction = 0;
-        damageReductionPhysical = 0;
-        damageReductionProjectiles = 0;
-        damageReductionFalling = 0;
-        damageReductionFire = 0;
-        damageReductionExplosions = 0;
+    protected void addPassiveEffectsGroup(Map<String, Double> properties, CasterProperties addProperties, String section, boolean stack) {
+       ConfigurationSection addSection = addProperties.getConfigurationSection(section);
+       if (addSection != null) {
+           Set<String> sectionTypes = addSection.getKeys(false);
+            for (String sectionType : sectionTypes) {
+                Double existing = properties.get(sectionType);
+                if (existing == null) {
+                    existing = 0.0;
+                }
+                double addValue = addSection.getDouble(sectionType);
+                if (stack) {
+                    existing = Math.min(1, existing + addValue);
+                } else {
+                    existing = Math.max(existing, addValue);
+                }
+                properties.put(sectionType, existing);
+            }
+       }
+    }
+
+    protected void addPassiveEffects(CasterProperties properties, boolean activeReduction) {
+        spMultiplier *= properties.getDouble("sp_multiplier", 1.0);
+
+       boolean stack = properties.getBoolean("stack", false);
+       addPassiveEffectsGroup(protection, properties, "protection", stack);
+       addPassiveEffectsGroup(weakness, properties, "weakness", stack);
+       addPassiveEffectsGroup(strength, properties, "strength", stack);
+
+       if (activeReduction || properties.getBoolean("passive")) {
+           if (stack) {
+               cooldownReduction = stackValue(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
+               costReduction = stackValue(costReduction, properties.getFloat("cost_reduction", 0));
+               consumeReduction = stackValue(consumeReduction, properties.getFloat("consume_reduction", 0));
+           } else {
+               cooldownReduction = Math.max(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
+               costReduction = Math.max(costReduction, properties.getFloat("cost_reduction", 0));
+               consumeReduction = Math.max(consumeReduction, properties.getFloat("consume_reduction", 0));
+           }
+       }
+    }
+
+    protected float stackValue(float currentValue, float stackValue) {
+        return Math.min(1, stackValue + currentValue);
+    }
+
+    protected void updatePassiveEffects() {
+        protection.clear();
+        strength.clear();
+        weakness.clear();
+
         spMultiplier = 1;
+        cooldownReduction = 0;
+        costReduction = 0;
+        consumeReduction = 0;
         
         List<PotionEffectType> currentEffects = new ArrayList<>(effectivePotionEffects.keySet());
         LivingEntity entity = getLivingEntity();
         effectivePotionEffects.clear();
+
+        addPassiveEffects(properties, true);
+        if (activeClass != null)
+        {
+            addPassiveEffects(activeClass, true);
+            spMultiplier *= activeClass.getDouble("sp_multiplier", 1.0);
+        }
         if (activeWand != null && !activeWand.isPassive())
         {
-            damageReduction += activeWand.getDamageReduction();
-            damageReductionPhysical += activeWand.getDamageReductionPhysical();
-            damageReductionProjectiles += activeWand.getDamageReductionProjectiles();
-            damageReductionFalling += activeWand.getDamageReductionFalling();
-            damageReductionFire += activeWand.getDamageReductionFire();
-            damageReductionExplosions += activeWand.getDamageReductionExplosions();
+            addPassiveEffects(activeWand, false);
             effectivePotionEffects.putAll(activeWand.getPotionEffects());
-
-            spMultiplier *= activeWand.getSPMultiplier();
         }
         // Don't add these together so things stay balanced!
         if (offhandWand != null && !offhandWand.isPassive())
         {
-            damageReduction = Math.max(damageReduction, offhandWand.getDamageReduction());
-            damageReductionPhysical += Math.max(damageReductionPhysical, offhandWand.getDamageReductionPhysical());
-            damageReductionProjectiles += Math.max(damageReductionProjectiles, offhandWand.getDamageReductionProjectiles());
-            damageReductionFalling += Math.max(damageReductionFalling, offhandWand.getDamageReductionFalling());
-            damageReductionFire += Math.max(damageReductionFire, offhandWand.getDamageReductionFire());
-            damageReductionExplosions += Math.max(damageReductionExplosions, offhandWand.getDamageReductionExplosions());
+            addPassiveEffects(offhandWand, false);
             effectivePotionEffects.putAll(offhandWand.getPotionEffects());
 
             spMultiplier *= offhandWand.getSPMultiplier();
@@ -2916,23 +3202,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (Wand armorWand : activeArmor.values())
         {
             if (armorWand != null) {
-                damageReduction += armorWand.getDamageReduction();
-                damageReductionPhysical += armorWand.getDamageReductionPhysical();
-                damageReductionProjectiles += armorWand.getDamageReductionProjectiles();
-                damageReductionFalling += armorWand.getDamageReductionFalling();
-                damageReductionFire += armorWand.getDamageReductionFire();
-                damageReductionExplosions += armorWand.getDamageReductionExplosions();
+                addPassiveEffects(armorWand, false);
                 effectivePotionEffects.putAll(armorWand.getPotionEffects());
-
-                spMultiplier *= armorWand.getSPMultiplier();
             }
         }
-        damageReduction = Math.min(damageReduction, 1);
-        damageReductionPhysical = Math.min(damageReductionPhysical, 1);
-        damageReductionProjectiles = Math.min(damageReductionProjectiles, 1);
-        damageReductionFalling = Math.min(damageReductionFalling, 1);
-        damageReductionFire = Math.min(damageReductionFire, 1);
-        damageReductionExplosions = Math.min(damageReductionExplosions, 1);
 
         if (entity != null)
         {
@@ -3108,6 +3381,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     
     public void setEntityData(EntityData entityData) {
         this.entityData = entityData;
+        controller.registerMagicMob(this);
+
+        ConfigurationSection mageProperties = entityData.getMageProperties();
+        if (mageProperties != null) {
+            ConfigurationUtils.addConfigurations(properties.getConfiguration(), mageProperties);
+            updatePassiveEffects();
+        }
+
+        // Only Magic Mobs tracks damage by player, for now
+        damagedBy = new HashMap<>();
     }
 
     @Override
@@ -3122,18 +3405,34 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             for (int i = 0; i < Wand.HOTBAR_SIZE; i++) {
                 ItemStack spellItem = player.getInventory().getItem(i);
                 String spellKey = Wand.getSpell(spellItem);
+                String classKey = Wand.getSpellClass(spellItem);
                 if (spellKey != null) {
                     Spell spell = getSpell(spellKey);
                     if (spell != null) {
                         int targetAmount = 1;
-                        long remainingCooldown = spell.getRemainingCooldown();
-                        CastingCost requiredCost = spell.getRequiredCost();
-                        boolean canCast = spell.canCast(location);
-                        if (canCast && remainingCooldown == 0 && requiredCost == null) {
-                            targetAmount = 1;
-                        } else if (!canCast) {
-                            targetAmount = 99;
+                        long remainingCooldown = 0;
+                        CastingCost requiredCost = null;
+                        boolean canCastSpell = false;
+                        if (classKey != null && !classKey.isEmpty()) {
+                            MageClass mageClass = getClass(classKey);
+                            if (mageClass != null && spell instanceof BaseSpell) {
+                                BaseSpell baseSpell = (BaseSpell)spell;
+                                baseSpell.setMageClass(mageClass);
+                                remainingCooldown = spell.getRemainingCooldown();
+                                requiredCost = spell.getRequiredCost();
+                                canCastSpell = spell.canCast(location);
+                                baseSpell.setMageClass(null);
+                            }
                         } else {
+                            remainingCooldown = spell.getRemainingCooldown();
+                            requiredCost = spell.getRequiredCost();
+                            canCastSpell = spell.canCast(location);
+                        }
+
+                        boolean canCast = canCastSpell;
+                        if (canCastSpell && remainingCooldown == 0 && requiredCost == null) {
+                            targetAmount = 1;
+                        } else if (canCastSpell ){
                             canCast = remainingCooldown == 0;
                             targetAmount = Wand.LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
                             if (Wand.LiveHotbarCooldown && requiredCost != null) {
@@ -3145,7 +3444,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                         int targetManaTime = (int)Math.min(Math.ceil(remainingMana / getEffectiveManaRegeneration()), 99);
                                         targetAmount = Math.max(targetManaTime, targetAmount);
                                     } else {
-                                        targetAmount = 99;
+                                        canCastSpell = false;
                                         canCast = false;
                                     }
                                 }
@@ -3164,7 +3463,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                 if (disabledIcon.isValid() && (disabledIcon.getMaterial() != spellItem.getType() || disabledIcon.getData() != spellItem.getDurability())) {
                                     disabledIcon.applyToItem(spellItem);
                                 }
-                                if (targetAmount == 99) {
+                                if (!canCastSpell) {
                                     if (spellItem.getAmount() != 1) {
                                         spellItem.setAmount(1);
                                     }
@@ -3182,7 +3481,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                     InventoryUtils.setNewSkullURL(spellItem, disabledUrlIcon);
                                     player.getInventory().setItem(i, spellItem);
                                 }
-                                if (targetAmount == 99) {
+                                if (!canCastSpell) {
                                     if (spellItem.getAmount() != 1) {
                                         spellItem.setAmount(1);
                                     }
@@ -3376,6 +3675,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         return attribute;
+    }
+
+    @Override
+    public void setLastDamageType(String damageType) {
+        currentDamageType = damageType;
+        lastDamageType = damageType;
+    }
+
+    @Override
+    public String getLastDamageType() {
+        return lastDamageType;
     }
 }
 

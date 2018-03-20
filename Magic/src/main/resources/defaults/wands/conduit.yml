@@ -8,8 +8,6 @@ conduit:
     icon: wood_hoe:6
     migrate_icon: gold_pickaxe
     effect_color: '8B008B'
-    protection_falling: 1
-    protection: 1
     mana_max: 600
     mana: 600
     mana_regeneration: 120

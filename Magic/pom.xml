@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.elmakers.mine.bukkit</groupId>
 		<artifactId>Magic-parent</artifactId>
-		<version>7.2-SNAPSHOT</version>
+		<version>7.4-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>de.slikey</groupId>
 			<artifactId>EffectLib</artifactId>
-			<version>5.7-SNAPSHOT</version>
+			<version>5.9-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -286,6 +286,12 @@
 			<version>3.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>ch.njol</groupId>
+			<artifactId>skript</artifactId>
+			<version>2.2-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<repositories>
@@ -325,6 +331,10 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+		<repository>
+			<id>njol-repo</id>
+			<url>http://maven.njol.ch/repo/</url>
+		</repository>
 
 		<!--
 			All of the following repositories seem to be offline.
@@ -483,7 +493,7 @@
 				<configuration>
 				  <doCheck>false</doCheck>
 				  <doUpdate>false</doUpdate>
-				  <shortRevisionLength>5</shortRevisionLength>
+				  <shortRevisionLength>7</shortRevisionLength>
 				</configuration>
 		    </plugin>
 			<plugin>

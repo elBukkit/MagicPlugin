@@ -13,9 +13,23 @@ rubberize:
           - class: ModifyBlock
     effects:
         cast:
+        -  sound: magic.shimmer
         -  class: EffectTrail
            particle: block_crack
-           sound: magic.shimmer
+           particle_count: 20
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        -  location: target
+           effectlib:
+             class: Helix
+             particle: block_crack
+             particleCount: 8
+             particleOffsetX: 0.2
+             particleOffsetY: 0.5
+             particleOffsetZ: 0.2
+             iterations: 1
+             radius: $size
     parameters:
         allow_max_range: false
         range: 16

@@ -1,15 +1,17 @@
 debugger:
-    icon: watch
+    icon: diamond_axe:7
+    disabled_icon: diamond_hoe:7
     hidden: true
     category: staff
     worth: 50
+    show_undoable: false
     actions:
         alternate_down:
         - class: ChangeContext
           target_caster: true
           actions:
           - class: Debugger
-            level: 10
+            level: 1
             check: true
         alternate_up:
         - class: AllEntities
@@ -18,8 +20,7 @@ debugger:
           - level: 0
         cast:
         - class: Debugger
-          level: 1
-          check: true
+          level: 10
         alternate_sneak:
         - class: Debugger
           level: 20
@@ -42,4 +43,5 @@ debugger:
         messsage_targets: false
         loud: true
         cooldown: 1000
+        target_self: true
 

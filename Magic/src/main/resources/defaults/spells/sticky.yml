@@ -13,6 +13,7 @@ sticky:
           actions:
           - class: PlayEffects
             effects: explode
+            ignore_result: true
           - class: AreaOfEffect
             actions:
             - class: Damage
@@ -34,7 +35,7 @@ sticky:
              class: SphereEffect
              particle: redstone
              color: "FFA500"
-             iterations: 20
+             iterations: 30
              radius: 0.2
              particles: 10
         hit:
@@ -43,12 +44,18 @@ sticky:
            sound_volume: .3
            location: target
            effectlib:
-             class: SphereEffect
-             particle: redstone
-             color: "FF0000"
+             class: Modified
              duration: $attach_duration
-             radius: 0.3
-             particles: 10
+             parameters:
+               radius: "sin(t/8) * 0.5"
+             effect:
+               class: SphereEffect
+               particle: redstone
+               particles: 10
+               particleCount: 4
+               particleOffsetX: 0.01
+               particleOffsetY: 0.01
+               particleOffsetZ: 0.01
         explode:
         - location: target
           particle: explosion_huge

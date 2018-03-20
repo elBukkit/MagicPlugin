@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.effect;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -24,8 +25,16 @@ public class EffectUtils extends NMSUtils {
     public static void spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power) {
         spawnFireworkEffect(server, location, effect, power, null, 2, 1);
     }
+    
+    public static void spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, boolean silent) {
+        spawnFireworkEffect(server, location, effect, power, null, 2, 1, silent);
+    }
 
     public static Entity spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown) {
+        return spawnFireworkEffect(server, location, effect, power, direction, expectedLifespan, ticksFlown, false);
+    }
+
+    public static Entity spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown, boolean silent) {
         Entity entity = null;
         try {
             Object world = getHandle(location.getWorld());
@@ -37,7 +46,8 @@ public class EffectUtils extends NMSUtils {
 
             Object item = getHandle(makeReal(itemStack));
             final Object fireworkHandle = class_EntityFireworkConstructor.newInstance(world, location.getX(), location.getY(), location.getZ(), item);
-
+            CompatibilityUtils.setSilent(fireworkHandle, silent);
+            
             if (direction != null) {
                 class_Entity_motXField.set(fireworkHandle, direction.getX());
                 class_Entity_motYField.set(fireworkHandle, direction.getY());

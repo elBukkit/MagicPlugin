@@ -34,14 +34,41 @@ wave:
            sound_volume: 1
            sound_pitch: 0.2
            location: origin
+           material: stone
+           effectlib:
+             class: EquationEffect
+             xEquation: "t/16"
+             yEquation: "sin(t/16)"
+             zEquation: "0"
+             x2Equation: "0"
+             y2Equation: "0"
+             z2Equation: "t2/16 * 4 - 4"
+             iterations: 8
+             particles: 24
+             particles2: 32
+             particle: block_crack
+             orient: true
+             orientPitch: false
+             period: 6
         iterate:
         -  class: EffectSingle
-           location: origin
+           location: target
            sound: magic.shimmer_quiet
+           orient: true
            effectlib:
-             class: SmokeEffect
-             iterations: 16
-             particle: smoke_normal
+             class: EquationEffect
+             xEquation: "0"
+             yEquation: "floor(t/16)*0.2-1"
+             zEquation: "t/16*4-4"
+             iterations: 2
+             particles: 16
+             particleCount: 4
+             particleOffsetX: 1
+             particleOffsetY: 0.2
+             particleOffsetZ: 1
+             particle: smoke_large
+             orient: true
+             orientPitch: false
     parameters:
         target: block
         target_type: Entity
@@ -63,7 +90,7 @@ wave:
         brush: air
         falling: true
         undo: 15000
-        damage: 0.5
+        damage: 2
         undo_speed: 0.5
     costs:
         mana: 150

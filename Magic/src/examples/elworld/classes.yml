@@ -12,3 +12,15 @@ testing:
     hotbar_count: subclass
   mana_max: 1000
   mana_regeneration: 100
+
+akr:
+  mana_max: 1000
+  mana_regeneration: 100
+  quick_cast: false
+  skill_limit: 2
+  spells:
+  - missile|4
+  - blink|2
+  - fling|3
+  - blast
+  - boom

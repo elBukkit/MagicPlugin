@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.BaseShopAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
@@ -248,10 +249,18 @@ public class SpellShopAction extends BaseShopAction
             }
             String upgradeDescription = spell.getUpgradeDescription();
             if (showUpgrades && upgradeDescription != null && !upgradeDescription.isEmpty()) {
+                upgradeDescription = controller.getMessages().get("spell.upgrade_description_prefix") + upgradeDescription;
                 InventoryUtils.wrapText(upgradeDescription,  lore);
             }
 
             String unpurchasableMessage = null;
+            
+            Collection<Requirement> requirements = spell.getRequirements();
+            String requirementMissing = controller.checkRequirements(context, requirements);
+            if (requirementMissing != null) {
+                unpurchasableMessage = requirementMissing;
+                InventoryUtils.wrapText(unpurchasableMessage, lore);
+            }
 
             if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
                     || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)
@@ -279,7 +288,7 @@ public class SpellShopAction extends BaseShopAction
                     unpurchasableMessage = ChatColor.RED + context.getMessage("cast_requirement", getDefaultMessage(context, "cast_requirement"))
                             .replace("$current", Long.toString(castCount))
                             .replace("$required", Long.toString(requiredCastCount));
-                    lore.add(unpurchasableMessage);
+                    InventoryUtils.wrapText(unpurchasableMessage, lore);
                 }
 
                 if (!missingSpells.isEmpty()) {

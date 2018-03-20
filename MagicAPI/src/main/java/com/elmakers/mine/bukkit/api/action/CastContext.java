@@ -178,4 +178,5 @@ public interface CastContext {
     SpellResult processHandlers();
     boolean hasHandlers();
     CasterProperties getActiveProperties();
+    void addMessageParameter(String key, String value);
 }

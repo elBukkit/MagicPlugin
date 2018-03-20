@@ -12,7 +12,11 @@ tag:
         -  class: EffectSingle
            sound: block_fire_extinguish
         -  class: EffectTrail
-           particle: redstone
+           particle: crit
+           particle_count: 20
+           particle_offset_x: 0.1
+           particle_offset_y: 0.1
+           particle_offset_z: 0.1
         -  class: EffectSingle
            location: target
            target_offset: 0,3,0
@@ -20,8 +24,19 @@ tag:
            effectlib:
              class: TextEffect
              text: $target
-             iterations: 2
+             iterations: 10
+             period: 4
              particle: redstone
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,3,0
+           effectlib:
+             class: TextEffect
+             text: $target
+             iterations: 5
+             period: 4
+             particleCount: 20
+             particle: fireworks_spark
     parameters:
         target_type: Player
         allow_max_range: false

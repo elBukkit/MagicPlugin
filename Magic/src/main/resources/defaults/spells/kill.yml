@@ -2,6 +2,8 @@ kill:
     icon: diamond_axe:170
     icon_disabled: diamond_hoe:170
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
+    example_thumbnail: https://thumbs.gfycat.com/IllCloudyAfricancivet-size_restricted.gif
+    example_link: https://thumbs.gfycat.com/IllCloudyAfricancivet
     category: master
     tags: noduel
     worth: 5000
@@ -43,7 +45,7 @@ kill:
         tick:
         - location: target
           particle: smoke_large
-          particle_count: 4
+          particle_count: 20
           particle_offset_x: 0.2
           particle_offset_y: 0.2
           particle_offset_z: 0.2
@@ -60,6 +62,23 @@ kill:
           location: target
           color: "00FF00"
           firework: ball_large
+        hit_entity:
+        - class: EffectSingle
+          location: target
+          target_offset: 0,3,0
+          orient: true
+          effectlib:
+             class: Modified
+             iterations: 75
+             parameters:
+              size: "max(0, (t / i) * 5 - 3) + 0.2"
+             effect:
+               enableRotation: false
+               class: ColoredImageEffect
+               fileName: https://i.imgur.com/47aVrwT.gif
+               stepX: 1
+               stepY: 1
+               transparency: true
     parameters:
         target: none
         target_type: Damageable

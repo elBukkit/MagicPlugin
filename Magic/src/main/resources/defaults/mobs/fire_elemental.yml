@@ -1,0 +1,23 @@
+fire_elemental:
+  type: blaze
+  name: Fire Elemental
+  health: 100
+  default_drops: false
+  protection:
+    fire: 2
+  weakness:
+    water: 1
+  interval: 5000
+  triggers:
+    interval:
+      cast:
+        fire: 100
+        flamethrower: 100
+        none: 50
+  drops:
+  - gold_nugget@8
+  - sp:10
+  potion_effects:
+  - type: speed
+    amplifier: 0
+

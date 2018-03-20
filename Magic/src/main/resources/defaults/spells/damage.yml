@@ -1,0 +1,79 @@
+# Possible values for damage_type:
+# FIRE
+# LIGHTNING
+# BURN
+# LAVA
+# HOT_FLOOR
+# STUCK
+# CRAMMING
+# DROWN
+# STARVE
+# CACTUS
+# FALL
+# FLY_INTO_WALL
+# OUT_OF_WORLD
+# GENERIC
+# MAGIC
+# WITHER
+# ANVIL
+# FALLING_BLOCK
+# DRAGON_BREATH
+
+damage:
+    icon: diamond_axe:172
+    icon_disabled: diamond_hoe:172
+    icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
+    category: staff
+    worth: 50000
+    actions:
+      cast:
+      - class: CustomProjectile
+        actions:
+        - class: Damage
+    effects:
+        cast:
+        - sound: magic.zap_big
+          sound_volume: 1
+          location: origin
+          source_location: cast
+          effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: redstone
+             color: FF0000
+             lengthGrow: 0.4
+        hit:
+        - location: target
+          target_location: hit
+          effectlib:
+             class: SphereEffect
+             iterations: 16
+             particle: redstone
+             color: FF0000
+             radius: 0.2
+        headshot:
+        - location: target
+          target_location: hit
+          effectlib:
+             class: SphereEffect
+             iterations: 16
+             particle: redstone
+             color: FFFF00
+             radius: 0.4
+    headshot_parameters:
+      damage_multiplier: 1.5
+    parameters:
+        velocity: 5000
+        target: other
+        target_type: Damageable
+        cooldown: 500
+        target_breakables: 5
+        bypass_backfire: true
+        bypass_pvp: true
+        range: 64
+        damage_type: OUT_OF_WORLD
+        damage: 10
+    costs:
+        mana: 100
+
+

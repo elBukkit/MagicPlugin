@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -63,7 +64,7 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
  * Some Spell implementations will absolutely require a Player (such as StashSpell),
  * and so will always fail unless cast by a player or with "castp".
  */
-public interface Mage extends CostReducer {
+public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Return the list of pending construction batches for this Mage
      *
@@ -345,7 +346,9 @@ public interface Mage extends CostReducer {
 
     ConfigurationSection getData();
 
+    @Override
     boolean isCooldownFree();
+    @Override
     float getCooldownReduction();
     boolean isCostFree();
     boolean isConsumeFree();
@@ -359,9 +362,22 @@ public interface Mage extends CostReducer {
     boolean isSuperProtected();
 
     float getRangeMultiplier();
-    float getDamageMultiplier();
     float getRadiusMultiplier();
     float getConstructionMultiplier();
+
+    /**
+     * Returns the combination of power-based damage multiplier, overall damage multiplier, and type-specific damage
+     * multiplier.
+     *
+     * @return
+     */
+    double getDamageMultiplier(String damageType);
+
+    /**
+     * Returns power-based damage combined with overall damage multipliers.
+     * @return
+     */
+    float getDamageMultiplier();
 
     Color getEffectColor();
     String getEffectParticleName();
@@ -501,8 +517,13 @@ public interface Mage extends CostReducer {
     @Nonnull Collection<String> getClassKeys();
     @Nullable MageClass getActiveClass();
     @Nullable MageClass unlockClass(@Nonnull String key);
+    boolean lockClass(@Nonnull String key);
     @Nullable MageClass getClass(@Nonnull String key);
     boolean hasClassUnlocked(@Nonnull String key);
+    void damagedBy(@Nonnull Entity enity, double damage);
+    @Nullable Collection<Entity> getDamagers();
+    @Nullable Entity getLastDamager();
+    @Nullable Entity getTopDamager();
 
     /**
      * This will return properties for the mage's active wand, if holding one, or if not then the active class.
@@ -577,4 +598,23 @@ public interface Mage extends CostReducer {
     boolean isAutomaton();
 
     Double getAttribute(String attributeKey);
+
+    /**
+     *
+     * Set the damage type that was last given to a Mage.
+     *
+     * Set this prior to damaging a mage for custom weakness/protection to work properly.
+     *
+     * @param damageType A damage type as defined in config.yml
+     */
+    void setLastDamageType(String damageType);
+
+    /**
+     * Get the last damage type done to this Mage.
+     *
+     * This can be a custom damage type, or the name of a vanilla type.
+     *
+     * @return the last damage type this Mage received.
+     */
+    @Nullable String getLastDamageType();
 }

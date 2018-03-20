@@ -24,6 +24,7 @@ wolf:
   active_brush: erase
   active_spell: missile|4
   spells:
+    - debugger@7
     - absorb@8
     - alter@90
     - animate@51
@@ -38,14 +39,14 @@ wolf:
     - boon|2@135
     - box@92
     - bridge@29
-    - superbroom@7
+    - superbroom@23
     - camera@133
     - collapse@58
     - commit@93
     - convert@94
     - counterspell@59
     - curse@66
-    - day@4
+    - day@3
     - defender@52
     - disarm@73
     - disc@136
@@ -65,7 +66,8 @@ wolf:
     - ghast@38
     - glider@56
     - grenade|2@78
-    - heal@6
+    - testdummy@6
+    - heal
     - hunter@53
     - icbm@79
     - iterate@95
@@ -74,7 +76,8 @@ wolf:
     - levitate|5@0
     - life@82
     - lightning|3@87
-    - missile|4@3
+    - damage@4
+    - missile|4
     - mob@67
     - monster@68
     - mount@116
@@ -89,7 +92,7 @@ wolf:
     - portal@119
     - pull@25
     - push@24
-    - recall@23
+    - recall@22
     - recurse@97
     - regenerate@98
     - repair@99

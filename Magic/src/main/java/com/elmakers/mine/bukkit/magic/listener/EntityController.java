@@ -166,6 +166,7 @@ public class EntityController implements Listener {
         if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
         Mage entityMage = controller.getRegisteredMage(entity);
         if (entityMage != null) {
+            entityMage.damagedBy(event.getDamager(), event.getDamage());
             if (entity instanceof Player) {
                 Player damaged = (Player)entity;
                 if (damaged.isBlocking()) {
@@ -239,21 +240,22 @@ public class EntityController implements Listener {
         if (entity.hasMetadata("nodrops")) {
             event.setDroppedExp(0);
             event.getDrops().clear();
+            entity.removeMetadata("nodrops", controller.getPlugin());
         }
-
-        if (!(entity instanceof Player)) {
-            return;
-        }
-        final Player player = (Player)entity;
-
         Mage apiMage = controller.getRegisteredMage(entity);
         if (apiMage == null) return;
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
-        mage.onPlayerDeath(event);
         mage.deactivateAllSpells();
+        mage.onDeath(event);
+
+        if (!(entity instanceof Player)) {
+            return;
+        }
+        final Player player = (Player)entity;
+
         String rule = entity.getWorld().getGameRuleValue("keepInventory");
         if (rule.equals("true")) return;
 
@@ -442,7 +444,7 @@ public class EntityController implements Listener {
                 if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
                 com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
 
-                mage.onPlayerDamage(event);
+                mage.onDamage(event);
             }
             else
             {
@@ -451,7 +453,7 @@ public class EntityController implements Listener {
                 if (apiMountMage != null) {
                     if (!(apiMountMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
                     com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMountMage;
-                    mage.onPlayerDamage(event);
+                    mage.onDamage(event);
                 }
             }
             if (entity instanceof Item)

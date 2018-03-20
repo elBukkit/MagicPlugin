@@ -11,15 +11,16 @@ base:
     path: subclass
     hotbar_count: subclass
 
+broomrider:
+  storage:
+    spell_levels: class
+
 caster:
   inherit: base
   locked: false
   mana_max: 50
   mana: 50
   mana_regeneration: 5
-  active_spell: missile
-  spells:
-   - missile
 
 battle_mage:
   parent: caster
@@ -37,3 +38,14 @@ mage:
   parent: caster
   locked: false
   path: beginner
+  spells:
+   - missile
+
+archer_mage:
+  parent: base
+  locked: false
+  path: archer
+  active_spell: arrow_regular
+  spells:
+  - arrow_regular
+  - arrow_poison

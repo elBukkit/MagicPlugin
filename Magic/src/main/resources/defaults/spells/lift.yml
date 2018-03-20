@@ -9,11 +9,48 @@ lift:
         cast:
         -  class: Velocity
            requires_entity_target: true
-           item_speed: 2
-           living_entity_speed: 3
+           item_speed: 0.05
+           living_entity_speed: 0.75
         -  class: PotionEffect
-        -  class: MoveBlock
+        -  class: Repeat
+           repeat: 5
+           actions:
+           - class: MoveBlock
+             set_target: true
+           - class: PlayEffects
+             effects: float
+             ignore_result: true
+           - class: Delay
+             delay: 100
+           - class: Skip
+             skip: 3
+             actions:
+             - class: PlayEffects
+               effects: floating
+               ignore_result: true
     effects:
+        floating:
+        -  class: EffectSingle
+           target_offset: 0.5,0.5,0.5
+           location: target
+           use_block_location: true
+           effectlib:
+             class: SphereEffect
+             iterations: 48
+             period: 2
+             particle: spell
+             radius: 0.8
+        float:
+        -  class: EffectSingle
+           target_offset: 0.5,0.5,0.5
+           location: target
+           use_block_location: true
+           effectlib:
+             class: SphereEffect
+             iterations: 4
+             period: 2
+             particle: spell
+             radius: 0.8
         cast:
         -  class: EffectSingle
            location: origin
@@ -26,18 +63,10 @@ lift:
              particle: spell
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0.5,5.5,0.5
-           location: target
-           use_block_location: true
-           effectlib:
-             class: SphereEffect
-             iterations: 48
-             period: 2
-             particle: spell
-             radius: 0.8
-        -  class: EffectSingle
            location: target
            effectlib:
+             yaw: 0
+             pitch: -90
              class: ConeEffect
              iterations: 8
              particle: spell
@@ -64,7 +93,7 @@ lift:
         target_breakables: 1
         bypass_backfire: false
         cooldown: 1000
-        offset: 0,5,0
+        offset: 0,1,0
         delay: 100
         direction: 0,1,0
         living_entity_speed: 0.1

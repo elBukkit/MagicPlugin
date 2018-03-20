@@ -305,22 +305,26 @@ public class BlockController implements Listener {
         Entity entity = event.getEntity();
 
         if (entity instanceof FallingBlock) {
-            UndoList blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
-            if (blockList != null) {
-                com.elmakers.mine.bukkit.api.action.CastContext context = blockList.getContext();
-                if (context != null && !context.hasBuildPermission(entity.getLocation().getBlock())) {
-                    event.setCancelled(true);
-                } else {
-                    Block block = event.getBlock();
-                    blockList.convert(entity, block);
-                    if (!blockList.getApplyPhysics()) {
-                        FallingBlock falling = (FallingBlock)entity;
-                        DeprecatedUtils.setTypeIdAndData(block, DeprecatedUtils.getId(falling.getMaterial()), DeprecatedUtils.getBlockData(falling), false);
+            if (event.getTo() == Material.AIR) {
+                // Block is falling, register it
+                controller.registerFallingBlock(entity, event.getBlock());
+            } else {
+                // Block is landing, convert it
+                UndoList blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
+                if (blockList != null) {
+                    com.elmakers.mine.bukkit.api.action.CastContext context = blockList.getContext();
+                    if (context != null && !context.hasBuildPermission(entity.getLocation().getBlock())) {
                         event.setCancelled(true);
+                    } else {
+                        Block block = event.getBlock();
+                        blockList.convert(entity, block);
+                        if (!blockList.getApplyPhysics()) {
+                            FallingBlock falling = (FallingBlock)entity;
+                            DeprecatedUtils.setTypeIdAndData(block, DeprecatedUtils.getId(falling.getMaterial()), DeprecatedUtils.getBlockData(falling), false);
+                            event.setCancelled(true);
+                        }
                     }
                 }
-            } else {
-                controller.registerFallingBlock(entity, event.getBlock());
             }
         }
     }

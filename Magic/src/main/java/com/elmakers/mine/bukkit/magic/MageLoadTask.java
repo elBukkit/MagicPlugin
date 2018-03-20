@@ -21,7 +21,7 @@ public class MageLoadTask implements Runnable {
             MageLoadEvent event = new MageLoadEvent(mage, data == null);
             Bukkit.getPluginManager().callEvent(event);
             if (mage.isPlayer()) {
-                mage.getController().sendResourcePack(mage.getPlayer());
+                mage.getController().promptResourcePack(mage.getPlayer());
             }
         } catch (Exception ex) {
             mage.getController().getLogger().warning("Failed to load mage data for player " + mage.getName());

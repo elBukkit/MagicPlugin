@@ -22,3 +22,22 @@ enchant_block: ""
 
 # Wands don't glow because they don't in the movies
 wand_glow: false
+
+# Configure some custom damage types
+damage_types:
+  earth:
+    max_reduction: 0.5
+    max_strength: 5
+    max_weakness: 10
+  fire:
+    max_reduction: 0.5
+    max_strength: 5
+    max_weakness: 10
+  air:
+    max_reduction: 0.5
+    max_strength: 5
+    max_weakness: 10
+  water:
+    max_reduction: 0.5
+    max_strength: 5
+    max_weakness: 10

@@ -9,7 +9,8 @@ effectshop:
     parameters:
         confirm_filler: stained_glass:9
         confirm: true
-        require_wand: true
+        requirements:
+        - holding_wand: true
         unlock_section: wand_effects
         cost_type: sp
         options:

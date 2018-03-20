@@ -7,7 +7,6 @@ student:
     migrate_icon: wood_hoe
     effect_color: '00FF00'
     mana_regeneration: 30
-    protection_falling: 0.5
     mana_max: 150
     mana: 150
     spells:

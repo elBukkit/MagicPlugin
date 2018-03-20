@@ -15,6 +15,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -43,7 +44,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 0)
 		{
-            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list] <type>");
+            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list] <type> [count]");
 			return true;
 		}
         
@@ -55,9 +56,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
         if (args[0].equalsIgnoreCase("clear"))
         {
-            String mobType = args.length > 1 ? args[1] : null;
-            String worldName = args.length > 2 ? args[2] : null;
-            onClearMobs(sender, mobType, worldName);
+            onClearMobs(sender, args);
             return true;
         }
 
@@ -67,7 +66,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
 
         if (!(sender instanceof Player) && !(sender instanceof BlockCommandSender) && args.length < 6) {
-            sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world>");
+            sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world> [count]");
             return true;
         }
         
@@ -111,7 +110,8 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
                         ConfigurationUtils.overrideDouble(args[3], currentY),
                         ConfigurationUtils.overrideDouble(args[4], currentZ));
             } catch (Exception ex) {
-                targetLocation = null;
+                sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world> [count]");
+                return true;
             }
         } else if (player != null) {
             Location location = player.getEyeLocation();
@@ -125,14 +125,35 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
         
         if (targetLocation == null || targetLocation.getWorld() == null) {
-            sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world>");
+            sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world> [count]");
             return true;
         }
         
         String mobKey = args[1];
+        int count = 1;
+        String countString = null;
+        if (args.length == 7) {
+            countString = args[6];
+        } else if (args.length == 3) {
+            countString = args[2];
+        }
+        if (countString != null) {
+            try {
+                count = Integer.parseInt(countString);
+            } catch (Exception ex) {
+                sender.sendMessage(ChatColor.RED + "Invalid count: " + countString);
+                return true;
+            }
+        }
+
+        if (count <= 0) return true;
 
         MageController controller = api.getController();
-        Entity spawned = controller.spawnMob(mobKey, targetLocation);
+        Entity spawned = null;
+
+        for (int i = 0; i < count; i++) {
+            spawned = controller.spawnMob(mobKey, targetLocation);
+        }
         if (spawned == null) {
             sender.sendMessage(ChatColor.RED + "Unknown mob type " + mobKey);
             return true;
@@ -149,7 +170,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
     protected void onListMobs(CommandSender sender) {
         Map<String, Integer> mobCounts = new HashMap<>();
 
-        Collection<Mage> mages = new ArrayList<>(api.getController().getMages());
+        Collection<Mage> mages = new ArrayList<>(api.getController().getMobMages());
         for (Mage mage : mages) {
             EntityData entityData = mage.getEntityData();
             if (entityData == null) continue;
@@ -174,14 +195,91 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
     }
 
-    protected void onClearMobs(CommandSender sender, String mobType, String worldName) {
-        Collection<Mage> mages = new ArrayList<>(api.getController().getMages());
+    protected void onClearMobs(CommandSender sender, String[] args) {
+        String mobType = args.length > 1 ? args[1] : null;
+        if (mobType != null && mobType.equalsIgnoreCase("all")) {
+            mobType = null;
+        }
+        String worldName = null;
+        Integer radiusSquared = null;
+        Location targetLocation = null;
+        Player player = (sender instanceof Player) ? (Player)sender : null;
+        BlockCommandSender commandBlock = (sender instanceof BlockCommandSender) ? (BlockCommandSender)sender : null;
+
+        if (args.length == 3) {
+            if (!(sender instanceof ConsoleCommandSender) && Bukkit.getWorld(args[2]) == null) {
+                try {
+                    int radius = Integer.parseInt(args[2]);
+                    radiusSquared = radius * radius;
+                } catch (Exception ex) {
+
+                }
+            }
+            if (radiusSquared == null) {
+                worldName = args[2];
+            } else {
+                if (player != null) {
+                    targetLocation = player.getLocation();
+                } else if (commandBlock != null) {
+                    targetLocation = commandBlock.getBlock().getLocation();
+                } else {
+                    sender.sendMessage(ChatColor.RED + "Invalid world: " + args[2]);
+                }
+            }
+        } else if (args.length > 5) {
+            World world = null;
+            if (args.length > 6) {
+                worldName = args[6];
+                world = Bukkit.getWorld(worldName);
+            }
+            if (world == null) {
+                sender.sendMessage(ChatColor.RED + "Invalid world: " + worldName);
+            }
+            try {
+                int radius = Integer.parseInt(args[2]);
+                radiusSquared = radius * radius;
+
+                double currentX = 0;
+                double currentY = 0;
+                double currentZ = 0;
+
+                if (player != null) {
+                    targetLocation = player.getLocation();
+                } else if (commandBlock != null) {
+                    targetLocation = commandBlock.getBlock().getLocation();
+                }
+
+                if (targetLocation != null) {
+                    currentX = targetLocation.getX();
+                    currentY = targetLocation.getY();
+                    currentZ = targetLocation.getZ();
+                    if (world == null) {
+                        world = targetLocation.getWorld();
+                        worldName = world.getName();
+                    }
+                }
+                if (world == null) {
+                    sender.sendMessage(ChatColor.RED + "Usage: mmob clear <type> <radius> <x> <y> <z> <world>");
+                    return;
+                }
+                targetLocation = new Location(world,
+                        ConfigurationUtils.overrideDouble(args[3], currentX),
+                        ConfigurationUtils.overrideDouble(args[4], currentY),
+                        ConfigurationUtils.overrideDouble(args[5], currentZ));
+            } catch (Exception ex) {
+                sender.sendMessage(ChatColor.RED + "Usage: mmob clear <type> <radius> <x> <y> <z> <world>");
+                return;
+            }
+        }
+
+        Collection<Mage> mages = new ArrayList<>(api.getController().getMobMages());
         int removed = 0;
         for (Mage mage : mages) {
             EntityData entityData = mage.getEntityData();
             if (entityData == null) continue;
             if (worldName != null && !mage.getLocation().getWorld().getName().equals(worldName)) continue;
             if (mobType != null && !entityData.getKey().equals(mobType)) continue;
+            if (radiusSquared != null && targetLocation != null && mage.getLocation().distanceSquared(targetLocation) > radiusSquared) continue;
 
             Entity entity = mage.getEntity();
             mage.undoScheduled();
@@ -203,7 +301,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             worlds.addAll(Bukkit.getWorlds());
         }
         Set<String> mobNames = new HashSet<>();
-        if (mobType != null && !mobType.equalsIgnoreCase("all")) {
+        if (mobType != null) {
             EntityData mob = api.getController().getMob(mobType);
             if (mob == null) {
                 sender.sendMessage(ChatColor.RED + "Unknown mob type: " + ChatColor.WHITE + mobType);
@@ -222,6 +320,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             for (Entity entity : entities) {
                 String customName = entity.getCustomName();
                 if (entity.isValid() && customName != null && mobNames.contains(customName)) {
+                    if (radiusSquared != null && targetLocation != null && entity.getLocation().distanceSquared(targetLocation) > radiusSquared) continue;
                     entity.remove();
                     removed++;
                 }

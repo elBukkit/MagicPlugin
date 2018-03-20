@@ -1,0 +1,11 @@
+mastersword:
+  enabled: false
+  output: mastersword
+  output_type: wand
+  materials:
+    o: nether_star
+    i: blaze_rod
+  row_1: o
+  row_2: o
+  row_3: i
+

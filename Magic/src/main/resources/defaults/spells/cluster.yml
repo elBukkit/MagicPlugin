@@ -1,29 +1,78 @@
 cluster:
+    inherit: false
     icon: diamond_axe:92
     icon_disabled: diamond_hoe:92
     icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     category: demolition
     pvp_restricted: true
+    upgrade_required_casts: 30
     worth: 600
     earns_sp: 8
     actions:
         cast:
         -  class: TNT
+           projectile_effects: "big"
+           size: 3
            actions:
-           -  class: TNT
-              count: 4
+           - class: Delay
+             delay: 100
+           - class: Multiply
+             actions:
+             - class: ChangeContext
+               source_pitch: -90
+               source_yaw: 0
+               actions:
+               - class: Spread
+                 pitch_max: 45
+                 yaw_max: 360
+                 actions:
+                 - class: TNT
+                   size: 2
+                   projectile_effects: "little"
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_creeper_primed
+        - class: EffectSingle
+          sound: entity_creeper_primed
+        big:
+        - location: origin
+          effectlib:
+            class: AnimatedBall
+            duration: 2500
+            particle: spell_witch
+            particleCount: 3
+            offset: 0,0.5,0
+            yFactor: 1
+            yOffset: 0
+        little:
+        - location: origin
+          sound: entity_creeper_primed
+          effectlib:
+            class: Sphere
+            duration: 2500
+            particle: redstone
+            offset: 0,0.5,0
     parameters:
         target: none
-        size: 2
         fuse: 60
         fire: false
         undo: 20000
         cooldown: 15000
         undo_speed: 0.2
+        repeat: 2
+        radius: 4
+        direction: 0,1,0
+        speed: 4
     costs:
         mana: 150
 
+cluster|2:
+  parameters:
+    repeat: 3
+
+cluster|3:
+  parameters:
+    repeat: 4
+
+cluster|4:
+  parameters:
+    repeat: 5

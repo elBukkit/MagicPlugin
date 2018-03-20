@@ -45,7 +45,13 @@ homing:
              offset: 0,-0.5,0
         tick:
         - particle: end_rod
-          color: FF0000
+          location: target
+        - particle: redstone
+          color: false
+          particle_count: 10
+          particle_offset_x: 0.3
+          particle_offset_y: 0.3
+          particle_offset_z: 0.3
           location: target
         projectile:
         - class: EffectSingle
@@ -63,6 +69,8 @@ homing:
            location: target
            color2: FF0000
            firework: burst
+        -  location: target
+           particle: explosion_large
     parameters:
         fov: 0.75
         hitbox: false

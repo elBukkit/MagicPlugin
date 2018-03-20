@@ -2,27 +2,45 @@ night:
     icon: diamond_axe:85
     icon_disabled: diamond_hoe:85
     icon_url: http://textures.minecraft.net/texture/15f1fe5d5cc447e215243b4cf0b4eb56331f1b4f40909bb91a2963929ef1c2
+    example_thumbnail: https://thumbs.gfycat.com/VillainousInfantileEmeraldtreeskink-size_restricted.gif
+    example_link: https://thumbs.gfycat.com/VillainousInfantileEmeraldtreeskink
     category: elemental
     quick_cast: true
     worth: 800
     earns_sp: 5
     actions:
         cast:
-        -  class: Time
+        - class: Delay
+        - class: Time
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.shimmer
+           location: source
            effectlib:
-             offset: 0,4,0
-             class: HelixEffect
-             iterations: 2
-             particle: smoke_large
+             class: Modified
+             duration: $delay
+             updateLocations: false
+             yEquation: "select(t-50,0,0,((t-50)/i) * 40)"
+             relativeOffset: "5,1,0"
+             orient: false
+             parameters:
+              radius: "select((t/i)-0.9, min(3, t/60), 0, ((t/i)-0.9) * 300 + 3)"
+             effect:
+              class: Sphere
+              radius: 3
+              particle: smoke_large
+              particleCount: 10
+              particleOffsetX: 0.2
+              particleOffsetY: 0.2
+              particleOffsetZ: 0.2
+              updateLocations: false
+              updateDirections: false
     parameters:
         target: none
         cooldown: 1800000
+        delay: 10000
         time: night
         cycle_moon_phase: true
     costs:
         mana: 150
-

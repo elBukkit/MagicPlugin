@@ -24,6 +24,7 @@ import java.util.Collection;
 
 public class ModifyBlockAction extends BaseSpellAction {
     private boolean spawnFallingBlocks;
+    private boolean fallingBlocksHurt;
     private double fallingBlockSpeed;
     private Vector fallingBlockDirection;
     private float fallingBlockFallDamage;
@@ -50,6 +51,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         fallingProbability = parameters.getDouble("falling_probability", 1);
         consumeBlocks = parameters.getBoolean("consume", false);
         consumeVariants = parameters.getBoolean("consume_variants", true);
+        fallingBlocksHurt = parameters.getBoolean("falling_hurts", false);
         fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction") && !parameters.getString("direction").isEmpty())
         {
@@ -132,7 +134,10 @@ public class ModifyBlockAction extends BaseSpellAction {
                 context.clearAttachables(block);
             }
         }
-
+        UndoList undoList = context.getUndoList();
+        if (undoList != null) {
+            undoList.setApplyPhysics(applyPhysics);
+        }
         brush.modify(block, applyPhysics);
 
         boolean spawnFalling = spawnFallingBlocks && previousMaterial != Material.AIR;
@@ -174,6 +179,8 @@ public class ModifyBlockAction extends BaseSpellAction {
                 }
                 if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
                     CompatibilityUtils.setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);
+                } else {
+                    falling.setHurtEntities(fallingBlocksHurt);
                 }
                 context.registerForUndo(falling);
             }
@@ -203,11 +210,12 @@ public class ModifyBlockAction extends BaseSpellAction {
         parameters.add("breakable");
         parameters.add("physics");
         parameters.add("commit");
+        parameters.add("hurts");
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("falling") || parameterKey.equals("physics") || parameterKey.equals("commit")) {
+        if (parameterKey.equals("falling") || parameterKey.equals("physics") || parameterKey.equals("commit") || parameterKey.equals("falling_hurts")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else if (parameterKey.equals("speed") || parameterKey.equals("breakable")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));

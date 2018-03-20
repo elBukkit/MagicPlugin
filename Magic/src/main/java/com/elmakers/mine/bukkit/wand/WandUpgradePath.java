@@ -74,15 +74,9 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private int maxManaRegeneration = 0;
     private int maxMana = 0;
     private int manaRegeneration = 0;
-    private float maxDamageReduction = 0.4f;
-    private float maxDamageReductionExplosions = 0.3f;
-    private float maxDamageReductionFalling = 0.9f;
-    private float maxDamageReductionFire = 0.5f;
-    private float maxDamageReductionPhysical = 0.1f;
-    private float maxDamageReductionProjectiles = 0.2f;
-    private float maxCostReduction = 0.5f;
-    private float maxCooldownReduction = 0.5f;
-    private float maxPower = 1;
+
+    private Map<String, Double> maxProperties = new HashMap<>();
+
     private int minLevel = 1;
     private int maxLevel = 1;
 
@@ -95,14 +89,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.levels = inherit.levels;
         this.maxMaxMana = inherit.maxMaxMana;
         this.maxManaRegeneration = inherit.maxManaRegeneration;
-        this.maxDamageReduction = inherit.maxDamageReduction;
-        this.maxDamageReductionExplosions = inherit.maxDamageReductionExplosions;
-        this.maxDamageReductionFalling = inherit.maxDamageReductionFalling;
-        this.maxDamageReductionFire = inherit.maxDamageReductionFire;
-        this.maxDamageReductionPhysical = inherit.maxDamageReductionPhysical;
-        this.maxDamageReductionProjectiles = inherit.maxDamageReductionProjectiles;
-        this.maxCostReduction = inherit.maxCostReduction;
-        this.maxPower = inherit.maxPower;
+        this.maxProperties.putAll(inherit.maxProperties);
         this.minLevel = inherit.minLevel;
         this.maxLevel = inherit.maxLevel;
         this.matchSpellMana = inherit.matchSpellMana;
@@ -221,14 +208,13 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         minLevel = template.getInt("min_enchant_level", minLevel);
         maxLevel = template.getInt("max_enchant_level", maxLevel);
 
-        maxDamageReduction = (float)template.getDouble("max_protection", maxDamageReduction);
-        maxDamageReductionExplosions = (float)template.getDouble("max_protection_explosions", maxDamageReductionExplosions);
-        maxDamageReductionFalling = (float)template.getDouble("max_protection_falling", maxDamageReductionFalling);
-        maxDamageReductionFire = (float)template.getDouble("max_protection_fire", maxDamageReductionFire);
-        maxDamageReductionPhysical = (float)template.getDouble("max_protection_physical", maxDamageReductionPhysical);
-        maxDamageReductionProjectiles = (float)template.getDouble("max_protection_projectiles", maxDamageReductionProjectiles);
-        maxCostReduction = (float)template.getDouble("max_cost_reduction", maxCostReduction);
-        maxCooldownReduction = (float)template.getDouble("max_cooldown_reduction", maxCooldownReduction);
+        ConfigurationSection maxConfig = template.getConfigurationSection("max_properties");
+        if (maxConfig != null) {
+            for (String maxKey : maxConfig.getKeys(false)) {
+                double value = maxConfig.getDouble(maxKey);
+                maxProperties.put(maxKey.replace("|", "."), value);
+            }
+        }
 
         Collection<String> tagList = ConfigurationUtils.getStringList(template, "tags");
         if (tagList != null && !tagList.isEmpty()) {
@@ -381,40 +367,9 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return maxManaRegeneration;
     }
 
-    public float getMaxDamageReduction() {
-        return maxDamageReduction;
-    }
-
-    public float getMaxDamageReductionExplosions() {
-        return maxDamageReductionExplosions;
-    }
-
-    public float getMaxDamageReductionFalling() {
-        return maxDamageReductionFalling;
-    }
-
-    public float getMaxDamageReductionFire() {
-        return maxDamageReductionFire;
-    }
-
-    public float getMaxDamageReductionPhysical() {
-        return maxDamageReductionPhysical;
-    }
-
-    public float getMaxDamageReductionProjectiles() {
-        return maxDamageReductionProjectiles;
-    }
-
-    public float getMaxCostReduction() {
-        return maxCostReduction;
-    }
-
-    public float getMaxCooldownReduction() {
-        return maxCooldownReduction;
-    }
-
-    public float getMaxPower() {
-        return maxPower;
+    public double getMaxProperty(String propertyKey) {
+        Double maxValue = maxProperties.get(propertyKey);
+        return maxValue == null ? 1 : maxValue;
     }
 
     public int getMinLevel() {

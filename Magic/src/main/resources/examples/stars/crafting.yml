@@ -67,3 +67,37 @@ lightsaber_purple:
   row_1: " o "
   row_2: " o "
   row_3: "xix"
+
+blaster_green:
+  output: blaster_green
+  output_type: wand
+  materials:
+    p: wood
+    i: iron_ingot
+    g: emerald
+  row_1: "iig"
+  row_2: "ii "
+  row_3: "p  "
+
+blaster_blue:
+  output: blaster_blue
+  output_type: wand
+  materials:
+    p: wood
+    i: iron_ingot
+    g: diamond
+  row_1: "iig"
+  row_2: "ii "
+  row_3: "p  "
+
+blaster_red:
+  output: blaster_blue
+  output_type: wand
+  materials:
+    p: wood
+    i: iron_ingot
+    g: redstone
+  row_1: "iig"
+  row_2: "ii "
+  row_3: "p  "
+

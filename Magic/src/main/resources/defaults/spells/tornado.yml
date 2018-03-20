@@ -40,7 +40,10 @@ tornado:
              distance: 0.8
              cloudSize: 1
              tornadoParticle: spell
+             particleCount: 4
+             particleOffsetY: 0.2
              offset: 0,-2,0
+             maxTornadoRadius: 3
         cast:
         -  class: EffectSingle
            sound: block_fire_extinguish

@@ -102,8 +102,6 @@ rainboweffects:
     upgrade: true
     indestructible: false
     icon: magma_cream
-    effect_color: random
-    effect_bubbles: false
     effect_particle: spell_mob
     effect_particle_data: 2
     effect_particle_count: 10

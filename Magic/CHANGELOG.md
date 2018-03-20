@@ -1,7 +1,113 @@
 # CHANGELOG
 
+## 7.4
+
+## 7.3.1
+
+ - Beginner, Apprentice, Student, and Master wands are now for demo purposes only and not tied to player progression.
+ - Fix sniper rifle damage not undoing
+ - The /mskills menu will now work with a player's class skills
+ - Add quick_cast and skill_limit properties for classes to control /mskills behavior
+ - Add auto undo to the Lightning spell
+ - Fix flashbang, singularity and earthquake detonating when hitting the caster
+ - Fix the Disposal spell
+ - Add /mage lock command, for locking a class without removing its progress
+ - Add /wand levelspells command, for levelling up player or wand spells
+ - Default sword controls changed to right-click instead of Q
+ - Fix normal arrows disappearing from magic bow temporarily
+
+## 7.3
+
+ - Update visual FX for nearly all default spells
+ - All new high-res spell icons! Thanks to my generous donators!
+ - Added 3 new wand appearances, courtesy of lix3nn
+ - Add MP5 to war configs (Thanks again to Sidewalk and NavalClash.net)
+ - Master Sword changed to Magic Sword, new appearance added courtesy of lix3nn.
+ - New Master Sword item that works more like the Zelda equivalent.
+ - Fix issues using /wand save to override an existing wand with a modified version of that wand.
+ - Fix for FX that should go on a targets' eyes but use the old "use_hit_location: false" method. (See: Blind)
+ - Headshot FX now default to normal hit effects if not specified
+ - EffectLib updates:
+   - Added "transparency" option to ColoredImageEffect and ImageEffect
+   - Image effects can now load files from a URL
+   - Add ModifiedEffect, which allows you to parameterized any existing effect.
+ - Add "resource_pack_prompt" option to config.yml, and /getrp command for players to use to get the RP when they want it.
+ - Fixed sandblast
+ - Renaming a wand on an anvil no longer organizes its inventory (changed default option to false)
+ - Add active spell expression to Skript
+ - Add basic support for magic bows
+ - Fix wand_undroppable behavior with shulker boxes
+ - Fix sexist camera (wasn't working with alex skins)
+ 
+## 7.2.5
+
+ - Magic mobs can now have a list of triggers, can cast spells or run commands on death/interval/damage.
+ - Magic mobs will now focus on the player that has damaged them the most
+ - Non-trivial magic mobs will despawn on chunk unload and shutdown
+ - Add support for clearing magic mobs from a specific location
+ - Add option to the wand buff shop to sharpen the the Master Sword
+ - Add physical protection option to buff shop
+ - Add Aggro action, to force a mob to target the caster (or the target, via some ChangeContext trickery.. see mob and monster)
+ - Add target_tamed property to allow spells to ignore tamed mobs
+ - The Cleric Chestplate now heals more the closer players are to the wearer
+ - Add hide_flags wand attribute for specific flag visibility per wand
+ - Enable headshots on husks, vindicators, evokers and illusioners
+   Examples: 
+    /mmob clear warlock 20                Clear all warlocks within 20 blocks of your location
+    /mmob clear all 20 0 64 0 world   Clear all magic mobs within 20 blocks of a specific location
+
+## 7.2.4
+
+ - Added "damage_type" parameter to Damage action, for using custom damage types.
+ - Changed bending configs to define earth/air/fire/water damage types, each bending class has protection against
+   its own elements.
+ - Implemented "weakness" and "strength" properties, which can be applied to classes or mobs for type-specific or overall
+   damage weaknesses or bonuses.
+ - Added optional count parameter to /mmob spawn command
+ - Added Skript integration: https://github.com/elBukkit/MagicPlugin/wiki/Skript
+ - Some changes/fixes to how cost/cooldown reductions work
+   - They are mostly back to only applying to spells cast with the wand that has the reduction
+   - Passive wands (armor, generally) can have reductions that stack and apply to the mage, but I don't have anything
+     like that in configs.
+   - This was done to prevent possible exploits with certain cost-free wands by holding them in the offhand.
+ - Add "boostable" wand property for making wands that aren't affected by mana boosts
+   
+## 7.2.3
+
+ - Fix painterly resource pack
+ - Fix cooldowns on NPCs, console and command block casting
+ - Fix blast protection migration
+
+## 7.2.2
+
+ - Another hotfix for weird behavior with offhand wands
+ - Broomstick progress gets stored on a new class instead of the broom item
+
+## 7.2.1
+
+ - Hotfix for infinite recursion error when migrating legacy protection
+ - Make sure spellbooks don't put the spell name in their title
+ - Some improvements to /describe commands
+
 ## 7.2
 
+ - Add Magic Torch (magictorch) item, not craftable, requires LightAPI
+ - Added support for spells requiring SkillAPI classes or skills. 
+   Thanks @robotnikthingy and my other helpful contributors!
+ - Add commands and generic requirements support to Selector action
+ - Sniper scope is now toggleable
+ - Added 4 new guns to war configs, and rebalanced existing guns a bit.
+   Thanks to Sidewalk and NavalClash.net!
+ - Add "infinite" option for repeat and delay parameters
+ - The Boon spell has been changed, it now toggles on and off and gains additional effects as it levels
+ - Add wand buff shop to progressmenu, the new way to get protection on your wand
+ - Add "damage_type" parameter to Damage action which can be used to fake any vanilla damage type.
+   Note that the damage source is lost, so other plugins (like quest plugins, etc) won't see the caster as the
+   source of damage and give credit for kills. This is a vanilla limitation.
+ - Wand protection format changed to a map (e.g. protection.fall) for greater flexibility. See MIGRATION.md
+ - Add "size" parameter for slimes to magic mobs
+ - Add requirement, cost scaling, and many other features to Selector action
+  
 ## 7.1.5
 
  - Unbreak wands broken in 7.1.4 (your data should be fine)

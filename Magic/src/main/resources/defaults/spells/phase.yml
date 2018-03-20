@@ -30,6 +30,14 @@ phase:
              particleOffsetX: 0.9
              particleOffsetY: 2
              particleOffsetZ: 0.9
+        -  location: source
+           source_location: eyes
+           effectlib:
+             class: AnimatedBall
+             particle: redstone
+             color: "F000F0"
+             duration: 5000
+             yOffset: -0.5
         phase:
         - class: EffectSingle
           source_location: eyes
@@ -57,6 +65,14 @@ phase:
              particleOffsetX: 0.9
              particleOffsetY: 2
              particleOffsetZ: 0.9
+        -  location: target
+           source_location: eyes
+           effectlib:
+             class: AnimatedBall
+             particle: redstone
+             color: "F000F0"
+             duration: 5000
+             yOffset: -0.5
     parameters:
         warmup: 5000
         cancel_on_damage: 1
