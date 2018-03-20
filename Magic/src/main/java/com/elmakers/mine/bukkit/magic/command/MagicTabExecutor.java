@@ -1,15 +1,10 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
-
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

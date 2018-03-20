@@ -106,13 +106,13 @@ public class InventoryUtils extends NMSUtils
         if (value instanceof Boolean) {
             wrappedValue = class_NBTTagByte_constructor.newInstance((byte)((boolean)value ? 1 : 0));
         } else if (value instanceof Double) {
-            wrappedValue = class_NBTTagDouble_constructor.newInstance((double)value);
+            wrappedValue = class_NBTTagDouble_constructor.newInstance((Double)value);
         } else if (value instanceof Float) {
-            wrappedValue = class_NBTTagFloat_constructor.newInstance((float)value);
+            wrappedValue = class_NBTTagFloat_constructor.newInstance((Float)value);
         } else if (value instanceof Integer) {
-            wrappedValue = class_NBTTagInt_constructor.newInstance((int)value);
+            wrappedValue = class_NBTTagInt_constructor.newInstance((Integer)value);
         } else if (value instanceof Long) {
-            wrappedValue = class_NBTTagLong_constructor.newInstance((long)value);
+            wrappedValue = class_NBTTagLong_constructor.newInstance((Long)value);
         } else if (value instanceof ConfigurationSection) {
             wrappedValue = class_NBTTagCompound.newInstance();
             saveTagsToNBT((ConfigurationSection)value, wrappedValue, null);
@@ -525,16 +525,16 @@ public class InventoryUtils extends NMSUtils
         if (property instanceof ConfigurationSection) {
             ConfigurationSection section = (ConfigurationSection)property;
             Set<String> keys = section.getKeys(false);
-            String full = "{";
+            StringBuilder full = new StringBuilder("{");
             boolean first = true;
             for (String key : keys) {
                 if (!first) {
-                    full += ",";
+                    full.append(',');
                 }
                 first = false;
-                full += key + ":" + describeProperty(section.get(key));
+                full.append(key).append(':').append(describeProperty(section.get(key)));
             }
-            propertyString = full + "}";
+            propertyString = full.append('}').toString();
         } else {
             propertyString = property.toString();
         }

@@ -623,7 +623,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage activate" + ChatColor.BLUE + " to change or clear the active class");
             Collection<String> classKeys = mage.getClassKeys();
             if (classKeys.size() > 0) {
-                Collection<String> coloredClasses = new ArrayList<String>();
+                Collection<String> coloredClasses = new ArrayList<>();
                 for (String classKey : classKeys) {
                     ChatColor color = mage.hasClassUnlocked(classKey) ? ChatColor.GREEN : ChatColor.GRAY;
                     coloredClasses.add(color + classKey);

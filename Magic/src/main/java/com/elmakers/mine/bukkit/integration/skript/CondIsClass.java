@@ -13,7 +13,8 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
+
+import javax.annotation.Nullable;
 
 @Name("Is Class")
 @Description("Checks whether a player is a magic class.")

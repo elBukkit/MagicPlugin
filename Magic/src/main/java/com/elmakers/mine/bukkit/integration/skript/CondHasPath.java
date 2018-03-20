@@ -17,7 +17,8 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
+
+import javax.annotation.Nullable;
 
 @Name("Is On Path")
 @Description("Checks whether a player is on a progression path.")

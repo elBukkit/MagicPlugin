@@ -8,13 +8,10 @@ import ru.beykerykt.lightapi.chunks.ChunkInfo;
 import java.util.List;
 
 public class LightAPIManager {
-    private final Plugin plugin;
-
     public LightAPIManager(Plugin plugin) {
-        this.plugin = plugin;
         plugin.getLogger().info("LightAPI found, Light action available");
     }
-    
+
     public boolean updateChunks(Location location) {
         List<ChunkInfo> chunks = LightAPI.collectChunks(location);
         if (chunks == null || chunks.isEmpty()) return false;

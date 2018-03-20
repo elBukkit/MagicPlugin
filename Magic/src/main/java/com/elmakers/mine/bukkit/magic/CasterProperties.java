@@ -29,6 +29,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return (propertyType == null || propertyType == type);
     }
 
+    @Override
     public int getManaRegeneration() {
         ManaController manaController = controller.getManaController();
         if (manaController != null && isPlayer()) {
@@ -37,6 +38,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return getInt("mana_regeneration", getInt("xp_regeneration"));
     }
 
+    @Override
     public int getManaMax() {
         ManaController manaController = controller.getManaController();
         if (manaController != null && isPlayer()) {
@@ -45,6 +47,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return getInt("mana_max", getInt("xp_max"));
     }
 
+    @Override
     public void setMana(float mana) {
         if (isCostFree()) {
             setProperty("mana", null);
@@ -327,6 +330,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return brushes;
     }
 
+    @Override
     public ProgressionPath getPath() {
         String pathKey = getString("path");
         if (pathKey != null && !pathKey.isEmpty()) {
@@ -385,5 +389,6 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     public abstract boolean isPlayer();
     public abstract Player getPlayer();
+    @Override
     public abstract Mage getMage();
 }

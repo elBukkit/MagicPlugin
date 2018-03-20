@@ -19,6 +19,8 @@
 
 package com.elmakers.mine.bukkit.utility;
 
+import java.nio.charset.StandardCharsets;
+
 /**
 * A Base64 encoder/decoder.
 *
@@ -55,7 +57,7 @@ private static final byte[] map2 = new byte[128];
 * @return   A String containing the Base64 encoded data.
 */
 public static String encodeString (String s) {
-   return new String(encode(s.getBytes())); }
+   return new String(encode(s.getBytes(StandardCharsets.UTF_8))); }
 
 /**
 * Encodes a byte array into Base 64 format and breaks the output into lines of 76 characters.
@@ -145,7 +147,7 @@ public static char[] encode (byte[] in, int iOff, int iLen) {
 * @throws   IllegalArgumentException If the input is not valid Base64 encoded data.
 */
 public static String decodeString (String s) {
-   return new String(decode(s)); }
+   return new String(decode(s), StandardCharsets.UTF_8); }
 
 /**
 * Decodes a byte array from Base64 format and ignores line separators, tabs and blanks.

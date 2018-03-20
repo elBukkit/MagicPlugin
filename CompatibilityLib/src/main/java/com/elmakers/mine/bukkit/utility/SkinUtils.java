@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.logging.Level;
 
@@ -121,11 +122,13 @@ public class SkinUtils extends NMSUtils {
         conn.setConnectTimeout(30000);
         conn.setReadTimeout(30000);
         conn.setInstanceFollowRedirects(true);
-        InputStream in = conn.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        String inputLine = "";
-        while ((inputLine = reader.readLine()) != null) {
-            response.append(inputLine);
+        try(InputStream in = conn.getInputStream()) {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(in, StandardCharsets.UTF_8));
+            String inputLine = "";
+            while ((inputLine = reader.readLine()) != null) {
+                response.append(inputLine);
+            }
         }
         return response.toString();
     }

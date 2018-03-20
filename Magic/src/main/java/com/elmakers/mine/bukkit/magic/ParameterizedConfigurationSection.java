@@ -35,6 +35,7 @@ public class ParameterizedConfigurationSection extends MemorySection {
      * @param path
      * @return
      */
+    @Override
     public ConfigurationSection createSection(String path) {
         Validate.notEmpty(path, "Cannot create section at empty path");
         Configuration root = getRoot();
@@ -66,6 +67,7 @@ public class ParameterizedConfigurationSection extends MemorySection {
         return section.createSection(key);
     }
 
+    @Override
     public int getInt(String path, int def) {
         Object val = get(path, def);
         if (val instanceof String && getRoot() instanceof ParameterizedConfiguration) {
@@ -74,6 +76,7 @@ public class ParameterizedConfigurationSection extends MemorySection {
         return (val instanceof Number) ? NumberConversions.toInt(val) : def;
     }
 
+    @Override
     public double getDouble(String path, double def) {
         Object val = get(path, def);
         if (val instanceof String && getRoot() instanceof ParameterizedConfiguration) {
@@ -82,6 +85,7 @@ public class ParameterizedConfigurationSection extends MemorySection {
         return (val instanceof Number) ? NumberConversions.toDouble(val) : def;
     }
 
+    @Override
     public long getLong(String path, long def) {
         Object val = get(path, def);
         if (val instanceof String && getRoot() instanceof ParameterizedConfiguration) {

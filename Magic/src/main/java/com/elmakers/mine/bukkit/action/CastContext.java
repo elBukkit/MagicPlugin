@@ -1355,6 +1355,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return SpellResult.PENDING;
     }
 
+    @Override
     public void addMessageParameter(String key, String value) {
         messageParameters.put(key, value);
     }

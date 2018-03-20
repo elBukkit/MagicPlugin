@@ -111,11 +111,11 @@ public class MageTrigger {
             for (String command : commands) {
                 if (command.contains("@killer")) {
                     if (killer == null) continue;
-                    command.replace("@killer", killer.getName());
+                    command = command.replace("@killer", killer.getName());
                 }
                 if (command.contains("@damager")) {
                     if (topDamager == null) continue;
-                    command.replace("@damager", topDamager.getName());
+                    command = command.replace("@damager", topDamager.getName());
                 }
 
                 boolean allDamagers = command.contains("@damagers");
