@@ -5,6 +5,8 @@ import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.wand.Wand;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -361,6 +363,24 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
 
         return super.upgrade(key, value);
+    }
+
+    @Override
+    public Double getAttribute(String attributeKey) {
+        ConfigurationSection attributes = getConfigurationSection("attributes");
+        return attributes == null ? null : attributes.getDouble(attributeKey);
+    }
+
+    @Override
+    public void setAttribute(String attributeKey, Double attributeValue) {
+        ConfigurationSection attributes = getConfigurationSection("attributes");
+        if (attributes == null) {
+            if (attributeValue == null) return;
+            attributes = new MemoryConfiguration();
+        }
+        attributes.set(attributeKey, attributeValue);
+        setProperty("attributes", attributes);
+        updated();
     }
 
     public abstract boolean isPlayer();

@@ -1074,9 +1074,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
 
-            this.attributes.clear();
-            this.attributes.putAll(data.getAttributes());
-
             // Link up parents
             for (MageClass mageClass : classes.values()) {
                 assignParent(mageClass);
@@ -1328,9 +1325,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 classProperties.put(entry.getKey(), entry.getValue().getConfiguration());
             }
             data.setClassProperties(classProperties);
-
-            Map<String, Double> attributes = new HashMap<>(this.attributes);
-            data.setAttributes(attributes);
 
             String activeClassKey = activeClass == null ? null : activeClass.getTemplate().getKey();
             data.setActiveClass(activeClassKey);
@@ -3128,7 +3122,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         updatePassiveEffects();
     }
 
-    protected void addPassiveEffectsGroup(Map<String, Double> properties, CasterProperties addProperties, String section, boolean stack) {
+    protected void addPassiveEffectsGroup(Map<String, Double> properties, CasterProperties addProperties, String section, boolean stack, Double maxValue) {
        ConfigurationSection addSection = addProperties.getConfigurationSection(section);
        if (addSection != null) {
            Set<String> sectionTypes = addSection.getKeys(false);
@@ -3139,7 +3133,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
                 double addValue = addSection.getDouble(sectionType);
                 if (stack) {
-                    existing = Math.min(1, existing + addValue);
+                    if (maxValue != null) {
+                        existing = Math.min(1, existing + addValue);
+                    } else {
+                        existing = existing + addValue;
+                    }
                 } else {
                     existing = Math.max(existing, addValue);
                 }
@@ -3152,9 +3150,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         spMultiplier *= properties.getDouble("sp_multiplier", 1.0);
 
        boolean stack = properties.getBoolean("stack", false);
-       addPassiveEffectsGroup(protection, properties, "protection", stack);
-       addPassiveEffectsGroup(weakness, properties, "weakness", stack);
-       addPassiveEffectsGroup(strength, properties, "strength", stack);
+       addPassiveEffectsGroup(protection, properties, "protection", stack, 1.0);
+       addPassiveEffectsGroup(weakness, properties, "weakness", stack, 1.0);
+       addPassiveEffectsGroup(strength, properties, "strength", stack, 1.0);
+       addPassiveEffectsGroup(attributes, properties, "attributes", stack, null);
 
        if (activeReduction || properties.getBoolean("passive")) {
            if (stack) {
@@ -3177,6 +3176,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         protection.clear();
         strength.clear();
         weakness.clear();
+        attributes.clear();
 
         spMultiplier = 1;
         cooldownReduction = 0;
@@ -3691,10 +3691,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         return attribute;
-    }
-
-    public void setAttribute(String attributeKey, Double value) {
-        attributes.put(attributeKey, value);
     }
 
     @Override

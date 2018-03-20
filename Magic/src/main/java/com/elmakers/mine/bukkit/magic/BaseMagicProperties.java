@@ -60,11 +60,11 @@ public class BaseMagicProperties implements MagicProperties {
             "quick_cast", "left_click", "right_click", "drop", "swap",
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
             "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
-            "sp_multiplier", "class", "consume_spell", "stack", "unstashable", "unmoveable"
+            "sp_multiplier", "class", "consume_spell", "stack", "unstashable", "unmoveable", "attributes"
     );
 
     public final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
-            "owner", "owner_id", "version", "attributes", "attribute_slot",
+            "owner", "owner_id", "version", "item_attributes", "item_attribute_slot",
             "mana_timestamp", "storage"
     );
 
@@ -299,5 +299,10 @@ public class BaseMagicProperties implements MagicProperties {
      */
     protected void clearProperty(String key) {
         configuration.set(key, null);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return configuration.getKeys(false).isEmpty();
     }
 }

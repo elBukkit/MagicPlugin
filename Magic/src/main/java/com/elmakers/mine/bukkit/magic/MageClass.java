@@ -194,6 +194,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         if (activeWand != null) {
             activeWand.updated();
         }
+        mage.updatePassiveEffects();
     }
 
     @Override

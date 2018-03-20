@@ -63,4 +63,11 @@ public interface MagicProperties {
      * @param ignoreProperties A set of properties to ignore
      */
     void describe(CommandSender sender, @Nullable Set<String> ignoreProperties);
+
+    /**
+     * Check to see if there is any data here at all.
+     *
+     * @return False if there are any keys set on this property holder directly.
+     */
+    boolean isEmpty();
 }

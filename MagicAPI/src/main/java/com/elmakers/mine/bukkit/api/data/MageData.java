@@ -16,7 +16,6 @@ public class MageData {
     private ConfigurationSection data;
     private ConfigurationSection properties;
     private Map<String, ConfigurationSection> classProperties;
-    private Map<String, Double> attributes;
     private String activeClass;
     private long lastCast;
     private Location lastDeathLocation;
@@ -227,14 +226,6 @@ public class MageData {
 
     public void setClassProperties(Map<String, ConfigurationSection> classProperties) {
         this.classProperties = classProperties;
-    }
-
-    public Map<String, Double> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(Map<String, Double> attributes) {
-        this.attributes = attributes;
     }
 
     public String getActiveClass() {

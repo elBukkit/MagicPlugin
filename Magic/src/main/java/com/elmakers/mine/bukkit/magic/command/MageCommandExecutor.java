@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -457,14 +458,17 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             return true;
         }
 
+        MageClass activeClass = mage.getActiveClass();
+        CasterProperties attributeProperties = activeClass == null ? mage.getProperties() : activeClass;
+
         String value = args[1];
         for (int i = 2; i < args.length; i++) {
             value = value + " " + args[i];
         }
         if (value.equals("-"))
         {
-            Double oldValue = mage.getAttribute(key);
-            mage.setAttribute(key, null);
+            Double oldValue = attributeProperties.getAttribute(key);
+            attributeProperties.setAttribute(key, null);
             String valueDescription = oldValue == null ? ChatColor.RED + "(not set)" : ChatColor.AQUA + Double.toString(oldValue);
             sender.sendMessage(ChatColor.BLUE + "Removed attribute " + ChatColor.DARK_AQUA + key + ChatColor.BLUE + ", was " + valueDescription);
             return true;
@@ -476,7 +480,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         } catch (Exception ex) {
             EquationTransform transform = EquationStore.getInstance().getTransform(value);
             if (transform.getException() == null) {
-                Double property = mage.getAttribute(key);
+                Double property = attributeProperties.getAttribute(key);
                 if (property == null || Double.isNaN(property)) {
                     property = 0.0;
                 }
@@ -489,7 +493,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             sender.sendMessage(ChatColor.RED + "Could not set " + ChatColor.YELLOW + key + ChatColor.RED + " to " + ChatColor.YELLOW + value);
             return true;
         }
-        mage.setAttribute(key, transformed);
+        attributeProperties.setAttribute(key, transformed);
 
         sender.sendMessage(ChatColor.GOLD + "Set " + ChatColor.DARK_AQUA + key + ChatColor.GOLD + " to " + ChatColor.AQUA + transformed + ChatColor.GOLD + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
         return true;
@@ -611,10 +615,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     public boolean onMageDescribe(CommandSender sender, Player player, String[] parameters) {
         Mage mage = api.getMage(player);
         MageClass activeClass = mage.getActiveClass();
-        MagicProperties mageProperties = activeClass;
-        if (mageProperties == null) {
-            mageProperties = mage.getProperties();
-        }
+        MagicProperties mageProperties = mage.getProperties();
 
         if (parameters.length == 0) {
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage describe <property>" + ChatColor.BLUE + " for specific properties");
@@ -627,6 +628,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     coloredClasses.add(color + classKey);
                 }
                 sender.sendMessage(ChatColor.AQUA + "Classes: " + ChatColor.GREEN + StringUtils.join(coloredClasses, ","));
+            }
+            if (!mageProperties.isEmpty()) {
+                 sender.sendMessage(ChatColor.AQUA + "Mage properties:");
+                 mageProperties.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
             }
             if (activeClass != null) {
                 sender.sendMessage(ChatColor.AQUA + "Active class: " + ChatColor.GREEN + activeClass.getKey());
@@ -641,9 +646,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
                 sender.sendMessage(ChatColor.AQUA + "Active spells: " + ChatColor.DARK_AQUA + StringUtils.join(spellNames, ","));
             }
-            mageProperties.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
+            activeClass.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
         } else {
-            Object property = mageProperties.getProperty(parameters[0]);
+            Object property = activeClass.getProperty(parameters[0]);
             if (property == null) {
                 sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.RED + "(Not Set)");
             } else {

@@ -10,4 +10,5 @@ base:
     brushes: class
     path: subclass
     hotbar_count: subclass
+    attributes: mage
 

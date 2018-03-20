@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class MageProperties extends CasterProperties {
@@ -16,24 +17,16 @@ public class MageProperties extends CasterProperties {
     }
 
     @Override
-    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
-        sender.sendMessage(ChatColor.AQUA + "Properties for Mage " + ChatColor.GREEN + mage.getName());
-
-        Set<String> hideKeys = ignoreProperties;
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {
         MageClass activeClass = mage.getActiveClass();
         if (activeClass != null) {
-            hideKeys = activeClass.getEffectiveConfiguration().getKeys(false);
-            if (ignoreProperties != null) {
-                hideKeys.addAll(ignoreProperties);
+            if (overriddenProperties == null) {
+                overriddenProperties = new HashSet<>();
             }
+            overriddenProperties.addAll(activeClass.getEffectiveConfiguration().getKeys(false));
         }
 
-        super.describe(sender, hideKeys);
-
-        if (activeClass != null) {
-            sender.sendMessage(ChatColor.AQUA + "Active Class: " + ChatColor.GREEN + activeClass.getTemplate().getKey());
-            activeClass.describe(sender, ignoreProperties);
-        }
+        super.describe(sender, ignoreProperties, overriddenProperties);
     }
 
     @Override

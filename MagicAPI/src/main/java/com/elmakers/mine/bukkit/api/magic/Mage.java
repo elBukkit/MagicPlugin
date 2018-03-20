@@ -598,7 +598,6 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean isAutomaton();
 
     Double getAttribute(String attributeKey);
-    void setAttribute(String attributeKey, Double attributeValue);
 
     /**
      *
