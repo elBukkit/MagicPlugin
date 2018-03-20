@@ -81,7 +81,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public static Vector DEFAULT_CAST_OFFSET = new Vector(0, 0, 0.5);
 	public static String DEFAULT_WAND_TEMPLATE = "default";
-	private static int WAND_VERSION = 5;
+	private static int WAND_VERSION = 6;
 
     private final static String[] EMPTY_PARAMETERS = new String[0];
 
@@ -481,6 +481,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 					wandConfig.set("spell_inventory", newSpellInventory);
 				}
 			}
+		}
+
+		// Migration: move attributes to item_attributes
+		if (version <= 5) {
+			ConfigurationSection attributes = wandConfig.getConfigurationSection("attributes");
+			wandConfig.set("attributes", null);
+			wandConfig.set("item_attributes", attributes);
 		}
 
     	wandConfig.set("version", WAND_VERSION);
@@ -1713,7 +1720,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		WandTemplate wandTemplate = getTemplate();
 
 		// Add vanilla attributes
-		InventoryUtils.applyAttributes(item, getConfigurationSection("attributes"), getString("attribute_slot"));
+		InventoryUtils.applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
 
 		// Add unstashable and unmoveable tags
 		if (getBoolean("unstashable") || (undroppable && Unstashable)) {

@@ -5,6 +5,7 @@
  - The wands named "beginner", "student", "apprentice" and "master" no longer have any progression.
    They should really not be used except for demonstration purposes, and are now labelled as such.
  - The Magic.wand.override_drop permission changed to Magic.wand.override_stash
+ - The wand property "attributes" has been renamed to "item_attributes"
 
 ## 7.3
 

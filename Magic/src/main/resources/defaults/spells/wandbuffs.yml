@@ -176,7 +176,7 @@ add_damage:
     target: self
     modify_target: "wand"
     modify:
-    - property: "attributes.GENERIC_ATTACK_DAMAGE"
+    - property: "item_attributes.GENERIC_ATTACK_DAMAGE"
       value: "x + 1"
       max: 10
 

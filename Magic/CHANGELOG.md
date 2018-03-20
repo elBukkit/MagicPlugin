@@ -12,6 +12,7 @@
  - Added "unstashable" and "unmoveable" wand properties
  - Fix active costs for Air Scooter, also Levitate/Air Scooter and Boon will prevent mana regen while active.
  - Fix wand organizing and alphabetizing
+ - The wand property "attributes" has been renamed to "item_attributes"
 
 ## 7.3.1
 
