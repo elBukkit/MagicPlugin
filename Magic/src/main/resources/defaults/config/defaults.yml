@@ -27,6 +27,9 @@ load_default_paths: true
 # Set to false to skip loading defaults/classes.defaults.yml entirely.
 load_default_classes: true
 
+# Set to false to skip loading defaults/attributes.defaults.yml entirely.
+load_default_attributes: true
+
 # Set to false to skip loading defaults/crafting.defaults.yml entirely.
 load_default_crafting: true
 

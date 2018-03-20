@@ -2,6 +2,11 @@
 
 ## 7.4
 
+ - Add builtin attribute system
+   - Attributes can be defined in attributes.yml, none exist in the default configuration.
+     See: https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/examples/rpg/attributes.yml
+   - Add /mage attribute command for listing and setting attributes
+
 ## 7.3.1
 
  - Beginner, Apprentice, Student, and Master wands are now for demo purposes only and not tied to player progression.

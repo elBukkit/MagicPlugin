@@ -11,6 +11,8 @@ import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import de.slikey.effectlib.math.EquationStore;
+import de.slikey.effectlib.math.EquationTransform;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -104,6 +106,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 		{
 			return onMageSetData(sender, player, args2);
 		}
+		if (subCommand.equalsIgnoreCase("attribute"))
+		{
+			return onMageAttribute(sender, player, args2);
+		}
         if (subCommand.equalsIgnoreCase("unbind"))
         {
             return onMageUnbind(sender, player, args2);
@@ -140,7 +146,6 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageRemove(sender, player, args2);
         }
-
 		if (subCommand.equalsIgnoreCase("levelspells"))
 		{
 			return onMageLevelSpells(sender, player, args2);
@@ -169,45 +174,18 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "unlock");
             addIfPermissible(sender, options, "Magic.commands.mage.", "lock");
             addIfPermissible(sender, options, "Magic.commands.mage.", "levelspells");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "attribute");
 		} else if (args.length == 2) {
-			String subCommand = args[0];
-			String subCommandPNode = "Magic.commands.mage." + subCommand;
-
 			options.addAll(api.getPlayerNames());
-            if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
-                for (String key : BaseMagicProperties.PROPERTY_KEYS) {
-                    options.add(key);
-                }
+		}
 
-				for (String protection : api.getController().getDamageTypes()) {
-					options.add("protection." + protection);
-				}
-            }
-
-            if (subCommand.equalsIgnoreCase("add")) {
-				Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
-				for (SpellTemplate spell : spellList) {
-					addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
-				}
-				addIfPermissible(sender, options, subCommandPNode, "brush", true);
-			}
-
-			if (subCommand.equalsIgnoreCase("remove")) {
-                Mage mage = api.getMage(sender);
-                MageClass mageClass = mage.getActiveClass();
-                if (mageClass != null) {
-                    options.addAll(mageClass.getSpells());
-                }
-                options.add("brush");
-			}
-
-		} else if (args.length == 3) {
+		if (args.length == 3 || args.length == 2) {
+		    CommandSender target = args.length == 2 ? sender : DeprecatedUtils.getPlayer(args[1]);
 		    String subCommand = args[0];
 			String subCommandPNode = "Magic.commands.mage." + subCommand;
 			if (subCommand.equalsIgnoreCase("setdata") || subCommand.equalsIgnoreCase("getdata")) {
-                Player player = DeprecatedUtils.getPlayer(args[1]);
-                if (player != null) {
-                    Mage mage = api.getMage(player);
+                if (target != null) {
+                    Mage mage = api.getMage(target);
                     ConfigurationSection data = mage.getData();
                     options.addAll(data.getKeys(false));
                 }
@@ -222,9 +200,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             }
 
             if (subCommand.equalsIgnoreCase("remove")) {
-                Player player = DeprecatedUtils.getPlayer(args[1]);
-                if (player != null) {
-                    Mage mage = api.getMage(player);
+                if (target != null) {
+                    Mage mage = api.getMage(target);
                     MageClass mageClass = mage.getActiveClass();
                     if (mageClass != null) {
                         options.addAll(mageClass.getSpells());
@@ -232,13 +209,37 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
                 options.add("brush");
             }
-		} else if (args.length == 2) {
+
+            if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
+                for (String key : BaseMagicProperties.PROPERTY_KEYS) {
+                    options.add(key);
+                }
+
+				for (String protection : api.getController().getDamageTypes()) {
+					options.add("protection." + protection);
+				}
+            }
+
+            if (subCommand.equalsIgnoreCase("attribute")) {
+				for (String attribute : api.getController().getAttributes()) {
+					options.add(attribute);
+				}
+            }
+
+            if (subCommand.equalsIgnoreCase("add")) {
+				Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+				for (SpellTemplate spell : spellList) {
+					addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+				}
+				addIfPermissible(sender, options, subCommandPNode, "brush", true);
+			}
+
             if (args[0].equalsIgnoreCase("lock") ||
                 args[0].equalsIgnoreCase("unlock") ||
                 args[0].equalsIgnoreCase("activate")) {
                 options.addAll(api.getController().getMageClassKeys());
             }
-        }
+		}
 		return options;
 	}
 
@@ -419,6 +420,71 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         String value = args[1];
         data.set(key, value);
         sender.sendMessage(ChatColor.GOLD + "Set " + ChatColor.AQUA + key + ChatColor.GOLD + " to " + ChatColor.AQUA + value + ChatColor.GOLD + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
+        return true;
+    }
+
+    public boolean onMageAttribute(CommandSender sender, Player player, String[] args)
+    {
+        Mage mage = api.getMage(player);
+        Set<String> attributes = api.getController().getAttributes();
+        if (attributes.isEmpty()) {
+            sender.sendMessage(ChatColor.RED + "No attributes configured, see attributes.yml");
+            return true;
+        }
+        if (args.length == 0)
+        {
+            for (String key : attributes) {
+                Double value = mage.getAttribute(key);
+                String valueDescription = value == null ? ChatColor.RED + "(not set)" : ChatColor.AQUA + Double.toString(value);
+                sender.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.BLUE + " = " + valueDescription);
+            }
+            return true;
+        }
+        String key = args[0];
+        if (args.length == 1)
+        {
+            if (!attributes.contains(key)) {
+                sender.sendMessage(ChatColor.RED + "Unknown attribute: " + ChatColor.YELLOW + key);
+                return true;
+            }
+            Double value = mage.getAttribute(key);
+            String valueDescription = value == null ? ChatColor.RED + "(not set)" : ChatColor.AQUA + Double.toString(value);
+            sender.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.BLUE + " = " + valueDescription);
+            return true;
+        }
+
+        String value = args[1];
+        if (value.equals("-"))
+        {
+            Double oldValue = mage.getAttribute(key);
+            mage.setAttribute(key, null);
+            String valueDescription = oldValue == null ? ChatColor.RED + "(not set)" : ChatColor.AQUA + Double.toString(oldValue);
+            sender.sendMessage(ChatColor.BLUE + "Removed attribute " + ChatColor.DARK_AQUA + key + ChatColor.BLUE + ", was " + valueDescription);
+            return true;
+        }
+
+        double transformed = Double.NaN;
+        try {
+            transformed = Double.parseDouble(value);
+        } catch (Exception ex) {
+            EquationTransform transform = EquationStore.getInstance().getTransform(value);
+            if (transform.getException() == null) {
+                Double property = mage.getAttribute(key);
+                if (property == null || Double.isNaN(property)) {
+                    property = 0.0;
+                }
+                transform.setVariable("x", property);
+                transformed = transform.get();
+            }
+        }
+
+        if (Double.isNaN(transformed)) {
+            sender.sendMessage(ChatColor.RED + "Could not set " + ChatColor.YELLOW + key + ChatColor.RED + " to " + ChatColor.YELLOW + value);
+            return true;
+        }
+        mage.setAttribute(key, transformed);
+
+        sender.sendMessage(ChatColor.GOLD + "Set " + ChatColor.DARK_AQUA + key + ChatColor.GOLD + " to " + ChatColor.AQUA + transformed + ChatColor.GOLD + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
         return true;
     }
 

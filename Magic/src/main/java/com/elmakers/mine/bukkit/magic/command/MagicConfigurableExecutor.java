@@ -53,13 +53,17 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
         } else {
             ConfigurationSection node = new MemoryConfiguration();
 
-            EquationTransform transform = EquationStore.getInstance().getTransform(value);
             double transformed = Double.NaN;
-            if (transform.getException() == null) {
-                double property = target.getProperty(parameters[0], Double.NaN);
-                if (!Double.isNaN(property)) {
-                    transform.setVariable("x", property);
-                    transformed = transform.get();
+            try {
+                transformed = Double.parseDouble(value);
+            } catch (Exception ex) {
+                EquationTransform transform = EquationStore.getInstance().getTransform(value);
+                if (transform.getException() == null) {
+                    double property = target.getProperty(parameters[0], Double.NaN);
+                    if (!Double.isNaN(property)) {
+                        transform.setVariable("x", property);
+                        transformed = transform.get();
+                    }
                 }
             }
 

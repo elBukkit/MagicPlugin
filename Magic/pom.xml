@@ -433,6 +433,11 @@
 										<include name="**/*.yml"></include>
 									</fileset>
 								</concat>
+								<concat destfile="${project.build.directory}/classes/defaults/attributes.defaults.yml" overwrite="yes" fixlastline="yes">
+									<fileset dir="${project.basedir}/src/main/resources/defaults/attributes">
+										<include name="**/*.yml"></include>
+									</fileset>
+								</concat>
 								<concat destfile="${project.build.directory}/classes/defaults/config.defaults.yml" overwrite="yes" fixlastline="yes">
 									<fileset dir="${project.basedir}/src/main/resources/defaults/config">
 										<include name="**/*.yml"></include>

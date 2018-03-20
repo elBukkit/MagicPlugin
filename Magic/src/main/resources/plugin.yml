@@ -397,6 +397,7 @@ commands:
         /mage upgrade     Upgrade properties of a mage
         /mage setdata     Modify Mage data
         /mage getdata     Describe Mage data
+        /mage attribute   Set or check mage attributes
         /mage check       Check player permissions
         /mage debug       Enable/disable debug for a player
         /mage reset       Reset all data for a Mage, or for a specific class
@@ -453,6 +454,20 @@ commands:
         /mage getdata <Player> [SpellKey]
         /mage getdata NathanWolf
         /mage getdata NathanWolf blink
+  "mage attribute":
+    description: List or modify Mage attributes. Does not work with attributes from integrated plugins such as SkillAPI.
+    permission: Magic.commands.mage.attribute
+    usage: |
+
+        /mage attribute <Player> <attribute> <value>
+        List all attributes set for a player
+        /mage attribute NathanWolf
+        List a specific attribute
+        /mage attribute NathanWolf intelligence
+        Set an attribute
+        /mage attribute NathanWolf intelligence 18
+        Clear an attribute
+        /mage attribute NathanWolf intelligence -
   "mage activate":
     description: Active a class for a player
     permission: Magic.commands.mage.activate
@@ -1191,6 +1206,7 @@ permissions:
     - Magic.commands.mage.describe
     - Magic.commands.mage.getdata
     - Magic.commands.mage.setdata
+    - Magic.commands.mage.attribute
     - Magic.commands.mage.unlock
     - Magic.commands.mage.lock
     - Magic.commands.mage.activate
@@ -1220,7 +1236,11 @@ permissions:
     type: boolean
     default: op
   Magic.commands.mage.getdata:
-    description: Player may check Mage attributes
+    description: Player may check Mage data
+    type: boolean
+    default: op
+  Magic.commands.mage.attribute:
+    description: Player may check or set Mage attributes
     type: boolean
     default: op
   Magic.commands.mage.unlock:
@@ -1236,7 +1256,7 @@ permissions:
     type: boolean
     default: op
   Magic.commands.mage.setdata:
-    description: Player may modify Mage attributes
+    description: Player may modify Mage data
     type: boolean
     default: op
   Magic.commands.mage.check:

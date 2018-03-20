@@ -21,6 +21,7 @@ public class ConfigurationLoadTask implements Runnable {
     protected ConfigurationSection mobs;
     protected ConfigurationSection items;
     protected ConfigurationSection classes;
+    protected ConfigurationSection attributes;
     protected Map<String, ConfigurationSection> spells;
 
     protected boolean success;
@@ -122,6 +123,14 @@ public class ConfigurationLoadTask implements Runnable {
             items = controller.loadItemsConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading items.yml", ex);
+            success = false;
+        }
+
+        // Load attributes
+        try {
+            attributes = controller.loadAttributesConfiguration(configuration);
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Error loading attributes.yml", ex);
             success = false;
         }
         

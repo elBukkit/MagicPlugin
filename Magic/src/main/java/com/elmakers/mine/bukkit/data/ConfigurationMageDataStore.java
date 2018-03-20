@@ -164,6 +164,9 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             }
         }
         saveFile.set("active_class", mage.getActiveClass());
+
+        Map<String, Double> attributes = mage.getAttributes();
+        saveFile.set("attributes", attributes);
     }
 
     @Override
@@ -234,6 +237,17 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
 
         // Load extra data
         data.setExtraData(saveFile.getConfigurationSection("data"));
+
+        // Load attributes
+        Map<String, Double> attributes = new HashMap<>();
+        ConfigurationSection attributeSection = saveFile.getConfigurationSection("attributes");
+        if (attributeSection != null) {
+            Set<String> attributeKeys = attributeSection.getKeys(false);
+            for (String attributeKey : attributeKeys) {
+                attributes.put(attributeKey, attributeSection.getDouble(attributeKey));
+            }
+        }
+        data.setAttributes(attributes);
 
         // Fall protection data
         data.setFallProtectionCount(saveFile.getLong("fall_protection_count", 0));

@@ -430,6 +430,11 @@ public class MagicController implements MageController {
         return damageTypes.keySet();
     }
 
+    @Override
+    public @Nonnull Set<String> getAttributes() {
+        return attributes.keySet();
+    }
+
     public float getMaxCostReduction() {
         return maxCostReduction;
     }
@@ -1529,6 +1534,7 @@ public class MagicController implements MageController {
         loadDefaultPaths = properties.getBoolean("load_default_paths", loadDefaultPaths);
         loadDefaultMobs = properties.getBoolean("load_default_mobs", loadDefaultMobs);
         loadDefaultItems = properties.getBoolean("load_default_items", loadDefaultItems);
+        loadDefaultAttributes = properties.getBoolean("load_default_attributes", loadDefaultAttributes);
 
         if (!properties.getBoolean("load_default_configs")) {
             loadDefaultWands = false;
@@ -1538,6 +1544,7 @@ public class MagicController implements MageController {
             loadDefaultMobs = false;
             loadDefaultItems = false;
             loadDefaultSpells = false;
+            loadDefaultAttributes = false;
         }
 
         return properties;
@@ -1579,6 +1586,10 @@ public class MagicController implements MageController {
 
     protected ConfigurationSection loadItemsConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
         return loadConfigFile(ITEMS_FILE, loadDefaultItems, mainConfiguration.getConfigurationSection("items"));
+    }
+
+    protected ConfigurationSection loadAttributesConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(ATTRIBUTES_FILE, loadDefaultAttributes, mainConfiguration.getConfigurationSection("attributes"));
     }
 
     protected Map<String, ConfigurationSection> loadAndMapSpells(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
@@ -1657,6 +1668,9 @@ public class MagicController implements MageController {
         loadMageClasses(loader.classes);
         getLogger().info("Loaded " + mageClasses.size() + " classes");
 
+        loadAttributes(loader.attributes);
+        getLogger().info("Loaded " + attributes.size() + " attributes");
+
         loadPaths(loader.paths);
         getLogger().info("Loaded " + getPathCount() + " progression paths");
 
@@ -1719,6 +1733,7 @@ public class MagicController implements MageController {
 
         Set<String> attributes = new HashSet<>();
         attributes.add("bowpull");
+        attributes.addAll(this.attributes.keySet());
         for (AttributeProvider provider : attributeProviders) {
             Set<String> providerAttributes = provider.getAllAttributes();
             if (providerAttributes != null) {
@@ -1735,6 +1750,15 @@ public class MagicController implements MageController {
 
     private void loadPaths(ConfigurationSection pathConfiguration) {
         WandUpgradePath.loadPaths(this, pathConfiguration);
+    }
+
+    private void loadAttributes(ConfigurationSection attributeConfiguration) {
+        Set<String> keys = attributeConfiguration.getKeys(false);
+        attributes.clear();;
+        for (String key : keys) {
+            MagicAttribute attribute = new MagicAttribute(key, attributeConfiguration.getConfigurationSection(key));
+            attributes.put(key, attribute);
+        }
     }
 
     public void loadConfiguration() {
@@ -5162,6 +5186,10 @@ public class MagicController implements MageController {
         return attributeProviders;
     }
 
+    public MagicAttribute getAttribute(String attributeKey) {
+        return attributes.get(attributeKey);
+    }
+
     @Override
     public boolean createLight(Location location, int lightLevel, boolean async) {
         if (lightAPIManager == null) return false;
@@ -5220,6 +5248,7 @@ public class MagicController implements MageController {
     private final String                        MATERIALS_FILE             	= "materials";
     private final String                        MOBS_FILE             	    = "mobs";
     private final String                        ITEMS_FILE             	    = "items";
+    private final String                        ATTRIBUTES_FILE             = "attributes";
     private final String                        RP_FILE             	    = "resourcepack";
     
     private final String						LOST_WANDS_FILE				= "lostwands";
@@ -5235,6 +5264,7 @@ public class MagicController implements MageController {
     private boolean                             loadDefaultClasses          = true;
     private boolean 							loadDefaultMobs 			= true;
     private boolean 							loadDefaultItems 			= true;
+    private boolean                             loadDefaultAttributes       = true;
 
     private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
     private @Nonnull MaterialSet                buildingMaterials               = MaterialSets.empty();
@@ -5316,6 +5346,7 @@ public class MagicController implements MageController {
     private final Map<String, SpellTemplate>    spellAliases                = new HashMap<>();
     private final Map<String, SpellData>        templateDataMap             = new HashMap<>();
     private final Map<String, SpellCategory>    categories              	= new HashMap<>();
+    private final Map<String, MagicAttribute>   attributes              	= new HashMap<>();
     private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<>();
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<>();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();

@@ -18,6 +18,10 @@ This is a *very rough* approximation of where Magic is headed in future versions
    - Including damage reduction
    - Mana bonuses
    - Maybe others, see TODO
+   - GUI to view player stats
+   - GUI to upgrade attributes
+   - Levelling system? 
+   - Health, hunger, oxygen, etc modifiers
  
 ## 7.6
 

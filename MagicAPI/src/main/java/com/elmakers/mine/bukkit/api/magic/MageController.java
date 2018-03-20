@@ -412,6 +412,7 @@ public interface MageController {
 
     @Nullable String checkRequirements(@Nonnull CastContext context, @Nullable Collection<Requirement> requirements);
     @Nonnull Set<String> getDamageTypes();
+    @Nonnull Set<String> getAttributes();
 
     boolean isWand(ItemStack item);
     boolean isSkill(ItemStack item);

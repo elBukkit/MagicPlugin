@@ -1,0 +1,19 @@
+#
+# Modify this file to add or remove attributes.
+#
+# Attributes in Magic are properties assigned to players that can be added to over time.
+#
+# These properties can be used to improve or modify spell behaviors as a player progresses.
+#
+# You can add new attributes in this file or modify the builtin ones. Use load_default_attributes: false
+# in config.yml to remove the default attributes completely.
+#
+# You can also add individual files to the attributes/ folder
+#
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/attributes
+#
+# For customization help see:
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+#

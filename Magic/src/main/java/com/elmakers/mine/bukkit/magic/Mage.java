@@ -119,6 +119,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected final String id;
     private final MageProperties properties;
     private final Map<String, MageClass> classes = new HashMap<>();
+    private final Map<String, Double> attributes = new HashMap<>();
     protected ConfigurationSection data = new MemoryConfiguration();
     protected Map<String, SpellData> spellData = new HashMap<>();
     protected WeakReference<Player> _player;
@@ -1073,6 +1074,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
 
+            this.attributes.clear();
+            this.attributes.putAll(data.getAttributes());
+
             // Link up parents
             for (MageClass mageClass : classes.values()) {
                 assignParent(mageClass);
@@ -1324,6 +1328,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 classProperties.put(entry.getKey(), entry.getValue().getConfiguration());
             }
             data.setClassProperties(classProperties);
+
+            Map<String, Double> attributes = new HashMap<>(this.attributes);
+            data.setAttributes(attributes);
 
             String activeClassKey = activeClass == null ? null : activeClass.getTemplate().getKey();
             data.setActiveClass(activeClassKey);
@@ -3662,19 +3669,32 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Double getAttribute(String attributeKey) {
-        Player player = getPlayer();
-        if (player == null) return null;
-        List<AttributeProvider> providers = controller.getAttributeProviders();
-        Double attribute = null;
-        for (AttributeProvider provider : providers) {
-            Double value = provider.getAttributeValue(attributeKey, player);
-            if (value != null) {
-                attribute = value;
-                break;
+        Double attribute = attributes.get(attributeKey);
+        if (attribute == null) {
+            MagicAttribute defaultSetting = controller.getAttribute(attributeKey);
+            if (defaultSetting != null) {
+                attribute = defaultSetting.getDefault();
+            }
+        }
+        if (attribute == null) {
+            Player player = getPlayer();
+            if (player != null) {
+                List<AttributeProvider> providers = controller.getAttributeProviders();
+                for (AttributeProvider provider : providers) {
+                    Double value = provider.getAttributeValue(attributeKey, player);
+                    if (value != null) {
+                        attribute = value;
+                        break;
+                    }
+                }
             }
         }
 
         return attribute;
+    }
+
+    public void setAttribute(String attributeKey, Double value) {
+        attributes.put(attributeKey, value);
     }
 
     @Override
