@@ -458,6 +458,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         }
 
         String value = args[1];
+        for (int i = 2; i < args.length; i++) {
+            value = value + " " + args[i];
+        }
         if (value.equals("-"))
         {
             Double oldValue = mage.getAttribute(key);
