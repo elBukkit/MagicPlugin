@@ -113,9 +113,6 @@ public class ProjectileAction  extends BaseProjectileAction
         if (startDistance > 0) {
             location = location.clone().add(direction.clone().multiply(startDistance));
         }
-
-		// Track projectiles to remove them after some time.
-		List<Projectile> projectiles = new ArrayList<>();
 		
 		// Spawn projectiles
         LivingEntity shootingEntity = context.getLivingEntity();
@@ -135,7 +132,6 @@ public class ProjectileAction  extends BaseProjectileAction
 					projectile.setShooter(shootingEntity);
 				}
 				
-				projectiles.add(projectile);
 				if (projectile instanceof Fireball) {
 					Fireball fireball = (Fireball)projectile;
 					fireball.setIsIncendiary(useFire);

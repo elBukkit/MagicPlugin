@@ -108,12 +108,9 @@ public class EntityController implements Listener {
     public void onEntityCombust(EntityCombustEvent event)
     {
         Entity entity = event.getEntity();
-        Mage apiMage = controller.getRegisteredMage(entity);
-        if (apiMage != null) {
-            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
-                mage.onPlayerCombust(event);
-            }
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(entity);
+        if (mage != null) {
+            mage.onCombust(event);
         }
 
         if (!event.isCancelled())
@@ -242,11 +239,8 @@ public class EntityController implements Listener {
             event.getDrops().clear();
             entity.removeMetadata("nodrops", controller.getPlugin());
         }
-        Mage apiMage = controller.getRegisteredMage(entity);
-        if (apiMage == null) return;
-
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(entity);
+        if (mage == null) return;
 
         mage.deactivateAllSpells();
         mage.onDeath(event);
@@ -438,22 +432,17 @@ public class EntityController implements Listener {
         try {
             Entity entity = event.getEntity();
 
-            Mage apiMage = controller.getRegisteredMage(event.getEntity());
-            if (apiMage != null)
+            com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(event.getEntity());
+            if (mage != null)
             {
-                if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
-
                 mage.onDamage(event);
             }
             else
             {
                 Entity passenger = entity.getPassenger();
-                Mage apiMountMage = controller.getRegisteredMage(passenger);
-                if (apiMountMage != null) {
-                    if (!(apiMountMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-                    com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMountMage;
-                    mage.onDamage(event);
+                com.elmakers.mine.bukkit.magic.Mage mountMage = controller.getRegisteredMage(passenger);
+                if (mountMage != null) {
+                    mountMage.onDamage(event);
                 }
             }
             if (entity instanceof Item)

@@ -19,11 +19,6 @@ import java.util.List;
 
 public class ActionHandler implements com.elmakers.mine.bukkit.api.action.ActionHandler, Cloneable
 {
-    @Deprecated
-    public static void registerActionClass(String name, Class<?> clazz) {
-        ActionFactory.registerActionClass(name, clazz);
-    }
-
     private List<ActionContext> actions = new ArrayList<>();
 
     private boolean undoable = false;

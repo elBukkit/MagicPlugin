@@ -126,7 +126,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                         Files.copy(configFile, backupFile);
                     }
                     String[] lines = StringUtils.split(cleanConfig.saveToString(), '\n');
-                    PrintWriter out = new PrintWriter(configFile);
+                    PrintWriter out = new PrintWriter(configFile, "UTF-8");
                     out.println("#");
                     out.println("# Default options have been removed from the file via /mconfig clean");
                     out.println("#");

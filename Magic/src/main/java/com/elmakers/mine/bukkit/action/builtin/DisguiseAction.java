@@ -10,7 +10,7 @@ import org.bukkit.entity.Entity;
 
 public class DisguiseAction extends BaseSpellAction
 {
-	private class UndoDisguise implements Runnable
+	private static class UndoDisguise implements Runnable
 	{
 		private final Entity entity;
 		private final MageController controller;

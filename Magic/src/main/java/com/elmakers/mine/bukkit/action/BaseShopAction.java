@@ -73,7 +73,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private boolean isActive = false;
     private SpellResult finalResult = null;
 
-    protected class ShopItem implements Comparable<ShopItem> {
+    protected static class ShopItem implements Comparable<ShopItem> {
         private final @Nonnull ItemStack item;
         private final double worth;
         private final @Nullable String permission;

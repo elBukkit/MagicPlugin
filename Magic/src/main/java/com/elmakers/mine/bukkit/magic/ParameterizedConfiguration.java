@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class ParameterizedConfiguration extends ParameterizedConfigurationSection implements Configuration {
-    private class Options extends ConfigurationOptions {
+    private static class Options extends ConfigurationOptions {
         protected Options(Configuration configuration) {
             super(configuration);
         }

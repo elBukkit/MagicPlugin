@@ -17,7 +17,7 @@ public class TimeAction extends BaseSpellAction
     private String timeSet = "day";
     private boolean cycleMoonPhase;
 
-    private class UndoTimeChange implements Runnable
+    private static class UndoTimeChange implements Runnable
     {
         private final World world;
         private final long time;

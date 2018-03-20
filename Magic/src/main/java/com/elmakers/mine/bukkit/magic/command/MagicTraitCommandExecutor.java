@@ -38,13 +38,17 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
 
         NPC npc = null;
         Citizens citizens = controller.getCitizensPlugin();
-        //did player specify a id?
-        try {
-            int npcId = Integer.parseInt(args[0]);
-            npc = CitizensAPI.getNPCRegistry().getById(npcId);
-            args = Arrays.copyOfRange(args, 1, args.length);
-        }
-        catch(Exception e){
+        // Did player specify a id?
+        if (args.length > 0) {
+
+            try {
+                int npcId = Integer.parseInt(args[0]);
+                npc = CitizensAPI.getNPCRegistry().getById(npcId);
+                args = Arrays.copyOfRange(args, 1, args.length);
+            }
+            catch (Exception e) {
+                sender.sendMessage("Invalid NPC id: " + args[0]);
+            }
         }
 
         if (npc == null)

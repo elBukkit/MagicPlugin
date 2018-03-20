@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MageClass extends TemplatedProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
-    protected final MageClassTemplate template;
+    protected final @Nonnull MageClassTemplate template;
     protected final MageProperties mageProperties;
     protected final Mage mage;
     private MageClass parent;

@@ -110,7 +110,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         return SpellResult.CAST;
     }
 
-    class SkillDescription implements Comparable<SkillDescription> {
+    private static class SkillDescription implements Comparable<SkillDescription> {
         public String heroesSkill;
         public SpellTemplate spell;
         private int skillLevel = 0;

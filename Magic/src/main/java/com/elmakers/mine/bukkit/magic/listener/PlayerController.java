@@ -192,10 +192,8 @@ public class PlayerController implements Listener {
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
         
-        final com.elmakers.mine.bukkit.api.wand.Wand apiWand = mage.getActiveWand();
-        final com.elmakers.mine.bukkit.api.wand.Wand apiOffhandWand = mage.getOffhandWand();
-        Wand activeWand = (apiWand instanceof Wand) ? (Wand)apiWand : null;
-        Wand offhandWand = (apiOffhandWand instanceof Wand) ? (Wand)apiOffhandWand : null;
+        final Wand activeWand = mage.getActiveWand();
+        final Wand offhandWand = mage.getOffhandWand();
 
         if (activeWand == null && offhandWand == null) return;
 

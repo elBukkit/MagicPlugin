@@ -201,11 +201,11 @@ public class MagicController implements MageController {
         return getMage(mageId, mageName, null, null);
     }
 
-    public com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, CommandSender commandSender, Entity entity) {
+    public @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, CommandSender commandSender, Entity entity) {
         return getMage(mageId, null, commandSender, entity);
     }
 
-    protected com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
+    protected @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
         Preconditions.checkNotNull(mageId);
 
         com.elmakers.mine.bukkit.magic.Mage apiMage = null;
@@ -324,31 +324,31 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public com.elmakers.mine.bukkit.magic.Mage getMage(Player player) {
+    public @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(Player player) {
         return getMage(player, player);
     }
 
     @Override
-    public com.elmakers.mine.bukkit.magic.Mage getMage(Entity entity) {
+    public @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(Entity entity) {
         CommandSender commandSender = (entity instanceof Player) ? (Player) entity : null;
         return getMage(entity, commandSender);
     }
 
     @Override
-    public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(Entity entity) {
+    public @Nullable com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(Entity entity) {
         if (entity == null) return null;
         String id = mageIdentifier.fromEntity(entity);
         return mages.get(id);
     }
 
-    protected com.elmakers.mine.bukkit.magic.Mage getMage(Entity entity, CommandSender commandSender) {
+    protected @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(Entity entity, CommandSender commandSender) {
         if (entity == null) return getMage(commandSender);
         String id = mageIdentifier.fromEntity(entity);
         return getMage(id, commandSender, entity);
     }
 
     @Override
-    public com.elmakers.mine.bukkit.magic.Mage getMage(CommandSender commandSender) {
+    public @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(CommandSender commandSender) {
         if (commandSender instanceof Player) {
             return getMage((Player) commandSender);
         }
@@ -473,8 +473,7 @@ public class MagicController implements MageController {
 
     @Override
     public double getWorthItemAmount() {
-        //TODO: Use a precondition here instead of the NPE of (double) null
-        return currencyItem == null ? null : currencyItem.getWorth();
+        return currencyItem == null ? 0 : currencyItem.getWorth();
     }
 
     @Override
@@ -1117,13 +1116,12 @@ public class MagicController implements MageController {
         if (skriptEnabled) {
             if (Bukkit.getPluginManager().isPluginEnabled("Skript")) {
                 try {
-                    skriptManager = new SkriptManager(this);
+                    new SkriptManager(this);
                 } catch (Throwable ex) {
                     getLogger().log(Level.WARNING, "Error integrating with LighSkripttAPI", ex);
                 }
             }
         } else {
-            skriptManager = null;
             getLogger().info("Skript integration disabled.");
         }
 
@@ -2865,13 +2863,11 @@ public class MagicController implements MageController {
             }
         }
         if (mage != null) {
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                UndoList undoList = mage.getLastUndoList();
-                if (undoList != null) {
-                    long now = System.currentTimeMillis();
-                    if (undoList.getModifiedTime() > now - undoTimeWindow) {
-                        blockList = undoList;
-                    }
+            UndoList undoList = mage.getLastUndoList();
+            if (undoList != null) {
+                long now = System.currentTimeMillis();
+                if (undoList.getModifiedTime() > now - undoTimeWindow) {
+                    blockList = undoList;
                 }
             }
 		} else {
@@ -4510,12 +4506,9 @@ public class MagicController implements MageController {
 
     @Override
     public void warpPlayerToServer(Player player, String server, String warp) {
-        Mage apiMage = getMage(player);
-        if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)
-        {
-            ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setDestinationWarp(warp);
-            info("Cross-server warping " + player.getName() + " to warp " + warp, 1);
-        }
+        com.elmakers.mine.bukkit.magic.Mage mage = getMage(player);
+        mage.setDestinationWarp(warp);
+        info("Cross-server warping " + player.getName() + " to warp " + warp, 1);
         sendPlayerToServer(player, server);
     }
 
@@ -5441,7 +5434,7 @@ public class MagicController implements MageController {
     private EntityController                    entityController            = null;
     private InventoryController                 inventoryController         = null;
     private ExplosionController                 explosionController         = null;
-    private MageIdentifier                      mageIdentifier              = new MageIdentifier();
+    private @Nonnull MageIdentifier             mageIdentifier              = new MageIdentifier();
     private final SimpleMaterialSetManager      materialSetManager          = new SimpleMaterialSetManager();
     private boolean                             citizensEnabled			    = true;
     private boolean                             libsDisguiseEnabled			= true;
@@ -5481,8 +5474,6 @@ public class MagicController implements MageController {
     private PlaceholderAPIManager               placeholderAPIManager       = null;
     private LightAPIManager                     lightAPIManager             = null;
     private MobArenaManager                     mobArenaManager             = null;
-    @SuppressWarnings("unused")
-    private SkriptManager                       skriptManager               = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();

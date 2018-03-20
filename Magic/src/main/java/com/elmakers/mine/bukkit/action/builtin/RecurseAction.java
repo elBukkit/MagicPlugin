@@ -29,7 +29,7 @@ public class RecurseAction extends CompoundAction {
     protected boolean checker;
     protected boolean replace;
 
-    private class StackEntry {
+    private static class StackEntry {
         public Block block;
         public int face;
 

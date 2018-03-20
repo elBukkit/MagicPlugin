@@ -486,7 +486,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             public int compare(File f1, File f2)
             {
                 if (backwards) {
-                    return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
+                    return Long.compare(f2.lastModified(), f1.lastModified());
                 }
                 return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
             } });

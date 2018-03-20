@@ -302,7 +302,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
 
             IIOMetadataNode root = (IIOMetadataNode) reader.getImageMetadata(frameIndex).getAsTree("javax_imageio_gif_image_1.0");
             IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension").item(0);
-            int delay = Integer.valueOf(gce.getAttribute("delayTime"));
+            int delay = Integer.parseInt(gce.getAttribute("delayTime"));
             String disposal = gce.getAttribute("disposalMethod");
 
             int x = 0;
@@ -339,6 +339,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                     }
                 }
 
+                if (from == null) break;
                 master = new BufferedImage(from.getColorModel(), from.copyData(null), from.isAlphaPremultiplied(), null);
                 masterGraphics = master.createGraphics();
                 masterGraphics.setBackground(new Color(0, 0, 0, 0));

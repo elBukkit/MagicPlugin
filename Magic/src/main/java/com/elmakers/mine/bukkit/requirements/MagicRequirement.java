@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 public  class MagicRequirement {
-    private class PropertyRequirement {
+    private static class PropertyRequirement {
         public final String key;
         public Double max;
         public Double min;
@@ -211,7 +211,7 @@ public  class MagicRequirement {
     }
 
     protected boolean checkProperty(PropertyRequirement requirement, Double value) {
-        if (requirement.value != null && (value == null || value != requirement.value)) return false;
+        if (requirement.value != null && (value == null || !value.equals(requirement.value))) return false;
         if (requirement.min != null && (value == null || value <= requirement.min)) return false;
         if (requirement.max != null && (value != null && value >= requirement.max)) return false;
         return true;
@@ -362,7 +362,7 @@ public  class MagicRequirement {
     }
 
     protected String checkRequiredProperty(CastContext context, PropertyRequirement requirement, String name, Double value) {
-        if (requirement.value != null && (value == null || value != requirement.value)) {
+        if (requirement.value != null && (value == null || !value.equals(requirement.value))) {
             return getMessage(context, "property_requirement")
                 .replace("$property", name).replace("$value", Double.toString(requirement.value));
         }

@@ -30,6 +30,21 @@ This is a *very rough* approximation of where Magic is headed in future versions
  
 ## 7.7
 
+ - Improved Magic Mobs
+   - Probability tables for drops
+   - Disguise support for armor stands with equipped items
+   - Additional triggers:
+     - entered combat
+     - attacked
+     - spawned
+     - killed player
+     - leave combat (??)
+     - change target
+     - ... explode, teleport - getting very specific now
+     - custom signals triggerd by spells
+     - Boss bar support 
+     - Scale difficulty based on players (when spawned)
+     - Mob factions
  - Persistent effect support
    - Replacing old automata tracking
    - Ability to have spells cast on chunk load and cancel on unload

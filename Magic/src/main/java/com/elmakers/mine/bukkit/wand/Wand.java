@@ -840,8 +840,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     		mage = controller.getMage(player);
 		}
 
-        // TODO: can mage ever be null here?
-        if (mage != null && (ownerId == null || ownerId.length() == 0) && quietLevel < 2)
+        if ((ownerId == null || ownerId.length() == 0) && quietLevel < 2)
         {
             mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
             String spellKey = getActiveSpellKey();
@@ -1270,7 +1269,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     InventoryUtils.setMeta(spellNode, "class", mageClassKey);
                 }
             }
-            if (wand != null && !wand.quickCast) {
+            if (!wand.quickCast) {
                 Object spellNode = InventoryUtils.getNode(itemStack, "spell");
                 if (spellNode != null) {
             		InventoryUtils.setMetaBoolean(spellNode, "quick_cast", false);
@@ -2030,7 +2029,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		if (remaining > 1) {
 			String message = getMessage("uses_remaining_brief");
-			name = name + ChatColor.DARK_RED + " (" + message.replace("$count", ((Integer)remaining).toString()) + ChatColor.DARK_RED + ")";
+			name = name + ChatColor.DARK_RED + " (" + message.replace("$count", Integer.toString(remaining)) + ChatColor.DARK_RED + ")";
 		}
 		return name;
 	}
@@ -2249,13 +2248,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 					case "$spells":
 						int spellCount = getSpells().size();
 						if (spellCount > 0) {
-							ConfigurationUtils.addIfNotEmpty(getMessage("spell_count").replace("$count", ((Integer)spellCount).toString()), lore);
+							ConfigurationUtils.addIfNotEmpty(getMessage("spell_count").replace("$count", Integer.toString(spellCount)), lore);
             			}
             			break;
 					case "$brushes":
 						int materialCount = getBrushes().size();
 						if (materialCount > 0) {
-							ConfigurationUtils.addIfNotEmpty(getMessage("material_count").replace("$count", ((Integer)materialCount).toString()), lore);
+							ConfigurationUtils.addIfNotEmpty(getMessage("material_count").replace("$count", Integer.toString(materialCount)), lore);
 						}
 						break;
 					case "$uses":
@@ -2424,16 +2423,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         if (spellCount > 0) {
             if (isUpgrade) {
-				ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()), lore);
+				ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_spell_count").replace("$count", Integer.toString(spellCount)), lore);
             } else if (spellCount > 1) {
-				ConfigurationUtils.addIfNotEmpty(getMessage("spell_count").replace("$count", ((Integer)spellCount).toString()), lore);
+				ConfigurationUtils.addIfNotEmpty(getMessage("spell_count").replace("$count", Integer.toString(spellCount)), lore);
             }
         }
         if (materialCount > 0) {
             if (isUpgrade) {
-				ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_material_count").replace("$count", ((Integer)materialCount).toString()), lore);
+				ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_material_count").replace("$count", Integer.toString(materialCount)), lore);
             } else if (materialCount > 1) {
-				ConfigurationUtils.addIfNotEmpty(getMessage("material_count").replace("$count", ((Integer)materialCount).toString()), lore);
+				ConfigurationUtils.addIfNotEmpty(getMessage("material_count").replace("$count", Integer.toString(materialCount)), lore);
             }
         }
 

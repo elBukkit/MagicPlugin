@@ -22,16 +22,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class ConfigurationMageDataStore implements MageDataStore {
-    protected Logger logger;
     protected MageController controller;
 
     @Override
     public void initialize(MageController controller, ConfigurationSection configuration) {
         this.controller = controller;
-        logger = controller.getPlugin().getLogger();
     }
 
     public void save(MageData mage, ConfigurationSection saveFile) {
@@ -298,6 +297,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                     ItemStack item = controller.deserialize(respawnData, key);
                     respawnInventory.put(index, item);
                 } catch (Exception ex) {
+                    controller.getLogger().log(Level.WARNING, "Error loading respawn inventory for " + id, ex);
                 }
             }
             data.setRespawnInventory(respawnInventory);
@@ -314,6 +314,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                     ItemStack item = controller.deserialize(respawnArmorData, key);
                     respawnArmor.put(index, item);
                 } catch (Exception ex) {
+                    controller.getLogger().log(Level.WARNING, "Error loading respawn armor inventory for " + id, ex);
                 }
             }
             data.setRespawnArmor(respawnArmor);

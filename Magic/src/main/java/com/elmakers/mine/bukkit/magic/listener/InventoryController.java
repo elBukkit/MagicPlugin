@@ -101,10 +101,7 @@ public class InventoryController implements Listener {
         if (!(event.getWhoClicked() instanceof Player)) return;
 
         Player player = (Player)event.getWhoClicked();
-        Mage apiMage = controller.getMage(player);
-
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        final com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        final com.elmakers.mine.bukkit.magic.Mage mage = controller.getMage(player);
 
         GUIAction gui = mage.getActiveGUI();
         if (gui != null)
@@ -433,10 +430,8 @@ public class InventoryController implements Listener {
 
         // Update the active wand, it may have changed around
         Player player = (Player)event.getPlayer();
-        Mage apiMage = controller.getRegisteredMage(player);
-
-        if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) return;
 
         Wand previousWand = mage.getActiveWand();
 
@@ -479,10 +474,8 @@ public class InventoryController implements Listener {
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
         Player player = (Player)event.getPlayer();
-        Mage apiMage = controller.getRegisteredMage(player);
-
-        if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) return;
 
         mage.setOpenCooldown(openCooldown);
 

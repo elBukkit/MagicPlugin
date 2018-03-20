@@ -209,12 +209,10 @@ public class WandOrganizer {
 
         Map<String, String> alphabetized = new TreeMap<>();
         for (String spellKey : spells.keySet()) {
-            String name = spellKey;
             SpellTemplate spell = wand.getController().getSpellTemplate(spellKey);
             if (spell != null) {
-                name = spell.getName();
+                alphabetized.put(spell.getName(), spell.getSpellKey().getBaseKey());
             }
-            alphabetized.put(name, spell.getSpellKey().getBaseKey());
         }
 
         currentInventoryIndex = 0;

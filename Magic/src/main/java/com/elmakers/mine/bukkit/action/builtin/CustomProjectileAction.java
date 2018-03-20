@@ -123,7 +123,7 @@ public class CustomProjectileAction extends CompoundAction
     private Vector previousLocation;
     private boolean projectileFollowPlayer;
     
-    private class PlanStep {
+    private static class PlanStep {
         public double distance;
         public long time;
         public double returnBuffer;

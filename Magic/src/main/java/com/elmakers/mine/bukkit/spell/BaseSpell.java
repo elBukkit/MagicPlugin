@@ -2744,11 +2744,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                             && (upgradeTags == null || upgradeTags.isEmpty() || (currentPath != null && currentPath.hasAllTags(upgradeTags))))
                     {
                         if (PrerequisiteSpell.hasPrerequisites(wand, upgrade)) {
-                            Spell newSpell = mage.getSpell(upgrade.getKey());
+                            MageSpell newSpell = mage.getSpell(upgrade.getKey());
                             if (isActive()) {
                                 deactivate(true, true);
-                                if (newSpell != null && newSpell instanceof MageSpell) {
-                                    ((MageSpell)newSpell).activate();
+                                if (newSpell != null) {
+                                    newSpell.activate();
                                 }
                             }
                             wand.forceAddSpell(upgrade.getKey());

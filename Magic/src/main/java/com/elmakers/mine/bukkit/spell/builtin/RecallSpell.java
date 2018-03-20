@@ -22,7 +22,7 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class RecallSpell extends UndoableSpell
 {
-	private class UndoMarkerMove implements Runnable {
+	private static class UndoMarkerMove implements Runnable {
 		private final Location location;
 		private final RecallSpell spell;
 		
@@ -33,11 +33,11 @@ public class RecallSpell extends UndoableSpell
 		
 		@Override
 		public void run() {
-			spell.location = this.location;
+			spell.markerLocation = this.location;
 		}
 	}
 	
-	public Location location;
+	public Location markerLocation;
 
 	private static int MAX_RETRY_COUNT = 8;
 	private static int RETRY_INTERVAL = 10;
@@ -65,7 +65,7 @@ public class RecallSpell extends UndoableSpell
 	//	FHOME,
 	};
 	
-	private class Waypoint
+	private static class Waypoint
 	{
 		public final RecallType type;
 		public  final int index;
@@ -124,7 +124,7 @@ public class RecallSpell extends UndoableSpell
         else if (parameters.contains("type")) {
 			cycleRetries = 0;
 			String typeString = parameters.getString("type", "");
-			if (location != null && typeString.equalsIgnoreCase("remove")) {
+			if (markerLocation != null && typeString.equalsIgnoreCase("remove")) {
 				removeMarker();
 				return SpellResult.TARGET_SELECTED;
 			}
@@ -296,7 +296,7 @@ public class RecallSpell extends UndoableSpell
 		switch (type) {
 		case MARKER:
 			castMessage = getMessage("cast_marker");
-			return location;
+			return markerLocation;
 		case DEATH:
 			castMessage = getMessage("cast_death");
 			failMessage = getMessage("no_target_death");
@@ -334,8 +334,8 @@ public class RecallSpell extends UndoableSpell
 
 	protected boolean removeMarker()
 	{
-		if (location == null) return false;
-		location = null;
+		if (markerLocation == null) return false;
+		markerLocation = null;
 		return true;
 	}
 	
@@ -382,8 +382,8 @@ public class RecallSpell extends UndoableSpell
 			return false;
 		}
 
-		registerForUndo(new UndoMarkerMove(this, location));
-		if (location != null) 
+		registerForUndo(new UndoMarkerMove(this, markerLocation));
+		if (markerLocation != null)
 		{
 			removeMarker();
 			castMessage(getMessage("cast_marker_move"));
@@ -393,10 +393,10 @@ public class RecallSpell extends UndoableSpell
 			castMessage(getMessage("cast_marker_place"));
 		}
 
-		location = getLocation();
-		location.setX(target.getX());
-		location.setY(target.getY());
-		location.setZ(target.getZ());
+		markerLocation = getLocation();
+		markerLocation.setX(target.getX());
+		markerLocation.setY(target.getY());
+		markerLocation.setZ(target.getZ());
 		
 		return true;
 	}
@@ -404,12 +404,12 @@ public class RecallSpell extends UndoableSpell
 	@Override
 	public void onLoad(ConfigurationSection node)
 	{
-		location = ConfigurationUtils.getLocation(node, "location");
+		markerLocation = ConfigurationUtils.getLocation(node, "location");
 	}
 
 	@Override
 	public void onSave(ConfigurationSection node)
 	{
-		node.set("location", ConfigurationUtils.fromLocation(location));
+		node.set("location", ConfigurationUtils.fromLocation(markerLocation));
 	}
 }

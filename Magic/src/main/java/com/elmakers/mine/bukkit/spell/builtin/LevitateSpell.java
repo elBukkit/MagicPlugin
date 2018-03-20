@@ -133,7 +133,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
     private EffectRing effectPlayer = null;
 
-    private class ThrustAction implements Runnable
+    private static class ThrustAction implements Runnable
     {
         private final LevitateSpell spell;
         private final int taskId;

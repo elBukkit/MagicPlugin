@@ -599,7 +599,7 @@ public class CompatibilityUtils extends NMSUtils {
     {
         YamlConfiguration configuration = new YamlConfiguration();
         try {
-            configuration.load(new InputStreamReader(stream));
+            configuration.load(new InputStreamReader(stream, "UTF-8"));
         } catch (FileNotFoundException fileNotFound) {
 
         }

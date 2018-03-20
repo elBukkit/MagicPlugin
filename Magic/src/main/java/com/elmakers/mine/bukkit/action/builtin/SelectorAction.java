@@ -138,7 +138,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
     }
 
     protected class SelectorConfiguration {
-        protected @Nonnull ItemStack icon;
+        protected @Nullable ItemStack icon;
         protected @Nullable List<ItemStack> items;
         protected @Nullable List<Cost> costs = null;
         protected @Nonnull String costType = "currency";
@@ -922,7 +922,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         finalResult = null;
     }
 
-    public RequirementsResult checkRequirements(CastContext context) {
+    public RequirementsResult checkDefaultRequirements(CastContext context) {
         return defaultConfiguration.checkRequirements(context);
     }
 
@@ -934,7 +934,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         if (finalResult != null) {
             return finalResult;
         }
-        RequirementsResult check = checkRequirements(context);
+        RequirementsResult check = checkDefaultRequirements(context);
         if (!check.result.isSuccess()) {
             context.sendMessage(check.message);
             return check.result;

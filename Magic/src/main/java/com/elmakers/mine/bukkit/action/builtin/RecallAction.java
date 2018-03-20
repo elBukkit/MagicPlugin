@@ -92,7 +92,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
     private static MaterialAndData defaultMaterial = new MaterialAndData(DefaultWaypointMaterial);
 
-    private class Waypoint implements Comparable<Waypoint>
+    private static class Waypoint implements Comparable<Waypoint>
     {
         public final RecallType type;
         public final String name;

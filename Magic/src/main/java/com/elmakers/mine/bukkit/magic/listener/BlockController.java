@@ -67,13 +67,10 @@ public class BlockController implements Listener {
         Block block = event.getBlock();
         Player player = event.getPlayer();
         if (creativeBreakFrequency > 0 && player.getGameMode() == GameMode.CREATIVE) {
-            Mage apiMage = controller.getMage(event.getPlayer());
-            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-                if (mage.checkLastClick(creativeBreakFrequency)) {
-                    event.setCancelled(true);
-                    return;
-                }
+            com.elmakers.mine.bukkit.magic.Mage mage = controller.getMage(event.getPlayer());
+            if (mage.checkLastClick(creativeBreakFrequency)) {
+                event.setCancelled(true);
+                return;
             }
         }
         if (controller.areLocksProtected() && controller.isContainer(block) && !event.getPlayer().hasPermission("Magic.bypass")) {
@@ -126,10 +123,7 @@ public class BlockController implements Listener {
             return;
         }
 
-        Mage apiMage = controller.getMage(player);
-
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getMage(player);
 
         if (mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
             event.setCancelled(true);

@@ -10,10 +10,10 @@ import java.util.Set;
 
 public class Requirement {
     public final static String DEFAULT_TYPE = "magic";
-    private final String type;
-    private final ConfigurationSection configuration;
+    private final @Nonnull String type;
+    private final @Nonnull ConfigurationSection configuration;
     
-    public Requirement(ConfigurationSection configuration) {
+    public Requirement(@Nonnull ConfigurationSection configuration) {
         this.configuration = configuration;
         this.type = configuration.getString("type", DEFAULT_TYPE);
     }

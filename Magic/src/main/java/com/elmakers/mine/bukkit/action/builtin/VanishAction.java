@@ -10,7 +10,7 @@ import org.bukkit.entity.Entity;
 
 public class VanishAction extends BaseSpellAction
 {
-	private class UndoVanish implements Runnable
+	private static class UndoVanish implements Runnable
 	{
 		private final Mage mage;
 

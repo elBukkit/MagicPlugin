@@ -26,8 +26,11 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -379,7 +382,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		}
 		
 		File file = new File(api.getPlugin().getDataFolder(), parameters[0] + ".csv");
-		try (FileWriter output = new FileWriter(file)) {
+		try (Writer output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8")) {
 			output.append("Name,Key,Cost\n");
 			
 			for (MaterialAndData material : items.values()) {

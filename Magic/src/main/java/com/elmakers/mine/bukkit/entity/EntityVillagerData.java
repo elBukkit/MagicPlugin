@@ -73,6 +73,9 @@ public class EntityVillagerData extends EntityExtraData {
         if (recipes != null) {
             villager.setRecipes(recipes);
         }
+        if (riches != null) {
+            villager.setRiches(riches);
+        }
     }
 
     @Override

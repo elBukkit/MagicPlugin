@@ -116,7 +116,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static double SNEAKING_CAST_OFFSET = -0.2;
 
     protected final String id;
-    private final MageProperties properties;
+    private final @Nonnull MageProperties properties;
     private final Map<String, MageClass> classes = new HashMap<>();
     private final Map<String, Double> attributes = new HashMap<>();
     protected ConfigurationSection data = new MemoryConfiguration();
@@ -154,7 +154,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean forget = false;
     private long disableWandOpenUntil = 0;
 
-    private class DamagedBy {
+    private static class DamagedBy {
         private WeakReference<Player> player;
         public double damage;
         public DamagedBy(Player player, double damage) {
@@ -355,7 +355,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    public void onPlayerCombust(EntityCombustEvent event) {
+    public void onCombust(EntityCombustEvent event) {
         if (getProtection("fire") >= 1) {
             event.getEntity().setFireTicks(0);
             event.setCancelled(true);
@@ -414,10 +414,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (topDamager == null) return null;
         Entity topEntity = topDamager.getEntity();
         if (topEntity == null && damagedBy != null) {
-            Set<UUID> damageIds = damagedBy.keySet();
             double topDamage = 0;
-            for (UUID uuid : damageIds) {
-                DamagedBy damaged = damagedBy.get(uuid);
+            for (Iterator<Map.Entry<UUID, DamagedBy>> it = damagedBy.entrySet().iterator(); it.hasNext();) {
+                Map.Entry<UUID, DamagedBy> entry = it.next();
+                DamagedBy damaged = entry.getValue();
                 Entity entity = damaged.getEntity();
                 if (entity != null) {
                     boolean withinRange = withinRange(entity);
@@ -427,7 +427,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         topDamager = damaged;
                     }
                 } else {
-                    damagedBy.remove(uuid);
+                    it.remove();
                 }
             }
         }

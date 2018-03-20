@@ -189,7 +189,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             String overrideParticle = wand == null ? mage.getEffectParticleName() : wand.getEffectParticleName();
             player.setParticleOverride(overrideParticle);
 
-            Location source = player.getSourceLocation(wand.getEffectsContext());
+            Location source = wand == null ? null : player.getSourceLocation(wand.getEffectsContext());
             if (source == null) {
                 source = mage.getLocation();
             }

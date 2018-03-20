@@ -14,11 +14,11 @@ import javax.annotation.Nullable;
  * A custom event that the Magic plugin will fire whenever a player upgrades to a new level
  */
 public class PathUpgradeEvent extends Event {
-    private final Mage mage;
-    private final Wand wand;
-    private final MageClass mageClass;
-    private final ProgressionPath oldPath;
-    private final ProgressionPath newPath;
+    private final @Nonnull Mage mage;
+    private final @Nullable Wand wand;
+    private final @Nullable MageClass mageClass;
+    private final @Nonnull ProgressionPath oldPath;
+    private final @Nonnull ProgressionPath newPath;
 
     private static final HandlerList handlers = new HandlerList();
 

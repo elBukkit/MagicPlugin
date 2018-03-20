@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 public class MageClassTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.magic.MageClassTemplate {
     private MageClassTemplate parent;
-    private final String key;
+    private final @Nonnull String key;
     private boolean isLocked = false;
     private String name;
     private String description;

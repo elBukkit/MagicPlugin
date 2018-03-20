@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class ModifyPropertiesAction extends BaseSpellAction
 {
-    private class ModifyProperty {
+    private static class ModifyProperty {
         public String path;
         public Object value;
         public Double min;
@@ -51,7 +51,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
     private String modifyTarget;
     private boolean upgrade;
 
-	private class ModifyPropertyUndoAction implements Runnable
+	private static class ModifyPropertyUndoAction implements Runnable
 	{
         private final CasterProperties properties;
         private final ConfigurationSection original;

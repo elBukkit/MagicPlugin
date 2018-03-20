@@ -164,10 +164,10 @@ public interface MageController {
 
     int getMessageThrottle();
     boolean isMage(Entity entity);
-    Mage getMage(CommandSender sender);
-    Mage getMage(Player player);
-    Mage getMage(Entity entity);
-    Mage getMage(String id, String name);
+    @Nonnull Mage getMage(CommandSender sender);
+    @Nonnull Mage getMage(Player player);
+    @Nonnull Mage getMage(Entity entity);
+    @Nonnull Mage getMage(String id, String name);
     Mage getRegisteredMage(String mageId);
     Mage getRegisteredMage(Entity entity);
     Mage getAutomaton(String id, String name);

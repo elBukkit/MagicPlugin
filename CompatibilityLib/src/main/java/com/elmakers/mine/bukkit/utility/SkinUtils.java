@@ -122,12 +122,18 @@ public class SkinUtils extends NMSUtils {
         conn.setConnectTimeout(30000);
         conn.setReadTimeout(30000);
         conn.setInstanceFollowRedirects(true);
-        try(InputStream in = conn.getInputStream()) {
+        InputStream in = null;
+        try {
+            in = conn.getInputStream();
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(in, StandardCharsets.UTF_8));
             String inputLine = "";
             while ((inputLine = reader.readLine()) != null) {
                 response.append(inputLine);
+            }
+        } finally {
+            if (in != null) {
+                in.close();
             }
         }
         return response.toString();

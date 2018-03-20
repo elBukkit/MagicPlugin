@@ -258,9 +258,9 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 }
                 break;
             case XP:
-                return messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
+                return messages.get("costs.xp_amount").replace("$amount", Integer.toString(getXP(reducer)));
             case LEVELS:
-                return messages.get("costs.levels_amount").replace("$amount", ((Integer)getLevels(reducer)).toString());
+                return messages.get("costs.levels_amount").replace("$amount", Integer.toString(getLevels(reducer)));
             case SP:
                 return messages.get("costs.sp_amount").replace("$amount", Integer.toString(getSkillPoints(reducer)));
             case MANA:
@@ -270,7 +270,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case HUNGER:
                 return messages.get("costs.hunger_amount").replace("$amount", Integer.toString(getMana(reducer)));
             case CURRENCY:
-                return messages.get("costs.currency_amount").replace("$amount", ((Integer)(int)Math.ceil(getCurrency(reducer))).toString());
+                return messages.get("costs.currency_amount").replace("$amount", Integer.toString((int)Math.ceil(getCurrency(reducer))));
         }
         return "";
     }

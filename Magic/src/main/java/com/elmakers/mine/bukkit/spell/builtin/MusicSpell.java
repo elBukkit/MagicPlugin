@@ -16,7 +16,7 @@ public class MusicSpell extends TargetingSpell
 {
 	protected Random random = new Random();
 	
-	protected static Material[] RECORDS = {
+	protected final static Material[] RECORDS = {
 	    Material.GOLD_RECORD,
 	    Material.GREEN_RECORD,
 	    Material.RECORD_3,

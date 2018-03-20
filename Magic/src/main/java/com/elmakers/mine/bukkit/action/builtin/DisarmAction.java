@@ -32,7 +32,7 @@ import java.util.Random;
 
 public class DisarmAction extends BaseSpellAction
 {
-	private class DisarmUndoAction implements Runnable
+	private static class DisarmUndoAction implements Runnable
 	{
 		private final Mage mage;
 		private final int originalSlot;

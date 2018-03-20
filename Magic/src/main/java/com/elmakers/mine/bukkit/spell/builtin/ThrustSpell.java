@@ -39,7 +39,7 @@ public class ThrustSpell extends TargetingSpell
 
     protected double overallScale = 1.0;
 
-	public class LevitateAction implements Runnable
+	private static class LevitateAction implements Runnable
 	{
         private final ThrustSpell spell;
 

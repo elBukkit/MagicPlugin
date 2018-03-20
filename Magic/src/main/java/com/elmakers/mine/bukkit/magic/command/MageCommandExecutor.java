@@ -647,7 +647,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
                 sender.sendMessage(ChatColor.AQUA + "Active spells: " + ChatColor.DARK_AQUA + StringUtils.join(spellNames, ","));
             }
-            activeClass.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
+            if (activeClass != null) {
+                activeClass.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
+            }
         } else {
             Object property = activeClass.getProperty(parameters[0]);
             if (property == null) {
