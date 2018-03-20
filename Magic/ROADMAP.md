@@ -9,6 +9,7 @@ This is a *very rough* approximation of where Magic is headed in future versions
      - Wand "unstashable tag", sets a generic item tag
      - "Unmoveable" tag, for use with classbound items that go in a specific slot
      - ModifyMage action to lock/unlock/activate classes, for building a class selection GUI
+     - Ability to use spellshop without a wand
  - Status effect system for temporary (timed) property changes
 
 ## 7.5
@@ -33,6 +34,9 @@ This is a *very rough* approximation of where Magic is headed in future versions
  - Improved Magic Mobs
    - Probability tables for drops
    - Disguise support for armor stands with equipped items
+   - Boss bar support 
+   - Scale difficulty based on players (when spawned)
+   - Mob factions
    - Additional triggers:
      - entered combat
      - attacked
@@ -41,10 +45,7 @@ This is a *very rough* approximation of where Magic is headed in future versions
      - leave combat (??)
      - change target
      - ... explode, teleport - getting very specific now
-     - custom signals triggerd by spells
-     - Boss bar support 
-     - Scale difficulty based on players (when spawned)
-     - Mob factions
+     - custom signals triggered by spells
  - Persistent effect support
    - Replacing old automata tracking
    - Ability to have spells cast on chunk load and cancel on unload

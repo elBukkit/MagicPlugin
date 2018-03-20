@@ -63,6 +63,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     void unenchant();
     void unlock();
     Wand duplicate();
+    @Override
     Spell getSpell(String key);
     Spell getSpell(String key, Mage mage);
     SpellTemplate getSpellTemplate(String key);
@@ -77,6 +78,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean fill(Player player, int maxLevel);
     boolean add(Wand other);
     boolean add(Wand other, Mage mage);
+    @Override
     boolean addItem(ItemStack item);
     @Override
     boolean removeProperty(String key);

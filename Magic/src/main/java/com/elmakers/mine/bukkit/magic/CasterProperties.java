@@ -2,13 +2,16 @@ package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -236,7 +239,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         boolean modified = spells.remove(key.getBaseKey());
         if (modified) {
             setProperty("spells", new ArrayList<>(spells));
-            Map<String, Object> spellLevels = getSpellLevels();
+            Map<String, Integer> spellLevels = getSpellLevels();
             if (spellLevels.remove(key.getBaseKey()) != null) {
                 setProperty("spell_levels", spellLevels);
             }
@@ -256,9 +259,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     public int getSpellLevel(String spellKey) {
-        Map<String, Object> spellLevels = getSpellLevels();
-        Object level = spellLevels.get(spellKey);
-        return level == null || !(level instanceof Integer) ? 1 : (Integer)level;
+        Map<String, Integer> spellLevels = getSpellLevels();
+        Integer level = spellLevels.get(spellKey);
+        return level == null ? 1 : level;
     }
 
     public SpellTemplate getBaseSpell(String spellKey) {
@@ -298,14 +301,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
-    public Collection<String> getSpells() {
+    public Set<String> getSpells() {
         Set<String> spellSet = new HashSet<>();
         Collection<String> spells = getBaseSpells();
-        Map<String, Object> spellLevels = getSpellLevels();
+        Map<String, Integer> spellLevels = getSpellLevels();
 
         for (String key : spells) {
-            Object levelObject = spellLevels.get(key);
-            Integer level = levelObject != null && levelObject instanceof Integer ? (Integer)levelObject : null;
+            Integer level = spellLevels.get(key);
             if (level != null) {
                 spellSet.add(new SpellKey(key, level).getKey());
             } else {
@@ -315,7 +317,25 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 		return spellSet;
     }
 
-    public Collection<String> getBrushes() {
+	@Override
+    public @Nullable Spell getSpell(String spellKey) {
+        Mage mage = getMage();
+		if (mage == null) {
+			return null;
+		}
+		SpellKey key = new SpellKey(spellKey);
+		spellKey = key.getBaseKey();
+		Set<String> spells = getSpells();
+		if (!spells.contains(spellKey)) return null;
+		Map<String, Integer> spellLevels = getSpellLevels();
+		Integer level = spellLevels.get(spellKey);
+		if (level != null) {
+			spellKey = new SpellKey(spellKey, level).getKey();
+		}
+		return mage.getSpell(spellKey);
+	}
+
+    public Set<String> getBrushes() {
         Object existingBrushes = getObject("brushes");
         Set<String> brushes = new HashSet<>();
         if (existingBrushes != null) {
@@ -386,6 +406,36 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         setProperty("attributes", attributes);
         updated();
     }
+
+    @Override
+	public boolean addItem(ItemStack item) {
+		if (Wand.isSpell(item) && !Wand.isSkill(item)) {
+			String spell = Wand.getSpell(item);
+			SpellKey spellKey = new SpellKey(spell);
+			Map<String, Integer> spellLevels = getSpellLevels();
+			Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
+			if ((currentLevel == null || currentLevel < spellKey.getLevel()) && addSpell(spell)) {
+                return true;
+			}
+		} else if (Wand.isBrush(item)) {
+			String materialKey = Wand.getBrush(item);
+			Set<String> materials = getBrushes();
+			if (!materials.contains(materialKey) && addBrush(materialKey)) {
+                return true;
+			}
+		}
+		Mage mage = getMage();
+		if (mage != null && !mage.isAtMaxSkillPoints() && controller.skillPointItemsEnabled()) {
+			Integer sp = Wand.getSP(item);
+			if (sp != null) {
+				int amount = (int)Math.floor(mage.getSPMultiplier() * sp * item.getAmount());
+				mage.addSkillPoints(amount);
+				return true;
+			}
+		}
+
+		return false;
+	}
 
     public abstract boolean isPlayer();
     public abstract Player getPlayer();

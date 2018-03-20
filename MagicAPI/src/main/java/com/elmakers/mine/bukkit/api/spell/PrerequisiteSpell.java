@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.api.spell;
 
-import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,15 +39,15 @@ public class PrerequisiteSpell {
                 '}';
     }
 
-    public static Collection<PrerequisiteSpell> getMissingRequirements(Wand wand, SpellTemplate spell) {
+    public static Collection<PrerequisiteSpell> getMissingRequirements(CasterProperties caster, SpellTemplate spell) {
         Collection<PrerequisiteSpell> missingRequirements = new ArrayList<>(spell.getPrerequisiteSpells());
-        if (wand == null) {
+        if (caster == null) {
             return missingRequirements;
         }
         Iterator<PrerequisiteSpell> it = missingRequirements.iterator();
         while (it.hasNext()) {
             PrerequisiteSpell prereq = it.next();
-            Spell mageSpell = wand.getSpell(prereq.getSpellKey().getKey());
+            Spell mageSpell = caster.getSpell(prereq.getSpellKey().getKey());
             if (isSpellSatisfyingPrerequisite(mageSpell, prereq)) {
                 it.remove();
             }
@@ -55,15 +55,15 @@ public class PrerequisiteSpell {
         return missingRequirements;
     }
 
-    public static boolean hasPrerequisites(Wand wand, SpellTemplate spell) {
+    public static boolean hasPrerequisites(CasterProperties caster, SpellTemplate spell) {
         if (spell == null) {
             return true;
         }
-        if (wand == null) {
+        if (caster == null) {
             return false;
         }
         for (PrerequisiteSpell prereq : spell.getPrerequisiteSpells()) {
-            Spell mageSpell = wand.getSpell(prereq.getSpellKey().getKey());
+            Spell mageSpell = caster.getSpell(prereq.getSpellKey().getKey());
             if (!isSpellSatisfyingPrerequisite(mageSpell, prereq)) {
                 return false;
             }

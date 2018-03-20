@@ -2,15 +2,16 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseShopAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -80,8 +81,7 @@ public class SpellShopAction extends BaseShopAction
         allowLocked = parameters.getBoolean("allow_locked", false);
         requiresCastCounts = parameters.getBoolean("upgrade_requires_casts", false);
         if (!castsSpells) {
-            requireWand = true;
-            applyToWand = true;
+            applyToCaster = true;
         }
     }
 
@@ -89,21 +89,24 @@ public class SpellShopAction extends BaseShopAction
     public List<ShopItem> getItems(CastContext context) {
         Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
+        CasterProperties caster = getCaster(context);
 
-        // Check for auto upgrade, if the wand can no longer progress on its current path and is
-        // eligible for an upgrade, we will upgrade it and skip showing the spell shop so the player
+        // Check for auto upgrade, if the player can no longer progress on their current path and is
+        // eligible for an upgrade, we will upgrade them and skip showing the spell shop so the player
         // can see their upgrade rewards.
         boolean canProgress = false;
-        if (wand != null && autoUpgrade) {
-            canProgress = wand.canProgress();
+
+        // TODO: Make this work on CasterProperties
+        if (autoUpgrade && wand != null) {
+            canProgress = caster.canProgress();
             if (!canProgress && wand.checkUpgrade(true) && wand.upgrade(false)) {
                 return null;
             }
         }
 
-        WandUpgradePath currentPath = wand == null ? null : wand.getPath();
+        ProgressionPath currentPath = caster.getPath();
 
-        if (!castsSpells && !allowLocked && wand.isLocked()) {
+        if (!castsSpells && !allowLocked && wand != null && wand.isLocked()) {
             context.showMessage(context.getMessage("no_path", getDefaultMessage(context, "no_path")).replace("$wand", wand.getName()));
             return null;
         }
@@ -117,7 +120,8 @@ public class SpellShopAction extends BaseShopAction
         else
         {
             if (currentPath == null) {
-                context.showMessage(context.getMessage("no_path", getDefaultMessage(context, "no_path")).replace("$wand", wand.getName()));
+                String name = wand == null ? "" : wand.getName();
+                context.showMessage(context.getMessage("no_path", getDefaultMessage(context, "no_path")).replace("$wand", name));
                 return null;
             }
 
@@ -134,7 +138,7 @@ public class SpellShopAction extends BaseShopAction
                 }
             }
             if (showUpgrades) {
-                Collection<String> spells = wand.getSpells();
+                Collection<String> spells = caster.getSpells();
                 for (String spellKey : spells) {
                     MageSpell spell = mage.getSpell(spellKey);
                     SpellTemplate upgradeSpell = spell.getUpgrade();
@@ -177,6 +181,7 @@ public class SpellShopAction extends BaseShopAction
         // If there is nothing here for us to do, check for upgrades being blocked
         // we will upgrade the wand here, but in theory that should never happen since we
         // checked for upgrades above.
+        // TODO: Make this work for caster...
         mage.sendDebugMessage(ChatColor.GOLD + "Spells to buy: " + shopItems.size(), 2);
         if (wand != null && shopItems.size() == 0) {
             boolean canUpgrade = autoUpgrade && wand.checkUpgrade(false);
@@ -196,15 +201,15 @@ public class SpellShopAction extends BaseShopAction
 	}
 
     private ShopItem createShopItem(String key, Double worth, CastContext context) {
+        CasterProperties caster = getCaster(context);
         Mage mage = context.getMage();
-        Wand wand = mage.getActiveWand();
         MageController controller = context.getController();
-        WandUpgradePath currentPath = wand == null ? null : wand.getPath();
+        ProgressionPath currentPath = caster.getPath();
 
         key = context.parameterize(key);
         String spellKey = key.split(" ", 2)[0];
 
-        if (!castsSpells && wand.hasSpell(spellKey)) {
+        if (!castsSpells && caster.hasSpell(spellKey)) {
             mage.sendDebugMessage(ChatColor.GRAY + " Skipping " + spellKey + ", already have it", 3);
             return null;
         }
@@ -230,12 +235,12 @@ public class SpellShopAction extends BaseShopAction
         ItemStack spellItem = controller.createSpellItem(key, castsSpells);
         if (!castsSpells)
         {
-            Spell mageSpell = wand != null ? wand.getSpell(spellKey) : null;
+            Spell mageSpell = caster.getSpell(spellKey);
             String requiredPathKey = mageSpell != null ? mageSpell.getRequiredUpgradePath() : null;
             Set<String> requiredPathTags = mageSpell != null ? mageSpell.getRequiredUpgradeTags() : null;
             long requiredCastCount = mageSpell != null ? mageSpell.getRequiredUpgradeCasts() : 0;
             long castCount = mageSpell != null ? Math.min(mageSpell.getCastCount(), requiredCastCount) : 0;
-            Collection<PrerequisiteSpell> missingSpells = PrerequisiteSpell.getMissingRequirements(wand, spell);
+            Collection<PrerequisiteSpell> missingSpells = PrerequisiteSpell.getMissingRequirements(caster, spell);
 
             ItemMeta meta = spellItem.getItemMeta();
             List<String> itemLore = meta.getLore();

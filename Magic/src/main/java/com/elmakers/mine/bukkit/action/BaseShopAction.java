@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -56,6 +57,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     protected boolean autoUpgrade = false;
     protected boolean castsSpells = false;
     protected boolean applyToWand = false;
+    protected boolean applyToCaster = false;
     protected boolean isXP = false;
     protected boolean isSkillPoints = false;
     protected boolean sell = false;
@@ -422,6 +424,13 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                         return;
                     }
                 }
+                CasterProperties caster = getCaster(context);
+                if (applyToCaster && !caster.addItem(item)) {
+                    String inapplicable = context.getMessage("not_applicable", getDefaultMessage(context, "not_applicable")).replace("$item", itemName);
+                    context.showMessage(inapplicable);
+                    mage.deactivateGUI();
+                    return;
+                }
 
                 if (castsSpells) {
                     Spell spell = null;
@@ -440,7 +449,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     context.showMessage(costString);
                     return;
                 }
-                if (!castsSpells && !applyToWand) {
+                if (!castsSpells && !applyToWand && !applyToCaster) {
                     ItemStack copy = InventoryUtils.getCopy(item);
                     if (filterBound && com.elmakers.mine.bukkit.wand.Wand.isBound(copy)) {
                         Wand bindWand = controller.getWand(copy);
@@ -843,4 +852,17 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     }
 
     protected abstract List<ShopItem> getItems(CastContext context);
+
+    protected @Nonnull CasterProperties getCaster(CastContext context) {
+        Mage mage = context.getMage();
+        Wand wand = mage.getActiveWand();
+        CasterProperties caster = wand;
+        if (caster == null) {
+            caster = mage.getActiveClass();
+        }
+        if (caster == null) {
+            caster = mage.getProperties();
+        }
+        return caster;
+    }
 }

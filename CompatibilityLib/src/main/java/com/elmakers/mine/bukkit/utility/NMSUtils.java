@@ -1832,7 +1832,11 @@ public class NMSUtils {
         }
     }
 
-    public static Map<String, Object> getMap(ConfigurationSection section)
+    public static Map<String, Object> getMap(ConfigurationSection section) {
+        return getTypedMap(section);
+    }
+
+    public static <T> Map<String, T> getTypedMap(ConfigurationSection section)
     {
         if (section == null) return null;
         if (section instanceof MemorySection)
@@ -1840,7 +1844,7 @@ public class NMSUtils {
             try {
                 Object mapObject = class_MemorySection_mapField.get(section);
                 if (mapObject instanceof Map) {
-                    return (Map<String, Object>)mapObject; 
+                    return (Map<String, T>)mapObject;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -1848,10 +1852,10 @@ public class NMSUtils {
         }
 
         // Do it the slow way
-        Map<String, Object> map = new HashMap<>();
+        Map<String, T> map = new HashMap<>();
         Set<String> keys = section.getKeys(false);
         for (String key : keys) {
-            map.put(key, section.get(key));
+            map.put(key, (T)section.get(key));
         }
         
         return map;

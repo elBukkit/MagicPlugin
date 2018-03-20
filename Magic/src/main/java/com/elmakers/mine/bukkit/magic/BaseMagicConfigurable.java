@@ -328,15 +328,15 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     @SuppressWarnings("unchecked")
-    protected @Nonnull Map<String, Object> getSpellLevels() {
+    protected @Nonnull Map<String, Integer> getSpellLevels() {
         Object existingLevelsRaw = getObject("spell_levels");
         if (existingLevelsRaw == null) return new HashMap<>();
-        Map<String, Object> spellLevels = null;
+        Map<String, Integer> spellLevels = null;
 
         if (existingLevelsRaw instanceof Map) {
-            spellLevels = (Map<String, Object>)existingLevelsRaw;
+            spellLevels = (Map<String, Integer>)existingLevelsRaw;
         } else if (existingLevelsRaw instanceof ConfigurationSection) {
-            spellLevels = NMSUtils.getMap((ConfigurationSection)existingLevelsRaw);
+            spellLevels = NMSUtils.getTypedMap((ConfigurationSection)existingLevelsRaw);
         } else {
             spellLevels = new HashMap<>();
         }
@@ -346,9 +346,9 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
 
     protected boolean upgradeSpellLevel(String spellKey, int level) {
         boolean modified = false;
-        Map<String, Object> spellLevels = getSpellLevels();
-        Object existingLevel = spellLevels.get(spellKey);
-        if (existingLevel == null || !(existingLevel instanceof Integer) || level > (Integer)existingLevel) {
+        Map<String, Integer> spellLevels = getSpellLevels();
+        Integer existingLevel = spellLevels.get(spellKey);
+        if (existingLevel == null || level > existingLevel) {
             modified = true;
             spellLevels.put(spellKey, level);
         }
@@ -364,24 +364,22 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         if (!(value instanceof Map) && !(value instanceof ConfigurationSection)) return false;
         boolean modified = false;
 
-        Map<String, Object> spellLevels = getSpellLevels();
-        Map<String, Object> newLevels;
+        Map<String, Integer> spellLevels = getSpellLevels();
+        Map<String, Integer> newLevels;
         if (value instanceof Map) {
-            newLevels = (Map<String, Object>)value;
+            newLevels = (Map<String, Integer>)value;
         } else {
-            newLevels = NMSUtils.getMap((ConfigurationSection)value);
+            newLevels = NMSUtils.getTypedMap((ConfigurationSection)value);
         }
 
-        for (Map.Entry<String, ? extends Object> entry : newLevels.entrySet()) {
-            if (entry.getValue() instanceof Integer) {
-                Integer newLevel = (Integer)entry.getValue();
-                String key = entry.getKey();
-                Object existingLevel = spellLevels.get(key);
-                if (existingLevel == null || !(existingLevel instanceof Integer) || newLevel > (Integer)existingLevel) {
-                    modified = true;
-                    sendDebug("Upgraded spell level for " + key + " from " + existingLevel + " to " + newLevel);
-                    spellLevels.put(key, newLevel);
-                }
+        for (Map.Entry<String, Integer> entry : newLevels.entrySet()) {
+            Integer newLevel = entry.getValue();
+            String key = entry.getKey();
+            Object existingLevel = spellLevels.get(key);
+            if (existingLevel == null || newLevel > (Integer)existingLevel) {
+                modified = true;
+                sendDebug("Upgraded spell level for " + key + " from " + existingLevel + " to " + newLevel);
+                spellLevels.put(key, newLevel);
             }
         }
         if (modified) {

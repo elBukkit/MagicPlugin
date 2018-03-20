@@ -1326,7 +1326,7 @@ spells:
         description: "Spend Spell Points to learn new spells.\nWhen you have learned all the required spells on your current path, you will rank up to the next path!"
         cost_lore: "Costs: $cost"
         no_items: There are no spells for you to buy here
-        no_path: You may not learn with that $wand.
+        no_path: You may not learn here.
         no_upgrade: There is nothing more for you here.
         no_required_path: You must be at least $path!
         no_path_end: You must be ready to advance from $path!
