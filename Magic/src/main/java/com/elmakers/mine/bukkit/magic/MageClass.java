@@ -95,8 +95,18 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         Set<String> ownKeys = getConfiguration().getKeys(false);
         overriddenProperties.addAll(ownKeys);
         sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration for (" + ChatColor.DARK_GREEN + getKey() + ChatColor.GREEN + "):");
-        template.describe(sender, ignoreProperties, overriddenProperties);
-        overriddenProperties.addAll(template.getConfiguration().getKeys(false));
+
+        Set<String> overriddenTemplateProperties = new HashSet<>(overriddenProperties);
+        for (String key : template.getConfiguration().getKeys(false)) {
+            MagicPropertyType propertyRoute = propertyRoutes.get(key);
+            if (propertyRoute == null || propertyRoute == type) {
+                overriddenProperties.add(key);
+            } else {
+                overriddenTemplateProperties.add(key);
+            }
+        }
+
+        template.describe(sender, ignoreProperties, overriddenTemplateProperties);
 
         MageClass parent = getParent();
         if (parent != null) {
@@ -105,14 +115,21 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         }
     }
 
-    public ConfigurationSection getEffectiveConfiguration() {
+    public ConfigurationSection getEffectiveConfiguration(boolean includeMage) {
         ConfigurationSection effectiveConfiguration = ConfigurationUtils.cloneConfiguration(getConfiguration());
-        ConfigurationSection templateConfiguration = template.getConfiguration();
+        ConfigurationSection templateConfiguration = ConfigurationUtils.cloneConfiguration(template.getConfiguration());
+        for (String key : templateConfiguration.getKeys(false)) {
+            MagicPropertyType propertyRoute = propertyRoutes.get(key);
+            if (propertyRoute != null && propertyRoute != type) {
+                templateConfiguration.set(key, null);
+            }
+        }
+
         ConfigurationUtils.overlayConfigurations(effectiveConfiguration, templateConfiguration);
         if (parent != null) {
-            ConfigurationSection parentConfiguration = parent.getEffectiveConfiguration();
+            ConfigurationSection parentConfiguration = parent.getEffectiveConfiguration(includeMage);
             ConfigurationUtils.overlayConfigurations(effectiveConfiguration, parentConfiguration);
-        } else {
+        } else if (includeMage) {
             // If we have a parent, it has already incorporated Mage data
             ConfigurationSection mageConfiguration = mageProperties.getConfiguration();
             ConfigurationUtils.overlayConfigurations(effectiveConfiguration, mageConfiguration);

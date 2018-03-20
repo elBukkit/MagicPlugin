@@ -23,7 +23,7 @@ public class MageProperties extends CasterProperties {
             if (overriddenProperties == null) {
                 overriddenProperties = new HashSet<>();
             }
-            overriddenProperties.addAll(activeClass.getEffectiveConfiguration().getKeys(false));
+            overriddenProperties.addAll(activeClass.getEffectiveConfiguration(false).getKeys(false));
         }
 
         super.describe(sender, ignoreProperties, overriddenProperties);
