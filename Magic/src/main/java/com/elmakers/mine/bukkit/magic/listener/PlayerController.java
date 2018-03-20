@@ -68,7 +68,6 @@ public class PlayerController implements Listener {
     private MaterialAndData enchantBlockMaterial;
     private String enchantClickSpell = "spellshop";
     private String enchantSneakClickSpell = "upgrades";
-    private boolean openOnSneakDrop;
     private boolean cancelInteractOnLeftClick = true;
     private boolean cancelInteractOnRightClick = false;
     private boolean allowOffhandCasting = true;
@@ -85,7 +84,6 @@ public class PlayerController implements Listener {
         enchantBlockMaterial = new MaterialAndData(properties.getString("enchant_block", "enchantment_table"));
         enchantClickSpell = properties.getString("enchant_click");
         enchantSneakClickSpell = properties.getString("enchant_sneak_click");
-        openOnSneakDrop = properties.getBoolean("open_wand_on_sneak_drop");
         cancelInteractOnLeftClick = properties.getBoolean("cancel_interact_on_left_click", true);
         cancelInteractOnRightClick = properties.getBoolean("cancel_interact_on_right_click", false);
         allowOffhandCasting = properties.getBoolean("allow_offhand_casting", true);
@@ -282,39 +280,7 @@ public class PlayerController implements Listener {
                     controller.removeItemFromWand(activeWand, droppedItem);
                 }
             }
-        } else if (openOnSneakDrop && !player.isSneaking() && event.getPlayer().getItemOnCursor().getType() == Material.AIR) {
-            PlayerInventory inventory = player.getInventory();
-
-            // Find a wand on the hotbar to open
-            for (int i = 0; i < 9; i++) {
-                ItemStack item = inventory.getItem(i);
-
-                if (item != null && Wand.isWand(item)) {
-                    final int previouslySelected = inventory
-                            .getHeldItemSlot();
-                    inventory.setHeldItemSlot(i);
-
-                    final Wand newWand = mage.checkWand();
-
-                    // Restore if not activated
-                    if (null == newWand) {
-                        inventory.setHeldItemSlot(previouslySelected);
-                    } else {
-                        // Using a runnable here as workaround for bukkit bug
-                        // that uses inventory.addItem when drop event is cancelled
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                newWand.openInventory();
-                                newWand.setHeldSlot(previouslySelected);
-                            }
-                        }.runTaskLater(mage.getController().getPlugin(), 0);
-                        break;
-                    }
-                }
-            }
-            cancelEvent = true;
-        } 
+        }
         
         if (!cancelEvent && Wand.Undroppable && Wand.isWand(droppedItem) && !player.hasPermission("Magic.wand.override_drop")) {
             Wand wand = controller.getWand(droppedItem);
