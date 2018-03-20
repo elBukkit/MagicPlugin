@@ -10,6 +10,7 @@ boon:
     upgrade_required_casts: 40
     quick_cast: true
     toggle: undo
+    disable_mana_regeneration: true
     actions:
         cast:
         - class: PotionEffect

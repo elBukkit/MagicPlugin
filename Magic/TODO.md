@@ -4,6 +4,8 @@
 
  - Wand organizer doesn't work right anymore- changes hotbar, doesn't apply to wand directly?
    https://youtu.be/98l2fr0FIhE
+ - Air scooter doesn't consume active mana
+ - Move attributes to CasterProperties, merge in Mage.
 
  - Auto show skull icons for players that haven't got the RP? (optionally)
  - Undoing a wolf house leaves diodes and redstone behind

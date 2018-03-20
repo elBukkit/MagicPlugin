@@ -3707,5 +3707,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public String getLastDamageType() {
         return lastDamageType;
     }
+
+    public boolean isManaRegenerationDisabled() {
+        for (MageSpell spell : activeSpells) {
+            if (spell.disableManaRegenerationWhenActive()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 

@@ -171,7 +171,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     public boolean tickMana() {
         boolean updated = false;
-        if (usesMana() && hasOwnMana()) {
+        if (usesMana() && hasOwnMana() && !getMage().isManaRegenerationDisabled()) {
             long now = System.currentTimeMillis();
             long lastManaRegeneration = getLastManaRegeneration();
             int effectiveManaRegeneration = getEffectiveManaRegeneration();

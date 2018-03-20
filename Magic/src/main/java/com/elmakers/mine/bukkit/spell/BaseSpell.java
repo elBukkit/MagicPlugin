@@ -119,7 +119,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public final static String[] BOOLEAN_PARAMETERS = {
         "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_protection",
-        "bypass", "bypass_build", "bypass_break", "bypass_pvp", "target_npc", "ignore_blocks", "target_self"
+        "bypass", "bypass_build", "bypass_break", "bypass_pvp", "target_npc", "ignore_blocks", "target_self",
+        "disable_mana_regeneration"
     };
 
     protected final static Set<String> booleanParameterMap = new HashSet<>(Arrays.asList(BOOLEAN_PARAMETERS));
@@ -205,24 +206,25 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassBuildRestriction    = false;
     protected boolean bypassBreakRestriction    = false;
     protected boolean bypassProtection          = false;
-    protected boolean bypassConfusion             = true;
-    protected boolean bypassWeakness              = true;
-    protected boolean bypassPermissions           = false;
-    protected boolean bypassRegionPermission      = false;
-    protected boolean castOnNoTarget              = true;
-    protected boolean bypassDeactivate            = false;
-    protected boolean bypassAll                   = false;
-    protected boolean quiet                       = false;
-    protected boolean loud                        = false;
-    protected ToggleType toggle                   = ToggleType.NONE;
-    protected boolean messageTargets              = true;
-    protected boolean targetSelf                  = false;
+    protected boolean bypassConfusion           = true;
+    protected boolean bypassWeakness            = true;
+    protected boolean bypassPermissions         = false;
+    protected boolean bypassRegionPermission    = false;
+    protected boolean castOnNoTarget            = true;
+    protected boolean bypassDeactivate          = false;
+    protected boolean bypassAll                 = false;
+    protected boolean quiet                     = false;
+    protected boolean loud                      = false;
+    protected ToggleType toggle                 = ToggleType.NONE;
+    protected boolean disableManaRegeneration   = false;
+    protected boolean messageTargets            = true;
+    protected boolean targetSelf                = false;
     protected boolean showUndoable              = true;
     protected boolean cancellable               = true;
     protected boolean quickCast                 = false;
     protected boolean cancelEffects = false;
     protected boolean commandBlockAllowed       = true;
-    protected int                               verticalSearchDistance  = 8;
+    protected int verticalSearchDistance        = 8;
 
     private boolean backfired                   = false;
     private boolean hidden                      = false;
@@ -934,6 +936,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         showUndoable = node.getBoolean("show_undoable", true);
         cancellable = node.getBoolean("cancellable", true);
         cancelEffects = node.getBoolean("cancel_effects", false);
+        disableManaRegeneration = node.getBoolean("disable_mana_regeneration", false);
 
         String toggleString = node.getString("toggle", "NONE");
         try {
@@ -2884,5 +2887,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public void setMageClass(MageClass mageClass) {
         this.mageClass = mageClass;
+    }
+
+    @Override
+    public boolean disableManaRegenerationWhenActive() {
+        return disableManaRegeneration;
     }
 }

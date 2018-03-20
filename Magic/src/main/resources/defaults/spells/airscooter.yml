@@ -8,6 +8,7 @@ airscooter:
     quick_cast: true
     cancel_effects: true
     toggle: cancel
+    disable_mana_regeneration: true
     actions:
       cast:
       - class: MountArmorStand

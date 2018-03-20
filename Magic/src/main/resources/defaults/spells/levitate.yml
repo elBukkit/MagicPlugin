@@ -11,6 +11,7 @@ levitate:
     worth: 5000
     show_undoable: false
     quick_cast: true
+    disable_mana_regeneration: true
     effects:
         cast:
            - class: EffectSingle
