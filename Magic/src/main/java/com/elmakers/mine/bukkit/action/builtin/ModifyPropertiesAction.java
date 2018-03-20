@@ -126,7 +126,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
             Object newValue = property.value;
             if ((originalValue == null || originalValue instanceof Number) && property.value instanceof String) {
                 EquationTransform transform = EquationStore.getInstance().getTransform((String)property.value);
-                originalValue = NumberConversions.toDouble(originalValue);
+                originalValue = originalValue == null ? null : NumberConversions.toDouble(originalValue);
                 double defaultValue = property.defaultValue == null ? 0 : property.defaultValue;
                 if (transform.isValid()) {
                     if (originalValue == null) {
