@@ -4176,25 +4176,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		if (!controller.hasWandPermission(player, this)) return false;
 
-		if (mageClassKey != null && !mageClassKey.isEmpty()) {
-			MageClass mageClass = mage.getClass(mageClassKey);
-			if (mageClass == null) {
-			    Integer lastSlot = mage.getLastActivatedSlot();
-                if (!offhand && (lastSlot == null || lastSlot != player.getInventory().getHeldItemSlot())) {
-                    mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
-                    mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", getName()));
-                }
-				return false;
-			}
-			setMageClass(mageClass);
-			if (!offhand) {
-				mage.setActiveClass(mageClassKey);
-			}
-			// This double-load here is not really ideal.
-			// Seems hard to prevent without merging Wand construction and activation, though.
-			loadProperties();
-		}
-
 		mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
 
 		InventoryView openInventory = player.getOpenInventory();
@@ -4237,6 +4218,25 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         this.mage = mage;
         this.isInOffhand = offhand;
         this.heldSlot = offhand ? OFFHAND_SLOT : player.getInventory().getHeldItemSlot();
+
+		if (mageClassKey != null && !mageClassKey.isEmpty()) {
+			MageClass mageClass = mage.getClass(mageClassKey);
+			if (mageClass == null) {
+			    Integer lastSlot = mage.getLastActivatedSlot();
+                if (!offhand && (lastSlot == null || lastSlot != player.getInventory().getHeldItemSlot())) {
+                    mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
+                    mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", getName()));
+                }
+				return false;
+			}
+			setMageClass(mageClass);
+			if (!offhand) {
+				mage.setActiveClass(mageClassKey);
+			}
+			// This double-load here is not really ideal.
+			// Seems hard to prevent without merging Wand construction and activation, though.
+			loadProperties();
+		}
 
 		// Check for replacement template
 		String replacementTemplate = getString("replace_on_activate", "");
