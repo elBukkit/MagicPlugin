@@ -525,16 +525,16 @@ public class InventoryUtils extends NMSUtils
         if (property instanceof ConfigurationSection) {
             ConfigurationSection section = (ConfigurationSection)property;
             Set<String> keys = section.getKeys(false);
-            String full = "{";
+            StringBuilder full = new StringBuilder("{");
             boolean first = true;
             for (String key : keys) {
                 if (!first) {
-                    full += ",";
+                    full.append(',');
                 }
                 first = false;
-                full += key + ":" + describeProperty(section.get(key));
+                full.append(key).append(':').append(describeProperty(section.get(key)));
             }
-            propertyString = full + "}";
+            propertyString = full.append('}').toString();
         } else {
             propertyString = property.toString();
         }
