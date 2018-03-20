@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
@@ -32,9 +32,8 @@ public class DropSpell extends BlockSpell
 			return SpellResult.NO_TARGET;
 		}
 
-		Set<Material> dropMaterials = controller.getMaterialSet(parameters.getString("drop"));
-		
-		if (!dropMaterials.contains(target.getType()))
+		MaterialSet dropMaterials = controller.getMaterialSetManager().fromConfigEmpty(parameters.getString("drop"));
+		if (!dropMaterials.testBlock(target))
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -60,12 +59,12 @@ public class DropSpell extends BlockSpell
 		return SpellResult.CAST;
 	}
 
-	protected void drop(Block block, Set<Material> dropTypes, Collection<ItemStack> drops, int maxRecursion)
+	protected void drop(Block block, MaterialSet dropTypes, Collection<ItemStack> drops, int maxRecursion)
 	{		
 		drop(block, dropTypes, drops, maxRecursion, 0);
 	}
 
-	protected void drop(Block block, Set<Material> dropTypes, Collection<ItemStack> drops, int maxRecursion, int rDepth)
+	protected void drop(Block block, MaterialSet dropTypes, Collection<ItemStack> drops, int maxRecursion, int rDepth)
 	{
 		registerForUndo(block);
 		if (dropCount < 0 || drops.size() < dropCount) {
@@ -112,9 +111,9 @@ public class DropSpell extends BlockSpell
 		}
 	}
 
-	protected void tryDrop(Block target, Set<Material> dropTypes, Collection<ItemStack> drops, int maxRecursion, int rDepth)
+	protected void tryDrop(Block target, MaterialSet dropTypes, Collection<ItemStack> drops, int maxRecursion, int rDepth)
 	{
-		if (!dropTypes.contains(target.getType()) || contains(target))
+		if (!dropTypes.testBlock(target) || contains(target))
 		{
 			return;
 		}

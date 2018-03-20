@@ -3,15 +3,16 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.google.common.collect.Iterables;
+
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Random;
-import java.util.Set;
 
 public class PlayRecordAction extends BaseSpellAction
 {
@@ -24,21 +25,26 @@ public class PlayRecordAction extends BaseSpellAction
         recordList = parameters.getString("records", "records");
     }
 	
-	@SuppressWarnings("deprecation")
 	@Override
     public SpellResult perform(CastContext context) {
-		Location location = context.getTargetLocation();
-        Set<Material> recordSet = context.getMaterialSet(recordList);
-        if (recordSet == null || recordSet.size() == 0) {
+        Collection<Material> records = context.getController()
+                .getMaterialSetManager()
+                .fromConfigEmpty(recordList)
+                .getMaterials();
+        if (records.isEmpty()) {
             return SpellResult.FAIL;
         }
-        List<Material> records = new ArrayList<>(recordSet);
-        Random random = context.getRandom();
-        Material record = records.get(random.nextInt(records.size()));
-		location.getWorld().playEffect(location, Effect.RECORD_PLAY, record.getId());
 
-		return SpellResult.CAST;
-	}
+
+        Random random = context.getRandom();
+        Material record = Iterables.get(records, random.nextInt(records.size()));
+
+        Location location = context.getTargetLocation();
+        location.getWorld().playEffect(location, Effect.RECORD_PLAY,
+                DeprecatedUtils.getId(record));
+
+        return SpellResult.CAST;
+    }
 
     @Override
     public boolean requiresTarget() {

@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -370,8 +371,8 @@ public class EntityController implements Listener {
         BlockData undoData = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
         boolean isBreaking = block.getType() != Material.AIR;
         if (!isBreaking) {
-            Set<Material> doubleAttachables = controller.getMaterialSet("attachable_double");
-            isBreaking = doubleAttachables.contains(spawnedItem.getType());
+            MaterialSet doubleAttachables = controller.getMaterialSetManager().getMaterialSetEmpty("attachable_double");
+            isBreaking = doubleAttachables.testItem(spawnedItem);
         }
         if (undoData != null && isBreaking)
         {

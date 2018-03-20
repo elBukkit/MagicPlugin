@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+
 import org.bukkit.Chunk;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;

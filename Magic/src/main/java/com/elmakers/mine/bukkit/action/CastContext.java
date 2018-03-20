@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -9,15 +10,16 @@ import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.magic.MaterialSets;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
@@ -33,7 +35,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -45,6 +46,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
+
+import javax.annotation.Nullable;
 
 public class CastContext implements com.elmakers.mine.bukkit.api.action.CastContext {
     protected static Random random;
@@ -650,9 +653,14 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public boolean isOkToStandIn(Material material)
-    {
-        return baseSpell != null ? baseSpell.isOkToStandIn(material) : true;
+    @Deprecated
+    public boolean isOkToStandIn(Material material) {
+        return baseSpell == null || baseSpell.isOkToStandIn(material);
+    }
+
+    @Override
+    public boolean isOkToStandIn(Block block) {
+        return baseSpell == null || baseSpell.isOkToStandIn(block);
     }
 
     @Override
@@ -661,16 +669,34 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return (mat == Material.WATER || mat == Material.STATIONARY_WATER);
     }
 
+    // This is primarily deprecated for API consistency
+    // And possibly doing this via the material system in the future
     @Override
-    public boolean isOkToStandOn(Material material)
-    {
-        return (material != Material.AIR && material != Material.LAVA && material != Material.STATIONARY_LAVA);
+    @Deprecated
+    public boolean isOkToStandOn(Material material) {
+        return isOkToStandOn0(material);
     }
 
     @Override
-    public boolean allowPassThrough(Material material)
-    {
-        return baseSpell != null ? baseSpell.allowPassThrough(material) : true;
+    public boolean isOkToStandOn(Block block) {
+        return isOkToStandOn0(block.getType());
+    }
+
+    private boolean isOkToStandOn0(Material material) {
+        return material != Material.AIR &&
+                material != Material.LAVA&&
+                material != Material.STATIONARY_LAVA;
+    }
+
+    @Override
+    @Deprecated
+    public boolean allowPassThrough(Material material) {
+        return baseSpell == null || baseSpell.allowPassThrough(material);
+    }
+
+    @Override
+    public boolean allowPassThrough(Block block) {
+        return baseSpell == null || baseSpell.allowPassThrough(block);
     }
 
     @Override
@@ -759,23 +785,41 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public boolean isTransparent(Material material)
-    {
-        if (targetingSpell != null)
-        {
+    @Deprecated
+    public boolean isTransparent(Material material) {
+        if (targetingSpell != null) {
             return targetingSpell.isTransparent(material);
         }
+
         return material.isTransparent();
     }
 
     @Override
-    public boolean isPassthrough(Material material)
-    {
-        if (baseSpell != null)
-        {
+    public boolean isTransparent(Block block) {
+        if (targetingSpell != null) {
+            return targetingSpell.isTransparent(block);
+        }
+
+        return block.getType().isTransparent();
+    }
+
+    @Override
+    @Deprecated
+    public boolean isPassthrough(Material material) {
+        if (baseSpell != null) {
             return baseSpell.isPassthrough(material);
         }
+
         return material.isTransparent();
+    }
+
+    @Override
+    public boolean isPassthrough(Block block) {
+        if (baseSpell != null) {
+            return baseSpell.isPassthrough(block);
+        }
+
+        return block.getType().isTransparent();
     }
 
     @Override
@@ -1119,8 +1163,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    @Deprecated
     public Set<Material> getMaterialSet(String key) {
-        return getController().getMaterialSet(key);
+        return MaterialSets.toLegacy(
+                getController().getMaterialSetManager().fromConfig(key));
     }
 
     @Override
@@ -1176,7 +1222,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public boolean isReflective(Block block) {
         if (block == null) return false;
-        if (targetingSpell != null && targetingSpell.isReflective(block.getType())) {
+        if (targetingSpell != null && targetingSpell.isReflective(block)) {
             return true;
         }
         return com.elmakers.mine.bukkit.block.UndoList.getRegistry().isReflective(block);
@@ -1186,7 +1232,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public Double getReflective(Block block) {
         if (block == null) return null;
 
-        if (targetingSpell != null && targetingSpell.isReflective(block.getType())) {
+        if (targetingSpell != null && targetingSpell.isReflective(block)) {
             return 1.0;
         }
 

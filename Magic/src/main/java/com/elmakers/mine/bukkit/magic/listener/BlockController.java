@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -35,7 +36,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class BlockController implements Listener {
     private final MagicController controller;
@@ -194,17 +194,18 @@ public class BlockController implements Listener {
         if (undoList != null && undoList.isScheduled())
         {
             // Avoid dropping broken items!
-            Set<Material> doubles = com.elmakers.mine.bukkit.block.UndoList.attachablesDouble;
-            if (doubles != null && doubles.contains(targetBlock.getType()))
+            MaterialSet doubles = com.elmakers.mine.bukkit.block.UndoList.attachablesDouble;
+            if (doubles.testBlock(targetBlock))
             {
                 Block upBlock = targetBlock.getRelative(BlockFace.UP);
-                while (doubles.contains(upBlock.getType())) {
+                while (doubles.testBlock(upBlock)) {
                     undoList.add(upBlock);
                     DeprecatedUtils.setTypeIdAndData(upBlock, Material.AIR.ordinal(), (byte) 0, false);
                     upBlock = upBlock.getRelative(BlockFace.UP);
                 }
+
                 Block downBlock = targetBlock.getRelative(BlockFace.DOWN);
-                while (doubles.contains(downBlock.getType())) {
+                while (doubles.testBlock(downBlock)) {
                     undoList.add(downBlock);
                     DeprecatedUtils.setTypeIdAndData(downBlock, Material.AIR.ordinal(), (byte) 0, false);
                     downBlock = downBlock.getRelative(BlockFace.DOWN);
