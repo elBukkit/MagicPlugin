@@ -135,7 +135,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.targetLocation = copy.getTargetLocation();
         this.undoList = copy.getUndoList();
         this.targetName = copy.getTargetName();
-        this.brush = copy.getBrush();
         this.targetMessagesSent = copy.getTargetMessagesSent();
         this.currentEffects = copy.getCurrentEffects();
         this.result = copy.getResult();
@@ -154,6 +153,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             this.direction = ((CastContext)copy).direction;
             this.messageParameters = ((CastContext)copy).messageParameters;
             this.targetCaster = ((CastContext)copy).targetCaster;
+            this.brush = ((CastContext)copy).brush;
         }
         else
         {
@@ -611,8 +611,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 }
                 if (sourceBlock != null) {
                     player.setMaterial(sourceBlock);
-                } else if (brush != null) {
-                    player.setMaterial(brush);
                 }
                 player.start(source, sourceEntity, target, targetEntity, targeted);
             }
