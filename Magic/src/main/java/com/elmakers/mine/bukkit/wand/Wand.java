@@ -2197,6 +2197,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (spMultiplier > 1) {
 			ConfigurationUtils.addIfNotEmpty(getPercentageString("sp_multiplier", spMultiplier - 1), lore);
 		}
+		ConfigurationSection attributes = getConfigurationSection("attributes");
+        if (attributes != null) {
+            boolean stack = getBoolean("stack");
+            String template = stack ? getMessage("attributes_stack") :  getMessage("attributes");
+            if (!template.isEmpty()) {
+                Set<String> keys = attributes.getKeys(false);
+                for (String key : keys) {
+                    String label = controller.getMessages().get("attributes." + key + ".name", key);
+
+                    // We are only display attributes as integers for now
+                    label = template.replace("$attribute", label).replace("$value", Integer.toString(attributes.getInt(key)));
+                	lore.add(label);
+                }
+            }
+        }
 	}
 	
 	public String getLevelString(String templateName, float amount)

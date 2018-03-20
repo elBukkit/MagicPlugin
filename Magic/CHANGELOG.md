@@ -6,14 +6,15 @@
    - Attributes can be defined in attributes.yml, none exist in the default configuration.
      See: https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/examples/rpg/attributes.yml
    - Add /mage attribute command for listing and setting attributes
+   - Attributes can be added to wands, and stack player attributes (or increase them to a limit)
+   - The wand property "attributes" has been renamed to "item_attributes"
+   - The mob property "attributes" has been renamed to "entity_attributes"
  - Add "Magic.commands.mage.others" to allow someone to use /mage commands on other players
  - Add /mage switch command to switch classes for a player (combo of lock, unlock and activate)
  - The Magic.wand.override_drop permission changed to Magic.wand.override_stash
  - Added "unstashable" and "unmoveable" wand properties
  - Fix active costs for Air Scooter, also Levitate/Air Scooter and Boon will prevent mana regen while active.
  - Fix wand organizing and alphabetizing
- - The wand property "attributes" has been renamed to "item_attributes"
- - The mob property "attributes" has been renamed to "entity_attributes"
 
 ## 7.3.1
 
