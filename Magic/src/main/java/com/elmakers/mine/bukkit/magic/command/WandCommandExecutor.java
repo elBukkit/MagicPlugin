@@ -876,8 +876,13 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		if (wand == null) {
 			return true;
 		}
+		boolean result = onConfigure("wand", wand, sender, player, parameters, safe);
+		Mage mage = api.getMage(player);
 		wand.deactivate();
-		return onConfigure("wand", wand, sender, player, parameters, safe);
+		if (mage != null) {
+			mage.checkWand();
+		}
+		return result;
 	}
 	
 	protected Wand checkWand(CommandSender sender, Player player)

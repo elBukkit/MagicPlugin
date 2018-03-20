@@ -84,7 +84,6 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
                 mage.sendMessage(api.getMessages().get(command + ".not_reconfigured"));
             }
         }
-        mage.checkWand();
         if (sender != player) {
             if (modified) {
                 sender.sendMessage(api.getMessages().getParameterized(command + ".player_reconfigured", "$name", player.getName()));
