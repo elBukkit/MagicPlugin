@@ -11,6 +11,6 @@ magicsword:
     active_spell: missile
     protection:
       physical: 0.4
-    attributes:
+    item_attributes:
       GENERIC_ATTACK_DAMAGE: 6
 
