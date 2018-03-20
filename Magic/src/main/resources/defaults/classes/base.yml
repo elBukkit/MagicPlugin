@@ -10,5 +10,8 @@ base:
     brushes: class
     path: subclass
     hotbar_count: subclass
-    attributes: mage
+
+    # Attributes are primarily stored on the mage
+    # But attributes can also be set on wands to provide attribute buffs.
+    attributes: mage,wand
 

@@ -38,12 +38,24 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         if (routeConfig != null) {
             Set<String> keys = routeConfig.getKeys(false);
             for (String key : keys) {
-                String propertyTypeName = routeConfig.getString(key);
+                String routeList = routeConfig.getString(key);
+                String[] routes = StringUtils.split(routeList, ",");
                 MagicPropertyType propertyType = null;
-                try {
-                    propertyType = MagicPropertyType.valueOf(propertyTypeName.toUpperCase());
-                } catch (Exception ex) {
-                    controller.getLogger().info("Invalid property type: " + propertyTypeName);
+                for (String route : routes) {
+                    try {
+                        MagicPropertyType routeType = MagicPropertyType.valueOf(route.toUpperCase());
+                        if (routeType == type) {
+                            propertyType = routeType;
+                            break;
+                        }
+                        if (propertyType == null) {
+                            propertyType = routeType;
+                        }
+                    } catch (Exception ex) {
+                        controller.getLogger().info("Invalid property type: " + route);
+                    }
+                }
+                if (propertyType == null) {
                     continue;
                 }
                 propertyRoutes.put(key, propertyType);
