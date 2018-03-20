@@ -7,6 +7,7 @@ airscooter:
     show_undoable: false
     quick_cast: true
     cancel_effects: true
+    toggle: cancel
     actions:
       cast:
       - class: MountArmorStand
