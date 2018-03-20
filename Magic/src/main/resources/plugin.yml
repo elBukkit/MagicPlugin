@@ -394,6 +394,7 @@ commands:
         /mage activate    Set or clear a player's active class
         /mage unlock      Unlock a class for a player
         /mage lock        Lock a class for a player
+        /mage switch      Switch classes for a player
         /mage upgrade     Upgrade properties of a mage
         /mage setdata     Modify Mage data
         /mage getdata     Describe Mage data
@@ -491,6 +492,14 @@ commands:
 
         /mage lock <Player> <Class>
         /mage lock NathanWolf jedi
+        /mage lock NathanWolf waterbender
+  "mage switch":
+    description: Lock the player's active class, unlock and activate a new one
+    permission: Magic.commands.mage.switch
+    usage: |
+
+        /mage switch <Player> <Class>
+        /mage switch NathanWolf jedi
         /mage lock NathanWolf waterbender
   "mage reset":
     description: Completely reset player data
@@ -1209,12 +1218,14 @@ permissions:
     - Magic.commands.mage.attribute
     - Magic.commands.mage.unlock
     - Magic.commands.mage.lock
+    - Magic.commands.mage.switch
     - Magic.commands.mage.activate
     - Magic.commands.mage.check
     - Magic.commands.mage.debug
     - Magic.commands.mage.reset
     - Magic.commands.mage.unbind
     - Magic.commands.mage.levelspells
+    - Magic.commands.mage.others
   Magic.commands.mage.configure:
     description: Player may configure Mage properties
     type: boolean
@@ -1247,6 +1258,10 @@ permissions:
     description: Player may unlock mage classes
     type: boolean
     default: op
+  Magic.commands.mage.switch:
+    description: Player may switch mage classes
+    type: boolean
+    default: op
   Magic.commands.mage.lock:
     description: Player may lock mage classes
     type: boolean
@@ -1277,6 +1292,10 @@ permissions:
     default: op
   Magic.commands.mage.levelspells:
     description: Player may upgrade all of a player's spells
+    type: boolean
+    default: op
+  Magic.commands.mage.others:
+    description: Player may use the mage command on other players
     type: boolean
     default: op
   Magic.commands.mskills:

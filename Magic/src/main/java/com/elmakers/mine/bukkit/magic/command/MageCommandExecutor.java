@@ -55,7 +55,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 		int argStart = 1;
 
 		if (sender instanceof Player) {
-			if (args.length > 1)
+			if (args.length > 1 && sender.hasPermission("Magic.commands.mage.others"))
 			{
 				player = DeprecatedUtils.getPlayer(args[1]);
 			}
@@ -175,7 +175,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "lock");
             addIfPermissible(sender, options, "Magic.commands.mage.", "levelspells");
             addIfPermissible(sender, options, "Magic.commands.mage.", "attribute");
-		} else if (args.length == 2) {
+		} else if (args.length == 2 && sender.hasPermission("Magic.commands.mage.others")) {
 			options.addAll(api.getPlayerNames());
 		}
 

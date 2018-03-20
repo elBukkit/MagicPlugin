@@ -6,6 +6,7 @@
    - Attributes can be defined in attributes.yml, none exist in the default configuration.
      See: https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/examples/rpg/attributes.yml
    - Add /mage attribute command for listing and setting attributes
+ - Add "Magic.commands.mage.others" to allow someone to use /mage commands on other players
 
 ## 7.3.1
 
