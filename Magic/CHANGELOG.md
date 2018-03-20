@@ -8,6 +8,8 @@
    - Add /mage attribute command for listing and setting attributes
  - Add "Magic.commands.mage.others" to allow someone to use /mage commands on other players
  - Add /mage switch command to switch classes for a player (combo of lock, unlock and activate)
+ - The Magic.wand.override_drop permission changed to Magic.wand.override_stash
+ - Added "unstashable" and "unmoveable" wand properties
 
 ## 7.3.1
 

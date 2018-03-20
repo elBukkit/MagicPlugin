@@ -242,7 +242,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public static boolean LiveHotbarSkills = false;
     public static boolean LiveHotbarCooldown = true;
     public static boolean Unbreakable = false;
-	public static boolean Undroppable = true;
+	public static boolean Unstashable = true;
     public static SoundEffect inventoryOpenSound = null;
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
@@ -1714,6 +1714,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		// Add vanilla attributes
 		InventoryUtils.applyAttributes(item, getConfigurationSection("attributes"), getString("attribute_slot"));
+
+		// Add unstashable and unmoveable tags
+		if (getBoolean("unstashable") || (undroppable && Unstashable)) {
+			InventoryUtils.setMetaBoolean(item, "unstashable", true);
+		} else {
+			InventoryUtils.removeMeta(item, "unstashable");
+		}
+		if (getBoolean("unmoveable")) {
+			InventoryUtils.setMetaBoolean(item, "unmoveable", true);
+		} else {
+			InventoryUtils.removeMeta(item, "unmoveable");
+		}
+		if (undroppable) {
+			InventoryUtils.setMetaBoolean(item, "undroppable", true);
+		} else {
+			InventoryUtils.removeMeta(item, "undroppable");
+		}
 
 		// Add vanilla enchantments
 		ConfigurationSection enchantments = getConfigurationSection("enchantments");

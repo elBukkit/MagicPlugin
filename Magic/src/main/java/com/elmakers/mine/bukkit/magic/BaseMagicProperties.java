@@ -53,15 +53,14 @@ public class BaseMagicProperties implements MagicProperties {
             "keep", "locked", "quiet", "force", "rename",
             "rename_description",
             "power", "overrides",
-            "protection",
-            "potion_effects",
+            "protection", "potion_effects",
             "brushes", "brush_inventory", "spells", "spell_inventory", "spell_levels",
             "powered", "protected", "heroes",
             "enchant_count", "max_enchant_count",
             "quick_cast", "left_click", "right_click", "drop", "swap",
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
             "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
-            "sp_multiplier", "class", "consume_spell", "stack"
+            "sp_multiplier", "class", "consume_spell", "stack", "unstashable", "unmoveable"
     );
 
     public final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(

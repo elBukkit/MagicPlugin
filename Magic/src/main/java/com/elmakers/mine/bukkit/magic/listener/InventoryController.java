@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -273,16 +274,16 @@ public class InventoryController implements Listener {
             }
         }
 
-        if (Wand.Undroppable && isHotbar) {
+        if (isHotbar && !player.hasPermission("Magic.wand.override_stash")) {
             ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
-            if (controller.getWandProperty(destinationItem, "undroppable", false)) {
+            if (InventoryUtils.getMetaBoolean(destinationItem, "unstashable", false)) {
                 event.setCancelled(true);
                 return;
             }
         }
             
-        if (clickedWand && Wand.Undroppable && !player.hasPermission("Magic.wand.override_drop") && isChest && !isContainerSlot) {
-            if (controller.getWandProperty(clickedItem, "undroppable", false)) {
+        if (isChest && !isContainerSlot && !player.hasPermission("Magic.wand.override_stash")) {
+            if (InventoryUtils.getMetaBoolean(clickedItem, "unstashable", false)) {
                 event.setCancelled(true);
                 return;
             }
@@ -299,18 +300,16 @@ public class InventoryController implements Listener {
         // Check for dropping items out of a wand's inventory
         // or dropping undroppable wands
         if (isDrop) {
-            if (clickedWand) {
-                if (controller.getWandProperty(clickedItem, "undroppable", false)) {
-                    event.setCancelled(true);
-                    if (activeWand != null) {
-                        if (activeWand.getHotbarCount() > 1) {
-                            activeWand.cycleHotbar(1);
-                        } else {
-                            activeWand.closeInventory();
-                        }
+            if (InventoryUtils.getMetaBoolean(clickedItem, "undroppable", false)) {
+                event.setCancelled(true);
+                if (activeWand != null) {
+                    if (activeWand.getHotbarCount() > 1) {
+                        activeWand.cycleHotbar(1);
+                    } else {
+                        activeWand.closeInventory();
                     }
-                    return;
                 }
+                return;
             }
             if (activeWand != null && activeWand.isInventoryOpen()) {
 

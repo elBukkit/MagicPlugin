@@ -1396,8 +1396,8 @@ permissions:
     description: A player may use a wand even if it is bound to another player.
     default: op
     type: boolean
-  Magic.wand.override_drop:
-    description: A player may drag a wand out of their inventory, and put them in chests.
+  Magic.wand.override_stash:
+    description: A player may put wands in chests.
     default: op
     type: boolean
   Magic.wand.override_locked:

@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -281,15 +282,8 @@ public class PlayerController implements Listener {
                 }
             }
         }
-        
-        if (!cancelEvent && Wand.Undroppable && Wand.isWand(droppedItem) && !player.hasPermission("Magic.wand.override_drop")) {
-            Wand wand = controller.getWand(droppedItem);
-            if (wand.isUndroppable() && wand.isBound()) {
-                cancelEvent = true;
-            }
-        }
-        if (!cancelEvent && controller.getWandProperty(droppedItem, "undroppable", false)) {
-            cancelEvent = true;
+        if (!cancelEvent) {
+            cancelEvent = InventoryUtils.getMetaBoolean(droppedItem, "undroppable", false);
         }
         if (cancelEvent) {
             if (droppedWand) {
@@ -319,6 +313,14 @@ public class PlayerController implements Listener {
                 return;
             } else {
                 wand.deactivate();
+            }
+        } else {
+            ItemStack mainHand = player.getInventory().getItemInMainHand();
+            ItemStack offhand = player.getInventory().getItemInOffHand();
+            if (InventoryUtils.getMetaBoolean(mainHand, "undroppable", false)
+                || (InventoryUtils.isEmpty(mainHand) && InventoryUtils.getMetaBoolean(offhand, "undroppable", false))) {
+                event.setCancelled(true);
+                return;
             }
         }
     }
@@ -353,12 +355,22 @@ public class PlayerController implements Listener {
 
         // Don't think this ever fires for ArmorStand - see above
         boolean isPlaceable = clickedEntity instanceof ItemFrame || clickedEntity instanceof ArmorStand;
-        if (wand != null && isPlaceable) {
-            if (wand.isUndroppable()) {
-                event.setCancelled(true);
-                return;
+        if (isPlaceable) {
+            if (wand != null) {
+                if (wand.isUndroppable()) {
+                    event.setCancelled(true);
+                    return;
+                } else {
+                    wand.deactivate();
+                }
             } else {
-                wand.deactivate();
+                ItemStack mainHand = player.getInventory().getItemInMainHand();
+                ItemStack offhand = player.getInventory().getItemInOffHand();
+                if (InventoryUtils.getMetaBoolean(mainHand, "undroppable", false)
+                    || (InventoryUtils.isEmpty(mainHand) && InventoryUtils.getMetaBoolean(offhand, "undroppable", false))) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
 
