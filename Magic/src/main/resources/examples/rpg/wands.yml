@@ -7,27 +7,16 @@ wizardwand:
     icon: wood_hoe:1
     effect_color: random
     active_spell: missile
-    mana_max: 50
-    mana: 50
-    mana_regeneration: 5
     class: wizard
-    spells:
-     - missile
-     - arrow
-     - blast
 
 roguebow:
-    inherit: base_wand
-    icon: bow
+    inherit: magicbow
     effect_color: random
     class: rogue
 
 battlesword:
-    inherit: base_wand
-    icon: bow
+    inherit: magicsword
     effect_color: random
     class: warrior
-    spells:
-     - wound
 
 
