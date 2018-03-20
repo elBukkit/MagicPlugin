@@ -274,9 +274,18 @@ public class InventoryController implements Listener {
             }
         }
 
-        if (isHotbar && !player.hasPermission("Magic.wand.override_stash")) {
+        if (InventoryUtils.getMetaBoolean(clickedItem, "unmoveable", false)) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (isHotbar) {
             ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
-            if (InventoryUtils.getMetaBoolean(destinationItem, "unstashable", false)) {
+            if (InventoryUtils.getMetaBoolean(destinationItem, "unmoveable", false)) {
+                event.setCancelled(true);
+                return;
+            }
+            if (isChest && InventoryUtils.getMetaBoolean(destinationItem, "unstashable", false) && !player.hasPermission("Magic.wand.override_stash")) {
                 event.setCancelled(true);
                 return;
             }
