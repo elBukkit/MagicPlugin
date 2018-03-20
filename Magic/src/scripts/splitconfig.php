@@ -14,14 +14,14 @@ if (count($argv) < 2) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$spellConfig =  dirname(__FILE__) . '/' . $argv[1];
+$spellConfig = $argv[1];
 
 if (!file_exists($spellConfig))
 {
     die("File not found: $spellConfig\n");
 }
 
-$targetFolder = dirname(__FILE__) . '/target';
+$targetFolder = dirname($argv[1]);
 if (!file_exists($targetFolder)) mkdir($targetFolder);
 
 $handle = fopen($spellConfig, "r");
