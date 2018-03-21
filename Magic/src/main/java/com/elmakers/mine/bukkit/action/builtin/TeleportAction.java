@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class TeleportAction extends BaseTeleportAction
@@ -56,10 +57,13 @@ public class TeleportAction extends BaseTeleportAction
 				context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting passthrough engaged", 11);
 			}
 		}
-
 		
 		Block target;
-		Block source = context.getEyeLocation().getBlock();
+
+		// This is a special chain to handle how this is invoked from a projectile, which sets itself as the source.
+		LivingEntity sourceEntity = context.getLivingEntity();
+		Location sourceLocation = sourceEntity == null ? context.getEyeLocation() : sourceEntity.getEyeLocation();
+		Block source = sourceLocation.getBlock();
 		Block face = context.getPreviousBlock();
 		if (useTargetLocation) {
 			Location location = context.getTargetLocation();
@@ -71,12 +75,14 @@ public class TeleportAction extends BaseTeleportAction
 
 		if (target == null)
 		{
+			context.getMage().sendDebugMessage(ChatColor.RED + "Teleporting entity failed, no target block", 11);
 			return SpellResult.NO_TARGET;
 		}
 
 		// Special-case to prevent passthrough of half-width blocks
 		if (!autoPassthrough && target.getX() == source.getX() && target.getY() == source.getY() && target.getZ() == source.getZ())
 		{
+			context.getMage().sendDebugMessage(ChatColor.RED + "Teleporting entity failed, can't stand in half block at " + ChatColor.DARK_RED + target.getType(), 11);
 			return SpellResult.NO_TARGET;
 		}
 

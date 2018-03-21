@@ -44,9 +44,9 @@ collapse:
              radius: 4
              particle: falling_dust
              particleCount: 2
-             particleCountOffsetX: 0.1
-             particleCountOffsetY: 0
-             particleCountOffsetZ: 0.1
+             particleOffsetX: 0.1
+             particleOffsetY: 0
+             particleOffsetZ: 0.1
         undo:
         -  class: EffectSingle
            sound: magic.shimmer

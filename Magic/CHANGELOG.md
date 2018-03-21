@@ -15,6 +15,8 @@
  - Added "unstashable" and "unmoveable" wand properties
  - Fix active costs for Air Scooter, also Levitate/Air Scooter and Boon will prevent mana regen while active.
  - Fix wand organizing and alphabetizing
+ - Fix wand inventory going weird on rankup (when earning additional hotbars)
+ - Fix Blink Arrows not working if you hit a wall
 
 ## 7.3.1
 

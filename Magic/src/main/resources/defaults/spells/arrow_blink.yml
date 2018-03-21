@@ -73,5 +73,6 @@ arrow_blink:
       speed: "bowpull * 3"
       spread: "1 - bowpull"
       vertical_range: 8
+      allow_passthrough: false
     costs:
       arrow: 1

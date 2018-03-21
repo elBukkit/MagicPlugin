@@ -2,6 +2,7 @@
 
 ## 7.4
 
+ - Blink arrow still won't work against a wall ... need to use one block out?
  - Wand organizer doesn't work right anymore- changes hotbar, doesn't apply to wand directly?
    https://youtu.be/98l2fr0FIhE
  - Move attributes to CasterProperties, merge in Mage.
