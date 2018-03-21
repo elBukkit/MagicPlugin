@@ -344,7 +344,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void onDeath(EntityDeathEvent event) {
         Player player = getPlayer();
-        if (player != null && player != event.getEntity()) {
+        if (player != null && player == event.getEntity()) {
             onPlayerDeath(event);
             return;
         }
