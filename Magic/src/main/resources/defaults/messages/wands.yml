@@ -9,8 +9,8 @@ wands:
         name: Starter Wand
         description: A Wand with Limited Potential
     beginner:
-        name: Beginner Wand
-        description: "For demonstration purposes"
+        name: (Outdated) Beginner Wand
+        description: "Don't use this anymore... Use 'wand' instead."
     master:
         name: Master Wand
         description: "For demonstration purposes"

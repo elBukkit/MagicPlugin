@@ -2,7 +2,8 @@
 # A sampling of "pre-levelled up" wands
 #
 student:
-    inherit: beginner
+    inherit: base_wand
+    active_spell: missile
     icon: wood_hoe:2
     migrate_icon: wood_hoe
     effect_color: '00FF00'
