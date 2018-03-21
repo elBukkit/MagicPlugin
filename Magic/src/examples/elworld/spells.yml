@@ -1041,7 +1041,6 @@ quafflepower:
       hitbox: false
       falling: false
       velocity: 30
-      item: quaffle
       hitbox_size: 1.5
       helmet_item: quaffleitem
       armor_stand_invisible: true
