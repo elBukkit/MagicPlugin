@@ -19,6 +19,7 @@
  - Fix Blink Arrows not working if you hit a wall
  - Hostile mobs can't be targeted by Heal, Cure or other boon spells (see: friendly_entity_types in config.yml)
  - Fix Recall last death location tracking
+ - Capture added to Conduit path (was supposed to be on there, forgot to give it an SP cost)
 
 ## 7.3.1
 
