@@ -1507,7 +1507,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void tick() {
-        if (!isValid()) return;
         Player player = getPlayer();
         if (controller.isNPC(player)) return;
 
