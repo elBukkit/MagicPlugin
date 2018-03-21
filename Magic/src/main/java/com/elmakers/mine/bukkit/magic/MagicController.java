@@ -2572,20 +2572,8 @@ public class MagicController implements MageController {
         spEarnEnabled = properties.getBoolean("sp_earn_enabled", true);
         spMaximum = properties.getInt("sp_max", 9999);
 
-        undoEntityTypes.clear();
-        if (properties.contains("entity_undo_types"))
-        {
-            undoEntityTypes = new HashSet<>();
-            Collection<String> typeStrings = ConfigurationUtils.getStringList(properties, "entity_undo_types");
-            for (String typeString : typeStrings)
-            {
-                try {
-                    undoEntityTypes.add(EntityType.valueOf(typeString.toUpperCase()));
-                } catch (Exception ex) {
-                    getLogger().warning("Unknown entity type: " + typeString);
-                }
-            }
-        }
+        populateEntityTypes(undoEntityTypes, properties, "entity_undo_types");
+        populateEntityTypes(friendlyEntityTypes, properties, "friendly_entity_types");
 
         String defaultLocationString = properties.getString("default_cast_location");
         try {
@@ -2733,6 +2721,23 @@ public class MagicController implements MageController {
             getLogger().info("Skin-based spell icons disabled");
         }
 	}
+
+	protected void populateEntityTypes(Set<EntityType> entityTypes, ConfigurationSection configuration, String key) {
+
+        entityTypes.clear();
+        if (configuration.contains(key))
+        {
+            Collection<String> typeStrings = ConfigurationUtils.getStringList(configuration, key);
+            for (String typeString : typeStrings)
+            {
+                try {
+                    entityTypes.add(EntityType.valueOf(typeString.toUpperCase()));
+                } catch (Exception ex) {
+                    getLogger().warning("Unknown entity type: " + typeString + " in " + key);
+                }
+            }
+        }
+    }
 
 	protected void clear()
 	{
@@ -3471,7 +3476,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isFriendly(Entity attacker, Entity entity) {
-        return isFriendly(attacker, entity, defaultFriendly);
+        return isFriendly(attacker, entity, true);
     }
 
     public boolean isFriendly(Entity attacker, Entity entity, boolean friendlyByDefault)
@@ -3485,7 +3490,17 @@ public class MagicController implements MageController {
             }
         }
 
-        return friendlyByDefault;
+        if (friendlyByDefault) {
+            // Mobs can always target players, just to avoid any confusion there.
+            if (!(attacker instanceof Player)) return true;
+
+            // Player vs Player is controlled by a special config flag
+            if (entity instanceof Player) return defaultFriendly;
+
+            // Otherwise we look at the friendly entity types
+            if (friendlyEntityTypes.contains(entity.getType())) return true;
+        }
+        return false;
     }
 
     @Override
@@ -5375,6 +5390,7 @@ public class MagicController implements MageController {
     private Mailer								mailer						= null;
     private Material							defaultMaterial				= Material.DIRT;
     private Set<EntityType>                     undoEntityTypes             = new HashSet<>();
+    private Set<EntityType>                     friendlyEntityTypes         = new HashSet<>();
 
     private PhysicsHandler						physicsHandler				= null;
 

@@ -49,6 +49,11 @@ public class LoadEvent extends Event {
         attributeProviders.add(provider);
     }
 
+    /**
+     * Register a TeamProvider, to be able to make decisions about who players and mobs can target.
+     *
+     * @param provider The provider to add.
+     */
     public void registerTeamProvider(TeamProvider provider) {
         teamProviders.add(provider);
     }

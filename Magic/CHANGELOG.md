@@ -17,6 +17,7 @@
  - Fix wand organizing and alphabetizing
  - Fix wand inventory going weird on rankup (when earning additional hotbars)
  - Fix Blink Arrows not working if you hit a wall
+ - Hostile mobs can't be targeted by Heal, Cure or other boon spells (see: friendly_entity_types in config.yml)
 
 ## 7.3.1
 

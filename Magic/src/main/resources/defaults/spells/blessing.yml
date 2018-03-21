@@ -44,7 +44,7 @@ blessing:
              class: Love
              iterations: 20
     parameters:
-        #target_type: Player
+        target_type: Player
         projectile: Snowball
         effect_heal: 6
         effect_damage_resistance: 1
@@ -53,8 +53,8 @@ blessing:
         radius: 8
         target_self_timeout: 100
         cooldown: 30000
-        #bypass_friendly_fire: true
-        #only_friendly: true
+        bypass_friendly_fire: true
+        only_friendly: true
         gravity: 0.05
         velocity: 15
     costs:
