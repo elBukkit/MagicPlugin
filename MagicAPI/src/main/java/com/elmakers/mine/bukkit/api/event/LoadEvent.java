@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.api.event;
 
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
+import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 import org.bukkit.event.Event;
@@ -19,6 +20,7 @@ public class LoadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private MageController controller;
     private List<AttributeProvider> attributeProviders = new ArrayList<>();
+    private List<TeamProvider> teamProviders = new ArrayList<>();
     private Map<String, RequirementsProcessor> requirementProcessors = new HashMap<>();
 
     public LoadEvent(MageController controller) {
@@ -38,12 +40,17 @@ public class LoadEvent extends Event {
         return controller;
     }
 
+    /**
+     * Register an AttributeProvider, for adding custom attribute support to spells and mages.
+     *
+     * @param provider The provider to add.
+     */
     public void registerAttributeProvider(AttributeProvider provider) {
         attributeProviders.add(provider);
     }
 
-    public Collection<AttributeProvider> getAttributeProviders() {
-        return attributeProviders;
+    public void registerTeamProvider(TeamProvider provider) {
+        teamProviders.add(provider);
     }
 
     /**
@@ -74,5 +81,13 @@ public class LoadEvent extends Event {
     
     public Map<String, RequirementsProcessor> getRequirementProcessors() {
         return requirementProcessors;
+    }
+
+    public Collection<AttributeProvider> getAttributeProviders() {
+        return attributeProviders;
+    }
+
+    public Collection<TeamProvider> getTeamProviders() {
+        return teamProviders;
     }
 }

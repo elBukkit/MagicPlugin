@@ -1,0 +1,24 @@
+package com.elmakers.mine.bukkit.api.entity;
+
+import org.bukkit.entity.Entity;
+
+public interface TeamProvider {
+    /**
+     * Check to see if one entity is friendly (on a team with) another entity.
+     *
+     * This will be called any time on entity (the attacker) is targeting another
+     * entity.
+     *
+     * Friendly entities generally can't target each other, unless a spell has
+     * bypass_friendly_fire (generally true for healing spells).
+     *
+     * Spells may also be marked only_friendly, meaning it can only be cast on friendly targets.
+     *
+     * The default state for two entities is that they are not friendly with each other.
+     *
+     * @param attacker The entity targeting another entity
+     * @param entity The entity being targeted
+     * @return true if the attacker is friends with the target
+     */
+    boolean isFriendly(Entity attacker, Entity entity);
+}

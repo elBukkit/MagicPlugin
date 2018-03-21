@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.heroes;
 
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
+import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -16,6 +17,7 @@ import com.herocraftonline.heroes.characters.party.HeroParty;
 import com.herocraftonline.heroes.characters.skill.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -32,7 +34,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HeroesManager implements ManaController, AttributeProvider {
+public class HeroesManager implements ManaController, AttributeProvider, TeamProvider {
     private Heroes heroes;
     private CharacterManager characters;
     private SkillManager skills;
@@ -322,6 +324,14 @@ public class HeroesManager implements ManaController, AttributeProvider {
         if (party == null || (pvpCheck && !party.isNoPvp())) return false;
 
         return party.getMembers().contains(checkHero);
+    }
+
+    @Override
+    public boolean isFriendly(Entity attacker, Entity entity) {
+        if (attacker instanceof Player && entity instanceof Player) {
+            return isInParty((Player)attacker, (Player)entity, false);
+        }
+        return false;
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.event.LoadEvent;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.item.ItemData;
@@ -36,6 +37,7 @@ import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.elementals.ElementalsController;
+import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
@@ -1710,6 +1712,7 @@ public class MagicController implements MageController {
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
 
+        // Register attribute providers
         attributeProviders.clear();
         attributeProviders.addAll(loadEvent.getAttributeProviders());
         if (skillAPIManager != null) {
@@ -1719,6 +1722,17 @@ public class MagicController implements MageController {
             attributeProviders.add(heroesManager);
         }
 
+        // Register team providers
+        teamProviders.clear();
+        teamProviders.addAll(loadEvent.getTeamProviders());
+        if (heroesManager != null && useHeroesParties) {
+            teamProviders.add(heroesManager);
+        }
+        if (useScoreboardTeams) {
+            teamProviders.add(new ScoreboardTeamProvider());
+        }
+
+        // Register requirement processors
         requirementProcessors.clear();
         requirementProcessors.putAll(loadEvent.getRequirementProcessors());
         if (skillAPIManager != null) {
@@ -3465,41 +3479,13 @@ public class MagicController implements MageController {
         // We are always friends with ourselves
         if (attacker == entity) return true;
 
-        // Check to see if we are not using a team or party system
-        if (!useScoreboardTeams && (!useHeroesParties || heroesManager == null))
-        {
-            return friendlyByDefault;
-        }
-
-        // Check for Heroes party
-        if (useHeroesParties && heroesManager != null && attacker instanceof Player && entity instanceof Player)
-        {
-            if (heroesManager.isInParty((Player)attacker, (Player)entity, false))
-            {
+        for (TeamProvider provider : teamProviders) {
+            if (provider.isFriendly(attacker, entity)) {
                 return true;
             }
         }
 
-        // Check for scoreboard teams
-        if (useScoreboardTeams && attacker instanceof Player && entity instanceof Player)
-        {
-            Player player1 = (Player)attacker;
-            Player player2 = (Player)entity;
-
-            Scoreboard scoreboard1 = player1.getScoreboard();
-            Scoreboard scoreboard2 = player2.getScoreboard();
-
-            if (scoreboard1 != null && scoreboard2 != null)
-            {
-                Team team1 = scoreboard1.getEntryTeam(player1.getName());
-                Team team2 = scoreboard2.getEntryTeam(player2.getName());
-                if (team1 != null && team2 != null && team1.equals(team2))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return friendlyByDefault;
     }
 
     @Override
@@ -5480,5 +5466,6 @@ public class MagicController implements MageController {
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();
     private List<PVPManager>                    pvpManagers                 = new ArrayList<>();
     private List<AttributeProvider>             attributeProviders          = new ArrayList<>();
+    private List<TeamProvider>                  teamProviders               = new ArrayList<>();
     private Map<String, RequirementsProcessor>  requirementProcessors       = new HashMap<>();
 }
