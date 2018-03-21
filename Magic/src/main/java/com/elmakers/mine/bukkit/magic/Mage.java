@@ -208,6 +208,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private Hologram hologram;
     private boolean hologramIsVisible = false;
+    private boolean isNPC = false;
 
     private Map<Integer, ItemStack> respawnInventory;
     private Map<Integer, ItemStack> respawnArmor;
@@ -934,9 +935,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             this._entity = new WeakReference<>(entity);
             hasEntity = true;
+            isNPC = controller.isNPC(entity);
         } else {
             this._entity.clear();
             hasEntity = false;
+            isNPC = false;
         }
     }
 
@@ -1507,8 +1510,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void tick() {
-        Player player = getPlayer();
-        if (controller.isNPC(player)) return;
+        if (isNPC) return;
 
         long now = System.currentTimeMillis();
         if (entityData != null) {
@@ -1529,6 +1531,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         // We don't tick non-player or offline Mages, except
         // above where entityData is ticked if present.
+        Player player = getPlayer();
         if (player != null && player.isOnline()) {
             // We only update all of this at a configurable interval,
             // as it could have performance concerns.
@@ -2559,8 +2562,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Player getPlayer() {
-        Player player = _player.get();
-        return controller.isNPC(player) ? null : player;
+        return isNPC ? null : _player.get();
     }
 
     @Override
@@ -2721,7 +2723,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Entity entity = getEntity();
 
         if (entity == null) return false;
-        if (controller.isNPC(entity)) return true;
+        if (isNPC) return true;
 
         if (entity instanceof Player) {
             Player player = (Player)entity;
