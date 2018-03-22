@@ -57,6 +57,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private Location targetLocation;
     private Location targetSourceLocation;
     private Location targetCenterLocation;
+    private Block previousBlock;
     private Entity targetEntity;
     private UndoList undoList;
     private String targetName = null;
@@ -154,6 +155,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             this.messageParameters = ((CastContext)copy).messageParameters;
             this.targetCaster = ((CastContext)copy).targetCaster;
             this.brush = ((CastContext)copy).brush;
+            this.previousBlock = ((CastContext)copy).previousBlock;
         }
         else
         {
@@ -282,7 +284,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
         return getLocation().getDirection();
     }
-    
+
     @Override
     public BlockFace getFacingDirection() {
         if (baseSpell != null) {
@@ -390,7 +392,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             undoList.add(entity);
         }
     }
-    
+
     @Override
     public void clearAttachables(Block block)
     {
@@ -454,6 +456,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public Block getPreviousBlock()
     {
+        if (previousBlock != null) return previousBlock;
         return targetingSpell != null ? targetingSpell.getPreviousBlock() : null;
     }
 
@@ -948,7 +951,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             }
         }
     }
-    
+
     public String parameterizeMessage(String message) {
         for (Map.Entry<String, String> entry : messageParameters.entrySet()) {
             message = message.replace("$" + entry.getKey(), entry.getValue());
@@ -1018,7 +1021,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public int getActionsPerformed() {
         return base.actionsPerformed;
     }
-    
+
     @Override
     public void finish() {
         if (finished) return;
@@ -1312,7 +1315,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
         return ChatColor.translateAlternateColorCodes('&', command);
     }
-    
+
     @Override
     public void addHandler(com.elmakers.mine.bukkit.api.action.ActionHandler handler) {
         if (base.handlers == null) {
@@ -1320,8 +1323,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
         base.handlers.add(new ActionHandlerContext(handler, this));
     }
-    
-    @Override 
+
+    @Override
     public boolean hasHandlers() {
         return handlers != null;
     }
@@ -1346,13 +1349,18 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 iterator.remove();
             }
         }
-        
+
         if (handlers.isEmpty()) {
             handlers = null;
             return result;
         }
 
         return SpellResult.PENDING;
+    }
+
+    @Override
+    public void setPreviousBlock(Block block) {
+        this.previousBlock = block;
     }
 
     @Override
