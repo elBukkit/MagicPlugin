@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.BaseTeleportAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -91,6 +92,8 @@ public class TeleportAction extends BaseTeleportAction
             face = target;
         }
 
+        context.getMage().sendDebugMessage(ChatColor.GREEN + "Teleporting to block: " + TextUtils.printBlock(target) + ChatColor.GREEN + " face: " + TextUtils.printBlock(face), 12);
+
 		World world = context.getWorld();
 		Block destination = face;
         int verticalSearchDistance = context.getVerticalSearchDistance();
@@ -106,7 +109,7 @@ public class TeleportAction extends BaseTeleportAction
 			if (safeLocation != null)
             {
                 destination = safeLocation.getBlock();
-				context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting destination changed to safe location", 11);
+				context.getMage().sendDebugMessage(ChatColor.GREEN + "Teleporting destination changed to safe location", 11);
 			}
 		}
 
@@ -164,10 +167,7 @@ public class TeleportAction extends BaseTeleportAction
 		if (ledge != null && context.isOkToStandOn(ledge))
 		{
 			destination = ledge.getRelative(BlockFace.UP);
-			context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting hit ledge at " +
-					ChatColor.BLUE + destination.getX() + ChatColor.GRAY + "," +
-					ChatColor.BLUE + destination.getY() + ChatColor.GRAY + "," +
-					ChatColor.BLUE + destination.getZ(), 11);
+			context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting hit ledge at " + TextUtils.printBlock(destination), 11);
 		}
 
 		Block oneUp = destination.getRelative(BlockFace.UP);
@@ -192,11 +192,7 @@ public class TeleportAction extends BaseTeleportAction
 
 		context.getMage().sendDebugMessage(ChatColor.AQUA + "Teleporting entity " +
 						ChatColor.DARK_AQUA + entity.getType() +
-						ChatColor.AQUA + " to " +
-						ChatColor.BLUE + targetLocation.getBlockX() + ChatColor.GRAY + "," +
-						ChatColor.BLUE + targetLocation.getBlockY() + ChatColor.GRAY + "," +
-						ChatColor.BLUE + targetLocation.getBlockZ()
-				, 11);
+						ChatColor.AQUA + " to " + TextUtils.printLocation(targetLocation), 11);
 
         return teleport(context, entity, targetLocation);
 	}
