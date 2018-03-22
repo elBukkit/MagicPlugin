@@ -2,6 +2,17 @@
 
 ## 7.4
 
+ - Need to do something about template data mixing with class data ... use cases:
+   - Screwed up migration, left properties on a wand that now belong to class
+     - In this case we want to ignore them? Or merge them? Merge can't be a permanent override though.
+   - Spells/mana etc on a wand or child class that should go to the base class
+     - This is also like a merge .. but is it only while you hold that wand?
+     - Does a battle mage's spells not apply to the caster except when using a magic sword?
+     - Need to just merge everything in the passive effects block, maybe.. ?
+
+ - Skill menu option to not show skills you already have
+ - Undroppable option for skills
+
  - Blink arrow still won't work against a wall ... need to use one block out?
  - Wand organizer doesn't work right anymore- changes hotbar, doesn't apply to wand directly?
    https://youtu.be/98l2fr0FIhE
@@ -33,6 +44,8 @@
    
 ## Suggestions
 
+ - Changes to mage classes don't affect online players with a /magic load
+ - Options to disable spell selection and casting from inventory
  - Cast location offset override per spell.
  - Flag to prevent putting SP in chests
  - Check knockback resistance in Velocity action, or add Mage knockback resistance.
