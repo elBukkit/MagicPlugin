@@ -55,15 +55,20 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
                         controller.getLogger().info("Invalid property type: " + route);
                     }
                 }
-                if (propertyType == null) {
+
+                // If this is a base class it should never get configured directly, and so we should not try
+                // to migrate properties to a subclass.
+                if (type == MagicPropertyType.CLASS && propertyType == MagicPropertyType.SUBCLASS) {
+                    continue;
+                }
+
+                if (propertyType == null || propertyType == type) {
                     continue;
                 }
                 propertyRoutes.put(key, propertyType);
 
-                // Migrate data if necessary
-                if (propertyType != type) {
-                    migrateProperty(key, propertyType);
-                }
+                // Migrate data if possible
+                migrateProperty(key, propertyType);
             }
         }
     }
@@ -97,7 +102,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
 
     public void setProperty(String key, Object value) {
         MagicPropertyType propertyType = propertyRoutes.get(key);
-        if (propertyType == null || propertyType == type) {
+        if (propertyType == null) {
             configuration.set(key, value);
         } else {
             BaseMagicConfigurable storage = getStorage(propertyType);
@@ -112,7 +117,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     @Nullable
     protected BaseMagicConfigurable getStorage(String key) {
         MagicPropertyType propertyType = propertyRoutes.get(key);
-        if (propertyType == null || propertyType == type) {
+        if (propertyType == null) {
             return null;
         }
         return getStorage(propertyType);
