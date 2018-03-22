@@ -661,14 +661,14 @@ public class Targeting {
         tracked.setMetadata("tracking", new FixedMetadataValue(plugin, true));
     }
 
-    public static boolean checkTracking(Plugin plugin, Entity tracked, Entity target) {
+    public static boolean checkTracking(Plugin plugin, Entity tracked, Entity target, Block block) {
         if (tracked == null || !tracked.hasMetadata("tracking")) {
             return false;
         }
         if (target != null) {
             tracked.setMetadata("hit", new FixedMetadataValue(plugin, new WeakReference<>(target)));
         } else if (!tracked.hasMetadata("hit")) {
-            tracked.setMetadata("hit", new FixedMetadataValue(plugin, null));
+            tracked.setMetadata("hit", new FixedMetadataValue(plugin, block));
         }
 
         return true;

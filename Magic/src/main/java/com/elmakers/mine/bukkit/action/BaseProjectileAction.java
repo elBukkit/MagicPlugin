@@ -3,13 +3,17 @@ package com.elmakers.mine.bukkit.action;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.Targeting;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
@@ -69,8 +73,8 @@ public abstract class BaseProjectileAction extends CompoundAction {
             {
                 tracking.remove(entity);
                 Plugin plugin = context.getPlugin();
-                entity.removeMetadata("track", plugin);
                 Entity targetEntity = null;
+                Block targetBlock = null;
                 Location targetLocation = entity.getLocation();
                 List<MetadataValue> metadata = entity.getMetadata("hit");
                 for (MetadataValue value : metadata) {
@@ -84,16 +88,56 @@ public abstract class BaseProjectileAction extends CompoundAction {
                                 targetLocation = targetEntity.getLocation();
                             }
                             break;
+                        } else if (o != null && o instanceof Block) {
+                            targetBlock = (Block)o;
+                            break;
                         }
                     }
                 }
+                entity.removeMetadata("track", plugin);
                 if (targetEntity == null) {
                     context.getMage().sendDebugMessage(ChatColor.GRAY + "Projectile missed", 4);
                 } else {
                     context.getMage().sendDebugMessage(ChatColor.GREEN + "Projectile hit " + ChatColor.GOLD + targetEntity.getType());
                 }
                 entity.removeMetadata("hit", plugin);
-                createActionContext(context, context.getMage().getEntity(), entity.getLocation(), targetEntity, targetLocation);
+                Location sourceLocation = entity.getLocation();
+
+                // So.. projectile X direction is backwards? I tested it with arrows and fireballs... don't really know what's up.
+                // Going to adjust for it until I hear otherwise.
+                Vector direction = sourceLocation.getDirection();
+                direction.setX(-direction.getX());
+                sourceLocation.setDirection(direction);
+
+                if (targetBlock != null) {
+                    // If we have a target block, try to approximate the hit location but ensure that it's on the edge of the block.
+                    // This makes this appear similar to how raycast targeting would work
+                    context.getMage().sendDebugMessage(ChatColor.GREEN + "Projectile at "
+                            + TextUtils.printLocation(entity.getLocation()) + ChatColor.GREEN + " hit block at "
+                            + TextUtils.printBlock(targetBlock)
+                            + " facing " + TextUtils.printVector(sourceLocation.getDirection()), 13);
+
+                    // Set previous location, this is mainly so the Teleport action works right.
+                    context.setPreviousBlock(sourceLocation.getBlock());
+                    targetLocation = targetBlock.getLocation();
+
+                    // raycast from entity through block
+                    Vector startPoint = sourceLocation.toVector();
+                    Vector endPoint = startPoint.clone().add(direction.clone().normalize().multiply(2));
+                    BoundingBox hitbox = new BoundingBox(targetLocation.toVector(), 0.001, 0.998, 0.001, 0.998, 0.001, 0.998);
+
+                    Vector hit = hitbox.getIntersection(startPoint, endPoint);
+                    if (hit != null) {
+                        targetLocation.setX(hit.getX());
+                        targetLocation.setY(hit.getY());
+                        targetLocation.setZ(hit.getZ());
+                    }
+                } else {
+                    context.getMage().sendDebugMessage(ChatColor.GRAY + "Projectile hit at " + TextUtils.printLocation(entity.getLocation())
+                        + " facing " + TextUtils.printVector(sourceLocation.getDirection()), 132);
+                }
+
+                createActionContext(context, context.getMage().getEntity(), sourceLocation, targetEntity, targetLocation);
                 actionContext.playEffects("hit");
                 SpellResult result = startActions();
                 if (targetEntity != null) {
