@@ -229,7 +229,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             getCommand("mtrait").setExecutor(magicTraitCommand);
             getCommand("mtrait").setTabCompleter(magicTraitCommand);
         }
-		TabExecutor magicConfigCommand = new MagicConfigCommandExecutor(this);
+		TabExecutor magicConfigCommand = new MagicConfigCommandExecutor(this, controller);
 		getCommand("mconfig").setExecutor(magicConfigCommand);
 		getCommand("mconfig").setTabCompleter(magicConfigCommand);
 	}

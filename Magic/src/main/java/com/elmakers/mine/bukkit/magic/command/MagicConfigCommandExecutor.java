@@ -1,6 +1,9 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.io.Files;
 
@@ -10,8 +13,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,9 +26,11 @@ import java.util.Map;
 import java.util.Set;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
+    private final MagicController controller;
 
-    public MagicConfigCommandExecutor(MagicAPI api) {
+    public MagicConfigCommandExecutor(MagicAPI api, MagicController controller) {
         super(api);
+        this.controller = controller;
     }
 
     @Override
@@ -81,6 +88,8 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
 
         File pluginFolder = api.getPlugin().getDataFolder();
+        Collection<String> examples = controller.getLoadedExamples();
+        Plugin plugin = controller.getPlugin();
         for (String configFileName : configFiles) {
             sender.sendMessage(ChatColor.AQUA + "Checking " + ChatColor.DARK_AQUA + configFileName);
             try {
@@ -93,6 +102,17 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
                 YamlConfiguration defaultConfig = new YamlConfiguration();
                 defaultConfig.load(defaultsFile);
+
+                // Overlay examples
+                for (String example : examples) {
+                    String examplesFileName = "examples/" + example + "/" + configFileName + ".yml";
+                    InputStream input = plugin.getResource(examplesFileName);
+                    if (input != null)
+                    {
+                        ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
+                        ConfigurationUtils.addConfigurations(defaultConfig, exampleConfig, false);
+                    }
+                }
 
                 Collection<String> allKeys = currentConfig.getKeys(true);
                 for (String key : allKeys) {

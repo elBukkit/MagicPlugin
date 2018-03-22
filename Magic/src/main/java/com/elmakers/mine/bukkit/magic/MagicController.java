@@ -5226,7 +5226,14 @@ public class MagicController implements MageController {
     public void registerMagicMob(com.elmakers.mine.bukkit.magic.Mage mage) {
         mobMages.put(mage.getId(), mage);
     }
-    
+
+    public Collection<String> getLoadedExamples() {
+        List<String> examples = new ArrayList<>();
+        if (exampleDefaults != null) examples.add(exampleDefaults);
+        if (addExamples != null) examples.addAll(addExamples);
+        return examples;
+    }
+
     /*
 	 * Private data
 	 */
