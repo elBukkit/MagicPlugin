@@ -42,4 +42,21 @@ public interface ProgressionPath {
      * @return
      */
     boolean containsSpell(String spellKey);
+
+    /**
+     * Check to see if a specific brush is available on this exact path.
+     *
+     * @param brushKey
+     * @return
+     */
+    boolean hasBrush(String brushKey);
+
+    /**
+     * Check to see if a specific brush is available on this path or
+     * any path inherited by this path.
+     *
+     * @param brushKey
+     * @return
+     */
+    boolean containsBrush(String brushKey);
 }

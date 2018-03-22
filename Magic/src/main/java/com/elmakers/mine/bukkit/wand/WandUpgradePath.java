@@ -50,12 +50,14 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private final String key;
     private final WandUpgradePath parent;
     private final Set<String> spells = new HashSet<>();
+    private final Set<String> brushes = new HashSet<>();
     private final Set<String> extraSpells = new HashSet<>();
     private Collection<PrerequisiteSpell> requiredSpells = new HashSet<>();
     private Set<String> requiredSpellKeys = new HashSet<>();
     private final Set<String> allSpells = new HashSet<>();
     private final Set<String> allExtraSpells = new HashSet<>();
     private final Set<String> allRequiredSpells = new HashSet<>();
+    private final Set<String> allBrushes = new HashSet<>();
     private String upgradeKey;
     private String upgradeItemKey;
     private String name;
@@ -103,6 +105,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         allRequiredSpells.addAll(inherit.allRequiredSpells);
         allSpells.addAll(inherit.allSpells);
         allExtraSpells.addAll(inherit.allExtraSpells);
+        allBrushes.addAll(inherit.allBrushes);
 
         if (inherit.tags != null && !inherit.tags.isEmpty())
         {
@@ -137,6 +140,10 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             extraSpells.add(prereq.getSpellKey().getKey());
         }
         allExtraSpells.addAll(extraSpells);
+
+        // Get brush info
+        brushes.addAll(ConfigurationUtils.getKeysOrList(template, "brushes"));
+        allBrushes.addAll(brushes);
 
         // Upgrade information
         followsPath = template.getString("follows");
@@ -437,6 +444,16 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     @Override
     public boolean containsSpell(String spellKey) {
         return allSpells.contains(spellKey);
+    }
+
+    @Override
+    public boolean hasBrush(String brushKey) {
+        return brushes.contains(brushKey);
+    }
+
+    @Override
+    public boolean containsBrush(String brushKey) {
+        return allBrushes.contains(brushKey);
     }
 
     @Override

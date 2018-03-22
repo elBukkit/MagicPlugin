@@ -31,6 +31,8 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 
+import javax.annotation.Nonnull;
+
 public class ConfigurationUtils extends ConfigUtils {
 
     public static Random random = new Random();
@@ -791,6 +793,23 @@ public class ConfigurationUtils extends ConfigUtils {
 
         return effectParticle;
     }
+
+    public static Collection<String> getKeysOrList(@Nonnull ConfigurationSection node, @Nonnull String key) {
+        Collection<String> values = null;
+        if (node.isString(key)) {
+            values = ConfigurationUtils.getStringList(node, key);
+        } else if (node.isConfigurationSection(key)) {
+            ConfigurationSection spellSection = node.getConfigurationSection(key);
+            if (spellSection != null) {
+                values = spellSection.getKeys(false);
+            }
+        }
+        if (values == null) {
+            values = new ArrayList<>(0);
+        }
+        return values;
+    }
+
 
     public static Collection<PrerequisiteSpell> getPrerequisiteSpells(MageController controller, ConfigurationSection node, String key, String loadContext, boolean removeMissing) {
         if (node == null || key == null) {
