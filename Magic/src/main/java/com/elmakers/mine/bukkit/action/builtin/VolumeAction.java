@@ -67,7 +67,9 @@ public class VolumeAction extends CompoundAction
 	private enum VolumeType {
 		SPIRAL,
 		YZX,
-		YXZ
+		YXZ,
+		ZXY,
+		XZY
 	}
 
 	@Override
@@ -256,6 +258,32 @@ public class VolumeAction extends CompoundAction
 		return (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ());
 	}
 
+	protected boolean nextXZY(CastContext context) {
+		dx++;
+		if (dx > max.getBlockX()) {
+			dx = min.getBlockX();
+			dz++;
+			if (dz > max.getBlockZ()) {
+				dz = min.getBlockZ();
+				dy++;
+			}
+		}
+		return (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ());
+	}
+
+	protected boolean nextZXY(CastContext context) {
+		dz++;
+		if (dz > max.getBlockZ()) {
+			dz = min.getBlockZ();
+			dx++;
+			if (dx > max.getBlockX()) {
+				dx = min.getBlockX();
+				dy++;
+			}
+		}
+		return (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ());
+	}
+
 	protected boolean nextSpiral(CastContext context) {
 		dy++;
 		if (dy > yEnd) {
@@ -323,6 +351,12 @@ public class VolumeAction extends CompoundAction
 				break;
 			case YXZ:
 				result = nextYXZ(context);
+				break;
+			case ZXY:
+				result = nextZXY(context);
+				break;
+			case XZY:
+				result = nextXZY(context);
 				break;
 		}
 		return result;

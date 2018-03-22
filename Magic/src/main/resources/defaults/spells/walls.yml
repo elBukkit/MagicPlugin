@@ -48,6 +48,7 @@ walls:
         brushcolor: true
         breakable: 3
         destructible: destructible_replace
+        volume_type: xzy
     costs:
         mana: 75
 
