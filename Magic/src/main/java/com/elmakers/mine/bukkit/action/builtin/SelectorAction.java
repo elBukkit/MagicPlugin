@@ -211,7 +211,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
             icon = parseItem(configuration.getString("icon"));
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
-            costs = parseCosts(configuration.getConfigurationSection("costs"));
+            costs = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "costs"));
             int cost = configuration.getInt("cost");
             if (cost > 0) {
                 if (costs == null) {
