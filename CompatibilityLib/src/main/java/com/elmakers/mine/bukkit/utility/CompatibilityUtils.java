@@ -37,6 +37,7 @@ import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -1344,5 +1345,15 @@ public class CompatibilityUtils extends NMSUtils {
             return false;
         }
         return true;
+    }
+
+    public static Block getHitBlock(ProjectileHitEvent event) {
+        if (class_ProjectileHitEvent_getHitBlockMethod == null) return null;
+        try {
+            return (Block) class_ProjectileHitEvent_getHitBlockMethod.invoke(event);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

@@ -16,6 +16,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -226,6 +227,7 @@ public class NMSUtils {
     protected static Method class_Block_fromLegacyData;
     protected static Method class_Chunk_setBlockMethod;
     protected static Method class_Arrow_setPickupStatusMethod;
+    protected static Method class_ProjectileHitEvent_getHitBlockMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -550,6 +552,12 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+            try {
+                class_ProjectileHitEvent_getHitBlockMethod = ProjectileHitEvent.class.getMethod("getHitBlock");
+            } catch (Throwable ex) {
+                class_ProjectileHitEvent_getHitBlockMethod = null;
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering ProjectileHitEvent.getHitBlock, arrow hit locations will be fuzzy", ex);
+            }
             try {
                 class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.Arrow$PickupStatus");
                 class_Arrow_setPickupStatusMethod = Arrow.class.getMethod("setPickupStatus", class_PickupStatus);
