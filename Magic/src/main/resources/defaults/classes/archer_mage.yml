@@ -1,5 +1,5 @@
 archer_mage:
-  parent: base
+  inherit: base
   locked: false
   path: archer
   active_spell: arrow_regular

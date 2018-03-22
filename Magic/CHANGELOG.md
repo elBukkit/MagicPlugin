@@ -23,6 +23,7 @@
  - Some improvements to Blink Arrows that were way more complicated then they were worth, but the arrows work great now.
  - Fix/improve teleportation ledge detection
  - Add "ai: false" option to magic mobs
+ - Fixed Magic Bow progression, *bow progress may get reset* - Sorry!
 
 ## 7.3.1
 
