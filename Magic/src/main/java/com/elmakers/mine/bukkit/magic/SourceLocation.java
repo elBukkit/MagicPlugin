@@ -9,6 +9,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nullable;
+
 public class SourceLocation {
     private LocationType locationType;
     private boolean orientToTarget;
@@ -82,6 +84,7 @@ public class SourceLocation {
         }
     }
 
+    @Nullable
     public Location getLocation(CastContext context) {
         Mage mage;
         Location eyeLocation;

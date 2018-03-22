@@ -69,9 +69,9 @@ import javax.annotation.Nullable;
  * be saved.
  */
 public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialAndData {
-    protected Material material;
-    protected Short data;
-    protected BlockExtraData extraData;
+    protected @Nullable Material material;
+    protected @Nullable Short data;
+    protected @Nullable BlockExtraData extraData;
     protected boolean isValid = true;
 
     public Material DEFAULT_MATERIAL = Material.AIR;
@@ -470,16 +470,19 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
     }
 
+    @Nullable
     @Override
     public Short getData() {
         return data;
     }
 
+    @Nullable
     @Override
     public Byte getBlockData() {
         return data == null ? null : (byte)(short)data;
     }
 
+    @Nullable
     @Override
     public Material getMaterial() {
         return material;
@@ -576,6 +579,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return false;
     }
 
+    @Nullable
     @Override
     public ItemStack getItemStack(int amount)
     {
@@ -683,6 +687,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return getName(null);
     }
     
+    @Nullable
     @Override
     public String getBaseName() {
         if (material == null) {
@@ -782,6 +787,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
     }
 
+    @Nullable
     @Override
     public String getCommandLine() {
         if (extraData != null && extraData instanceof BlockCommand) {
@@ -812,6 +818,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return (isValid() ? material + (data != 0 ? "@" + data : "") : "invalid");
     }
 
+    @Nullable
     @SuppressWarnings("deprecation")
     @Override
     public MaterialData getMaterialData() {

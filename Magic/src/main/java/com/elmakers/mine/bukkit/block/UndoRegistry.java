@@ -1,13 +1,12 @@
 package com.elmakers.mine.bukkit.block;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
-
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nullable;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 
 public class UndoRegistry {
     protected Map<Long, BlockData> modified = new HashMap<>();
@@ -128,7 +127,7 @@ public class UndoRegistry {
         return currentAmount;
     }
 
-    public BlockData getBlockData(Location location) {
+    @Nullable public BlockData getBlockData(Location location) {
         long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(location.getBlock());
 
         // Prefer to return blocks that are watched by lists which are going to auto-undo.
@@ -155,10 +154,12 @@ public class UndoRegistry {
         return block != null && breakable.containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
     }
 
+    @Nullable
     public Double getReflective(Block block) {
         return block == null ? null : reflective.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
     }
 
+    @Nullable
     public Double getBreakable(Block block) {
         return block == null ? null : breakable.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
     }

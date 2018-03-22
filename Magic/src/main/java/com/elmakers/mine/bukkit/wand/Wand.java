@@ -98,8 +98,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
      * used for off-hand casting.
      */
     protected @Nullable Mage mage;
-    protected @Nullable CastContext effectsContext;
-	
+
+    // Lazy loaded
+    protected CastContext effectsContext;
+
 	// Cached state
 	private String id = "";
 	private List<Inventory> hotbars;
@@ -805,6 +807,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return template != null && template.hasTag(tag);
 	}
 
+    @Nullable
     @Override
     public WandUpgradePath getPath() {
         String pathKey = path;
@@ -874,7 +877,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		saveState();
 	}
 
-	public String getControlKey(WandAction action) {
+	@Nullable public String getControlKey(WandAction action) {
     	String controlKey = null;
 		if (rightClickAction == action) {
 			controlKey = "right_click";
@@ -888,8 +891,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		return controlKey;
 	}
-	
-	@Override
+
+    @Nullable
+    @Override
     public ItemStack getItem() {
 		return item;
 	}
@@ -937,7 +941,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return brushes;
 	}
 
-	protected Integer parseSlot(String[] pieces) {
+	@Nullable protected Integer parseSlot(String[] pieces) {
 		Integer slot = null;
 		if (pieces.length > 1) {
 			try {
@@ -1209,22 +1213,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 	}
 
+    @Nullable
     protected ItemStack createSpellIcon(SpellTemplate spell) {
         return createSpellItem(spell, "", controller, getActiveMage(), this, false);
     }
 
+    @Nullable
     public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem) {
         String[] split = spellKey.split(" ", 2);
         return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, wand == null ? null : wand.getActiveMage(), wand, isItem);
     }
 
+    @Nullable
     public static ItemStack createSpellItem(String spellKey, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
         String[] split = spellKey.split(" ", 2);
         return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, mage, wand, isItem);
     }
 
-	public static ItemStack createSpellItem(SpellTemplate spell, String args, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
-		if (spell == null) return null;
+    @Nullable
+    public static ItemStack createSpellItem(SpellTemplate spell, String args, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
+        if (spell == null) return null;
         String iconURL = spell.getIconURL();
 
         ItemStack itemStack = null;
@@ -1279,12 +1287,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		return itemStack;
 	}
-	
-	protected ItemStack createBrushIcon(String materialKey) {
-		return createBrushItem(materialKey, controller, this, false);
-	}
-	
-	public static ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.magic.MageController controller, Wand wand, boolean isItem) {
+
+    @Nullable
+    protected ItemStack createBrushIcon(String materialKey) {
+        return createBrushItem(materialKey, controller, this, false);
+    }
+
+    @Nullable
+    public static ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.magic.MageController controller, Wand wand, boolean isItem) {
 		MaterialBrush brushData = MaterialBrush.parseMaterialKey(materialKey);
 		if (brushData == null) return null;
 
@@ -1353,7 +1363,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 	}
 
-    public static ConfigurationSection itemToConfig(ItemStack item, ConfigurationSection stateNode) {
+    @Nullable public static ConfigurationSection itemToConfig(ItemStack item, ConfigurationSection stateNode) {
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 
         if (wandNode == null) {
@@ -1376,7 +1386,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
-    protected String getPotionEffectString() {
+    @Nullable
+    private String getPotionEffectString() {
         return getPotionEffectString(potionEffects);
     }
 
@@ -2313,7 +2324,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 	}
 
-	protected String getPathName() {
+	@Nullable protected String getPathName() {
     	String pathName = null;
 		com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
 		if (path != null) {
@@ -2489,7 +2500,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return isWand(activeItem);
 	}
 	
-	public static Wand getActiveWand(MagicController controller, Player player) {
+	@Nullable public static Wand getActiveWand(MagicController controller, Player player) {
 		ItemStack activeItem =  player.getInventory().getItemInMainHand();
 		if (isWand(activeItem)) {
 			return controller.getWand(activeItem);
@@ -2526,7 +2537,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return InventoryUtils.hasMeta(item, "sp");
 	}
 
-	public static Integer getSP(ItemStack item) {
+	@Nullable public static Integer getSP(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
 		String spNode = InventoryUtils.getMetaString(item, "sp");
 		if (spNode == null) return null;
@@ -2556,7 +2567,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return item != null && InventoryUtils.hasMeta(item, "brush");
 	}
 
-	protected static Object getWandOrUpgradeNode(ItemStack item) {
+	@Nullable protected static Object getWandOrUpgradeNode(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
 		Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 		if (wandNode == null) {
@@ -2565,27 +2576,28 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return wandNode;
 	}
 
-    public static String getWandTemplate(ItemStack item) {
+    @Nullable public static String getWandTemplate(ItemStack item) {
         Object wandNode = getWandOrUpgradeNode(item);
         if (wandNode == null) return null;
         return InventoryUtils.getMetaString(wandNode, "template");
     }
 
-    public static String getWandId(ItemStack item) {
+    @Nullable public static String getWandId(ItemStack item) {
 		if (InventoryUtils.isEmpty(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null) return null;
         return InventoryUtils.getMetaString(wandNode, "id");
     }
 
-	public static String getSpell(ItemStack item) {
-		if (InventoryUtils.isEmpty(item)) return null;
+    @Nullable
+    public static String getSpell(ItemStack item) {
+        if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
         return InventoryUtils.getMetaString(spellNode, "key");
 	}
 
-    public static String getSpellClass(ItemStack item) {
+    @Nullable public static String getSpellClass(ItemStack item) {
         if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
@@ -2600,15 +2612,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return quickCast == null ? true : quickCast;
     }
 
+    @Nullable
     public static String getSpellArgs(ItemStack item) {
-		if (InventoryUtils.isEmpty(item)) return null;
+        if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
         return InventoryUtils.getMetaString(spellNode, "args");
     }
 
+    @Nullable
     public static String getBrush(ItemStack item) {
-		if (InventoryUtils.isEmpty(item)) return null;
+        if (InventoryUtils.isEmpty(item)) return null;
         Object brushNode = InventoryUtils.getNode(item, "brush");
         if (brushNode == null) return null;
         return InventoryUtils.getMetaString(brushNode, "key");
@@ -3018,7 +3032,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return levels;
 	}
 
-    public static ItemStack createItem(MagicController controller, String templateName) {
+    @Nullable
+    private static ItemStack createItem(MagicController controller, String templateName) {
         ItemStack item = createSpellItem(templateName, controller, null, true);
         if (item == null) {
             item = createBrushItem(templateName, controller, null, true);
@@ -3032,8 +3047,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         return item;
     }
-	
-	public static Wand createWand(MagicController controller, String templateName) {
+
+    @Nullable
+    public static Wand createWand(MagicController controller, String templateName) {
 		if (controller == null) return null;
 		
 		Wand wand = null;
@@ -3047,6 +3063,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return wand; 
 	}
 
+    @Nullable
     public static Wand createWand(MagicController controller, ItemStack itemStack) {
         if (controller == null) return null;
 
@@ -3748,8 +3765,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		this.mage = null;
 		updateMaxMana(true);
 	}
-	
-	@Override
+
+    @Nullable
+    @Override
     public Spell getActiveSpell() {
 		if (mage == null) return null;
 		String activeSpellKey = getActiveSpellKey();
@@ -3757,22 +3775,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return mage.getSpell(activeSpellKey);
 	}
 
-	public Spell getAlternateSpell() {
+	@Nullable public Spell getAlternateSpell() {
 		if (mage == null || alternateSpell == null || alternateSpell.length() == 0) return null;
 		return mage.getSpell(alternateSpell);
 	}
 
-	public Spell getAlternateSpell2() {
+	@Nullable public Spell getAlternateSpell2() {
 		if (mage == null || alternateSpell2 == null || alternateSpell2.length() == 0) return null;
 		return mage.getSpell(alternateSpell2);
 	}
 
+    @Nullable
     @Override
     public SpellTemplate getBaseSpell(String spellName) {
         return getBaseSpell(new SpellKey(spellName));
     }
 
-    public SpellTemplate getBaseSpell(SpellKey key) {
+    @Nullable public SpellTemplate getBaseSpell(SpellKey key) {
     	if (!spells.contains(key.getBaseKey())) return null;
         SpellKey baseKey = new SpellKey(key.getBaseKey(), getSpellLevel(key.getBaseKey()));
         return controller.getSpellTemplate(baseKey.getKey());
@@ -4038,7 +4057,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		setActiveBrush(StringUtils.split(materials.get(materialIndex), '@')[0]);
 	}
 
-	public Mage getActiveMage() {
+	@Nullable public Mage getActiveMage() {
 		return mage;
 	}
 
@@ -4049,8 +4068,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 	}
 
-	@Override
-	public Color getEffectColor() {
+    @Nullable
+    @Override
+    public Color getEffectColor() {
 		return effectColor == null ? null : effectColor.getColor();
 	}
 
@@ -4058,12 +4078,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return effectParticle;
     }
 
-	@Override
-	public String getEffectParticleName() {
+    @Nullable
+    @Override
+    public String getEffectParticleName() {
 		return effectParticle == null ? null : effectParticle.name();
 	}
 
-	public Inventory getHotbar() {
+    @Nullable
+    public Inventory getHotbar() {
         if (this.hotbars.size() == 0) return null;
 
 		if (currentHotbar < 0 || currentHotbar >= this.hotbars.size())
@@ -5080,9 +5102,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public boolean isBound() {
         return bound;
     }
-	
-	@Override
-	public Spell getSpell(String spellKey, com.elmakers.mine.bukkit.api.magic.Mage mage) {
+
+    @Nullable
+    @Override
+    public Spell getSpell(String spellKey, com.elmakers.mine.bukkit.api.magic.Mage mage) {
 		if (mage == null) {
 			return null;
 		}
@@ -5095,9 +5118,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 		return mage.getSpell(spellKey);
 	}
-	
-	@Override
-	public SpellTemplate getSpellTemplate(String spellKey) {
+
+    @Nullable
+    @Override
+    public SpellTemplate getSpellTemplate(String spellKey) {
 		SpellKey key = new SpellKey(spellKey);
 		spellKey = key.getBaseKey();
 		if (!spells.contains(spellKey)) return null;
@@ -5107,10 +5131,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 		return controller.getSpellTemplate(spellKey);
 	}
-	
-	@Override
+
+    @Nullable
+    @Override
     public Spell getSpell(String spellKey) {
-		return getSpell(spellKey, mage);
+        return getSpell(spellKey, mage);
     }
 
 	private void setSpellLevel(String spellKey, int level) {
@@ -5176,8 +5201,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return level != null && level > 0 ? (float)level : 0;
     }
 
-	@Override
-	public WandTemplate getTemplate() {
+    @Nullable
+    @Override
+    public WandTemplate getTemplate() {
 		if (template == null || template.isEmpty()) return null;
 		return controller.getWandTemplate(template);
 	}
@@ -5346,8 +5372,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return isReflected;
 	}
 
-	@Override
-	public Location getLocation() {
+    @Nullable
+    @Override
+    public Location getLocation() {
 		if (mage == null) {
 			return null;
 		}
@@ -5356,8 +5383,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return wandLocation;
 	}
 
-	@Override
-	public Mage getMage() {
+    @Nullable
+    @Override
+    public Mage getMage() {
 		return mage;
 	}
 
@@ -5397,6 +5425,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return heldSlot;
     }
 
+    @Nullable
     @Override
     protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         switch (propertyType) {
@@ -5427,6 +5456,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return mage == null ? false : mage.isPlayer();
     }
 
+    @Nullable
     @Override
     public Player getPlayer() {
         return mage == null ? null : mage.getPlayer();

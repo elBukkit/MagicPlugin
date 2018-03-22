@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.integration.VaultController;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,9 +11,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.integration.VaultController;
+import javax.annotation.Nullable;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -91,6 +91,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         return get(key, key).replace(paramName1, paramValue1).replace(paramName2, paramValue2);
     }
 
+    @Nullable
     @Override
     public String getRandomized(String key) {
         if (!randomized.containsKey(key)) return null;

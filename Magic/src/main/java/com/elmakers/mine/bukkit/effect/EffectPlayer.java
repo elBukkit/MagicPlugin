@@ -1,14 +1,14 @@
 package com.elmakers.mine.bukkit.effect;
 
-import java.util.*;
-
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
-
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import de.slikey.effectlib.util.DynamicLocation;
 import de.slikey.effectlib.util.ParticleEffect;
-
+import java.util.*;
+import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Effect;
@@ -22,9 +22,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
-
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
@@ -579,21 +576,21 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.color = color;
     }
 
-    public Color getColor1() {
+    @Nullable public Color getColor1() {
         return useColor ? (color1 != null ? color1 : color) : null;
     }
 
-    public Color getColor2() {
+    @Nullable public Color getColor2() {
         return useColor ? (color2 != null ? color2 : color) : null;
     }
 
     public abstract void play();
 
-    public Location getOrigin() {
+    @Nullable public Location getOrigin() {
         return origin == null ? null : origin.getLocation();
     }
 
-    public Location getTarget() {
+    @Nullable public Location getTarget() {
         return target == null ? null : target.getLocation();
     }
 
@@ -619,11 +616,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
-    public Entity getOriginEntity() {
+    @Nullable public Entity getOriginEntity() {
         return origin == null ? null : origin.getEntity();
     }
 
-    public Entity getTargetEntity() {
+    @Nullable public Entity getTargetEntity() {
         return target == null ? null : target.getEntity();
     }
 
@@ -682,11 +679,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.currentEffects = plays;
     }
 
+    @Nullable
     @Override
     public Location getSourceLocation(CastContext context)  {
         return sourceLocation.getLocation(context);
     }
 
+    @Nullable
     @Override
     public Location getTargetLocation(CastContext context)  {
         return targetLocation.getLocation(context);

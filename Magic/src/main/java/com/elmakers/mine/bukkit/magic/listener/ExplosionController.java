@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 public class ExplosionController implements Listener {
     private final MagicController controller;
     private int	maxTNTPerChunk = 0;
@@ -47,6 +49,7 @@ public class ExplosionController implements Listener {
         }
     }
 
+    @Nullable
     protected UndoList getExplosionUndo(Entity explodingEntity) {
         UndoList blockList = controller.getEntityUndo(explodingEntity);
         if (blockList == null && autoRollbackDuration > 0 && rollbackExplosions.contains(explodingEntity.getType())) {

@@ -1,13 +1,18 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.spell.SpellEventType;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
+import com.elmakers.mine.bukkit.utility.Target;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
-
-import com.elmakers.mine.bukkit.utility.RandomUtils;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
+import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -24,11 +29,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.elmakers.mine.bukkit.api.spell.SpellEventType;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.UndoableSpell;
-import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
@@ -71,7 +71,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
             List<LivingEntity> iterate = new ArrayList<>(familiars);
             for (LivingEntity familiar : iterate)
             {
-                if (familiar.getUniqueId() == entity.getUniqueId()) {
+                if (Objects.equals(familiar.getUniqueId(), entity.getUniqueId())) {
                     familiar.remove();
                     familiars.remove(familiar);
                 }
@@ -244,7 +244,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 
 	}
 
-	protected LivingEntity spawnFamiliar(Location target, EntityType famType, Location targetLocation, LivingEntity targetEntity, boolean setTarget)
+	@Nullable protected LivingEntity spawnFamiliar(Location target, EntityType famType, Location targetLocation, LivingEntity targetEntity, boolean setTarget)
 	{
         LivingEntity familiar = null;
 		try {

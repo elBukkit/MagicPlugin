@@ -264,6 +264,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return level == null ? 1 : level;
     }
 
+    @Nullable
     public SpellTemplate getBaseSpell(String spellKey) {
         SpellKey key = new SpellKey(spellKey);
         Collection<String> spells = getSpells();
@@ -317,8 +318,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 		return spellSet;
     }
 
-	@Override
-    public @Nullable Spell getSpell(String spellKey) {
+    @Nullable
+    @Override
+    public Spell getSpell(String spellKey) {
         Mage mage = getMage();
 		if (mage == null) {
 			return null;
@@ -350,6 +352,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return brushes;
     }
 
+    @Nullable
     @Override
     public ProgressionPath getPath() {
         String pathKey = getString("path");
@@ -389,6 +392,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return super.upgrade(key, value);
     }
 
+	@Nullable
     @Override
     public Double getAttribute(String attributeKey) {
         ConfigurationSection attributes = getConfigurationSection("attributes");
@@ -438,7 +442,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 	}
 
     public abstract boolean isPlayer();
+    @Nullable
     public abstract Player getPlayer();
+    @Nullable
     @Override
     public abstract Mage getMage();
 }

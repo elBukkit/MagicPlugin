@@ -1,17 +1,19 @@
 package com.elmakers.mine.bukkit.api.effect;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
+import java.util.Collection;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import org.bukkit.entity.Entity;
 
-import java.util.Collection;
-import java.util.Map;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
 public interface EffectPlayer {
     void setEffectPlayList(Collection<EffectPlay> plays);
@@ -29,7 +31,9 @@ public interface EffectPlayer {
     void setMaterial(MaterialAndData material);
     void setMaterial(Block block);
     void setColor(Color color);
+    @Nullable
     Location getSourceLocation(CastContext context);
+    @Nullable
     Location getTargetLocation(CastContext context);
 
     boolean playsAtOrigin();

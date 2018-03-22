@@ -17,6 +17,8 @@ import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 
+import javax.annotation.Nullable;
+
 @Name("Caster")
 @Description({"The caster of a spell event.",
 		"Please note that the attacker can also be a command block or the console, but this expression will not be set in these cases."})
@@ -43,7 +45,7 @@ public class ExprCaster extends SimpleExpression<Entity> {
 		return new Entity[] {getCaster(e)};
 	}
 
-	private static Entity getCaster(final Event e) {
+	@Nullable private static Entity getCaster(final Event e) {
 		if (e != null && e instanceof CastEvent) {
 		    return ((CastEvent)e).getMage().getEntity();
 		}
@@ -56,7 +58,7 @@ public class ExprCaster extends SimpleExpression<Entity> {
 	}
 
 	@Override
-	public String toString(final Event e, final boolean debug) {
+	public String toString(@Nullable Event e, final boolean debug) {
 		if (e == null)
 			return "the caster";
 		return Classes.getDebugMessage(getSingle(e));

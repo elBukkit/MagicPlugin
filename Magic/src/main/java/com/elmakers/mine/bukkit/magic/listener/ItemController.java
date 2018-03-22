@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 public class ItemController {
     private MageController controller;
     private final Map<String, ItemData> items = new HashMap<>();
@@ -48,11 +50,13 @@ public class ItemController {
     public Set<String> getKeys() {
         return items.keySet();
     }
-    
+
+    @Nullable
     public ItemData get(String key) {
         return items.get(key);
     }
 
+    @Nullable
     public ItemData getOrCreate(String key) {
         ItemData data = get(key);
         if (data == null) {
@@ -65,6 +69,7 @@ public class ItemController {
         return data;
     }
 
+    @Nullable
     public ItemData get(ItemStack item) {
         return itemsByStack.get(item);
     }

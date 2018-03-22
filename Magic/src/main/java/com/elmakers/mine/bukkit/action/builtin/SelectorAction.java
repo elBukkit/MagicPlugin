@@ -221,7 +221,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
         }
 
-        protected List<Cost> parseCosts(ConfigurationSection node) {
+        @Nullable protected List<Cost> parseCosts(ConfigurationSection node) {
             if (node == null) {
                 return null;
             }
@@ -234,7 +234,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             return costs;
         }
 
-        protected List<CostModifier> parseCostModifiers(ConfigurationSection configuration, String section) {
+        @Nullable protected List<CostModifier> parseCostModifiers(ConfigurationSection configuration, String section) {
             Collection<ConfigurationSection> modifierConfigs = ConfigurationUtils.getNodeList(configuration, section);
             if (modifierConfigs == null) {
                 return null;
@@ -496,7 +496,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
         }
 
-        protected Cost takeCosts(CostReducer reducer, CastContext context) {
+        @Nullable protected Cost takeCosts(CostReducer reducer, CastContext context) {
             Cost required = getRequiredCost(reducer, context);
             if (required != null) {
                 return required;
@@ -510,7 +510,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             return null;
         }
 
-        public Cost getRequiredCost(CostReducer reducer, CastContext context) {
+        @Nullable public Cost getRequiredCost(CostReducer reducer, CastContext context) {
             if (costs != null) {
                 for (Cost cost : costs) {
                     if (!cost.has(context.getMage(), context.getWand(), reducer)) {
@@ -636,7 +636,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             return unavailable;
         }
 
-        public ItemStack getIcon() {
+        @Nullable public ItemStack getIcon() {
             return icon;
         }
 
@@ -947,7 +947,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         return showItems(context);
     }
 
-    protected ItemStack parseItem(String itemKey) {
+    @Nullable protected ItemStack parseItem(String itemKey) {
         if (itemKey == null || itemKey.isEmpty() || itemKey.equalsIgnoreCase("none"))
         {
             return null;

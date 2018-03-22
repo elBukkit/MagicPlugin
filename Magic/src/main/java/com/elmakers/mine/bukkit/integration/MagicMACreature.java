@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.garbagemule.MobArena.framework.Arena;
 import com.garbagemule.MobArena.waves.MACreature;
 import com.garbagemule.MobArena.waves.WaveUtils;
+import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Creature;
@@ -21,6 +22,7 @@ public class MagicMACreature extends MACreature {
         this.controller = controller;
     }
 
+    @Nullable
     @Override
     public LivingEntity spawn(Arena arena, World world, Location loc) {
         loc.setWorld(world);

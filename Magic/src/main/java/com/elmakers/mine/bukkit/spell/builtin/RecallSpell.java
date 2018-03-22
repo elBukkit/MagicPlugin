@@ -1,10 +1,15 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.LostWand;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.Target;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
+import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -12,12 +17,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.spell.UndoableSpell;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
 public class RecallSpell extends UndoableSpell
@@ -290,7 +289,7 @@ public class RecallSpell extends UndoableSpell
 		cycleTargetType(reverse);
 	}
 	
-	protected Location getTargetLocation(Player player, RecallType type, int index) {
+	@Nullable protected Location getTargetLocation(Player player, RecallType type, int index) {
 		castMessage = "";
 		failMessage = "";
 		switch (type) {

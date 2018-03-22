@@ -17,6 +17,12 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
@@ -24,13 +30,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nonnull;
 
 public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     private int page;
@@ -125,6 +124,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             skillLevel = heroes.getSkillLevel(player, heroesSkill);
         }
 
+        @Nullable
         public String getSkillKey() {
             String key = getSpellKey();
             if (key != null) {
@@ -133,6 +133,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             return key;
         }
 
+        @Nullable
         public String getSpellKey() {
             if (heroesSkill != null) {
                 return "heroes*" + heroesSkill;

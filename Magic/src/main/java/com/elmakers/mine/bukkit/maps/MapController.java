@@ -1,6 +1,13 @@
 package com.elmakers.mine.bukkit.maps;
 
 import com.elmakers.mine.bukkit.utility.SkinUtils;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -11,13 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 public class MapController implements com.elmakers.mine.bukkit.api.maps.MapController {
     private final File configurationFile;
@@ -281,6 +281,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
      * @param photoLabel
      * @return
      */
+    @Nullable
     @Override
     public ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoLabel) {
         photoLabel = photoLabel == null ? playerName : photoLabel;
@@ -293,11 +294,13 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return getMapItem(photoLabel, mapView);
     }
 
+    @Nullable
     public MapView getURL(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
         URLMap map = get(worldName, url, name, x, y, xOverlay, yOverlay, width, height, priority);
         return map.getMapView();
     }
 
+    @Nullable
     public MapView getURL(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
         URLMap map = get(worldName, url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName);
         return map.getMapView();
@@ -436,14 +439,17 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return map;
     }
 
+    @Nullable
     private URLMap get(String worldName, String url, int x, int y, int width, int height) {
         return get(worldName, url, x, y, width, height, null);
     }
 
+    @Nullable
     private URLMap get(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
         return get(worldName, url, name, x, y, xOverlay, yOverlay, width, height, priority, null);
     }
 
+    @Nullable
     @SuppressWarnings("deprecation")
     private URLMap get(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
         URLMap existing = null;
@@ -475,6 +481,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return newMap;
     }
 
+    @Nullable
     private URLMap get(String worldName, String url, int x, int y, int width, int height, Integer priority) {
         return get(worldName, url, null, x, y, null, null, width, height, priority);
     }

@@ -1,6 +1,12 @@
 package com.elmakers.mine.bukkit.block;
 
 import com.elmakers.mine.bukkit.api.block.ModifyType;
+import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import java.lang.ref.WeakReference;
+import java.util.Set;
+import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -11,12 +17,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.BlockVector;
-import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.magic.MaterialSet;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-
-import java.lang.ref.WeakReference;
-import java.util.Set;
 
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.
@@ -231,7 +231,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + worldName + "|" + getMaterial().getId() + ":" + getData();
     }
 
-    @SuppressWarnings("deprecation")
+    @Nullable @SuppressWarnings("deprecation")
     public static BlockData fromString(String s) {
         BlockData result = null;
         if (s == null) return null;
@@ -293,16 +293,16 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         return location;
     }
 
+    @Nullable
     @Override
-    public World getWorld()
-    {
+    public World getWorld() {
         if (worldName == null || worldName.length() == 0) return null;
         return Bukkit.getWorld(worldName);
     }
 
+    @Nullable
     @Override
-    public Block getBlock()
-    {
+    public Block getBlock() {
         Block block = null;
         if (location != null)
         {
@@ -320,6 +320,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         return isDifferent(getBlock());
     }
 
+    @Nullable
     @Override
     public UndoList getUndoList() {
         return undoList != null ? undoList.get() : null;

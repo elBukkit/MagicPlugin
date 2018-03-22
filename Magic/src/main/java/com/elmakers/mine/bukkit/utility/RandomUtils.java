@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
+import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -32,7 +32,7 @@ public class RandomUtils {
         return (T)(Number)((Float)previousValue + distance * ((Float)nextValue - (Float)previousValue));
     }
 
-    public static <T extends Object> T weightedRandom(LinkedList<WeightedPair<T>> weightList) {
+    @Nullable public static <T extends Object> T weightedRandom(LinkedList<WeightedPair<T>> weightList) {
         if (weightList == null || weightList.size() == 0) return null;
 
         Float maxWeight = weightList.getLast().getThreshold();
@@ -154,7 +154,7 @@ public class RandomUtils {
         return base;
     }
 
-    public static String getEntry(String csvList, int index)
+    @Nullable public static String getEntry(String csvList, int index)
     {
         if (csvList == null) return null;
         String[] pieces = StringUtils.split(csvList, ',');

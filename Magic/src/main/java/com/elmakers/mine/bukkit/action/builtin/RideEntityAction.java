@@ -25,6 +25,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 public class RideEntityAction extends BaseSpellAction
 {
     private double moveDistance = 0;
@@ -395,6 +397,7 @@ public class RideEntityAction extends BaseSpellAction
         }
     }
 
+    @Nullable
     protected Entity getMount(CastContext context) {
         return isPassenger ? context.getEntity() : mount;
     }

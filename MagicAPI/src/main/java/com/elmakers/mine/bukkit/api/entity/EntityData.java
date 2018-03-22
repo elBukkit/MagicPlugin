@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.api.entity;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
+import javax.annotation.Nullable;
+
 import org.bukkit.Art;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -8,6 +9,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface EntityData {
     String getKey();
@@ -19,13 +22,19 @@ public interface EntityData {
     ItemStack getItem();
     double getHealth();
     void setHasMoved(boolean hasMoved);
+    @Nullable
     Entity spawn();
+    @Nullable
     Entity spawn(Location location);
+    @Nullable
     Entity spawn(MageController controller, Location location);
+    @Nullable
     Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason);
+    @Nullable
     Entity undo();
     boolean modify(MageController controller, Entity entity);
     boolean modify(Entity entity);
+    @Nullable
     EntityData getRelativeTo(Location center);
     String describe();
     String getInteractSpell();

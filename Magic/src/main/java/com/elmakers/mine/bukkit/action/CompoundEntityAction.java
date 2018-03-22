@@ -2,12 +2,12 @@ package com.elmakers.mine.bukkit.action;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nullable;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 public abstract class CompoundEntityAction extends CompoundAction
 {
@@ -60,9 +60,9 @@ public abstract class CompoundEntityAction extends CompoundAction
         return SpellResult.NO_ACTION;
     }
 
+    @Nullable
     @Override
-    public Object clone()
-    {
+    public Object clone() {
         CompoundEntityAction action = (CompoundEntityAction)super.clone();
         if (action != null) {
             action.entities = new ArrayList<>(this.entities);

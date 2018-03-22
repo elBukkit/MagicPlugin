@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.action;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.Maps;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -9,9 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.Maps;
+import javax.annotation.Nullable;
 
 /**
  * Creates new action instances from a "class" parameter usually obtained from a
@@ -173,6 +174,7 @@ public class ActionFactory {
                 "%s",
         };
 
+        @Nullable
         @Override
         public ActionConstructor resolve(String className,
                 List<String> attempts) {
@@ -211,6 +213,7 @@ public class ActionFactory {
             return null;
         }
 
+        @Nullable
         private static ActionConstructor createConstructor(Class<?> clazz) {
             Constructor<?> constructor;
 

@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.api.magic;
 
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import org.bukkit.inventory.ItemStack;
+import java.util.Collection;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
+
+import org.bukkit.inventory.ItemStack;
+
+import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public interface CasterProperties extends MagicConfigurable {
     boolean hasSpell(String spellKey);
@@ -18,8 +20,10 @@ public interface CasterProperties extends MagicConfigurable {
     void setManaMax(int manaMax);
     int getManaRegeneration();
     void setManaRegeneration(int manaRegeneration);
+    @Nullable
     ProgressionPath getPath();
     boolean canProgress();
+    @Nullable
     Double getAttribute(String attributeKey);
     void setAttribute(String attributeKey, Double attributeValue);
     boolean addItem(ItemStack item);
@@ -32,5 +36,6 @@ public interface CasterProperties extends MagicConfigurable {
      * @param spellKey The spell key to request
      * @return the Spell, or null if not present here.
      */
-    @Nullable Spell getSpell(String spellKey);
+    @Nullable
+    Spell getSpell(String spellKey);
 }

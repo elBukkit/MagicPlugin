@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.integration;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import javax.annotation.Nullable;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.item.ItemInfo;
@@ -8,9 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 public class VaultController {
     private static VaultController instance;
@@ -98,7 +98,7 @@ public class VaultController {
         return response.transactionSuccess();
     }
 
-    public String getItemName(Material material, short data) {
+    @Nullable public String getItemName(Material material, short data) {
         ItemInfo info = Items.itemByType(material, data);
         return info == null ? null : info.getName();
     }

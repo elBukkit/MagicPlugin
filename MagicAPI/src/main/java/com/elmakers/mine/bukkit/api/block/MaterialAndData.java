@@ -1,10 +1,13 @@
 package com.elmakers.mine.bukkit.api.block;
 
-import com.elmakers.mine.bukkit.api.magic.Messages;
+import javax.annotation.Nullable;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
+
+import com.elmakers.mine.bukkit.api.magic.Messages;
 
 /**
  * A utility interface for presenting a Material in its entirety, including Material variants.
@@ -47,22 +50,29 @@ public interface MaterialAndData {
     void modify(Block block);
     void modify(Block block, boolean applyPhysics);
     void modify(Block block, ModifyType modifyType);
+    @Nullable
     Short getData();
+    @Nullable
     Byte getBlockData();
     void setData(Short data);
+    @Nullable
     Material getMaterial();
     String getKey();
     String getName();
     String getName(Messages messages);
+    @Nullable
     String getBaseName();
     boolean is(Block block);
     boolean isDifferent(Block block);
+    @Nullable
     ItemStack getItemStack(int amount);
     boolean isValid();
+    @Nullable
     String getCommandLine();
     void setCommandLine(String commandLine);
     void setCustomName(String customName);
     void setRawData(Object data);
     ItemStack applyToItem(ItemStack stack);
+    @Nullable
     MaterialData getMaterialData();
 }

@@ -15,13 +15,6 @@ import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
 import com.herocraftonline.heroes.characters.party.HeroParty;
 import com.herocraftonline.heroes.characters.skill.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +26,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nullable;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class HeroesManager implements ManaController, AttributeProvider, TeamProvider {
     private Heroes heroes;
@@ -207,7 +206,7 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
         }
     }
 
-    public SpellTemplate createSkillSpell(MagicController controller, String skillName) {
+    @Nullable public SpellTemplate createSkillSpell(MagicController controller, String skillName) {
         if (skills == null) return null;
         Skill skill = skills.getSkill(skillName);
         if (skill == null) return null;
@@ -270,12 +269,12 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
         return heroClass.getName();
     }
 
-    protected Skill getSkill(String key) {
+    @Nullable protected Skill getSkill(String key) {
         if (skills == null) return null;
         return skills.getSkill(key);
     }
 
-    protected Hero getHero(Player player) {
+    @Nullable protected Hero getHero(Player player) {
         if (characters == null) return null;
         return characters.getHero(player);
     }
@@ -339,6 +338,7 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
         return attributes.keySet();
     }
 
+    @Nullable
     @Override
     public Double getAttributeValue(String attribute, Player player) {
         Double result = null;

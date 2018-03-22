@@ -1,5 +1,21 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.api.wand.WandAction;
+import com.elmakers.mine.bukkit.api.wand.WandTemplate;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.wand.WandMode;
+import de.slikey.effectlib.util.ParticleEffect;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,18 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.api.wand.WandTemplate;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.api.wand.WandAction;
-import com.elmakers.mine.bukkit.wand.WandMode;
-
-import de.slikey.effectlib.util.ParticleEffect;
+import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,13 +35,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
 
 public class WandCommandExecutor extends MagicConfigurableExecutor {
 	
@@ -884,24 +882,24 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		}
 		return result;
 	}
-	
-	protected Wand checkWand(CommandSender sender, Player player)
-	{
-		return checkWand(sender, player, false, false);
-	}
-	
-	protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable)
-	{
-		return checkWand(sender, player, skipModifiable, false);
-	}
-	
-	protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound)
-	{
-		return checkWand(sender, player, skipModifiable, skipBound, false);
-	}
-	
-	protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet)
-	{
+
+    @Nullable
+    protected Wand checkWand(CommandSender sender, Player player) {
+        return checkWand(sender, player, false, false);
+    }
+
+    @Nullable
+    protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable) {
+        return checkWand(sender, player, skipModifiable, false);
+    }
+
+    @Nullable
+    protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound) {
+        return checkWand(sender, player, skipModifiable, skipBound, false);
+    }
+
+    @Nullable
+    protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet) {
 		Mage mage = api.getMage(player);
 		if (mage == null) return  null;
 		Wand wand = mage.getActiveWand();

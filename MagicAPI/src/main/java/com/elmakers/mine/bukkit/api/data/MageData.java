@@ -1,14 +1,17 @@
 package com.elmakers.mine.bukkit.api.data;
 
-import com.elmakers.mine.bukkit.api.wand.Wand;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public class MageData {
     private String id;
@@ -237,6 +240,7 @@ public class MageData {
     }
 
     @Deprecated
+    @Nullable
     public Wand getSoulWand() {
         return null;
     }

@@ -1,20 +1,21 @@
 package com.elmakers.mine.bukkit.spell;
 
+import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.utility.ColorHD;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.elmakers.mine.bukkit.utility.ColorHD;
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
-
-import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public abstract class BrushSpell extends BlockSpell {
 
@@ -132,6 +133,7 @@ public abstract class BrushSpell extends BlockSpell {
         return brushIsErase();
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush()
     {
@@ -147,6 +149,7 @@ public abstract class BrushSpell extends BlockSpell {
         return super.getBrush();
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {

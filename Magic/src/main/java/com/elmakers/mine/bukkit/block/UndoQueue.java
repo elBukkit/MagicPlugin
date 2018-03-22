@@ -4,11 +4,11 @@ import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import org.bukkit.block.Block;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Nullable;
+import org.bukkit.block.Block;
 
 public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 {
@@ -108,12 +108,14 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
          return head == null;
     }
 
+    @Nullable
     @Override
     public UndoList getLast()
     {
         return head;
     }
 
+    @Nullable
     @Override
     public UndoList getLast(Block target)
     {
@@ -135,11 +137,13 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         maxSize = size;
     }
 
+    @Nullable
     public UndoList undo()
     {
         return undoRecent(0);
     }
 
+    @Nullable
     public UndoList undo(Block target)
     {
         return undoRecent(target, 0);
@@ -158,12 +162,14 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
      * @param timeout How long ago the UndoList may have been modified
      * @return The UndoList that was undone, or null if none.
      */
+    @Nullable
     @Override
     public UndoList undoRecent(int timeout)
     {
         return undoRecent(timeout, null);
     }
 
+    @Nullable
     @Override
     public UndoList undoRecent(int timeout, String spellKey)
     {
@@ -204,6 +210,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
      * @param timeout How long ago the UndoList may have been modified
      * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
      */
+    @Nullable
     @Override
     public UndoList undoRecent(Block block, int timeout)
     {

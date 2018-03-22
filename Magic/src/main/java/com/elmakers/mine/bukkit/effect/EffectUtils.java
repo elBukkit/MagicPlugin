@@ -3,6 +3,11 @@ package com.elmakers.mine.bukkit.effect;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
+import java.lang.reflect.Constructor;
+import java.util.Collection;
+import java.util.Random;
+import javax.annotation.Nullable;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -13,27 +18,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.util.Vector;
-
-import java.lang.reflect.Constructor;
-import java.util.Collection;
-import java.util.Random;
 
 public class EffectUtils extends NMSUtils {
     public static void spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power) {
         spawnFireworkEffect(server, location, effect, power, null, 2, 1);
     }
-    
+
     public static void spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, boolean silent) {
         spawnFireworkEffect(server, location, effect, power, null, 2, 1, silent);
     }
 
+    @Nullable
     public static Entity spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown) {
         return spawnFireworkEffect(server, location, effect, power, direction, expectedLifespan, ticksFlown, false);
     }
 
+    @Nullable
     public static Entity spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown, boolean silent) {
         Entity entity = null;
         try {

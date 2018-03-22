@@ -9,14 +9,12 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class FillBatch extends BrushBatch {
 	private final MaterialBrush brush;
 	private final World world;
-	private final Mage mage;
 
 	private final int absx;
 	private final int absy;
@@ -42,7 +40,6 @@ public class FillBatch extends BrushBatch {
 		super(spell);
 		this.bounds = new BoundingBox(p1.toVector(), p2.toVector());
 		this.brush = brush;
-		this.mage = spell.getMage();
 		this.world = p1.getWorld();
 		
 		int deltax = p2.getBlockX() - p1.getBlockX();

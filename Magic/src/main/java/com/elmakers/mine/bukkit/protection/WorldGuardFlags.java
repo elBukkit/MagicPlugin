@@ -7,10 +7,21 @@ import com.sk89q.worldguard.protection.association.RegionAssociable;
 
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 public interface WorldGuardFlags {
+    @Nullable
     public String getDestructible(RegionAssociable source, ApplicableRegionSet checkSet);
+
+    @Nullable
     public String getReflective(RegionAssociable source, ApplicableRegionSet checkSet);
+
+    @Nullable
     public Set<String> getSpellOverrides(RegionAssociable source, ApplicableRegionSet checkSet);
+
+    @Nullable
     public Boolean getWandPermission(RegionAssociable source, ApplicableRegionSet checkSet, Wand wand);
+
+    @Nullable
     public Boolean getCastPermission(RegionAssociable source, ApplicableRegionSet checkSet, SpellTemplate spell);
 }

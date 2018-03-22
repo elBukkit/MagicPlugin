@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
@@ -98,7 +99,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     private boolean                 consumed = false;
     private boolean                 undoEntityEffects = true;
-    private Set<EntityType>         undoEntityTypes = null;
+    private @Nullable Set<EntityType>   undoEntityTypes = null;
     protected boolean               undoBreakable = false;
     protected boolean               undoReflective = false;
     protected boolean               undoBreaking = false;
@@ -346,6 +347,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
+    @Nullable
     public BlockData undoNext(boolean applyPhysics)
     {
         if (blockList.size() == 0) {
@@ -600,6 +602,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
+    @Nullable
     public EntityData modify(Entity entity)
     {
         EntityData entityData = null;
@@ -626,6 +629,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
+    @Nullable
     public EntityData damage(Entity entity) {
         EntityData data = modify(entity);
         // Kind of a hack to prevent dropping hanging entities that we're going to undo later
@@ -810,6 +814,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
+    @Nullable
     public CastContext getContext() {
         return context == null ? null : context.get();
     }
@@ -826,7 +831,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     @Override
     public int compareTo(com.elmakers.mine.bukkit.api.block.UndoList o) {
-        return (int)(scheduledTime - o.getScheduledTime());
+        return Long.compare(scheduledTime, o.getScheduledTime());
     }
 
     @Override
@@ -883,13 +888,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         this.next = null;
     }
 
-    public UndoList getNext()
-    {
+    @Nullable
+    public UndoList getNext() {
         return next;
     }
 
-    public UndoList getPrevious()
-    {
+    @Nullable
+    public UndoList getPrevious() {
         return previous;
     }
 
@@ -917,6 +922,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return modifyType;
     }
 
+    @Nullable
     public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Entity entity) {
         com.elmakers.mine.bukkit.api.block.UndoList blockList = null;
         if (entity != null && entity.hasMetadata("MagicBlockList")) {
@@ -941,10 +947,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return blockList;
     }
 
+    @Nullable
     public static BlockData getBlockData(Location location) {
         return registry.getBlockData(location);
     }
 
+    @Nullable
     public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Location location) {
         BlockData blockData = getBlockData(location);
         return blockData == null ? null : blockData.getUndoList();
@@ -1035,8 +1043,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public int getRunnableCount() {
         return runnables == null ? 0 : runnables.size();
     }
-    
+
     @Override
+    @Nullable
     public Runnable undoNextRunnable() {
         Runnable undone = null;
         if (runnables != null && !runnables.isEmpty()) {

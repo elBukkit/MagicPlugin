@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.maps;
 
+import com.elmakers.mine.bukkit.utility.SkinUtils;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -17,14 +18,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
-
-import com.elmakers.mine.bukkit.utility.SkinUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -180,6 +179,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         return enabled;
     }
 
+    @Nullable
     @SuppressWarnings("deprecation")
     protected MapView getMapView() {
         if (!enabled) {
@@ -349,7 +349,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         }
     }
 
-    protected BufferedImage getImage() {
+    @Nullable protected BufferedImage getImage() {
         if (loading || !enabled) {
             return null;
         }

@@ -3,8 +3,8 @@ package com.elmakers.mine.bukkit.api.magic;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.spell.SpellCategory;
+import javax.annotation.Nullable;
+
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
@@ -281,14 +283,17 @@ public interface MagicAPI {
      * @param magicItemKey The template key, may be a wand, spell, etc.
      * @return An ItemStack representing the magic item.
      */
+    @Nullable
     ItemStack createItem(String magicItemKey);
-    ItemStack createItem(String magicItemKey, Mage mage);
+    @Nullable
+    ItemStack createItem(String magicItemKey, @Nullable Mage mage);
 
     /**
      * Create a generic version of an item with no extra data.
      * @param magicItemKey The template key, may be a wand, spell, etc.
      * @return The specified item.
      */
+    @Nullable
     ItemStack createGenericItem(String magicItemKey);
 
     /**
@@ -339,6 +344,7 @@ public interface MagicAPI {
      * @param wandKey The template key, or blank for a default wand.
      * @return A new Wand instance, with a useable ItemStack.
      */
+    @Nullable
     Wand createWand(String wandKey);
 
     /**
@@ -367,6 +373,7 @@ public interface MagicAPI {
      * @param item The item to use as the wand's icon.
      * @return The wand instance, or null on error.
      */
+    @Nullable
     Wand createWand(ItemStack item);
 
     /**
@@ -422,6 +429,7 @@ public interface MagicAPI {
      * @param item The item to inspect
      * @return The key of the Spell represented by this item.
      */
+    @Nullable
     String getSpell(ItemStack item);
 
     /**
@@ -430,6 +438,7 @@ public interface MagicAPI {
      * @param item The item to inspect
      * @return The key of the material brush represented by this item.
      */
+    @Nullable
     String getBrush(ItemStack item);
 
     /**
@@ -441,6 +450,7 @@ public interface MagicAPI {
      * @param spellKey The Spell to create an item for.
      * @return A new ItemStack, or null on error.
      */
+    @Nullable
     ItemStack createSpellItem(String spellKey);
 
     /**
@@ -452,6 +462,7 @@ public interface MagicAPI {
      * @param brushKey The Material brush to create an item for.
      * @return A new ItemStack, or null on error.
      */
+    @Nullable
     ItemStack createBrushItem(String brushKey);
 
     /**
@@ -529,6 +540,7 @@ public interface MagicAPI {
      * @param key The key of the SpellTemplate to look up.
      * @return The requested SpellTemplate, or null on failure.
      */
+    @Nullable
     SpellTemplate getSpellTemplate(String key);
 
     /**

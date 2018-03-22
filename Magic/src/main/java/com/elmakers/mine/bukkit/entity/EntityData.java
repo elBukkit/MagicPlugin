@@ -8,6 +8,17 @@ import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Level;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.bukkit.Art;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -46,17 +57,6 @@ import org.bukkit.material.Colorable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
-
-import javax.annotation.Nonnull;
-import java.lang.ref.WeakReference;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
 
 /**
  * This class stores information about an Entity.
@@ -221,7 +221,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
     
-    private ItemData getItem(ItemStack item) {
+    @Nullable private ItemData getItem(ItemStack item) {
         return item == null ? null : new com.elmakers.mine.bukkit.item.ItemData(item);
     }
 
@@ -396,7 +396,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.uuid = entity == null ? null : entity.getUniqueId();
     }
 
-    @SuppressWarnings("deprecation")
+    @Nullable @SuppressWarnings("deprecation")
     public static EntityType parseEntityType(String typeString)
     {
         if (typeString == null) return null;
@@ -447,7 +447,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return health;
     }
 
-    protected Entity trySpawn(MageController controller, CreatureSpawnEvent.SpawnReason reason) {
+    @Nullable protected Entity trySpawn(MageController controller, CreatureSpawnEvent.SpawnReason reason) {
         Entity spawned = null;
         boolean addedToWorld = false;
         if (type != null && type != EntityType.PLAYER) {
@@ -481,6 +481,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return spawned;
     }
 
+    @Nullable
     @Override
     public EntityData getRelativeTo(Location center) {
         EntityData copy = this.clone();
@@ -495,21 +496,25 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return copy;
     }
 
+    @Nullable
     @Override
     public Entity spawn() {
         return spawn(null, null);
     }
 
+    @Nullable
     @Override
     public Entity spawn(Location location) {
         return spawn(null, location, null);
     }
 
+    @Nullable
     @Override
     public Entity spawn(MageController controller, Location location) {
         return spawn(controller, location, null);
     }
-    
+
+    @Nullable
     @Override
     public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
         if (location != null) this.location = location;
@@ -517,6 +522,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return trySpawn(controller, reason);
     }
 
+    @Nullable
     @Override
     public Entity undo() {
         Entity entity = this.getEntity();
@@ -671,7 +677,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return true;
     }
 
-    public ConfigurationSection getMageProperties() {
+    @Nullable public ConfigurationSection getMageProperties() {
         return mageData != null ? mageData.mageProperties : null;
     }
 
@@ -748,7 +754,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return isProjectile;
     }
 
-    public Entity getEntity() {
+    @Nullable public Entity getEntity() {
         return entity == null ? null : entity.get();
     }
     
@@ -757,6 +763,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return name;
     }
 
+    @Nullable
     @Override
     public EntityData clone() {
         try {

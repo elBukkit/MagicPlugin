@@ -3,26 +3,16 @@ package com.elmakers.mine.bukkit.wand;
 import com.elmakers.mine.bukkit.api.event.PathUpgradeEvent;
 import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +23,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import javax.annotation.Nullable;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 /**
  * A represents a randomized upgrade path that a wand may use
@@ -280,7 +280,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return key;
     }
 
-    public WandLevel getLevel(int level) {
+    @Nullable public WandLevel getLevel(int level) {
         if (levelMap == null) return null;
 
         if (!levelMap.containsKey(level)) {
@@ -294,8 +294,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return levelMap.get(level);
     }
 
-    protected static WandUpgradePath getPath(MageController controller, String key, ConfigurationSection configuration)
-    {
+    @Nullable
+    protected static WandUpgradePath getPath(MageController controller, String key, ConfigurationSection configuration) {
         WandUpgradePath path = paths.get(key);
         if (path == null) {
             ConfigurationSection parameters = configuration.getConfigurationSection(key);
@@ -334,6 +334,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return paths.keySet();
     }
 
+    @Nullable
     public static WandUpgradePath getPath(String key) {
         return paths.get(key);
     }
@@ -344,6 +345,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return Math.min(levels[levels.length - 1], maxLevel);
     }
 
+    @Nullable
     public Set<Integer> getLevels() {
         if (levelMap == null) return null;
         Set<Integer> filteredLevels = new HashSet<>();
@@ -540,6 +542,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return upgradeKey != null && !upgradeKey.isEmpty();
     }
 
+    @Nullable
     @Override
     public WandUpgradePath getUpgrade() {
         return getPath(upgradeKey);

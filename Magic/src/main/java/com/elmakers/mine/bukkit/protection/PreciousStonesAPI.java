@@ -2,7 +2,11 @@ package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nullable;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.FieldSign;
 import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
@@ -25,11 +29,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, PVPManager {
 	private PreciousStones preciousStones = null;
@@ -61,7 +60,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		return fields.size() == 0;
 	}
 
-	public Map<String, Location> getFieldLocations(Player player) {
+	@Nullable public Map<String, Location> getFieldLocations(Player player) {
 		if (preciousStones == null || player == null || !canGetFields)
 			return null;
 
@@ -110,7 +109,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		return allowed;
 	}
 
-    public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
+    @Nullable public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
         Boolean overridePermission = null;
         if (location != null && preciousStones != null)
         {

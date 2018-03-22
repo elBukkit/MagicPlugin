@@ -33,6 +33,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 /**
  * Contains some raw methods for doing some simple NMS utilities.
  * 
@@ -1330,6 +1332,7 @@ public class NMSUtils {
         return meta;
     }
 
+    @Nullable
     public static Boolean getMetaBoolean(Object node, String tag) {
         if (node == null || !class_NBTTagCompound.isInstance(node)) return null;
         Boolean meta = null;

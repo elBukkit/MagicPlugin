@@ -5,6 +5,8 @@ import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.google.common.base.Preconditions;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -13,6 +15,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 public abstract class CompoundAction extends BaseSpellAction
 {
     private boolean usesBrush = false;
@@ -20,11 +24,11 @@ public abstract class CompoundAction extends BaseSpellAction
     private boolean requiresBuildPermission = false;
     private boolean requiresBreakPermission = false;
     private boolean stopOnSuccess = false;
-    protected ConfigurationSection actionConfiguration;
-    protected CastContext actionContext;
+    protected @Nullable ConfigurationSection actionConfiguration;
+    protected @Nullable CastContext actionContext;
 
     protected Map<String, ActionHandler> handlers = new HashMap<>();
-    protected String currentHandler = null;
+    protected @Nullable String currentHandler = null;
     protected State state = State.NOT_STARTED;
 
     protected enum State {
@@ -50,6 +54,8 @@ public abstract class CompoundAction extends BaseSpellAction
     }
 
     protected SpellResult startActions(String handlerKey) {
+        Preconditions.checkState(actionContext != null);
+
         currentHandler = handlerKey;
         ActionHandler handler = handlers.get(currentHandler);
         if (handler != null) {
@@ -150,10 +156,12 @@ public abstract class CompoundAction extends BaseSpellAction
         addHandler(spell, "actions");
     }
 
+    @Nullable
     protected ActionHandler getHandler(String handlerKey) {
         return handlers.get(handlerKey);
     }
 
+    @Nullable
     protected ActionHandler addHandler(Spell spell, String handlerKey) {
         ActionHandler handler = handlers.get(handlerKey);
         if (handler != null) {
@@ -316,6 +324,7 @@ public abstract class CompoundAction extends BaseSpellAction
     }
 
     @Override
+    @Nullable
     public Object clone()
     {
         CompoundAction action = (CompoundAction)super.clone();

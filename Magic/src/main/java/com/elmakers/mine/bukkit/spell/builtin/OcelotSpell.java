@@ -1,16 +1,15 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.Target;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.annotation.Nullable;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
-
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utility.Target;
 
 public class OcelotSpell extends TargetingSpell
 {
@@ -18,7 +17,7 @@ public class OcelotSpell extends TargetingSpell
 
 	protected List<Ocelot> ocelots = new ArrayList<>();
 
-	public Ocelot newOcelot(Target target)
+	@Nullable public Ocelot newOcelot(Target target)
 	{
 		Block targetBlock = target.getBlock();
 		if (targetBlock == null)

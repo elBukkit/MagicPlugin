@@ -10,6 +10,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 public abstract class BaseSpellAction implements SpellAction
 {
     private boolean requiresTarget;
@@ -105,6 +107,7 @@ public abstract class BaseSpellAction implements SpellAction
     }
 
     @Override
+    @Nullable
     public Object clone()
     {
         try

@@ -11,13 +11,13 @@ import com.sk89q.worldguard.protection.association.RegionAssociable;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import java.util.Set;
+import java.util.logging.Level;
+import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.util.Set;
-import java.util.logging.Level;
 
 public class WorldGuardAPI {
     private final Plugin owningPlugin;
@@ -106,7 +106,7 @@ public class WorldGuardAPI {
 		return true;
 	}
 
-    public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
+    @Nullable public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
         if (location != null && worldGuard != null && customFlags != null)
         {
             RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
@@ -124,7 +124,7 @@ public class WorldGuardAPI {
         return null;
     }
 
-    public Boolean getWandPermission(Player player, Wand wand, Location location) {
+    @Nullable public Boolean getWandPermission(Player player, Wand wand, Location location) {
         if (location != null && worldGuard != null && customFlags != null)
         {
             RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
@@ -142,7 +142,7 @@ public class WorldGuardAPI {
         return null;
     }
 
-    public String getReflective(Player player, Location location) {
+    @Nullable public String getReflective(Player player, Location location) {
         if (location != null && worldGuard != null && customFlags != null)
         {
             RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
@@ -160,7 +160,7 @@ public class WorldGuardAPI {
         return null;
     }
 
-    public Set<String> getSpellOverrides(Player player, Location location) {
+    @Nullable public Set<String> getSpellOverrides(Player player, Location location) {
         if (location != null && worldGuard != null && customFlags != null)
         {
             RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
@@ -178,7 +178,7 @@ public class WorldGuardAPI {
         return null;
     }
 
-    public String getDestructible(Player player, Location location) {
+    @Nullable public String getDestructible(Player player, Location location) {
         if (location != null && worldGuard != null && customFlags != null)
         {
             RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());

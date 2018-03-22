@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.maps;
 
+import com.elmakers.mine.bukkit.utility.ColorHD;
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.elmakers.mine.bukkit.utility.ColorHD;
+import javax.annotation.Nullable;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.map.MapCanvas;
@@ -31,6 +31,7 @@ public class BufferedMapCanvas implements MapCanvas {
     private byte[] pixels = new byte[128 * 128];
     private Map<Byte, DyeColor> dyeColors = new HashMap<>();
 
+    @Nullable
     @Override
     public MapView getMapView() {
         return null;
@@ -82,7 +83,7 @@ public class BufferedMapCanvas implements MapCanvas {
         return pixels[x + y * CANVAS_WIDTH];
     }
 
-    @SuppressWarnings("deprecation")
+    @Nullable @SuppressWarnings("deprecation")
     public DyeColor getDyeColor(int x, int y) {
         byte color = getPixel(x, y);
         if (color == MapPalette.TRANSPARENT) return null;

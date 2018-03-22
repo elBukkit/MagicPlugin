@@ -5,19 +5,19 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MageTrigger;
 import com.elmakers.mine.bukkit.magic.MageTrigger.MageTriggerType;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class EntityMageData {
     // These properties will get copied directly to mage data, as if they were in the "mage" section.
@@ -92,7 +92,7 @@ public class EntityMageData {
         return !hasProperties && !hasTriggers && !aggro;
     }
 
-    private List<MageTrigger> getTriggers(MageTriggerType type) {
+    @Nullable private List<MageTrigger> getTriggers(MageTriggerType type) {
         return triggers == null ? null : triggers.get(type);
     }
 

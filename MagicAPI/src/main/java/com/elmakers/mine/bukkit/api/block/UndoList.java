@@ -4,16 +4,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.batch.Batch;
-import com.elmakers.mine.bukkit.api.entity.EntityData;
-import com.elmakers.mine.bukkit.api.spell.Spell;
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import org.bukkit.entity.EntityType;
+
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.batch.Batch;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public interface UndoList extends BlockList, Comparable<UndoList> {
     void commit();
@@ -21,6 +23,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     void undo(boolean blocking);
     void undoScheduled();
     void undoScheduled(boolean blocking);
+    @Nullable
     BlockData undoNext(boolean applyPhysics);
 
     void setEntityUndo(boolean undoEntityEffects);
@@ -49,7 +52,9 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
 
     void add(Entity entity);
     void remove(Entity entity);
+    @Nullable
     EntityData damage(Entity entity);
+    @Nullable
     EntityData modify(Entity entity);
     void add(Runnable runnable);
     void move(Entity entity);
@@ -69,6 +74,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
 
     String getName();
     Mage getOwner();
+    @Nullable
     CastContext getContext();
     void setBypass(boolean bypass);
     Collection<Entity> getAllEntities();
@@ -89,5 +95,6 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     boolean hasChanges();
     
     int getRunnableCount();
+    @Nullable
     Runnable undoNextRunnable();
 }

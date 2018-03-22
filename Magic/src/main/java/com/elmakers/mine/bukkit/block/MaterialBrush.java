@@ -1,5 +1,15 @@
 package com.elmakers.mine.bukkit.block;
 
+import com.elmakers.mine.bukkit.api.block.BrushMode;
+import com.elmakers.mine.bukkit.api.block.Schematic;
+import com.elmakers.mine.bukkit.api.data.BrushData;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.entity.EntityData;
+import com.elmakers.mine.bukkit.maps.BufferedMapCanvas;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,12 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-
-import com.elmakers.mine.bukkit.api.block.BrushMode;
-import com.elmakers.mine.bukkit.api.data.BrushData;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,12 +36,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
-
-import com.elmakers.mine.bukkit.api.block.Schematic;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.entity.EntityData;
-import com.elmakers.mine.bukkit.maps.BufferedMapCanvas;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialBrush {
 
@@ -233,10 +232,12 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return brushKey;
     }
 
+    @Nullable
     public static MaterialBrush parseMaterialKey(String materialKey) {
         return parseMaterialKey(materialKey, false);
     }
 
+    @Nullable
     public static MaterialBrush parseMaterialKey(String materialKey, boolean allowItems) {
         if (materialKey == null || materialKey.length() == 0) return null;
         MaterialBrush brush = new MaterialBrush(materialKey);
@@ -370,7 +371,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return true;
     }
 
-    public Location toTargetLocation(Location target) {
+    @Nullable public Location toTargetLocation(Location target) {
         if (cloneSource == null || cloneTarget == null) return null;
         Location translated = cloneSource.clone();
         translated.subtract(cloneTarget.toVector());
@@ -378,7 +379,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return translated;
     }
 
-    public Location fromTargetLocation(World targetWorld, Location target) {
+    @Nullable public Location fromTargetLocation(World targetWorld, Location target) {
         if (cloneSource == null || cloneTarget == null) return null;
         Location translated = target.clone();
         translated.setX(translated.getBlockX());
@@ -547,9 +548,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC;
     }
 
+    @Nullable
     @Override
-    public Collection<Entity> getTargetEntities()
-    {
+    public Collection<Entity> getTargetEntities() {
         if (cloneTarget == null || mage == null) return null;
 
         if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC)
@@ -573,9 +574,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return null;
     }
 
+    @Nullable
     @Override
-    public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities()
-    {
+    public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities() {
         if (cloneTarget == null) return null;
 
         if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && cloneSource != null)
@@ -767,7 +768,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return mode == BrushMode.ERASE || (mode == BrushMode.MATERIAL && material == Material.AIR);
     }
 
-    public ItemStack getItem(MageController controller, boolean isItem) {
+    @Nullable public ItemStack getItem(MageController controller, boolean isItem) {
         Messages messages = controller.getMessages();
         MaterialAndData icon = new MaterialAndData(this.getMaterial(), this.getData());
         String extraLore = null;

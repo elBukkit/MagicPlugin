@@ -6,8 +6,9 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import javax.annotation.Nonnull;
+
 import com.elmakers.mine.bukkit.api.block.BlockData;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.block.UndoList;
 
@@ -16,8 +17,7 @@ public class RegenerateBatch extends SpellBatch {
 	
 	private final UndoList restoredBlocks;
 	private final World world;
-	private final Mage mage;
-	private final UndoableSpell spell;
+	private final UndoableSpell undoableSpell;
 
 	// These are chunk coords!
 	private final int absx;
@@ -37,8 +37,8 @@ public class RegenerateBatch extends SpellBatch {
 	private int restoringIndex = 0;
 	private boolean expand = false;
 
-	private BoundingBox bounds = new BoundingBox();
-	
+    private final @Nonnull BoundingBox bounds;
+
 	private enum RegenerateState {
 		SAVING, REGENERATING, RESTORING
 	};
@@ -47,8 +47,7 @@ public class RegenerateBatch extends SpellBatch {
 	
 	public RegenerateBatch(UndoableSpell spell, Location p1, Location p2) {
 		super(spell);
-		this.spell = spell;
-		this.mage = spell.getMage();
+		this.undoableSpell = spell;
         this.restoredBlocks = new UndoList(mage, spell.getName());
         this.restoredBlocks.setSpell(spell);
 		this.restoredBlocks.setBatch(this);
@@ -88,7 +87,7 @@ public class RegenerateBatch extends SpellBatch {
 	@Override
     public int process(int maxBlocks) {
 		int processedBlocks = 0;
-        if (state == RegenerateState.SAVING && expand && !spell.isUndoable())
+        if (state == RegenerateState.SAVING && expand && !undoableSpell.isUndoable())
         {
             state = RegenerateState.REGENERATING;
         }
@@ -103,8 +102,8 @@ public class RegenerateBatch extends SpellBatch {
 						return processedBlocks;
 					}
 					Block block = chunk.getBlock(blockX, blockY, blockZ);
-					if (!spell.hasBuildPermission(block) || !spell.hasBreakPermission(block)) {
-						spell.sendMessage(spell.getMessage("insufficient_permission"));
+					if (!undoableSpell.hasBuildPermission(block) || !undoableSpell.hasBreakPermission(block)) {
+						undoableSpell.sendMessage(undoableSpell.getMessage("insufficient_permission"));
 						finish();
 						return processedBlocks;
 					}
@@ -166,7 +165,7 @@ public class RegenerateBatch extends SpellBatch {
 			if (ix >= absx) 
 			{
 				restoreBlocks = restoredBlocks.toArray(template);
-                if (expand && !spell.isUndoable()) {
+                if (expand && !undoableSpell.isUndoable()) {
                     finish();
                 } else {
                     state = RegenerateState.RESTORING;
@@ -203,7 +202,7 @@ public class RegenerateBatch extends SpellBatch {
 	@Override
 	public void finish() {
 		if (!finished) {
-			UndoList modified = spell.getUndoList();
+			UndoList modified = undoableSpell.getUndoList();
 			modified.prune();
 			restoredBlocks.setBatch(null);
 			super.finish();

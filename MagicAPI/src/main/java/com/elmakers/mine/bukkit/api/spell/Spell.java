@@ -1,14 +1,17 @@
 package com.elmakers.mine.bukkit.api.spell;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.api.magic.MageController;
+import javax.annotation.Nullable;
+
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 /**
  * Represents a Spell that may be cast by a Mage.
@@ -29,11 +32,14 @@ public interface Spell extends SpellTemplate {
     boolean cast(String[] parameters, Location defaultLocation);
     boolean cast(ConfigurationSection parameters, Location defaultLocation);
     boolean cast(ConfigurationSection parameters);
+    @Nullable
     Location getLocation();
     Entity getEntity();
     Location getEyeLocation();
     void target();
+    @Nullable
     Location getTargetLocation();
+    @Nullable
     Entity getTargetEntity();
     Vector getDirection();
     boolean canTarget(Entity entity);
@@ -43,6 +49,7 @@ public interface Spell extends SpellTemplate {
     void clearCooldown();
     void setRemainingCooldown(long ms);
     long getRemainingCooldown();
+    @Nullable
     CastingCost getRequiredCost();
     void messageTargets(String messageKey);
     void playEffects(String effectName);
@@ -56,8 +63,11 @@ public interface Spell extends SpellTemplate {
     void sendMessage(String message);
     void castMessage(String message);
     MaterialAndData getEffectMaterial();
+    @Nullable
     String getEffectParticle();
+    @Nullable
     Color getEffectColor();
+    @Nullable
     MaterialBrush getBrush();
     boolean brushIsErase();
     boolean isCancellable();
@@ -67,6 +77,7 @@ public interface Spell extends SpellTemplate {
     boolean cancelOnCastOther();
     String getMessage(String messageKey);
     boolean hasHandlerParameters(String handlerKey);
+    @Nullable
     ConfigurationSection getHandlerParameters(String handlerKey);
     long getProgressLevel();
     boolean cancelOnNoPermission();

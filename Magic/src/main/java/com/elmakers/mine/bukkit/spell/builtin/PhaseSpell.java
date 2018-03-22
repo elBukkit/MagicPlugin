@@ -1,15 +1,15 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
+import javax.annotation.Nullable;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
-
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 @Deprecated
 public class PhaseSpell extends TargetingSpell
@@ -103,7 +103,7 @@ public class PhaseSpell extends TargetingSpell
 		return SpellResult.CAST;
 	}
 
-    protected World getWorld(String worldName, boolean loadWorld) {
+    @Nullable protected World getWorld(String worldName, boolean loadWorld) {
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             if (loadWorld) {

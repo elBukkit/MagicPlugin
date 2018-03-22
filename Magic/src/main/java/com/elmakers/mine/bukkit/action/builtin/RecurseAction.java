@@ -9,10 +9,6 @@ import com.elmakers.mine.bukkit.block.BlockFace;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +17,10 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Nullable;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class RecurseAction extends CompoundAction {
     protected int recursionDepth;
@@ -79,7 +79,7 @@ public class RecurseAction extends CompoundAction {
         BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST
     );
 
-    protected BlockFace getBlockFace(String name) {
+    @Nullable protected BlockFace getBlockFace(String name) {
         try {
             return BlockFace.valueOf(name.toUpperCase());
         } catch (Exception ex) {
@@ -87,7 +87,7 @@ public class RecurseAction extends CompoundAction {
         return null;
     }
 
-    protected List<BlockFace> getDirections(String name) {
+    @Nullable protected List<BlockFace> getDirections(String name) {
         if (name == null) {
             return null;
         }
@@ -107,7 +107,7 @@ public class RecurseAction extends CompoundAction {
         return singleSet;
     }
 
-    protected List<BlockFace> getDirections(ConfigurationSection parameters, String key) {
+    @Nullable protected List<BlockFace> getDirections(ConfigurationSection parameters, String key) {
         if (parameters.isString(key)) {
             String name = parameters.getString(key);
             return getDirections(name);

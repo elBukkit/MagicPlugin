@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.api.spell;
 
+import javax.annotation.Nullable;
+
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -44,5 +46,6 @@ public interface MageSpell extends Spell, CostReducer {
     void tick();
     void initialize(MageController controller);
 
+    @Nullable
     Double getAttribute(String attributeKey);
 }

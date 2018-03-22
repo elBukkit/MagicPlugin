@@ -54,10 +54,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     private final Location location;
     private final Entity entity;
-    private Location targetLocation;
-    private Location targetSourceLocation;
-    private Location targetCenterLocation;
-    private Entity targetEntity;
+    private @Nullable Location targetLocation;
+    private @Nullable Location targetSourceLocation;
+    private @Nullable Location targetCenterLocation;
+    private @Nullable Entity targetEntity;
     private UndoList undoList;
     private String targetName = null;
     private SpellResult result = SpellResult.NO_ACTION;
@@ -194,6 +194,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
     }
 
+    @Nullable
     @Override
     public Location getCastLocation() {
         if (location != null) {
@@ -209,6 +210,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return castLocation;
     }
 
+    @Nullable
     @Override
     public Location getWandLocation() {
         return getCastLocation();
@@ -238,12 +240,14 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return spell.getEntity();
     }
 
+    @Nullable
     @Override
     public LivingEntity getLivingEntity() {
         Entity entity = getEntity();
         return entity instanceof LivingEntity ? (LivingEntity)entity : null;
     }
 
+    @Nullable
     @Override
     public Location getLocation() {
         if (location != null) {
@@ -255,21 +259,25 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return spell.getLocation();
     }
 
+    @Nullable
     @Override
     public Location getTargetLocation() {
         return targetLocation;
     }
 
+    @Nullable
     @Override
     public Location getTargetSourceLocation() {
         return targetSourceLocation == null ? targetLocation : targetSourceLocation;
     }
 
+    @Nullable
     @Override
     public Block getTargetBlock() {
         return targetLocation == null ? null : targetLocation.getBlock();
     }
 
+    @Nullable
     @Override
     public Entity getTargetEntity() {
         return targetEntity;
@@ -296,6 +304,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.direction = direction;
     }
 
+    @Nullable
     @Override
     public World getWorld() {
         Location location = getLocation();
@@ -322,13 +331,15 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return spell;
     }
 
+    @Nullable
     @Override
     public Mage getMage() {
         return this.mage;
     }
 
+    @Nullable
     @Override
-    public @Nullable MageClass getMageClass() {
+    public MageClass getMageClass() {
         return this.mageClass;
     }
 
@@ -345,6 +356,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return mage.getActiveProperties();
     }
 
+    @Nullable
     @Override
     public MageController getController() {
         Mage mage = getMage();
@@ -451,9 +463,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
     }
 
+    @Nullable
     @Override
-    public Block getPreviousBlock()
-    {
+    public Block getPreviousBlock() {
         return targetingSpell != null ? targetingSpell.getPreviousBlock() : null;
     }
 
@@ -542,6 +554,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return effects;
     }
 
+    @Nullable
     public Color getEffectColor() {
         Color color = wand == null ? null : wand.getEffectColor();
         if (color == null) {
@@ -550,6 +563,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return color;
     }
 
+    @Nullable
     public String getEffectParticle() {
         String particle = wand == null ? null : wand.getEffectParticleName();
         if (particle == null) {
@@ -635,11 +649,13 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return baseSpell != null ? baseSpell.getMessage(key, def) : def;
     }
 
+    @Nullable
     @Override
     public Location findPlaceToStand(Location target, int verticalSearchDistance, boolean goUp) {
         return baseSpell != null ? baseSpell.findPlaceToStand(target, goUp, verticalSearchDistance) : location;
     }
 
+    @Nullable
     @Override
     public Location findPlaceToStand(Location targetLoc, int verticalSearchDistance) {
         return baseSpell != null ? baseSpell.findPlaceToStand(targetLoc, verticalSearchDistance, verticalSearchDistance) : location;
@@ -896,6 +912,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return targetingSpell == null ? true : targetingSpell.canTarget(entity, targetType);
     }
 
+    @Nullable
     @Override
     public MaterialBrush getBrush() {
         if (brush != null) {
@@ -956,6 +973,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return message;
     }
 
+    @Nullable
     @Override
     public Block getInteractBlock() {
         Location location = getEyeLocation();
@@ -1075,9 +1093,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return base;
     }
 
+    @Nullable
     @Override
-    public Location getTargetCenterLocation()
-    {
+    public Location getTargetCenterLocation() {
         return targetCenterLocation == null ? targetLocation : targetCenterLocation;
     }
 
@@ -1096,6 +1114,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return currentEffects;
     }
 
+    @Nullable
     @Override
     public Plugin getPlugin() {
         MageController controller = getController();
@@ -1160,6 +1179,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
     }
 
+    @Nullable
     @Override
     @Deprecated
     public Set<Material> getMaterialSet(String key) {
@@ -1202,6 +1222,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return com.elmakers.mine.bukkit.block.UndoList.getRegistry().isBreakable(block);
     }
 
+    @Nullable
     @Override
     public Double getBreakable(Block block) {
         return com.elmakers.mine.bukkit.block.UndoList.getRegistry().getBreakable(block);
@@ -1226,6 +1247,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return com.elmakers.mine.bukkit.block.UndoList.getRegistry().isReflective(block);
     }
 
+    @Nullable
     @Override
     public Double getReflective(Block block) {
         if (block == null) return null;

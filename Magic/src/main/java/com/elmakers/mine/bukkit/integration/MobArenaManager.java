@@ -9,6 +9,9 @@ import com.garbagemule.MobArena.events.ArenaPlayerJoinEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerLeaveEvent;
 import com.garbagemule.MobArena.framework.Arena;
 import com.garbagemule.MobArena.framework.ArenaMaster;
+import java.util.List;
+import java.util.Set;
+import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,9 +20,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-
-import java.util.List;
-import java.util.Set;
 
 public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildManager {
     private final MageController controller;
@@ -76,7 +76,7 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
     }
 
     // Hopefully can use this again one day for custom item provider
-    public ItemStack getItem(String s) {
+    @Nullable public ItemStack getItem(String s) {
         if (!s.startsWith("magic:")) return null;
         s = s.substring(6);
         return controller.createItem(s);

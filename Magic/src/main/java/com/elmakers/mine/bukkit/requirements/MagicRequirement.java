@@ -91,7 +91,7 @@ public  class MagicRequirement {
         }
     }
         
-    private List<PropertyRequirement> parsePropertyRequirements(ConfigurationSection configuration, String section, String type) {
+    @Nullable private List<PropertyRequirement> parsePropertyRequirements(ConfigurationSection configuration, String section, String type) {
         if (!configuration.contains(section)) return null;
 
         List<PropertyRequirement> requirements = new ArrayList<>();
@@ -344,7 +344,7 @@ public  class MagicRequirement {
         return null;
     }
 
-    protected String getRequiredProperty(CastContext context, CasterProperties properties, List<PropertyRequirement> requirements) {
+    @Nullable protected String getRequiredProperty(CastContext context, CasterProperties properties, List<PropertyRequirement> requirements) {
         for (PropertyRequirement requirement : requirements) {
             String key = requirement.key;
             Double value = properties.hasProperty(key) ? properties.getProperty(key, 0.0) : null;
@@ -361,7 +361,7 @@ public  class MagicRequirement {
         return null;
     }
 
-    protected String checkRequiredProperty(CastContext context, PropertyRequirement requirement, String name, Double value) {
+    @Nullable protected String checkRequiredProperty(CastContext context, PropertyRequirement requirement, String name, Double value) {
         if (requirement.value != null && (value == null || !value.equals(requirement.value))) {
             return getMessage(context, "property_requirement")
                 .replace("$property", name).replace("$value", Double.toString(requirement.value));

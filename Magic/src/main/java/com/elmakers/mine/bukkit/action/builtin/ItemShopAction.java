@@ -7,16 +7,16 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import de.slikey.effectlib.util.ConfigUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 public class ItemShopAction extends BaseShopAction
 {
@@ -86,17 +86,17 @@ public class ItemShopAction extends BaseShopAction
         }
     }
 
-    protected ShopItem createShopItem(MageController controller, String itemKey, double worth) {
+    @Nullable protected ShopItem createShopItem(MageController controller, String itemKey, double worth) {
         ItemStack item = parseItemKey(controller, itemKey);
         return item == null ? null : new ShopItem(controller, item, worth);
     }
 
-    protected ShopItem createShopItem(MageController controller, ConfigurationSection configuration) {
+    @Nullable protected ShopItem createShopItem(MageController controller, ConfigurationSection configuration) {
         ItemStack item = parseItemKey(controller, configuration.getString("item"));
         return item == null ? null : new ShopItem(controller, item, configuration);
     }
 
-    protected ItemStack parseItemKey(MageController controller, String itemKey) {
+    @Nullable protected ItemStack parseItemKey(MageController controller, String itemKey) {
         if (itemKey == null || itemKey.isEmpty() || itemKey.equalsIgnoreCase("none"))
         {
             return null;

@@ -1,5 +1,26 @@
 package com.elmakers.mine.bukkit.api.magic;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
@@ -16,25 +37,6 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.util.Vector;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.File;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * The controller is used for more advanced plugin interaction, and is
@@ -77,13 +79,20 @@ public interface MageController {
      * @param wandKey The template key, or blank for a default wand.
      * @return A new Wand instance, with a useable ItemStack.
      */
+    @Nullable
     Wand createWand(String wandKey);
+    @Nullable
     ItemStack createItem(String magicItemKey);
+    @Nullable
     ItemStack createItem(String magicItemKey, boolean brief);
+    @Nullable
     ItemStack createGenericItem(String itemKey);
     Wand createUpgrade(String wandKey);
+    @Nullable
     ItemStack createSpellItem(String spellKey);
+    @Nullable
     ItemStack createSpellItem(String spellKey, boolean brief);
+    @Nullable
     ItemStack createBrushItem(String brushKey);
 
     /**
@@ -95,6 +104,7 @@ public interface MageController {
      */
     Wand getWand(ItemStack item);
     Wand getWand(ConfigurationSection config);
+    @Nullable
     WandTemplate getWandTemplate(String key);
     Collection<WandTemplate> getWandTemplates();
     void loadWandTemplate(String key, ConfigurationSection wandNode);
@@ -102,16 +112,20 @@ public interface MageController {
 
     String describeItem(ItemStack item);
     String getItemKey(ItemStack item);
+    @Nullable
     String getWandKey(ItemStack item);
     boolean takeItem(Player player, ItemStack item);
     boolean hasItem(Player player, ItemStack item);
 
+    @Nullable
     SpellCategory getCategory(String key);
     Collection<SpellCategory> getCategories();
     Collection<SpellTemplate> getSpellTemplates();
     Collection<SpellTemplate> getSpellTemplates(boolean showHidden);
+    @Nullable
     SpellTemplate getSpellTemplate(String key);
     Set<String> getWandPathKeys();
+    @Nullable
     WandUpgradePath getPath(String key);
 
     void updateBlock(Block block);
@@ -122,6 +136,7 @@ public interface MageController {
     boolean canCreateWorlds();
     int getMaxUndoPersistSize();
 
+    @Nullable
     Schematic loadSchematic(String name);
 
     /**
@@ -130,6 +145,7 @@ public interface MageController {
     MaterialSetManager getMaterialSetManager();
     @Deprecated
     Collection<String> getMaterialSets();
+    @Nullable
     @Deprecated
     Set<Material> getMaterialSet(String string);
 
@@ -148,8 +164,11 @@ public interface MageController {
 
     String getMessagePrefix();
 
+    @Nullable
     String getReflectiveMaterials(Mage mage, Location location);
+    @Nullable
     String getDestructibleMaterials(Mage mage, Location location);
+    @Nullable
     Set<String> getSpellOverrides(Mage mage, Location location);
 
     Set<Material> getDestructibleMaterials();
@@ -168,6 +187,7 @@ public interface MageController {
     @Nonnull Mage getMage(Player player);
     @Nonnull Mage getMage(Entity entity);
     @Nonnull Mage getMage(String id, String name);
+    @Nullable
     Mage getRegisteredMage(String mageId);
     Mage getRegisteredMage(Entity entity);
     Mage getAutomaton(String id, String name);
@@ -181,7 +201,9 @@ public interface MageController {
     boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue);
     boolean hasPermission(CommandSender sender, String pNode);
     boolean hasCastPermission(CommandSender sender, SpellTemplate spell);
+    @Nullable
     Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location);
+    @Nullable
     Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location);
     boolean isPVPAllowed(Player player, Location location);
     boolean isExitAllowed(Player player, Location location);
@@ -217,13 +239,18 @@ public interface MageController {
 
     boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message);
 
+    @Nullable
     Location getWarp(String warpName);
+    @Nullable
     Location getTownLocation(Player player);
+    @Nullable
     Map<String, Location> getHomeLocations(Player player);
 
     void giveItemToPlayer(Player player, ItemStack itemStack);
 
+    @Nullable
     UndoList undoAny(Block target);
+    @Nullable
     UndoList undoRecent(Block target, int timeout);
     void scheduleUndo(UndoList undoList);
     void cancelScheduledUndo(UndoList undoList);
@@ -235,6 +262,7 @@ public interface MageController {
     double getWorthBase();
     double getWorthXP();
     double getWorthSkillPoints();
+    @Nullable
     ItemStack getWorthItem();
     double getWorthItemAmount();
     CurrencyItem getCurrency();
@@ -339,6 +367,7 @@ public interface MageController {
      * @param key
      * @return
      */
+    @Nullable
     ItemStack deserialize(ConfigurationSection root, String key);
 
     /**
@@ -365,15 +394,22 @@ public interface MageController {
     void disableItemSpawn();
     void enableItemSpawn();
     void setForceSpawn(boolean force);
+    @Nullable
     String getSpell(ItemStack item);
+    @Nullable
     String getSpellArgs(ItemStack item);
     
     Set<String> getMobKeys();
+    @Nullable
     Entity spawnMob(String key, Location location);
+    @Nullable
     EntityData getMob(String key);
+    @Nullable
     EntityData getMobByName(String name);
     EntityData loadMob(ConfigurationSection configuration);
+    @Nullable
     String getBlockSkin(Material blockType);
+    @Nullable
     String getMobSkin(EntityType mobType);
     void checkResourcePack(CommandSender sender);
     boolean sendResourcePackToAllPlayers(CommandSender sender);
@@ -382,17 +418,22 @@ public interface MageController {
     boolean commitOnQuit();
     
     Set<String> getItemKeys();
+    @Nullable
     ItemData getItem(String key);
+    @Nullable
     ItemData getOrCreateItem(String key);
+    @Nullable
     ItemData getItem(ItemStack match);
     void unloadItemTemplate(String key);
     void loadItemTemplate(String key, ConfigurationSection itemNode);
+    @Nullable
     Double getWorth(ItemStack item);
     boolean disguise(Entity entity, ConfigurationSection configuration);
     void managePlayerData(boolean external, boolean backupInventories);
     String getDefaultWandTemplate();
     String getHeroesSkillPrefix();
 
+    @Nullable
     Object getWandProperty(ItemStack itemStack, String key);
     @Nonnull <T> T getWandProperty(ItemStack itemStack, @Nonnull String key, @Nonnull T defaultValue);
 

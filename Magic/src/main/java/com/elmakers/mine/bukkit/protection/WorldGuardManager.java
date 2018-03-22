@@ -2,14 +2,14 @@ package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import java.util.Set;
+import java.util.logging.Level;
+import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.util.Set;
-import java.util.logging.Level;
 
 public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBuildManager {
     private boolean enabled = false;
@@ -75,6 +75,7 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
         return true;
     }
 
+    @Nullable
     public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
         if (enabled && worldGuard != null) {
             return worldGuard.getCastPermission(player, spell, location);
@@ -82,6 +83,7 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
         return null;
     }
 
+    @Nullable
     public Boolean getWandPermission(Player player, Wand wand, Location location) {
         if (enabled && worldGuard != null) {
             return worldGuard.getWandPermission(player, wand, location);
@@ -89,6 +91,7 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
         return null;
     }
 
+    @Nullable
     public String getReflective(Player player, Location location) {
         if (enabled && worldGuard != null) {
             return worldGuard.getReflective(player, location);
@@ -96,6 +99,7 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
         return null;
     }
 
+    @Nullable
     public String getDestructible(Player player, Location location) {
         if (enabled && worldGuard != null) {
             return worldGuard.getDestructible(player, location);
@@ -103,6 +107,7 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
         return null;
     }
 
+    @Nullable
     public Set<String> getSpellOverrides(Player player, Location location) {
         if (enabled && worldGuard != null) {
             return worldGuard.getSpellOverrides(player, location);

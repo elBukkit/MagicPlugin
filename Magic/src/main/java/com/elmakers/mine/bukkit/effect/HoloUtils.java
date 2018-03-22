@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.effect;
 
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import javax.annotation.Nullable;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 /**
  * With much thanks to zombiekiller753 and Goblom!
@@ -15,7 +15,7 @@ public class HoloUtils extends NMSUtils
     private static int HORSE_AGE_OFFSET = -1700000; // Magic number for horse rendering glitch
     private static int Y_OFFSET = 55; // Offset to account for above
 
-    protected static Object createSkull(Location location)
+    @Nullable protected static Object createSkull(Location location)
     {
         Object skull = null;
         try {
@@ -32,7 +32,7 @@ public class HoloUtils extends NMSUtils
         return skull;
     }
 
-    protected static Object createHorse(Location location, String text)
+    @Nullable protected static Object createHorse(Location location, String text)
     {
         Object horse = null;
         try {

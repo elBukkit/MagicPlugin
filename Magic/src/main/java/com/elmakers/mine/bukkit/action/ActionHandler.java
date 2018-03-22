@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 public class ActionHandler implements com.elmakers.mine.bukkit.api.action.ActionHandler, Cloneable
 {
     private List<ActionContext> actions = new ArrayList<>();
@@ -25,7 +27,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
     private boolean usesBrush = false;
     private boolean requiresBuildPermission = false;
     private boolean requiresBreakPermission = false;
-    private Integer currentAction = null;
+    private @Nullable Integer currentAction = null;
     private boolean started = false;
     private static String debugIndent = "";
 

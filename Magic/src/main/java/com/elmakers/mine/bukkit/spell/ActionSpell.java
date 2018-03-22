@@ -5,12 +5,12 @@ import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.configuration.ConfigurationSection;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import javax.annotation.Nullable;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class ActionSpell extends BrushSpell
 {
@@ -266,6 +266,7 @@ public class ActionSpell extends BrushSpell
         return requiresBreakPermission || (requiresBuildPermission && brushIsErase());
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {

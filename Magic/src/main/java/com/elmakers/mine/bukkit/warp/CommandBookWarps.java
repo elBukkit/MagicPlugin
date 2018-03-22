@@ -6,6 +6,7 @@ import com.sk89q.commandbook.locations.RootLocationManager;
 import com.sk89q.commandbook.locations.WarpsComponent;
 import com.zachsthings.libcomponents.ComponentManager;
 import com.zachsthings.libcomponents.bukkit.BukkitComponent;
+import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -20,7 +21,7 @@ public class CommandBookWarps {
         this.locationManager = locationManager;
     }
 
-    public static CommandBookWarps create(Plugin plugin)
+    @Nullable public static CommandBookWarps create(Plugin plugin)
     {
         if (plugin instanceof CommandBook) {
             ComponentManager<BukkitComponent> componentManager = ((CommandBook)plugin).getComponentManager();
@@ -34,7 +35,7 @@ public class CommandBookWarps {
         return null;
     }
 
-    public Location getWarp(String warpName) {
+    @Nullable public Location getWarp(String warpName) {
         if (locationManager == null) return null;
         NamedLocation location = locationManager.get(null, warpName);
         if (location == null) return null;

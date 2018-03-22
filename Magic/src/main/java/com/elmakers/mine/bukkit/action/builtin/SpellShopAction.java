@@ -8,19 +8,13 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,6 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nullable;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class SpellShopAction extends BaseShopAction
 {
@@ -85,6 +85,7 @@ public class SpellShopAction extends BaseShopAction
         }
     }
 
+    @Nullable
     @Override
     public List<ShopItem> getItems(CastContext context) {
         Mage mage = context.getMage();
@@ -200,7 +201,7 @@ public class SpellShopAction extends BaseShopAction
         return shopItems;
 	}
 
-    private ShopItem createShopItem(String key, Double worth, CastContext context) {
+    @Nullable private ShopItem createShopItem(String key, Double worth, CastContext context) {
         CasterProperties caster = getCaster(context);
         Mage mage = context.getMage();
         MageController controller = context.getController();

@@ -13,6 +13,19 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Level;
+import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,19 +41,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
 
 public class RecallAction extends BaseTeleportAction implements GUIAction
 {
@@ -658,7 +658,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return SpellResult.CAST;
 	}
 
-    protected Waypoint getUnknownWarp(String warpKey) {
+    @Nullable protected Waypoint getUnknownWarp(String warpKey) {
         MageController controller = context.getController();
         Location warpLocation = controller.getWarp(warpKey);
         if (warpLocation == null || warpLocation.getWorld() == null) {
@@ -696,7 +696,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         context.getMage().activateGUI(this, displayInventory);
     }
 
-    protected Waypoint getFriend(String uuid)
+    @Nullable protected Waypoint getFriend(String uuid)
     {
         Player onlinePlayer = Bukkit.getPlayer(UUID.fromString(uuid));
         if (onlinePlayer == null) return null;
@@ -710,7 +710,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return new Waypoint(RecallType.WARP, onlinePlayer.getLocation(), title, castMessage, failMessage, "", null, iconURL);
     }
 
-    protected Waypoint getWarp(String warpKey)
+    @Nullable protected Waypoint getWarp(String warpKey)
     {
         if (warps == null) return getUnknownWarp(warpKey);
         ConfigurationSection config = warps.get(warpKey);
@@ -738,7 +738,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return new Waypoint(RecallType.WARP, warpLocation, title, castMessage, failMessage, description, icon, iconURL);
     }
 
-    protected Waypoint getCommand(CastContext context, String commandKey)
+    @Nullable protected Waypoint getCommand(CastContext context, String commandKey)
     {
         if (commands == null) return null;
         ConfigurationSection config = commands.get(commandKey);
@@ -757,7 +757,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return new Waypoint(RecallType.COMMAND, command, op, console, title, castMessage, failMessage, description, icon, iconURL);
     }
 
-	protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters, CastContext context) {
+	@Nullable protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters, CastContext context) {
 		Mage mage = context.getMage();
         MageController controller = context.getController();
 		switch (type) {
@@ -788,7 +788,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 		}
 	}
     
-    protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key)
+    @Nullable protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key)
     {
         String iconKey = parameters.getString(key);
         if (iconKey == null || iconKey.isEmpty()) return null;

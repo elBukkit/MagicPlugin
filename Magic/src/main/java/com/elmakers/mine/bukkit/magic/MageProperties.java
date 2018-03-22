@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
-import org.bukkit.ChatColor;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -34,6 +34,7 @@ public class MageProperties extends CasterProperties {
         return mage.isPlayer();
     }
 
+    @Nullable
     @Override
     public Player getPlayer() {
         return mage.getPlayer();

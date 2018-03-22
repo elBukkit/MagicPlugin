@@ -7,10 +7,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import javax.annotation.Nullable;
 
 public abstract class TemplatedProperties extends CasterProperties {
-     public TemplatedProperties(MagicPropertyType type, MageController controller) {
+    public TemplatedProperties(MagicPropertyType type, MageController controller) {
         super(type, controller);
     }
 
+    @Nullable
     @Override
     public ConfigurationSection getConfigurationSection(String key) {
         ConfigurationSection own = super.getConfigurationSection(key);
@@ -27,5 +28,6 @@ public abstract class TemplatedProperties extends CasterProperties {
         return own;
     }
 
-    protected abstract @Nullable BaseMagicProperties getTemplate();
+    @Nullable
+    protected abstract BaseMagicProperties getTemplate();
 }

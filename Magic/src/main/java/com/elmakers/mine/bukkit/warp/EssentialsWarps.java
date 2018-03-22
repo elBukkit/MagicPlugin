@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.warp;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.Warps;
+import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -15,7 +16,7 @@ public class EssentialsWarps {
         this.warps = warps;
     }
 
-    public static EssentialsWarps create(Plugin plugin) {
+    @Nullable public static EssentialsWarps create(Plugin plugin) {
         if (plugin instanceof Essentials) {
             Essentials essentials = (Essentials)plugin;
             Warps warps = essentials.getWarps();
@@ -25,7 +26,7 @@ public class EssentialsWarps {
         return null;
     }
 
-    public Location getWarp(String warpName) {
+    @Nullable public Location getWarp(String warpName) {
         try {
             return warps.getWarp(warpName);
         } catch (Exception ex) {

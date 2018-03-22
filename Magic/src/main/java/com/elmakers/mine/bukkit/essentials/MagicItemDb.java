@@ -5,6 +5,8 @@ import net.ess3.api.IEssentials;
 
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
+
 import com.earth2me.essentials.ItemDb;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -18,7 +20,8 @@ public class MagicItemDb extends ItemDb {
 		this.controller = controller;
 		this.reloadConfig();
 	}
-	
+
+	@Nullable
 	@Override
 	public ItemStack get(final String id) throws Exception
 	{

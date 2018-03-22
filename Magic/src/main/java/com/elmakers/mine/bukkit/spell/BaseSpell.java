@@ -15,6 +15,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
@@ -386,25 +388,25 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return isSafeLocation(loc.getBlock());
     }
 
-    public Location tryFindPlaceToStand(Location targetLoc)
-    {
+    @Nullable
+    public Location tryFindPlaceToStand(Location targetLoc) {
         int maxHeight = CompatibilityUtils.getMaxHeight(targetLoc.getWorld());
         return tryFindPlaceToStand(targetLoc, maxHeight, maxHeight);
     }
 
-    public Location findPlaceToStand(Location targetLoc)
-    {
+    @Nullable
+    public Location findPlaceToStand(Location targetLoc) {
         return findPlaceToStand(targetLoc, verticalSearchDistance, verticalSearchDistance);
     }
 
-    public Location tryFindPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta)
-    {
+    @Nullable
+    public Location tryFindPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta) {
         Location location = findPlaceToStand(targetLoc, maxDownDelta, maxUpDelta);
         return location == null ? targetLoc : location;
     }
 
-    public Location findPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta)
-    {
+    @Nullable
+    public Location findPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta) {
         if (!targetLoc.getBlock().getChunk().isLoaded()) return null;
         int minY = MIN_Y;
         int maxY = CompatibilityUtils.getMaxHeight(targetLoc.getWorld());
@@ -446,13 +448,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return location;
     }
 
-    public Location findPlaceToStand(Location target, boolean goUp)
-    {
+    @Nullable
+    public Location findPlaceToStand(Location target, boolean goUp) {
         return findPlaceToStand(target, goUp, verticalSearchDistance);
     }
 
-    public Location findPlaceToStand(Location target, boolean goUp, int maxDelta)
-    {
+    @Nullable
+    public Location findPlaceToStand(Location target, boolean goUp, int maxDelta) {
         int direction = goUp ? 1 : -1;
 
         // search for a spot to stand
@@ -505,8 +507,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      *
      * @return The Block the player is standing on
      */
-    public Block getPlayerBlock()
-    {
+    @Nullable
+    public Block getPlayerBlock() {
         Location location = getLocation();
         if (location == null) return null;
         return location.getBlock().getRelative(BlockFace.DOWN);
@@ -597,6 +599,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    @Nullable
     public Location getLocation()
     {
         if (location != null) return location.clone();
@@ -606,8 +609,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return null;
     }
 
-    public Location getWandLocation()
-    {
+    @Nullable
+    public Location getWandLocation() {
         if (this.location != null)
         {
             return location.clone();
@@ -615,8 +618,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return mage.getWandLocation();
     }
 
-    public Location getCastLocation()
-    {
+    @Nullable
+    public Location getCastLocation() {
         if (this.location != null)
         {
             return location.clone();
@@ -657,8 +660,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return direction.getY() < -LOOK_THRESHOLD_RADIANS;
     }
 
-    public World getWorld()
-    {
+    @Nullable
+    public World getWorld() {
         Location location = getLocation();
         if (location != null) return location.getWorld();
         return null;
@@ -677,13 +680,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return (playerBlock.getType() == Material.WATER || playerBlock.getType() == Material.STATIONARY_WATER);
     }
 
-    protected String getBlockSkin(Material blockType) 
-    {
+    @Nullable
+    protected String getBlockSkin(Material blockType) { 
         return controller.getBlockSkin(blockType);
     }
 
-    protected String getMobSkin(EntityType mobType)
-    {
+    @Nullable
+    protected String getMobSkin(EntityType mobType) {
         return controller.getMobSkin(mobType);
     }
 
@@ -808,6 +811,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+    @Nullable
     protected List<CastingCost> parseCosts(ConfigurationSection node) {
         if (node == null) {
             return null;
@@ -1626,6 +1630,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    @Nullable
     public Location getTargetLocation() {
         return null;
     }
@@ -1656,10 +1661,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    @Nullable
     public Entity getTargetEntity() {
         return null;
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {
@@ -1827,8 +1834,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     //
 
     @Override
-    public Object clone()
-    {
+    @Nullable
+    public Object clone() {
         try
         {
             return super.clone();
@@ -1879,6 +1886,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     // Public API Implementation
     //
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.spell.Spell createSpell()
     {
@@ -2032,6 +2040,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    @Nullable
     public Collection<CastingCost> getCosts() {
         if (costs == null) return null;
         List<CastingCost> copy = new ArrayList<>();
@@ -2040,6 +2049,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    @Nullable
     public Collection<CastingCost> getActiveCosts() {
         if (activeCosts == null) return null;
         List<CastingCost> copy = new ArrayList<>();
@@ -2098,25 +2108,30 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+    @Nullable
     @Override
     public String getMageCooldownDescription() {
         return getCooldownDescription(controller.getMessages(), mageCooldown, mage, null);
     }
 
+    @Nullable
     public String getMageCooldownDescription(Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
         return getCooldownDescription(controller.getMessages(), mageCooldown, mage, wand);
     }
 
+    @Nullable
     @Override
     public String getCooldownDescription() {
         return getCooldownDescription(
                 controller.getMessages(), getDisplayCooldown(),  mage, null);
     }
 
+    @Nullable
     public String getWarmupDescription() {
         return getTimeDescription(controller.getMessages(), warmup);
     }
 
+    @Nullable
     public String getCooldownDescription(Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
         return getCooldownDescription(
                 controller.getMessages(), getDisplayCooldown(), mage, wand);
@@ -2130,6 +2145,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return displayCooldown != -1 ? displayCooldown : cooldown;
     }
 
+    @Nullable
     private String getTimeDescription(Messages messages, int time) {
         if (time > 0) {
             int timeInSeconds = time / 1000;
@@ -2160,6 +2176,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return null;
     }
 
+    @Nullable
     protected String getCooldownDescription(Messages messages, int cooldown, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
         CooldownReducer reducer = mageClass != null ? mageClass : (wand != null ? wand : mage);
         if (reducer != null) {
@@ -2183,6 +2200,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    @Nullable
     public CastingCost getRequiredCost() {
         if (!mage.isCostFree() && (mageClass == null || !mageClass.isCostFree()))
         {
@@ -2406,6 +2424,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    @Nullable
     public Color getColor()
     {
         if (color != null) return color;
@@ -2482,6 +2501,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    @Nullable
     public SpellTemplate getUpgrade() {
         if (requiredUpgradeCasts <= 0
                 && ((requiredUpgradePath == null || requiredUpgradePath.isEmpty())
@@ -2511,6 +2531,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return mage.getEntity();
     }
 
+    @Nullable
     @Override
     public String getEffectParticle() {
         if (particle == null) {
@@ -2519,6 +2540,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return particle;
     }
 
+    @Nullable
     @Override
     public Color getEffectColor() {
         if (color == null) {
@@ -2655,8 +2677,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush()
-    {
+    @Nullable
+    public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush() {
         if (mage == null) {
             return null;
         }
@@ -2817,8 +2839,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public ConfigurationSection getHandlerParameters(String handlerKey)
-    {
+    @Nullable
+    public ConfigurationSection getHandlerParameters(String handlerKey) {
         return null;
     }
 
@@ -2850,6 +2872,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
     
     @Override
+    @Nullable
     public String getDurationDescription(Messages messages) {
         String description = null;
         long effectiveDuration = this.getDuration();
@@ -2875,6 +2898,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return description;
     }
 
+    @Nullable
     @Override
     public Double getAttribute(String attributeKey) {
         Double data = mage.getAttribute(attributeKey);

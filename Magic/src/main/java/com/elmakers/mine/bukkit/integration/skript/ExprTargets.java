@@ -44,7 +44,7 @@ public class ExprTargets extends SimpleExpression<Entity> {
 		if (e != null && e instanceof CastEvent) {
 		    return ((CastEvent)e).getSpell().getCurrentCast().getTargetedEntities().toArray(templateArray);
 		}
-		return null;
+		return new Entity[0];
 	}
 
 	@Override

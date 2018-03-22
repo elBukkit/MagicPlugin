@@ -43,9 +43,9 @@ public class EffectVariable extends EffectPlayer {
                 Collection<EffectPlayer> childPlayers = EffectPlayer.loadEffects(plugin, brightness, key);
                 brightnessMap.put(level, childPlayers);
                 for (EffectPlayer childPlayer : childPlayers) {
-                    playAtOrigin = playAtOrigin | childPlayer.playsAtOrigin();
-                    playAtAllTargets = playAtAllTargets | childPlayer.playsAtAllTargets();
-                    playAtTarget = playAtTarget | childPlayer.playsAtTarget();
+                    playAtOrigin |= childPlayer.playsAtOrigin();
+                    playAtAllTargets |= childPlayer.playsAtAllTargets();
+                    playAtTarget |= childPlayer.playsAtTarget();
                 }
 
             } catch (Exception ex) {

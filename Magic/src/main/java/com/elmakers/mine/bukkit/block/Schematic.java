@@ -3,6 +3,12 @@ package com.elmakers.mine.bukkit.block;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nullable;
 import org.bukkit.Art;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,12 +17,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
     private volatile boolean loaded = false;
@@ -155,6 +155,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
         return (x >= 0 && x <= size.getBlockX() && y >= 0 && y <= size.getBlockY() && z >= 0 && z <= size.getBlockZ());
     }
 
+    @Nullable
     @Override
     public MaterialAndData getBlock(Vector v) {
         int x = v.getBlockX() + center.getBlockX();

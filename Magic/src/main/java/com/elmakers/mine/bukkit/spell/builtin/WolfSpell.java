@@ -1,23 +1,22 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.Target;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.annotation.Nullable;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
-
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utility.Target;
 
 public class WolfSpell extends TargetingSpell
 {
 	private static int DEFAULT_MAX_WOLVES = 5;
 	protected List<Wolf> wolves = new ArrayList<>();
 
-	public Wolf newWolf(Target target)
+	@Nullable public Wolf newWolf(Target target)
 	{
 		Block targetBlock = target.getBlock();
 		if (targetBlock == null) {

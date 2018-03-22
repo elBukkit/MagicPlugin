@@ -16,16 +16,16 @@ import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.CombatUtil;
 import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
+import java.lang.reflect.Method;
+import java.util.UUID;
+import java.util.logging.Level;
+import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.lang.reflect.Method;
-import java.util.UUID;
-import java.util.logging.Level;
 
 public class TownyAPI
 {
@@ -115,7 +115,7 @@ public class TownyAPI
         return true;
     }
 
-    protected Resident getResident(Player player) {
+    @Nullable protected Resident getResident(Player player) {
         try {
             if (getPlayerByNameMethod != null) {
                 return (Resident) getPlayerByNameMethod.invoke(TownyUniverse.getDataSource(), player.getName());
@@ -131,7 +131,7 @@ public class TownyAPI
         return null;
     }
 
-    public Location getTownLocation(Player player) {
+    @Nullable public Location getTownLocation(Player player) {
         if (towny == null || player == null) {
             return null;
         }

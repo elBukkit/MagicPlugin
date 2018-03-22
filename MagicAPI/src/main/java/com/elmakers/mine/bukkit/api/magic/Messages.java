@@ -1,13 +1,16 @@
 package com.elmakers.mine.bukkit.api.magic;
 
-import org.bukkit.inventory.ItemStack;
-
 import java.util.Collection;
 import java.util.List;
+
+import javax.annotation.Nullable;
+
+import org.bukkit.inventory.ItemStack;
 
 public interface Messages {
     boolean containsKey(String key);
     String get(String key);
+    @Nullable
     String getRandomized(String key);
     String get(String key, String defaultValue);
     List<String> getAll(String path);

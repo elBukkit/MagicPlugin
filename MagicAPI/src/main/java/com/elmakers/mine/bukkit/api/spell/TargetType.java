@@ -18,7 +18,7 @@ public enum TargetType {
     SELECT(false),
     SELECT_ENTITY(true);
 
-    private boolean targetEntities;
+    private final boolean targetEntities;
 
     TargetType(boolean targetEntities) {
         this.targetEntities = true;

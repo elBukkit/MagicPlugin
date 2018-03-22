@@ -6,10 +6,9 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.collect.ImmutableSet;
-
 import java.util.Collection;
 import java.util.Set;
-
+import javax.annotation.Nullable;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -116,6 +115,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         return categories;
     }
 
+    @Nullable
     @Override
     public ItemStack getItemStack(int amount) {
         ItemStack newItem = InventoryUtils.getCopy(item);
@@ -141,6 +141,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         return item == null ? Material.AIR : item.getType();
     }
 
+    @Nullable
     @SuppressWarnings("deprecation")
     @Override
     public MaterialData getMaterialData() {
@@ -150,6 +151,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         return materialData;
     }
 
+    @Nullable
     @Override
     public ItemMeta getItemMeta() {
         return item == null ? null : item.getItemMeta();

@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 public class MobController implements Listener {
     private MageController controller;
     private final Map<String, EntityData> mobs = new HashMap<>();
@@ -133,11 +135,13 @@ public class MobController implements Listener {
     public Set<String> getKeys() {
         return mobs.keySet();
     }
-    
+
+    @Nullable
     public EntityData get(String key) {
         return mobs.get(key);
     }
 
+    @Nullable
     public EntityData getByName(String name) {
         return mobsByName.get(name);
     }
