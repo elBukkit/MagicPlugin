@@ -2350,11 +2350,14 @@ arrowstorm:
         cast:
         -  class: ThrowBlock
            actions:
-           -  class: AreaOfEffect
-              radius: 5
+           -  class: ChangeContext
+              target_offset: 0,1,0
               actions:
-              -  class: Projectile
-                 actions: Damage
+              - class: AreaOfEffect
+                radius: 5
+                actions:
+                -  class: Projectile
+                   actions: Damage
     effects:
         cast:
         -  class: EffectSingle
