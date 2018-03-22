@@ -152,3 +152,10 @@ mobarena:
 
 # Skript integration will add cast events and effect
 skript_enabled: true;
+
+# The folder and file path to use for loading schematics. This will be relative to
+# The server's /plugins folder.
+# You can use WorldEdit's schematics folder for easy access to saved schematics.
+# You can use this folder to override the built-in schematics, such as replacing the schematics
+# used for Tent or Cage.
+schematic_files: WorldEdit/schematics/
