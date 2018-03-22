@@ -25,6 +25,7 @@
  - Fix/improve teleportation ledge detection
  - Add "ai: false" option to magic mobs
  - Fix wand current hotbar not saving
+ - Fix non-battle spells and brushes showig in the Master Sword inventory
 
 ## 7.3.1
 

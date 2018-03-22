@@ -180,6 +180,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean hasUses = false;
     private boolean isSingleUse = false;
     private boolean limitSpellsToPath = false;
+    private boolean limitBrushesToPath = false;
 
     private float manaPerDamage = 0;
 	
@@ -1167,11 +1168,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	protected void loadBrushes(Collection<String> brushKeys) {
+    	WandUpgradePath path = getPath();
     	clearBrushes();
 		for (String materialName : brushKeys) {
 			String[] pieces = StringUtils.split(materialName, '@');
 			Integer slot = parseSlot(pieces);
 			String materialKey = pieces[0].trim();
+			if (limitBrushesToPath && path != null && !path.containsBrush(materialKey)) continue;
 			if (slot != null) {
 				brushInventory.put(materialKey, slot);
 			}
@@ -1816,6 +1819,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		brushInventory.clear();
 		spellInventory.clear();
 		limitSpellsToPath = getBoolean("limit_spells_to_path");
+		limitBrushesToPath = getBoolean("limit_brushes_to_path");
 		Object wandSpells = getObject("spells");
 		if (wandSpells != null) {
 			if (wandSpells instanceof String) {
