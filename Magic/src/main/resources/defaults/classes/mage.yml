@@ -2,6 +2,6 @@ mage:
   parent: caster
   locked: false
   path: beginner
-  spells:
-   - missile
+#  spells:
+#   - missile
 

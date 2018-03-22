@@ -3,10 +3,10 @@ battle_mage:
   locked: false
   limit_spells_to_path: true
   path: battle
-  spells:
-    - missile
-    - arrow
-    - curse
-    - fire
-    - push
+#  spells:
+#    - missile
+#    - arrow
+#    - curse
+#    - fire
+#    - push
 
