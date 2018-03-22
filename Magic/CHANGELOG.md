@@ -22,6 +22,7 @@
  - Capture added to Conduit path (was supposed to be on there, forgot to give it an SP cost)
  - Some improvements to Blink Arrows that were way more complicated then they were worth, but the arrows work great now.
  - Fix/improve teleportation ledge detection
+ - Add "ai: false" option to magic mobs
 
 ## 7.3.1
 

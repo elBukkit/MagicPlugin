@@ -88,6 +88,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isBaby;
     protected boolean isSilent;
     protected boolean isTamed;
+    protected boolean hasAI;
     protected int fireTicks;
     
     protected DyeColor dyeColor;
@@ -163,6 +164,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             this.potionEffects = li.getActivePotionEffects();
             this.airLevel = li.getRemainingAir();
             this.maxHealth = li.getMaxHealth();
+            this.hasAI = li.hasAI();
             
             itemInHand = getItem(li.getEquipment().getItemInMainHand());
             helmet = getItem(li.getEquipment().getHelmet());
@@ -264,6 +266,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         isTamed = parameters.getBoolean("tamed", false);
         isBaby = parameters.getBoolean("baby", false);
+        hasAI = parameters.getBoolean("ai", true);
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
@@ -651,6 +654,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 }
                 if (airLevel != null) {
                     li.setRemainingAir(Math.min(airLevel, li.getRemainingAir()));
+                }
+                if (!hasAI) {
+                    li.setAI(hasAI);
                 }
             } catch (Throwable ex) {
                 ex.printStackTrace();
