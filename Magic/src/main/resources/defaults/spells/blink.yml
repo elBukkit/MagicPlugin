@@ -90,6 +90,7 @@ blink:
         prevent_passthrough: nopassthrough
         bypass_confusion: true
         vertical_range: 8
+        ledge_range: 4
     costs:
         mana: 50
 

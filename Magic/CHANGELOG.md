@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 7.4
+## 7.3.2
 
  - Add builtin attribute system
    - Attributes can be defined in attributes.yml, none exist in the default configuration.
@@ -20,6 +20,8 @@
  - Hostile mobs can't be targeted by Heal, Cure or other boon spells (see: friendly_entity_types in config.yml)
  - Fix Recall last death location tracking
  - Capture added to Conduit path (was supposed to be on there, forgot to give it an SP cost)
+ - Some improvements to Blink Arrows that were way more complicated then they were worth, but the arrows work great now.
+ - Fix/improve teleportation ledge detection
 
 ## 7.3.1
 

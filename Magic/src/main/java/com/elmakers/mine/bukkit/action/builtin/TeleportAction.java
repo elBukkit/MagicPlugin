@@ -103,31 +103,21 @@ public class TeleportAction extends BaseTeleportAction
 			destination = target;
 		}
 
-		// Don't drop the player too far, and make sure there is somewhere to stand - unless they are flying
-		if (!(entity instanceof Player && ((Player)entity).isFlying()) && safe) {
-            Location safeLocation = context.findPlaceToStand(destination.getLocation(), verticalSearchDistance, false);
-			if (safeLocation != null)
-            {
-                destination = safeLocation.getBlock();
-				context.getMage().sendDebugMessage(ChatColor.GREEN + "Teleporting destination changed to safe location", 11);
-			}
-		}
-
 		// Also check for a ledge above the target
 		Block ledge = null;
+		int distanceUp = 0;
 		if (!isPassthrough && (!face.equals(target.getRelative(BlockFace.DOWN)) || autoPassthrough))
 		{
-			int distanceUp = 0;
 			ledge = target;
 			Block inFront = face;
 			Block oneUp = ledge.getRelative(BlockFace.UP);
 			Block twoUp = oneUp.getRelative(BlockFace.UP);
 			Block faceOneUp = face.getRelative(BlockFace.UP);
 			Block faceTwoUp = faceOneUp.getRelative(BlockFace.UP);
-			
-			if (!autoPassthrough && (!context.isTransparent(oneUp) || !context.isTransparent(twoUp)
-                    || !context.isTransparent(face) || !context.isTransparent(faceOneUp)
-                    || !context.isTransparent(faceTwoUp)))
+
+			// Look up along the hit wall until
+			if (!autoPassthrough && (!context.isTransparent(face) || !context.isTransparent(faceOneUp)
+					|| !context.isTransparent(faceTwoUp) || context.isTransparent(ledge)))
             {
 				ledge = null;
 			}
@@ -152,8 +142,10 @@ public class TeleportAction extends BaseTeleportAction
 				) 
 				{
 					faceOneUp = faceOneUp.getRelative(BlockFace.UP);
-					faceTwoUp = faceOneUp.getRelative(BlockFace.UP);
+					faceTwoUp = faceTwoUp.getRelative(BlockFace.UP);
 					inFront = inFront.getRelative(BlockFace.UP);
+					oneUp = oneUp.getRelative(BlockFace.UP);
+					twoUp = twoUp.getRelative(BlockFace.UP);
 					ledge = ledge.getRelative(BlockFace.UP);
 					distanceUp++;
 				}
@@ -166,8 +158,29 @@ public class TeleportAction extends BaseTeleportAction
 
 		if (ledge != null && context.isOkToStandOn(ledge))
 		{
-			destination = ledge.getRelative(BlockFace.UP);
-			context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting hit ledge at " + TextUtils.printBlock(destination), 11);
+			// Check to see if the ground is closer to the target than the ledge
+			Block floor = face;
+			while (!context.isOkToStandOn(floor) && distanceUp >= 0) {
+				floor = floor.getRelative(BlockFace.DOWN);
+				distanceUp--;
+			}
+			if (distanceUp > 0) {
+				destination = floor.getRelative(BlockFace.UP);
+				context.getMage().sendDebugMessage(ChatColor.GREEN + "Teleporting found ledge at " + TextUtils.printBlock(ledge) + ChatColor.GREEN + " but ground is closer: " + TextUtils.printBlock(destination), 11);
+			} else {
+				destination = ledge.getRelative(BlockFace.UP);
+				context.getMage().sendDebugMessage(ChatColor.GREEN + "Teleporting hit ledge at " + TextUtils.printBlock(destination), 11);
+			}
+		}
+
+		// Don't drop the player too far, and make sure there is somewhere to stand - unless they are flying
+		if (!(entity instanceof Player && ((Player)entity).isFlying()) && safe) {
+            Location safeLocation = context.findPlaceToStand(destination.getLocation(), verticalSearchDistance, false);
+			if (safeLocation != null)
+            {
+                destination = safeLocation.getBlock();
+				context.getMage().sendDebugMessage(ChatColor.GREEN + "Teleporting destination changed to safe location", 11);
+			}
 		}
 
 		Block oneUp = destination.getRelative(BlockFace.UP);
