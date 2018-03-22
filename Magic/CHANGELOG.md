@@ -2,6 +2,7 @@
 
 ## 7.3.2
 
+ - Fixed Magic Bow progression, *bow progress may get reset* - Sorry!
  - Add builtin attribute system
    - Attributes can be defined in attributes.yml, none exist in the default configuration.
      See: https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/examples/rpg/attributes.yml
@@ -23,7 +24,7 @@
  - Some improvements to Blink Arrows that were way more complicated then they were worth, but the arrows work great now.
  - Fix/improve teleportation ledge detection
  - Add "ai: false" option to magic mobs
- - Fixed Magic Bow progression, *bow progress may get reset* - Sorry!
+ - Fix wand current hotbar not saving
 
 ## 7.3.1
 

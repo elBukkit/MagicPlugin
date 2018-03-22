@@ -1680,10 +1680,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 
 		if (hasProperty("hotbar")) {
-			int hotbar = getInt("hotbar");
-			if (hotbar != currentHotbar) {
-				setCurrentHotbar(hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar);
-			}
+			currentHotbar = getInt("hotbar");
 		}
 
 		if (hasProperty("page")) {
@@ -4068,7 +4065,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		if (currentHotbar < 0 || currentHotbar >= this.hotbars.size())
 		{
-			setCurrentHotbar(currentHotbar);
+			setCurrentHotbar(0);
 		}
 		return this.hotbars.get(currentHotbar);
 	}
