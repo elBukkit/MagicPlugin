@@ -3178,7 +3178,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
        addPassiveEffectsGroup(strength, properties, "strength", stack, 1.0);
        addPassiveEffectsGroup(attributes, properties, "attributes", stack, null);
 
-       if (activeReduction || properties.getBoolean("passive")) {
+       if (activeReduction || properties.getBoolean("passive") || stack) {
            if (stack) {
                cooldownReduction = stackValue(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
                costReduction = stackValue(costReduction, properties.getFloat("cost_reduction", 0));
