@@ -1,12 +1,12 @@
 package com.elmakers.mine.bukkit.magic;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.Plugin;
-
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.Plugin;
 
 public class ConfigurationLoadTask implements Runnable {
     private final MagicController controller;

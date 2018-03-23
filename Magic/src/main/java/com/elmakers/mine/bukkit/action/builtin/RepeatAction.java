@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 public class RepeatAction extends CompoundAction
 {

@@ -1,27 +1,28 @@
 package com.elmakers.mine.bukkit.heroes;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.spell.CastingCost;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.herocraftonline.heroes.characters.Hero;
-import com.herocraftonline.heroes.characters.skill.PassiveSkill;
-import com.herocraftonline.heroes.characters.skill.Skill;
-import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
-import com.herocraftonline.heroes.characters.skill.SkillSetting;
+import java.util.List;
+import java.util.logging.Level;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-import java.util.logging.Level;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.spell.CastingCost;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.skill.PassiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 
 public class HeroesSkillSpell extends BaseSpell {
     private String skillKey;

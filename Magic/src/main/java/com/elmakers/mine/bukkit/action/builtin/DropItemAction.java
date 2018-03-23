@@ -1,5 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Collection;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
+
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -7,10 +12,6 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Collection;
 
 public class DropItemAction extends BaseSpellAction
 {

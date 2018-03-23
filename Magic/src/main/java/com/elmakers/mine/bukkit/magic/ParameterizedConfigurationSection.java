@@ -1,17 +1,16 @@
 package com.elmakers.mine.bukkit.magic;
 
+import static org.bukkit.util.NumberConversions.toLong;
+
+import java.util.Map;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
-
-import com.elmakers.mine.bukkit.utility.NMSUtils;
-
-import java.util.Map;
-
 import org.bukkit.util.NumberConversions;
 
-import static org.bukkit.util.NumberConversions.toLong;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class ParameterizedConfigurationSection extends MemorySection {
 

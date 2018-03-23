@@ -1,5 +1,16 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
+import javax.annotation.Nullable;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.entity.PlayerDeathEvent;
+
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
+import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.magic.MagicPlugin;
+
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.classes.Converter;
 import ch.njol.skript.doc.Description;
@@ -7,15 +18,6 @@ import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.effects.Delay;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageClass;
-import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.magic.MagicPlugin;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.entity.PlayerDeathEvent;
-
-import javax.annotation.Nullable;
 
 @Name("Active Spell")
 @Description({"The active spell for a player"})

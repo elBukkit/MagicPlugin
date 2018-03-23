@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.lang.ref.WeakReference;
+import java.util.List;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+
 import com.elmakers.mine.bukkit.action.CompoundEntityAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.utility.Targeting;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-
-import java.lang.ref.WeakReference;
-import java.util.List;
 
 public class ConeOfEffectAction extends CompoundEntityAction
 {

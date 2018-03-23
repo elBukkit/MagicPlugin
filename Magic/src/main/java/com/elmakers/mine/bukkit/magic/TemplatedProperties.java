@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.magic;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import javax.annotation.Nullable;
+
 import org.bukkit.configuration.ConfigurationSection;
 
-import javax.annotation.Nullable;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class TemplatedProperties extends CasterProperties {
      public TemplatedProperties(MagicPropertyType type, MageController controller) {

@@ -1,13 +1,15 @@
 package com.elmakers.mine.bukkit.magic;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import de.slikey.effectlib.util.MathUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+
+import de.slikey.effectlib.util.MathUtils;
 
 public class SourceLocation {
     private LocationType locationType;

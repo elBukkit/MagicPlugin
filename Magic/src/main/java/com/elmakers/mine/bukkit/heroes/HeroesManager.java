@@ -1,5 +1,23 @@
 package com.elmakers.mine.bukkit.heroes;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -14,25 +32,11 @@ import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
 import com.herocraftonline.heroes.characters.party.HeroParty;
-import com.herocraftonline.heroes.characters.skill.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.herocraftonline.heroes.characters.skill.ActiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillManager;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 
 public class HeroesManager implements ManaController, AttributeProvider, TeamProvider {
     private Heroes heroes;

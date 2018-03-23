@@ -1,17 +1,18 @@
 package com.elmakers.mine.bukkit.action;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class CompoundAction extends BaseSpellAction
 {

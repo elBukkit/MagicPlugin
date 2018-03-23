@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.action;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -8,6 +7,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class TeleportTask implements Runnable {
     protected final static int TELEPORT_RETRY_COUNT = 8;

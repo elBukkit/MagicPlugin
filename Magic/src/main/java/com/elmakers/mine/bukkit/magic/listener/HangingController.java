@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.magic.MagicController;
+import java.util.logging.Level;
+
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -12,7 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 
-import java.util.logging.Level;
+import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class HangingController implements Listener {
     private final MagicController controller;

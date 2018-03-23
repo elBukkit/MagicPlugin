@@ -1,5 +1,11 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
+import org.bukkit.Location;
+import org.bukkit.event.Event;
+
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.magic.MagicPlugin;
+
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
@@ -9,10 +15,6 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.Direction;
 import ch.njol.util.Kleenean;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.magic.MagicPlugin;
-import org.bukkit.Location;
-import org.bukkit.event.Event;
 
 @Name("Spawn Magic Mob")
 @Description("Spawn a magic mob.")

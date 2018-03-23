@@ -8,14 +8,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Fireball;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Projectile;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.NMSUtils;

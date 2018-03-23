@@ -1,18 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.entity.EntityData;
-import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.wand.WandAction;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.magic.DropActionTask;
-import com.elmakers.mine.bukkit.magic.Mage;
-import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
-import com.elmakers.mine.bukkit.wand.Wand;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -57,7 +45,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.projectiles.ProjectileSource;
-import java.util.logging.Level;
+
+import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.wand.WandAction;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.magic.DropActionTask;
+import com.elmakers.mine.bukkit.magic.Mage;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.wand.Wand;
 
 public class PlayerController implements Listener {
     private final static double MAX_ARROW_SPEED = 3;

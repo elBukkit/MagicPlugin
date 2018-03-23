@@ -1,5 +1,12 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -8,13 +15,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+
 import de.slikey.effectlib.math.VectorTransform;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
 
 public class ArmorStandProjectileAction extends EntityProjectileAction {
     private boolean smallArmorStand = false;

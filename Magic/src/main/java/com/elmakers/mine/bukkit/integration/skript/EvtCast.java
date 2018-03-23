@@ -1,13 +1,15 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
+import org.bukkit.ChatColor;
+import org.bukkit.event.Event;
+
+import com.elmakers.mine.bukkit.api.event.CastEvent;
+import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
-import com.elmakers.mine.bukkit.api.event.CastEvent;
-import com.elmakers.mine.bukkit.api.event.PreCastEvent;
-import org.bukkit.ChatColor;
-import org.bukkit.event.Event;
 
 public class EvtCast extends SkriptEvent {
 	private Literal<String> spells;

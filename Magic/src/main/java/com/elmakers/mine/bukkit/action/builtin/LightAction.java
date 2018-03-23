@@ -1,11 +1,12 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 
 public class LightAction extends BaseSpellAction {
     private int level;

@@ -1,5 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.action.ActionContext;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.CompoundAction;
@@ -8,10 +13,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class RandomAction extends CompoundAction
 {

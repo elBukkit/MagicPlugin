@@ -1,11 +1,12 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class ChangeBiomeAction extends BaseSpellAction {
     private Biome biome;

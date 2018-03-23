@@ -1,8 +1,7 @@
 package com.elmakers.mine.bukkit.entity;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.ColorHD;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import java.util.List;
+
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,7 +11,9 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 
-import java.util.List;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ColorHD;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class EntityAreaEffectCloudData extends EntityExtraData {
     private Color color;

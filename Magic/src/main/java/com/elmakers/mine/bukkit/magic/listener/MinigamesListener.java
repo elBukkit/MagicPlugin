@@ -1,12 +1,14 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import au.com.mineauz.minigames.events.QuitMinigameEvent;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+
 import au.com.mineauz.minigames.events.JoinMinigameEvent;
+import au.com.mineauz.minigames.events.QuitMinigameEvent;
 
 public class MinigamesListener implements Listener {
 

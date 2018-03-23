@@ -1,15 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
-import com.elmakers.mine.bukkit.api.magic.MaterialSet;
-
 import static com.google.common.base.Preconditions.checkNotNull;
-import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,6 +11,15 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nullable;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 /* package */ final class SimpleMaterialSetManager
         implements MaterialSetManager {

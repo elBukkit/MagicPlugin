@@ -1,9 +1,10 @@
 package com.elmakers.mine.bukkit.api.block;
 
-import com.elmakers.mine.bukkit.api.data.UndoData;
+import java.util.Collection;
+
 import org.bukkit.block.Block;
 
-import java.util.Collection;
+import com.elmakers.mine.bukkit.api.data.UndoData;
 
 public interface UndoQueue {
     void add(UndoList blocks);

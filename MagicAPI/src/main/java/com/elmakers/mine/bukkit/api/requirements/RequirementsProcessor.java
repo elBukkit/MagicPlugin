@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.api.requirements;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.elmakers.mine.bukkit.api.action.CastContext;
 
 /**
  * Implement this and register in LoadEvent to provide custom requirements.

@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.block;
 
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.entity.EntityData;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.Art;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,11 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
     private volatile boolean loaded = false;

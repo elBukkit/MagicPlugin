@@ -1,17 +1,18 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
-import com.elmakers.mine.bukkit.api.spell.SpellKey;
-import com.elmakers.mine.bukkit.effect.SoundEffect;
-import com.elmakers.mine.bukkit.magic.SpellParameters;
-import de.slikey.effectlib.util.ConfigUtils;
-import de.slikey.effectlib.util.ParticleEffect;
+import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -29,9 +30,15 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.effect.SoundEffect;
+import com.elmakers.mine.bukkit.magic.SpellParameters;
 
-import javax.annotation.Nonnull;
+import de.slikey.effectlib.util.ConfigUtils;
+import de.slikey.effectlib.util.ParticleEffect;
 
 public class ConfigurationUtils extends ConfigUtils {
 

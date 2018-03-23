@@ -1,13 +1,10 @@
 package com.elmakers.mine.bukkit.protection;
 
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
-import net.sacredlabyrinth.Phaed.PreciousStones.entries.FieldSign;
-import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
-import net.sacredlabyrinth.Phaed.PreciousStones.field.FieldFlag;
-import net.sacredlabyrinth.Phaed.PreciousStones.managers.ForceFieldManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,10 +23,14 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+
+import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
+import net.sacredlabyrinth.Phaed.PreciousStones.entries.FieldSign;
+import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
+import net.sacredlabyrinth.Phaed.PreciousStones.field.FieldFlag;
+import net.sacredlabyrinth.Phaed.PreciousStones.managers.ForceFieldManager;
 
 public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, PVPManager {
 	private PreciousStones preciousStones = null;

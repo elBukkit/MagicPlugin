@@ -1,13 +1,5 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.CompoundAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
-
-import de.slikey.effectlib.util.VectorUtils;
-
 import javax.annotation.Nonnull;
 
 import org.bukkit.ChatColor;
@@ -16,6 +8,14 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
+
+import de.slikey.effectlib.util.VectorUtils;
 
 public class ChangeContextAction extends CompoundAction {
     private Vector sourceOffset;

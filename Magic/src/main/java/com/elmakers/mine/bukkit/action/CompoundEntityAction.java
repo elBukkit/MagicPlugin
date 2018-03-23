@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.action;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public abstract class CompoundEntityAction extends CompoundAction
 {

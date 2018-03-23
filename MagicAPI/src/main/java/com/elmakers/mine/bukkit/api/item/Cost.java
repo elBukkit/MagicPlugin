@@ -1,11 +1,12 @@
 package com.elmakers.mine.bukkit.api.item;
 
+import org.bukkit.inventory.ItemStack;
+
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * Represents an abstract cost that may be one of several types:

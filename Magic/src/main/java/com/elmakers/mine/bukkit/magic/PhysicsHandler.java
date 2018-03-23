@@ -1,11 +1,12 @@
 package com.elmakers.mine.bukkit.magic;
 
-import com.elmakers.mine.bukkit.api.block.BlockData;
-import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
+
+import com.elmakers.mine.bukkit.api.block.BlockData;
+import com.elmakers.mine.bukkit.block.UndoList;
 
 public class PhysicsHandler implements Listener {
 	private final MagicController controller;

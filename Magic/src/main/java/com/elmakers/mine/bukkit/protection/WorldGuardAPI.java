@@ -1,5 +1,13 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.util.Set;
+import java.util.logging.Level;
+
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.sk89q.worldguard.bukkit.RegionContainer;
@@ -11,13 +19,6 @@ import com.sk89q.worldguard.protection.association.RegionAssociable;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import java.util.Set;
-import java.util.logging.Level;
 
 public class WorldGuardAPI {
     private final Plugin owningPlugin;

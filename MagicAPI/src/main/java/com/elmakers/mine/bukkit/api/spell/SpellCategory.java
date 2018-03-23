@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.api.spell;
 
-import org.bukkit.Color;
-
 import java.util.Collection;
+
+import org.bukkit.Color;
 
 public interface SpellCategory extends Comparable<SpellCategory> {
     String getKey();

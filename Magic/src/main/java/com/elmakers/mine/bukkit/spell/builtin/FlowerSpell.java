@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.builtin.CoverAction;
 import com.elmakers.mine.bukkit.action.builtin.FlowerAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.Target;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
 
 @Deprecated
 public class FlowerSpell extends BlockSpell

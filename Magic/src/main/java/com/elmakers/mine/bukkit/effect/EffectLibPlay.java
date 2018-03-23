@@ -1,9 +1,10 @@
 package com.elmakers.mine.bukkit.effect;
 
-import com.elmakers.mine.bukkit.api.effect.EffectPlay;
-import de.slikey.effectlib.Effect;
-
 import java.util.logging.Level;
+
+import com.elmakers.mine.bukkit.api.effect.EffectPlay;
+
+import de.slikey.effectlib.Effect;
 
 public class EffectLibPlay implements EffectPlay {
     private final Effect effect;

@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,6 +9,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 @Deprecated
 public class TossSpell extends BrushSpell

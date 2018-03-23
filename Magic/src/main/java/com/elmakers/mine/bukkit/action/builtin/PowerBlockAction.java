@@ -1,11 +1,8 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,8 +16,12 @@ import org.bukkit.material.PistonBaseMaterial;
 import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
 
-import java.util.Arrays;
-import java.util.Collection;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class PowerBlockAction extends BaseSpellAction {
     private boolean applyPhysics = false;

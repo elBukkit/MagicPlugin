@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 
 public class RPCommandExecutor extends MagicTabExecutor {
 

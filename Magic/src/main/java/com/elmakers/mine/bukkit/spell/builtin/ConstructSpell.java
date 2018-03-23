@@ -6,22 +6,22 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.block.UndoList;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
-import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.batch.ConstructBatch;
+import com.elmakers.mine.bukkit.block.ConstructionType;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import org.bukkit.util.Vector;
 
 public class ConstructSpell extends BrushSpell
 {

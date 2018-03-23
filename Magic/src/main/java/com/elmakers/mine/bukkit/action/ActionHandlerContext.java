@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.action;
 
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class ActionHandlerContext {
     private final com.elmakers.mine.bukkit.api.action.ActionHandler actions;

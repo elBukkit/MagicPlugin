@@ -1,28 +1,38 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BlockSpell;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.Target;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
-import org.bukkit.map.MapView;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Horse.Color;
 import org.bukkit.entity.Horse.Style;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Ocelot.Type;
+import org.bukkit.entity.Painting;
+import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
+import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.map.MapView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
 public class AlterSpell extends BlockSpell

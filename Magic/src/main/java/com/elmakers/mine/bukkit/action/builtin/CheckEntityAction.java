@@ -1,17 +1,18 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class CheckEntityAction extends CompoundAction {
     private boolean allowCaster;

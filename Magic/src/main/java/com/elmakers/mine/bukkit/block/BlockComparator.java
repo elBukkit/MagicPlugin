@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.block;
 
-import com.elmakers.mine.bukkit.api.magic.MaterialSet;
-
 import java.util.Comparator;
+
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 
 final class BlockComparator implements Comparator<com.elmakers.mine.bukkit.api.block.BlockData> {
     private MaterialSet attachables;

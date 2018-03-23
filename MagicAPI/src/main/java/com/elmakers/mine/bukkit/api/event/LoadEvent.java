@@ -1,17 +1,18 @@
 package com.elmakers.mine.bukkit.api.event;
 
-import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
-import com.elmakers.mine.bukkit.api.entity.TeamProvider;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
+
+import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
+import com.elmakers.mine.bukkit.api.entity.TeamProvider;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 
 /**
  * A custom event that fires whenever Magic loads or reloads configurations.

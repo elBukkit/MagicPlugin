@@ -1,10 +1,8 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseProjectileAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.effect.EffectUtils;
+import java.lang.reflect.Field;
+import java.util.Random;
+
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
@@ -13,8 +11,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-import java.lang.reflect.Field;
-import java.util.Random;
+import com.elmakers.mine.bukkit.action.BaseProjectileAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.effect.EffectUtils;
 
 public class FireworkAction extends BaseProjectileAction
 {

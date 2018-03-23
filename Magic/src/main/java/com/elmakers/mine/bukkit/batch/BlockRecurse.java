@@ -1,18 +1,18 @@
 package com.elmakers.mine.bukkit.batch;
 
-import com.elmakers.mine.bukkit.action.ActionContext;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
+import com.elmakers.mine.bukkit.action.ActionContext;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockData;
-
-import java.util.HashSet;
-import java.util.Set;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class BlockRecurse
 {

@@ -1,13 +1,11 @@
 package com.elmakers.mine.bukkit.effect;
 
-import java.util.*;
-
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.effect.EffectPlay;
-
-import com.elmakers.mine.bukkit.magic.SourceLocation;
-import de.slikey.effectlib.util.DynamicLocation;
-import de.slikey.effectlib.util.ParticleEffect;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -23,8 +21,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+
+import de.slikey.effectlib.util.DynamicLocation;
+import de.slikey.effectlib.util.ParticleEffect;
 
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";

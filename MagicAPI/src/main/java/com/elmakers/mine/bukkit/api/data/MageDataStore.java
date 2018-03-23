@@ -1,9 +1,10 @@
 package com.elmakers.mine.bukkit.api.data;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
+import java.util.Collection;
+
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Collection;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface MageDataStore {
     /**

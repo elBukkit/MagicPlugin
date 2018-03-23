@@ -1,20 +1,20 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.data.MageData;
-import com.elmakers.mine.bukkit.api.data.MageDataCallback;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.elmakers.mine.bukkit.api.data.MageData;
+import com.elmakers.mine.bukkit.api.data.MageDataCallback;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicSaveCommandExecutor extends MagicTabExecutor {
 	public MagicSaveCommandExecutor(MagicAPI api) {

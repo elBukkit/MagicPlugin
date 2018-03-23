@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.integration;
 
-import ch.njol.skript.registrations.EventValues;
-import ch.njol.skript.util.Getter;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -9,15 +11,15 @@ import com.elmakers.mine.bukkit.integration.skript.CondHasItem;
 import com.elmakers.mine.bukkit.integration.skript.CondHasPath;
 import com.elmakers.mine.bukkit.integration.skript.CondHasSpell;
 import com.elmakers.mine.bukkit.integration.skript.CondIsClass;
+import com.elmakers.mine.bukkit.integration.skript.EffCast;
 import com.elmakers.mine.bukkit.integration.skript.EffSpawn;
+import com.elmakers.mine.bukkit.integration.skript.EvtCast;
 import com.elmakers.mine.bukkit.integration.skript.ExprActiveSpell;
 import com.elmakers.mine.bukkit.integration.skript.ExprCaster;
 import com.elmakers.mine.bukkit.integration.skript.ExprTargets;
-import com.elmakers.mine.bukkit.integration.skript.EffCast;
-import com.elmakers.mine.bukkit.integration.skript.EvtCast;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
+
+import ch.njol.skript.registrations.EventValues;
+import ch.njol.skript.util.Getter;
 
 public class SkriptManager {
 

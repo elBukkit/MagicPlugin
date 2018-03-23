@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.warp;
 
+import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
+
 import com.sk89q.commandbook.CommandBook;
 import com.sk89q.commandbook.locations.NamedLocation;
 import com.sk89q.commandbook.locations.RootLocationManager;
 import com.sk89q.commandbook.locations.WarpsComponent;
 import com.zachsthings.libcomponents.ComponentManager;
 import com.zachsthings.libcomponents.bukkit.BukkitComponent;
-import org.bukkit.Location;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Encapsulates CommandBook warps

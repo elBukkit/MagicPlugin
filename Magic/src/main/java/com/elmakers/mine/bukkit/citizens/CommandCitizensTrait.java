@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.citizens;
 
-import net.citizensnpcs.api.util.DataKey;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Level;
+import net.citizensnpcs.api.util.DataKey;
 
 public class CommandCitizensTrait extends CitizensTrait {
     private String command;

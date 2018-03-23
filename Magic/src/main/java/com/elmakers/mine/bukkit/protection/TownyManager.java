@@ -1,12 +1,12 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.util.logging.Level;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.util.logging.Level;
 
 public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildManager {
 	private boolean enabled = false;

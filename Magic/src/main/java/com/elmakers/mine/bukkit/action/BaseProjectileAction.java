@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.action;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.BoundingBox;
-import com.elmakers.mine.bukkit.utility.Targeting;
-import com.elmakers.mine.bukkit.utility.TextUtils;
+import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -15,11 +15,12 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import java.lang.ref.WeakReference;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
+import com.elmakers.mine.bukkit.utility.Targeting;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public abstract class BaseProjectileAction extends CompoundAction {
     private long lifetime;

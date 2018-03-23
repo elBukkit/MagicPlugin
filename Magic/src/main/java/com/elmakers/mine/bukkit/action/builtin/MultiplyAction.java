@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
+
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MultiplyAction extends CompoundAction
 {

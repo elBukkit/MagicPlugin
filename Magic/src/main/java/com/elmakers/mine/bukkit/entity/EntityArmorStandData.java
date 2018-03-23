@@ -1,11 +1,12 @@
 package com.elmakers.mine.bukkit.entity;
 
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
+
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class EntityArmorStandData extends EntityExtraData {
     public ItemStack itemInHand;

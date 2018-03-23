@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -19,6 +17,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class GotoSpell extends UndoableSpell

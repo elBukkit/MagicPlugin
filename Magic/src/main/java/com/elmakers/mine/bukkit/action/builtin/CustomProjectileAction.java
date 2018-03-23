@@ -1,24 +1,11 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.ActionHandler;
-import com.elmakers.mine.bukkit.action.CompoundAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.effect.EffectPlay;
-import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.spell.TargetType;
-import com.elmakers.mine.bukkit.magic.SourceLocation;
-import com.elmakers.mine.bukkit.utility.HitboxUtils;
-import de.slikey.effectlib.math.VectorTransform;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.Targeting;
-import de.slikey.effectlib.util.DynamicLocation;
-import de.slikey.effectlib.util.VectorUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -30,12 +17,26 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
+import com.elmakers.mine.bukkit.action.ActionHandler;
+import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.effect.EffectPlay;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.magic.SourceLocation;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.HitboxUtils;
+import com.elmakers.mine.bukkit.utility.Target;
+import com.elmakers.mine.bukkit.utility.Targeting;
+
+import de.slikey.effectlib.math.VectorTransform;
+import de.slikey.effectlib.util.DynamicLocation;
+import de.slikey.effectlib.util.VectorUtils;
 
 public class CustomProjectileAction extends CompoundAction
 {

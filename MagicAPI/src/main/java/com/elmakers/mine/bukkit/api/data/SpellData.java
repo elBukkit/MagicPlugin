@@ -1,8 +1,9 @@
 package com.elmakers.mine.bukkit.api.data;
 
-import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 
 public class SpellData {
     private SpellKey spellKey;

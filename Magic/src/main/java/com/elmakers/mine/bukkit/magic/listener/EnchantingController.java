@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 
 public class EnchantingController implements Listener {
 	private final MagicController controller;

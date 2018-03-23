@@ -1,5 +1,16 @@
 package com.elmakers.mine.bukkit.integration;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -11,15 +22,6 @@ import com.sucy.skill.SkillAPI;
 import com.sucy.skill.api.player.PlayerClass;
 import com.sucy.skill.api.player.PlayerData;
 import com.sucy.skill.manager.AttributeManager;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 public class SkillAPIManager implements ManaController, AttributeProvider, RequirementsProcessor {
     private final Plugin skillAPIPlugin;
