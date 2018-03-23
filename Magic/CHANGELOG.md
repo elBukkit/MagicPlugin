@@ -3,6 +3,15 @@
 ## 7.3.2
 
  - Fixed Magic Bow progression, *bow progress may get reset* - Sorry!
+ - The Magic Sword no longer starts with additional spells. This may or may not be temporary, some technical issues came up.
+ - Fix non-battle spells and brushes showing in the Magic Sword inventory (they weren't supposed to)
+ - Fix active costs for Air Scooter, also Levitate/Air Scooter and Boon will prevent mana regen while active.
+ - Fix wand organizing and alphabetizing
+ - Fix wand inventory going weird on rankup (when earning additional hotbars)
+ - Fix Blink Arrows not working if you hit a wall
+ - Fix Recall last death location tracking
+ - Fix/improve teleportation ledge detection
+ - Fix wand current hotbar not saving
  - Add builtin attribute system
    - Attributes can be defined in attributes.yml, none exist in the default configuration.
      See: https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/examples/rpg/attributes.yml
@@ -14,18 +23,10 @@
  - Add /mage switch command to switch classes for a player (combo of lock, unlock and activate)
  - The Magic.wand.override_drop permission changed to Magic.wand.override_stash
  - Added "unstashable" and "unmoveable" wand properties
- - Fix active costs for Air Scooter, also Levitate/Air Scooter and Boon will prevent mana regen while active.
- - Fix wand organizing and alphabetizing
- - Fix wand inventory going weird on rankup (when earning additional hotbars)
- - Fix Blink Arrows not working if you hit a wall
- - Hostile mobs can't be targeted by Heal, Cure or other boon spells (see: friendly_entity_types in config.yml)
- - Fix Recall last death location tracking
  - Capture added to Conduit path (was supposed to be on there, forgot to give it an SP cost)
+ - Hostile mobs can't be targeted by Heal, Cure or other boon spells (see: friendly_entity_types in config.yml)
  - Some improvements to Blink Arrows that were way more complicated then they were worth, but the arrows work great now.
- - Fix/improve teleportation ledge detection
  - Add "ai: false" option to magic mobs
- - Fix wand current hotbar not saving
- - Fix non-battle spells and brushes showig in the Master Sword inventory
 
 ## 7.3.1
 
