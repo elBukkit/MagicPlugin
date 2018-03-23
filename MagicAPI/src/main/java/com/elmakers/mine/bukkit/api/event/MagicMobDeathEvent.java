@@ -16,18 +16,18 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class MagicMobDeathEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
-    
+
     private final EntityDeathEvent deathEvent;
     private final EntityData entityData;
     private final MageController controller;
     private Mage mage;
     private Player player;
-    
+
     public MagicMobDeathEvent(MageController controller, EntityData entityData, EntityDeathEvent deathEvent) {
         this.controller = controller;
         this.entityData = entityData;
         this.deathEvent = deathEvent;
-        
+
         LivingEntity killed = deathEvent.getEntity();
         EntityDamageEvent damageEvent = killed.getLastDamageCause();
         if (damageEvent instanceof EntityDamageByEntityEvent)
@@ -62,15 +62,15 @@ public class MagicMobDeathEvent extends Event {
     public EntityData getEntityData() {
         return entityData;
     }
-    
+
     public MageController getController() {
         return controller;
     }
-    
+
     public Mage getMage() {
         return mage;
     }
-    
+
     public Player getPlayer() {
         return player;
     }

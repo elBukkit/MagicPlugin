@@ -42,25 +42,25 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 
 /**
  * A Mage represents any entity that may cast spells. This can include:
- * 
+ *
  * - A Player. Mages for Players will be persisted and destroyed if a Player
  * logs out. By default a Mage will be kept around if a Player has anything in
  * their undo queue, so that an admin may Rewind their constructions after logout.
- * 
+ *
  * - A CommandBlockSender. A Command block will have a Mage if it uses /cast.
- * Each Command block will have a unique Mage for its assigned name (assign a name to 
+ * Each Command block will have a unique Mage for its assigned name (assign a name to
  * a Command block using an Anvil). More than one Command block with the same name
  * (so mapping to the same Mage) may cause overlap issues with cooldowns or other
  * persistent Spell data.
- * 
+ *
  * - A CommandSender. Any other CommandSender, such as from the server console,
  * will map to a global "COMMAND" mage. This Mage has no Location, so is generally
  * limited in what it can cast unless the "p" location parameters are used, e.g.
- * 
+ *
  * cast blast pworld world px 0 py 70 pz 0
- * 
+ *
  * This will case "blast" in the center of the world "world" using the "COMMAND" Mage.
- * 
+ *
  * Some Spell implementations will absolutely require a Player (such as StashSpell),
  * and so will always fail unless cast by a player or with "castp".
  */

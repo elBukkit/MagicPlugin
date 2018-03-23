@@ -106,6 +106,6 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
      * @param parameterKey The parameter for which to retrieve example options.
      */
     void getParameterOptions(Collection<String> examples, String parameterKey);
-    
+
     Collection<Requirement> getRequirements();
 }

@@ -369,7 +369,7 @@ public interface MageController {
     void setForceSpawn(boolean force);
     String getSpell(ItemStack item);
     String getSpellArgs(ItemStack item);
-    
+
     Set<String> getMobKeys();
     Entity spawnMob(String key, Location location);
     EntityData getMob(String key);
@@ -382,7 +382,7 @@ public interface MageController {
     boolean sendResourcePack(Player player);
     boolean promptResourcePack(Player player);
     boolean commitOnQuit();
-    
+
     Set<String> getItemKeys();
     ItemData getItem(String key);
     ItemData getOrCreateItem(String key);
@@ -406,7 +406,7 @@ public interface MageController {
 
     Set<String> getMageClassKeys();
     MageClassTemplate getMageClassTemplate(String key);
-    
+
     // LightAPI integration
     boolean createLight(Location location, int lightlevel, boolean async);
     boolean deleteLight(Location location, boolean async);

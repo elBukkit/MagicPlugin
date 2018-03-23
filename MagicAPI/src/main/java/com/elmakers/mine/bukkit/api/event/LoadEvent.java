@@ -27,7 +27,7 @@ public class LoadEvent extends Event {
     public LoadEvent(MageController controller) {
         this.controller = controller;
     }
-    
+
     @Override
     public HandlerList getHandlers() {
         return handlers;
@@ -36,7 +36,7 @@ public class LoadEvent extends Event {
     public static HandlerList getHandlerList() {
         return handlers;
     }
-    
+
     public MageController getController() {
         return controller;
     }
@@ -61,20 +61,20 @@ public class LoadEvent extends Event {
 
     /**
      * Register a RequirementsProcessor for handling a specific type of requirement.
-     * 
+     *
      * Requirement types are 1:1 with processors, each type may only have one processor associated with it.
-     * 
+     *
      * Processors must be re-registered with each load.
-     * 
+     *
      * Example requirement block, which might appear in a spell, Selector or other config:
-     * 
+     *
      * requirements:
      * - type: skillapi
      *   skill: enchanting
      * - type: avengers
      *   power: hulkout
      *   character: Hulk
-     * 
+     *
      * @param requirementType The type of requirements this processor handles
      * @param processor The processor to register
      */
@@ -84,7 +84,7 @@ public class LoadEvent extends Event {
         }
         requirementProcessors.put(requirementType, processor);
     }
-    
+
     public Map<String, RequirementsProcessor> getRequirementProcessors() {
         return requirementProcessors;
     }

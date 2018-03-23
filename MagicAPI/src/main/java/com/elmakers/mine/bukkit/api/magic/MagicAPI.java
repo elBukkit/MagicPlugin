@@ -23,31 +23,31 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 *
 * This is the API for the Magic plugin for Bukkit. Other plugins can
 * use this API to integrate with Magic.
-* 
+*
 * If you wish to extend Magic, such as by adding a completely new Spell
 * or EffectPlayer class, you will need to build against Magic directly.
-* 
+*
 * \section issues_sec Issues
-* 
+*
 * For issues with the API, or suggestions, use our Issue Tracker:
-* 
+*
 * https://github.com/elBukkit/MagicPlugin/issues
-* 
+*
 * \section start_sec Getting Started
-* 
+*
 * If you haven't done so already, get started with Bukkit by getting a basic
 * shell of a plugin working. You should at least have a working Plugin that
 * loads in Bukkit (add a debug print to onEnable to be sure!) before you
 * start trying to integrate with other Plugins. See here for general help:
-* 
+*
 * http://wiki.bukkit.org/Plugin_Tutorial
-* 
+*
 * \section maven_sec Building with Maven
-* 
+*
 * Once you have a project set up, it is easy to build against the Magic API
 * with Maven. Simply add the elmakers repository to your repository list,
 * and then add a dependency for MagicAPI. A typical setup would look like:
-* 
+*
 * <pre>
 * &lt;dependencies&gt;
 * &lt;dependency&gt;
@@ -74,17 +74,17 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 * &lt;/repository&gt;
 * &lt;/repositories&gt;
 * </pre>
-* 
+*
 * \section plugin_sec Getting the API reference
-* 
+*
 * A Plugin that wishes to interact with Magic should generally check
 * the PluginManager for the "Magic" plugin. If present, the Plugin may
 * cast it to MagicAPI and use it.
-* 
+*
 * If you wish to softdepend to Magic, make sure to not use any of these API classes
 * unless you know the Magic plugin is loaded. Make sure you're not building the API
 * into your plugin, it should always be referenced externally (e.g. "provided" in Maven).
-* 
+*
 * <pre>
 *       MagicAPI getMagicAPI() {
 *           Plugin magicPlugin = Bukkit.getPluginManager().getPlugin("Magic");
@@ -94,24 +94,23 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 *           return (MagicAPI)magicPlugin;
 *       }
 * </pre>
-* 
+*
 * \section example_sec Examples
 *
 * \subsection casting Casting Spells
-* 
+*
 * A plugin may cast spells directly, or on behalf of logged in players.
-* 
+*
 * \subsection wands Creating Wands
-* 
+*
 * A plugin may create or modify Wand items.
 */
 
 /**
  * This is the primary entry point into the Magic API.
- * 
+ *
  * A Plugin should generally check for the "Magic" plugin, and
  * then cast that Plugin to MagicAPI to interact with it.
- * 
  */
 public interface MagicAPI {
 

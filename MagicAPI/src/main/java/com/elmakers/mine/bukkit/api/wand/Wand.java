@@ -29,12 +29,12 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
 /**
  * Represents a Wand that a Mage may use to cast a Spell.
- * 
+ *
  * Every Wand has an inventory of Spell keys and Material brush keys that it may cast and use.
- * 
+ *
  * A Wand may also have a variety of properties, including effects, an XP ("Mana") pool for
  * casting Spells with an XP-based CastingCost, and various boosts and protections.
- * 
+ *
  * Each Wand is backed by an ItemStack, and the Wand stores its data in the ItemStack. A Wand
  * is otherwise not tracked or persistent, other than via the Mage.getActiveWand() method, or
  * via a tracked LostWand record, if the ItemStack can be found.

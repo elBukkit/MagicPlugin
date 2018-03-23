@@ -13,13 +13,13 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 
 /**
  * Represents a Spell that may be cast by a Mage.
- * 
+ *
  * Each Spell is based on a SpellTemplate, which are defined
  * by the spells configuration files.
- * 
+ *
  * Every spell uses a specific Class that must extend from
  * com.elmakers.mine.bukkit.plugins.magic.spell.Spell.
- * 
+ *
  * To create a new custom spell from scratch, you must also
  * implement the MageSpell interface.
  */
