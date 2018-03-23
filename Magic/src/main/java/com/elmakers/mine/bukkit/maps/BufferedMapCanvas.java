@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.map.MapCanvas;
@@ -125,7 +126,7 @@ public class BufferedMapCanvas implements MapCanvas {
                 x = xStart;
                 y += font.getHeight() + 1;
                 continue;
-            } else if (ch == '\u00A7') {
+            } else if (ch == ChatColor.COLOR_CHAR) {
                 int j = text.indexOf(';', i);
                 if (j >= 0) {
                     try {
