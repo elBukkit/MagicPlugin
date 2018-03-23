@@ -15,11 +15,6 @@
  - Skill menu option to not show skills you already have
  - Undroppable option for skills
 
- - Blink arrow still won't work against a wall ... need to use one block out?
- - Wand organizer doesn't work right anymore- changes hotbar, doesn't apply to wand directly?
-   https://youtu.be/98l2fr0FIhE
- - Move attributes to CasterProperties, merge in Mage.
-
  - Auto show skull icons for players that haven't got the RP? (optionally)
  - Undoing a wolf house leaves diodes and redstone behind
  - Brushette requests damage reduction (as in subtract an amount)
@@ -29,9 +24,7 @@
    
 ## Attributes
 
- - Add internal attribute system.
  - Attributes can improve with rankup (spell purchase? need new progression mechanism...)
- - Attributes can be used in spell configs
  - Also allow classes to define attribute global effects
    - Physical damage
    - Speed

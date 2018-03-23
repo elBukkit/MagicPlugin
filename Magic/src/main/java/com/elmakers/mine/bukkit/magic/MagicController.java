@@ -1695,7 +1695,7 @@ public class MagicController implements MageController {
             plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    initializeAttributes();;
+                    initializeAttributes();
                 }
             }, 1);
         }
@@ -3668,6 +3668,13 @@ public class MagicController implements MageController {
                 }
             }
         }
+
+		// Update registered mages so their classes are current
+		for (Mage mage : mages.values()) {
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).reloadClasses();
+            }
+		}
     }
 
     @Override

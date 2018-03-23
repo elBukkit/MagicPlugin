@@ -2,6 +2,9 @@
 
 ## 7.4
 
+ - Allow using \n when configuring a wand description via configure command
+ - Changes to classes will take effect properly when using /magic load
+
 ## 7.3.2
 
  - Fixed Magic Bow progression, *bow progress may get reset* - Sorry!

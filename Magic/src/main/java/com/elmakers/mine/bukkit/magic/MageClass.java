@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class MageClass extends TemplatedProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
-    protected final @Nonnull MageClassTemplate template;
+    protected @Nonnull MageClassTemplate template;
     protected final MageProperties mageProperties;
     protected final Mage mage;
     private MageClass parent;
@@ -242,10 +242,12 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     public void unlock() {
         configuration.set("locked", null);
         if (parent != null) parent.unlock();
+        onUnlocked();
     }
 
     public void lock() {
         configuration.set("locked", true);
+        onLocked();
     }
 
     @Override
@@ -296,4 +298,20 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 		}
 		return "mage." + key;
 	}
+
+	public void onRemoved() {
+        onLocked();
+    }
+
+	public void onLocked() {
+    }
+
+	public void onUnlocked() {
+    }
+
+    public void setTemplate(@Nonnull MageClassTemplate template) {
+        // TODO: This won't update the "type" field of the base base base class here if the
+        // template hierarchy has drastically changed.
+        this.template = template;
+    }
 }

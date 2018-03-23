@@ -1170,6 +1170,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!classes.containsKey(classKey)) {
             return false;
         }
+        classes.get(classKey).onRemoved();
         classes.remove(classKey);
         if (activeClass != null && activeClass.getTemplate().getKey().equals(classKey)) {
             activeClass = null;
@@ -1245,6 +1246,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 mageClass = new MageClass(this, template);
                 assignParent(mageClass);
                 classes.put(key, mageClass);
+                mageClass.onUnlocked();
             }
         }
         if (mageClass != null && mageClass.isLocked()) {
@@ -1607,6 +1609,25 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public int getLastHeldMapId() {
         return brush.getMapId();
+    }
+
+    protected void reloadClasses() {
+        for (Iterator<Map.Entry<String, MageClass>> it = classes.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<String, MageClass> entry = it.next();
+            String templateKey = entry.getKey();
+            MageClass mageClass = entry.getValue();
+            MageClassTemplate template = controller.getMageClassTemplate(templateKey);
+            if (template == null) {
+                mageClass.onRemoved();
+                if (activeClass == mageClass) {
+                    setActiveClass(null);
+                }
+                it.remove();
+                continue;
+            }
+
+            mageClass.setTemplate(template);
+        }
     }
 
     protected void loadSpells(Map<String, ConfigurationSection> spellConfiguration) {
