@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 /**
  * A set of materials.
  *
- * Magic does not distinguish between sets that need to be enumerable and sets
+ * <p>Magic does not distinguish between sets that need to be enumerable and sets
  * that serve as a predicate.
  */
 public interface MaterialSet {

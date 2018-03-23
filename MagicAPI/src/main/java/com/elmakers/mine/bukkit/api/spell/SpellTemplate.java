@@ -79,7 +79,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     /**
      * Returns the maximum progress level for this spell.
      *
-     * This may return 0 even though a spell's current progress level is always 1 or greater. A result of 0 indicates
+     * <p>This may return 0 even though a spell's current progress level is always 1 or greater. A result of 0 indicates
      * that progress levels are not used for this spell.
      */
     long getMaxProgressLevel();

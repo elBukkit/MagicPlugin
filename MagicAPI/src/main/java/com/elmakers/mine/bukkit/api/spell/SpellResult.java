@@ -78,7 +78,7 @@ public enum SpellResult {
     /**
      * Determine if this result is a failure or not.
      *
-     * Note that a spell result can be neither failure nor
+     * <p>Note that a spell result can be neither failure nor
      * success.
      *
      * @return True if this cast was a failure.
@@ -108,7 +108,7 @@ public enum SpellResult {
      * Determine if this result should stop processing or not.
      *
      * @return True if this result should stop processing, either
-     *  temporarily (PENDING) or permanently (CANCELLED)
+     *      temporarily (PENDING) or permanently (CANCELLED)
      */
     public boolean isStop() {
         return stop;

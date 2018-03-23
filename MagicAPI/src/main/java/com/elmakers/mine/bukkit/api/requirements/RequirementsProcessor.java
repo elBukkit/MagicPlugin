@@ -13,7 +13,7 @@ public interface RequirementsProcessor {
      * Check if a player fulfills the target requirement. Requirements are defined ad-hoc on spell configurations,
      * Selector configurations and perhaps other configurations in the future.
      *
-     * There is no central definition of all known requirements, and processors need not register them in advance.
+     * <p>There is no central definition of all known requirements, and processors need not register them in advance.
      *
      * @param context The context under which this query is taking place
      * @param requirement The requirement being checked

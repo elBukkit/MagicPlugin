@@ -76,17 +76,16 @@ public interface Cost {
      * Deduct these costs from the specified Mage
      *
      * @param mage The mage to check for costs
-     * @return False if deducting costs failed
      */
     void deduct(Mage mage);
 
     /**
      * Get a human-readable description of this cost.
      *
-     * For XP, display text will be determined by the
+     * <p>For XP, display text will be determined by the
      * CostReducer if it uses Mana.
      *
-     * This does not include the amount, and only the label - e.g. "Bread" or "Mana" or "XP".
+     * <p>This does not include the amount, and only the label - e.g. "Bread" or "Mana" or "XP".
      *
      * @param messages The Messages class for looking up localizations
      * @param reducer An optional scale for costs
@@ -97,10 +96,10 @@ public interface Cost {
     /**
      * Get a human-readable description of this cost.
      *
-     * For XP, display text will be determined by the
+     * <p>For XP, display text will be determined by the
      * CostReducer if it uses Mana.
      *
-     * This does not include the amount, and only the label - e.g. "Bread" or "Mana" or "XP".
+     * <p>This does not include the amount, and only the label - e.g. "Bread" or "Mana" or "XP".
      *
      * @param messages The Messages class for looking up localizations
      * @return A printable String to display this casting cost to a Player.
@@ -110,10 +109,10 @@ public interface Cost {
     /**
      * Get a human-readable description of this cost.
      *
-     * For XP, display text will be determined by the
+     * <p>For XP, display text will be determined by the
      * CostReducer if it uses Mana.
      *
-     * This includes the amount as well as the label - e.g. "2 Bread" or "30 Mana" or "50 XP".
+     * <p>This includes the amount as well as the label - e.g. "2 Bread" or "30 Mana" or "50 XP".
      *
      * @param messages The Messages class for looking up localizations
      * @param reducer An optional scale for costs
@@ -124,10 +123,10 @@ public interface Cost {
     /**
      * Get a human-readable description of this cost.
      *
-     * For XP, display text will be determined by the
+     * <p>For XP, display text will be determined by the
      * CostReducer if it uses Mana.
      *
-     * This includes the amount as well as the label - e.g. "2 Bread" or "30 Mana" or "50 XP".
+     * <p>This includes the amount as well as the label - e.g. "2 Bread" or "30 Mana" or "50 XP".
      *
      * @param messages The Messages class for looking up localizations
      * @return A printable String to display this casting cost to a Player.
@@ -137,7 +136,7 @@ public interface Cost {
     /**
      * Get a copy of the item represented by this cost.
      *
-     * This will return null for non-item costs.
+     * <p>This will return null for non-item costs.
      *
      * @return The item cost, or null if none.
      */

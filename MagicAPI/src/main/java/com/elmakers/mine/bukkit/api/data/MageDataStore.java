@@ -21,7 +21,7 @@ public interface MageDataStore {
     /**
      * Save a single Mage.
      *
-     * If the provided callback is non-null, it should be called on completion.
+     * <p>If the provided callback is non-null, it should be called on completion.
      */
     void save(MageData mage, MageDataCallback callback);
 
@@ -33,9 +33,9 @@ public interface MageDataStore {
     /**
      * Load a single mage by id.
      *
-     * If there is no data for this mage, a new empty record should be returned.
+     * <p>If there is no data for this mage, a new empty record should be returned.
      *
-     * If the provided callback is non-null, it should be called on completion.
+     * <p>If the provided callback is non-null, it should be called on completion.
      */
     void load(String id, MageDataCallback callback);
 
@@ -54,7 +54,7 @@ public interface MageDataStore {
     /**
      * Mark a Mage as having been migrated.
      *
-     * This may be a deletion, backup or flagging,
+     * <p>This may be a deletion, backup or flagging,
      * however the implementation prefers.
      */
     void migrate(String id);

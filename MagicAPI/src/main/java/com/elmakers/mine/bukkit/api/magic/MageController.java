@@ -55,7 +55,7 @@ public interface MageController {
     /**
      * Retrieve the Plugin that owns this controller.
      *
-     * This will generally be the MagicPlugin, but.. maybe not always?
+     * <p>This will generally be the MagicPlugin, but.. maybe not always?
      *
      * @return The owning plugin instance
      */
@@ -73,7 +73,7 @@ public interface MageController {
     /**
      * Create a new Wand from a template.
      *
-     * Once created, a Wand is a unique item. It "remembers" which template
+     * <p>Once created, a Wand is a unique item. It "remembers" which template
      * it was created from, but this is currently not used for anything.
      *
      * @param wandKey The template key, or blank for a default wand.
@@ -143,8 +143,6 @@ public interface MageController {
 
     /**
      * This will remove a Mage after their undo queue and pending spell casts have completed.
-     *
-     * @param mage
      */
     void forgetMage(Mage mage);
 
@@ -191,10 +189,10 @@ public interface MageController {
     /**
      * Check whether or not one entity is allowed to target another.
      *
-     * This takes into account region-based PVP permissions, mob protection, scoreboard teams and parties
+     * <p>This takes into account region-based PVP permissions, mob protection, scoreboard teams and parties
      * via other plugins, depending on global settings.
      *
-     * PvP and friendly fire checks can be overridden on a per-spell or global basis.
+     * <p>PvP and friendly fire checks can be overridden on a per-spell or global basis.
      *
      * @param attacker The attacking entity
      * @param target The entity potentially being targeted
@@ -206,7 +204,7 @@ public interface MageController {
      * This checks scoreboard teams or integrated party groupings, as configured and provided by other plugins,
      * to see if two entities are "friends" with one another.
      *
-     * This is primarily used for "only_friendly: true" spells to disallow targeting non-friend players.
+     * <p>This is primarily used for "only_friendly: true" spells to disallow targeting non-friend players.
      *
      * @param source The source entity
      * @param target The target entity
@@ -249,9 +247,7 @@ public interface MageController {
     /**
      * Check to see if the Elementals plugin is present an enabled.
      *
-     * If so, Magic will work as a passthrough API.
-     *
-     * @return
+     * <p>If so, Magic will work as a passthrough API.
      */
     boolean elementalsEnabled();
 
@@ -276,7 +272,7 @@ public interface MageController {
     /**
      * Check to see if the given Entity is an NPC of any kind.
      *
-     * This currently integrates with Citizens and Shopkeepers, and
+     * <p>This currently integrates with Citizens and Shopkeepers, and
      * relies on Entity metadata.
      */
     boolean isNPC(Entity entity);
@@ -296,7 +292,7 @@ public interface MageController {
     /**
      * Change the scale of an Elemental, making it bigger or smaller.
      *
-     * Elementals will limit their own size within sane limits. (0.1 - 5.0 for instance).
+     * <p>Elementals will limit their own size within sane limits. (0.1 - 5.0 for instance).
      *
      * @param entity The entity representing the Elemental to scale
      * @param scale The new scale
@@ -336,19 +332,11 @@ public interface MageController {
 
     /**
      * Use this to safely load a Magic ItemStack from a config.
-     *
-     * @param root
-     * @param key
-     * @return
      */
     ItemStack deserialize(ConfigurationSection root, String key);
 
     /**
      * Use this to safely save a Magic ItemStack to a config.
-     *
-     * @param root
-     * @param key
-     * @param item
      */
     void serialize(ConfigurationSection root, String key, ItemStack item);
 
@@ -400,7 +388,6 @@ public interface MageController {
 
     /**
      * Remove all custom Magic data from an item, but leave other metadata intact.
-     * @param itemStack
      */
     void cleanItem(ItemStack itemStack);
 

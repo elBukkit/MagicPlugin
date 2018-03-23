@@ -81,7 +81,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     /**
      * Check to see if this list has any changes that would get normally auto-undone (e.g. by scheduled undo)
      *
-     * This generally only includes block changes, though if setEntityUndo(true) has been used it will include
+     * <p>This generally only includes block changes, though if setEntityUndo(true) has been used it will include
      * entity changes as well.
      *
      * @return true if this list has changes to undo

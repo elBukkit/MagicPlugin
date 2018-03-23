@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
  * This class is a placeholder for the eventuality of having a DAO
  * for UndoQueue data.
  *
- * The complexity in implementing this requires a stopgap solution.
+ * <p>The complexity in implementing this requires a stopgap solution.
  */
 public class UndoData {
     private final List<UndoList> blockList;

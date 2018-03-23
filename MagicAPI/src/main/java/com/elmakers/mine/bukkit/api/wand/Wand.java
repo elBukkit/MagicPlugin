@@ -30,15 +30,14 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 /**
  * Represents a Wand that a Mage may use to cast a Spell.
  *
- * Every Wand has an inventory of Spell keys and Material brush keys that it may cast and use.
+ * <p>Every Wand has an inventory of Spell keys and Material brush keys that it may cast and use.
  *
- * A Wand may also have a variety of properties, including effects, an XP ("Mana") pool for
+ * <p>A Wand may also have a variety of properties, including effects, an XP ("Mana") pool for
  * casting Spells with an XP-based CastingCost, and various boosts and protections.
  *
- * Each Wand is backed by an ItemStack, and the Wand stores its data in the ItemStack. A Wand
+ * <p>Each Wand is backed by an ItemStack, and the Wand stores its data in the ItemStack. A Wand
  * is otherwise not tracked or persistent, other than via the Mage.getActiveWand() method, or
  * via a tracked LostWand record, if the ItemStack can be found.
- *
  */
 public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     String getName();
@@ -88,8 +87,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
 
     /**
      * Adds a spell to a locked wand.
-     * @param key
-     * @return
      */
     boolean forceAddSpell(String key);
     boolean removeBrush(String key);
@@ -169,7 +166,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     /**
      * Save this Wand to a Configuration Section.
      *
-     * @param section
+     * @param section The section to save to.
      * @param filtered If true, removes item-specific data such as Wand
      *                 id and bound owner.
      */
@@ -178,7 +175,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     /**
      * Save current Wand state to the ItemStack's NBT data immediately.
      *
-     * Wands are saved periodically so this is generally not needed unless
+     * <p>Wands are saved periodically so this is generally not needed unless
      * you need to force an update right away.
      */
     void saveState();
@@ -225,8 +222,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     /**
      * This method is deprecated, use {@link Mage#checkWand()} instead.
      * Wands should only ever be active while held.
-     *
-     * @param mage
      */
     @Deprecated
     void activate(Mage mage);
@@ -244,10 +239,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     /**
      * This method is deprecated, it just converts the Map to a ConfigurationSection.
      *
-     * Use {@link MagicConfigurable#configure(ConfigurationSection)} instead.
-     *
-     * @param properties
-     * @return
+     * <p>Use {@link MagicConfigurable#configure(ConfigurationSection)} instead.
      */
     @Deprecated
     boolean configure(Map<String, Object> properties);
@@ -255,10 +247,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     /**
      * This method is deprecated, it just converts the Map to a ConfigurationSection.
      *
-     * Use {@link MagicConfigurable#upgrade(ConfigurationSection)} instead.
-     *
-     * @param properties
-     * @return
+     * <p>Use {@link MagicConfigurable#upgrade(ConfigurationSection)} instead.
      */
     @Deprecated
     boolean upgrade(Map<String, Object> properties);
