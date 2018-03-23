@@ -1800,20 +1800,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		spellInventory.clear();
 		limitSpellsToPath = getBoolean("limit_spells_to_path");
 		limitBrushesToPath = getBoolean("limit_brushes_to_path");
-		Object wandSpells = getObject("spells");
-		if (wandSpells != null) {
-			if (wandSpells instanceof String) {
-				parseSpells((String)wandSpells);
-			} else if (wandSpells instanceof Collection) {
-				@SuppressWarnings("unchecked")
-				Collection<String> spellList = (Collection<String>)wandSpells;
-				loadSpells(spellList);
-			} else {
-				clearSpells();
-			}
-		} else {
-			clearSpells();
-		}
+		loadSpells();
 
 		// Load spell levels
 		Object spellLevelsRaw = getObject("spell_levels");
@@ -1828,21 +1815,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 		}
 		checkActiveSpell();
-
-		Object wandBrushes = getObject("brushes", getObject("materials"));
-		if (wandBrushes != null) {
-			if (wandBrushes instanceof String) {
-				parseBrushes((String)wandBrushes);
-			} else if (wandBrushes instanceof Collection) {
-				@SuppressWarnings("unchecked")
-				Collection<String> brushList = (Collection<String>)wandBrushes;
-				loadBrushes(brushList);
-			} else {
-				clearBrushes();
-			}
-		} else {
-			clearBrushes();
-		}
+		loadBrushes();
 
 		Object brushInventoryRaw = getObject("brush_inventory");
 		if (brushInventoryRaw != null) {
@@ -1928,6 +1901,40 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         checkActiveMaterial();
     }
+
+    private void loadSpells() {
+		Object wandSpells = getObject("spells");
+		if (wandSpells != null) {
+			if (wandSpells instanceof String) {
+				parseSpells((String)wandSpells);
+			} else if (wandSpells instanceof Collection) {
+				@SuppressWarnings("unchecked")
+				Collection<String> spellList = (Collection<String>)wandSpells;
+				loadSpells(spellList);
+			} else {
+				clearSpells();
+			}
+		} else {
+			clearSpells();
+		}
+	}
+
+	private void loadBrushes() {
+		Object wandBrushes = getObject("brushes", getObject("materials"));
+		if (wandBrushes != null) {
+			if (wandBrushes instanceof String) {
+				parseBrushes((String)wandBrushes);
+			} else if (wandBrushes instanceof Collection) {
+				@SuppressWarnings("unchecked")
+				Collection<String> brushList = (Collection<String>)wandBrushes;
+				loadBrushes(brushList);
+			} else {
+				clearBrushes();
+			}
+		} else {
+			clearBrushes();
+		}
+	}
 
     private void parseOverride(String override) {
 		// Unescape commas
@@ -4108,8 +4115,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public void setPath(String path) {
+    	String oldPath = this.path;
         this.path = path;
 		setProperty("path", path);
+
+		// Handle the case of a path upgrade meaning there are suddenly more spells or brushes available
+		boolean updateInventory = limitBrushesToPath || limitSpellsToPath;
+    	if (!oldPath.equals(path) && updateInventory) {
+    		closeInventory();
+    		if (limitSpellsToPath) {
+    			loadSpells();
+			}
+			if (limitBrushesToPath) {
+    			loadBrushes();
+			}
+			buildInventory();
+		}
     }
 
 	/*

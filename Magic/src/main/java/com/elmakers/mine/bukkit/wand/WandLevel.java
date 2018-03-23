@@ -163,7 +163,9 @@ public class WandLevel {
                 Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
                 for (int i = 0; spellCount != null && i < spellCount; i++) {
                     String spellKey = RandomUtils.weightedRandom(remainingSpells);
-                    if (wand.addSpell(spellKey)) {
+                    boolean added = wand.addSpell(spellKey);
+                    mage.sendDebugMessage("Trying to add spell: " + spellKey + " ? " + added);
+                    if (added) {
                         addedSpells = true;
                     }
                 }
@@ -220,7 +222,7 @@ public class WandLevel {
         {
             if (mage != null && mage.getDebugLevel() > 0) {
                 mage.sendDebugMessage("Has upgrade: " + hasUpgrade);
-                mage.sendDebugMessage("Added spells: " + addedSpells + " (" + addSpells + ")");
+                mage.sendDebugMessage("Added spells: " + addedSpells + ", should: " + addSpells);
                 mage.sendDebugMessage("Spells per enchant: " + getSpellCount());
                 mage.sendDebugMessage("Spells in list: " + spellProbability.size());
                 mage.sendDebugMessage("Added brushes: " +  addedMaterials + ", needed: " + needsMaterials);
