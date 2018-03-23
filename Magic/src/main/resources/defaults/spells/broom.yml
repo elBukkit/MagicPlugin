@@ -76,6 +76,7 @@ broom:
         controllable: true
         strafe_controllable: 1
         jump_controllable: 1
+        exemption_duration: 5000
 
 broom|2:
   upgrade_required_casts: 30

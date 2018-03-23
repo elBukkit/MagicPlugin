@@ -17,6 +17,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
@@ -41,6 +42,7 @@ public class RideEntityAction extends BaseSpellAction
     private int liftoffDuration = 0;
     private int maxHeightAboveGround;
     private int maxHeight;
+    private int exemptionDuration;
     private boolean controllable = false;
     private boolean pitchControllable = true;
     private double strafeControllable = 0;
@@ -153,6 +155,7 @@ public class RideEntityAction extends BaseSpellAction
         crashEntityFOV = parameters.getDouble("crash_entity_fov" , 0.3);
         crashDismountSpeed = parameters.getDouble("crash_dismount_speed", 0.0);
         fallProtection = parameters.getInt("fall_protection", 0);
+        exemptionDuration = parameters.getInt("exemption_duration", 0);
         if (parameters.contains("direction_y")) {
             yDirection = parameters.getDouble("direction_y");
         } else {
@@ -264,6 +267,10 @@ public class RideEntityAction extends BaseSpellAction
                 }
                 context.playEffects("crash_entity", 1.0f, null, mounted, null, entity);
             }
+        }
+
+        if (exemptionDuration > 0 && mounted instanceof Player) {
+            context.getController().addFlightExemption((Player)mounted, exemptionDuration);
         }
         
         adjustHeading(context);
