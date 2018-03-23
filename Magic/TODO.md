@@ -9,6 +9,8 @@
      - This is also like a merge .. but is it only while you hold that wand?
      - Does a battle mage's spells not apply to the caster except when using a magic sword?
      - Need to just merge everything in the passive effects block, maybe.. ?
+     
+ - Update skill icon lore when armor updates (to take buffs into account)
 
  - Skill menu option to not show skills you already have
  - Undroppable option for skills
@@ -63,6 +65,8 @@
    - Allow placeholder-driven attributes
  
  - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
+ 
+ - Paginate wand and spell lists
 
 ## On Hold
 

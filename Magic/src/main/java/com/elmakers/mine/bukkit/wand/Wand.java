@@ -2170,22 +2170,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			for (Map.Entry<String, Double> entry : protection.entrySet()) {
 				String protectionType = entry.getKey();
 				double amount = entry.getValue();
-				if (amount > 0) {
-					String templateKey = getMessageKey("protection." + protectionType);
-					String template;
-					if (controller.getMessages().containsKey(templateKey)) {
-						template = controller.getMessages().get(templateKey);
-					} else {
-						templateKey = getMessageKey("protection.unknown");
-						template = controller.getMessages().get(templateKey);
-						String pretty = protectionType.substring(0, 1).toUpperCase() + protectionType.substring(1);
-						template = template.replace("$type", pretty);
-					}
-					template = controller.getMessages().formatLevelString(template, (float)amount);
-					ConfigurationUtils.addIfNotEmpty(template, lore);
-				}
+				addDamageTypeLore("protection", protectionType, amount, lore);
 			}
         }
+
+        ConfigurationSection weaknessConfig = getConfigurationSection("weakness");
+        if (weaknessConfig != null) {
+        	Set<String> keys = weaknessConfig.getKeys(false);
+        	for (String key : keys) {
+				addDamageTypeLore("weakness", key, weaknessConfig.getDouble(key), lore);
+			}
+		}
+
+        ConfigurationSection strengthConfig = getConfigurationSection("strength");
+        if (strengthConfig != null) {
+        	Set<String> keys = strengthConfig.getKeys(false);
+        	for (String key : keys) {
+				addDamageTypeLore("strength", key, strengthConfig.getDouble(key), lore);
+			}
+		}
+
         if (spMultiplier > 1) {
 			ConfigurationUtils.addIfNotEmpty(getPercentageString("sp_multiplier", spMultiplier - 1), lore);
 		}
@@ -2204,6 +2208,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
         }
+	}
+
+	private void addDamageTypeLore(String property, String propertyType, double amount, List<String> lore) {
+		if (amount > 0) {
+			String templateKey = getMessageKey(property + "." + propertyType);
+			String template;
+			if (controller.getMessages().containsKey(templateKey)) {
+				template = controller.getMessages().get(templateKey);
+			} else {
+				templateKey = getMessageKey("protection.unknown");
+				template = controller.getMessages().get(templateKey);
+				String pretty = propertyType.substring(0, 1).toUpperCase() + propertyType.substring(1);
+				template = template.replace("$type", pretty);
+			}
+			template = controller.getMessages().formatLevelString(template, (float)amount);
+			ConfigurationUtils.addIfNotEmpty(template, lore);
+		}
 	}
 	
 	public String getLevelString(String templateName, float amount)
