@@ -10,6 +10,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -304,6 +306,22 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     }
 
 	public void onLocked() {
+        if (getBoolean("clean_on_lock", false)) {
+            Player player = mage.getPlayer();
+            if (player != null) {
+                Inventory inventory = player.getInventory();
+                String key = getKey();
+                for (int i = 0; i < inventory.getSize(); i++) {
+                    ItemStack item = inventory.getItem(i);
+                    if (controller.isSkill(item)) {
+                        String skillClass = Wand.getSpellClass(item);
+                        if (skillClass != null && skillClass.equals(key)) {
+                            inventory.setItem(i, null);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 	public void onUnlocked() {
