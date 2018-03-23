@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 7.4
+
 ## 7.3.2
 
  - Fixed Magic Bow progression, *bow progress may get reset* - Sorry!
