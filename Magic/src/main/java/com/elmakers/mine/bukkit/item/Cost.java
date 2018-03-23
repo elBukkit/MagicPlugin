@@ -188,7 +188,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         if (reduction >= 1) {
             return 0;
         }
-        if (reduction > 0) {
+        if (reduction != 0) {
             reducedAmount = (1.0f - reduction) * reducedAmount;
         }
         if (reducer != null) {
