@@ -3,7 +3,9 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -39,6 +41,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     private boolean quickCast = true;
     private String classKey;
     private int inventoryLimit = 0;
+    private int extraSlots = 0;
     private String inventoryTitle;
     private CastContext context;
 
@@ -87,11 +90,24 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             Mage mage = controller.getMage(player);
             MageClass activeClass = mage.getActiveClass();
             if (activeClass != null) {
+                // gather spells in player's inventory to avoid showing
+                Set<String> hasSpells = new HashSet<>();
+                for (ItemStack item : player.getInventory().getContents()) {
+                    String spellKey = controller.getSpell(item);
+                    if (spellKey != null) {
+                        hasSpells.add(spellKey);
+                    }
+                }
+
                 classKey = activeClass.getKey();
                 quickCast = activeClass.getProperty("quick_cast", true);
                 inventoryLimit = activeClass.getProperty("skill_limit", 0);
                 Collection<String> spells = activeClass.getSpells();
                 for (String spellKey : spells) {
+                    if (hasSpells.contains(spellKey)) {
+                        extraSlots++;
+                        continue;
+                    }
                     SpellTemplate spell = controller.getSpellTemplate(spellKey);
                     if (spell != null) {
                         allSkills.add(new SkillDescription(spell));
@@ -175,7 +191,8 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         MagicController controller = (MagicController) apiController;
         HeroesManager heroes = controller.getHeroes();
         int inventorySize = 9 * controller.getSkillInventoryRows();
-        int numPages = (int)Math.ceil((float)allSkills.size() / inventorySize);
+        float numSlots = extraSlots + allSkills.size();
+        int numPages = (int)Math.ceil(numSlots / inventorySize);
         if (page < 1) page = numPages;
         else if (page > numPages) page = 1;
         Mage mage = context.getMage();
@@ -194,7 +211,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             player.sendMessage(messageTemplate.replace("$page", Integer.toString(page)));
             return;
         }
-        int invSize = (int)Math.ceil(skills.size() / 9.0f) * 9;
+        int invSize = (int)Math.ceil(numSlots / 9.0f) * 9;
         String title = inventoryTitle;
         title = title
                 .replace("$pages", Integer.toString(numPages))
