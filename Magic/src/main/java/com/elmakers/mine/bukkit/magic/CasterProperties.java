@@ -245,7 +245,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             return false;
         }
 
-		// Special handling for spells to remove
+        // Special handling for spells to remove
         Collection<SpellKey> spellsToRemove = template.getSpellsToRemove();
         for (SpellKey removeKey : spellsToRemove) {
             removeSpell(removeKey.getBaseKey());

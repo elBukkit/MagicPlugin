@@ -17,11 +17,11 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 		this.id = id;
 		load(config);
 	}
-	
+
 	public LostWand(Wand wand, Location location) {
 		update(wand, location);
 	}
-	
+
 	public void update(Wand wand, Location location) {
 		this.location = location;
 		this.id = wand.getId();
@@ -30,7 +30,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
         this.ownerId = wand.getOwnerId();
 		this.description = wand.getHTMLDescription();
 	}
-	
+
 	public void update(LostWand other) {
 		this.location = other.location;
 		this.name = other.getName();
@@ -41,11 +41,11 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 			this.description = description;
 		}
 	}
-	
+
 	public boolean isValid() {
 		return location != null && id != null && id.length() > 0;
 	}
-	
+
 	public void save(ConfigurationSection configNode)
 	{
 		try {
@@ -56,9 +56,9 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
             configNode.set("owner_id", ownerId);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		}	
+		}
 	}
-	
+
 	public void load(ConfigurationSection configNode)
 	{
 		try {
@@ -71,15 +71,15 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
             ownerId = configNode.getString("owner_id");
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		}		
+		}
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 	    if (!(obj instanceof LostWand)) {
 	        return false;
 	    }
-	    
+
         LostWand other = (LostWand)obj;
         return other.id.equals(id);
 	}
@@ -88,12 +88,12 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	public int hashCode() {
 	    return id.hashCode();
 	}
-	
+
 	@Override
     public String getId() {
 		return id;
 	}
-	
+
 	@Override
     public String getOwner() {
 		return owner;
@@ -108,24 +108,24 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
     public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name =  name;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description =  description;
 	}
-	
+
 	@Override
     public Location getLocation() {
 		return location;
 	}
-	
+
 	public void setLocation(Location location) {
 		this.location = location;
 	}

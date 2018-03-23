@@ -13,14 +13,14 @@ import com.elmakers.mine.bukkit.batch.FillBatch;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
-public class FillSpell extends BrushSpell 
+public class FillSpell extends BrushSpell
 {
 	private static final int DEFAULT_MAX_DIMENSION = 128;
-	
+
 	private Block targetBlock = null;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		boolean singleBlock = getTargetType() != TargetType.SELECT;
 		Block targetBlock = getTargetBlock();
@@ -28,7 +28,7 @@ public class FillSpell extends BrushSpell
         {
             targetBlock = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
         }
-		if (targetBlock == null) 
+		if (targetBlock == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -52,22 +52,22 @@ public class FillSpell extends BrushSpell
 			buildWith.setTarget(targetBlock.getLocation());
 			buildWith.update(mage, targetBlock.getLocation());
 			buildWith.modify(targetBlock);
-			
+
 			controller.updateBlock(targetBlock);
 			registerForUndo();
-			
+
 			return SpellResult.CAST;
 		}
-		
+
 		if (targetLocation2 != null) {
 			this.targetBlock = targetLocation2.getBlock();
 		}
 
 		if (this.targetBlock != null)
 		{
-			// Update the brush using the center of the fill volume.
+            // Update the brush using the center of the fill volume.
             // This is kind of a hack to make map-building easier
-			Location centerLocation = this.targetBlock.getLocation();
+            Location centerLocation = this.targetBlock.getLocation();
             Location secondLocation = this.targetBlock.getLocation();
             if (buildWith.getMode() == BrushMode.MAP) {
                 centerLocation = targetBlock.getLocation();
@@ -76,7 +76,7 @@ public class FillSpell extends BrushSpell
                 centerLocation.setZ(Math.floor((centerLocation.getZ() + secondLocation.getZ()) / 2));
             }
 			buildWith.setTarget(this.targetBlock.getLocation(), centerLocation);
-			
+
 			FillBatch batch = new FillBatch(this, secondLocation, targetBlock.getLocation(), buildWith);
 			boolean consumeBlocks = parameters.getBoolean("consume", false);
 			batch.setConsume(consumeBlocks);
@@ -84,17 +84,17 @@ public class FillSpell extends BrushSpell
 			if (undoList != null && !currentCast.isConsumeFree()) {
 				undoList.setConsumed(consumeBlocks);
 			}
-			
-			int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);	
-			maxDimension = parameters.getInt("md", maxDimension);	
+
+			int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
+			maxDimension = parameters.getInt("md", maxDimension);
 			maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
-			
+
 			if (!batch.checkDimension(maxDimension))
 			{
 				return SpellResult.FAIL;
 			}
 			boolean success = mage.addBatch(batch);
-			
+
 			deactivate();
 			return success ? SpellResult.CAST : SpellResult.FAIL;
 		}
@@ -121,10 +121,10 @@ public class FillSpell extends BrushSpell
 			deactivate();
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public void onDeactivate() {
 		targetBlock = null;

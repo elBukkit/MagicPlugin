@@ -29,7 +29,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
 		super(api);
         this.controller = controller;
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!api.hasPermission(sender, "Magic.commands.mtrait"))

@@ -15,11 +15,11 @@ public class LocketteManager implements BlockBuildManager, BlockBreakManager {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
+
 	public boolean isEnabled() {
 		return enabled && isOwnerMethod != null && isProtectedMethod != null;
 	}
-	
+
 	public void initialize(Plugin plugin) {
 		if (enabled) {
 			Plugin lockettePlugin = plugin.getServer().getPluginManager().getPlugin("Lockette");
@@ -45,7 +45,7 @@ public class LocketteManager implements BlockBuildManager, BlockBreakManager {
 			plugin.getLogger().info("Lockette integration disabled");
 		}
 	}
-	
+
 	@Override
     public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && isOwnerMethod != null && isProtectedMethod != null) {
@@ -69,7 +69,7 @@ public class LocketteManager implements BlockBuildManager, BlockBreakManager {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 

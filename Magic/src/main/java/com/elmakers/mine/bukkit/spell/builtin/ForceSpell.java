@@ -19,17 +19,17 @@ public class ForceSpell extends TargetingSpell
 {
 	LivingEntity targetEntity = null;
 	private Color effectColor = null;
-	
+
 	final private static int DEFAULT_MAGNITUDE = 3;
-	
+
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		effectColor = mage.getEffectColor();
 		if (effectColor == null) {
 			effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
 		}
-		
+
 		if (targetEntity != null)
 		{
 			Location location = getLocation();
@@ -67,7 +67,7 @@ public class ForceSpell extends TargetingSpell
 
 			releaseTarget();
 			LivingEntity checkTarget = (LivingEntity)target.getEntity();
-			
+
 			// Check for protected Mages
 			if (controller.isMage(checkTarget)) {
 				Mage targetMage = controller.getMage(checkTarget);
@@ -79,7 +79,7 @@ public class ForceSpell extends TargetingSpell
 					return SpellResult.NO_TARGET;
 				}
 			}
-			
+
 			selectTarget(checkTarget);
 			activate();
 			return SpellResult.TARGET_SELECTED;
@@ -100,13 +100,13 @@ public class ForceSpell extends TargetingSpell
 		forceVector.multiply(magnitude);
 		SafetyUtils.setVelocity(target, forceVector);
 	}
-	
+
 	protected void selectTarget(LivingEntity entity) {
 		releaseTarget();
 		targetEntity = entity;
 		getCurrentTarget().setEntity(entity);
 	}
-	
+
 	protected void releaseTarget() {
 		targetEntity = null;
 	}
@@ -120,7 +120,7 @@ public class ForceSpell extends TargetingSpell
             deactivate();
 			return true;
 		}
-		
+
 		return false;
 	}
 }

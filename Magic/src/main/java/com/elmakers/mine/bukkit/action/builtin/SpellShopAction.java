@@ -260,7 +260,7 @@ public class SpellShopAction extends BaseShopAction
             }
 
             String unpurchasableMessage = null;
-            
+
             Collection<Requirement> requirements = spell.getRequirements();
             String requirementMissing = controller.checkRequirements(context, requirements);
             if (requirementMissing != null) {

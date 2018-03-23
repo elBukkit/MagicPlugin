@@ -26,7 +26,7 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
-public class AnimateSpell extends SimulateSpell 
+public class AnimateSpell extends SimulateSpell
 {
 	private static Random random = new Random();
 	private LinkedList<WeightedPair<Integer>> levelWeights = null;
@@ -34,21 +34,21 @@ public class AnimateSpell extends SimulateSpell
 	public final static String[] ANIMATE_PARAMETERS = {
 		"animate", "sim_check_destructible", "seed_radius", "restricted", "obworld", "btarget"
 	};
-	
+
     @Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		if (parameters.getString("animate", null) != null)
 		{
 			return super.onCast(parameters);
 		}
-		
+
 		final Block targetBlock = getTargetBlock();
-		if (targetBlock == null) 
+		if (targetBlock == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(targetBlock)) 
+		if (!hasBuildPermission(targetBlock))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
@@ -103,7 +103,7 @@ public class AnimateSpell extends SimulateSpell
 				}
 			}
 		}
-		
+
 		// Look for randomized levels
 		int level = 0;
 		if (parameters.contains("level")) {
@@ -112,7 +112,7 @@ public class AnimateSpell extends SimulateSpell
 		else if (levelWeights != null) {
 			level = RandomUtils.weightedRandom(levelWeights);
 		}
-		
+
 		boolean simCheckDestructible = parameters.getBoolean("sim_check_destructible", true);
 		simCheckDestructible = parameters.getBoolean("scd", simCheckDestructible);
 
@@ -128,18 +128,18 @@ public class AnimateSpell extends SimulateSpell
 		String automataType = parameters.getString("message_type", "evil");
 		List<String> prefixes = messages.getAll("automata." + automataType + ".prefixes");
 		List<String> suffixes = messages.getAll("automata." + automataType + ".suffixes");
-		
+
 		automataName = prefixes.get(random.nextInt(prefixes.size()))
 				+ " " + automataName + " " + suffixes.get(random.nextInt(suffixes.size()));
 
-		if (level > 1) 
+		if (level > 1)
 		{
 			automataName += " " + escapeLevel(messages, "automata.level", level);
 		}
 
 		String message = getMessage("cast_broadcast").replace("$name", automataName);
 		if (message.length() > 0) {
-			controller.sendToMages(message, targetBlock.getLocation());	
+			controller.sendToMages(message, targetBlock.getLocation());
 		}
 
 		automataParameters.set("animate", automataName);
@@ -164,7 +164,7 @@ public class AnimateSpell extends SimulateSpell
 	public void getParameterOptions(Collection<String> examples, String parameterKey)
 	{
 		super.getParameterOptions(examples, parameterKey);
-		
+
 		if (parameterKey.equals("animate") || parameterKey.equals("sim_check_destructible")) {
 			examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));
 		}
@@ -176,26 +176,26 @@ public class AnimateSpell extends SimulateSpell
 		super.getParameters(parameters);
 		parameters.addAll(Arrays.asList(ANIMATE_PARAMETERS));
 	}
-	
+
 	@Override
 	protected void loadTemplate(ConfigurationSection template)
 	{
 		super.loadTemplate(template);
-		
+
 		if (template.contains("levels")) {
 			ConfigurationSection levelTemplate = template.getConfigurationSection("levels");
 			Collection<String> levelKeys = levelTemplate.getKeys(false);
-			
+
 			List<AscendingPair<Float>> levels = new ArrayList<>();
-			
+
 			for (String levelString : levelKeys) {
 				int level =  Integer.parseInt(levelString);
 				double weight = levelTemplate.getDouble(levelString);
 				levels.add(new AscendingPair<>(level, (float)weight));
 			}
-			
+
 			RandomUtils.extrapolateFloatList(levels);
-			
+
 			levelWeights = new LinkedList<>();
 			float threshold = 0;
 			for (AscendingPair<Float> level : levels) {
@@ -208,7 +208,7 @@ public class AnimateSpell extends SimulateSpell
 			levelWeights = null;
 		}
 	}
-	
+
 	protected static String escapeLevel(Messages messages, String templateName, int level)
 	{
 		String templateString = messages.get(templateName);

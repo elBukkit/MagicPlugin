@@ -20,7 +20,7 @@ public class WandCleanupRunnable extends RunnableJob {
 	private final String owner;
 	private final boolean removeAll;
     private final boolean check;
-	
+
 	public WandCleanupRunnable(MagicAPI api, World world, String owner, boolean check) {
 		super(api.getLogger());
 		this.world = world;
@@ -30,7 +30,7 @@ public class WandCleanupRunnable extends RunnableJob {
         this.check = check;
 		this.owner = owner == null ? "" : owner;
 	}
-	
+
 	public WandCleanupRunnable(MagicAPI api, World world) {
 		super(api.getLogger());
 		this.world = world;
@@ -40,13 +40,13 @@ public class WandCleanupRunnable extends RunnableJob {
 		this.owner = "";
 		lostWands.addAll(api.getLostWands());
 	}
-	
+
 	@Override
     public void finish() {
 		super.finish();
 		lostWands.clear();
 	}
-	
+
 	@Override
     public void run() {
 		if (lostWands.isEmpty()) {
@@ -103,7 +103,7 @@ public class WandCleanupRunnable extends RunnableJob {
                 }
             }
         }
-		
+
 		lostWands.removeFirst();
 		api.removeLostWand(lostWand.getId());
 		logger.info("Could not find wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + ", removing from list");

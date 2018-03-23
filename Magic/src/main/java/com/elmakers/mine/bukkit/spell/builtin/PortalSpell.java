@@ -13,14 +13,14 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 public class PortalSpell extends BlockSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Block target = getTargetBlock();
 		if (target == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(target)) 
+		if (!hasBuildPermission(target))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
@@ -44,7 +44,7 @@ public class PortalSpell extends BlockSpell
 		blockType = portalBase.getType();
 		if (blockType != Material.AIR && blockType != Material.SNOW)
 		{
-			return SpellResult.NO_TARGET;		
+			return SpellResult.NO_TARGET;
 		}
 
 		controller.disablePhysics(1000);

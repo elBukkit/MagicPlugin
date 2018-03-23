@@ -456,7 +456,7 @@ public class Targeting {
             } else {
                 source = sourceEntity.getLocation();
             }
-        } 
+        }
         if (source != null) {
             Vector queryRange = null;
             Location sourceLocation = source;

@@ -36,8 +36,8 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
             worldGuard = null;
             plugin.getLogger().info("WorldGuard integration disabled, region protection and pvp checks will not be used.");
         }
-    } 
-    
+    }
+
     public void initializeFlags(Plugin plugin) {
         try {
             Plugin wgPlugin = plugin.getServer().getPluginManager().getPlugin("WorldGuard");

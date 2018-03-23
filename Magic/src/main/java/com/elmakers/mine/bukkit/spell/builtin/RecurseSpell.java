@@ -13,18 +13,18 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 @Deprecated
-public class RecurseSpell extends BrushSpell 
+public class RecurseSpell extends BrushSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Block targetBlock = getTargetBlock();
-		
-		if (targetBlock == null) 
+
+		if (targetBlock == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(targetBlock)) 
+		if (!hasBuildPermission(targetBlock))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
@@ -69,7 +69,7 @@ public class RecurseSpell extends BrushSpell
 		blockRecurse.recurse(new ActionContext(action, parameters), context);
 		registerForUndo();
 		controller.updateBlock(targetBlock);
-		
+
 		return SpellResult.CAST;
 	}
 }

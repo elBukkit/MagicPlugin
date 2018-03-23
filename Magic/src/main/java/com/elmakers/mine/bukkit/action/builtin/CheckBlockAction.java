@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class CheckBlockAction extends CompoundAction {
     private MaterialSet allowed;
-    
+
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
     {
@@ -22,7 +22,7 @@ public class CheckBlockAction extends CompoundAction {
         allowed = spell.getController().getMaterialSetManager()
                 .fromConfig(parameters.getString("allowed"));
     }
-    
+
     protected boolean isAllowed(CastContext context) {
         MaterialBrush brush = context.getBrush();
         Block block = context.getTargetBlock();
@@ -47,7 +47,7 @@ public class CheckBlockAction extends CompoundAction {
         }
         return true;
     }
-    
+
     @Override
     public SpellResult step(CastContext context) {
         boolean allowed = isAllowed(context);
@@ -55,7 +55,7 @@ public class CheckBlockAction extends CompoundAction {
         if (actions == null || actions.size() == 0) {
             return allowed ? SpellResult.CAST : SpellResult.STOP;
         }
-        
+
         if (!allowed) {
             return SpellResult.NO_TARGET;
         }

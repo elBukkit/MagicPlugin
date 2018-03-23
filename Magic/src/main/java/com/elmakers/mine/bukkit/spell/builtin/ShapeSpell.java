@@ -24,11 +24,11 @@ public class ShapeSpell extends BrushSpell
     private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
 	private static final int DEFAULT_RADIUS						= 8;
 	private static final int DEFAULT_MAX_DIMENSION 				= 32;
-	
+
 	private Block targetBlock = null;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target t = getTarget();
 		Block target = t.getBlock();
@@ -40,24 +40,24 @@ public class ShapeSpell extends BrushSpell
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = parameters.getInt("r", radius);
 		Location orientTo = null;
-		
+
 		if (getTargetType() == TargetType.SELECT) {
 
 			if (targetLocation2 != null) {
 				this.targetBlock = targetLocation2.getBlock();
 			}
-			
+
 			if (targetBlock == null) {
 				targetBlock = target;
 				activate();
-				
+
 				return SpellResult.TARGET_SELECTED;
 			} else {
 				radius = (int)targetBlock.getLocation().distance(target.getLocation());
 				orientTo = target.getLocation();
 				target = targetBlock;
 			}
-		} 
+		}
 
 		int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
 		maxDimension = parameters.getInt("md", maxDimension);
@@ -75,7 +75,7 @@ public class ShapeSpell extends BrushSpell
 
 		MaterialBrush buildWith = getBrush();
 		buildWith.setTarget(target.getLocation());
-		
+
 		ConstructionType conType = DEFAULT_CONSTRUCTION_TYPE;
 		String typeString = parameters.getString("type", "");
 
@@ -124,7 +124,7 @@ public class ShapeSpell extends BrushSpell
 			deactivate();
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -134,13 +134,13 @@ public class ShapeSpell extends BrushSpell
 		super.getParameters(parameters);
 		parameters.addAll(Arrays.asList(CONSTRUCT_PARAMETERS));
 	}
-	
+
 	@Override
 	public void getParameterOptions(Collection<String> examples, String parameterKey)
 	{
 		super.getParameterOptions(examples, parameterKey);
-	
-		if (parameterKey.equals("radius") || parameterKey.equals("max_dimension") 
+
+		if (parameterKey.equals("radius") || parameterKey.equals("max_dimension")
 				|| parameterKey.equals("orient_dimension_max")
                 || parameterKey.equals("orient_dimension_min") || parameterKey.equals("thickness")) {
 			examples.addAll(Arrays.asList(EXAMPLE_SIZES));

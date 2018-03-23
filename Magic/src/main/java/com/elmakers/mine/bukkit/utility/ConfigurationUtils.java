@@ -288,11 +288,11 @@ public class ConfigurationUtils extends ConfigUtils {
                 new MemoryConfiguration();
         return addConfigurations(copy, section);
     }
-    
+
     private static Map<String, Object> replaceParameters(Map<String, Object> configuration, ConfigurationSection parameters)
     {
         if (configuration == null || configuration.isEmpty()) return configuration;
-        
+
         Map<String, Object> replaced = new HashMap<>();
         for (Map.Entry<String, Object> entry : configuration.entrySet())
         {
@@ -302,7 +302,7 @@ public class ConfigurationUtils extends ConfigUtils {
                 replaced.put(entry.getKey(), replacement);
             }
         }
-        
+
         return replaced;
     }
 
@@ -329,14 +329,14 @@ public class ConfigurationUtils extends ConfigUtils {
         {
             value = replaceParameter((String)value, parameters);
         }
-        
+
         return value;
     }
 
     private static List<Object> replaceParameters(List<Object> configurations, ConfigurationSection parameters)
     {
         if (configurations == null || configurations.size() == 0) return configurations;
-        
+
         List<Object> replaced = new ArrayList<>();
         for (Object value : configurations)
         {
@@ -345,7 +345,7 @@ public class ConfigurationUtils extends ConfigUtils {
                 replaced.add(replacement);
             }
         }
-        
+
         return replaced;
     }
 
@@ -358,22 +358,22 @@ public class ConfigurationUtils extends ConfigUtils {
     public static ConfigurationSection replaceParameters(ConfigurationSection configuration, ConfigurationSection parameters)
     {
         if (configuration == null) return null;
-        
+
         ConfigurationSection replaced = new MemoryConfiguration();
         Map<String, Object> map = NMSUtils.getMap(configuration);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             Object value = entry.getValue();
             if (value == null) continue;
-            
+
             Object replacement = replaceParameters(value, parameters);
             if (replacement != null) {
                 replaced.set(entry.getKey(), replacement);
             }
         }
-        
+
         return replaced;
     }
-    
+
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
         return addConfigurations(first, second, true);
@@ -894,7 +894,7 @@ public class ConfigurationUtils extends ConfigUtils {
         List<PotionEffect> effects = new ArrayList<>();
         Set<String> keys = effectConfig.getKeys(false);
         if (keys.isEmpty()) return null;
-        
+
         for (String key : keys) {
             String value = effectConfig.getString(key);
             try {

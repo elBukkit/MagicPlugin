@@ -28,7 +28,7 @@ public class WorldGuardAPI {
 	public boolean isEnabled() {
 		return worldGuard != null;
 	}
-	
+
 	public WorldGuardAPI(Plugin plugin, Plugin owningPlugin) {
         this.owningPlugin = owningPlugin;
         if (plugin instanceof WorldGuardPlugin) {
@@ -43,7 +43,7 @@ public class WorldGuardAPI {
             }
         }
 	}
-	
+
 	public void checkFlagSupport() {
         if (customFlags == null) {
             try {
@@ -73,10 +73,10 @@ public class WorldGuardAPI {
 
         return associable;
     }
-	
+
 	public boolean isPVPAllowed(Player player, Location location) {
 		if (worldGuard == null || location == null) return true;
-				 
+
 		RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
         if (regionManager == null) return true;
 

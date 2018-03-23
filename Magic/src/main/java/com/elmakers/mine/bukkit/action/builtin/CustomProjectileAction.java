@@ -123,14 +123,14 @@ public class CustomProjectileAction extends CompoundAction
     private boolean updateLaunchLocation;
     private Vector previousLocation;
     private boolean projectileFollowPlayer;
-    
+
     private static class PlanStep {
         public double distance;
         public long time;
         public double returnBuffer;
         public ConfigurationSection parameters;
         public String effectsKey;
-        
+
         public PlanStep(ConfigurationSection planConfig) {
             distance = planConfig.getDouble("distance");
             time = planConfig.getLong("time");
@@ -159,7 +159,7 @@ public class CustomProjectileAction extends CompoundAction
         addHandler(spell, "miss");
         addHandler(spell, "tick");
     }
-    
+
     public void modifyParameters(ConfigurationSection parameters) {
         gravity = parameters.getDouble("gravity", gravity);
         drag = parameters.getDouble("drag", drag);
@@ -167,7 +167,7 @@ public class CustomProjectileAction extends CompoundAction
         trackEntity = parameters.getBoolean("track_target", trackEntity);
         trackCursorRange = parameters.getDouble("track_range", trackCursorRange);
         trackSpeed = parameters.getDouble("track_speed", trackSpeed);
-        
+
         if (parameters.contains("velocity_transform")) {
             ConfigurationSection transformParameters = ConfigurationUtils.getConfigurationSection(parameters, "velocity_transform");
             if (transformParameters != null) {
@@ -194,7 +194,7 @@ public class CustomProjectileAction extends CompoundAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        
+
         // Parameters that can be modified by a flight plan need
         // to be reset here.
         gravity = 0;
@@ -212,7 +212,7 @@ public class CustomProjectileAction extends CompoundAction
         updateLaunchLocation = false;
         projectileFollowPlayer = false;
         modifyParameters(parameters);
-        
+
         // These parameters can't be changed mid-flight
         targeting.processParameters(parameters);
         interval = parameters.getInt("interval", 30);
@@ -224,11 +224,11 @@ public class CustomProjectileAction extends CompoundAction
         minEntityRange = parameters.getDouble("min_entity_range",0);
         minBlockRange = parameters.getDouble("min_block_range",0);
         minRange = parameters.getDouble("min_entity_range", Math.max(minEntityRange, minBlockRange));
-        
+
         if (minRange < Math.max(minEntityRange, minBlockRange)) {
         	minRange = Math.max(minEntityRange, minBlockRange);
         }
-        
+
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
         headshotEffectKey = parameters.getString("headshot_effects", "headshot");
         hitEffectKey = parameters.getString("hit_effects", "hit");
@@ -290,7 +290,7 @@ public class CustomProjectileAction extends CompoundAction
     public void reset(CastContext context)
     {
         super.reset(context);
-        
+
         targeting.reset();
         long now = System.currentTimeMillis();
         nextUpdate = 0;
@@ -308,7 +308,7 @@ public class CustomProjectileAction extends CompoundAction
         attachedOffset = null;
         missed = false;
         returnDistanceAway = null;
-        
+
         // This has to be done here, so that the plan is not shared across parallel instances
         if (planConfiguration != null && !planConfiguration.isEmpty()) {
             plan = new LinkedList<>();
@@ -379,7 +379,7 @@ public class CustomProjectileAction extends CompoundAction
         if (velocity == null)
         {
             projectileLocation = sourceLocation.getLocation(context).clone();
-            
+
             /* This feels confusing however...
              * Looking straight down in Minecraft gives a pitch of 90
              * While looking straight up is a pitch of -90
@@ -389,7 +389,7 @@ public class CustomProjectileAction extends CompoundAction
             if (pitchMin < projectileLocation.getPitch())
             {
                 projectileLocation.setPitch(pitchMin);
-            } 
+            }
             else if (pitchMax > projectileLocation.getPitch())
             {
                 projectileLocation.setPitch(pitchMax);
@@ -434,7 +434,7 @@ public class CustomProjectileAction extends CompoundAction
                 effectLocation.setDirection(velocity);
             }
         }
-        
+
         // Check plan
         if (plan != null && !plan.isEmpty()) {
             PlanStep next = plan.peek();
@@ -587,26 +587,26 @@ public class CustomProjectileAction extends CompoundAction
         Location targetLocation;
         Targeting.TargetingResult targetingResult = Targeting.TargetingResult.MISS;
         Target target = null;
-        
+
         if (!ignoreTargeting) {
             targeting.start(projectileLocation);
             target = targeting.target(actionContext, distanceTravelledThisTick);
             targetingResult = targeting.getResult();
             targetLocation = target.getLocation();
-            
+
             boolean keepGoing = distanceTravelled < minRange;
             Location tempLocation = projectileLocation.clone();
             int checkIterations = 0;
-            
+
             while (keepGoing)
             {
                 // TODO if all of these distance() calls are necessary, they should be optimized to distanceSquared()
-            	if (targetingResult == Targeting.TargetingResult.MISS) {
+                if (targetingResult == Targeting.TargetingResult.MISS) {
             		keepGoing = false;
-            	} 
+            	}
                 else if (targetingResult != null && targetLocation.distance(projectileLocation) + distanceTravelled >= minRange) {
             		keepGoing = false;
-            	} 
+            	}
                 else if (targetLocation.distance(projectileLocation) + distanceTravelled >= minEntityRange && targetingResult == Targeting.TargetingResult.ENTITY) {
             		keepGoing = false;
             	}
@@ -620,18 +620,17 @@ public class CustomProjectileAction extends CompoundAction
             		keepGoing = false;
             	}
             	else {
-            		
             		if (tempLocation.distance(projectileLocation)<targetLocation.distance(projectileLocation)) {
             			tempLocation.add(velocity.clone().multiply(targetLocation.distance(projectileLocation)+0.1));
             		}
             		else {
             			tempLocation.add(velocity.clone().multiply(0.2));
             		}
-            		
+
                     actionContext.setTargetLocation(tempLocation);
                     actionContext.setTargetEntity(null);
                     actionContext.setDirection(velocity);
-            		
+
                     // TODO: This whole procedure, particularly retargeting, is going to be very costly
                     // This is hopefully an easier way
                     targeting.start(tempLocation);
@@ -718,13 +717,13 @@ public class CustomProjectileAction extends CompoundAction
         if (!block.getChunk().isLoaded()) {
             return miss();
         }
-        
+
         if (distanceTravelled < minRange && targetingResult != null) {
             // TODO : Should this be < ?
-        	if (distanceTravelled >= minBlockRange && targetingResult == Targeting.TargetingResult.BLOCK) {
+            if (distanceTravelled >= minBlockRange && targetingResult == Targeting.TargetingResult.BLOCK) {
         		return miss();
         	}
-        	
+
         	if (distanceTravelled >= minEntityRange && targetingResult == Targeting.TargetingResult.ENTITY) {
         		return miss();
         	}
@@ -741,7 +740,7 @@ public class CustomProjectileAction extends CompoundAction
 
 		return SpellResult.PENDING;
 	}
-	
+
 	protected void reflect(Vector normal, double offset) {
         trackEntity = reflectTrackEntity;
         reorient = reflectReorient;
@@ -760,7 +759,7 @@ public class CustomProjectileAction extends CompoundAction
         actionContext.setTargetLocation(actionContext.getTargetLocation().add(velocity.clone().multiply(offset)));
         // actionContext.setTargetLocation(targetLocation.add(normal.normalize().multiply(2)));
 
-        actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected: " + ChatColor.LIGHT_PURPLE + 
+        actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected: " + ChatColor.LIGHT_PURPLE +
                 " with normal vector of " + ChatColor.LIGHT_PURPLE + normal, 4);
 
         actionContext.playEffects("reflect");
@@ -792,7 +791,7 @@ public class CustomProjectileAction extends CompoundAction
         }
         return continueProjectile ? SpellResult.PENDING : (hitRequiresEntity ? miss() : hit());
     }
-    
+
     protected SpellResult hitEntity(Target target) {
         Entity hitEntity = target.getEntity();
         Location targetLocation = actionContext.getTargetLocation();
@@ -811,7 +810,7 @@ public class CustomProjectileAction extends CompoundAction
                 }
             }
         }
-        
+
         entityHitCount++;
         if (hitEntity != null && entityHitLimit > 1) {
             targeting.ignoreEntity(hitEntity);
@@ -939,7 +938,7 @@ public class CustomProjectileAction extends CompoundAction
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         }
     }
-    
+
     protected void startProjectileEffects(CastContext context, String effectKey) {
 
         Collection<EffectPlayer> projectileEffects = context.getEffects(effectKey);

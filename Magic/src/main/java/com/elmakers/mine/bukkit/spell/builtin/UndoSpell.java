@@ -17,9 +17,9 @@ import com.elmakers.mine.bukkit.utility.Target;
 public class UndoSpell extends TargetingSpell
 {
 	private String undoListName;
-	
+
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
         int timeout = parameters.getInt("target_timeout", 0);
@@ -53,7 +53,7 @@ public class UndoSpell extends TargetingSpell
         if (!parameters.getBoolean("target_blocks", true)) {
             return SpellResult.NO_TARGET;
         }
-		
+
 		Block targetBlock = target.getBlock();
         if (targetDown && isLookingDown()) {
             targetBlock = getLocation().getBlock();
@@ -64,7 +64,7 @@ public class UndoSpell extends TargetingSpell
 			if (targetAll)
 			{
 				UndoList undid = controller.undoRecent(targetBlock, timeout);
-				if (undid != null) 
+				if (undid != null)
 				{
 					Mage targetMage = undid.getOwner();
 					undoListName = undid.getName();
@@ -82,10 +82,10 @@ public class UndoSpell extends TargetingSpell
                 }
 			}
 		}
-		
-		return SpellResult.NO_TARGET;	
+
+		return SpellResult.NO_TARGET;
 	}
-	
+
 	@Override
 	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);

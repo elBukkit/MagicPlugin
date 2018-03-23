@@ -41,7 +41,7 @@ public class ExplosionAction extends BaseSpellAction {
 		size = parameters.getInt("size", 1);
 		useFire = parameters.getBoolean("fire", false);
 		breakBlocks = parameters.getBoolean("break_blocks", true);
-		
+
 		size = (int)(mage.getRadiusMultiplier() * size);
 	}
 

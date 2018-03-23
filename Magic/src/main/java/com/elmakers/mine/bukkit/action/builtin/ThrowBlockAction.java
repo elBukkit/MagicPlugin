@@ -61,7 +61,7 @@ public class ThrowBlockAction extends BaseProjectileAction
 		location.setY(location.getY() - 1);
 		MaterialBrush buildWith = context.getBrush();
 		buildWith.setTarget(location);
-        
+
         if (buildWith.isErase() || buildWith.getMaterial() == Material.AIR) {
             return SpellResult.NO_TARGET;
         }

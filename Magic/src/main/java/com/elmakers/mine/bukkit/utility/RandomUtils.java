@@ -49,7 +49,7 @@ public class RandomUtils {
     public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
         RandomUtils.populateProbabilityMap(Integer.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
     }
-    
+
     public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap) {
         RandomUtils.populateProbabilityMap(Integer.class, probabilityMap, nodeMap, 0, 0, 0);
     }
@@ -167,12 +167,12 @@ public class RandomUtils {
     {
         RandomUtils.extrapolateList(Float.class,list);
     }
-    
-    public static void extrapolateIntegerList(List<AscendingPair<Integer>> list) 
+
+    public static void extrapolateIntegerList(List<AscendingPair<Integer>> list)
     {
         RandomUtils.extrapolateList(Integer.class,list);
     }
-    
+
     public static <T extends Number> void extrapolateList(Class<T> valueClass, List<AscendingPair<T>> list)
     {
         Collections.sort(list);

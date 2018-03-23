@@ -90,7 +90,7 @@ public class RideEntityAction extends BaseSpellAction
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
         super.initialize(spell, parameters);
-        
+
         crashEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("crash_effects"));
         durationWarning = parameters.getInt("duration_warning", 0);
         warningEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("warning_effects"), durationWarning);
@@ -118,7 +118,7 @@ public class RideEntityAction extends BaseSpellAction
         warningEffectsApplied = false;
         nextSoundPlay = 0;
     }
-    
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
@@ -209,7 +209,7 @@ public class RideEntityAction extends BaseSpellAction
                 mount.setPassenger(mounted);
             }
         }
-        
+
         // Play sound effects
         if (sound != null && nextSoundPlay < System.currentTimeMillis()) {
             nextSoundPlay = System.currentTimeMillis() + soundInterval;
@@ -274,7 +274,7 @@ public class RideEntityAction extends BaseSpellAction
         if (exemptionDuration > 0 && mounted instanceof Player) {
             context.getController().addFlightExemption((Player)mounted, exemptionDuration);
         }
-        
+
         adjustHeading(context);
         if (System.currentTimeMillis() > liftoffTime + liftoffDuration) {
             applyThrust(context);
@@ -283,10 +283,10 @@ public class RideEntityAction extends BaseSpellAction
         if (fallProtection > 0) {
             context.getMage().enableFallProtection(fallProtection, Integer.MAX_VALUE, context.getSpell());
         }
-        
+
         return SpellResult.PENDING;
     }
-    
+
     protected void adjustHeading(CastContext context) {
         Location targetLocation = context.getEntity().getLocation();
         Vector targetDirection = targetLocation.getDirection();
@@ -311,7 +311,7 @@ public class RideEntityAction extends BaseSpellAction
         targetLocation.setDirection(direction);
         CompatibilityUtils.setYawPitch(mount, targetLocation.getYaw() + (float)yawOffset, targetLocation.getPitch());
     }
-    
+
     protected void applyThrust(CastContext context) {
         Entity mountedEntity = context.getEntity();
         if (duration > 0) {
@@ -364,7 +364,7 @@ public class RideEntityAction extends BaseSpellAction
         if (pitchOffset != 0) {
             direction.setY(direction.getY() + pitchOffset).normalize();
         }
-        
+
         // Check for max height
         double blocksAbove = 0;
         Location currentLocation = mountedEntity.getLocation();
@@ -387,7 +387,7 @@ public class RideEntityAction extends BaseSpellAction
                 direction.setY(0).normalize();
             }
         }
-        
+
         // Apply thrust
         if (speed != 0) {
             Vector velocity = direction.clone();
@@ -407,7 +407,7 @@ public class RideEntityAction extends BaseSpellAction
     protected Entity getMount(CastContext context) {
         return isPassenger ? context.getEntity() : mount;
     }
-    
+
     protected SpellResult mount(CastContext context) {
         Entity entity = context.getEntity();
         if (entity == null)
@@ -447,7 +447,7 @@ public class RideEntityAction extends BaseSpellAction
 
         return SpellResult.PENDING;
 	}
-	
+
 	@Override
     public void finish(CastContext context) {
         if (mount != null) {
@@ -527,7 +527,7 @@ public class RideEntityAction extends BaseSpellAction
 	{
 		return false;
 	}
-    
+
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)
     {

@@ -27,7 +27,7 @@ public class PushSpell extends UndoableSpell
 	{
 		float maxDistance = maxAllDistance * mage.getRangeMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
-		
+
 		List<Entity> entities = getWorld().getEntities();
 		for (Entity target : entities)
 		{
@@ -55,7 +55,7 @@ public class PushSpell extends UndoableSpell
 	}
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		boolean push = false;
 		boolean pull = false;
@@ -70,7 +70,7 @@ public class PushSpell extends UndoableSpell
 			multiplier *= mage.getDamageMultiplier();
 		}
 		int count = parameters.getInt("count", 0);
-		
+
 		boolean allowAll = mage.isSuperPowered() || parameters.getBoolean("allow_area", true);
         boolean forceArea = parameters.getBoolean("area", false);
 		int itemMagnitude = parameters.getInt("item_force", DEFAULT_ITEM_MAGNITUDE);
@@ -105,7 +105,7 @@ public class PushSpell extends UndoableSpell
 		{
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		int pushed = 0;
 		for (Target target : targets) {
 			Entity targetEntity = target.getEntity();

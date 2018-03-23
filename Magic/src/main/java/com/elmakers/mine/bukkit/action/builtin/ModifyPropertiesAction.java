@@ -57,7 +57,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
 	{
         private final CasterProperties properties;
         private final ConfigurationSection original;
-        
+
 		public ModifyPropertyUndoAction(ConfigurationSection original, CasterProperties properties) {
             this.original = original;
             this.properties = properties;
@@ -112,12 +112,12 @@ public class ModifyPropertiesAction extends BaseSpellAction
         } else {
             properties = mage.getClass(modifyTarget);
         }
-        
+
         // I am now wishing I hadn't made a base class called "mage" :(
         if (properties == null && modifyTarget.equals("mage")) {
             properties = mage.getProperties();
         }
-        
+
         if (properties == null) {
             return SpellResult.NO_TARGET;
         }

@@ -149,11 +149,11 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
     /**
      * Undo a recent construction performed by this Mage.
      *
-     * This will restore anything changed by the last-cast
+     * <p>This will restore anything changed by the last-cast
      * construction spell, and remove that construction from
      * the Mage's UndoQueue.
      *
-     * It will skip undoing if the UndoList is older than
+     * <p>It will skip undoing if the UndoList is older than
      * the specified timeout.
      *
      * @param timeout How long ago the UndoList may have been modified
@@ -194,11 +194,11 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
      * Undo a recent construction performed by this Mage against the
      * given Block
      *
-     * This will restore anything changed by the last-cast
+     * <p>This will restore anything changed by the last-cast
      * construction spell by this Mage that targeted the specific Block,
      * even if it was not the most recent Spell cast by that Mage.
      *
-     * It will skip undoing if the UndoList is older than
+     * <p>It will skip undoing if the UndoList is older than
      * the specified timeout.
      *
      * @param block The block to check for modifications.

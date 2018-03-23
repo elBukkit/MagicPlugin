@@ -74,7 +74,7 @@ public class VaultController {
 
         return economy.format(amount);
     }
-    
+
     public String getCurrency() {
         return economy == null ? "" : economy.currencyNameSingular();
     }

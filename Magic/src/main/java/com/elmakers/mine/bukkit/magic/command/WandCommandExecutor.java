@@ -39,11 +39,11 @@ import com.elmakers.mine.bukkit.wand.WandMode;
 import de.slikey.effectlib.util.ParticleEffect;
 
 public class WandCommandExecutor extends MagicConfigurableExecutor {
-	
+
 	public WandCommandExecutor(MagicAPI api) {
 		super(api);
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
 		String commandName = command.getName();
@@ -95,20 +95,20 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		if (!(sender instanceof Player)) {
 			return false;
 		}
-		
+
 		Player player = (Player)sender;
 		if (commandName.equalsIgnoreCase("wand"))
 		{
 			return processWandCommand("wand", sender, player, args);
 		}
-		
+
 		return false;
 	}
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<>();
-		
+
 		Player player = (sender instanceof Player) ? (Player)sender : null;
 
         String permissionKey = "wand";
@@ -125,7 +125,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 				args = Arrays.copyOfRange(args, 1, args.length);
 			}
 		}
-		
+
 		if (args.length == 1) {
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "add");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "remove");
@@ -155,17 +155,17 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 				addIfPermissible(sender, options, "Magic.create.", wandKey);
 			}
 		}
-		
+
 		if (args.length == 2) {
 			String subCommand = args[0];
 			String subCommandPNode = "Magic.commands." + permissionKey + "." + subCommand;
-			
+
 			if (!api.hasPermission(sender, subCommandPNode)) {
 				return options;
 			}
-			
+
 			subCommandPNode += ".";
-			
+
 			if (subCommand.equalsIgnoreCase("add")) {
 				Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
 				for (SpellTemplate spell : spellList) {
@@ -173,7 +173,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 				}
 				addIfPermissible(sender, options, subCommandPNode, "brush", true);
 			}
-			
+
 			if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
 				for (String key : BaseMagicProperties.PROPERTY_KEYS) {
 					options.add(key);
@@ -208,7 +208,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 					}
 				}
 			}
-			
+
 			if (subCommand.equalsIgnoreCase("remove")) {
 				Wand activeWand = null;
 				if (player != null) {
@@ -220,11 +220,11 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 					for (String spellName : spellNames) {
 						options.add(spellName);
 					}
-					
+
 					options.add("brush");
 				}
 			}
-			
+
 			if (subCommand.equalsIgnoreCase("combine")) {
 				Collection<String> allWands = api.getWandKeys();
 				for (String wandKey : allWands) {
@@ -244,7 +244,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 				}
 			}
 		}
-		
+
 		if (args.length == 3)
 		{
 			String subCommand = args[0];
@@ -290,7 +290,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 					}
 				}
             }
-			
+
 			String subCommandPNode = "Magic.commands." + permissionKey + "." + subCommand + "." + subCommand2;
 			if (!api.hasPermission(sender, subCommandPNode)) {
 				return options;
@@ -310,7 +310,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 					}
 				}
 			}
-			
+
 			if (subCommand.equalsIgnoreCase("add") && isBrushCommand) {
 				options.addAll(api.getBrushes());
 			}
@@ -442,7 +442,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 			if (args2.length > 0 && !api.hasPermission(sender,"Magic.commands." + command + ".combine." + args2[0], true)) return true;
-			
+
 			onWandCombine(sender, player, args2);
 			return true;
 		}
@@ -494,7 +494,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("remove"))
-		{   
+		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandRemove(sender, player, args2);
@@ -510,7 +510,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		}
 
         if (!api.hasPermission(sender, "Magic.commands." + command)) return true;
-		if (subCommand.length() == 0) 
+		if (subCommand.length() == 0)
 		{
 			if (!api.hasPermission(sender, "Magic.create.default")
 				&& !api.hasPermission(sender, "Magic.create." + api.getController().getDefaultWandTemplate())
@@ -518,8 +518,8 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 				sender.sendMessage(ChatColor.RED + "You do not have permission to create the default wand");
 				return true;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			if (!api.hasPermission(sender, "Magic.create." + subCommand)
 				&& !api.hasPermission(sender, "Magic.create.*")) {
@@ -527,7 +527,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 				return true;
 			}
 		}
-		
+
 		return onWand(sender, player, args);
 	}
 
@@ -542,11 +542,11 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		{
 			ConfigurationSection templateConfig = templateEntry.getValue();
 			if (templateConfig.getBoolean("hidden", false)) continue;
-			
+
 			String key = templateEntry.getKey();
 			String name = api.getMessages().get("wands." + key + ".name", api.getMessages().get("wand.default_name"));
 			String description = api.getMessages().get("wands." + key + ".description", "");
-			description = ChatColor.YELLOW + description; 
+			description = ChatColor.YELLOW + description;
 			if (!name.equals(key)) {
 				description = ChatColor.BLUE + name + ChatColor.WHITE + " : " + description;
 			}
@@ -607,7 +607,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
         return true;
 	}
-	
+
 	public boolean onWandOrganize(CommandSender sender, Player player)
 	{
 		// Allow reorganizing modifiable wands
@@ -622,7 +622,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_reorganized", "$name", player.getName()).replace("$wand", wand.getName()));
 		}
-		
+
 		return true;
 	}
 
@@ -677,7 +677,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         }
         return true;
     }
-	
+
 	public boolean onWandCreate(CommandSender sender, Player player)
 	{
 		Mage mage = api.getMage(player);
@@ -694,20 +694,20 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             sender.sendMessage(api.getMessages().getParameterized("wand.already_enchanted", "$item", MaterialAndData.getMaterialName(heldItem)));
             return false;
         }
-		
+
 		Wand wand = api.createWand(heldItem);
 		player.getInventory().setItemInMainHand(wand.getItem());
 		mage.checkWand();
 
 		mage.sendMessage(api.getMessages().getParameterized("wand.enchanted", "$item", MaterialAndData.getMaterialName(heldItem)));
-				
+
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_enchanted",
 					"$item", MaterialAndData.getMaterialName(heldItem),
 					"$name", player.getName()
 			));
 		}
-		
+
 		return true;
 	}
 
@@ -744,7 +744,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		}
 		return true;
 	}
-	
+
 	public boolean onWandDestroy(CommandSender sender, Player player)
 	{
 		Wand wand = checkWand(sender, player);
@@ -755,7 +755,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		wand.deactivate();
 		wand.unenchant();
 		player.getInventory().setItemInMainHand(wand.getItem());
-		
+
 		mage.sendMessage(api.getMessages().get("wand.unenchanted"));
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_unenchanted", "$name", player.getName()));
@@ -771,9 +771,9 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		}
 		Mage mage = api.getMage(player);
 		Wand newWand = wand.duplicate();
-		
+
 		api.giveItemToPlayer(player, newWand.getItem());
-		
+
 		mage.sendMessage(api.getMessages().get("wand.duplicated"));
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_duplicated", "$name", player.getName()));
@@ -869,7 +869,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
         return true;
     }
-	
+
 	public boolean onWandConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
 	{
 		Wand wand = checkWand(sender, player);
@@ -884,22 +884,22 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		}
 		return result;
 	}
-	
+
 	protected Wand checkWand(CommandSender sender, Player player)
 	{
 		return checkWand(sender, player, false, false);
 	}
-	
+
 	protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable)
 	{
 		return checkWand(sender, player, skipModifiable, false);
 	}
-	
+
 	protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound)
 	{
 		return checkWand(sender, player, skipModifiable, skipBound, false);
 	}
-	
+
 	protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet)
 	{
 		Mage mage = api.getMage(player);
@@ -914,7 +914,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 				wand = api.getWand(item);
 			}
 		}
-		
+
 		if (wand == null) {
 			if (!quiet) mage.sendMessage(api.getMessages().get("wand.no_wand"));
 			if (sender != player) {
@@ -936,7 +936,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			}
 			return null;
 		}
-		
+
 		return wand;
 	}
 
@@ -963,7 +963,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		wand.deactivate();
 		boolean result = wand.add(newWand);
 		mage.checkWand();
-		
+
 		if (sender != player) {
 			if (result) {
 				sender.sendMessage(api.getMessages().getParameterized("wand.player_upgraded", "$name", player.getName()));
@@ -980,7 +980,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		if (wand == null) {
 			return true;
 		}
-		
+
 		Mage mage = api.getMage(player);
 
 		wand.fill(player, maxLevel);
@@ -988,10 +988,10 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_filled", "$name", player.getName()));
 		}
-		
+
 		return true;
 	}
-	
+
 	public boolean onWandDelete(CommandSender sender, String wandKey) {
 		MageController controller = api.getController();
 		WandTemplate existing = controller.getWandTemplate(wandKey);
@@ -1043,7 +1043,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
 		MageController controller = api.getController();
 		String template = parameters[0];
-		
+
 		WandTemplate existing = controller.getWandTemplate(template);
 		if (existing != null && !player.hasPermission("Magic.wand.overwrite")) {
 			String creatorId = existing.getCreatorId();
@@ -1124,7 +1124,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
 		return onLevelSpells("wand", sender, player, wand, maxLevel);
 	}
-	
+
 	public boolean onWandAdd(CommandSender sender, Player player, String[] parameters)
 	{
 		if (parameters.length < 1) {
@@ -1145,7 +1145,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 				sender.sendMessage("Use: /wand add brush <material:data>");
 				return true;
 			}
-			
+
 			String materialKey = parameters[1];
 			if (!MaterialBrush.isValidMaterial(materialKey, false)) {
 				sender.sendMessage(materialKey + " is not a valid brush");
@@ -1216,7 +1216,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
 		Mage mage = api.getMage(player);
 
-		String spellName = parameters[0];	
+		String spellName = parameters[0];
 		if (spellName.equals("material") || spellName.equals("brush")) {
 			if (parameters.length < 2) {
 				sender.sendMessage("Use: /wand remove brush <material:data>");
@@ -1238,7 +1238,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
 			return true;
 		}
-		
+
 		if (wand.removeSpell(spellName)) {
             SpellTemplate template = api.getSpellTemplate(spellName);
             if (template != null) {
@@ -1269,7 +1269,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		if (wand == null) {
 			return true;
 		}
-		
+
 		Mage mage = api.getMage(player);
 
 		wand.setName(StringUtils.join(parameters, " "));
@@ -1281,7 +1281,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
 		return true;
 	}
-	
+
 	public boolean onWand(CommandSender sender, Player player, String[] parameters)
 	{
 		String wandName = null;
@@ -1289,7 +1289,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		{
 			wandName = parameters[0];
 		}
-		
+
 		return giveWand(sender, player, wandName, false, true, false, false);
 	}
 }

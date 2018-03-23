@@ -15,7 +15,7 @@ public class MapSpell extends TargetingSpell
 {
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		World world = getWorld();
 		MapView newMap = Bukkit.createMap(world);

@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.utility.Target;
 public class FrostSpell extends BlockSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
         Target target = getTarget();
         if (target == null || !target.isValid())

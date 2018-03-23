@@ -643,7 +643,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Double value = weakness.get(damageType);
         return value == null ? 0 : value;
     }
-    
+
     @Override
     public void unbindAll() {
         boundWands.clear();
@@ -761,17 +761,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             Bukkit.getPluginManager().callEvent(activatedEvent);
         }
     }
-    
+
     @Override
     public boolean tryToOwn(com.elmakers.mine.bukkit.api.wand.Wand wand) {
         if (isPlayer() && wand instanceof Wand && ((Wand)wand).tryToOwn(getPlayer())) {
             addBound((Wand)wand);
             return true;
         }
-        
+
         return false;
     }
-    
+
     protected void addBound(Wand wand) {
         WandTemplate template = wand.getTemplate();
         if (template != null && template.isRestorable()) {
@@ -1398,7 +1398,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         return activeWand;
     }
-    
+
     public boolean offhandCast() {
         long now = System.currentTimeMillis();
         if (lastOffhandCast > 0 && now < lastOffhandCast + OFFHAND_CAST_COOLDOWN) {
@@ -1408,7 +1408,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         Player player = getPlayer();
         if (isLoading() || player == null) return false;
-        
+
         ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
         if (Wand.isWand(itemInOffhand)) {
             if (offhandWand != null && (offhandWand.getLeftClickAction() == WandAction.CAST || offhandWand.getRightClickAction() == WandAction.CAST)) {
@@ -1430,7 +1430,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return castResult;
             }
         }
-        
+
         return false;
     }
 
@@ -1660,9 +1660,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-	/*
-	 * API Implementation
-	 */
+    /*
+     * API Implementation
+     */
 
     @Override
     public Collection<Batch> getPendingBatches() {
@@ -2254,7 +2254,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (int index = 0; amount > 0 && index < contents.length; index++) {
             ItemStack item = contents[index];
             if (item == null) continue;
-            
+
             if ((!allowVariants && itemStack.isSimilar(item)) || (allowVariants && itemStack.getType() == item.getType() && (item.getItemMeta() == null || item.getItemMeta().getDisplayName() == null)))
             {
                 if (amount >= item.getAmount()) {
@@ -2266,8 +2266,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
-        
-        return amount;   
+
+        return amount;
     }
 
     @Override
@@ -2277,7 +2277,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (sp != null) {
             return getSkillPoints() >= sp;
         }
-        
+
         int amount = itemStack == null ? 0 :itemStack.getAmount();
         if (amount <= 0 ) {
             return true;
@@ -2287,7 +2287,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (ItemStack item : contents) {
             if (item != null
                 && ((!allowVariants && itemStack.isSimilar(item)) || (allowVariants && itemStack.getType() == item.getType() && (item.getItemMeta() == null || item.getItemMeta().getDisplayName() == null)))
-                && (amount -= item.getAmount()) <= 0) 
+                && (amount -= item.getAmount()) <= 0)
             {
                 return true;
             }
@@ -2446,7 +2446,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         float expProgress = player.getExp();
         int expLevel = player.getLevel();
-        
+
         while ((expProgress > 0 || expLevel > 0) && xp > 0) {
             if (expProgress > 0) {
                 float expToLevel = Wand.getExpToLevel(expLevel);
@@ -2509,7 +2509,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             player.giveExp(xp);
         }
     }
-    
+
     public void sendExperience(float exp, int level) {
         if (virtualExperience && exp == virtualExperienceProgress && level == virtualExperienceLevel) return;
         Player player = getPlayer();
@@ -2588,7 +2588,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Entity getEntity() {
         return _entity.get();
     }
-    
+
     @Override
     public EntityData getEntityData() {
         return entityData;
@@ -2811,7 +2811,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Player player = getPlayer();
         return (player != null && player.isSneaking());
     }
-    
+
     @Override
     public boolean isJumping() {
     	Entity entity = getEntity();
@@ -3205,7 +3205,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         cooldownReduction = 0;
         costReduction = 0;
         consumeReduction = 0;
-        
+
         List<PotionEffectType> currentEffects = new ArrayList<>(effectivePotionEffects.keySet());
         LivingEntity entity = getLivingEntity();
         effectivePotionEffects.clear();
@@ -3269,7 +3269,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             activeWand.deactivate();
         }
     }
-    
+
     @Override
     public void undoScheduled() {
         // Immediately rollback any auto-undo spells
@@ -3408,7 +3408,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         return null;
     }
-    
+
     public void setEntityData(EntityData entityData) {
         this.entityData = entityData;
         controller.registerMagicMob(this);
@@ -3533,11 +3533,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
     }
-    
+
     public long getLastBlockTime() {
         return lastBlockTime;
     }
-    
+
     public void setLastBlockTime(long ms) {
         lastBlockTime = ms;
     }
@@ -3552,7 +3552,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         return false;
     }
-    
+
     @Override
     public boolean isBlocked(double angle) {
         if (activeWand != null && activeWand.isBlocked(angle)) {

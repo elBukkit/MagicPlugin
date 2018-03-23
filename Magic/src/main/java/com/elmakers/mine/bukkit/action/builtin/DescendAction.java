@@ -22,7 +22,7 @@ public class DescendAction extends BaseTeleportAction
 			targetLocation.setY(targetLocation.getY() - 1);
 		}
 		Location location = context.findPlaceToStand(targetLocation, verticalSearchDistance, false);
-		if (location != null) 
+		if (location != null)
 		{
 			return teleport(context, entity, location);
 		}

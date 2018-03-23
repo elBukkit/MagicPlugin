@@ -230,7 +230,7 @@ public class RecurseAction extends CompoundAction {
         if (faceIndex >= 0) {
             block = directions.get(faceIndex).getRelative(block);
         }
-        
+
         long id = BlockData.getBlockId(block);
         if (touched.contains(id))
         {

@@ -29,7 +29,7 @@ public class WolfSpell extends TargetingSpell
 		}
 		targetBlock = targetBlock.getRelative(BlockFace.UP);
 		if (target.hasEntity())
-		{      
+		{
 			targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
 		}
 
@@ -43,7 +43,7 @@ public class WolfSpell extends TargetingSpell
 	}
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
 		ArrayList<Wolf> newWolves = new ArrayList<>();
@@ -57,10 +57,10 @@ public class WolfSpell extends TargetingSpell
 		}
 
 		wolves = newWolves;
-		
+
 		int maxWolves = parameters.getInt("max_wolves", DEFAULT_MAX_WOLVES);
 		int scaledMaxWolves = (int)(mage.getRadiusMultiplier() * maxWolves);
-		if (wolves.size() >= scaledMaxWolves) 
+		if (wolves.size() >= scaledMaxWolves)
 		{
 			Wolf killWolf = wolves.remove(0);
 			killWolf.setHealth(0);

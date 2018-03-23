@@ -15,7 +15,7 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
 	public MagicServerCommandExecutor(MagicAPI api) {
 		super(api);
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String server;

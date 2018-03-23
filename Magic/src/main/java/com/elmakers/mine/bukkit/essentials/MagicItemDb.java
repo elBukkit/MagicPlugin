@@ -10,15 +10,15 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import net.ess3.api.IEssentials;
 
 public class MagicItemDb extends ItemDb {
-	
+
 	private final MagicController controller;
-	
+
 	public MagicItemDb(final MagicController controller, final Object ess) {
 		super((IEssentials)ess);
 		this.controller = controller;
 		this.reloadConfig();
 	}
-	
+
 	@Override
 	public ItemStack get(final String id) throws Exception
 	{
@@ -32,7 +32,7 @@ public class MagicItemDb extends ItemDb {
 			Wand wand = Wand.createWand(controller, "");
 			if (wand != null) {
 				return wand.getItem();
-			} 
+			}
 		} else if (id.startsWith("wand:")) {
 			String wandId = id.replace("wand:", "");
 			Wand wand = Wand.createWand(controller, wandId.trim());
@@ -86,7 +86,7 @@ public class MagicItemDb extends ItemDb {
             String wandId = id.replace("item:", "");
             return controller.createItem(wandId);
         }
-		
+
 		return super.get(id);
 	}
 }

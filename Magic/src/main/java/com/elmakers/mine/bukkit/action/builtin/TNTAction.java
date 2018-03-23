@@ -87,7 +87,7 @@ public class TNTAction extends BaseProjectileAction
 			}
 			track(context, grenade);
 		}
-		
+
 		return checkTracking(context);
 	}
 

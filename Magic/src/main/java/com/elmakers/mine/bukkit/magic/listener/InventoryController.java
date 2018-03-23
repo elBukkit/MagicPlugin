@@ -288,14 +288,14 @@ public class InventoryController implements Listener {
                 return;
             }
         }
-            
+
         if (isChest && !isContainerSlot && !player.hasPermission("Magic.wand.override_stash")) {
             if (InventoryUtils.getMetaBoolean(clickedItem, "unstashable", false)) {
                 event.setCancelled(true);
                 return;
             }
         }
-        
+
         // Check for armor changing
         if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
         {

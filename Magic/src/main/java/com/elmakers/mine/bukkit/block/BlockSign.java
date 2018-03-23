@@ -18,7 +18,7 @@ public class BlockSign extends BlockExtraData {
             this.lines[i] = lines[i];
         }
     }
-    
+
     public BlockSign(Object tag) {
         for (int i = 0; i < 4; ++i) {
             String line = InventoryUtils.getMetaString(tag, "Text" + (i + 1));

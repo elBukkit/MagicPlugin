@@ -51,7 +51,7 @@ public class MountArmorStandAction extends RideEntityAction
             mount.remove();
         }
     }
-    
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
@@ -100,7 +100,7 @@ public class MountArmorStandAction extends RideEntityAction
             mount = context.getTargetEntity();
         }
     }
-    
+
     @Override
     protected void adjustHeading(CastContext context) {
         super.adjustHeading(context);
@@ -119,7 +119,7 @@ public class MountArmorStandAction extends RideEntityAction
             armorStand.setHeadPose(new EulerAngle(pitch, 0, roll));
         }
     }
-    
+
     @Override
     protected SpellResult mount(CastContext context) {
         Mage mage = context.getMage();
@@ -159,7 +159,7 @@ public class MountArmorStandAction extends RideEntityAction
         }
         return result;
 	}
-	
+
 	protected boolean mountNewArmorStand(CastContext context) {
         Mage mage = context.getMage();
         Entity entity = context.getEntity();
@@ -201,7 +201,7 @@ public class MountArmorStandAction extends RideEntityAction
 
         return true;
     }
-	
+
 	@Override
     public void finish(CastContext context) {
         if (!mountTarget && mount != null) {
@@ -224,7 +224,7 @@ public class MountArmorStandAction extends RideEntityAction
             player.getInventory().setItem(slotNumber, item);
         }
         mage.checkWand();
-        
+
         item = null;
     }
 
@@ -246,7 +246,7 @@ public class MountArmorStandAction extends RideEntityAction
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
     {
         if (parameterKey.equals("armor_stand_invisible")
-                || parameterKey.equals("armor_stand_marker") 
+                || parameterKey.equals("armor_stand_marker")
                 || parameterKey.equals("armor_stand_small")
                 || parameterKey.equals("armor_stand_gravity")
                 || parameterKey.equals("mount_target")

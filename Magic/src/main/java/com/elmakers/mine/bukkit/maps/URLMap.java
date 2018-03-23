@@ -136,7 +136,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     public String getName() {
         return name;
     }
-    
+
     public String getPlayerName() {
         return playerName;
     }

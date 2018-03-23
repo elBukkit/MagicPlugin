@@ -303,7 +303,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         {
             unlockedWarps.addAll(Arrays.asList(StringUtils.split(unlockedString, ',')));
         }
-        
+
         Set<String> friends = new HashSet<>();
         String friendString = mageData.getString(friendKey);
         if (friendString != null && !friendString.isEmpty())
@@ -389,13 +389,13 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             {
                 return SpellResult.NO_ACTION;
             }
-            
+
             Player online = DeprecatedUtils.getPlayer(friendName);
             if (online == null)
             {
                 return SpellResult.FAIL;
             }
-            
+
             String uuid = online.getUniqueId().toString();
             if (friends.contains(uuid))
             {
@@ -405,7 +405,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             friends.add(uuid);
             friendString = StringUtils.join(friends, ",");
             mageData.set(friendKey, friendString);
-            
+
             String message = context.getMessage("add_friend").replace("$name", online.getDisplayName());
             context.sendMessage(message);
 
@@ -426,12 +426,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             {
                 return SpellResult.NO_ACTION;
             }
-            
+
             friends.remove(uuid);
 
             friendString = StringUtils.join(friends, ",");
             mageData.set(friendKey, friendString);
-            
+
             String message = context.getMessage("remove_friend").replace("$name", online.getDisplayName());
             context.sendMessage(message);
 
@@ -441,7 +441,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         Location playerLocation = mage.getLocation();
 		for (RecallType testType : RecallType.values())
         {
-			// Special-case for warps
+            // Special-case for warps
             if (testType == RecallType.WARP)
             {
 				if (warpConfig != null)
@@ -550,7 +550,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
 
 			RecallType recallType = RecallType.valueOf(typeString.toUpperCase());
-			
+
 			Waypoint location = getWaypoint(player, recallType, 0, parameters, context);
 			if (tryTeleport(player, location)) {
 				return SpellResult.CAST;
@@ -788,12 +788,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 		    return null;
 		}
 	}
-    
+
     protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key)
     {
         String iconKey = parameters.getString(key);
         if (iconKey == null || iconKey.isEmpty()) return null;
-        
+
         MaterialAndData material = ConfigurationUtils.getMaterialAndData(parameters, key);
         if (material == null || !material.isValid() || material.getMaterial() == null)
         {
@@ -820,7 +820,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         Location location = ConfigurationUtils.getLocation(mageData, markerKey);
         return location != null;
     }
-	
+
 	protected boolean tryTeleport(final Player player, final Waypoint waypoint) {
         Mage mage = context.getMage();
         if (waypoint == null) return false;
@@ -893,7 +893,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         Location location = ConfigurationUtils.getLocation(mageData, markerKey);
 
         context.registerForUndo(new UndoMarkerMove(mage, location));
-		if (location != null) 
+		if (location != null)
 		{
             context.sendMessageKey("cast_marker_move");
 		}

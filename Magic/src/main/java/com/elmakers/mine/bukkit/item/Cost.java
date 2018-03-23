@@ -24,7 +24,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         HUNGER,
         LEVELS
     };
-    
+
     protected ItemStack item;
     protected boolean itemWildcard;
     protected double amount;
@@ -73,7 +73,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 return getXP(reducer) == 0;
             case MANA:
                 return getMana(reducer) == 0;
-            case CURRENCY: 
+            case CURRENCY:
                 return getCurrency(reducer) == 0;
             case SP:
                 return getSkillPoints(reducer) == 0;
@@ -176,7 +176,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     public void deduct(Mage mage) {
         deduct(mage, mage.getActiveWand(), null);
     }
-    
+
     protected int getRoundedCost(double cost, CostReducer reducer) {
         return (int)Math.ceil(getReducedCost(cost, reducer));
     }
@@ -196,7 +196,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         }
         return reducedAmount;
     }
-    
+
     public int getAmount(CostReducer reducer)
     {
         return getRoundedCost(amount, reducer);
@@ -206,7 +206,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     {
         return reducer != null && reducer.getConsumeReduction() >= 1;
     }
-    
+
     @Override
     public String getDescription(Messages messages) {
         return getDescription(messages, null);
@@ -222,7 +222,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     public String getDescription(Messages messages, CostReducer reducer)
     {
         if (amount == 0) return "";
-        
+
         switch (type) {
             case ITEM:
                 if (item != null && reducer.getConsumeReduction() < 1) {
@@ -305,7 +305,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     {
         return type == Type.LEVELS ? getRoundedCost(amount, reducer) : 0;
     }
-    
+
     public int getSkillPoints(CostReducer reducer)
     {
         return type == Type.SP ? getRoundedCost(amount, reducer) : 0;

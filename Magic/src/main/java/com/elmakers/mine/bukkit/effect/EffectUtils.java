@@ -25,7 +25,7 @@ public class EffectUtils extends NMSUtils {
     public static void spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power) {
         spawnFireworkEffect(server, location, effect, power, null, 2, 1);
     }
-    
+
     public static void spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, boolean silent) {
         spawnFireworkEffect(server, location, effect, power, null, 2, 1, silent);
     }
@@ -47,7 +47,7 @@ public class EffectUtils extends NMSUtils {
             Object item = getHandle(makeReal(itemStack));
             final Object fireworkHandle = class_EntityFireworkConstructor.newInstance(world, location.getX(), location.getY(), location.getZ(), item);
             CompatibilityUtils.setSilent(fireworkHandle, silent);
-            
+
             if (direction != null) {
                 class_Entity_motXField.set(fireworkHandle, direction.getX());
                 class_Entity_motYField.set(fireworkHandle, direction.getY());

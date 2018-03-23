@@ -16,9 +16,9 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
             super(configuration);
         }
     }
-    
+
     private Options options;
-    
+
     @Override
     public ConfigurationSection getParent() {
         return null;
@@ -65,7 +65,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
 
         return transform.get();
     }
-    
+
     protected abstract Set<String> getParameters();
     protected abstract double getParameter(String parameter);
 }

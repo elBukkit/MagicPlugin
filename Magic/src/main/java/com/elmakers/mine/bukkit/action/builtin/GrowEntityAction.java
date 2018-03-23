@@ -26,7 +26,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 public class GrowEntityAction extends BaseSpellAction
 {
     private boolean skeletons;
-    
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
@@ -87,12 +87,12 @@ public class GrowEntityAction extends BaseSpellAction
 
 		return SpellResult.CAST;
 	}
-    
+
     @Override
     public boolean isUndoable() {
         return true;
     }
-    
+
     @Override
     public boolean requiresTargetEntity() {
         return true;
@@ -102,7 +102,7 @@ public class GrowEntityAction extends BaseSpellAction
     public boolean requiresTarget() {
         return true;
     }
-    
+
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);

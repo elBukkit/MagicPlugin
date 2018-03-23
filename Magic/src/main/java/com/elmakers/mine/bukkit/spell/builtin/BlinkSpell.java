@@ -26,7 +26,7 @@ public class BlinkSpell extends UndoableSpell
 			targetLocation.setY(targetLocation.getY() + 1);
 		}
 		Location location = findPlaceToStand(targetLocation, true);
-		if (location != null) 
+		if (location != null)
 		{
 			setTarget(location);
             delayTeleport(entity, location);
@@ -43,7 +43,7 @@ public class BlinkSpell extends UndoableSpell
 			targetLocation.setY(targetLocation.getY() - 1);
 		}
 		Location location = findPlaceToStand(targetLocation, false);
-		if (location != null) 
+		if (location != null)
 		{
 			setTarget(location);
             delayTeleport(entity, location);
@@ -53,10 +53,10 @@ public class BlinkSpell extends UndoableSpell
 	}
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		String elevateType = parameters.getString("type", "");
-		
+
 		Entity entity = mage.getLivingEntity();
         if (entity == null) {
 			return SpellResult.ENTITY_REQUIRED;
@@ -76,13 +76,13 @@ public class BlinkSpell extends UndoableSpell
 		{
 			return ascend(entity);
 		}
-		
+
 		if (autoPassthrough && !isLookingUp() && !isLookingDown())
 		{
 			Block firstBlock = getInteractBlock();
 			if (firstBlock == null) return SpellResult.NO_TARGET;
-			
-			if (!allowPassThrough(firstBlock.getType())) 
+
+			if (!allowPassThrough(firstBlock.getType()))
 			{
 				return SpellResult.NO_TARGET;
 			}
@@ -100,7 +100,7 @@ public class BlinkSpell extends UndoableSpell
 		Block target = getTargetBlock();
 		Block face = getPreviousBlock();
 
-		if (target == null) 
+		if (target == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -119,7 +119,7 @@ public class BlinkSpell extends UndoableSpell
 		{
 			destination = target;
 		}
-		
+
 		// Don't drop the player too far, and make sure there is somewhere to stand - unless they are flying
 		if (!(entity instanceof Player && ((Player)entity).isFlying())) {
 			Block groundBlock = destination.getRelative(BlockFace.DOWN);
@@ -141,14 +141,14 @@ public class BlinkSpell extends UndoableSpell
 			Block twoUp = oneUp.getRelative(BlockFace.UP);
 			Block faceOneUp = face.getRelative(BlockFace.UP);
 			Block faceTwoUp = faceOneUp.getRelative(BlockFace.UP);
-			
+
 			if (!autoPassthrough && !autoAscend && (!isTransparent(oneUp.getType()) || !isTransparent(twoUp.getType()) || !isTransparent(face.getType()) || !isTransparent(faceOneUp.getType()) || !isTransparent(faceTwoUp.getType()))) {
 				ledge = null;
 			} else {
 				// Check for ability to pass through the face block
 				while
 				(
-						(autoPassthrough || autoAscend || 
+						(autoPassthrough || autoAscend ||
 						isTransparent(face.getType()) && isTransparent(faceOneUp.getType()) && isTransparent(faceTwoUp.getType()))
 					&&		distanceUp < verticalSearchDistance
 					&&		isOkToStandIn(inFront.getType())
@@ -157,7 +157,7 @@ public class BlinkSpell extends UndoableSpell
 						||		!isOkToStandIn(oneUp.getType())
 						||		!isOkToStandIn(twoUp.getType())
 						)
-				) 
+				)
 				{
 					faceOneUp = faceOneUp.getRelative(BlockFace.UP);
 					faceTwoUp = faceOneUp.getRelative(BlockFace.UP);
@@ -195,9 +195,6 @@ public class BlinkSpell extends UndoableSpell
 
     /**
      * Delay tp by one tick, mainly for effects.
-     *
-     * @param entity
-     * @param location
      */
     protected void delayTeleport(final Entity entity, final Location location) {
         registerMoved(entity);

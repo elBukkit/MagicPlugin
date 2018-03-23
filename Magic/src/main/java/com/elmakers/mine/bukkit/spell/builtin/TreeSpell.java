@@ -15,7 +15,7 @@ public class TreeSpell extends TargetingSpell
 	private TreeType lastTreeType = null;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Block target = getTargetBlock();
 		lastTreeType = null;
@@ -73,7 +73,7 @@ public class TreeSpell extends TargetingSpell
 		}
 		return tree;
 	}
-	
+
 	@Override
 	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);

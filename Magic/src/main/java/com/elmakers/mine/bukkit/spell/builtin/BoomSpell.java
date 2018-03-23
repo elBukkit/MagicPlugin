@@ -17,7 +17,7 @@ public class BoomSpell extends BlockSpell {
 
 	public SpellResult createExplosionAt(Location target, float size, boolean incendiary, boolean breakBlocks)
 	{
-		if (target == null) 
+		if (target == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -36,12 +36,12 @@ public class BoomSpell extends BlockSpell {
 	}
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		int size = parameters.getInt("size", defaultSize);
 		boolean useFire = parameters.getBoolean("fire", false);
 		boolean breakBlocks = parameters.getBoolean("break_blocks", true);
-		
+
 		size = (int)(mage.getRadiusMultiplier() * size);
 
 		Target target = getTarget();

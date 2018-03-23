@@ -24,23 +24,23 @@ public class ShrinkBlockAction extends BaseSpellAction
 		MageController controller = context.getController();
 		String blockSkin = controller.getBlockSkin(targetBlock.getType());
 		if (blockSkin == null) return SpellResult.NO_TARGET;
-		
+
 		if (!context.hasBreakPermission(targetBlock))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		if (!context.isDestructible(targetBlock)) 
+		if (!context.isDestructible(targetBlock))
 		{
 			return SpellResult.NO_TARGET;
 		}
-		
-		context.registerForUndo(targetBlock);		
+
+		context.registerForUndo(targetBlock);
 
 		dropHead(targetBlock.getLocation(), blockSkin, targetBlock.getType().name(), (byte)3);
 		targetBlock.setType(Material.AIR);
 		return SpellResult.CAST;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	protected void dropHead(Location location, String ownerName, String itemName, byte data) {
         ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);

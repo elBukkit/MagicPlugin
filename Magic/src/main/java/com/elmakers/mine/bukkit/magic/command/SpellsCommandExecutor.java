@@ -22,7 +22,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 	public SpellsCommandExecutor(MagicAPI api) {
 		super(api);
 	}
-	
+
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String comandName, String[] args) {
 		return new ArrayList<>();
@@ -37,7 +37,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		listSpells(sender, -1, args.length > 0 ? args[0] : null);
 		return true;
 	}
-	
+
 
 	public void listSpellsByCategory(CommandSender sender, String category)
 	{
@@ -47,7 +47,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		for (SpellTemplate spell : spellVariants)
 		{
 			SpellCategory spellCategory = spell.getCategory();
-			if (spellCategory != null && spellCategory.getKey().equalsIgnoreCase(category) 
+			if (spellCategory != null && spellCategory.getKey().equalsIgnoreCase(category)
 				&& (player == null || spell.hasCastPermission(player)))
 			{
 				categorySpells.add(spell);
@@ -84,7 +84,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		{
 			if (player != null && !spell.hasCastPermission(player)) continue;
 			if (spell.getCategory() == null) continue;
-			
+
 			Integer spellCount = spellCounts.get(spell.getCategory().getKey());
 			if (spellCount == null || spellCount == 0)
 			{
@@ -151,7 +151,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		} else {
 			String message = api.getMessages().get("general.spell_list");
 			message = message.replace("$count", Integer.toString(spellCount));
-			sender.sendMessage(message);	
+			sender.sendMessage(message);
 		}
 
 		int currentPage = 1;
@@ -191,7 +191,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 				{
 					lineCount = 0;
 					currentPage++;
-				}	
+				}
 			}
 		}
 	}

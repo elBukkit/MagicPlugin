@@ -32,7 +32,7 @@ public class WandOrganizer {
 
 	private int currentInventoryIndex = 0;
 	private int currentInventoryCount = 0;
-	
+
 	public WandOrganizer(Wand wand, Mage mage) {
 		this.wand = wand;
 		this.mage = mage;
@@ -68,22 +68,22 @@ public class WandOrganizer {
             }
         }
     }
-	
-	public void organize() {
+
+    public void organize() {
         Map<String, Integer> spells = wand.getSpellInventory();
         Map<String, Integer> brushes = wand.getBrushInventory();
 
         removeHotbar(spells, brushes);
 
         // Collect favorite spells
-		MageController controller = wand.getController();
+        MageController controller = wand.getController();
 		TreeMap<Long, List<String>> favoriteSpells = new TreeMap<>();
 		Map<String, Collection<String>> groupedSpells = new TreeMap<>();
 		for (String spellName : spells.keySet()) {
 			Spell mageSpell = mage == null ? null : mage.getSpell(spellName);
 			SpellTemplate spell = mageSpell == null ? controller.getSpellTemplate(spellName) : mageSpell;
 			if (spell != null) {
-                // Sum up all levels of this spell:
+				// Sum up all levels of this spell:
 				long castCount = 0;
 				int spellLevel = 1;
                 while (mageSpell != null) {
@@ -133,7 +133,7 @@ public class WandOrganizer {
 		currentInventoryIndex = 0;
 		currentInventoryCount = 0;
 
-		// Organize favorites
+        // Organize favorites
         WandMode mode = wand.getMode();
         Set<String> addedFavorites = new HashSet<>();
         List<String> favoriteList = new ArrayList<>();
@@ -159,7 +159,7 @@ public class WandOrganizer {
             addedFavorites.clear();
         }
 
-		// Add unused spells by category
+        // Add unused spells by category
         int inventoryOrganizeNewGroupSize = wand.getInventorySize() - inventoryOrganizeNewGroupBuffer;
 		for (Collection<String> spellGroup : groupedSpells.values()) {
 

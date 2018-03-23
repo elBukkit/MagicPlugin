@@ -25,17 +25,17 @@ public class GotoSpell extends UndoableSpell
 	LivingEntity targetEntity = null;
 	int playerIndex = 0;
 	private Color effectColor = null;
-	
+
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Player player = mage.getPlayer();
-		if (player == null) 
+		if (player == null)
 		{
 			return SpellResult.PLAYER_REQUIRED;
 		}
 		effectColor = mage.getEffectColor();
-		if (effectColor == null) 
+		if (effectColor == null)
 		{
 			effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
 		}
@@ -47,8 +47,8 @@ public class GotoSpell extends UndoableSpell
 			if (!allowSelection || !targetEntity.isValid() || targetEntity.isDead())
 			{
 				releaseTarget();
-			} 
-			
+			}
+
 			// Check for protected Mages
 			if (targetEntity != null && controller.isMage(targetEntity)) {
 				Mage targetMage = controller.getMage(targetEntity);
@@ -58,7 +58,7 @@ public class GotoSpell extends UndoableSpell
 				}
 			}
 		}
-		
+
 		// Totally different behavior for selection
 		if (!allowSelection)
 		{
@@ -72,32 +72,32 @@ public class GotoSpell extends UndoableSpell
 				allTargets.add(new Target(location, targetPlayer, 512, Math.PI));
 			}
 			if (allTargets.size() == 0) return SpellResult.NO_TARGET;
-			
+
 			registerMoved(player);
 			registerForUndo();
-			
+
 			Collections.sort(allTargets);
 			Entity targetEntity = allTargets.get(0).getEntity();
 			getCurrentTarget().setEntity(targetEntity);
 			registerModified(player);
 			teleportTo(player, targetEntity);
 			castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityDisplayName(targetEntity)));
-			
+
 			return SpellResult.CAST;
 		}
-		
+
 		if (!isLookingUp() && !isLookingDown()) {
 			Target target = getTarget();
-			
+
 			if (targetEntity != null) {
 				return teleportTarget(target.getLocation()) ? SpellResult.CAST : SpellResult.NO_TARGET;
 			}
-			
+
 			if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
 			{
 				return SpellResult.NO_TARGET;
 			}
-		
+
 			// Check for protected Mages
 			if (controller.isMage(targetEntity)) {
 				Mage targetMage = controller.getMage(targetEntity);
@@ -111,7 +111,7 @@ public class GotoSpell extends UndoableSpell
 			activate();
 			return SpellResult.TARGET_SELECTED;
 		}
-		
+
 		if (isLookingUp() && targetEntity != null)
 		{
 			getCurrentTarget().setEntity(targetEntity);
@@ -125,27 +125,27 @@ public class GotoSpell extends UndoableSpell
 
 		List<String> playerNames = new ArrayList<>(controller.getPlayerNames());
 		if (playerNames.size() == 1) return SpellResult.NO_TARGET;
-		
+
 		if (playerIndex < 0) playerIndex = playerNames.size() - 1;
 		if (playerIndex >= playerNames.size()) {
 			playerIndex = 0;
 		}
-		
+
 		String playerName = playerNames.get(playerIndex);
 		if (playerName.equals(player.getName())) {
 			playerIndex = (playerIndex + 1) % playerNames.size();
 			playerName = playerNames.get(playerIndex);
 		}
 		playerIndex++;
-		
+
 		Player targetPlayer = DeprecatedUtils.getPlayer(playerName);
 		if (targetPlayer == null) return SpellResult.NO_TARGET;
-		
+
 		selectTarget(targetPlayer);
 		activate();
 		return SpellResult.TARGET_SELECTED;
 	}
-	
+
 	protected boolean teleportTarget(Location location) {
 		if (targetEntity == null || location == null) return false;
 		registerMoved(targetEntity);
@@ -153,13 +153,13 @@ public class GotoSpell extends UndoableSpell
 		targetEntity.teleport(location);
 		this.getCurrentTarget().setEntity(targetEntity);
 		registerForUndo();
-		
+
 		return true;
 	}
-	
+
 	protected void teleportTo(Entity sourceEntity, Entity targetEntity) {
 		Location targetLocation = targetEntity.getLocation();
-		
+
 		// Try to place you in front of the other player, and facing them
 		BlockFace targetFacing = getFacing(targetEntity.getLocation());
 		Location candidate = findPlaceToStand(targetLocation.getBlock().getRelative(targetFacing).getRelative(targetFacing).getLocation(), 4, 4);
@@ -171,14 +171,14 @@ public class GotoSpell extends UndoableSpell
 
         sourceEntity.teleport(targetLocation);
 	}
-	
+
 	protected void selectTarget(LivingEntity entity) {
 		releaseTarget();
 
 		targetEntity = entity;
 		getCurrentTarget().setEntity(entity);
 	}
-	
+
 	protected void releaseTarget() {
 		targetEntity = null;
 	}
@@ -192,7 +192,7 @@ public class GotoSpell extends UndoableSpell
             deactivate();
 			return true;
 		}
-		
+
 		return false;
 	}
 }

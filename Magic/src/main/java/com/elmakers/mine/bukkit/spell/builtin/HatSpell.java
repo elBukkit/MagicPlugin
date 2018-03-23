@@ -17,10 +17,10 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 @Deprecated
-public class HatSpell extends TargetingSpell 
+public class HatSpell extends TargetingSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Player player = mage.getPlayer();
 		if (player == null) {
@@ -28,11 +28,11 @@ public class HatSpell extends TargetingSpell
 		}
 		Block target = getTargetBlock();
 
-		if (target == null) 
+		if (target == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
-	
+
 		MaterialAndData material = new MaterialAndData(target);
 		if (material.getMaterial() == Material.AIR)
 		{

@@ -153,7 +153,7 @@ public class ChangeWorldAction extends BaseTeleportAction
 
         setTargetWorldName(context, targetLocation.getWorld().getName());
         teleport(context, entity, targetLocation);
-		
+
 		return SpellResult.CAST;
 	}
 
@@ -182,7 +182,7 @@ public class ChangeWorldAction extends BaseTeleportAction
         Messages messages = context.getController().getMessages();
         targetWorldMessage = messages.get("worlds." + worldName + ".name", worldName);
     }
-	
+
 	@Override
 	public String transformMessage(String message) {
         return message.replace("$world_name", targetWorldMessage);

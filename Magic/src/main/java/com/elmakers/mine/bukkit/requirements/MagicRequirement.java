@@ -49,7 +49,7 @@ public  class MagicRequirement {
             return "[Require " + key + "=" + value + " from (" + min + " to " + max + ")]";
         }
     }
-    
+
     private @Nonnull final MageController controller;
     private @Nullable String permissionNode = null;
     private @Nullable String requiredPath = null;
@@ -62,7 +62,7 @@ public  class MagicRequirement {
     private @Nullable List<PropertyRequirement> classProperties = null;
     private @Nullable List<PropertyRequirement> attributes = null;
     private boolean requireWand = false;
-    
+
     public MagicRequirement(@Nonnull MageController controller, @Nonnull Requirement requirement) {
         this.controller = controller;
         ConfigurationSection configuration = requirement.getConfiguration();
@@ -87,12 +87,12 @@ public  class MagicRequirement {
             requiredPath = requiresCompletedPath;
             exactPath = requiresCompletedPath;
         }
-        
+
         if (requiredTemplate != null || requiredTemplates != null || wandProperties != null) {
             requireWand = true;
         }
     }
-        
+
     private List<PropertyRequirement> parsePropertyRequirements(ConfigurationSection configuration, String section, String type) {
         if (!configuration.contains(section)) return null;
 
@@ -109,11 +109,11 @@ public  class MagicRequirement {
         }
         return requirements;
     }
-    
+
     public boolean checkRequirement(@Nonnull CastContext context) {
         Mage mage = context.getMage();
         Player player = mage.getPlayer();
-        
+
         if (permissionNode != null && (player == null || !player.hasPermission(permissionNode))) {
             return false;
         }
@@ -197,7 +197,7 @@ public  class MagicRequirement {
                 }
             }
         }
-        
+
         return true;
     }
 
@@ -226,7 +226,7 @@ public  class MagicRequirement {
     protected String getDefaultMessage(CastContext context, String key) {
         return context.getController().getMessages().get("requirements." + key);
     }
-    
+
     @Nullable
     public String getRequirementDescription(@Nonnull CastContext context) {
         Mage mage = context.getMage();
@@ -240,7 +240,7 @@ public  class MagicRequirement {
         if (wand == null && requireWand) {
             return getMessage(context, "no_wand");
         }
-        
+
         if (requiredTemplate != null) {
             String template = wand.getTemplateKey();
             if (template == null || !template.equals(requiredTemplate)) {
@@ -254,13 +254,13 @@ public  class MagicRequirement {
                 return getMessage(context, "no_template").replace("$wand", wand.getName());
             }
         }
-        
+
         if (mageClass != null && !mageClass.isEmpty()) {
             if (mage.hasClassUnlocked(mageClass)) {
                 return getMessage(context, "no_class").replace("$class", mageClass);
             }
         }
-        
+
         CasterProperties checkProperties = context.getActiveProperties();
         ProgressionPath path = checkProperties.getPath();
 
@@ -342,7 +342,7 @@ public  class MagicRequirement {
                 }
             }
         }
-        
+
         return null;
     }
 

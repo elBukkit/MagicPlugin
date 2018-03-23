@@ -19,7 +19,7 @@ public class CheckEntityAction extends CompoundAction {
     private boolean onlyCaster;
     private Set<EntityType> allowedTypes;
     private Set<EntityType> deniedTypes;
-    
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
@@ -52,7 +52,7 @@ public class CheckEntityAction extends CompoundAction {
             }
         }
     }
-    
+
     protected boolean isAllowed(CastContext context) {
         Entity targetEntity = context.getTargetEntity();
         if (targetEntity == null) return false;
@@ -71,7 +71,7 @@ public class CheckEntityAction extends CompoundAction {
         }
         return true;
     }
-    
+
     @Override
     public SpellResult step(CastContext context) {
         boolean allowed = isAllowed(context);
@@ -79,7 +79,7 @@ public class CheckEntityAction extends CompoundAction {
         if (actions == null || actions.size() == 0) {
             return allowed ? SpellResult.CAST : SpellResult.STOP;
         }
-        
+
         if (!allowed) {
             return SpellResult.NO_TARGET;
         }

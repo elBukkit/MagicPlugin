@@ -39,7 +39,7 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
  * A represents a randomized upgrade path that a wand may use
  * when upgrading.
  *
- * Upgrading is generally done by spending XP on an enchanting table.
+ * <p>Upgrading is generally done by spending XP on an enchanting table.
  */
 public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUpgradePath {
     private static Map<String, WandUpgradePath> paths = new HashMap<>();
@@ -626,7 +626,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                     mage.sendMessage(message);
                 }
                 return false;
-            } else if (mage != null) { 
+            } else if (mage != null) {
                 Spell spell = wand.getSpell(prereq.getSpellKey().getKey(), mage);
                 if (!PrerequisiteSpell.isSpellSatisfyingPrerequisite(spell, prereq)) {
                     if (spell != null) {

@@ -63,11 +63,11 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
     // State
     private boolean isActive = false;
     private SpellResult finalResult = null;
-    
+
     protected class RequirementsResult {
         public final SpellResult result;
         public final String message;
-        
+
         public RequirementsResult(SpellResult result, String message) {
             this.result = result;
             this.message = message;
@@ -195,7 +195,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                     requirements.add(new Requirement(requirementConfiguration));
                 }
             }
-            
+
             if (configuration.contains("item")) {
                 items = new ArrayList<>();
                 ItemStack item = parseItem(configuration.getString("item"));
@@ -276,7 +276,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             if (player == null) {
                 return new SelectorAction.RequirementsResult(SpellResult.PLAYER_REQUIRED);
             }
-            
+
             if (limit > 0 && has >= limit) {
                 return new RequirementsResult(SpellResult.NO_TARGET, getMessage("at_limit").replace("$limit", Integer.toString(limit)));
             }
@@ -286,7 +286,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                     return new RequirementsResult(SpellResult.NO_TARGET, getMessage("has_class").replace("$class", unlockClass));
                 }
             }
-            
+
             if (requirements != null) {
                 String message = controller.checkRequirements(context, requirements);
                 if (message != null) {
@@ -300,7 +300,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         public boolean isUnlock() {
             return unlockKey != null && !unlockKey.isEmpty();
         }
-        
+
         public boolean showIfUnavailable() {
             return showUnavailable;
         }
@@ -465,7 +465,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 // Show a question mark if nothing else worked
                 this.icon = InventoryUtils.getURLSkull("http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d");
             }
-            
+
             // Prepare icon
             ItemMeta meta = icon.getItemMeta();
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
@@ -599,7 +599,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                     mage.giveItem(copy);
                 }
             }
-            
+
             if (commands != null && !commands.isEmpty()) {
                 for (String command : commands) {
                     String execute = context.parameterize(command);
@@ -688,7 +688,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
     protected String getMessage(String key) {
         return context.getMessage(key, getDefaultMessage(context, key));
     }
-    
+
     protected String getDefaultMessage(CastContext context, String key) {
         return context.getController().getMessages().get("shops." + key);
     }
@@ -803,7 +803,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 if (option.isUnavailable() && !option.showIfUnavailable()) {
                     continue;
                 }
-                
+
                 Integer targetSlot = option.getSlot();
                 int slot = targetSlot == null ? numSlots : targetSlot;
                 showingItems.put(slot, option);

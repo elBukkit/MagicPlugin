@@ -15,7 +15,7 @@ public class CushionSpell extends BlockSpell
 	private static final int DEFAULT_CUSHION_HEIGHT = 4;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		World world = getWorld();
 		Block targetFace = getTargetBlock();
@@ -26,7 +26,7 @@ public class CushionSpell extends BlockSpell
 		if (!hasBuildPermission(targetFace)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		
+
 		int cushionWidth = parameters.getInt("width", DEFAULT_CUSHION_WIDTH);
 		int cushionHeight = parameters.getInt("height", DEFAULT_CUSHION_HEIGHT);
 

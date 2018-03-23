@@ -24,7 +24,7 @@ public class MountAction extends BaseSpellAction {
 			return SpellResult.LIVING_ENTITY_REQUIRED;
 		}
 
-		// Make it so this spell can be used to get someone off of you
+        // Make it so this spell can be used to get someone off of you
         if (eject) {
             source.eject();
             return SpellResult.CAST;
@@ -38,16 +38,16 @@ public class MountAction extends BaseSpellAction {
 		if (targetEntity == null) {
 			return SpellResult.NO_TARGET;
 		}
-        
+
         if (targetEntity == source.getPassenger() || source == targetEntity.getPassenger()) {
             return SpellResult.NO_TARGET;
         }
-		
+
         while (targetEntity instanceof ComplexEntityPart) {
             targetEntity = ((ComplexEntityPart)targetEntity).getParent();
         }
 		targetEntity.setPassenger(source);
-		
+
 		return SpellResult.CAST;
 	}
 }

@@ -17,7 +17,7 @@ public class TunnelSpell extends BlockSpell
 	private int torchFrequency = 4;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		defaultDepth = parameters.getInt("depth", defaultDepth);
 		defaultWidth = parameters.getInt("width", defaultWidth);
@@ -26,7 +26,7 @@ public class TunnelSpell extends BlockSpell
 		torchFrequency = parameters.getInt("torch_frequency", torchFrequency);
 
 		Block playerBlock = getPlayerBlock();
-		if (playerBlock == null) 
+		if (playerBlock == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -69,12 +69,12 @@ public class TunnelSpell extends BlockSpell
 				{
 					if (isDestructible(targetBlock) && hasBreakPermission(targetBlock))
 					{
-						// Put torches on the left and right wall 
+						// Put torches on the left and right wall
 						/*
-						boolean useTorch = 
+						boolean useTorch =
 						(
-								torchFrequency > 0 
-						&& 		(w == 0 || w == width - 1) 
+								torchFrequency > 0
+						&& 		(w == 0 || w == width - 1)
 						&& 		(h == 1)
 						&& 		(d % torchFrequency == 0)
 						);

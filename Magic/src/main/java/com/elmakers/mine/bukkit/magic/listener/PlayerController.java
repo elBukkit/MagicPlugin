@@ -185,14 +185,14 @@ public class PlayerController implements Listener {
             }
         }
     }
-    
+
     @EventHandler
     public void onPlayerSwapItem(PlayerSwapHandItemsEvent event) {
 
         final Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
-        
+
         final Wand activeWand = mage.getActiveWand();
         final Wand offhandWand = mage.getOffhandWand();
 
@@ -388,7 +388,7 @@ public class PlayerController implements Listener {
             }
         }
     }
-    
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerAnimate(PlayerAnimationEvent event)
     {
@@ -403,13 +403,13 @@ public class PlayerController implements Listener {
 
         Wand wand = mage.checkWand();
         if (wand == null) return;
-        
+
         Messages messages = controller.getMessages();
         if (!controller.hasWandPermission(player))
         {
             return;
         }
-        
+
         // Check for region or wand-specific permissions
         if (!controller.hasWandPermission(player, wand))
         {
@@ -417,7 +417,7 @@ public class PlayerController implements Listener {
             mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
             return;
         }
-        
+
         if (!mage.checkLastClick(clickCooldown)) {
             return;
         }
@@ -443,7 +443,7 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         Action action = event.getAction();
         boolean isLeftClick = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
-        
+
         // Don't allow interacting while holding spells, brushes or upgrades
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         boolean isSkill = Wand.isSkill(itemInHand);
@@ -452,7 +452,7 @@ public class PlayerController implements Listener {
             event.setCancelled(true);
             return;
         }
-        
+
         boolean isRightClick = (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
         boolean isOffhandSkill = false;
         ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
@@ -497,7 +497,7 @@ public class PlayerController implements Listener {
             event.setCancelled(true);
             return;
         }
-        
+
         // Check for offhand casting
         if (isRightClick)
         {
@@ -692,7 +692,7 @@ public class PlayerController implements Listener {
         if (undoList != null) {
             undoList.remove(item);
         }
-        
+
         Player player = event.getPlayer();
         Mage mage = controller.getMage(player);
         // Remove lost wands from records

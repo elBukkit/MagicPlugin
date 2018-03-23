@@ -32,7 +32,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 	public MageCommandExecutor(MagicAPI api) {
 		super(api);
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (args.length == 0)
@@ -43,7 +43,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 			}
 			return false;
 		}
-		
+
 		String subCommand = args[0];
 		if (sender instanceof Player)
 		{
@@ -160,7 +160,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 		sender.sendMessage("Unknown mage command: " + subCommand);
 		return true;
 	}
-	
+
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<>();

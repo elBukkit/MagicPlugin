@@ -31,7 +31,7 @@ public class OcelotSpell extends TargetingSpell
 		}
 		targetBlock = targetBlock.getRelative(BlockFace.UP);
 		if (target.hasEntity())
-		{      
+		{
 			targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
 		}
 
@@ -45,7 +45,7 @@ public class OcelotSpell extends TargetingSpell
 	}
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
 		ArrayList<Ocelot> newocelots = new ArrayList<>();
@@ -59,10 +59,10 @@ public class OcelotSpell extends TargetingSpell
 		}
 
 		ocelots = newocelots;
-		
+
 		int maxOcelots = parameters.getInt("max_ocelots", DEFAULT_MAX_OCELOTS);
 		int scaledMaxOcelots = (int)(mage.getRadiusMultiplier() * maxOcelots);
-		if (ocelots.size() >= scaledMaxOcelots) 
+		if (ocelots.size() >= scaledMaxOcelots)
 		{
 			Ocelot killOcelot = ocelots.remove(0);
 			killOcelot.setHealth(0);

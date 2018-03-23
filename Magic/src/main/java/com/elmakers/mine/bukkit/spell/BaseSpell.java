@@ -142,7 +142,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             ),
             PERCENTAGE_PARAMETERS
         );
-    
+
     private static final DecimalFormat RANGE_FORMATTER = new DecimalFormat("0.#");
     private static final DecimalFormat SECONDS_FORMATTER = new DecimalFormat("0.##");
 
@@ -577,7 +577,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     /**
      * Send a message to a player.
      *
-     * Use this to send messages to the player that are important.
+     * <p>Use this to send messages to the player that are important.
      *
      * @param message The message to send
      */
@@ -677,7 +677,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return (playerBlock.getType() == Material.WATER || playerBlock.getType() == Material.STATIONARY_WATER);
     }
 
-    protected String getBlockSkin(Material blockType) 
+    protected String getBlockSkin(Material blockType)
     {
         return controller.getBlockSkin(blockType);
     }
@@ -1016,7 +1016,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
     }
-    
+
     @Override
     public void loadPrerequisites(ConfigurationSection node)
     {
@@ -1078,14 +1078,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             processResult(SpellResult.DEACTIVATE, parameters);
             return true;
         }
-        
+
         if (mage.getDebugLevel() > 5 && extraParameters != null) {
             Collection<String> keys = extraParameters.getKeys(false);
             if (keys.size() > 0) {
                 mage.sendDebugMessage(ChatColor.BLUE + "Cast " + ChatColor.GOLD + getName() + " " + ChatColor.GREEN + ConfigurationUtils.getParameters(extraParameters));
             }
         }
-        
+
         this.reset();
 
         Location location = mage.getLocation();
@@ -1503,7 +1503,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 materialName = materialName == null ? "None" : materialName;
                 message = message.replace("$material", materialName);
             }
-            
+
             message = currentCast.parameterizeMessage(message);
         }
         return message;
@@ -2426,9 +2426,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     /**
      * Called when this spell is cast.
      *
-     * This is where you do your work!
+     * <p>This is where you do your work!
      *
-     * If parameters were passed to this spell, either via a variant or the command line,
+     * <p>If parameters were passed to this spell, either via a variant or the command line,
      * they will be passed in here.
      *
      * @param parameters Any parameters that were passed to this spell
@@ -2680,12 +2680,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (result.isSuccess() && (loud || (!mage.isQuiet() && !quiet))) {
             messageTargets("cast_player_message");
         }
-        
+
         // Clear cooldown on miss
         if (result.shouldRefundCooldown(castOnNoTarget)) {
             clearCooldown();
         }
-        
+
         if (cancelEffects) {
             context.cancelEffects();
         }
@@ -2843,12 +2843,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public ConfigurationSection getSpellParameters() {
         return parameters;
     }
-    
+
     @Override
     public Collection<Requirement> getRequirements() {
         return requirements;
     }
-    
+
     @Override
     public String getDurationDescription(Messages messages) {
         String description = null;
@@ -2871,7 +2871,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 description = messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString());
             }
         }
-        
+
         return description;
     }
 

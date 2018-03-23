@@ -62,7 +62,7 @@ public class VolumeAction extends CompoundAction
 	private boolean appliedMultiplier;
 	private float pitch;
 	private float yaw;
-	
+
 	private Material replaceMaterial;
 
 	private enum VolumeType {

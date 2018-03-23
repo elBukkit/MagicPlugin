@@ -16,7 +16,7 @@ public class MountSpell extends TargetingSpell {
 			return SpellResult.LIVING_ENTITY_REQUIRED;
 		}
 
-		// Make it so this spell can be used to get someone off of you
+        // Make it so this spell can be used to get someone off of you
         if (isLookingUp()) {
             player.eject();
         }
@@ -29,9 +29,9 @@ public class MountSpell extends TargetingSpell {
 		if (targetEntity == null) {
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		targetEntity.setPassenger(player);
-		
+
 		return SpellResult.CAST;
 	}
 

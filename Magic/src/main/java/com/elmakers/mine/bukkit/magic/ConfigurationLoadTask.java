@@ -133,7 +133,7 @@ public class ConfigurationLoadTask implements Runnable {
             logger.log(Level.WARNING, "Error loading attributes.yml", ex);
             success = false;
         }
-        
+
         // Finalize configuration load
         if (synchronous) {
             controller.finalizeLoad(this, sender);

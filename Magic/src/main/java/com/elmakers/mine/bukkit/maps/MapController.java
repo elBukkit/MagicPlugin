@@ -192,7 +192,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     /**
      * Saves the configuration file.
      *
-     * This is called automatically as changes are made, but you can call it in onDisable to be safe.
+     * <p>This is called automatically as changes are made, but you can call it in onDisable to be safe.
      */
     public void save(boolean asynchronous) {
         if (!loaded) {
@@ -231,7 +231,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     /**
      * Resets all internal data.
      *
-     * Can be called prior to save() to permanently delete all map images.
+     * <p>Can be called prior to save() to permanently delete all map images.
      * Can also be called prior to load() to load a fresh config file.
      */
     public void resetAll() {
@@ -258,9 +258,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     /**
      * A helper function to get an ItemStack from a MapView.
      *
-     * @param name
-     * 	The display name to give the new item. Optional.
-     * @param mapId
+     * @param name The display name to give the new item. Optional.
      * @return
      */
     public ItemStack getMapItem(String name, short mapId) {
@@ -275,12 +273,6 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
 
     /**
      * Get an ItemStack that is a headshot of a player's skin.
-     *
-     * @param worldName
-     * @param playerName
-     * @param priority
-     * @param photoLabel
-     * @return
      */
     @Override
     public ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoLabel) {
@@ -356,9 +348,6 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
 
     /**
      * Force reload of a player headshot.
-     *
-     * @param worldName
-     * @param playerName
      */
     @Override
     public void forceReloadPlayerPortrait(String worldName, String playerName) {
@@ -367,13 +356,6 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
 
     /**
      * Force reload of the specific url and cropping.
-     *
-     * @param worldName
-     * @param url
-     * @param x
-     * @param y
-     * @param width
-     * @param height
      */
     public void forceReload(String worldName, String url, int x, int y, int width, int height) {
         get(worldName, url, x, y, width, height).reload();
@@ -381,7 +363,6 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
 
     /**
      * Force resending all maps to a specific player.
-     * @param playerName
      */
     public void resend(String playerName) {
         for (URLMap map : keyMap.values()) {
@@ -410,7 +391,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     public URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
         return get(world, mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority, null);
     }
-        
+
     public URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
         String key = URLMap.getKey(world, url, playerName, x, y, width, height);
         URLMap map = idMap.get(mapId);

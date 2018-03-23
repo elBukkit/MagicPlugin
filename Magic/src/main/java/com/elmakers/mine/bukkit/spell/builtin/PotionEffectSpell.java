@@ -30,7 +30,7 @@ public class PotionEffectSpell extends UndoableSpell
     protected final static Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
 		if (!target.hasTarget())

@@ -15,7 +15,7 @@ public class GenericSpell extends UndoableSpell
     private boolean undoMovement = false;
 
     @Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
         if (!target.hasTarget()) {

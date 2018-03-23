@@ -34,12 +34,12 @@ public class ConstructSpell extends BrushSpell
 	private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
 	private static final int DEFAULT_RADIUS						= 2;
 	private static final int DEFAULT_MAX_DIMENSION 				= 16;
-	
+
 	private Block targetBlock = null;
 	private boolean powered = false;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
         Block target = null;
 		boolean isSelect = getTargetType() == TargetType.SELECT;
@@ -146,14 +146,14 @@ public class ConstructSpell extends BrushSpell
                 return SpellResult.FAIL;
             }
         }
-		
+
 		// TODO : Is this needed? Or just use "ty"?
 		if (parameters.contains("y_offset")) {
 			target = target.getRelative(BlockFace.UP, parameters.getInt("y_offset", 0));
 		}
 
 		buildWith.setTarget(target.getLocation());
-		
+
 		ConstructionType conType = DEFAULT_CONSTRUCTION_TYPE;
 
 		int thickness = parameters.getInt("thickness", 0);
@@ -190,7 +190,7 @@ public class ConstructSpell extends BrushSpell
 			replaceMaterials.add(wildReplace);
             batch.setReplace(replaceMaterials);
 		}
-		
+
 		// Check for command block overrides
 		if (parameters.contains("commands"))
 		{
@@ -240,7 +240,7 @@ public class ConstructSpell extends BrushSpell
 	protected boolean isBatched() {
 		return true;
 	}
-	
+
 	@Override
 	public void onDeactivate() {
 		targetBlock = null;
@@ -254,16 +254,16 @@ public class ConstructSpell extends BrushSpell
 			deactivate();
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
-	public boolean hasBrushOverride() 
+	public boolean hasBrushOverride()
 	{
 		return powered || super.hasBrushOverride();
 	}
-	
+
 	@Override
 	protected void loadTemplate(ConfigurationSection node)
 	{
@@ -280,13 +280,13 @@ public class ConstructSpell extends BrushSpell
 		super.getParameters(parameters);
 		parameters.addAll(Arrays.asList(CONSTRUCT_PARAMETERS));
 	}
-	
+
 	@Override
 	public void getParameterOptions(Collection<String> examples, String parameterKey)
 	{
 		super.getParameterOptions(examples, parameterKey);
-	
-		if (parameterKey.equals("radius") || parameterKey.equals("max_dimension") 
+
+		if (parameterKey.equals("radius") || parameterKey.equals("max_dimension")
 				|| parameterKey.equals("orient_dimension_max") || parameterKey.equals("orient_dimension_min")
 				|| parameterKey.equals("thickness") || parameterKey.equals("speed")) {
 			examples.addAll(Arrays.asList(EXAMPLE_SIZES));

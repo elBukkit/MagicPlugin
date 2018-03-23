@@ -45,7 +45,7 @@ public class AlterSpell extends BlockSpell
 	static final String DEFAULT_ADJUST_MAX =  "2 ,5, 5 ,15,15,15,15,1 ,15,1 ,3 ,1  ,5 ,2 ,9 ,9 ,5 ,2 ,5 ,15,8 ,8 ,15,15,15,3 ,5 ,15,5 ,7 ,8 ,5 ,5 ,15,3 ,9 ,3 ,2 ,14,15,7 ,15,15,5 ,0 ,5 ,5 ,15, 5,3 ,15,15 ,7  ,7  ,3  ,3  ,3  ,7  ,15 ,15 ,3  ,3  ,3  ,3  ,15 ,7  ,7  ,4  ,4  ,3  ,15 ,15 ,15 ,15 ,6";
 	static final String DEFAULT_ADJUST_MIN =  "0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0  ,0 ,0  ,2 ,0 ,0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,2 ,0 ,2 ,0 ,0 ,2 ,2 ,0 ,0 ,0 ,0 ,5 ,6 ,0 ,0 ,0 ,0 ,0 ,3 ,2 ,2 ,0 , 0,0 ,0 ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0";
 	static final int DEFAULT_RECURSE_DISTANCE = 0;
-	
+
 	static public List<Integer> parseIntegers(String csvList) {
 		List<Integer> ints = new ArrayList<>();
 
@@ -60,10 +60,10 @@ public class AlterSpell extends BlockSpell
 		}
 		return ints;
 	}
-	
-	
+
+
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
 		if (target.hasEntity()) {
@@ -73,11 +73,11 @@ public class AlterSpell extends BlockSpell
 			}
 		}
 		Block targetBlock = target.getBlock();
-		if (targetBlock == null) 
+		if (targetBlock == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		int recurseDistance = parameters.getInt("depth", DEFAULT_RECURSE_DISTANCE);
 		recurseDistance = (int)(mage.getRadiusMultiplier() * recurseDistance);
 
@@ -89,7 +89,7 @@ public class AlterSpell extends BlockSpell
 		{
 			controller.getLogger().warning("Spells:Alter: Mis-match in adjustable material lists!");
 		}
-		
+
 		if (!adjustableMaterials.contains(targetBlock.getTypeId()))
 		{
 			return SpellResult.FAIL;
@@ -136,10 +136,10 @@ public class AlterSpell extends BlockSpell
 			tryAdjust(block.getRelative(BlockFace.SOUTH), dataValue,targetMaterial, recurseDistance, rDepth + 1);
 			tryAdjust(block.getRelative(BlockFace.EAST), dataValue,targetMaterial, recurseDistance, rDepth + 1);
 			tryAdjust(block.getRelative(BlockFace.UP), dataValue,targetMaterial, recurseDistance, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.DOWN), dataValue,targetMaterial, recurseDistance, rDepth + 1);			
+			tryAdjust(block.getRelative(BlockFace.DOWN), dataValue,targetMaterial, recurseDistance, rDepth + 1);
 		}
 	}
-	
+
 	protected SpellResult alterEntity(Entity entity) {
 		EntityType entityType = entity.getType();
 		switch (entityType) {
@@ -190,11 +190,11 @@ public class AlterSpell extends BlockSpell
 				Color color = horse.getColor();
 				Color[] colorValues = Color.values();
 				color = colorValues[(color.ordinal() + 1) % colorValues.length];
-			
+
 				Style horseStyle = horse.getStyle();
 				Style[] styleValues = Style.values();
 				horseStyle = styleValues[(horseStyle.ordinal() + 1) % styleValues.length];
-				
+
 				horse.setStyle(horseStyle);
 				horse.setColor(color);
 			    break;

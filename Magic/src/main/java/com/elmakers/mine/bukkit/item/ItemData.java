@@ -24,12 +24,12 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private Set<String> categories = ImmutableSet.of();
     private String creatorId;
     private String creator;
-    
+
     public ItemData(ItemStack itemStack) {
         this.item = NMSUtils.getCopy(itemStack);
         this.key = itemStack.getType().toString();
     }
-    
+
     public ItemData(String materialKey) throws Exception {
         MaterialAndData material = new MaterialAndData(materialKey);
         if (material.isValid()) {
@@ -40,7 +40,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         }
         key = materialKey;
     }
-    
+
     public ItemData(String key, ConfigurationSection configuration) throws Exception {
         if (configuration.isItemStack("item")) {
             item = configuration.getItemStack("item");
@@ -54,7 +54,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             if (item == null) {
                 throw new Exception("Invalid item key: " + materialKey);
             }
-            
+
             ConfigurationSection tagSection = itemConfiguration.getConfigurationSection("tags");
             if (tagSection != null) {
                 item = CompatibilityUtils.makeReal(item);
@@ -77,7 +77,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         worth = configuration.getDouble("worth", 0);
         creator = configuration.getString("creator");
         creatorId = configuration.getString("creator_id");
-        
+
         // Convenience method for renaming items
         String customName = configuration.getString("name");
         if (customName != null) {
@@ -91,7 +91,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             categories = ImmutableSet.copyOf(categoriesList);
         }
     }
-    
+
     public ItemData(String key, ItemStack item, double worth) throws Exception {
         if (item == null) {
             throw new Exception("Invalid item");
@@ -110,7 +110,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     public double getWorth() {
         return worth;
     }
-    
+
     @Override
     public Set<String> getCategories() {
         return categories;
@@ -125,12 +125,12 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         newItem.setAmount(amount);
         return newItem;
     }
-    
+
     @Override
     public String getCreator() {
         return creator;
     }
-    
+
     @Override
     public String getCreatorId() {
         return creatorId;

@@ -85,11 +85,11 @@ public class ProjectileAction  extends BaseProjectileAction
         MageController controller = context.getController();
 		Mage mage = context.getMage();
 
-		// Modify with wand power
-		// Turned some of this off for now
-		// int count = this.count * mage.getRadiusMultiplier();
+        // Modify with wand power
+        // Turned some of this off for now
+        // int count = this.count * mage.getRadiusMultiplier();
         // int speed = this.speed * damageMultiplier;
-		int size = (int)(mage.getRadiusMultiplier() * this.size);
+        int size = (int)(mage.getRadiusMultiplier() * this.size);
 		double damageMultiplier = mage.getDamageMultiplier("projectile");
         double damage = damageMultiplier * this.damage;
         float radiusMultiplier = mage.getRadiusMultiplier();
@@ -98,13 +98,13 @@ public class ProjectileAction  extends BaseProjectileAction
 			 spread = spread / radiusMultiplier;
 		}
         Random random = context.getRandom();
-		
+
 		Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);
 		if (!CompatibilityUtils.isValidProjectileClass(projectileType)) {
 			controller.getLogger().warning("Bad projectile class: " + projectileTypeName);
 			return SpellResult.FAIL;
 		}
-		
+
 		// Prepare parameters
 		Location location = sourceLocation.getLocation(context);
 		Vector direction = location.getDirection();
@@ -112,8 +112,8 @@ public class ProjectileAction  extends BaseProjectileAction
         if (startDistance > 0) {
             location = location.clone().add(direction.clone().multiply(startDistance));
         }
-		
-		// Spawn projectiles
+
+        // Spawn projectiles
         LivingEntity shootingEntity = context.getLivingEntity();
         ProjectileSource source = null;
         if (shootingEntity != null)
@@ -130,7 +130,7 @@ public class ProjectileAction  extends BaseProjectileAction
 				if (shootingEntity != null) {
 					projectile.setShooter(shootingEntity);
 				}
-				
+
 				if (projectile instanceof Fireball) {
 					Fireball fireball = (Fireball)projectile;
 					fireball.setIsIncendiary(useFire);

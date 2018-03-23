@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.utility.Target;
 public class OrientSpell extends TargetingSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
         Target target = getTarget();
         Entity entity = target.getEntity();
@@ -32,7 +32,7 @@ public class OrientSpell extends TargetingSpell
         location.setPitch((float)parameters.getDouble("pitch", 0));
         location.setYaw((float)parameters.getDouble("yaw", 0));
         entity.teleport(location);
-		
+
 		return SpellResult.CAST;
 	}
 }

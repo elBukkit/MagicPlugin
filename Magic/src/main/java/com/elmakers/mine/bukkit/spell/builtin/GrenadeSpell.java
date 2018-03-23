@@ -18,11 +18,11 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 public class GrenadeSpell extends BlockSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		int size = parameters.getInt("size", 6);
 		int count = parameters.getInt("count", 1);
-		size = (int)(mage.getRadiusMultiplier() * size);		
+		size = (int)(mage.getRadiusMultiplier() * size);
 		int fuse = parameters.getInt("fuse", 80);
 		boolean useFire = parameters.getBoolean("fire", false);
 		boolean breakBlocks = parameters.getBoolean("break_blocks", true);
@@ -34,7 +34,7 @@ public class GrenadeSpell extends BlockSpell
 		if (!hasBreakPermission(target)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		
+
 		Location loc = getEyeLocation();
 		final Random rand = new Random();
 		for (int i = 0; i < count; i++)
@@ -59,7 +59,7 @@ public class GrenadeSpell extends BlockSpell
 				grenade.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
 			}
 		}
-		
+
 		registerForUndo();
 		return SpellResult.CAST;
 	}

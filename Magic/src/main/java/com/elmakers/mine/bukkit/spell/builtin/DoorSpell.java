@@ -12,7 +12,7 @@ import com.elmakers.mine.bukkit.utility.Target;
 public class DoorSpell extends BlockSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
 
@@ -20,7 +20,7 @@ public class DoorSpell extends BlockSpell
 		{
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		Block targetBlock = target.getBlock();
         byte data = targetBlock.getData();
         if ((data & 0x8) != 0) {
@@ -48,7 +48,7 @@ public class DoorSpell extends BlockSpell
         } else {
             return SpellResult.FAIL;
         }
-		
+
 		registerForUndo();
 		return SpellResult.CAST;
 	}

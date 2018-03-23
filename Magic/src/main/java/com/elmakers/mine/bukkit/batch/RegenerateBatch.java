@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.spell.UndoableSpell;
 
 public class RegenerateBatch extends SpellBatch {
 	private static final BlockData[] template = new BlockData[0];
-	
+
 	private final UndoList restoredBlocks;
 	private final World world;
 	private final Mage mage;
@@ -28,23 +28,23 @@ public class RegenerateBatch extends SpellBatch {
 	private final int z;
 	private int ix = 0;
 	private int iz = 0;
-	
+
 	private int blockY = 0;
 	private int blockX = 0;
 	private int blockZ = 0;
-	
+
 	private BlockData[] restoreBlocks;
 	private int restoringIndex = 0;
 	private boolean expand = false;
 
 	private BoundingBox bounds = new BoundingBox();
-	
+
 	private enum RegenerateState {
 		SAVING, REGENERATING, RESTORING
 	};
-	
+
 	private RegenerateState state;
-	
+
 	public RegenerateBatch(UndoableSpell spell, Location p1, Location p2) {
 		super(spell);
 		this.spell = spell;
@@ -54,19 +54,19 @@ public class RegenerateBatch extends SpellBatch {
 		this.restoredBlocks.setBatch(this);
 		this.world = this.mage.getLocation().getWorld();
 		this.state = RegenerateState.SAVING;
-		
+
 		int deltax = p2.getBlock().getChunk().getX() - p1.getChunk().getX();
 		int deltaz = p2.getChunk().getZ() - p1.getChunk().getZ();
 
 		absx = Math.abs(deltax) + 1;
 		absz = Math.abs(deltaz) + 1;
-		
+
 		dx = (int)Math.signum(deltax);
 		dz = (int)Math.signum(deltaz);
 
 		x = p1.getChunk().getX();
 		z = p1.getChunk().getZ();
-		
+
 		bounds = new BoundingBox(p1.toVector(), p2.toVector());
 	}
 
@@ -74,17 +74,17 @@ public class RegenerateBatch extends SpellBatch {
     public int size() {
 		return (absx * absz) * 16 * 16 * 256;
 	}
-	
+
 	@Override
     public int remaining() {
 		return (absx - ix) * (absz - iz) * 16 * 16 * 256;
 	}
-	
+
 	public boolean checkDimension(int maxDimension) {
 		// Convert to block coords
 		return !(maxDimension > 0 && (absx * 16 > maxDimension || absz * 16 > maxDimension));
 	}
-	
+
 	@Override
     public int process(int maxBlocks) {
 		int processedBlocks = 0;
@@ -114,7 +114,7 @@ public class RegenerateBatch extends SpellBatch {
 						registerForUndo(block);
 					}
 					processedBlocks++;
-					
+
 					blockX++;
 					if (blockX > 15) {
 						blockX = 0;
@@ -138,7 +138,7 @@ public class RegenerateBatch extends SpellBatch {
 				}
 			}
 
-			if (ix >= absx) 
+			if (ix >= absx)
 			{
 				state = RegenerateState.REGENERATING;
 				ix = 0;
@@ -155,15 +155,15 @@ public class RegenerateBatch extends SpellBatch {
 				// Note that we've already done permissions checks for every block in this chunk.
 				processedBlocks += 256 * 16 * 16;
 				world.regenerateChunk(chunk.getX(), chunk.getZ());
-			
+
 				iz++;
 				if (iz >= absz) {
 					iz = 0;
 					ix++;
 				}
 			}
-			
-			if (ix >= absx) 
+
+			if (ix >= absx)
 			{
 				restoreBlocks = restoredBlocks.toArray(template);
                 if (expand && !spell.isUndoable()) {
@@ -184,14 +184,14 @@ public class RegenerateBatch extends SpellBatch {
 			}
 			break;
 		}
-		
+
 		return processedBlocks;
 	}
-	
+
 	public int getXSize() {
 		return absx;
 	}
-	
+
 	public int getZSize() {
 		return absz;
 	}
@@ -199,7 +199,7 @@ public class RegenerateBatch extends SpellBatch {
 	public void setExpand(boolean expand) {
 		this.expand = expand;
 	}
-	
+
 	@Override
 	public void finish() {
 		if (!finished) {

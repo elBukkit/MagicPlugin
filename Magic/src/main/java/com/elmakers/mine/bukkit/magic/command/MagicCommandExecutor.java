@@ -62,11 +62,11 @@ import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 public class MagicCommandExecutor extends MagicMapExecutor {
 
 	private RunnableJob runningTask = null;
-	
+
 	public MagicCommandExecutor(MagicAPI api) {
 		super(api);
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (args.length == 0)
@@ -79,7 +79,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			sender.sendMessage("Use /magic help for more info");
 			return true;
 		}
-		
+
 		String subCommand = args[0];
 		if (sender instanceof Player)
 		{
@@ -123,12 +123,12 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("load") || subCommand.equalsIgnoreCase("reload"))
-		{		
+		{
 			api.reload(sender);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("clearcache"))
-		{		
+		{
 			api.clearCache();
 			sender.sendMessage("Image map cache cleared.");
 			return true;
@@ -146,7 +146,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 		{
 			Player player = null;
 			int argStart = 1;
-			
+
 			if (sender instanceof Player) {
                 if (args.length > 1)
                 {
@@ -262,7 +262,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
 			return true;
 		}
-		
+
 		sender.sendMessage("Unknown magic command: " + subCommand);
 		return true;
 	}
@@ -691,17 +691,17 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			sender.sendMessage(usageString);
 			return true;
 		}
-		
+
 		String key = "";
 		boolean isMaterial = false;
 		boolean isWand = false;
 		boolean isUpgrade = false;
-		
+
 		if (args.length > 1 && !args[0].equals("material") && !args[0].equals("wand") && !args[0].equals("upgrade")) {
 			sender.sendMessage(usageString);
 			return true;
 		}
-		
+
 		if (args[0].equals("wand")) {
 			isWand = true;
 			key = args.length > 1 ? args[1] : "";
@@ -732,10 +732,10 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 		} else {
 			onGive(sender, player, key, giveItem, giveValue, showWorth);
 		}
-		
+
 		return true;
 	}
-	
+
 	protected void onGive(CommandSender sender, Player player, String key, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
 		if (!onGiveSpell(sender, player, key, true, giveItem, giveValue, showWorth)) {
@@ -748,7 +748,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 		}
 	}
-	
+
 	protected boolean onGiveSpell(CommandSender sender, Player player, String spellKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
 		ItemStack itemStack = api.createSpellItem(spellKey);
@@ -768,7 +768,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         }
 		return true;
 	}
-	
+
 	protected boolean onGiveBrush(CommandSender sender, Player player, String materialKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
 		ItemStack itemStack = api.createBrushItem(materialKey);
@@ -788,7 +788,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         }
 		return true;
 	}
-	
+
 	protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
 		Mage mage = api.getMage(player);
@@ -796,7 +796,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 		if (currentWand != null) {
 			currentWand.closeInventory();
 		}
-	
+
 		Wand wand = api.createWand(wandKey);
 		if (wand != null) {
 			wand.makeUpgrade();
@@ -815,14 +815,14 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 		}
 		return true;
 	}
-	
+
 	protected void checkRunningTask()
 	{
 		if (runningTask != null && runningTask.isFinished()) {
 			runningTask = null;
 		}
 	}
-	
+
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<>();

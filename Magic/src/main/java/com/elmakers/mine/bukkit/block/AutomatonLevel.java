@@ -24,7 +24,7 @@ public class AutomatonLevel {
 	private final Integer yRadius;
 	private final Integer maxBlocks;
 	private final Integer minBlocks;
-	
+
 	public AutomatonLevel(int level, Integer levels[], ConfigurationSection template) {
 		int levelIndex = 0;
 		int nextLevelIndex = 0;
@@ -36,11 +36,11 @@ public class AutomatonLevel {
 					distance = 0;
 					break;
 				}
-				
+
 				if (level > levels[levelIndex]) {
 					nextLevelIndex = levelIndex + 1;
 					int previousLevel = levels[levelIndex];
-					int nextLevel = levels[nextLevelIndex];				
+					int nextLevel = levels[nextLevelIndex];
 					distance = (float)(level - previousLevel) / (float)(nextLevel - previousLevel);
 				}
 			}
@@ -105,11 +105,11 @@ public class AutomatonLevel {
 		}
 		spellParameters = template.getString("spell_parameters");
 	}
-	
+
 	public int getYRadius(int yRadius) {
 		return this.yRadius != null ? this.yRadius : yRadius;
 	}
-	
+
 	public int getRadius(int radius) {
 		return this.radius != null ? this.radius : radius;
 	}
@@ -121,27 +121,27 @@ public class AutomatonLevel {
 	public int getMaxBlocks(int maxBlocks) {
 		return this.maxBlocks != null ? this.maxBlocks : maxBlocks;
 	}
-	
+
 	public int getLiveRangeSquared(int liveRangeSquared) {
 		return this.liveRange != null ? this.liveRange * this.liveRange : liveRangeSquared;
 	}
-	
+
 	public int getBirthRangeSquared(int birthRangeSquared) {
 		return this.birthRange != null ? this.birthRange * this.birthRange : birthRangeSquared;
 	}
-	
+
 	public int getDelay(int delay) {
 		return this.delay != null ? this.delay : delay;
 	}
-	
+
 	public int getMoveRangeSquared(int moveRangeSquared) {
 		return this.moveRange != null ? this.moveRange * this.moveRange : moveRangeSquared;
 	}
-	
+
 	public int getDropXp(int dropXp) {
 		return this.dropXp != null ? this.dropXp : dropXp;
 	}
-	
+
 	public void onDeath(Mage mage, MaterialAndData birthMaterial) {
 		if (deathSpells != null && deathSpells.size() > 0) {
 			String deathSpell = RandomUtils.weightedRandom(deathSpells);
@@ -150,7 +150,7 @@ public class AutomatonLevel {
 			}
 		}
 	}
-	
+
 	public void onTick(Mage mage, MaterialAndData birthMaterial) {
 		if (tickSpells != null && tickSpells.size() > 0) {
 			String tickSpell = RandomUtils.weightedRandom(tickSpells);
@@ -159,7 +159,7 @@ public class AutomatonLevel {
 			}
 		}
 	}
-	
+
 	protected void castSpell(String spellCommand, Mage mage, MaterialAndData birthMaterial) {
 		if (spellCommand == null || spellCommand.length() == 0 || spellCommand.equals("none")) return;
 
@@ -181,7 +181,7 @@ public class AutomatonLevel {
 		if (SimulateBatch.DEBUG) {
 			mage.getController().getLogger().info("Casting " + spellCommand + " " + StringUtils.join(parameters, ' ' ));
 		}
-		
+
 		Spell spell = mage.getSpell(spellCommand);
 		if (spell != null) {
 			spell.cast(parameters);

@@ -56,7 +56,7 @@ public class ShapeBatch extends BrushBatch {
 	public void setOrientDimensionMax(int maxDim) {
 		this.maxOrientDimension = maxDim;
 	}
-	
+
 	public void setOrientDimensionMin(int minDim) {
 		this.minOrientDimension = minDim;
 	}
@@ -65,13 +65,13 @@ public class ShapeBatch extends BrushBatch {
     public int size() {
 		return radius * radius * radius * 8;
 	}
-	
+
 	@Override
     public int remaining() {
 		if (r >= radius) return 0;
 		return (radius - r) * (radius - r) * (radius - r) * 8;
 	}
-	
+
 	@Override
     public int process(int maxBlocks) {
 		int processedBlocks = 0;
@@ -124,7 +124,7 @@ public class ShapeBatch extends BrushBatch {
             }
             processedBlocks++;
         }
-		
+
 		return processedBlocks;
 	}
 
@@ -137,20 +137,20 @@ public class ShapeBatch extends BrushBatch {
 				float mx = x - 0.5f;
 				float my = y - 0.5f;
 				float mz = z - 0.5f;
-				
+
 				int distanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 				if (thickness == 0)
 				{
 					fillBlock = distanceSquared <= maxDistanceSquared;
-				} 
-				else 
+				}
+				else
 				{
 					mx++;
 					my++;
 					mz++;
 					int outerDistanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 					fillBlock = maxDistanceSquared >= distanceSquared - thickness && maxDistanceSquared <= outerDistanceSquared;
-				}	
+				}
 				//spells.getLog().info("(" + x + "," + y + "," + z + ") : " + fillBlock + " = " + distanceSquared + " : " + maxDistanceSquared);
 				break;
 			case PYRAMID:
@@ -158,11 +158,11 @@ public class ShapeBatch extends BrushBatch {
 				if (thickness == 0) {
 					fillBlock = (x <= elevation) && (z <= elevation);
 				} else {
-					fillBlock = (x <= elevation && x >= elevation - thickness && z <= elevation) 
+					fillBlock = (x <= elevation && x >= elevation - thickness && z <= elevation)
 							 || (z <= elevation && z >= elevation - thickness && x <= elevation);
 				}
 				break;
-			default: 
+			default:
 				fillBlock = thickness == 0 ? true : (x >= radius - thickness || y >= radius - thickness || z >= radius - thickness);
 				break;
 		}
@@ -188,14 +188,14 @@ public class ShapeBatch extends BrushBatch {
 		// Special-case hackiness..
 		if (limitYAxis && minOrientDimension != null && dy < -minOrientDimension) return true;
 		if (limitYAxis && maxOrientDimension != null && dy > maxOrientDimension) return true;
-		
+
 		// Initial range checks, we skip everything if this is not sane.
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
-		
+
 		if (y < 0 || y > center.getWorld().getMaxHeight()) return true;
-		
+
 		// Make sure the block is loaded.
 		Block block = center.getWorld().getBlockAt(x, y, z);
 		if (!block.getChunk().isLoaded()) {
@@ -207,14 +207,14 @@ public class ShapeBatch extends BrushBatch {
 		// given the current target (clone, replicate)
 		MaterialBrush brush = spell.getBrush();
 		brush.update(mage, block.getLocation());
-		
+
 		// Make sure the brush is ready, it may need to load chunks.
 		if (!brush.isReady()) {
 			brush.prepare();
 			return false;
 		}
 
-		if (!spell.hasBuildPermission(block)) 
+		if (!spell.hasBuildPermission(block))
 		{
 			return true;
 		}

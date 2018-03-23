@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 public class TossSpell extends BrushSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Location location = getLocation();
 		if (!hasBuildPermission(location.getBlock())) {
@@ -28,20 +28,20 @@ public class TossSpell extends BrushSpell
 
 		Material material = buildWith.getMaterial();
 		byte data = buildWith.getBlockData();
-		
+
 		int tossCount = 1;
 		tossCount = parameters.getInt("count", tossCount);
-		tossCount = (int)(mage.getRadiusMultiplier() * tossCount);	
+		tossCount = (int)(mage.getRadiusMultiplier() * tossCount);
 		float speed = 0.6f;
 		speed = (float)parameters.getDouble("speed", speed);
-		
+
 		Vector direction = getDirection();
 		direction.normalize().multiply(speed);
 		Vector up = new Vector(0, 1, 0);
 		Vector perp = new Vector();
 		perp.copy(direction);
 		perp.crossProduct(up);
-		
+
 		for (int i = 0; i < tossCount; i++)
 		{
 			FallingBlock block = null;

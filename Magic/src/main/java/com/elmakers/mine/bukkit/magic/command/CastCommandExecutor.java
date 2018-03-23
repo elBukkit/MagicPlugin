@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.elmakers.mine.bukkit.magic.command;
 
@@ -25,11 +25,11 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class CastCommandExecutor extends MagicTabExecutor {
-	
+
 	public CastCommandExecutor(MagicAPI api) {
 		super(api);
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
 		String commandName = command.getName();
@@ -141,7 +141,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 			}
 			return processCastCommand(sender, player, args);
 		}
-		
+
 		return false;
 	}
 

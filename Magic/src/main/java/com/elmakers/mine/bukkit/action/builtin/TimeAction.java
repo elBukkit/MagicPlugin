@@ -89,7 +89,7 @@ public class TimeAction extends BaseSpellAction
 		world.setTime(targetTime);
 		return SpellResult.CAST;
 	}
-	
+
 	@Override
 	public String transformMessage(String message) {
 		return message.replace("$newtime", timeSet);

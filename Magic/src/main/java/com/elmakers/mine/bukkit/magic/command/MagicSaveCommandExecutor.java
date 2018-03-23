@@ -20,7 +20,7 @@ public class MagicSaveCommandExecutor extends MagicTabExecutor {
 	public MagicSaveCommandExecutor(MagicAPI api) {
 		super(api);
 	}
-	
+
 	@Override
 	public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
         Player player;

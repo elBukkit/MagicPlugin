@@ -84,7 +84,7 @@ public class EntityVillagerData extends EntityExtraData {
         EntityVillagerData copy = new EntityVillagerData();
         copy.profession = profession;
         copy.recipes = recipes;
-        
+
         return copy;
     }
 }

@@ -61,10 +61,8 @@ public class BoundingBox
     /**
      * Scale this BoundingBox, but keep the min-Y value constant.
      *
-     * Useful for scaling entity AABB's.
+     * <p>Useful for scaling entity AABB's.
      *
-     * @param scale
-     * @param scaleY
      * @return the scaled BB (this object)
      */
     public BoundingBox scaleFromBase(double scale, double scaleY)

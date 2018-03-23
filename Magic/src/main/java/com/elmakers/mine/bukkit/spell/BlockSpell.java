@@ -142,7 +142,7 @@ public abstract class BlockSpell extends UndoableSpell {
     /**
      * A helper function to go change a given direction to the direction "to the right".
      *
-     * There's probably some better matrix-y, math-y way to do this.
+     * <p>There's probably some better matrix-y, math-y way to do this.
      * It'd be nice if this was in BlockFace.
      *
      * @param direction The current direction
@@ -168,7 +168,7 @@ public abstract class BlockSpell extends UndoableSpell {
     /**
      * A helper function to go change a given direction to the direction "to the right".
      *
-     * There's probably some better matrix-y, math-y way to do this.
+     * <p>There's probably some better matrix-y, math-y way to do this.
      * It'd be nice if this was in BlockFace.
      *
      * @param direction The current direction

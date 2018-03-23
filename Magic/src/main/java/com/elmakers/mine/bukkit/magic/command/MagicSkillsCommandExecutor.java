@@ -18,7 +18,7 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
 	public MagicSkillsCommandExecutor(MagicAPI api) {
 		super(api);
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!api.hasPermission(sender, "Magic.commands.mskills"))

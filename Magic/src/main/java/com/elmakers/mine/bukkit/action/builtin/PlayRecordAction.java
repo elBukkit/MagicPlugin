@@ -24,7 +24,7 @@ public class PlayRecordAction extends BaseSpellAction
         super.prepare(context, parameters);
         recordList = parameters.getString("records", "records");
     }
-	
+
 	@Override
     public SpellResult perform(CastContext context) {
         Collection<Material> records = context.getController()

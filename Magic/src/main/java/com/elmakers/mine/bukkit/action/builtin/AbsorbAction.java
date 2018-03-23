@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class AbsorbAction extends BaseSpellAction
-{   
+{
 	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult perform(CastContext context)
@@ -40,7 +40,7 @@ public class AbsorbAction extends BaseSpellAction
 		{
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		// Add to the wand
 		MaterialAndData mat = new MaterialAndData(material, data);
 		if (!wand.addBrush(mat.getKey())) {
@@ -48,10 +48,10 @@ public class AbsorbAction extends BaseSpellAction
 			wand.setActiveBrush(mat.getKey());
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		// And activate it
 		wand.setActiveBrush(mat.getKey());
-		
+
 		return SpellResult.CAST;
 	}
 

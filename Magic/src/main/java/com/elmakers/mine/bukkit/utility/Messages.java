@@ -117,7 +117,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
 
         return result;
     }
-    
+
     @Override
     public String describeItem(ItemStack item) {
         String displayName = null;
@@ -136,7 +136,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
 
         return displayName;
     }
-    
+
     @Override
     public String describeCurrency(double amount) {
         VaultController vault = VaultController.getInstance();
@@ -144,7 +144,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         if (!VaultController.hasEconomy()) {
             formatted =  get("costs.currency_amount").replace("$amount", formatted);
         }
-        
+
         return formatted;
     }
 
@@ -154,7 +154,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         if (VaultController.hasEconomy()) {
             return vault.getCurrency();
         }
-        
+
         return get("costs.currency");
     }
 

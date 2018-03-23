@@ -15,7 +15,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
 	public RPCommandExecutor(MagicAPI api) {
 		super(api);
 	}
-	
+
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		return new ArrayList<>();

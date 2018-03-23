@@ -10,12 +10,12 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 @Deprecated
-public class TorchSpell extends BlockSpell 
+public class TorchSpell extends BlockSpell
 {
 	private String timeType = "day";
-	
+
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		World world = getWorld();
 		if (world == null) {
@@ -45,19 +45,19 @@ public class TorchSpell extends BlockSpell
 					timeType = "night";
 				}
 			}
-			
+
 			if (timeType.equalsIgnoreCase("night"))
 			{
 				targetTime = 13000;
 			}
 			else
 			{
-				try 
+				try
 				{
 					targetTime = Long.parseLong(timeType);
 					timeType = "raw(" + targetTime + ")";
-				} 
-				catch (NumberFormatException ex) 
+				}
+				catch (NumberFormatException ex)
 				{
 					targetTime = 0;
 				}
@@ -74,7 +74,7 @@ public class TorchSpell extends BlockSpell
 			world.setTime(targetTime);
 			return SpellResult.ALTERNATE;
 		}
-		
+
 		boolean allowNight = parameters.getBoolean("allow_night", false);
 		boolean allowDay = parameters.getBoolean("allow_day", false);
 		if (isLookingUp() && allowDay)
@@ -92,7 +92,7 @@ public class TorchSpell extends BlockSpell
 			return SpellResult.ALTERNATE;
 		}
 
-		Block target = getTargetBlock();	
+		Block target = getTargetBlock();
 		Block face = getPreviousBlock();
 
 		if (target == null || face == null)
@@ -127,7 +127,7 @@ public class TorchSpell extends BlockSpell
 		if (!replaceAttachment)
 		{
 			target = face;
-		}	
+		}
 
 		byte data = 0;
 		if (targetMaterial == Material.TORCH)
@@ -165,7 +165,7 @@ public class TorchSpell extends BlockSpell
 
 		return SpellResult.CAST;
 	}
-	
+
 	@Override
 	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);

@@ -48,11 +48,10 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 /**
  * Implements a Collection of Blocks, for quick getting/putting while iterating
  * over a set or area of blocks.
- * 
- * This stores BlockData objects, which are hashable via their Persisted
+ *
+ * <p>This stores BlockData objects, which are hashable via their Persisted
  * inheritance, and their LocationData id (which itself has a hash function
  * based on world name and BlockVector's hash function)
- * 
  */
 public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.block.UndoList
 {
@@ -196,14 +195,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         {
             return false;
         }
-        
+
         add(testBlock);
         MaterialAndData.clearItems(testBlock.getState());
         DeprecatedUtils.setTypeIdAndData(testBlock, DeprecatedUtils.getId(Material.AIR), (byte)0, false);
-        
+
         return true;
     }
-    
+
     @Override
     public boolean add(BlockData blockData)
     {
@@ -434,7 +433,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             }
         }
     }
-    
+
     @Override
     public boolean isUndone()
     {
@@ -1035,7 +1034,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public int getRunnableCount() {
         return runnables == null ? 0 : runnables.size();
     }
-    
+
     @Override
     public Runnable undoNextRunnable() {
         Runnable undone = null;

@@ -27,14 +27,14 @@ public class FlingSpell extends UndoableSpell implements Listener
 
 	protected int defaultMaxSpeedAtElevation = 64;
 	protected double defaultMinMagnitude = 1.5;
-	protected double defaultMaxMagnitude = 4; 
+	protected double defaultMaxMagnitude = 4;
 
     private final static int minRingEffectRange = 2;
     private final static int maxRingEffectRange = 15;
     private final static int maxDamageAmount = 200;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		int height = 0;
 		Block playerBlock = getLocation().getBlock();
@@ -48,7 +48,7 @@ public class FlingSpell extends UndoableSpell implements Listener
 		double minMagnitude = parameters.getDouble("min_speed", defaultMinMagnitude);
 		double maxMagnitude = parameters.getDouble("max_speed", defaultMaxMagnitude);
         safetyLength = parameters.getLong("safety", safetyLength);
-		
+
 		while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
 		{
 			playerBlock = playerBlock.getRelative(BlockFace.DOWN);

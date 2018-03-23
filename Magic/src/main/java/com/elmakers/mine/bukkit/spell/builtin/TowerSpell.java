@@ -10,14 +10,14 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 public class TowerSpell extends BlockSpell {
 
 	private int blocksCreated;
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		blocksCreated = 0;
 		Block target = getTargetBlock();
-		if (target == null) 
+		if (target == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -69,14 +69,14 @@ public class TowerSpell extends BlockSpell {
 							registerForUndo(block);
 							block.setTypeId(material);
 						}
-					}					
+					}
 				}
 			}
 		}
 		registerForUndo();
 		return SpellResult.CAST;
 	}
-	
+
 	@Override
 	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);

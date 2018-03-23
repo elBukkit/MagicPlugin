@@ -31,8 +31,6 @@ public class ParameterizedConfigurationSection extends MemorySection {
 
     /**
      * Borrowed from Bukkit's MemorySection
-     * @param path
-     * @return
      */
     @Override
     public ConfigurationSection createSection(String path) {

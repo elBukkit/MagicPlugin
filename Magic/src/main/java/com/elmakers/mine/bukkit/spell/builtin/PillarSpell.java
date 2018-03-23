@@ -9,20 +9,20 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 @Deprecated
-public class PillarSpell extends BrushSpell 
+public class PillarSpell extends BrushSpell
 {
 	int MAX_SEARCH_DISTANCE = 255;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Block attachBlock = getTargetBlock();
 		if (attachBlock == null)
 		{
 			return SpellResult.NO_TARGET;
-		}	
+		}
 
-		BlockFace direction = BlockFace.UP;	
+		BlockFace direction = BlockFace.UP;
 		String typeString = parameters.getString("type", "");
 		if (typeString.equals("down"))
 		{
@@ -56,9 +56,9 @@ public class PillarSpell extends BrushSpell
 		buildWith.update(mage, pillar.getLocation());
 		registerForUndo(pillar);
 		buildWith.modify(pillar);
-		
+
 		registerForUndo();
-		
+
 		return SpellResult.CAST;
 	}
 }

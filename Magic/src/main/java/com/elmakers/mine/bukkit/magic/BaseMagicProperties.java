@@ -304,8 +304,6 @@ public class BaseMagicProperties implements MagicProperties {
     /**
      * This is used in some very specific cases where properties coming from a config file should not
      * really be part of the config, and are more meta config.
-     *
-     * @param key
      */
     protected void clearProperty(String key) {
         configuration.set(key, null);

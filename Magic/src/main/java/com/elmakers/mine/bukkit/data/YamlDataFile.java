@@ -8,17 +8,17 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class YamlDataFile extends YamlConfiguration {
 	protected final File file;
 	protected final Logger logger;
-	
+
 	public YamlDataFile(Logger logger, File file) {
 		this.file = file;
 		this.logger = logger;
 	}
-	
+
 	public YamlDataFile(Logger logger, String filename) {
 		file = new File(filename);
 		this.logger = logger;
 	}
-	
+
 	public void load() {
 		try {
 			load(file);
@@ -27,7 +27,7 @@ public class YamlDataFile extends YamlConfiguration {
 			logger.warning("Error loading data file " + file.getName());
 		}
 	}
-	
+
 	public void save() {
 		try {
             File tempFile = new File(file.getAbsolutePath() + ".tmp");

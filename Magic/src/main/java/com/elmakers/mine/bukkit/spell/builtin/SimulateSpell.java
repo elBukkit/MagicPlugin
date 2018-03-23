@@ -27,57 +27,57 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class SimulateSpell extends BlockSpell {
-	
+
 	public final static String[] SIMULATE_PARAMETERS = {
 		"radius", "yradius", "material", "omx", "omy", "omz", "death_material",
 		"olcx", "olcy", "olcz", "obcx", "obcy", "obcz", "live_rules", "birth_rules",
 		"target_mode", "target_types", "move", "target_min_range", "target_max_range",
 		"cast", "death_cast", "cast_probability", "diagonal_live_rules", "diagonal_birth_rules",
 	};
-	
+
 	private static final int DEFAULT_RADIUS = 32;
 
 	private TreeMap<Integer, AutomatonLevel> levelMap = null;
-	
+
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) {
 		Target t = getTarget();
 		if (t == null) {
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		Block target = t.getBlock();
 		if (target == null) {
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		if (!hasBuildPermission(target)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		
+
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = parameters.getInt("r", radius);
 		int yRadius = parameters.getInt("yradius", 0);
-		
+
 		MaterialAndData birthMaterial = new MaterialAndData(target);
 		birthMaterial = ConfigurationUtils.getMaterialAndData(parameters, "material", birthMaterial);
 		birthMaterial = ConfigurationUtils.getMaterialAndData(parameters, "m", birthMaterial);
-		
+
 		Double dmxValue = ConfigurationUtils.getDouble(parameters, "obx", null);
 		Double dmyValue = ConfigurationUtils.getDouble(parameters, "oby", null);
 		Double dmzValue = ConfigurationUtils.getDouble(parameters, "obz", null);
 		if (dmxValue != null || dmyValue != null || dmzValue != null) {
-			Vector offset = new Vector( 
-					dmxValue == null ? 0 : dmxValue, 
-					dmyValue == null ? 0 : dmyValue, 
+			Vector offset = new Vector(
+					dmxValue == null ? 0 : dmxValue,
+					dmyValue == null ? 0 : dmyValue,
 					dmzValue == null ? 0 : dmzValue);
 			Location targetLocation = target.getLocation().add(offset);
 			if (!targetLocation.getBlock().getChunk().isLoaded()) return SpellResult.FAIL;
 			birthMaterial = new MaterialAndData(targetLocation.getBlock());
 		}
-		
+
 		Material deathMaterial = ConfigurationUtils.getMaterial(parameters, "death_material", Material.AIR);
-		
+
 		// use the target location with the player's facing
 		Location location = getLocation();
 		Location targetLocation = target.getLocation();
@@ -88,12 +88,12 @@ public class SimulateSpell extends BlockSpell {
 
 		Set<Integer> birthCounts = new HashSet<>();
 		Set<Integer> liveCounts = new HashSet<>();
-		
+
 		Double dlcxValue = ConfigurationUtils.getDouble(parameters, "olcx", null);
 		Double dlcyValue = ConfigurationUtils.getDouble(parameters, "olcy", null);
 		Double dlczValue = ConfigurationUtils.getDouble(parameters, "olcz", null);
 		if (dlcxValue != null || dlcyValue != null || dlczValue != null) {
-			Location liveChestLocation = targetLocation.clone().add(new Vector(dlcxValue == null ? 0 : dlcxValue, dlcyValue == null ? 0 : 
+			Location liveChestLocation = targetLocation.clone().add(new Vector(dlcxValue == null ? 0 : dlcxValue, dlcyValue == null ? 0 :
 				dlcyValue, dlczValue == null ? 0 : dlczValue));
 			Block chestBlock = liveChestLocation.getBlock();
 			BlockState chestState = chestBlock.getState();
@@ -114,12 +114,12 @@ public class SimulateSpell extends BlockSpell {
 			liveCounts.add(2);
 			liveCounts.add(3);
 		}
-		
+
 		Double dbcxValue = ConfigurationUtils.getDouble(parameters, "obcx", null);
 		Double dbcyValue = ConfigurationUtils.getDouble(parameters, "obcy", null);
 		Double dbczValue = ConfigurationUtils.getDouble(parameters, "obcz", null);
 		if (dbcxValue != null || dbcyValue != null || dbczValue != null) {
-			Location birthChestLocation = targetLocation.clone().add(new Vector(dbcxValue == null ? 0 : dbcxValue, dbcyValue == null ? 0 : 
+			Location birthChestLocation = targetLocation.clone().add(new Vector(dbcxValue == null ? 0 : dbcxValue, dbcyValue == null ? 0 :
 				dbcyValue, dbczValue == null ? 0 : dbczValue));
 			Block chestBlock = birthChestLocation.getBlock();
 			BlockState chestState = chestBlock.getState();
@@ -139,7 +139,7 @@ public class SimulateSpell extends BlockSpell {
 		} else {
 			birthCounts.add(3);
 		}
-		
+
 		if (liveCounts.size() == 0 || birthCounts.size() == 0) {
 			return SpellResult.FAIL;
 		}
@@ -147,7 +147,7 @@ public class SimulateSpell extends BlockSpell {
 		String automataName = parameters.getString("animate", null);
 		boolean isAutomata = automataName != null;
 		final SimulateBatch batch = new SimulateBatch(this, targetLocation, radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts, automataName);
-		
+
 		if (parameters.contains("diagonal_live_rules")) {
 			batch.setDiagonalLiveRules(ConfigurationUtils.getIntegerList(parameters, "diagonal_live_rules"));
 		}
@@ -183,7 +183,7 @@ public class SimulateSpell extends BlockSpell {
 				}
 			}
 			batch.setMoveRange(parameters.getInt("move", 3));
-			
+
 			SimulateBatch.TargetType targetType = null;
 			String targetTypeString = parameters.getString("targets", "");
 			if (targetTypeString.length() > 0) {
@@ -231,12 +231,12 @@ public class SimulateSpell extends BlockSpell {
 		super.getParameters(parameters);
 		parameters.addAll(Arrays.asList(SIMULATE_PARAMETERS));
 	}
-	
+
 	@Override
 	public void getParameterOptions(Collection<String> examples, String parameterKey)
 	{
 		super.getParameterOptions(examples, parameterKey);
-		
+
 		if (parameterKey.equals("material")) {
 			examples.addAll(controller.getBrushKeys());
 		} else if (parameterKey.equals("radius") || parameterKey.equals("yradis")) {
@@ -255,14 +255,14 @@ public class SimulateSpell extends BlockSpell {
 			examples.addAll(Arrays.asList(EXAMPLE_PERCENTAGES));
 		}
 	}
-	
+
 	static final Integer[] emptyList = {};
-	
+
 	@Override
 	protected void loadTemplate(ConfigurationSection template)
 	{
 		super.loadTemplate(template);
-		
+
 		if (template.contains("levels")) {
 			ConfigurationSection levelTemplate = template.getConfigurationSection("levels");
 			Collection<String> levelKeys = levelTemplate.getKeys(false);
@@ -270,12 +270,12 @@ public class SimulateSpell extends BlockSpell {
 			for (String levelString : levelKeys) {
 				levels.add(Integer.parseInt(levelString));
 			}
-			
+
 			if (levels.size() == 0) return;
-			
-			levelMap = new TreeMap<>();	
+
+			levelMap = new TreeMap<>();
 			Collections.sort(levels);
-			
+
 			Integer[] levelsArray = levels.toArray(emptyList);
 			for (int level = 1; level <= levelsArray[levelsArray.length - 1]; level++) {
 				levelMap.put(level, new AutomatonLevel(level, levelsArray, template));

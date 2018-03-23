@@ -100,7 +100,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             }
             clearProperty("migrate_icons");
         }
-        
+
         if (node.contains("effects")) {
             ConfigurationSection effectsNode = node.getConfigurationSection("effects");
             Collection<String> effectKeys = effectsNode.getKeys(false);
@@ -177,7 +177,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         Preconditions.checkNotNull(mage, "mage");
         Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects(effectName);
         if (effects.isEmpty()) return false;
-        
+
         Entity sourceEntity = mage.getEntity();
         for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects)
         {
@@ -196,7 +196,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
 
             player.start(source, sourceEntity, null, null, null);
         }
-        
+
         return true;
     }
 
@@ -224,7 +224,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     public WandTemplate getMigrateTemplate() {
         return migrateTemplate == null ? null : controller.getWandTemplate(migrateTemplate);
     }
-    
+
     @Override
     public String migrateIcon(String currentIcon) {
         if (icon != null && migrateIcon != null && migrateIcon.equals(currentIcon)) {
@@ -238,13 +238,13 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         }
         return currentIcon;
     }
-    
+
     @Override
     @Deprecated
     public boolean isSoul() {
         return false;
     }
-    
+
     @Override
     public boolean isRestorable() {
         return restorable;

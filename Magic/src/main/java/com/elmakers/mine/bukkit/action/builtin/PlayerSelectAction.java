@@ -144,7 +144,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
             String name = targetPlayer.getName();
             String displayName = targetPlayer.getDisplayName();
 
-            @SuppressWarnings("deprecation") 
+            @SuppressWarnings("deprecation")
             ItemStack playerItem = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
             ItemMeta meta = playerItem.getItemMeta();
             meta.setDisplayName(displayName);

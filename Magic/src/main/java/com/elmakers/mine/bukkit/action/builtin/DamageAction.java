@@ -86,7 +86,7 @@ public class DamageAction extends BaseSpellAction
 			if (knockbackResistance != null && livingTarget != null) {
 				AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 				previousKnockbackResistance = knockBackAttribute.getBaseValue();
-				knockBackAttribute.setBaseValue(knockbackResistance); 
+				knockBackAttribute.setBaseValue(knockbackResistance);
 			}
 			if (controller.isElemental(entity)) {
 				damage = elementalDamage;
@@ -138,7 +138,7 @@ public class DamageAction extends BaseSpellAction
 					mage.sendDebugMessage(ChatColor.RED + "Damaging x " + ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + ": " + damage, 5);
 					CompatibilityUtils.damage(targetEntity, damage, mage.getEntity());
 				}
-				
+
 				if (damage == (int)damage) {
 					context.addMessageParameter("damage", Integer.toString((int)damage));
 				} else {

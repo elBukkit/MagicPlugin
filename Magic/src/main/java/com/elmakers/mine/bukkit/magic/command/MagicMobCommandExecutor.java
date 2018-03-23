@@ -34,7 +34,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 	public MagicMobCommandExecutor(MagicAPI api) {
 		super(api);
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!api.hasPermission(sender, "Magic.commands.mmob"))
@@ -48,7 +48,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list] <type> [count]");
 			return true;
 		}
-        
+
         if (args[0].equalsIgnoreCase("list"))
         {
             onListMobs(sender);
@@ -70,7 +70,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world> [count]");
             return true;
         }
-        
+
         Location targetLocation = null;
         World targetWorld = null;
         Player player = (sender instanceof Player) ? (Player)sender : null;
@@ -124,12 +124,12 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             block = block.getRelative(BlockFace.UP);
             targetLocation = block.getLocation();
         }
-        
+
         if (targetLocation == null || targetLocation.getWorld() == null) {
             sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world> [count]");
             return true;
         }
-        
+
         String mobKey = args[1];
         int count = 1;
         String countString = null;
@@ -159,7 +159,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "Unknown mob type " + mobKey);
             return true;
         }
-        
+
         String name = spawned.getName();
         if (name == null) {
             name = mobKey;
@@ -167,7 +167,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         sender.sendMessage(ChatColor.AQUA + "Spawned mob: " + ChatColor.LIGHT_PURPLE + name);
         return true;
 	}
-    
+
     protected void onListMobs(CommandSender sender) {
         Map<String, Integer> mobCounts = new HashMap<>();
 
@@ -175,7 +175,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         for (Mage mage : mages) {
             EntityData entityData = mage.getEntityData();
             if (entityData == null) continue;
-            
+
             Integer mobCount = mobCounts.get(entityData.getKey());
             if (mobCount == null) {
                 mobCounts.put(entityData.getKey(), 1);
@@ -183,7 +183,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
                 mobCounts.put(entityData.getKey(), mobCount + 1);
             }
         }
-        
+
         Set<String> keys = api.getController().getMobKeys();
         for (String key : keys) {
             EntityData mobType = api.getController().getMob(key);

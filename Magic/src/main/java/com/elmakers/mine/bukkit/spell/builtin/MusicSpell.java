@@ -12,10 +12,10 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
-public class MusicSpell extends TargetingSpell 
+public class MusicSpell extends TargetingSpell
 {
 	protected Random random = new Random();
-	
+
 	protected final static Material[] RECORDS = {
 	    Material.GOLD_RECORD,
 	    Material.GREEN_RECORD,
@@ -30,9 +30,9 @@ public class MusicSpell extends TargetingSpell
 	    Material.RECORD_11,
 	    Material.RECORD_12
 	};
-	
+
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
 		if (!target.hasTarget()) {

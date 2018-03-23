@@ -20,11 +20,11 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
+
 	public boolean isEnabled() {
 		return enabled && factionsManager != null;
 	}
-	
+
 	public void initialize(Plugin plugin) {
 		if (enabled) {
 			Plugin factionsPlugin = plugin.getServer().getPluginManager().getPlugin("Factions");
@@ -80,11 +80,11 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
 			plugin.getLogger().info("Factions integration disabled");
 		}
 	}
-	
+
 	@Override
     public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && factionsManager != null && factionsCanBuildMethod != null) {
-			
+
 			// Check for wilderness
 			if (player == null) {
                 if (board == null || getFactionAtMethod == null || isNoneMethod == null || psFactoryMethod == null) {
@@ -100,7 +100,7 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
                     return false;
                 }
             }
-			
+
 			try {
                 if (psFactoryMethod != null) {
                     Object loc = psFactoryMethod.invoke(null, block.getLocation());
@@ -112,7 +112,7 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 

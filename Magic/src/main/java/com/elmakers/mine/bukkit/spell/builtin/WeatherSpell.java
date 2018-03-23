@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 public class WeatherSpell extends BaseSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		World world = getWorld();
 		boolean hasStorm = world.hasStorm();

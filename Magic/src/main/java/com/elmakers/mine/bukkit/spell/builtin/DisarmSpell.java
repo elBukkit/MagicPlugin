@@ -23,37 +23,37 @@ import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 @Deprecated
-public class DisarmSpell extends TargetingSpell 
+public class DisarmSpell extends TargetingSpell
 {
     private Random random = new Random();
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
 		if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity)) {
-			return SpellResult.NO_TARGET;    
+			return SpellResult.NO_TARGET;
 		}
 		LivingEntity entity = (LivingEntity)target.getEntity();
-		
+
 		EntityEquipment equipment = entity.getEquipment();
 		ItemStack stack = equipment.getItemInHand();
-		
+
 		if (stack == null || stack.getType() == Material.AIR)
 		{
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		// Special case for wands
 		if (Wand.isWand(stack) && controller.isMage(entity)) {
             Mage targetMage = controller.getMage(entity);
-			
+
 			// Check for protected players (admins, generally...)
 			// This gets overridden by superpower...
 			if (!mage.isSuperPowered() && isSuperProtected(targetMage)) {
 				return SpellResult.NO_TARGET;
 			}
-			
+
 			if (targetMage != null && targetMage.getActiveWand() != null) {
 				targetMage.getActiveWand().deactivate();
 			}
@@ -98,8 +98,8 @@ public class DisarmSpell extends TargetingSpell
             velocity.setY(velocity.getY() * 5);
             SafetyUtils.setVelocity(item, velocity);
         }
-		
+
 		return SpellResult.CAST;
-		
+
 	}
 }

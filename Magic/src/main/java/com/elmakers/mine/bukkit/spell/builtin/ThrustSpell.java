@@ -29,11 +29,11 @@ public class ThrustSpell extends TargetingSpell
 	protected float hoverHeight = 0;
 	protected long lastTick = 0;
 
-	protected int checkFrequency = 10; // We'll check the ground every X steps 
+	protected int checkFrequency = 10; // We'll check the ground every X steps
 	protected int maxTerrainChangeHeight = 4;
 
 	protected int defaultHoverHeight = 5;
-	protected int elevateRate = 32; // In blocks /s / s, at max speed 
+	protected int elevateRate = 32; // In blocks /s / s, at max speed
 	protected int maxSpeedAtElevation = 32;
 	protected int maxSpeed = 20; // In blocks /s / s, at max speed and elevation
 	protected int minSpeed = 6; // In blocks /s / s, at max speed and elevation
@@ -103,7 +103,7 @@ public class ThrustSpell extends TargetingSpell
 		if (targetHeight > 255)
 		{
 			targetHeight = 255;
-		} 
+		}
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class ThrustSpell extends TargetingSpell
 
 	protected void applyForce()
 	{
-		if (!isActive()) 
+		if (!isActive())
 		{
 			return;
 		}
@@ -242,7 +242,7 @@ public class ThrustSpell extends TargetingSpell
     }
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
         overallScale = parameters.getDouble("scale", 1.0f);
 		lastTick = System.currentTimeMillis();

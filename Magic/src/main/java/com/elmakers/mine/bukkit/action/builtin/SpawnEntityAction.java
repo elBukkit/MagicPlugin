@@ -45,11 +45,11 @@ public class SpawnEntityAction extends BaseSpellAction
     private boolean setTarget = false;
     private boolean force = false;
     private boolean repeatRandomize = true;
-    
+
     private Vector direction = null;
     private double speed;
     private double dyOffset;
-    
+
     private EntityData entityData;
 
     @Override
@@ -61,7 +61,7 @@ public class SpawnEntityAction extends BaseSpellAction
         speed = parameters.getDouble("speed", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
         dyOffset = parameters.getDouble("dy_offset", 0);
-        
+
         if (parameters.contains("type"))
         {
             String mobType = parameters.getString("type");

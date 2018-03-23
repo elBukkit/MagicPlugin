@@ -30,9 +30,9 @@ public class ShrinkSpell extends BlockSpell
 {
 	private int             DEFAULT_PLAYER_DAMAGE = 1;
 	private int             DEFAULT_ENTITY_DAMAGE = 100;
-	
+
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		String giveName = parameters.getString("name");
 		if (giveName != null) {
@@ -45,7 +45,7 @@ public class ShrinkSpell extends BlockSpell
             }
 			return SpellResult.CAST;
 		}
-		
+
 		Target target = getTarget();
 
 		if (target.hasEntity()) {
@@ -60,15 +60,15 @@ public class ShrinkSpell extends BlockSpell
 					elementalSize /= 2;
 					controller.setElementalScale(targetEntity, elementalSize);
 				}
-				
+
 				return SpellResult.CAST;
 			}
-			
+
 			if (!(targetEntity instanceof LivingEntity)) return SpellResult.NO_TARGET;
-			
+
 			// Register for undo in advance to catch entity death.
 			registerForUndo();
-			
+
 			int damage =  parameters.getInt("entity_damage", DEFAULT_ENTITY_DAMAGE);
 
 			LivingEntity li = (LivingEntity)targetEntity;
@@ -76,7 +76,7 @@ public class ShrinkSpell extends BlockSpell
 			String ownerName = null;
 			String itemName = null;
 			byte data = 3;
-			
+
 			if (li instanceof Player)
 			{
 				damage = parameters.getInt("player_damage", DEFAULT_PLAYER_DAMAGE);
@@ -104,7 +104,7 @@ public class ShrinkSpell extends BlockSpell
             if (itemName == null && ownerName != null) {
                 itemName = ownerName + "'s Head";
             }
-			
+
 			Location targetLocation = targetEntity.getLocation();
 			if (li instanceof Player) {
                 CompatibilityUtils.magicDamage(li, damage, mage.getEntity());
@@ -151,23 +151,23 @@ public class ShrinkSpell extends BlockSpell
 			}
 			String blockSkin = getBlockSkin(targetBlock.getType());
 			if (blockSkin == null) return SpellResult.NO_TARGET;
-			
+
 			if (!hasBreakPermission(targetBlock))
 			{
 				return SpellResult.INSUFFICIENT_PERMISSION;
 			}
-			if (mage.isIndestructible(targetBlock)) 
+			if (mage.isIndestructible(targetBlock))
 			{
 				return SpellResult.NO_TARGET;
 			}
-			
-			registerForUndo(targetBlock);		
+
+			registerForUndo(targetBlock);
 			registerForUndo();
 
 			dropHead(targetBlock.getLocation(), blockSkin, targetBlock.getType().name(), (byte)3);
 			targetBlock.setType(Material.AIR);
 		}
-		
+
 		return SpellResult.CAST;
 	}
 
@@ -178,7 +178,7 @@ public class ShrinkSpell extends BlockSpell
     protected void dropPlayerHead(Location location, String playerName, String itemName) {
 		dropHead(location, playerName, itemName, (byte)3);
     }
-	
+
 	protected void dropHead(Location location, String ownerName, String itemName, byte data) {
         ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);
         ItemMeta meta = shrunkenHead.getItemMeta();

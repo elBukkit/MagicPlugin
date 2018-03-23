@@ -17,7 +17,7 @@ public class PhysicsHandler implements Listener {
 	{
 		this.controller = controller;
 	}
-	
+
 	@EventHandler
 	public void onBlockPhysics(BlockPhysicsEvent event)
 	{
@@ -26,7 +26,7 @@ public class PhysicsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	protected boolean allowPhysics(Block block)
 	{
 		if (timeout == 0) {

@@ -51,7 +51,7 @@ public class MagicRecipe {
         if (outputKey == null) {
             return false;
         }
-        
+
         substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
 

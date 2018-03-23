@@ -18,7 +18,7 @@ public class ElectrifyAction extends BaseSpellAction
 		super.prepare(context, parameters);
 		electrify = parameters.getBoolean("electrify", true);
 	}
-	
+
 	@Override
 	public SpellResult perform(CastContext context)
 	{

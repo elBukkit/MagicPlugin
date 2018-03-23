@@ -24,7 +24,7 @@ public class DropSpell extends BlockSpell
 	private boolean diagonals = false;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Block target = getTargetBlock();
 		if (target == null)
@@ -60,7 +60,7 @@ public class DropSpell extends BlockSpell
 	}
 
 	protected void drop(Block block, MaterialSet dropTypes, Collection<ItemStack> drops, int maxRecursion)
-	{		
+	{
 		drop(block, dropTypes, drops, maxRecursion, 0);
 	}
 
@@ -75,7 +75,7 @@ public class DropSpell extends BlockSpell
 			falling.setDropItem(false);
 		}
 		block.setType(Material.AIR);
-		
+
 		if (rDepth < maxRecursion)
 		{
 			tryDrop(block.getRelative(BlockFace.NORTH), dropTypes, drops, maxRecursion, rDepth + 1);

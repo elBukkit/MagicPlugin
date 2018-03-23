@@ -26,23 +26,23 @@ public class AnvilController implements Listener {
 	public AnvilController(MagicController controller) {
 		this.controller = controller;
 	}
-	
+
 	public void load(ConfigurationSection properties) {
 		combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
 		organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
         clearDescriptionOnRename = properties.getBoolean("anvil_rename_clears_description", clearDescriptionOnRename);
     }
-	
+
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (event.isCancelled()) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
-	
+
 		InventoryType inventoryType = event.getInventory().getType();
 		SlotType slotType = event.getSlotType();
 		Player player = (Player)event.getWhoClicked();
 		Mage mage = controller.getMage(player);
-		
+
 		if (inventoryType == InventoryType.ANVIL)
 		{
 			ItemStack cursor = event.getCursor();
@@ -51,9 +51,9 @@ public class AnvilController implements Listener {
 			InventoryAction action = event.getAction();
 			ItemStack firstItem = anvilInventory.getItem(0);
 			ItemStack secondItem = anvilInventory.getItem(1);
-			
+
 			//org.bukkit.Bukkit.getLogger().info("cursor? " + Wand.isWand(cursor) + " current?" + Wand.isWand(current) + " action: " + action + " slot: " + slotType + " first: " + firstItem + ", second: " + secondItem);
-			
+
 			// Handle direct movement
 			if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY)
 			{
@@ -92,14 +92,14 @@ public class AnvilController implements Listener {
 				}
 				return;
 			}
-			
+
 			// Set/unset active names when starting to craft
 			if (slotType == SlotType.CRAFTING) {
 				// Putting a wand into the anvil's crafting slot
 				if (Wand.isWand(cursor)) {
 					Wand wand = controller.getWand(cursor);
 					wand.updateName(false);
-				} 
+				}
 				// Taking a wand out of the anvil's crafting slot
 				if (Wand.isWand(current)) {
 					Wand wand = controller.getWand(current);
@@ -111,10 +111,10 @@ public class AnvilController implements Listener {
 						wand.tryToOwn((Player)event.getWhoClicked());
 					}
 				}
-				
+
 				return;
 			}
-			
+
 			// Rename wand when taking from result slot
 			if (slotType == SlotType.RESULT && Wand.isWand(current)) {
 				if (!combiningEnabled) {
@@ -125,7 +125,7 @@ public class AnvilController implements Listener {
 				}
 				ItemMeta meta = current.getItemMeta();
 				String newName = meta.getDisplayName();
-				
+
 				Wand wand = controller.getWand(current);
 				if (!wand.canUse(player)) {
 					event.setCancelled(true);
@@ -144,7 +144,7 @@ public class AnvilController implements Listener {
 				// Check for wands in both slots
 				// ...... arg. So close.. and yet, not.
 				// I guess I need to wait for the long-awaited anvil API?
-				if (Wand.isWand(firstItem) && Wand.isWand(secondItem)) 
+				if (Wand.isWand(firstItem) && Wand.isWand(secondItem))
 				{
 					Wand firstWand = controller.getWand(firstItem);
 					Wand secondWand = controller.getWand(secondItem);
@@ -156,7 +156,7 @@ public class AnvilController implements Listener {
 						mage.sendMessage("One of those wands is not bound to you");
 						return;
 					}
-					
+
 					if (!firstWand.add(secondWand)) {
 						mage.sendMessage("These wands can not be combined with each other");
 						return;
@@ -171,7 +171,7 @@ public class AnvilController implements Listener {
 					firstWand.tryToOwn(player);
 					player.getInventory().addItem(firstWand.getItem());
 					mage.sendMessage("Your wands have been combined!");
-					
+
 					// This seems to work in the debugger, but.. doesn't do anything.
 					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
 				} else if (organizingEnabled && Wand.isWand(firstItem)) {
@@ -185,17 +185,17 @@ public class AnvilController implements Listener {
 					player.getInventory().addItem(firstWand.getItem());
 					mage.sendMessage("Your wand has been organized!");
 				}
-				
+
 				return;
 			}
 		}
 	}
-	
+
 	public boolean isCombiningEnabled()
 	{
 		return combiningEnabled;
 	}
-	
+
 	public boolean isOrganizingEnabled()
 	{
 		return organizingEnabled;

@@ -84,7 +84,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         /**
          * The configuration data attached to this item.
          *
-         * Only available when the item was created from a configuration section.
+         * <p>Only available when the item was created from a configuration section.
          */
         private final @Nullable ConfigurationSection configuration;
 
@@ -337,7 +337,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             worth = Math.ceil(costScale * worth * controller.getWorthBase());
             VaultController.getInstance().withdrawPlayer(mage.getPlayer(), worth);
         }
-        
+
         return true;
     }
 
@@ -739,7 +739,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
         return Integer.toString((int)Math.ceil(amount)) + " " + controller.describeItem(item);
     }
-    
+
     protected boolean hasItem(MageController controller, Mage mage, ItemStack item) {
         if (com.elmakers.mine.bukkit.wand.Wand.isSP(item)) {
             return mage.hasItem(item);

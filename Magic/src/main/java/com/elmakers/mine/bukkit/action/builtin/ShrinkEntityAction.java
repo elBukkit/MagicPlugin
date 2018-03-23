@@ -31,9 +31,9 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 public class ShrinkEntityAction extends DamageAction
 {
 	private boolean skeletons;
-	
+
 	@Override
-	public void prepare(CastContext context, ConfigurationSection parameters) 
+	public void prepare(CastContext context, ConfigurationSection parameters)
 	{
 		super.prepare(context, parameters);
 		skeletons = parameters.getBoolean("skeletons", true);
@@ -54,15 +54,15 @@ public class ShrinkEntityAction extends DamageAction
 			controller.setElementalScale(targetEntity, elementalSize);
 			return SpellResult.CAST;
 		}
-		
+
 		if (!(targetEntity instanceof LivingEntity)) return SpellResult.NO_TARGET;
-		
+
 		LivingEntity li = (LivingEntity)targetEntity;
 		boolean alreadyDead = li.isDead() || li.getHealth() <= 0;
 		String ownerName = null;
 		String itemName = null;
 		byte data = 3;
-		
+
 		if (li instanceof Player)
 		{
 			ownerName = ((Player)li).getName();
@@ -89,7 +89,7 @@ public class ShrinkEntityAction extends DamageAction
 		if (itemName == null && ownerName != null) {
 			itemName = ownerName + "'s Head";
 		}
-		
+
 		Location targetLocation = targetEntity.getLocation();
 		if (li instanceof Player) {
 			super.perform(context);
@@ -133,14 +133,14 @@ public class ShrinkEntityAction extends DamageAction
 				dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 			}
 		}
-		
+
 		return SpellResult.CAST;
 	}
 
     protected void dropPlayerHead(Location location, Player player, String itemName) {
 		dropHead(location, player.getName(), itemName, (byte)3);
     }
-	
+
 	@SuppressWarnings("deprecation")
 	protected void dropHead(Location location, String ownerName, String itemName, byte data) {
         ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);

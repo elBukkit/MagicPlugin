@@ -36,7 +36,7 @@ public class CheckManaAction extends CompoundAction {
         }
         return true;
     }
-    
+
     @Override
     public SpellResult step(CastContext context) {
         boolean allowed = isAllowed(context);
@@ -44,7 +44,7 @@ public class CheckManaAction extends CompoundAction {
         if (actions == null || actions.size() == 0) {
             return allowed ? SpellResult.CAST : SpellResult.STOP;
         }
-        
+
         if (!allowed) {
             return SpellResult.NO_TARGET;
         }

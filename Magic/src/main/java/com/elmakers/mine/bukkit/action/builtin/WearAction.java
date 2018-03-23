@@ -130,11 +130,11 @@ public class WearAction extends BaseSpellAction
             if (activeWand != context.getWand()) {
                 return SpellResult.NO_TARGET;
             }
-            
+
             if (activeWand != null) {
                 activeWand.deactivate();
             }
-            
+
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand == null || itemInHand.getType() == Material.AIR)
             {
@@ -155,7 +155,7 @@ public class WearAction extends BaseSpellAction
             }
             return SpellResult.CAST;
         }
-        
+
         ItemStack wearItem = null;
         String materialName = null;
         if (item == null)
@@ -192,9 +192,9 @@ public class WearAction extends BaseSpellAction
             wearItem = InventoryUtils.getCopy(item);
             materialName = context.getController().describeItem(wearItem);
         }
-        
+
 		ItemMeta meta = wearItem.getItemMeta();
-        
+
         // Legacy support
         String displayName = context.getMessage("hat_name", "");
         displayName = context.getMessage("wear_name", displayName);

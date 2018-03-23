@@ -129,7 +129,7 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
         }
         return true;
     }
-    
+
     protected String getMessage(CastContext context, String key) {
         return context.getMessage(key, context.getController().getMessages().get("skillapi." + key));
     }
@@ -138,7 +138,7 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
     public @Nullable String getRequirementDescription(@Nonnull CastContext context, @Nonnull Requirement requirement) {
         ConfigurationSection configuration = requirement.getConfiguration();
         if (configuration.contains("skill")) {
-            return getMessage(context, "required_skill").replace("$skill", configuration.getString("skill"));   
+            return getMessage(context, "required_skill").replace("$skill", configuration.getString("skill"));
         }
         if (configuration.contains("class")) {
             return getMessage(context, "required_class").replace("$class", configuration.getString("class"));

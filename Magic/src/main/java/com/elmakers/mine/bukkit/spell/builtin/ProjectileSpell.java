@@ -41,7 +41,7 @@ public class ProjectileSpell extends UndoableSpell
 	private static Class<?> craftArrowClass;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		checkReflection();
         getTarget();
@@ -52,7 +52,7 @@ public class ProjectileSpell extends UndoableSpell
 		float speed = (float)parameters.getDouble("speed", 0.6f);
 		float spread = (float)parameters.getDouble("spread", 12);
 		Collection<PotionEffect> effects = null;
-		
+
 		if (radius > 0) {
 			effects = getPotionEffects(parameters);
 			radius = (int)(mage.getRadiusMultiplier() * radius);
@@ -66,21 +66,21 @@ public class ProjectileSpell extends UndoableSpell
 		// speed *= damageMultiplier;
 		damage *= damageMultiplier;
 		spread /= damageMultiplier;
-		
+
 		boolean useFire = parameters.getBoolean("fire", true);
 		int tickIncrease = parameters.getInt("tick_increase", 1180);
-		
+
 		String projectileTypeName = parameters.getString("projectile", "Arrow");
-		
+
 		if (projectileClass == null || worldClass == null || fireballClass == null || arrowClass == null || craftArrowClass == null) {
 			controller.getLogger().warning("Can't find NMS classess");
 			return SpellResult.FAIL;
 		}
-		
+
 		Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);
 		if (projectileType == null
-			|| (!arrowClass.isAssignableFrom(projectileType) 
-			&& !projectileClass.isAssignableFrom(projectileType) 
+			|| (!arrowClass.isAssignableFrom(projectileType)
+			&& !projectileClass.isAssignableFrom(projectileType)
 			&& !fireballClass.isAssignableFrom(projectileType))) {
 			controller.getLogger().warning("Bad projectile class: " + projectileTypeName);
 			return SpellResult.FAIL;
@@ -95,31 +95,31 @@ public class ProjectileSpell extends UndoableSpell
 		Method addEntityMethod = null;
 		try {
 			constructor = projectileType.getConstructor(worldClass);
-			
+
 			if (fireballClass.isAssignableFrom(projectileType)) {
 				dirXField = projectileType.getField("dirX");
 				dirYField = projectileType.getField("dirY");
 				dirZField = projectileType.getField("dirZ");
-			} 
+			}
 
 			if (projectileClass.isAssignableFrom(projectileType) || arrowClass.isAssignableFrom(projectileType)) {
 				shootMethod = projectileType.getMethod("shoot", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
 			}
-			
+
 			setPositionRotationMethod = projectileType.getMethod("setPositionRotation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
 			addEntityMethod = worldClass.getMethod("addEntity", entityClass);
 	    } catch (Throwable ex) {
 			ex.printStackTrace();
 			return SpellResult.FAIL;
 		}
-		
+
 		// Prepare parameters
 		Location location = getEyeLocation();
 		Vector direction = getDirection().normalize();
 
 		// Track projectiles to remove them after some time.
 		List<Projectile> projectiles = new ArrayList<>();
-		
+
 		// Spawn projectiles
 		Object nmsWorld = NMSUtils.getHandle(location.getWorld());
         LivingEntity player = mage.getLivingEntity();
@@ -132,13 +132,13 @@ public class ProjectileSpell extends UndoableSpell
 				if (nmsProjectile == null) {
 					throw new Exception("Failed to spawn projectile of class " + projectileTypeName);
 				}
-				
+
 				// Set position and rotation, and potentially velocity (direction)
 				// Velocity must be set manually- EntityFireball.setDirection applies a crazy-wide gaussian distribution!
 				if (dirXField != null && dirYField != null && dirZField != null) {
 					// Taken from EntityArrow
 					double spreadWeight = Math.min(0.4f,  spread * 0.007499999832361937D);
-					
+
 					double dx = speed * (direction.getX() + (random.nextGaussian() * spreadWeight));
 					double dy = speed * (direction.getY() + (random.nextGaussian() * spreadWeight));
 					double dz = speed * (direction.getZ() + (random.nextGaussian() * spreadWeight));
@@ -158,7 +158,7 @@ public class ProjectileSpell extends UndoableSpell
 				if (shootMethod != null) {
 					shootMethod.invoke(nmsProjectile, direction.getX(), direction.getY(), direction.getZ(), speed, spread);
 				}
-				
+
 				Entity entity = NMSUtils.getBukkitEntity(nmsProjectile);
 				if (entity == null || !(entity instanceof Projectile)) {
 					throw new Exception("Got invalid bukkit entity from projectile of class " + projectileTypeName);
@@ -168,11 +168,11 @@ public class ProjectileSpell extends UndoableSpell
 				if (player != null) {
 					projectile.setShooter(player);
 				}
-				
+
 				projectiles.add(projectile);
-				
+
 				addEntityMethod.invoke(nmsWorld, nmsProjectile);
-				
+
 				if (projectile instanceof Fireball) {
 					Fireball fireball = (Fireball)projectile;
 					fireball.setIsIncendiary(useFire);
@@ -183,7 +183,7 @@ public class ProjectileSpell extends UndoableSpell
 					if (useFire) {
 						arrow.setFireTicks(300);
 					}
-					
+
 					// Hackily make this an infinite arrow and set damage
 					try {
 						if (arrowClass == null || craftArrowClass == null) {
@@ -191,7 +191,7 @@ public class ProjectileSpell extends UndoableSpell
 						} else {
 							Method getHandleMethod = arrow.getClass().getMethod("getHandle");
 							Object handle = getHandleMethod.invoke(arrow);
-							
+
 							Field fromPlayerField = arrowClass.getField("fromPlayer");
 							fromPlayerField.setInt(handle, 2);
 							if (damage > 0) {
@@ -217,12 +217,12 @@ public class ProjectileSpell extends UndoableSpell
 		if (tickIncrease > 0 && projectiles.size() > 0 && arrowClass != null) {
 			scheduleProjectileCheck(projectiles, tickIncrease, effects, radius, 5);
 		}
-		
+
 		registerForUndo();
 		return SpellResult.CAST;
 	}
-	
-	protected void scheduleProjectileCheck(final Collection<Projectile> projectiles, final int tickIncrease, 
+
+	protected void scheduleProjectileCheck(final Collection<Projectile> projectiles, final int tickIncrease,
 			final Collection<PotionEffect> effects, final int radius, final int retries) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 			@Override
@@ -273,7 +273,7 @@ public class ProjectileSpell extends UndoableSpell
 		}
 	}
 
-	protected void checkProjectiles(final Collection<Projectile> projectiles, final int tickIncrease, 
+	protected void checkProjectiles(final Collection<Projectile> projectiles, final int tickIncrease,
 			final Collection<PotionEffect> effects, final int radius, int retries) {
 
 		final Collection<Projectile> remaining = new ArrayList<>();

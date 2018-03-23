@@ -20,10 +20,10 @@ public class DisintegrateSpell extends BlockSpell
 	private final static int             DEFAULT_ENTITY_DAMAGE = 100;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
-		
+
 		int playerDamage = parameters.getInt("player_damage", DEFAULT_PLAYER_DAMAGE);
 		int entityDamage = parameters.getInt("entity_damage", DEFAULT_ENTITY_DAMAGE);
 
@@ -62,7 +62,7 @@ public class DisintegrateSpell extends BlockSpell
 		{
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		Block targetBlock = target.getBlock();
 		if (!hasBreakPermission(targetBlock))
 		{
@@ -79,7 +79,7 @@ public class DisintegrateSpell extends BlockSpell
         // it always displays air or water
         MaterialAndData targetMaterial = new MaterialAndData(targetBlock);
         getCurrentCast().setTargetName(targetMaterial.getName());
-		
+
 		if (isUnderwater())
 		{
 			targetBlock.setType(Material.STATIONARY_WATER);
@@ -88,7 +88,7 @@ public class DisintegrateSpell extends BlockSpell
 		{
 			targetBlock.setType(Material.AIR);
 		}
-		
+
 		registerForUndo();
 		return SpellResult.CAST;
 	}

@@ -70,7 +70,7 @@ public class UndoAction extends BaseSpellAction
         while (context.getWorkAllowed() > 0) {
             if (undoToSize > 0 && totalSize <= undoToSize) break;
             if (undoList.size() == 0) {
-                if (undoList.undoNextRunnable() == null) break; 
+                if (undoList.undoNextRunnable() == null) break;
             } else {
                 if (undoList.undoNext(false) == null) break;
             }
@@ -98,7 +98,7 @@ public class UndoAction extends BaseSpellAction
 
         // Old functionality- this should be converted into an action that processes
         // blocks instead of creating a separate batch.
-		Entity targetEntity = context.getTargetEntity();
+        Entity targetEntity = context.getTargetEntity();
 
         SpellResult result = SpellResult.CAST;
         Mage mage = context.getMage();
@@ -153,7 +153,7 @@ public class UndoAction extends BaseSpellAction
                         ChatColor.YELLOW + blockTimeout, 2);
 
 				UndoList undid = controller.undoRecent(targetBlock, blockTimeout);
-				if (undid != null) 
+				if (undid != null)
 				{
 					Mage targetMage = undid.getOwner();
 					undoListName = undid.getName();
@@ -176,8 +176,8 @@ public class UndoAction extends BaseSpellAction
                 }
 			}
 		}
-		
-		return SpellResult.NO_TARGET;	
+
+		return SpellResult.NO_TARGET;
 	}
 
     @Override

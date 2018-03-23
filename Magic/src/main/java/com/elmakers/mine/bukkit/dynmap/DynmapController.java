@@ -33,7 +33,7 @@ public class DynmapController {
 		}
 		dynmap = (DynmapCommonAPI)dynmapPlugin;
 	 }
-	 
+
 	 public void showCastMarker(Mage mage, Spell spell, SpellResult result) {
 		 if (dynmap != null && dynmap.markerAPIInitialized()) {
 				MarkerAPI markers = dynmap.getMarkerAPI();
@@ -43,7 +43,7 @@ public class DynmapController {
 				}
 				final String markerId = "Spell-" + mage.getId();
 				final String targetId = "SpellTarget-" + mage.getId();
-				
+
 				int range = 32;
 				double radius = 3.0 * mage.getPower() + 3;
 				int width = (int)(2.0 * mage.getPower()) + 2;
@@ -58,7 +58,7 @@ public class DynmapController {
 				final String worldName = location.getWorld().getName();
 				Date now = new Date();
 				String label = spell.getName() + " : " + mage.getName() + " @ " + dateFormatter.format(now);
-				
+
 				// Create a circular disc for a spell cast
 				CircleMarker marker = spellSet.findCircleMarker(markerId);
 				if (marker != null) {
@@ -70,17 +70,17 @@ public class DynmapController {
 				marker.setRadius(radius, radius);
 				marker.setLineStyle(1, 0.9, spellColor.asRGB());
 				marker.setFillStyle(0.5, mageColor.asRGB());
-				
+
 				// Create a targeting indicator line
 				Location target = spell.getTargetLocation();
-					
+
 				if (target == null) {
 					target = location.clone();
 					Vector direction = location.getDirection();
 					direction.normalize().multiply(range);
 					target.add(direction);
 				}
-							
+
 				PolyLineMarker targetMarker = spellSet.findPolyLineMarker(targetId);
 				if (targetMarker != null) {
 					targetMarker.setCornerLocation(0, location.getX(), location.getY(), location.getZ());
@@ -90,17 +90,17 @@ public class DynmapController {
 					double[] x = {location.getX(), target.getX()};
 					double[] y = {location.getY(), target.getY()};
 					double[] z = {location.getZ(), target.getZ()};
-					
+
 					targetMarker = spellSet.createPolyLineMarker(targetId, label, false, worldName, x, y, z, false);
 				}
 				targetMarker.setLineStyle(width, 0.8, spellColor.asRGB());
 			}
 	 }
-	 
+
 	 public boolean isReady() {
 		 return dynmap == null || dynmap.markerAPIInitialized();
 	 }
-	 
+
 	 public boolean addMarker(String id, String group, String title, String world, int x, int y, int z, String description) {
 		 boolean created = false;
 			if (dynmap != null && dynmap.markerAPIInitialized())
@@ -114,7 +114,7 @@ public class DynmapController {
 				if (wandIcon == null) {
 					wandIcon = markers.createMarkerIcon("wand", "Wand", plugin.getResource("wand_icon32.png"));
 				}
-				
+
 				Marker marker = markerSet.findMarker(id);
 				if (marker == null) {
 					created = true;
@@ -127,14 +127,14 @@ public class DynmapController {
 					marker.setDescription(description);
 				}
 			}
-			
+
 			return created;
 	 }
-	 
+
 	public boolean removeMarker(String id, String group)
 	{
 		boolean removed = false;
-		if (dynmap != null && dynmap.markerAPIInitialized()) 
+		if (dynmap != null && dynmap.markerAPIInitialized())
 		{
 			MarkerAPI markers = dynmap.getMarkerAPI();
 			MarkerSet markerSet = markers.getMarkerSet(group);
@@ -146,16 +146,16 @@ public class DynmapController {
 				}
 			}
 		}
-		
+
 		return removed;
 	}
-	 
+
 	public int triggerRenderOfVolume(String wid, int minx, int miny, int minz, int maxx, int maxy, int maxz)
 	{
 		if (dynmap == null) return 0;
 		return dynmap.triggerRenderOfVolume(wid, minx, miny, minz, maxx, maxy, maxz);
 	}
-	
+
 	public int triggerRenderOfBlock(String wid, int x, int y, int z)
 	{
 		if (dynmap == null) return 0;

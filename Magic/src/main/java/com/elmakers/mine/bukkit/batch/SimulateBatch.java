@@ -36,7 +36,7 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class SimulateBatch extends SpellBatch {
-	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
+	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST,
 		BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
 	};
 	private static BlockFace[] DIAGONAL_FACES = {  BlockFace.SOUTH_EAST, BlockFace.NORTH_EAST, BlockFace.SOUTH_WEST, BlockFace.NORTH_WEST };
@@ -47,17 +47,17 @@ public class SimulateBatch extends SpellBatch {
 	private enum SimulationState {
 		INITIALIZING, SCANNING, UPDATING, PRUNE, TARGETING, HEART_UPDATE, DELAY, CLEANUP, CHECK, FINISHED
 	};
-	
+
 	public enum TargetMode {
 		STABILIZE, WANDER, GLIDE, HUNT, FLEE, DIRECTED
 	};
-	
+
 	public enum TargetType {
 		PLAYER, MAGE, MOB, AUTOMATON, ANY
 	};
 
 	public static boolean DEBUG = false;
-	
+
 	private Mage mage;
 	private Block heartBlock;
 	private Block heartTargetBlock;
@@ -109,7 +109,7 @@ public class SimulateBatch extends SpellBatch {
 	private List<Block> deadBlocks = new ArrayList<>();
 	private List<Block> bornBlocks = new ArrayList<>();
 	private List<Target> potentialHeartBlocks = new LinkedList<>();
-	
+
 	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts, String automataName) {
 		super(spell);
 
@@ -117,7 +117,7 @@ public class SimulateBatch extends SpellBatch {
 		this.yRadius = yRadius;
 		this.radius = radius;
 		this.center = center.clone();
-		
+
 		this.birthMaterial = birth;
 		this.deathMaterial = death;
 
@@ -129,7 +129,7 @@ public class SimulateBatch extends SpellBatch {
 		if (isAutomata) {
 			this.heartBlock = center.getBlock();
 		}
-		
+
 		state = SimulationState.INITIALIZING;
 		undoList.setModifyType(modifyType);
 	}
@@ -138,13 +138,13 @@ public class SimulateBatch extends SpellBatch {
     public int size() {
 		return radius * radius * radius * 8;
 	}
-	
+
 	@Override
     public int remaining() {
 		if (r >= radius) return 0;
 		return (radius - r) *  (radius - r) *  (radius - r) * 8;
 	}
-	
+
 	protected void checkForPotentialHeart(Block block, int distanceSquared) {
 		liveBlocks.add(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
 		if (isAutomata) {
@@ -156,11 +156,11 @@ public class SimulateBatch extends SpellBatch {
 			}
 		}
 	}
-	
+
 	protected void die() {
 		String message = spell.getMessage("death_broadcast").replace("$name", automataName);
 		if (message.length() > 0) {
-			controller.sendToMages(message, center);	
+			controller.sendToMages(message, center);
 		}
 
 		// Drop item
@@ -178,7 +178,7 @@ public class SimulateBatch extends SpellBatch {
 				}
 			}
 		}
-		
+
 		// Drop Xp
 		if (dropXp > 0) {
 			Entity entity = center.getWorld().spawnEntity(center, EntityType.EXPERIENCE_ORB);
@@ -239,7 +239,7 @@ public class SimulateBatch extends SpellBatch {
             undoList.setUndoReflective(true);
         }
     }
-	
+
 	protected void birthBlock(Block block) {
 		if (isAutomata && liveBlocks.size() >= blockLimit) return;
 		liveBlocks.add(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
@@ -249,7 +249,7 @@ public class SimulateBatch extends SpellBatch {
 			bornBlocks.add(block);
 		}
 	}
-	
+
 	protected boolean simulateBlock(int dx, int dy, int dz) {
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;
@@ -259,7 +259,7 @@ public class SimulateBatch extends SpellBatch {
 			return false;
 		}
 		if (!context.hasBuildPermission(block)) return false;
-		
+
 		Material blockMaterial = block.getType();
 		if (birthMaterial.is(block)) {
 			int distanceSquared = liveRangeSquared > 0 || isAutomata ?
@@ -290,7 +290,7 @@ public class SimulateBatch extends SpellBatch {
 			int distanceSquared = birthRangeSquared > 0 || isAutomata ?
 					(int)Math.ceil(block.getLocation().distanceSquared(heartBlock.getLocation())) : 0;
 
-			if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {	
+			if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {
 				if (diagonalBirthCounts.size() > 0) {
 					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial);
 					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial);
@@ -308,10 +308,10 @@ public class SimulateBatch extends SpellBatch {
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	protected boolean simulateBlocks(int x, int y, int z) {
 		boolean success = true;
 		if (y != 0) {
@@ -352,7 +352,7 @@ public class SimulateBatch extends SpellBatch {
 					finish();
 					return processedBlocks;
 				}
-				
+
 				// Check for death since activation (e.g. during delay period)
 				if (this.blockLimit < minBlocks) {
 					if (DEBUG) {
@@ -365,14 +365,14 @@ public class SimulateBatch extends SpellBatch {
 				// Reset potential new locations
 				potentialHeartBlocks.clear();
 			}
-			
+
 			processedBlocks++;
 			state = SimulationState.SCANNING;
 		}
-		
+
 		while (state == SimulationState.SCANNING && processedBlocks <= maxBlocks) {
 			simulateBlocks(x, y, z);
-			
+
 			y++;
 			if (y > yRadius) {
 				y = 0;
@@ -387,13 +387,13 @@ public class SimulateBatch extends SpellBatch {
 					}
 				}
 			}
-			
-			if (r > radius) 
+
+			if (r > radius)
 			{
 				state = SimulationState.UPDATING;
 			}
 		}
-		
+
 		while (state == SimulationState.UPDATING && processedBlocks <= maxBlocks) {
 			int deadIndex = updatingIndex;
 			if (deadIndex >= 0 && deadIndex < deadBlocks.size()) {
@@ -402,7 +402,7 @@ public class SimulateBatch extends SpellBatch {
 					killBlock.getChunk().load();
 					return processedBlocks;
 				}
-				
+
 				if (birthMaterial.is(killBlock)) {
 				    removeBlock(killBlock);
 				} else {
@@ -417,7 +417,7 @@ public class SimulateBatch extends SpellBatch {
 				}
 				processedBlocks++;
 			}
-			
+
 			int bornIndex = updatingIndex - deadBlocks.size();
 			if (bornIndex >= 0 && bornIndex < bornBlocks.size()) {
 				Block birthBlock = bornBlocks.get(bornIndex);
@@ -427,11 +427,11 @@ public class SimulateBatch extends SpellBatch {
 				}
 				createBlock(birthBlock);
 			}
-			
+
 			updatingIndex++;
 			if (updatingIndex >= deadBlocks.size() + bornBlocks.size()) {
 				state = SimulationState.PRUNE;
-				
+
 				// Wait at least a tick
 				return maxBlocks;
 			}
@@ -450,7 +450,7 @@ public class SimulateBatch extends SpellBatch {
 			}
 			state = SimulationState.TARGETING;
 		}
-		
+
 		// Each of the following states will end in this tick
 		if (state == SimulationState.TARGETING) {
 			if (isAutomata && potentialHeartBlocks.size() > 0) {
@@ -465,7 +465,7 @@ public class SimulateBatch extends SpellBatch {
 					Collections.shuffle(potentialHeartBlocks);
 					break;
 				}
-				
+
 				// Find a valid block for the command
 				heartTargetBlock = null;
 				Block backupBlock = null;
@@ -475,7 +475,7 @@ public class SimulateBatch extends SpellBatch {
 						heartTargetBlock = block;
 					}
 				}
-				
+
 				// If we didn't find any powerable blocks, but we did find at least one valid sim block
 				// just use that one.
 				if (heartTargetBlock == null) heartTargetBlock = backupBlock;
@@ -490,7 +490,7 @@ public class SimulateBatch extends SpellBatch {
 			}
 			state = SimulationState.HEART_UPDATE;
 		}
-		
+
 		if (state == SimulationState.HEART_UPDATE) {
 			if (isAutomata) {
 				if (heartTargetBlock != null) {
@@ -528,7 +528,7 @@ public class SimulateBatch extends SpellBatch {
 
 			return processedBlocks;
 		}
-		
+
 		if (state == SimulationState.CLEANUP) {
 			if (this.blockLimit <= 0) {
 				state = SimulationState.CHECK;
@@ -585,16 +585,16 @@ public class SimulateBatch extends SpellBatch {
 				finish();
 			}
 		}
-		
+
 		return processedBlocks;
 	}
-	
+
 	public void setDrop(String dropName, int dropXp, Collection<String> drops) {
 		this.dropItem = dropName;
 		this.dropXp = dropXp;
 		this.dropItems = drops;
 	}
-	
+
 	public void setLevel(AutomatonLevel level) {
 		this.level = level;
 		this.commandMoveRangeSquared = level.getMoveRangeSquared(commandMoveRangeSquared);
@@ -606,7 +606,7 @@ public class SimulateBatch extends SpellBatch {
 		this.blockLimit = level.getMaxBlocks(blockLimit);
 		this.minBlocks = level.getMinBlocks(minBlocks);
 	}
-	
+
 	public void setBirthRange(int range) {
 		birthRangeSquared = range * range;
 	}
@@ -614,11 +614,11 @@ public class SimulateBatch extends SpellBatch {
 	public void setLiveRange(int range) {
 		liveRangeSquared = range * range;
 	}
-	
+
 	public void setMaxHuntRange(int range) {
 		huntMaxRange = range;
 	}
-	
+
 	public void setCastRange(int range) {
 		castRange = range;
 	}
@@ -626,7 +626,7 @@ public class SimulateBatch extends SpellBatch {
 	public void setMinHuntRange(int range) {
 		huntMinRange = range;
 	}
-	
+
 	public void setTargetType(TargetType targetType) {
 		this.targetType = targetType;
 	}
@@ -678,7 +678,7 @@ public class SimulateBatch extends SpellBatch {
 
 					LivingEntity li = mage.getLivingEntity();
 					if (li != null && li.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
-					
+
 					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, 1000, false);
 					int score = newScore.getScore();
 					if (bestTarget == null || score > bestTarget.getScore()) {
@@ -686,18 +686,18 @@ public class SimulateBatch extends SpellBatch {
 					}
 				}
 			}
-			
-			if (bestTarget != null) 
+
+			if (bestTarget != null)
 			{
 				String targetDescription = bestTarget.getEntity() == null ? "NONE" :
 					((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
-				
+
 				if (DEBUG) {
 					controller.getLogger().info(" Tracking " + targetDescription +
 				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation() + " move " + commandMoveRangeSquared);
 				}
 				Vector direction = null;
-				
+
 				if (mode == TargetMode.DIRECTED) {
 					direction = bestTarget.getLocation().getDirection();
 					if (DEBUG) {
@@ -707,11 +707,11 @@ public class SimulateBatch extends SpellBatch {
 					Location targetLocation = bestTarget.getLocation();
 					direction = targetLocation.toVector().subtract(center.toVector());
 				}
-				
+
 				if (direction != null) {
 					center.setDirection(direction);
 				}
-				
+
 				// Check for obstruction
 				// TODO Think about this more..
 				/*
@@ -759,11 +759,11 @@ public class SimulateBatch extends SpellBatch {
 		}
 		mage.setLocation(center);
 	}
-	
+
 	public void setMoveRange(int commandRadius) {
 		commandMoveRangeSquared = commandRadius * commandRadius;
 	}
-	
+
 	protected int getNeighborCount(Block block, MaterialAndData liveMaterial) {
         return getDiagonalNeighborCount(block, liveMaterial) + getFaceNeighborCount(block, liveMaterial);
 	}
@@ -808,7 +808,7 @@ public class SimulateBatch extends SpellBatch {
 	public void setConcurrent(boolean concurrent) {
 		this.concurrent = concurrent;
 	}
-	
+
 	@Override
 	public void finish() {
 		if (isAutomata && !mage.isPlayer()) {
@@ -817,7 +817,7 @@ public class SimulateBatch extends SpellBatch {
 		state = SimulationState.FINISHED;
 		super.finish();
 	}
-	
+
 	protected void mapIntegers(Collection<Integer> flags, List<Boolean> flagMap) {
 		for (Integer flag : flags) {
 			while (flagMap.size() <= flag) {
@@ -826,11 +826,11 @@ public class SimulateBatch extends SpellBatch {
 			flagMap.set(flag, true);
 		}
 	}
-	
+
 	public void setDiagonalLiveRules(Collection<Integer> rules) {
 		mapIntegers(rules, this.diagonalLiveCounts);
 	}
-	
+
 	public void setDiagonalBirthRules(Collection<Integer> rules) {
 		mapIntegers(rules, this.diagonalBirthCounts);
 	}

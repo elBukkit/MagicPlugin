@@ -25,35 +25,35 @@ public class RecallSpell extends UndoableSpell
 	private static class UndoMarkerMove implements Runnable {
 		private final Location location;
 		private final RecallSpell spell;
-		
+
 		public UndoMarkerMove(RecallSpell spell, Location currentLocation) {
 			this.location = currentLocation;
 			this.spell = spell;
 		}
-		
+
 		@Override
 		public void run() {
 			spell.markerLocation = this.location;
 		}
 	}
-	
+
 	public Location markerLocation;
 
 	private static int MAX_RETRY_COUNT = 8;
 	private static int RETRY_INTERVAL = 10;
-	
+
 	private int retryCount = 0;
 	private boolean allowCrossWorld = true;
 	private int selectedIndex = 0;
 	private List<String> warps = new ArrayList<>();
-	
+
 	private RecallType selectedType = RecallType.MARKER;
 	private int selectedTypeIndex = 0;
 	private List<RecallType> enabledTypes = new ArrayList<>();
-	
+
 	private String castMessage;
 	private String failMessage;
-	
+
 	private enum RecallType
 	{
 		MARKER,
@@ -62,14 +62,14 @@ public class RecallSpell extends UndoableSpell
 		HOME,
 		WAND,
 		WARP
-	//	FHOME,
+		// FHOME,
 	};
-	
+
 	private static class Waypoint
 	{
 		public final RecallType type;
 		public  final int index;
-		
+
 		public Waypoint(RecallType type, int index) {
 			this.type = type;
 			this.index = index;
@@ -77,7 +77,7 @@ public class RecallSpell extends UndoableSpell
 	};
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		boolean allowMarker = true;
 		selectedTypeIndex = 0;
@@ -89,7 +89,7 @@ public class RecallSpell extends UndoableSpell
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-		
+
 		allowCrossWorld = parameters.getBoolean("cross_world", true);
 		for (RecallType testType : RecallType.values()) {
 			// Special-case for warps
@@ -129,7 +129,7 @@ public class RecallSpell extends UndoableSpell
 				return SpellResult.TARGET_SELECTED;
 			}
 			RecallType newType = RecallType.valueOf(typeString.toUpperCase());
-			
+
 			selectedType = newType;
 			Location location = getTargetLocation(player, selectedType, 0);
 			if (tryTeleport(player, location)) {
@@ -138,7 +138,7 @@ public class RecallSpell extends UndoableSpell
 			}
 			return SpellResult.FAIL;
 		}
-		
+
 		if (isLookingDown() && allowMarker)
 		{
             if (placeMarker(getLocation().getBlock())) {
@@ -192,7 +192,7 @@ public class RecallSpell extends UndoableSpell
 			if (allWaypoints.size() == 0) {
 				return SpellResult.NO_TARGET;
 			}
-			
+
 			Collections.sort(allWaypoints);
 			Target targetWaypoint = allWaypoints.get(0);
 			Waypoint waypoint = (Waypoint)targetWaypoint.getExtraData();
@@ -202,7 +202,7 @@ public class RecallSpell extends UndoableSpell
 				registerForUndo();
 				return SpellResult.CAST;
 			}
-			
+
 			return SpellResult.FAIL;
 		}
 
@@ -210,7 +210,7 @@ public class RecallSpell extends UndoableSpell
 			if (enabledTypes.size() == 0) return SpellResult.FAIL;
 			selectedType = enabledTypes.get(0);
 		}
-		
+
 		boolean success = false;
 		while (!success && cycleRetries >= 0) {
 			success = tryCurrentType(player);
@@ -227,7 +227,7 @@ public class RecallSpell extends UndoableSpell
 		registerForUndo();
 		return SpellResult.CAST;
 	}
-	
+
 	protected void cycleTargetType(boolean reverse) {
 		if (reverse) selectedTypeIndex--;
 		else selectedTypeIndex++;
@@ -247,7 +247,7 @@ public class RecallSpell extends UndoableSpell
 			selectedIndex = 0;
 		}
 	}
-	
+
 	protected void cycleTarget(boolean reverse) {
 		// Special-case for warps
 		if (selectedType == RecallType.WARP) {
@@ -286,10 +286,10 @@ public class RecallSpell extends UndoableSpell
 				}
 			}
 		}
-		
+
 		cycleTargetType(reverse);
 	}
-	
+
 	protected Location getTargetLocation(Player player, RecallType type, int index) {
 		castMessage = "";
 		failMessage = "";
@@ -320,10 +320,10 @@ public class RecallSpell extends UndoableSpell
 			castMessage = getMessage("cast_warp").replace("$name", warpName);
 			return controller.getWarp(warpName);
 		}
-		
+
 		return null;
 	}
-	
+
 	protected boolean tryCurrentType(Player player) {
 		Location location = getTargetLocation(player, selectedType, selectedIndex);
 		if (location == null) {
@@ -338,7 +338,7 @@ public class RecallSpell extends UndoableSpell
 		markerLocation = null;
 		return true;
 	}
-	
+
 	protected boolean tryTeleport(final Player player, final Location targetLocation) {
 		if (targetLocation == null) {
 			sendMessage(failMessage);
@@ -348,7 +348,7 @@ public class RecallSpell extends UndoableSpell
 			sendMessage(getMessage("cross_world_disallowed"));
 			return false;
 		}
-		
+
 		Chunk chunk = targetLocation.getBlock().getChunk();
 		if (!chunk.isLoaded()) {
 			chunk.load(true);
@@ -361,7 +361,7 @@ public class RecallSpell extends UndoableSpell
 						me.tryTeleport(player, targetLocation);
 					}
 				}, RETRY_INTERVAL);
-				
+
 				return true;
 			}
 		}
@@ -397,10 +397,10 @@ public class RecallSpell extends UndoableSpell
 		markerLocation.setX(target.getX());
 		markerLocation.setY(target.getY());
 		markerLocation.setZ(target.getZ());
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public void onLoad(ConfigurationSection node)
 	{

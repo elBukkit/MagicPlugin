@@ -23,7 +23,7 @@ public class KillAction extends BaseSpellAction
 			return SpellResult.NO_TARGET;
 		}
         // Overkill to bypass protection
-		context.registerModified(targetEntity);
+        context.registerModified(targetEntity);
 		targetEntity.damage(targetEntity.getMaxHealth() * 100);
 		return SpellResult.CAST;
 	}

@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class CaptureAction extends BaseSpellAction {
     private double minHealth;
-    
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
@@ -54,7 +54,7 @@ public class CaptureAction extends BaseSpellAction {
         }
         targetEntity.remove();
         ItemStack spawnEgg = new ItemStack(Material.MONSTER_EGG);
-        
+
         String entityName = targetEntity.getCustomName();
         if (entityName != null && !entityName.isEmpty()) {
             ItemMeta meta = spawnEgg.getItemMeta();
@@ -62,10 +62,10 @@ public class CaptureAction extends BaseSpellAction {
             spawnEgg.setItemMeta(meta);
         }
         spawnEgg = InventoryUtils.makeReal(spawnEgg);
-        
+
         // Add entity type attribute
         CompatibilityUtils.setMeta(savedEntity, "id", entityTypeString);
-        
+
         // Remove instance-specific attributes
         CompatibilityUtils.removeMeta(savedEntity, "Pos");
         CompatibilityUtils.removeMeta(savedEntity, "Motion");
@@ -74,15 +74,15 @@ public class CaptureAction extends BaseSpellAction {
         CompatibilityUtils.removeMeta(savedEntity, "Dimension");
         CompatibilityUtils.removeMeta(savedEntity, "UUID");
         CompatibilityUtils.removeMeta(savedEntity, "PortalCooldown");
-        
+
         if (!CompatibilityUtils.setMetaNode(spawnEgg, "EntityTag", savedEntity)) {
             return SpellResult.FAIL;
         }
         targetEntity.getWorld().dropItemNaturally(targetEntity.getLocation(), spawnEgg);
-        
+
         return SpellResult.CAST;
     }
-    
+
     @Override
     public boolean isUndoable() {
         return false;

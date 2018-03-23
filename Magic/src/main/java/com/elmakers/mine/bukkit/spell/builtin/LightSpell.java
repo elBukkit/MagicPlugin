@@ -8,11 +8,11 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 public class LightSpell extends TargetingSpell {
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		sendMessage("This spell has been disabled for safety!");
 		return SpellResult.FAIL;
-		
+
 		/*
 		Block target = getTargetBlock();
 		Location targetLocation = getLocation();

@@ -38,7 +38,7 @@ public class CraftingController implements Listener {
 	public CraftingController(MagicController controller) {
 		this.controller = controller;
 	}
-	
+
 	public void load(ConfigurationSection configuration) {
         recipes.clear();
         recipeCount = 0;
@@ -79,7 +79,7 @@ public class CraftingController implements Listener {
         }
         return controller.hasPermission(player, "Magic.craft." + recipe.getKey(), true);
     }
-	
+
 	public void register(Plugin plugin) {
         if (!craftingEnabled) {
             return;
@@ -90,9 +90,9 @@ public class CraftingController implements Listener {
             }
         }
 	}
-	
+
 	@EventHandler
-	public void onPrepareCraftItem(PrepareItemCraftEvent event) 
+	public void onPrepareCraftItem(PrepareItemCraftEvent event)
 	{
         CraftingInventory inventory = event.getInventory();
         ItemStack[] contents = inventory.getMatrix();
@@ -137,12 +137,12 @@ public class CraftingController implements Listener {
             }
         }
 	}
-	
+
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (!(event.getWhoClicked() instanceof Player)) return;
 		if (event.isCancelled()) return;
-		
+
 		InventoryType inventoryType = event.getInventory().getType();
 		SlotType slotType = event.getSlotType();
 		// Check for wand clicks to prevent grinding them to dust, or whatever.
@@ -176,7 +176,7 @@ public class CraftingController implements Listener {
             }
         }
     }
-	
+
 	public boolean isEnabled()
 	{
 		return craftingEnabled;

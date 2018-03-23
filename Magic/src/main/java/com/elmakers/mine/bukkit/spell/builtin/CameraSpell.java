@@ -18,12 +18,12 @@ public class CameraSpell extends TargetingSpell
 {
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		ItemStack newMapItem = null;
 		Integer priority = ConfigurationUtils.getInteger(parameters, "priority", null);
 		boolean selfie = false;
-		
+
 		// Check for special case id
 		if (parameters.contains("id"))
 		{
@@ -36,7 +36,7 @@ public class CameraSpell extends TargetingSpell
 		}
 
         MapController maps = controller.getMaps();
-		
+
 		// Check for special case url
 		if (newMapItem == null) {
 			String url = parameters.getString("url");
@@ -49,12 +49,12 @@ public class CameraSpell extends TargetingSpell
 				newMapItem = maps.getURLItem(getWorld().getName(), url, mapName, x, y, width, height, priority);
 			}
 		}
-		
+
 		if (newMapItem == null) {
 			Target target = getTarget();
 			String playerName = parameters.getString("name");
 			String metaName = null;
-			if (playerName == null) 
+			if (playerName == null)
 			{
 				if (target != null)
 				{
@@ -100,7 +100,7 @@ public class CameraSpell extends TargetingSpell
 			return SpellResult.FAIL;
 		}
 		getWorld().dropItemNaturally(getLocation(), newMapItem);
-		
+
 		return selfie ? SpellResult.CAST_SELF : SpellResult.CAST_TARGET;
 	}
 }

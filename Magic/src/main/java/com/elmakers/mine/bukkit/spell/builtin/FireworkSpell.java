@@ -15,19 +15,19 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 @Deprecated
 public class FireworkSpell extends TargetingSpell
-{	
+{
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Random rand = new Random();
 		int power = rand.nextInt(2) + 1;
-		
+
 		Color color1 = null;
 		Color color2 = null;
 		Type fireworkType = null;
 		Boolean flicker = null;
 		Boolean trail = null;
-		
+
 		// Configuration overrides
 		power = parameters.getInt("size", power);
 		if (parameters.contains("color1")) {
@@ -43,12 +43,12 @@ public class FireworkSpell extends TargetingSpell
 		}
 		flicker = parameters.getBoolean("flicker");
 		trail = parameters.getBoolean("trail");
-		
+
 		int flareCount = parameters.getInt("count", 1);
 		Block target = getTarget().getBlock();
-	     
+
         FireworkEffect effect = EffectUtils.getFireworkEffect(currentCast, color1, color2, fireworkType, flicker, trail);
-        
+
 		for (int i = 0; i < flareCount; i++)
 		{
 			// TODO: Spread locations
@@ -57,24 +57,24 @@ public class FireworkSpell extends TargetingSpell
 
 		return SpellResult.CAST;
 	}
-	
+
 	protected Color getColor(String name) {
 		try {
 			Field colorConstant = Color.class.getField(name.toUpperCase());
 			return (Color)colorConstant.get(null);
 		} catch (Exception ex) {
 		}
-		
+
 		return Color.WHITE;
 	}
-	
+
 	protected Type getType(String name) {
 		for (Type t : Type.values()) {
 			if (t.name().equalsIgnoreCase(name)) {
 				return t;
 			}
 		}
-		
+
 		return Type.BALL;
 	}
 }

@@ -94,7 +94,7 @@ public class FireworkAction extends BaseProjectileAction
                 return SpellResult.NO_TARGET;
             }
         }
-	     
+
         FireworkEffect effect = EffectUtils.getFireworkEffect(context, color1, color2, fireworkType, flicker, trail);
         Entity firework = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown, silent);
 
@@ -116,17 +116,17 @@ public class FireworkAction extends BaseProjectileAction
 			return (Color)colorConstant.get(null);
 		} catch (Exception ex) {
 		}
-		
+
 		return Color.WHITE;
 	}
-	
+
 	protected Type getType(String name) {
 		for (Type t : Type.values()) {
 			if (t.name().equalsIgnoreCase(name)) {
 				return t;
 			}
 		}
-		
+
 		return Type.BALL;
 	}
 

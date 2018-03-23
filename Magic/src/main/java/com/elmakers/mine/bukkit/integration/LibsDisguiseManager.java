@@ -33,7 +33,7 @@ public class LibsDisguiseManager {
     public boolean isDisguised(Entity entity) {
         return DisguiseAPI.isDisguised(entity);
     }
-    
+
     public boolean disguise(Entity entity, ConfigurationSection configuration) {
         if (configuration == null) {
             DisguiseAPI.undisguiseToAll(entity);

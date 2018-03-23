@@ -73,9 +73,9 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             }
         }
     }
-    
+
     public Object getInheritedProperty(String key) {
-        return getProperty(key);    
+        return getProperty(key);
     }
 
     protected void migrateProperty(String key, MagicPropertyType propertyType) {

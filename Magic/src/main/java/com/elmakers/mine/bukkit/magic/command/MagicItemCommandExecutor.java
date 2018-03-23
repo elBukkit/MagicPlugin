@@ -40,7 +40,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class MagicItemCommandExecutor extends MagicTabExecutor {
-	
+
 	public MagicItemCommandExecutor(MagicAPI api) {
 		super(api);
 	}
@@ -84,7 +84,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<>();
 
-		if (args.length == 1) 
+		if (args.length == 1)
 		{
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "add");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "remove");
@@ -102,7 +102,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "skull");
 		}
 
-		if (args.length == 2) 
+		if (args.length == 2)
 		{
 			String subCommand = args[0];
 			String subCommandPNode = "Magic.commands.mitem." + subCommand;
@@ -110,7 +110,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			if (!api.hasPermission(sender, subCommandPNode)) {
 				return options;
 			}
-			
+
 			if (subCommand.equalsIgnoreCase("add")) {
 				options.add("enchant");
 				options.add("attribute");
@@ -185,7 +185,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				options.add("3");
 			}
 		}
-		
+
 		if (args.length == 5)
 		{
 			String subCommand = args[0];
@@ -265,7 +265,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		{
 			return onItemSkull(player, item);
 		}
-		
+
 		return false;
 	}
 
@@ -365,7 +365,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
 			MaterialAndData mat = new MaterialAndData(material);
 			items.put(mat.getKey(), mat);
-			
+
 			String baseName = mat.getName();
 			for (short data = 1; data < 32; data++) {
 				testItem = new ItemStack(material, 1, data);
@@ -380,11 +380,11 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				items.put(mat.getKey(), mat);
 			}
 		}
-		
+
 		File file = new File(api.getPlugin().getDataFolder(), parameters[0] + ".csv");
 		try (Writer output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8")) {
 			output.append("Name,Key,Cost\n");
-			
+
 			for (MaterialAndData material : items.values()) {
 				Double worth = api.getController().getWorth(material.getItemStack(1));
 				String worthString = worth == null ? "" : worth.toString();
@@ -397,7 +397,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		inventory.setItem(itemSlot, item);
 		return true;
 	}
-	
+
 	public boolean onItemSerialize(Player player, ItemStack item) {
 		YamlConfiguration configuration = new YamlConfiguration();
 		configuration.set("item", item);
@@ -420,7 +420,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		if (VaultController.hasEconomy()) {
 			worthDescription = vault.format(totalWorth);
 			if (amount > 1) {
-				worthDescription = worthDescription + ChatColor.WHITE + 
+				worthDescription = worthDescription + ChatColor.WHITE +
 					" (" + ChatColor.GOLD + vault.format(worth) + ChatColor.WHITE + " each)";
 			}
 		} else {
@@ -430,11 +430,11 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 					" (" + ChatColor.GOLD + Double.toString(worth) + ChatColor.WHITE + " each)";
 			}
 		}
-		 
+
 		player.sendMessage("That item is worth " + ChatColor.GOLD + worthDescription);
 		return true;
 	}
-	
+
 	public boolean onItemDuplicate(Player player, ItemStack item)
 	{
 		ItemStack newItem = InventoryUtils.getCopy(item);
@@ -450,13 +450,13 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			player.sendMessage(api.getMessages().get("item.skull_no_book"));
 			return true;
 		}
-		
+
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null || !(meta instanceof BookMeta)) {
 			player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
 			return true;
 		}
-		
+
 		BookMeta bookMeta = (BookMeta)meta;
 		List<String> pages = bookMeta.getPages();
 		if (pages.isEmpty()) {
@@ -514,7 +514,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		}
 		return true;
 	}
-	
+
 	public boolean onItemDelete(CommandSender sender, String itemKey) {
 		MageController controller = api.getController();
 		ItemData existing = controller.getItem(itemKey);
@@ -584,7 +584,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
 		// We always save items with a quantity of 1!
 		item.setAmount(1);
-		
+
 		YamlConfiguration itemConfig = new YamlConfiguration();
 		ConfigurationSection itemSection = itemConfig.createSection(template);
 		itemSection.set("creator_id", player.getUniqueId().toString());
@@ -619,7 +619,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			displayName = ChatColor.translateAlternateColorCodes('&', StringUtils.join(parameters, " "));
 			player.sendMessage(api.getMessages().get("item.renamed"));
 		}
-		
+
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(displayName);
 		item.setItemMeta(meta);
@@ -635,13 +635,13 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			player.sendMessage(ChatColor.RED + "Invalid flag: " + ChatColor.WHITE + flagName);
 			return true;
 		}
-		
+
 		ItemMeta itemMeta = item.getItemMeta();
 		itemMeta.addItemFlags(flag);
 		item.setItemMeta(itemMeta);
 
 		player.sendMessage(api.getMessages().get("item.flag_added").replace("$flag", flag.name()));
-		
+
 		return true;
 	}
 
@@ -700,7 +700,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			if (level < 0 || level > 10) {
 				player.sendMessage(ChatColor.RED + "Invalid enchantment level: " + ChatColor.WHITE + enchantValue);
 				return true;
-			}	
+			}
 		}
 
 		ItemMeta itemMeta = item.getItemMeta();
@@ -773,7 +773,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			player.sendMessage(ChatColor.RED + "Invalid attribute value: " + ChatColor.WHITE + attributeValue);
 			return true;
 		}
-		
+
 		if (CompatibilityUtils.setItemAttribute(item, attribute, value, attributeSlot)) {
 			if (attributeSlot == null) {
 				attributeSlot = "(All Slots)";
@@ -794,7 +794,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 	{
 		Attribute attribute = null;
 		if (attributeName == null) return false;
-		
+
 		try {
 			attribute = Attribute.valueOf(attributeName.toUpperCase());
 		} catch (Exception ex) {
@@ -902,7 +902,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			player.sendMessage(ChatColor.RED + "Invalid lore line: " + loreIndex);
 			return true;
 		}
-		
+
 		String line = lore.remove(index);
 		itemMeta.setLore(lore);
 		item.setItemMeta(itemMeta);
@@ -910,7 +910,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 
-	public boolean onItemType(Player player, ItemStack item, String[] parameters) 
+	public boolean onItemType(Player player, ItemStack item, String[] parameters)
 	{
 		if (parameters.length < 1) {
 			return false;
@@ -940,7 +940,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		item.setDurability(durability);
 		return true;
 	}
-	
+
 	public boolean onItemAdd(Player player, ItemStack item, String[] parameters)
 	{
 		if (parameters.length < 1) {
@@ -1005,7 +1005,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		if (removeCommand.equalsIgnoreCase("unplaceable")) {
 			return onItemRemoveUnplaceable(player, item);
 		}
-		
+
 		String firstParameter = parameters.length > 1 ? parameters[1] : null;
 		if (removeCommand.equalsIgnoreCase("flag")) {
 			return onItemRemoveFlag(player, item, firstParameter);

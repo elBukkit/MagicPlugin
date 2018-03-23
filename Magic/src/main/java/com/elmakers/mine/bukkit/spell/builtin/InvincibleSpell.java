@@ -15,7 +15,7 @@ public class InvincibleSpell extends TargetingSpell implements Listener
 	protected int amount = 100;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		amount = parameters.getInt("amount", amount);
 
@@ -35,17 +35,17 @@ public class InvincibleSpell extends TargetingSpell implements Listener
 	@Override
 	public void onDeactivate()
 	{
-		mage.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
+		mage.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
 		protectAmount = 0;
 	}
-	
+
 	@Override
 	public void onActivate()
 	{
 		mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		protectAmount = (float)amount / 100;
 	}
-	
+
 	@Override
 	@EventHandler
 	public void onPlayerDamage(EntityDamageEvent event)

@@ -15,11 +15,11 @@ public class ItemController {
     private MageController controller;
     private final Map<String, ItemData> items = new HashMap<>();
     private final Map<ItemStack, ItemData> itemsByStack = new HashMap<>();
-    
+
     public ItemController(MageController controller) {
         this.controller = controller;
     }
-    
+
     public void load(ConfigurationSection configuration) {
         Set<String> itemKeys = configuration.getKeys(false);
         for (String itemKey : itemKeys) {
@@ -31,7 +31,7 @@ public class ItemController {
             }
         }
     }
-    
+
     public void loadItem(String itemKey, ConfigurationSection configuration) {
         try {
             ItemData magicItem = new ItemData(itemKey, configuration);
@@ -41,7 +41,7 @@ public class ItemController {
             controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
         }
     }
-    
+
     public int getCount() {
         return items.size();
     }
@@ -49,7 +49,7 @@ public class ItemController {
     public Set<String> getKeys() {
         return items.keySet();
     }
-    
+
     public ItemData get(String key) {
         return items.get(key);
     }

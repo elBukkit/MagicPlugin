@@ -10,7 +10,7 @@ import me.NoChance.PvPManager.PvPlayer;
 /**
  * This a manager specifically for the PvPManager plugin.
  *
- * This is why it has kind of a funky name.
+ * <p>This is why it has kind of a funky name.
  */
 public class PvPManagerManager implements PVPManager {
 

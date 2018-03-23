@@ -90,7 +90,7 @@ public class ChangeContextAction extends CompoundAction {
         sourcePitchOffset = (float)(parameters.getDouble("source_pitch_offset", 0));
         targetYawOffset = (float)(parameters.getDouble("target_yaw_offset", 0));
         targetPitchOffset = (float)(parameters.getDouble("target_pitch_offset", 0));
-        
+
         if (parameters.contains("target_direction_speed"))
         {
             targetDirectionSpeed = parameters.getDouble("target_direction_speed");
@@ -157,7 +157,7 @@ public class ChangeContextAction extends CompoundAction {
         {
             sourceLocation.setPitch((float)(double)sourcePitch);
         }
-        if (sourceLocation.getPitch() > sourcePitchMin) 
+        if (sourceLocation.getPitch() > sourcePitchMin)
         {
             sourceLocation.setPitch(sourcePitchMin);
         }
@@ -177,12 +177,12 @@ public class ChangeContextAction extends CompoundAction {
         	} else {
         		relativeSource = sourceLocation;
         	}
-        	
+
         	if (!orientPitch) {
         		relativeSource.setPitch(0);
         	}
-        	
-        	//If persistCaster is true, it makes the vector relative to the caster and not what the sourceLocation may 
+
+        	//If persistCaster is true, it makes the vector relative to the caster and not what the sourceLocation may
         	Vector offset = VectorUtils.rotateVector(relativeSourceOffset, relativeSource);
             sourceLocation.add(offset);
         }
@@ -205,17 +205,17 @@ public class ChangeContextAction extends CompoundAction {
         if (relativeTargetOffset != null & targetLocation != null)
         {
         	Location relativeTarget;
-        	
+
         	if (persistCaster) {
         		relativeTarget = context.getMage().getEyeLocation();
         	} else {
         		relativeTarget = targetLocation;
         	}
-        	
+
         	if (!orientPitch) {
         		relativeTarget.setPitch(0);
         	}
-        	
+
         	Vector offset = VectorUtils.rotateVector(relativeTargetOffset, relativeTarget);
             targetLocation.add(offset);
         }

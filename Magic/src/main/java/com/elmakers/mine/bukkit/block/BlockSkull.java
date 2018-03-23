@@ -8,7 +8,7 @@ public class BlockSkull extends BlockExtraData {
     protected SkullType skullType = null;
     protected Object profile = null;
     protected String playerName = null;
-    
+
     public BlockSkull(String playerName) {
         this(null, playerName, SkullType.PLAYER, BlockFace.SELF);
     }
@@ -22,7 +22,7 @@ public class BlockSkull extends BlockExtraData {
         this.profile = profile;
         this.rotation = rotation;
     }
-    
+
     private BlockSkull(Object profile, String playerName, SkullType skullType, BlockFace rotation) {
         this.skullType = skullType;
         this.profile = profile;

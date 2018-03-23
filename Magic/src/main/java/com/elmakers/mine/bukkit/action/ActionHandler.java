@@ -249,7 +249,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         SpellResult newResult = context.getResult();
         if (showDebug && newResult != currentResult) {
             mage.sendDebugMessage(ChatColor.AQUA + debugIndent + "Result changed from " +
-                    ChatColor.DARK_AQUA + currentResult.name().toLowerCase() + ChatColor.WHITE  +
+                    ChatColor.DARK_AQUA + currentResult.name().toLowerCase() + ChatColor.WHITE +
                     " to " + ChatColor.AQUA + newResult.name().toLowerCase(), 12);
         }
 

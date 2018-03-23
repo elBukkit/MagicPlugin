@@ -53,7 +53,7 @@ public class EnchantingController implements Listener {
 			wand.makeEnchantable(true);
 		}
 	}
-	
+
 	@EventHandler
 	public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
 		if (Wand.isWand(event.getItem())) {
@@ -76,7 +76,7 @@ public class EnchantingController implements Listener {
 				event.setCancelled(true);
 				return;
 			}
-			
+
 			if (!wandItem.canUse(player)) {
 				event.setCancelled(true);
 				return;
@@ -111,10 +111,10 @@ public class EnchantingController implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (event.isCancelled()) return;
-		
+
 		InventoryType inventoryType = event.getInventory().getType();
 		SlotType slotType = event.getSlotType();
-		
+
 		if (enchantingEnabled && inventoryType == InventoryType.ENCHANTING)
 		{
 			if (slotType == SlotType.CRAFTING) {
@@ -126,7 +126,7 @@ public class EnchantingController implements Listener {
 
 				ItemStack cursor = event.getCursor();
 				ItemStack current = event.getCurrentItem();
-				
+
 				// Make wands into an enchantable item when placing
 				if (Wand.isWand(cursor)) {
 					Wand wand = controller.getWand(cursor);
@@ -144,7 +144,7 @@ public class EnchantingController implements Listener {
 			}
 		}
 	}
-	
+
 	public boolean isEnabled()
 	{
 		return enchantingEnabled;

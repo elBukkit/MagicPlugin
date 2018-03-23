@@ -13,8 +13,8 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 public class TransmuteSpell extends BrushSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
-	{	
+	public SpellResult onCast(ConfigurationSection parameters)
+	{
 		BlockList transmuteAction = null;
 
 		/*

@@ -13,17 +13,17 @@ public class LightAction extends BaseSpellAction {
     private boolean async;
     private boolean update;
     private MageController controller;
-    
+
     private class LightUndoAction implements Runnable
     {
         private final Location location;
         private final boolean update;
-        
+
         public LightUndoAction(Location location, boolean update) {
             this.location = location;
             this.update = update;
         }
-        
+
         @Override
         public void run() {
             if (location != null) {
@@ -34,7 +34,7 @@ public class LightAction extends BaseSpellAction {
             }
         }
     }
-    
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {

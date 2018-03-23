@@ -19,17 +19,17 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public abstract class MagicTabExecutor implements TabExecutor {
 	protected MagicAPI api;
-	
+
 	public MagicTabExecutor(MagicAPI api) {
 		this.api = api;
 	}
-	
+
 	public abstract Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args);
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		String completeCommand = args.length > 0 ? args[args.length - 1] : "";
-	
+
 		completeCommand = completeCommand.toLowerCase();
 		Collection<String> allOptions = onTabComplete(sender, command.getName(), args);
 		List<String>options = new ArrayList<>();
@@ -40,14 +40,14 @@ public abstract class MagicTabExecutor implements TabExecutor {
 			}
 		}
         Collections.sort(options);
-		
+
 		return options;
 	}
 
 	public String getMagicVersion() {
         return api.getPlugin().getDescription().getVersion();
     }
-	
+
 	protected void sendNoPermission(CommandSender sender)
 	{
         if (sender != null) sender.sendMessage(ChatColor.RED + "You are not allowed to use that command.");
@@ -76,7 +76,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
 		if (currentWand != null) {
 			currentWand.closeInventory();
 		}
-	
+
 		Wand wand = api.createWand(wandKey);
 		if (wand != null) {
             if (giveItem) {

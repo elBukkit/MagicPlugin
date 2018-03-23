@@ -29,7 +29,7 @@ public class AscendAction extends BaseTeleportAction
 			location.setYaw(targetLocation.getYaw());
 			verticalSearchDistance = 0;
 		}
-		if (location != null) 
+		if (location != null)
 		{
 			return teleport(context, entity, location);
 		}

@@ -9,7 +9,7 @@ import info.nothingspecial.api.elementals.ElementalsAPI;
 
 public class ElementalsController {
 	private ElementalsAPI api;
-	
+
 	public ElementalsController(Plugin plugin) {
 		api = (ElementalsAPI)plugin;
 	}
@@ -29,7 +29,7 @@ public class ElementalsController {
 	public double getElementalScale(Entity entity) {
 		return api.getElementalScale(entity);
 	}
-	
+
 	public boolean createElemental(Location location, String templateName, CommandSender creator) {
 		return api.createElemental(location, templateName, creator);
 	}

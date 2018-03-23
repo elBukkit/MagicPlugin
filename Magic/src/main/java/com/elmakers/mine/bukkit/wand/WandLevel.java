@@ -32,14 +32,14 @@ public class WandLevel {
 
 	private LinkedList<WeightedPair<Integer>> propertyCountProbability = new LinkedList<>();
 	private Map<String, LinkedList<WeightedPair<Float>>> propertiesProbability = new HashMap<>();
-	
+
 	private LinkedList<WeightedPair<Integer>> manaRegenerationProbability = new LinkedList<>();
 	private LinkedList<WeightedPair<Integer>> manaMaxProbability = new LinkedList<>();
 
 	protected WandLevel(WandUpgradePath path, MageController controller, ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
         this.path = path;
 
-		// Fetch spell probabilities, and filter out invalid/unknown spells
+        // Fetch spell probabilities, and filter out invalid/unknown spells
         LinkedList<WeightedPair<String>> spells = new LinkedList<>();
 		RandomUtils.populateStringProbabilityMap(spells, template, "spells", levelIndex, nextLevelIndex, distance);
 
@@ -51,13 +51,13 @@ public class WandLevel {
 
 		// Fetch spell count probabilities
 		RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template, "spell_count", levelIndex, nextLevelIndex, distance);
-		
+
 		// Fetch material probabilities
 		RandomUtils.populateStringProbabilityMap(materialProbability, template, "materials", levelIndex, nextLevelIndex, distance);
-		
+
 		// Fetch material count probabilities
 		RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getConfigurationSection("material_count"), levelIndex, nextLevelIndex, distance);
-		
+
 		// Fetch uses
 		RandomUtils.populateIntegerProbabilityMap(useProbability, template, "uses", levelIndex, nextLevelIndex, distance);
 		RandomUtils.populateIntegerProbabilityMap(addUseProbability, template, "add_uses", levelIndex, nextLevelIndex, distance);
@@ -75,7 +75,7 @@ public class WandLevel {
 		        propertiesProbability.put(propertyKey, propertyProbability);
             }
         }
-        
+
 		// Fetch regeneration
 		RandomUtils.populateIntegerProbabilityMap(manaRegenerationProbability, template, "mana_regeneration", levelIndex, nextLevelIndex, distance);
 		RandomUtils.populateIntegerProbabilityMap(manaMaxProbability, template, "mana_max", levelIndex, nextLevelIndex, distance);
@@ -147,9 +147,9 @@ public class WandLevel {
 
         return remainingMaterials;
     }
-	
+
 	public boolean randomizeWand(Mage mage, Wand wand, boolean additive, boolean hasUpgrade, boolean addSpells) {
-		// Add random spells to the wand
+        // Add random spells to the wand
         Mage activeMage = wand.getActiveMage();
         if (mage == null) {
             mage = activeMage;
@@ -171,7 +171,7 @@ public class WandLevel {
                 }
             }
         }
-		
+
 		// Look through all spells for the max mana casting cost
 		// Also look for any material-using spells
 		boolean needsMaterials = false;
@@ -189,15 +189,15 @@ public class WandLevel {
 				}
 			}
 		}
-		
+
 		// Add random materials
 		boolean addedMaterials = false;
         LinkedList<WeightedPair<String>> remainingMaterials = getRemainingMaterials(wand);
 		if (needsMaterials && remainingMaterials.size() > 0) {
 			int currentMaterialCount = wand.getBrushes().size();
 			Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
-			
-			// Make sure the wand has at least one material.
+
+            // Make sure the wand has at least one material.
             if (materialCount == null) {
                 materialCount = 0;
             }
@@ -230,7 +230,7 @@ public class WandLevel {
             wand.setActiveMage(activeMage);
             return false;
         }
-		
+
 		// Add random wand properties
 		boolean addedProperties = false;
         Integer propertyCount = propertyCountProbability.size() == 0 ? Integer.valueOf(0) : RandomUtils.weightedRandom(propertyCountProbability);
@@ -265,7 +265,7 @@ public class WandLevel {
                 wandProperties.set(randomProperty, current);
             }
 		}
-		
+
 		// The mana system is considered separate from other properties
 
 		if (wand.isCostFree()) {
@@ -290,11 +290,11 @@ public class WandLevel {
 				wandProperties.set("mana_max", manaMax);
                 addedProperties = true;
 			}
-			
+
 			// Refill the wand's mana, why not
 			wandProperties.set("mana", manaMax);
 		}
-		
+
 		// Add or set uses to the wand
 		if (additive) {
 			// Only add uses to a wand if it already has some.

@@ -6,7 +6,7 @@ import org.bukkit.plugin.Plugin;
 public class WarpController {
     private CommandBookWarps commandBook;
     private EssentialsWarps essentials;
-	
+
 	public Location getWarp(String warpName) {
         Location warp = null;
         if (commandBook != null) {
@@ -17,7 +17,7 @@ public class WarpController {
         }
 		return warp;
 	}
-	
+
 	public boolean setCommandBook(Plugin plugin) {
         commandBook = CommandBookWarps.create(plugin);
         return (commandBook != null);

@@ -461,7 +461,7 @@ public class Target implements Comparable<Target>
         }
 
     }
-    
+
     public void setDirection(Vector direction)
     {
         if (location != null)

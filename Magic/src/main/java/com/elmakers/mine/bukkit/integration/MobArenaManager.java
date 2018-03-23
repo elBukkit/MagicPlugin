@@ -37,7 +37,7 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
             String mobKey = mob.toLowerCase().replaceAll("[-_\\.]", "");
             new MagicMACreature(controller, mobKey, controller.getMob(mob));
         }
-        
+
         if (plugin instanceof MobArena) {
             mobArena = (MobArena)plugin;
         }
@@ -45,7 +45,7 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
 
         Bukkit.getPluginManager().registerEvents(this, controller.getPlugin());
     }
-    
+
     public void configure(ConfigurationSection configuration) {
         protect = configuration.getBoolean("protect");
         if (protect) {
@@ -82,7 +82,7 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
         s = s.substring(6);
         return controller.createItem(s);
     }
-    
+
     public boolean isProtected() {
         return mobArena != null && (protect || protectedArenas != null);
     }

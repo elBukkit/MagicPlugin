@@ -94,7 +94,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		spawnCount = 0;
 
@@ -103,7 +103,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		{
 			return SpellResult.NO_TARGET;
 		}
-		Block originalTarget = target.getBlock(); 
+		Block originalTarget = target.getBlock();
 		Block targetBlock = originalTarget;
 		LivingEntity targetEntity = null;
 
@@ -258,7 +258,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
             }
 
 			if (famEntity == null || !(famEntity instanceof LivingEntity)) return null;
-	
+
 			familiar = (LivingEntity)famEntity;
 			if (familiar instanceof Skeleton) {
 				Skeleton skellie = (Skeleton)familiar;
@@ -285,7 +285,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 			mage.unregisterEvent(SpellEventType.PLAYER_QUIT, this);
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerQuit(PlayerEvent event)
 	{
@@ -295,7 +295,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 			checkListener();
 		}
 	}
-	
+
 	@Override
 	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);

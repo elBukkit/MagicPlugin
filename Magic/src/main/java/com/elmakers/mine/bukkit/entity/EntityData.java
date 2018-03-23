@@ -70,7 +70,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected String key;
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
-    
+
     protected EntityType type;
     protected EntityExtraData extraData;
     protected Location location;
@@ -92,11 +92,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isTamed;
     protected boolean hasAI;
     protected int fireTicks;
-    
+
     protected DyeColor dyeColor;
     protected Ocelot.Type ocelotType;
     protected Rabbit.Type rabbitType = null;
-    
+
     protected Collection<PotionEffect> potionEffects = null;
     protected Map<Attribute, Double> attributes = null;
 
@@ -113,7 +113,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected ItemData chestplate;
     protected ItemData leggings;
     protected ItemData boots;
-    
+
     protected Integer xp;
     protected Integer dropXp;
 
@@ -167,7 +167,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             this.airLevel = li.getRemainingAir();
             this.maxHealth = li.getMaxHealth();
             this.hasAI = li.hasAI();
-            
+
             itemInHand = getItem(li.getEquipment().getItemInMainHand());
             helmet = getItem(li.getEquipment().getHelmet());
             chestplate = getItem(li.getEquipment().getChestplate());
@@ -224,7 +224,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntitySlimeData((Slime)entity);
         }
     }
-    
+
     private ItemData getItem(ItemStack item) {
         return item == null ? null : new com.elmakers.mine.bukkit.item.ItemData(item);
     }
@@ -286,7 +286,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (tagList != null) {
             tags = new HashSet<>(tagList);
         }
-        
+
         try {
             if (type == EntityType.HORSE) {
                 extraData = new EntityHorseData(parameters, controller);
@@ -361,10 +361,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 }
             }
         }
-        
+
         MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
         item = itemData == null ? null : itemData.getItemStack(parameters.getInt("amount", 1));
-        
+
         itemInHand = controller.getOrCreateItem(parameters.getString("item"));
         helmet = controller.getOrCreateItem(parameters.getString("helmet"));
         chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
@@ -514,7 +514,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public Entity spawn(MageController controller, Location location) {
         return spawn(controller, location, null);
     }
-    
+
     @Override
     public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
         if (location != null) this.location = location;
@@ -701,7 +701,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         return true;
     }
-    
+
     public void applyAttributes(LivingEntity entity) {
         if (attributes != null) {
             for (Map.Entry<Attribute, Double> entry : attributes.entrySet()) {
@@ -759,7 +759,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public Entity getEntity() {
         return entity == null ? null : entity.get();
     }
-    
+
     @Override
     public String getName() {
         return name;
@@ -824,16 +824,16 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         return name;
     }
-    
+
     public void setKey(String key) {
         this.key = key;
     }
-    
+
     @Override
     public String getKey() {
         return key;
     }
-    
+
     public long getTickInterval() {
         return mageData == null ? 0 : mageData.tickInterval;
     }
@@ -849,7 +849,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             mageData.onDamage(mage, damage);
         }
     }
-    
+
     public void tick(Mage mage) {
         if (mageData != null) {
             mageData.tick(mage);

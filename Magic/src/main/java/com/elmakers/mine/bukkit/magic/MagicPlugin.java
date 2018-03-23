@@ -51,33 +51,33 @@ import com.elmakers.mine.bukkit.wand.Wand;
 *
 * This is the documentation for the MagicPlugin. If you are looking to
 * integrate with Magic (but not extend it), see the MagicAPI:
-* 
+*
 * http://jenkins.elmakers.com/job/MagicPlugin/doxygen/
-* 
+*
 * Building against MagicPlugin directly is only necessary if you want
 * to extend Magic, such as adding a new Spell or EffectPlayer.
-* 
+*
 * \section issues_sec Issues
-* 
+*
 * For issues, bugs, feature requests, spell ideas, use our issue tracker:
-* 
+*
 * https://github.com/elBukkit/MagicPlugin/issues
-* 
+*
 * \section start_sec Getting Started
-* 
+*
 * If you haven't done so already, get started with Bukkit by getting a basic
 * shell of a plugin working. You should at least have a working Plugin that
 * loads in Bukkit (add a debug print to onEnable to be sure!) before you
 * start trying to integrate with other Plugins. See here for general help:
-* 
+*
 * http://wiki.bukkit.org/Plugin_Tutorial
-* 
+*
 * \section maven_sec Building with Maven
-* 
+*
 * Once you have a project set up, it is easy to build against the Magic API
 * with Maven. Simply add the elmakers repository to your repository list,
 * and then add a dependency for MagicAPI. A typical setup would look like:
-* 
+*
 * <pre>
 * &lt;dependencies&gt;
 * &lt;dependency&gt;
@@ -110,22 +110,22 @@ import com.elmakers.mine.bukkit.wand.Wand;
 * &lt;/repository&gt;
 * &lt;/repositories&gt;
 * </pre>
-* 
+*
 * \section example_sec Examples
 *
 * \subsection casting Casting Spells
-* 
+*
 * A plugin may cast spells directly, or on behalf of logged in players.
-* 
+*
 * \subsection wands Creating Wands
-* 
+*
 * A plugin may create or modify Wand items.
 */
 
 /**
  * This is the main Plugin class for Magic.
- * 
- * An integrating Plugin should generally cast this to MagicAPI and
+ *
+ * <p>An integrating Plugin should generally cast this to MagicAPI and
  * use the API interface when interacting with Magic.
  *
  */
@@ -136,14 +136,14 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
      */
     private static MagicPlugin instance;
 
-	/*
-	 * Private data
-	 */	
-	private MagicController controller = null;
+    /*
+     * Private data
+     */
+    private MagicController controller = null;
 
-	/*
-	 * Plugin interface
-	 */
+    /*
+     * Plugin interface
+     */
 
     public MagicPlugin()
     {
@@ -158,10 +158,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		}
 		controller.initializeWorldGuardFlags();
 	}
-    
+
 	@Override
-    public void onEnable() 
-	{
+    public void onEnable() {
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		if (controller == null) {
 			controller = new MagicController(this);
@@ -181,7 +180,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	protected void initialize()
 	{
 		controller.initialize();
-		
+
 		TabExecutor magicCommand = new MagicCommandExecutor(this);
 		getCommand("magic").setExecutor(magicCommand);
 		getCommand("magic").setTabCompleter(magicCommand);
@@ -235,16 +234,15 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		getCommand("mconfig").setTabCompleter(magicConfigCommand);
 	}
 
-	/* 
-	 * Help commands
-	 */
+    /*
+     * Help commands
+     */
 
-	@Override
-    public void onDisable() 
-	{
+    @Override
+    public void onDisable() {
         if (controller != null) {
-        	// Safety fallback in case we've missed some pending batches from logged out mages
-			controller.onShutdown();
+            // Safety fallback in case we've missed some pending batches from logged out mages
+            controller.onShutdown();
         	controller.undoScheduled();
             controller.clear();
             controller.save();
@@ -254,7 +252,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	/*
 	 * API Implementation
 	 */
-	
+
 	@Override
 	public Plugin getPlugin() {
 		return this;
@@ -289,17 +287,17 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	public void clearCache() {
 		controller.clearCache();
 	}
-	
+
 	@Override
 	public boolean commit() {
 		return controller.commitAll();
 	}
-	
+
 	@Override
 	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMages() {
 		return controller.getMages();
 	}
-	
+
 	@Override
 	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMagesWithPendingBatches() {
 		Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = new ArrayList<>();
@@ -314,14 +312,14 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         undo.addAll(controller.getPendingUndo());
         return undo;
     }
-	
+
 	@Override
 	public Collection<LostWand> getLostWands() {
 		Collection<LostWand> lostWands = new ArrayList<>();
 		lostWands.addAll(controller.getLostWands());
 		return lostWands;
 	}
-	
+
 	@Override
 	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getAutomata() {
 		Collection<com.elmakers.mine.bukkit.api.magic.Mage> automata = new ArrayList<>();
@@ -530,7 +528,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	public Collection<String> getBrushes() {
 		return controller.getBrushKeys();
 	}
-	
+
 	@Override
 	public MageController getController() {
 		return controller;

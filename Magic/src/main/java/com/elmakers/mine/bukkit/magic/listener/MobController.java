@@ -31,11 +31,11 @@ public class MobController implements Listener {
     private MageController controller;
     private final Map<String, EntityData> mobs = new HashMap<>();
     private final Map<String, EntityData> mobsByName = new HashMap<>();
-    
+
     public MobController(MageController controller) {
         this.controller = controller;
     }
-    
+
     public void load(ConfigurationSection configuration) {
         Set<String> mobKeys = configuration.getKeys(false);
         for (String mobKey : mobKeys) {
@@ -43,7 +43,7 @@ public class MobController implements Listener {
             if (!mobConfiguration.getBoolean("enabled", true)) continue;
             EntityData mob = new EntityData(controller, mobKey, mobConfiguration);
             mobs.put(mobKey, mob);
-            
+
             // TODO Remove the name map
             String mobName = mob.getName();
             if (mobName != null && !mobName.isEmpty()) {
@@ -51,7 +51,7 @@ public class MobController implements Listener {
             }
         }
     }
-    
+
     @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         Entity entity = event.getEntity();
@@ -65,7 +65,7 @@ public class MobController implements Listener {
             }
         }
     }
-    
+
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityTarget(EntityTargetEvent event) {
         // TODO: Don't use metadata!
@@ -93,7 +93,7 @@ public class MobController implements Listener {
             event.setCancelled(true);
         }
     }
-    
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         // TODO: fix all of this, don't reference by names.
@@ -126,7 +126,7 @@ public class MobController implements Listener {
         died.setCustomNameVisible(false);
         died.setCustomName(null);
     }
-    
+
     public int getCount() {
         return mobs.size();
     }
@@ -134,7 +134,7 @@ public class MobController implements Listener {
     public Set<String> getKeys() {
         return mobs.keySet();
     }
-    
+
     public EntityData get(String key) {
         return mobs.get(key);
     }

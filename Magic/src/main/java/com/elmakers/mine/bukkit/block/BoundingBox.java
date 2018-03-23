@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
  * Represents a BoundingBox, using two BlockVectors
  */
 public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingBox
-{	
+{
     protected static final Vector UNIT_VECTOR = new Vector(1, 1, 1);
     protected BlockVector max;
     protected BlockVector min;
@@ -39,7 +39,7 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
     /**
      * Create a new Bounding box from two BlockVectors.
      *
-     * The vectors will be referenced, not copied.
+     * <p>The vectors will be referenced, not copied.
      *
      * @param min
      *            The minimum corner
@@ -158,10 +158,10 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
     /**
      * Fill this BB with a specified material, using the specified World.
      *
-     * This function respects a MaterialList to determine which blocks are ok to
+     * <p>This function respects a MaterialList to determine which blocks are ok to
      * replace.
      *
-     * Note that the HashMap will become a MaterialList soon!
+     * <p>Note that the HashMap will become a MaterialList soon!
      *
      * @param world
      *            The world to fill
@@ -178,10 +178,10 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
     /**
      * Fill this BB with a specified material, using the specified World.
      *
-     * This function respects a MaterialList to determine which blocks are ok to
+     * <p>This function respects a MaterialList to determine which blocks are ok to
      * replace.
      *
-     * It also returns any blocks placed in the "affected" UndoList.
+     * <p>It also returns any blocks placed in the "affected" UndoList.
      *
      * @param world
      *            The world to fill
@@ -233,9 +233,9 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
      * Fill a BlockList with blocks from the BoundingBox, given the specified
      * World.
      *
-     * Chunks must be loaded first!
+     * <p>Chunks must be loaded first!
      *
-     * It also returns any blocks placed in the "affected" UndoList.
+     * <p>It also returns any blocks placed in the "affected" UndoList.
      *
      * @param world
      *            The world to fetch blocks from
@@ -274,9 +274,9 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
     /**
      * Return a (width 1) "face" of this BoundingBox.
      *
-     * A "face" represents the side of this BB as given by "face".
+     * <p>A "face" represents the side of this BB as given by "face".
      *
-     * This can be used for defining a wall, floor, or ceiling for a volume.
+     * <p>This can be used for defining a wall, floor, or ceiling for a volume.
      *
      * @param face
      *            The BlockFace used to represent the face of this BB we want
@@ -291,9 +291,9 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
     /**
      * Return a "face" of a BoundingBox
      *
-     * A "face" represents the side of this BB as given by "face".
+     * <p>A "face" represents the side of this BB as given by "face".
      *
-     * This can be used for defining a wall, floor, or ceiling for a volume.
+     * <p>This can be used for defining a wall, floor, or ceiling for a volume.
      *
      * @param face
      *            face The BlockFace used to represent the face of this BB we
@@ -392,9 +392,9 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
     {
         /*
          * minY = 0; maxY = 128; minX = location.getBlockX() -
-         * PortalArea.defaultSize * ratio / 2; maxX = location.getBlockX() +
+         * PortalArea.defaultSize * ratio / 2; maxX = location.getBlockX()
          * PortalArea.defaultSize * ratio / 2; minZ = location.getBlockZ() -
-         * PortalArea.defaultSize * ratio / 2; maxZ = location.getBlockZ() +
+         * PortalArea.defaultSize * ratio / 2; maxZ = location.getBlockZ()
          * PortalArea.defaultSize * ratio / 2;.
          */
 

@@ -19,10 +19,10 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class SignSpell extends BlockSpell
-{  
+{
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		String typeString = parameters.getString("type", "");
 		boolean autoGive = parameters.getBoolean("auto_give", false);
@@ -110,7 +110,7 @@ public class SignSpell extends BlockSpell
 					Player player = (Player)sourceEntity;
 					InventoryUtils.openSign(player, targetBlock.getLocation());
 				}
-				
+
 				return SpellResult.CAST;
 			}
 			else

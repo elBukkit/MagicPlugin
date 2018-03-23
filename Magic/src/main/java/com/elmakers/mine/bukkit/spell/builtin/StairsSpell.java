@@ -16,10 +16,10 @@ public class StairsSpell extends BlockSpell
 	private int torchFrequency = 4;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Block targetBlock = getTargetBlock();
-		if (targetBlock == null) 
+		if (targetBlock == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -27,7 +27,7 @@ public class StairsSpell extends BlockSpell
 		if (!hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		
+
 		defaultDepth = parameters.getInt("depth", defaultDepth);
 		defaultWidth = parameters.getInt("width", defaultWidth);
 		defaultHeight = parameters.getInt("height", defaultHeight);
@@ -82,11 +82,11 @@ public class StairsSpell extends BlockSpell
 						{
 							checkBlock = targetBlock.getRelative(toTheRight);
 						}
-						// Put torches on the left and right wall 
-						boolean useTorch = 
+						// Put torches on the left and right wall
+						boolean useTorch =
 								(
-										torchFrequency > 0 
-										&& 		(w == 0 || w == width - 1) 
+										torchFrequency > 0
+										&& 		(w == 0 || w == width - 1)
 										&& 		(h == 1)
 										&& 		(d % torchFrequency == 0)
 										&&		checkBlock.getType() != Material.AIR
@@ -124,7 +124,7 @@ public class StairsSpell extends BlockSpell
 		}
 
 		registerForUndo();
-	}	
+	}
 
 	protected void createSpiralStairs(Block targetBlock)
 	{

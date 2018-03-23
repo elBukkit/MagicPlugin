@@ -134,8 +134,8 @@ public class ConstructBatch extends BrushBatch {
 		// For double-high blocks, a material can always attach to itself.
 		if (vertical && attachMaterial == material) return true;
 
-			// Should I use my own list for this? This one seems good and efficient.
-		if (material.isTransparent()) return false;
+        // Should I use my own list for this? This one seems good and efficient.
+        if (material.isTransparent()) return false;
 
 		// Can't attach to any attachables either- some of these (like signs) aren't transparent.
 		return !attachables.testMaterial(material) && !attachablesWall.testMaterial(material) && !attachablesDouble.testMaterial(material);
@@ -511,7 +511,7 @@ public class ConstructBatch extends BrushBatch {
 				}
 				mage.removeItem(requires, consumeVariants);
 			}
-			
+
             if (!commit) {
                 registerForUndo(block);
             }

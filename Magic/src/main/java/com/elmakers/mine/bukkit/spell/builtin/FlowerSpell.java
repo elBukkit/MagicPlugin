@@ -14,16 +14,16 @@ import com.elmakers.mine.bukkit.utility.Target;
 public class FlowerSpell extends BlockSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
-		if (target == null || !target.isValid()) 
+		if (target == null || !target.isValid())
 		{
 			return SpellResult.NO_TARGET;
 		}
 
 		Block targetBlock = target.getBlock();
-		if (!hasBuildPermission(targetBlock)) 
+		if (!hasBuildPermission(targetBlock))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}

@@ -8,15 +8,15 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
-public class BridgeSpell extends BrushSpell 
+public class BridgeSpell extends BrushSpell
 {
 	int MAX_SEARCH_DISTANCE = 16;
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Block playerBlock = getPlayerBlock();
-		if (playerBlock == null) 
+		if (playerBlock == null)
 		{
 			// no spot found to bridge
 			return SpellResult.NO_TARGET;
@@ -47,7 +47,7 @@ public class BridgeSpell extends BrushSpell
 		MaterialBrush buildWith = getBrush();
 		buildWith.setTarget(attachBlock.getLocation(), targetBlock.getLocation());
 		buildWith.update(mage, targetBlock.getLocation());
-		
+
 		registerForUndo(targetBlock);
 		buildWith.modify(targetBlock);
 		registerForUndo();

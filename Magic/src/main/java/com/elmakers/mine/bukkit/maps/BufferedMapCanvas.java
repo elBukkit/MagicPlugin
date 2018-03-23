@@ -18,9 +18,9 @@ import com.elmakers.mine.bukkit.utility.ColorHD;
 
 /**
  * This is a MapCanvas implementation that can be used
- * to retrieve the contents of a Map. 
- * 
- * It can be queried for raw data, and can also do
+ * to retrieve the contents of a Map.
+ *
+ * <p>It can be queried for raw data, and can also do
  * translation to DyeColor values.
  *
  */

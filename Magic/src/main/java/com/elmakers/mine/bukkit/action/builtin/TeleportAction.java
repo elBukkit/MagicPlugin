@@ -59,7 +59,7 @@ public class TeleportAction extends BaseTeleportAction
 				context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting passthrough engaged", 11);
 			}
 		}
-		
+
 		Block target;
 
 		// This is a special chain to handle how this is invoked from a projectile, which sets itself as the source.
@@ -140,7 +140,7 @@ public class TeleportAction extends BaseTeleportAction
 						||		!context.isOkToStandIn(oneUp)
 						||		!context.isOkToStandIn(twoUp)
 						)
-				) 
+				)
 				{
 					faceOneUp = faceOneUp.getRelative(BlockFace.UP);
 					faceTwoUp = faceTwoUp.getRelative(BlockFace.UP);

@@ -368,7 +368,7 @@ public abstract class TargetingSpell extends BaseSpell {
         // Ignore invisible entities
         if (!targetInvisible && entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) return false;
         if (!targetVanished && entity instanceof Player && controller.isVanished(entity)) return false;
-        
+
         if (targetContents != null && entity instanceof ItemFrame)
         {
             ItemFrame itemFrame = (ItemFrame)entity;

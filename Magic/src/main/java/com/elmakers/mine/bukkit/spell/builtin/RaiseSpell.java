@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 public class RaiseSpell extends BlockSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Block targetBlock = getTargetBlock();
 		if (targetBlock == null)
@@ -54,7 +54,7 @@ public class RaiseSpell extends BlockSpell
         currentCast.registerBreakable(highestBlock, 1);
 
         registerForUndo();
-		
+
 		return SpellResult.CAST;
 	}
 }

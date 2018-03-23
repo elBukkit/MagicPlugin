@@ -64,7 +64,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private static Class<?> worldClass;
 
 	private final int safetyLength = 10000;
-    
+
     private float flySpeed = 0;
     private int flyDelay = 2;
     private int startDelay = 0;
@@ -453,7 +453,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     }
 
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
         Player player = mage.getPlayer();
         if (player == null) {
@@ -674,7 +674,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             if (previousBoost < mountBoostTicksRemaining) {
                 playEffects("boost");
             }
-            
+
             updateMountHealth();
         }
     }
@@ -757,7 +757,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             player.setAllowFlight(false);
         }
 	}
-	
+
 	@Override
 	public void onActivate() {
 		final Player player = mage.getPlayer();

@@ -21,25 +21,25 @@ import com.elmakers.mine.bukkit.utility.Target;
 /**
  * Can run any Bukkit command as a Spell.
  *
- * This includes running as Console, or opping/deopping the player if needed.
+ * <p>This includes running as Console, or opping/deopping the player if needed.
  *
- * This spell can also act as a targeting spell, running commands using the
+ * <p>This spell can also act as a targeting spell, running commands using the
  * target location or entity.
  *
- * The following parameters will all be substituted in the "command" string
+ * <p>The following parameters will all be substituted in the "command" string
  * if found:
  *
- * @_ - A spell, useful for command-line casting
- * @spell - name of spell being cast
- * @p - mage name
- * @uuid - mage uuid
- * @world, @x, @y, @z - mage location
+ * <li><code>@_</code> - A spell, useful for command-line casting
+ * <li><code>@spell</code> - name of spell being cast
+ * <li><code>@p</code> - mage name
+ * <li><code>@uuid</code> - mage uuid
+ * <li><code>@world, @x, @y, @z</code> - mage location
  *
- * If targeting is used ("target: none" to disable), the following will also be escaped:
+ * <p>If targeting is used ("target: none" to disable), the following will also be escaped:
  *
- * @t - target mage name
- * @tuuid - target entity uuid
- * @tworld, @tx, @ty, @tz - target location
+ * <li><code>@t</code> - target mage name
+ * <li><code>@tuuid</code> - target entity uuid
+ * <li><code>@tworld, @tx, @ty, @tz</code> - target location
  */
 @Deprecated
 public class CommandSpell extends TargetingSpell {

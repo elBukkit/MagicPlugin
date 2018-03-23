@@ -5,7 +5,7 @@ import org.bukkit.block.Block;
 /**
  * Represents the face of a block
  *
- * This was copied from the Bukkit API to add
+ * <p>This was copied from the Bukkit API to add
  * vertical diagonals.
  */
 public enum BlockFace {

@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
-public class HealSpell extends TargetingSpell 
+public class HealSpell extends TargetingSpell
 {
     private final static PotionEffectType[] _negativeEffects =
             {PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
@@ -26,7 +26,7 @@ public class HealSpell extends TargetingSpell
     protected final static Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
     @Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target target = getTarget();
 		Entity targetEntity = target.getEntity();

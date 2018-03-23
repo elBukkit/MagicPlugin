@@ -71,7 +71,7 @@ public class TorchAction extends BaseSpellAction
 			replaceAttachment = true;
 		}
 
-		// Otherwise use glowstone as the torch
+        // Otherwise use glowstone as the torch
         boolean allowLightstone = this.allowLightstone;
 		if (useLightstone)
 		{

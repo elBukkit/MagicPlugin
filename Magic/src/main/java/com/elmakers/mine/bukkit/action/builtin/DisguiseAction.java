@@ -29,7 +29,7 @@ public class DisguiseAction extends BaseSpellAction
 		}
 	}
 	private ConfigurationSection disguiseConfig;
-	
+
 	@Override
 	public void prepare(CastContext context, ConfigurationSection parameters) {
 		super.prepare(context, parameters);
@@ -50,7 +50,7 @@ public class DisguiseAction extends BaseSpellAction
 		} else if (disguiseConfig != null && controller.isDisguised(entity)) {
 			return SpellResult.NO_TARGET;
 		}
-		
+
 		controller.disguise(entity, disguiseConfig);
 		context.registerForUndo(new UndoDisguise(controller, entity));
 		return SpellResult.CAST;

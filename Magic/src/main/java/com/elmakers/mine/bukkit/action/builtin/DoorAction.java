@@ -54,7 +54,7 @@ public class DoorAction extends BaseSpellAction
                 DeprecatedUtils.setData(targetBlock, (byte)(data ^ 0x4));
                 break;
         }
-		
+
 		return SpellResult.CAST;
 	}
 

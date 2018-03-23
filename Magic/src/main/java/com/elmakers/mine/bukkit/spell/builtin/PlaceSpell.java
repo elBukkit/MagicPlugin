@@ -9,10 +9,10 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
-public class PlaceSpell extends BrushSpell 
+public class PlaceSpell extends BrushSpell
 {
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
+	public SpellResult onCast(ConfigurationSection parameters)
 	{
 		Target attachToBlock = getTarget();
 		if (!attachToBlock.isValid()) return SpellResult.NO_TARGET;
