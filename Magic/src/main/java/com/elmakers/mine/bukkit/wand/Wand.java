@@ -2160,10 +2160,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // In this case we should show it as such in the lore.
         if (passive) isSingleSpell = false;
 
-		if (consumeReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("consume_reduction", consumeReduction), lore);
+		if (consumeReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("consume_reduction", consumeReduction), lore);
 
-        if (costReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cost_reduction", costReduction), lore);
-		if (cooldownReduction > 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cooldown_reduction", cooldownReduction), lore);
+        if (costReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cost_reduction", costReduction), lore);
+		if (cooldownReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cooldown_reduction", cooldownReduction), lore);
 		if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("power", power), lore);
         if (superProtected) {
             ConfigurationUtils.addIfNotEmpty(getMessage("super_protected"), lore);
