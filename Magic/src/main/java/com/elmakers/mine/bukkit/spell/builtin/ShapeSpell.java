@@ -1,18 +1,19 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.spell.TargetType;
-import com.elmakers.mine.bukkit.block.ConstructionType;
-import com.elmakers.mine.bukkit.batch.ShapeBatch;
-import com.elmakers.mine.bukkit.spell.BrushSpell;
-import com.elmakers.mine.bukkit.utility.Target;
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Arrays;
-import java.util.Collection;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.batch.ShapeBatch;
+import com.elmakers.mine.bukkit.block.ConstructionType;
+import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.utility.Target;
 
 public class ShapeSpell extends BrushSpell
 {

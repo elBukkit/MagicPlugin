@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.protection;
 
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.api.wand.Wand;
+import java.util.Set;
+import java.util.logging.Level;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Set;
-import java.util.logging.Level;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBuildManager {
     private boolean enabled = false;

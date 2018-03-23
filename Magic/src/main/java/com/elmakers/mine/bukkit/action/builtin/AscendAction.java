@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+
 import com.elmakers.mine.bukkit.action.BaseTeleportAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 
 public class AscendAction extends BaseTeleportAction
 {

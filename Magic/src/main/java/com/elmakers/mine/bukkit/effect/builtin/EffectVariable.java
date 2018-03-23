@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.effect.builtin;
 
-import com.elmakers.mine.bukkit.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.Color;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.Plugin;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.bukkit.Color;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class EffectVariable extends EffectPlayer {
 

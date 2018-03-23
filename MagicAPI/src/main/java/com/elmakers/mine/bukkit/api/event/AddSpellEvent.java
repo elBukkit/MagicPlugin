@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.api.event;
 
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
+
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
 /**
  * A custom event that the Magic plugin will fire any time a player

@@ -1,14 +1,15 @@
 package com.elmakers.mine.bukkit.block;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.bukkit.block.Block;
+
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import org.bukkit.block.Block;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 {

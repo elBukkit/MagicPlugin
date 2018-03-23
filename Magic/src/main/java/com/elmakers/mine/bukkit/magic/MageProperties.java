@@ -1,12 +1,12 @@
 package com.elmakers.mine.bukkit.magic;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.annotation.Nullable;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class MageProperties extends CasterProperties {
     private final Mage mage;

@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.effect;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import de.slikey.effectlib.Effect;
-import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.util.DynamicLocation;
-import de.slikey.effectlib.util.ParticleEffect;
+import java.io.File;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,10 +14,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+
+import de.slikey.effectlib.Effect;
+import de.slikey.effectlib.EffectManager;
+import de.slikey.effectlib.util.DynamicLocation;
+import de.slikey.effectlib.util.ParticleEffect;
 
 /**
  * Manages EffectLib integration

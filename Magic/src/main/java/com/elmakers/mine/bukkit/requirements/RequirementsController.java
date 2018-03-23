@@ -1,12 +1,12 @@
 package com.elmakers.mine.bukkit.requirements;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class RequirementsController implements RequirementsProcessor {
     private final MageController controller;

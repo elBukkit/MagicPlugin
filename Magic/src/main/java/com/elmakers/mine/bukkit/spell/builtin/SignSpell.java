@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class SignSpell extends BlockSpell

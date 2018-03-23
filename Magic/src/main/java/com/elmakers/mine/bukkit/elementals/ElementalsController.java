@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.elementals;
 
-import info.nothingspecial.api.elementals.ElementalsAPI;
-
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
+
+import info.nothingspecial.api.elementals.ElementalsAPI;
 
 public class ElementalsController {
 	private ElementalsAPI api;

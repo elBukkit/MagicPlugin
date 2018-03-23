@@ -4,10 +4,10 @@ import java.util.Collection;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import org.bukkit.util.Vector;
 
 public interface MaterialBrush extends MaterialAndData {
     void prepare();

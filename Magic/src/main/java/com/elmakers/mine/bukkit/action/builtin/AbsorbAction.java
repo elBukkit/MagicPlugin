@@ -1,5 +1,9 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -7,9 +11,6 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 
 public class AbsorbAction extends BaseSpellAction
 {   

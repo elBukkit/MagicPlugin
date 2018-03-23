@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.builtin.CoverAction;
 import com.elmakers.mine.bukkit.action.builtin.DamageAction;
 import com.elmakers.mine.bukkit.action.builtin.FreezeAction;
 import com.elmakers.mine.bukkit.action.builtin.PotionEffectAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.Target;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
 
 @Deprecated
 public class FrostSpell extends BlockSpell

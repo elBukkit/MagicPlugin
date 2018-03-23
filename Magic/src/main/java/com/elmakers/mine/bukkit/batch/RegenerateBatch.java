@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.batch;
 
-import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -10,6 +9,7 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 
 public class RegenerateBatch extends SpellBatch {
 	private static final BlockData[] template = new BlockData[0];

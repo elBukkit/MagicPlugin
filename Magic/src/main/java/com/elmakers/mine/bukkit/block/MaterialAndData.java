@@ -1,15 +1,6 @@
 package com.elmakers.mine.bukkit.block;
 
-import com.elmakers.mine.bukkit.api.block.ModifyType;
-import com.elmakers.mine.bukkit.api.magic.MaterialSet;
-import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.integration.VaultController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
-import com.elmakers.mine.bukkit.utility.SkinUtils;
-import com.google.common.base.Objects;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -33,7 +24,16 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 
-import javax.annotation.Nullable;
+import com.elmakers.mine.bukkit.api.block.ModifyType;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.SkinUtils;
+import com.google.common.base.Objects;
 
 /**
  * A utility class for presenting a Material in its entirety, including Material variants.

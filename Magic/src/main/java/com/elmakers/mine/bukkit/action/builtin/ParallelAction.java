@@ -1,13 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.elmakers.mine.bukkit.action.ActionContext;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ParallelAction extends CompoundAction
 {

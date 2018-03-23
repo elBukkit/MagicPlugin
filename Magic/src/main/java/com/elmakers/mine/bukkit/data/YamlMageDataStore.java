@@ -1,16 +1,17 @@
 package com.elmakers.mine.bukkit.data;
 
-import com.elmakers.mine.bukkit.api.data.MageData;
-import com.elmakers.mine.bukkit.api.data.MageDataCallback;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.api.data.MageData;
+import com.elmakers.mine.bukkit.api.data.MageDataCallback;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class YamlMageDataStore extends ConfigurationMageDataStore {
     private File playerDataFolder;

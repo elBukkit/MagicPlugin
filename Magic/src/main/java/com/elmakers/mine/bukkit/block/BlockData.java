@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.block;
 
-import com.elmakers.mine.bukkit.api.block.ModifyType;
+import java.lang.ref.WeakReference;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -11,12 +13,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.BlockVector;
+
+import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-
-import java.lang.ref.WeakReference;
-import java.util.Set;
 
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.

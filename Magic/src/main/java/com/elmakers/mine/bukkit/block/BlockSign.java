@@ -1,12 +1,13 @@
 package com.elmakers.mine.bukkit.block;
 
+import java.io.StringReader;
+import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import org.bukkit.Bukkit;
-
-import java.io.StringReader;
-import java.util.logging.Level;
 
 public class BlockSign extends BlockExtraData {
     protected String[] lines = new String[4];

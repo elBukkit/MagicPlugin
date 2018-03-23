@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.api.magic;
 
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import org.bukkit.inventory.ItemStack;
+import java.util.Collection;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
+
+import org.bukkit.inventory.ItemStack;
+
+import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public interface CasterProperties extends MagicConfigurable {
     boolean hasSpell(String spellKey);

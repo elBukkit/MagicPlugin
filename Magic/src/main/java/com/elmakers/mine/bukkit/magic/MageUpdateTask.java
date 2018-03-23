@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
+
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public class MageUpdateTask implements Runnable {

@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
-import org.bukkit.entity.Player;
 
 public class MailSpell extends TargetingSpell
 {

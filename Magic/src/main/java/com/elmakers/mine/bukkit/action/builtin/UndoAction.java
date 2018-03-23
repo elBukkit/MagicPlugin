@@ -1,5 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
@@ -8,10 +13,6 @@ import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.bukkit.ChatColor;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 
 public class UndoAction extends BaseSpellAction
 {

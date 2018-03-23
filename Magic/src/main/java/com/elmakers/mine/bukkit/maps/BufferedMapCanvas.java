@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.elmakers.mine.bukkit.utility.ColorHD;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.map.MapCanvas;
@@ -13,6 +12,8 @@ import org.bukkit.map.MapFont;
 import org.bukkit.map.MapFont.CharacterSprite;
 import org.bukkit.map.MapPalette;
 import org.bukkit.map.MapView;
+
+import com.elmakers.mine.bukkit.utility.ColorHD;
 
 /**
  * This is a MapCanvas implementation that can be used

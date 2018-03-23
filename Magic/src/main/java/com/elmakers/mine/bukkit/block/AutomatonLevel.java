@@ -2,12 +2,12 @@ package com.elmakers.mine.bukkit.block;
 
 import java.util.LinkedList;
 
-import com.elmakers.mine.bukkit.batch.SimulateBatch;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.batch.SimulateBatch;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 

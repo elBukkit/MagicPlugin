@@ -1,10 +1,5 @@
 package com.elmakers.mine.bukkit.citizens;
 
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.integration.VaultController;
-import com.elmakers.mine.bukkit.magic.MagicPlugin;
-import net.citizensnpcs.api.trait.Trait;
-import net.citizensnpcs.api.util.DataKey;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -14,6 +9,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.magic.MagicPlugin;
+
+import net.citizensnpcs.api.trait.Trait;
+import net.citizensnpcs.api.util.DataKey;
 
 public abstract class CitizensTrait extends Trait {
     private String permissionNode;

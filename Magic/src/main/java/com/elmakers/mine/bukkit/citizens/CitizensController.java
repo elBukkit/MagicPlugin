@@ -1,9 +1,10 @@
 package com.elmakers.mine.bukkit.citizens;
 
+import org.bukkit.plugin.Plugin;
+
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.trait.TraitInfo;
-import org.bukkit.plugin.Plugin;
 
 public class CitizensController {
 	private Citizens citizensPlugin;

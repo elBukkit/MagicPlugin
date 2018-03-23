@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.magic;
 
-import static org.junit.Assert.*;
-
-import com.elmakers.mine.bukkit.api.magic.MaterialSet;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MaterialSetsTest {
     @Test

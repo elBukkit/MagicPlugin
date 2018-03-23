@@ -1,5 +1,10 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.event.Event;
+
+import com.elmakers.mine.bukkit.api.event.CastEvent;
+
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -12,9 +17,6 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.util.Kleenean;
-import com.elmakers.mine.bukkit.api.event.CastEvent;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.Event;
 
 @Name("Targets")
 @Description({"The targets of a spell event."})

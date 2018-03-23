@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.magic;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import org.bukkit.configuration.ConfigurationSection;
 
 public class MagicAttribute {
     private final @Nonnull String key;

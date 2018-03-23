@@ -1,6 +1,12 @@
 package com.elmakers.mine.bukkit.maps;
 
-import com.elmakers.mine.bukkit.utility.SkinUtils;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,12 +18,7 @@ import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import com.elmakers.mine.bukkit.utility.SkinUtils;
 
 public class MapController implements com.elmakers.mine.bukkit.api.maps.MapController {
     private final File configurationFile;

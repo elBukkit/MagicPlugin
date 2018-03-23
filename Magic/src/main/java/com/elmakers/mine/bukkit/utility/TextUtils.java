@@ -1,12 +1,12 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 public class TextUtils
 {

@@ -1,15 +1,15 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicServerCommandExecutor extends MagicTabExecutor {
 	public MagicServerCommandExecutor(MagicAPI api) {

@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.integration;
 
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -7,10 +10,9 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderHook;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class PlaceholderAPIManager extends PlaceholderHook {
     private final MageController controller;

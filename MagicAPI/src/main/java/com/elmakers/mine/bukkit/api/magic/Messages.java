@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.api.magic;
 
-import org.bukkit.inventory.ItemStack;
-
 import java.util.Collection;
 import java.util.List;
+
+import org.bukkit.inventory.ItemStack;
 
 public interface Messages {
     boolean containsKey(String key);

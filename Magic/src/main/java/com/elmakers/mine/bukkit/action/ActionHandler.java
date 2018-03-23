@@ -1,5 +1,15 @@
 package com.elmakers.mine.bukkit.action;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -7,15 +17,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.batch.ActionBatch;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class ActionHandler implements com.elmakers.mine.bukkit.api.action.ActionHandler, Cloneable
 {

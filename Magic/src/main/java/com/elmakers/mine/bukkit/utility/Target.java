@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility;
 
 import java.lang.ref.WeakReference;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class Target implements Comparable<Target>
 {

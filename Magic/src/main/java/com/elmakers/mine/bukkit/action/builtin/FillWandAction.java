@@ -1,12 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 
 public class FillWandAction extends BaseSpellAction
 {

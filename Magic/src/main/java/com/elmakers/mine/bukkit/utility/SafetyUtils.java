@@ -1,8 +1,9 @@
 package com.elmakers.mine.bukkit.utility;
 
-import de.slikey.effectlib.util.MathUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
+
+import de.slikey.effectlib.util.MathUtils;
 
 public class SafetyUtils {
     public static double MAX_VELOCITY = 10;

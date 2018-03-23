@@ -1,5 +1,17 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
+import javax.annotation.Nullable;
+
+import org.bukkit.entity.Entity;
+import org.bukkit.event.Event;
+
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.magic.MagicPlugin;
+
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
@@ -9,16 +21,6 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Checker;
 import ch.njol.util.Kleenean;
-import com.elmakers.mine.bukkit.api.magic.CasterProperties;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageClass;
-import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
-import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.magic.MagicPlugin;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.Event;
-
-import javax.annotation.Nullable;
 
 @Name("Is On Path")
 @Description("Checks whether a player is on a progression path.")
