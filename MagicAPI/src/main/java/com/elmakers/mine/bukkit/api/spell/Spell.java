@@ -13,14 +13,14 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 
 /**
  * Represents a Spell that may be cast by a Mage.
- * 
- * Each Spell is based on a SpellTemplate, which are defined
+ *
+ * <p>Each Spell is based on a SpellTemplate, which are defined
  * by the spells configuration files.
- * 
- * Every spell uses a specific Class that must extend from
+ *
+ * <p>Every spell uses a specific Class that must extend from
  * com.elmakers.mine.bukkit.plugins.magic.spell.Spell.
- * 
- * To create a new custom spell from scratch, you must also
+ *
+ * <p>To create a new custom spell from scratch, you must also
  * implement the MageSpell interface.
  */
 public interface Spell extends SpellTemplate {
@@ -77,7 +77,7 @@ public interface Spell extends SpellTemplate {
      * Signal that this spell was cancelled. Will send cancel messages
      * and play cancel FX.
      *
-     * This will not actually cancel any pending spell casts (batches) of this spell,
+     * <p>This will not actually cancel any pending spell casts (batches) of this spell,
      * for that you will need Mage.cancelPending
      *
      * @return true (for legacy reasons)
@@ -87,7 +87,7 @@ public interface Spell extends SpellTemplate {
     /**
      * Cancel a selection in-progress for a two-click selection spell (like Architect magic)
      *
-     * Will call cancel() if selection was cancelled.
+     * <p>Will call cancel() if selection was cancelled.
      *
      * @return true if the spell was in the middle of selection and was cancelled.
      */

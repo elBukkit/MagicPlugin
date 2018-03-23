@@ -17,12 +17,14 @@ public interface MagicConfigurable extends MagicProperties {
      * Transfer properties from a configuration to this store, following a set of
      * upgrade rules:
      *
-     * 1. String values are replaced unless they match with a case-insensitve comparison
-     * 2. Numeric values are only replaced if they are greater than the ones present already in the store
-     * 3. Certain other special rules apply to specific properties, such as spells are
+     * <ol>
+     * <li>String values are replaced unless they match with a case-insensitve comparison
+     * <li>Numeric values are only replaced if they are greater than the ones present already in the store
+     * <li>Certain other special rules apply to specific properties, such as spells are
      * merged.
+     * </ol>
      *
-     * Anything else is copied over directly, overwriting what is in the store.
+     * <p>Anything else is copied over directly, overwriting what is in the store.
      *
      * @param configuration The configuration to copy into this store
      * @return true if any property was changed, false means the upgrade was rejected.
@@ -32,7 +34,7 @@ public interface MagicConfigurable extends MagicProperties {
     /**
      * Remove a property from this store.
      *
-     * If this property is inherited, it cannot be removed.
+     * <p>If this property is inherited, it cannot be removed.
      * If this property exists but an inherited value also exists, the property will now have the inherited value.
      *
      * @param key The key to remove

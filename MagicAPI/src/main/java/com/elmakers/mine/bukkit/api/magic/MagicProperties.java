@@ -13,7 +13,7 @@ public interface MagicProperties {
     /**
      * Check to see if this property store contains a specific property.
      *
-     * If this is an inherited store (such as a Wand to a WandTemplate), inherited
+     * <p>If this is an inherited store (such as a Wand to a WandTemplate), inherited
      * properties are checked as well.
      *
      * @param key The key to check
@@ -35,6 +35,7 @@ public interface MagicProperties {
      *
      * @param key The key to retrieve
      * @param type The class the value is expected to be
+     * @param <T> The property type.
      * @return An Optional wrapper for the value
      */
     @Nonnull <T> Optional<? extends T> getProperty(@Nonnull String key, @Nonnull Class<T> type);
@@ -44,6 +45,7 @@ public interface MagicProperties {
      *
      * @param key The key to retrieve
      * @param defaultValue The value to return if the key is not present in the store or is not the correct type.
+     * @param <T> The property type.
      * @return The value, if present and of the correct type, otherwise returns defaultValue
      */
     @Nonnull <T> T getProperty(@Nonnull String key, @Nonnull T defaultValue);
@@ -58,7 +60,7 @@ public interface MagicProperties {
     /**
      * Print all properties except those in a specific set.
      *
-     * Useful for differentiating between inherited and non-inherited properties.
+     * <p>Useful for differentiating between inherited and non-inherited properties.
      *
      * @param sender Where to print properties.
      * @param ignoreProperties A set of properties to ignore

@@ -42,33 +42,33 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 
 /**
  * A Mage represents any entity that may cast spells. This can include:
- * 
- * - A Player. Mages for Players will be persisted and destroyed if a Player
+ *
+ * <li>A Player. Mages for Players will be persisted and destroyed if a Player
  * logs out. By default a Mage will be kept around if a Player has anything in
  * their undo queue, so that an admin may Rewind their constructions after logout.
- * 
- * - A CommandBlockSender. A Command block will have a Mage if it uses /cast.
- * Each Command block will have a unique Mage for its assigned name (assign a name to 
+ *
+ * <li>A CommandBlockSender. A Command block will have a Mage if it uses /cast.
+ * Each Command block will have a unique Mage for its assigned name (assign a name to
  * a Command block using an Anvil). More than one Command block with the same name
  * (so mapping to the same Mage) may cause overlap issues with cooldowns or other
  * persistent Spell data.
- * 
- * - A CommandSender. Any other CommandSender, such as from the server console,
+ *
+ * <li>A CommandSender. Any other CommandSender, such as from the server console,
  * will map to a global "COMMAND" mage. This Mage has no Location, so is generally
  * limited in what it can cast unless the "p" location parameters are used, e.g.
- * 
- * cast blast pworld world px 0 py 70 pz 0
- * 
- * This will case "blast" in the center of the world "world" using the "COMMAND" Mage.
- * 
- * Some Spell implementations will absolutely require a Player (such as StashSpell),
+ *
+ * <code>cast blast pworld world px 0 py 70 pz 0</code>
+ *
+ * <p>This will case "blast" in the center of the world "world" using the "COMMAND" Mage.
+ *
+ * <p>Some Spell implementations will absolutely require a Player (such as StashSpell),
  * and so will always fail unless cast by a player or with "castp".
  */
 public interface Mage extends CostReducer, CooldownReducer {
     /**
-     * Return the list of pending construction batches for this Mage
+     * Return the list of pending construction batches for this Mage.
      *
-     * @return Collection<BlockBatch> pending construction batches
+     * @return Pending construction batches
      */
     Collection<Batch> getPendingBatches();
 
@@ -131,17 +131,17 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Get the Player instance backed by this Mage.
      *
-     * This may return null for Command block or console-based mages.
+     * <p>This may return null for Command block or console-based mages.
      *
-     * A Spell should detect this and, if the Spell absolutely requires a
+     * <p>A Spell should detect this and, if the Spell absolutely requires a
      * Player, should return SpellResult.PLAYER_REQUIRED.
      *
-     * Spells should attempt to avoid requiring a player, do not use the
+     * <p>Spells should attempt to avoid requiring a player, do not use the
      * Player object to get a Location or Vector direction, generally
      * try to use the Spell or Mage methods for that. This will make
      * sure that parameter overrides and command-block usage function properly.
      *
-     * A Player should only be needed if a Spell does something very Player-specific,
+     * <p>A Player should only be needed if a Spell does something very Player-specific,
      * such as open an inventory to show the Player in-game, like StashSpell does.
      *
      * @return The player backed by this Mage, or null for Automaton Mages.
@@ -151,7 +151,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Get the Entity instance backed by this Mage.
      *
-     * This may be a Player or other Entity, or null in the case of a
+     * <p>This may be a Player or other Entity, or null in the case of a
      * CommandSender-based Mage, like an Automaton.
      *
      * @return The Entity represented by this Mage
@@ -161,7 +161,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Get the LivingEntity instance backed by this Mage.
      *
-     * This is basically a helper wrapper for getEntity that does a typecheck
+     * <p>This is basically a helper wrapper for getEntity that does a typecheck
      * for you.
      *
      * @return The LivingEntity represented by this Mage
@@ -171,7 +171,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Get the CommandSender backed by this Mage.
      *
-     * This should generally always be non-null, and can be used to send a message
+     * <p>This should generally always be non-null, and can be used to send a message
      * to the Mage. This may show in the server console, Player chat, or get
      * eaten by a Command block.
      *
@@ -182,10 +182,10 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Send a message to this Mage.
      *
-     * This will respect the global plugin message cooldown, message
+     * <p>This will respect the global plugin message cooldown, message
      * display settings and the Mage's active Wand "quiet" setting.
      *
-     * A Wand "quiet" setting of 2 will disable these messages.
+     * <p>A Wand "quiet" setting of 2 will disable these messages.
      *
      * @param message The message to send.
      */
@@ -196,10 +196,10 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Send a message to this Mage.
      *
-     * This will respect the global plugin "cast" message cooldown, message
+     * <p>This will respect the global plugin "cast" message cooldown, message
      * display settings and the Mage's active Wand "quiet" setting.
      *
-     * A Wand "quiet" setting of 1 will disable these messages.
+     * <p>A Wand "quiet" setting of 1 will disable these messages.
      *
      * @param message The message to send.
      */
@@ -218,7 +218,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Undo the last construction performed by this Mage.
      *
-     * This will restore anything changed by the last-cast
+     * <p>This will restore anything changed by the last-cast
      * construction spell, and remove that construction from
      * the Mage's UndoQueue.
      *
@@ -230,7 +230,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      * Undo the last construction performed by this Mage against the
      * given Block
      *
-     * This will restore anything changed by the last-cast
+     * <p>This will restore anything changed by the last-cast
      * construction spell by this Mage that targeted the specific Block,
      * even if it was not the most recent Spell cast by that Mage.
      *
@@ -242,14 +242,14 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Commit this Mage's UndoQueue.
      *
-     * This will cause anything in the undo queue to become permanent-
+     * <p>This will cause anything in the undo queue to become permanent-
      * meaning other overlapping spells won't undo this construction, even
      * if they were cast before the spells in this undo queue.
      *
-     * This also clears the Mage's undo queue, which may allow them to be
+     * <p>This also clears the Mage's undo queue, which may allow them to be
      * destroyed if they are no longer active (e.g. the Player logged out).
      *
-     * This has no effect on the Mage's scheduled undo batches.
+     * <p>This has no effect on the Mage's scheduled undo batches.
      *
      * @return True if anything was commited, false if the Mage has no undo queue.
      */
@@ -258,10 +258,10 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Get the active Wand being used by this Mage.
      *
-     * This will generally be the Wand represented by the ItemStack held by the
+     * <p>This will generally be the Wand represented by the ItemStack held by the
      * Player this Mage represents.
      *
-     * Automata and other non-Player Mages generally do not have Wands.
+     * <p>Automata and other non-Player Mages generally do not have Wands.
      *
      * @return The Mage's active Wand.
      */
@@ -283,7 +283,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Force a re-check of the current active wand vs the item the player is holding.
      *
-     * This may activate or deactivate a wand, or both.
+     * <p>This may activate or deactivate a wand, or both.
      *
      * @return The current active wand, after checking
      */
@@ -293,7 +293,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      * Return a Spell for this Mage, which can be used to programatically
      * cast or modify a Spell on behalf of this Mage.
      *
-     * This will create and register the spell if the Mage has never cast it, but has
+     * <p>This will create and register the spell if the Mage has never cast it, but has
      * permission to do so.
      *
      * @param key The key of the Spell to retrieve.
@@ -313,7 +313,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Return all of the Spell objects registered to this Mage.
      *
-     * This will generally be any Spells the Mage has ever cast.
+     * <p>This will generally be any Spells the Mage has ever cast.
      *
      * @return A Collection of Spell objects this Mage has cast.
      */
@@ -332,7 +332,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      * Deactivate a currently active spell. A spell may call this to deactivate
      * itself.
      *
-     * If the given spell is not currently active, nothing will happen.
+     * <p>If the given spell is not currently active, nothing will happen.
      *
      * @param spell The spell to deactivate
      */
@@ -528,7 +528,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * This will return properties for the mage's active wand, if holding one, or if not then the active class.
      *
-     * If the mage has no active class, then mage properties are returned.
+     * <p>If the mage has no active class, then mage properties are returned.
      *
      * @return
      */
@@ -573,7 +573,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Return the current movement vector of this entity, in blocks per second.
      *
-     * This is a computed value, and is not the same as getEntity().getVelocity.
+     * <p>This is a computed value, and is not the same as getEntity().getVelocity.
      */
     Vector getVelocity();
 
@@ -586,11 +586,11 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * This method is deprecated, soul wand functionality was never implemented.
      *
-     * Get the Mage's "soul" wand. This represents all of the
+     * <p>Get the Mage's "soul" wand. This represents all of the
      * spells and other properties that are bound to the Mage itself,
      * rather than to a specific wand.
      *
-     * This wand never appears as an in-game item.
+     * <p>This wand never appears as an in-game item.
      */
     @Deprecated
     Wand getSoulWand();
@@ -600,10 +600,9 @@ public interface Mage extends CostReducer, CooldownReducer {
     Double getAttribute(String attributeKey);
 
     /**
-     *
      * Set the damage type that was last given to a Mage.
      *
-     * Set this prior to damaging a mage for custom weakness/protection to work properly.
+     * <p>Set this prior to damaging a mage for custom weakness/protection to work properly.
      *
      * @param damageType A damage type as defined in config.yml
      */
@@ -612,7 +611,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Get the last damage type done to this Mage.
      *
-     * This can be a custom damage type, or the name of a vanilla type.
+     * <p>This can be a custom damage type, or the name of a vanilla type.
      *
      * @return the last damage type this Mage received.
      */

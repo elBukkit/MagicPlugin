@@ -23,31 +23,31 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 *
 * This is the API for the Magic plugin for Bukkit. Other plugins can
 * use this API to integrate with Magic.
-* 
+*
 * If you wish to extend Magic, such as by adding a completely new Spell
 * or EffectPlayer class, you will need to build against Magic directly.
-* 
+*
 * \section issues_sec Issues
-* 
+*
 * For issues with the API, or suggestions, use our Issue Tracker:
-* 
+*
 * https://github.com/elBukkit/MagicPlugin/issues
-* 
+*
 * \section start_sec Getting Started
-* 
+*
 * If you haven't done so already, get started with Bukkit by getting a basic
 * shell of a plugin working. You should at least have a working Plugin that
 * loads in Bukkit (add a debug print to onEnable to be sure!) before you
 * start trying to integrate with other Plugins. See here for general help:
-* 
+*
 * http://wiki.bukkit.org/Plugin_Tutorial
-* 
+*
 * \section maven_sec Building with Maven
-* 
+*
 * Once you have a project set up, it is easy to build against the Magic API
 * with Maven. Simply add the elmakers repository to your repository list,
 * and then add a dependency for MagicAPI. A typical setup would look like:
-* 
+*
 * <pre>
 * &lt;dependencies&gt;
 * &lt;dependency&gt;
@@ -74,17 +74,17 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 * &lt;/repository&gt;
 * &lt;/repositories&gt;
 * </pre>
-* 
+*
 * \section plugin_sec Getting the API reference
-* 
+*
 * A Plugin that wishes to interact with Magic should generally check
 * the PluginManager for the "Magic" plugin. If present, the Plugin may
 * cast it to MagicAPI and use it.
-* 
+*
 * If you wish to softdepend to Magic, make sure to not use any of these API classes
 * unless you know the Magic plugin is loaded. Make sure you're not building the API
 * into your plugin, it should always be referenced externally (e.g. "provided" in Maven).
-* 
+*
 * <pre>
 *       MagicAPI getMagicAPI() {
 *           Plugin magicPlugin = Bukkit.getPluginManager().getPlugin("Magic");
@@ -94,24 +94,23 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 *           return (MagicAPI)magicPlugin;
 *       }
 * </pre>
-* 
+*
 * \section example_sec Examples
 *
 * \subsection casting Casting Spells
-* 
+*
 * A plugin may cast spells directly, or on behalf of logged in players.
-* 
+*
 * \subsection wands Creating Wands
-* 
+*
 * A plugin may create or modify Wand items.
 */
 
 /**
  * This is the primary entry point into the Magic API.
- * 
- * A Plugin should generally check for the "Magic" plugin, and
+ *
+ * <p>A Plugin should generally check for the "Magic" plugin, and
  * then cast that Plugin to MagicAPI to interact with it.
- * 
  */
 public interface MagicAPI {
 
@@ -132,8 +131,8 @@ public interface MagicAPI {
     /**
      * Check to see if a CommandSender has permission.
      *
-     * This extends Bukkit's permission checks to account for special
-     * Magic bypass flags and Autonoma behavior.
+     * <p>This extends Bukkit's permission checks to account for special
+     * Magic bypass flags and Automata behavior.
      *
      * @param sender The CommandSender, may also be a Player or null.
      * @param pNode The permission node to check
@@ -147,7 +146,7 @@ public interface MagicAPI {
      * as a dynamically generated list), but would like permission to be enabled by
      * default.
      *
-     * This is used, for instance, in Magic's list of wands and spells- players have
+     * <p>This is used, for instance, in Magic's list of wands and spells- players have
      * access to all spells by default, unless a -Magic.cast.spellname pnode is added.
      *
      * @param sender The CommandSender, may also be a Player or null.
@@ -187,7 +186,7 @@ public interface MagicAPI {
     /**
      * Get all currently loaded Mage instances.
      *
-     * These may be players or Automata (command blocks)
+     * <p>These may be players or Automata (command blocks)
      *
      * @return The list of all currently active mages.
      */
@@ -197,7 +196,7 @@ public interface MagicAPI {
      * Get all currently loaded Mage instances that have
      * pending construction batches.
      *
-     * These may be players or Automata (command blocks)
+     * <p>These may be players or Automata (command blocks)
      *
      * @return The list of Mages that have pending constructions in progress.
      */
@@ -207,10 +206,10 @@ public interface MagicAPI {
     /**
      * Retrieve or create a Mage for a particular CommandSender.
      *
-     * There is one Mage for the Console sender, one Mage for each Player,
+     * <p>There is one Mage for the Console sender, one Mage for each Player,
      * and one Mage for each named Command Block.
      *
-     * Each Mage is persistent and singular- two command blocks with the same
+     * <p>Each Mage is persistent and singular- two command blocks with the same
      * name, if loaded at the same time, will use the same Mage. This may
      * cause conflicts with cooldowns or other persistent Spell data.
      *
@@ -222,7 +221,7 @@ public interface MagicAPI {
     /**
      * Retrieve or create a Mage for a particular Entity.
      *
-     * Every Entity should use its own Mage for casting spells. Entity
+     * <p>Every Entity should use its own Mage for casting spells. Entity
      * Mages are tracked by UUID, and their data is saved and restored
      * as normal.
      *
@@ -237,7 +236,7 @@ public interface MagicAPI {
      * the item in the player's hand if it is empty, else in the player's
      * inventory. If there is no room, the item will drop on the ground.
      *
-     * If the item is a Wand, and it goes into the player's hand, it
+     * <p>If the item is a Wand, and it goes into the player's hand, it
      * will be activated. Make sure to use this method, or else make
      * sure to deal with activating wands as the player gets them.
      *
@@ -249,7 +248,7 @@ public interface MagicAPI {
     /**
      * Give experience to a player, in a way that is safe for wands.
      *
-     * This method may get removed in the future if Wands can be smarter
+     * <p>This method may get removed in the future if Wands can be smarter
      * about XP being added externally.
      *
      * @param player The Player to give XP
@@ -260,7 +259,7 @@ public interface MagicAPI {
     /**
      * A utility method to get the names of all currently logged-in Players.
      *
-     * Useful for tab-completion.
+     * <p>Useful for tab-completion.
      *
      * @return The names of all logged-in players.
      */
@@ -294,46 +293,35 @@ public interface MagicAPI {
     /**
      * Return the key name of an item, so it can be re-created with
      * createItem.
-     *
-     * @param item
-     * @return
      */
     String getItemKey(ItemStack item);
 
     /**
      * Return a string description of an item.
      *
-     * This will use the display name if set, then Vault if
+     * <p>This will use the display name if set, then Vault if
      * present, then falling back to the Material name.
      *
-     * @param item
+     * @param item The item stack.
      * @return A description of this item
      */
     String describeItem(ItemStack item);
 
     /**
      * Check to see if a player has a specific item.
-     *
-     * @param player
-     * @param item
-     * @return
      */
     boolean hasItem(Player player, ItemStack item);
 
     /**
      * Check to see if a player has a specific item, and remove it
      * from the player's inventory.
-     *
-     * @param player
-     * @param item
-     * @return
      */
     boolean takeItem(Player player, ItemStack item);
 
     /**
      * Create a new Wand from a template.
      *
-     * Once created, a Wand is a unique item. It "remembers" which template
+     * <p>Once created, a Wand is a unique item. It "remembers" which template
      * it was created from, but this is currently not used for anything.
      *
      * @param wandKey The template key, or blank for a default wand.
@@ -344,7 +332,7 @@ public interface MagicAPI {
     /**
      * Create an upgrade Wand item from a template.
      *
-     * This can be used to create upgrade items from wand
+     * <p>This can be used to create upgrade items from wand
      * templates that are not originally meant to be upgrades.
      *
      * @param wandKey The template key
@@ -372,7 +360,7 @@ public interface MagicAPI {
     /**
      * Create a new Wand instance out of a given Material type.
      *
-     * This will create a new ItemStack to represent the Wand.
+     * <p>This will create a new ItemStack to represent the Wand.
      *
      * @param iconMaterial The type of Material to use as the Wand icon.
      * @param iconData Data used for durability or icon variants.
@@ -435,7 +423,7 @@ public interface MagicAPI {
     /**
      * Create an ItemStack that represents a Spell.
      *
-     * This item will be absorbed by a Wand on activate, adding that Spell
+     * <p>This item will be absorbed by a Wand on activate, adding that Spell
      * to the Wand, if the Wand finds this item in a Player's inventory.
      *
      * @param spellKey The Spell to create an item for.
@@ -446,7 +434,7 @@ public interface MagicAPI {
     /**
      * Create an ItemStack that represents a Material Brush.
      *
-     * This item will be absorbed by a Wand on activate, adding that brush
+     * <p>This item will be absorbed by a Wand on activate, adding that brush
      * to the Wand, if the Wand finds this item in a Player's inventory.
      *
      * @param brushKey The Material brush to create an item for.
@@ -464,7 +452,7 @@ public interface MagicAPI {
     /**
      * Forget a specific LostWand.
      *
-     * The ItemStack will not be removed if it still exists, and
+     * <p>The ItemStack will not be removed if it still exists, and
      * a new LostWand record may get created if the ItemStack is found
      * again by the Chunk scanner.
      *
@@ -482,11 +470,11 @@ public interface MagicAPI {
     /**
      * Cast a specific Spell, with optional parameters.
      *
-     * The parameters are generally in alternating key/value format, such as
+     * <p>The parameters are generally in alternating key/value format, such as
      *
-     * {"radius", "32", "range", "64"}
+     * <code>{"radius", "32", "range", "64"}</code>
      *
-     * This Spell will be cast using the COMMAND Mage.
+     * <p>This Spell will be cast using the COMMAND Mage.
      *
      * @param spellName The key name of the Spell to cast
      * @param parameters A list of parameters, as if cast from the command-line.
@@ -497,11 +485,11 @@ public interface MagicAPI {
     /**
      * Cast a specific Spell, with optional parameters, using a specific CommandSender and/or Player.
      *
-     * The parameters are generally in alternating key/value format, such as
+     * <p>The parameters are generally in alternating key/value format, such as
      *
-     * {"radius", "32", "range", "64"}
+     * <code>{"radius", "32", "range", "64"}</code>
      *
-     * The CommandSender and Player may differ, in which case both will be notified of Spell results.
+     * <p>The CommandSender and Player may differ, in which case both will be notified of Spell results.
      *
      * @param spellName The key name of the Spell to cast
      * @param parameters A list of parameters, as if cast from the command-line.
@@ -516,7 +504,7 @@ public interface MagicAPI {
      * Get a list of all currently loaded SpellTemplate records, as defined in spells.defaults.yml
      * and spells.yml
      *
-     * A Spell is created for a Mage from a SpellTemplate.
+     * <p>A Spell is created for a Mage from a SpellTemplate.
      *
      * @return A list of all known SpellTemplate definitions.
      */
@@ -534,7 +522,7 @@ public interface MagicAPI {
     /**
      * Get a list of all valid Material Brush names.
      *
-     * This will include all Block Materials, as well as special brushes
+     * <p>This will include all Block Materials, as well as special brushes
      * (copy, clone, erase, replicate, map) and any known schematic brushes.
      *
      * @return A list of all valid brush keys.
@@ -544,12 +532,12 @@ public interface MagicAPI {
     /**
      * Get a list of all known schematics.
      *
-     * These will be loaded from Magic's built-in schematic collection,
+     * <p>These will be loaded from Magic's built-in schematic collection,
      * or from an external source (e.g. WorldEdit).
      *
-     * The list may be empty if schematics are disabled.
+     * <p>The list may be empty if schematics are disabled.
      *
-     * These are the raw schematic names, and do not have the "schematic:" prefix or ".schematic" extension.
+     * <p>These are the raw schematic names, and do not have the "schematic:" prefix or ".schematic" extension.
      *
      * @return The list of known schematic names.
      */
@@ -558,7 +546,7 @@ public interface MagicAPI {
     /**
      * Get the MageController.
      *
-     * The controller is used for more advanced plugin interaction, and is
+     * <p>The controller is used for more advanced plugin interaction, and is
      * used heavily by Spells themselves to interact with the Magic plugin's
      * internal functionality.
      *

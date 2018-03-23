@@ -9,10 +9,10 @@ import org.bukkit.util.Vector;
 /**
  * Implements a Collection of Blocks, for quick getting/putting while iterating
  * over a set or area of blocks.
- * 
- * A BlockList also tracks the BoundingBox that contains all of its blocks.
- * 
- * A BlockList should not contain blocks from more than one World in it.
+ *
+ * <p>A BlockList also tracks the BoundingBox that contains all of its blocks.
+ *
+ * <p>A BlockList should not contain blocks from more than one World in it.
  */
 public interface BlockList extends Collection<BlockData> {
     void save(ConfigurationSection node);

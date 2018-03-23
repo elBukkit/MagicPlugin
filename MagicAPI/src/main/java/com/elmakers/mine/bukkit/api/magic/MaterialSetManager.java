@@ -39,11 +39,11 @@ public interface MaterialSetManager {
      *
      * @param name
      *            The material set name or parameters.
-     * @return When the name is empty, or an empty string null is returned.
-     *         <p>
-     *         In all other cases a {@link MaterialSet} is returned. It will
-     *         either be one named exactly like {@code name}, or parsed by the
-     *         string.
+     * @return
+     *          When the name is empty, or an empty string null is returned.
+     *          In all other cases a {@link MaterialSet} is returned. It will
+     *          either be one named exactly like {@code name}, or parsed by the
+     *          string.
      */
     @Nullable
     MaterialSet fromConfig(@Nullable String name);

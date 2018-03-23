@@ -11,13 +11,12 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.
- * 
- * This also stores the block state using the MaterialAndData structure as a base, and can be
+ *
+ * <p>This also stores the block state using the MaterialAndData structure as a base, and can be
  * used to restore a previously stored state.
- * 
- * In addition, BlockData instances can be linked to each other for layered undo queues that work
+ *
+ * <p>In addition, BlockData instances can be linked to each other for layered undo queues that work
  * even when undone out of order.
- * 
  */
 public interface BlockData extends MaterialAndData {
     long getId();

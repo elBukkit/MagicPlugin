@@ -29,7 +29,7 @@ public interface CasterProperties extends MagicConfigurable {
     /**
      * Returns a Spell for a given spell key, if this caster has the spell.
      *
-     * Will return the correct spell level for the given spell, regarless of the level requested.
+     * <p>Will return the correct spell level for the given spell, regarless of the level requested.
      *
      * @param spellKey The spell key to request
      * @return the Spell, or null if not present here.

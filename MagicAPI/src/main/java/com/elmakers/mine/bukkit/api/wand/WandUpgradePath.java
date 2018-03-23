@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 /**
  * This interface is deprecated and will be replaced by ProgressionPath.
  *
- * Please transition to ProgressionPath as soon as possible to keep your
+ * <p>Please transition to ProgressionPath as soon as possible to keep your
  * integration future-proof!
  */
 // TODO: Actually deprecate this when we can.

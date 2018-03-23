@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.api.spell;
 
 /**
  * Every Spell will return a SpellResult when cast. This result
- * will determine the messaging and effects used, as well as whether 
+ * will determine the messaging and effects used, as well as whether
  * or not the Spell cast consumes its CastingCost costs.
  */
 public enum SpellResult {
@@ -78,7 +78,7 @@ public enum SpellResult {
     /**
      * Determine if this result is a failure or not.
      *
-     * Note that a spell result can be neither failure nor
+     * <p>Note that a spell result can be neither failure nor
      * success.
      *
      * @return True if this cast was a failure.
@@ -108,12 +108,12 @@ public enum SpellResult {
      * Determine if this result should stop processing or not.
      *
      * @return True if this result should stop processing, either
-     *  temporarily (PENDING) or permanently (CANCELLED)
+     *      temporarily (PENDING) or permanently (CANCELLED)
      */
     public boolean isStop() {
         return stop;
     }
-    
+
     public boolean isFree(boolean castOnNoTarget) {
         if (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION)
         {
@@ -121,7 +121,7 @@ public enum SpellResult {
         }
         return isFree();
     }
-    
+
     public boolean shouldRefundCooldown(boolean castOnNoTarget) {
         return  (!castOnNoTarget && (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION));
     }

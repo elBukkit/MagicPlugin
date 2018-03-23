@@ -14,11 +14,11 @@ public interface UndoQueue {
     /**
      * Undo a recent construction performed by this Mage.
      *
-     * This will restore anything changed by the last-cast
+     * <p>This will restore anything changed by the last-cast
      * construction spell, and remove that construction from
      * the Mage's UndoQueue.
      *
-     * It will skip undoing if the UndoList is older than
+     * <p>It will skip undoing if the UndoList is older than
      * the specified timeout.
      *
      * @param timeout The maximum age of the change
@@ -31,11 +31,11 @@ public interface UndoQueue {
      * Undo a recent construction performed by this Mage against the
      * given Block
      *
-     * This will restore anything changed by the last-cast
+     * <p>This will restore anything changed by the last-cast
      * construction spell by this Mage that targeted the specific Block,
      * even if it was not the most recent Spell cast by that Mage.
      *
-     * It will skip undoing if the UndoList is older than
+     * <p>It will skip undoing if the UndoList is older than
      * the specified timeout.
      *
      * @param block The block to check for modifications.
@@ -59,15 +59,16 @@ public interface UndoQueue {
     int getSize();
 
     boolean isEmpty();
+
     boolean commit();
 
     /**
-     * Save the data in this undo queue
+     * Save the data in this undo queue.
      */
     void save(UndoData data);
 
     /**
-     * Load the data in this undo queue
+     * Load the data in this undo queue.
      */
     void load(UndoData data);
 
