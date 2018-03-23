@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import java.util.Collection;
+
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Collection;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class WeatherAction extends BaseSpellAction
 {

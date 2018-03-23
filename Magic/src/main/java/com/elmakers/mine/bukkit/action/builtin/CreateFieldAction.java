@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.ConfigurationSection;
 
 public class CreateFieldAction extends ModifyBlockAction {
     private Material fieldType;

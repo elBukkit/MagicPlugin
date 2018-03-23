@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.block;
 
+import java.util.List;
+
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;
-
-import java.util.List;
 
 public class BlockBanner extends BlockExtraData {
     protected List<Pattern> patterns;

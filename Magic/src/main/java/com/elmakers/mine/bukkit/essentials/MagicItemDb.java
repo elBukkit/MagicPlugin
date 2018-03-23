@@ -1,13 +1,13 @@
 package com.elmakers.mine.bukkit.essentials;
 
-import com.elmakers.mine.bukkit.api.spell.SpellCategory;
-import net.ess3.api.IEssentials;
-
 import org.bukkit.inventory.ItemStack;
 
 import com.earth2me.essentials.ItemDb;
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.wand.Wand;
+
+import net.ess3.api.IEssentials;
 
 public class MagicItemDb extends ItemDb {
 	

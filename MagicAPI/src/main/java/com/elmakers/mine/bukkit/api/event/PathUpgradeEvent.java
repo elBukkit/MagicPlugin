@@ -1,14 +1,15 @@
 package com.elmakers.mine.bukkit.api.event;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
+
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * A custom event that the Magic plugin will fire whenever a player upgrades to a new level

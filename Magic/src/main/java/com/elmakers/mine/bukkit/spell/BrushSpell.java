@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.elmakers.mine.bukkit.utility.ColorHD;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -13,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 

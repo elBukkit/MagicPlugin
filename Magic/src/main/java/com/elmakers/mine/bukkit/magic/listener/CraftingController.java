@@ -1,7 +1,11 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import com.elmakers.mine.bukkit.api.event.CraftWandEvent;
-import com.elmakers.mine.bukkit.magic.MagicRecipe;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,15 +23,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.event.CraftWandEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.MagicRecipe;
 import com.elmakers.mine.bukkit.wand.Wand;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class CraftingController implements Listener {
 	private final MagicController controller;

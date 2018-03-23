@@ -1,7 +1,8 @@
 package com.elmakers.mine.bukkit.action;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
 import org.bukkit.entity.Entity;
+
+import com.elmakers.mine.bukkit.api.action.CastContext;
 
 public class EffectContext {
     private final CastContext context;

@@ -1,5 +1,15 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
+
 import com.elmakers.mine.bukkit.action.BaseProjectileAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -12,15 +22,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Item;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.util.Vector;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 public class ThrowItemAction extends BaseProjectileAction {
     private double itemSpeedMin;

@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.citizens;
 
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import net.citizensnpcs.api.util.DataKey;
+import java.util.Collection;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -9,7 +9,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import java.util.Collection;
+
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+
+import net.citizensnpcs.api.util.DataKey;
 
 public class MagicCitizensTrait extends CitizensTrait {
 

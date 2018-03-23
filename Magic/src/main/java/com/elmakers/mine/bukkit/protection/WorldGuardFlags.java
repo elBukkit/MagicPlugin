@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.util.Set;
+
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.association.RegionAssociable;
-
-import java.util.Set;
 
 public interface WorldGuardFlags {
     public String getDestructible(RegionAssociable source, ApplicableRegionSet checkSet);

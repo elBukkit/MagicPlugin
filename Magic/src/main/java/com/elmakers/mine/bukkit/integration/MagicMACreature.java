@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.integration;
 
-import com.elmakers.mine.bukkit.api.entity.EntityData;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.garbagemule.MobArena.framework.Arena;
-import com.garbagemule.MobArena.waves.MACreature;
-import com.garbagemule.MobArena.waves.WaveUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+
+import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.garbagemule.MobArena.framework.Arena;
+import com.garbagemule.MobArena.waves.MACreature;
+import com.garbagemule.MobArena.waves.WaveUtils;
 
 public class MagicMACreature extends MACreature {
     private final EntityData entityData;

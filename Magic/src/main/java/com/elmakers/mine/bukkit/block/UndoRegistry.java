@@ -1,13 +1,13 @@
 package com.elmakers.mine.bukkit.block;
 
-import com.elmakers.mine.bukkit.api.block.BlockData;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import com.elmakers.mine.bukkit.api.block.BlockData;
 
 public class UndoRegistry {
     protected Map<Long, BlockData> modified = new HashMap<>();

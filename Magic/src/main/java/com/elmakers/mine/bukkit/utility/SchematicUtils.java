@@ -1,14 +1,15 @@
 package com.elmakers.mine.bukkit.utility;
 
-import com.elmakers.mine.bukkit.block.Schematic;
-import org.bukkit.Bukkit;
-import org.bukkit.util.Vector;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.bukkit.Bukkit;
+import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.block.Schematic;
 
 public class SchematicUtils extends CompatibilityUtils {
     public static boolean loadSchematic(File inputFile, Schematic schematic) {

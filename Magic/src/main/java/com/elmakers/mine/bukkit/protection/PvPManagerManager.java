@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.protection;
 
-import me.NoChance.PvPManager.PvPManager;
-import me.NoChance.PvPManager.PvPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import me.NoChance.PvPManager.PvPManager;
+import me.NoChance.PvPManager.PvPlayer;
 
 /**
  * This a manager specifically for the PvPManager plugin.

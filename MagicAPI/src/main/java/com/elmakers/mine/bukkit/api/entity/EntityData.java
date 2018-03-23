@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.api.entity;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.Art;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -8,6 +7,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface EntityData {
     String getKey();

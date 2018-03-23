@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.effect;
 
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import java.util.Collection;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -8,7 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Collection;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEffect {
     private Sound sound;

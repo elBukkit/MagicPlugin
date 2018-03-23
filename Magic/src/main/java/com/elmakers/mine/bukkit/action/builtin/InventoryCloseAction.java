@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
+
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
 
 public class InventoryCloseAction extends BaseSpellAction {
 

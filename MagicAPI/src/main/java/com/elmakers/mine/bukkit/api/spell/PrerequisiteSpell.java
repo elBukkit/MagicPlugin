@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.api.spell;
 
-import com.elmakers.mine.bukkit.api.magic.CasterProperties;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 
 /**
  * Represents a spell that is required to learn another spell or path.

@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.entity;
 
-import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+
+import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 
 public class ScoreboardTeamProvider implements TeamProvider {
     @Override

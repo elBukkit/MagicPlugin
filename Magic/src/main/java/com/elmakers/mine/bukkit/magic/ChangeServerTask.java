@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.magic;
 
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class ChangeServerTask implements Runnable {
     private final Player player;

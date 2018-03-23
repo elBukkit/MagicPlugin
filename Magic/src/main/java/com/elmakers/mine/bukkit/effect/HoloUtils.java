@@ -1,11 +1,12 @@
 package com.elmakers.mine.bukkit.effect;
 
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 /**
  * With much thanks to zombiekiller753 and Goblom!

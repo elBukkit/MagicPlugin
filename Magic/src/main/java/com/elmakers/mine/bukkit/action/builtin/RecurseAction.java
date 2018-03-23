@@ -1,5 +1,18 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -9,18 +22,6 @@ import com.elmakers.mine.bukkit.block.BlockFace;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class RecurseAction extends CompoundAction {
     protected int recursionDepth;

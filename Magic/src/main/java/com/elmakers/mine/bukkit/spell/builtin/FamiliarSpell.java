@@ -6,8 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import com.elmakers.mine.bukkit.utility.RandomUtils;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -24,13 +22,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.util.Vector;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class FamiliarSpell extends UndoableSpell implements Listener
 {

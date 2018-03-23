@@ -1,9 +1,8 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -12,9 +11,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicGiveCommandExecutor extends MagicTabExecutor {
 	public MagicGiveCommandExecutor(MagicAPI api) {

@@ -1,12 +1,13 @@
 package com.elmakers.mine.bukkit.api.requirements;
 
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.configuration.ConfigurationSection;
-
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class Requirement {
     public final static String DEFAULT_TYPE = "magic";

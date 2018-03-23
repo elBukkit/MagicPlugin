@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 

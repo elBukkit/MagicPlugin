@@ -1,15 +1,9 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseProjectileAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.magic.SourceLocation;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Random;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Arrow;
@@ -20,11 +14,16 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import com.elmakers.mine.bukkit.action.BaseProjectileAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.magic.SourceLocation;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class ProjectileAction  extends BaseProjectileAction
 {

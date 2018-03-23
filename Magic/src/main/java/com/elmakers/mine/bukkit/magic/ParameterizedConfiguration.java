@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.magic;
 
-import de.slikey.effectlib.math.EquationStore;
-import de.slikey.effectlib.math.EquationTransform;
+import java.util.Map;
+import java.util.Set;
+
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Map;
-import java.util.Set;
+import de.slikey.effectlib.math.EquationStore;
+import de.slikey.effectlib.math.EquationTransform;
 
 public abstract class ParameterizedConfiguration extends ParameterizedConfigurationSection implements Configuration {
     private static class Options extends ConfigurationOptions {

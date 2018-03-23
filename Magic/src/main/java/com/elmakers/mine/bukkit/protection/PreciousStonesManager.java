@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.protection;
 
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import java.util.Map;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Map;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
 public class PreciousStonesManager implements BlockBuildManager, BlockBreakManager, PVPManager {
 	private boolean enabled = false;

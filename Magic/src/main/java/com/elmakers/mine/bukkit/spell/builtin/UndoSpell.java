@@ -1,15 +1,15 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.batch.Batch;
+import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 

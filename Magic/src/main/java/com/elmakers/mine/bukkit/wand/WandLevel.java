@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.elmakers.mine.bukkit.api.magic.CasterProperties;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
-import org.bukkit.configuration.MemoryConfiguration;
 
 public class WandLevel {
     private final WandUpgradePath path;

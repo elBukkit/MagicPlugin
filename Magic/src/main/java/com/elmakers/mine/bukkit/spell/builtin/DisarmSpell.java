@@ -1,6 +1,9 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,15 +15,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.wand.Wand;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 @Deprecated
 public class DisarmSpell extends TargetingSpell 

@@ -1,8 +1,9 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.magic.MagicController;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.Chunk;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,10 +14,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.logging.Level;
+import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class ExplosionController implements Listener {
     private final MagicController controller;

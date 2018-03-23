@@ -1,12 +1,14 @@
 package com.elmakers.mine.bukkit.effect.builtin;
 
-import com.elmakers.mine.bukkit.effect.EffectRepeating;
-import de.slikey.effectlib.math.VectorTransform;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.effect.EffectRepeating;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+
+import de.slikey.effectlib.math.VectorTransform;
+import de.slikey.effectlib.util.DynamicLocation;
 
 public class EffectTransform extends EffectRepeating {
     private VectorTransform positionTransform;

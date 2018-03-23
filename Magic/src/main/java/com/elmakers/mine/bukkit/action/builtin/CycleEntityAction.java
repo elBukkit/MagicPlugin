@@ -1,10 +1,5 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import org.bukkit.Art;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -19,6 +14,12 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
+
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class CycleEntityAction extends BaseSpellAction {
 

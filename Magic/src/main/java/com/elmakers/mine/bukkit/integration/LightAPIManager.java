@@ -1,11 +1,12 @@
 package com.elmakers.mine.bukkit.integration;
 
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
+
 import ru.beykerykt.lightapi.LightAPI;
 import ru.beykerykt.lightapi.chunks.ChunkInfo;
-
-import java.util.List;
 
 public class LightAPIManager {
     public LightAPIManager(Plugin plugin) {

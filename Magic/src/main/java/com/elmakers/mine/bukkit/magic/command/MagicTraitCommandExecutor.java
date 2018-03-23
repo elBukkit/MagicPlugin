@@ -1,5 +1,15 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
@@ -7,18 +17,10 @@ import com.elmakers.mine.bukkit.citizens.CitizensTrait;
 import com.elmakers.mine.bukkit.citizens.CommandCitizensTrait;
 import com.elmakers.mine.bukkit.citizens.MagicCitizensTrait;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 public class MagicTraitCommandExecutor extends MagicTabExecutor {
     final protected CitizensController controller;

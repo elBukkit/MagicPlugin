@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.magic;
 
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
-import javax.annotation.Nonnull;
-import java.util.Set;
 
 public class SpellParameters extends ParameterizedConfiguration {
     private static Set<String> attributes;

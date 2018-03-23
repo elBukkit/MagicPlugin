@@ -1,14 +1,15 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 
 public class ExplosionAction extends BaseSpellAction {
 

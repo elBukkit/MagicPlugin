@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.entity;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -9,9 +11,8 @@ import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class EntityVillagerData extends EntityExtraData {
     protected Villager.Profession profession;

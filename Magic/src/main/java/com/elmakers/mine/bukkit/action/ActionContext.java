@@ -1,11 +1,12 @@
 package com.elmakers.mine.bukkit.action;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.configuration.ConfigurationSection;
 
 public class ActionContext implements Cloneable {
     private final ConfigurationSection parameters;

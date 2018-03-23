@@ -1,9 +1,10 @@
 package com.elmakers.mine.bukkit.warp;
 
-import com.earth2me.essentials.Essentials;
-import com.earth2me.essentials.Warps;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
+
+import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.Warps;
 
 /**
  * Encapsulates Essentials warps

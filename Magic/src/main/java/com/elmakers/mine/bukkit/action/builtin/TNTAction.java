@@ -1,5 +1,17 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Random;
+
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
+
 import com.elmakers.mine.bukkit.action.BaseProjectileAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -9,17 +21,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.util.Vector;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Random;
 
 public class TNTAction extends BaseProjectileAction
 {

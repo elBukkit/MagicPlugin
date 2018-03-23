@@ -1,16 +1,17 @@
 package com.elmakers.mine.bukkit.integration;
 
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
-import net.milkbowl.vault.item.ItemInfo;
-import net.milkbowl.vault.item.Items;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
+import net.milkbowl.vault.item.ItemInfo;
+import net.milkbowl.vault.item.Items;
 
 public class VaultController {
     private static VaultController instance;

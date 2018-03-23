@@ -1,20 +1,5 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
-import com.google.common.io.Files;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -24,6 +9,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.google.common.io.Files;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private final MagicController controller;

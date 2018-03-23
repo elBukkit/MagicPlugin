@@ -1,9 +1,10 @@
 package com.elmakers.mine.bukkit.api.event;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 /**
  * A custom event that the Magic plugin will fire whenever a wand has become

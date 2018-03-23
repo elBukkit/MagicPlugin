@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.entity;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class EntityHorseData extends EntityExtraData {
     public Horse.Color color;

@@ -4,16 +4,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.batch.Batch;
-import com.elmakers.mine.bukkit.api.entity.EntityData;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import org.bukkit.entity.EntityType;
+
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.batch.Batch;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public interface UndoList extends BlockList, Comparable<UndoList> {
     void commit();

@@ -1,15 +1,9 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.effect.SoundEffect;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import de.slikey.effectlib.util.VectorUtils;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -22,9 +16,17 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.effect.SoundEffect;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
+
+import de.slikey.effectlib.util.VectorUtils;
 
 public class RideEntityAction extends BaseSpellAction
 {

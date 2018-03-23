@@ -1,5 +1,18 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -10,22 +23,10 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 public class MageCommandExecutor extends MagicConfigurableExecutor {
 	public MageCommandExecutor(MagicAPI api) {

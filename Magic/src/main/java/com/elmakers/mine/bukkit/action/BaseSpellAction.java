@@ -1,14 +1,15 @@
 package com.elmakers.mine.bukkit.action;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 public abstract class BaseSpellAction implements SpellAction
 {

@@ -1,12 +1,13 @@
 package com.elmakers.mine.bukkit.magic;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import static com.google.common.base.Preconditions.*;
-
-import org.bukkit.configuration.ConfigurationSection;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import org.bukkit.configuration.ConfigurationSection;
+
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class MageClassTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.magic.MageClassTemplate {
     private MageClassTemplate parent;

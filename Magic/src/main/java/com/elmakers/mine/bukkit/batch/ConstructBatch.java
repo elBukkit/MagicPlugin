@@ -10,9 +10,6 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.block.UndoList;
-import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,13 +27,16 @@ import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.ConstructionType;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 public class ConstructBatch extends BrushBatch {
 	private final Location center;

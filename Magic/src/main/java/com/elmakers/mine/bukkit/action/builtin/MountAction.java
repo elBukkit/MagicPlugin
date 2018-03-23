@@ -1,12 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class MountAction extends BaseSpellAction {
     private boolean eject = false;

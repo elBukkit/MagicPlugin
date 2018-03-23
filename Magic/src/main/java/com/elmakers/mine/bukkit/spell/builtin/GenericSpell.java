@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.Target;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 
 @Deprecated
 public class GenericSpell extends UndoableSpell

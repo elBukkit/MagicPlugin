@@ -1,17 +1,18 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class CycleBlockAction extends BaseSpellAction {
 

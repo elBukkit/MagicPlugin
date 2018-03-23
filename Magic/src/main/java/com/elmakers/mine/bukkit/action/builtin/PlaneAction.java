@@ -1,9 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 
 public class PlaneAction extends VolumeAction
 {

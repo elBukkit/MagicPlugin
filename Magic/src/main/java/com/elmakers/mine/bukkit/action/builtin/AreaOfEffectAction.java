@@ -1,5 +1,17 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+
 import com.elmakers.mine.bukkit.action.CompoundEntityAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -7,17 +19,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class AreaOfEffectAction extends CompoundEntityAction
 {

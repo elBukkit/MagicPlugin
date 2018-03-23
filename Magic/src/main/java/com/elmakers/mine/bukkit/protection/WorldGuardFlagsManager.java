@@ -1,5 +1,9 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.util.Set;
+
+import org.bukkit.plugin.Plugin;
+
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -8,11 +12,7 @@ import com.sk89q.worldguard.protection.association.RegionAssociable;
 import com.sk89q.worldguard.protection.flags.RegionGroup;
 import com.sk89q.worldguard.protection.flags.SetFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;
-
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import org.bukkit.plugin.Plugin;
-
-import java.util.Set;
 
 public class WorldGuardFlagsManager implements WorldGuardFlags {
 

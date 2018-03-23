@@ -1,16 +1,17 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.action.builtin.SkillSelectorAction;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import com.elmakers.mine.bukkit.action.CastContext;
+import com.elmakers.mine.bukkit.action.builtin.SkillSelectorAction;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 
 public class MagicSkillsCommandExecutor extends MagicTabExecutor {
 

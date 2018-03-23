@@ -1,17 +1,5 @@
 package com.elmakers.mine.bukkit.magic;
 
-import com.elmakers.mine.bukkit.api.item.ItemData;
-import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
-import org.bukkit.plugin.Plugin;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,6 +9,19 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import javax.annotation.Nullable;
+
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 /**
  * Represents a crafting recipe which will make a wand item.

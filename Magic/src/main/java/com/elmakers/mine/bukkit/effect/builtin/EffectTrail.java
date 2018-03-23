@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.effect.builtin;
 
-import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -8,6 +7,8 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.effect.EffectRepeating;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+
+import de.slikey.effectlib.util.DynamicLocation;
 
 public class EffectTrail extends EffectRepeating {
 

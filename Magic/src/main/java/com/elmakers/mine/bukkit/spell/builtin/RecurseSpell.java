@@ -1,15 +1,15 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import com.elmakers.mine.bukkit.action.ActionContext;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.action.ActionContext;
+import com.elmakers.mine.bukkit.action.builtin.ModifyBlockAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.batch.BlockRecurse;
-import com.elmakers.mine.bukkit.action.builtin.ModifyBlockAction;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 @Deprecated

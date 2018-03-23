@@ -1,5 +1,10 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -8,11 +13,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
 
 public class HitboxUtils extends CompatibilityUtils {
     private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<>();

@@ -1,12 +1,13 @@
 package com.elmakers.mine.bukkit.magic;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.MagicProperties;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -16,12 +17,13 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicProperties;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 
 public class BaseMagicProperties implements MagicProperties {
 

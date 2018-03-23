@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.batch;
 
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.block.ConstructionType;
-import com.elmakers.mine.bukkit.spell.BrushSpell;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Minecart;
 import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.block.ConstructionType;
+import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 /**
  * TODO: Abstract a lot of this into a common class for ConstructBatch

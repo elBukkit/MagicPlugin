@@ -1,28 +1,5 @@
 package com.elmakers.mine.bukkit.wand;
 
-import com.elmakers.mine.bukkit.api.event.PathUpgradeEvent;
-import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
-import com.elmakers.mine.bukkit.api.magic.CasterProperties;
-import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +10,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+
+import com.elmakers.mine.bukkit.api.event.PathUpgradeEvent;
+import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 /**
  * A represents a randomized upgrade path that a wand may use

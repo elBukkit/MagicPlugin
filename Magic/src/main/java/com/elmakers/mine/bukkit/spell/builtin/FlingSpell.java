@@ -2,9 +2,6 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.Collection;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.spell.UndoableSpell;
-import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -18,6 +15,9 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 @Deprecated
 public class FlingSpell extends UndoableSpell implements Listener

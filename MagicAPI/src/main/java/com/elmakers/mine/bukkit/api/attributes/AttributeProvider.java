@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.api.attributes;
 
-import org.bukkit.entity.Player;
-
 import java.util.Set;
+
+import org.bukkit.entity.Player;
 
 public interface AttributeProvider {
     Set<String> getAllAttributes();

@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.api.magic;
 
+import java.util.Collection;
+
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-
-import java.util.Collection;
 
 public interface MageClass extends CasterProperties, CostReducer, CooldownReducer {
     @Override

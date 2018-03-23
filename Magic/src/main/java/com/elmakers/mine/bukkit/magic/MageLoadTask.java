@@ -1,8 +1,9 @@
 package com.elmakers.mine.bukkit.magic;
 
+import org.bukkit.Bukkit;
+
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.event.MageLoadEvent;
-import org.bukkit.Bukkit;
 
 public class MageLoadTask implements Runnable {
     private final Mage mage;

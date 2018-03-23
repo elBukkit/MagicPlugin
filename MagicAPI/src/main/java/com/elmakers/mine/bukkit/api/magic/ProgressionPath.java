@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.api.magic;
 
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-
 import java.util.Collection;
 import java.util.Set;
+
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
 public interface ProgressionPath {
     String getKey();

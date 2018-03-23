@@ -1,21 +1,5 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.maps.MapController;
-import com.elmakers.mine.bukkit.api.maps.URLMap;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +13,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.InflaterInputStream;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.maps.MapController;
+import com.elmakers.mine.bukkit.api.maps.URLMap;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicMapCommandExecutor extends MagicMapExecutor {
 	public MagicMapCommandExecutor(MagicAPI api) {

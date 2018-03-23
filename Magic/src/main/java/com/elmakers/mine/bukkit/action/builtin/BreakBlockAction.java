@@ -1,5 +1,14 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.InventoryHolder;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -7,14 +16,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.InventoryHolder;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 public class BreakBlockAction extends ModifyBlockAction {
     private int durabilityAmount;

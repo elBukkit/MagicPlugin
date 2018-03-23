@@ -1,14 +1,15 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.maps.URLMap;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.maps.URLMap;
 
 public abstract class MagicMapExecutor extends MagicTabExecutor {
     public MagicMapExecutor(MagicAPI api) {

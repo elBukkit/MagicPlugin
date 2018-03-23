@@ -1,18 +1,18 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.google.common.collect.Iterables;
+import java.util.Collection;
+import java.util.Random;
 
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Collection;
-import java.util.Random;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.google.common.collect.Iterables;
 
 public class PlayRecordAction extends BaseSpellAction
 {

@@ -1,17 +1,18 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 public class OrientAction extends BaseSpellAction {
     private Float pitch;

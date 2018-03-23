@@ -1,5 +1,16 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.lang.reflect.Method;
+import java.util.UUID;
+import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.db.TownyDataSource;
@@ -16,16 +27,6 @@ import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.CombatUtil;
 import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import java.lang.reflect.Method;
-import java.util.UUID;
-import java.util.logging.Level;
 
 public class TownyAPI
 {

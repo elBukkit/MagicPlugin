@@ -4,16 +4,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.api.requirements.Requirement;
-import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 /**
  * A Spell template, as defined in the spells configuration files.

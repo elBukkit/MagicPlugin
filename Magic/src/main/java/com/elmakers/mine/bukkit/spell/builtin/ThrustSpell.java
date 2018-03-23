@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,6 +15,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 public class ThrustSpell extends TargetingSpell
 {
