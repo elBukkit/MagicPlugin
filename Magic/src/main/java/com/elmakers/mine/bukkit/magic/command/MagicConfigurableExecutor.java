@@ -44,7 +44,9 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
         } else if (value.equals("\"\"")) {
             value = "";
         }
-        value = value.replace("\\n", "\n");
+        if (value != null) {
+            value = value.replace("\\n", "\n");
+        }
         boolean modified = false;
         if (value == null) {
             if (target.removeProperty(parameters[0])) {
