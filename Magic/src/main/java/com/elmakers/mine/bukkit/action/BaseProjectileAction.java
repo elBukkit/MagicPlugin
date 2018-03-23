@@ -103,10 +103,12 @@ public abstract class BaseProjectileAction extends CompoundAction {
                 entity.removeMetadata("hit", plugin);
                 Location sourceLocation = entity.getLocation();
 
-                // So.. projectile X direction is backwards? I tested it with arrows and fireballs... don't really know what's up.
-                // Going to adjust for it until I hear otherwise.
-                Vector direction = sourceLocation.getDirection();
-                direction.setX(-direction.getX());
+                // So.. projectile X direction is backwards. See: https://hub.spigotmc.org/jira/browse/SPIGOT-3867
+                // The direction of the entity is adjusted to account for the orientation of the models.
+                // I'm using the fix suggested by md_5, which is to use the velocity rather than orientation.
+                // This feels cleaner than inverting the x-component of direction, just in case Mojang ever
+                // fixes this issue.
+                Vector direction = entity.getVelocity().normalize();
                 sourceLocation.setDirection(direction);
 
                 if (targetBlock != null) {
