@@ -1182,20 +1182,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	protected void loadBrushInventory(Map<String, ? extends Object> inventory) {
     	if (inventory == null) return;
+    	WandUpgradePath path = getPath();
     	for (Map.Entry<String, ?> brushEntry : inventory.entrySet()) {
     		Object slot = brushEntry.getValue();
+    		String brushKey = brushEntry.getKey();
+			if (limitBrushesToPath && path != null && !path.containsBrush(brushKey)) continue;
     		if (slot != null && slot instanceof Integer) {
-    			brushInventory.put(brushEntry.getKey(), (Integer)slot);
+    			brushInventory.put(brushKey, (Integer)slot);
 			}
 		}
 	}
 
 	protected void loadSpellInventory(Map<String, ? extends Object> inventory) {
 		if (inventory == null) return;
+    	WandUpgradePath path = getPath();
 		for (Map.Entry<String, ? extends Object> spellEntry : inventory.entrySet()) {
+			String spellKey = spellEntry.getKey();
+			if (limitSpellsToPath && path != null && !path.containsSpell(spellKey)) continue;
 			Object slot = spellEntry.getValue();
 			if (slot != null && slot instanceof Integer) {
-				spellInventory.put(spellEntry.getKey(), (Integer)slot);
+				spellInventory.put(spellKey, (Integer)slot);
 			}
 		}
 	}
