@@ -355,6 +355,10 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     protected boolean upgradeSpellLevel(String spellKey, int level) {
+        BaseMagicConfigurable storage = getStorage("spell_levels");
+        if (storage != this && storage != null) {
+            return storage.upgradeSpellLevel(spellKey, level);
+        }
         boolean modified = false;
         Map<String, Integer> spellLevels = getSpellLevels();
         Integer existingLevel = spellLevels.get(spellKey);

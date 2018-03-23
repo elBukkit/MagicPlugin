@@ -258,7 +258,15 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     protected String getMessage(String messageKey, String defaultValue) {
-        return controller.getMessages().get(messageKey, defaultValue);
+        return parameterizeMessage(controller.getMessages().get(getMessageKey(messageKey), defaultValue));
+    }
+
+    protected String getMessageKey(String messageKey) {
+        return messageKey;
+    }
+
+    protected String parameterizeMessage(String message) {
+        return message;
     }
 
     public static String describeProperty(Object property) {

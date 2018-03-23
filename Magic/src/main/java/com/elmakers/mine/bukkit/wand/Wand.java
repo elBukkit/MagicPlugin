@@ -18,8 +18,6 @@ import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
-import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
-import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -1406,24 +1404,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         	node.set("inherit", template);
 		}
     }
-
-    public void updateBrushes() {
-		if (brushes.isEmpty()) {
-			setProperty("brushes", null);
-		} else {
-			setProperty("brushes", new ArrayList<>(brushes));
-		}
-	}
-
-	public void updateSpells() {
-		if (spells.isEmpty()) {
-			setProperty("spells", null);
-			setProperty("spells_levels", null);
-		} else {
-			setProperty("spells", new ArrayList<>(spells));
-			setProperty("spell_levels", new HashMap<>(spellLevels));
-		}
-	}
 
 	public void updateBrushInventory() {
     	if (brushInventory.isEmpty()) {
@@ -3427,7 +3407,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		if (autoFill) setProperty("fill", false);
 		autoFill = false;
-		updateSpells();
 		saveState();
 		
 		return true;
@@ -4534,26 +4513,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	@Override
 	public boolean forceAddSpell(String spellName) {
-        SpellKey spellKey = new SpellKey(spellName);
-        if (hasSpell(spellKey)) {
-            return false;
-        }
+    	if (!super.addSpell(spellName)) {
+    		return false;
+		}
 
 		saveInventory();
         SpellTemplate template = controller.getSpellTemplate(spellName);
-        if (template == null) {
-            controller.getLogger().warning("Tried to add unknown spell to wand: " + spellName);
-            return false;
-        }
-
-        // This handles adding via an alias
-        if (hasSpell(template.getKey())) return false;
 
 		ItemStack spellItem = createSpellIcon(template);
 		if (spellItem == null) {
 			return false;
 		}
-        spellKey = template.getSpellKey();
+        SpellKey spellKey = template.getSpellKey();
         int level = spellKey.getLevel();
         int inventoryCount = inventories.size();
         int spellCount = spells.size();
@@ -4562,28 +4533,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Integer inventorySlot = spellInventory.get(spellKey.getBaseKey());
         SpellTemplate currentSpell = getBaseSpell(spellKey);
         clearSlot(inventorySlot);
-
-		// Special handling for spells to remove
-        Collection<SpellKey> spellsToRemove = template.getSpellsToRemove();
-        if (!spellsToRemove.isEmpty()) {
-            List<Inventory> allInventories = getAllInventories();
-            for (Inventory inventory : allInventories) {
-                ItemStack[] items = inventory.getContents();
-                for (int index = 0; index < items.length; index++) {
-                    ItemStack itemStack = items[index];
-                    if (isSpell(itemStack)) {
-                        SpellKey checkKey = new SpellKey(getSpell(itemStack));
-						for (SpellKey key : spellsToRemove) {
-							if (checkKey.getBaseKey().equals(key.getBaseKey())) {
-								inventory.setItem(index, null);
-								spells.remove(key.getKey());
-								spellLevels.remove(key.getBaseKey());
-							}
-						}
-                    }
-                }
-            }
-        }
 
         setSpellLevel(spellKey.getBaseKey(), level);
 		spells.add(spellKey.getBaseKey());
@@ -4595,35 +4544,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		addToInventory(spellItem, inventorySlot);
 		updateInventory();
 		updateHasInventory();
-		updateSpells();
         saveState();
 		updateLore();
 
         if (mage != null)
         {
-            if (currentSpell != null) {
-                String levelDescription = template.getLevelDescription();
-                if (levelDescription == null || levelDescription.isEmpty()) {
-                    levelDescription = template.getName();
-                }
-                sendLevelMessage("spell_upgraded", currentSpell.getName(), levelDescription);
-
-                String upgradeDescription = template.getUpgradeDescription().replace("$name", currentSpell.getName());
-                if (!upgradeDescription.isEmpty()) {
-                	mage.sendMessage(controller.getMessages().get("spell.upgrade_description_prefix") + upgradeDescription);
-				}
-
-                SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, template);
-                Bukkit.getPluginManager().callEvent(upgradeEvent);
-            } else {
-            	// This is a little hacky, but it is here to fix duplicate spell messages from the spellshop.
-            	if (mage.getActiveGUI() == null)
-                	sendAddMessage("spell_added", template.getName());
-
-                AddSpellEvent addEvent = new AddSpellEvent(mage, this, template);
-                Bukkit.getPluginManager().callEvent(addEvent);
-            }
-
             if (spells.size() != spellCount) {
                 if (spellCount == 0)
                 {
@@ -4683,22 +4608,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	@Override
-	protected void sendAddMessage(String messageKey, String nameParam) {
-		if (mage == null || nameParam == null || nameParam.isEmpty()) return;
-		String message = getMessage(messageKey).replace("$name", nameParam).replace("$wand", getName());
-		mage.sendMessage(message);
-	}
-
-    protected void sendLevelMessage(String messageKey, String nameParam, String level) {
-        if (mage == null || nameParam == null || nameParam.isEmpty()) return;
-        String message = getMessage(messageKey).replace("$name", nameParam).replace("$wand", getName()).replace("$level", level);
-        mage.sendMessage(message);
-    }
-
-	@Override
-	protected void sendMessage(String messageKey) {
-		if (mage == null || messageKey == null || messageKey.isEmpty()) return;
-		String message = getMessage(messageKey).replace("$wand", getName());
+	public String getMessage(String messageKey, String defaultValue) {
+    	String message = super.getMessage(messageKey, defaultValue);
 
 		// Some special-casing here, not sure how to avoid.
 		if (messageKey.equals("hotbar_count_usage")) {
@@ -4707,18 +4618,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				controlKey = controller.getMessages().get("controls." + controlKey);
 				message = message.replace("$cycle_hotbar", controlKey);
 			} else {
-				return;
+				return "";
 			}
 		}
-
-		mage.sendMessage(message);
+		return message;
 	}
 
 	@Override
-    public String getMessage(String key, String defaultValue) {
-        return controller.getMessages().get(getMessageKey(key), defaultValue);
-    }
-
     protected String getMessageKey(String key) {
     	String wandKey = "wands." + template + "." + key;
 		if (template != null && !template.isEmpty() && controller.getMessages().containsKey(wandKey)) {
@@ -4728,11 +4634,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	}
 
 	@Override
-	protected void sendDebug(String debugMessage) {
-		if (mage != null) {
-			mage.sendDebugMessage(debugMessage);
-		}
-	}
+    protected String parameterizeMessage(String message) {
+        return message.replace("$wand", getName());
+    }
 
 	@Override
 	public boolean add(com.elmakers.mine.bukkit.api.wand.Wand other) {
@@ -4763,7 +4667,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	@Override
 	public boolean addBrush(String materialKey) {
 		if (!isModifiable()) return false;
-		if (hasBrush(materialKey)) return false;
+		if (!super.addBrush(materialKey)) return false;
 
 		saveInventory();
 		
@@ -4782,22 +4686,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			updateInventory();
 		}
 		updateHasInventory();
-		updateBrushes();
         saveState();
 		updateLore();
 
         if (mage != null)
         {
-			Messages messages = controller.getMessages();
-			String materialName = MaterialBrush.getMaterialName(messages, materialKey);
-			if (materialName == null)
-			{
-				mage.getController().getLogger().warning("Invalid material: " + materialKey);
-				materialName = materialKey;
-			}
-
-			sendAddMessage("brush_added", materialName);
-
             if (brushCount == 0)
             {
 				String controlKey = getControlKey(WandAction.TOGGLE);
@@ -4880,6 +4773,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	@Override
 	public boolean removeBrush(String materialKey) {
 		if (!isModifiable() || materialKey == null) return false;
+		if (!removeBrush(materialKey)) return false;
 
 		saveInventory();
 		if (materialKey.equals(activeBrush)) {
@@ -4893,7 +4787,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 		updateActiveMaterial();
 		updateInventory();
-		updateBrushes();
 		updateBrushInventory();
         saveState();
 		updateName();
@@ -4904,8 +4797,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	@Override
 	public boolean removeSpell(String spellName) {
 		if (!isModifiable()) return false;
+		if (!super.removeSpell(spellName)) return false;
 		SpellKey spellKey = new SpellKey(spellName);
-		if (!spells.contains(spellKey.getBaseKey())) return false;
 
 		saveInventory();
 		if (activeSpell != null) {
@@ -4924,7 +4817,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         updateInventory();
 		updateHasInventory();
-		updateSpells();
 		updateSpellInventory();
         saveState();
         updateName();
@@ -5439,5 +5331,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             effectsContext = new com.elmakers.mine.bukkit.action.CastContext(mage, this);
         }
         return effectsContext;
+    }
+
+    @Override
+    public Wand getWand() {
+        return this;
     }
 }

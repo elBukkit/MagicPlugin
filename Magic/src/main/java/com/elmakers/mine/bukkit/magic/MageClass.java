@@ -285,4 +285,13 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     public float getCostScale() {
         return 1.0f;
     }
+
+	@Override
+    protected String getMessageKey(String key) {
+    	String mageKey = "classes." + template + "." + key;
+		if (controller.getMessages().containsKey(mageKey)) {
+			return mageKey;
+		}
+		return "mage." + key;
+	}
 }

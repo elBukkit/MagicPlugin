@@ -1,11 +1,16 @@
 package com.elmakers.mine.bukkit.magic;
 
+import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
+import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.wand.Wand;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
@@ -208,8 +213,23 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public boolean addSpell(String spellKey) {
+        BaseMagicConfigurable storage = getStorage("spells");
+        if (storage != this && storage != null) {
+            return storage.addSpell(spellKey);
+        }
+
+        SpellTemplate template = controller.getSpellTemplate(spellKey);
+        if (template == null) {
+            controller.getLogger().warning("Tried to add unknown spell: " + spellKey);
+            return false;
+        }
+
+        // Convert to spell if aliased
+        spellKey = template.getKey();
+
         Collection<String> spells = getBaseSpells();
         SpellKey key = new SpellKey(spellKey);
+        SpellTemplate currentSpell = getBaseSpell(spellKey);
         boolean modified = spells.add(key.getBaseKey());
         if (modified) {
             setProperty("spells", new ArrayList<>(spells));
@@ -219,15 +239,71 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             levelModified = upgradeSpellLevel(key.getBaseKey(), key.getLevel());
         }
 
-        return modified || levelModified;
+        if (!modified && !levelModified) {
+            return false;
+        }
+
+		// Special handling for spells to remove
+        Collection<SpellKey> spellsToRemove = template.getSpellsToRemove();
+        for (SpellKey removeKey : spellsToRemove) {
+            removeSpell(removeKey.getBaseKey());
+        }
+
+        Mage mage = getMage();
+        if (mage != null)
+        {
+            if (currentSpell != null) {
+                String levelDescription = template.getLevelDescription();
+                if (levelDescription == null || levelDescription.isEmpty()) {
+                    levelDescription = template.getName();
+                }
+                sendLevelMessage("spell_upgraded", currentSpell.getName(), levelDescription);
+
+                String upgradeDescription = template.getUpgradeDescription().replace("$name", currentSpell.getName());
+                if (!upgradeDescription.isEmpty()) {
+                	mage.sendMessage(controller.getMessages().get("spell.upgrade_description_prefix") + upgradeDescription);
+				}
+
+                SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, getWand(), currentSpell, template);
+                Bukkit.getPluginManager().callEvent(upgradeEvent);
+            } else {
+            	// This is a little hacky, but it is here to fix duplicate spell messages from the spellshop.
+            	if (mage.getActiveGUI() == null)
+                	sendAddMessage("spell_added", template.getName());
+
+                AddSpellEvent addEvent = new AddSpellEvent(mage, getWand(), template);
+                Bukkit.getPluginManager().callEvent(addEvent);
+            }
+        }
+
+        return true;
     }
 
     @Override
     public boolean addBrush(String brushKey) {
+        BaseMagicConfigurable storage = getStorage("brushes");
+        if (storage != this && storage != null) {
+            return storage.addBrush(brushKey);
+        }
+
         Collection<String> brushes = getBrushes();
         boolean modified = brushes.add(brushKey);
         if (modified) {
             setProperty("brushes", new ArrayList<>(brushes));
+        }
+
+        Mage mage = getMage();
+        if (modified && mage != null)
+        {
+			Messages messages = controller.getMessages();
+			String materialName = MaterialBrush.getMaterialName(messages, brushKey);
+			if (materialName == null)
+			{
+				mage.getController().getLogger().warning("Invalid material: " + brushKey);
+				materialName = brushKey;
+			}
+
+			sendAddMessage("brush_added", materialName);
         }
 
         return modified;
@@ -436,6 +512,41 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
 		return false;
 	}
+
+    protected void sendLevelMessage(String messageKey, String nameParam, String level) {
+        Mage mage = getMage();
+        if (mage == null || nameParam == null || nameParam.isEmpty()) return;
+
+        String message = getMessage(messageKey).replace("$name", nameParam).replace("$level", level);
+        mage.sendMessage(message);
+    }
+
+	@Override
+	protected void sendAddMessage(String messageKey, String nameParam) {
+        Mage mage = getMage();
+		if (mage == null || nameParam == null || nameParam.isEmpty()) return;
+		String message = getMessage(messageKey).replace("$name", nameParam);
+		mage.sendMessage(message);
+	}
+
+	@Override
+	protected void sendMessage(String messageKey) {
+        Mage mage = getMage();
+		if (mage == null || messageKey == null || messageKey.isEmpty()) return;
+		mage.sendMessage(getMessage(messageKey));
+	}
+
+	@Override
+	protected void sendDebug(String debugMessage) {
+        Mage mage = getMage();
+		if (mage != null) {
+			mage.sendDebugMessage(debugMessage);
+		}
+	}
+
+	protected Wand getWand() {
+        return null;
+    }
 
     public abstract boolean isPlayer();
     public abstract Player getPlayer();
