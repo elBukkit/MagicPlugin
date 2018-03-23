@@ -14,7 +14,7 @@
  - Fix wand current hotbar not saving
  - Add builtin attribute system
    - Attributes can be defined in attributes.yml, none exist in the default configuration.
-     See: https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/examples/rpg/attributes.yml
+     See: https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/examples/rpg/attributes.yml
    - Add /mage attribute command for listing and setting attributes
    - Attributes can be added to wands, and stack player attributes (or increase them to a limit)
    - The wand property "attributes" has been renamed to "item_attributes"
