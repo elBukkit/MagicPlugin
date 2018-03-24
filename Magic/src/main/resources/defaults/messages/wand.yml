@@ -53,8 +53,9 @@ wand:
     cooldown_reduction: "&6Cooldown Reduction $roman"
     power: "&6Power $roman"
     attributes: "&d$attribute $value"
+    attributes_negative: "&c$attribute $value"
     attributes_stack: "&d$attribute +$value"
-    attributes_stack_negative: "&d$attribute $value"
+    attributes_stack_negative: "&c$attribute $value"
     item_attributes:
       GENERIC_ATTACK_DAMAGE: "Attack Damage"
     protection:

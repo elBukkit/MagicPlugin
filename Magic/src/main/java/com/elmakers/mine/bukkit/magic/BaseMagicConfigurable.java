@@ -194,6 +194,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     protected void addPotionEffects(Map<PotionEffectType, Integer> effects, String effectsString) {
+        // TODO: Support configuration section here ... ?
         if (effectsString == null || effectsString.isEmpty()) {
             return;
         }

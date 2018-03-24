@@ -2230,15 +2230,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		ConfigurationSection attributes = getConfigurationSection("attributes");
         if (attributes != null) {
             boolean stack = getBoolean("stack");
-            String template = stack ? getMessage("attributes_stack") :  getMessage("attributes");
-            if (!template.isEmpty()) {
+            String positiveTemplate = stack ? getMessage("attributes_stack") :  getMessage("attributes");
+            String negativeTemplate = stack ? getMessage("attributes_stack_negative") :  getMessage("attributes_negative");
+            if (!positiveTemplate.isEmpty() || !negativeTemplate.isEmpty()) {
                 Set<String> keys = attributes.getKeys(false);
                 for (String key : keys) {
                     String label = controller.getMessages().get("attributes." + key + ".name", key);
 
                     // We are only display attributes as integers for now
-                    label = template.replace("$attribute", label).replace("$value", Integer.toString(attributes.getInt(key)));
-                	lore.add(label);
+					int value = attributes.getInt(key);
+					if (value == 0) continue;
+
+					String template = value > 0 ? positiveTemplate : negativeTemplate;
+					if (!template.isEmpty()) {
+						label = template.replace("$attribute", label).replace("$value", Integer.toString(value));
+						lore.add(label);
+					}
                 }
             }
         }
