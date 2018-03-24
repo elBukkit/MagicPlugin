@@ -10,8 +10,8 @@ package com.elmakers.mine.bukkit.utility;
  *
  * @param <T> The type of Numeric to randomly select
  */
-public class AscendingPair<T extends Number> implements Comparable<AscendingPair<? extends Object>> {
-    private final Long index;
+public class AscendingPair<T extends Number> implements Comparable<AscendingPair<?>> {
+    private final long index;
     private final T value;
 
     public AscendingPair(long index, T value) {
@@ -29,6 +29,6 @@ public class AscendingPair<T extends Number> implements Comparable<AscendingPair
 
     @Override
     public int compareTo(AscendingPair<? extends Object> other) {
-        return this.index.compareTo(other.index);
+        return Long.compare(this.index, other.index);
     }
 }
