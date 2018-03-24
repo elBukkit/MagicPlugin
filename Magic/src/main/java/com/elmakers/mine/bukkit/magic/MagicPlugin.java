@@ -293,6 +293,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		return controller.commitAll();
 	}
 
+	@Deprecated
 	@Override
 	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMages() {
 		return controller.getMages();
@@ -382,11 +383,13 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         }
     }
 
-	@Override
-	public com.elmakers.mine.bukkit.api.magic.Mage getMage(CommandSender sender) {
-		return controller.getMage(sender);
-	}
+    @Deprecated
+    @Override
+    public com.elmakers.mine.bukkit.api.magic.Mage getMage(CommandSender sender) {
+        return controller.getMage(sender);
+    }
 
+	@Deprecated
 	@Override
 	public com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity, CommandSender sender) {
 		return controller.getMage(entity);
