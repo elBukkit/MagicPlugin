@@ -516,11 +516,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		clear();
 	}
 
-	public void setIcon(Material material, byte data) {
-		setIcon(material == null ? null : new MaterialAndData(material, data));
-        updateIcon();
-	}
-
 	public void updateItemIcon() {
 		setIcon(icon);
 	}
@@ -559,6 +554,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		setProperty("inactive_icon", inactiveIconKey);
 		updateItemIcon();
 	}
+
+    public void setIcon(Material material, byte data) {
+        setIcon(material == null ? null : new MaterialAndData(material, data));
+        updateIcon();
+    }
 
 	@Override
 	public void setIcon(com.elmakers.mine.bukkit.api.block.MaterialAndData materialData) {
@@ -666,6 +666,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 	public boolean isUpgrade() {
 		return isUpgrade;
 	}
+
+    public static boolean isUpgrade(ItemStack item) {
+        return item != null && InventoryUtils.hasMeta(item, UPGRADE_KEY);
+    }
 
     @Override
     public boolean usesMana() {
@@ -952,7 +956,24 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return slot;
 	}
 
-	public void addToInventory(ItemStack itemStack) {
+
+    protected void addToInventory(ItemStack itemStack, Integer slot) {
+        if (slot == null) {
+            addToInventory(itemStack);
+            return;
+        }
+        Inventory inventory = getInventory(slot);
+        slot = getInventorySlot(slot);
+
+        ItemStack existing = inventory.getItem(slot);
+        inventory.setItem(slot, itemStack);
+
+        if (existing != null && existing.getType() != Material.AIR) {
+            addToInventory(existing);
+        }
+    }
+
+    public void addToInventory(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
         }
@@ -1034,22 +1055,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         return ((slot - hotbarSize) % getInventorySize());
     }
-
-	protected void addToInventory(ItemStack itemStack, Integer slot) {
-		if (slot == null) {
-			addToInventory(itemStack);
-			return;
-		}
-		Inventory inventory = getInventory(slot);
-		slot = getInventorySlot(slot);
-
-		ItemStack existing = inventory.getItem(slot);
-		inventory.setItem(slot, itemStack);
-
-		if (existing != null && existing.getType() != Material.AIR) {
-			addToInventory(existing);
-		}
-	}
 
 	protected void buildInventory() {
 		// Force an update of the display inventory since chest mode is a different size
@@ -1154,6 +1159,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 	}
 
+    private void loadSpells() {
+        Object wandSpells = getObject("spells");
+        if (wandSpells != null) {
+            if (wandSpells instanceof String) {
+                parseSpells((String)wandSpells);
+            } else if (wandSpells instanceof Collection) {
+                @SuppressWarnings("unchecked")
+                Collection<String> spellList = (Collection<String>)wandSpells;
+                loadSpells(spellList);
+            } else {
+                clearSpells();
+            }
+        } else {
+            clearSpells();
+        }
+    }
+
 	protected void parseBrushes(String brushString) {
 		// Support YML-List-As-String format
 		// Maybe don't need this anymore since loading lists is now a separate path
@@ -1180,6 +1202,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			brushes.add(materialKey);
 		}
 	}
+
+    private void loadBrushes() {
+        Object wandBrushes = getObject("brushes", getObject("materials"));
+        if (wandBrushes != null) {
+            if (wandBrushes instanceof String) {
+                parseBrushes((String)wandBrushes);
+            } else if (wandBrushes instanceof Collection) {
+                @SuppressWarnings("unchecked")
+                Collection<String> brushList = (Collection<String>)wandBrushes;
+                loadBrushes(brushList);
+            } else {
+                clearBrushes();
+            }
+        } else {
+            clearBrushes();
+        }
+    }
 
 	protected void loadBrushInventory(Map<String, ? extends Object> inventory) {
     	if (inventory == null) return;
@@ -1412,6 +1451,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
     }
 
+    public void save() {
+        saveState();
+        updateName();
+        updateLore();
+    }
+
 	public void updateBrushInventory() {
     	if (brushInventory.isEmpty()) {
 			setProperty("brush_inventory", null);
@@ -1419,6 +1464,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			setProperty("brush_inventory", new HashMap<>(brushInventory));
 		}
 	}
+
+    protected void updateBrushInventory(Map<String, Integer> updateBrushes) {
+        for (Map.Entry<String, Integer> brushEntry : brushInventory.entrySet()) {
+            String brushKey = brushEntry.getKey();
+            Integer slot = updateBrushes.get(brushKey);
+            if (slot != null) {
+                brushEntry.setValue(slot);
+            }
+        }
+    }
 
 	public void updateSpellInventory() {
 		if (spellInventory.isEmpty()) {
@@ -1428,7 +1483,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 	}
 
-	public void setEffectColor(String hexColor) {
+    protected void updateSpellInventory(Map<String, Integer> updateSpells) {
+        for (Map.Entry<String, Integer> spellEntry : spellInventory.entrySet()) {
+            String spellKey = spellEntry.getKey();
+            Integer slot = updateSpells.get(spellKey);
+            if (slot != null) {
+                spellEntry.setValue(slot);
+            }
+        }
+    }
+
+    public void setEffectColor(String hexColor) {
         // Annoying config conversion issue :\
         if (hexColor.contains(".")) {
             hexColor = hexColor.substring(0, hexColor.indexOf('.'));
@@ -1913,40 +1978,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         checkActiveMaterial();
     }
-
-    private void loadSpells() {
-		Object wandSpells = getObject("spells");
-		if (wandSpells != null) {
-			if (wandSpells instanceof String) {
-				parseSpells((String)wandSpells);
-			} else if (wandSpells instanceof Collection) {
-				@SuppressWarnings("unchecked")
-				Collection<String> spellList = (Collection<String>)wandSpells;
-				loadSpells(spellList);
-			} else {
-				clearSpells();
-			}
-		} else {
-			clearSpells();
-		}
-	}
-
-	private void loadBrushes() {
-		Object wandBrushes = getObject("brushes", getObject("materials"));
-		if (wandBrushes != null) {
-			if (wandBrushes instanceof String) {
-				parseBrushes((String)wandBrushes);
-			} else if (wandBrushes instanceof Collection) {
-				@SuppressWarnings("unchecked")
-				Collection<String> brushList = (Collection<String>)wandBrushes;
-				loadBrushes(brushList);
-			} else {
-				clearBrushes();
-			}
-		} else {
-			clearBrushes();
-		}
-	}
 
     private void parseOverride(String override) {
 		// Unescape commas
@@ -2478,12 +2509,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         CompatibilityUtils.setLore(item, getLore());
 	}
 
-    public void save() {
-        saveState();
-        updateName();
-        updateLore();
-    }
-
 	public int getRemainingUses() {
 		return uses;
 	}
@@ -2531,14 +2556,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return isWand(item) || isUpgrade(item) || isSpell(item) || isBrush(item) || isSP(item);
 	}
 
-	public static boolean isBound(ItemStack item) {
-		Object wandSection = InventoryUtils.getNode(item, WAND_KEY);
-		if (wandSection == null) return false;
-
-		String boundValue = InventoryUtils.getMetaString(wandSection, "bound");
-		return boundValue != null && boundValue.equalsIgnoreCase("true");
-	}
-
     public static boolean isSelfDestructWand(ItemStack item) {
         return item != null && WAND_SELF_DESTRUCT_KEY != null && InventoryUtils.hasMeta(item, WAND_SELF_DESTRUCT_KEY);
     }
@@ -2559,10 +2576,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
 
 		return sp;
-	}
-
-    public static boolean isUpgrade(ItemStack item) {
-    	return item != null && InventoryUtils.hasMeta(item, UPGRADE_KEY);
 	}
 
 	public static boolean isSpell(ItemStack item) {
@@ -2604,7 +2617,27 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
         return InventoryUtils.getMetaString(spellNode, "key");
-	}
+    }
+
+    @Override
+    public Spell getSpell(String spellKey, com.elmakers.mine.bukkit.api.magic.Mage mage) {
+        if (mage == null) {
+            return null;
+        }
+        SpellKey key = new SpellKey(spellKey);
+        spellKey = key.getBaseKey();
+        if (!spells.contains(spellKey)) return null;
+        Integer level = spellLevels.get(spellKey);
+        if (level != null) {
+            spellKey = new SpellKey(spellKey, level).getKey();
+        }
+        return mage.getSpell(spellKey);
+    }
+
+    @Override
+    public Spell getSpell(String spellKey) {
+        return getSpell(spellKey, mage);
+    }
 
     public static String getSpellClass(ItemStack item) {
         if (InventoryUtils.isEmpty(item)) return null;
@@ -2650,6 +2683,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateSpellItem(messages, itemStack, spell, args, wand == null ? null : wand.getActiveMage(), wand, activeMaterial, isItem);
     }
 
+    public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, String activeMaterial, boolean isItem) {
+        updateSpellName(messages, itemStack, spell, wand, activeMaterial);
+        List<String> lore = new ArrayList<>();
+        addSpellLore(messages, spell, lore, mage, wand);
+        if (isItem) {
+            ConfigurationUtils.addIfNotEmpty(messages.get("wand.spell_item_description"), lore);
+        }
+        CompatibilityUtils.setLore(itemStack, lore);
+        Object spellNode = CompatibilityUtils.createNode(itemStack, "spell");
+        CompatibilityUtils.setMeta(spellNode, "key", spell.getKey());
+        CompatibilityUtils.setMeta(spellNode, "args", args);
+        if (SpellGlow) {
+            CompatibilityUtils.addGlow(itemStack);
+        }
+    }
+
 	public static void updateSpellName(Messages messages, ItemStack itemStack, SpellTemplate spell, Wand wand, String activeMaterial) {
 		String displayName;
 		if (wand != null && !wand.isQuickCast()) {
@@ -2658,22 +2707,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			displayName = getSpellDisplayName(messages, spell, MaterialBrush.parseMaterialKey(activeMaterial));
 		}
 		CompatibilityUtils.setDisplayName(itemStack, displayName);
-	}
-
-	public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, String activeMaterial, boolean isItem) {
-        updateSpellName(messages, itemStack, spell, wand, activeMaterial);
-		List<String> lore = new ArrayList<>();
-		addSpellLore(messages, spell, lore, mage, wand);
-		if (isItem) {
-			ConfigurationUtils.addIfNotEmpty(messages.get("wand.spell_item_description"), lore);
-		}
-        CompatibilityUtils.setLore(itemStack, lore);
-        Object spellNode = CompatibilityUtils.createNode(itemStack, "spell");
-		CompatibilityUtils.setMeta(spellNode, "key", spell.getKey());
-        CompatibilityUtils.setMeta(spellNode, "args", args);
-        if (SpellGlow) {
-            CompatibilityUtils.addGlow(itemStack);
-        }
 	}
 
 	public static void updateBrushName(Messages messages, ItemStack itemStack, String materialKey, Wand wand) {
@@ -2720,33 +2753,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
-	private void updateInventory() {
-		if (mage == null) return;
-		if (!isInventoryOpen()) return;
-		Player player = mage.getPlayer();
-		if (player == null) return;
-
-		WandMode wandMode = getMode();
-		if (wandMode == WandMode.INVENTORY) {
-			if (!hasStoredInventory()) return;
-			PlayerInventory inventory = player.getInventory();
-			if (!updateHotbar(inventory)) {
-				for (int i = 0; i < HOTBAR_SIZE; i++) {
-					if (i != inventory.getHeldItemSlot()) {
-						inventory.setItem(i, null);
-					}
-				}
-			}
-			updateInventory(inventory);
-			updateName();
-		} else if (wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS) {
-			Inventory inventory = getDisplayInventory();
-			inventory.clear();
-			updateInventory(inventory);
-		}
-	}
-
-	private boolean updateHotbar(PlayerInventory playerInventory) {
+    private boolean updateHotbar(PlayerInventory playerInventory) {
         if (getMode() != WandMode.INVENTORY) return false;
 		Inventory hotbar = getHotbar();
         if (hotbar == null) return false;
@@ -2774,7 +2781,33 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return true;
     }
 
-	private void updateInventory(Inventory targetInventory) {
+    private void updateInventory() {
+        if (mage == null) return;
+        if (!isInventoryOpen()) return;
+        Player player = mage.getPlayer();
+        if (player == null) return;
+
+        WandMode wandMode = getMode();
+        if (wandMode == WandMode.INVENTORY) {
+            if (!hasStoredInventory()) return;
+            PlayerInventory inventory = player.getInventory();
+            if (!updateHotbar(inventory)) {
+                for (int i = 0; i < HOTBAR_SIZE; i++) {
+                    if (i != inventory.getHeldItemSlot()) {
+                        inventory.setItem(i, null);
+                    }
+                }
+            }
+            updateInventory(inventory);
+            updateName();
+        } else if (wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS) {
+            Inventory inventory = getDisplayInventory();
+            inventory.clear();
+            updateInventory(inventory);
+        }
+    }
+
+    private void updateInventory(Inventory targetInventory) {
 		// Set inventory from current page, taking into account hotbar offset
 		int currentOffset = getHotbarSize() > 0 ? HOTBAR_SIZE : 0;
         List<Inventory> inventories = this.inventories;
@@ -3039,6 +3072,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return levels;
 	}
 
+    protected void randomize() {
+        if (template != null && template.length() > 0) {
+            ConfigurationSection wandConfig = controller.getWandTemplateConfiguration(template);
+            if (wandConfig != null && wandConfig.contains("icon")) {
+                String iconKey = wandConfig.getString("icon");
+                if (iconKey.contains(",")) {
+                    Random r = new Random();
+                    String[] keys = StringUtils.split(iconKey, ',');
+                    iconKey = keys[r.nextInt(keys.length)];
+                }
+                setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
+                updateIcon();
+                playEffects("randomize");
+            }
+        }
+    }
+
     public static ItemStack createItem(MagicController controller, String templateName) {
         ItemStack item = createSpellItem(templateName, controller, null, true);
         if (item == null) {
@@ -3080,6 +3130,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             ex.printStackTrace();
         }
         return wand;
+    }
+
+    @Override
+    public boolean add(com.elmakers.mine.bukkit.api.wand.Wand other) {
+        if (other instanceof Wand) {
+            return add((Wand)other);
+        }
+
+        return false;
     }
 
     public boolean add(Wand other) {
@@ -3266,6 +3325,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		hasInventory = inventorySize > 1 || (inventorySize == 1 && hasSpellProgression);
 	}
 
+    public void cycleInventory() {
+        cycleInventory(1);
+    }
+
 	public void cycleInventory(int direction) {
 		if (!hasInventory) {
 			return;
@@ -3306,10 +3369,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			DeprecatedUtils.updateInventory(mage.getPlayer());
 		}
 	}
-
-    public void cycleInventory() {
-        cycleInventory(1);
-    }
 
 	public void openInventory() {
 		if (mage == null) return;
@@ -3449,23 +3508,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		return true;
 	}
-
-    protected void randomize() {
-        if (template != null && template.length() > 0) {
-            ConfigurationSection wandConfig = controller.getWandTemplateConfiguration(template);
-            if (wandConfig != null && wandConfig.contains("icon")) {
-                String iconKey = wandConfig.getString("icon");
-                if (iconKey.contains(",")) {
-                    Random r = new Random();
-                    String[] keys = StringUtils.split(iconKey, ',');
-                    iconKey = keys[r.nextInt(keys.length)];
-                }
-				setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
-				updateIcon();
-				playEffects("randomize");
-            }
-        }
-    }
 
 	protected void checkActiveMaterial() {
 		if (activeBrush == null || activeBrush.length() == 0) {
@@ -3823,16 +3865,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		}
     }
 
-    @Override
-	public boolean cast() {
-		return cast(getActiveSpell(), null);
-	}
-
-	@Override
-	public boolean cast(String[] parameters) {
-		return cast(getActiveSpell(), parameters);
-	}
-
 	public boolean alternateCast() {
 		return cast(getAlternateSpell());
 	}
@@ -3841,9 +3873,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return cast(getAlternateSpell2());
 	}
 
-	public boolean cast(Spell spell) {
-    	return cast(spell, null);
-	}
+    @Override
+    public boolean cast() {
+        return cast(getActiveSpell(), null);
+    }
+
+    @Override
+    public boolean cast(String[] parameters) {
+        return cast(getActiveSpell(), parameters);
+    }
+
+    public boolean cast(Spell spell) {
+        return cast(spell, null);
+    }
 
 	public boolean cast(Spell spell, String[] parameters) {
 		if (spell != null) {
@@ -4181,14 +4223,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return new LostWand(this, location);
     }
 
-	@Override
-	@Deprecated
-	public void activate(com.elmakers.mine.bukkit.api.magic.Mage mage) {
-		if (mage instanceof Mage) {
-			activate((Mage)mage);
-		}
-	}
-
     protected void showActiveIcon(boolean show) {
         if (this.icon == null || this.inactiveIcon == null || this.inactiveIcon.getMaterial() == Material.AIR || this.inactiveIcon.getMaterial() == null) return;
         if (this.icon.getMaterial() == Material.AIR || this.icon.getMaterial() == null) {
@@ -4214,13 +4248,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
-	public boolean activate(Mage mage) {
-    	return activate(mage, false);
-	}
-
 	public boolean activateOffhand(Mage mage) {
 		return activate(mage, true);
 	}
+
+    @Override
+    @Deprecated
+    public void activate(com.elmakers.mine.bukkit.api.magic.Mage mage) {
+        if (mage instanceof Mage) {
+            activate((Mage)mage);
+        }
+    }
+
+    public boolean activate(Mage mage) {
+        return activate(mage, false);
+    }
 
     public boolean activate(Mage mage, boolean offhand) {
         if (mage == null) return false;
@@ -4440,21 +4482,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return updated;
 	}
 
-    @Override
-	public boolean organizeInventory() {
-    	if (mage != null) {
-    		return organizeInventory(mage);
-		}
-		return false;
-	}
-
 	private void setOpenInventoryPage(int page) {
     	this.openInventoryPage = page;
     	this.setProperty("page", page);
-	}
+    }
 
-	@Override
-	public boolean organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
+    @Override
+    public boolean organizeInventory() {
+        if (mage != null) {
+            return organizeInventory(mage);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
         WandOrganizer organizer = new WandOrganizer(this, mage);
         closeInventory();
         organizer.organize();
@@ -4501,13 +4543,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
 		configure(ConfigurationUtils.toConfigurationSection(convertedProperties));
 		return true;
-	}
-
-	@Override
-	@Deprecated
-	public boolean upgrade(Map<String, Object> properties) {
-		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
-		return upgrade(ConfigurationUtils.toConfigurationSection(convertedProperties));
 	}
 
 	@Override
@@ -4689,15 +4724,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected String parameterizeMessage(String message) {
         return message.replace("$wand", getName());
     }
-
-	@Override
-	public boolean add(com.elmakers.mine.bukkit.api.wand.Wand other) {
-		if (other instanceof Wand) {
-			return add((Wand)other);
-		}
-
-		return false;
-	}
 
     @Override
 	public boolean hasBrush(String materialKey) {
@@ -5021,25 +5047,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return false;
     }
 
+    public static boolean isBound(ItemStack item) {
+        Object wandSection = InventoryUtils.getNode(item, WAND_KEY);
+        if (wandSection == null) return false;
+
+        String boundValue = InventoryUtils.getMetaString(wandSection, "bound");
+        return boundValue != null && boundValue.equalsIgnoreCase("true");
+    }
+
     @Override
     public boolean isBound() {
         return bound;
     }
-
-	@Override
-	public Spell getSpell(String spellKey, com.elmakers.mine.bukkit.api.magic.Mage mage) {
-		if (mage == null) {
-			return null;
-		}
-		SpellKey key = new SpellKey(spellKey);
-		spellKey = key.getBaseKey();
-		if (!spells.contains(spellKey)) return null;
-		Integer level = spellLevels.get(spellKey);
-		if (level != null) {
-			spellKey = new SpellKey(spellKey, level).getKey();
-		}
-		return mage.getSpell(spellKey);
-	}
 
 	@Override
 	public SpellTemplate getSpellTemplate(String spellKey) {
@@ -5053,10 +5072,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		return controller.getSpellTemplate(spellKey);
 	}
 
-	@Override
-    public Spell getSpell(String spellKey) {
-		return getSpell(spellKey, mage);
-    }
+
 
 	private void setSpellLevel(String spellKey, int level) {
     	if (level <= 1) {
@@ -5083,26 +5099,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     protected Map<String, Integer> getBrushInventory() {
         return new HashMap<>(brushInventory);
-    }
-
-    protected void updateSpellInventory(Map<String, Integer> updateSpells) {
-        for (Map.Entry<String, Integer> spellEntry : spellInventory.entrySet()) {
-            String spellKey = spellEntry.getKey();
-            Integer slot = updateSpells.get(spellKey);
-            if (slot != null) {
-                spellEntry.setValue(slot);
-            }
-        }
-    }
-
-    protected void updateBrushInventory(Map<String, Integer> updateBrushes) {
-        for (Map.Entry<String, Integer> brushEntry : brushInventory.entrySet()) {
-            String brushKey = brushEntry.getKey();
-            Integer slot = updateBrushes.get(brushKey);
-            if (slot != null) {
-                brushEntry.setValue(slot);
-            }
-        }
     }
 
     public Map<PotionEffectType, Integer> getPotionEffects() {
@@ -5252,6 +5248,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		WandUpgradePath path = getPath();
 		return path == null || !path.hasUpgrade() ? false : path.checkUpgradeRequirements(this, quiet ? null : mage);
 	}
+
+    @Override
+    @Deprecated
+    public boolean upgrade(Map<String, Object> properties) {
+        Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
+        return upgrade(ConfigurationUtils.toConfigurationSection(convertedProperties));
+    }
 
 	@Override
 	public boolean upgrade(boolean quiet) {

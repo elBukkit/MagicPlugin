@@ -159,8 +159,16 @@ public class UndoRegistry {
         return block == null ? null : reflective.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
     }
 
+    public Map<Long, Double> getReflective() {
+        return reflective;
+    }
+
     public Double getBreakable(Block block) {
         return block == null ? null : breakable.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+    }
+
+    public Map<Long, Double> getBreakable() {
+        return breakable;
     }
 
     public void registerReflective(Block block, double amount) {
@@ -194,14 +202,6 @@ public class UndoRegistry {
 
     public Map<Long, BlockData> getWatching() {
         return watching;
-    }
-
-    public Map<Long, Double> getReflective() {
-        return reflective;
-    }
-
-    public Map<Long, Double> getBreakable() {
-        return breakable;
     }
 
     public Map<Long, Double> getBreaking() {

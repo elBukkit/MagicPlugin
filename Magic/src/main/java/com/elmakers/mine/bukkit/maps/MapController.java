@@ -256,22 +256,6 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     }
 
     /**
-     * A helper function to get an ItemStack from a MapView.
-     *
-     * @param name The display name to give the new item. Optional.
-     * @return
-     */
-    public ItemStack getMapItem(String name, short mapId) {
-        ItemStack newMapItem = new ItemStack(Material.MAP, 1, mapId);
-        if (name != null) {
-            ItemMeta meta = newMapItem.getItemMeta();
-            meta.setDisplayName(name);
-            newMapItem.setItemMeta(meta);
-        }
-        return newMapItem;
-    }
-
-    /**
      * Get an ItemStack that is a headshot of a player's skin.
      */
     @Override
@@ -296,6 +280,22 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return map.getMapView();
     }
 
+    /**
+     * A helper function to get an ItemStack from a MapView.
+     *
+     * @param name The display name to give the new item. Optional.
+     * @return
+     */
+    public ItemStack getMapItem(String name, short mapId) {
+        ItemStack newMapItem = new ItemStack(Material.MAP, 1, mapId);
+        if (name != null) {
+            ItemMeta meta = newMapItem.getItemMeta();
+            meta.setDisplayName(name);
+            newMapItem.setItemMeta(meta);
+        }
+        return newMapItem;
+    }
+
     @Override
     public ItemStack getMapItem(short id)
     {
@@ -313,6 +313,15 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         }
 
         return newMapItem;
+    }
+
+    @SuppressWarnings("deprecation")
+    protected ItemStack getMapItem(String name, MapView mapView) {
+        short id = 0;
+        if (mapView != null) {
+            id = mapView.getId();
+        }
+        return getMapItem(name, id);
     }
 
     /**
@@ -335,15 +344,6 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     @Override
     public short getURLMapId(String world, String url) {
         return getURLMapId(world, url, null, 0, 0, 0, 0, null);
-    }
-
-    @SuppressWarnings("deprecation")
-    protected ItemStack getMapItem(String name, MapView mapView) {
-        short id = 0;
-        if (mapView != null) {
-            id = mapView.getId();
-        }
-        return getMapItem(name, id);
     }
 
     /**

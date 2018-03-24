@@ -94,6 +94,10 @@ public class ConfigurationUtils extends ConfigUtils {
         return toMaterial(stringData);
     }
 
+    public static Material getMaterial(ConfigurationSection node, String path) {
+        return getMaterial(node, path, null);
+    }
+
     public static MaterialAndData getMaterialAndData(ConfigurationSection node, String path) {
         return getMaterialAndData(node, path, null);
     }
@@ -105,10 +109,6 @@ public class ConfigurationUtils extends ConfigUtils {
         }
 
         return toMaterialAndData(stringData);
-    }
-
-    public static Material getMaterial(ConfigurationSection node, String path) {
-        return getMaterial(node, path, null);
     }
 
     public static String fromLocation(Location location) {
@@ -346,12 +346,6 @@ public class ConfigurationUtils extends ConfigUtils {
         return replaced;
     }
 
-    private static Object replaceParameter(String value, ConfigurationSection parameters)
-    {
-        if (value.length() < 2 || value.charAt(0) != '$') return value;
-        return parameters.get(value.substring(1));
-    }
-
     public static ConfigurationSection replaceParameters(ConfigurationSection configuration, ConfigurationSection parameters)
     {
         if (configuration == null) return null;
@@ -369,6 +363,12 @@ public class ConfigurationUtils extends ConfigUtils {
         }
 
         return replaced;
+    }
+
+    private static Object replaceParameter(String value, ConfigurationSection parameters)
+    {
+        if (value.length() < 2 || value.charAt(0) != '$') return value;
+        return parameters.get(value.substring(1));
     }
 
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second)

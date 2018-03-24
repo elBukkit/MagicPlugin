@@ -333,6 +333,25 @@ public interface MagicAPI {
     Wand createWand(String wandKey);
 
     /**
+     * Turn the given ItemStack into a wand
+     *
+     * @param item The item to use as the wand's icon.
+     * @return The wand instance, or null on error.
+     */
+    Wand createWand(ItemStack item);
+
+    /**
+     * Create a new Wand instance out of a given Material type.
+     *
+     * <p>This will create a new ItemStack to represent the Wand.
+     *
+     * @param iconMaterial The type of Material to use as the Wand icon.
+     * @param iconData Data used for durability or icon variants.
+     * @return A newly-created Wand.
+     */
+    Wand createWand(Material iconMaterial, short iconData);
+
+    /**
      * Create an upgrade Wand item from a template.
      *
      * <p>This can be used to create upgrade items from wand
@@ -351,25 +370,6 @@ public interface MagicAPI {
      * @return The wand instance, or null on error.
      */
     Wand getWand(ItemStack item);
-
-    /**
-     * Turn the given ItemStack into a wand
-     *
-     * @param item The item to use as the wand's icon.
-     * @return The wand instance, or null on error.
-     */
-    Wand createWand(ItemStack item);
-
-    /**
-     * Create a new Wand instance out of a given Material type.
-     *
-     * <p>This will create a new ItemStack to represent the Wand.
-     *
-     * @param iconMaterial The type of Material to use as the Wand icon.
-     * @param iconData Data used for durability or icon variants.
-     * @return A newly-created Wand.
-     */
-    Wand createWand(Material iconMaterial, short iconData);
 
     /**
      * Check to see if an existing item is a Wand. This will inspect

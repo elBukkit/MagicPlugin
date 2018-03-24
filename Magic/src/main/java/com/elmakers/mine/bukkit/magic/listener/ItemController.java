@@ -54,6 +54,10 @@ public class ItemController {
         return items.get(key);
     }
 
+    public ItemData get(ItemStack item) {
+        return itemsByStack.get(item);
+    }
+
     public ItemData getOrCreate(String key) {
         ItemData data = get(key);
         if (data == null) {
@@ -64,10 +68,6 @@ public class ItemController {
             }
         }
         return data;
-    }
-
-    public ItemData get(ItemStack item) {
-        return itemsByStack.get(item);
     }
 
     public void remove(String key) {

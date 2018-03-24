@@ -675,6 +675,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    protected void deactivateWand() {
+        // Close the wand inventory to make sure the player's normal inventory gets saved
+        if (activeWand != null) {
+            activeWand.deactivate();
+        }
+    }
+
     public void deactivateWand(Wand wand) {
         if (wand == null) return;
 
@@ -1401,6 +1408,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return activeWand;
     }
 
+    @Override
+    public Wand checkWand() {
+        Player player = getPlayer();
+        if (isLoading() || player == null) return null;
+        checkOffhandWand();
+        return checkWand(player.getInventory().getItemInMainHand());
+    }
+
     public boolean offhandCast() {
         long now = System.currentTimeMillis();
         if (lastOffhandCast > 0 && now < lastOffhandCast + OFFHAND_CAST_COOLDOWN) {
@@ -1483,14 +1498,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void checkWandNextTick() {
         Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new CheckWandTask(this));
-    }
-
-    @Override
-    public Wand checkWand() {
-        Player player = getPlayer();
-        if (isLoading() || player == null) return null;
-        checkOffhandWand();
-        return checkWand(player.getInventory().getItemInMainHand());
     }
 
     @Override
@@ -1791,6 +1798,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public UndoList undo() {
+        return getUndoQueue().undo();
+    }
+
+    @Override
     public Batch cancelPending() {
         return cancelPending(null, true);
     }
@@ -1803,26 +1815,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public Batch cancelPending(boolean force) {
         return cancelPending(null, force);
-    }
-
-    @Override
-    public int finishPendingUndo() {
-        int finished = 0;
-        if (pendingBatches.size() > 0) {
-            List<Batch> batches = new ArrayList<>();
-            batches.addAll(pendingBatches);
-            for (Batch batch : batches) {
-                if (batch instanceof UndoBatch) {
-                    while (!batch.isFinished()) {
-                        batch.process(1000);
-                    }
-                    pendingBatches.remove(batch);
-                    finished++;
-                }
-            }
-        }
-
-        return finished;
     }
 
     @Override
@@ -1870,8 +1862,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public UndoList undo() {
-        return getUndoQueue().undo();
+    public int finishPendingUndo() {
+        int finished = 0;
+        if (pendingBatches.size() > 0) {
+            List<Batch> batches = new ArrayList<>();
+            batches.addAll(pendingBatches);
+            for (Batch batch : batches) {
+                if (batch instanceof UndoBatch) {
+                    while (!batch.isFinished()) {
+                        batch.process(1000);
+                    }
+                    pendingBatches.remove(batch);
+                    finished++;
+                }
+            }
+        }
+
+        return finished;
     }
 
     @Override
@@ -2273,6 +2280,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public int removeItem(ItemStack itemStack) {
+        return removeItem(itemStack, false);
+    }
+
+    @Override
     public boolean hasItem(ItemStack itemStack, boolean allowVariants) {
         if (!isPlayer()) return false;
         Integer sp = Wand.getSP(itemStack);
@@ -2295,11 +2307,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         return false;
-    }
-
-    @Override
-    public int removeItem(ItemStack itemStack) {
-        return removeItem(itemStack, false);
     }
 
     @Override
@@ -2917,11 +2924,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void sendDebugMessage(String message) {
-        sendDebugMessage(message, 1);
-    }
-
-    @Override
     public void debugPermissions(CommandSender sender, Spell spell) {
         com.elmakers.mine.bukkit.api.wand.Wand wand = getActiveWand();
         Location location = getLocation();
@@ -3021,6 +3023,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return (dark ? ChatColor.DARK_RED : ChatColor.RED) + text;
         }
         return ChatColor.GRAY + text;
+    }
+
+    @Override
+    public void sendDebugMessage(String message) {
+        sendDebugMessage(message, 1);
     }
 
     @Override
@@ -3263,13 +3270,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         deactivateWand();
         deactivateAllSpells(true, true);
         removeActiveEffects();
-    }
-
-    protected void deactivateWand() {
-        // Close the wand inventory to make sure the player's normal inventory gets saved
-        if (activeWand != null) {
-            activeWand.deactivate();
-        }
     }
 
     @Override

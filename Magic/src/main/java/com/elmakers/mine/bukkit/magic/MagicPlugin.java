@@ -444,6 +444,16 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
     @Override
+    public com.elmakers.mine.bukkit.api.wand.Wand createWand(Material iconMaterial, short iconData) {
+        return new Wand(controller, iconMaterial, iconData);
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.Wand createWand(ItemStack item) {
+        return Wand.createWand(controller, item);
+    }
+
+    @Override
     public com.elmakers.mine.bukkit.api.wand.Wand createUpgrade(String wandKey) {
         Wand wand = Wand.createWand(controller, wandKey);
         if (!wand.isUpgrade()) {
@@ -472,6 +482,21 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		return cast(spellName, parameters, null, null);
 	}
 
+    @Override
+    public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity) {
+        ConfigurationSection config = null;
+        if (parameters != null && parameters.length > 0) {
+            config = new MemoryConfiguration();
+            ConfigurationUtils.addParameters(parameters, config);
+        }
+        return controller.cast(null, spellName, config, sender, entity);
+    }
+
+    @Override
+    public boolean cast(String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity) {
+        return controller.cast(null, spellName, parameters, sender, entity);
+    }
+
 	@Override
 	public Collection<SpellTemplate> getSpellTemplates() {
 		return controller.getSpellTemplates();
@@ -487,35 +512,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		return controller.getWandTemplateKeys();
 	}
 
-	@Override
-	public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity) {
-		ConfigurationSection config = null;
-        if (parameters != null && parameters.length > 0) {
-            config = new MemoryConfiguration();
-            ConfigurationUtils.addParameters(parameters, config);
-        }
-        return controller.cast(null, spellName, config, sender, entity);
-	}
-
-    @Override
-    public boolean cast(String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity) {
-        return controller.cast(null, spellName, parameters, sender, entity);
-    }
-
     @Override
 	public Collection<String> getPlayerNames() {
 		return controller.getPlayerNames();
 	}
-
-	@Override
-	public com.elmakers.mine.bukkit.api.wand.Wand createWand(Material iconMaterial, short iconData) {
-		return new Wand(controller, iconMaterial, iconData);
-	}
-
-    @Override
-    public com.elmakers.mine.bukkit.api.wand.Wand createWand(ItemStack item) {
-        return Wand.createWand(controller, item);
-    }
 
 	@Override
 	public SpellTemplate getSpellTemplate(String key) {

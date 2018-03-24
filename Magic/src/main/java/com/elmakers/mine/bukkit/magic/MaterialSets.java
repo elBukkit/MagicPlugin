@@ -391,22 +391,22 @@ public class MaterialSets {
             return this;
         }
 
-        public Union addAll(Material... materials) {
-            for (Material material : materials) {
-                checkNotNull(material, "material");
-
-                this.materials.add(material);
-            }
-
-            return this;
-        }
-
         public Union add(MaterialAndData materialAndData) {
             checkNotNull(materialAndData, "materialAndData");
             checkArgument(materialAndData.isValid(),
                     "Material data is not valid: %s", materialAndData);
 
             materialAndDatas.add(materialAndData);
+
+            return this;
+        }
+
+        public Union addAll(Material... materials) {
+            for (Material material : materials) {
+                checkNotNull(material, "material");
+
+                this.materials.add(material);
+            }
 
             return this;
         }

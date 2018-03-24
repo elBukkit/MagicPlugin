@@ -338,13 +338,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return isOkToStandOn(block.getType());
     }
 
-    protected boolean isHalfBlock(Material mat) {
-
-        // TODO: Data-driven half-block list
-        // Don't put carpet and snow in here, acts weird. Not sure why though.
-        return (mat == Material.STEP || mat == Material.WOOD_STEP);
-    }
-
     @Deprecated // Material
     public boolean isOkToStandOn(Material mat)
     {
@@ -352,6 +345,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return true;
         }
         return (mat != Material.AIR && !unsafeMaterials.testMaterial(mat) && !passthroughMaterials.testMaterial(mat));
+    }
+
+    protected boolean isHalfBlock(Material mat) {
+
+        // TODO: Data-driven half-block list
+        // Don't put carpet and snow in here, acts weird. Not sure why though.
+        return (mat == Material.STEP || mat == Material.WOOD_STEP);
     }
 
     public boolean isSafeLocation(Block block)
@@ -393,15 +393,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return tryFindPlaceToStand(targetLoc, maxHeight, maxHeight);
     }
 
-    public Location findPlaceToStand(Location targetLoc)
-    {
-        return findPlaceToStand(targetLoc, verticalSearchDistance, verticalSearchDistance);
-    }
-
     public Location tryFindPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta)
     {
         Location location = findPlaceToStand(targetLoc, maxDownDelta, maxUpDelta);
         return location == null ? targetLoc : location;
+    }
+
+    public Location findPlaceToStand(Location targetLoc) {
+        return findPlaceToStand(targetLoc, verticalSearchDistance, verticalSearchDistance);
     }
 
     public Location findPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta)
@@ -822,8 +821,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return castingCosts;
     }
 
-    protected void loadTemplate(ConfigurationSection node)
-    {
+    @Override
+    public void loadTemplate(String key, ConfigurationSection node) {
+        spellKey = new SpellKey(key);
+        this.configuration = node;
+        this.loadTemplate(node);
+    }
+
+    protected void loadTemplate(ConfigurationSection node) {
         // Get localizations
         String baseKey = spellKey.getBaseKey();
 
@@ -1285,6 +1290,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         return finalizeCast(workingParameters);
+    }
+
+    @Override
+    public boolean cast() {
+        return cast((ConfigurationSection)null, null);
+    }
+
+    @Override
+    public boolean cast(String[] extraParameters) {
+        return cast(extraParameters, null);
     }
 
     @Override
@@ -1897,18 +1912,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public boolean cast()
-    {
-        return cast((ConfigurationSection)null, null);
-    }
-
-    @Override
-    public boolean cast(String[] extraParameters)
-    {
-        return cast(extraParameters, null);
-    }
-
-    @Override
     public final String getKey()
     {
         return spellKey.getKey();
@@ -2013,14 +2016,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return tags != null && !Collections.disjoint(tagSet, tags);
     }
 
-    @Override
-    public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(SpellResult result) {
-        return getEffects(result.name().toLowerCase());
-    }
-
     public boolean hasEffects(String key) {
         Collection<EffectPlayer> effectList = effects.get(key);
         return effectList != null && effectList.size() > 0;
+    }
+
+    @Override
+    public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(SpellResult result) {
+        return getEffects(result.name().toLowerCase());
     }
 
     @Override
@@ -2114,13 +2117,29 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 controller.getMessages(), getDisplayCooldown(),  mage, null);
     }
 
-    public String getWarmupDescription() {
-        return getTimeDescription(controller.getMessages(), warmup);
-    }
-
     public String getCooldownDescription(Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
         return getCooldownDescription(
                 controller.getMessages(), getDisplayCooldown(), mage, wand);
+    }
+
+    protected String getCooldownDescription(Messages messages, int cooldown, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
+        CooldownReducer reducer = mageClass != null ? mageClass : (wand != null ? wand : mage);
+        if (reducer != null) {
+            if (reducer.isCooldownFree()) {
+                cooldown = 0;
+            }
+            double cooldownReduction = reducer.getCooldownReduction();
+            cooldownReduction += this.cooldownReduction;
+            if (cooldown > 0 && cooldownReduction < 1) {
+                cooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
+            }
+        }
+
+        return getTimeDescription(messages, cooldown);
+    }
+
+    public String getWarmupDescription() {
+        return getTimeDescription(controller.getMessages(), warmup);
     }
 
     /**
@@ -2159,22 +2178,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
         return null;
-    }
-
-    protected String getCooldownDescription(Messages messages, int cooldown, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
-        CooldownReducer reducer = mageClass != null ? mageClass : (wand != null ? wand : mage);
-        if (reducer != null) {
-            if (reducer.isCooldownFree()) {
-                cooldown = 0;
-            }
-            double cooldownReduction = reducer.getCooldownReduction();
-            cooldownReduction += this.cooldownReduction;
-            if (cooldown > 0 && cooldownReduction < 1) {
-                cooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
-            }
-        }
-
-        return getTimeDescription(messages, cooldown);
     }
 
     @Override
@@ -2369,14 +2372,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void setSpellData(SpellData data) {
         this.spellData = data;
-    }
-
-    @Override
-    public void loadTemplate(String key, ConfigurationSection node)
-    {
-        spellKey = new SpellKey(key);
-        this.configuration = node;
-        this.loadTemplate(node);
     }
 
     @Override

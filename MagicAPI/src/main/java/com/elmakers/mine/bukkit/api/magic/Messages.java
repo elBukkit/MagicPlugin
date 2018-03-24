@@ -8,8 +8,8 @@ import org.bukkit.inventory.ItemStack;
 public interface Messages {
     boolean containsKey(String key);
     String get(String key);
-    String getRandomized(String key);
     String get(String key, String defaultValue);
+    String getRandomized(String key);
     List<String> getAll(String path);
     String getParameterized(String key, String paramName, String paramValue);
     String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2);

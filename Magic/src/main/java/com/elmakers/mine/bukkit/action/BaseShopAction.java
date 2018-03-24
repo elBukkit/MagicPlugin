@@ -704,6 +704,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         return displayInventory;
     }
 
+    protected ItemStack getWorthItem(MageController controller) {
+        return worthItem == null ? controller.getWorthItem() : worthItem;
+    }
+
     protected String formatItemAmount(MageController controller, double amount) {
         CurrencyItem currency = controller.getCurrency();
         if (worthItem == null && currency != null) {
@@ -722,10 +726,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
         }
         return formatItemAmount(controller, getWorthItem(controller), amount);
-    }
-
-    protected ItemStack getWorthItem(MageController controller) {
-        return worthItem == null ? controller.getWorthItem() : worthItem;
     }
 
     protected String formatItemAmount(MageController controller, ItemStack item, double amount) {

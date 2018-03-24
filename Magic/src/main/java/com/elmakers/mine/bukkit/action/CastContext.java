@@ -363,6 +363,27 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
     }
 
+
+    @Override
+    public void registerForUndo(Entity entity)
+    {
+        addWork(5);
+        if (undoList != null)
+        {
+            undoList.add(entity);
+        }
+    }
+
+    @Override
+    public void registerForUndo(Block block)
+    {
+        addWork(10);
+        if (undoList != null)
+        {
+            undoList.add(block);
+        }
+    }
+
     @Override
     public void registerModified(Entity entity)
     {
@@ -384,32 +405,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void registerForUndo(Entity entity)
-    {
-        addWork(5);
-        if (undoList != null)
-        {
-            undoList.add(entity);
-        }
-    }
-
-    @Override
     public void clearAttachables(Block block)
     {
         addWork(50);
         if (undoList != null)
         {
             undoList.clearAttachables(block);
-        }
-    }
-
-    @Override
-    public void registerForUndo(Block block)
-    {
-        addWork(10);
-        if (undoList != null)
-        {
-            undoList.add(block);
         }
     }
 
@@ -478,12 +479,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public boolean hasEffects(String key) {
         return baseSpell != null ? baseSpell.hasEffects(key) : false;
-    }
-
-    @Override
-    public void playEffects(String key)
-    {
-        playEffects(key, 1.0f);
     }
 
     private void multiplyParameter(String key, Map<String, String> parameterMap, ConfigurationSection configuration, ConfigurationSection baseConfiguration) {
@@ -559,6 +554,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             particle = spell.getEffectParticle();
         }
         return particle;
+    }
+
+    @Override
+    public void playEffects(String key)
+    {
+        playEffects(key, 1.0f);
     }
 
     @Override

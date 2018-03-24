@@ -274,6 +274,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     @Override
+    public void updateFrom(Block block) {
+        updateFromBlock(block, null);
+    }
+
+    @Override
     public void setMaterial(Material material, short data) {
         setMaterial(material, (Short)data);
     }
@@ -286,23 +291,18 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         isValid = true;
     }
 
-    @SuppressWarnings("deprecation")
-    public void setMaterialId(int id) {
-        this.material = Material.getMaterial(id);
-    }
-
     @Override
     public void setMaterial(Material material) {
         setMaterial(material, (byte)0);
     }
 
-    @Override
-    public void updateFrom(Block block) {
-        updateFrom(block, null);
+    @SuppressWarnings("deprecation")
+    public void setMaterialId(int id) {
+        this.material = Material.getMaterial(id);
     }
 
     @SuppressWarnings("deprecation")
-    public void updateFrom(Block block, @Nullable MaterialSet restrictedMaterials) {
+    public void updateFromBlock(Block block, @Nullable MaterialSet restrictedMaterials) {
         if (block == null) {
             isValid = false;
             return;
@@ -352,11 +352,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         isValid = true;
     }
 
-    @Override
-    public void modify(Block block) {
-        modify(block, false);
-    }
-
     public static void clearItems(BlockState block) {
         if (block != null && (block instanceof InventoryHolder || block.getType() == Material.FLOWER_POT)) {
             NMSUtils.clearItems(block.getLocation());
@@ -370,6 +365,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (material != block.getType() || data != block.getData()) {
             CompatibilityUtils.setBlockFast(block, material, data);
         }
+    }
+
+    @Override
+    public void modify(Block block) {
+        modify(block, false);
     }
 
     @Override
@@ -684,16 +684,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     @Override
-    public String getName() {
-        return getName(null);
-    }
-
-    @Override
     public String getBaseName() {
         if (material == null) {
             return null;
         }
         return material.name().toLowerCase().replace('_', ' ');
+    }
+
+    @Override
+    public String getName() {
+        return getName(null);
     }
 
     @Override

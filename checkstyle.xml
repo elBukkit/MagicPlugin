@@ -25,7 +25,9 @@
     </module>
 
     <module name="TreeWalker">
-        <module name="OuterTypeFilename"/>
+        <module name="OuterTypeFilename">
+            <property name="severity" value="error"/>
+        </module>
         <module name="IllegalTokenText">
             <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
             <property name="format" value="\\u00(09|0(a|A)|0(c|C)|0(d|D)|22|27|5(C|c))|\\(0(10|11|12|14|15|42|47)|134)"/>
@@ -35,8 +37,37 @@
             <property name="allowEscapesForControlCharacters" value="true"/>
             <property name="allowByTailComment" value="true"/>
             <property name="allowNonPrintableEscapes" value="true"/>
+            <property name="severity" value="error"/>
         </module>
 
+        <module name="LineLength">
+            <property name="max" value="800"/> <!-- TODO: Make 80 -->
+            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+            <property name="severity" value="error"/>
+        </module>
+        <module name="NoLineWrap">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="EmptyBlock">
+            <property name="option" value="TEXT"/>
+            <property name="tokens" value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
+            <property name="severity" value="error"/>
+        </module>
+        <!-- TODO: Require braces on if statements
+        <module name="NeedBraces"/>
+         -->
+        <!-- TODO: Curly format
+        <module name="LeftCurly"/>
+        <module name="RightCurly">
+            <property name="id" value="RightCurlySame"/>
+            <property name="tokens" value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_DO"/>
+        </module>
+        <module name="RightCurly">
+            <property name="id" value="RightCurlyAlone"/>
+            <property name="option" value="alone"/>
+            <property name="tokens" value="CLASS_DEF, METHOD_DEF, CTOR_DEF, LITERAL_FOR, LITERAL_WHILE, STATIC_INIT, INSTANCE_INIT"/>
+        </module>
+        -->
         <module name="WhitespaceAround">
             <property name="allowEmptyConstructors" value="true"/>
             <property name="allowEmptyMethods" value="true"/>
@@ -189,11 +220,37 @@
             <property name="severity" value="error"/>
         </module>
 
+        <!-- Indentation -->
+        <!-- TODO
+        <module name="Indentation">
+            <property name="basicOffset" value="4"/>
+            <property name="braceAdjustment" value="0"/>
+            <property name="caseIndent" value="0"/>
+            <property name="throwsIndent" value="4"/>
+            <property name="lineWrappingIndentation" value="4"/>
+            <property name="arrayInitIndent" value="4"/>
+        </module>
+        -->
+
+        <!-- Make sure overloaded methods are grouped -->
+        <module name="OverloadMethodsDeclarationOrder">
+            <property name="severity" value="error"/>
+        </module>
+
+        <!-- TODO: Limit the maximum distance between declaration and use of a
+          local variable.
+        <module name="VariableDeclarationUsageDistance">
+            <property name="severity" value="error"/>
+        </module>
+         -->
+
         <!-- Make sure imports are sane -->
         <module name="AvoidStarImport">
             <property name="severity" value="error"/>
         </module>
-        <module name="OneTopLevelClass"/>
+        <module name="OneTopLevelClass">
+            <property name="severity" value="error"/>
+        </module>
         <module name="CustomImportOrder">
             <property name="sortImportsInGroupAlphabetically" value="true"/>
             <property name="separateLineBetweenGroups" value="true"/>
@@ -230,6 +287,7 @@
             <property name="tokens" value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR, LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR, METHOD_REF "/>
             <property name="severity" value="error"/>
         </module>
+
         <!-- Annotation identation -->
         <module name="AnnotationLocation">
             <property name="id" value="AnnotationLocationMostCases"/>

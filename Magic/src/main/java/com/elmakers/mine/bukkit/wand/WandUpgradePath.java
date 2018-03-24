@@ -329,6 +329,10 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return path;
     }
 
+    public static WandUpgradePath getPath(String key) {
+        return paths.get(key);
+    }
+
     public static void loadPaths(MageController controller, ConfigurationSection configuration) {
         paths.clear();
         Set<String> pathKeys = configuration.getKeys(false);
@@ -340,10 +344,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     public static Set<String> getPathKeys() {
         return paths.keySet();
-    }
-
-    public static WandUpgradePath getPath(String key) {
-        return paths.get(key);
     }
 
     public int getMaxLevel() {

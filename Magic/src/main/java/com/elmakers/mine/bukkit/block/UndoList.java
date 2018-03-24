@@ -232,6 +232,31 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return true;
     }
 
+    @Override
+    public void add(Entity entity)
+    {
+        if (entity == null) return;
+        if (entities == null) entities = new HashSet<>();
+        if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
+
+        entities.add(entity);
+        if (this.isScheduled()) {
+            entity.setMetadata("temporary", new FixedMetadataValue(plugin, true));
+        }
+        watch(entity);
+        contain(entity.getLocation().toVector());
+        modifiedTime = System.currentTimeMillis();
+    }
+
+    @Override
+    public void add(Runnable runnable)
+    {
+        if (runnable == null) return;
+        if (runnables == null) runnables = new LinkedList<>();
+        runnables.add(runnable);
+        modifiedTime = System.currentTimeMillis();
+    }
+
     protected boolean addAttachable(BlockData block, BlockFace direction, @Nonnull MaterialSet materials)
     {
         Block testBlock = block.getBlock().getRelative(direction);
@@ -309,14 +334,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         clear();
     }
 
+    public static void commit(com.elmakers.mine.bukkit.api.block.BlockData block) {
+        registry.commit(block);
+    }
+
     public static void commitAll()
     {
         registry.commitAll();
-    }
-
-    public static void commit(com.elmakers.mine.bukkit.api.block.BlockData block)
-    {
-        registry.commit(block);
     }
 
     @Override
@@ -329,6 +353,19 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
 
         return super.remove(o);
+    }
+
+    @Override
+    public void remove(Entity entity) {
+        entity.removeMetadata("MagicBlockList", plugin);
+        if (entities != null) {
+            entities.remove(entity);
+        }
+        UUID entityId = entity.getUniqueId();
+        if (modifiedEntities != null) {
+            modifiedEntities.remove(entityId);
+        }
+        modifiedTime = System.currentTimeMillis();
     }
 
     protected static void removeFromModified(BlockData block) {
@@ -404,42 +441,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return false;
     }
 
-    public void undoEntityEffects()
-    {
-        // This part doesn't happen in a batch, and may lag on large lists
-        if (entities != null || modifiedEntities != null) {
-            if (entities != null) {
-                for (Entity entity : entities) {
-                    if (entity != null) {
-                        if (!entity.isValid()) {
-                            if (!entity.getLocation().getChunk().isLoaded()) {
-                                entity.getLocation().getChunk().load();
-                            }
-                            entity = NMSUtils.getEntity(entity.getWorld(), entity.getUniqueId());
-                        }
-                        if (entity != null && entity.isValid()) {
-                            entity.remove();
-                        }
-                    }
-                }
-                entities = null;
-            }
-            if (modifiedEntities != null) {
-                for (EntityData data : modifiedEntities.values()) {
-                    if (!undoEntityEffects && undoEntityTypes != null && !undoEntityTypes.contains(data.getType())) continue;
-                    data.undo();
-                }
-                modifiedEntities = null;
-            }
-        }
-    }
-
-    @Override
-    public boolean isUndone()
-    {
-        return undone;
-    }
-
     @Override
     public void undo()
     {
@@ -454,33 +455,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             spell.cancel();
         }
         undo(blocking, true);
-    }
-
-    @Override
-    public void undoScheduled(boolean blocking)
-    {
-        undo(blocking, false);
-
-        if (isScheduled())
-        {
-            owner.getController().cancelScheduledUndo(this);
-        }
-    }
-
-    @Override
-    public void undoScheduled()
-    {
-        undo(false, false);
-    }
-
-    public void unregisterWatched()
-    {
-        if (watching != null) {
-            for (BlockData block : watching.values()) {
-                removeFromWatched(block);
-            }
-            watching = null;
-        }
     }
 
     public void undo(boolean blocking, boolean undoEntities)
@@ -530,6 +504,70 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    public void undoEntityEffects()
+    {
+        // This part doesn't happen in a batch, and may lag on large lists
+        if (entities != null || modifiedEntities != null) {
+            if (entities != null) {
+                for (Entity entity : entities) {
+                    if (entity != null) {
+                        if (!entity.isValid()) {
+                            if (!entity.getLocation().getChunk().isLoaded()) {
+                                entity.getLocation().getChunk().load();
+                            }
+                            entity = NMSUtils.getEntity(entity.getWorld(), entity.getUniqueId());
+                        }
+                        if (entity != null && entity.isValid()) {
+                            entity.remove();
+                        }
+                    }
+                }
+                entities = null;
+            }
+            if (modifiedEntities != null) {
+                for (EntityData data : modifiedEntities.values()) {
+                    if (!undoEntityEffects && undoEntityTypes != null && !undoEntityTypes.contains(data.getType())) continue;
+                    data.undo();
+                }
+                modifiedEntities = null;
+            }
+        }
+    }
+
+    @Override
+    public boolean isUndone()
+    {
+        return undone;
+    }
+
+    @Override
+    public void undoScheduled(boolean blocking)
+    {
+        undo(blocking, false);
+
+        if (isScheduled())
+        {
+            owner.getController().cancelScheduledUndo(this);
+        }
+    }
+
+    @Override
+    public void undoScheduled()
+    {
+        undo(false, false);
+    }
+
+    public void unregisterWatched()
+    {
+        if (watching != null) {
+            for (BlockData block : watching.values()) {
+                removeFromWatched(block);
+            }
+            watching = null;
+        }
+    }
+
+
     @Override
     public void load(ConfigurationSection node)
     {
@@ -570,31 +608,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (!entity.hasMetadata("MagicBlockList")) {
             entity.setMetadata("MagicBlockList", new FixedMetadataValue(plugin, this));
         }
-        modifiedTime = System.currentTimeMillis();
-    }
-
-    @Override
-    public void add(Entity entity)
-    {
-        if (entity == null) return;
-        if (entities == null) entities = new HashSet<>();
-        if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
-
-        entities.add(entity);
-        if (this.isScheduled()) {
-            entity.setMetadata("temporary", new FixedMetadataValue(plugin, true));
-        }
-        watch(entity);
-        contain(entity.getLocation().toVector());
-        modifiedTime = System.currentTimeMillis();
-    }
-
-    @Override
-    public void add(Runnable runnable)
-    {
-        if (runnable == null) return;
-        if (runnables == null) runnables = new LinkedList<>();
-        runnables.add(runnable);
         modifiedTime = System.currentTimeMillis();
     }
 
@@ -673,20 +686,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (entityData != null) {
             entityData.setHasPotionEffects(true);
         }
-    }
-
-    @Override
-    public void remove(Entity entity)
-    {
-        entity.removeMetadata("MagicBlockList", plugin);
-        if (entities != null) {
-            entities.remove(entity);
-        }
-        UUID entityId = entity.getUniqueId();
-        if (modifiedEntities != null) {
-            modifiedEntities.remove(entityId);
-        }
-        modifiedTime = System.currentTimeMillis();
     }
 
     @Override
@@ -940,13 +939,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return blockList;
     }
 
-    public static BlockData getBlockData(Location location) {
-        return registry.getBlockData(location);
-    }
-
     public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Location location) {
         BlockData blockData = getBlockData(location);
         return blockData == null ? null : blockData.getUndoList();
+    }
+
+    public static BlockData getBlockData(Location location) {
+        return registry.getBlockData(location);
     }
 
     public static UndoRegistry getRegistry() {

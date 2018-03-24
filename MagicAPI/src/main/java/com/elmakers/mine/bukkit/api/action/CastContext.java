@@ -74,10 +74,10 @@ public interface CastContext {
     boolean hasEffects(String key);
     MageController getController();
     void registerForUndo(Runnable runnable);
-    void registerModified(Entity entity);
-    void registerDamaged(Entity entity);
     void registerForUndo(Entity entity);
     void registerForUndo(Block block);
+    void registerModified(Entity entity);
+    void registerDamaged(Entity entity);
     void clearAttachables(Block block);
     void updateBlock(Block block);
     void registerVelocity(Entity entity);

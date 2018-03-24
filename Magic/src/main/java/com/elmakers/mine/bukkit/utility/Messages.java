@@ -195,6 +195,12 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     }
 
     @Override
+    public String getLevelString(String templateName, float amount, float max) {
+        String templateString = get(templateName, "");
+        return formatLevelString(templateString, amount, max);
+    }
+
+    @Override
     public String formatLevelString(String message, float amount)
     {
         return formatLevelString(message, amount, 1);
@@ -212,13 +218,6 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         }
         return message.replace("$amount", Integer.toString((int) amount))
                 .replace("$percent", Integer.toString((int) (100.0 * amount)));
-    }
-
-    @Override
-    public String getLevelString(String templateName, float amount, float max)
-    {
-        String templateString = get(templateName, "");
-        return formatLevelString(templateString, amount, max);
     }
 
     @Override
