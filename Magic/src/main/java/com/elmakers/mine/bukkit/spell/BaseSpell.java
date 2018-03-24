@@ -91,47 +91,47 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected static final int MIN_Y = 1;
 
     // TODO: Configurable default? this does look cool, though.
-    protected final static Material DEFAULT_EFFECT_MATERIAL = Material.WATER;
+    protected static final Material DEFAULT_EFFECT_MATERIAL = Material.WATER;
 
-    public final static String[] EXAMPLE_VECTOR_COMPONENTS = {"-1", "-0.5", "0", "0.5", "1", "~-1", "~-0.5", "~0", "~0.5", "*1", "*-1", "*-0.5", "*0.5", "*1"};
-    public final static String[] EXAMPLE_SIZES = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "12", "16", "32", "64"};
-    public final static String[] EXAMPLE_INTEGERS = {"-10", "-5", "-1", "1", "5", "10"};
-    public final static String[] EXAMPLE_BOOLEANS = {"true", "false"};
-    public final static String[] EXAMPLE_DURATIONS = {"500", "1000", "2000", "5000", "10000", "60000", "120000"};
-    public final static String[] EXAMPLE_PERCENTAGES = {"0", "0.1", "0.25", "0.5", "0.75", "1"};
+    public static final String[] EXAMPLE_VECTOR_COMPONENTS = {"-1", "-0.5", "0", "0.5", "1", "~-1", "~-0.5", "~0", "~0.5", "*1", "*-1", "*-0.5", "*0.5", "*1"};
+    public static final String[] EXAMPLE_SIZES = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "12", "16", "32", "64"};
+    public static final String[] EXAMPLE_INTEGERS = {"-10", "-5", "-1", "1", "5", "10"};
+    public static final String[] EXAMPLE_BOOLEANS = {"true", "false"};
+    public static final String[] EXAMPLE_DURATIONS = {"500", "1000", "2000", "5000", "10000", "60000", "120000"};
+    public static final String[] EXAMPLE_PERCENTAGES = {"0", "0.1", "0.25", "0.5", "0.75", "1"};
 
-    public final static String[] OTHER_PARAMETERS = {
+    public static final String[] OTHER_PARAMETERS = {
         "transparent", "target", "target_type", "range", "duration", "player"
     };
 
-    public final static String[] WORLD_PARAMETERS = {
+    public static final String[] WORLD_PARAMETERS = {
         "pworld", "tworld", "otworld", "t2world"
     };
 
-    protected final static Set<String> worldParameterMap = new HashSet<>(Arrays.asList(WORLD_PARAMETERS));
+    protected static final Set<String> worldParameterMap = new HashSet<>(Arrays.asList(WORLD_PARAMETERS));
 
-    public final static String[] VECTOR_PARAMETERS = {
+    public static final String[] VECTOR_PARAMETERS = {
         "px", "py", "pz", "pdx", "pdy", "pdz", "tx", "ty", "tz", "otx", "oty", "otz", "t2x", "t2y", "t2z",
         "otdx", "otdy", "otdz"
     };
 
-    protected final static Set<String> vectorParameterMap = new HashSet<>(Arrays.asList(VECTOR_PARAMETERS));
+    protected static final Set<String> vectorParameterMap = new HashSet<>(Arrays.asList(VECTOR_PARAMETERS));
 
-    public final static String[] BOOLEAN_PARAMETERS = {
+    public static final String[] BOOLEAN_PARAMETERS = {
         "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_protection",
         "bypass", "bypass_build", "bypass_break", "bypass_pvp", "target_npc", "ignore_blocks", "target_self",
         "disable_mana_regeneration"
     };
 
-    protected final static Set<String> booleanParameterMap = new HashSet<>(Arrays.asList(BOOLEAN_PARAMETERS));
+    protected static final Set<String> booleanParameterMap = new HashSet<>(Arrays.asList(BOOLEAN_PARAMETERS));
 
-    public final static String[] PERCENTAGE_PARAMETERS = {
+    public static final String[] PERCENTAGE_PARAMETERS = {
         "fizzle_chance", "backfire_chance", "cooldown_reduction"
     };
 
-    protected final static Set<String> percentageParameterMap = new HashSet<>(Arrays.asList(PERCENTAGE_PARAMETERS));
+    protected static final Set<String> percentageParameterMap = new HashSet<>(Arrays.asList(PERCENTAGE_PARAMETERS));
 
-    public final static String[] COMMON_PARAMETERS = (String[])
+    public static final String[] COMMON_PARAMETERS = (String[])
         ArrayUtils.addAll(
             ArrayUtils.addAll(
                     ArrayUtils.addAll(

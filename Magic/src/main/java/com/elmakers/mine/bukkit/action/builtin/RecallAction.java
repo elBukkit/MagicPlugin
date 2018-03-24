@@ -45,7 +45,7 @@ import com.elmakers.mine.bukkit.utility.SkinUtils;
 
 public class RecallAction extends BaseTeleportAction implements GUIAction
 {
-    private final static Material DefaultWaypointMaterial = Material.BEACON;
+    private static final Material DefaultWaypointMaterial = Material.BEACON;
 
     private boolean allowCrossWorld = true;
     private Map<String, ConfigurationSection> warps = new HashMap<>();

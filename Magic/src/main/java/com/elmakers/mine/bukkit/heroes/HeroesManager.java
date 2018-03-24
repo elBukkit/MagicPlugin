@@ -42,12 +42,12 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
     private Heroes heroes;
     private CharacterManager characters;
     private SkillManager skills;
-    private final static Set<String> emptySkills = new HashSet<>();
-    private final static List<String> emptySkillList = new ArrayList<>();
+    private static final Set<String> emptySkills = new HashSet<>();
+    private static final List<String> emptySkillList = new ArrayList<>();
     private final Logger log;
 
     private Method getHeroAttributeMethod;
-    private final static Map<String, Enum<?>> attributes = new HashMap<>();
+    private static final Map<String, Enum<?>> attributes = new HashMap<>();
 
     public HeroesManager(Plugin plugin, Plugin heroesPlugin) {
         log = plugin.getLogger();

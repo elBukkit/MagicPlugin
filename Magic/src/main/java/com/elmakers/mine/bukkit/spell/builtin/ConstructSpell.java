@@ -25,7 +25,7 @@ import com.elmakers.mine.bukkit.utility.Target;
 
 public class ConstructSpell extends BrushSpell
 {
-	public final static String[] CONSTRUCT_PARAMETERS = {
+	public static final String[] CONSTRUCT_PARAMETERS = {
 		"radius", "falling", "speed", "max_dimension", "replace", "consume",
 		"type", "thickness", "orient_dimension_max", "orient_dimension_min",
 		"power", "breakable", "backfire", "select_self", "use_brush_size", "falling_direction"

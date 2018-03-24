@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.utility;
 
 public class Mercator {
-    final private static double R_MAJOR = 6378137.0;
-    final private static double R_MINOR = 6356752.3142;
+    private static final double R_MAJOR = 6378137.0;
+    private static final double R_MINOR = 6356752.3142;
 
     public static double[] merc(double x, double y) {
         return new double[] {mercX(x), mercY(y)};

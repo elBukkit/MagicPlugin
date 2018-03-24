@@ -49,6 +49,10 @@
              <property name="severity" value="error"/>
         </module>
 
+        <module name="ModifierOrder">
+            <property name="severity" value="error"/>
+        </module>
+
         <!-- Make sure imports are sane -->
         <module name="AvoidStarImport">
             <property name="severity" value="error"/>

@@ -61,7 +61,7 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class PlayerController implements Listener {
-    private final static double MAX_ARROW_SPEED = 3;
+    private static final double MAX_ARROW_SPEED = 3;
     private final MagicController controller;
     private int clickCooldown = 150;
     private boolean enableCreativeModeEjecting = true;

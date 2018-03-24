@@ -758,7 +758,7 @@ public class ConfigurationUtils extends ConfigUtils {
          }
      }
 
-    static public void addParameters(String[] extraParameters, ConfigurationSection parameters)
+    public static void addParameters(String[] extraParameters, ConfigurationSection parameters)
     {
         if (extraParameters != null)
         {
@@ -769,7 +769,7 @@ public class ConfigurationUtils extends ConfigUtils {
         }
     }
 
-    static public String getParameters(ConfigurationSection parameters) {
+    public static String getParameters(ConfigurationSection parameters) {
         Collection<String> parameterStrings = new ArrayList<>();
         Map<String, Object> map = NMSUtils.getMap(parameters);
         for (Map.Entry<String, Object> entry : map.entrySet()) {

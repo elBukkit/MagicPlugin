@@ -31,7 +31,7 @@ public class AnimateSpell extends SimulateSpell
 	private static Random random = new Random();
 	private LinkedList<WeightedPair<Integer>> levelWeights = null;
 
-	public final static String[] ANIMATE_PARAMETERS = {
+	public static final String[] ANIMATE_PARAMETERS = {
 		"animate", "sim_check_destructible", "seed_radius", "restricted", "obworld", "btarget"
 	};
 

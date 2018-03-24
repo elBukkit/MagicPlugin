@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 @Deprecated
 public class DropSpell extends BlockSpell
 {
-	private final static int DEFAULT_MAX_RECURSION = 16;
+	private static final int DEFAULT_MAX_RECURSION = 16;
 	private int dropCount;
 	private boolean falling = true;
 	private boolean diagonals = false;

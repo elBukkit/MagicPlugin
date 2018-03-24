@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class FeedAction extends BaseSpellAction
 {
-    static private int MAX_FOOD_LEVEL = 20;
+    private static int MAX_FOOD_LEVEL = 20;
 
     private int feedAmount;
     private float saturationAmount;

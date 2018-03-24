@@ -43,7 +43,7 @@ import com.elmakers.mine.bukkit.utility.Target;
  */
 @Deprecated
 public class CommandSpell extends TargetingSpell {
-    public final static String[] PARAMETERS = {
+    public static final String[] PARAMETERS = {
             "command", "console", "op", "radius"
     };
 

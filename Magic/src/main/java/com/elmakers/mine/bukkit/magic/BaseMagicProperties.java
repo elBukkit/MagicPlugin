@@ -31,7 +31,7 @@ public class BaseMagicProperties implements MagicProperties {
     protected ConfigurationSection configuration = new MemoryConfiguration();
 
     private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
-    public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
+    public static final Set<String> PROPERTY_KEYS = ImmutableSet.of(
             "active_spell", "active_brush", "alternate_spell", "alternate_spell2",
             "path", "template", "passive",
             "mana", "mana_regeneration", "mana_max", "mana_max_boost",
@@ -65,7 +65,7 @@ public class BaseMagicProperties implements MagicProperties {
             "sp_multiplier", "class", "consume_spell", "stack", "unstashable", "unmoveable", "attributes"
     );
 
-    public final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
+    public static final Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
             "owner", "owner_id", "version", "item_attributes", "item_attribute_slot",
             "mana_timestamp", "storage"
     );

@@ -70,20 +70,20 @@ import com.google.common.base.Preconditions;
 import de.slikey.effectlib.util.ParticleEffect;
 
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
-	public final static int OFFHAND_SLOT = 40;
-	public final static int INVENTORY_SIZE = 27;
-	public final static int PLAYER_INVENTORY_SIZE = 36;
-	public final static int INVENTORY_ORGANIZE_BUFFER = 4;
-	public final static int HOTBAR_SIZE = 9;
-	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
-	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
+	public static final int OFFHAND_SLOT = 40;
+	public static final int INVENTORY_SIZE = 27;
+	public static final int PLAYER_INVENTORY_SIZE = 36;
+	public static final int INVENTORY_ORGANIZE_BUFFER = 4;
+	public static final int HOTBAR_SIZE = 9;
+	public static final int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
+	public static final float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public static Vector DEFAULT_CAST_OFFSET = new Vector(0, 0, 0.5);
 	public static String DEFAULT_WAND_TEMPLATE = "default";
 	private static int WAND_VERSION = 6;
 
-    private final static String[] EMPTY_PARAMETERS = new String[0];
+    private static final String[] EMPTY_PARAMETERS = new String[0];
 
-    private final static Random random = new Random();
+    private static final Random random = new Random();
 
     /**
      * The item as it appears in the inventory of the player.

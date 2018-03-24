@@ -25,7 +25,7 @@ public abstract class BrushSpell extends BlockSpell {
     protected boolean brushIsErase = false;
     protected boolean usesBrushEffects = true;
 
-    public final static String[] BRUSH_PARAMETERS = {
+    public static final String[] BRUSH_PARAMETERS = {
         "brushmod", "brush", "obx", "oby", "obz", "obworld", "btarget", "brushcolor", "preserve_data"
     };
 

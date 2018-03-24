@@ -20,7 +20,7 @@ public class ForceSpell extends TargetingSpell
 	LivingEntity targetEntity = null;
 	private Color effectColor = null;
 
-	final private static int DEFAULT_MAGNITUDE = 3;
+	private static final int DEFAULT_MAGNITUDE = 3;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters)

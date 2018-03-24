@@ -28,7 +28,7 @@ import com.elmakers.mine.bukkit.utility.Target;
 
 public class SimulateSpell extends BlockSpell {
 
-	public final static String[] SIMULATE_PARAMETERS = {
+	public static final String[] SIMULATE_PARAMETERS = {
 		"radius", "yradius", "material", "omx", "omy", "omz", "death_material",
 		"olcx", "olcy", "olcz", "obcx", "obcy", "obcz", "live_rules", "birth_rules",
 		"target_mode", "target_types", "move", "target_min_range", "target_max_range",

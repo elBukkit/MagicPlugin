@@ -29,9 +29,9 @@ public class FlingSpell extends UndoableSpell implements Listener
 	protected double defaultMinMagnitude = 1.5;
 	protected double defaultMaxMagnitude = 4;
 
-    private final static int minRingEffectRange = 2;
-    private final static int maxRingEffectRange = 15;
-    private final static int maxDamageAmount = 200;
+    private static final int minRingEffectRange = 2;
+    private static final int maxRingEffectRange = 15;
+    private static final int maxDamageAmount = 200;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters)

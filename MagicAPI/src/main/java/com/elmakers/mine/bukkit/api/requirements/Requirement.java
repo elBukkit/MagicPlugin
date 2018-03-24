@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class Requirement {
-    public final static String DEFAULT_TYPE = "magic";
+    public static final String DEFAULT_TYPE = "magic";
     private final @Nonnull String type;
     private final @Nonnull ConfigurationSection configuration;
 

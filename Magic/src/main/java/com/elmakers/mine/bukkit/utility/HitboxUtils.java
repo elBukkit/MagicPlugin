@@ -15,8 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class HitboxUtils extends CompatibilityUtils {
-    private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<>();
-    private final static Map<EntityType, Double> headSizes = new HashMap<>();
+    private static final Map<EntityType, BoundingBox> hitboxes = new HashMap<>();
+    private static final Map<EntityType, Double> headSizes = new HashMap<>();
     private static double hitboxScale = 1.0;
     private static double hitboxScaleY = 1.0;
     private static double hitboxSneakScaleY = 0.75;

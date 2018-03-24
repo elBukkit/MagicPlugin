@@ -16,8 +16,8 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class DisintegrateSpell extends BlockSpell
 {
-	private final static int             DEFAULT_PLAYER_DAMAGE = 1;
-	private final static int             DEFAULT_ENTITY_DAMAGE = 100;
+	private static final int             DEFAULT_PLAYER_DAMAGE = 1;
+	private static final int             DEFAULT_ENTITY_DAMAGE = 100;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters)
