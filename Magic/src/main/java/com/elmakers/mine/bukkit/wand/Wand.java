@@ -2274,11 +2274,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 						}
 						break;
 					case "$uses":
-						int remaining = getRemainingUses();
-						if (!isSingleUse && remaining > 0) {
-							String message = (remaining == 1) ? getMessage("uses_remaining_singular") : getMessage("uses_remaining_brief");
-							ConfigurationUtils.addIfNotEmpty(message.replace("$count", ((Integer)remaining).toString()), lore);
-						}
+						addUseLore(lore);
 						break;
 					case "$mana_max":
 						if (usesMana()) {
@@ -2452,6 +2448,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
+        addUseLore(lore);
+		addPropertyLore(lore, isSingleSpell);
+		if (isUpgrade) {
+			ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_item_description"), lore);
+		}
+		return lore;
+	}
+
+	protected void addUseLore(List<String> lore) {
 		int remaining = getRemainingUses();
 		if (!isSingleUse && remaining > 0) {
 			if (isUpgrade) {
@@ -2462,11 +2467,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 				ConfigurationUtils.addIfNotEmpty(message.replace("$count", ((Integer)remaining).toString()), lore);
 			}
 		}
-		addPropertyLore(lore, isSingleSpell);
-		if (isUpgrade) {
-			ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_item_description"), lore);
-		}
-		return lore;
 	}
 
 	protected void updateLore() {
