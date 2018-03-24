@@ -7,6 +7,12 @@ spellbook:
     keep: true
     bound: true
     class: mage
-    # This parameter in skills mode determines if the skill items are quick cast
-    # or if they must be held and right-clicked to cast.
-    quick_cast: true
+    skills:
+      # Set this to false if you want skills to be held and right-clicked to cast
+      # quick_cast: false
+
+      # Don't lose skill items on death (they will disappear otherwise, they are never dropped)
+      keep: true
+
+      # Make skill items undroppable
+      # undroppable: true
