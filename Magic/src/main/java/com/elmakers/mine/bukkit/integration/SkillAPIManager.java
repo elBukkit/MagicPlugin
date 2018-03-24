@@ -95,7 +95,7 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
     @Override
     public void removeMana(Player player, float amount) {
         PlayerData playerData = SkillAPI.getPlayerData(player);
-        playerData.setMana(Math.max(0, playerData.getMana() - amount));
+        playerData.useMana(amount);
     }
 
     @Override
