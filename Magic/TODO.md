@@ -11,6 +11,8 @@
      - Need to just merge everything in the passive effects block, maybe.. ?
      
  - Update skill icon lore when armor updates (to take buffs into account)
+ 
+ - Cooldown and other reductions on mage (from wearables, etc) don't apply to spells cast via a wand.
 
  - Skill menu option to not show skills you already have
  - Undroppable option for skills

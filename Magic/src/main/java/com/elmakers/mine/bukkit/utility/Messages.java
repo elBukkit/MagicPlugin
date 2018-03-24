@@ -230,6 +230,11 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
 
     private String getRomanString(float amount) {
         String roman = "";
+        boolean negative = false;
+        if (amount < 0) {
+            amount = -amount;
+            negative = true;
+        }
 
         if (amount > 1) {
             roman = get("wand.enchantment_level_max");
@@ -243,6 +248,9 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             roman = get("wand.enchantment_level_2");
         } else {
             roman = get("wand.enchantment_level_1");
+        }
+        if (negative) {
+            roman = "-" + roman;
         }
         return roman;
     }
