@@ -1107,7 +1107,7 @@ spells:
         fail: Failed to load photo
         cast: CLICK!
         cast_self: Selfie!
-        insufficient_resources: Camera is charging up
+        cooldown: Camera is charging up
     tornado:
         name: Tornado
         description: Spawn a destructive whirlwind

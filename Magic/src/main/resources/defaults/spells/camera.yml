@@ -6,6 +6,7 @@ camera:
     category: specialty
     class: CameraSpell
     worth: 80
+    show_undoable: false
     effects:
         cast:
         -  class: EffectSingle
@@ -15,10 +16,10 @@ camera:
     parameters:
         target_type: LivingEntity
         target_npc: true
-        cooldown: 1000
+        cooldown: 5000
         allow_max_range: false
         range: 32
         bypass_pvp: true
     costs:
-        mana: 5
+        paper: 1
 
