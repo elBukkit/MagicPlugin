@@ -2,12 +2,6 @@
 
 ## 7.4
 
- - Need to add keep option for classes and skills
-   - Maybe move all this stuff to a skills subsection?
-   - Add support for options to spellbook, too
-   
- - Wands that can be used with multiple classes
-
  - Need to do something about template data mixing with class data ... use cases:
    - Screwed up migration, left properties on a wand that now belong to class
      - In this case we want to ignore them? Or merge them? Merge can't be a permanent override though.

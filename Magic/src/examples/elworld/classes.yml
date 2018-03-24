@@ -34,3 +34,15 @@ akr:
   - boon
   - invincible
   - levitate
+
+test2:
+  mana_max: 1000
+  mana_regeneration: 100
+  skills:
+    quick_cast: false
+    skill_limit: 2
+    undroppable: true
+    keep: true
+  clean_on_lock: true
+  spells:
+  - kill

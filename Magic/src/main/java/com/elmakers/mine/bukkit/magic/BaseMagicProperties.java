@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.magic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,7 +63,8 @@ public class BaseMagicProperties implements MagicProperties {
             "quick_cast", "left_click", "right_click", "drop", "swap",
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
             "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
-            "sp_multiplier", "class", "consume_spell", "stack", "unstashable", "unmoveable", "attributes"
+            "sp_multiplier", "class", "classes",
+            "consume_spell", "stack", "unstashable", "unmoveable", "attributes"
     );
 
     public static final Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
@@ -196,6 +198,12 @@ public class BaseMagicProperties implements MagicProperties {
 
     public String getString(String key) {
         return getString(key, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<String> getStringList(String key) {
+        Object value = getProperty(key);
+        return ConfigurationUtils.getStringList(value);
     }
 
     public ConfigurationSection getConfigurationSection(String key) {

@@ -655,6 +655,11 @@ public class ConfigurationUtils extends ConfigUtils {
     @SuppressWarnings("unchecked")
     public static List<Object> getList(ConfigurationSection section, String path) {
         Object o = section.get(path);
+        return getList(o);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<Object> getList(Object o) {
         if (o == null) {
             return null;
         } else if (o instanceof List) {
@@ -681,14 +686,22 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static List<String> getStringList(ConfigurationSection section, String path) {
         List<Object> raw = getList(section, path);
+        return getStringList(raw);
+    }
 
-        if (raw == null) {
+    public static List<String> getStringList(Object o) {
+        List<Object> raw = getList(o);
+        return getStringList(raw);
+    }
+
+    public static List<String> getStringList(List<Object> rawList) {
+        if (rawList == null) {
             return null;
         }
 
         List<String> list = new ArrayList<>();
 
-        for (Object o : raw) {
+        for (Object o : rawList) {
             if (o == null) {
                 continue;
             }

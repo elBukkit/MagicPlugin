@@ -121,7 +121,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private String ownerId = "";
 	private String template = "";
     private String path = "";
-    private String mageClassKey = null;
+    private List<String> mageClassKeys = null;
     private boolean superProtected = false;
     private boolean superPowered = false;
     private boolean glow = false;
@@ -1547,7 +1547,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         manaPerDamage = getFloat("mana_per_damage");
 		spMultiplier = getFloat("sp_multiplier", 1);
 
-		mageClassKey = getString("class");
+		String singleClass = getString("class");
+		if (singleClass != null && !singleClass.isEmpty()) {
+			mageClassKeys = new ArrayList<>();
+			mageClassKeys.add(singleClass);
+		} else {
+			mageClassKeys = getStringList("classes");
+		}
 
         // Check for single-use wands
         uses = getInt("uses");
@@ -2357,8 +2363,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
 		if (path != null) {
 			pathName = path.getName();
-		} else if (mageClassKey != null && !mageClassKey.isEmpty()) {
-			MageClassTemplate classTemplate = controller.getMageClassTemplate(mageClassKey);
+		} else if (mageClassKeys != null && !mageClassKeys.isEmpty()) {
+			MageClassTemplate classTemplate = controller.getMageClassTemplate(mageClassKeys.get(0));
 			if (classTemplate != null) {
 				String pathKey = classTemplate.getProperty("path", "");
 				if (!pathKey.isEmpty()) {
@@ -4262,8 +4268,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		if (!controller.hasWandPermission(player, this)) return false;
 
-		mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
-
 		InventoryView openInventory = player.getOpenInventory();
 		InventoryType inventoryType = openInventory.getType();
         if (inventoryType == InventoryType.ENCHANTING
@@ -4305,8 +4309,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         this.isInOffhand = offhand;
         this.heldSlot = offhand ? OFFHAND_SLOT : player.getInventory().getHeldItemSlot();
 
-		if (mageClassKey != null && !mageClassKey.isEmpty()) {
-			MageClass mageClass = mage.getClass(mageClassKey);
+		if (mageClassKeys != null && !mageClassKeys.isEmpty()) {
+			MageClass mageClass = null;
+
+			for (String mageClassKey : mageClassKeys) {
+				mageClass = mage.getClass(mageClassKey);
+				if (mageClass != null) break;
+			}
+
 			if (mageClass == null) {
 			    Integer lastSlot = mage.getLastActivatedSlot();
                 if (!offhand && (lastSlot == null || lastSlot != player.getInventory().getHeldItemSlot())) {
@@ -4317,12 +4327,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 			}
 			setMageClass(mageClass);
 			if (!offhand) {
-				mage.setActiveClass(mageClassKey);
+				mage.setActiveClass(mageClass.getKey());
 			}
 			// This double-load here is not really ideal.
 			// Seems hard to prevent without merging Wand construction and activation, though.
 			loadProperties();
 		}
+
+		mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
 
 		// Check for replacement template
 		String replacementTemplate = getString("replace_on_activate", "");
@@ -5307,7 +5319,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 	@Override
     public @Nullable String getMageClassKey() {
-        return mageClassKey;
+    	if (mageClass != null) {
+    		return mageClass.getKey();
+		}
+        return mageClassKeys == null || mageClassKeys.isEmpty() ? null : mageClassKeys.get(0);
     }
 
 	public void setCurrentHotbar(int hotbar) {

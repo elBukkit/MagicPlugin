@@ -167,4 +167,9 @@ testing:
   mana: 50
   mana_regeneration: 5
 
+testclasses:
+  inherit: base_wand
+  icon: blaze_rod
+  classes: akr,test2
+
 

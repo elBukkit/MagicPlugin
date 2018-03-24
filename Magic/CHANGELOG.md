@@ -6,6 +6,7 @@
  - Changes to classes will take effect properly when using /magic load
  - Camera no requires 1 paper to use
  - Skill properties moved to a "skills" section on classes and spellbook, added "keep" option to keep skills on death
+ - Wands can have a "classes" list instead of a single class if they can work with more than one class
 
 ## 7.3.2
 
