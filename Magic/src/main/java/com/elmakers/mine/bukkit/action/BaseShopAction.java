@@ -493,7 +493,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             if (!sell && wand != null && autoUpgrade) {
                 if (upgradeLevels <= 0) {
                     com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
-                    WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
+                    WandUpgradePath nextPath = path != null ? path.getUpgrade() : null;
                     if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
                         path.upgrade(wand, mage);
                     }

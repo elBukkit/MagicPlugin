@@ -131,7 +131,7 @@ public class ShapeBatch extends BrushBatch {
 	public boolean createSymmetricalBlock(int x, int y, int z)
 	{
 		boolean fillBlock = false;
-		switch(type) {
+		switch (type) {
 			case SPHERE:
 				int maxDistanceSquared = radius * radius;
 				float mx = x - 0.5f;

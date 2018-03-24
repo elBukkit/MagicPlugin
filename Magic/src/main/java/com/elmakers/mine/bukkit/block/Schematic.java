@@ -23,7 +23,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
     private volatile boolean loaded = false;
     private Vector size;
     private Vector center;
-    private MaterialAndData blocks[][][];
+    private MaterialAndData[][][] blocks;
     private Collection<EntityData> entities;
 
     public Schematic() {
@@ -91,12 +91,9 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
             }
         }
 
-        for(int y = 0; y < height; y++)
-        {
-            for(int z = 0; z < length; z++)
-            {
-                for(int x = 0; x < width; x++)
-                {
+        for (int y = 0; y < height; y++) {
+            for (int z = 0; z < length; z++) {
+                for (int x = 0; x < width; x++) {
                     int index = x + (y * length + z) * width;
                     Material material = null;
                     try {

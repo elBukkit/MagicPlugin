@@ -31,7 +31,7 @@ public class BaseMagicProperties implements MagicProperties {
     protected ConfigurationSection configuration = new MemoryConfiguration();
 
     private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
-    public final static Set<String> PROPERTY_KEYS = ImmutableSet.of(
+    public static final Set<String> PROPERTY_KEYS = ImmutableSet.of(
             "active_spell", "active_brush", "alternate_spell", "alternate_spell2",
             "path", "template", "passive",
             "mana", "mana_regeneration", "mana_max", "mana_max_boost",
@@ -65,7 +65,7 @@ public class BaseMagicProperties implements MagicProperties {
             "sp_multiplier", "class", "consume_spell", "stack", "unstashable", "unmoveable", "attributes"
     );
 
-    public final static Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
+    public static final Set<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
             "owner", "owner_id", "version", "item_attributes", "item_attribute_slot",
             "mana_timestamp", "storage"
     );
@@ -97,7 +97,7 @@ public class BaseMagicProperties implements MagicProperties {
     @Override
     public <T> Optional<T> getProperty(String key, Class<T> type) {
         Object value = getProperty(key);
-        if(value == null || !type.isInstance(value)) {
+        if (value == null || !type.isInstance(value)) {
             return Optional.absent();
         }
 
@@ -105,7 +105,6 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getProperty(String key, T defaultValue) {
         Preconditions.checkNotNull(key, "key");
         Preconditions.checkNotNull(defaultValue, "defaultValue");
@@ -119,17 +118,17 @@ public class BaseMagicProperties implements MagicProperties {
         }
         if (value != null && value instanceof Number && defaultValue instanceof Number) {
             if (defaultValue instanceof Double) {
-                return (T)(Double)NumberConversions.toDouble(value);
+                return clazz.cast(NumberConversions.toDouble(value));
             } else if (defaultValue instanceof Integer) {
-                return (T)(Integer)NumberConversions.toInt(value);
+                return clazz.cast(NumberConversions.toInt(value));
             } else if (defaultValue instanceof Byte) {
-                return (T)(Byte)NumberConversions.toByte(value);
+                return clazz.cast(NumberConversions.toByte(value));
             } else if (defaultValue instanceof Float) {
-                return (T)(Float)NumberConversions.toFloat(value);
+                return clazz.cast(NumberConversions.toFloat(value));
             } else if (defaultValue instanceof Long) {
-                return (T)(Long)NumberConversions.toLong(value);
+                return clazz.cast(NumberConversions.toLong(value));
             } else if (defaultValue instanceof Short) {
-                return (T)(Short)NumberConversions.toShort(value);
+                return clazz.cast(NumberConversions.toShort(value));
             }
         }
 
@@ -138,7 +137,7 @@ public class BaseMagicProperties implements MagicProperties {
 
     public Object getObject(String key, Object defaultValue) {
         Object value = getProperty(key);
-        return value == null ? defaultValue :value;
+        return value == null ? defaultValue : value;
     }
 
     public Object getObject(String key) {
@@ -178,7 +177,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     public long getLong(String key) {
-        return getLong(key, 0l);
+        return getLong(key, 0L);
     }
 
     public boolean getBoolean(String key, boolean defaultValue) {

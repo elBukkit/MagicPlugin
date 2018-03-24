@@ -32,7 +32,8 @@ public class OrientAction extends BaseSpellAction {
             yaw = (float)parameters.getDouble("yaw");
         } else {
             yaw = null;
-        }if (parameters.contains("pitch_offset")) {
+        }
+        if (parameters.contains("pitch_offset")) {
             pitchOffset = (float)parameters.getDouble("pitch_offset");
         } else {
             pitchOffset = null;

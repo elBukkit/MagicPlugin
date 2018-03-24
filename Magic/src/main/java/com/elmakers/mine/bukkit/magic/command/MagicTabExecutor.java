@@ -13,15 +13,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public abstract class MagicTabExecutor implements TabExecutor {
-	protected MagicAPI api;
+	protected final MagicAPI api;
+	protected final MageController controller;
 
 	public MagicTabExecutor(MagicAPI api) {
 		this.api = api;
+		this.controller = api.getController();
 	}
 
 	public abstract Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args);
@@ -71,7 +74,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
 
 	public boolean giveWand(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
-		Mage mage = api.getMage(player);
+		Mage mage = controller.getMage(player);
 		Wand currentWand =  mage.getActiveWand();
 		if (currentWand != null) {
 			currentWand.closeInventory();

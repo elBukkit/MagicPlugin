@@ -209,7 +209,7 @@ public class ProjectileSpell extends UndoableSpell
                     effectPlayer.start(projectile.getLocation(), projectile, null, null);
                 }
 				registerForUndo(projectile);
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
@@ -290,7 +290,7 @@ public class ProjectileSpell extends UndoableSpell
 						if (currentLife < tickIncrease) {
 							lifeField.set(handle, tickIncrease);
 						}
-					} catch(Exception ex) {
+					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
 				}

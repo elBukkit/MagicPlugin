@@ -46,7 +46,7 @@ public class AlterSpell extends BlockSpell
 	static final String DEFAULT_ADJUST_MIN =  "0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0  ,0 ,0  ,2 ,0 ,0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,2 ,0 ,2 ,0 ,0 ,2 ,2 ,0 ,0 ,0 ,0 ,5 ,6 ,0 ,0 ,0 ,0 ,0 ,3 ,2 ,2 ,0 , 0,0 ,0 ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0";
 	static final int DEFAULT_RECURSE_DISTANCE = 0;
 
-	static public List<Integer> parseIntegers(String csvList) {
+	public static List<Integer> parseIntegers(String csvList) {
 		List<Integer> ints = new ArrayList<>();
 
 		String[] intStrings = StringUtils.split(csvList, ',');

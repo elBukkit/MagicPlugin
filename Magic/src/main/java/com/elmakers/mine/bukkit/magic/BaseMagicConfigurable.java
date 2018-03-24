@@ -142,10 +142,10 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             result = Boolean.valueOf(isTrue);
         } else {
             try {
-                result = Double.valueOf(value instanceof Double?((Double)value).doubleValue():(value instanceof Float?(double)((Float)value).floatValue():Double.parseDouble(value.toString())));
+                result = Double.valueOf(value instanceof Double ? ((Double)value).doubleValue() : (value instanceof Float ? (double)((Float)value).floatValue() : Double.parseDouble(value.toString())));
             } catch (Exception notADouble) {
                 try {
-                    result = Integer.valueOf(value instanceof Integer?((Integer)value).intValue():Integer.parseInt(value.toString()));
+                    result = Integer.valueOf(value instanceof Integer ? ((Integer)value).intValue() : Integer.parseInt(value.toString()));
                 } catch (Exception notAnInteger) {
                 }
             }

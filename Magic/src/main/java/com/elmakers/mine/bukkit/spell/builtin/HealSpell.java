@@ -19,11 +19,11 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class HealSpell extends TargetingSpell
 {
-    private final static PotionEffectType[] _negativeEffects =
+    private static final PotionEffectType[] _negativeEffects =
             {PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
              PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
              PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
-    protected final static Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
+    protected static final Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
     @Override
 	public SpellResult onCast(ConfigurationSection parameters)

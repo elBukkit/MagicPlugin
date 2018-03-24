@@ -136,12 +136,10 @@ public class DisarmAction extends BaseSpellAction
 				return SpellResult.NO_TARGET;
 			}
 
-			if (targetMage != null) {
-				Wand activeWand = targetMage.getActiveWand();
-				if (activeWand != null && isMainHand) {
-					targetMage.getActiveWand().deactivate();
-					stack = equipment.getItemInMainHand();
-				}
+			Wand activeWand = targetMage.getActiveWand();
+			if (activeWand != null && isMainHand) {
+				targetMage.getActiveWand().deactivate();
+				stack = equipment.getItemInMainHand();
 			}
 		}
 
@@ -180,7 +178,7 @@ public class DisarmAction extends BaseSpellAction
 		}
 		if (targetSlot != null && targetInventory != null) {
 			targetInventory.setItem(targetSlot, stack);
-			if (originalSlot != null && targetMage != null) {
+			if (originalSlot != null) {
 				DisarmUndoAction disarmUndo = new DisarmUndoAction(targetMage, originalSlot, targetSlot);
 				context.registerForUndo(disarmUndo);
 			}

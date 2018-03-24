@@ -33,7 +33,7 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
             return true;
         }
 
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         String value = "";
         for (int i = 1; i < parameters.length; i++) {
             if (i != 1) value = value + " ";

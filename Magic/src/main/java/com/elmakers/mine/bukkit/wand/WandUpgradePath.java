@@ -726,7 +726,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         newPath.upgradeTo(wand);
 
         // Don't do events without a mage
-        if(mage == null) {
+        if (mage == null) {
             return;
         }
 

@@ -621,7 +621,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public void update(String activeMaterial) {
         // First check for brush mods
-        String pieces[] = StringUtils.split(activeMaterial, '&');
+        String[] pieces = StringUtils.split(activeMaterial, '&');
         if (pieces != null && pieces.length > 0)
         {
             activeMaterial = pieces[0];

@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 
@@ -55,7 +57,7 @@ public class ExprTargets extends SimpleExpression<Entity> {
 	}
 
 	@Override
-	public String toString(final Event e, final boolean debug) {
+	public String toString(@Nullable Event e, final boolean debug) {
 		if (e == null)
 			return "the targets";
 		return Classes.getDebugMessage(e);

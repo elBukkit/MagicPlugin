@@ -44,7 +44,7 @@ public class BlockController implements Listener {
     private int creativeBreakFrequency = 0;
 
     // This is used only for the BlockBurn event, in other cases we get a source block to check.
-    final static List<BlockFace> blockBurnDirections = Arrays.asList(
+    static final List<BlockFace> blockBurnDirections = Arrays.asList(
             BlockFace.NORTH, BlockFace.SOUTH,
             BlockFace.EAST, BlockFace.WEST,
             BlockFace.UP, BlockFace.DOWN

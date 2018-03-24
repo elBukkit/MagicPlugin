@@ -61,7 +61,7 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class PlayerController implements Listener {
-    private final static double MAX_ARROW_SPEED = 3;
+    private static final double MAX_ARROW_SPEED = 3;
     private final MagicController controller;
     private int clickCooldown = 150;
     private boolean enableCreativeModeEjecting = true;
@@ -119,7 +119,6 @@ public class PlayerController implements Listener {
         ItemStack next = inventory.getItem(event.getNewSlot());
 
         Mage mage = controller.getMage(player);
-        if (mage == null) return;
 
         // Check for self-destructing and temporary items
         if (Wand.isSelfDestructWand(next)) {
@@ -203,7 +202,7 @@ public class PlayerController implements Listener {
         } else if (activeWand != null && activeWand.isInventoryOpen()) {
             activeWand.closeInventory();
             event.setCancelled(true);
-        } else if (activeWand != null || offhandWand != null || Wand.isWand(event.getMainHandItem()) || Wand.isWand(event.getOffHandItem())){
+        } else if (activeWand != null || offhandWand != null || Wand.isWand(event.getMainHandItem()) || Wand.isWand(event.getOffHandItem())) {
             mage.checkWandNextTick();
         }
     }
@@ -297,7 +296,7 @@ public class PlayerController implements Listener {
         mage.restoreRespawnInventories();
     }
 
-    @EventHandler(priority=EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerInteractArmorStand(PlayerArmorStandManipulateEvent event)
     {
         Player player = event.getPlayer();
@@ -340,7 +339,7 @@ public class PlayerController implements Listener {
         controller.cast(mage, interactSpell, config, player, player);
     }
 
-    @EventHandler(priority=EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
@@ -399,7 +398,6 @@ public class PlayerController implements Listener {
         }
 
         Mage mage = controller.getMage(player);
-        if (mage == null) return;
 
         Wand wand = mage.checkWand();
         if (wand == null) return;
@@ -429,7 +427,7 @@ public class PlayerController implements Listener {
         wand.performAction(wand.getLeftClickAction());
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event)
     {
         if (!controller.isLoaded()) return;
@@ -471,7 +469,6 @@ public class PlayerController implements Listener {
         }
 
         Mage mage = controller.getMage(player);
-        if (mage == null) return;
 
         Wand wand = mage.checkWand();
         if (action == Action.RIGHT_CLICK_BLOCK) {
@@ -479,7 +476,7 @@ public class PlayerController implements Listener {
             isRightClick = !controller.isInteractable(event.getClickedBlock());
 
             // This is to prevent Essentials signs from giving you an item in your wand inventory.
-            if (wand != null && (material== Material.SIGN_POST || material == Material.WALL_SIGN)) {
+            if (wand != null && (material == Material.SIGN_POST || material == Material.WALL_SIGN)) {
                 wand.closeInventory();
             }
         }
@@ -576,20 +573,20 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event)
     {
         // Automatically re-activate mages.
         controller.getMage(event.getPlayer());
     }
 
-    @EventHandler(priority=EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerKick(PlayerKickEvent event)
     {
         handlePlayerQuitEvent(event);
     }
 
-    @EventHandler(priority=EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event)
     {
         handlePlayerQuitEvent(event);
@@ -655,13 +652,11 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event)
     {
         Player player = event.getPlayer();
         Mage mage = controller.getMage(player);
-
-        if (mage == null) return;
 
         // If a wand's inventory is active, add the item there
         if (mage.hasStoredInventory()) {
@@ -672,7 +667,7 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerPrePickupItem(PlayerPickupItemEvent event)
     {
         Item item = event.getItem();
@@ -705,7 +700,7 @@ public class PlayerController implements Listener {
         if (isWand) {
             Wand wand = controller.getWand(pickup);
             if (!wand.canUse(player)) {
-                if (mage != null && (lastDropWarn == 0 || System.currentTimeMillis() - lastDropWarn > 10000)) {
+                if (lastDropWarn == 0 || System.currentTimeMillis() - lastDropWarn > 10000) {
                     mage.sendMessage(messages.get("wand.bound").replace("$name", wand.getOwner()));
                 }
                 lastDropWarn = System.currentTimeMillis();
@@ -715,8 +710,6 @@ public class PlayerController implements Listener {
 
             controller.removeLostWand(wand.getId());
         }
-
-        if (mage == null) return;
 
         // Wands will absorb spells and upgrade items
         Wand activeWand = mage.getActiveWand();

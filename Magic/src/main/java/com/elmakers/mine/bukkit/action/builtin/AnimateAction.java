@@ -13,11 +13,11 @@ public class AnimateAction extends CompoundAction {
 
 	public enum TargetMode {
 		STABILIZE, WANDER, GLIDE, HUNT, FLEE, DIRECTED
-	};
+	}
 
 	public enum TargetType {
 		PLAYER, MAGE, MOB, AUTOMATON, ANY
-	};
+	}
 
 	public static boolean DEBUG = false;
 }

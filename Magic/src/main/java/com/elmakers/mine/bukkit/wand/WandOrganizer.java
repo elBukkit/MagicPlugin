@@ -25,10 +25,10 @@ public class WandOrganizer {
 	private final Wand wand;
 	private final Mage mage;
 
-	protected final static int inventoryOrganizeNewGroupBuffer = 8;
-	protected final static int favoriteCastCountThreshold = 20;
-    protected final static int favoriteCountBuffer = 9;
-    protected final static int favoritePageBuffer = 4;
+	protected static final int inventoryOrganizeNewGroupBuffer = 8;
+	protected static final int favoriteCastCountThreshold = 20;
+    protected static final int favoriteCountBuffer = 9;
+    protected static final int favoritePageBuffer = 4;
 
 	private int currentInventoryIndex = 0;
 	private int currentInventoryCount = 0;

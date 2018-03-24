@@ -156,7 +156,7 @@ public class ProjectileAction  extends BaseProjectileAction
                     projectile.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
                 }
 				track(context, projectile);
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}

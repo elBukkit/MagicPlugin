@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
-
 public abstract class EffectRepeating extends EffectPlayer implements Runnable {
     protected int iterations = 4;
     protected int period = 1;

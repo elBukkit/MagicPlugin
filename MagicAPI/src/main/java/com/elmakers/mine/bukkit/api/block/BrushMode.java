@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.api.block;
 
-public enum BrushMode
-{
+public enum BrushMode {
     MATERIAL,
     ERASE,
     COPY,
@@ -9,4 +8,4 @@ public enum BrushMode
     REPLICATE,
     MAP,
     SCHEMATIC
-};
+}

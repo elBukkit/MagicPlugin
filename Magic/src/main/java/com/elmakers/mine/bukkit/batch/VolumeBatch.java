@@ -59,7 +59,7 @@ public abstract class VolumeBatch implements Batch {
     @Override
     public void finish() {
         if (!finished) {
-            if (worldName != null && minx != null && miny != null && minz != null && maxx !=null && maxy != null && maxz != null) {
+            if (worldName != null && minx != null && miny != null && minz != null && maxx != null && maxy != null && maxz != null) {
                 controller.updateVolume(worldName, minx, miny, minz, maxx, maxy, maxz);
             }
             finished = true;

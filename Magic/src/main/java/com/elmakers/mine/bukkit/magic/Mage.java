@@ -160,6 +160,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private static class DamagedBy {
         private WeakReference<Player> player;
         public double damage;
+
         public DamagedBy(Player player, double damage) {
             this.player = new WeakReference<>(player);
             this.damage = damage;
@@ -168,7 +169,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         public Entity getEntity() {
             return player.get();
         }
-    };
+    }
+
     private DamagedBy topDamager;
     private DamagedBy lastDamager;
     private Map<UUID, DamagedBy> damagedBy;
@@ -721,7 +723,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 } else {
                     activeWand.setActiveSpell(spell.getKey());
                 }
-            } else if (Wand.isBrush(icon)){
+            } else if (Wand.isBrush(icon)) {
                 activeWand.setActiveBrush(icon);
             }
         } else {
@@ -1061,7 +1063,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         Wand boundWand = controller.getWand(boundWandItem);
                         boundWands.put(boundWand.getTemplateKey(), boundWand);
                     } catch (Exception ex) {
-                        controller.getLogger().log(Level.WARNING, "Failed to load bound wand for " + playerName +": " + boundWandItem, ex);
+                        controller.getLogger().log(Level.WARNING, "Failed to load bound wand for " + playerName + ": " + boundWandItem, ex);
                     }
                 }
             }
@@ -1273,7 +1275,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             MageClass parentClass = getClass(parentTemplate.getKey(), true);
 
             // Should never be null, check is here to silence the compiler.
-            if(parentClass != null) {
+            if (parentClass != null) {
                 mageClass.setParent(parentClass);
             }
         }
@@ -2278,7 +2280,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return getSkillPoints() >= sp;
         }
 
-        int amount = itemStack == null ? 0 :itemStack.getAmount();
+        int amount = itemStack == null ? 0 : itemStack.getAmount();
         if (amount <= 0 ) {
             return true;
         }
@@ -3462,7 +3464,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         boolean canCast = canCastSpell;
                         if (canCastSpell && remainingCooldown == 0 && requiredCost == null) {
                             targetAmount = 1;
-                        } else if (canCastSpell ){
+                        } else if (canCastSpell ) {
                             canCast = remainingCooldown == 0;
                             targetAmount = Wand.LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
                             if (Wand.LiveHotbarCooldown && requiredCost != null) {

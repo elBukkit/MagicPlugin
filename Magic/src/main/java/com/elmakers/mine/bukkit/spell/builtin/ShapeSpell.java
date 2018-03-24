@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.utility.Target;
 
 public class ShapeSpell extends BrushSpell
 {
-	public final static String[] CONSTRUCT_PARAMETERS = {
+	public static final String[] CONSTRUCT_PARAMETERS = {
 		"radius", "max_dimension", "orient_dimension_max", "orient_dimension_min", "thickness"
 	};
 

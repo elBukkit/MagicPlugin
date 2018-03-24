@@ -12,7 +12,7 @@ import net.citizensnpcs.api.util.DataKey;
 
 public class CommandCitizensTrait extends CitizensTrait {
     private String command;
-    private boolean console = true;;
+    private boolean console = true;
     private boolean op = false;
 
 	public CommandCitizensTrait() {
@@ -36,7 +36,7 @@ public class CommandCitizensTrait extends CitizensTrait {
 	}
 
     @Override
-    public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event){
+    public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event) {
         if (command == null || command.isEmpty()) return false;
 
         CommandSender sender = event.getClicker();

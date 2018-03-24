@@ -18,7 +18,7 @@ public class DoorAction extends BaseSpellAction
         OPEN,
         CLOSE,
         TOGGLE
-    };
+    }
 
     private DoorActionType actionType;
 

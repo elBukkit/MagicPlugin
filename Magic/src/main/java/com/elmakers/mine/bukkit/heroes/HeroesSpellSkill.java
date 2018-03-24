@@ -77,7 +77,7 @@ public class HeroesSpellSkill extends ActiveSkill {
         if (spellLevelString != null && spellLevelString.isEmpty()) {
             try {
                 spellLevel = Integer.parseInt(spellLevelString);
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 controller.getLogger().warning("Invalid tier in skill config for " + spellTemplate.getKey() + ": " + spellLevelString);
             }
         }
@@ -87,7 +87,7 @@ public class HeroesSpellSkill extends ActiveSkill {
     public SkillResult use(Hero hero, String[] strings) {
         Mage mage = controller.getMage(hero.getPlayer());
         boolean success = false;
-        if (mage != null) {
+        {
             String spellKey = spellTemplate.getKey();
             int targetLevel = SkillConfigManager.getUseSetting(hero, this, "tier", spellLevel, true);
             if (targetLevel != 1) {
@@ -98,7 +98,7 @@ public class HeroesSpellSkill extends ActiveSkill {
             Spell spell = mage.getSpell(spellKey);
             if (spell == null) {
                 if (targetLevel > 1) {
-                    controller.getLogger().warning("Invalid tier for spell in skills config: " + spellKey + " (tier " + spellLevel +")");
+                    controller.getLogger().warning("Invalid tier for spell in skills config: " + spellKey + " (tier " + spellLevel + ")");
                 } else {
                     controller.getLogger().warning("Invalid spell in skills config: " + spellKey);
                 }

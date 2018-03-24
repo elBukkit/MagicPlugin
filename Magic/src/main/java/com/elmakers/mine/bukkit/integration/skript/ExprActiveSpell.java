@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.entity.Player;
@@ -30,7 +31,6 @@ public class ExprActiveSpell extends SimplePropertyExpression<Player, String> {
 	@Override
 	protected String[] get(final Event e, final Player[] source) {
 		return super.get(source, new Converter<Player, String>() {
-			@SuppressWarnings("null")
 			@Override
 			public String convert(final Player p) {
 				Mage mage = MagicPlugin.getAPI().getController().getRegisteredMage(p);
@@ -48,8 +48,11 @@ public class ExprActiveSpell extends SimplePropertyExpression<Player, String> {
 		});
 	}
 
-	@Override
+	// Eclipse detects the parent return type of this function as @NonNull
+	// which is not correct.
+	@SuppressWarnings("null")
 	@Nullable
+	@Override
 	public String convert(final Player p) {
 		assert false;
 		return null;
@@ -60,9 +63,12 @@ public class ExprActiveSpell extends SimplePropertyExpression<Player, String> {
 		return String.class;
 	}
 
-	@Override
+	// Eclipse detects the parent return type of this function as @NonNull
+	// which is not correct.
+	@SuppressWarnings("null")
 	@Nullable
-	public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
+	@Override
+	public Class<?>[] acceptChange(@Nonnull Changer.ChangeMode mode) {
 		if (mode != Changer.ChangeMode.SET && mode != Changer.ChangeMode.REMOVE_ALL)
 			return null;
 		return new Class<?>[] {String.class};

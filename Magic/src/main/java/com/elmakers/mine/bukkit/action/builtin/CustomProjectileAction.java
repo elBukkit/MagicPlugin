@@ -138,7 +138,7 @@ public class CustomProjectileAction extends CompoundAction
             returnBuffer = planConfig.getDouble("return_buffer");
             parameters = planConfig;
         }
-    };
+    }
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -616,12 +616,12 @@ public class CustomProjectileAction extends CompoundAction
             	else if (targetLocation.distance(projectileLocation) >= distanceTravelledThisTick) {
             		keepGoing = false;
             	}
-            	else if(checkIterations > 1000) {
+            	else if (checkIterations > 1000) {
             		keepGoing = false;
             	}
             	else {
-            		if (tempLocation.distance(projectileLocation)<targetLocation.distance(projectileLocation)) {
-            			tempLocation.add(velocity.clone().multiply(targetLocation.distance(projectileLocation)+0.1));
+            		if (tempLocation.distance(projectileLocation) < targetLocation.distance(projectileLocation)) {
+            			tempLocation.add(velocity.clone().multiply(targetLocation.distance(projectileLocation) + 0.1));
             		}
             		else {
             			tempLocation.add(velocity.clone().multiply(0.2));
@@ -634,7 +634,7 @@ public class CustomProjectileAction extends CompoundAction
                     // TODO: This whole procedure, particularly retargeting, is going to be very costly
                     // This is hopefully an easier way
                     targeting.start(tempLocation);
-                    target = targeting.target(actionContext, distanceTravelledThisTick-tempLocation.distance(projectileLocation));
+                    target = targeting.target(actionContext, distanceTravelledThisTick - tempLocation.distance(projectileLocation));
                     targetingResult = targeting.getResult();
                     targetLocation = target.getLocation();
                     checkIterations++;
@@ -862,7 +862,7 @@ public class CustomProjectileAction extends CompoundAction
         {
             attachedOffset = targetLocation.toVector().subtract(targetEntity.getLocation().toVector());
         }
-        if(actionContext != null) actionContext.playEffects(hitEffectKey);
+        if (actionContext != null) actionContext.playEffects(hitEffectKey);
         return SpellResult.PENDING;
     }
 

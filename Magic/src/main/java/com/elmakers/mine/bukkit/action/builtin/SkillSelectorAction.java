@@ -178,7 +178,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             }
             return getSpellName().compareTo(other.getSpellName());
         }
-    };
+    }
 
     public SkillSelectorAction() {
     }
@@ -319,8 +319,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         }
 
         // We don't allow quick-casting here if there is an inventory limit.
-        if (action == InventoryAction.PICKUP_HALF && mage != null)
-        {
+        if (action == InventoryAction.PICKUP_HALF) {
             Spell spell = mage.getSpell(Wand.getSpell(clickedItem));
             if (spell != null) {
                 spell.cast();

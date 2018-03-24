@@ -44,16 +44,17 @@ public class RecurseAction extends CompoundAction {
             this.face = face;
         }
     }
+
     protected Deque<StackEntry> stack;
     protected Set<Long> touched;
 
-    public final static String[] EXAMPLE_DIRECTIONS = {"cardinal", "all", "plane", "up", "down", "north", "south", "east", "west"};
-    private final static List<BlockFace> cardinalDirections = Arrays.asList(
+    public static final String[] EXAMPLE_DIRECTIONS = {"cardinal", "all", "plane", "up", "down", "north", "south", "east", "west"};
+    private static final List<BlockFace> cardinalDirections = Arrays.asList(
         BlockFace.NORTH, BlockFace.SOUTH,
         BlockFace.EAST, BlockFace.WEST,
         BlockFace.UP, BlockFace.DOWN
     );
-    private final static List<BlockFace> allDirections = Arrays.asList(
+    private static final List<BlockFace> allDirections = Arrays.asList(
         BlockFace.UP, BlockFace.DOWN,
         BlockFace.NORTH, BlockFace.SOUTH,
         BlockFace.EAST, BlockFace.WEST,
@@ -73,7 +74,7 @@ public class RecurseAction extends CompoundAction {
         BlockFace.DOWN_NORTH_EAST, BlockFace.DOWN_NORTH_WEST,
         BlockFace.DOWN_SOUTH_EAST, BlockFace.DOWN_SOUTH_WEST
     );
-    private final static List<BlockFace> planeDirections = Arrays.asList(
+    private static final List<BlockFace> planeDirections = Arrays.asList(
         BlockFace.NORTH, BlockFace.SOUTH,
         BlockFace.EAST, BlockFace.WEST,
         BlockFace.NORTH_EAST, BlockFace.NORTH_WEST,

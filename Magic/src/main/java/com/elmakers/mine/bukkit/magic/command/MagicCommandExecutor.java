@@ -214,7 +214,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 
 			int stoppedPending = 0;
-			for (Mage mage : api.getMages()) {
+			for (Mage mage : controller.getMages()) {
 				while (mage.cancelPending() != null) stoppedPending++;
 			}
 
@@ -244,7 +244,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 
 			boolean check = false;
-			if (owner != null && owner.equals("check")){
+			if (owner != null && owner.equals("check")) {
 				check = true;
 				owner = "ALL";
 			}
@@ -295,7 +295,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				}
 			}
 
-			Collection<Mage> mages = api.getMages();
+			Collection<Mage> mages = controller.getMages();
 			sender.sendMessage(ChatColor.AQUA + "Modified blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getModified().size() + ChatColor.AQUA + ")");
 			sender.sendMessage(ChatColor.AQUA + "Watching blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getWatching().size() + ChatColor.AQUA + ")");
 			sender.sendMessage(ChatColor.AQUA + "Registered breaking (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreaking().size() + ChatColor.AQUA + ")");
@@ -346,9 +346,9 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				CodeSource src = MagicAPI.class.getProtectionDomain().getCodeSource();
 				if (src != null) {
 					URL jar = src.getLocation();
-                    try(InputStream is = jar.openStream();
+                    try (InputStream is = jar.openStream();
                             ZipInputStream zip = new ZipInputStream(is)) {
-                        while(true) {
+                        while (true) {
                             ZipEntry e = zip.getNextEntry();
                             if (e == null)
                                 break;
@@ -791,7 +791,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
 	protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
-		Mage mage = api.getMage(player);
+		Mage mage = controller.getMage(player);
 		Wand currentWand =  mage.getActiveWand();
 		if (currentWand != null) {
 			currentWand.closeInventory();
@@ -876,7 +876,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			} else if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
                 Player player = DeprecatedUtils.getPlayer(args[1]);
                 if (player != null) {
-                    Mage mage = api.getMage(player);
+                    Mage mage = controller.getMage(player);
                     ConfigurationSection data = mage.getData();
                     options.addAll(data.getKeys(false));
                 }

@@ -215,7 +215,7 @@ public class VolumeAction extends CompoundAction
 		}
 	}
 
-	public static Vector rotate(float yaw, float pitch, double x, double y, double z){
+	public static Vector rotate(float yaw, float pitch, double x, double y, double z) {
 		float angle;
 		angle = -yaw * DEGTORAD;
 		double sinYaw = Math.sin(angle);

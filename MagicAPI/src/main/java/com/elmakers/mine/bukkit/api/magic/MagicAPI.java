@@ -190,6 +190,7 @@ public interface MagicAPI {
      *
      * @return The list of all currently active mages.
      */
+    @Deprecated
     Collection<Mage> getMages();
 
     /**
@@ -216,6 +217,7 @@ public interface MagicAPI {
      * @param sender the CommandSender (Player, Command block, etc) to turn into a Mage
      * @return Mage instance, new, created or loaded.
      */
+    @Deprecated
     Mage getMage(CommandSender sender);
 
     /**
@@ -229,6 +231,7 @@ public interface MagicAPI {
      * @param sender the CommandSender to use, optional
      * @return Mage instance, new, created or loaded.
      */
+    @Deprecated
     Mage getMage(Entity entity, CommandSender sender);
 
     /**

@@ -354,7 +354,7 @@ public class EntityController implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onItemSpawn(ItemSpawnEvent event)
     {
         if (disableItemSpawn)

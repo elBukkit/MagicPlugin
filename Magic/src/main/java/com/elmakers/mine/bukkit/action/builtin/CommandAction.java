@@ -51,7 +51,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
  * <p>If <code>@arg</code> is present in the command string a conversation will be created with the player to gather the input.
  */
 public class CommandAction extends BaseSpellAction {
-    public final static String[] PARAMETERS = {
+    public static final String[] PARAMETERS = {
             "command", "console", "op", "local_echo", "modal", "timeout", "escape_sequence"
     };
 

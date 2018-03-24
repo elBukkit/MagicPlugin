@@ -23,7 +23,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 
 public class MagicTraitCommandExecutor extends MagicTabExecutor {
-    final protected CitizensController controller;
+    protected final CitizensController controller;
 
 	public MagicTraitCommandExecutor(MagicAPI api, CitizensController controller) {
 		super(api);

@@ -104,7 +104,7 @@ public class AddSpellAction extends BaseSpellAction
 
         if (autoUpgrade) {
             com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
-            WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
+            WandUpgradePath nextPath = path != null ? path.getUpgrade() : null;
             if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
                 path.upgrade(wand, mage);
             }

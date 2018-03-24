@@ -25,7 +25,7 @@ public class AutomatonLevel {
 	private final Integer maxBlocks;
 	private final Integer minBlocks;
 
-	public AutomatonLevel(int level, Integer levels[], ConfigurationSection template) {
+	public AutomatonLevel(int level, Integer[] levels, ConfigurationSection template) {
 		int levelIndex = 0;
 		int nextLevelIndex = 0;
 		float distance = 0;

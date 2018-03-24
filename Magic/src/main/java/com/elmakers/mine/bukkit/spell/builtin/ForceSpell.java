@@ -20,7 +20,7 @@ public class ForceSpell extends TargetingSpell
 	LivingEntity targetEntity = null;
 	private Color effectColor = null;
 
-	final private static int DEFAULT_MAGNITUDE = 3;
+	private static final int DEFAULT_MAGNITUDE = 3;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters)
@@ -71,9 +71,7 @@ public class ForceSpell extends TargetingSpell
 			// Check for protected Mages
 			if (controller.isMage(checkTarget)) {
 				Mage targetMage = controller.getMage(checkTarget);
-				if (targetMage == null) {
-					return SpellResult.NO_TARGET;
-				}
+
 				// Check for protected players
 				if (isSuperProtected(targetMage)) {
 					return SpellResult.NO_TARGET;

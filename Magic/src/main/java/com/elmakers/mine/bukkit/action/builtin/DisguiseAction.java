@@ -28,6 +28,7 @@ public class DisguiseAction extends BaseSpellAction
 			controller.disguise(entity, null);
 		}
 	}
+
 	private ConfigurationSection disguiseConfig;
 
 	@Override

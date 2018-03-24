@@ -128,9 +128,9 @@ public class BoundingBox
     }
 
     protected boolean inBox(Vector hit, int axis) {
-        if (axis==1 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
-        if (axis==2 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getX() > min.getX() && hit.getX() < max.getX()) return true;
-        if (axis==3 && hit.getX() > min.getX() && hit.getX() < max.getX() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
+        if (axis == 1 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
+        if (axis == 2 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getX() > min.getX() && hit.getX() < max.getX()) return true;
+        if (axis == 3 && hit.getX() > min.getX() && hit.getX() < max.getX() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
         return false;
     }
 
@@ -139,35 +139,55 @@ public class BoundingBox
         Vector currentHit = getIntersection(p1.getX() - min.getX(), p2.getX() - min.getX(), p1, p2, 1);
         Vector hit = getIntersection(p1.getY() - min.getY(), p2.getY() - min.getY(), p1, p2, 2);
         if (currentHit != null && hit != null) {
-            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) return currentHit; else return hit;
+            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) {
+                return currentHit;
+            } else {
+                return hit;
+            }
         } else if (currentHit == null) {
             currentHit = hit;
         }
 
         hit = getIntersection(p1.getZ() - min.getZ(), p2.getZ() - min.getZ(), p1, p2, 3);
         if (currentHit != null && hit != null) {
-            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) return currentHit; else return hit;
+            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) {
+                return currentHit;
+            } else {
+                return hit;
+            }
         } else if (currentHit == null) {
             currentHit = hit;
         }
 
         hit = getIntersection(p1.getX() - max.getX(), p2.getX() - max.getX(), p1, p2, 1);
         if (currentHit != null && hit != null) {
-            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) return currentHit; else return hit;
+            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) {
+                return currentHit;
+            } else {
+                return hit;
+            }
         } else if (currentHit == null) {
             currentHit = hit;
         }
 
         hit = getIntersection(p1.getY() - max.getY(), p2.getY() - max.getY(), p1, p2, 2);
         if (currentHit != null && hit != null) {
-            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) return currentHit; else return hit;
+            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) {
+                return currentHit;
+            } else {
+                return hit;
+            }
         } else if (currentHit == null) {
             currentHit = hit;
         }
 
         hit = getIntersection(p1.getZ() - max.getZ(), p2.getZ() - max.getZ(), p1, p2, 3);
         if (currentHit != null && hit != null) {
-            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) return currentHit; else return hit;
+            if (currentHit.distanceSquared(p1) < hit.distanceSquared(p1)) {
+                return currentHit;
+            } else {
+                return hit;
+            }
         } else if (hit != null) {
             return hit;
         }

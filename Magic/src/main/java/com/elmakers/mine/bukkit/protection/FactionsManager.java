@@ -60,7 +60,7 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
                         } else {
                             plugin.getLogger().info("Factions 1.8.2+ build found");
                         }
-                    } catch(Throwable ex2) {
+                    } catch (Throwable ex2) {
                         plugin.getLogger().log(Level.WARNING, "Failed to find mcore", ex);
                         plugin.getLogger().log(Level.WARNING, "Failed to find FactionsBlockListener", ex2);
                         factionsManager = null;

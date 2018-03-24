@@ -44,7 +44,7 @@ public class MagicCitizensTrait extends CitizensTrait {
             } else {
                 try {
                     parameters.loadFromString(parameterString);
-                } catch(Exception ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
@@ -63,7 +63,7 @@ public class MagicCitizensTrait extends CitizensTrait {
 	}
 
     @Override
-    public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event){
+    public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event) {
         if (spellKey == null || spellKey.isEmpty()) return false;
 
         CommandSender sender = event.getClicker();

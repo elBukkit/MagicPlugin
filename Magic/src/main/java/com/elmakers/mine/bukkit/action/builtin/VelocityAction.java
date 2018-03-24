@@ -162,7 +162,7 @@ public class VelocityAction extends BaseSpellAction
                 ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude
                 , 11);
 
-        if(!MathUtils.isFinite(velocity.getX()) ||
+        if (!MathUtils.isFinite(velocity.getX()) ||
                 !MathUtils.isFinite(velocity.getY()) ||
                 !MathUtils.isFinite(velocity.getZ())) {
             context.getMage().sendDebugMessage(ChatColor.AQUA + "Invalid velocity!" +

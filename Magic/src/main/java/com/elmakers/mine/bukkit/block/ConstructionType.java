@@ -20,4 +20,4 @@ public enum ConstructionType
 		}
 		return construct;
 	}
-};
+}

@@ -42,12 +42,12 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
     private Heroes heroes;
     private CharacterManager characters;
     private SkillManager skills;
-    private final static Set<String> emptySkills = new HashSet<>();
-    private final static List<String> emptySkillList = new ArrayList<>();
+    private static final Set<String> emptySkills = new HashSet<>();
+    private static final List<String> emptySkillList = new ArrayList<>();
     private final Logger log;
 
     private Method getHeroAttributeMethod;
-    private final static Map<String, Enum<?>> attributes = new HashMap<>();
+    private static final Map<String, Enum<?>> attributes = new HashMap<>();
 
     public HeroesManager(Plugin plugin, Plugin heroesPlugin) {
         log = plugin.getLogger();
@@ -90,8 +90,6 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
             getHeroAttributeMethod = null;
             log.info("Could not register Heroes attributes, you may need to update Heroes");
         }
-
-
     }
 
     public boolean canUseSkill(Player player, String skillName) {
@@ -224,7 +222,7 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
             String icon = SkillConfigManager.getRaw(skill, "icon", null);
             if (icon == null || icon.isEmpty()) {
                 config.set("icon", controller.getDefaultSkillIcon());
-            } else if(icon.startsWith("http://")) {
+            } else if (icon.startsWith("http://")) {
                 config.set("icon_url", icon);
             } else {
                 config.set("icon", icon);

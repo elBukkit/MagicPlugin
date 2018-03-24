@@ -54,7 +54,7 @@ public class DisarmSpell extends TargetingSpell
 				return SpellResult.NO_TARGET;
 			}
 
-			if (targetMage != null && targetMage.getActiveWand() != null) {
+			if (targetMage.getActiveWand() != null) {
 				targetMage.getActiveWand().deactivate();
 			}
 		}

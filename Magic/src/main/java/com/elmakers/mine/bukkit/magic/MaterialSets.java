@@ -66,7 +66,7 @@ public class MaterialSets {
         public String toString() {
             return "(*)";
         }
-    };
+    }
 
     /**
      * @return A material set that matches all materials.

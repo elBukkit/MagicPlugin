@@ -292,7 +292,7 @@ public class ConstructBatch extends BrushBatch {
         float mx;
         float my;
         float mz;
-        switch(type) {
+        switch (type) {
 			case SPHERE:
 				mx = x - 0.1f;
 				my = y - 0.1f;

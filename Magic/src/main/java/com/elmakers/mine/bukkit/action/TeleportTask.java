@@ -11,8 +11,8 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class TeleportTask implements Runnable {
-    protected final static int TELEPORT_RETRY_COUNT = 8;
-    protected final static int TELEPORT_RETRY_INTERVAL = 1;
+    protected static final int TELEPORT_RETRY_COUNT = 8;
+    protected static final int TELEPORT_RETRY_INTERVAL = 1;
 
     private final CastContext context;
     private final Entity entity;

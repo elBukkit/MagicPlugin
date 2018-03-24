@@ -47,7 +47,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
             if (configuration.isDouble("default"))
                 defaultValue = configuration.getDouble("default");
         }
-    };
+    }
 
     private List<ModifyProperty> modify;
     private String modifyTarget;

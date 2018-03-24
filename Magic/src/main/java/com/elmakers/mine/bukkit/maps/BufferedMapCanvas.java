@@ -133,8 +133,8 @@ public class BufferedMapCanvas implements MapCanvas {
                         color = Byte.parseByte(text.substring(i + 1, j));
                         i = j;
                         continue;
+                    } catch (NumberFormatException ex) {
                     }
-                    catch (NumberFormatException ex) {}
                 }
             }
 

@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.elmakers.mine.bukkit.magic.command;
 
 import java.util.Arrays;

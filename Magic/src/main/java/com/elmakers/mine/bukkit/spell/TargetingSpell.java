@@ -246,7 +246,7 @@ public abstract class TargetingSpell extends BaseSpell {
                                     player.start(originLocation, null, location, mageEntity);
                                 }
                             }
-                        }, 5l);
+                        }, 5L);
                 }
                 target = new Target(getEyeLocation(), mageEntity);
             }
