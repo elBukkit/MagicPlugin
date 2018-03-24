@@ -16,9 +16,10 @@ testing:
 akr:
   mana_max: 1000
   mana_regeneration: 100
-  quick_cast: false
-  skill_limit: 2
-  undroppable: true
+  skills:
+    quick_cast: false
+    skill_limit: 2
+    undroppable: true
   clean_on_lock: true
   spells:
   - missile|4

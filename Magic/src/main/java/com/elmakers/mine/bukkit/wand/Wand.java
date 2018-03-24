@@ -1277,7 +1277,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     InventoryUtils.setMeta(spellNode, "class", mageClassKey);
                 }
             }
-            if (!wand.quickCast) {
+            if (!wand.getBoolean("skills.quick_cast", true)) {
                 Object spellNode = InventoryUtils.getNode(itemStack, "spell");
                 if (spellNode != null) {
             		InventoryUtils.setMetaBoolean(spellNode, "quick_cast", false);

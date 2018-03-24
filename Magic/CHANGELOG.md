@@ -5,6 +5,7 @@
  - Allow using \n when configuring a wand description via configure command
  - Changes to classes will take effect properly when using /magic load
  - Camera no requires 1 paper to use
+ - Skill properties moved to a "skills" section on classes
 
 ## 7.3.2
 

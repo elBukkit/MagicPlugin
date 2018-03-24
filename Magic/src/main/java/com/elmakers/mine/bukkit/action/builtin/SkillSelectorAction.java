@@ -101,9 +101,9 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
                 }
 
                 classKey = activeClass.getKey();
-                quickCast = activeClass.getProperty("quick_cast", true);
-                undroppable = activeClass.getProperty("undroppable", false);
-                inventoryLimit = activeClass.getProperty("skill_limit", 0);
+                quickCast = activeClass.getProperty("skills.quick_cast", true);
+                undroppable = activeClass.getProperty("skills.undroppable", false);
+                inventoryLimit = activeClass.getProperty("skills.skill_limit", 0);
                 Collection<String> spells = activeClass.getSpells();
                 for (String spellKey : spells) {
                     if (hasSpells.contains(spellKey)) {
