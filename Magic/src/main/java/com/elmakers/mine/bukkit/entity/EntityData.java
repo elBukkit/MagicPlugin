@@ -329,20 +329,19 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             Set<String> keys = migrateAttributes.getKeys(false);
             for (String attributeKey : keys) {
                 try {
-                    Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
-                    if (attribute != null) {
-                        if (attributeConfiguration == null) {
-                            attributeConfiguration = parameters.createSection("entity_attributes");
-                        }
-                        attributeConfiguration.set(attributeKey, migrateAttributes.get(attributeKey));
-                        parameters.set("attributes", null);
-                        if (key != null && !nagged) {
-                            controller.getLogger().warning("You have vanilla entity attributes in the 'attributes' property of mob template '" + key + "', please rename that to entity_attributes.");
-                            nagged = true;
-                        }
-                    }
-                } catch (Exception ex) {
+                    Attribute.valueOf(attributeKey.toUpperCase());
+                } catch(IllegalArgumentException ignored) {
+                    continue;
+                }
 
+                if (attributeConfiguration == null) {
+                    attributeConfiguration = parameters.createSection("entity_attributes");
+                }
+                attributeConfiguration.set(attributeKey, migrateAttributes.get(attributeKey));
+                parameters.set("attributes", null);
+                if (key != null && !nagged) {
+                    controller.getLogger().warning("You have vanilla entity attributes in the 'attributes' property of mob template '" + key + "', please rename that to entity_attributes.");
+                    nagged = true;
                 }
             }
         }
