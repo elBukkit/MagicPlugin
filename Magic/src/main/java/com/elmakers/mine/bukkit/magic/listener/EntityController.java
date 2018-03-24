@@ -433,39 +433,35 @@ public class EntityController implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event)
     {
-        try {
-            Entity entity = event.getEntity();
+        Entity entity = event.getEntity();
 
-            com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(event.getEntity());
-            if (mage != null)
-            {
-                mage.onDamage(event);
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(event.getEntity());
+        if (mage != null)
+        {
+            mage.onDamage(event);
+        }
+        else
+        {
+            Entity passenger = entity.getPassenger();
+            com.elmakers.mine.bukkit.magic.Mage mountMage = controller.getRegisteredMage(passenger);
+            if (mountMage != null) {
+                mountMage.onDamage(event);
             }
-            else
+        }
+        if (entity instanceof Item)
+        {
+            Item item = (Item)entity;
+            ItemStack itemStack = item.getItemStack();
+            if (Wand.isWand(itemStack))
             {
-                Entity passenger = entity.getPassenger();
-                com.elmakers.mine.bukkit.magic.Mage mountMage = controller.getRegisteredMage(passenger);
-                if (mountMage != null) {
-                    mountMage.onDamage(event);
+                boolean invulnerable = controller.getWandProperty(itemStack, "invulnerable", false);
+                if (invulnerable) {
+                    event.setCancelled(true);
+                } else if (event.getDamage() >= itemStack.getDurability()) {
+                    String wandId = Wand.getWandId(itemStack);
+                    controller.removeLostWand(wandId);
                 }
             }
-            if (entity instanceof Item)
-            {
-                Item item = (Item)entity;
-                ItemStack itemStack = item.getItemStack();
-                if (Wand.isWand(itemStack))
-                {
-                    boolean invulnerable = controller.getWandProperty(itemStack, "invulnerable", false);
-                    if (invulnerable) {
-                        event.setCancelled(true);
-                    } else if (event.getDamage() >= itemStack.getDurability()) {
-                        String wandId = Wand.getWandId(itemStack);
-                        controller.removeLostWand(wandId);
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 
