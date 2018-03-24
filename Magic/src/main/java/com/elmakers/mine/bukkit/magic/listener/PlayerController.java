@@ -433,6 +433,14 @@ public class PlayerController implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event)
     {
         if (!controller.isLoaded()) return;
+
+        Action action = event.getAction();
+        boolean isLeftClick = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
+        boolean isRightClick = (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
+
+        // We only care about left click and right click.
+        if (!isLeftClick && !isRightClick) return;
+
         // Note that an interact on air event will arrive pre-cancelled
         // So this is kind of useless. :\
         //if (event.isCancelled()) return;
@@ -441,8 +449,6 @@ public class PlayerController implements Listener {
         // controller.getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()) + " cancelled: " + event.isCancelled());
 
         Player player = event.getPlayer();
-        Action action = event.getAction();
-        boolean isLeftClick = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
 
         // Don't allow interacting while holding spells, brushes or upgrades
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
@@ -453,7 +459,6 @@ public class PlayerController implements Listener {
             return;
         }
 
-        boolean isRightClick = (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
         boolean isOffhandSkill = false;
         ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
         if (isRightClick) {
