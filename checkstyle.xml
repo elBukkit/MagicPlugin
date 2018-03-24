@@ -49,6 +49,9 @@
              <property name="severity" value="error"/>
         </module>
 
+        <module name="UpperEll">
+            <property name="severity" value="error"/>
+        </module>
         <module name="ModifierOrder">
             <property name="severity" value="error"/>
         </module>

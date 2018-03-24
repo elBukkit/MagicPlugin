@@ -7,7 +7,7 @@ public class ColorHD implements Cloneable {
     private static long BYTES_PER_COMPONENT = 6;
     private static long BITS_PER_COMPONENT = BYTES_PER_COMPONENT * 8;
     private static long COMPONENT_SHIFT = BITS_PER_COMPONENT - 8;
-    private static long BIT_MASK = (1l << BITS_PER_COMPONENT) - 1;
+    private static long BIT_MASK = (1L << BITS_PER_COMPONENT) - 1;
 
     private final long red;
     private final long green;

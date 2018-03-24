@@ -177,7 +177,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     public long getLong(String key) {
-        return getLong(key, 0l);
+        return getLong(key, 0L);
     }
 
     public boolean getBoolean(String key, boolean defaultValue) {
