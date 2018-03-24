@@ -159,7 +159,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             String effectName = configuration.getString("effect");
             try {
                 effect = Effect.valueOf(effectName.toUpperCase());
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
             if (effect == null) {
                 plugin.getLogger().warning("Unknown effect type " + effectName);
@@ -172,7 +172,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             String effectName = configuration.getString("entity_effect");
             try {
                 entityEffect = EntityEffect.valueOf(effectName.toUpperCase());
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
             if (entityEffect == null) {
                 plugin.getLogger().warning("Unknown entity effect type " + effectName);
@@ -197,7 +197,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 String typeName = configuration.getString("firework");
                 try {
                     fireworkType = FireworkEffect.Type.valueOf(typeName.toUpperCase());
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
                 }
                 if (fireworkType == null) {
                     plugin.getLogger().warning("Unknown firework type " + typeName);
@@ -212,7 +212,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             String typeName = configuration.getString("particle");
             try {
                 particleType = ParticleEffect.valueOf(typeName.toUpperCase());
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
             if (particleType == null) {
                 plugin.getLogger().warning("Unknown particle type " + typeName);

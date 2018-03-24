@@ -79,7 +79,7 @@ public class TownyAPI
             if (townBlock.hasTown()) {
                 town = townBlock.getTown();
             }
-        } catch (NotRegisteredException ex) {
+        } catch (NotRegisteredException ignored) {
         }
 
         if (town == null) return true;
@@ -145,7 +145,7 @@ public class TownyAPI
         Town town = null;
         try {
             town = resident.getTown();
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
 
         if (town == null) {
@@ -155,7 +155,7 @@ public class TownyAPI
         Location location = null;
         try {
             location = town.getSpawn();
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
 
         }
         return location;

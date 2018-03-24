@@ -74,7 +74,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected BlockExtraData extraData;
     protected boolean isValid = true;
 
-    public Material DEFAULT_MATERIAL = Material.AIR;
+    public static final Material DEFAULT_MATERIAL = Material.AIR;
 
     public MaterialAndData() {
         material = DEFAULT_MATERIAL;
@@ -101,7 +101,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             SkullType skullType = SkullType.PLAYER;
             try {
                 skullType = SkullType.values()[this.data];
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
 
             }
             extraData = new BlockSkull(profile, skullType);

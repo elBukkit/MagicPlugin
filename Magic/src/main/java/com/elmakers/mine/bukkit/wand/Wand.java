@@ -433,7 +433,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 							wandConfig.set(key, null);
 							continue;
 						}
-					} catch (NumberFormatException ex) {
+					} catch (NumberFormatException ignored) {
 
 					}
 					if (wandData.equals(templateData)) {
@@ -3173,7 +3173,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (modeString != null && !modeString.isEmpty()) {
 			try {
 				defaultValue = WandMode.valueOf(modeString.toUpperCase());
-			} catch (Exception ex) {
+			} catch (Exception ignored) {
 			}
 		}
 
@@ -3184,7 +3184,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		if (actionString != null && !actionString.isEmpty()) {
 			try {
 				defaultValue = WandAction.valueOf(actionString.toUpperCase());
-			} catch (Exception ex) {
+			} catch (Exception ignored) {
 			}
 		}
 

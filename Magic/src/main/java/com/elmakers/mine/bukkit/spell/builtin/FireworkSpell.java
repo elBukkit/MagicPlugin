@@ -62,7 +62,7 @@ public class FireworkSpell extends TargetingSpell
 		try {
 			Field colorConstant = Color.class.getField(name.toUpperCase());
 			return (Color)colorConstant.get(null);
-		} catch (Exception ex) {
+		} catch (Exception ignored) {
 		}
 
 		return Color.WHITE;

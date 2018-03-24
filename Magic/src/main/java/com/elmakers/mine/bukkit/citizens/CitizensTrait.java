@@ -76,9 +76,9 @@ public abstract class CitizensTrait extends Trait {
         Entity entity = null;
         try {
             entity = npc.getEntity();
-        } catch (Exception ex) {
-
+        } catch (Exception ignored) {
         }
+
         LivingEntity li = entity instanceof LivingEntity ? (LivingEntity)entity : null;
         if (li != null) {
             if (invisible) {
@@ -232,9 +232,9 @@ public abstract class CitizensTrait extends Trait {
                 Entity entity = null;
                 try {
                     entity = npc.getEntity();
-                } catch (Exception ex) {
-
+                } catch (Exception ignored) {
                 }
+
                 LivingEntity li = entity instanceof LivingEntity ? (LivingEntity)entity : null;
                 if (li != null) {
                     li.getEquipment().setHelmet(hatItem);

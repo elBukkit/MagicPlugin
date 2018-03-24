@@ -49,7 +49,7 @@ public class EffectVariable extends EffectPlayer {
                     playAtTarget = playAtTarget | childPlayer.playsAtTarget();
                 }
 
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
         }
     }

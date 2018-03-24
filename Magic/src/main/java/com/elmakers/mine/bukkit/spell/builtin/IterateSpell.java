@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 @Deprecated
 public class IterateSpell extends BrushSpell
 {
-	private int				DEFAULT_SIZE			= 16;
+    private static final int DEFAULT_SIZE = 16;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters)

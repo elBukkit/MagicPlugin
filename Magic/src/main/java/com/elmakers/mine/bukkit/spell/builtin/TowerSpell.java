@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class TowerSpell extends BlockSpell {
+    private static final int MAX_HEIGHT = 255;
 
 	private int blocksCreated;
 
@@ -24,7 +25,6 @@ public class TowerSpell extends BlockSpell {
 		if (!hasBuildPermission(target)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		int MAX_HEIGHT = 255;
 		int height = 16;
 		int maxHeight = 255;
 		int material = 20;

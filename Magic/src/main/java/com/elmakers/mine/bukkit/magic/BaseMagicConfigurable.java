@@ -146,7 +146,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             } catch (Exception notADouble) {
                 try {
                     result = Integer.valueOf(value instanceof Integer ? ((Integer)value).intValue() : Integer.parseInt(value.toString()));
-                } catch (Exception notAnInteger) {
+                } catch (Exception ignored) {
                 }
             }
         }

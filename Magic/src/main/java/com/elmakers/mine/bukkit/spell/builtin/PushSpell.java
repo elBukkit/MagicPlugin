@@ -19,9 +19,9 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class PushSpell extends UndoableSpell
 {
-	private int DEFAULT_ITEM_MAGNITUDE = 1;
-	private int DEFAULT_ENTITY_MAGNITUDE = 3;
-	private int DEFAULT_MAX_ALL_DISTANCE = 20;
+    private static final int DEFAULT_ITEM_MAGNITUDE = 1;
+    private static final int DEFAULT_ENTITY_MAGNITUDE = 3;
+    private static final int DEFAULT_MAX_ALL_DISTANCE = 20;
 
 	public void forceAll(Entity sourceEntity, double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance, double damage, int fallProtection)
 	{

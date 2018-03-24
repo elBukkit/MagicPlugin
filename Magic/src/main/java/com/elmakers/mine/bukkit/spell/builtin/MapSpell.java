@@ -28,7 +28,7 @@ public class MapSpell extends TargetingSpell
 		if (scaleType != null) {
 			try {
 				scale = MapView.Scale.valueOf(scaleType.toUpperCase());
-			} catch (Exception ex) {
+			} catch (Exception ignored) {
 
 			}
 		}

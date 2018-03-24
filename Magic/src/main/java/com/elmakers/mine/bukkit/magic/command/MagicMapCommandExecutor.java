@@ -119,7 +119,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             {
                 try {
                     parsedId = Short.parseShort(mapId);
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -143,7 +143,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             {
                 try {
                     parsedId = Short.parseShort(mapId);
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -179,7 +179,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             {
                 try {
                     limit = Integer.parseInt(args[1]);
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -207,8 +207,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             {
                 try {
                     startingId = Integer.parseInt(args[1]);
-                } catch (Exception ex) {
-
+                } catch (Exception ignored) {
                 }
             }
             onMapRestore(sender, world, startingId);

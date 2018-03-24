@@ -29,7 +29,7 @@ public class MultiverseManager implements PVPManager {
                 if (mvPlugin instanceof MultiverseCore) {
                     mv = (MultiverseCore)mvPlugin;
                 }
-            } catch (Throwable ex) {
+            } catch (Throwable ignored) {
             }
 
             if (mv != null) {

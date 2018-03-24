@@ -54,7 +54,7 @@ public class AlterSpell extends BlockSpell
 			try {
 				int thisInt = Integer.parseInt(s.trim());
 				ints.add(thisInt);
-			} catch (NumberFormatException ex) {
+			} catch (NumberFormatException ignored) {
 
 			}
 		}

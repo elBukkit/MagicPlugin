@@ -84,7 +84,7 @@ public class RecurseAction extends CompoundAction {
     protected BlockFace getBlockFace(String name) {
         try {
             return BlockFace.valueOf(name.toUpperCase());
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
         return null;
     }

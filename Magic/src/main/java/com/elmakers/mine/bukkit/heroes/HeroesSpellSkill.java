@@ -113,7 +113,7 @@ public class HeroesSpellSkill extends ActiveSkill {
                 Double doubleValue = null;
                 try {
                     doubleValue = Double.parseDouble(value);
-                } catch (NumberFormatException cantparse) {
+                } catch (NumberFormatException ignored) {
                 }
 
                 Object magicValue = spellParameters.getString(magicKey);
@@ -124,7 +124,7 @@ public class HeroesSpellSkill extends ActiveSkill {
                         if (magicValue != null) {
                             doubleMagicValue = Double.parseDouble(magicValue.toString());
                         }
-                    } catch (NumberFormatException cantparse) {
+                    } catch (NumberFormatException ignored) {
                     }
                     if (doubleMagicValue != null && doubleValue.equals(doubleMagicValue)) continue;
                 } else {

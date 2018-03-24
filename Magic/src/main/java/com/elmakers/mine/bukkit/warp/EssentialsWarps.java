@@ -29,7 +29,7 @@ public class EssentialsWarps {
     public Location getWarp(String warpName) {
         try {
             return warps.getWarp(warpName);
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
 
         }
         return null;

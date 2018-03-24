@@ -734,9 +734,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return effects;
     }
 
-    public boolean isInCircle(int x, int z, int R)
-    {
-        return ((x * x) +  (z * z) - (R * R)) <= 0;
+    public boolean isInCircle(int x, int z, int r) {
+        return ((x * x) +  (z * z) - (r * r)) <= 0;
     }
 
     private boolean canSendMessage()

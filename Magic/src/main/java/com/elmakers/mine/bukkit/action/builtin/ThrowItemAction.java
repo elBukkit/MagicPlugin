@@ -88,7 +88,7 @@ public class ThrowItemAction extends BaseProjectileAction {
         Item droppedItem = null;
         try {
             droppedItem = spawnLocation.getWorld().dropItem(spawnLocation, itemStack);
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
 
         }
         if (droppedItem == null) {

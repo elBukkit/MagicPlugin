@@ -56,10 +56,10 @@ public class ColorHD implements Cloneable {
                     r = Long.parseLong(pieces[0], 16);
                     g = Long.parseLong(pieces[1], 16);
                     b = Long.parseLong(pieces[2], 16);
-                } catch (Exception ex) {
-
+                } catch (Exception ignored) {
                 }
             }
+
             red = r;
             green = g;
             blue = b;
@@ -67,9 +67,9 @@ public class ColorHD implements Cloneable {
             long effectColor = 0;
             try {
                 effectColor = Integer.parseInt(hexColor, 16);
-            } catch (Exception ex) {
-
+            } catch (Exception ignored) {
             }
+
             red = ((effectColor >> 16) & 0xFF) << COMPONENT_SHIFT;
             green = ((effectColor >> 8) & 0xFF) << COMPONENT_SHIFT;
             blue = ((effectColor) & 0xFF) << COMPONENT_SHIFT;

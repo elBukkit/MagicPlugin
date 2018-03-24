@@ -194,12 +194,12 @@ public class ConfigurationUtils extends ConfigUtils {
         }
         if (o instanceof String) {
             String matName = (String)o;
-            try
-            {
+            try {
                 Integer value = Integer.parseInt(matName);
                 return Material.getMaterial(value);
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ignored) {
             }
+
             return Material.getMaterial(matName.toUpperCase());
         }
 
@@ -789,7 +789,7 @@ public class ConfigurationUtils extends ConfigUtils {
             String particleName = effectParticleName.toUpperCase();
             try {
                 effectParticle = ParticleEffect.valueOf(particleName);
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
         }
 

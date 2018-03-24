@@ -105,7 +105,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             if (variantName != null) {
                 try {
                     variant = Ocelot.Type.valueOf(variantName.toUpperCase());
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
                 }
             } else {
                 variant = Ocelot.Type.WILD_OCELOT;
@@ -120,7 +120,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             if (variantName != null) {
                 try {
                     color = DyeColor.valueOf(variantName.toUpperCase());
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -135,7 +135,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
                 try {
                     color = DyeColor.valueOf(variantName.toUpperCase());
                     wolf.setTamed(true);
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
                 }
                 wolf.setCollarColor(color);
             }

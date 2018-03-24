@@ -50,11 +50,11 @@ public class OcelotSpell extends TargetingSpell
 		Target target = getTarget();
 		ArrayList<Ocelot> newocelots = new ArrayList<>();
 
-		for (Ocelot Ocelot : ocelots)
+		for (Ocelot ocelot : ocelots)
 		{
-			if (!Ocelot.isDead())
+			if (!ocelot.isDead())
 			{
-				newocelots.add(Ocelot);
+				newocelots.add(ocelot);
 			}
 		}
 
@@ -68,13 +68,13 @@ public class OcelotSpell extends TargetingSpell
 			killOcelot.setHealth(0);
 		}
 
-		Ocelot Ocelot = newOcelot(target);
-		if (Ocelot == null)
+		Ocelot ocelot = newOcelot(target);
+		if (ocelot == null)
 		{
 			return SpellResult.FAIL;
 		}
 
-		ocelots.add(Ocelot);
+		ocelots.add(ocelot);
 
 		Entity e = target.getEntity();
 		if (e != null && e instanceof LivingEntity)
@@ -89,13 +89,12 @@ public class OcelotSpell extends TargetingSpell
 		return SpellResult.CAST;
 	}
 
-	protected void tameOcelot(Ocelot Ocelot)
-	{
-		Ocelot.setHealth(8);
-		Ocelot.setTamed(true);
+    protected void tameOcelot(Ocelot ocelot) {
+		ocelot.setHealth(8);
+		ocelot.setTamed(true);
         Player player = mage.getPlayer();
         if (player != null) {
-            Ocelot.setOwner(player);
+            ocelot.setOwner(player);
         }
 	}
 }

@@ -212,7 +212,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
                 try {
                     int radius = Integer.parseInt(args[2]);
                     radiusSquared = radius * radius;
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
 
                 }
             }

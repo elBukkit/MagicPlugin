@@ -125,9 +125,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Map<String, Double> attributes = new HashMap<>();
     protected ConfigurationSection data = new MemoryConfiguration();
     protected Map<String, SpellData> spellData = new HashMap<>();
-    protected WeakReference<Player> _player;
-    protected WeakReference<Entity> _entity;
-    protected WeakReference<CommandSender> _commandSender;
+    protected WeakReference<Player> playerRef;
+    protected WeakReference<Entity> entityRef;
+    protected WeakReference<CommandSender> commandSenderRef;
     protected boolean hasEntity;
     protected String playerName;
     protected final MagicController controller;
@@ -237,9 +237,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         this.controller = controller;
         this.brush = new MaterialBrush(this, Material.DIRT, (byte) 0);
         this.properties = new MageProperties(this);
-        _player = new WeakReference<>(null);
-        _entity = new WeakReference<>(null);
-        _commandSender = new WeakReference<>(null);
+        playerRef = new WeakReference<>(null);
+        entityRef = new WeakReference<>(null);
+        commandSenderRef = new WeakReference<>(null);
         hasEntity = false;
     }
 
@@ -916,14 +916,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected void setPlayer(Player player) {
         if (player != null) {
             playerName = player.getName();
-            this._player = new WeakReference<>(player);
-            this._entity = new WeakReference<Entity>(player);
-            this._commandSender = new WeakReference<CommandSender>(player);
+            this.playerRef = new WeakReference<>(player);
+            this.entityRef = new WeakReference<Entity>(player);
+            this.commandSenderRef = new WeakReference<CommandSender>(player);
             hasEntity = true;
         } else {
-            this._player.clear();
-            this._entity.clear();
-            this._commandSender.clear();
+            this.playerRef.clear();
+            this.entityRef.clear();
+            this.commandSenderRef.clear();
             hasEntity = false;
         }
     }
@@ -938,11 +938,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     playerName = customName;
                 }
             }
-            this._entity = new WeakReference<>(entity);
+            this.entityRef = new WeakReference<>(entity);
             hasEntity = true;
             isNPC = controller.isNPC(entity);
         } else {
-            this._entity.clear();
+            this.entityRef.clear();
             hasEntity = false;
             isNPC = false;
         }
@@ -950,7 +950,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     protected void setCommandSender(CommandSender sender) {
         if (sender != null) {
-            this._commandSender = new WeakReference<>(sender);
+            this.commandSenderRef = new WeakReference<>(sender);
 
             if (sender instanceof BlockCommandSender) {
                 BlockCommandSender commandBlock = (BlockCommandSender) sender;
@@ -969,7 +969,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 setLocation(null);
             }
         } else {
-            this._commandSender.clear();
+            this.commandSenderRef.clear();
             setLocation(null);
         }
     }
@@ -2583,12 +2583,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Player getPlayer() {
-        return isNPC ? null : _player.get();
+        return isNPC ? null : playerRef.get();
     }
 
     @Override
     public Entity getEntity() {
-        return _entity.get();
+        return entityRef.get();
     }
 
     @Override
@@ -2598,13 +2598,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public LivingEntity getLivingEntity() {
-        Entity entity = _entity.get();
+        Entity entity = entityRef.get();
         return (entity != null && entity instanceof LivingEntity) ? (LivingEntity) entity : null;
     }
 
     @Override
     public CommandSender getCommandSender() {
-        return _commandSender.get();
+        return commandSenderRef.get();
     }
 
     @Override
