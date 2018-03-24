@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.wand;
 
+import static com.google.common.base.Verify.verifyNotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -5383,9 +5385,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public @Nonnull CastContext getEffectsContext() {
         if (effectsContext == null || (effectsContext.getMage() != mage)) {
+            // Lazy load or mage has changed
             effectsContext = new com.elmakers.mine.bukkit.action.CastContext(mage, this);
         }
-        return effectsContext;
+
+        return verifyNotNull(effectsContext);
     }
 
     @Override
