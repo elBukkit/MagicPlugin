@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.magic;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -183,6 +186,8 @@ public class MagicController implements MageController {
 
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(String mageId) {
+        checkNotNull(mageId);
+
         if (!loaded) {
             return null;
         }
@@ -191,6 +196,9 @@ public class MagicController implements MageController {
 
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getAutomaton(String mageId, String mageName) {
+        checkNotNull(mageId);
+        checkNotNull(mageName);
+
         com.elmakers.mine.bukkit.magic.Mage mage = getMage(mageId, mageName, null, null);
         mage.setIsAutomaton(true);
         return mage;
@@ -198,17 +206,48 @@ public class MagicController implements MageController {
 
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, String mageName) {
+        checkNotNull(mageId);
+        checkNotNull(mageName);
+
         return getMage(mageId, mageName, null, null);
     }
 
-    public @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, CommandSender commandSender, Entity entity) {
+    @Nonnull
+    public com.elmakers.mine.bukkit.magic.Mage getMage(
+            @Nonnull String mageId,
+            @Nullable CommandSender commandSender, @Nullable Entity entity) {
+        checkState(
+                commandSender != null || entity != null,
+                "Need to provide either an entity or a command sender for a non-automata mage.");
         return getMage(mageId, null, commandSender, entity);
     }
 
-    protected @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
-        Preconditions.checkNotNull(mageId);
+    /**
+     * Exception that is thrown when an operation did not succeed because the
+     *  plugin was not loaded yet.
+     */
+    private static class PluginNotLoadedException extends RuntimeException {
+    }
 
-        com.elmakers.mine.bukkit.magic.Mage apiMage = null;
+    /**
+     * Exception that is thrown when a mage could not be found nor loaded for a
+     *  given entity or command sender.
+     */
+    // TODO: Move to API
+    private static class NoSuchMageException extends RuntimeException {
+        public NoSuchMageException(String mageId) {
+            super("Failed to locate mage with id: " + mageId);
+        }
+    }
+
+    @Nonnull
+    protected com.elmakers.mine.bukkit.magic.Mage getMage(
+            @Nonnull String mageId, @Nullable String mageName,
+            @Nullable CommandSender commandSender, @Nullable Entity entity)
+            throws PluginNotLoadedException, NoSuchMageException {
+        checkNotNull(mageId);
+
+        // Should only happen for Automata.
         if (commandSender == null && entity == null) {
             commandSender = Bukkit.getConsoleSender();
         }
@@ -216,9 +255,11 @@ public class MagicController implements MageController {
             if (entity instanceof Player) {
                 getLogger().warning("Player data request for " + mageId + " (" + ((Player)commandSender).getName() + ") failed, plugin not loaded yet");
             }
-            return null;
+
+            throw new PluginNotLoadedException();
         }
 
+        com.elmakers.mine.bukkit.magic.Mage apiMage = null;
         if (!mages.containsKey(mageId)) {
             if (entity instanceof Player && !((Player)entity).isOnline() && !isNPC(entity))
             {
@@ -305,7 +346,7 @@ public class MagicController implements MageController {
         }
         if (apiMage == null) {
             getLogger().warning("getMage returning null mage for " + entity + " and " + commandSender);
-            Thread.dumpStack();
+            throw new NoSuchMageException(mageId);
         }
         return apiMage;
     }
@@ -323,32 +364,42 @@ public class MagicController implements MageController {
         }
     }
 
+    @Nonnull
     @Override
-    public @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(Player player) {
-        return getMage(player, player);
+    public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull Player player) {
+        checkNotNull(player);
+        return getMageFromEntity(player, player);
     }
 
+    @Nonnull
     @Override
-    public @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(Entity entity) {
+    public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull Entity entity) {
+        checkNotNull(entity);
         CommandSender commandSender = (entity instanceof Player) ? (Player) entity : null;
-        return getMage(entity, commandSender);
+        return getMageFromEntity(entity, commandSender);
     }
 
+    @Nullable
     @Override
-    public @Nullable com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(Entity entity) {
-        if (entity == null) return null;
+    public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(@Nonnull Entity entity) {
+        checkNotNull(entity);
         String id = mageIdentifier.fromEntity(entity);
         return mages.get(id);
     }
 
-    protected @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(Entity entity, CommandSender commandSender) {
-        if (entity == null) return getMage(commandSender);
+    @Nonnull
+    protected com.elmakers.mine.bukkit.magic.Mage getMageFromEntity(
+            @Nonnull Entity entity, @Nullable CommandSender commandSender) {
+        checkNotNull(entity);
+
         String id = mageIdentifier.fromEntity(entity);
         return getMage(id, commandSender, entity);
     }
 
+    @Nonnull
     @Override
-    public @Nonnull com.elmakers.mine.bukkit.magic.Mage getMage(CommandSender commandSender) {
+    public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull CommandSender commandSender) {
+        checkNotNull(commandSender);
         if (commandSender instanceof Player) {
             return getMage((Player) commandSender);
         }
@@ -3159,14 +3210,12 @@ public class MagicController implements MageController {
 			if (sender != null && sender instanceof BlockCommandSender) {
                 targetLocation = ((BlockCommandSender) sender).getBlock().getLocation();
             }
-            if (mageController == null) {
-                mage = getMage(entity);
+            if (entity == null) {
+                mage = getMage(mageController);
             } else {
-                mage = getMage(entity, mageController);
+                mage = getMageFromEntity(entity, mageController);
             }
-		}
-
-        if (mage == null) return false;
+        }
 
         // This is a bit of a hack to make automata maintain direction
         if (targetLocation != null) {
