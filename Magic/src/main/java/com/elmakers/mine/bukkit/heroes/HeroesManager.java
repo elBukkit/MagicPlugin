@@ -90,8 +90,6 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
             getHeroAttributeMethod = null;
             log.info("Could not register Heroes attributes, you may need to update Heroes");
         }
-
-
     }
 
     public boolean canUseSkill(Player player, String skillName) {

@@ -138,7 +138,7 @@ public class CustomProjectileAction extends CompoundAction
             returnBuffer = planConfig.getDouble("return_buffer");
             parameters = planConfig;
         }
-    };
+    }
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {

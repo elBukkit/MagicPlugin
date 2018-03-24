@@ -32,7 +32,7 @@ public abstract class CompoundAction extends BaseSpellAction
         NOT_STARTED,
         STARTED,
         STEPPING
-    };
+    }
 
     public SpellResult step(CastContext context) {
         return SpellResult.NO_ACTION;

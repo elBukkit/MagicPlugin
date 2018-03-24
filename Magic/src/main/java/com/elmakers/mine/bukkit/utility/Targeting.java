@@ -74,7 +74,7 @@ public class Targeting {
         BLOCK,
         ENTITY,
         MISS
-    };
+    }
 
     public void reset() {
         iterate();

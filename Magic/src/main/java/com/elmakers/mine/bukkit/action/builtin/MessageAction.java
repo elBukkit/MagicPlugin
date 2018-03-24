@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class MessageAction extends BaseSpellAction
 {
-	private enum MessageType { CHAT, TITLE, ACTION_BAR };
+	private enum MessageType { CHAT, TITLE, ACTION_BAR }
 
 	private String message = "";
 	private String subMessage = "";

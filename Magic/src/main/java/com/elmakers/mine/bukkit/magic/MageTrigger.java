@@ -24,7 +24,7 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 public class MageTrigger {
     public enum MageTriggerType {
         INTERVAL, DEATH, DAMAGE
-    };
+    }
 
     protected MageTriggerType type;
     protected LinkedList<WeightedPair<String>> spells;

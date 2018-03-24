@@ -83,7 +83,8 @@ import de.slikey.effectlib.math.EquationTransform;
 
 public abstract class BaseSpell implements MageSpell, Cloneable {
     public static String DEFAULT_DISABLED_ICON_URL = "";
-    protected enum ToggleType { NONE, CANCEL, UNDO };
+
+    protected enum ToggleType { NONE, CANCEL, UNDO }
 
     protected static final double LOOK_THRESHOLD_RADIANS = 0.9;
 

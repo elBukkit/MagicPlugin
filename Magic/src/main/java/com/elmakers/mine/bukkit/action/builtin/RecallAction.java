@@ -212,7 +212,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public boolean isCommand() {
             return command != null;
         }
-    };
+    }
 
     @Override
     public boolean isUndoable() {

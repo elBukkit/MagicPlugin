@@ -178,7 +178,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             }
             return getSpellName().compareTo(other.getSpellName());
         }
-    };
+    }
 
     public SkillSelectorAction() {
     }

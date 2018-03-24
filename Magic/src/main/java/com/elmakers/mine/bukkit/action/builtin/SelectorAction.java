@@ -78,7 +78,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         }
     }
 
-    protected enum ModifierType { WAND, MAGE, CLASS, ATTRIBUTE };
+    protected enum ModifierType { WAND, MAGE, CLASS, ATTRIBUTE }
 
     protected class CostModifier {
         private ModifierType type;

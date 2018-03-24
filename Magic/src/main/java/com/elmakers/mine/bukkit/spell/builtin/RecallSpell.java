@@ -63,7 +63,7 @@ public class RecallSpell extends UndoableSpell
 		WAND,
 		WARP
 		// FHOME,
-	};
+	}
 
 	private static class Waypoint
 	{
@@ -74,7 +74,7 @@ public class RecallSpell extends UndoableSpell
 			this.type = type;
 			this.index = index;
 		}
-	};
+	}
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters)

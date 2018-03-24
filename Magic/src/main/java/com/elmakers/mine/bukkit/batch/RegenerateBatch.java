@@ -41,7 +41,7 @@ public class RegenerateBatch extends SpellBatch {
 
 	private enum RegenerateState {
 		SAVING, REGENERATING, RESTORING
-	};
+	}
 
 	private RegenerateState state;
 

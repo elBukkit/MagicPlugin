@@ -29,7 +29,7 @@ public class LockAction extends BaseSpellAction
         LOCK,
         UNLOCK,
         KEY
-    };
+    }
 
     private LockActionType actionType;
     private MaterialAndData iconType;

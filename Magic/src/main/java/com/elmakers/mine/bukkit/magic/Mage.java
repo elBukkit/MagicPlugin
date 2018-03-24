@@ -160,6 +160,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private static class DamagedBy {
         private WeakReference<Player> player;
         public double damage;
+
         public DamagedBy(Player player, double damage) {
             this.player = new WeakReference<>(player);
             this.damage = damage;
@@ -168,7 +169,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         public Entity getEntity() {
             return player.get();
         }
-    };
+    }
+
     private DamagedBy topDamager;
     private DamagedBy lastDamager;
     private Map<UUID, DamagedBy> damagedBy;

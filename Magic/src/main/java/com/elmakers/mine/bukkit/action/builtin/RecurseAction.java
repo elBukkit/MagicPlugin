@@ -44,6 +44,7 @@ public class RecurseAction extends CompoundAction {
             this.face = face;
         }
     }
+
     protected Deque<StackEntry> stack;
     protected Set<Long> touched;
 

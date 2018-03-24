@@ -69,6 +69,16 @@
         <module name="ModifierOrder">
             <property name="severity" value="error"/>
         </module>
+        <module name="EmptyLineSeparator">
+            <property name="allowNoEmptyLineBetweenFields" value="true"/>
+            <property name="allowMultipleEmptyLines" value="false" />
+            <property name="allowMultipleEmptyLinesInsideClassMembers" value="false" />
+
+            <!-- TODO: We have removed METHOD_DEF for now, as methods are put
+                right next to eachother in the API package. We should fix this.  -->
+            <property name="tokens" value="PACKAGE_DEF, IMPORT, CLASS_DEF, INTERFACE_DEF, ENUM_DEF, STATIC_INIT, INSTANCE_INIT, CTOR_DEF, VARIABLE_DEF" />
+            <property name="severity" value="error"/>
+        </module>
 
         <!-- Make sure imports are sane -->
         <module name="AvoidStarImport">

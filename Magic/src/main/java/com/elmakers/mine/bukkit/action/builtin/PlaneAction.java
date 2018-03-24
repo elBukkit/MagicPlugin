@@ -6,9 +6,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 
-public class PlaneAction extends VolumeAction
-{
-	protected enum Axis { X, Y, Z };
+public class PlaneAction extends VolumeAction {
+	protected enum Axis { X, Y, Z }
+
 	protected Axis axis;
 	protected Axis brushAxis;
 

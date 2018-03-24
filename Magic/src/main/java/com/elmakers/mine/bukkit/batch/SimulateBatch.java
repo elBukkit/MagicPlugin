@@ -46,15 +46,15 @@ public class SimulateBatch extends SpellBatch {
 
 	private enum SimulationState {
 		INITIALIZING, SCANNING, UPDATING, PRUNE, TARGETING, HEART_UPDATE, DELAY, CLEANUP, CHECK, FINISHED
-	};
+	}
 
 	public enum TargetMode {
 		STABILIZE, WANDER, GLIDE, HUNT, FLEE, DIRECTED
-	};
+	}
 
 	public enum TargetType {
 		PLAYER, MAGE, MOB, AUTOMATON, ANY
-	};
+	}
 
 	public static boolean DEBUG = false;
 

@@ -23,7 +23,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         HEALTH,
         HUNGER,
         LEVELS
-    };
+    }
 
     protected ItemStack item;
     protected boolean itemWildcard;
