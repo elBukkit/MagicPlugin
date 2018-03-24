@@ -461,7 +461,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             if (icon == null && defaults.icon != null) {
                 this.icon = InventoryUtils.getCopy(defaults.icon);
             }
-            if (icon == null) {
+            if (icon == null || !icon.hasItemMeta()) {
                 // Show a question mark if nothing else worked
                 this.icon = InventoryUtils.getURLSkull("http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d");
             }
