@@ -42,6 +42,37 @@ public class InventoryUtils extends NMSUtils
         return saveTagsToNBT(tags, tag, null);
     }
 
+    public static boolean configureSkillItem(ItemStack skillItem, String skillClass, ConfigurationSection skillConfig) {
+        if (skillItem == null || skillConfig == null) return false;
+        Object handle = getHandle(skillItem);
+        if (handle == null) return false;
+        Object tag = getTag(handle);
+        if (tag == null) return false;
+
+        setMetaBoolean(tag, "skill", true);
+
+        if (skillConfig.getBoolean("undroppable", false)) {
+            setMetaBoolean(tag, "undroppable", true);
+        }
+        if (skillConfig.getBoolean("keep", false)) {
+            setMetaBoolean(tag, "keep", true);
+        }
+        boolean quickCast = skillConfig.getBoolean("quick_cast", true);
+        if (skillClass != null || !quickCast) {
+            Object spellNode = InventoryUtils.getNode(skillItem, "spell");
+            if (spellNode != null) {
+                if (skillClass != null) {
+                    InventoryUtils.setMeta(spellNode, "class", skillClass);
+                }
+                if (!quickCast) {
+                    InventoryUtils.setMetaBoolean(spellNode, "quick_cast", false);
+                }
+            }
+        }
+
+        return true;
+    }
+
     public static boolean saveTagsToNBT(ConfigurationSection tags, Object node)
     {
         return saveTagsToNBT(tags, node, null);
