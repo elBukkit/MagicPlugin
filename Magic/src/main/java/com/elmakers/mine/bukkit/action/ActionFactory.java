@@ -131,7 +131,7 @@ public class ActionFactory {
         }
 
         public NamedActionResolver() {
-            this(Maps.<String, ActionConstructor> newHashMap());
+            this(Maps.<String, ActionConstructor>newHashMap());
         }
 
         @Override

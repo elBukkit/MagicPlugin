@@ -184,6 +184,10 @@
             <property name="severity" value="error"/>
         </module>
 
+        <!-- Finalizers are evil. -->
+        <module name="NoFinalizer">
+            <property name="severity" value="error"/>
+        </module>
 
         <!-- Make sure imports are sane -->
         <module name="AvoidStarImport">
@@ -206,6 +210,17 @@
             <property name="tokens" value="COMMA, SEMI, POST_INC, POST_DEC, DOT, ELLIPSIS, METHOD_REF"/>
             <property name="allowLineBreaks" value="true"/>
             <property name="severity" value="error"/>
+        </module>
+        <module name="GenericWhitespace">
+            <message key="ws.followed"
+              value="GenericWhitespace ''{0}'' is followed by whitespace."/>
+             <message key="ws.preceded"
+              value="GenericWhitespace ''{0}'' is preceded with whitespace."/>
+             <message key="ws.illegalFollow"
+              value="GenericWhitespace ''{0}'' should followed by whitespace."/>
+             <message key="ws.notPreceded"
+              value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
+             <property name="severity" value="error"/>
         </module>
         <module name="ParenPad">
             <property name="severity" value="error"/>
