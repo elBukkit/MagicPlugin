@@ -31,7 +31,7 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "This command may only be used in-game");
             return true;
         }
-        Mage mage = api.getMage(sender);
+        Mage mage = controller.getMage(sender);
         SkillSelectorAction selector = new SkillSelectorAction();
         int page = 1;
         if (args.length > 0) {

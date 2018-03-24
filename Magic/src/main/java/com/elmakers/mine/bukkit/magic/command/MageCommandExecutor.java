@@ -191,7 +191,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 			String subCommandPNode = "Magic.commands.mage." + subCommand;
 			if (subCommand.equalsIgnoreCase("setdata") || subCommand.equalsIgnoreCase("getdata")) {
                 if (target != null) {
-                    Mage mage = api.getMage(target);
+                    Mage mage = controller.getMage(target);
                     ConfigurationSection data = mage.getData();
                     options.addAll(data.getKeys(false));
                 }
@@ -207,7 +207,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
             if (subCommand.equalsIgnoreCase("remove")) {
                 if (target != null) {
-                    Mage mage = api.getMage(target);
+                    Mage mage = controller.getMage(target);
                     MageClass mageClass = mage.getActiveClass();
                     if (mageClass != null) {
                         options.addAll(mageClass.getSpells());
@@ -261,14 +261,14 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 			}
 		}
 
-		Mage mage = api.getMage(player);
+		Mage mage = controller.getMage(player);
         MageClass activeClass = mage.getActiveClass();
 		return onLevelSpells("mage", sender, player, activeClass == null ? mage.getProperties() : activeClass, maxLevel);
 	}
 
     public boolean onMageCheck(CommandSender sender, Player player, String[] args)
     {
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
 		mage.debugPermissions(sender, null);
         return true;
     }
@@ -279,7 +279,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             api.getController().deleteMage(player.getUniqueId().toString());
             sender.sendMessage(ChatColor.RED + "Reset player " + player.getName());
         } else {
-            Mage mage = api.getMage(player);
+            Mage mage = controller.getMage(player);
             if (mage.removeClass(args[0])) {
                 sender.sendMessage(ChatColor.RED + "Reset " + ChatColor.GOLD + "class " + args[0] + " for player " + player.getName());
             } else {
@@ -291,7 +291,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
     public boolean onMageDebug(CommandSender sender, Player player, String[] args)
     {
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         if (args.length > 0) {
             try {
                 int level = Integer.parseInt(args[0]);
@@ -321,7 +321,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
     public boolean onMageGetData(CommandSender sender, Player player, String[] args)
     {
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         ConfigurationSection data = mage.getData();
         if (args != null && args.length > 0)
         {
@@ -372,7 +372,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
     public boolean onMageSetData(CommandSender sender, Player player, String[] args)
     {
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         if (args.length == 1)
         {
             ConfigurationSection data = mage.getData();
@@ -431,7 +431,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
     public boolean onMageAttribute(CommandSender sender, Player player, String[] args)
     {
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         Set<String> attributes = api.getController().getAttributes();
         if (attributes.isEmpty()) {
             sender.sendMessage(ChatColor.RED + "No attributes configured, see attributes.yml");
@@ -503,7 +503,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
     public boolean onMageUnbind(CommandSender sender, Player player, String[] parameters)
     {
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         if (parameters.length > 0) {
             String template = parameters[0];
             if (mage.unbind(template)) {
@@ -531,7 +531,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
     public boolean onMageConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
     {
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         MageClass activeClass = mage.getActiveClass();
         return onConfigure("mage", activeClass == null ? mage.getProperties() : activeClass, sender, player, parameters, safe);
     }
@@ -542,7 +542,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mage unlock [player] <class>");
             return true;
         }
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         String classKey = parameters[0];
         MageClass mageClass = mage.unlockClass(classKey);
         if (mageClass == null) {
@@ -559,7 +559,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mage lock [player] <class>");
             return true;
         }
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         String classKey = parameters[0];
         boolean locked = mage.lockClass(classKey);
         if (!locked) {
@@ -577,7 +577,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             return true;
         }
         String classKey = parameters[0];
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         MageClass activeClass = mage.getActiveClass();
         if (activeClass != null && activeClass.getKey().equals(classKey)) {
             sender.sendMessage(ChatColor.RED + "Player "  + ChatColor.WHITE + player.getName() + ChatColor.RED + " already has class active: " + ChatColor.WHITE + classKey);
@@ -600,7 +600,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
     public boolean onMageActivate(CommandSender sender, Player player, String[] parameters)
     {
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         String classKey = parameters.length == 0 ? null : parameters[0];
         if (mage.setActiveClass(classKey)) {
             if (classKey == null) {
@@ -615,7 +615,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     }
 
     public boolean onMageDescribe(CommandSender sender, Player player, String[] parameters) {
-        Mage mage = api.getMage(player);
+        Mage mage = controller.getMage(player);
         MageClass activeClass = mage.getActiveClass();
         MagicProperties mageProperties = mage.getProperties();
 
@@ -670,7 +670,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 			return true;
 		}
 
-		Mage mage = api.getMage(player);
+		Mage mage = controller.getMage(player);
         MageClass activeClass = mage.getActiveClass();
 		if (activeClass == null) {
 		    sender.sendMessage("Can't modify player " + player.getName());
@@ -739,7 +739,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 			return true;
 		}
 
-		Mage mage = api.getMage(player);
+		Mage mage = controller.getMage(player);
         MageClass activeClass = mage.getActiveClass();
 		if (activeClass == null) {
 		    sender.sendMessage("Can't modify player " + player.getName());
