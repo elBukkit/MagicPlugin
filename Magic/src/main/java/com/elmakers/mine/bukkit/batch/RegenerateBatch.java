@@ -37,7 +37,7 @@ public class RegenerateBatch extends SpellBatch {
 	private int restoringIndex = 0;
 	private boolean expand = false;
 
-	private BoundingBox bounds = new BoundingBox();
+	private final BoundingBox bounds;
 
 	private enum RegenerateState {
 		SAVING, REGENERATING, RESTORING
