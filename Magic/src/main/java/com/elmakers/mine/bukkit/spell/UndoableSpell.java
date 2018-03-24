@@ -90,8 +90,13 @@ public abstract class UndoableSpell extends TargetingSpell {
         return modifiedBlocks == null ? 0 : modifiedBlocks.size();
     }
 
-    public void registerForUndo()
+    public void prepareForUndo()
     {
+        UndoList list = getUndoList();
+        mage.prepareForUndo(list);
+    }
+
+    public void registerForUndo() {
         // Must add empty lists here since they may get added to later!
         UndoList list = getUndoList();
         if (!list.isScheduled())
@@ -99,12 +104,6 @@ public abstract class UndoableSpell extends TargetingSpell {
             controller.update(list);
         }
         mage.registerForUndo(list);
-    }
-
-    public void prepareForUndo()
-    {
-        UndoList list = getUndoList();
-        mage.prepareForUndo(list);
     }
 
     public void registerForUndo(Block block) {

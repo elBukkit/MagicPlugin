@@ -46,8 +46,8 @@ public interface Spell extends SpellTemplate {
     long getRemainingCooldown();
     CastingCost getRequiredCost();
     void messageTargets(String messageKey);
-    void playEffects(String effectName);
     CastContext getCurrentCast();
+    void playEffects(String effectName);
     void playEffects(String effectName, CastContext context);
     void playEffects(String effectName, CastContext context, float scale);
     boolean requiresBuildPermission();

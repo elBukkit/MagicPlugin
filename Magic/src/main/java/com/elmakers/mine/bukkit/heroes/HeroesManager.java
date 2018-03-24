@@ -152,10 +152,6 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
         return SkillConfigManager.getUseSetting(hero, skill, SkillSetting.LEVEL, 1, true);
     }
 
-    public Set<String> getSkills(Player player) {
-        return getSkills(player, false, false);
-    }
-
     private void addSkills(Hero hero, HeroClass heroClass, Collection<String> skillSet, boolean showUnuseable, boolean showPassive)
     {
         if (heroClass != null)
@@ -173,6 +169,10 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
                 }
             }
         }
+    }
+
+    public Set<String> getSkills(Player player) {
+        return getSkills(player, false, false);
     }
 
     public Set<String> getSkills(Player player, boolean showUnuseable, boolean showPassive) {

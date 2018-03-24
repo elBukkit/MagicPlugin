@@ -33,15 +33,14 @@ public class BoundingBox
         return results;
     }
 
+    public Vector center() {
+        return this.max.clone().add(this.min).multiply(0.5);
+    }
+
     public boolean contains(Vector point) {
         return this.min.getX() <= point.getX() && point.getX() <= this.max.getX()
                 && this.min.getY() <= point.getY() && point.getY() <= this.max.getY()
                 && this.min.getZ() <= point.getZ() && point.getZ() <= this.max.getZ();
-    }
-
-    public Vector center()
-    {
-        return this.max.clone().add(this.min).multiply(0.5);
     }
 
     public BoundingBox scale(double scale)
@@ -127,15 +126,7 @@ public class BoundingBox
         return inBox(p2Clone, side) ? p2Clone : null;
     }
 
-    protected boolean inBox(Vector hit, int axis) {
-        if (axis == 1 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
-        if (axis == 2 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getX() > min.getX() && hit.getX() < max.getX()) return true;
-        if (axis == 3 && hit.getX() > min.getX() && hit.getX() < max.getX() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
-        return false;
-    }
-
-    public Vector getIntersection(Vector p1, Vector p2)
-    {
+    public Vector getIntersection(Vector p1, Vector p2) {
         Vector currentHit = getIntersection(p1.getX() - min.getX(), p2.getX() - min.getX(), p1, p2, 1);
         Vector hit = getIntersection(p1.getY() - min.getY(), p2.getY() - min.getY(), p1, p2, 2);
         if (currentHit != null && hit != null) {
@@ -192,6 +183,14 @@ public class BoundingBox
             return hit;
         }
         return currentHit;
+    }
+
+
+    protected boolean inBox(Vector hit, int axis) {
+        if (axis == 1 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
+        if (axis == 2 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getX() > min.getX() && hit.getX() < max.getX()) return true;
+        if (axis == 3 && hit.getX() > min.getX() && hit.getX() < max.getX() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
+        return false;
     }
 
     public Vector size()

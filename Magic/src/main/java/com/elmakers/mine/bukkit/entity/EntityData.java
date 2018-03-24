@@ -229,6 +229,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return item == null ? null : new com.elmakers.mine.bukkit.item.ItemData(item);
     }
 
+    @Override
+    public ItemStack getItem() {
+        return item;
+    }
+
     public EntityData(EntityType type) {
         this.type = type;
     }
@@ -439,11 +444,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public BlockFace getFacing() {
         return facing;
-    }
-
-    @Override
-    public ItemStack getItem() {
-        return item;
     }
 
     @Override

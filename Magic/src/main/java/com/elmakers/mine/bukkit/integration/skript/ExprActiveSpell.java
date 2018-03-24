@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.PlayerDeathEvent;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -17,7 +16,6 @@ import ch.njol.skript.classes.Converter;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
-import ch.njol.skript.effects.Delay;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 
 @Name("Active Spell")
@@ -88,12 +86,6 @@ public class ExprActiveSpell extends SimplePropertyExpression<Player, String> {
 
 			final String newSpell = delta == null ? null : ((String) delta[0]);
 
-			int level;
-			if (getTime() > 0 && e instanceof PlayerDeathEvent && ((PlayerDeathEvent) e).getEntity() == p && !Delay.isDelayed(e)) {
-				level = ((PlayerDeathEvent) e).getNewLevel();
-			} else {
-				level = p.getLevel();
-			}
 			switch (mode) {
 				case SET:
 					wand.setActiveSpell(newSpell);

@@ -104,6 +104,15 @@ public enum SpellResult {
     public boolean isFree() {
         return free;
     }
+
+    public boolean isFree(boolean castOnNoTarget) {
+        if (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION)
+        {
+            return !castOnNoTarget;
+        }
+        return isFree();
+    }
+
     /**
      * Determine if this result should stop processing or not.
      *
@@ -112,14 +121,6 @@ public enum SpellResult {
      */
     public boolean isStop() {
         return stop;
-    }
-
-    public boolean isFree(boolean castOnNoTarget) {
-        if (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION)
-        {
-            return !castOnNoTarget;
-        }
-        return isFree();
     }
 
     public boolean shouldRefundCooldown(boolean castOnNoTarget) {

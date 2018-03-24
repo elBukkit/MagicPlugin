@@ -46,8 +46,8 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     void closeInventory();
     void deactivate();
     boolean organizeInventory(Mage mage);
-    boolean alphabetizeInventory();
     boolean organizeInventory();
+    boolean alphabetizeInventory();
     ItemStack getItem();
     MaterialAndData getIcon();
     MaterialAndData getInactiveIcon();
@@ -220,6 +220,14 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean upgrade(boolean quiet);
 
     /**
+     * This method is deprecated, it just converts the Map to a ConfigurationSection.
+     *
+     * <p>Use {@link MagicConfigurable#upgrade(ConfigurationSection)} instead.
+     */
+    @Deprecated
+    boolean upgrade(Map<String, Object> properties);
+
+    /**
      * This method is deprecated, use {@link Mage#checkWand()} instead.
      * Wands should only ever be active while held.
      */
@@ -243,14 +251,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
      */
     @Deprecated
     boolean configure(Map<String, Object> properties);
-
-    /**
-     * This method is deprecated, it just converts the Map to a ConfigurationSection.
-     *
-     * <p>Use {@link MagicConfigurable#upgrade(ConfigurationSection)} instead.
-     */
-    @Deprecated
-    boolean upgrade(Map<String, Object> properties);
 
     @Deprecated
     boolean isSoul();

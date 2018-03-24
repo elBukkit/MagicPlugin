@@ -213,14 +213,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     }
 
     @Override
-    public String getFullDescription(Messages messages)
-    {
-        return getFullDescription(messages, null);
-    }
-
-    @Override
-    public String getDescription(Messages messages, CostReducer reducer)
-    {
+    public String getDescription(Messages messages, CostReducer reducer) {
         if (amount == 0) return "";
 
         switch (type) {
@@ -248,8 +241,12 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     }
 
     @Override
-    public String getFullDescription(Messages messages, CostReducer reducer)
-    {
+    public String getFullDescription(Messages messages) {
+        return getFullDescription(messages, null);
+    }
+
+    @Override
+    public String getFullDescription(Messages messages, CostReducer reducer) {
         if (getAmount(reducer) == 0) return "";
 
         switch (type) {

@@ -42,9 +42,9 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
  */
 public interface MaterialAndData {
     void updateFrom(MaterialAndData other);
+    void updateFrom(Block block);
     void setMaterial(Material material, short data);
     void setMaterial(Material material);
-    void updateFrom(Block block);
     void modify(Block block);
     void modify(Block block, boolean applyPhysics);
     void modify(Block block, ModifyType modifyType);

@@ -396,6 +396,59 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     @Override
+    public void update(String activeMaterial) {
+        // First check for brush mods
+        String[] pieces = StringUtils.split(activeMaterial, '&');
+        if (pieces != null && pieces.length > 0)
+        {
+            activeMaterial = pieces[0];
+            if (pieces.length > 1)
+            {
+                update(pieces[1]);
+            }
+        }
+
+        pieces = splitMaterialKey(activeMaterial);
+        isValid = true;
+        if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
+            enableCopying();
+        } else if (activeMaterial.equals(CLONE_MATERIAL_KEY)) {
+            enableCloning();
+        } else if (activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
+            enableReplication();
+        } else if (pieces[0].equals(MAP_MATERIAL_KEY)) {
+            int size = DEFAULT_MAP_SIZE;
+            if (pieces.length > 1) {
+                try {
+                    size = Integer.parseInt(pieces[1]);
+                } catch (Exception ex) {
+                    Bukkit.getLogger().info("Error in map brush definition, first part is not an integer: " + activeMaterial);
+                }
+            }
+            if (pieces.length > 2) {
+                String mapKey = pieces[2];
+                if (controller != null && mapKey.startsWith("http")) {
+                    mapId = controller.getMaps().getURLMapId(Bukkit.getWorlds().get(0).getName(), pieces[2]);
+                } else {
+                    try {
+                        mapId = Integer.parseInt(mapKey);
+                    } catch (Exception ex) {
+                        Bukkit.getLogger().info("Error in map brush definition, second part is not an integer or a URL: " + activeMaterial);
+                    }
+                }
+            }
+            enableMap(size);
+        } else if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
+            enableErase();
+        } else if (pieces.length > 1 && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
+            enableSchematic(pieces[1]);
+        } else {
+            mode = BrushMode.MATERIAL;
+            super.update(activeMaterial);
+        }
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public boolean update(final Mage fromMage, final Location target) {
         if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) {
@@ -411,7 +464,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 Block block = materialTarget.getBlock();
                 if (!block.getChunk().isLoaded()) return false;
 
-                updateFrom(block, fromMage.getRestrictedMaterialSet());
+                updateFromBlock(block, fromMage.getRestrictedMaterialSet());
                 isValid = fillWithAir || material != Material.AIR;
             }
         }
@@ -622,59 +675,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     @Override
-    public void update(String activeMaterial) {
-        // First check for brush mods
-        String[] pieces = StringUtils.split(activeMaterial, '&');
-        if (pieces != null && pieces.length > 0)
-        {
-            activeMaterial = pieces[0];
-            if (pieces.length > 1)
-            {
-                update(pieces[1]);
-            }
-        }
-
-        pieces = splitMaterialKey(activeMaterial);
-        isValid = true;
-        if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
-            enableCopying();
-        } else if (activeMaterial.equals(CLONE_MATERIAL_KEY)) {
-            enableCloning();
-        } else if (activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
-            enableReplication();
-        } else if (pieces[0].equals(MAP_MATERIAL_KEY)) {
-            int size = DEFAULT_MAP_SIZE;
-            if (pieces.length > 1) {
-                try {
-                    size = Integer.parseInt(pieces[1]);
-                } catch (Exception ex) {
-                    Bukkit.getLogger().info("Error in map brush definition, first part is not an integer: " + activeMaterial);
-                }
-            }
-            if (pieces.length > 2) {
-                String mapKey = pieces[2];
-                if (controller != null && mapKey.startsWith("http")) {
-                    mapId = controller.getMaps().getURLMapId(Bukkit.getWorlds().get(0).getName(), pieces[2]);
-                } else {
-                    try {
-                        mapId = Integer.parseInt(mapKey);
-                    } catch (Exception ex) {
-                        Bukkit.getLogger().info("Error in map brush definition, second part is not an integer or a URL: " + activeMaterial);
-                    }
-                }
-            }
-            enableMap(size);
-        } else if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
-            enableErase();
-        } else if (pieces.length > 1 && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
-            enableSchematic(pieces[1]);
-        } else {
-            mode = BrushMode.MATERIAL;
-            super.update(activeMaterial);
-        }
-    }
-
-    @Override
     public void setTarget(Location target) {
         setTarget(target, target);
     }
@@ -736,7 +736,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 targetLocation = targetLocation.add(targetOffset);
                 block = targetLocation.getBlock();
             }
-            updateFrom(block, mage.getRestrictedMaterialSet());
+            updateFromBlock(block, mage.getRestrictedMaterialSet());
         }
     }
 

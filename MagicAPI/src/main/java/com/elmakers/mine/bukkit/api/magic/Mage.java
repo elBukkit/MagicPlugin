@@ -428,8 +428,8 @@ public interface Mage extends CostReducer, CooldownReducer {
 
     Inventory getInventory();
     int removeItem(ItemStack item);
-    boolean hasItem(ItemStack item);
     int removeItem(ItemStack item, boolean allowVariants);
+    boolean hasItem(ItemStack item);
     boolean hasItem(ItemStack item, boolean allowVariants);
 
     MaterialBrush getBrush();

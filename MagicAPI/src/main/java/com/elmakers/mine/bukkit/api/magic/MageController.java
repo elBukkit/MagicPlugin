@@ -148,11 +148,12 @@ public interface MageController {
 
     String getMessagePrefix();
 
-    String getReflectiveMaterials(Mage mage, Location location);
-    String getDestructibleMaterials(Mage mage, Location location);
     Set<String> getSpellOverrides(Mage mage, Location location);
+    String getReflectiveMaterials(Mage mage, Location location);
 
+    String getDestructibleMaterials(Mage mage, Location location);
     Set<Material> getDestructibleMaterials();
+
     Set<Material> getBuildingMaterials();
     Set<Material> getRestrictedMaterials();
 
@@ -373,8 +374,8 @@ public interface MageController {
 
     Set<String> getItemKeys();
     ItemData getItem(String key);
-    ItemData getOrCreateItem(String key);
     ItemData getItem(ItemStack match);
+    ItemData getOrCreateItem(String key);
     void unloadItemTemplate(String key);
     void loadItemTemplate(String key, ConfigurationSection itemNode);
     Double getWorth(ItemStack item);

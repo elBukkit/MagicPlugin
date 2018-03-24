@@ -194,6 +194,23 @@ public class MagicController implements MageController {
         return mages.get(mageId);
     }
 
+    @Nullable
+    @Override
+    public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(@Nonnull Entity entity) {
+        checkNotNull(entity);
+        String id = mageIdentifier.fromEntity(entity);
+        return mages.get(id);
+    }
+
+    @Nonnull
+    protected com.elmakers.mine.bukkit.magic.Mage getMageFromEntity(
+            @Nonnull Entity entity, @Nullable CommandSender commandSender) {
+        checkNotNull(entity);
+
+        String id = mageIdentifier.fromEntity(entity);
+        return getMage(id, commandSender, entity);
+    }
+
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getAutomaton(String mageId, String mageName) {
         checkNotNull(mageId);
@@ -220,6 +237,33 @@ public class MagicController implements MageController {
                 commandSender != null || entity != null,
                 "Need to provide either an entity or a command sender for a non-automata mage.");
         return getMage(mageId, null, commandSender, entity);
+    }
+
+
+    @Nonnull
+    @Override
+    public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull Player player) {
+        checkNotNull(player);
+        return getMageFromEntity(player, player);
+    }
+
+    @Nonnull
+    @Override
+    public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull Entity entity) {
+        checkNotNull(entity);
+        CommandSender commandSender = (entity instanceof Player) ? (Player) entity : null;
+        return getMageFromEntity(entity, commandSender);
+    }
+    @Nonnull
+    @Override
+    public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull CommandSender commandSender) {
+        checkNotNull(commandSender);
+        if (commandSender instanceof Player) {
+            return getMage((Player) commandSender);
+        }
+
+        String mageId = mageIdentifier.fromCommandSender(commandSender);
+        return getMage(mageId, commandSender, null);
     }
 
     /**
@@ -362,50 +406,6 @@ public class MagicController implements MageController {
         {
             getLogger().info(message);
         }
-    }
-
-    @Nonnull
-    @Override
-    public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull Player player) {
-        checkNotNull(player);
-        return getMageFromEntity(player, player);
-    }
-
-    @Nonnull
-    @Override
-    public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull Entity entity) {
-        checkNotNull(entity);
-        CommandSender commandSender = (entity instanceof Player) ? (Player) entity : null;
-        return getMageFromEntity(entity, commandSender);
-    }
-
-    @Nullable
-    @Override
-    public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(@Nonnull Entity entity) {
-        checkNotNull(entity);
-        String id = mageIdentifier.fromEntity(entity);
-        return mages.get(id);
-    }
-
-    @Nonnull
-    protected com.elmakers.mine.bukkit.magic.Mage getMageFromEntity(
-            @Nonnull Entity entity, @Nullable CommandSender commandSender) {
-        checkNotNull(entity);
-
-        String id = mageIdentifier.fromEntity(entity);
-        return getMage(id, commandSender, entity);
-    }
-
-    @Nonnull
-    @Override
-    public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull CommandSender commandSender) {
-        checkNotNull(commandSender);
-        if (commandSender instanceof Player) {
-            return getMage((Player) commandSender);
-        }
-
-        String mageId = mageIdentifier.fromCommandSender(commandSender);
-        return getMage(mageId, commandSender, null);
     }
 
     public void addSpell(Spell variant) {
@@ -1366,6 +1366,10 @@ public class MagicController implements MageController {
         return scheduledUndo;
     }
 
+    public UndoList getPendingUndo(Location location) {
+        return com.elmakers.mine.bukkit.block.UndoList.getUndoList(location);
+    }
+
     protected void addPending(Mage mage) {
         pendingConstruction.add(mage);
     }
@@ -1422,22 +1426,10 @@ public class MagicController implements MageController {
         return loadConfigFile(fileName, loadDefaults, false);
     }
 
-    protected void enableAll(ConfigurationSection rootSection) {
-        Set<String> keys = rootSection.getKeys(false);
-        for (String key : keys)
-        {
-            ConfigurationSection section = rootSection.getConfigurationSection(key);
-            if (!section.isSet("enabled")) {
-                section.set("enabled", true);
-            }
-        }
-    }
-
     protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults)
         throws IOException, InvalidConfigurationException {
         return loadConfigFile(fileName, loadDefaults, disableDefaults, null);
     }
-
 
     protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults, ConfigurationSection mainConfiguration)
         throws IOException, InvalidConfigurationException {
@@ -1525,6 +1517,17 @@ public class MagicController implements MageController {
         config = loadConfigFolder(config, configSubFolder, filesReplace, disableDefaults);
 
         return config;
+    }
+
+    protected void enableAll(ConfigurationSection rootSection) {
+        Set<String> keys = rootSection.getKeys(false);
+        for (String key : keys)
+        {
+            ConfigurationSection section = rootSection.getConfigurationSection(key);
+            if (!section.isSet("enabled")) {
+                section.set("enabled", true);
+            }
+        }
     }
 
     protected ConfigurationSection loadConfigFolder(ConfigurationSection config, File configSubFolder, boolean filesReplace, boolean setEnabled)
@@ -2336,6 +2339,12 @@ public class MagicController implements MageController {
     }
 
     @Override
+    @Deprecated
+    public Set<Material> getDestructibleMaterials() {
+        return MaterialSets.toLegacy(destructibleMaterials);
+    }
+
+    @Override
     public Set<String> getSpellOverrides(Mage mage, Location location) {
         return worldGuardManager.getSpellOverrides(mage.getPlayer(), location);
     }
@@ -2906,11 +2915,6 @@ public class MagicController implements MageController {
 		return hasPermission((Player) sender, pNode, defaultValue);
 	}
 
-    public UndoList getPendingUndo(Location location)
-    {
-        return com.elmakers.mine.bukkit.block.UndoList.getUndoList(location);
-    }
-
 	public void registerFallingBlock(Entity fallingBlock, Block block) {
         UndoList undoList = getPendingUndo(fallingBlock.getLocation());
         if (undoList != null) {
@@ -2963,10 +2967,6 @@ public class MagicController implements MageController {
     @Override
     public boolean commitOnQuit() {
         return commitOnQuit;
-    }
-
-    public void playerQuit(Mage mage) {
-        playerQuit(mage, null);
     }
 
     public void onShutdown() {
@@ -3037,7 +3037,11 @@ public class MagicController implements MageController {
         maps.resend(mage.getName());
 
         mageQuit(mage, callback);
-	}
+    }
+
+    public void playerQuit(Mage mage) {
+        playerQuit(mage, null);
+    }
 
     @Override
     public void forgetMage(Mage mage) {
@@ -3286,6 +3290,11 @@ public class MagicController implements MageController {
         return welcomeWand;
     }
 
+    @Override
+    public void sendToMages(String message, Location location) {
+        sendToMages(message, location, toggleMessageRange);
+    }
+
 	public void sendToMages(String message, Location location, int range) {
 		int rangeSquared = range * range;
 		if (message != null && message.length() > 0) {
@@ -3373,11 +3382,6 @@ public class MagicController implements MageController {
 	}
 
 	@Override
-	public void sendToMages(String message, Location location) {
-		sendToMages(message, location, toggleMessageRange);
-	}
-
-	@Override
 	public int getMaxUndoPersistSize() {
 		return undoMaxPersistSize;
 	}
@@ -3413,12 +3417,6 @@ public class MagicController implements MageController {
     public Collection<Mage> getMobMages() {
         Collection<? extends Mage> values = mobMages.values();
         return Collections.unmodifiableCollection(values);
-    }
-
-    @Override
-    @Deprecated
-    public Set<Material> getDestructibleMaterials() {
-        return MaterialSets.toLegacy(destructibleMaterials);
     }
 
     @Override
@@ -3882,13 +3880,13 @@ public class MagicController implements MageController {
 	}
 
     @Override
-    public String getEntityName(Entity target) {
-        return getEntityName(target, false);
+    public String getEntityDisplayName(Entity target) {
+        return getEntityName(target, true);
     }
 
     @Override
-    public String getEntityDisplayName(Entity target) {
-        return getEntityName(target, true);
+    public String getEntityName(Entity target) {
+        return getEntityName(target, false);
     }
 
     protected String getEntityName(Entity target, boolean display) {
@@ -4754,16 +4752,16 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public ItemData getItem(ItemStack match) {
+        return items.get(match);
+    }
+
+    @Override
     public ItemData getOrCreateItem(String key) {
         if (key == null || key.isEmpty()) {
             return null;
         }
         return items.getOrCreate(key);
-    }
-
-    @Override
-    public ItemData getItem(ItemStack match) {
-        return items.get(match);
     }
 
     @Override
@@ -5147,6 +5145,11 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public String getDefaultWandTemplate() {
+        return Wand.DEFAULT_WAND_TEMPLATE;
+    }
+
+    @Override
     public Object getWandProperty(ItemStack item, String key) {
         Preconditions.checkNotNull(key, "key");
         if (InventoryUtils.isEmpty(item)) return null;
@@ -5161,11 +5164,6 @@ public class MagicController implements MageController {
         }
 
         return value;
-    }
-
-    @Override
-    public String getDefaultWandTemplate() {
-        return Wand.DEFAULT_WAND_TEMPLATE;
     }
 
     @Override

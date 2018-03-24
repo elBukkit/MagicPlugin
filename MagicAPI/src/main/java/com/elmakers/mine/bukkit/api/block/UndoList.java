@@ -48,10 +48,10 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     void prune();
 
     void add(Entity entity);
+    void add(Runnable runnable);
     void remove(Entity entity);
     EntityData damage(Entity entity);
     EntityData modify(Entity entity);
-    void add(Runnable runnable);
     void move(Entity entity);
     void modifyVelocity(Entity entity);
     void addPotionEffects(Entity entity);

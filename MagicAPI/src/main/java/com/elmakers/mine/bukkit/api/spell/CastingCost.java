@@ -20,19 +20,19 @@ public interface CastingCost extends Cost {
     int getXP();
 
     /**
-     * Returns the raw mana cost.
-     *
-     * @return The raw mana cost, without reduction.
-     */
-    int getMana();
-
-    /**
      * Returns the XP amount to deduct
      *
      * @param reducer The CostReducer to use to calculate costs
      * @return The XP amount cost
      */
     int getXP(CostReducer reducer);
+
+    /**
+     * Returns the raw mana cost.
+     *
+     * @return The raw mana cost, without reduction.
+     */
+    int getMana();
 
     /**
      * Returns the Mana amount to deduct
