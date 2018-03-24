@@ -20,6 +20,7 @@ akr:
     quick_cast: false
     skill_limit: 2
     undroppable: true
+    keep: true
   clean_on_lock: true
   spells:
   - missile|4

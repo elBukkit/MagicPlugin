@@ -40,6 +40,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     private List<SkillDescription> allSkills = new ArrayList<>();
     private boolean quickCast = true;
     private boolean undroppable = false;
+    private boolean keep = false;
     private String classKey;
     private int inventoryLimit = 0;
     private int extraSlots = 0;
@@ -103,6 +104,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
                 classKey = activeClass.getKey();
                 quickCast = activeClass.getProperty("skills.quick_cast", true);
                 undroppable = activeClass.getProperty("skills.undroppable", false);
+                keep = activeClass.getProperty("skills.keep", false);
                 inventoryLimit = activeClass.getProperty("skills.skill_limit", 0);
                 Collection<String> spells = activeClass.getSpells();
                 for (String spellKey : spells) {
@@ -231,6 +233,9 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             }
             if (undroppable) {
                 InventoryUtils.setMetaBoolean(skillItem, "undroppable", true);
+            }
+            if (keep) {
+                InventoryUtils.setMetaBoolean(skillItem, "keep", true);
             }
             if (classKey != null) {
                 Object spellNode = InventoryUtils.getNode(skillItem, "spell");

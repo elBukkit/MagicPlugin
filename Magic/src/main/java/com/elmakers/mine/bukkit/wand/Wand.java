@@ -1723,6 +1723,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 		} else {
 			InventoryUtils.removeMeta(item, "undroppable");
 		}
+		if (keep) {
+			InventoryUtils.setMetaBoolean(item, "keep", true);
+		} else {
+			InventoryUtils.removeMeta(item, "keep");
+		}
 
 		// Add vanilla enchantments
 		ConfigurationSection enchantments = getConfigurationSection("enchantments");

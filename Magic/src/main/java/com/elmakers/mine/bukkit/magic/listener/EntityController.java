@@ -291,17 +291,8 @@ public class EntityController implements Listener {
                 removeDrops.add(itemStack);
                 continue;
             }
-            boolean keepItem = false;
-            if (Wand.isWand(itemStack)) {
-                keepItem = keepWandsOnDeath;
-                if (!keepItem) {
-                    Wand testWand = controller.getWand(itemStack);
-                    keepItem = testWand.keepOnDeath();
-                }
-            }
-            else if (InventoryUtils.isKeep(itemStack)) {
-                keepItem = true;
-            }
+            boolean keepItem = InventoryUtils.getMetaBoolean(itemStack, "keep", false);
+            if (!keepItem && keepWandsOnDeath && Wand.isWand(itemStack)) keepItem = true;
             if (keepItem)
             {
                 mage.addToRespawnInventory(index, itemStack);
@@ -317,16 +308,8 @@ public class EntityController implements Listener {
                 removeDrops.add(itemStack);
                 continue;
             }
-            boolean keepItem = false;
-            if (Wand.isWand(itemStack)) {
-                keepItem = keepWandsOnDeath;
-                if (!keepItem) {
-                    Wand testWand = controller.getWand(itemStack);
-                    keepItem = testWand.keepOnDeath();
-                }
-            } else if (InventoryUtils.isKeep(itemStack)) {
-                keepItem = true;
-            }
+            boolean keepItem = InventoryUtils.getMetaBoolean(itemStack, "keep", false);
+            if (!keepItem && keepWandsOnDeath && Wand.isWand(itemStack)) keepItem = true;
             if (keepItem)
             {
                 mage.addToRespawnArmor(index, itemStack);
