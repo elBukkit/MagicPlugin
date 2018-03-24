@@ -47,8 +47,8 @@ public class CondHasItem extends Condition {
     }
 
     @SuppressWarnings({"unchecked"})
-	@Override
-	public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
+    @Override
+    public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
 		entities = (Expression<Entity>) vars[0];
 		itemKeys = (Expression<String>) vars[1];
 		offhand = (matchedPattern == 2 || matchedPattern == 3 || matchedPattern == 7 || matchedPattern == 8);
