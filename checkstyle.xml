@@ -328,29 +328,9 @@
             <property name="ignoreInlineTags" value="false"/>
             <property name="severity" value="error"/>
         </module>
-        <!--
-
-        I had to turn this one off for now, sorry! It keeps triggering on me and I don't understand why... take this for instance:
-
-                    String label = controller.getMessages().get("attributes." + key + ".name", key);
-
-                    // We are only display attributes as integers for now
-					int value = attributes.getInt(key);
-					if (value == 0) continue;
-
-        Gave me:
-
-        [ERROR] Failed to execute goal org.apache.maven.plugins:maven-checkstyle-plugin:3.0.0:check (validate) on project Magic: Failed during checkstyle execution: There is 1 error reported by Checkstyle 8.8 with checkstyle.xml ruleset. -> [Help 1]
-        [ERROR] /Users/nathan/Documents/Code/Bukkit/MagicPlugin/Magic/src/main/java/com/elmakers/mine/bukkit/wand/Wand.java:2240: Comment has incorrect indentation level 20, expected is 5, indentation should be the same level as line 2,241. [CommentsIndentation]
-
-        And strangely it happened without me touching any of that code. Is it some kind of space to tabs thing my IDE is doing, maybe?
-
-        Anyway I had to get a hotfix build out quickly and couldn't figure it out, sorry.
-
         <module name="CommentsIndentation">
             <property name="severity" value="error"/>
         </module>
-        -->
         <module name="NonEmptyAtclauseDescription">
             <property name="severity" value="error"/>
         </module>
