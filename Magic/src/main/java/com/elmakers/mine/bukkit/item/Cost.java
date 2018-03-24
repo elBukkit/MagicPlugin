@@ -97,7 +97,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 return caster == null ? mage.getMana() >= getMana(reducer) : caster.getMana() >= getMana(reducer);
             case CURRENCY:
                 VaultController vault = VaultController.getInstance();
-                return vault.has(mage.getPlayer(), getCurrency(reducer));
+                return vault != null && vault.has(mage.getPlayer(), getCurrency(reducer));
             case SP:
                 return mage.getSkillPoints() >= getSkillPoints(reducer);
             case HEALTH:
@@ -148,7 +148,9 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 break;
             case CURRENCY:
                 VaultController vault = VaultController.getInstance();
-                vault.withdrawPlayer(mage.getPlayer(), getCurrency(reducer));
+                if (vault != null) {
+                    vault.withdrawPlayer(mage.getPlayer(), getCurrency(reducer));
+                }
                 break;
             case SP:
                 mage.addSkillPoints(-getSkillPoints(reducer));

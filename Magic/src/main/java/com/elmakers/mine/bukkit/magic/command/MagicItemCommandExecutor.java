@@ -375,7 +375,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
 				mat = new MaterialAndData(material, data);
 				if (mat.getName().equals(baseName)) break;
-				String testVaultName = vault.getItemName(material, data);
+				String testVaultName = vault == null ? null : vault.getItemName(material, data);
 				if (testVaultName == null || testVaultName.isEmpty()) break;
 				items.put(mat.getKey(), mat);
 			}
@@ -414,10 +414,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 		String worthDescription = null;
-		VaultController vault = VaultController.getInstance();
 		int amount = item.getAmount();
 		double totalWorth = worth * amount;
 		if (VaultController.hasEconomy()) {
+			VaultController vault = VaultController.getInstance();
 			worthDescription = vault.format(totalWorth);
 			if (amount > 1) {
                 worthDescription = worthDescription + ChatColor.WHITE

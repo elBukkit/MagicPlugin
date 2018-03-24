@@ -140,6 +140,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     @Override
     public String describeCurrency(double amount) {
         VaultController vault = VaultController.getInstance();
+        if (vault == null) return Integer.toString((int)amount);
         String formatted = vault.format(amount);
         if (!VaultController.hasEconomy()) {
             formatted =  get("costs.currency_amount").replace("$amount", formatted);

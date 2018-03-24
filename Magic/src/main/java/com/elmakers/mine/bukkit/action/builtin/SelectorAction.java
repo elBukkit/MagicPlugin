@@ -611,7 +611,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 mage.giveExperience(experience);
             }
 
-            if (currency != 0) {
+            if (currency != 0 && VaultController.hasEconomy()) {
                 VaultController.getInstance().depositPlayer(mage.getPlayer(), currency);
             }
 
@@ -869,8 +869,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 description = messages.get("costs.levels_amount").replace("$amount", levelAmount);
                 break;
             default:
-                double balance = VaultController.getInstance().getBalance(mage.getPlayer());
-                description = VaultController.getInstance().format(balance);
+                if (VaultController.hasEconomy()) {
+                    double balance = VaultController.getInstance().getBalance(player);
+                    description = VaultController.getInstance().format(balance);
+                }
         }
 
         return description;
