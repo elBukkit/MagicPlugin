@@ -9,10 +9,21 @@ camera:
     show_undoable: false
     effects:
         cast:
-        -  class: EffectSingle
-           effect: smoke
-           sound: entity_tnt_primed,0.5,3
-           location: origin
+        - particle: smoke_large
+          particle_count: 20
+          particle_offset_x: 0.15
+          particle_offset_y: 0.05
+          particle_offset_z: 0.15
+          relative_offset: 0.2,-1,-0.4
+          sound: entity_tnt_primed,0.5,3
+          location: origin
+        - particle: end_rod
+          particle_count: 4
+          particle_offset_x: 0.05
+          particle_offset_y: 0.05
+          particle_offset_z: 0.05
+          relative_offset: 0.8,-0.8,-0.4
+          location: origin
     parameters:
         target_type: LivingEntity
         target_npc: true
