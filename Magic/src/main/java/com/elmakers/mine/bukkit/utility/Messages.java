@@ -210,8 +210,8 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             }
             message = message.replace("$roman", getRomanString(amount));
         }
-        return message.replace("$amount", Integer.toString((int) amount)).
-            replace("$percent", Integer.toString((int) (100.0 * amount)));
+        return message.replace("$amount", Integer.toString((int) amount))
+                .replace("$percent", Integer.toString((int) (100.0 * amount)));
     }
 
     @Override

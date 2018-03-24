@@ -159,8 +159,8 @@ public class VelocityAction extends BaseSpellAction
         context.getMage().sendDebugMessage(ChatColor.AQUA + "Applying velocity of " +
                 ChatColor.BLUE + velocity +
                 ChatColor.AQUA + " to " + ChatColor.DARK_AQUA + entity.getType() +
-                ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude
-                , 11);
+                ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude,
+                11);
 
         if (!MathUtils.isFinite(velocity.getX()) ||
                 !MathUtils.isFinite(velocity.getY()) ||

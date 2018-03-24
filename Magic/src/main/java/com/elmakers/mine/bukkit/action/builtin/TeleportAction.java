@@ -190,8 +190,8 @@ public class TeleportAction extends BaseTeleportAction
 			context.getMage().sendDebugMessage(ChatColor.RED + "Teleporting entity failed, can't stand in " +
 					ChatColor.DARK_RED + destination.getType() +
 					ChatColor.RED + " or " +
-					ChatColor.DARK_RED + oneUp.getType()
-					, 11);
+					ChatColor.DARK_RED + oneUp.getType(),
+					11);
 			return SpellResult.NO_TARGET;
 		}
 		Location targetLocation = new Location
