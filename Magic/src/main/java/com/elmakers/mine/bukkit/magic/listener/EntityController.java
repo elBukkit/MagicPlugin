@@ -434,8 +434,9 @@ public class EntityController implements Listener {
     public void onEntityDamage(EntityDamageEvent event)
     {
         Entity entity = event.getEntity();
+        if (entity == null) return;
 
-        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(event.getEntity());
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(entity);
         if (mage != null)
         {
             mage.onDamage(event);
@@ -443,7 +444,7 @@ public class EntityController implements Listener {
         else
         {
             Entity passenger = entity.getPassenger();
-            com.elmakers.mine.bukkit.magic.Mage mountMage = controller.getRegisteredMage(passenger);
+            com.elmakers.mine.bukkit.magic.Mage mountMage = passenger == null ? null : controller.getRegisteredMage(passenger);
             if (mountMage != null) {
                 mountMage.onDamage(event);
             }
