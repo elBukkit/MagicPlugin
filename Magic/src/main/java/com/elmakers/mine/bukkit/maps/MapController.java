@@ -216,14 +216,14 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
 
     protected void info(String message)
     {
-        if (plugin != null){
+        if (plugin != null) {
             plugin.getLogger().info(message);
         }
     }
 
     protected void warning(String message)
     {
-        if (plugin != null){
+        if (plugin != null) {
             plugin.getLogger().warning(message);
         }
     }

@@ -247,7 +247,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             int materialId = Integer.parseInt(materialPieces[0]);
             byte dataId = Byte.parseByte(materialPieces[1]);
             return new BlockData(x, y, z, world, Material.getMaterial(materialId), dataId);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
         }
 
         return result;

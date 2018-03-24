@@ -412,7 +412,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                                     conn.setConnectTimeout(30000);
                                     conn.setReadTimeout(30000);
                                     conn.setInstanceFollowRedirects(true);
-                                    try(InputStream in = conn.getInputStream();
+                                    try (InputStream in = conn.getInputStream();
                                             OutputStream out = new FileOutputStream(cacheFile)) {
                                         byte[] buffer = new byte[10 * 1024];
                                         int len;

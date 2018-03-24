@@ -97,7 +97,7 @@ public class BaseMagicProperties implements MagicProperties {
     @Override
     public <T> Optional<T> getProperty(String key, Class<T> type) {
         Object value = getProperty(key);
-        if(value == null || !type.isInstance(value)) {
+        if (value == null || !type.isInstance(value)) {
             return Optional.absent();
         }
 
@@ -137,7 +137,7 @@ public class BaseMagicProperties implements MagicProperties {
 
     public Object getObject(String key, Object defaultValue) {
         Object value = getProperty(key);
-        return value == null ? defaultValue :value;
+        return value == null ? defaultValue : value;
     }
 
     public Object getObject(String key) {

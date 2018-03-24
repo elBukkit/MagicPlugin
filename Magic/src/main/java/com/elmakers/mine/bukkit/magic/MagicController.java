@@ -776,7 +776,7 @@ public class MagicController implements MageController {
             CodeSource codeSource = MagicTabExecutor.class.getProtectionDomain().getCodeSource();
             if (codeSource != null) {
                 URL jar = codeSource.getLocation();
-                try(ZipInputStream zip = new ZipInputStream(jar.openStream())) {
+                try (ZipInputStream zip = new ZipInputStream(jar.openStream())) {
                     ZipEntry entry = zip.getNextEntry();
                     while (entry != null) {
                         String name = entry.getName();
@@ -4484,9 +4484,7 @@ public class MagicController implements MageController {
         {
             ConfigurationSection stateNode = itemSection.createSection("wand");
             Wand.itemToConfig(item, stateNode);
-        }
-        else if(Wand.isSpell(item))
-        {
+        } else if (Wand.isSpell(item)) {
             itemSection.set("spell", Wand.getSpell(item));
             if (Wand.isSkill(item)) {
                 itemSection.set("skill", "true");
@@ -4978,7 +4976,7 @@ public class MagicController implements MageController {
                             Date tryParseDate;
                             try {
                                 tryParseDate = format.parse(lastModified);
-                            } catch(ParseException dateFormat) {
+                            } catch (ParseException dateFormat) {
                                 cancelResourcePackChecks();
                                 server.getScheduler().runTask(plugin, new Runnable() {
                                     @Override
@@ -5005,7 +5003,7 @@ public class MagicController implements MageController {
                                 });
 
                                 MessageDigest digest = MessageDigest.getInstance("SHA1");
-                                try(BufferedInputStream in = new BufferedInputStream(rpURL.openStream())) {
+                                try (BufferedInputStream in = new BufferedInputStream(rpURL.openStream())) {
                                     final byte data[] = new byte[1024];
                                     int count;
                                     while ((count = in.read(data, 0, 1024)) != -1) {

@@ -27,7 +27,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
  * Represents a crafting recipe which will make a wand item.
  */
 public class MagicRecipe {
-    public enum MatchType {NONE, MATCH, PARTIAL};
+    public enum MatchType { NONE, MATCH, PARTIAL };
     private String outputKey;
     private Material outputType;
     private Material substitue;
@@ -178,7 +178,7 @@ public class MagicRecipe {
 
         ItemStack item;
         if (outputItemType.equalsIgnoreCase("wand")) {
-            if(outputKey != null && !outputKey.isEmpty()) {
+            if (outputKey != null && !outputKey.isEmpty()) {
                 item = controller.createWand(outputKey).getItem();
             } else {
                 item = null;

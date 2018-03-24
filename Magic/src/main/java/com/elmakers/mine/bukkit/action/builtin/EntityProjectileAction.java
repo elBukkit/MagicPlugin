@@ -120,7 +120,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             if (variantName != null) {
                 try {
                     color = DyeColor.valueOf(variantName.toUpperCase());
-                } catch (Exception ex){
+                } catch (Exception ex) {
 
                 }
             }
@@ -135,8 +135,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
                 try {
                     color = DyeColor.valueOf(variantName.toUpperCase());
                     wolf.setTamed(true);
-                } catch (Exception ex){
-
+                } catch (Exception ex) {
                 }
                 wolf.setCollarColor(color);
             }

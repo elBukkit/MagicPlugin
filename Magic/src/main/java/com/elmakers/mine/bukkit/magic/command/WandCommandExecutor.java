@@ -523,7 +523,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		{
 			if (!api.hasPermission(sender, "Magic.create." + subCommand)
 				&& !api.hasPermission(sender, "Magic.create.*")) {
-				sender.sendMessage(ChatColor.RED + "You do not have permission to create the wand \"" + subCommand +"\"");
+				sender.sendMessage(ChatColor.RED + "You do not have permission to create the wand \"" + subCommand + "\"");
 				return true;
 			}
 		}

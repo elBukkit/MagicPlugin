@@ -57,7 +57,7 @@ public class ConfigurationUtils extends ConfigUtils {
         BlockFace face = null;
         try {
             face = BlockFace.valueOf(s.toUpperCase());
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             face = null;
         }
         return face;
@@ -152,7 +152,7 @@ public class ConfigurationUtils extends ConfigUtils {
                     pitch = Float.parseFloat(pieces[5]);
                 }
                 return new Location(world, x, y, z, yaw, pitch);
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 return null;
             }
         }
@@ -176,7 +176,7 @@ public class ConfigurationUtils extends ConfigUtils {
                 double y = parseDouble(pieces[1]);
                 double z = parseDouble(pieces[2]);
                 return new Vector(x, y, z);
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 return null;
             }
         }
@@ -198,10 +198,7 @@ public class ConfigurationUtils extends ConfigUtils {
             {
                 Integer value = Integer.parseInt(matName);
                 return Material.getMaterial(value);
-            }
-            catch(NumberFormatException ex)
-            {
-
+            } catch (NumberFormatException ex) {
             }
             return Material.getMaterial(matName.toUpperCase());
         }
@@ -753,9 +750,7 @@ public class ConfigurationUtils extends ConfigUtils {
              try
              {
                  return Integer.parseInt((String)o);
-             }
-             catch(NumberFormatException ex)
-             {
+             } catch (NumberFormatException ex) {
                  return null;
              }
          } else {
@@ -867,9 +862,9 @@ public class ConfigurationUtils extends ConfigUtils {
                 } else {
                     if (!removeMissing) {
                         requiredSpells.add(prerequisiteSpell);
-                        controller.getLogger().warning("Unknown or disabled spell requirement " + prerequisiteSpell.getSpellKey().getKey() + " in " + loadContext +", upgrade will be disabled");
+                        controller.getLogger().warning("Unknown or disabled spell requirement " + prerequisiteSpell.getSpellKey().getKey() + " in " + loadContext + ", upgrade will be disabled");
                     } else {
-                        controller.getLogger().warning("Unknown or disabled spell prerequisite " + prerequisiteSpell.getSpellKey().getKey() + " in " + loadContext +", ignoring");
+                        controller.getLogger().warning("Unknown or disabled spell prerequisite " + prerequisiteSpell.getSpellKey().getKey() + " in " + loadContext + ", ignoring");
                     }
                 }
             }

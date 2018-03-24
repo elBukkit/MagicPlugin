@@ -327,7 +327,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             BlockState blockState = block.getState();
             if (material == Material.FLOWER_POT || blockState instanceof InventoryHolder || blockState instanceof Sign) {
                 extraData = new BlockTileEntity(NMSUtils.getTileEntityData(block.getLocation()));
-            } else if (blockState instanceof CommandBlock){
+            } else if (blockState instanceof CommandBlock) {
                 // This seems to occasionally throw exceptions...
                 CommandBlock command = (CommandBlock)blockState;
                 extraData = new BlockCommand(command.getCommand(), command.getName());

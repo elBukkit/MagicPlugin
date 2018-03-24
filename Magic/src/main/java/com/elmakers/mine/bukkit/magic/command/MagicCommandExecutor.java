@@ -244,7 +244,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 
 			boolean check = false;
-			if (owner != null && owner.equals("check")){
+			if (owner != null && owner.equals("check")) {
 				check = true;
 				owner = "ALL";
 			}
@@ -346,9 +346,9 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				CodeSource src = MagicAPI.class.getProtectionDomain().getCodeSource();
 				if (src != null) {
 					URL jar = src.getLocation();
-                    try(InputStream is = jar.openStream();
+                    try (InputStream is = jar.openStream();
                             ZipInputStream zip = new ZipInputStream(is)) {
-                        while(true) {
+                        while (true) {
                             ZipEntry e = zip.getNextEntry();
                             if (e == null)
                                 break;

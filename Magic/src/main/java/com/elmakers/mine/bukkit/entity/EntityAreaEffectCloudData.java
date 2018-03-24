@@ -42,14 +42,14 @@ public class EntityAreaEffectCloudData extends EntityExtraData {
             try {
                 potionType = PotionType.valueOf(parameters.getString("base_potion_type").toUpperCase());
                 basePotionData = new PotionData(potionType);
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 controller.getLogger().warning("Invalid base_potion_type: " + parameters.getString("base_potion_type"));
             }
         }
         if (parameters.contains("particle")) {
             try {
                 particle = Particle.valueOf(parameters.getString("particle").toUpperCase());
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 controller.getLogger().warning("Invalid particle: " + parameters.getString("particle"));
             }
         }

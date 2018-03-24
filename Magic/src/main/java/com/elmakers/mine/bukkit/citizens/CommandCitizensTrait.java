@@ -36,7 +36,7 @@ public class CommandCitizensTrait extends CitizensTrait {
 	}
 
     @Override
-    public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event){
+    public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event) {
         if (command == null || command.isEmpty()) return false;
 
         CommandSender sender = event.getClicker();

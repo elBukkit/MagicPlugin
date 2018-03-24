@@ -79,9 +79,9 @@ public class TownyAPI
             if (townBlock.hasTown()) {
                 town = townBlock.getTown();
             }
-        } catch (NotRegisteredException ex){
-
+        } catch (NotRegisteredException ex) {
         }
+
         if (town == null) return true;
 
         return !town.isAdminDisabledPVP() && town.isPVP();

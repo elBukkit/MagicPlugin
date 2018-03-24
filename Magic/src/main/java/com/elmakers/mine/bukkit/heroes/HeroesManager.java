@@ -224,7 +224,7 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
             String icon = SkillConfigManager.getRaw(skill, "icon", null);
             if (icon == null || icon.isEmpty()) {
                 config.set("icon", controller.getDefaultSkillIcon());
-            } else if(icon.startsWith("http://")) {
+            } else if (icon.startsWith("http://")) {
                 config.set("icon_url", icon);
             } else {
                 config.set("icon", icon);

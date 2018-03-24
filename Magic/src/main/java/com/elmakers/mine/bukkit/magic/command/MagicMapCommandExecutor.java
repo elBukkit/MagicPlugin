@@ -481,7 +481,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         }
         int addedFiles = 0;
         File[] cacheFiles = mapController.getCacheFolder().listFiles();
-        Arrays.sort(cacheFiles, new Comparator<File>(){
+        Arrays.sort(cacheFiles, new Comparator<File>() {
             @Override
             public int compare(File f1, File f2)
             {

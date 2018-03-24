@@ -330,7 +330,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             for (String attributeKey : keys) {
                 try {
                     Attribute.valueOf(attributeKey.toUpperCase());
-                } catch(IllegalArgumentException ignored) {
+                } catch (IllegalArgumentException ignored) {
                     continue;
                 }
 
