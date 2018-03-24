@@ -596,12 +596,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         double damage = event.getDamage();
-        sendDebugMessage(ChatColor.RED + "Damaged by " + ChatColor.BLUE + (damageType == null ? "generic" : damageType) + " (" + cause + ")" + ChatColor.RED + " for " +
-                ChatColor.DARK_RED + damage, 10);
+        sendDebugMessage(ChatColor.RED + "Damaged by " + ChatColor.BLUE + (damageType == null ? "generic" : damageType) + " (" + cause + ")" + ChatColor.RED + " for "
+                + ChatColor.DARK_RED + damage, 10);
         if (reduction > 0) {
             damage = (1.0 - reduction) * damage;
-            sendDebugMessage(ChatColor.DARK_RED + "Damage type " + ChatColor.BLUE + damageType +
-                    " reduced by " + ChatColor.AQUA + reduction + ChatColor.DARK_RED + " to " + ChatColor.RED + damage, 9);
+            sendDebugMessage(ChatColor.DARK_RED + "Damage type " + ChatColor.BLUE + damageType
+                    + " reduced by " + ChatColor.AQUA + reduction + ChatColor.DARK_RED + " to " + ChatColor.RED + damage, 9);
             event.setDamage(damage);
         }
 
@@ -614,8 +614,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if (multiplier > 1) {
             damage = multiplier * damage;
-            sendDebugMessage(ChatColor.DARK_RED + "Damage type " + ChatColor.BLUE + damageType +
-                    " multiplied by " + ChatColor.AQUA + multiplier + ChatColor.DARK_RED + " to " + ChatColor.RED + damage, 9);
+            sendDebugMessage(ChatColor.DARK_RED + "Damage type " + ChatColor.BLUE + damageType
+                    + " multiplied by " + ChatColor.AQUA + multiplier + ChatColor.DARK_RED + " to " + ChatColor.RED + damage, 9);
             event.setDamage(damage);
         }
 
@@ -2281,7 +2281,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         int amount = itemStack == null ? 0 : itemStack.getAmount();
-        if (amount <= 0 ) {
+        if (amount <= 0) {
             return true;
         }
         Inventory inventory = getInventory();
@@ -3464,7 +3464,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         boolean canCast = canCastSpell;
                         if (canCastSpell && remainingCooldown == 0 && requiredCost == null) {
                             targetAmount = 1;
-                        } else if (canCastSpell ) {
+                        } else if (canCastSpell) {
                             canCast = remainingCooldown == 0;
                             targetAmount = Wand.LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
                             if (Wand.LiveHotbarCooldown && requiredCost != null) {

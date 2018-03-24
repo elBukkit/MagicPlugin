@@ -135,7 +135,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
         return hasBuildPermission(player, block);
     }
 
-	public boolean canTarget(Entity source, Entity target ) {
+	public boolean canTarget(Entity source, Entity target) {
 		if (target == null)
 		{
 			return true;

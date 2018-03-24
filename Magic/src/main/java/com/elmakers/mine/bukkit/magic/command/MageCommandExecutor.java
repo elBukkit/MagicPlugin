@@ -240,9 +240,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 				addIfPermissible(sender, options, subCommandPNode, "brush", true);
 			}
 
-            if (args[0].equalsIgnoreCase("lock") ||
-                args[0].equalsIgnoreCase("unlock") ||
-                args[0].equalsIgnoreCase("activate")) {
+            if (args[0].equalsIgnoreCase("lock")
+                    || args[0].equalsIgnoreCase("unlock")
+                    || args[0].equalsIgnoreCase("activate")) {
                 options.addAll(api.getController().getMageClassKeys());
             }
 		}

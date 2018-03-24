@@ -110,11 +110,11 @@ public class UndoAction extends BaseSpellAction
         MageController controller = context.getController();
 		if (targetEntity != null && controller.isMage(targetEntity))
 		{
-			Mage targetMage = controller.getMage(targetEntity);
-            mage.sendDebugMessage(ChatColor.AQUA + "Undo checking last spell of " +
-                    ChatColor.GOLD + targetMage + ChatColor.AQUA + " with timeout of " +
-                    ChatColor.YELLOW + timeout + ChatColor.AQUA + " for target spellKey" +
-                    ChatColor.BLUE + targetSpellKey, 2);
+            Mage targetMage = controller.getMage(targetEntity);
+            mage.sendDebugMessage(ChatColor.AQUA + "Undo checking last spell of "
+                    + ChatColor.GOLD + targetMage + ChatColor.AQUA + " with timeout of "
+                    + ChatColor.YELLOW + timeout + ChatColor.AQUA + " for target spellKey"
+                    + ChatColor.BLUE + targetSpellKey, 2);
 
             Batch batch = targetMage.cancelPending(targetSpellKey);
             if (batch != null) {
@@ -148,9 +148,9 @@ public class UndoAction extends BaseSpellAction
             undoAny = undoAny || mage.isSuperPowered();
             if (undoAny)
 			{
-                mage.sendDebugMessage(ChatColor.AQUA + "Looking for recent cast at " +
-                        ChatColor.GOLD + targetBlock + ChatColor.AQUA + " with timeout of " +
-                        ChatColor.YELLOW + blockTimeout, 2);
+                mage.sendDebugMessage(ChatColor.AQUA + "Looking for recent cast at "
+                        + ChatColor.GOLD + targetBlock + ChatColor.AQUA + " with timeout of "
+                        + ChatColor.YELLOW + blockTimeout, 2);
 
 				UndoList undid = controller.undoRecent(targetBlock, blockTimeout);
 				if (undid != null)
@@ -165,8 +165,8 @@ public class UndoAction extends BaseSpellAction
 			}
 			else
 			{
-                mage.sendDebugMessage(ChatColor.AQUA + "Looking for recent self-cast at " +
-                        ChatColor.GOLD + targetBlock, 2);
+                mage.sendDebugMessage(ChatColor.AQUA + "Looking for recent self-cast at "
+                        + ChatColor.GOLD + targetBlock, 2);
 
                 context.setTargetName(mage.getName());
 				UndoList undoList = mage.undo(targetBlock);

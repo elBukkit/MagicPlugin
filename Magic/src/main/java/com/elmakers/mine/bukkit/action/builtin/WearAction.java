@@ -179,8 +179,7 @@ public class WearAction extends BaseSpellAction
                 }
             }
 
-            if ( material == null || material.getMaterial() == Material.AIR)
-            {
+            if (material == null || material.getMaterial() == Material.AIR) {
                 return SpellResult.NO_TARGET;
             }
 

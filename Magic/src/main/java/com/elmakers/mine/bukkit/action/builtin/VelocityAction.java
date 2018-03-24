@@ -156,19 +156,19 @@ public class VelocityAction extends BaseSpellAction
         if (exemptionDuration > 0 && entity instanceof Player) {
             context.getController().addFlightExemption((Player)entity, exemptionDuration);
         }
-        context.getMage().sendDebugMessage(ChatColor.AQUA + "Applying velocity of " +
-                ChatColor.BLUE + velocity +
-                ChatColor.AQUA + " to " + ChatColor.DARK_AQUA + entity.getType() +
-                ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude,
+        context.getMage().sendDebugMessage(ChatColor.AQUA + "Applying velocity of "
+                + ChatColor.BLUE + velocity
+                + ChatColor.AQUA + " to " + ChatColor.DARK_AQUA + entity.getType()
+                + ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude,
                 11);
 
-        if (!MathUtils.isFinite(velocity.getX()) ||
-                !MathUtils.isFinite(velocity.getY()) ||
-                !MathUtils.isFinite(velocity.getZ())) {
-            context.getMage().sendDebugMessage(ChatColor.AQUA + "Invalid velocity!" +
-                ChatColor.BLUE + velocity +
-                ChatColor.AQUA + "Context direction: " + ChatColor.DARK_AQUA + context.getDirection() +
-                ChatColor.AQUA + "direction: " + ChatColor.DARK_AQUA + direction);
+        if (!MathUtils.isFinite(velocity.getX())
+                || !MathUtils.isFinite(velocity.getY())
+                || !MathUtils.isFinite(velocity.getZ())) {
+            context.getMage().sendDebugMessage(ChatColor.AQUA + "Invalid velocity!"
+                + ChatColor.BLUE + velocity
+                + ChatColor.AQUA + "Context direction: " + ChatColor.DARK_AQUA + context.getDirection()
+                + ChatColor.AQUA + "direction: " + ChatColor.DARK_AQUA + direction);
         } else {
             SafetyUtils.setVelocity(entity, velocity);
         }

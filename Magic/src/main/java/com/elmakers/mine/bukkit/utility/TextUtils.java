@@ -54,9 +54,9 @@ public class TextUtils
 
     public static String printLocation(Location location, int digits) {
         NumberFormat formatter = formatters[Math.min(Math.max(0, digits), formatters.length - 1)];
-        return "" + ChatColor.BLUE + formatter.format(location.getX()) + ChatColor.GRAY + "," +
-            ChatColor.BLUE + formatter.format(location.getY()) + ChatColor.GRAY + "," +
-            ChatColor.BLUE + formatter.format(location.getZ());
+        return "" + ChatColor.BLUE + formatter.format(location.getX()) + ChatColor.GRAY + ","
+                + ChatColor.BLUE + formatter.format(location.getY()) + ChatColor.GRAY + ","
+                + ChatColor.BLUE + formatter.format(location.getZ());
     }
 
     public static String printVector(Vector vector) {
@@ -65,9 +65,9 @@ public class TextUtils
 
     public static String printVector(Vector vector, int digits) {
         NumberFormat formatter = formatters[Math.min(Math.max(0, digits), formatters.length - 1)];
-        return "" + ChatColor.BLUE + formatter.format(vector.getX()) + ChatColor.GRAY + "," +
-            ChatColor.BLUE + formatter.format(vector.getY()) + ChatColor.GRAY + "," +
-            ChatColor.BLUE + formatter.format(vector.getZ());
+        return "" + ChatColor.BLUE + formatter.format(vector.getX()) + ChatColor.GRAY + ","
+                + ChatColor.BLUE + formatter.format(vector.getY()) + ChatColor.GRAY + ","
+                + ChatColor.BLUE + formatter.format(vector.getZ());
     }
 
     public static String printBlock(Block block) {

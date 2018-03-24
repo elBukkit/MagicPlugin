@@ -152,9 +152,12 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public static boolean isSpecialMaterialKey(String materialKey) {
         if (materialKey == null || materialKey.length() == 0) return false;
         materialKey = splitMaterialKey(materialKey)[0];
-        return COPY_MATERIAL_KEY.equals(materialKey) || ERASE_MATERIAL_KEY.equals(materialKey) ||
-               REPLICATE_MATERIAL_KEY.equals(materialKey) || CLONE_MATERIAL_KEY.equals(materialKey) ||
-               MAP_MATERIAL_KEY.equals(materialKey) || SCHEMATIC_MATERIAL_KEY.equals(materialKey);
+        return COPY_MATERIAL_KEY.equals(materialKey)
+                || ERASE_MATERIAL_KEY.equals(materialKey)
+                || REPLICATE_MATERIAL_KEY.equals(materialKey)
+                || CLONE_MATERIAL_KEY.equals(materialKey)
+                || MAP_MATERIAL_KEY.equals(materialKey)
+                || SCHEMATIC_MATERIAL_KEY.equals(materialKey);
     }
 
     public static boolean isSchematic(String materialKey) {
@@ -685,8 +688,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         orientVector.setZ(Math.abs(orientVector.getZ()));
 
         if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE || mode == BrushMode.MAP || mode == BrushMode.SCHEMATIC) {
-            if (cloneTarget == null || mode == BrushMode.CLONE ||
-                !center.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
+            if (cloneTarget == null
+                    || mode == BrushMode.CLONE
+                    || !center.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
                 cloneTarget = center;
                 if (targetOffset != null) {
                     cloneTarget = cloneTarget.add(targetOffset);

@@ -147,14 +147,14 @@ public class RideEntityAction extends BaseSpellAction
         jumpControllable = parameters.getDouble("jump_controllable", 0.0);
         braking = parameters.getDouble("braking", 0.0);
         crashEntityDistance = parameters.getDouble("crash_entity_distance", 2.0);
-        crashVelocityYOffset = parameters.getDouble("crash_velocity_y_offset" , 0.0);
-        crashVelocity = parameters.getDouble("crash_velocity" , 0.0);
-        crashDamage = parameters.getDouble("crash_damage" , 0.0);
-        crashVehicleDamage = parameters.getDouble("crash_vehicle_damage" , 0.0);
-        crashEntityVehicleDamage = parameters.getDouble("crash_entity_vehicle_damage" , 0.0);
-        crashEntityDamage = parameters.getDouble("crash_entity_damage" , 0.0);
-        crashBraking = parameters.getDouble("crash_braking" , 0.0);
-        crashEntityFOV = parameters.getDouble("crash_entity_fov" , 0.3);
+        crashVelocityYOffset = parameters.getDouble("crash_velocity_y_offset", 0.0);
+        crashVelocity = parameters.getDouble("crash_velocity", 0.0);
+        crashDamage = parameters.getDouble("crash_damage", 0.0);
+        crashVehicleDamage = parameters.getDouble("crash_vehicle_damage", 0.0);
+        crashEntityVehicleDamage = parameters.getDouble("crash_entity_vehicle_damage", 0.0);
+        crashEntityDamage = parameters.getDouble("crash_entity_damage", 0.0);
+        crashBraking = parameters.getDouble("crash_braking", 0.0);
+        crashEntityFOV = parameters.getDouble("crash_entity_fov", 0.3);
         crashDismountSpeed = parameters.getDouble("crash_dismount_speed", 0.0);
         fallProtection = parameters.getInt("fall_protection", 0);
         exemptionDuration = parameters.getInt("exemption_duration", 0);
@@ -218,7 +218,7 @@ public class RideEntityAction extends BaseSpellAction
             if (speed > 0) {
                 double minForwardSpeed = Math.max(0, minSpeed);
                 speedRatio = minSpeed >= maxSpeed ? 1 : (speed - minForwardSpeed) / (maxSpeed - minForwardSpeed);
-            } else if (minSpeed < 0 ) {
+            } else if (minSpeed < 0) {
                 double maxBackwardSpeed = Math.max(Math.abs(minSpeed), maxSpeed);
                 double backwardSpeed = Math.abs(speed);
                 speedRatio = backwardSpeed / maxBackwardSpeed;
@@ -492,7 +492,7 @@ public class RideEntityAction extends BaseSpellAction
         }
         boolean dismount = (speed >= crashDismountSpeed);
         if (dismount) {
-            if (crashVelocity > 0 && maxSpeed > 0 ) {
+            if (crashVelocity > 0 && maxSpeed > 0) {
                 mount.eject();
                 Vector crashDirection = direction.clone();
                 if (crashVelocityYOffset > 0) {

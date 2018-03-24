@@ -73,7 +73,7 @@ public class MobController implements Listener {
             return;
         }
 
-        if (event.getReason() == EntityTargetEvent.TargetReason.CLOSEST_PLAYER ) {
+        if (event.getReason() == EntityTargetEvent.TargetReason.CLOSEST_PLAYER) {
             event.setCancelled(true);
         }
     }

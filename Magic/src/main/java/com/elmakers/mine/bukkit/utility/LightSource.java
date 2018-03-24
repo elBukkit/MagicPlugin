@@ -14,7 +14,7 @@ public class LightSource extends NMSUtils {
 	 * http://forums.bukkit.org/threads/resource-server-side-lighting-no-it-isnt-just-client-side.154503/
 	 */
 
-	public static void createLightSource (Server server, Location l, int level) {
+	public static void createLightSource(Server server, Location l, int level) {
 		createLightSource(server, l, level, null);
 	}
 
@@ -22,7 +22,7 @@ public class LightSource extends NMSUtils {
 	 * Create light with level at a location. Players can be added to make them only see it.
 	 */
 	@SuppressWarnings("unchecked")
-	public static void createLightSource (Server server, Location l, int level, Collection<Player> players) {
+	public static void createLightSource(Server server, Location l, int level, Collection<Player> players) {
 		// Store the original light level
 		// int oLevel = l.getBlock().getLightLevel();
 
@@ -63,7 +63,7 @@ public class LightSource extends NMSUtils {
 		*/
 	}
 
-	public static void deleteLightSource (Server server, Location l) {
+	public static void deleteLightSource(Server server, Location l) {
 		deleteLightSource(server, l, null);
 	}
 
@@ -71,7 +71,7 @@ public class LightSource extends NMSUtils {
 	 * Updates the block making the light source return to what it actually is
 	 */
 	@SuppressWarnings("deprecation")
-	public static void deleteLightSource (Server server, Location l, Collection<Player> players) {
+	public static void deleteLightSource(Server server, Location l, Collection<Player> players) {
 		int t = l.getBlock().getTypeId();
 		l.getBlock().setTypeId(t == 1 ? 2 : 1);
 
@@ -83,7 +83,7 @@ public class LightSource extends NMSUtils {
 	/**
 	 * Gets all the chunks touching/diagonal to the chunk the location is in and updates players with them.
 	 */
-	private static void updateChunk (Server server, Location l, Collection<Player> players) {
+	private static void updateChunk(Server server, Location l, Collection<Player> players) {
 		// This needs fixing if we ever want to use it again.
 		/*
 		// Make a list of NMS Chunks

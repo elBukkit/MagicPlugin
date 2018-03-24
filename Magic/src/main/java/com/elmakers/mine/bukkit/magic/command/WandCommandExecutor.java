@@ -283,8 +283,8 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 					for (WandMode mode : WandMode.values()) {
 						options.add(mode.name().toLowerCase());
 					}
-				} else if (subCommand2.equals("left_click") || subCommand2.equals("right_click") ||
-						   subCommand2.equals("drop") || subCommand2.equals("swap")) {
+                } else if (subCommand2.equals("left_click") || subCommand2.equals("right_click")
+                        || subCommand2.equals("drop") || subCommand2.equals("swap")) {
 					for (WandAction action : WandAction.values()) {
 						options.add(action.name().toLowerCase());
 					}
@@ -927,7 +927,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 			}
 			return null;
 		}
-		if (!skipBound && !wand.canUse(mage.getPlayer()) ) {
+		if (!skipBound && !wand.canUse(mage.getPlayer())) {
 			if (!quiet) mage.sendMessage(api.getMessages().get("wand.bound_to_other"));
 			if (sender != player) {
 				sender.sendMessage(api.getMessages().getParameterized("wand.player_unmodifiable", "$name", player.getName()));

@@ -90,9 +90,12 @@ public abstract class BlockSpell extends UndoableSpell {
 
         MaterialSetManager materials = controller.getMaterialSetManager();
         indestructible = MaterialSets.empty();
-        indestructible = materials.fromConfig( // Legacy
+
+        // Legacy
+        indestructible = materials.fromConfig(
                 parameters.getString("id"),
                 indestructible);
+
         indestructible = materials.fromConfig(
                 parameters.getString("indestructible"),
                 indestructible);

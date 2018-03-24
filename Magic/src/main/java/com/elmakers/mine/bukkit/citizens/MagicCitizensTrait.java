@@ -154,8 +154,8 @@ public class MagicCitizensTrait extends CitizensTrait {
                 String[] params = StringUtils.split(value, ' ');
                 if (params.length == 1) {
                     parameters.set(params[0], null);
-                    sender.sendMessage(ChatColor.DARK_PURPLE + "Cleared " + ChatColor.LIGHT_PURPLE + params[0] +
-                            ChatColor.DARK_PURPLE + ", parameters now: ");
+                    sender.sendMessage(ChatColor.DARK_PURPLE + "Cleared " + ChatColor.LIGHT_PURPLE + params[0]
+                            + ChatColor.DARK_PURPLE + ", parameters now: ");
                     describeParameters(sender);
                 } else {
                     ConfigurationUtils.addParameters(params, parameters);

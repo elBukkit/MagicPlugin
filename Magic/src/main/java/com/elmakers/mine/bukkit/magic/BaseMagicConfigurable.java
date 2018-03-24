@@ -267,8 +267,8 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
 
         // Add materials
         @SuppressWarnings("unchecked")
-        Collection<String> materials = value instanceof String ?
-                Arrays.asList(StringUtils.split((String)value, ','))
+        Collection<String> materials = value instanceof String
+                ? Arrays.asList(StringUtils.split((String)value, ','))
                 : (List<String>)value;
         for (String materialKey : materials) {
             materialKey = StringUtils.split(materialKey, '@')[0].trim();
@@ -289,8 +289,8 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         boolean modified = false;
 
         @SuppressWarnings("unchecked")
-        Collection<String> overrides = value instanceof String ?
-                Arrays.asList(StringUtils.split((String)value, ','))
+        Collection<String> overrides = value instanceof String
+                ? Arrays.asList(StringUtils.split((String)value, ','))
                 : (List<String>)value;
 
         Set<String> upgradedSpells = new HashSet<>();
@@ -325,8 +325,8 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         boolean modified = false;
 
         @SuppressWarnings("unchecked")
-        Collection<String> spells = value instanceof String ?
-                Arrays.asList(StringUtils.split((String)value, ','))
+        Collection<String> spells = value instanceof String
+                ? Arrays.asList(StringUtils.split((String)value, ','))
                 : (List<String>)value;
         for (String spellKey : spells) {
             spellKey = StringUtils.split(spellKey,'@')[0].trim();

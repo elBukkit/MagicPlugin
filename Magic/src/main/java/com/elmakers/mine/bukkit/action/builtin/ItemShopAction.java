@@ -45,8 +45,9 @@ public class ItemShopAction extends BaseShopAction
                         String itemKey = (String)itemEntry;
                         items.add(createShopItem(spell.getController(), itemKey, -1));
                     } else if (itemEntry instanceof ConfigurationSection || itemEntry instanceof Map) {
-                        ConfigurationSection itemConfig = (itemEntry instanceof ConfigurationSection) ?
-                                (ConfigurationSection)itemEntry : ConfigUtils.toConfigurationSection((Map<?,?>)itemEntry);
+                        ConfigurationSection itemConfig = (itemEntry instanceof ConfigurationSection)
+                                ? (ConfigurationSection)itemEntry
+                                : ConfigUtils.toConfigurationSection((Map<?,?>)itemEntry);
                         ShopItem shopItem = null;
                         if (itemConfig != null) {
                             double cost = itemConfig.getDouble("cost");

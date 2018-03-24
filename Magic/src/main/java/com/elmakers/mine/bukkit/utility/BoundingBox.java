@@ -34,9 +34,9 @@ public class BoundingBox
     }
 
     public boolean contains(Vector point) {
-        return this.min.getX() <= point.getX() && point.getX() <= this.max.getX() &&
-                this.min.getY() <= point.getY() && point.getY() <= this.max.getY() &&
-                this.min.getZ() <= point.getZ() && point.getZ() <= this.max.getZ();
+        return this.min.getX() <= point.getX() && point.getX() <= this.max.getX()
+                && this.min.getY() <= point.getY() && point.getY() <= this.max.getY()
+                && this.min.getZ() <= point.getZ() && point.getZ() <= this.max.getZ();
     }
 
     public Vector center()

@@ -138,8 +138,8 @@ public class HeroesSpellSkill extends ActiveSkill {
                 }
             }
             // Don't let Magic get in the way of using the skill
-            heroParameters.set("cost_reduction" , 2);
-            heroParameters.set("cooldown_reduction" , 2);
+            heroParameters.set("cost_reduction", 2);
+            heroParameters.set("cooldown_reduction", 2);
             success = spell.cast(heroParameters);
         }
         if (success) {
@@ -182,7 +182,7 @@ public class HeroesSpellSkill extends ActiveSkill {
         node.set("cooldown", spellTemplate.getCooldown());
         node.set("name", spellTemplate.getName());
         Collection<CastingCost> costs = spellTemplate.getCosts();
-        if (costs != null ) {
+        if (costs != null) {
             for (CastingCost cost : costs) {
                 if (cost.getMana() > 0) {
                     node.set(SkillSetting.MANA.node(), cost.getMana());

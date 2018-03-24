@@ -72,9 +72,9 @@ public class CondHasItem extends Condition {
 			    	return (wand != null) != isNegated();
 				}
 				final LivingEntity living = mage.getLivingEntity();
-			    final ItemStack item = wand == null && living != null ?
-					(offhand ? living.getEquipment().getItemInOffHand() : living.getEquipment().getItemInMainHand())
-					: null;
+                final ItemStack item = wand == null && living != null
+                    ? (offhand ? living.getEquipment().getItemInOffHand() : living.getEquipment().getItemInMainHand())
+                    : null;
 				return itemKeys.check(e, new Checker<String>() {
 					@Override
 					public boolean check(final String targetKey) {

@@ -1204,7 +1204,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         double cooldownRemaining = getRemainingCooldown() / 1000.0;
         String timeDescription = "";
         if (cooldownRemaining > 0) {
-            if (cooldownRemaining > 60 * 60 ) {
+            if (cooldownRemaining > 60 * 60) {
                 long hours = (long)Math.ceil(cooldownRemaining / (60 * 60));
                 if (hours == 1) {
                     timeDescription = controller.getMessages().get("cooldown.wait_hour");
@@ -1467,12 +1467,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         Location source = getEyeLocation();
         if (mage == null || source == null) return;
 
-        mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + " from " +
-                ChatColor.GRAY + source.getBlockX() +
-                ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
-                ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
-                ChatColor.WHITE  + ": " + ChatColor.AQUA + result.name().toLowerCase() +
-                ChatColor.DARK_AQUA + message);
+        mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + " from "
+                + ChatColor.GRAY + source.getBlockX()
+                + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY()
+                + ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ()
+                + ChatColor.WHITE  + ": " + ChatColor.AQUA + result.name().toLowerCase()
+                + ChatColor.DARK_AQUA + message);
     }
 
     @Override
@@ -2134,7 +2134,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private String getTimeDescription(Messages messages, int time) {
         if (time > 0) {
             int timeInSeconds = time / 1000;
-            if (timeInSeconds > 60 * 60 ) {
+            if (timeInSeconds > 60 * 60) {
                 int hours = timeInSeconds / (60 * 60);
                 if (hours == 1) {
                     return messages.get("cooldown.description_hour");
@@ -2856,10 +2856,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         long effectiveDuration = this.getDuration();
         if (effectiveDuration > 0) {
             long seconds = effectiveDuration / 1000;
-            if (seconds > 60 * 60 ) {
+            if (seconds > 60 * 60) {
                 long hours = seconds / (60 * 60);
                 description = messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString());
-            } else if (seconds == 60 * 60 ) {
+            } else if (seconds == 60 * 60) {
                 description = messages.get("duration.lasts_hour").replace("$hours", "1");
             } else if (seconds > 60) {
                 long minutes = seconds / 60;

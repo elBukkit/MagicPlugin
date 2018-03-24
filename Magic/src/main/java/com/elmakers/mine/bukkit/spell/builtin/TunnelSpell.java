@@ -52,7 +52,7 @@ public class TunnelSpell extends BlockSpell
 		BlockFace toTheRight = goRight(direction);
 		Block bottomBlock = searchBlock.getRelative(BlockFace.DOWN);
 		Block bottomLeftBlock = bottomBlock;
-		for (int i = 0; i < width / 2; i ++)
+		for (int i = 0; i < width / 2; i++)
 		{
 			bottomLeftBlock = bottomLeftBlock.getRelative(toTheLeft);
 		}

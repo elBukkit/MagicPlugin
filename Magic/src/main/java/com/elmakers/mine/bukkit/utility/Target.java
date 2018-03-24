@@ -360,8 +360,8 @@ public class Target implements Comparable<Target>
 
             if (DEBUG_TARGETING && hasEntity())
             {
-                org.bukkit.Bukkit.getLogger().info("CHECKING " + getEntity().getType() + " (" + closeDistanceSquared + ") " +
-                        " angle = " + angle + " against " + checkAngle + " at distance " + distanceSquared
+                org.bukkit.Bukkit.getLogger().info("CHECKING " + getEntity().getType() + " (" + closeDistanceSquared + ") "
+                        + " angle = " + angle + " against " + checkAngle + " at distance " + distanceSquared
                         + " rangeA = (" + closeAngle + " to " + maxAngle + "), rangeD = (" + closeDistanceSquared + " to " + maxDistanceSquared + ")"
                         + " ... from " + sourceLocation + " to " + targetLoc);
             }

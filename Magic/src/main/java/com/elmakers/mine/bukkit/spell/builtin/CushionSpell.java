@@ -35,7 +35,7 @@ public class CushionSpell extends BlockSpell
 
 		for (int dx = bubbleStart; dx < bubbleEnd; dx++)
 		{
-			for (int dz = bubbleStart ; dz < bubbleEnd; dz++)
+			for (int dz = bubbleStart; dz < bubbleEnd; dz++)
 			{
 				for (int dy = 0; dy < cushionHeight; dy++)
 				{

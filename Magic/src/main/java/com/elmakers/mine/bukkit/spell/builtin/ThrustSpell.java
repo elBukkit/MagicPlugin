@@ -177,8 +177,7 @@ public class ThrustSpell extends TargetingSpell
 		pitch += 15;
 
 		// Adjust target height based on aim
-		Vector aim = new Vector
-        (
+		Vector aim = new Vector(
             (0 - Math.sin(Math.toRadians(yaw))),
             (0 - Math.sin(Math.toRadians(pitch))),
             Math.cos(Math.toRadians(yaw))

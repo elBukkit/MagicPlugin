@@ -111,9 +111,9 @@ public class InventoryAction extends BaseSpellAction
 	}
 
 	private void showGenericInventory(Player showPlayer) {
-		Inventory inventory = title != null && !title.isEmpty() ?
-				Bukkit.createInventory(showPlayer, inventoryType, title)
-				: Bukkit.createInventory(showPlayer, inventoryType);
+        Inventory inventory = title != null && !title.isEmpty()
+                ? Bukkit.createInventory(showPlayer, inventoryType, title)
+                : Bukkit.createInventory(showPlayer, inventoryType);
 		showPlayer.openInventory(inventory);
 	}
 

@@ -33,10 +33,10 @@ public class PrerequisiteSpell {
 
     @Override
     public String toString() {
-        return "PrerequisiteSpell{" +
-                "spellKey=" + spellKey.getKey() +
-                ", progressLevel=" + progressLevel +
-                '}';
+        return "PrerequisiteSpell{"
+                + "spellKey=" + spellKey.getKey()
+                + ", progressLevel=" + progressLevel
+                + '}';
     }
 
     public static Collection<PrerequisiteSpell> getMissingRequirements(CasterProperties caster, SpellTemplate spell) {

@@ -4228,8 +4228,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
 		InventoryView openInventory = player.getOpenInventory();
 		InventoryType inventoryType = openInventory.getType();
-		if (inventoryType == InventoryType.ENCHANTING ||
-			inventoryType == InventoryType.ANVIL) return false;
+        if (inventoryType == InventoryType.ENCHANTING
+                || inventoryType == InventoryType.ANVIL) return false;
 
 		if (hasUses && uses <= 0) {
 			if (offhand) {

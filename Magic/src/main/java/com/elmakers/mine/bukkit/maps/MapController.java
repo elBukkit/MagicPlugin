@@ -107,8 +107,8 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                             map.getMapView();
                         }
                     } catch (Exception ex) {
-                        warning("Failed to load " + configurationFile.getAbsolutePath() +
-                                ": " + ex.getMessage() + ", saving will be disabled until this issues is resolved");
+                        warning("Failed to load " + configurationFile.getAbsolutePath()
+                                + ": " + ex.getMessage() + ", saving will be disabled until this issues is resolved");
                         disabled = true;
                     }
                 }

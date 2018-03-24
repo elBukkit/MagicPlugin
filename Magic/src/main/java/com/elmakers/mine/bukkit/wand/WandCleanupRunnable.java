@@ -88,8 +88,10 @@ public class WandCleanupRunnable extends RunnableJob {
             	String lostId = Wand.getWandId(itemStack);
                 if (lostId != null && lostWand.getId().equals(lostId)) {
                     String description = check ? "Found" : "Removed";
-                    logger.info(description + " lost wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + " in " +
-                            location.getWorld().getName() + " at " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+                    logger.info(description + " lost wand " + lostWand.getName()
+                            + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + " in "
+                            + location.getWorld().getName()
+                            + " at " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
                     if (check) {
                         if (lostWand instanceof com.elmakers.mine.bukkit.wand.LostWand) {
                             ((com.elmakers.mine.bukkit.wand.LostWand)lostWand).setLocation(entity.getLocation());

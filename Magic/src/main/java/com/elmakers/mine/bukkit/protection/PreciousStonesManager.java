@@ -74,7 +74,7 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
         return hasBuildPermission(player, block);
     }
 
-	public boolean canTarget(Entity source, Entity target ) {
+	public boolean canTarget(Entity source, Entity target) {
 		if (!enabled || target == null || api == null)
 		{
 			return true;
