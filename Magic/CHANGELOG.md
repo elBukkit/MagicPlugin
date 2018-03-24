@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## 7.4
+## 7.3.3
 
+ - Fix progressmenu (and other things, possibly) being broken without Vault
  - Allow using \n when configuring a wand description via configure command
  - Changes to classes will take effect properly when using /magic load
  - Camera no requires 1 paper to use

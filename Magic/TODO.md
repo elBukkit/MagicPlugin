@@ -2,6 +2,7 @@
 
 ## 7.4
 
+ - Figure out positive/negative solution for reduction, protection, strength and weakness
  - Need to do something about template data mixing with class data ... use cases:
    - Screwed up migration, left properties on a wand that now belong to class
      - In this case we want to ignore them? Or merge them? Merge can't be a permanent override though.
