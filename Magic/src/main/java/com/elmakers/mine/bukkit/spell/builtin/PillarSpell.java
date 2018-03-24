@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 @Deprecated
 public class PillarSpell extends BrushSpell
 {
-	int MAX_SEARCH_DISTANCE = 255;
+    private static final int MAX_SEARCH_DISTANCE = 255;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters)

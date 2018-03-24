@@ -79,9 +79,9 @@ public class FillBatch extends BrushBatch {
 		return !(maxVolume > 0 && absx * absy * absz > maxVolume);
 	}
 
-	@Override
+    @Override
     @SuppressWarnings("deprecation")
-	public int process(int maxBlocks) {
+    public int process(int maxBlocks) {
 		int processedBlocks = 0;
 
 		while (processedBlocks <= maxBlocks && ix < absx) {

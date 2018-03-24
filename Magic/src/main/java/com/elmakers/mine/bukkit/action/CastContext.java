@@ -684,9 +684,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     private boolean isOkToStandOn0(Material material) {
-        return material != Material.AIR &&
-                material != Material.LAVA &&
-                material != Material.STATIONARY_LAVA;
+        return material != Material.AIR
+                && material != Material.LAVA
+                && material != Material.STATIONARY_LAVA;
     }
 
     @Override

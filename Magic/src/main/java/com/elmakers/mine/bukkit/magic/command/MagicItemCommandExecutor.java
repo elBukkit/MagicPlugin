@@ -420,14 +420,14 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		if (VaultController.hasEconomy()) {
 			worthDescription = vault.format(totalWorth);
 			if (amount > 1) {
-				worthDescription = worthDescription + ChatColor.WHITE +
-					" (" + ChatColor.GOLD + vault.format(worth) + ChatColor.WHITE + " each)";
+                worthDescription = worthDescription + ChatColor.WHITE
+                        + " (" + ChatColor.GOLD + vault.format(worth) + ChatColor.WHITE + " each)";
 			}
 		} else {
 			worthDescription = Double.toString(totalWorth);
 			if (amount > 1) {
-				worthDescription = worthDescription + ChatColor.WHITE +
-					" (" + ChatColor.GOLD + Double.toString(worth) + ChatColor.WHITE + " each)";
+                worthDescription = worthDescription + ChatColor.WHITE
+                        + " (" + ChatColor.GOLD + Double.toString(worth) + ChatColor.WHITE + " each)";
 			}
 		}
 

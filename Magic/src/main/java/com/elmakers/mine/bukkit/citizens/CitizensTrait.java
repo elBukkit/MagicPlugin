@@ -76,9 +76,9 @@ public abstract class CitizensTrait extends Trait {
         Entity entity = null;
         try {
             entity = npc.getEntity();
-        } catch (Exception ex) {
-
+        } catch (Exception ignored) {
         }
+
         LivingEntity li = entity instanceof LivingEntity ? (LivingEntity)entity : null;
         if (li != null) {
             if (invisible) {
@@ -134,8 +134,8 @@ public abstract class CitizensTrait extends Trait {
 
     public void describe(CommandSender sender)
     {
-        sender.sendMessage(ChatColor.AQUA + "Magic NPC: " + ChatColor.GOLD + npc.getName() +
-                ChatColor.WHITE + "(" + ChatColor.GRAY + npc.getId() + ChatColor.WHITE + ")");
+        sender.sendMessage(ChatColor.AQUA + "Magic NPC: " + ChatColor.GOLD + npc.getName()
+                + ChatColor.WHITE + "(" + ChatColor.GRAY + npc.getId() + ChatColor.WHITE + ")");
         String permissionDescription = permissionNode == null ? (ChatColor.GRAY + "(None)") : (ChatColor.LIGHT_PURPLE + permissionNode);
         sender.sendMessage(ChatColor.DARK_PURPLE + "Permission: " + permissionDescription);
         String invisibleDescription = invisible ? (ChatColor.GREEN + "YES") : (ChatColor.GRAY + "NO");
@@ -232,9 +232,9 @@ public abstract class CitizensTrait extends Trait {
                 Entity entity = null;
                 try {
                     entity = npc.getEntity();
-                } catch (Exception ex) {
-
+                } catch (Exception ignored) {
                 }
+
                 LivingEntity li = entity instanceof LivingEntity ? (LivingEntity)entity : null;
                 if (li != null) {
                     li.getEquipment().setHelmet(hatItem);

@@ -32,7 +32,7 @@ public class PvPManagerManager implements PVPManager {
                 if (pvpPlugin instanceof PvPManager) {
                     manager = (PvPManager)pvpPlugin;
                 }
-            } catch (Throwable ex) {
+            } catch (Throwable ignored) {
             }
 
             if (manager != null) {

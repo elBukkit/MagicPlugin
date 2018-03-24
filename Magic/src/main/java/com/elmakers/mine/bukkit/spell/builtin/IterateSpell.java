@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 @Deprecated
 public class IterateSpell extends BrushSpell
 {
-	private int				DEFAULT_SIZE			= 16;
+    private static final int DEFAULT_SIZE = 16;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters)
@@ -83,7 +83,7 @@ public class IterateSpell extends BrushSpell
 					// TODO: Arbitrary axis rotation.
 					double q = dspoke * Math.PI * 2 / spokes;
 					if (aim.getY() > 0.7) {
-						Vector axis = new Vector(1, 0 ,0);
+						Vector axis = new Vector(1, 0, 0);
 						Vector perp = aim.clone().crossProduct(axis).multiply(dr);
 
 						double x = perp.getZ() * Math.sin(q) - perp.getX() * Math.cos(q);
@@ -93,7 +93,7 @@ public class IterateSpell extends BrushSpell
 
 						currentLoc.add(perp);
 					} else if (aim.getX() > 0.7) {
-						Vector axis = new Vector(0, 1 ,0);
+						Vector axis = new Vector(0, 1, 0);
 						Vector perp = aim.clone().crossProduct(axis).multiply(dr);
 
 						double y = perp.getZ() * Math.sin(q) - perp.getY() * Math.cos(q);
@@ -103,7 +103,7 @@ public class IterateSpell extends BrushSpell
 
 						currentLoc.add(perp);
 					} else {
-						Vector axis = new Vector(0, 1 ,0);
+						Vector axis = new Vector(0, 1, 0);
 						Vector perp = aim.clone().crossProduct(axis).multiply(dr);
 
 						double y = perp.getX() * Math.sin(q) - perp.getY() * Math.cos(q);

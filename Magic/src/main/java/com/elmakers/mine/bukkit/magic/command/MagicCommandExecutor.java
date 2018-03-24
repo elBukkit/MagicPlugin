@@ -75,7 +75,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				sendNoPermission(sender);
 				return true;
 			}
-			sender.sendMessage("Magic " + getMagicVersion( ));
+			sender.sendMessage("Magic " + getMagicVersion());
 			sender.sendMessage("Use /magic help for more info");
 			return true;
 		}
@@ -442,12 +442,12 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			for (LostWand lostWand : lostWands) {
 				Location location = lostWand.getLocation();
 				if (location == null) continue;
-				if (owner.length() > 0 && !owner.equalsIgnoreCase	(lostWand.getOwner())) {
+				if (owner.length() > 0 && !owner.equalsIgnoreCase(lostWand.getOwner())) {
 					continue;
 				}
 				shown++;
-				sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " " +
-						location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+				sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " "
+				        + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
 			}
 
 			sender.sendMessage(shown + " lost wands found" + (owner.length() > 0 ? " for " + owner : ""));
@@ -465,8 +465,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 					isOnline = world.isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4);
 				}
 				ChatColor nameColor = isOnline ? ChatColor.AQUA : ChatColor.GRAY;
-				sender.sendMessage(nameColor + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " " +
-						location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+				sender.sendMessage(nameColor + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " "
+				        + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
 			}
 
 			sender.sendMessage(automata.size() + " automata active");

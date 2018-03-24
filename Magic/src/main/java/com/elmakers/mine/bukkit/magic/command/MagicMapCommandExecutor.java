@@ -119,7 +119,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             {
                 try {
                     parsedId = Short.parseShort(mapId);
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -143,7 +143,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             {
                 try {
                     parsedId = Short.parseShort(mapId);
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -179,7 +179,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             {
                 try {
                     limit = Integer.parseInt(args[1]);
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -207,8 +207,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             {
                 try {
                     startingId = Integer.parseInt(args[1]);
-                } catch (Exception ex) {
-
+                } catch (Exception ignored) {
                 }
             }
             onMapRestore(sender, world, startingId);
@@ -375,8 +374,8 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
 
     protected void onMapFix(CommandSender sender, World world, int retries)
     {
-        sender.sendMessage(ChatColor.AQUA + "Fixing maps, using up to " + ChatColor.DARK_AQUA + retries +
-                ChatColor.AQUA + " ids at a time.");
+        sender.sendMessage(ChatColor.AQUA + "Fixing maps, using up to " + ChatColor.DARK_AQUA + retries
+                + ChatColor.AQUA + " ids at a time.");
 
         MapController mapController = api.getController().getMaps();
         List<URLMap> maps = mapController.getAll();
@@ -397,8 +396,8 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         }
 
         mapController.save();
-        sender.sendMessage(ChatColor.AQUA + "Fixed " + ChatColor.DARK_AQUA + fixed +
-                ChatColor.AQUA + " and skipped " + ChatColor.DARK_AQUA + skipped + ChatColor.AQUA + " maps");
+        sender.sendMessage(ChatColor.AQUA + "Fixed " + ChatColor.DARK_AQUA + fixed
+                + ChatColor.AQUA + " and skipped " + ChatColor.DARK_AQUA + skipped + ChatColor.AQUA + " maps");
         if (notFixed > 0) {
             sender.sendMessage(ChatColor.RED + "There are still " + ChatColor.DARK_RED + notFixed + ChatColor.RED + " maps disabled, you may want to try running this command again.");
         }

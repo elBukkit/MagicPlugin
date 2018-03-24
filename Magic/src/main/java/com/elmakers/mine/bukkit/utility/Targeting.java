@@ -255,11 +255,11 @@ public class Targeting {
         if (mage != null && mage.getDebugLevel() > 15)
         {
             Location targetLocation = target.getLocation();
-            String message = ChatColor.GREEN + "Targeted from " + ChatColor.GRAY + source.getBlockX() +
-                    ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
-                    ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
-                    ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range + ChatColor.DARK_GREEN + ": " +
-                    ChatColor.GOLD + result;
+            String message = ChatColor.GREEN + "Targeted from " + ChatColor.GRAY + source.getBlockX()
+                    + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY()
+                    + ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ()
+                    + ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range + ChatColor.DARK_GREEN + ": "
+                    + ChatColor.GOLD + result;
 
             Entity targetEntity = target.getEntity();
             if (targetEntity != null) {
@@ -267,10 +267,10 @@ public class Targeting {
             }
             if (targetLocation != null) {
                 message = message + ChatColor.DARK_GREEN + " (" + ChatColor.LIGHT_PURPLE + targetLocation.getBlock().getType() + ChatColor.DARK_GREEN + ")";
-                message = message + ChatColor.DARK_GREEN + " at " +
-                        ChatColor.GRAY + targetLocation.getBlockX() +
-                        ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + targetLocation.getBlockY() +
-                        ChatColor.DARK_GRAY + "," + ChatColor.GRAY + targetLocation.getBlockZ();
+                message = message + ChatColor.DARK_GREEN + " at "
+                        + ChatColor.GRAY + targetLocation.getBlockX()
+                        + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + targetLocation.getBlockY()
+                        + ChatColor.DARK_GRAY + "," + ChatColor.GRAY + targetLocation.getBlockZ();
             }
             mage.sendDebugMessage(message);
         }
@@ -394,9 +394,9 @@ public class Targeting {
 
         // Pre-check for no block movement
         Location targetLocation = source.clone().add(source.getDirection().multiply(range));
-        if (targetLocation.getBlockX() == source.getBlockX() &&
-            targetLocation.getBlockY() == source.getBlockY() &&
-            targetLocation.getBlockZ() == source.getBlockZ()) {
+        if (targetLocation.getBlockX() == source.getBlockX()
+                && targetLocation.getBlockY() == source.getBlockY()
+                && targetLocation.getBlockZ() == source.getBlockZ()) {
 
             result = TargetingResult.MISS;
             return;
@@ -477,26 +477,26 @@ public class Targeting {
             entities = CompatibilityUtils.getNearbyEntities(sourceLocation, queryRange.getX() / 2, queryRange.getY() / 2, queryRange.getZ() / 2);
             if (mage != null && mage.getDebugLevel() > 16)
             {
-                mage.sendDebugMessage(ChatColor.GREEN + "Targeting " + ChatColor.GOLD + entities.size() + ChatColor.GREEN + " entities from " +
-                        ChatColor.GRAY + source.getBlockX() +
-                        ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
-                        ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
-                        " via bounding box " +
-                        ChatColor.GRAY + (int)Math.ceil(queryRange.getX()) +
-                        ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + (int)Math.ceil(queryRange.getY()) +
-                        ChatColor.DARK_GRAY + "," + ChatColor.GRAY + (int)Math.ceil(queryRange.getZ()) +
-                        ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range);
+                mage.sendDebugMessage(ChatColor.GREEN + "Targeting " + ChatColor.GOLD + entities.size() + ChatColor.GREEN + " entities from "
+                        + ChatColor.GRAY + source.getBlockX()
+                        + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY()
+                        + ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ()
+                        + " via bounding box "
+                        + ChatColor.GRAY + (int)Math.ceil(queryRange.getX())
+                        + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + (int)Math.ceil(queryRange.getY())
+                        + ChatColor.DARK_GRAY + "," + ChatColor.GRAY + (int)Math.ceil(queryRange.getZ())
+                        + ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range);
                 debugMessage = false;
             }
         }
 
         if (debugMessage && mage != null && mage.getDebugLevel() > 17)
         {
-            mage.sendDebugMessage(ChatColor.GREEN + "Targeting entities from " +
-                    ChatColor.GRAY + source.getBlockX() +
-                    ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
-                    ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
-                    ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range);
+            mage.sendDebugMessage(ChatColor.GREEN + "Targeting entities from "
+                    + ChatColor.GRAY + source.getBlockX()
+                    + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY()
+                    + ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ()
+                    + ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range);
         }
 
         if (entities == null) return targets;
@@ -525,9 +525,9 @@ public class Targeting {
             }
             if (mage != null && mage.getDebugLevel() > requiredDebug)
             {
-                String message = ChatColor.DARK_GREEN + "Target " +
-                        ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN +
-                        ": " + ChatColor.YELLOW + newScore.getScore()
+                String message = ChatColor.DARK_GREEN + "Target "
+                        + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN
+                        + ": " + ChatColor.YELLOW + newScore.getScore()
                         + ChatColor.DARK_GREEN + ", r2: "
                         + ChatColor.GREEN + ((int)newScore.getDistanceSquared() + " / " + (useRange * useRange));
                 if (!useHitbox) {

@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class BridgeSpell extends BrushSpell
 {
-	int MAX_SEARCH_DISTANCE = 16;
+    private static final int MAX_SEARCH_DISTANCE = 16;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters)

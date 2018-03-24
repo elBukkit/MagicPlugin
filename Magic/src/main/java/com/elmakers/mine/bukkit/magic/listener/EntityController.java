@@ -193,7 +193,7 @@ public class EntityController implements Listener {
                 event.setDamage(event.getDamage() * (1 - reduction));
             }
         }
-        if (damager instanceof Player ) {
+        if (damager instanceof Player) {
             Mage damagerMage = controller.getRegisteredMage(damager);
             com.elmakers.mine.bukkit.api.wand.Wand activeWand = null;
             boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityUtils.isDamaging;

@@ -262,8 +262,9 @@ public class SimulateBatch extends SpellBatch {
 
 		Material blockMaterial = block.getType();
 		if (birthMaterial.is(block)) {
-			int distanceSquared = liveRangeSquared > 0 || isAutomata ?
-					(int)Math.ceil(block.getLocation().distanceSquared(heartBlock.getLocation())) : 0;
+            int distanceSquared = liveRangeSquared > 0 || isAutomata
+                    ? (int)Math.ceil(block.getLocation().distanceSquared(heartBlock.getLocation()))
+                    : 0;
 
 			if (liveRangeSquared <= 0 || distanceSquared <= liveRangeSquared) {
 				if (diagonalLiveCounts.size() > 0) {
@@ -287,8 +288,9 @@ public class SimulateBatch extends SpellBatch {
 				killBlock(block);
 			}
 		} else if (blockMaterial == deathMaterial) {
-			int distanceSquared = birthRangeSquared > 0 || isAutomata ?
-					(int)Math.ceil(block.getLocation().distanceSquared(heartBlock.getLocation())) : 0;
+            int distanceSquared = birthRangeSquared > 0 || isAutomata
+                    ? (int)Math.ceil(block.getLocation().distanceSquared(heartBlock.getLocation()))
+                    : 0;
 
 			if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {
 				if (diagonalBirthCounts.size() > 0) {
@@ -635,7 +637,7 @@ public class SimulateBatch extends SpellBatch {
 		target(targetMode);
 	}
 
-	public void target(TargetMode mode ) {
+	public void target(TargetMode mode) {
 		TargetType targetType = this.targetType;
 		if (mode == TargetMode.DIRECTED) {
 			targetType = TargetType.PLAYER;
@@ -693,8 +695,8 @@ public class SimulateBatch extends SpellBatch {
 					((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
 
 				if (DEBUG) {
-					controller.getLogger().info(" Tracking " + targetDescription +
-				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation() + " move " + commandMoveRangeSquared);
+                    controller.getLogger().info(" Tracking " + targetDescription
+                            + " score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation() + " move " + commandMoveRangeSquared);
 				}
 				Vector direction = null;
 

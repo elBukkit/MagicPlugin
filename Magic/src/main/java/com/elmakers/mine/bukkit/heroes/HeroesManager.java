@@ -78,12 +78,12 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
 
         try {
             @SuppressWarnings("unchecked")
-            Class<Enum<?>> class_AttributeType = (Class<Enum<?>>)Class.forName("com.herocraftonline.heroes.attributes.AttributeType");
-            Enum<?>[] values = class_AttributeType.getEnumConstants();
+            Class<Enum<?>> classAttributeType = (Class<Enum<?>>)Class.forName("com.herocraftonline.heroes.attributes.AttributeType");
+            Enum<?>[] values = classAttributeType.getEnumConstants();
             for (Enum<?> value : values) {
                 attributes.put(value.name().toLowerCase(), value);
             }
-            getHeroAttributeMethod = Hero.class.getMethod("getAttributeValue", class_AttributeType);
+            getHeroAttributeMethod = Hero.class.getMethod("getAttributeValue", classAttributeType);
             log.info("Registered Heroes attributes for use in spell parameters: " + getAllAttributes());
         } catch (Exception ex) {
             attributes.clear();

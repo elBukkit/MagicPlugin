@@ -470,8 +470,9 @@ public class CustomProjectileAction extends CompoundAction
             Entity targetEntity = context.getTargetEntity();
             if (targetEntity != null && targetEntity.isValid() && context.canTarget(targetEntity))
             {
-                Location targetLocation = targetEntity instanceof LivingEntity ?
-                        ((LivingEntity)targetEntity).getEyeLocation() : targetEntity.getLocation();
+                Location targetLocation = targetEntity instanceof LivingEntity
+                        ? ((LivingEntity)targetEntity).getEyeLocation()
+                        : targetEntity.getLocation();
                 targetVelocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
             }
         }
@@ -759,8 +760,8 @@ public class CustomProjectileAction extends CompoundAction
         actionContext.setTargetLocation(actionContext.getTargetLocation().add(velocity.clone().multiply(offset)));
         // actionContext.setTargetLocation(targetLocation.add(normal.normalize().multiply(2)));
 
-        actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected: " + ChatColor.LIGHT_PURPLE +
-                " with normal vector of " + ChatColor.LIGHT_PURPLE + normal, 4);
+        actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected: " + ChatColor.LIGHT_PURPLE
+                + " with normal vector of " + ChatColor.LIGHT_PURPLE + normal, 4);
 
         actionContext.playEffects("reflect");
         reflectCount++;
@@ -929,10 +930,17 @@ public class CustomProjectileAction extends CompoundAction
     {
         super.getParameterOptions(spell, parameterKey, examples);
 
-        if (parameterKey.equals("speed") || parameterKey.equals("lifetime") ||
-            parameterKey.equals("interval") || parameterKey.equals("start") || parameterKey.equals("size") ||
-            parameterKey.equals("gravity") || parameterKey.equals("drag") || parameterKey.equals("tick_size") ||
-            parameterKey.equals("spread") || parameterKey.equals("spread_movement") || parameterKey.equals("spread_movement_max")) {
+        if (parameterKey.equals("speed")
+                || parameterKey.equals("lifetime")
+                || parameterKey.equals("interval")
+                || parameterKey.equals("start")
+                || parameterKey.equals("size")
+                || parameterKey.equals("gravity")
+                || parameterKey.equals("drag")
+                || parameterKey.equals("tick_size")
+                || parameterKey.equals("spread")
+                || parameterKey.equals("spread_movement")
+                || parameterKey.equals("spread_movement_max")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("target_entities") || parameterKey.equals("track_target")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));

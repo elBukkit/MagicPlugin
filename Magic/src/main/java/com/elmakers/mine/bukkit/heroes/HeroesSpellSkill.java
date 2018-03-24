@@ -113,7 +113,7 @@ public class HeroesSpellSkill extends ActiveSkill {
                 Double doubleValue = null;
                 try {
                     doubleValue = Double.parseDouble(value);
-                } catch (NumberFormatException cantparse) {
+                } catch (NumberFormatException ignored) {
                 }
 
                 Object magicValue = spellParameters.getString(magicKey);
@@ -124,7 +124,7 @@ public class HeroesSpellSkill extends ActiveSkill {
                         if (magicValue != null) {
                             doubleMagicValue = Double.parseDouble(magicValue.toString());
                         }
-                    } catch (NumberFormatException cantparse) {
+                    } catch (NumberFormatException ignored) {
                     }
                     if (doubleMagicValue != null && doubleValue.equals(doubleMagicValue)) continue;
                 } else {
@@ -138,8 +138,8 @@ public class HeroesSpellSkill extends ActiveSkill {
                 }
             }
             // Don't let Magic get in the way of using the skill
-            heroParameters.set("cost_reduction" , 2);
-            heroParameters.set("cooldown_reduction" , 2);
+            heroParameters.set("cost_reduction", 2);
+            heroParameters.set("cooldown_reduction", 2);
             success = spell.cast(heroParameters);
         }
         if (success) {
@@ -182,7 +182,7 @@ public class HeroesSpellSkill extends ActiveSkill {
         node.set("cooldown", spellTemplate.getCooldown());
         node.set("name", spellTemplate.getName());
         Collection<CastingCost> costs = spellTemplate.getCosts();
-        if (costs != null ) {
+        if (costs != null) {
             for (CastingCost cost : costs) {
                 if (cost.getMana() > 0) {
                     node.set(SkillSetting.MANA.node(), cost.getMana());

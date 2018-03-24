@@ -726,7 +726,7 @@ public class MagicController implements MageController {
                 inputSchematic = plugin.getResource("schematics/" + fileName);
                 info("Loading builtin schematic: " + fileName);
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
 
         }
 
@@ -804,7 +804,7 @@ public class MagicController implements MageController {
                     }
                 }
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
 
         }
 
@@ -880,7 +880,7 @@ public class MagicController implements MageController {
         if (skillAPIPlugin != null && skillAPIEnabled) {
             skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
             if (skillAPIManager.initialize()) {
-                getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements." );
+                getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements.");
                 if (useSkillAPIMana) {
                     getLogger().info("SkillAPI mana will be used by spells and wands");
                 }
@@ -1029,7 +1029,7 @@ public class MagicController implements MageController {
                     getLogger().warning("CommandBook integration failed");
                 }
             }
-        } catch (Throwable ex) {
+        } catch (Throwable ignored) {
 
         }
 
@@ -2277,7 +2277,7 @@ public class MagicController implements MageController {
 	public static Spell loadSpell(String name, ConfigurationSection node, MageController controller)
 	{
 		String className = node.getString("class");
-		if (className == null || className.equalsIgnoreCase("action") || className.equalsIgnoreCase("actionspell") )
+		if (className == null || className.equalsIgnoreCase("action") || className.equalsIgnoreCase("actionspell"))
         {
             className = "com.elmakers.mine.bukkit.spell.ActionSpell";
         }
@@ -2486,7 +2486,7 @@ public class MagicController implements MageController {
             currencyItem = null;
         }
 
-        SafetyUtils.MAX_VELOCITY = properties.getDouble("max_velocity", 10 );
+        SafetyUtils.MAX_VELOCITY = properties.getDouble("max_velocity", 10);
         HitboxUtils.setHitboxScale(properties.getDouble("hitbox_scale", 1.0));
         HitboxUtils.setHitboxScaleY(properties.getDouble("hitbox_scale_y", 1.0));
         HitboxUtils.setHitboxSneakScaleY(properties.getDouble("hitbox_sneaking_scale_y", 0.75));
@@ -3010,7 +3010,7 @@ public class MagicController implements MageController {
                         finalizeMageQuit(quitMage, callback, isOpen);
                     }
                 }
-            },1 );
+            }, 1);
         } else {
             finalizeMageQuit(mage, callback, isOpen);
         }
@@ -4237,7 +4237,7 @@ public class MagicController implements MageController {
             magicItemKey = pieces[0];
             try {
                 amount = Integer.parseInt(pieces[1]);
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
 
             }
         }
@@ -4943,11 +4943,11 @@ public class MagicController implements MageController {
                     modifiedTime = rpSection.getLong("modified");
 
                     // Ignore old encoding, we will need to update
-                    if (currentSHA != null && currentSHA.length() < 40 ) {
+                    if (currentSHA != null && currentSHA.length() < 40) {
                         resourcePackHash = BaseEncoding.base64().decode(currentSHA);
                     }
                 }
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
         }
 
@@ -5292,25 +5292,25 @@ public class MagicController implements MageController {
     /*
 	 * Private data
 	 */
-    private static final String                 BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
+    private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
 
-    private final String                        SPELLS_FILE                 = "spells";
-    private final String                        CONFIG_FILE             	= "config";
-    private final String                        WANDS_FILE             		= "wands";
-    private final String                        ENCHANTING_FILE             = "enchanting";
-    private final String                        PATHS_FILE                  = "paths";
-    private final String                        CRAFTING_FILE             	= "crafting";
-    private final String                        CLASSES_FILE             	= "classes";
-    private final String                        MESSAGES_FILE             	= "messages";
-    private final String                        MATERIALS_FILE             	= "materials";
-    private final String                        MOBS_FILE             	    = "mobs";
-    private final String                        ITEMS_FILE             	    = "items";
-    private final String                        ATTRIBUTES_FILE             = "attributes";
-    private final String                        RP_FILE             	    = "resourcepack";
+    private static final String SPELLS_FILE         = "spells";
+    private static final String CONFIG_FILE         = "config";
+    private static final String WANDS_FILE          = "wands";
+    private static final String ENCHANTING_FILE     = "enchanting";
+    private static final String PATHS_FILE          = "paths";
+    private static final String CRAFTING_FILE       = "crafting";
+    private static final String CLASSES_FILE        = "classes";
+    private static final String MESSAGES_FILE       = "messages";
+    private static final String MATERIALS_FILE      = "materials";
+    private static final String MOBS_FILE           = "mobs";
+    private static final String ITEMS_FILE          = "items";
+    private static final String ATTRIBUTES_FILE     = "attributes";
+    private static final String RP_FILE             = "resourcepack";
 
-    private final String						LOST_WANDS_FILE				= "lostwands";
-    private final String						SPELLS_DATA_FILE			= "spells";
-    private final String						URL_MAPS_FILE				= "imagemaps";
+    private static final String LOST_WANDS_FILE     = "lostwands";
+    private static final String SPELLS_DATA_FILE    = "spells";
+    private static final String URL_MAPS_FILE       = "imagemaps";
 
     private boolean                             disableDefaultSpells        = false;
     private boolean                             disableDefaultWands         = false;

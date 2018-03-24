@@ -34,8 +34,8 @@ public class CondHasSpell extends Condition {
     }
 
     @SuppressWarnings({"unchecked"})
-	@Override
-	public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
+    @Override
+    public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
 		entities = (Expression<Entity>) vars[0];
 		spells = (Expression<String>) vars[1];
 		setNegated(matchedPattern == 1);

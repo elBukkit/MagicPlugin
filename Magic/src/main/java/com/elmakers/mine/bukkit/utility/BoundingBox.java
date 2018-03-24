@@ -34,9 +34,9 @@ public class BoundingBox
     }
 
     public boolean contains(Vector point) {
-        return this.min.getX() <= point.getX() && point.getX() <= this.max.getX() &&
-                this.min.getY() <= point.getY() && point.getY() <= this.max.getY() &&
-                this.min.getZ() <= point.getZ() && point.getZ() <= this.max.getZ();
+        return this.min.getX() <= point.getX() && point.getX() <= this.max.getX()
+                && this.min.getY() <= point.getY() && point.getY() <= this.max.getY()
+                && this.min.getZ() <= point.getZ() && point.getZ() <= this.max.getZ();
     }
 
     public Vector center()
@@ -119,12 +119,12 @@ public class BoundingBox
         return true;
     }
 
-    protected Vector getIntersection(double fDst1, double fDst2, Vector P1, Vector P2, int side) {
+    protected Vector getIntersection(double fDst1, double fDst2, Vector p1, Vector p2, int side) {
         if ((fDst1 * fDst2) >= 0.0f) return null;
         if (fDst1 == fDst2) return null;
-        Vector P2_clone = P2.clone();
-        P2_clone = P1.clone().add(P2_clone.subtract(P1).multiply(-fDst1 / (fDst2 - fDst1)));
-        return inBox(P2_clone, side) ? P2_clone : null;
+        Vector p2Clone = p2.clone();
+        p2Clone = p1.clone().add(p2Clone.subtract(p1).multiply(-fDst1 / (fDst2 - fDst1)));
+        return inBox(p2Clone, side) ? p2Clone : null;
     }
 
     protected boolean inBox(Vector hit, int axis) {

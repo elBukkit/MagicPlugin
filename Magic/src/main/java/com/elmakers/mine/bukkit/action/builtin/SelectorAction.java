@@ -344,7 +344,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             parse(configuration);
 
             if (defaults.requirements != null) {
-                if (requirements == null ) {
+                if (requirements == null) {
                     requirements = defaults.requirements;
                 } else {
                     requirements.addAll(defaults.requirements);
@@ -837,7 +837,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
     protected String getConfirmTitle(SelectorOption option)
     {
-        if (option.isUnlock() ) {
+        if (option.isUnlock()) {
             if (confirmUnlockTitle != null && !confirmUnlockTitle.isEmpty()) {
                 return confirmUnlockTitle;
             }

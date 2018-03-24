@@ -127,12 +127,11 @@ public class TeleportAction extends BaseTeleportAction
 				// Check for ability to pass through the face block
 				while
 				(
-						(autoPassthrough ||
-                            (   context.isTransparent(face)
+                        (autoPassthrough || (
+                                context.isTransparent(face)
                             &&  context.isTransparent(faceOneUp)
                             &&  context.isTransparent(faceTwoUp)
-                            )
-                        )
+                        ))
 					&&	distanceUp < ledgeSearchDistance
 					&&	context.isOkToStandIn(inFront)
 					&&	(
@@ -187,15 +186,14 @@ public class TeleportAction extends BaseTeleportAction
 		Block oneUp = destination.getRelative(BlockFace.UP);
 		if (!context.isOkToStandIn(destination) || !context.isOkToStandIn(oneUp))
 		{
-			context.getMage().sendDebugMessage(ChatColor.RED + "Teleporting entity failed, can't stand in " +
-					ChatColor.DARK_RED + destination.getType() +
-					ChatColor.RED + " or " +
-					ChatColor.DARK_RED + oneUp.getType()
-					, 11);
+            context.getMage().sendDebugMessage(ChatColor.RED + "Teleporting entity failed, can't stand in "
+                    + ChatColor.DARK_RED + destination.getType()
+                    + ChatColor.RED + " or "
+                    + ChatColor.DARK_RED + oneUp.getType(),
+                    11);
 			return SpellResult.NO_TARGET;
 		}
-		Location targetLocation = new Location
-		(
+		Location targetLocation = new Location(
 			world,
 			destination.getX() + 0.5,
 			destination.getY(),
@@ -204,9 +202,9 @@ public class TeleportAction extends BaseTeleportAction
             entity.getLocation().getPitch()
 		);
 
-		context.getMage().sendDebugMessage(ChatColor.AQUA + "Teleporting entity " +
-						ChatColor.DARK_AQUA + entity.getType() +
-						ChatColor.AQUA + " to " + TextUtils.printLocation(targetLocation), 11);
+        context.getMage().sendDebugMessage(ChatColor.AQUA + "Teleporting entity "
+                + ChatColor.DARK_AQUA + entity.getType()
+                + ChatColor.AQUA + " to " + TextUtils.printLocation(targetLocation), 11);
 
         return teleport(context, entity, targetLocation);
 	}

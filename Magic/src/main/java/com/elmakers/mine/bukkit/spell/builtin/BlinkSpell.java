@@ -146,10 +146,16 @@ public class BlinkSpell extends UndoableSpell
 				ledge = null;
 			} else {
 				// Check for ability to pass through the face block
-				while
-				(
-						(autoPassthrough || autoAscend ||
-						isTransparent(face.getType()) && isTransparent(faceOneUp.getType()) && isTransparent(faceTwoUp.getType()))
+				while (
+                    (
+                        autoPassthrough
+                        || autoAscend
+                        || (
+                                isTransparent(face.getType())
+                                && isTransparent(faceOneUp.getType())
+                                && isTransparent(faceTwoUp.getType())
+                        )
+                    )
 					&&		distanceUp < verticalSearchDistance
 					&&		isOkToStandIn(inFront.getType())
 					&&	(
@@ -179,8 +185,7 @@ public class BlinkSpell extends UndoableSpell
 		{
 			return SpellResult.NO_TARGET;
 		}
-		Location targetLocation = new Location
-		(
+		Location targetLocation = new Location(
 			world,
 			destination.getX() + 0.5,
 			destination.getY(),

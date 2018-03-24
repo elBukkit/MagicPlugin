@@ -179,7 +179,7 @@ public class AutomatonLevel {
 		}
 
 		if (SimulateBatch.DEBUG) {
-			mage.getController().getLogger().info("Casting " + spellCommand + " " + StringUtils.join(parameters, ' ' ));
+			mage.getController().getLogger().info("Casting " + spellCommand + " " + StringUtils.join(parameters, ' '));
 		}
 
 		Spell spell = mage.getSpell(spellCommand);

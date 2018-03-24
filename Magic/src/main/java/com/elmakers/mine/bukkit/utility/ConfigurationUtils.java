@@ -194,12 +194,12 @@ public class ConfigurationUtils extends ConfigUtils {
         }
         if (o instanceof String) {
             String matName = (String)o;
-            try
-            {
+            try {
                 Integer value = Integer.parseInt(matName);
                 return Material.getMaterial(value);
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ignored) {
             }
+
             return Material.getMaterial(matName.toUpperCase());
         }
 
@@ -280,9 +280,9 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static ConfigurationSection cloneConfiguration(ConfigurationSection section)
     {
-        ConfigurationSection copy = section instanceof SpellParameters ?
-                new SpellParameters((SpellParameters)section) :
-                new MemoryConfiguration();
+        ConfigurationSection copy = section instanceof SpellParameters
+                ? new SpellParameters((SpellParameters)section)
+                : new MemoryConfiguration();
         return addConfigurations(copy, section);
     }
 
@@ -746,9 +746,8 @@ public class ConfigurationUtils extends ConfigUtils {
              return (int) (float) (Float) o;
          } else if (o instanceof Long) {
              return (int) (long) (Long) o;
-         } else if (o instanceof String ) {
-             try
-             {
+         } else if (o instanceof String) {
+             try {
                  return Integer.parseInt((String)o);
              } catch (NumberFormatException ex) {
                  return null;
@@ -789,7 +788,7 @@ public class ConfigurationUtils extends ConfigUtils {
             String particleName = effectParticleName.toUpperCase();
             try {
                 effectParticle = ParticleEffect.valueOf(particleName);
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
         }
 

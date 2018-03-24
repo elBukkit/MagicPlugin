@@ -117,8 +117,8 @@ public class TorchSpell extends BlockSpell
 		}
 
 		boolean allowLightstone = parameters.getBoolean("allow_glowstone", false);
-		if ((!isAir && !isWater) ||
-		        (targetMaterial == Material.GLOWSTONE && !allowLightstone))
+		if ((!isAir && !isWater)
+		        || (targetMaterial == Material.GLOWSTONE && !allowLightstone))
 		{
 			return SpellResult.NO_TARGET;
 		}

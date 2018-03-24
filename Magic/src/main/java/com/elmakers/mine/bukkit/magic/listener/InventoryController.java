@@ -393,8 +393,8 @@ public class InventoryController implements Listener {
         if (activeWand != null) {
             WandMode wandMode = activeWand.getMode();
             boolean isChestInventory = wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS;
-            if ((wandMode == WandMode.INVENTORY && isPlayerInventory) ||
-                    (isChestInventory && inventoryType == InventoryType.CHEST)) {
+            if ((wandMode == WandMode.INVENTORY && isPlayerInventory)
+                    || (isChestInventory && inventoryType == InventoryType.CHEST)) {
                 if (activeWand.isInventoryOpen()) {
                     if (event.getAction() == InventoryAction.NOTHING) {
                         int direction = event.getClick() == ClickType.LEFT ? 1 : -1;

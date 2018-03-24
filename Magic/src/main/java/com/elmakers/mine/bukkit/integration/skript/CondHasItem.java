@@ -47,8 +47,8 @@ public class CondHasItem extends Condition {
     }
 
     @SuppressWarnings({"unchecked"})
-	@Override
-	public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
+    @Override
+    public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
 		entities = (Expression<Entity>) vars[0];
 		itemKeys = (Expression<String>) vars[1];
 		offhand = (matchedPattern == 2 || matchedPattern == 3 || matchedPattern == 7 || matchedPattern == 8);
@@ -72,9 +72,9 @@ public class CondHasItem extends Condition {
 			    	return (wand != null) != isNegated();
 				}
 				final LivingEntity living = mage.getLivingEntity();
-			    final ItemStack item = wand == null && living != null ?
-					(offhand ? living.getEquipment().getItemInOffHand() : living.getEquipment().getItemInMainHand())
-					: null;
+                final ItemStack item = wand == null && living != null
+                    ? (offhand ? living.getEquipment().getItemInOffHand() : living.getEquipment().getItemInMainHand())
+                    : null;
 				return itemKeys.check(e, new Checker<String>() {
 					@Override
 					public boolean check(final String targetKey) {

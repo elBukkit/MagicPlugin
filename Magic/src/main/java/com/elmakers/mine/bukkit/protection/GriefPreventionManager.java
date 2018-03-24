@@ -24,7 +24,7 @@ public class GriefPreventionManager implements BlockBuildManager, BlockBreakMana
 				if (griefPlugin != null) {
                     api = new GriefPreventionAPI(griefPlugin);
 				}
-			} catch (Throwable ex) {
+			} catch (Throwable ignored) {
 			}
 
 			if (api == null) {

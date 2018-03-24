@@ -35,7 +35,7 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
 					api = new PreciousStonesAPI(plugin, psPlugin);
 					plugin.getLogger().info("PreciousStones found, will respect build and PVP permissions for force fields");
 				}
-			} catch (Throwable ex) {
+			} catch (Throwable ignored) {
 			}
 		} else {
 			plugin.getLogger().info("PreciousStones manager disabled, field protection and pvp checks will not be used.");
@@ -74,7 +74,7 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
         return hasBuildPermission(player, block);
     }
 
-	public boolean canTarget(Entity source, Entity target ) {
+	public boolean canTarget(Entity source, Entity target) {
 		if (!enabled || target == null || api == null)
 		{
 			return true;
