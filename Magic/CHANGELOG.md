@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.4
+
 ## 7.3.3
 
  - Fix progressmenu (and other things, possibly) being broken without Vault
