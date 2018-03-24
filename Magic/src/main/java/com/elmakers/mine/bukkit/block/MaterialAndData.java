@@ -581,25 +581,30 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     {
         if (material == null) return null;
 
-        // TODO: Need to config-drive this?
-        switch (material) {
-            case SKULL: material = Material.SKULL_ITEM; break;
-            case WALL_BANNER: material = Material.BANNER; break;
-            case STANDING_BANNER: material = Material.BANNER; break;
-            case WOODEN_DOOR: material = Material.WOOD_DOOR; break;
-            case IRON_DOOR_BLOCK: material = Material.IRON_DOOR; break;
-            case WALL_SIGN: material = Material.SIGN; break;
-            case SIGN_POST: material = Material.SIGN; break;
-            case ACACIA_DOOR: material = Material.ACACIA_DOOR_ITEM; break;
-            case JUNGLE_DOOR: material = Material.JUNGLE_DOOR_ITEM; break;
-            case DARK_OAK_DOOR: material = Material.DARK_OAK_DOOR_ITEM; break;
-            case BIRCH_DOOR: material = Material.BIRCH_DOOR_ITEM; break;
-            case SPRUCE_DOOR: material = Material.SPRUCE_DOOR_ITEM; break;
-            default:
-        }
+        convertToItemStackMaterial();
         ItemStack stack = new ItemStack(material, amount, data == null ? 0 : data);
         applyToItem(stack);
         return stack;
+    }
+
+    // TODO: Need to config-drive this?
+    // TODO: Should this mutate the material?
+    private Material convertToItemStackMaterial() {
+        switch (material) {
+            case SKULL: return material = Material.SKULL_ITEM;
+            case WALL_BANNER: return material = Material.BANNER;
+            case STANDING_BANNER: return material = Material.BANNER;
+            case WOODEN_DOOR: return material = Material.WOOD_DOOR;
+            case IRON_DOOR_BLOCK: return material = Material.IRON_DOOR;
+            case WALL_SIGN: return material = Material.SIGN;
+            case SIGN_POST: return material = Material.SIGN;
+            case ACACIA_DOOR: return material = Material.ACACIA_DOOR_ITEM;
+            case JUNGLE_DOOR: return material = Material.JUNGLE_DOOR_ITEM;
+            case DARK_OAK_DOOR: return material = Material.DARK_OAK_DOOR_ITEM;
+            case BIRCH_DOOR: return material = Material.BIRCH_DOOR_ITEM;
+            case SPRUCE_DOOR: return material = Material.SPRUCE_DOOR_ITEM;
+            default: return material;
+        }
     }
 
     @Override

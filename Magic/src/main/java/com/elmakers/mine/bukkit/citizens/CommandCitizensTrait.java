@@ -12,7 +12,7 @@ import net.citizensnpcs.api.util.DataKey;
 
 public class CommandCitizensTrait extends CitizensTrait {
     private String command;
-    private boolean console = true;;
+    private boolean console = true;
     private boolean op = false;
 
 	public CommandCitizensTrait() {
