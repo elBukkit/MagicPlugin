@@ -5004,7 +5004,7 @@ public class MagicController implements MageController {
 
                                 MessageDigest digest = MessageDigest.getInstance("SHA1");
                                 try (BufferedInputStream in = new BufferedInputStream(rpURL.openStream())) {
-                                    final byte data[] = new byte[1024];
+                                    final byte[] data = new byte[1024];
                                     int count;
                                     while ((count = in.read(data, 0, 1024)) != -1) {
                                         digest.update(data, 0, count);

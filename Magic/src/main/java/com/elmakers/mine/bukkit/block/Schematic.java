@@ -23,7 +23,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
     private volatile boolean loaded = false;
     private Vector size;
     private Vector center;
-    private MaterialAndData blocks[][][];
+    private MaterialAndData[][][] blocks;
     private Collection<EntityData> entities;
 
     public Schematic() {

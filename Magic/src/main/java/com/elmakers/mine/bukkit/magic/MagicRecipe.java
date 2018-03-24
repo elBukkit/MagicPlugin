@@ -207,8 +207,8 @@ public class MagicRecipe {
     @SuppressWarnings("deprecation")
     public MatchType getMatchType(ItemStack[] matrix) {
         if (recipe == null || matrix.length < 9) return MatchType.NONE;
-        boolean rows[] = new boolean[3];
-        boolean columns[] = new boolean[3];
+        boolean[] rows = new boolean[3];
+        boolean[] columns = new boolean[3];
         for (int matrixRow = 0; matrixRow < 3; matrixRow++) {
             for (int matrixColumn = 0; matrixColumn < 3; matrixColumn++) {
                 int i = matrixRow * 3 + matrixColumn;

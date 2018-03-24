@@ -51,7 +51,18 @@
         <module name="OneStatementPerLine">
             <property name="severity" value="error"/>
         </module>
-
+        <module name="MultipleVariableDeclarations">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="ArrayTypeStyle">
+            <property name="severity" value="error"/>
+        </module>
+        <!--
+        <module name="MissingSwitchDefault" />
+        <module name="FallThrough">
+            <property name="severity" value="error"/>
+        </module>
+        -->
         <module name="UpperEll">
             <property name="severity" value="error"/>
         </module>
