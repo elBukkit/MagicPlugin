@@ -445,9 +445,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
 	protected float stackPassiveProperty(float property, float stackProperty) {
         boolean stack = getBoolean("stack");
-        if (stack) {
-            property += stackProperty;
-        } else {
+
+        // If stacking, then this value has already been added to the base value.
+        // If this value is 0, then we don't need to look at it.
+        if (!stack && stackProperty != 0) {
             property = Math.max(property, stackProperty);
         }
 		return property;
