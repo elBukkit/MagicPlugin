@@ -36,7 +36,7 @@ public class StashSpell extends TargetingSpell
 				return SpellResult.NO_TARGET;
 			}
 
-			if (targetMage != null && targetMage.getActiveWand() != null && typeString.equalsIgnoreCase("inventory")) {
+			if (targetMage.getActiveWand() != null && typeString.equalsIgnoreCase("inventory")) {
 				targetMage.getActiveWand().closeInventory();
 			}
 		}

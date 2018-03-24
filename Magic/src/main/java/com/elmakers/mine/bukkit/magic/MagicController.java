@@ -3448,6 +3448,9 @@ public class MagicController implements MageController {
 		return messageThrottle;
 	}
 
+    // TODO: Remove the if and replace it with a precondition
+    // once we're sure nothing is calling this with a null value.
+    @SuppressWarnings({ "null", "unused" })
     @Override
     public boolean isMage(Entity entity) {
         if (entity == null) return false;

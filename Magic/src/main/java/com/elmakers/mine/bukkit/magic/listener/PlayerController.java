@@ -119,7 +119,6 @@ public class PlayerController implements Listener {
         ItemStack next = inventory.getItem(event.getNewSlot());
 
         Mage mage = controller.getMage(player);
-        if (mage == null) return;
 
         // Check for self-destructing and temporary items
         if (Wand.isSelfDestructWand(next)) {
@@ -399,7 +398,6 @@ public class PlayerController implements Listener {
         }
 
         Mage mage = controller.getMage(player);
-        if (mage == null) return;
 
         Wand wand = mage.checkWand();
         if (wand == null) return;
@@ -471,7 +469,6 @@ public class PlayerController implements Listener {
         }
 
         Mage mage = controller.getMage(player);
-        if (mage == null) return;
 
         Wand wand = mage.checkWand();
         if (action == Action.RIGHT_CLICK_BLOCK) {
@@ -661,8 +658,6 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         Mage mage = controller.getMage(player);
 
-        if (mage == null) return;
-
         // If a wand's inventory is active, add the item there
         if (mage.hasStoredInventory()) {
             event.setCancelled(true);
@@ -705,7 +700,7 @@ public class PlayerController implements Listener {
         if (isWand) {
             Wand wand = controller.getWand(pickup);
             if (!wand.canUse(player)) {
-                if (mage != null && (lastDropWarn == 0 || System.currentTimeMillis() - lastDropWarn > 10000)) {
+                if (lastDropWarn == 0 || System.currentTimeMillis() - lastDropWarn > 10000) {
                     mage.sendMessage(messages.get("wand.bound").replace("$name", wand.getOwner()));
                 }
                 lastDropWarn = System.currentTimeMillis();
@@ -715,8 +710,6 @@ public class PlayerController implements Listener {
 
             controller.removeLostWand(wand.getId());
         }
-
-        if (mage == null) return;
 
         // Wands will absorb spells and upgrade items
         Wand activeWand = mage.getActiveWand();

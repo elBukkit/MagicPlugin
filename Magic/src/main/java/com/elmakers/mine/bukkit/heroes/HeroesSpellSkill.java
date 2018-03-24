@@ -87,7 +87,7 @@ public class HeroesSpellSkill extends ActiveSkill {
     public SkillResult use(Hero hero, String[] strings) {
         Mage mage = controller.getMage(hero.getPlayer());
         boolean success = false;
-        if (mage != null) {
+        {
             String spellKey = spellTemplate.getKey();
             int targetLevel = SkillConfigManager.getUseSetting(hero, this, "tier", spellLevel, true);
             if (targetLevel != 1) {

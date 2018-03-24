@@ -53,7 +53,7 @@ public class InventoryController implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onInventoryDrag(InventoryDragEvent event) {
         Mage mage = controller.getMage(event.getWhoClicked());
-        GUIAction activeGUI = mage == null ? null : mage.getActiveGUI();
+        GUIAction activeGUI = mage.getActiveGUI();
         if (activeGUI != null) {
             activeGUI.dragged(event);
             return;

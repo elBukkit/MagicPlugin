@@ -163,7 +163,7 @@ public interface MageController {
     Collection<String> getPlayerNames();
 
     int getMessageThrottle();
-    boolean isMage(Entity entity);
+    boolean isMage(@Nonnull Entity entity);
     @Nonnull Mage getMage(@Nonnull CommandSender sender);
     @Nonnull Mage getMage(@Nonnull Player player);
     @Nonnull Mage getMage(@Nonnull Entity entity);

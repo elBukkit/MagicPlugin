@@ -879,9 +879,8 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 		boolean result = onConfigure("wand", wand, sender, player, parameters, safe);
 		Mage mage = controller.getMage(player);
 		wand.deactivate();
-		if (mage != null) {
-			mage.checkWand();
-		}
+		mage.checkWand();
+
 		return result;
 	}
 
@@ -903,7 +902,6 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 	protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet)
 	{
 		Mage mage = controller.getMage(player);
-		if (mage == null) return  null;
 		Wand wand = mage.getActiveWand();
         boolean bypassLocked = (sender instanceof Player) && api.hasPermission(sender, "Magic.wand.override_locked");
 		if (wand == null) {

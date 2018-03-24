@@ -30,7 +30,6 @@ public class ExprActiveSpell extends SimplePropertyExpression<Player, String> {
 	@Override
 	protected String[] get(final Event e, final Player[] source) {
 		return super.get(source, new Converter<Player, String>() {
-			@SuppressWarnings("null")
 			@Override
 			public String convert(final Player p) {
 				Mage mage = MagicPlugin.getAPI().getController().getRegisteredMage(p);

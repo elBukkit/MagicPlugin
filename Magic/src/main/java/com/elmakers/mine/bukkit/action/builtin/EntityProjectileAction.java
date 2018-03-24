@@ -142,7 +142,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             }
         }
 
-        if (projectileEffects != null && entity != null && entity instanceof LivingEntity) {
+        if (projectileEffects != null && entity instanceof LivingEntity) {
             CompatibilityUtils.applyPotionEffects((LivingEntity)entity, projectileEffects);
         }
         targeting.ignoreEntity(entity);
