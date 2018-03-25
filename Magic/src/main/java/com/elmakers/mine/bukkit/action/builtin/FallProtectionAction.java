@@ -29,7 +29,9 @@ public class FallProtectionAction extends BaseSpellAction {
     public SpellResult perform(CastContext context) {
         Entity targetEntity = context.getTargetEntity();
         MageController controller = context.getController();
-        Mage targetMage = controller.isMage(targetEntity) ? controller.getMage(targetEntity) : null;
+        Mage targetMage = targetEntity != null && controller.isMage(targetEntity)
+                ? controller.getMage(targetEntity)
+                : null;
 
         if (targetMage == null) {
             return SpellResult.NO_TARGET;

@@ -69,7 +69,7 @@ public class ForceSpell extends TargetingSpell
 			LivingEntity checkTarget = (LivingEntity)target.getEntity();
 
 			// Check for protected Mages
-			if (controller.isMage(checkTarget)) {
+			if (checkTarget != null && controller.isMage(checkTarget)) {
 				Mage targetMage = controller.getMage(checkTarget);
 
 				// Check for protected players
