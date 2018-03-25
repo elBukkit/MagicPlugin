@@ -212,6 +212,11 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                     }
                 }
             }
+
+            // Prevent out of bounds exceptions later
+            if (items != null && items.isEmpty()) {
+                items = null;
+            }
             icon = parseItem(configuration.getString("icon"));
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
             costs = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "costs"));
