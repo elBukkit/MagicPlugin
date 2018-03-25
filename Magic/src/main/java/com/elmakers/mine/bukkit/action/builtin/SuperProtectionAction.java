@@ -1,6 +1,9 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import static com.google.common.base.Verify.verifyNotNull;
+
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -17,10 +20,10 @@ public class SuperProtectionAction extends BaseSpellAction
 		duration = parameters.getInt("duration");
 	}
 
-	@Override
-    public SpellResult perform(CastContext context)
-	{
-        Mage mage = context.getController().getMage(context.getTargetEntity());
+    @Override
+    public SpellResult perform(CastContext context) {
+        Entity targetEntity = verifyNotNull(context.getTargetEntity());
+        Mage mage = context.getController().getMage(targetEntity);
 		mage.enableSuperProtection(duration);
 		return SpellResult.CAST;
 	}
