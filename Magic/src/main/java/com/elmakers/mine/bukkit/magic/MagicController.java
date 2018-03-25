@@ -4712,8 +4712,9 @@ public class MagicController implements MageController {
                     mageDataStore.delete(id);
 
                     // If this was a player and that player is online, reload them so they function normally.
-                    if (mage.isPlayer() && mage.isOnline()) {
-                        getMage(mage.getPlayer());
+                    Player player = mage.getPlayer();
+                    if (player != null && player.isOnline()) {
+                        getMage(player);
                     }
                 }
             });

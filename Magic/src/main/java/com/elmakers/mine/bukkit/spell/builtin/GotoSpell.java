@@ -89,22 +89,22 @@ public class GotoSpell extends UndoableSpell
 		if (!isLookingUp() && !isLookingDown()) {
 			Target target = getTarget();
 
-			if (targetEntity != null) {
-				return teleportTarget(target.getLocation()) ? SpellResult.CAST : SpellResult.NO_TARGET;
-			}
+        if (targetEntity != null) {
+            // Check for protected Mages
+            if (controller.isMage(targetEntity)) {
+                Mage targetMage = controller.getMage(targetEntity);
+                // Check for protected players (admins, generally...)
+                if (isSuperProtected(targetMage)) {
+                    return SpellResult.NO_TARGET;
+                }
+            }
+
+            return teleportTarget(target.getLocation()) ? SpellResult.CAST : SpellResult.NO_TARGET;
+        }
 
 			if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
 			{
 				return SpellResult.NO_TARGET;
-			}
-
-			// Check for protected Mages
-			if (controller.isMage(targetEntity)) {
-				Mage targetMage = controller.getMage(targetEntity);
-				// Check for protected players (admins, generally...)
-				if (isSuperProtected(targetMage)) {
-					return SpellResult.NO_TARGET;
-				}
 			}
 
 			selectTarget((LivingEntity)target.getEntity());
