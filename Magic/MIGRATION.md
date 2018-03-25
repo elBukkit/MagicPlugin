@@ -2,6 +2,7 @@
 
 ## 7.4
 
+ - API change: getProperty(String, Class) no longer returns an Optional
  - The wands named "beginner", "student", "apprentice" and "master" no longer have any progression.
    They should really not be used except for demonstration purposes, and are now labelled as such.
  - The Magic.wand.override_drop permission changed to Magic.wand.override_stash

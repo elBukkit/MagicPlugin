@@ -39,8 +39,8 @@ public interface MagicProperties {
      * @param <T> The property type.
      * @return An Optional wrapper for the value
      */
-    @Nonnull
-    <T> Optional<? extends T> getProperty(@Nonnull String key, @Nonnull Class<T> type);
+    @Nullable
+    <T> T getProperty(@Nonnull String key, @Nonnull Class<T> type);
 
     /**
      * Get a property, specifying a default value.

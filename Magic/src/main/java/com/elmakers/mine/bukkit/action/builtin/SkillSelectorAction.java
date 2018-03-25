@@ -103,10 +103,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
                 }
 
                 classKey = activeClass.getKey();
-                Optional<? extends ConfigurationSection> checkSkillsConfig = activeClass.getProperty("skills", ConfigurationSection.class);
-                if (checkSkillsConfig.isPresent()) {
-                    skillsConfig = checkSkillsConfig.get();
-                }
+                skillsConfig = activeClass.getProperty("skills", ConfigurationSection.class);
                 inventoryLimit = activeClass.getProperty("skills.skill_limit", 0);
                 Collection<String> spells = activeClass.getSpells();
                 for (String spellKey : spells) {

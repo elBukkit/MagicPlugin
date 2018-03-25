@@ -22,7 +22,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
@@ -97,13 +96,13 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Override
-    public <T> Optional<T> getProperty(String key, Class<T> type) {
+    public <T> T getProperty(String key, Class<T> type) {
         Object value = getProperty(key);
         if (value == null || !type.isInstance(value)) {
-            return Optional.absent();
+            return null;
         }
 
-        return Optional.of(type.cast(value));
+        return type.cast(value);
     }
 
     @Override
