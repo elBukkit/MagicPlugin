@@ -2538,10 +2538,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (!isSingleUse && remaining > 0) {
             if (isUpgrade) {
                 String message = (remaining == 1) ? getMessage("upgrade_uses_singular") : getMessage("upgrade_uses");
-                ConfigurationUtils.addIfNotEmpty(message.replace("$count", ((Integer)remaining).toString()), lore);
+                ConfigurationUtils.addIfNotEmpty(message.replace("$count", Integer.toString(remaining)), lore);
             } else {
                 String message = (remaining == 1) ? getMessage("uses_remaining_singular") : getMessage("uses_remaining_brief");
-                ConfigurationUtils.addIfNotEmpty(message.replace("$count", ((Integer)remaining).toString()), lore);
+                ConfigurationUtils.addIfNotEmpty(message.replace("$count", Integer.toString(remaining)), lore);
             }
         }
     }
