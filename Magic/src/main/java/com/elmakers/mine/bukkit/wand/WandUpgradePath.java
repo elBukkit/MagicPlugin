@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -288,6 +290,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return key;
     }
 
+    @Nullable
     public WandLevel getLevel(int level) {
         if (levelMap == null) return null;
 
@@ -302,8 +305,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return levelMap.get(level);
     }
 
-    protected static WandUpgradePath getPath(MageController controller, String key, ConfigurationSection configuration)
-    {
+    @Nullable
+    protected static WandUpgradePath getPath(MageController controller, String key, ConfigurationSection configuration) {
         WandUpgradePath path = paths.get(key);
         if (path == null) {
             ConfigurationSection parameters = configuration.getConfigurationSection(key);
@@ -352,6 +355,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return Math.min(levels[levels.length - 1], maxLevel);
     }
 
+    @Nullable
     public Set<Integer> getLevels() {
         if (levelMap == null) return null;
         Set<Integer> filteredLevels = new HashSet<>();

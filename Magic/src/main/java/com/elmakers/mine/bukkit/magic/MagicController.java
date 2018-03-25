@@ -184,6 +184,7 @@ public class MagicController implements MageController {
         defaultsFolder.mkdirs();
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(String mageId) {
         checkNotNull(mageId);
@@ -517,6 +518,7 @@ public class MagicController implements MageController {
         return worthSkillPoints;
     }
 
+    @Nullable
     @Override
     public ItemStack getWorthItem() {
         return currencyItem == null ? null : currencyItem.getItem();
@@ -684,6 +686,7 @@ public class MagicController implements MageController {
         maps.resetAll();
     }
 
+    @Nullable
     @Override
     public Schematic loadSchematic(String schematicName) {
         if (schematicName == null || schematicName.length() == 0) return null;
@@ -1366,6 +1369,7 @@ public class MagicController implements MageController {
         return scheduledUndo;
     }
 
+    @Nullable
     public UndoList getPendingUndo(Location location) {
         return com.elmakers.mine.bukkit.block.UndoList.getUndoList(location);
     }
@@ -1401,6 +1405,7 @@ public class MagicController implements MageController {
         return new File(dataFolder, fileName + ".yml");
     }
 
+    @Nullable
     protected ConfigurationSection loadDataFile(String fileName) {
         File dataFile = getDataFile(fileName);
         if (!dataFile.exists()) {
@@ -1954,10 +1959,12 @@ public class MagicController implements MageController {
         }
     }
 
+    @Nullable
     protected String getChunkKey(Block block) {
         return getChunkKey(block.getLocation());
     }
 
+    @Nullable
     protected String getChunkKey(Location location) {
         World world = location.getWorld();
         if (world == null) return null;
@@ -2108,18 +2115,19 @@ public class MagicController implements MageController {
         Bukkit.getPluginManager().callEvent(saveEvent);
 	}
 
-    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config)
-    {
+    @Nullable
+    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config) {
         return getSpellConfig(key, config, true);
     }
 
+    @Nullable
     protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config, boolean addInherited) {
         resolvingKeys.clear();
         return getSpellConfig(key, config, addInherited, resolvingKeys);
     }
 
-    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config, boolean addInherited, Set<String> resolving)
-    {
+    @Nullable
+    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config, boolean addInherited, Set<String> resolving) {
         // Catch circular dependencies
         if (resolvingKeys.contains(key)) {
             getLogger().log(Level.WARNING, "Circular dependency detected in spell configs: " + StringUtils.join(resolvingKeys, " -> ") + " -> " + key);
@@ -2277,8 +2285,8 @@ public class MagicController implements MageController {
 		}
 	}
 
-	public static Spell loadSpell(String name, ConfigurationSection node, MageController controller)
-	{
+    @Nullable
+    public static Spell loadSpell(String name, ConfigurationSection node, MageController controller) {
 		String className = node.getString("class");
 		if (className == null || className.equalsIgnoreCase("action") || className.equalsIgnoreCase("actionspell"))
         {
@@ -2328,11 +2336,13 @@ public class MagicController implements MageController {
 		return newSpell;
 	}
 
+    @Nullable
     @Override
     public String getReflectiveMaterials(Mage mage, Location location) {
         return worldGuardManager.getReflective(mage.getPlayer(), location);
     }
 
+    @Nullable
     @Override
     public String getDestructibleMaterials(Mage mage, Location location) {
         return worldGuardManager.getDestructible(mage.getPlayer(), location);
@@ -2341,9 +2351,10 @@ public class MagicController implements MageController {
     @Override
     @Deprecated
     public Set<Material> getDestructibleMaterials() {
-        return MaterialSets.toLegacy(destructibleMaterials);
+        return MaterialSets.toLegacyNN(destructibleMaterials);
     }
 
+    @Nullable
     @Override
     public Set<String> getSpellOverrides(Mage mage, Location location) {
         return worldGuardManager.getSpellOverrides(mage.getPlayer(), location);
@@ -2863,16 +2874,16 @@ public class MagicController implements MageController {
         return hasPermission(sender, spell.getPermissionNode());
     }
 
+    @Nullable
     @Override
-    public Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location)
-    {
+    public Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location) {
         if (player != null && player.hasPermission("Magic.bypass")) return true;
         return worldGuardManager.getCastPermission(player, spell, location);
     }
 
+    @Nullable
     @Override
-    public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location)
-    {
+    public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location) {
         if (player != null && player.hasPermission("Magic.bypass")) return true;
         return preciousStonesManager.getCastPermission(player, spell, location);
     }
@@ -2922,7 +2933,8 @@ public class MagicController implements MageController {
         }
 	}
 
-	public UndoList getEntityUndo(Entity entity) {
+    @Nullable
+    public UndoList getEntityUndo(Entity entity) {
 		UndoList blockList = null;
 		if (entity == null) return null;
         Mage mage = getRegisteredMage(entity);
@@ -3109,7 +3121,8 @@ public class MagicController implements MageController {
         }
     }
 
-	public ItemStack removeItemFromWand(Wand wand, ItemStack droppedItem) {
+    @Nullable
+    public ItemStack removeItemFromWand(Wand wand, ItemStack droppedItem) {
 		if (wand == null || droppedItem == null || Wand.isWand(droppedItem)) {
 			return null;
 		}
@@ -3410,7 +3423,7 @@ public class MagicController implements MageController {
     @Override
     @Deprecated
     public Set<Material> getBuildingMaterials() {
-        return MaterialSets.toLegacy(buildingMaterials);
+        return MaterialSets.toLegacyNN(buildingMaterials);
     }
 
     @Override
@@ -3422,7 +3435,7 @@ public class MagicController implements MageController {
     @Override
     @Deprecated
     public Set<Material> getRestrictedMaterials() {
-        return MaterialSets.toLegacy(restrictedMaterials);
+        return MaterialSets.toLegacyNN(restrictedMaterials);
     }
 
     @Override
@@ -3467,6 +3480,7 @@ public class MagicController implements MageController {
         return getMaterialSetManager().getMaterialSets();
     }
 
+    @Nullable
     @Override
     @Deprecated
     public Set<Material> getMaterialSet(String string) {
@@ -3551,8 +3565,9 @@ public class MagicController implements MageController {
         return false;
     }
 
+    @Nullable
     @Override
-	public Location getWarp(String warpName) {
+    public Location getWarp(String warpName) {
         Location location = null;
 		if (warpController != null) {
             try {
@@ -3564,11 +3579,13 @@ public class MagicController implements MageController {
 		return location;
 	}
 
+    @Nullable
     @Override
     public Location getTownLocation(Player player) {
         return townyManager.getTownLocation(player);
     }
 
+    @Nullable
     @Override
     public Map<String, Location> getHomeLocations(Player player) {
         return preciousStonesManager.getFieldLocations(player);
@@ -3591,9 +3608,9 @@ public class MagicController implements MageController {
 		return false;
 	}
 
-	@Override
-	public UndoList undoAny(Block target)
-	{
+    @Nullable
+    @Override
+    public UndoList undoAny(Block target) {
 		for (Mage mage : mages.values())
 		{
 			UndoList undid = mage.undo(target);
@@ -3606,9 +3623,9 @@ public class MagicController implements MageController {
 		return null;
 	}
 
+    @Nullable
     @Override
-    public UndoList undoRecent(Block target, int timeout)
-    {
+    public UndoList undoRecent(Block target, int timeout) {
         for (Mage mage : mages.values())
         {
             com.elmakers.mine.bukkit.api.block.UndoQueue queue = mage.getUndoQueue();
@@ -3638,11 +3655,13 @@ public class MagicController implements MageController {
         return new Wand(this, config);
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.wand.Wand createWand(String wandKey) {
         return Wand.createWand(this, wandKey);
     }
 
+    @Nullable
     @Override
     public WandTemplate getWandTemplate(String key) {
         if (key == null || key.isEmpty()) return null;
@@ -3654,11 +3673,13 @@ public class MagicController implements MageController {
         return new ArrayList<com.elmakers.mine.bukkit.api.wand.WandTemplate>(wandTemplates.values());
     }
 
+    @Nullable
     protected ConfigurationSection resolveConfiguration(String key, ConfigurationSection properties, Map<String, ConfigurationSection> configurations) {
         resolvingKeys.clear();
         return resolveConfiguration(key, properties, configurations, resolvingKeys);
     }
 
+    @Nullable
     protected ConfigurationSection resolveConfiguration(String key, ConfigurationSection properties, Map<String, ConfigurationSection> configurations, Set<String> resolving) {
         // Catch circular dependencies
         if (resolvingKeys.contains(key)) {
@@ -3774,6 +3795,7 @@ public class MagicController implements MageController {
         return wandTemplates.keySet();
     }
 
+    @Nullable
     public ConfigurationSection getWandTemplateConfiguration(String key) {
         WandTemplate template = getWandTemplate(key);
         return template == null ? null : template.getConfiguration();
@@ -3819,9 +3841,9 @@ public class MagicController implements MageController {
 		return elementals.getElementalScale(entity);
 	}
 
-	@Override
-	public com.elmakers.mine.bukkit.api.spell.SpellCategory getCategory(String key)
-	{
+    @Nullable
+    @Override
+    public com.elmakers.mine.bukkit.api.spell.SpellCategory getCategory(String key) {
         if (key == null || key.isEmpty()) {
             return null;
         }
@@ -3861,9 +3883,9 @@ public class MagicController implements MageController {
         return allSpells;
     }
 
+    @Nullable
     @Override
-	public SpellTemplate getSpellTemplate(String name)
-	{
+    public SpellTemplate getSpellTemplate(String name) {
 		if (name == null || name.length() == 0) return null;
         SpellTemplate spell = spellAliases.get(name);
         if (spell == null) {
@@ -4176,6 +4198,7 @@ public class MagicController implements MageController {
         return Wand.isSkill(item);
     }
 
+    @Nullable
     @Override
     public String getWandKey(ItemStack item) {
         if (Wand.isWand(item)) {
@@ -4216,11 +4239,13 @@ public class MagicController implements MageController {
         return material.getKey();
     }
 
+    @Nullable
     @Override
     public ItemStack createItem(String magicItemKey) {
         return createItem(magicItemKey, false);
     }
 
+    @Nullable
     @Override
     public ItemStack createItem(String magicItemKey, boolean brief) {
         ItemStack itemStack = null;
@@ -4332,6 +4357,7 @@ public class MagicController implements MageController {
         return itemStack;
     }
 
+    @Nullable
     @Override
     public ItemStack createGenericItem(String key) {
         ConfigurationSection template = getWandTemplateConfiguration(key);
@@ -4372,16 +4398,19 @@ public class MagicController implements MageController {
         return wand;
     }
 
+    @Nullable
     @Override
     public ItemStack createSpellItem(String spellKey) {
         return Wand.createSpellItem(spellKey, this, null, true);
     }
 
+    @Nullable
     @Override
     public ItemStack createSpellItem(String spellKey, boolean brief) {
         return Wand.createSpellItem(spellKey, this, null, !brief);
     }
 
+    @Nullable
     @Override
     public ItemStack createBrushItem(String brushKey) {
         return Wand.createBrushItem(brushKey, this, null, true);
@@ -4436,9 +4465,9 @@ public class MagicController implements MageController {
         return WandUpgradePath.getPath(key);
     }
 
+    @Nullable
     @Override
-    public ItemStack deserialize(ConfigurationSection root, String key)
-    {
+    public ItemStack deserialize(ConfigurationSection root, String key) {
         ConfigurationSection itemSection = root.getConfigurationSection(key);
         if (itemSection == null) {
             return null;
@@ -4516,6 +4545,7 @@ public class MagicController implements MageController {
         return heroesManager;
     }
 
+    @Nullable
     public ManaController getManaController() {
         if (useHeroesMana && heroesManager != null) return heroesManager;
         if (useSkillAPIMana && skillAPIManager != null) return skillAPIManager;
@@ -4698,11 +4728,13 @@ public class MagicController implements MageController {
         return 0;
     }
 
+    @Nullable
     @Override
     public String getSpell(ItemStack item) {
         return Wand.getSpell(item);
     }
 
+    @Nullable
     @Override
     public String getSpellArgs(ItemStack item) {
         return Wand.getSpellArgs(item);
@@ -4713,6 +4745,7 @@ public class MagicController implements MageController {
         return mobs.getKeys();
     }
 
+    @Nullable
     @Override
     public Entity spawnMob(String key, Location location) {
         EntityData mobType = mobs.get(key);
@@ -4756,6 +4789,7 @@ public class MagicController implements MageController {
         return items.get(match);
     }
 
+    @Nullable
     @Override
     public ItemData getOrCreateItem(String key) {
         if (key == null || key.isEmpty()) {
@@ -4774,6 +4808,7 @@ public class MagicController implements MageController {
         items.loadItem(key, configuration);
     }
 
+    @Nullable
     @Override
     public Double getWorth(ItemStack item) {
         String spellKey = Wand.getSpell(item);
@@ -4798,6 +4833,7 @@ public class MagicController implements MageController {
         return backupInventories;
     }
 
+    @Nullable
     @Override
     public String getBlockSkin(Material blockType) {
         String skinName = null;
@@ -5053,6 +5089,7 @@ public class MagicController implements MageController {
         return true;
     }
 
+    @Nullable
     @Override
     public String getMobSkin(EntityType mobType)
     {
@@ -5149,6 +5186,7 @@ public class MagicController implements MageController {
         return Wand.DEFAULT_WAND_TEMPLATE;
     }
 
+    @Nullable
     @Override
     public Object getWandProperty(ItemStack item, String key) {
         Preconditions.checkNotNull(key, "key");

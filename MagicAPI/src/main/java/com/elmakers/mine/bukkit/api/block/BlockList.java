@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.api.block;
 
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
@@ -17,6 +19,7 @@ import org.bukkit.util.Vector;
 public interface BlockList extends Collection<BlockData> {
     void save(ConfigurationSection node);
     void load(ConfigurationSection node);
+    @Nullable
     String getWorldName();
     BoundingBox getArea();
     boolean add(Block block);

@@ -253,6 +253,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return new HashSet<Spell>(activeSpells);
     }
 
+    @Nullable
     public Inventory getStoredInventory() {
         return activeWand != null ? activeWand.getStoredInventory() : null;
     }
@@ -876,6 +877,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return undoQueue;
     }
 
+    @Nullable
     @Override
     public UndoList getLastUndoList() {
         if (undoQueue == null || undoQueue.isEmpty()) return null;
@@ -1380,6 +1382,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         sendMessage(controller.getMessages().get(key, key));
     }
 
+    @Nullable
     private Wand checkWand(ItemStack itemInHand) {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
@@ -1408,6 +1411,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return activeWand;
     }
 
+    @Nullable
     @Override
     public Wand checkWand() {
         Player player = getPlayer();
@@ -1457,6 +1461,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return wasActive;
     }
 
+    @Nullable
     private Wand checkOffhandWand() {
         Player player = getPlayer();
         if (player == null) {
@@ -1465,6 +1470,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return checkOffhandWand(player.getInventory().getItemInOffHand());
     }
 
+    @Nullable
     private Wand checkOffhandWand(ItemStack itemInHand) {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
@@ -1708,6 +1714,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return id;
     }
 
+    @Nullable
     @Override
     public Location getLocation() {
         if (location != null) return location.clone();
@@ -1717,6 +1724,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return livingEntity.getLocation();
     }
 
+    @Nullable
     @Override
     public Location getEyeLocation() {
         Entity entity = getEntity();
@@ -1727,6 +1735,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return getLocation();
     }
 
+    @Nullable
     @Override
     public Location getCastLocation() {
         Location castLocation = getEyeLocation();
@@ -1743,6 +1752,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return castLocation;
     }
 
+    @Nullable
     @Override
     public Location getWandLocation() {
         return getCastLocation();
@@ -1774,6 +1784,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return baseLocation;
     }
 
+    @Nullable
     @Override
     public Location getOffhandWandLocation() {
         Location wandLocation = getEyeLocation();
@@ -1792,31 +1803,37 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return new Vector(0, 1, 0);
     }
 
+    @Nullable
     @Override
     public UndoList undo(Block target) {
         return getUndoQueue().undo(target);
     }
 
+    @Nullable
     @Override
     public UndoList undo() {
         return getUndoQueue().undo();
     }
 
+    @Nullable
     @Override
     public Batch cancelPending() {
         return cancelPending(null, true);
     }
 
+    @Nullable
     @Override
     public Batch cancelPending(String spellKey) {
         return cancelPending(spellKey, true);
     }
 
+    @Nullable
     @Override
     public Batch cancelPending(boolean force) {
         return cancelPending(null, force);
     }
 
+    @Nullable
     @Override
     public Batch cancelPending(String spellKey, boolean force) {
         Batch stoppedPending = null;
@@ -1896,6 +1913,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return spells.containsKey(key);
     }
 
+    @Nullable
     @Override
     public MageSpell getSpell(String key) {
         if (loading) return null;
@@ -1918,6 +1936,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return playerSpell;
     }
 
+    @Nullable
     protected MageSpell createSpell(String key) {
         MageSpell playerSpell = spells.get(key);
         if (playerSpell != null) {
@@ -2083,6 +2102,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Nullable
     @Override
     public Color getEffectColor() {
         if (offhandCast && offhandWand != null) {
@@ -2092,6 +2112,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return activeWand.getEffectColor();
     }
 
+    @Nullable
     @Override
     public String getEffectParticleName() {
         if (offhandCast && offhandWand != null) {
@@ -2153,6 +2174,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return controller;
     }
 
+    @Nullable
     @Override
     @Deprecated
     public Set<Material> getRestrictedMaterials() {
@@ -2228,6 +2250,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return getLocation() != null;
     }
 
+    @Nullable
     @Override
     public Inventory getInventory() {
         if (hasStoredInventory()) {
@@ -2314,6 +2337,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return hasItem(itemStack, false);
     }
 
+    @Nullable
     @Override
     @Deprecated
     public Wand getSoulWand() {
@@ -2588,6 +2612,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Nullable
     @Override
     public Player getPlayer() {
         return isNPC ? null : playerRef.get();
@@ -2603,6 +2628,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return entityData;
     }
 
+    @Nullable
     @Override
     public LivingEntity getLivingEntity() {
         Entity entity = entityRef.get();
@@ -3401,6 +3427,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return boundWands.get(template);
     }
 
+    @Nullable
     @Override
     public WandUpgradePath getBoundWandPath(String templateKey) {
         com.elmakers.mine.bukkit.api.wand.Wand boundWand = boundWands.get(templateKey);
@@ -3692,6 +3719,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         this.lastActivatedSlot = slot;
     }
 
+    @Nullable
     @Override
     public Double getAttribute(String attributeKey) {
         Double attribute = attributes.get(attributeKey);

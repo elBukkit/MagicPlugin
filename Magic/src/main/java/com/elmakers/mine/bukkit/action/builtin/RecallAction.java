@@ -13,6 +13,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -657,8 +659,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
-	}
+    }
 
+    @Nullable
     protected Waypoint getUnknownWarp(String warpKey) {
         MageController controller = context.getController();
         Location warpLocation = controller.getWarp(warpKey);
@@ -697,8 +700,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         context.getMage().activateGUI(this, displayInventory);
     }
 
-    protected Waypoint getFriend(String uuid)
-    {
+    @Nullable
+    protected Waypoint getFriend(String uuid) {
         Player onlinePlayer = Bukkit.getPlayer(UUID.fromString(uuid));
         if (onlinePlayer == null) return null;
 
@@ -711,8 +714,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return new Waypoint(RecallType.WARP, onlinePlayer.getLocation(), title, castMessage, failMessage, "", null, iconURL);
     }
 
-    protected Waypoint getWarp(String warpKey)
-    {
+    @Nullable
+    protected Waypoint getWarp(String warpKey) {
         if (warps == null) return getUnknownWarp(warpKey);
         ConfigurationSection config = warps.get(warpKey);
         if (config == null) return getUnknownWarp(warpKey);
@@ -739,8 +742,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return new Waypoint(RecallType.WARP, warpLocation, title, castMessage, failMessage, description, icon, iconURL);
     }
 
-    protected Waypoint getCommand(CastContext context, String commandKey)
-    {
+    @Nullable
+    protected Waypoint getCommand(CastContext context, String commandKey) {
         if (commands == null) return null;
         ConfigurationSection config = commands.get(commandKey);
         if (config == null) return null;
@@ -758,7 +761,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return new Waypoint(RecallType.COMMAND, command, op, console, title, castMessage, failMessage, description, icon, iconURL);
     }
 
-	protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters, CastContext context) {
+    @Nullable
+    protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters, CastContext context) {
 		Mage mage = context.getMage();
         MageController controller = context.getController();
 		switch (type) {
@@ -789,8 +793,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 		}
 	}
 
-    protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key)
-    {
+    @Nullable
+    protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key) {
         String iconKey = parameters.getString(key);
         if (iconKey == null || iconKey.isEmpty()) return null;
 

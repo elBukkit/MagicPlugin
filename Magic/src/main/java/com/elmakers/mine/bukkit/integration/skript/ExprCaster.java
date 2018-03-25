@@ -47,6 +47,7 @@ public class ExprCaster extends SimpleExpression<Entity> {
 		return new Entity[] {getCaster(e)};
 	}
 
+	@Nullable
 	private static Entity getCaster(final Event e) {
 		if (e != null && e instanceof CastEvent) {
 		    return ((CastEvent)e).getMage().getEntity();

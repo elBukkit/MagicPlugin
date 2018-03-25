@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
@@ -267,6 +269,7 @@ public class ActionSpell extends BrushSpell
         return requiresBreakPermission || (requiresBuildPermission && brushIsErase());
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {

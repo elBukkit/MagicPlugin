@@ -11,6 +11,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Art;
 import org.bukkit.ChatColor;
@@ -225,6 +226,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
+    @Nullable
     private ItemData getItem(ItemStack item) {
         return item == null ? null : new com.elmakers.mine.bukkit.item.ItemData(item);
     }
@@ -405,9 +407,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.uuid = entity == null ? null : entity.getUniqueId();
     }
 
+    @Nullable
     @SuppressWarnings("deprecation")
-    public static EntityType parseEntityType(String typeString)
-    {
+    public static EntityType parseEntityType(String typeString) {
         if (typeString == null) return null;
 
         EntityType returnType = null;
@@ -451,6 +453,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return health;
     }
 
+    @Nullable
     protected Entity trySpawn(MageController controller, CreatureSpawnEvent.SpawnReason reason) {
         Entity spawned = null;
         boolean addedToWorld = false;
@@ -485,6 +488,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return spawned;
     }
 
+    @Nullable
     @Override
     public EntityData getRelativeTo(Location center) {
         EntityData copy = this.clone();
@@ -499,21 +503,25 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return copy;
     }
 
+    @Nullable
     @Override
     public Entity spawn() {
         return spawn(null, null);
     }
 
+    @Nullable
     @Override
     public Entity spawn(Location location) {
         return spawn(null, location, null);
     }
 
+    @Nullable
     @Override
     public Entity spawn(MageController controller, Location location) {
         return spawn(controller, location, null);
     }
 
+    @Nullable
     @Override
     public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
         if (location != null) this.location = location;
@@ -521,6 +529,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return trySpawn(controller, reason);
     }
 
+    @Nullable
     @Override
     public Entity undo() {
         Entity entity = this.getEntity();
@@ -678,6 +687,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return true;
     }
 
+    @Nullable
     public ConfigurationSection getMageProperties() {
         return mageData != null ? mageData.mageProperties : null;
     }
@@ -755,6 +765,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return isProjectile;
     }
 
+    @Nullable
     public Entity getEntity() {
         return entity == null ? null : entity.get();
     }
@@ -764,6 +775,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return name;
     }
 
+    @Nullable
     @Override
     public EntityData clone() {
         try {

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -62,6 +64,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		return fields.size() == 0;
 	}
 
+	@Nullable
 	public Map<String, Location> getFieldLocations(Player player) {
 		if (preciousStones == null || player == null || !canGetFields)
 			return null;
@@ -111,6 +114,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		return allowed;
 	}
 
+    @Nullable
     public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
         Boolean overridePermission = null;
         if (location != null && preciousStones != null)

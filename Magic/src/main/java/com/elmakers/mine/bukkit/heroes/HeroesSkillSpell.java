@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.heroes;
 import java.util.List;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -128,6 +130,7 @@ public class HeroesSkillSpell extends BaseSpell {
         return Math.max(0, cooldown - now);
     }
 
+    @Nullable
     @Override
     public CastingCost getRequiredCost() {
         if (isCasting || skill == null || mage == null) return null;

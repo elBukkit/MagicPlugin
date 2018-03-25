@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -381,6 +382,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         registry.removeFromWatched(block);
     }
 
+    @Nullable
     @Override
     public BlockData undoNext(boolean applyPhysics)
     {
@@ -611,9 +613,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
     }
 
+    @Nullable
     @Override
-    public EntityData modify(Entity entity)
-    {
+    public EntityData modify(Entity entity) {
         EntityData entityData = null;
         if (entity == null || entity.hasMetadata("notarget")) return entityData;
         if (worldName != null && !entity.getWorld().getName().equals(worldName)) return entityData;
@@ -637,6 +639,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return entityData;
     }
 
+    @Nullable
     @Override
     public EntityData damage(Entity entity) {
         EntityData data = modify(entity);
@@ -807,6 +810,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return owner;
     }
 
+    @Nullable
     @Override
     public CastContext getContext() {
         return context == null ? null : context.get();
@@ -915,6 +919,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return modifyType;
     }
 
+    @Nullable
     public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Entity entity) {
         com.elmakers.mine.bukkit.api.block.UndoList blockList = null;
         if (entity != null && entity.hasMetadata("MagicBlockList")) {
@@ -939,11 +944,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return blockList;
     }
 
+    @Nullable
     public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Location location) {
         BlockData blockData = getBlockData(location);
         return blockData == null ? null : blockData.getUndoList();
     }
 
+    @Nullable
     public static BlockData getBlockData(Location location) {
         return registry.getBlockData(location);
     }
@@ -1034,6 +1041,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return runnables == null ? 0 : runnables.size();
     }
 
+    @Nullable
     @Override
     public Runnable undoNextRunnable() {
         Runnable undone = null;

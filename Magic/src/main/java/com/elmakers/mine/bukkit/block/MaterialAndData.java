@@ -475,6 +475,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return data;
     }
 
+    @Nullable
     @Override
     public Byte getBlockData() {
         return data == null ? null : (byte)(short)data;
@@ -576,9 +577,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return false;
     }
 
+    @Nullable
     @Override
-    public ItemStack getItemStack(int amount)
-    {
+    public ItemStack getItemStack(int amount) {
         if (material == null) return null;
 
         convertToItemStackMaterial();
@@ -683,6 +684,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return material.getName();
     }
 
+    @Nullable
     @Override
     public String getBaseName() {
         if (material == null) {
@@ -787,6 +789,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
     }
 
+    @Nullable
     @Override
     public String getCommandLine() {
         if (extraData != null && extraData instanceof BlockCommand) {
@@ -818,6 +821,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     @SuppressWarnings("deprecation")
+    @Nullable
     @Override
     public MaterialData getMaterialData() {
         if (material == null) return null;

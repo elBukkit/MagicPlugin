@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -86,6 +88,7 @@ public class SpellShopAction extends BaseShopAction
         }
     }
 
+    @Nullable
     @Override
     public List<ShopItem> getItems(CastContext context) {
         Mage mage = context.getMage();
@@ -201,6 +204,7 @@ public class SpellShopAction extends BaseShopAction
         return shopItems;
 	}
 
+    @Nullable
     private ShopItem createShopItem(String key, Double worth, CastContext context) {
         CasterProperties caster = getCaster(context);
         Mage mage = context.getMage();

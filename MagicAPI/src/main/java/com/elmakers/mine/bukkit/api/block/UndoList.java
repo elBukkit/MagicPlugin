@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -21,6 +23,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     void undo(boolean blocking);
     void undoScheduled();
     void undoScheduled(boolean blocking);
+    @Nullable
     BlockData undoNext(boolean applyPhysics);
 
     void setEntityUndo(boolean undoEntityEffects);
@@ -50,7 +53,9 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     void add(Entity entity);
     void add(Runnable runnable);
     void remove(Entity entity);
+    @Nullable
     EntityData damage(Entity entity);
+    @Nullable
     EntityData modify(Entity entity);
     void move(Entity entity);
     void modifyVelocity(Entity entity);
@@ -69,6 +74,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
 
     String getName();
     Mage getOwner();
+    @Nullable
     CastContext getContext();
     void setBypass(boolean bypass);
     Collection<Entity> getAllEntities();
@@ -89,5 +95,6 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     boolean hasChanges();
 
     int getRunnableCount();
+    @Nullable
     Runnable undoNextRunnable();
 }

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Effect;
@@ -583,20 +585,24 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.color = color;
     }
 
+    @Nullable
     public Color getColor1() {
         return useColor ? (color1 != null ? color1 : color) : null;
     }
 
+    @Nullable
     public Color getColor2() {
         return useColor ? (color2 != null ? color2 : color) : null;
     }
 
     public abstract void play();
 
+    @Nullable
     public Location getOrigin() {
         return origin == null ? null : origin.getLocation();
     }
 
+    @Nullable
     public Location getTarget() {
         return target == null ? null : target.getLocation();
     }
@@ -623,10 +629,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
+    @Nullable
     public Entity getOriginEntity() {
         return origin == null ? null : origin.getEntity();
     }
 
+    @Nullable
     public Entity getTargetEntity() {
         return target == null ? null : target.getEntity();
     }
@@ -686,11 +694,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.currentEffects = plays;
     }
 
+    @Nullable
     @Override
     public Location getSourceLocation(CastContext context)  {
         return sourceLocation.getLocation(context);
     }
 
+    @Nullable
     @Override
     public Location getTargetLocation(CastContext context)  {
         return targetLocation.getLocation(context);

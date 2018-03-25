@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -44,6 +45,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static Random random = new Random();
 
+    @Nullable
     public static Location getLocation(ConfigurationSection node, String path) {
         String stringData = node.getString(path);
         if (stringData == null) {
@@ -53,6 +55,7 @@ public class ConfigurationUtils extends ConfigUtils {
         return toLocation(stringData);
     }
 
+    @Nullable
     public static BlockFace toBlockFace(String s) {
         BlockFace face = null;
         try {
@@ -72,10 +75,12 @@ public class ConfigurationUtils extends ConfigUtils {
         return vector.getX() + "," + vector.getY() + "," + vector.getZ();
     }
 
+    @Nullable
     public static Vector getVector(ConfigurationSection node, String path) {
        return getVector(node, path, null);
     }
 
+    @Nullable
     public static Vector getVector(ConfigurationSection node, String path, Vector def) {
         String stringData = node.getString(path, null);
         if (stringData == null) {
@@ -85,6 +90,7 @@ public class ConfigurationUtils extends ConfigUtils {
         return toVector(stringData);
     }
 
+    @Nullable
     public static Material getMaterial(ConfigurationSection node, String path, Material def) {
         String stringData = node.getString(path);
         if (stringData == null) {
@@ -94,14 +100,17 @@ public class ConfigurationUtils extends ConfigUtils {
         return toMaterial(stringData);
     }
 
+    @Nullable
     public static Material getMaterial(ConfigurationSection node, String path) {
         return getMaterial(node, path, null);
     }
 
+    @Nullable
     public static MaterialAndData getMaterialAndData(ConfigurationSection node, String path) {
         return getMaterialAndData(node, path, null);
     }
 
+    @Nullable
     public static MaterialAndData getMaterialAndData(ConfigurationSection node, String path, MaterialAndData def) {
         String stringData = node.getString(path);
         if (stringData == null) {
@@ -129,6 +138,7 @@ public class ConfigurationUtils extends ConfigUtils {
         return fromLocation(block.getLocation()) + "|" + block.getTypeId() + ":" + block.getData();
     }
 
+    @Nullable
     public static Location toLocation(Object o) {
         if (o instanceof Location) {
             return (Location)o;
@@ -159,6 +169,7 @@ public class ConfigurationUtils extends ConfigUtils {
         return null;
     }
 
+    @Nullable
     public static Vector toVector(Object o) {
         if (o instanceof Vector) {
             return (Vector)o;
@@ -184,8 +195,8 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     @SuppressWarnings("deprecation")
-    public static Material toMaterial(Object o)
-    {
+    @Nullable
+    public static Material toMaterial(Object o) {
         if (o instanceof Material) {
             return (Material)o;
         }
@@ -206,8 +217,8 @@ public class ConfigurationUtils extends ConfigUtils {
         return null;
     }
 
-    public static MaterialAndData toMaterialAndData(Object o)
-    {
+    @Nullable
+    public static MaterialAndData toMaterialAndData(Object o) {
         if (o instanceof MaterialAndData) {
             return (MaterialAndData)o;
         }
@@ -303,8 +314,8 @@ public class ConfigurationUtils extends ConfigUtils {
         return replaced;
     }
 
-    private static Object replaceParameters(Object value, ConfigurationSection parameters)
-    {
+    @Nullable
+    private static Object replaceParameters(Object value, ConfigurationSection parameters) {
         if (value == null) return null;
         if (value instanceof Map)
         {
@@ -346,8 +357,8 @@ public class ConfigurationUtils extends ConfigUtils {
         return replaced;
     }
 
-    public static ConfigurationSection replaceParameters(ConfigurationSection configuration, ConfigurationSection parameters)
-    {
+    @Nullable
+    public static ConfigurationSection replaceParameters(ConfigurationSection configuration, ConfigurationSection parameters) {
         if (configuration == null) return null;
 
         ConfigurationSection replaced = new MemoryConfiguration();
@@ -512,10 +523,12 @@ public class ConfigurationUtils extends ConfigUtils {
         return overrideDouble(override, value);
     }
 
+    @Nullable
     public static World overrideWorld(ConfigurationSection node, String path, World world, boolean canCreateWorlds) {
         return overrideWorld(node.getString(path), world, canCreateWorlds);
     }
 
+    @Nullable
     public static World overrideWorld(String worldName, World world, boolean canCreateWorlds) {
         if (worldName == null || worldName.length() == 0) return null;
 
@@ -552,8 +565,8 @@ public class ConfigurationUtils extends ConfigUtils {
         return worldOverride;
     }
 
-    public static Location overrideLocation(ConfigurationSection node, String basePath, Location location, boolean canCreateWorlds)
-    {
+    @Nullable
+    public static Location overrideLocation(ConfigurationSection node, String basePath, Location location, boolean canCreateWorlds) {
         String xName = basePath + "x";
         String yName = basePath + "y";
         String zName = basePath + "z";
@@ -600,6 +613,7 @@ public class ConfigurationUtils extends ConfigUtils {
         return o == null ? def : o;
     }
 
+    @Nullable
     public static Color toColor(Object o) {
         if (o == null) {
             return null;
@@ -652,12 +666,13 @@ public class ConfigurationUtils extends ConfigUtils {
         return def;
     }
 
-    @SuppressWarnings("unchecked")
+    @Nullable
     public static List<Object> getList(ConfigurationSection section, String path) {
         Object o = section.get(path);
         return getList(o);
     }
 
+    @Nullable
     @SuppressWarnings("unchecked")
     public static List<Object> getList(Object o) {
         if (o == null) {
@@ -684,16 +699,19 @@ public class ConfigurationUtils extends ConfigUtils {
         return list == null ? (def == null ? new ArrayList<String>() : def) : list;
     }
 
+    @Nullable
     public static List<String> getStringList(ConfigurationSection section, String path) {
         List<Object> raw = getList(section, path);
         return getStringList(raw);
     }
 
+    @Nullable
     public static List<String> getStringList(Object o) {
         List<Object> raw = getList(o);
         return getStringList(raw);
     }
 
+    @Nullable
     public static List<String> getStringList(List<Object> rawList) {
         if (rawList == null) {
             return null;
@@ -746,6 +764,7 @@ public class ConfigurationUtils extends ConfigUtils {
       * @param o the object to cast
       * @return an Integer, or null on failure
       */
+     @Nullable
      private static Integer castInt(Object o) {
          if (o == null) {
              return null;
@@ -795,6 +814,7 @@ public class ConfigurationUtils extends ConfigUtils {
         return new SoundEffect(soundConfig);
     }
 
+    @Nullable
     public static ParticleEffect toParticleEffect(String effectParticleName) {
         ParticleEffect effectParticle = null;
         if (effectParticleName.length() > 0) {
@@ -885,18 +905,18 @@ public class ConfigurationUtils extends ConfigUtils {
         return requiredSpells;
     }
 
-    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig)
-    {
+    @Nullable
+    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig) {
         return getPotionEffects(effectConfig, null);
     }
 
-    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig, Integer duration)
-    {
+    @Nullable
+    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig, Integer duration) {
         return getPotionEffects(effectConfig, duration, true, true);
     }
 
-    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig, Integer duration, boolean ambient, boolean particles)
-    {
+    @Nullable
+    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig, Integer duration, boolean ambient, boolean particles) {
         if (effectConfig == null) return null;
         List<PotionEffect> effects = new ArrayList<>();
         Set<String> keys = effectConfig.getKeys(false);
@@ -930,6 +950,7 @@ public class ConfigurationUtils extends ConfigUtils {
         return effects;
     }
 
+    @Nullable
     public static List<PotionEffect> getPotionEffectObjects(ConfigurationSection baseConfig, String key, Logger log) {
         List<PotionEffect> potionEffects = null;
         Collection<ConfigurationSection> potionEffectList = getNodeList(baseConfig, key);

@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
@@ -181,6 +182,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         return enabled;
     }
 
+    @Nullable
     @SuppressWarnings("deprecation")
     protected MapView getMapView() {
         if (!enabled) {
@@ -350,6 +352,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    @Nullable
     protected BufferedImage getImage() {
         if (loading || !enabled) {
             return null;

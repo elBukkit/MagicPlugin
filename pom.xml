@@ -72,14 +72,36 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
+				<version>3.3</version>
 				<configuration>
+					<compilerId>javac-with-errorprone</compilerId>
+					<forceJavacCompilerUse>true</forceJavacCompilerUse>
+
 					<source>${version.java}</source>
 					<target>${version.java}</target>
-					<compilerArgument>-Xlint:all,-serial,-fallthrough</compilerArgument>
+
+					<compilerArgs>
+						<arg>-Xlint:all,-serial,-fallthrough</arg>
+						<!-- <arg>-Xep:FieldMissingNullable:ERROR</arg>  -->
+						<arg>-Xep:ReturnMissingNullable:ERROR</arg>
+						<arg>-Xep:RemoveUnusedImports:ERROR</arg>
+					</compilerArgs>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.plexus</groupId>
+						<artifactId>plexus-compiler-javac-errorprone</artifactId>
+						<version>2.8.3</version>
+					</dependency>
+					<!-- Get a more recent checkstyle version -->
+					<dependency>
+						<groupId>com.google.errorprone</groupId>
+						<artifactId>error_prone_core</artifactId>
+						<version>2.2.0</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 			<!-- Checkstyle -->

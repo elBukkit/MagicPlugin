@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.util.Vector;
 
 public class BoundingBox
@@ -118,6 +120,7 @@ public class BoundingBox
         return true;
     }
 
+    @Nullable
     protected Vector getIntersection(double fDst1, double fDst2, Vector p1, Vector p2, int side) {
         if ((fDst1 * fDst2) >= 0.0f) return null;
         if (fDst1 == fDst2) return null;
@@ -126,6 +129,7 @@ public class BoundingBox
         return inBox(p2Clone, side) ? p2Clone : null;
     }
 
+    @Nullable
     public Vector getIntersection(Vector p1, Vector p2) {
         Vector currentHit = getIntersection(p1.getX() - min.getX(), p2.getX() - min.getX(), p1, p2, 1);
         Vector hit = getIntersection(p1.getY() - min.getY(), p2.getY() - min.getY(), p1, p2, 2);

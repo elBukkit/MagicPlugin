@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -314,8 +315,8 @@ public abstract class TargetingSpell extends BaseSpell {
         return targeting.getOrCreateTarget(getEyeLocation());
     }
 
-    public Block getTargetBlock()
-    {
+    @Nullable
+    public Block getTargetBlock() {
         return getTarget().getBlock();
     }
 
@@ -424,6 +425,7 @@ public abstract class TargetingSpell extends BaseSpell {
         return targetThroughMaterials.testBlock(block);
     }
 
+    @Nullable
     public Block getInteractBlock() {
         Location location = getEyeLocation();
         if (location == null) return null;
@@ -640,6 +642,7 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     @Override
+    @Nullable
     public Location getTargetLocation() {
         Target target = targeting.getTarget();
         if (target != null && target.isValid()) {
@@ -650,6 +653,7 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     @Override
+    @Nullable
     public Entity getTargetEntity() {
         Target target = targeting.getTarget();
         if (target != null && target.isValid()) {
@@ -659,6 +663,7 @@ public abstract class TargetingSpell extends BaseSpell {
         return null;
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {

@@ -50,7 +50,7 @@ public class HeroesSpellSkill extends ActiveSkill {
      */
     private static String getSkillName(Heroes heroes, String spellKey) {
         Plugin magicPlugin = heroes.getServer().getPluginManager().getPlugin("Magic");
-        if (magicPlugin == null || !(magicPlugin instanceof MagicAPI) && !magicPlugin.isEnabled()) {
+        if (magicPlugin == null || (!(magicPlugin instanceof MagicAPI) && !magicPlugin.isEnabled())) {
             heroes.getLogger().warning("MagicHeroes skills require the Magic plugin");
             throw new RuntimeException("MagicHeroes skills require the Magic plugin");
         }

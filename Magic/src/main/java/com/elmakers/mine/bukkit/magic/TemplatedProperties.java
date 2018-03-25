@@ -8,10 +8,11 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class TemplatedProperties extends CasterProperties {
-     public TemplatedProperties(MagicPropertyType type, MageController controller) {
+    public TemplatedProperties(MagicPropertyType type, MageController controller) {
         super(type, controller);
     }
 
+    @Nullable
     @Override
     public ConfigurationSection getConfigurationSection(String key) {
         ConfigurationSection own = super.getConfigurationSection(key);
@@ -28,5 +29,6 @@ public abstract class TemplatedProperties extends CasterProperties {
         return own;
     }
 
-    protected abstract @Nullable BaseMagicProperties getTemplate();
+    @Nullable
+    protected abstract BaseMagicProperties getTemplate();
 }

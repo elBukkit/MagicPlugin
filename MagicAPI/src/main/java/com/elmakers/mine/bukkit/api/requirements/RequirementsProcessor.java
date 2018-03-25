@@ -29,5 +29,6 @@ public interface RequirementsProcessor {
      * @param requirement The requirement that failed
      * @return a player-readable description of what this requirement represents.
      */
-    @Nullable String getRequirementDescription(@Nonnull CastContext context, @Nonnull Requirement requirement);
+    @Nullable
+    String getRequirementDescription(@Nonnull CastContext context, @Nonnull Requirement requirement);
 }

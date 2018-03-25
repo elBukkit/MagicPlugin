@@ -50,6 +50,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
         return getMaterialSet(name, MaterialSets.empty());
     }
 
+    @Nullable
     @Override
     public MaterialSet fromConfig(String name) {
         if (name == null || name.isEmpty()) {

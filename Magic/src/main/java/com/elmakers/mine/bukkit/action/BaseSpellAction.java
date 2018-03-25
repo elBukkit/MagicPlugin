@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.action;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -106,6 +108,7 @@ public abstract class BaseSpellAction implements SpellAction
     }
 
     @Override
+    @Nullable
     public Object clone()
     {
         try

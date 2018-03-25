@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.api.entity;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Art;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -20,13 +22,19 @@ public interface EntityData {
     ItemStack getItem();
     double getHealth();
     void setHasMoved(boolean hasMoved);
+    @Nullable
     Entity spawn();
+    @Nullable
     Entity spawn(Location location);
+    @Nullable
     Entity spawn(MageController controller, Location location);
+    @Nullable
     Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason);
+    @Nullable
     Entity undo();
     boolean modify(MageController controller, Entity entity);
     boolean modify(Entity entity);
+    @Nullable
     EntityData getRelativeTo(Location center);
     String describe();
     String getInteractSpell();

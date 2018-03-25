@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.api.spell;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,11 +32,14 @@ public interface Spell extends SpellTemplate {
     boolean cast(String[] parameters, Location defaultLocation);
     boolean cast(ConfigurationSection parameters, Location defaultLocation);
     boolean cast(ConfigurationSection parameters);
+    @Nullable
     Location getLocation();
     Entity getEntity();
     Location getEyeLocation();
     void target();
+    @Nullable
     Location getTargetLocation();
+    @Nullable
     Entity getTargetEntity();
     Vector getDirection();
     boolean canTarget(Entity entity);
@@ -44,6 +49,7 @@ public interface Spell extends SpellTemplate {
     void clearCooldown();
     void setRemainingCooldown(long ms);
     long getRemainingCooldown();
+    @Nullable
     CastingCost getRequiredCost();
     void messageTargets(String messageKey);
     CastContext getCurrentCast();
@@ -57,8 +63,11 @@ public interface Spell extends SpellTemplate {
     void sendMessage(String message);
     void castMessage(String message);
     MaterialAndData getEffectMaterial();
+    @Nullable
     String getEffectParticle();
+    @Nullable
     Color getEffectColor();
+    @Nullable
     MaterialBrush getBrush();
     boolean brushIsErase();
     boolean isCancellable();
@@ -68,6 +77,7 @@ public interface Spell extends SpellTemplate {
     boolean cancelOnCastOther();
     String getMessage(String messageKey);
     boolean hasHandlerParameters(String handlerKey);
+    @Nullable
     ConfigurationSection getHandlerParameters(String handlerKey);
     long getProgressLevel();
     boolean cancelOnNoPermission();

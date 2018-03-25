@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.essentials;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.inventory.ItemStack;
 
 import com.earth2me.essentials.ItemDb;
@@ -19,6 +21,7 @@ public class MagicItemDb extends ItemDb {
 		this.reloadConfig();
 	}
 
+	@Nullable
 	@Override
 	public ItemStack get(final String id) throws Exception
 	{

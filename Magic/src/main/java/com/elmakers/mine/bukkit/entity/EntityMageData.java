@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -94,6 +95,7 @@ public class EntityMageData {
         return !hasProperties && !hasTriggers && !aggro;
     }
 
+    @Nullable
     private List<MageTrigger> getTriggers(MageTriggerType type) {
         return triggers == null ? null : triggers.get(type);
     }

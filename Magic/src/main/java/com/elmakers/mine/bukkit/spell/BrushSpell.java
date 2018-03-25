@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -132,6 +134,7 @@ public abstract class BrushSpell extends BlockSpell {
         return brushIsErase();
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush()
     {
@@ -147,6 +150,7 @@ public abstract class BrushSpell extends BlockSpell {
         return super.getBrush();
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {

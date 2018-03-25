@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.warp;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -21,8 +23,8 @@ public class CommandBookWarps {
         this.locationManager = locationManager;
     }
 
-    public static CommandBookWarps create(Plugin plugin)
-    {
+    @Nullable
+    public static CommandBookWarps create(Plugin plugin) {
         if (plugin instanceof CommandBook) {
             ComponentManager<BukkitComponent> componentManager = ((CommandBook)plugin).getComponentManager();
             WarpsComponent component = componentManager.getComponent(WarpsComponent.class);
@@ -35,6 +37,7 @@ public class CommandBookWarps {
         return null;
     }
 
+    @Nullable
     public Location getWarp(String warpName) {
         if (locationManager == null) return null;
         NamedLocation location = locationManager.get(null, warpName);

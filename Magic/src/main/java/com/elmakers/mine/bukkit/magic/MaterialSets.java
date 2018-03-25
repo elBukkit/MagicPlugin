@@ -25,7 +25,12 @@ import com.google.common.collect.ImmutableSet;
 public class MaterialSets {
     @Nullable
     public static Set<Material> toLegacy(@Nullable MaterialSet v) {
-        return v == null ? null : ImmutableSet.copyOf(v.getMaterials());
+        return v == null ? null : toLegacyNN(v);
+    }
+
+    @Nonnull
+    public static Set<Material> toLegacyNN(@Nonnull MaterialSet v) {
+        return ImmutableSet.copyOf(v.getMaterials());
     }
 
     private static enum WildcardMaterialSet implements MaterialSet {

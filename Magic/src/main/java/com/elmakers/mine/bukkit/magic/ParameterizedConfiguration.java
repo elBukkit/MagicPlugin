@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.magic;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,6 +21,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
 
     private Options options;
 
+    @Nullable
     @Override
     public ConfigurationSection getParent() {
         return null;
@@ -39,6 +42,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
 
     }
 
+    @Nullable
     @Override
     public Configuration getDefaults() {
         return null;
@@ -53,6 +57,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
         return options;
     }
 
+    @Nullable
     protected Double evaluate(String expression) {
         Set<String> parameters = getParameters();
         if (parameters == null || parameters.isEmpty()) return null;

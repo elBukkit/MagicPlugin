@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.integration;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -77,6 +79,7 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
     }
 
     // Hopefully can use this again one day for custom item provider
+    @Nullable
     public ItemStack getItem(String s) {
         if (!s.startsWith("magic:")) return null;
         s = s.substring(6);

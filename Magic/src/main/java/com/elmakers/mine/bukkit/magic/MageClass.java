@@ -141,6 +141,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         return effectiveConfiguration;
     }
 
+    @Nullable
     @Override
     protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         switch (propertyType) {
@@ -170,6 +171,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         return mageProperties.isPlayer();
     }
 
+    @Nullable
     @Override
     public Player getPlayer() {
         return mageProperties.getPlayer();
@@ -221,6 +223,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         mage.updatePassiveEffects();
     }
 
+    @Nullable
     @Override
     public ProgressionPath getPath() {
         String pathKey = getString("path");

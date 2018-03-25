@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
@@ -209,6 +211,7 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
         }
     }
 
+    @Nullable
     public SpellTemplate createSkillSpell(MagicController controller, String skillName) {
         if (skills == null) return null;
         Skill skill = skills.getSkill(skillName);
@@ -272,11 +275,13 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
         return heroClass.getName();
     }
 
+    @Nullable
     protected Skill getSkill(String key) {
         if (skills == null) return null;
         return skills.getSkill(key);
     }
 
+    @Nullable
     protected Hero getHero(Player player) {
         if (characters == null) return null;
         return characters.getHero(player);
@@ -341,6 +346,7 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
         return attributes.keySet();
     }
 
+    @Nullable
     @Override
     public Double getAttributeValue(String attribute, Player player) {
         Double result = null;

@@ -704,6 +704,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         return displayInventory;
     }
 
+    @Nullable
     protected ItemStack getWorthItem(MageController controller) {
         return worthItem == null ? controller.getWorthItem() : worthItem;
     }
@@ -852,6 +853,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         return showItems(context, items);
     }
 
+    @Nullable
     protected abstract List<ShopItem> getItems(CastContext context);
 
     protected @Nonnull CasterProperties getCaster(CastContext context) {

@@ -2,13 +2,17 @@ package com.elmakers.mine.bukkit.api.block;
 
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.api.data.UndoData;
 
 public interface UndoQueue {
     void add(UndoList blocks);
+    @Nullable
     UndoList getLast();
+    @Nullable
     UndoList getLast(Block target);
 
     /**
@@ -24,7 +28,9 @@ public interface UndoQueue {
      * @param timeout The maximum age of the change
      * @return The UndoList that was undone, or null if none.
      */
+    @Nullable
     UndoList undoRecent(int timeout);
+    @Nullable
     UndoList undoRecent(int timeout, String spellKey);
 
     /**
@@ -42,6 +48,7 @@ public interface UndoQueue {
      * @param timeout The maximum age of the change
      * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
      */
+    @Nullable
     UndoList undoRecent(Block block, int timeout);
 
     /**
