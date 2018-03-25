@@ -2,6 +2,9 @@
 
 ## 7.4
 
+ - Optional lore on wands to say which classes they work with
+ - Option for Selector for switch class rather than unlock class
+
  - Figure out positive/negative solution for reduction, protection, strength and weakness
  - Need to do something about template data mixing with class data ... use cases:
    - Screwed up migration, left properties on a wand that now belong to class

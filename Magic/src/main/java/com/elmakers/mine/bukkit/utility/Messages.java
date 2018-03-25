@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +11,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.ChatColor;
@@ -28,6 +32,8 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private Map<String, String> messageMap = new HashMap<>();
     private Map<String, List<String>> randomized = new HashMap<>();
     private ConfigurationSection configuration = null;
+
+    private NumberFormat formatter = new DecimalFormat("#0.00");
 
     public Messages() {
 
@@ -202,23 +208,52 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     }
 
     @Override
+    public String getPropertyString(String templateName, float amount, float max, String propertyTemplateName) {
+        String templateString = get(templateName, "");
+        String propertyTemplateString = get(propertyTemplateName, "");
+        return formatPropertyString(templateString, amount, max, propertyTemplateString);
+    }
+
+    @Override
     public String formatLevelString(String message, float amount)
     {
         return formatLevelString(message, amount, 1);
     }
 
-
     @Override
     public String formatLevelString(String message, float amount, float max)
+    {
+        return formatPropertyString(message, amount, max, null);
+    }
+
+    @Override
+    public String formatPropertyString(String message, float amount, float max, @Nullable String propertyTemplate)
     {
         if (message.contains("$roman")) {
             if (max != 1) {
                 amount = amount / max;
             }
-            message = message.replace("$roman", getRomanString(amount));
+            String property = getRomanString(amount);
+            if (propertyTemplate != null) {
+                property = propertyTemplate.replace("$property", property);
+            }
+            message = message.replace("$roman",property);
         }
-        return message.replace("$amount", Integer.toString((int) amount))
-                .replace("$percent", Integer.toString((int) (100.0 * amount)));
+        String valueString = Math.floor(amount) == amount ? Integer.toString((int)amount) : formatter.format(amount);
+        if (propertyTemplate != null) {
+            valueString = propertyTemplate.replace("$property", valueString);
+        }
+        String amountString = Integer.toString((int) amount);
+        if (propertyTemplate != null) {
+            amountString = propertyTemplate.replace("$property", amountString);
+        }
+        String percentString = Integer.toString((int) (100.0 * amount));
+        if (propertyTemplate != null) {
+            percentString = propertyTemplate.replace("$property", percentString);
+        }
+        return message.replace("$amount", amountString)
+                .replace("$value", valueString)
+                .replace("$percent", percentString);
     }
 
     @Override

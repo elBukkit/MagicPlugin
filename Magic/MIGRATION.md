@@ -7,6 +7,10 @@
  - The Magic.wand.override_drop permission changed to Magic.wand.override_stash
  - The wand property "attributes" has been renamed to "item_attributes"
  - The mob property "attributes" has been renamed to "entity_attributes"
+ - The following entries in messages.yml have changed, $value needs to be replace with $percent as below:
+   - mana_boost: "&eMana Boost: $percent%"
+   - mana_regeneration_boost: "&eMana Regeneration Boost: $percent%"
+   - sp_multiplier: "&6SP Earn Boost: $percent%"
 
 ## 7.3
 

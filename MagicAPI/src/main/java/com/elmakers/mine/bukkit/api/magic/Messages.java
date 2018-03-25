@@ -23,6 +23,34 @@ public interface Messages {
     String getLevelString(String templateName, float amount, float max);
     String getPercentageString(String templateName, float amount);
 
+    /**
+     * Get a level string that applies a separate template to the value, filling the value into the $property variable.
+     * The escaped property template is then applied to the level string via the normal $roman,$value,$percentage,$amount
+     * variables.
+     *
+     * @param templateName The key of the string template, such as "protection.fall", which would have an entry such as
+     *                     "Protection $roman"
+     * @param amount The amount of the property to print
+     * @param max The max value of the property to print, used in "roman" mode
+     * @param propertyTemplateName the template to use for formatting the amount, such as "properties.stacked_negative,
+     *                             which would have an entry such as "+$property".
+     *                             This is most often used to differentiate between positive and negative values.
+     * @return
+     */
+    String getPropertyString(String templateName, float amount, float max, String propertyTemplateName);
+
     String formatLevelString(String message, float amount);
     String formatLevelString(String message, float amount, float max);
+
+    /**
+     * Similar to getPropertyString, but this one doesn't do the message lookup for you. You pass in messages directly
+     * to be escaped.
+     *
+     * @param template The string to escape, such as "Protection $roman"
+     * @param amount The amount of the property to print
+     * @param max The max value of the property to print, used in "roman" mode
+     * @param propertyTemplate The string to use for property formatting, such as "+&4$property"
+     * @return
+     */
+    String formatPropertyString(String template, float amount, float max, String propertyTemplate);
 }

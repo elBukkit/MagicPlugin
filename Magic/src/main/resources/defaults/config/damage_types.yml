@@ -48,3 +48,7 @@ damage_types:
     max_reduction: 0.2
     max_strength: 5
     max_weakness: 10
+  magic:
+    max_reduction: 0.5
+    max_strength: 5
+    max_weakness: 10

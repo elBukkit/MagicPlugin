@@ -59,6 +59,7 @@ import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
+import com.elmakers.mine.bukkit.magic.MagicAttribute;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.utility.ColorHD;
@@ -2171,11 +2172,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         float manaMaxBoost = getManaMaxBoost();
         if (manaMaxBoost != 0) {
-            ConfigurationUtils.addIfNotEmpty(getPercentageString("mana_boost", manaMaxBoost), lore);
+            ConfigurationUtils.addIfNotEmpty(getPropertyString("mana_boost", manaMaxBoost), lore);
         }
         float manaRegenerationBoost = getManaRegenerationBoost();
         if (manaRegenerationBoost != 0) {
-            ConfigurationUtils.addIfNotEmpty(getPercentageString("mana_regeneration_boost", manaRegenerationBoost), lore);
+            ConfigurationUtils.addIfNotEmpty(getPropertyString("mana_regeneration_boost", manaRegenerationBoost), lore);
         }
 
         if (castSpell != null) {
@@ -2193,10 +2194,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // In this case we should show it as such in the lore.
         if (passive) isSingleSpell = false;
 
-        if (consumeReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("consume_reduction", consumeReduction), lore);
+        if (consumeReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("consume_reduction", consumeReduction), lore);
 
-        if (costReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cost_reduction", costReduction), lore);
-        if (cooldownReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getLevelString("cooldown_reduction", cooldownReduction), lore);
+        if (costReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("cost_reduction", costReduction), lore);
+        if (cooldownReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("cooldown_reduction", cooldownReduction), lore);
         if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("power", power), lore);
         if (superProtected) {
             ConfigurationUtils.addIfNotEmpty(getMessage("super_protected"), lore);
@@ -2225,14 +2226,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         if (spMultiplier > 1) {
-            ConfigurationUtils.addIfNotEmpty(getPercentageString("sp_multiplier", spMultiplier - 1), lore);
+            ConfigurationUtils.addIfNotEmpty(getPropertyString("sp_multiplier", spMultiplier - 1), lore);
         }
         ConfigurationSection attributes = getConfigurationSection("attributes");
         if (attributes != null) {
-            boolean stack = getBoolean("stack");
-            String positiveTemplate = stack ? getMessage("attributes_stack") :  getMessage("attributes");
-            String negativeTemplate = stack ? getMessage("attributes_stack_negative") :  getMessage("attributes_negative");
-            if (!positiveTemplate.isEmpty() || !negativeTemplate.isEmpty()) {
+            // Don't bother with the lore at all if the template has been blanked out
+            String template = getMessage("attributes");
+            if (!template.isEmpty()) {
                 Set<String> keys = attributes.getKeys(false);
                 for (String key : keys) {
                     String label = controller.getMessages().get("attributes." + key + ".name", key);
@@ -2241,18 +2241,48 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     int value = attributes.getInt(key);
                     if (value == 0) continue;
 
-                    String template = value > 0 ? positiveTemplate : negativeTemplate;
-                    if (!template.isEmpty()) {
-                        label = template.replace("$attribute", label).replace("$value", Integer.toString(value));
-                        lore.add(label);
+                    float max = 1;
+                    MagicAttribute attribute = controller.getAttribute(key);
+                    if (attribute != null) {
+                        Double maxValue = attribute.getMax();
+                        if (maxValue != null) {
+                            max = (float)(double)maxValue;
+                        }
                     }
+
+                    label = getPropertyString("attributes", value, max).replace("$attribute", label);
+                    lore.add(label);
                 }
             }
         }
     }
 
+    private String getPropertyString(String templateName, float value) {
+        return getPropertyString(templateName, value, 1);
+    }
+
+    private String getPropertyString(String templateName, float value, float max) {
+        String propertyTemplate = getBoolean("stack") ? "property_stack" : "property_value";
+        if (value < 0) {
+            propertyTemplate = propertyTemplate + "_negative";
+        }
+        return controller.getMessages().getPropertyString(getMessageKey(templateName), value, max, getMessageKey(propertyTemplate));
+    }
+
+    private String formatPropertyString(String template, float value) {
+        return formatPropertyString(template, value, 1);
+    }
+
+    private String formatPropertyString(String template, float value, float max) {
+        String propertyTemplate = getBoolean("stack") ? "property_stack" : "property_value";
+        if (value < 0) {
+            propertyTemplate = propertyTemplate + "_negative";
+        }
+        return controller.getMessages().formatPropertyString(template, value, max, getMessage(propertyTemplate));
+    }
+
     private void addDamageTypeLore(String property, String propertyType, double amount, List<String> lore) {
-        if (amount > 0) {
+        if (amount != 0) {
             String templateKey = getMessageKey(property + "." + propertyType);
             String template;
             if (controller.getMessages().containsKey(templateKey)) {
@@ -2263,7 +2293,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 String pretty = propertyType.substring(0, 1).toUpperCase() + propertyType.substring(1);
                 template = template.replace("$type", pretty);
             }
-            template = controller.getMessages().formatLevelString(template, (float)amount);
+            template = formatPropertyString(template, (float)amount);
             ConfigurationUtils.addIfNotEmpty(template, lore);
         }
     }
@@ -2276,11 +2306,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public String getLevelString(String templateName, float amount, float max)
     {
         return controller.getMessages().getLevelString(getMessageKey(templateName), amount, max);
-    }
-
-    public String getPercentageString(String templateName, float amount)
-    {
-        return controller.getMessages().getPercentageString(getMessageKey(templateName), amount);
     }
 
     protected List<String> getCustomLore(Collection<String> loreTemplate) {
