@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -30,10 +32,12 @@ public class EffectUtils extends NMSUtils {
         spawnFireworkEffect(server, location, effect, power, null, 2, 1, silent);
     }
 
+    @Nullable
     public static Entity spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown) {
         return spawnFireworkEffect(server, location, effect, power, direction, expectedLifespan, ticksFlown, false);
     }
 
+    @Nullable
     public static Entity spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown, boolean silent) {
         Entity entity = null;
         try {

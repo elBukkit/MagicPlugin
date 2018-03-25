@@ -100,7 +100,9 @@ public class ModifyPropertiesAction extends BaseSpellAction
             return SpellResult.FAIL;
         }
         Entity entity = context.getTargetEntity();
-        Mage mage = context.getController().getRegisteredMage(entity);
+        Mage mage = entity == null
+                ? null
+                : context.getController().getRegisteredMage(entity);
         if (mage == null) {
             return SpellResult.NO_TARGET;
         }

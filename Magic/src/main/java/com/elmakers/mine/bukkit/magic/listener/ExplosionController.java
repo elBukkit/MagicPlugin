@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Chunk;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -47,6 +49,7 @@ public class ExplosionController implements Listener {
         }
     }
 
+    @Nullable
     protected UndoList getExplosionUndo(Entity explodingEntity) {
         UndoList blockList = controller.getEntityUndo(explodingEntity);
         if (blockList == null && autoRollbackDuration > 0 && rollbackExplosions.contains(explodingEntity.getType())) {

@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.BlockVector;
@@ -18,7 +20,7 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
     protected BoundingBox          		area;
-    protected String					worldName;
+    protected @Nullable String          worldName;
 
     protected LinkedList<BlockData> 	blockList;
     protected HashSet<Long>        		blockIdMap;
@@ -269,6 +271,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         }
     }
 
+    @Nullable
     public BlockData get(int index)
     {
         if (blockList == null || index >= blockList.size())
@@ -279,20 +282,20 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     }
 
     @Override
-    public Object[] toArray()
-    {
-        if (blockList == null)
-        {
+    @Nullable
+    public Object[] toArray() {
+        if (blockList == null) {
+            // FIXME: This breaks the contract of Collection
             return null;
         }
         return blockList.toArray();
     }
 
     @Override
-    public <T> T[] toArray(T[] arg0)
-    {
-        if (blockList == null)
-        {
+    @Nullable
+    public <T> T[] toArray(T[] arg0) {
+        if (blockList == null) {
+            // FIXME: This breaks the contract of Collection
             return null;
         }
         return blockList.toArray(arg0);
@@ -324,6 +327,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     }
 
     @Override
+    @Nullable
     public String getWorldName() {
         return worldName;
     }

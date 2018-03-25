@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.api.block;
 
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -20,8 +22,10 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
  */
 public interface BlockData extends MaterialAndData {
     long getId();
+    @Nullable
     World getWorld();
     String getWorldName();
+    @Nullable
     Block getBlock();
     BlockVector getPosition();
     void restore();
@@ -37,6 +41,7 @@ public interface BlockData extends MaterialAndData {
     void setNextState(BlockData next);
     BlockData getPriorState();
     void setPriorState(BlockData prior);
+    @Nullable
     UndoList getUndoList();
     void setUndoList(UndoList undoList);
     BlockVector getLocation();

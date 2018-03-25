@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Art;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -153,6 +155,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
         return (x >= 0 && x <= size.getBlockX() && y >= 0 && y <= size.getBlockY() && z >= 0 && z <= size.getBlockZ());
     }
 
+    @Nullable
     @Override
     public MaterialAndData getBlock(Vector v) {
         int x = v.getBlockX() + center.getBlockX();

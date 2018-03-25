@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -404,6 +406,7 @@ public class RideEntityAction extends BaseSpellAction
         }
     }
 
+    @Nullable
     protected Entity getMount(CastContext context) {
         return isPassenger ? context.getEntity() : mount;
     }

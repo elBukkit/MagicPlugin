@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.protection;
 
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -80,6 +82,7 @@ public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildMa
 		return towny.canTarget(entity, target);
 	}
 
+	@Nullable
 	public Location getTownLocation(Player player) {
 		if (!enabled || towny == null || player == null)
 			return null;

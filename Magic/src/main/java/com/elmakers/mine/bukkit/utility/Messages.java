@@ -98,6 +98,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         return get(key, key).replace(paramName1, paramValue1).replace(paramName2, paramValue2);
     }
 
+    @Nullable
     @Override
     public String getRandomized(String key) {
         if (!randomized.containsKey(key)) return null;

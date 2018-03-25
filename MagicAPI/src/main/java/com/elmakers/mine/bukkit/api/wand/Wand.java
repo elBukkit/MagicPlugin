@@ -48,6 +48,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean organizeInventory(Mage mage);
     boolean organizeInventory();
     boolean alphabetizeInventory();
+    @Nullable
     ItemStack getItem();
     MaterialAndData getIcon();
     MaterialAndData getInactiveIcon();
@@ -64,7 +65,9 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     Wand duplicate();
     @Override
     Spell getSpell(String key);
+    @Nullable
     Spell getSpell(String key, Mage mage);
+    @Nullable
     SpellTemplate getSpellTemplate(String key);
     @Override
     boolean hasSpell(String key);
@@ -93,6 +96,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean removeSpell(String key);
     String getActiveBrushKey();
     String getActiveSpellKey();
+    @Nullable
     Spell getActiveSpell();
     void setActiveBrush(String key);
     void setActiveSpell(String key);
@@ -143,8 +147,10 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     MageController getController();
     boolean showCastMessages();
     boolean showMessages();
-    @Nullable String getTemplateKey();
-    @Nullable WandTemplate getTemplate();
+    @Nullable
+    String getTemplateKey();
+    @Nullable
+    WandTemplate getTemplate();
     boolean isIndestructible();
     boolean playEffects(String key);
     boolean cast();
@@ -234,13 +240,17 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     @Deprecated
     void activate(Mage mage);
 
+    @Nullable
     Color getEffectColor();
     String getEffectParticleName();
+    @Nullable
     Location getLocation();
     @Override
     Mage getMage();
-    @Nullable MageClass getMageClass();
-    @Nullable String getMageClassKey();
+    @Nullable
+    MageClass getMageClass();
+    @Nullable
+    String getMageClassKey();
     boolean hasInventory();
     int getHeldSlot();
 
@@ -260,5 +270,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     WandAction getLeftClickAction();
     WandAction getSwapAction();
     boolean performAction(WandAction action);
-    @Nonnull CastContext getEffectsContext();
+    @Nonnull
+    CastContext getEffectsContext();
 }

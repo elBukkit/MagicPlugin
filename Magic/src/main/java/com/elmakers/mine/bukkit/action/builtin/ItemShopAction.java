@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -89,16 +91,19 @@ public class ItemShopAction extends BaseShopAction
         }
     }
 
+    @Nullable
     protected ShopItem createShopItem(MageController controller, String itemKey, double worth) {
         ItemStack item = parseItemKey(controller, itemKey);
         return item == null ? null : new ShopItem(controller, item, worth);
     }
 
+    @Nullable
     protected ShopItem createShopItem(MageController controller, ConfigurationSection configuration) {
         ItemStack item = parseItemKey(controller, configuration.getString("item"));
         return item == null ? null : new ShopItem(controller, item, configuration);
     }
 
+    @Nullable
     protected ItemStack parseItemKey(MageController controller, String itemKey) {
         if (itemKey == null || itemKey.isEmpty() || itemKey.equalsIgnoreCase("none"))
         {

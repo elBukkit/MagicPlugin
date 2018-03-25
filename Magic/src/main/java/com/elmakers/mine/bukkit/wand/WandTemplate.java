@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -219,6 +220,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         return categories;
     }
 
+    @Nullable
     @Override
     public WandTemplate getMigrateTemplate() {
         return migrateTemplate == null ? null : controller.getWandTemplate(migrateTemplate);
@@ -259,6 +261,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         return attributeSlot;
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.wand.WandTemplate getParent() {
         if (parentKey != null && !parentKey.isEmpty() && !parentKey.equalsIgnoreCase("false")) {

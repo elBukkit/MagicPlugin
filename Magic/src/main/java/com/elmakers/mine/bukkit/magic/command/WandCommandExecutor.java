@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -886,23 +888,23 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         return result;
     }
 
-    protected Wand checkWand(CommandSender sender, Player player)
-    {
+    @Nullable
+    protected Wand checkWand(CommandSender sender, Player player) {
         return checkWand(sender, player, false, false);
     }
 
-    protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable)
-    {
+    @Nullable
+    protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable) {
         return checkWand(sender, player, skipModifiable, false);
     }
 
-    protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound)
-    {
+    @Nullable
+    protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound) {
         return checkWand(sender, player, skipModifiable, skipBound, false);
     }
 
-    protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet)
-    {
+    @Nullable
+    protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet) {
         Mage mage = controller.getMage(player);
         Wand wand = mage.getActiveWand();
         boolean bypassLocked = (sender instanceof Player) && api.hasPermission(sender, "Magic.wand.override_locked");

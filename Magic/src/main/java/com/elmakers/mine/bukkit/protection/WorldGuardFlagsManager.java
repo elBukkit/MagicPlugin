@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.protection;
 
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -43,24 +45,25 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
         callingPlugin.getLogger().info("Registered custom WorldGuard flags: allowed-spells, blocked-spells, allowed-spell-categories, blocked-spell-categories, allowed-wands, blocked-wands, spell-overrides, destructible, reflective");
     }
 
+    @Nullable
     @Override
-    public String getDestructible(RegionAssociable source, ApplicableRegionSet checkSet)
-    {
+    public String getDestructible(RegionAssociable source, ApplicableRegionSet checkSet) {
         return checkSet.queryValue(source, DESTRUCTIBLE);
     }
 
+    @Nullable
     @Override
-    public String getReflective(RegionAssociable source, ApplicableRegionSet checkSet)
-    {
+    public String getReflective(RegionAssociable source, ApplicableRegionSet checkSet) {
         return checkSet.queryValue(source, REFLECTIVE);
     }
 
+    @Nullable
     @Override
-    public Set<String> getSpellOverrides(RegionAssociable source, ApplicableRegionSet checkSet)
-    {
+    public Set<String> getSpellOverrides(RegionAssociable source, ApplicableRegionSet checkSet) {
         return checkSet.queryValue(source, SPELL_OVERRIDES);
     }
 
+    @Nullable
     @Override
     public Boolean getWandPermission(RegionAssociable source, ApplicableRegionSet checkSet, Wand wand) {
         String wandTemplate = wand.getTemplateKey();
@@ -75,6 +78,7 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
         return null;
     }
 
+    @Nullable
     @Override
     public Boolean getCastPermission(RegionAssociable source, ApplicableRegionSet checkSet, SpellTemplate spell) {
         String spellKey = spell.getSpellKey().getBaseKey();

@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.api.wand;
 import java.util.Collection;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
@@ -16,12 +18,14 @@ public interface WandTemplate extends MagicProperties {
     boolean hasTag(String tag);
     String getCreatorId();
     String getCreator();
+    @Nullable
     WandTemplate getMigrateTemplate();
     String migrateIcon(String icon);
     boolean isRestorable();
     Set<String> getCategories();
     ConfigurationSection getAttributes();
     String getAttributeSlot();
+    @Nullable
     WandTemplate getParent();
 
     boolean playEffects(Wand wand, String key);

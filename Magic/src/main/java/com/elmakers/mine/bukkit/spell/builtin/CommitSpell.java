@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -19,10 +20,10 @@ public class CommitSpell extends TargetingSpell
 			return controller.commitAll() ? SpellResult.CAST : SpellResult.FAIL;
 		}
 
-		Target target = getTarget();
-		if (target.hasEntity() && target.getEntity() instanceof Player)
-		{
-			Mage mage = controller.getMage((Player)target.getEntity());
+        Target target = getTarget();
+        Entity targetEntity = target.getEntity();
+        if (targetEntity instanceof Player) {
+            Mage mage = controller.getMage((Player) targetEntity);
 			return mage.commit() ? SpellResult.CAST : SpellResult.FAIL;
 		}
 

@@ -93,6 +93,7 @@ public  class MagicRequirement {
         }
     }
 
+    @Nullable
     private List<PropertyRequirement> parsePropertyRequirements(ConfigurationSection configuration, String section, String type) {
         if (!configuration.contains(section)) return null;
 
@@ -346,6 +347,7 @@ public  class MagicRequirement {
         return null;
     }
 
+    @Nullable
     protected String getRequiredProperty(CastContext context, CasterProperties properties, List<PropertyRequirement> requirements) {
         for (PropertyRequirement requirement : requirements) {
             String key = requirement.key;
@@ -363,6 +365,7 @@ public  class MagicRequirement {
         return null;
     }
 
+    @Nullable
     protected String checkRequiredProperty(CastContext context, PropertyRequirement requirement, String name, Double value) {
         if (requirement.value != null && (value == null || !value.equals(requirement.value))) {
             return getMessage(context, "property_requirement")

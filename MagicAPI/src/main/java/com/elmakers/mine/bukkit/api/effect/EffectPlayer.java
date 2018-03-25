@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.api.effect;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -29,7 +31,9 @@ public interface EffectPlayer {
     void setMaterial(MaterialAndData material);
     void setMaterial(Block block);
     void setColor(Color color);
+    @Nullable
     Location getSourceLocation(CastContext context);
+    @Nullable
     Location getTargetLocation(CastContext context);
 
     boolean playsAtOrigin();
@@ -41,9 +45,14 @@ public interface EffectPlayer {
     void start(Location origin, Entity originEntity, Location target, Entity targetEntity);
     void start(Location origin, Entity originEntity, Location target, Entity targetEntity, Collection<Entity> targets);
 
-    @Deprecated boolean shouldUseHitLocation();
-    @Deprecated boolean shouldUseWandLocation();
-    @Deprecated boolean shouldUseCastLocation();
-    @Deprecated boolean shouldUseEyeLocation();
-    @Deprecated boolean shouldUseBlockLocation();
+    @Deprecated
+    boolean shouldUseHitLocation();
+    @Deprecated
+    boolean shouldUseWandLocation();
+    @Deprecated
+    boolean shouldUseCastLocation();
+    @Deprecated
+    boolean shouldUseEyeLocation();
+    @Deprecated
+    boolean shouldUseBlockLocation();
 }

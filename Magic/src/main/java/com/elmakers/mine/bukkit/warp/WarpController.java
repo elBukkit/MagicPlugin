@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.warp;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -7,7 +9,8 @@ public class WarpController {
     private CommandBookWarps commandBook;
     private EssentialsWarps essentials;
 
-	public Location getWarp(String warpName) {
+    @Nullable
+    public Location getWarp(String warpName) {
         Location warp = null;
         if (commandBook != null) {
             warp = commandBook.getWarp(warpName);

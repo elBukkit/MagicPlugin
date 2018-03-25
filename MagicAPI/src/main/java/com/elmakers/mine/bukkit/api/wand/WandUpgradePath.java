@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.wand;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
@@ -19,6 +20,7 @@ public interface WandUpgradePath extends ProgressionPath {
     boolean checkUpgradeRequirements(Wand wand, Mage mage);
     @Override
     Set<String> getTags();
+    @Nullable
     WandUpgradePath getUpgrade();
     void upgrade(@Nonnull Wand wand, Mage mage);
     void checkMigration(Wand wand);

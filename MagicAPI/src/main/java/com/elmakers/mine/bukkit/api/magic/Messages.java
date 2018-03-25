@@ -3,12 +3,15 @@ package com.elmakers.mine.bukkit.api.magic;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.inventory.ItemStack;
 
 public interface Messages {
     boolean containsKey(String key);
     String get(String key);
     String get(String key, String defaultValue);
+    @Nullable
     String getRandomized(String key);
     List<String> getAll(String path);
     String getParameterized(String key, String paramName, String paramValue);

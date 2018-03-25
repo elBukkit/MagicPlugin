@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -24,10 +26,13 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     String getDescription();
     String getExtendedDescription();
     String getLevelDescription();
+    @Nullable
     String getCooldownDescription();
+    @Nullable
     String getMageCooldownDescription();
     String getKey();
     SpellKey getSpellKey();
+    @Nullable
     Color getColor();
     double getWorth();
     double getEarns();
@@ -42,13 +47,17 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     String getDisabledIconURL();
     boolean hasIcon();
     boolean hasCastPermission(CommandSender sender);
+    @Nullable
     Collection<CastingCost> getCosts();
+    @Nullable
     Collection<CastingCost> getActiveCosts();
     Collection<EffectPlayer> getEffects(SpellResult result);
     Collection<EffectPlayer> getEffects(String effectsKey);
     long getDuration();
+    @Nullable
     String getDurationDescription(Messages messages);
     long getCooldown();
+    @Nullable
     Spell createSpell();
     void loadTemplate(String key, ConfigurationSection node);
     void loadPrerequisites(ConfigurationSection node);
@@ -74,6 +83,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     void addLore(Messages messages, Mage mage, Wand wand, List<String> lore);
     boolean hasTag(String tag);
     boolean hasAnyTag(Collection<String> tags);
+    @Nullable
     SpellTemplate getUpgrade();
 
     /**

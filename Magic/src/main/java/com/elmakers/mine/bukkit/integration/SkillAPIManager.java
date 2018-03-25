@@ -57,6 +57,7 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
         return attributes;
     }
 
+    @Nullable
     @Override
     public Double getAttributeValue(String attribute, Player player) {
         if (attributes == null || !attributes.contains(attribute)) return null;

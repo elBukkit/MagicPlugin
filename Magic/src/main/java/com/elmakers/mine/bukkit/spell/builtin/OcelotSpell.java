@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,8 +24,8 @@ public class OcelotSpell extends TargetingSpell
 
 	protected List<Ocelot> ocelots = new ArrayList<>();
 
-	public Ocelot newOcelot(Target target)
-	{
+	@Nullable
+	public Ocelot newOcelot(Target target) {
 		Block targetBlock = target.getBlock();
 		if (targetBlock == null)
 		{

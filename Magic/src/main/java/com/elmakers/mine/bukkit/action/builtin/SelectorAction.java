@@ -229,6 +229,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
         }
 
+        @Nullable
         protected List<Cost> parseCosts(ConfigurationSection node) {
             if (node == null) {
                 return null;
@@ -242,6 +243,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             return costs;
         }
 
+        @Nullable
         protected List<CostModifier> parseCostModifiers(ConfigurationSection configuration, String section) {
             Collection<ConfigurationSection> modifierConfigs = ConfigurationUtils.getNodeList(configuration, section);
             if (modifierConfigs == null) {
@@ -509,6 +511,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             }
         }
 
+        @Nullable
         protected Cost takeCosts(CostReducer reducer, CastContext context) {
             Cost required = getRequiredCost(reducer, context);
             if (required != null) {
@@ -523,6 +526,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             return null;
         }
 
+        @Nullable
         public Cost getRequiredCost(CostReducer reducer, CastContext context) {
             if (costs != null) {
                 for (Cost cost : costs) {
@@ -649,6 +653,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             return unavailable;
         }
 
+        @Nullable
         public ItemStack getIcon() {
             return icon;
         }
@@ -962,6 +967,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         return showItems(context);
     }
 
+    @Nullable
     protected ItemStack parseItem(String itemKey) {
         if (itemKey == null || itemKey.isEmpty() || itemKey.equalsIgnoreCase("none"))
         {

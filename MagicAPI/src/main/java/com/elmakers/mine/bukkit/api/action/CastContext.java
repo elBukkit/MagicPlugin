@@ -33,17 +33,24 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public interface CastContext {
+    @Nullable
     Entity getEntity();
     LivingEntity getLivingEntity();
+    @Nullable
     Location getLocation();
+    @Nullable
     Location getTargetLocation();
+    @Nullable
     Location getTargetCenterLocation();
     void setTargetCenterLocation(Location location);
+    @Nullable
     Location getTargetSourceLocation();
     Vector getDirection();
     BlockFace getFacingDirection();
     void setDirection(Vector direction);
+    @Nullable
     World getWorld();
+    @Nullable
     Plugin getPlugin();
     Location getEyeLocation();
 
@@ -53,15 +60,20 @@ public interface CastContext {
      * a wand.
      * @return
      */
+    @Nullable
     Location getWandLocation();
 
     /**
      * Get the source location of this cast.
      * @return
      */
+    @Nullable
     Location getCastLocation();
+    @Nullable
     Block getTargetBlock();
+    @Nullable
     Block getInteractBlock();
+    @Nullable
     Entity getTargetEntity();
     void setTargetEntity(Entity targetEntity);
     void setTargetLocation(Location targetLocation);
@@ -69,9 +81,11 @@ public interface CastContext {
     Spell getSpell();
     Mage getMage();
     Wand getWand();
-    @Nullable MageClass getMageClass();
+    @Nullable
+    MageClass getMageClass();
     Collection<EffectPlayer> getEffects(String key);
     boolean hasEffects(String key);
+    @Nullable
     MageController getController();
     void registerForUndo(Runnable runnable);
     void registerForUndo(Entity entity);
@@ -94,7 +108,9 @@ public interface CastContext {
     boolean hasBreakPermission(Block block);
     boolean isBreakable(Block block);
     boolean isReflective(Block block);
+    @Nullable
     Double getBreakable(Block block);
+    @Nullable
     Double getReflective(Block block);
     void clearBreakable(Block block);
     void clearReflective(Block block);
@@ -106,7 +122,9 @@ public interface CastContext {
     void cancelEffects();
     String getMessage(String key);
     String getMessage(String key, String def);
+    @Nullable
     Location findPlaceToStand(Location target, int verticalSearchDistance);
+    @Nullable
     Location findPlaceToStand(Location target, int verticalSearchDistance, boolean goUp);
     void castMessage(String message);
     void sendMessage(String message);
@@ -128,6 +146,7 @@ public interface CastContext {
     boolean isTargetable(Block block);
     boolean canTarget(Entity entity);
     boolean canTarget(Entity entity, Class<?> targetType);
+    @Nullable
     MaterialBrush getBrush();
     void setBrush(MaterialBrush brush);
     Collection<Entity> getTargetedEntities();

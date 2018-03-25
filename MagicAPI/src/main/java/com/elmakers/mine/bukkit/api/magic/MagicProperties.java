@@ -28,7 +28,8 @@ public interface MagicProperties {
      * @param key The key to retrieve
      * @return The raw value stored for the given key, or null if not present.
      */
-    @Nullable Object getProperty(@Nonnull String key);
+    @Nullable
+    Object getProperty(@Nonnull String key);
 
     /**
      * Get a property only if it is of a specific type.
@@ -38,7 +39,8 @@ public interface MagicProperties {
      * @param <T> The property type.
      * @return An Optional wrapper for the value
      */
-    @Nonnull <T> Optional<? extends T> getProperty(@Nonnull String key, @Nonnull Class<T> type);
+    @Nonnull
+    <T> Optional<? extends T> getProperty(@Nonnull String key, @Nonnull Class<T> type);
 
     /**
      * Get a property, specifying a default value.
@@ -48,7 +50,8 @@ public interface MagicProperties {
      * @param <T> The property type.
      * @return The value, if present and of the correct type, otherwise returns defaultValue
      */
-    @Nonnull <T> T getProperty(@Nonnull String key, @Nonnull T defaultValue);
+    @Nonnull
+    <T> T getProperty(@Nonnull String key, @Nonnull T defaultValue);
 
     /**
      * Print all properties to a CommandSender in a human-readable format.

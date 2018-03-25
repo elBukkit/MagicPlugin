@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -107,6 +109,7 @@ public class PhaseSpell extends TargetingSpell
 		return SpellResult.CAST;
 	}
 
+    @Nullable
     protected World getWorld(String worldName, boolean loadWorld) {
         World world = Bukkit.getWorld(worldName);
         if (world == null) {

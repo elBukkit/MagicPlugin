@@ -20,8 +20,10 @@ public interface CasterProperties extends MagicConfigurable {
     void setManaMax(int manaMax);
     int getManaRegeneration();
     void setManaRegeneration(int manaRegeneration);
+    @Nullable
     ProgressionPath getPath();
     boolean canProgress();
+    @Nullable
     Double getAttribute(String attributeKey);
     void setAttribute(String attributeKey, Double attributeValue);
     boolean addItem(ItemStack item);
@@ -34,5 +36,6 @@ public interface CasterProperties extends MagicConfigurable {
      * @param spellKey The spell key to request
      * @return the Spell, or null if not present here.
      */
-    @Nullable Spell getSpell(String spellKey);
+    @Nullable
+    Spell getSpell(String spellKey);
 }

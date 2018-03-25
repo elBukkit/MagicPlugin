@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -116,6 +118,7 @@ public class TownyAPI
         return true;
     }
 
+    @Nullable
     protected Resident getResident(Player player) {
         try {
             if (getPlayerByNameMethod != null) {
@@ -132,6 +135,7 @@ public class TownyAPI
         return null;
     }
 
+    @Nullable
     public Location getTownLocation(Player player) {
         if (towny == null || player == null) {
             return null;

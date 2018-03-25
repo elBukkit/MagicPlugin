@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.block;
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -232,6 +234,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + worldName + "|" + getMaterial().getId() + ":" + getData();
     }
 
+    @Nullable
     @SuppressWarnings("deprecation")
     public static BlockData fromString(String s) {
         BlockData result = null;
@@ -294,16 +297,16 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         return location;
     }
 
+    @Nullable
     @Override
-    public World getWorld()
-    {
+    public World getWorld() {
         if (worldName == null || worldName.length() == 0) return null;
         return Bukkit.getWorld(worldName);
     }
 
+    @Nullable
     @Override
-    public Block getBlock()
-    {
+    public Block getBlock() {
         Block block = null;
         if (location != null)
         {
@@ -321,6 +324,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         return isDifferent(getBlock());
     }
 
+    @Nullable
     @Override
     public UndoList getUndoList() {
         return undoList != null ? undoList.get() : null;

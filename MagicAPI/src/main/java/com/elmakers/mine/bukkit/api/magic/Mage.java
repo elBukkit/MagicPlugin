@@ -104,13 +104,13 @@ public interface Mage extends CostReducer, CooldownReducer {
      * @return Location the location of the Mage's eyes, used for targeting.
      */
     Location getEyeLocation();
-    Location getOffhandWandLocation();
 
     /**
      * Gets the source location of spells cast by this mage, which were
      * not cast with a wand.
      * @return
      */
+    @Nullable
     Location getCastLocation();
 
     /**
@@ -119,7 +119,11 @@ public interface Mage extends CostReducer, CooldownReducer {
      * return null if the Mage is not holding a Wand.
      * @return
      */
+    @Nullable
     Location getWandLocation();
+    @Nullable
+    Location getOffhandWandLocation();
+
 
     /**
      * Get the direction this Mage is facing.
@@ -146,6 +150,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      *
      * @return The player backed by this Mage, or null for Automaton Mages.
      */
+    @Nullable
     Player getPlayer();
 
     /**
@@ -166,6 +171,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      *
      * @return The LivingEntity represented by this Mage
      */
+    @Nullable
     LivingEntity getLivingEntity();
 
     /**
@@ -210,9 +216,13 @@ public interface Mage extends CostReducer, CooldownReducer {
      *
      * @return The batch that was cancelled, or null if nothing was pending.
      */
+    @Nullable
     Batch cancelPending();
+    @Nullable
     Batch cancelPending(String spellKey);
+    @Nullable
     Batch cancelPending(boolean force);
+    @Nullable
     Batch cancelPending(String spellKey, boolean force);
 
     /**
@@ -224,6 +234,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      *
      * @return The UndoList that was undone, or null if none.
      */
+    @Nullable
     UndoList undo();
 
     /**
@@ -237,6 +248,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      * @param block The block to check for modifications.
      * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
      */
+    @Nullable
     UndoList undo(Block block);
 
     /**
@@ -287,6 +299,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      *
      * @return The current active wand, after checking
      */
+    @Nullable
     Wand checkWand();
 
     /**
@@ -299,6 +312,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      * @param key The key of the Spell to retrieve.
      * @return The Spell instance for this Mage, or null if the Mage does not have access to this Spell.
      */
+    @Nullable
     MageSpell getSpell(String key);
 
     /**
@@ -379,7 +393,9 @@ public interface Mage extends CostReducer, CooldownReducer {
      */
     float getDamageMultiplier();
 
+    @Nullable
     Color getEffectColor();
+    @Nullable
     String getEffectParticleName();
     float getPower();
     float getPowerMultiplier();
@@ -411,6 +427,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     // Used for checking if a brush is restricted
     // TODO: Pass some kind of proper data class instead
     boolean isRestricted(Material material, @Nullable Short data);
+    @Nullable
     @Deprecated
     Set<Material> getRestrictedMaterials();
     MaterialSet getRestrictedMaterialSet();
@@ -426,6 +443,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean registerForUndo(UndoList blocks);
     boolean prepareForUndo(UndoList blocks);
 
+    @Nullable
     Inventory getInventory();
     int removeItem(ItemStack item);
     int removeItem(ItemStack item, boolean allowVariants);
@@ -476,6 +494,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean isValid();
     boolean hasPending();
     boolean restoreWand();
+    @Nullable
     UndoList getLastUndoList();
     boolean isStealth();
     boolean isSneaking();
@@ -502,6 +521,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     void addSkillPoints(int delta);
     void setSkillPoints(int sp);
     boolean isAtMaxSkillPoints();
+    @Nullable
     WandUpgradePath getBoundWandPath(String templateKey);
     boolean unbind(String template);
     void unbind(Wand wand);
@@ -513,17 +533,25 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean isBlocked(double angle);
     int getLastHeldMapId();
     float getSPMultiplier();
-    @Nonnull Collection<MageClass> getClasses();
-    @Nonnull Collection<String> getClassKeys();
-    @Nullable MageClass getActiveClass();
-    @Nullable MageClass unlockClass(@Nonnull String key);
+    @Nonnull
+    Collection<MageClass> getClasses();
+    @Nonnull
+    Collection<String> getClassKeys();
+    @Nullable
+    MageClass getActiveClass();
+    @Nullable
+    MageClass unlockClass(@Nonnull String key);
     boolean lockClass(@Nonnull String key);
-    @Nullable MageClass getClass(@Nonnull String key);
+    @Nullable
+    MageClass getClass(@Nonnull String key);
     boolean hasClassUnlocked(@Nonnull String key);
     void damagedBy(@Nonnull Entity enity, double damage);
-    @Nullable Collection<Entity> getDamagers();
-    @Nullable Entity getLastDamager();
-    @Nullable Entity getTopDamager();
+    @Nullable
+    Collection<Entity> getDamagers();
+    @Nullable
+    Entity getLastDamager();
+    @Nullable
+    Entity getTopDamager();
 
     /**
      * This will return properties for the mage's active wand, if holding one, or if not then the active class.
@@ -550,7 +578,8 @@ public interface Mage extends CostReducer, CooldownReducer {
      */
     boolean setActiveClass(@Nullable String key);
     boolean removeClass(@Nonnull String key);
-    @Nonnull CasterProperties getProperties();
+    @Nonnull
+    CasterProperties getProperties();
 
     /**
      * This method returns a positive number if the player is moving
@@ -592,11 +621,13 @@ public interface Mage extends CostReducer, CooldownReducer {
      *
      * <p>This wand never appears as an in-game item.
      */
+    @Nullable
     @Deprecated
     Wand getSoulWand();
 
     boolean isAutomaton();
 
+    @Nullable
     Double getAttribute(String attributeKey);
 
     /**
@@ -615,5 +646,6 @@ public interface Mage extends CostReducer, CooldownReducer {
      *
      * @return the last damage type this Mage received.
      */
-    @Nullable String getLastDamageType();
+    @Nullable
+    String getLastDamageType();
 }

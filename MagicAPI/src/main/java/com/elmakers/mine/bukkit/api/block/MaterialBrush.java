@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.api.block;
 
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
@@ -13,6 +15,7 @@ public interface MaterialBrush extends MaterialAndData {
     void prepare();
     boolean isReady();
     Collection<EntityData> getEntities();
+    @Nullable
     Collection<Entity> getTargetEntities();
     boolean hasEntities();
     boolean update(final Mage mage, final Location location);

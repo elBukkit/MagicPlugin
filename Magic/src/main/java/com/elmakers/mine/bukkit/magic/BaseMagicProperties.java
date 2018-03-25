@@ -200,17 +200,19 @@ public class BaseMagicProperties implements MagicProperties {
         return getString(key, null);
     }
 
-    @SuppressWarnings("unchecked")
+    @Nullable
     public List<String> getStringList(String key) {
         Object value = getProperty(key);
         return ConfigurationUtils.getStringList(value);
     }
 
+    @Nullable
     public ConfigurationSection getConfigurationSection(String key) {
         Object value = getProperty(key);
         return value == null || !(value instanceof ConfigurationSection) ? null : (ConfigurationSection)value;
     }
 
+    @Nullable
     public Vector getVector(String key, Vector def) {
         String stringData = getString(key, null);
         if (stringData == null) {
@@ -220,6 +222,7 @@ public class BaseMagicProperties implements MagicProperties {
         return ConfigurationUtils.toVector(stringData);
     }
 
+    @Nullable
     public Vector getVector(String key) {
         return getVector(key, null);
     }
@@ -228,6 +231,7 @@ public class BaseMagicProperties implements MagicProperties {
         return configuration;
     }
 
+    @Nullable
     protected static String getPotionEffectString(Map<PotionEffectType, Integer> potionEffects) {
         if (potionEffects.size() == 0) return null;
         Collection<String> effectStrings = new ArrayList<>();

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -26,7 +28,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
     private boolean usesBrush = false;
     private boolean requiresBuildPermission = false;
     private boolean requiresBreakPermission = false;
-    private Integer currentAction = null;
+    private @Nullable Integer currentAction = null;
     private boolean started = false;
     private static String debugIndent = "";
 

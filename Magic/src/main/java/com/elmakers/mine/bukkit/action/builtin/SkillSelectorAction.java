@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -147,6 +148,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             skillLevel = heroes.getSkillLevel(player, heroesSkill);
         }
 
+        @Nullable
         public String getSkillKey() {
             String key = getSpellKey();
             if (key != null) {
@@ -155,6 +157,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             return key;
         }
 
+        @Nullable
         public String getSpellKey() {
             if (heroesSkill != null) {
                 return "heroes*" + heroesSkill;

@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.Maps;
@@ -173,6 +175,7 @@ public class ActionFactory {
                 "%s",
         };
 
+        @Nullable
         @Override
         public ActionConstructor resolve(String className,
                 List<String> attempts) {
@@ -211,6 +214,7 @@ public class ActionFactory {
             return null;
         }
 
+        @Nullable
         private static ActionConstructor createConstructor(Class<?> clazz) {
             Constructor<?> constructor;
 

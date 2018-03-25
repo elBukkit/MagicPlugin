@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.protection;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -61,6 +63,7 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
 		return api.hasBuildPermission(player, block);
 	}
 
+    @Nullable
     public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
 		if (!override || !enabled || api == null || location == null)
 		{
@@ -97,6 +100,7 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
 		return api.rentField(signLocation, player, rent, timePeriod, signDirection);
 	}
 
+	@Nullable
 	public Map<String, Location> getFieldLocations(Player player) {
 		if (!enabled || api == null || player == null)
 			return null;

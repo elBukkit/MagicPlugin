@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -343,6 +345,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		return Wand.isWand(item);
 	}
 
+    @Nullable
     @Override
     public String getSpell(ItemStack item) {
         return Wand.getSpell(item);
@@ -358,6 +361,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return Wand.isSpell(item);
     }
 
+    @Nullable
     @Override
     public String getBrush(ItemStack item) {
         return Wand.getBrush(item);
@@ -410,11 +414,13 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return controller.hasItem(player, item);
     }
 
+    @Nullable
     @Override
     public ItemStack createItem(String magicKey) {
         return createItem(magicKey, null);
     }
 
+    @Nullable
     @Override
     public ItemStack createItem(String magicKey, com.elmakers.mine.bukkit.api.magic.Mage mage) {
         ItemStack itemStack = null;
@@ -433,21 +439,24 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return controller.createItem(magicKey);
     }
 
+    @Nullable
     @Override
     public ItemStack createGenericItem(String itemKey) {
         return controller.createItem(itemKey);
     }
 
+    @Nullable
     @Override
-	public com.elmakers.mine.bukkit.api.wand.Wand createWand(String wandKey) {
-		return Wand.createWand(controller, wandKey);
-	}
+    public com.elmakers.mine.bukkit.api.wand.Wand createWand(String wandKey) {
+        return Wand.createWand(controller, wandKey);
+    }
 
     @Override
     public com.elmakers.mine.bukkit.api.wand.Wand createWand(Material iconMaterial, short iconData) {
         return new Wand(controller, iconMaterial, iconData);
     }
 
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.api.wand.Wand createWand(ItemStack item) {
         return Wand.createWand(controller, item);
@@ -467,15 +476,17 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return controller.getItemKey(item);
     }
 
-	@Override
-	public ItemStack createSpellItem(String spellKey) {
-		return Wand.createSpellItem(spellKey, controller, null, true);
-	}
+    @Nullable
+    @Override
+    public ItemStack createSpellItem(String spellKey) {
+        return Wand.createSpellItem(spellKey, controller, null, true);
+    }
 
-	@Override
-	public ItemStack createBrushItem(String brushKey) {
-		return Wand.createBrushItem(brushKey, controller, null, true);
-	}
+    @Nullable
+    @Override
+    public ItemStack createBrushItem(String brushKey) {
+        return Wand.createBrushItem(brushKey, controller, null, true);
+    }
 
 	@Override
 	public boolean cast(String spellName, String[] parameters) {
@@ -517,10 +528,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		return controller.getPlayerNames();
 	}
 
-	@Override
-	public SpellTemplate getSpellTemplate(String key) {
-		return controller.getSpellTemplate(key);
-	}
+    @Nullable
+    @Override
+    public SpellTemplate getSpellTemplate(String key) {
+        return controller.getSpellTemplate(key);
+    }
 
 	@Override
 	public Collection<String> getSchematicNames() {

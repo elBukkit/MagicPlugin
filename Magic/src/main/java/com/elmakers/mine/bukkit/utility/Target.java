@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.utility;
 
 import java.lang.ref.WeakReference;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -424,13 +426,13 @@ public class Target implements Comparable<Target>
         return location != null;
     }
 
-    public Entity getEntity()
-    {
+    @Nullable
+    public Entity getEntity() {
         return entityRef == null ? null : entityRef.get();
     }
 
-    public Block getBlock()
-    {
+    @Nullable
+    public Block getBlock() {
         if (location == null)
         {
             return null;

@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.integration;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Creature;
@@ -22,6 +24,7 @@ public class MagicMACreature extends MACreature {
         this.controller = controller;
     }
 
+    @Nullable
     @Override
     public LivingEntity spawn(Arena arena, World world, Location loc) {
         loc.setWorld(world);

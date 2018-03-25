@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.protection;
 import java.util.Set;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -107,6 +109,7 @@ public class WorldGuardAPI {
 		return true;
 	}
 
+    @Nullable
     public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
         if (location != null && worldGuard != null && customFlags != null)
         {
@@ -125,6 +128,7 @@ public class WorldGuardAPI {
         return null;
     }
 
+    @Nullable
     public Boolean getWandPermission(Player player, Wand wand, Location location) {
         if (location != null && worldGuard != null && customFlags != null)
         {
@@ -143,6 +147,7 @@ public class WorldGuardAPI {
         return null;
     }
 
+    @Nullable
     public String getReflective(Player player, Location location) {
         if (location != null && worldGuard != null && customFlags != null)
         {
@@ -161,6 +166,7 @@ public class WorldGuardAPI {
         return null;
     }
 
+    @Nullable
     public Set<String> getSpellOverrides(Player player, Location location) {
         if (location != null && worldGuard != null && customFlags != null)
         {
@@ -179,6 +185,7 @@ public class WorldGuardAPI {
         return null;
     }
 
+    @Nullable
     public String getDestructible(Player player, Location location) {
         if (location != null && worldGuard != null && customFlags != null)
         {

@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -84,6 +86,7 @@ public class SourceLocation {
         }
     }
 
+    @Nullable
     public Location getLocation(CastContext context) {
         Mage mage;
         Location eyeLocation;

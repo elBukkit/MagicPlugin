@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -290,6 +292,7 @@ public class RecallSpell extends UndoableSpell
 		cycleTargetType(reverse);
 	}
 
+	@Nullable
 	protected Location getTargetLocation(Player player, RecallType type, int index) {
 		castMessage = "";
 		failMessage = "";

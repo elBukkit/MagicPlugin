@@ -106,8 +106,8 @@ public class CommandSpell extends TargetingSpell {
                         .replace("@ty", Double.toString(targetLocation.getY()))
                         .replace("@tz", Double.toString(targetLocation.getZ()));
 
-                if (target.hasEntity()) {
-                    Entity targetEntity = target.getEntity();
+                Entity targetEntity = target.getEntity();
+                if (targetEntity != null) {
                     if (controller.isMage(targetEntity)) {
                         Mage targetMage = controller.getMage(targetEntity);
                         command = command
