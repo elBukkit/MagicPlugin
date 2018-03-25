@@ -45,6 +45,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     }
 
     @Override
+    @Nullable
     public Object getProperty(String key) {
         Object value = null;
         BaseMagicProperties storage = getStorage(key);
@@ -61,6 +62,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     }
 
     @Override
+    @Nullable
     public Object getInheritedProperty(String key) {
         Object value = super.getProperty(key);
         if (value == null) {

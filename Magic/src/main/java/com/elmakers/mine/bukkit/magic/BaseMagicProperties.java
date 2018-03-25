@@ -91,11 +91,13 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Override
+    @Nullable
     public Object getProperty(String key) {
         return configuration.get(key);
     }
 
     @Override
+    @Nullable
     public <T> T getProperty(String key, Class<T> type) {
         Object value = getProperty(key);
         if (value == null || !type.isInstance(value)) {
@@ -106,6 +108,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Override
+    @Nonnull
     public <T> T getProperty(String key, T defaultValue) {
         Preconditions.checkNotNull(key, "key");
         Preconditions.checkNotNull(defaultValue, "defaultValue");
@@ -136,11 +139,13 @@ public class BaseMagicProperties implements MagicProperties {
         return defaultValue;
     }
 
+    @Nullable
     public Object getObject(String key, Object defaultValue) {
         Object value = getProperty(key);
         return value == null ? defaultValue : value;
     }
 
+    @Nullable
     public Object getObject(String key) {
         return getProperty(key);
     }

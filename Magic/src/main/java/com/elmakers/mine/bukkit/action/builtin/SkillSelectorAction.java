@@ -36,7 +36,6 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
-import com.google.common.base.Optional;
 
 public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     private int page;

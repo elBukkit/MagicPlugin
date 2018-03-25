@@ -74,6 +74,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         }
     }
 
+    @Nullable
     public Object getInheritedProperty(String key) {
         return getProperty(key);
     }

@@ -7,8 +7,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.command.CommandSender;
 
-import com.google.common.base.Optional;
-
 public interface MagicProperties {
     /**
      * Check to see if this property store contains a specific property.
