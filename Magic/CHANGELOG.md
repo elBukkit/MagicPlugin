@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.4
+
 # 7.3.4
 
  - Fix broken selector icons.
