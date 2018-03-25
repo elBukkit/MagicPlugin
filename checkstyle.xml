@@ -11,12 +11,10 @@
     <property name="fileExtensions" value="java, properties, xml"/>
 
     <!-- Avoid tab characters -->
-    <!-- TODO
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
         <property name="severity" value="error"/>
     </module>
-     -->
 
     <!-- Avoid trailing whitespace -->
     <module name="RegexpSingleline">
