@@ -3,6 +3,7 @@
 # 7.4
 
  - Fix automata spawning via MagicWorlds
+ - Add Light Arrow to Magic Bow progression
 
 # 7.3.4
 

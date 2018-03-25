@@ -42,6 +42,7 @@ poison:
                particleOffsetX: 0.1
                particleOffsetY: 0.1
                particleOffsetZ: 0.1
+               disappearWithOriginEntity: true
     costs:
         mana: 50
     parameters:

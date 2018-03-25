@@ -1,0 +1,136 @@
+arrow_light:
+    icon: diamond_axe:242
+    icon_disabled: diamond_hoe:242
+    icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
+    category: combat
+    worth: 5000
+    earns_sp: 8
+    brush_effects: false
+    require_break: false
+    require_build: false
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: ModifyBlock
+            ignore_result: true
+          - class: PotionEffect
+            duration: 3000
+          - class: Asynchronous
+            actions:
+            - class: Repeat
+              repeat: 3
+              actions:
+              - class: Damage
+              - class: Delay
+                delay: 1000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           sound_pitch: 1.5
+           location: origin
+           effectlib:
+             class: VortexEffect
+             iterations: 100
+             particle: end_rod
+             radius: 0.2
+             grow: 0.5
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: fireworks_spark
+          location: target
+        - particle: end_rod
+          location: target
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           target_location: body
+           particle: end_rod
+           particle_count: 40
+           particle_offset_x: 0.4
+           particle_offset_y: 1
+           particle_offset_z: 0.4
+           effectlib:
+            class: AnimatedBall
+            particle: end_rod
+            duration: 3000
+            yFactor: 1.5
+            particles: 50
+            particleCount: 4
+            particleOffsetX: 0.02
+            particleOffsetY: 0.01
+            particleOffsetZ: 0.02
+            offset: 0,-0.2,0
+            size: 0.6
+            disappearWithOriginEntity: true
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 10
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+           particle_data: 0.4
+           sound: magic.zap
+           sound_pitch: 1.2
+           sound_volume: 0.5
+        -  location: target
+           particle: end_rod
+           particle_count: 10
+           particle_offset_x: 0.1
+           particle_offset_y: 0.1
+           particle_offset_z: 0.1
+        hit_block:
+        -  effect: step_sound
+           location: target
+        -  location: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 0.8
+           particle_offset_y: 1
+           particle_offset_z: 0.8
+        headshot:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 20
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 0.5
+           sound: magic.zap
+           sound_volume: .3
+           particle_data: 0.4
+        -  sound: entity_player_attack_crit
+           sound_pitch: 0.8
+           location: target
+           particle: crit_magic
+           particle_count: 30
+           particle_offset_y: 1
+           particle_offset_x: 1
+           particle_offset_z: 1
+           particle_data: 0.5
+    headshot_parameters:
+      damage_multiplier: 2
+    parameters:
+        destructible: destructible,destructible2,destructible3,transparent
+        allow_max_range: true
+        velocity: 1000
+        range: 80
+        hitbox: true
+        block_hit_count: 4
+        entity_hit_count: 5
+        target_type: Damageable
+        player_damage: 3
+        entity_damage: 10
+        target_breakables: 1
+        reorient: false
+        potion_effects:
+          slow: 10
+        undo: 5000
+        brush: air
+        transparent: air,water,stationary_water
+    costs:
+      arrow: 1

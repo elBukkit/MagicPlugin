@@ -142,6 +142,9 @@ spells:
         name: Arrow
         description: Fire a magic arrow
         upgrade_description: "Increased damage and accuracy"
+    arrow_light:
+        name: Light Arrow
+        description: Fire an arrow of pure light
     arrow_bomb:
         name: Bomb Arrow
         description: Fire an exploding arrow
