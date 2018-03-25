@@ -479,7 +479,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	@Override
 	public boolean cast(String spellName, String[] parameters) {
-		return cast(spellName, parameters, null, null);
+		return cast(spellName, parameters, Bukkit.getConsoleSender(), null);
 	}
 
     @Override

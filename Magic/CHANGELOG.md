@@ -2,6 +2,8 @@
 
 # 7.4
 
+ - Fix automata spawning via MagicWorlds
+
 # 7.3.4
 
  - Fix broken selector icons.
