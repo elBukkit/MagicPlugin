@@ -1,23 +1,15 @@
 donatorshop:
-    inherit: appearanceshop
+    inherit: buyshop
     hidden: true
     parameters:
+        auto_close: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        require_wand: true
         items:
         - item: wand|appearance_beginner
-          cost: 0
-          permission: bought_beginner
         - item: wand|appearance_student
-          cost: 0
-          permission: bought_student
         - item: wand|appearance_apprentice
-          cost: 0
-          permission: bought_apprentice
         - item: wand|appearance_master
-          cost: 0
-          permission: bought_master
         - item: wand|appearance_engineer
-          cost: 0
-          permission: bought_engineer
         - item: wand|appearance_conduit
-          cost: 0
-          permission: bought_conduit
