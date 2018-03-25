@@ -7,9 +7,14 @@ donatorshop:
         confirm_filler: stained_glass:3
         require_wand: true
         items:
-        - item: wand|appearance_beginner
-        - item: wand|appearance_student
-        - item: wand|appearance_apprentice
-        - item: wand|appearance_master
-        - item: wand|appearance_engineer
-        - item: wand|appearance_conduit
+        - item: appearance_beginner
+        - item: appearance_student
+        - item: appearance_apprentice
+        - item: appearance_master
+        - item: appearance_engineer
+        - item: appearance_conduit
+        - item: appearance_moon
+        - item: appearance_magicka
+        - item: appearance_spire
+        - item: appearance_claw
+        - item: appearance_orb
