@@ -23,8 +23,8 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.action.GUIAction;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -57,6 +57,13 @@ public class InventoryController implements Listener {
         if (activeGUI != null) {
             activeGUI.dragged(event);
             return;
+        }
+
+        // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
+        // This could possibly be narrowed down to events only effecting held item slots and armor
+        ItemStack oldCursor = event.getOldCursor();
+        if (oldCursor.hasItemMeta() && Wand.isWand(InventoryUtils.makeReal(oldCursor))) {
+            controller.onArmorUpdated(mage);
         }
 
         if (!enableItemHacks) return;
@@ -96,13 +103,13 @@ public class InventoryController implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        //controller.getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+        // controller.getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in " + event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
 
         if (event.isCancelled()) return;
         if (!(event.getWhoClicked() instanceof Player)) return;
 
         Player player = (Player)event.getWhoClicked();
-        final com.elmakers.mine.bukkit.magic.Mage mage = controller.getMage(player);
+        final Mage mage = controller.getMage(player);
 
         GUIAction gui = mage.getActiveGUI();
         if (gui != null)
@@ -431,7 +438,7 @@ public class InventoryController implements Listener {
 
         // Update the active wand, it may have changed around
         Player player = (Player)event.getPlayer();
-        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(player);
+        Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
 
         Wand previousWand = mage.getActiveWand();
@@ -475,7 +482,7 @@ public class InventoryController implements Listener {
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
         Player player = (Player)event.getPlayer();
-        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(player);
+        Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
 
         mage.setOpenCooldown(openCooldown);

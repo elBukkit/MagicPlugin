@@ -2,7 +2,8 @@
 
 ## 7.4
 
- - Potion effects on passive wands don't work if dragging into an armor slot? (reported)
+ - Fix all the new warnings ...
+
  - Optional lore on wands to say which classes they work with
  - Option for Selector for switch class rather than unlock class
 

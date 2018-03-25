@@ -4,6 +4,7 @@
 
  - Fix automata spawning via MagicWorlds
  - Add Light Arrow to Magic Bow progression
+ - Fix magic armor not always updating due to inventory drag event
 
 # 7.3.4
 
