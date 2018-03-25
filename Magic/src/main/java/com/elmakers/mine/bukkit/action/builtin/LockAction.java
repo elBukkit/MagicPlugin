@@ -124,8 +124,8 @@ public class LockAction extends BaseSpellAction
         if (!result) {
             mage.sendDebugMessage("Failed to lock");
         }
-		return result ? SpellResult.CAST : SpellResult.FAIL;
-	}
+        return result ? SpellResult.CAST : SpellResult.FAIL;
+    }
 
     protected void giveKey(Mage mage, String keyName, String keyDescription) {
         if (!InventoryUtils.hasItem(mage.getInventory(), keyName)) {

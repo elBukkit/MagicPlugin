@@ -19,48 +19,48 @@ public class BlockRecurse
     protected Set<MaterialAndData> replaceable = null;
     protected int maxRecursion = 8;
 
-	public void recurse(ActionContext action, CastContext context)
-	{
-		recurse(context.getTargetBlock(), action, context, null, 0);
-	}
+    public void recurse(ActionContext action, CastContext context)
+    {
+        recurse(context.getTargetBlock(), action, context, null, 0);
+    }
 
-	protected void recurse(Block block, ActionContext recurseAction, CastContext context, BlockFace nextFace, int rDepth)
-	{
-		if (nextFace != null)
-		{
-			block = block.getRelative(nextFace);
-		}
+    protected void recurse(Block block, ActionContext recurseAction, CastContext context, BlockFace nextFace, int rDepth)
+    {
+        if (nextFace != null)
+        {
+            block = block.getRelative(nextFace);
+        }
         if (replaceable != null && !replaceable.contains(new MaterialAndData(block)))
         {
             return;
         }
         UndoList undoList = context.getUndoList();
-		if (undoList != null)
-		{
-			if (undoList.contains(block))
-			{
-				return;
-			}
-			undoList.add(block);
-		}
+        if (undoList != null)
+        {
+            if (undoList.contains(block))
+            {
+                return;
+            }
+            undoList.add(block);
+        }
 
         context.setTargetLocation(block.getLocation());
-		if (recurseAction.perform(context) != SpellResult.CAST)
-		{
-			return;
-		}
+        if (recurseAction.perform(context) != SpellResult.CAST)
+        {
+            return;
+        }
 
-		if (rDepth < maxRecursion)
-		{
-			for (BlockFace face : BlockData.FACES)
-			{
-				if (nextFace == null || nextFace != BlockData.getReverseFace(face))
-				{
-					recurse(block, recurseAction, context, face, rDepth + 1);
-				}
-			}
-		}
-	}
+        if (rDepth < maxRecursion)
+        {
+            for (BlockFace face : BlockData.FACES)
+            {
+                if (nextFace == null || nextFace != BlockData.getReverseFace(face))
+                {
+                    recurse(block, recurseAction, context, face, rDepth + 1);
+                }
+            }
+        }
+    }
 
     public void addReplaceable(MaterialAndData material) {
         if (replaceable == null) {
@@ -74,10 +74,10 @@ public class BlockRecurse
     }
 
     public int getMaxRecursion() {
-		return maxRecursion;
-	}
+        return maxRecursion;
+    }
 
-	public void setMaxRecursion(int maxRecursion) {
-		this.maxRecursion = maxRecursion;
-	}
+    public void setMaxRecursion(int maxRecursion) {
+        this.maxRecursion = maxRecursion;
+    }
 }

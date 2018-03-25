@@ -15,25 +15,25 @@ public class CommandCitizensTrait extends CitizensTrait {
     private boolean console = true;
     private boolean op = false;
 
-	public CommandCitizensTrait() {
-		super("command");
-	}
+    public CommandCitizensTrait() {
+        super("command");
+    }
 
-	@Override
+    @Override
     public void load(DataKey data) {
         super.load(data);
         command = data.getString("command", null);
         console = data.getBoolean("console", true);
         op = data.getBoolean("op", false);
-	}
+    }
 
-	@Override
+    @Override
     public void save(DataKey data) {
         super.save(data);
         data.setString("command", command);
         data.setBoolean("console", console);;
         data.setBoolean("op", op);
-	}
+    }
 
     @Override
     public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event) {

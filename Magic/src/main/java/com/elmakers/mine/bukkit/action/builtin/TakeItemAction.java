@@ -18,80 +18,80 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class TakeItemAction extends BaseSpellAction
 {
-	private String displayName;
+    private String displayName;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-		displayName = parameters.getString("display_name", null);
-		if (displayName != null) {
-			displayName = ChatColor.translateAlternateColorCodes('&', displayName);
-		}
+        displayName = parameters.getString("display_name", null);
+        if (displayName != null) {
+            displayName = ChatColor.translateAlternateColorCodes('&', displayName);
+        }
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
-		Entity target = context.getTargetEntity();
-		if (target == null) {
-			return SpellResult.NO_TARGET;
-		}
+    @Override
+    public SpellResult perform(CastContext context)
+    {
+        Entity target = context.getTargetEntity();
+        if (target == null) {
+            return SpellResult.NO_TARGET;
+        }
 
-		ItemStack item = null;
-		if (target instanceof LivingEntity) {
-			LivingEntity livingEntity = (LivingEntity)target;
-			if (displayName == null) {
-				EntityEquipment equipment = livingEntity.getEquipment();
-				item = equipment.getItemInMainHand();;
-				equipment.setItemInMainHand(null);
-			} else {
-				if (!(target instanceof Player)) {
-					return SpellResult.PLAYER_REQUIRED;
-				}
-				Player targetPlayer = (Player)target;
-				PlayerInventory playerInventory = targetPlayer.getInventory();
-				for (int i = 0; i < playerInventory.getSize(); i++) {
-					ItemStack inventoryItem = playerInventory.getItem(i);
-					if (InventoryUtils.isEmpty(inventoryItem)) continue;
+        ItemStack item = null;
+        if (target instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity)target;
+            if (displayName == null) {
+                EntityEquipment equipment = livingEntity.getEquipment();
+                item = equipment.getItemInMainHand();;
+                equipment.setItemInMainHand(null);
+            } else {
+                if (!(target instanceof Player)) {
+                    return SpellResult.PLAYER_REQUIRED;
+                }
+                Player targetPlayer = (Player)target;
+                PlayerInventory playerInventory = targetPlayer.getInventory();
+                for (int i = 0; i < playerInventory.getSize(); i++) {
+                    ItemStack inventoryItem = playerInventory.getItem(i);
+                    if (InventoryUtils.isEmpty(inventoryItem)) continue;
 
-					ItemMeta meta = inventoryItem.getItemMeta();
-					if (meta == null || !meta.hasDisplayName()) continue;
-					if (meta.getDisplayName().equals(displayName)) {
-						item = inventoryItem;
-						playerInventory.setItem(i, null);
-						break;
-					}
-				}
-			}
-		} else if (target instanceof Item) {
-			Item itemEntity = (Item)target;
-			item = itemEntity.getItemStack();
-			if (displayName != null) {
-				ItemMeta itemMeta = item.getItemMeta();
-				if (itemMeta == null || !itemMeta.hasDisplayName() || !itemMeta.getDisplayName().equals(displayName)) {
-					item = null;
-				}
-			}
-			if (item != null) {
-				itemEntity.remove();
-			}
-		}
+                    ItemMeta meta = inventoryItem.getItemMeta();
+                    if (meta == null || !meta.hasDisplayName()) continue;
+                    if (meta.getDisplayName().equals(displayName)) {
+                        item = inventoryItem;
+                        playerInventory.setItem(i, null);
+                        break;
+                    }
+                }
+            }
+        } else if (target instanceof Item) {
+            Item itemEntity = (Item)target;
+            item = itemEntity.getItemStack();
+            if (displayName != null) {
+                ItemMeta itemMeta = item.getItemMeta();
+                if (itemMeta == null || !itemMeta.hasDisplayName() || !itemMeta.getDisplayName().equals(displayName)) {
+                    item = null;
+                }
+            }
+            if (item != null) {
+                itemEntity.remove();
+            }
+        }
 
-		if (InventoryUtils.isEmpty(item)) {
-			return SpellResult.NO_TARGET;
-		}
+        if (InventoryUtils.isEmpty(item)) {
+            return SpellResult.NO_TARGET;
+        }
 
-		context.getMage().giveItem(item);
+        context.getMage().giveItem(item);
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return false;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return false;
+    }
 
     @Override
     public boolean requiresTargetEntity()

@@ -66,23 +66,23 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected Map<Long, BlockData>          watching;
     private boolean                         loading = false;
 
-    protected Set<Entity> 	                entities;
-    protected LinkedList<Runnable>			runnables;
-    protected HashMap<UUID, EntityData> 	modifiedEntities;
+    protected Set<Entity>                     entities;
+    protected LinkedList<Runnable>            runnables;
+    protected HashMap<UUID, EntityData>     modifiedEntities;
 
     protected WeakReference<CastContext>    context;
 
-    protected Mage			        owner;
-    protected Plugin		   	    plugin;
+    protected Mage                    owner;
+    protected Plugin                   plugin;
 
     protected boolean               undone              = false;
-    protected int                  	timeToLive          = 0;
+    protected int                      timeToLive          = 0;
     protected ModifyType            modifyType           = ModifyType.NO_PHYSICS;
 
-    protected boolean				bypass		 	    = false;
-    protected boolean				hasBeenScheduled    = false;
-    protected final long			createdTime;
-    protected long					modifiedTime;
+    protected boolean                bypass                 = false;
+    protected boolean                hasBeenScheduled    = false;
+    protected final long            createdTime;
+    protected long                    modifiedTime;
     protected long                  scheduledTime;
     protected double                speed = 0;
 
@@ -94,7 +94,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected UndoList              next;
     protected UndoList              previous;
 
-    protected String				name;
+    protected String                name;
 
     private boolean                 consumed = false;
     private boolean                 undoEntityEffects = true;
@@ -141,8 +141,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         return (
             (blockList == null || blockList.isEmpty())
-        && 	(entities == null || entities.isEmpty())
-        && 	(runnables == null || runnables.isEmpty()));
+        &&     (entities == null || entities.isEmpty())
+        &&     (runnables == null || runnables.isEmpty()));
     }
 
     @Override

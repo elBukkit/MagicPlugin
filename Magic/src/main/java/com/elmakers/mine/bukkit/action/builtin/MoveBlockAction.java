@@ -24,10 +24,10 @@ public class MoveBlockAction extends BaseSpellAction
         setTarget = parameters.getBoolean("set_target", false);
     }
 
-	@Override
+    @Override
     public SpellResult perform(CastContext context)
-	{
-		Block targetBlock = context.getTargetBlock();
+    {
+        Block targetBlock = context.getTargetBlock();
         if (!context.isDestructible(targetBlock))
         {
             return SpellResult.NO_TARGET;
@@ -39,7 +39,7 @@ public class MoveBlockAction extends BaseSpellAction
         }
 
         double distanceSquared = offset.lengthSquared();
-		Block moveToBlock = targetBlock;
+        Block moveToBlock = targetBlock;
         int distance = 0;
         Vector moveBlock = offset.clone().normalize();
         while (distance * distance < distanceSquared) {
@@ -49,9 +49,9 @@ public class MoveBlockAction extends BaseSpellAction
             }
             distance++;
         }
-		if (!context.hasBuildPermission(moveToBlock)) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
+        if (!context.hasBuildPermission(moveToBlock)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
 
         MaterialAndData blockState = new MaterialAndData(targetBlock);
         context.registerForUndo(targetBlock);
@@ -74,8 +74,8 @@ public class MoveBlockAction extends BaseSpellAction
         blockState.modify(moveToBlock);
         context.registerBreakable(moveToBlock, 1);
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public boolean requiresTarget() {

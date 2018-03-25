@@ -31,12 +31,12 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MagicMobCommandExecutor extends MagicTabExecutor {
-	public MagicMobCommandExecutor(MagicAPI api) {
-		super(api);
-	}
+    public MagicMobCommandExecutor(MagicAPI api) {
+        super(api);
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!api.hasPermission(sender, "Magic.commands.mmob"))
         {
             sendNoPermission(sender);
@@ -44,10 +44,10 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0)
-		{
+        {
             sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list] <type> [count]");
-			return true;
-		}
+            return true;
+        }
 
         if (args[0].equalsIgnoreCase("list"))
         {
@@ -166,7 +166,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
         sender.sendMessage(ChatColor.AQUA + "Spawned mob: " + ChatColor.LIGHT_PURPLE + name);
         return true;
-	}
+    }
 
     protected void onListMobs(CommandSender sender) {
         Map<String, Integer> mobCounts = new HashMap<>();
@@ -330,28 +330,28 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         sender.sendMessage("Removed " + removed + " magic mobs");
     }
 
-	@Override
-	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<>();
+    @Override
+    public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+        List<String> options = new ArrayList<>();
         if (!sender.hasPermission("Magic.commands.mmob")) return options;
 
-		if (args.length == 1) {
+        if (args.length == 1) {
             options.add("spawn");
             options.add("list");
             options.add("clear");
-		} else if (args.length == 2 && (args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("clear"))) {
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("clear"))) {
             options.addAll(api.getController().getMobKeys());
             for (EntityType entityType : EntityType.values()) {
                 if (entityType.isAlive() && entityType.isSpawnable()) {
                     options.add(entityType.name().toLowerCase());
                 }
             }
-		} else if (args.length == 3 && args[0].equalsIgnoreCase("clear")) {
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("clear")) {
             List<World> worlds = api.getPlugin().getServer().getWorlds();
             for (World world : worlds) {
                 options.add(world.getName());
             }
         }
-		return options;
-	}
+        return options;
+    }
 }

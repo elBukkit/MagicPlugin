@@ -108,27 +108,27 @@ public class FireworkAction extends BaseProjectileAction
 
         track(context, firework);
         return checkTracking(context);
-	}
+    }
 
-	protected Color getColor(String name) {
-		try {
-			Field colorConstant = Color.class.getField(name.toUpperCase());
-			return (Color)colorConstant.get(null);
-		} catch (Exception ignored) {
-		}
+    protected Color getColor(String name) {
+        try {
+            Field colorConstant = Color.class.getField(name.toUpperCase());
+            return (Color)colorConstant.get(null);
+        } catch (Exception ignored) {
+        }
 
-		return Color.WHITE;
-	}
+        return Color.WHITE;
+    }
 
-	protected Type getType(String name) {
-		for (Type t : Type.values()) {
-			if (t.name().equalsIgnoreCase(name)) {
-				return t;
-			}
-		}
+    protected Type getType(String name) {
+        for (Type t : Type.values()) {
+            if (t.name().equalsIgnoreCase(name)) {
+                return t;
+            }
+        }
 
-		return Type.BALL;
-	}
+        return Type.BALL;
+    }
 
     @Override
     public boolean requiresTarget() {

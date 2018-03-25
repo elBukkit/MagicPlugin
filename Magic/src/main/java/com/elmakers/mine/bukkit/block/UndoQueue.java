@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 {
-    private final Mage					owner;
+    private final Mage                    owner;
     private UndoList                    head = null;
     private UndoList                    tail = null;
     private int                         scheduledSize = 0;

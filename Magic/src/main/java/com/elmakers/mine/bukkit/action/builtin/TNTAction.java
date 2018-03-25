@@ -33,7 +33,7 @@ public class TNTAction extends BaseProjectileAction
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
-		track = true;
+        track = true;
         super.prepare(context, parameters);
         size = parameters.getInt("size", 6);
         count = parameters.getInt("count", 1);
@@ -43,74 +43,74 @@ public class TNTAction extends BaseProjectileAction
         velocity = parameters.getDouble("tnt_velocity", 1.0);
     }
 
-	@Override
-	public SpellResult start(CastContext context) {
-		Mage mage = context.getMage();
+    @Override
+    public SpellResult start(CastContext context) {
+        Mage mage = context.getMage();
         LivingEntity living = mage.getLivingEntity();
-		MageController controller = context.getController();
+        MageController controller = context.getController();
         int size = (int)(mage.getRadiusMultiplier() * this.size);
 
-		Location loc = context.getEyeLocation();
-		if (loc == null) {
-			return SpellResult.LOCATION_REQUIRED;
-		}
-		if (!context.hasBreakPermission(loc.getBlock())) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
+        Location loc = context.getEyeLocation();
+        if (loc == null) {
+            return SpellResult.LOCATION_REQUIRED;
+        }
+        if (!context.hasBreakPermission(loc.getBlock())) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
 
-		final Random rand = new Random();
-		for (int i = 0; i < count; i++)
-		{
-			Location targetLoc = loc.clone();
-			if (count > 1)
-			{
-				targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * count) - count);
-				targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * count) - count);
-			}
-			TNTPrimed grenade = (TNTPrimed)context.getWorld().spawnEntity(targetLoc, EntityType.PRIMED_TNT);
-			if (grenade == null) {
-				return SpellResult.FAIL;
-			}
+        final Random rand = new Random();
+        for (int i = 0; i < count; i++)
+        {
+            Location targetLoc = loc.clone();
+            if (count > 1)
+            {
+                targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * count) - count);
+                targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * count) - count);
+            }
+            TNTPrimed grenade = (TNTPrimed)context.getWorld().spawnEntity(targetLoc, EntityType.PRIMED_TNT);
+            if (grenade == null) {
+                return SpellResult.FAIL;
+            }
             if (living != null) {
                 CompatibilityUtils.setTNTSource(grenade, living);
             }
-			if (velocity > 0) {
-				Vector aim = context.getDirection();
-				SafetyUtils.setVelocity(grenade, aim.multiply(velocity));
-			}
-			grenade.setYield(size);
-			grenade.setFuseTicks(fuse);
-			grenade.setIsIncendiary(useFire);
-			if (!breakBlocks)
-			{
-				grenade.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
-			}
-			track(context, grenade);
-		}
+            if (velocity > 0) {
+                Vector aim = context.getDirection();
+                SafetyUtils.setVelocity(grenade, aim.multiply(velocity));
+            }
+            grenade.setYield(size);
+            grenade.setFuseTicks(fuse);
+            grenade.setIsIncendiary(useFire);
+            if (!breakBlocks)
+            {
+                grenade.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
+            }
+            track(context, grenade);
+        }
 
-		return checkTracking(context);
-	}
+        return checkTracking(context);
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
-		super.getParameterNames(spell, parameters);
-		parameters.add("size");
-		parameters.add("count");
-		parameters.add("fuse");
-		parameters.add("fire");
-		parameters.add("break_blocks");
-	}
+        super.getParameterNames(spell, parameters);
+        parameters.add("size");
+        parameters.add("count");
+        parameters.add("fuse");
+        parameters.add("fire");
+        parameters.add("break_blocks");
+    }
 
-	@Override
-	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-		if (parameterKey.equals("fire") || parameterKey.equals("break_blocks")) {
-			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
-		} else if (parameterKey.equals("size") || parameterKey.equals("count") || parameterKey.equals("fuse")) {
-			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
-		} else {
-			super.getParameterOptions(spell, parameterKey, examples);
-		}
-	}
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("fire") || parameterKey.equals("break_blocks")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else if (parameterKey.equals("size") || parameterKey.equals("count") || parameterKey.equals("fuse")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
+    }
 
     @Override
     public boolean isUndoable()
@@ -118,13 +118,13 @@ public class TNTAction extends BaseProjectileAction
         return true;
     }
 
-	@Override
-	public boolean requiresBuildPermission() {
-		return useFire;
-	}
+    @Override
+    public boolean requiresBuildPermission() {
+        return useFire;
+    }
 
-	@Override
-	public boolean requiresBreakPermission() {
-		return breakBlocks;
-	}
+    @Override
+    public boolean requiresBreakPermission() {
+        return breakBlocks;
+    }
 }

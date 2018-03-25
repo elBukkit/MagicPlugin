@@ -9,17 +9,17 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 @Deprecated
 public class WeatherSpell extends BaseSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		World world = getWorld();
-		boolean hasStorm = world.hasStorm();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        World world = getWorld();
+        boolean hasStorm = world.hasStorm();
 
-		if (hasStorm)
-		{
-			world.setStorm(false);
-			world.setThundering(false);
-			/*
+        if (hasStorm)
+        {
+            world.setStorm(false);
+            world.setThundering(false);
+            /*
             boolean hasThunder = world.isThundering();
             if (hasThunder)
             {
@@ -30,15 +30,15 @@ public class WeatherSpell extends BaseSpell
                 world.setThundering(true);
                 castMessage("You anger the storm");
             }
-			 */
-		}
-		else
-		{
-			world.setStorm(true);
-			// This is mainly so we can have different cast messages and effects, but is a bit of a hack.
-			return SpellResult.ALTERNATE;
-		}
-		return SpellResult.CAST;
-	}
+             */
+        }
+        else
+        {
+            world.setStorm(true);
+            // This is mainly so we can have different cast messages and effects, but is a bit of a hack.
+            return SpellResult.ALTERNATE;
+        }
+        return SpellResult.CAST;
+    }
 
 }

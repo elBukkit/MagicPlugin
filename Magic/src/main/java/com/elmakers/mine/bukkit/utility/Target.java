@@ -39,14 +39,14 @@ public class Target implements Comparable<Target>
     private Location location;
     private MaterialAndData locationMaterial;
     private WeakReference<Entity> entityRef;
-    private Mage	 mage;
+    private Mage     mage;
     private boolean  reverseDistance = false;
 
     private double   distanceSquared    = 100000;
     private double   angle              = 10000;
     private int      score              = 0;
 
-    private Object	 extraData	 = null;
+    private Object     extraData     = null;
 
     public Target(Location sourceLocation)
     {

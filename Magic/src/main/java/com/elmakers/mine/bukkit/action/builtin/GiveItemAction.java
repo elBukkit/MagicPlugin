@@ -82,7 +82,7 @@ public class GiveItemAction extends BaseSpellAction
         if (targetEntity == null) {
             return SpellResult.NO_TARGET;
         }
-		if (!(targetEntity instanceof Player)) {
+        if (!(targetEntity instanceof Player)) {
             return SpellResult.PLAYER_REQUIRED;
         }
 
@@ -100,7 +100,7 @@ public class GiveItemAction extends BaseSpellAction
         mage.giveItem(InventoryUtils.getCopy(item));
         DeprecatedUtils.updateInventory(player);
         return SpellResult.CAST;
-	}
+    }
 
     @Override
     public String transformMessage(String message) {

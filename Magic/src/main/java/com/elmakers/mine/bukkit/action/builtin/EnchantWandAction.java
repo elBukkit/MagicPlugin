@@ -49,8 +49,8 @@ public class EnchantWandAction extends BaseSpellAction
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
         Wand wand = context.getWand();
-		Player player = mage.getPlayer();
-		if (player == null) {
+        Player player = mage.getPlayer();
+        if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
         if (levels <= 0) {
@@ -106,7 +106,7 @@ public class EnchantWandAction extends BaseSpellAction
             mage.setLevel(Math.max(0, mage.getLevel() - levelsUsed));
         }
         return SpellResult.CAST;
-	}
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

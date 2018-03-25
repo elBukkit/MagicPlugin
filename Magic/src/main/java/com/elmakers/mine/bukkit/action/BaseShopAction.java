@@ -605,8 +605,8 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     public SpellResult showItems(CastContext context, List<ShopItem> items) {
         Mage mage = context.getMage();
         this.context = context;
-		Player player = mage.getPlayer();
-		if (player == null) {
+        Player player = mage.getPlayer();
+        if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
 
@@ -668,7 +668,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         mage.activateGUI(this, displayInventory);
 
         return SpellResult.PENDING;
-	}
+    }
 
     protected String getInventoryTitle(CastContext context)
     {

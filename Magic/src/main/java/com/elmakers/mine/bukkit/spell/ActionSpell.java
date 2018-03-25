@@ -77,7 +77,7 @@ public class ActionSpell extends BrushSpell
         }
         else if (mage.isJumping())
         {
-        	alternateParameters = getHandlerParameters("alternate_jumping");
+            alternateParameters = getHandlerParameters("alternate_jumping");
         }
         if (alternateParameters != null)
         {
@@ -122,8 +122,8 @@ public class ActionSpell extends BrushSpell
         }
         else if (jumpHandler != null && mage.isJumping())
         {
-        	result = SpellResult.ALTERNATE_JUMPING;
-        	currentHandler = jumpHandler;
+            result = SpellResult.ALTERNATE_JUMPING;
+            currentHandler = jumpHandler;
         }
 
         if (isUndoable())

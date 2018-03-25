@@ -20,11 +20,11 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class UndoableSpell extends TargetingSpell {
-    private UndoList 		modifiedBlocks 			= null;
-    private boolean 		undoEntityEffects		= false;
-    private Set<EntityType> undoEntityTypes     	= null;
-    private boolean 		bypassUndo				= false;
-    private int	 			autoUndo				= 0;
+    private UndoList         modifiedBlocks             = null;
+    private boolean         undoEntityEffects        = false;
+    private Set<EntityType> undoEntityTypes         = null;
+    private boolean         bypassUndo                = false;
+    private int                 autoUndo                = 0;
     private double          undoSpeed               = 0;
 
     @Override

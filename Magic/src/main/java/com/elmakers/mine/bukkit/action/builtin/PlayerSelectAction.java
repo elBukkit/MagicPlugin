@@ -103,8 +103,8 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     public SpellResult start(CastContext context) {
         Mage mage = context.getMage();
         MageController controller = context.getController();
-		Player player = mage.getPlayer();
-		if (player == null) {
+        Player player = mage.getPlayer();
+        if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
 
@@ -165,7 +165,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
         mage.activateGUI(this, displayInventory);
 
         return SpellResult.NO_ACTION;
-	}
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {

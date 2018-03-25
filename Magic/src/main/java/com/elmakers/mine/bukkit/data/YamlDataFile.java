@@ -6,37 +6,37 @@ import java.util.logging.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class YamlDataFile extends YamlConfiguration {
-	protected final File file;
-	protected final Logger logger;
+    protected final File file;
+    protected final Logger logger;
 
-	public YamlDataFile(Logger logger, File file) {
-		this.file = file;
-		this.logger = logger;
-	}
+    public YamlDataFile(Logger logger, File file) {
+        this.file = file;
+        this.logger = logger;
+    }
 
-	public YamlDataFile(Logger logger, String filename) {
-		file = new File(filename);
-		this.logger = logger;
-	}
+    public YamlDataFile(Logger logger, String filename) {
+        file = new File(filename);
+        this.logger = logger;
+    }
 
-	public void load() {
-		try {
-			load(file);
-		} catch (Exception ex) {
-			logger.warning(ex.getMessage());
-			logger.warning("Error loading data file " + file.getName());
-		}
-	}
+    public void load() {
+        try {
+            load(file);
+        } catch (Exception ex) {
+            logger.warning(ex.getMessage());
+            logger.warning("Error loading data file " + file.getName());
+        }
+    }
 
-	public void save() {
-		try {
+    public void save() {
+        try {
             File tempFile = new File(file.getAbsolutePath() + ".tmp");
             if (tempFile.exists()) {
                 logger.warning("Temp file for " + file.getName() + "exists, deleting");
                 tempFile.delete();
             }
             File backupFile = new File(file.getAbsolutePath() + ".bak");
-			save(tempFile);
+            save(tempFile);
             if (backupFile.exists()) {
                 backupFile.delete();
             }
@@ -45,11 +45,11 @@ public class YamlDataFile extends YamlConfiguration {
                 targetFile.renameTo(backupFile);
             }
             tempFile.renameTo(file);
-		} catch (Exception ex) {
-			logger.warning(ex.getMessage());
-			logger.warning("Error saving data file " + file.getName());
-		}
-	}
+        } catch (Exception ex) {
+            logger.warning(ex.getMessage());
+            logger.warning("Error saving data file " + file.getName());
+        }
+    }
 
     public File getFile() {
         return file;

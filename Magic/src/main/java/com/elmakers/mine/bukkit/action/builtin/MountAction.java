@@ -17,12 +17,12 @@ public class MountAction extends BaseSpellAction {
         eject = parameters.getBoolean("eject", false);
     }
 
-	@Override
+    @Override
     public SpellResult perform(CastContext context) {
-		LivingEntity source = context.getLivingEntity();
-		if (source == null) {
-			return SpellResult.LIVING_ENTITY_REQUIRED;
-		}
+        LivingEntity source = context.getLivingEntity();
+        if (source == null) {
+            return SpellResult.LIVING_ENTITY_REQUIRED;
+        }
 
         // Make it so this spell can be used to get someone off of you
         if (eject) {
@@ -34,10 +34,10 @@ public class MountAction extends BaseSpellAction {
         if (current != null) {
             current.eject();
         }
-		Entity targetEntity = context.getTargetEntity();
-		if (targetEntity == null) {
-			return SpellResult.NO_TARGET;
-		}
+        Entity targetEntity = context.getTargetEntity();
+        if (targetEntity == null) {
+            return SpellResult.NO_TARGET;
+        }
 
         if (targetEntity == source.getPassenger() || source == targetEntity.getPassenger()) {
             return SpellResult.NO_TARGET;
@@ -46,8 +46,8 @@ public class MountAction extends BaseSpellAction {
         while (targetEntity instanceof ComplexEntityPart) {
             targetEntity = ((ComplexEntityPart)targetEntity).getParent();
         }
-		targetEntity.setPassenger(source);
+        targetEntity.setPassenger(source);
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 }

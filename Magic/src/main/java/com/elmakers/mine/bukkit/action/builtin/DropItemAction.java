@@ -36,7 +36,7 @@ public class DropItemAction extends BaseSpellAction
         }
         context.getTargetLocation().getWorld().dropItem(context.getTargetLocation(), item);
         return SpellResult.CAST;
-	}
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

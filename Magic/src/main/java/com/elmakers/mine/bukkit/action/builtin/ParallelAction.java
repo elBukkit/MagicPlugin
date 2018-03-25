@@ -37,7 +37,7 @@ public class ParallelAction extends CompoundAction
     }
 
     @Override
-	public SpellResult perform(CastContext context) {
+    public SpellResult perform(CastContext context) {
         SpellResult result = SpellResult.NO_ACTION;
         int startingWork = context.getWorkAllowed();
         List<ActionContext> subActions = new ArrayList<>(remaining);
@@ -54,6 +54,6 @@ public class ParallelAction extends CompoundAction
             result = result.min(actionResult);
         }
 
-		return result;
-	}
+        return result;
+    }
 }

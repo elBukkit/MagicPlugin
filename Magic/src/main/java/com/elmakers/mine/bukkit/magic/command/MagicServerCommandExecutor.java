@@ -12,12 +12,12 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicServerCommandExecutor extends MagicTabExecutor {
-	public MagicServerCommandExecutor(MagicAPI api) {
-		super(api);
-	}
+    public MagicServerCommandExecutor(MagicAPI api) {
+        super(api);
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String server;
         Player player;
         if (sender instanceof Player)
@@ -55,16 +55,16 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
         }
         api.getController().sendPlayerToServer(player, server);
         return true;
-	}
+    }
 
-	@Override
-	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<>();
+    @Override
+    public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+        List<String> options = new ArrayList<>();
         if (!sender.hasPermission("Magic.commands.mserver")) return options;
 
-		if (args.length == 1) {
+        if (args.length == 1) {
             options.addAll(api.getPlayerNames());
-		}
-		return options;
-	}
+        }
+        return options;
+    }
 }

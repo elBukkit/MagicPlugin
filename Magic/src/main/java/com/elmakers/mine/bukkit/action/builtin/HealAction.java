@@ -20,7 +20,7 @@ public class HealAction extends BaseSpellAction
 {
     private double percentage;
     private double amount;
-	private double maxDistanceSquared;
+    private double maxDistanceSquared;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -28,18 +28,18 @@ public class HealAction extends BaseSpellAction
         super.prepare(context, parameters);
         percentage = parameters.getDouble("percentage", 0);
         amount = parameters.getDouble("amount", 20);
-		double maxDistance = parameters.getDouble("heal_max_distance");
-		maxDistanceSquared = maxDistance * maxDistance;
+        double maxDistance = parameters.getDouble("heal_max_distance");
+        maxDistanceSquared = maxDistance * maxDistance;
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Entity entity = context.getTargetEntity();
-		if (!(entity instanceof LivingEntity))
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (!(entity instanceof LivingEntity))
+        {
+            return SpellResult.NO_TARGET;
+        }
 
         LivingEntity targetEntity = (LivingEntity)entity;
         if (targetEntity.getHealth() == targetEntity.getMaxHealth() || targetEntity.isDead())
@@ -77,8 +77,8 @@ public class HealAction extends BaseSpellAction
         context.registerModified(targetEntity);
         targetEntity.setHealth(Math.min(targetEntity.getHealth() + healAmount, targetEntity.getMaxHealth()));
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public boolean isUndoable()

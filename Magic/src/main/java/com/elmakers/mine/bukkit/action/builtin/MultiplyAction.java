@@ -67,7 +67,7 @@ public class MultiplyAction extends CompoundAction
     }
 
     @Override
-	public SpellResult perform(CastContext context) {
+    public SpellResult perform(CastContext context) {
         SpellResult result = SpellResult.NO_ACTION;
         if (remaining.size() == 0) return result;
 
@@ -86,6 +86,6 @@ public class MultiplyAction extends CompoundAction
             result = result.min(actionResult);
         }
 
-		return result;
-	}
+        return result;
+    }
 }

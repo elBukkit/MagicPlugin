@@ -35,10 +35,10 @@ public class RepeatAction extends CompoundAction
         current = 0;
     }
 
-	@Override
-	public SpellResult step(CastContext context) {
+    @Override
+    public SpellResult step(CastContext context) {
         return startActions();
-	}
+    }
 
     @Override
     public boolean next(CastContext context) {

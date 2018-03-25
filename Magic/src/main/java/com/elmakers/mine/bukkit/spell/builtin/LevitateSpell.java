@@ -60,10 +60,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
 {
     private static final BlockFace[] CHECK_FACES = {BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH};
 
-	private static final float defaultFlySpeed = 0.1f;
+    private static final float defaultFlySpeed = 0.1f;
     private static Class<?> worldClass;
 
-	private final int safetyLength = 10000;
+    private final int safetyLength = 10000;
 
     private float flySpeed = 0;
     private int flyDelay = 2;
@@ -452,9 +452,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
         return true;
     }
 
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
         Player player = mage.getPlayer();
         if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
@@ -471,7 +471,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         castBoost = parameters.getDouble("boost", 0);
         deactivateFrequency = parameters.getInt("auto_deactivate", 10);
         yBoost = parameters.getDouble("y_boost", 2);
-		flySpeed = (float)parameters.getDouble("speed", 0);
+        flySpeed = (float)parameters.getDouble("speed", 0);
         thrustSpeed = (float)parameters.getDouble("thrust", 0);
         thrustFrequency = parameters.getInt("thrust_interval", thrustFrequency);
         autoDeactivateHeight = parameters.getInt("auto_deactivate", 0);
@@ -598,7 +598,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         castBoost += mage.getPower() * boostBonus;
         maxMountBoost += mage.getPower() * maxSpeedBonus;
 
-		if (isActive()) {
+        if (isActive()) {
             if (castBoost != 0) {
                 boostTicksRemaining += boostTicks;
                 return SpellResult.ALTERNATE;
@@ -606,8 +606,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 return SpellResult.NO_ACTION;
             }
             land();
-			return SpellResult.DEACTIVATE;
-		}
+            return SpellResult.DEACTIVATE;
+        }
 
         if (mountType != null) {
             Location testLocation = getEyeLocation();
@@ -631,10 +631,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
             heldItemSlot = inventory.getHeldItemSlot();
         }
 
-		activate();
+        activate();
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     protected void parseSoundEffect(String effectSoundName) {
         if (effectSoundName.length() > 0) {
@@ -692,8 +692,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         deactivate(true, false);
     }
 
-	@Override
-	public void onDeactivate() {
+    @Override
+    public void onDeactivate() {
         if (safetyLength > 0) {
             mage.enableFallProtection(safetyLength, this);
         }
@@ -735,9 +735,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (player == null) return;
 
         controller.removeFlightExemption(player);
-		if (flySpeed > 0 && flight) {
-			player.setFlySpeed(defaultFlySpeed);
-		}
+        if (flySpeed > 0 && flight) {
+            player.setFlySpeed(defaultFlySpeed);
+        }
 
         if (heldItem != null) {
             Inventory inventory = mage.getInventory();
@@ -756,12 +756,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
             player.setFlying(false);
             player.setAllowFlight(false);
         }
-	}
+    }
 
-	@Override
-	public void onActivate() {
-		final Player player = mage.getPlayer();
-		if (player == null) return;
+    @Override
+    public void onActivate() {
+        final Player player = mage.getPlayer();
+        if (player == null) return;
 
         // Prevent the player from death by fall
         direction = null;
@@ -789,9 +789,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
             heldItem = null;
         }
 
-		if (flySpeed > 0) {
-			player.setFlySpeed(flySpeed * defaultFlySpeed);
-		}
+        if (flySpeed > 0) {
+            player.setFlySpeed(flySpeed * defaultFlySpeed);
+        }
 
         if (thrustSpeed > 0) {
             if (thrust != null) {
@@ -959,7 +959,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 }
             }, flyDelay);
         }
-	}
+    }
 
     protected void configureArmorStand(ArmorStand armorStand) {
         if (useHelmet) {

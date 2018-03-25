@@ -67,8 +67,8 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
         Mage mage = context.getMage();
         CasterProperties casterProperties = context.getActiveProperties();
         this.context = context;
-		Player player = mage.getPlayer();
-		if (player == null) {
+        Player player = mage.getPlayer();
+        if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
         Collection<String> spells = casterProperties.getSpells();
@@ -143,5 +143,5 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
         mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
-	}
+    }
 }

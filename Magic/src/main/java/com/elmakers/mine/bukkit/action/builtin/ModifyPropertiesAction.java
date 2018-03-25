@@ -53,21 +53,21 @@ public class ModifyPropertiesAction extends BaseSpellAction
     private String modifyTarget;
     private boolean upgrade;
 
-	private static class ModifyPropertyUndoAction implements Runnable
-	{
+    private static class ModifyPropertyUndoAction implements Runnable
+    {
         private final CasterProperties properties;
         private final ConfigurationSection original;
 
-		public ModifyPropertyUndoAction(ConfigurationSection original, CasterProperties properties) {
+        public ModifyPropertyUndoAction(ConfigurationSection original, CasterProperties properties) {
             this.original = original;
             this.properties = properties;
-		}
+        }
 
-		@Override
-		public void run() {
-		    properties.configure(original);
-		}
-	}
+        @Override
+        public void run() {
+            properties.configure(original);
+        }
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -93,9 +93,9 @@ public class ModifyPropertiesAction extends BaseSpellAction
         }
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         if (modify == null) {
             return SpellResult.FAIL;
         }
@@ -164,8 +164,8 @@ public class ModifyPropertiesAction extends BaseSpellAction
         else
             properties.configure(changed);
         context.registerForUndo(new ModifyPropertyUndoAction(original, properties));
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)
@@ -190,9 +190,9 @@ public class ModifyPropertiesAction extends BaseSpellAction
         }
     }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return true;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 }

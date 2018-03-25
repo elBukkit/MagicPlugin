@@ -20,7 +20,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class LineAction extends CompoundAction
 {
-	private static final int DEFAULT_SIZE = 16;
+    private static final int DEFAULT_SIZE = 16;
     private boolean incrementData;
     private int size;
     private int startDistance;
@@ -97,7 +97,7 @@ public class LineAction extends CompoundAction
         actionContext.setTargetLocation(targetLocation);
     }
 
-	@Override
+    @Override
     public SpellResult step(CastContext context)
     {
         MaterialBrush brush = context.getBrush();
@@ -117,7 +117,7 @@ public class LineAction extends CompoundAction
         }
         context.playEffects("iterate");
         return startActions();
-	}
+    }
 
     @Override
     public boolean next(CastContext context) {

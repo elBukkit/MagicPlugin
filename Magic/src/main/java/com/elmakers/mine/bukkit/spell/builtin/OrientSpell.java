@@ -12,9 +12,9 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class OrientSpell extends TargetingSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
         Target target = getTarget();
         Entity entity = target.getEntity();
         if (entity == null) {
@@ -33,6 +33,6 @@ public class OrientSpell extends TargetingSpell
         location.setYaw((float)parameters.getDouble("yaw", 0));
         entity.teleport(location);
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 }

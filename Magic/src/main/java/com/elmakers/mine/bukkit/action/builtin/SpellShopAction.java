@@ -202,7 +202,7 @@ public class SpellShopAction extends BaseShopAction
         }
 
         return shopItems;
-	}
+    }
 
     @Nullable
     private ShopItem createShopItem(String key, Double worth, CastContext context) {

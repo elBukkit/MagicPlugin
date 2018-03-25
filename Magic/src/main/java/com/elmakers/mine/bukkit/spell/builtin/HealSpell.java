@@ -26,10 +26,10 @@ public class HealSpell extends TargetingSpell
     protected static final Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
     @Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
-		Entity targetEntity = target.getEntity();
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
+        Entity targetEntity = target.getEntity();
         if (targetEntity == null || !(targetEntity instanceof LivingEntity)) {
             return SpellResult.NO_TARGET;
         }
@@ -59,5 +59,5 @@ public class HealSpell extends TargetingSpell
             }
         }
         return SpellResult.CAST;
-	}
+    }
 }

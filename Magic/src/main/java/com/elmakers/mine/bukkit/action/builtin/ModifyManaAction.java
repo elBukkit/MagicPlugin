@@ -38,8 +38,8 @@ public class ModifyManaAction extends BaseSpellAction
         if (mage == null) {
             return SpellResult.NO_TARGET;
         }
-		Player player = mage.getPlayer();
-		if (player == null) {
+        Player player = mage.getPlayer();
+        if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
         double currentMana = mage.getMana();
@@ -58,7 +58,7 @@ public class ModifyManaAction extends BaseSpellAction
         mage.setMana((float)currentMana);
         mage.updateMana();
         return SpellResult.CAST;
-	}
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

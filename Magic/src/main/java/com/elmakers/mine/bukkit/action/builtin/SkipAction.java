@@ -25,8 +25,8 @@ public class SkipAction extends CompoundAction
         skipCounter = 0;
     }
 
-	@Override
-	public SpellResult step(CastContext context) {
+    @Override
+    public SpellResult step(CastContext context) {
         if (skipCounter++ <= skipCount)
         {
             return SpellResult.NO_ACTION;
@@ -36,7 +36,7 @@ public class SkipAction extends CompoundAction
             skipCounter = 0;
         }
         return startActions();
-	}
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

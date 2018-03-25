@@ -24,30 +24,30 @@ public class AirSupplyAction extends BaseSpellAction
         air = parameters.getInt("air", 0);
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
-		Entity entity = context.getTargetEntity();
+    @Override
+    public SpellResult perform(CastContext context)
+    {
+        Entity entity = context.getTargetEntity();
 
-		if (entity == null || !(entity instanceof LivingEntity)) {
-			return SpellResult.NO_TARGET;
-		}
-		LivingEntity livingEntity = (LivingEntity)entity;
+        if (entity == null || !(entity instanceof LivingEntity)) {
+            return SpellResult.NO_TARGET;
+        }
+        LivingEntity livingEntity = (LivingEntity)entity;
 
-		int airLevel = air;
-		if (airLevel > livingEntity.getMaximumAir()) {
-			airLevel = livingEntity.getMaximumAir();
-		}
-		context.registerModified(livingEntity);
-		livingEntity.setRemainingAir(airLevel);
-		return SpellResult.CAST;
-	}
+        int airLevel = air;
+        if (airLevel > livingEntity.getMaximumAir()) {
+            airLevel = livingEntity.getMaximumAir();
+        }
+        context.registerModified(livingEntity);
+        livingEntity.setRemainingAir(airLevel);
+        return SpellResult.CAST;
+    }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return true;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 
     @Override
     public boolean requiresTargetEntity()
@@ -55,18 +55,18 @@ public class AirSupplyAction extends BaseSpellAction
         return true;
     }
 
-	@Override
-	public void getParameterNames(Spell spell, Collection<String> parameters) {
-		super.getParameterNames(spell, parameters);
-		parameters.add("air");
-	}
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
+        parameters.add("air");
+    }
 
-	@Override
-	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-		if (parameterKey.equals("air")) {
-			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
-		} else {
-			super.getParameterOptions(spell, parameterKey, examples);
-		}
-	}
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("air")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
+    }
 }

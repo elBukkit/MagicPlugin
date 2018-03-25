@@ -23,7 +23,7 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class ChangeWorldAction extends BaseTeleportAction
 {
-	private String targetWorldMessage = "";
+    private String targetWorldMessage = "";
     private Location targetLocation = null;
 
     @Override
@@ -131,7 +131,7 @@ public class ChangeWorldAction extends BaseTeleportAction
         return true;
     }
 
-	@Override
+    @Override
     public SpellResult perform(CastContext context) {
         Entity e = context.getTargetEntity();
         LivingEntity entity = e != null && e instanceof LivingEntity ? (LivingEntity)e : null;
@@ -140,9 +140,9 @@ public class ChangeWorldAction extends BaseTeleportAction
         }
 
         Location playerLocation = entity.getLocation();
-		if (targetLocation == null) {
-			return SpellResult.NO_TARGET;
-		}
+        if (targetLocation == null) {
+            return SpellResult.NO_TARGET;
+        }
 
         // Sanity check!
         targetLocation.setX(Math.min(targetLocation.getX(), 3.0E7D));
@@ -154,8 +154,8 @@ public class ChangeWorldAction extends BaseTeleportAction
         setTargetWorldName(context, targetLocation.getWorld().getName());
         teleport(context, entity, targetLocation);
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     protected World getWorld(CastContext context, String worldName, boolean loadWorld, World copyFrom) {
         World world = Bukkit.getWorld(worldName);
@@ -183,10 +183,10 @@ public class ChangeWorldAction extends BaseTeleportAction
         targetWorldMessage = messages.get("worlds." + worldName + ".name", worldName);
     }
 
-	@Override
-	public String transformMessage(String message) {
+    @Override
+    public String transformMessage(String message) {
         return message.replace("$world_name", targetWorldMessage);
-	}
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

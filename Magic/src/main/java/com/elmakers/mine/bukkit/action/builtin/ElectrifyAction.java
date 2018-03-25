@@ -10,36 +10,36 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class ElectrifyAction extends BaseSpellAction
 {
-	private boolean electrify;
+    private boolean electrify;
 
-	@Override
-	public void prepare(CastContext context, ConfigurationSection parameters)
-	{
-		super.prepare(context, parameters);
-		electrify = parameters.getBoolean("electrify", true);
-	}
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters)
+    {
+        super.prepare(context, parameters);
+        electrify = parameters.getBoolean("electrify", true);
+    }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
-		Entity entity = context.getTargetEntity();
+    @Override
+    public SpellResult perform(CastContext context)
+    {
+        Entity entity = context.getTargetEntity();
 
-		if (entity == null || !(entity instanceof Creeper)) {
-			return SpellResult.NO_TARGET;
-		}
-		Creeper creeper = (Creeper)entity;
-		if (creeper.isPowered() == electrify) {
-			return SpellResult.NO_ACTION;
-		}
-		creeper.setPowered(electrify);
-		return SpellResult.CAST;
-	}
+        if (entity == null || !(entity instanceof Creeper)) {
+            return SpellResult.NO_TARGET;
+        }
+        Creeper creeper = (Creeper)entity;
+        if (creeper.isPowered() == electrify) {
+            return SpellResult.NO_ACTION;
+        }
+        creeper.setPowered(electrify);
+        return SpellResult.CAST;
+    }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return false;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return false;
+    }
 
     @Override
     public boolean requiresTargetEntity()

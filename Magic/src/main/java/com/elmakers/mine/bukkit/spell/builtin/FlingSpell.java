@@ -22,92 +22,92 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 @Deprecated
 public class FlingSpell extends UndoableSpell implements Listener
 {
-	private long safetyLength = 20000;
-	private long lastFling = 0;
+    private long safetyLength = 20000;
+    private long lastFling = 0;
 
-	protected int defaultMaxSpeedAtElevation = 64;
-	protected double defaultMinMagnitude = 1.5;
-	protected double defaultMaxMagnitude = 4;
+    protected int defaultMaxSpeedAtElevation = 64;
+    protected double defaultMinMagnitude = 1.5;
+    protected double defaultMaxMagnitude = 4;
 
     private static final int minRingEffectRange = 2;
     private static final int maxRingEffectRange = 15;
     private static final int maxDamageAmount = 200;
 
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		int height = 0;
-		Block playerBlock = getLocation().getBlock();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        int height = 0;
+        Block playerBlock = getLocation().getBlock();
 
         LivingEntity entity = mage.getLivingEntity();
         if (entity == null) {
             return SpellResult.LIVING_ENTITY_REQUIRED;
         }
 
-		int maxSpeedAtElevation = parameters.getInt("cruising_altitude", defaultMaxSpeedAtElevation);
-		double minMagnitude = parameters.getDouble("min_speed", defaultMinMagnitude);
-		double maxMagnitude = parameters.getDouble("max_speed", defaultMaxMagnitude);
+        int maxSpeedAtElevation = parameters.getInt("cruising_altitude", defaultMaxSpeedAtElevation);
+        double minMagnitude = parameters.getDouble("min_speed", defaultMinMagnitude);
+        double maxMagnitude = parameters.getDouble("max_speed", defaultMaxMagnitude);
         safetyLength = parameters.getLong("safety", safetyLength);
 
-		while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
-		{
-			playerBlock = playerBlock.getRelative(BlockFace.DOWN);
-			height++;
-		}
+        while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
+        {
+            playerBlock = playerBlock.getRelative(BlockFace.DOWN);
+            height++;
+        }
 
-		double heightModifier = maxSpeedAtElevation > 0 ? ((double)height / maxSpeedAtElevation) : 1;
-		double magnitude = (minMagnitude + ((maxMagnitude - minMagnitude) * heightModifier));
+        double heightModifier = maxSpeedAtElevation > 0 ? ((double)height / maxSpeedAtElevation) : 1;
+        double magnitude = (minMagnitude + ((maxMagnitude - minMagnitude) * heightModifier));
 
-		Vector velocity = getDirection();
-		if (mage.getLocation().getBlockY() >= 256)
-		{
-			velocity.setY(0);
-		}
+        Vector velocity = getDirection();
+        if (mage.getLocation().getBlockY() >= 256)
+        {
+            velocity.setY(0);
+        }
 
-		velocity.multiply(magnitude);
+        velocity.multiply(magnitude);
 
         registerVelocity(entity);
         registerMoved(entity);
-		SafetyUtils.setVelocity(entity, velocity);
+        SafetyUtils.setVelocity(entity, velocity);
         if (safetyLength > 0) {
             mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
         }
-		lastFling = System.currentTimeMillis();
+        lastFling = System.currentTimeMillis();
         registerForUndo();
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent event)
-	{
-		if (event.getCause() != DamageCause.FALL) return;
+    {
+        if (event.getCause() != DamageCause.FALL) return;
 
-		mage.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
+        mage.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
 
-		if (lastFling == 0) return;
+        if (lastFling == 0) return;
 
-		if (lastFling + safetyLength > System.currentTimeMillis())
-		{
-			event.setCancelled(true);
-			lastFling = 0;
+        if (lastFling + safetyLength > System.currentTimeMillis())
+        {
+            event.setCancelled(true);
+            lastFling = 0;
 
             // Visual effect
             int ringEffectRange = (int)Math.ceil(((double)maxRingEffectRange - minRingEffectRange) * event.getDamage() / maxDamageAmount + minRingEffectRange);
             ringEffectRange = Math.min(maxRingEffectRange, ringEffectRange);
             playEffects("land", ringEffectRange);
-		}
-	}
+        }
+    }
 
-	@Override
-	public void getParameters(Collection<String> parameters)
-	{
-		super.getParameters(parameters);
-		parameters.add("cruising_altitude");
-		parameters.add("min_speed");
-		parameters.add("max_speed");
+    @Override
+    public void getParameters(Collection<String> parameters)
+    {
+        super.getParameters(parameters);
+        parameters.add("cruising_altitude");
+        parameters.add("min_speed");
+        parameters.add("max_speed");
         parameters.add("safety");
-	}
+    }
 
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()

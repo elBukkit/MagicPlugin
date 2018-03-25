@@ -186,8 +186,8 @@ public class RideEntityAction extends BaseSpellAction
     protected void remount(CastContext context) {
     }
 
-	@Override
-	public SpellResult perform(CastContext context) {
+    @Override
+    public SpellResult perform(CastContext context) {
         if (mount == null) {
             return mount(context);
         }
@@ -449,9 +449,9 @@ public class RideEntityAction extends BaseSpellAction
         }
 
         return SpellResult.PENDING;
-	}
+    }
 
-	@Override
+    @Override
     public void finish(CastContext context) {
         if (mount != null) {
             if (noTarget) {
@@ -525,11 +525,11 @@ public class RideEntityAction extends BaseSpellAction
         return false;
     }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return false;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return false;
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

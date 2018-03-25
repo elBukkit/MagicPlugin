@@ -6,9 +6,9 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class StopAction extends BaseSpellAction
 {
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         return SpellResult.STOP;
-	}
+    }
 }

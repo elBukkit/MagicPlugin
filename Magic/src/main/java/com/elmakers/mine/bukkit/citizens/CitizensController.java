@@ -7,9 +7,9 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.trait.TraitInfo;
 
 public class CitizensController {
-	private Citizens citizensPlugin;
+    private Citizens citizensPlugin;
 
-	public CitizensController(Plugin plugin) {
+    public CitizensController(Plugin plugin) {
         citizensPlugin = (Citizens)plugin;
 
         CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MagicCitizensTrait.class).withName("magic"));

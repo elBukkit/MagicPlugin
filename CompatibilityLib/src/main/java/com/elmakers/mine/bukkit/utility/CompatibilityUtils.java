@@ -221,9 +221,9 @@ public class CompatibilityUtils extends NMSUtils {
             case COURBET:
             case POOL:
             case SEA:
-            case SUNSET:	// Use same as 4x3
+            case SUNSET:    // Use same as 4x3
 
-                // 4x3
+            // 4x3
             case DONKEYKONG:
             case SKELETON:
                 if(facing == BlockFace.WEST)
@@ -233,18 +233,18 @@ public class CompatibilityUtils extends NMSUtils {
                 else
                     return loc;
 
-                // 2x2
+            // 2x2
             case BUST:
             case MATCH:
             case SKULL_AND_ROSES:
             case STAGE:
             case VOID:
-            case WITHER:	// Use same as 4x2
+            case WITHER:    // Use same as 4x2
 
-                // 4x2
+            // 4x2
             case FIGHTERS:  // Use same as 4x4
 
-                // 4x4
+            // 4x4
             case BURNINGSKULL:
             case PIGSCENE:
             case POINTER:
@@ -255,7 +255,7 @@ public class CompatibilityUtils extends NMSUtils {
                 else
                     return loc.add(0, -1, 0);
 
-                // Unsupported artwork
+            // Unsupported artwork
             default:
                 return loc;
         }

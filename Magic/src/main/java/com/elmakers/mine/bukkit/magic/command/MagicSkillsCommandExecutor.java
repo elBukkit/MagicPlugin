@@ -15,12 +15,12 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 
 public class MagicSkillsCommandExecutor extends MagicTabExecutor {
 
-	public MagicSkillsCommandExecutor(MagicAPI api) {
-		super(api);
-	}
+    public MagicSkillsCommandExecutor(MagicAPI api) {
+        super(api);
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!api.hasPermission(sender, "Magic.commands.mskills"))
         {
             sendNoPermission(sender);
@@ -45,7 +45,7 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
         selector.setPage(page);
         selector.perform(new CastContext(mage));
         return true;
-	}
+    }
 
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {

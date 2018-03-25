@@ -15,56 +15,56 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class FillSpell extends BrushSpell
 {
-	private static final int DEFAULT_MAX_DIMENSION = 128;
+    private static final int DEFAULT_MAX_DIMENSION = 128;
 
-	private Block targetBlock = null;
+    private Block targetBlock = null;
 
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		boolean singleBlock = getTargetType() != TargetType.SELECT;
-		Block targetBlock = getTargetBlock();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        boolean singleBlock = getTargetType() != TargetType.SELECT;
+        Block targetBlock = getTargetBlock();
         if (!singleBlock && parameters.getBoolean("select_self", true) && isLookingDown())
         {
             targetBlock = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
         }
-		if (targetBlock == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (targetBlock == null)
+        {
+            return SpellResult.NO_TARGET;
+        }
 
         MaterialBrush buildWith = getBrush();
         boolean hasPermission = buildWith != null && buildWith.isErase() ? hasBreakPermission(targetBlock) : hasBuildPermission(targetBlock);
         if (!hasPermission) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
 
-		if (singleBlock)
-		{
-			deactivate();
+        if (singleBlock)
+        {
+            deactivate();
             if (isIndestructible(targetBlock))
             {
                 return SpellResult.NO_TARGET;
             }
 
-			registerForUndo(targetBlock);
+            registerForUndo(targetBlock);
 
-			buildWith.setTarget(targetBlock.getLocation());
-			buildWith.update(mage, targetBlock.getLocation());
-			buildWith.modify(targetBlock);
+            buildWith.setTarget(targetBlock.getLocation());
+            buildWith.update(mage, targetBlock.getLocation());
+            buildWith.modify(targetBlock);
 
-			controller.updateBlock(targetBlock);
-			registerForUndo();
+            controller.updateBlock(targetBlock);
+            registerForUndo();
 
-			return SpellResult.CAST;
-		}
+            return SpellResult.CAST;
+        }
 
-		if (targetLocation2 != null) {
-			this.targetBlock = targetLocation2.getBlock();
-		}
+        if (targetLocation2 != null) {
+            this.targetBlock = targetLocation2.getBlock();
+        }
 
-		if (this.targetBlock != null)
-		{
+        if (this.targetBlock != null)
+        {
             // Update the brush using the center of the fill volume.
             // This is kind of a hack to make map-building easier
             Location centerLocation = this.targetBlock.getLocation();
@@ -75,58 +75,58 @@ public class FillSpell extends BrushSpell
                 centerLocation.setY(Math.floor((centerLocation.getY() + secondLocation.getY()) / 2));
                 centerLocation.setZ(Math.floor((centerLocation.getZ() + secondLocation.getZ()) / 2));
             }
-			buildWith.setTarget(this.targetBlock.getLocation(), centerLocation);
+            buildWith.setTarget(this.targetBlock.getLocation(), centerLocation);
 
-			FillBatch batch = new FillBatch(this, secondLocation, targetBlock.getLocation(), buildWith);
-			boolean consumeBlocks = parameters.getBoolean("consume", false);
-			batch.setConsume(consumeBlocks);
-			UndoList undoList = getUndoList();
-			if (undoList != null && !currentCast.isConsumeFree()) {
-				undoList.setConsumed(consumeBlocks);
-			}
+            FillBatch batch = new FillBatch(this, secondLocation, targetBlock.getLocation(), buildWith);
+            boolean consumeBlocks = parameters.getBoolean("consume", false);
+            batch.setConsume(consumeBlocks);
+            UndoList undoList = getUndoList();
+            if (undoList != null && !currentCast.isConsumeFree()) {
+                undoList.setConsumed(consumeBlocks);
+            }
 
-			int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
-			maxDimension = parameters.getInt("md", maxDimension);
-			maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
+            int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
+            maxDimension = parameters.getInt("md", maxDimension);
+            maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
 
-			if (!batch.checkDimension(maxDimension))
-			{
-				return SpellResult.FAIL;
-			}
-			boolean success = mage.addBatch(batch);
+            if (!batch.checkDimension(maxDimension))
+            {
+                return SpellResult.FAIL;
+            }
+            boolean success = mage.addBatch(batch);
 
-			deactivate();
-			return success ? SpellResult.CAST : SpellResult.FAIL;
-		}
-		else
-		{
-			this.targetBlock = targetBlock;
-			activate();
-			return SpellResult.TARGET_SELECTED;
-		}
-	}
+            deactivate();
+            return success ? SpellResult.CAST : SpellResult.FAIL;
+        }
+        else
+        {
+            this.targetBlock = targetBlock;
+            activate();
+            return SpellResult.TARGET_SELECTED;
+        }
+    }
 
-	@Override
-	protected boolean isBatched() {
-		return true;
-	}
+    @Override
+    protected boolean isBatched() {
+        return true;
+    }
 
-	@Override
-	public boolean onCancelSelection()
-	{
-		if (targetBlock != null)
-		{
-			// Extra set here, just in case we're not in sync with active state.
-			targetBlock = null;
-			deactivate();
-			return true;
-		}
+    @Override
+    public boolean onCancelSelection()
+    {
+        if (targetBlock != null)
+        {
+            // Extra set here, just in case we're not in sync with active state.
+            targetBlock = null;
+            deactivate();
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public void onDeactivate() {
-		targetBlock = null;
-	}
+    @Override
+    public void onDeactivate() {
+        targetBlock = null;
+    }
 }

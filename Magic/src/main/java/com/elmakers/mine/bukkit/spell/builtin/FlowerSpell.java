@@ -13,27 +13,27 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class FlowerSpell extends BlockSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
-		if (target == null || !target.isValid())
-		{
-			return SpellResult.NO_TARGET;
-		}
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
+        if (target == null || !target.isValid())
+        {
+            return SpellResult.NO_TARGET;
+        }
 
-		Block targetBlock = target.getBlock();
-		if (!hasBuildPermission(targetBlock))
-		{
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
+        Block targetBlock = target.getBlock();
+        if (!hasBuildPermission(targetBlock))
+        {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
         CoverAction cover = new CoverAction();
         cover.addAction(new FlowerAction());
         ActionHandler handler = new ActionHandler();
         handler.loadAction(cover);
         handler.initialize(this, parameters);
-		registerForUndo();
+        registerForUndo();
 
         return handler.start(getCurrentCast(), parameters);
-	}
+    }
 }

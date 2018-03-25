@@ -10,25 +10,25 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 @Deprecated
 public class AbsorbSpell extends BrushSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
         target();
-		ActionHandler handler = new ActionHandler();
-		handler.loadAction(new AbsorbAction());
+        ActionHandler handler = new ActionHandler();
+        handler.loadAction(new AbsorbAction());
         handler.initialize(this, parameters);
-		return handler.start(getCurrentCast(), parameters);
-	}
+        return handler.start(getCurrentCast(), parameters);
+    }
 
-	@Override
-	public boolean hasBrushOverride()
-	{
-		return true;
-	}
+    @Override
+    public boolean hasBrushOverride()
+    {
+        return true;
+    }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return false;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return false;
+    }
 }

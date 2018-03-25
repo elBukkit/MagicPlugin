@@ -86,7 +86,7 @@ public class SpawnEntityAction extends BaseSpellAction
     public SpellResult perform(CastContext context) {
         Block targetBlock = context.getTargetBlock();
 
-		targetBlock = targetBlock.getRelative(BlockFace.UP);
+        targetBlock = targetBlock.getRelative(BlockFace.UP);
 
         Location spawnLocation = targetBlock.getLocation();
         Location sourceLocation = context.getLocation();
@@ -173,9 +173,9 @@ public class SpawnEntityAction extends BaseSpellAction
         {
             context.setTargetEntity(spawnedEntity);
         }
-		return SpellResult.CAST;
+        return SpellResult.CAST;
 
-	}
+    }
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)

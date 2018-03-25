@@ -34,8 +34,8 @@ public class DelayAction extends BaseSpellAction
         targetTime = null;
     }
 
-	@Override
-	public SpellResult perform(CastContext context) {
+    @Override
+    public SpellResult perform(CastContext context) {
         if (targetTime == null) {
             targetTime = System.currentTimeMillis() + delay;
             return SpellResult.PENDING;
@@ -44,8 +44,8 @@ public class DelayAction extends BaseSpellAction
         {
             return SpellResult.PENDING;
         }
-		return SpellResult.NO_ACTION;
-	}
+        return SpellResult.NO_ACTION;
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

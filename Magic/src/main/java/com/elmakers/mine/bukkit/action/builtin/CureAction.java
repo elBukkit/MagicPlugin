@@ -16,39 +16,39 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class CureAction extends BaseSpellAction
 {
-	private static final PotionEffectType[] _negativeEffects =
-			{PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
-					PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
-					PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
-	protected static final Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
+    private static final PotionEffectType[] _negativeEffects =
+            {PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
+                    PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
+                    PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
+    protected static final Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Entity entity = context.getTargetEntity();
-		if (entity == null || !(entity instanceof LivingEntity))
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (entity == null || !(entity instanceof LivingEntity))
+        {
+            return SpellResult.NO_TARGET;
+        }
 
-		LivingEntity targetEntity = (LivingEntity)entity;
-		Collection<PotionEffect> currentEffects = targetEntity.getActivePotionEffects();
-		for (PotionEffect effect : currentEffects)
-		{
-			if (negativeEffects.contains(effect.getType()))
-			{
-				context.registerPotionEffects(targetEntity);
-				targetEntity.removePotionEffect(effect.getType());
-			}
-		}
-		return SpellResult.CAST;
-	}
+        LivingEntity targetEntity = (LivingEntity)entity;
+        Collection<PotionEffect> currentEffects = targetEntity.getActivePotionEffects();
+        for (PotionEffect effect : currentEffects)
+        {
+            if (negativeEffects.contains(effect.getType()))
+            {
+                context.registerPotionEffects(targetEntity);
+                targetEntity.removePotionEffect(effect.getType());
+            }
+        }
+        return SpellResult.CAST;
+    }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return true;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 
     @Override
     public boolean requiresTargetEntity()

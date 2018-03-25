@@ -10,9 +10,9 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class DeactivateAction extends BaseSpellAction
 {
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Entity targetEntity = context.getTargetEntity();
         MageController controller = context.getController();
         Mage targetMage = targetEntity != null && controller.isMage(targetEntity)
@@ -25,8 +25,8 @@ public class DeactivateAction extends BaseSpellAction
         }
 
         targetMage.deactivateAllSpells(true, false);
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public boolean requiresTargetEntity()

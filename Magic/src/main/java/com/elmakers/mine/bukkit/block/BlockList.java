@@ -19,11 +19,11 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 
 public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
-    protected BoundingBox          		area;
+    protected BoundingBox                  area;
     protected @Nullable String          worldName;
 
-    protected LinkedList<BlockData> 	blockList;
-    protected HashSet<Long>        		blockIdMap;
+    protected LinkedList<BlockData>     blockList;
+    protected HashSet<Long>                blockIdMap;
 
     public BlockList()
     {

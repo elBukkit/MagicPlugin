@@ -152,10 +152,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     /*
      * protected members that are helpful to use
      */
-    protected MageController				controller;
-    protected Mage 							mage;
+    protected MageController                controller;
+    protected Mage                             mage;
     protected MageClass                     mageClass;
-    protected Location    					location;
+    protected Location                        location;
     protected CastContext                   currentCast;
     protected UndoList                      toggleUndo;
 
@@ -197,15 +197,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean cancelOnCastOther         = false;
     protected boolean cancelOnNoPermission      = false;
     protected boolean cancelOnNoWand            = false;
-    protected boolean pvpRestricted           	= false;
+    protected boolean pvpRestricted               = false;
     protected boolean disguiseRestricted        = false;
     protected boolean worldBorderRestricted     = true;
     protected boolean glideRestricted           = false;
     protected boolean glideExclusive            = false;
     protected boolean usesBrushSelection        = false;
-    protected boolean bypassFriendlyFire    	= false;
-    protected boolean onlyFriendlyFire    	    = false;
-    protected boolean bypassPvpRestriction    	= false;
+    protected boolean bypassFriendlyFire        = false;
+    protected boolean onlyFriendlyFire            = false;
+    protected boolean bypassPvpRestriction        = false;
     protected boolean bypassBuildRestriction    = false;
     protected boolean bypassBreakRestriction    = false;
     protected boolean bypassProtection          = false;
@@ -265,12 +265,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private long                                lastActiveCost          = 0;
     private float                               activeCostScale         = 1;
 
-    private Map<String, Collection<EffectPlayer>>     effects				= new HashMap<>();
+    private Map<String, Collection<EffectPlayer>>     effects                = new HashMap<>();
 
-    private float								fizzleChance			= 0.0f;
-    private float								backfireChance			= 0.0f;
+    private float                                fizzleChance            = 0.0f;
+    private float                                backfireChance            = 0.0f;
 
-    private long 								lastMessageSent 			= 0;
+    private long                                 lastMessageSent             = 0;
     private MaterialSet                         preventPassThroughMaterials = null;
     private MaterialSet                         passthroughMaterials = null;
     private MaterialSet                         unsafeMaterials = null;
@@ -379,8 +379,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         Player player = mage.getPlayer();
         return (
                 (isOkToStandOn(blockOneDown) || (player != null && player.isFlying()))
-                &&	isOkToStandIn(blockOneUp)
-                && 	isOkToStandIn(block)
+                &&    isOkToStandIn(blockOneUp)
+                &&     isOkToStandIn(block)
         );
     }
 

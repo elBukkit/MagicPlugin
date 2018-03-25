@@ -35,8 +35,8 @@ public class SpreadAction extends CompoundAction
         outerProbability = (float)parameters.getDouble("outer_probability", outerProbability);
     }
 
-	@Override
-	public SpellResult step(CastContext context) {
+    @Override
+    public SpellResult step(CastContext context) {
         Location sourceLocation = context.getCastLocation();
         Entity source = context.getEntity();
         Random random = context.getRandom();
@@ -68,7 +68,7 @@ public class SpreadAction extends CompoundAction
             actionContext.setTargetLocation(targetLocation);
         }
         return startActions();
-	}
+    }
 
     @Override
     public boolean requiresTarget() {

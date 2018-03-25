@@ -15,9 +15,9 @@ public class GenericSpell extends UndoableSpell
     private boolean undoMovement = false;
 
     @Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
         if (!target.hasTarget()) {
             return SpellResult.NO_TARGET;
         }
@@ -42,7 +42,7 @@ public class GenericSpell extends UndoableSpell
         }
 
         return SpellResult.CAST;
-	}
+    }
 
     @Override
     protected void loadTemplate(ConfigurationSection node)

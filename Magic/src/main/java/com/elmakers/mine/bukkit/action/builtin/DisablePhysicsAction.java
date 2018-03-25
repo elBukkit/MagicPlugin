@@ -24,12 +24,12 @@ public class DisablePhysicsAction extends BaseSpellAction
         duration += parameters.getInt("physics_buffer", 1000);
     }
 
-	@Override
-	public SpellResult perform(CastContext context) {
+    @Override
+    public SpellResult perform(CastContext context) {
         MageController controller = context.getController();
         controller.disablePhysics(duration);
         return SpellResult.CAST;
-	}
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

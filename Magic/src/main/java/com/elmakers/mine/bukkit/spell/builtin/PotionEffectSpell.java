@@ -29,14 +29,14 @@ public class PotionEffectSpell extends UndoableSpell
                     PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
     protected static final Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
-		if (!target.hasTarget())
-		{
-			return SpellResult.NO_TARGET;
-		}
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
+        if (!target.hasTarget())
+        {
+            return SpellResult.NO_TARGET;
+        }
 
         List<LivingEntity> targetEntities = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class PotionEffectSpell extends UndoableSpell
         if (parameters.contains("duration")) {
             duration = parameters.getInt("duration");
         }
-		Collection<PotionEffect> effects = getPotionEffects(parameters, duration);
+        Collection<PotionEffect> effects = getPotionEffects(parameters, duration);
         for (LivingEntity targetEntity : targetEntities) {
             Mage targetMage = controller.isMage(targetEntity) ? controller.getMage(targetEntity) : null;
 
@@ -132,7 +132,7 @@ public class PotionEffectSpell extends UndoableSpell
                 }
             }
         }
-		registerForUndo();
-		return SpellResult.CAST;
-	}
+        registerForUndo();
+        return SpellResult.CAST;
+    }
 }

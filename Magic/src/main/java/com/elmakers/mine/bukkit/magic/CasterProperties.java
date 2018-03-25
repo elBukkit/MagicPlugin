@@ -263,15 +263,15 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
                 String upgradeDescription = template.getUpgradeDescription().replace("$name", currentSpell.getName());
                 if (!upgradeDescription.isEmpty()) {
-                	mage.sendMessage(controller.getMessages().get("spell.upgrade_description_prefix") + upgradeDescription);
-				}
+                    mage.sendMessage(controller.getMessages().get("spell.upgrade_description_prefix") + upgradeDescription);
+                }
 
                 SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, getWand(), currentSpell, template);
                 Bukkit.getPluginManager().callEvent(upgradeEvent);
             } else {
-            	// This is a little hacky, but it is here to fix duplicate spell messages from the spellshop.
-            	if (mage.getActiveGUI() == null)
-                	sendAddMessage("spell_added", template.getName());
+                // This is a little hacky, but it is here to fix duplicate spell messages from the spellshop.
+                if (mage.getActiveGUI() == null)
+                    sendAddMessage("spell_added", template.getName());
 
                 AddSpellEvent addEvent = new AddSpellEvent(mage, getWand(), template);
                 Bukkit.getPluginManager().callEvent(addEvent);
@@ -297,15 +297,15 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         Mage mage = getMage();
         if (modified && mage != null)
         {
-			Messages messages = controller.getMessages();
-			String materialName = MaterialBrush.getMaterialName(messages, brushKey);
-			if (materialName == null)
-			{
-				mage.getController().getLogger().warning("Invalid material: " + brushKey);
-				materialName = brushKey;
-			}
+            Messages messages = controller.getMessages();
+            String materialName = MaterialBrush.getMaterialName(messages, brushKey);
+            if (materialName == null)
+            {
+                mage.getController().getLogger().warning("Invalid material: " + brushKey);
+                materialName = brushKey;
+            }
 
-			sendAddMessage("brush_added", materialName);
+            sendAddMessage("brush_added", materialName);
         }
 
         return modified;
@@ -359,7 +359,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public boolean hasSpell(String key) {
         SpellKey spellKey = new SpellKey(key);
 
-    	if (!getBaseSpells().contains(spellKey.getBaseKey())) return false;
+        if (!getBaseSpells().contains(spellKey.getBaseKey())) return false;
         int level = getSpellLevel(spellKey.getBaseKey());
         return (level >= spellKey.getLevel());
     }
@@ -390,30 +390,30 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             if (level != null) {
                 spellSet.add(new SpellKey(key, level).getKey());
             } else {
-            	spellSet.add(key);
-			}
+                spellSet.add(key);
+            }
         }
-		return spellSet;
+        return spellSet;
     }
 
     @Nullable
     @Override
     public Spell getSpell(String spellKey) {
         Mage mage = getMage();
-		if (mage == null) {
-			return null;
-		}
-		SpellKey key = new SpellKey(spellKey);
-		spellKey = key.getBaseKey();
-		Set<String> spells = getSpells();
-		if (!spells.contains(spellKey)) return null;
-		Map<String, Integer> spellLevels = getSpellLevels();
-		Integer level = spellLevels.get(spellKey);
-		if (level != null) {
-			spellKey = new SpellKey(spellKey, level).getKey();
-		}
-		return mage.getSpell(spellKey);
-	}
+        if (mage == null) {
+            return null;
+        }
+        SpellKey key = new SpellKey(spellKey);
+        spellKey = key.getBaseKey();
+        Set<String> spells = getSpells();
+        if (!spells.contains(spellKey)) return null;
+        Map<String, Integer> spellLevels = getSpellLevels();
+        Integer level = spellLevels.get(spellKey);
+        if (level != null) {
+            spellKey = new SpellKey(spellKey, level).getKey();
+        }
+        return mage.getSpell(spellKey);
+    }
 
     public Set<String> getBrushes() {
         Object existingBrushes = getObject("brushes");
@@ -440,13 +440,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return null;
     }
 
-	@Override
-	public boolean canProgress() {
-		ProgressionPath path = getPath();
-		return (path != null && path.canProgress(this));
-	}
+    @Override
+    public boolean canProgress() {
+        ProgressionPath path = getPath();
+        return (path != null && path.canProgress(this));
+    }
 
-	protected float stackPassiveProperty(float property, float stackProperty) {
+    protected float stackPassiveProperty(float property, float stackProperty) {
         boolean stack = getBoolean("stack");
 
         // If stacking, then this value has already been added to the base value.
@@ -454,11 +454,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         if (!stack && stackProperty != 0) {
             property = Math.max(property, stackProperty);
         }
-		return property;
-	}
+        return property;
+    }
 
-	@Override
-	public boolean upgrade(String key, Object value) {
+    @Override
+    public boolean upgrade(String key, Object value) {
         if (key.equals("path")) {
             ProgressionPath path = getPath();
             if (path != null && path.hasPath(value.toString())) {
@@ -491,34 +491,34 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
-	public boolean addItem(ItemStack item) {
-		if (Wand.isSpell(item) && !Wand.isSkill(item)) {
-			String spell = Wand.getSpell(item);
-			SpellKey spellKey = new SpellKey(spell);
-			Map<String, Integer> spellLevels = getSpellLevels();
-			Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
-			if ((currentLevel == null || currentLevel < spellKey.getLevel()) && addSpell(spell)) {
+    public boolean addItem(ItemStack item) {
+        if (Wand.isSpell(item) && !Wand.isSkill(item)) {
+            String spell = Wand.getSpell(item);
+            SpellKey spellKey = new SpellKey(spell);
+            Map<String, Integer> spellLevels = getSpellLevels();
+            Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
+            if ((currentLevel == null || currentLevel < spellKey.getLevel()) && addSpell(spell)) {
                 return true;
-			}
-		} else if (Wand.isBrush(item)) {
-			String materialKey = Wand.getBrush(item);
-			Set<String> materials = getBrushes();
-			if (!materials.contains(materialKey) && addBrush(materialKey)) {
+            }
+        } else if (Wand.isBrush(item)) {
+            String materialKey = Wand.getBrush(item);
+            Set<String> materials = getBrushes();
+            if (!materials.contains(materialKey) && addBrush(materialKey)) {
                 return true;
-			}
-		}
-		Mage mage = getMage();
-		if (mage != null && !mage.isAtMaxSkillPoints() && controller.skillPointItemsEnabled()) {
-			Integer sp = Wand.getSP(item);
-			if (sp != null) {
-				int amount = (int)Math.floor(mage.getSPMultiplier() * sp * item.getAmount());
-				mage.addSkillPoints(amount);
-				return true;
-			}
-		}
+            }
+        }
+        Mage mage = getMage();
+        if (mage != null && !mage.isAtMaxSkillPoints() && controller.skillPointItemsEnabled()) {
+            Integer sp = Wand.getSP(item);
+            if (sp != null) {
+                int amount = (int)Math.floor(mage.getSPMultiplier() * sp * item.getAmount());
+                mage.addSkillPoints(amount);
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
     protected void sendLevelMessage(String messageKey, String nameParam, String level) {
         Mage mage = getMage();
@@ -528,28 +528,28 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         mage.sendMessage(message);
     }
 
-	@Override
-	protected void sendAddMessage(String messageKey, String nameParam) {
+    @Override
+    protected void sendAddMessage(String messageKey, String nameParam) {
         Mage mage = getMage();
-		if (mage == null || nameParam == null || nameParam.isEmpty()) return;
-		String message = getMessage(messageKey).replace("$name", nameParam);
-		mage.sendMessage(message);
-	}
+        if (mage == null || nameParam == null || nameParam.isEmpty()) return;
+        String message = getMessage(messageKey).replace("$name", nameParam);
+        mage.sendMessage(message);
+    }
 
-	@Override
-	protected void sendMessage(String messageKey) {
+    @Override
+    protected void sendMessage(String messageKey) {
         Mage mage = getMage();
-		if (mage == null || messageKey == null || messageKey.isEmpty()) return;
-		mage.sendMessage(getMessage(messageKey));
-	}
+        if (mage == null || messageKey == null || messageKey.isEmpty()) return;
+        mage.sendMessage(getMessage(messageKey));
+    }
 
-	@Override
-	protected void sendDebug(String debugMessage) {
+    @Override
+    protected void sendDebug(String debugMessage) {
         Mage mage = getMage();
-		if (mage != null) {
-			mage.sendDebugMessage(debugMessage);
-		}
-	}
+        if (mage != null) {
+            mage.sendDebugMessage(debugMessage);
+        }
+    }
 
     @Nullable
     protected Wand getWand() {

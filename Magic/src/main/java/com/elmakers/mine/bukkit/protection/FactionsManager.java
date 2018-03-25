@@ -9,32 +9,32 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class FactionsManager implements BlockBuildManager, BlockBreakManager {
-	private boolean enabled = false;
-	private Class<?> factionsManager = null;
-	private Method factionsCanBuildMethod = null;
-	private Method psFactoryMethod = null;
+    private boolean enabled = false;
+    private Class<?> factionsManager = null;
+    private Method factionsCanBuildMethod = null;
+    private Method psFactoryMethod = null;
     private Object board = null;
     private Method getFactionAtMethod = null;
     private Method isNoneMethod = null;
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public boolean isEnabled() {
-		return enabled && factionsManager != null;
-	}
+    public boolean isEnabled() {
+        return enabled && factionsManager != null;
+    }
 
-	public void initialize(Plugin plugin) {
-		if (enabled) {
-			Plugin factionsPlugin = plugin.getServer().getPluginManager().getPlugin("Factions");
-			if (factionsPlugin != null)
-			{
-				try {
-					Class<?> psClass = Class.forName("com.massivecraft.massivecore.ps.PS");
-					factionsManager = Class.forName("com.massivecraft.factions.engine.EngineMain");
-					factionsCanBuildMethod = factionsManager.getMethod("canPlayerBuildAt", Object.class, psClass, Boolean.TYPE);
-					psFactoryMethod = psClass.getMethod("valueOf", Location.class);
+    public void initialize(Plugin plugin) {
+        if (enabled) {
+            Plugin factionsPlugin = plugin.getServer().getPluginManager().getPlugin("Factions");
+            if (factionsPlugin != null)
+            {
+                try {
+                    Class<?> psClass = Class.forName("com.massivecraft.massivecore.ps.PS");
+                    factionsManager = Class.forName("com.massivecraft.factions.engine.EngineMain");
+                    factionsCanBuildMethod = factionsManager.getMethod("canPlayerBuildAt", Object.class, psClass, Boolean.TYPE);
+                    psFactoryMethod = psClass.getMethod("valueOf", Location.class);
 
                     Class<?> boardClass = Class.forName("com.massivecraft.factions.entity.BoardColl");
                     Method boardSingleton = boardClass.getMethod("get");
@@ -43,14 +43,14 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
                     Class<?> factionClass = Class.forName("com.massivecraft.factions.entity.Faction");
                     isNoneMethod = factionClass.getMethod("isNone");
 
-					if (factionsManager == null || factionsCanBuildMethod == null || psFactoryMethod == null) {
-						factionsManager = null;
-						factionsCanBuildMethod = null;
-						psFactoryMethod = null;
-					}
-				} catch (Throwable ex) {
-					// Try for Factions "Limited"
-					psFactoryMethod = null;
+                    if (factionsManager == null || factionsCanBuildMethod == null || psFactoryMethod == null) {
+                        factionsManager = null;
+                        factionsCanBuildMethod = null;
+                        psFactoryMethod = null;
+                    }
+                } catch (Throwable ex) {
+                    // Try for Factions "Limited"
+                    psFactoryMethod = null;
                     try {
                         factionsManager = Class.forName("com.massivecraft.factions.listeners.FactionsBlockListener");
                         factionsCanBuildMethod = factionsManager.getMethod("playerCanBuildDestroyBlock", Player.class, Block.class, String.class, Boolean.TYPE);
@@ -66,27 +66,27 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
                         factionsManager = null;
                         factionsCanBuildMethod = null;
                     }
-				}
+                }
 
-				if (factionsManager == null) {
-					plugin.getLogger().info("Factions integration failed.");
-				} else {
-					plugin.getLogger().info("Factions found, will integrate for build checks.");
-				}
-			} else {
-				plugin.getLogger().info("Factions not found, will not integrate.");
-			}
-		} else {
-			plugin.getLogger().info("Factions integration disabled");
-		}
-	}
+                if (factionsManager == null) {
+                    plugin.getLogger().info("Factions integration failed.");
+                } else {
+                    plugin.getLogger().info("Factions found, will integrate for build checks.");
+                }
+            } else {
+                plugin.getLogger().info("Factions not found, will not integrate.");
+            }
+        } else {
+            plugin.getLogger().info("Factions integration disabled");
+        }
+    }
 
-	@Override
+    @Override
     public boolean hasBuildPermission(Player player, Block block) {
-		if (enabled && block != null && factionsManager != null && factionsCanBuildMethod != null) {
+        if (enabled && block != null && factionsManager != null && factionsCanBuildMethod != null) {
 
-			// Check for wilderness
-			if (player == null) {
+            // Check for wilderness
+            if (player == null) {
                 if (board == null || getFactionAtMethod == null || isNoneMethod == null || psFactoryMethod == null) {
                     return false;
                 }
@@ -101,20 +101,20 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
                 }
             }
 
-			try {
+            try {
                 if (psFactoryMethod != null) {
                     Object loc = psFactoryMethod.invoke(null, block.getLocation());
                     return loc != null && (Boolean)factionsCanBuildMethod.invoke(null, player, loc, false);
                 }
                 return (Boolean)factionsCanBuildMethod.invoke(null, player, block, "destroy", true);
-			} catch (Throwable ex) {
-				ex.printStackTrace();
-				return false;
-			}
-		}
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
     @Override
     public boolean hasBreakPermission(Player player, Block block) {

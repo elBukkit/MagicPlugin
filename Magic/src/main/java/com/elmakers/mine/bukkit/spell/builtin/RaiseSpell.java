@@ -12,14 +12,14 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 @Deprecated
 public class RaiseSpell extends BlockSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Block targetBlock = getTargetBlock();
-		if (targetBlock == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Block targetBlock = getTargetBlock();
+        if (targetBlock == null)
+        {
+            return SpellResult.NO_TARGET;
+        }
 
         if (!isDestructible(targetBlock))
         {
@@ -31,9 +31,9 @@ public class RaiseSpell extends BlockSpell
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
 
-		BlockFace direction = BlockFace.UP;
+        BlockFace direction = BlockFace.UP;
         int distance = parameters.getInt("distance", 5);
-		Block highestBlock = targetBlock;
+        Block highestBlock = targetBlock;
         while (distance > 0) {
             highestBlock = highestBlock.getRelative(direction);
             if (highestBlock.getType() != Material.AIR) {
@@ -41,9 +41,9 @@ public class RaiseSpell extends BlockSpell
             }
             distance--;
         }
-		if (!hasBuildPermission(highestBlock)) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
+        if (!hasBuildPermission(highestBlock)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
 
         MaterialAndData blockState = new MaterialAndData(targetBlock);
         registerForUndo(targetBlock);
@@ -55,6 +55,6 @@ public class RaiseSpell extends BlockSpell
 
         registerForUndo();
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 }

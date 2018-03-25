@@ -19,20 +19,20 @@ public class ChangeServerAction extends BaseSpellAction
         serverName = parameters.getString("server", "");
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Entity targetEntity = context.getTargetEntity();
-		if (!(targetEntity instanceof Player))
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (!(targetEntity instanceof Player))
+        {
+            return SpellResult.NO_TARGET;
+        }
 
         Player player = (Player)targetEntity;
         context.getController().sendPlayerToServer(player, serverName);
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public boolean requiresTargetEntity()

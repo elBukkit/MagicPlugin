@@ -11,37 +11,37 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class BurnAction extends BaseSpellAction
 {
-	@Override
+    @Override
     public SpellResult perform(CastContext context)
-	{
+    {
         Block block = context.getTargetBlock();
-		if (block == null || block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
-		{
-			return SpellResult.NO_TARGET;
-		}
-		Material material = Material.FIRE;
-		if (block.getType() == Material.ICE || block.getType() == Material.SNOW || block.getType() == Material.PACKED_ICE || block.getType() == Material.FROSTED_ICE)
-		{
-			material = Material.AIR;
-		}
-		else
-		{
-			block = block.getRelative(BlockFace.UP);
-		}
-		if (block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (block == null || block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+        {
+            return SpellResult.NO_TARGET;
+        }
+        Material material = Material.FIRE;
+        if (block.getType() == Material.ICE || block.getType() == Material.SNOW || block.getType() == Material.PACKED_ICE || block.getType() == Material.FROSTED_ICE)
+        {
+            material = Material.AIR;
+        }
+        else
+        {
+            block = block.getRelative(BlockFace.UP);
+        }
+        if (block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+        {
+            return SpellResult.NO_TARGET;
+        }
         if (!context.isDestructible(block))
         {
             return SpellResult.NO_TARGET;
         }
         context.registerForUndo(block);
-		MaterialAndData applyMaterial = new MaterialAndData(material);
-		applyMaterial.modify(block);
+        MaterialAndData applyMaterial = new MaterialAndData(material);
+        applyMaterial.modify(block);
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public boolean isUndoable()

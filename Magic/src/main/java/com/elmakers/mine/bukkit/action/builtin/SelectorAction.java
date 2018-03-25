@@ -829,8 +829,8 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
     public SpellResult showItems(CastContext context) {
         Mage mage = context.getMage();
-		Player player = mage.getPlayer();
-		if (player == null) {
+        Player player = mage.getPlayer();
+        if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
 
@@ -840,7 +840,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         mage.activateGUI(this, displayInventory);
 
         return SpellResult.PENDING;
-	}
+    }
 
     protected String getInventoryTitle()
     {

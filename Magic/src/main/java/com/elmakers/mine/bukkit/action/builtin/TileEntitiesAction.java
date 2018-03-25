@@ -25,8 +25,8 @@ public class TileEntitiesAction extends CompoundAction
     private List<BlockState> tiles;
     private int currentTile = 0;
 
-	@Override
-	public void prepare(CastContext context, ConfigurationSection parameters) {
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         targetAllWorlds = parameters.getBoolean("target_all_worlds", false);
     }
@@ -67,12 +67,12 @@ public class TileEntitiesAction extends CompoundAction
 
     public void addTiles(CastContext context, List<BlockState> tiles)
     {
-		Location sourceLocation = context.getLocation();
+        Location sourceLocation = context.getLocation();
 
-		if (sourceLocation == null && !targetAllWorlds)
-		{
-			return;
-		}
+        if (sourceLocation == null && !targetAllWorlds)
+        {
+            return;
+        }
 
         List<World> worlds;
         if (targetAllWorlds) {
@@ -87,8 +87,8 @@ public class TileEntitiesAction extends CompoundAction
             for (Chunk chunk : chunks) {
                 tiles.addAll(Arrays.asList(chunk.getTileEntities()));
             }
-		}
-	}
+        }
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {

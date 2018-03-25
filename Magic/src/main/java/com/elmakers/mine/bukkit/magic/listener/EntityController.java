@@ -48,10 +48,10 @@ public class EntityController implements Listener {
     private double meleeDamageReduction = 0;
     private boolean preventMeleeDamage = false;
     private boolean keepWandsOnDeath = true;
-    private boolean	disableItemSpawn = false;
-    private boolean	forceSpawn = false;
-    private boolean	preventWandMeleeDamage = true;
-    private int ageDroppedItems	= 0;
+    private boolean    disableItemSpawn = false;
+    private boolean    forceSpawn = false;
+    private boolean    preventWandMeleeDamage = true;
+    private int ageDroppedItems    = 0;
     private Map<EntityType, Double> entityDamageReduction;
 
     public void loadProperties(ConfigurationSection properties) {

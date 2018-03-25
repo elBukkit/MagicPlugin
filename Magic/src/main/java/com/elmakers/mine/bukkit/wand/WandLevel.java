@@ -23,25 +23,25 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 public class WandLevel {
     private final WandUpgradePath path;
 
-	private LinkedList<WeightedPair<Integer>> spellCountProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Integer>> materialCountProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<String>> spellProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<String>> materialProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Integer>> useProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Integer>> addUseProbability = new LinkedList<>();
+    private LinkedList<WeightedPair<Integer>> spellCountProbability = new LinkedList<>();
+    private LinkedList<WeightedPair<Integer>> materialCountProbability = new LinkedList<>();
+    private LinkedList<WeightedPair<String>> spellProbability = new LinkedList<>();
+    private LinkedList<WeightedPair<String>> materialProbability = new LinkedList<>();
+    private LinkedList<WeightedPair<Integer>> useProbability = new LinkedList<>();
+    private LinkedList<WeightedPair<Integer>> addUseProbability = new LinkedList<>();
 
-	private LinkedList<WeightedPair<Integer>> propertyCountProbability = new LinkedList<>();
-	private Map<String, LinkedList<WeightedPair<Float>>> propertiesProbability = new HashMap<>();
+    private LinkedList<WeightedPair<Integer>> propertyCountProbability = new LinkedList<>();
+    private Map<String, LinkedList<WeightedPair<Float>>> propertiesProbability = new HashMap<>();
 
-	private LinkedList<WeightedPair<Integer>> manaRegenerationProbability = new LinkedList<>();
-	private LinkedList<WeightedPair<Integer>> manaMaxProbability = new LinkedList<>();
+    private LinkedList<WeightedPair<Integer>> manaRegenerationProbability = new LinkedList<>();
+    private LinkedList<WeightedPair<Integer>> manaMaxProbability = new LinkedList<>();
 
-	protected WandLevel(WandUpgradePath path, MageController controller, ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
+    protected WandLevel(WandUpgradePath path, MageController controller, ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
         this.path = path;
 
         // Fetch spell probabilities, and filter out invalid/unknown spells
         LinkedList<WeightedPair<String>> spells = new LinkedList<>();
-		RandomUtils.populateStringProbabilityMap(spells, template, "spells", levelIndex, nextLevelIndex, distance);
+        RandomUtils.populateStringProbabilityMap(spells, template, "spells", levelIndex, nextLevelIndex, distance);
 
         for (WeightedPair<String> spellValue : spells) {
             if (controller.getSpellTemplate(spellValue.getValue()) != null) {
@@ -49,37 +49,37 @@ public class WandLevel {
             }
         }
 
-		// Fetch spell count probabilities
-		RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template, "spell_count", levelIndex, nextLevelIndex, distance);
+        // Fetch spell count probabilities
+        RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template, "spell_count", levelIndex, nextLevelIndex, distance);
 
-		// Fetch material probabilities
-		RandomUtils.populateStringProbabilityMap(materialProbability, template, "materials", levelIndex, nextLevelIndex, distance);
+        // Fetch material probabilities
+        RandomUtils.populateStringProbabilityMap(materialProbability, template, "materials", levelIndex, nextLevelIndex, distance);
 
-		// Fetch material count probabilities
-		RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getConfigurationSection("material_count"), levelIndex, nextLevelIndex, distance);
+        // Fetch material count probabilities
+        RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getConfigurationSection("material_count"), levelIndex, nextLevelIndex, distance);
 
-		// Fetch uses
-		RandomUtils.populateIntegerProbabilityMap(useProbability, template, "uses", levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateIntegerProbabilityMap(addUseProbability, template, "add_uses", levelIndex, nextLevelIndex, distance);
+        // Fetch uses
+        RandomUtils.populateIntegerProbabilityMap(useProbability, template, "uses", levelIndex, nextLevelIndex, distance);
+        RandomUtils.populateIntegerProbabilityMap(addUseProbability, template, "add_uses", levelIndex, nextLevelIndex, distance);
 
-		// Fetch property count probability
-		RandomUtils.populateIntegerProbabilityMap(propertyCountProbability, template, "property_count", levelIndex, nextLevelIndex, distance);
+        // Fetch property count probability
+        RandomUtils.populateIntegerProbabilityMap(propertyCountProbability, template, "property_count", levelIndex, nextLevelIndex, distance);
 
-		// Fetch properties
-		ConfigurationSection propertiesConfig = template.getConfigurationSection("properties");
-		if (propertiesConfig != null) {
-		    for (String propertyKey : propertiesConfig.getKeys(false)) {
-		        LinkedList<WeightedPair<Float>> propertyProbability = new LinkedList<>();
-		        RandomUtils.populateFloatProbabilityMap(propertyProbability, propertiesConfig, propertyKey, levelIndex, nextLevelIndex, distance);
-		        propertyKey = propertyKey.replace("|", ".");
-		        propertiesProbability.put(propertyKey, propertyProbability);
+        // Fetch properties
+        ConfigurationSection propertiesConfig = template.getConfigurationSection("properties");
+        if (propertiesConfig != null) {
+            for (String propertyKey : propertiesConfig.getKeys(false)) {
+                LinkedList<WeightedPair<Float>> propertyProbability = new LinkedList<>();
+                RandomUtils.populateFloatProbabilityMap(propertyProbability, propertiesConfig, propertyKey, levelIndex, nextLevelIndex, distance);
+                propertyKey = propertyKey.replace("|", ".");
+                propertiesProbability.put(propertyKey, propertyProbability);
             }
         }
 
-		// Fetch regeneration
-		RandomUtils.populateIntegerProbabilityMap(manaRegenerationProbability, template, "mana_regeneration", levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateIntegerProbabilityMap(manaMaxProbability, template, "mana_max", levelIndex, nextLevelIndex, distance);
-	}
+        // Fetch regeneration
+        RandomUtils.populateIntegerProbabilityMap(manaRegenerationProbability, template, "mana_regeneration", levelIndex, nextLevelIndex, distance);
+        RandomUtils.populateIntegerProbabilityMap(manaMaxProbability, template, "mana_max", levelIndex, nextLevelIndex, distance);
+    }
 
     public void add(WandLevel other) {
         spellProbability = RandomUtils.merge(spellProbability, other.spellProbability);
@@ -148,14 +148,14 @@ public class WandLevel {
         return remainingMaterials;
     }
 
-	public boolean randomizeWand(Mage mage, Wand wand, boolean additive, boolean hasUpgrade, boolean addSpells) {
+    public boolean randomizeWand(Mage mage, Wand wand, boolean additive, boolean hasUpgrade, boolean addSpells) {
         // Add random spells to the wand
         Mage activeMage = wand.getActiveMage();
         if (mage == null) {
             mage = activeMage;
         }
         wand.setActiveMage(mage);
-		boolean addedSpells = false;
+        boolean addedSpells = false;
         LinkedList<WeightedPair<String>> remainingSpells = getRemainingSpells(wand);
 
         if (addSpells) {
@@ -172,50 +172,50 @@ public class WandLevel {
             }
         }
 
-		// Look through all spells for the max mana casting cost
-		// Also look for any material-using spells
-		boolean needsMaterials = false;
-		int maxManaCost = 0;
-		Set<String> spells = wand.getSpells();
-		for (String spellName : spells) {
-			SpellTemplate spell = wand.getController().getSpellTemplate(spellName);
-			if (spell != null) {
-				needsMaterials = needsMaterials || spell.usesBrush();
-				Collection<CastingCost> costs = spell.getCosts();
-				if (costs != null) {
-					for (CastingCost cost : costs) {
-						maxManaCost = Math.max(maxManaCost, cost.getMana());
-					}
-				}
-			}
-		}
+        // Look through all spells for the max mana casting cost
+        // Also look for any material-using spells
+        boolean needsMaterials = false;
+        int maxManaCost = 0;
+        Set<String> spells = wand.getSpells();
+        for (String spellName : spells) {
+            SpellTemplate spell = wand.getController().getSpellTemplate(spellName);
+            if (spell != null) {
+                needsMaterials = needsMaterials || spell.usesBrush();
+                Collection<CastingCost> costs = spell.getCosts();
+                if (costs != null) {
+                    for (CastingCost cost : costs) {
+                        maxManaCost = Math.max(maxManaCost, cost.getMana());
+                    }
+                }
+            }
+        }
 
-		// Add random materials
-		boolean addedMaterials = false;
+        // Add random materials
+        boolean addedMaterials = false;
         LinkedList<WeightedPair<String>> remainingMaterials = getRemainingMaterials(wand);
-		if (needsMaterials && remainingMaterials.size() > 0) {
-			int currentMaterialCount = wand.getBrushes().size();
-			Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
+        if (needsMaterials && remainingMaterials.size() > 0) {
+            int currentMaterialCount = wand.getBrushes().size();
+            Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
 
             // Make sure the wand has at least one material.
             if (materialCount == null) {
                 materialCount = 0;
             }
-			if (currentMaterialCount == 0) {
-				materialCount = Math.max(1, materialCount);
-			}
-			int retries = 100;
-			for (int i = 0; i < materialCount; i++) {
-				String materialKey = RandomUtils.weightedRandom(remainingMaterials);
-				materialKey = materialKey.replace("|", ":");
-				if (!wand.addBrush(materialKey)) {
-					// Try again up to a certain number if we picked one the wand already had.
-					if (retries-- > 0) i--;
-				} else {
-					addedMaterials = true;
-				}
-			}
-		}
+            if (currentMaterialCount == 0) {
+                materialCount = Math.max(1, materialCount);
+            }
+            int retries = 100;
+            for (int i = 0; i < materialCount; i++) {
+                String materialKey = RandomUtils.weightedRandom(remainingMaterials);
+                materialKey = materialKey.replace("|", ":");
+                if (!wand.addBrush(materialKey)) {
+                    // Try again up to a certain number if we picked one the wand already had.
+                    if (retries-- > 0) i--;
+                } else {
+                    addedMaterials = true;
+                }
+            }
+        }
 
         // Let them upgrade if they aren't getting any new spells or brushes
         if (hasUpgrade && addSpells && !(addedMaterials && needsMaterials) && !addedSpells && ((getSpellCount() > 0 && spellProbability.size() > 0) || (getMaterialCount() > 0 && materialProbability.size() > 0)))
@@ -231,12 +231,12 @@ public class WandLevel {
             return false;
         }
 
-		// Add random wand properties
-		boolean addedProperties = false;
+        // Add random wand properties
+        boolean addedProperties = false;
         Integer propertyCount = propertyCountProbability.size() == 0 ? Integer.valueOf(0) : RandomUtils.weightedRandom(propertyCountProbability);
-		ConfigurationSection wandProperties = new MemoryConfiguration();
+        ConfigurationSection wandProperties = new MemoryConfiguration();
 
-		List<String> propertyKeys = new ArrayList<>(propertiesProbability.keySet());
+        List<String> propertyKeys = new ArrayList<>(propertiesProbability.keySet());
         List<String> propertiesAvailable = new ArrayList<>();
 
         for (String propertyKey : propertyKeys) {
@@ -254,7 +254,7 @@ public class WandLevel {
 
         while (propertyCount != null && propertyCount-- > 0 && propertiesAvailable.size() > 0)
         {
-			int randomPropertyIndex = (int)(Math.random() * propertiesAvailable.size());
+            int randomPropertyIndex = (int)(Math.random() * propertiesAvailable.size());
             String randomProperty = propertiesAvailable.get(randomPropertyIndex);
             LinkedList<WeightedPair<Float>> probabilities = propertiesProbability.get(randomProperty);
             double current = wand.getDouble(randomProperty);
@@ -264,54 +264,54 @@ public class WandLevel {
                 current = Math.min(maxValue, current + RandomUtils.weightedRandom(probabilities));
                 wandProperties.set(randomProperty, current);
             }
-		}
+        }
 
-		// The mana system is considered separate from other properties
+        // The mana system is considered separate from other properties
 
-		if (wand.isCostFree()) {
-			// Cost-Free wands don't need mana.
-			wandProperties.set("mana_regeneration", 0);
-			wandProperties.set("mana_max", 0);
-			wandProperties.set("mana", 0);
-		} else {
-			int manaRegeneration = wand.getManaRegeneration();
-			if (manaRegenerationProbability.size() > 0 && manaRegeneration < path.getMaxManaRegeneration()) {
+        if (wand.isCostFree()) {
+            // Cost-Free wands don't need mana.
+            wandProperties.set("mana_regeneration", 0);
+            wandProperties.set("mana_max", 0);
+            wandProperties.set("mana", 0);
+        } else {
+            int manaRegeneration = wand.getManaRegeneration();
+            if (manaRegenerationProbability.size() > 0 && manaRegeneration < path.getMaxManaRegeneration()) {
                 addedProperties = true;
                 manaRegeneration = Math.min(path.getMaxManaRegeneration(), manaRegeneration + RandomUtils.weightedRandom(manaRegenerationProbability));
                 wandProperties.set("mana_regeneration", manaRegeneration);
-			}
-			int manaMax = wand.getManaMax();
-			if (manaMaxProbability.size() > 0 && manaMax < path.getMaxMaxMana()) {
-				manaMax = Math.min(path.getMaxMaxMana(), manaMax + RandomUtils.weightedRandom(manaMaxProbability));
+            }
+            int manaMax = wand.getManaMax();
+            if (manaMaxProbability.size() > 0 && manaMax < path.getMaxMaxMana()) {
+                manaMax = Math.min(path.getMaxMaxMana(), manaMax + RandomUtils.weightedRandom(manaMaxProbability));
                 if (path.getMatchSpellMana()) {
                     // Make sure the wand has at least enough mana to cast the highest costing spell it has.
                     manaMax = Math.max(maxManaCost, manaMax);
                 }
-				wandProperties.set("mana_max", manaMax);
+                wandProperties.set("mana_max", manaMax);
                 addedProperties = true;
-			}
+            }
 
-			// Refill the wand's mana, why not
-			wandProperties.set("mana", manaMax);
-		}
+            // Refill the wand's mana, why not
+            wandProperties.set("mana", manaMax);
+        }
 
-		// Add or set uses to the wand
-		if (additive) {
-			// Only add uses to a wand if it already has some.
-			int wandUses = wand.getRemainingUses();
-			if (wandUses > 0 && wandUses < path.getMaxUses() && addUseProbability.size() > 0) {
-				wandProperties.set("uses", Math.min(path.getMaxUses(), wandUses + RandomUtils.weightedRandom(addUseProbability)));
-				addedProperties = true;
-			}
-		} else if (useProbability.size() > 0) {
-			wandProperties.set("uses", Math.min(path.getMaxUses(), RandomUtils.weightedRandom(useProbability)));
-		}
+        // Add or set uses to the wand
+        if (additive) {
+            // Only add uses to a wand if it already has some.
+            int wandUses = wand.getRemainingUses();
+            if (wandUses > 0 && wandUses < path.getMaxUses() && addUseProbability.size() > 0) {
+                wandProperties.set("uses", Math.min(path.getMaxUses(), wandUses + RandomUtils.weightedRandom(addUseProbability)));
+                addedProperties = true;
+            }
+        } else if (useProbability.size() > 0) {
+            wandProperties.set("uses", Math.min(path.getMaxUses(), RandomUtils.weightedRandom(useProbability)));
+        }
 
         // Set properties.
         wand.upgrade(wandProperties);
         wand.setActiveMage(activeMage);
-		return addedMaterials || addedSpells || addedProperties;
-	}
+        return addedMaterials || addedSpells || addedProperties;
+    }
 
     public int getSpellProbabilityCount() {
         return spellProbability.size();

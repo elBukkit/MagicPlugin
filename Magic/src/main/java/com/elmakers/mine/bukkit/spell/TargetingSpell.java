@@ -50,20 +50,20 @@ public abstract class TargetingSpell extends BaseSpell {
 
     private Location                            targetLocation          = null;
     protected Location                          targetLocation2         = null;
-    private Entity								targetEntity            = null;
+    private Entity                                targetEntity            = null;
 
-    private boolean								targetNPCs				= false;
-    private boolean								targetArmorStands		= false;
-    private boolean								targetInvisible			= true;
-    private boolean								targetVanished			= false;
-    private boolean								targetUnknown			= true;
+    private boolean                                targetNPCs                = false;
+    private boolean                                targetArmorStands        = false;
+    private boolean                                targetInvisible            = true;
+    private boolean                                targetVanished            = false;
+    private boolean                                targetUnknown            = true;
     private boolean                             targetTamed             = true;
     private String                              targetDisplayName       = null;
     protected Class<?>                          targetEntityType        = null;
     protected Set<EntityType>                   targetEntityTypes       = null;
     protected Set<EntityType>                   ignoreEntityTypes       = null;
     protected Material                          targetContents          = null;
-    protected double 		                    targetBreakables	    = 0;
+    protected double                             targetBreakables        = 0;
     protected boolean                           instantBlockEffects     = false;
     private double                              range                   = 0;
 

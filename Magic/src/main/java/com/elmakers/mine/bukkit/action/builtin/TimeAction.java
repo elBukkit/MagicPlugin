@@ -14,7 +14,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class TimeAction extends BaseSpellAction
 {
-	private String timeType = "day";
+    private String timeType = "day";
     private String timeSet = "day";
     private boolean cycleMoonPhase;
 
@@ -43,14 +43,14 @@ public class TimeAction extends BaseSpellAction
         timeType = parameters.getString("time", "day");
     }
 
-	@Override
-	public SpellResult perform(CastContext context) {
-		World world = context.getWorld();
-		if (world == null) {
-			return SpellResult.WORLD_REQUIRED;
-		}
+    @Override
+    public SpellResult perform(CastContext context) {
+        World world = context.getWorld();
+        if (world == null) {
+            return SpellResult.WORLD_REQUIRED;
+        }
 
-		long targetTime = 0;
+        long targetTime = 0;
         timeSet = timeType;
         if (timeType.equalsIgnoreCase("toggle")) {
             long currentTime = world.getTime();
@@ -58,63 +58,63 @@ public class TimeAction extends BaseSpellAction
                 timeSet = "day";
             } else {
                 timeSet = "night";
-				targetTime = 13000;
+                targetTime = 13000;
             }
         }
-		else if (timeType.equalsIgnoreCase("night"))
-		{
-			targetTime = 13000;
-		}
-		else
-		{
-			try
-			{
-				targetTime = Long.parseLong(timeType);
+        else if (timeType.equalsIgnoreCase("night"))
+        {
+            targetTime = 13000;
+        }
+        else
+        {
+            try
+            {
+                targetTime = Long.parseLong(timeType);
                 timeSet = "raw(" + targetTime + ")";
-			}
-			catch (NumberFormatException ex)
-			{
-				targetTime = 0;
-			}
-		}
+            }
+            catch (NumberFormatException ex)
+            {
+                targetTime = 0;
+            }
+        }
 
         context.registerForUndo(new UndoTimeChange(world));
-		if (cycleMoonPhase)
-		{
-			long currentTime = world.getFullTime();
-			currentTime = ((currentTime % 24000) + 1) * 24000 + targetTime;
-			world.setFullTime(currentTime);
-			return SpellResult.CAST;
-		}
-		world.setTime(targetTime);
-		return SpellResult.CAST;
-	}
+        if (cycleMoonPhase)
+        {
+            long currentTime = world.getFullTime();
+            currentTime = ((currentTime % 24000) + 1) * 24000 + targetTime;
+            world.setFullTime(currentTime);
+            return SpellResult.CAST;
+        }
+        world.setTime(targetTime);
+        return SpellResult.CAST;
+    }
 
-	@Override
-	public String transformMessage(String message) {
-		return message.replace("$newtime", timeSet);
-	}
+    @Override
+    public String transformMessage(String message) {
+        return message.replace("$newtime", timeSet);
+    }
 
-	@Override
-	public void getParameterNames(Spell spell, Collection<String> parameters) {
-		super.getParameterNames(spell, parameters);
-		parameters.add("time");
-	}
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
+        parameters.add("time");
+    }
 
-	@Override
-	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-		if (parameterKey.equals("time")) {
-			examples.add("day");
-			examples.add("night");
-			examples.add("toggle");
-			examples.add("0");
-			examples.add("130000");
-		} else if (parameterKey.equals("cycle_moon_phase")) {
-			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
-		} else {
-			super.getParameterOptions(spell, parameterKey, examples);
-		}
-	}
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("time")) {
+            examples.add("day");
+            examples.add("night");
+            examples.add("toggle");
+            examples.add("0");
+            examples.add("130000");
+        } else if (parameterKey.equals("cycle_moon_phase")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
+    }
 
     @Override
     public boolean isUndoable() {

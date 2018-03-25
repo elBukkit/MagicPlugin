@@ -37,7 +37,7 @@ public class ModifySPAction extends BaseSpellAction
         }
         mage.addSkillPoints(sp);
         return SpellResult.CAST;
-	}
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

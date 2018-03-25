@@ -53,16 +53,16 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 * <pre>
 * &lt;dependencies&gt;
 * &lt;dependency&gt;
-* 	&lt;groupId&gt;org.bukkit&lt;/groupId&gt;
-* 	&lt;artifactId&gt;bukkit&lt;/artifactId&gt;
-* 	&lt;version&gt;1.6.4-R2.0&lt;/version&gt;
-* 	&lt;scope&gt;provided&lt;/scope&gt;
+*     &lt;groupId&gt;org.bukkit&lt;/groupId&gt;
+*     &lt;artifactId&gt;bukkit&lt;/artifactId&gt;
+*     &lt;version&gt;1.6.4-R2.0&lt;/version&gt;
+*     &lt;scope&gt;provided&lt;/scope&gt;
 * &lt;/dependency&gt;
 * &lt;dependency&gt;
-* 	&lt;groupId&gt;com.elmakers.mine.bukkit&lt;/groupId&gt;
-* 	&lt;artifactId&gt;MagicAPI&lt;/artifactId&gt;
-* 	&lt;version&gt;1.0&lt;/version&gt;
-* 	&lt;scope&gt;provided&lt;/scope&gt;
+*     &lt;groupId&gt;com.elmakers.mine.bukkit&lt;/groupId&gt;
+*     &lt;artifactId&gt;MagicAPI&lt;/artifactId&gt;
+*     &lt;version&gt;1.0&lt;/version&gt;
+*     &lt;scope&gt;provided&lt;/scope&gt;
 * &lt;/dependency&gt;
 * &lt;/dependencies&gt;
 * &lt;repositories&gt;
@@ -90,9 +90,9 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 * <pre>
 *       MagicAPI getMagicAPI() {
 *           Plugin magicPlugin = Bukkit.getPluginManager().getPlugin("Magic");
-* 		    if (magicPlugin == null || !(magicPlugin instanceof MagicAPI)) {
-* 			    return null;
-* 		    }
+*             if (magicPlugin == null || !(magicPlugin instanceof MagicAPI)) {
+*                 return null;
+*             }
 *           return (MagicAPI)magicPlugin;
 *       }
 * </pre>

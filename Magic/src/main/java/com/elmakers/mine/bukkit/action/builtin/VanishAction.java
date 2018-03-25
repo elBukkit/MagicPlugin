@@ -11,52 +11,52 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class VanishAction extends BaseSpellAction
 {
-	private static class UndoVanish implements Runnable
-	{
-		private final Mage mage;
+    private static class UndoVanish implements Runnable
+    {
+        private final Mage mage;
 
-		public UndoVanish(Mage mage)
-		{
-			this.mage = mage;
-		}
+        public UndoVanish(Mage mage)
+        {
+            this.mage = mage;
+        }
 
-		@Override
-		public void run()
-		{
-			mage.setVanished(false);
-		}
-	}
+        @Override
+        public void run()
+        {
+            mage.setVanished(false);
+        }
+    }
 
-	private boolean vanish = true;
+    private boolean vanish = true;
 
-	@Override
-	public void prepare(CastContext context, ConfigurationSection parameters) {
-		super.prepare(context, parameters);
-		vanish = parameters.getBoolean("vanish", true);
-	}
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        vanish = parameters.getBoolean("vanish", true);
+    }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Entity entity = context.getTargetEntity();
-		if (entity == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
-		MageController controller = context.getController();
-		Mage mage = controller.getMage(entity);
-		mage.setVanished(vanish);
-		if (vanish) {
-			context.registerForUndo(new UndoVanish(mage));
-		}
-		return SpellResult.CAST;
-	}
+        if (entity == null)
+        {
+            return SpellResult.NO_TARGET;
+        }
+        MageController controller = context.getController();
+        Mage mage = controller.getMage(entity);
+        mage.setVanished(vanish);
+        if (vanish) {
+            context.registerForUndo(new UndoVanish(mage));
+        }
+        return SpellResult.CAST;
+    }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return true;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 
     @Override
     public boolean requiresTargetEntity()

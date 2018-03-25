@@ -15,19 +15,19 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 @Deprecated
 public class RecurseSpell extends BrushSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Block targetBlock = getTargetBlock();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Block targetBlock = getTargetBlock();
 
-		if (targetBlock == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
-		if (!hasBuildPermission(targetBlock))
-		{
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
+        if (targetBlock == null)
+        {
+            return SpellResult.NO_TARGET;
+        }
+        if (!hasBuildPermission(targetBlock))
+        {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
 
         if (!isDestructible(targetBlock))
         {
@@ -35,41 +35,41 @@ public class RecurseSpell extends BrushSpell
         }
 
         BlockRecurse blockRecurse = new BlockRecurse();
-		int size = parameters.getInt("size", 8);
-		size = (int)(mage.getRadiusMultiplier() * size);
-		blockRecurse.setMaxRecursion(size);
+        int size = parameters.getInt("size", 8);
+        size = (int)(mage.getRadiusMultiplier() * size);
+        blockRecurse.setMaxRecursion(size);
 
-		ModifyBlockAction action = new ModifyBlockAction();
+        ModifyBlockAction action = new ModifyBlockAction();
         action.initialize(this, parameters);
         blockRecurse.addReplaceable(new MaterialAndData(targetBlock));
         Material targetMaterial = targetBlock.getType();
 
-		// A bit hacky, but is very handy!
-		if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
-		{
-			for (byte i = 0; i < 9; i++) {
+        // A bit hacky, but is very handy!
+        if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
+        {
+            for (byte i = 0; i < 9; i++) {
                 blockRecurse.addReplaceable(Material.STATIONARY_WATER, i);
                 blockRecurse.addReplaceable(Material.WATER, i);
-			}
-		}
-		else if (targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
-		{
-			for (byte i = 0; i < 9; i++) {
+            }
+        }
+        else if (targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
+        {
+            for (byte i = 0; i < 9; i++) {
                 blockRecurse.addReplaceable(Material.STATIONARY_LAVA, i);
                 blockRecurse.addReplaceable(Material.LAVA, i);
-			}
-		}
-		else if (targetMaterial == Material.SNOW) {
-			for (byte i = 0; i < 8; i++) {
+            }
+        }
+        else if (targetMaterial == Material.SNOW) {
+            for (byte i = 0; i < 8; i++) {
                 blockRecurse.addReplaceable(Material.SNOW, i);
-			}
-		}
+            }
+        }
         CastContext context = getCurrentCast();
         context.setTargetLocation(targetBlock.getLocation());
-		blockRecurse.recurse(new ActionContext(action, parameters), context);
-		registerForUndo();
-		controller.updateBlock(targetBlock);
+        blockRecurse.recurse(new ActionContext(action, parameters), context);
+        registerForUndo();
+        controller.updateBlock(targetBlock);
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 }

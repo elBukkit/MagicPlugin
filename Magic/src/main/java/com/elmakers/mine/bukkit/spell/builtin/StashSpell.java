@@ -15,48 +15,48 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class StashSpell extends TargetingSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
-		if (!target.hasEntity()) return SpellResult.NO_TARGET;
-		Entity targetEntity = target.getEntity();
-		if (!(targetEntity instanceof HumanEntity)) return SpellResult.NO_TARGET;
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
+        if (!target.hasEntity()) return SpellResult.NO_TARGET;
+        Entity targetEntity = target.getEntity();
+        if (!(targetEntity instanceof HumanEntity)) return SpellResult.NO_TARGET;
 
-		Player showPlayer = mage.getPlayer();
-		if (showPlayer == null) return SpellResult.PLAYER_REQUIRED;
-		String typeString = parameters.getString("type", "ender");
+        Player showPlayer = mage.getPlayer();
+        if (showPlayer == null) return SpellResult.PLAYER_REQUIRED;
+        String typeString = parameters.getString("type", "ender");
 
-		// Special case for wands
-		if (targetEntity instanceof Player && targetEntity != showPlayer) {
-			Player targetPlayer = (Player)targetEntity;
-			Mage targetMage = controller.getMage(targetPlayer);
+        // Special case for wands
+        if (targetEntity instanceof Player && targetEntity != showPlayer) {
+            Player targetPlayer = (Player)targetEntity;
+            Mage targetMage = controller.getMage(targetPlayer);
 
-			if (!mage.isSuperPowered() && isSuperProtected(targetMage)) {
-				return SpellResult.NO_TARGET;
-			}
+            if (!mage.isSuperPowered() && isSuperProtected(targetMage)) {
+                return SpellResult.NO_TARGET;
+            }
 
-			if (targetMage.getActiveWand() != null && typeString.equalsIgnoreCase("inventory")) {
-				targetMage.getActiveWand().closeInventory();
-			}
-		}
+            if (targetMage.getActiveWand() != null && typeString.equalsIgnoreCase("inventory")) {
+                targetMage.getActiveWand().closeInventory();
+            }
+        }
 
-		// Make sure to close the player's wand
-		Wand activeWand = mage.getActiveWand();
-		if (activeWand != null) {
-			activeWand.closeInventory();
-		}
+        // Make sure to close the player's wand
+        Wand activeWand = mage.getActiveWand();
+        if (activeWand != null) {
+            activeWand.closeInventory();
+        }
 
-		HumanEntity humanTarget = (HumanEntity)targetEntity;
+        HumanEntity humanTarget = (HumanEntity)targetEntity;
 
-		if (typeString.equalsIgnoreCase("inventory")) {
-			Inventory inventory = humanTarget.getInventory();
-			showPlayer.openInventory(inventory);
-		} else {
-			Inventory enderInventory = humanTarget.getEnderChest();
-			showPlayer.openInventory(enderInventory);
-		}
+        if (typeString.equalsIgnoreCase("inventory")) {
+            Inventory inventory = humanTarget.getInventory();
+            showPlayer.openInventory(inventory);
+        } else {
+            Inventory enderInventory = humanTarget.getEnderChest();
+            showPlayer.openInventory(enderInventory);
+        }
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 }

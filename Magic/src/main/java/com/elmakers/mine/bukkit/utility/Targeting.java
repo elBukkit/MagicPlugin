@@ -34,18 +34,18 @@ public class Targeting {
     private TargetingResult                     result                  = TargetingResult.NONE;
     private Location                            source                  = null;
 
-    private Target								target					= null;
+    private Target                                target                    = null;
     private List<Target>                        targets                 = null;
 
-    private TargetType							targetType				= TargetType.NONE;
+    private TargetType                            targetType                = TargetType.NONE;
     private BlockIterator                       blockIterator           = null;
     private Block                               currentBlock            = null;
-    private	Block								previousBlock           = null;
-    private	Block								previousPreviousBlock   = null;
+    private    Block                                previousBlock           = null;
+    private    Block                                previousPreviousBlock   = null;
 
     private Vector                              targetLocationOffset;
-    private Vector								targetDirectionOverride;
-    private String								targetLocationWorldName;
+    private Vector                                targetDirectionOverride;
+    private String                                targetLocationWorldName;
 
     protected float                             distanceWeight          = 1;
     protected float                             fovWeight               = 4;
@@ -55,7 +55,7 @@ public class Targeting {
     protected int                               livingEntityWeight      = 3;
 
     private boolean                             ignoreBlocks            = false;
-    private int 		                        targetBreakableDepth	= 2;
+    private int                                 targetBreakableDepth    = 2;
 
     private double                              hitboxPadding           = 0;
     private double                              hitboxBlockPadding      = 0;

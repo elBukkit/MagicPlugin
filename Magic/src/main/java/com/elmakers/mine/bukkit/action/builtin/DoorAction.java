@@ -25,7 +25,7 @@ public class DoorAction extends BaseSpellAction
     @Override
     public SpellResult perform(CastContext context)
     {
-		Block targetBlock = context.getTargetBlock();
+        Block targetBlock = context.getTargetBlock();
         byte data = DeprecatedUtils.getData(targetBlock);
         if ((data & 0x8) != 0) {
             targetBlock = targetBlock.getRelative(BlockFace.DOWN);
@@ -55,8 +55,8 @@ public class DoorAction extends BaseSpellAction
                 break;
         }
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public boolean isUndoable() {

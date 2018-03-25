@@ -116,8 +116,8 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         schematics.clear();
         variants.clear();
         this.context = context;
-		Player player = mage.getPlayer();
-		if (player == null) {
+        Player player = mage.getPlayer();
+        if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
         if (wand == null) {
@@ -223,5 +223,5 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
-	}
+    }
 }

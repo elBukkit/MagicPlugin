@@ -23,23 +23,23 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class CastCommandExecutor extends MagicTabExecutor {
 
-	public CastCommandExecutor(MagicAPI api) {
-		super(api);
-	}
+    public CastCommandExecutor(MagicAPI api) {
+        super(api);
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-		String commandName = command.getName();
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
+        String commandName = command.getName();
         if (commandName.equalsIgnoreCase("castp"))
-		{
-			if (!api.hasPermission(sender, "Magic.commands.castp")) {
-				sendNoPermission(sender);
-				return true;
-			}
-			if (args.length < 1) {
+        {
+            if (!api.hasPermission(sender, "Magic.commands.castp")) {
+                sendNoPermission(sender);
+                return true;
+            }
+            if (args.length < 1) {
                 if (sender != null) sender.sendMessage("Usage: /castp [player] [spell] <parameters>");
-				return true;
-			}
+                return true;
+            }
             String playerName = args[0];
 
             // Look for Entity-based Mages
@@ -122,81 +122,81 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 if (sender != null) sender.sendMessage("Player " + playerName + " is not online");
                 return true;
             }
-			String[] args2 = Arrays.copyOfRange(args, 1, args.length);
-			return processCastCommand(sender, player, args2);
-		}
+            String[] args2 = Arrays.copyOfRange(args, 1, args.length);
+            return processCastCommand(sender, player, args2);
+        }
 
-		if (commandName.equalsIgnoreCase("cast"))
-		{
-			if (!api.hasPermission(sender, "Magic.commands.cast")) {
-				sendNoPermission(sender);
-				return true;
-			}
-			Player player = null;
-			if (sender instanceof Player) {
-				player = (Player)sender;
-			}
-			return processCastCommand(sender, player, args);
-		}
+        if (commandName.equalsIgnoreCase("cast"))
+        {
+            if (!api.hasPermission(sender, "Magic.commands.cast")) {
+                sendNoPermission(sender);
+                return true;
+            }
+            Player player = null;
+            if (sender instanceof Player) {
+                player = (Player)sender;
+            }
+            return processCastCommand(sender, player, args);
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public boolean processCastCommand(CommandSender sender, Entity entity, String[] castParameters)
-	{
-		if (castParameters.length < 1) return false;
+    public boolean processCastCommand(CommandSender sender, Entity entity, String[] castParameters)
+    {
+        if (castParameters.length < 1) return false;
 
-		String spellName = castParameters[0];
-		String[] parameters = null;
-		if (sender.hasPermission("Magic.commands.cast.parameters"))
-		{
-			parameters = new String[castParameters.length - 1];
-			for (int i = 1; i < castParameters.length; i++)
-			{
-				parameters[i - 1] = castParameters[i];
-			}
-		}
-		api.cast(spellName, parameters, sender, entity);
-		return true;
-	}
+        String spellName = castParameters[0];
+        String[] parameters = null;
+        if (sender.hasPermission("Magic.commands.cast.parameters"))
+        {
+            parameters = new String[castParameters.length - 1];
+            for (int i = 1; i < castParameters.length; i++)
+            {
+                parameters[i - 1] = castParameters[i];
+            }
+        }
+        api.cast(spellName, parameters, sender, entity);
+        return true;
+    }
 
-	@Override
-	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		Collection<String> options = new HashSet<>();
+    @Override
+    public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+        Collection<String> options = new HashSet<>();
 
         String permissionKey = "cast";
-		if (commandName.contains("castp"))
-		{
+        if (commandName.contains("castp"))
+        {
             permissionKey = "castp";
-			if (args.length == 1) {
-				options.addAll(api.getPlayerNames());
-				return options;
-			} else if (args.length > 1) {
-				args = Arrays.copyOfRange(args, 1, args.length);
-			}
-		}
+            if (args.length == 1) {
+                options.addAll(api.getPlayerNames());
+                return options;
+            } else if (args.length > 1) {
+                args = Arrays.copyOfRange(args, 1, args.length);
+            }
+        }
 
-		if (args.length == 1) {
-			Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
-			for (SpellTemplate spell : spellList) {
-				addIfPermissible(sender, options, "Magic." + permissionKey + ".", spell.getKey());
-			}
-		}
+        if (args.length == 1) {
+            Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
+            for (SpellTemplate spell : spellList) {
+                addIfPermissible(sender, options, "Magic." + permissionKey + ".", spell.getKey());
+            }
+        }
 
-		if (args.length > 1 && sender.hasPermission("Magic.commands.cast.parameters"))
-		{
-			String spellName = args[0];
-			SpellTemplate spell = api.getSpellTemplate(spellName);
-			if (spell != null) {
-				if (args.length % 2 == 0) {
-					spell.getParameters(options);
-				} else {
-					spell.getParameterOptions(options, args[args.length - 2]);
-				}
-			}
-		}
+        if (args.length > 1 && sender.hasPermission("Magic.commands.cast.parameters"))
+        {
+            String spellName = args[0];
+            SpellTemplate spell = api.getSpellTemplate(spellName);
+            if (spell != null) {
+                if (args.length % 2 == 0) {
+                    spell.getParameters(options);
+                } else {
+                    spell.getParameterOptions(options, args[args.length - 2]);
+                }
+            }
+        }
 
-		return options;
-	}
+        return options;
+    }
 
 }

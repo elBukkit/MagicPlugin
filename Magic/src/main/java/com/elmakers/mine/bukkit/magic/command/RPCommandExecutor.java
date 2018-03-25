@@ -12,27 +12,27 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 
 public class RPCommandExecutor extends MagicTabExecutor {
 
-	public RPCommandExecutor(MagicAPI api) {
-		super(api);
-	}
+    public RPCommandExecutor(MagicAPI api) {
+        super(api);
+    }
 
-	@Override
-	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		return new ArrayList<>();
-	}
+    @Override
+    public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+        return new ArrayList<>();
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!api.hasPermission(sender, "Magic.commands.getrp")) {
-			sendNoPermission(sender);
-			return true;
-		}
-		if (!(sender instanceof Player)) {
-			sender.sendMessage(ChatColor.RED + "This command may only be used in-game");
-			return true;
-		}
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!api.hasPermission(sender, "Magic.commands.getrp")) {
+            sendNoPermission(sender);
+            return true;
+        }
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "This command may only be used in-game");
+            return true;
+        }
 
-		api.getController().sendResourcePack((Player)sender);
-		return true;
-	}
+        api.getController().sendResourcePack((Player)sender);
+        return true;
+    }
 }

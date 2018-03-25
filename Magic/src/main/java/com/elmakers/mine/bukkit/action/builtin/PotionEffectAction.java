@@ -118,14 +118,14 @@ public class PotionEffectAction extends BaseSpellAction
         }
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Entity entity = context.getTargetEntity();
-		if (!(entity instanceof LivingEntity))
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (!(entity instanceof LivingEntity))
+        {
+            return SpellResult.NO_TARGET;
+        }
 
         LivingEntity targetEntity = (LivingEntity)entity;
         context.registerPotionEffects(targetEntity);
@@ -150,8 +150,8 @@ public class PotionEffectAction extends BaseSpellAction
             }
         }
 
-		return effected ? SpellResult.CAST : SpellResult.NO_TARGET;
-	}
+        return effected ? SpellResult.CAST : SpellResult.NO_TARGET;
+    }
 
     @Override
     public boolean isUndoable()

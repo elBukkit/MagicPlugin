@@ -61,93 +61,93 @@ import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 
 public class MagicCommandExecutor extends MagicMapExecutor {
 
-	private RunnableJob runningTask = null;
+    private RunnableJob runningTask = null;
 
-	public MagicCommandExecutor(MagicAPI api) {
-		super(api);
-	}
+    public MagicCommandExecutor(MagicAPI api) {
+        super(api);
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (args.length == 0)
-		{
-			if (!api.hasPermission(sender, "Magic.commands.magic")) {
-				sendNoPermission(sender);
-				return true;
-			}
-			sender.sendMessage("Magic " + getMagicVersion());
-			sender.sendMessage("Use /magic help for more info");
-			return true;
-		}
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 0)
+        {
+            if (!api.hasPermission(sender, "Magic.commands.magic")) {
+                sendNoPermission(sender);
+                return true;
+            }
+            sender.sendMessage("Magic " + getMagicVersion());
+            sender.sendMessage("Use /magic help for more info");
+            return true;
+        }
 
-		String subCommand = args[0];
-		if (sender instanceof Player)
-		{
-			if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand)) {
-				sendNoPermission(sender);
-				return true;
-			}
-		}
-		if (subCommand.equalsIgnoreCase("help"))
-		{
-			sender.sendMessage(ChatColor.AQUA + "See help information for Magic commands with /help <command>");
-			sender.sendMessage("wand     Create or modify wand items");
-			sender.sendMessage("mage     Inspect or modify mage data");
-			sender.sendMessage("mconfig  Configure Magic in-game");
-			sender.sendMessage("magic    Reload configs and other admin functions");
-			sender.sendMessage("mitem    Create or modify vanilla items");
-			sender.sendMessage("mmob     Spwan vanilla or magic mobs");
-			sender.sendMessage("cast     Cast spells and test parameter changes");
-			sender.sendMessage("mtrait   Create or modify Magic Citizens NPCs");
-			sender.sendMessage("mmap     Create maps from images or players");
-			sender.sendMessage("castp    Cast spells as another player");
-			sender.sendMessage("wandp    Modify other players' wands");
-			sender.sendMessage("mskills  Show the skill selector");
-			return true;
-		}
-		if (subCommand.equalsIgnoreCase("rpcheck"))
-		{
-			api.getController().checkResourcePack(sender);
-			return true;
-		}
+        String subCommand = args[0];
+        if (sender instanceof Player)
+        {
+            if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand)) {
+                sendNoPermission(sender);
+                return true;
+            }
+        }
+        if (subCommand.equalsIgnoreCase("help"))
+        {
+            sender.sendMessage(ChatColor.AQUA + "See help information for Magic commands with /help <command>");
+            sender.sendMessage("wand     Create or modify wand items");
+            sender.sendMessage("mage     Inspect or modify mage data");
+            sender.sendMessage("mconfig  Configure Magic in-game");
+            sender.sendMessage("magic    Reload configs and other admin functions");
+            sender.sendMessage("mitem    Create or modify vanilla items");
+            sender.sendMessage("mmob     Spwan vanilla or magic mobs");
+            sender.sendMessage("cast     Cast spells and test parameter changes");
+            sender.sendMessage("mtrait   Create or modify Magic Citizens NPCs");
+            sender.sendMessage("mmap     Create maps from images or players");
+            sender.sendMessage("castp    Cast spells as another player");
+            sender.sendMessage("wandp    Modify other players' wands");
+            sender.sendMessage("mskills  Show the skill selector");
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("rpcheck"))
+        {
+            api.getController().checkResourcePack(sender);
+            return true;
+        }
 
-		if (subCommand.equalsIgnoreCase("rpsend"))
-		{
-			api.getController().sendResourcePackToAllPlayers(sender);
-			return true;
-		}
-		if (subCommand.equalsIgnoreCase("save"))
-		{
-			api.save();
-			sender.sendMessage("Data saved.");
-			return true;
-		}
-		if (subCommand.equalsIgnoreCase("load") || subCommand.equalsIgnoreCase("reload"))
-		{
-			api.reload(sender);
-			return true;
-		}
-		if (subCommand.equalsIgnoreCase("clearcache"))
-		{
-			api.clearCache();
-			sender.sendMessage("Image map cache cleared.");
-			return true;
-		}
-		if (subCommand.equalsIgnoreCase("commit"))
-		{
-			if (api.commit()) {
-				sender.sendMessage("All changes committed");
-			} else {
-				sender.sendMessage("Nothing to commit");
-			}
-			return true;
-		}
-		if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell"))
-		{
-			Player player = null;
-			int argStart = 1;
+        if (subCommand.equalsIgnoreCase("rpsend"))
+        {
+            api.getController().sendResourcePackToAllPlayers(sender);
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("save"))
+        {
+            api.save();
+            sender.sendMessage("Data saved.");
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("load") || subCommand.equalsIgnoreCase("reload"))
+        {
+            api.reload(sender);
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("clearcache"))
+        {
+            api.clearCache();
+            sender.sendMessage("Image map cache cleared.");
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("commit"))
+        {
+            if (api.commit()) {
+                sender.sendMessage("All changes committed");
+            } else {
+                sender.sendMessage("Nothing to commit");
+            }
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell"))
+        {
+            Player player = null;
+            int argStart = 1;
 
-			if (sender instanceof Player) {
+            if (sender instanceof Player) {
                 if (args.length > 1)
                 {
                     player = DeprecatedUtils.getPlayer(args[1]);
@@ -160,28 +160,28 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                 {
                     argStart = 2;
                 }
-			} else {
+            } else {
                 if (args.length <= 1) {
                     sender.sendMessage("Must specify a player name");
                     return true;
                 }
-				argStart = 2;
-				player = DeprecatedUtils.getPlayer(args[1]);
-				if (player == null) {
-					sender.sendMessage("Can't find player " + args[1]);
-					return true;
-				}
-				if (!player.isOnline()) {
-					sender.sendMessage("Player " + args[1] + " is not online");
-					return true;
-				}
-			}
+                argStart = 2;
+                player = DeprecatedUtils.getPlayer(args[1]);
+                if (player == null) {
+                    sender.sendMessage("Can't find player " + args[1]);
+                    return true;
+                }
+                if (!player.isOnline()) {
+                    sender.sendMessage("Player " + args[1] + " is not online");
+                    return true;
+                }
+            }
             String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
             if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell"))
             {
                 return onMagicGive(sender, player, subCommand, args2);
             }
-		}
+        }
         if (subCommand.equalsIgnoreCase("worth"))
         {
             if (!(sender instanceof Player))
@@ -200,152 +200,152 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             showWorth(player, item);
             return true;
         }
-		if (subCommand.equalsIgnoreCase("list"))
-		{
-			return onMagicList(sender, subCommand, args);
-		}
-		if (subCommand.equalsIgnoreCase("cancel"))
-		{
-			checkRunningTask();
-			if (runningTask != null) {
-				runningTask.cancel();
-				runningTask = null;
-				sender.sendMessage("Job cancelled");
-			}
+        if (subCommand.equalsIgnoreCase("list"))
+        {
+            return onMagicList(sender, subCommand, args);
+        }
+        if (subCommand.equalsIgnoreCase("cancel"))
+        {
+            checkRunningTask();
+            if (runningTask != null) {
+                runningTask.cancel();
+                runningTask = null;
+                sender.sendMessage("Job cancelled");
+            }
 
-			int stoppedPending = 0;
-			for (Mage mage : controller.getMages()) {
-				while (mage.cancelPending() != null) stoppedPending++;
-			}
+            int stoppedPending = 0;
+            for (Mage mage : controller.getMages()) {
+                while (mage.cancelPending() != null) stoppedPending++;
+            }
 
-			sender.sendMessage("Stopped " + stoppedPending + " pending spell casts");
+            sender.sendMessage("Stopped " + stoppedPending + " pending spell casts");
 
-			return true;
-		}
-		if (subCommand.equalsIgnoreCase("clean"))
-		{
-			checkRunningTask();
-			if (runningTask != null) {
-				sender.sendMessage("Cancel current job first");
-				return true;
-			}
-			World world = null;
-			String owner = null;
-			if (args.length > 1) {
-				owner = args[1];
-			}
-			if (sender instanceof Player) {
-				world = ((Player)sender).getWorld();
-			} else {
-				if (args.length > 2) {
-					String worldName = args[2];
-					world = Bukkit.getWorld(worldName);
-				}
-			}
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("clean"))
+        {
+            checkRunningTask();
+            if (runningTask != null) {
+                sender.sendMessage("Cancel current job first");
+                return true;
+            }
+            World world = null;
+            String owner = null;
+            if (args.length > 1) {
+                owner = args[1];
+            }
+            if (sender instanceof Player) {
+                world = ((Player)sender).getWorld();
+            } else {
+                if (args.length > 2) {
+                    String worldName = args[2];
+                    world = Bukkit.getWorld(worldName);
+                }
+            }
 
-			boolean check = false;
-			if (owner != null && owner.equals("check")) {
-				check = true;
-				owner = "ALL";
-			}
-			String description = check ? "Checking for" : "Cleaning up";
-			String ownerName = owner == null ? "(Unowned)" : owner;
-			if (world == null) {
-				sender.sendMessage(description + " lost wands in all worlds for owner: " + ownerName);
-			} else if (ownerName.equals("ALL")) {
-				sender.sendMessage(description + " lost wands in world '" + world.getName() + "' for ALL owners");
-			} else {
-				sender.sendMessage(description + " lost wands in world '" + world.getName() + "' for owner " + ownerName);
-			}
-			runningTask = new WandCleanupRunnable(api, world, owner, check);
-			runningTask.runTaskTimer(api.getPlugin(), 5, 5);
+            boolean check = false;
+            if (owner != null && owner.equals("check")) {
+                check = true;
+                owner = "ALL";
+            }
+            String description = check ? "Checking for" : "Cleaning up";
+            String ownerName = owner == null ? "(Unowned)" : owner;
+            if (world == null) {
+                sender.sendMessage(description + " lost wands in all worlds for owner: " + ownerName);
+            } else if (ownerName.equals("ALL")) {
+                sender.sendMessage(description + " lost wands in world '" + world.getName() + "' for ALL owners");
+            } else {
+                sender.sendMessage(description + " lost wands in world '" + world.getName() + "' for owner " + ownerName);
+            }
+            runningTask = new WandCleanupRunnable(api, world, owner, check);
+            runningTask.runTaskTimer(api.getPlugin(), 5, 5);
 
-			return true;
-		}
+            return true;
+        }
 
-		sender.sendMessage("Unknown magic command: " + subCommand);
-		return true;
-	}
+        sender.sendMessage("Unknown magic command: " + subCommand);
+        return true;
+    }
 
-	protected boolean onMagicList(CommandSender sender, String subCommand, String[] args)
-	{
-		String usage = "Usage: magic list <wands|map|automata|tasks|schematics|entities|blocks>";
-		String listCommand = "";
-		if (args.length > 1)
-		{
-			listCommand = args[1];
-			if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand + "." + listCommand)) {
-				sendNoPermission(sender);
-				return false;
-			}
-		}
-		else
-		{
-			sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics', 'entities', 'blocks' or 'automata' parameter.");
+    protected boolean onMagicList(CommandSender sender, String subCommand, String[] args)
+    {
+        String usage = "Usage: magic list <wands|map|automata|tasks|schematics|entities|blocks>";
+        String listCommand = "";
+        if (args.length > 1)
+        {
+            listCommand = args[1];
+            if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand + "." + listCommand)) {
+                sendNoPermission(sender);
+                return false;
+            }
+        }
+        else
+        {
+            sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics', 'entities', 'blocks' or 'automata' parameter.");
 
-			MageController apiController = api.getController();
-			if (apiController != null && apiController instanceof MagicController) {
-				MagicController controller = (MagicController)apiController;
-				long timeout = controller.getPhysicsTimeout();
-				if (timeout > 0) {
-					long seconds = (timeout - System.currentTimeMillis()) / 1000;
-					sender.sendMessage(ChatColor.GREEN + "Physics handler active for another " + ChatColor.DARK_GREEN + seconds + ChatColor.GREEN + " seconds");
-				} else {
-					sender.sendMessage(ChatColor.GRAY + "Physics handler inactive");
-				}
-			}
+            MageController apiController = api.getController();
+            if (apiController != null && apiController instanceof MagicController) {
+                MagicController controller = (MagicController)apiController;
+                long timeout = controller.getPhysicsTimeout();
+                if (timeout > 0) {
+                    long seconds = (timeout - System.currentTimeMillis()) / 1000;
+                    sender.sendMessage(ChatColor.GREEN + "Physics handler active for another " + ChatColor.DARK_GREEN + seconds + ChatColor.GREEN + " seconds");
+                } else {
+                    sender.sendMessage(ChatColor.GRAY + "Physics handler inactive");
+                }
+            }
 
-			Collection<Mage> mages = controller.getMages();
-			sender.sendMessage(ChatColor.AQUA + "Modified blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getModified().size() + ChatColor.AQUA + ")");
-			sender.sendMessage(ChatColor.AQUA + "Watching blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getWatching().size() + ChatColor.AQUA + ")");
-			sender.sendMessage(ChatColor.AQUA + "Registered breaking (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreaking().size() + ChatColor.AQUA + ")");
-			sender.sendMessage(ChatColor.AQUA + "Registered breakable (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreakable().size() + ChatColor.AQUA + ")");
-			sender.sendMessage(ChatColor.AQUA + "Registered reflective (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getReflective().size() + ChatColor.AQUA + ")");
-			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + ChatColor.LIGHT_PURPLE + mages.size());
-			Collection<com.elmakers.mine.bukkit.api.block.UndoList> pendingUndo = api.getPendingUndo();
-			sender.sendMessage(ChatColor.AQUA + "Pending undo (" + ChatColor.LIGHT_PURPLE + pendingUndo.size() + ChatColor.AQUA + "): ");
+            Collection<Mage> mages = controller.getMages();
+            sender.sendMessage(ChatColor.AQUA + "Modified blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getModified().size() + ChatColor.AQUA + ")");
+            sender.sendMessage(ChatColor.AQUA + "Watching blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getWatching().size() + ChatColor.AQUA + ")");
+            sender.sendMessage(ChatColor.AQUA + "Registered breaking (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreaking().size() + ChatColor.AQUA + ")");
+            sender.sendMessage(ChatColor.AQUA + "Registered breakable (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreakable().size() + ChatColor.AQUA + ")");
+            sender.sendMessage(ChatColor.AQUA + "Registered reflective (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getReflective().size() + ChatColor.AQUA + ")");
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + ChatColor.LIGHT_PURPLE + mages.size());
+            Collection<com.elmakers.mine.bukkit.api.block.UndoList> pendingUndo = api.getPendingUndo();
+            sender.sendMessage(ChatColor.AQUA + "Pending undo (" + ChatColor.LIGHT_PURPLE + pendingUndo.size() + ChatColor.AQUA + "): ");
 
-			long now = System.currentTimeMillis();
-			for (com.elmakers.mine.bukkit.api.block.UndoList undo : pendingUndo) {
-				long remainingTime = (undo.getScheduledTime() - now) / 1000;
+            long now = System.currentTimeMillis();
+            for (com.elmakers.mine.bukkit.api.block.UndoList undo : pendingUndo) {
+                long remainingTime = (undo.getScheduledTime() - now) / 1000;
 
-				sender.sendMessage(ChatColor.AQUA + undo.getName() + ChatColor.GRAY + " will undo in "
-						+ ChatColor.WHITE + "" + remainingTime + "" + ChatColor.GRAY
-						+ " seconds");
-			}
+                sender.sendMessage(ChatColor.AQUA + undo.getName() + ChatColor.GRAY + " will undo in "
+                        + ChatColor.WHITE + "" + remainingTime + "" + ChatColor.GRAY
+                        + " seconds");
+            }
 
-			Collection<Mage> pending = api.getMagesWithPendingBatches();
-			sender.sendMessage(ChatColor.AQUA + "Pending casts (" + ChatColor.LIGHT_PURPLE + pending.size() + ChatColor.AQUA + "): ");
-			for (Mage mage : pending) {
-				int totalSize = 0;
-				int totalRemaining = 0;
-				Collection<Batch> pendingBatches = mage.getPendingBatches();
-				String names = "";
-				if (pendingBatches.size() > 0) {
-					for (Batch batch : pendingBatches) {
-						names = names + batch.getName() + " ";
-						totalSize += batch.size();
-						totalRemaining += batch.remaining();
-					}
-				}
+            Collection<Mage> pending = api.getMagesWithPendingBatches();
+            sender.sendMessage(ChatColor.AQUA + "Pending casts (" + ChatColor.LIGHT_PURPLE + pending.size() + ChatColor.AQUA + "): ");
+            for (Mage mage : pending) {
+                int totalSize = 0;
+                int totalRemaining = 0;
+                Collection<Batch> pendingBatches = mage.getPendingBatches();
+                String names = "";
+                if (pendingBatches.size() > 0) {
+                    for (Batch batch : pendingBatches) {
+                        names = names + batch.getName() + " ";
+                        totalSize += batch.size();
+                        totalRemaining += batch.remaining();
+                    }
+                }
 
-				sender.sendMessage(ChatColor.AQUA + mage.getName() + ChatColor.GRAY + " has "
-						+ ChatColor.WHITE + "" + pendingBatches.size() + "" + ChatColor.GRAY
-						+ " pending (" + ChatColor.WHITE + "" + totalRemaining + "/" + totalSize
-						+ "" + ChatColor.GRAY + ") (" + names + ")");
-			}
-			return true;
-		}
-		if (listCommand.equalsIgnoreCase("schematics")) {
-			List<String> schematics = new ArrayList<>();
-			try {
-				Plugin plugin = (Plugin)api;
-				MagicController controller = (MagicController)api.getController();
+                sender.sendMessage(ChatColor.AQUA + mage.getName() + ChatColor.GRAY + " has "
+                        + ChatColor.WHITE + "" + pendingBatches.size() + "" + ChatColor.GRAY
+                        + " pending (" + ChatColor.WHITE + "" + totalRemaining + "/" + totalSize
+                        + "" + ChatColor.GRAY + ") (" + names + ")");
+            }
+            return true;
+        }
+        if (listCommand.equalsIgnoreCase("schematics")) {
+            List<String> schematics = new ArrayList<>();
+            try {
+                Plugin plugin = (Plugin)api;
+                MagicController controller = (MagicController)api.getController();
 
-				// Find built-in schematics
-				CodeSource src = MagicAPI.class.getProtectionDomain().getCodeSource();
-				if (src != null) {
-					URL jar = src.getLocation();
+                // Find built-in schematics
+                CodeSource src = MagicAPI.class.getProtectionDomain().getCodeSource();
+                if (src != null) {
+                    URL jar = src.getLocation();
                     try (InputStream is = jar.openStream();
                             ZipInputStream zip = new ZipInputStream(is)) {
                         while (true) {
@@ -360,402 +360,402 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                     }
                 }
 
-				// Check extra path first
-				File configFolder = plugin.getDataFolder();
-				File magicSchematicFolder = new File(configFolder, "schematics");
-				if (magicSchematicFolder.exists()) {
-					for (File nextFile : magicSchematicFolder.listFiles()) {
-						schematics.add(nextFile.getName());
-					}
-				}
-				String extraSchematicFilePath = controller.getExtraSchematicFilePath();
-				if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
-					File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
-					if (schematicFolder.exists() && !schematicFolder.equals(magicSchematicFolder)) {
-						for (File nextFile : schematicFolder.listFiles()) {
-							schematics.add(nextFile.getName());
-						}
-					}
-				}
-			} catch (Exception ex) {
-				sender.sendMessage("Error loading schematics: " + ex.getMessage());
-				ex.printStackTrace();;
-			}
+                // Check extra path first
+                File configFolder = plugin.getDataFolder();
+                File magicSchematicFolder = new File(configFolder, "schematics");
+                if (magicSchematicFolder.exists()) {
+                    for (File nextFile : magicSchematicFolder.listFiles()) {
+                        schematics.add(nextFile.getName());
+                    }
+                }
+                String extraSchematicFilePath = controller.getExtraSchematicFilePath();
+                if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+                    File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
+                    if (schematicFolder.exists() && !schematicFolder.equals(magicSchematicFolder)) {
+                        for (File nextFile : schematicFolder.listFiles()) {
+                            schematics.add(nextFile.getName());
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                sender.sendMessage("Error loading schematics: " + ex.getMessage());
+                ex.printStackTrace();;
+            }
 
-			sender.sendMessage(ChatColor.DARK_AQUA + "Found " + ChatColor.LIGHT_PURPLE + schematics.size() + ChatColor.DARK_AQUA + " schematics");
-			Collections.sort(schematics);
-			for (String schematic : schematics) {
-				if (schematic.indexOf(".schematic") > 0) {
-					sender.sendMessage(ChatColor.AQUA + schematic.replace(".schematic", ""));
-				}
-			}
+            sender.sendMessage(ChatColor.DARK_AQUA + "Found " + ChatColor.LIGHT_PURPLE + schematics.size() + ChatColor.DARK_AQUA + " schematics");
+            Collections.sort(schematics);
+            for (String schematic : schematics) {
+                if (schematic.indexOf(".schematic") > 0) {
+                    sender.sendMessage(ChatColor.AQUA + schematic.replace(".schematic", ""));
+                }
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		if (listCommand.equalsIgnoreCase("tasks")) {
-			List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
-			HashMap<String, Integer> pluginCounts = new HashMap<>();
-			HashMap<String, HashMap<String, Integer>> taskCounts = new HashMap<>();
-			for (BukkitTask task : tasks)  {
-				String pluginName = task.getOwner().getName();
-				HashMap<String, Integer> pluginTaskCounts = taskCounts.get(pluginName);
-				if (pluginTaskCounts == null) {
-					pluginTaskCounts = new HashMap<>();
-					taskCounts.put(pluginName, pluginTaskCounts);
-				}
-				String className = "(Unknown)";
-				Runnable taskRunnable = CompatibilityUtils.getTaskRunnable(task);
-				if (taskRunnable != null) {
-					Class<? extends Runnable> taskClass = taskRunnable.getClass();
-					className = taskClass.getName();
-				}
-				Integer count = pluginTaskCounts.get(className);
-				if (count == null) count = 0;
-				count++;
-				pluginTaskCounts.put(className, count);
+        if (listCommand.equalsIgnoreCase("tasks")) {
+            List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
+            HashMap<String, Integer> pluginCounts = new HashMap<>();
+            HashMap<String, HashMap<String, Integer>> taskCounts = new HashMap<>();
+            for (BukkitTask task : tasks)  {
+                String pluginName = task.getOwner().getName();
+                HashMap<String, Integer> pluginTaskCounts = taskCounts.get(pluginName);
+                if (pluginTaskCounts == null) {
+                    pluginTaskCounts = new HashMap<>();
+                    taskCounts.put(pluginName, pluginTaskCounts);
+                }
+                String className = "(Unknown)";
+                Runnable taskRunnable = CompatibilityUtils.getTaskRunnable(task);
+                if (taskRunnable != null) {
+                    Class<? extends Runnable> taskClass = taskRunnable.getClass();
+                    className = taskClass.getName();
+                }
+                Integer count = pluginTaskCounts.get(className);
+                if (count == null) count = 0;
+                count++;
+                pluginTaskCounts.put(className, count);
 
-				Integer totalCount = pluginCounts.get(pluginName);
-				if (totalCount == null) totalCount = 0;
-				totalCount++;
-				pluginCounts.put(pluginName, totalCount);
-			}
-			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active tasks: " + tasks.size());
-			for (Entry<String, HashMap<String, Integer>> pluginEntry : taskCounts.entrySet()) {
-				String pluginName = pluginEntry.getKey();
-				sender.sendMessage(" " + ChatColor.DARK_PURPLE + pluginName + ": " + ChatColor.LIGHT_PURPLE + pluginCounts.get(pluginName));
-				for (Entry<String, Integer> taskEntry : pluginEntry.getValue().entrySet()) {
-					sender.sendMessage("  " + ChatColor.DARK_PURPLE + taskEntry.getKey() + ": " + ChatColor.LIGHT_PURPLE + taskEntry.getValue());
-				}
-			}
+                Integer totalCount = pluginCounts.get(pluginName);
+                if (totalCount == null) totalCount = 0;
+                totalCount++;
+                pluginCounts.put(pluginName, totalCount);
+            }
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active tasks: " + tasks.size());
+            for (Entry<String, HashMap<String, Integer>> pluginEntry : taskCounts.entrySet()) {
+                String pluginName = pluginEntry.getKey();
+                sender.sendMessage(" " + ChatColor.DARK_PURPLE + pluginName + ": " + ChatColor.LIGHT_PURPLE + pluginCounts.get(pluginName));
+                for (Entry<String, Integer> taskEntry : pluginEntry.getValue().entrySet()) {
+                    sender.sendMessage("  " + ChatColor.DARK_PURPLE + taskEntry.getKey() + ": " + ChatColor.LIGHT_PURPLE + taskEntry.getValue());
+                }
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		if (listCommand.equalsIgnoreCase("wands")) {
-			String owner = "";
-			if (args.length > 2) {
-				owner = args[2];
-			}
-			Collection<LostWand> lostWands = api.getLostWands();
-			int shown = 0;
-			for (LostWand lostWand : lostWands) {
-				Location location = lostWand.getLocation();
-				if (location == null) continue;
-				if (owner.length() > 0 && !owner.equalsIgnoreCase(lostWand.getOwner())) {
-					continue;
-				}
-				shown++;
-				sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " "
-				        + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
-			}
+        if (listCommand.equalsIgnoreCase("wands")) {
+            String owner = "";
+            if (args.length > 2) {
+                owner = args[2];
+            }
+            Collection<LostWand> lostWands = api.getLostWands();
+            int shown = 0;
+            for (LostWand lostWand : lostWands) {
+                Location location = lostWand.getLocation();
+                if (location == null) continue;
+                if (owner.length() > 0 && !owner.equalsIgnoreCase(lostWand.getOwner())) {
+                    continue;
+                }
+                shown++;
+                sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " "
+                        + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+            }
 
-			sender.sendMessage(shown + " lost wands found" + (owner.length() > 0 ? " for " + owner : ""));
-			return true;
-		}
+            sender.sendMessage(shown + " lost wands found" + (owner.length() > 0 ? " for " + owner : ""));
+            return true;
+        }
 
-		if (listCommand.equalsIgnoreCase("automata")) {
-			Collection<Mage> automata = api.getAutomata();
-			for (Mage automaton : automata) {
-				Location location = automaton.getLocation();
-				String worldName = location.getWorld().getName();
-				boolean isOnline = false;
-				World world = Bukkit.getWorld(worldName);
-				if (worldName != null) {
-					isOnline = world.isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4);
-				}
-				ChatColor nameColor = isOnline ? ChatColor.AQUA : ChatColor.GRAY;
-				sender.sendMessage(nameColor + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " "
-				        + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
-			}
+        if (listCommand.equalsIgnoreCase("automata")) {
+            Collection<Mage> automata = api.getAutomata();
+            for (Mage automaton : automata) {
+                Location location = automaton.getLocation();
+                String worldName = location.getWorld().getName();
+                boolean isOnline = false;
+                World world = Bukkit.getWorld(worldName);
+                if (worldName != null) {
+                    isOnline = world.isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4);
+                }
+                ChatColor nameColor = isOnline ? ChatColor.AQUA : ChatColor.GRAY;
+                sender.sendMessage(nameColor + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " "
+                        + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+            }
 
-			sender.sendMessage(automata.size() + " automata active");
-			return true;
-		}
+            sender.sendMessage(automata.size() + " automata active");
+            return true;
+        }
 
-		if (listCommand.equalsIgnoreCase("maps")) {
-			String keyword = "";
-			for (int i = 2; i < args.length; i++)
-			{
-				if (i != 2) keyword = keyword + " ";
-				keyword = keyword + args[i];
-			}
-			onMapList(sender, keyword);
-			return true;
-		}
+        if (listCommand.equalsIgnoreCase("maps")) {
+            String keyword = "";
+            for (int i = 2; i < args.length; i++)
+            {
+                if (i != 2) keyword = keyword + " ";
+                keyword = keyword + args[i];
+            }
+            onMapList(sender, keyword);
+            return true;
+        }
 
-		if (listCommand.equalsIgnoreCase("blocks")) {
-			for (BlockData blockData : UndoList.getRegistry().getModified().values())
-			{
-				BlockVector blockLocation = blockData.getLocation();
-				Block block = blockData.getBlock();
-				sender.sendMessage(ChatColor.BLUE + "Block at "
-						+ ChatColor.GRAY + blockLocation.getBlockX() + ChatColor.DARK_GRAY + ","
-						+ ChatColor.GRAY + blockLocation.getBlockY() + ChatColor.DARK_GRAY + ","
-						+ ChatColor.GRAY + blockLocation.getBlockZ()
-						+ ChatColor.BLUE + " stored as " + ChatColor.AQUA + blockData.getMaterial()
-						+ ChatColor.BLUE + " is currently " + ChatColor.AQUA + block.getType()
-						+ ChatColor.BLUE + " from " + ChatColor.GOLD + blockData.getUndoList().getName());
-			}
-			return true;
-		}
+        if (listCommand.equalsIgnoreCase("blocks")) {
+            for (BlockData blockData : UndoList.getRegistry().getModified().values())
+            {
+                BlockVector blockLocation = blockData.getLocation();
+                Block block = blockData.getBlock();
+                sender.sendMessage(ChatColor.BLUE + "Block at "
+                        + ChatColor.GRAY + blockLocation.getBlockX() + ChatColor.DARK_GRAY + ","
+                        + ChatColor.GRAY + blockLocation.getBlockY() + ChatColor.DARK_GRAY + ","
+                        + ChatColor.GRAY + blockLocation.getBlockZ()
+                        + ChatColor.BLUE + " stored as " + ChatColor.AQUA + blockData.getMaterial()
+                        + ChatColor.BLUE + " is currently " + ChatColor.AQUA + block.getType()
+                        + ChatColor.BLUE + " from " + ChatColor.GOLD + blockData.getUndoList().getName());
+            }
+            return true;
+        }
 
-		if (listCommand.equalsIgnoreCase("mages")) {
-			for (Mage mage : api.getController().getMages())
-			{
-				Entity mageEntity = mage.getEntity();
-				Location location = mage.getLocation();
-				ChatColor mageColor = ChatColor.YELLOW;
-				if (mage instanceof com.elmakers.mine.bukkit.magic.Mage && ((com.elmakers.mine.bukkit.magic.Mage)mage).isForget()) {
-					mageColor = ChatColor.RED;
-				} else if (mage.isAutomaton()) {
-					mageColor = ChatColor.GOLD;
-				}
-				String mageType = mageEntity == null ? "Non-Entity" : mageEntity.getType().name();
-				String message = ChatColor.AQUA + "Mage " + mageColor + mage.getId()
-						+ ChatColor.GRAY + " (" + mage.getName() + ")" + ChatColor.AQUA + " of type "
-						+ ChatColor.DARK_AQUA + mageType + ChatColor.AQUA;
-				if (location != null) {
-					String worldName = location.getWorld() != null ? location.getWorld().getName() : "(Unknown world)";
-					message = message + " is at " + ChatColor.BLUE + worldName + " " + ChatColor.DARK_PURPLE
-						+ " " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ();
-				}
-				sender.sendMessage(message);
-			}
-			return true;
-		}
+        if (listCommand.equalsIgnoreCase("mages")) {
+            for (Mage mage : api.getController().getMages())
+            {
+                Entity mageEntity = mage.getEntity();
+                Location location = mage.getLocation();
+                ChatColor mageColor = ChatColor.YELLOW;
+                if (mage instanceof com.elmakers.mine.bukkit.magic.Mage && ((com.elmakers.mine.bukkit.magic.Mage)mage).isForget()) {
+                    mageColor = ChatColor.RED;
+                } else if (mage.isAutomaton()) {
+                    mageColor = ChatColor.GOLD;
+                }
+                String mageType = mageEntity == null ? "Non-Entity" : mageEntity.getType().name();
+                String message = ChatColor.AQUA + "Mage " + mageColor + mage.getId()
+                        + ChatColor.GRAY + " (" + mage.getName() + ")" + ChatColor.AQUA + " of type "
+                        + ChatColor.DARK_AQUA + mageType + ChatColor.AQUA;
+                if (location != null) {
+                    String worldName = location.getWorld() != null ? location.getWorld().getName() : "(Unknown world)";
+                    message = message + " is at " + ChatColor.BLUE + worldName + " " + ChatColor.DARK_PURPLE
+                        + " " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ();
+                }
+                sender.sendMessage(message);
+            }
+            return true;
+        }
 
-		if (listCommand.equalsIgnoreCase("entities")) {
-			World world = Bukkit.getWorlds().get(0);
-			NumberFormat formatter = new DecimalFormat("#0.0");
-			List<EntityType> types = Arrays.asList(EntityType.values());
-			Collections.sort(types, new Comparator<EntityType>() {
-				@Override
-				public int compare(EntityType o1, EntityType o2) {
-					return o1.name().compareTo(o2.name());
-				}
-			});
-			Collection<? extends Player> players = Bukkit.getServer().getOnlinePlayers();
-			for (Player player : players)
-			{
-				showEntityInfo(sender, player, EntityType.PLAYER.name() + ChatColor.GRAY + " (" + player.getName() + " [" + (player.isSneaking() ? "sneaking" : "standing") + "])", formatter);
-				break;
-			}
+        if (listCommand.equalsIgnoreCase("entities")) {
+            World world = Bukkit.getWorlds().get(0);
+            NumberFormat formatter = new DecimalFormat("#0.0");
+            List<EntityType> types = Arrays.asList(EntityType.values());
+            Collections.sort(types, new Comparator<EntityType>() {
+                @Override
+                public int compare(EntityType o1, EntityType o2) {
+                    return o1.name().compareTo(o2.name());
+                }
+            });
+            Collection<? extends Player> players = Bukkit.getServer().getOnlinePlayers();
+            for (Player player : players)
+            {
+                showEntityInfo(sender, player, EntityType.PLAYER.name() + ChatColor.GRAY + " (" + player.getName() + " [" + (player.isSneaking() ? "sneaking" : "standing") + "])", formatter);
+                break;
+            }
 
-			final Class<?> worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
-			for (EntityType entityType : types)
-			{
-				if (entityType.isSpawnable())
-				{
-					Entity testEntity = null;
-					String errorMessage = null;
-					String entityName = "Entity" + entityType.getEntityClass().getSimpleName();
-					// A few hacky special cases :(
-					// Still better than actually adding all of these entities to the world!
-					if (entityName.equals("EntityGiant")) {
-						entityName = "EntityGiantZombie";
-					} else if (entityName.equals("EntityLeashHitch")) {
-						entityName = "EntityLeash";
-					} else if (entityName.equals("EntityStorageMinecart")) {
-						entityName = "EntityMinecartChest";
-					} else if (entityName.equals("EntitySpawnerMinecart")) {
-						entityName = "EntityMinecartMobSpawner";
-					} else if (entityName.equals("EntityCommandMinecart")) {
-						entityName = "EntityMinecartCommandBlock";
-					} else if (entityName.equals("EntityPoweredMinecart")) {
-						entityName = "EntityMinecartFurnace";
-					} else if (entityName.equals("EntityExplosiveMinecart")) {
-						entityName = "EntityMinecartTNT";
-					} else if (entityName.contains("Minecart")) {
-						entityName = entityType.getEntityClass().getSimpleName();
-						entityName = entityName.replace("Minecart", "");
-						entityName = "EntityMinecart" + entityName;
-					}
-					try {
-						Class<?> entityClass = NMSUtils.getBukkitClass("net.minecraft.server." + entityName);
-						if (entityClass != null) {
-							Constructor<? extends Object> constructor = entityClass.getConstructor(worldClass);
-							Object nmsWorld = NMSUtils.getHandle(world);
-							Object nmsEntity = constructor.newInstance(nmsWorld);
-							testEntity = NMSUtils.getBukkitEntity(nmsEntity);
-							if (testEntity == null) {
-								errorMessage = "Failed to get Bukkit entity for class " + entityName;
-							}
-						} else {
-							errorMessage = "Could not load class " + entityName;
-						}
-					} catch (Exception ex) {
-						testEntity = null;
-						errorMessage = ex.getClass().getSimpleName() + " [" + entityName + "]";
-						String message = ex.getMessage();
-						if (message != null && !message.isEmpty()) {
-							errorMessage += ": " + message;
-						}
-					}
-					if (testEntity == null) {
-						sender.sendMessage(ChatColor.BLACK + entityType.name() + ": " + ChatColor.RED + "Spawning error " + ChatColor.DARK_RED + "(" + errorMessage + ")");
-						continue;
-					}
-					String label = entityType.name();
+            final Class<?> worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
+            for (EntityType entityType : types)
+            {
+                if (entityType.isSpawnable())
+                {
+                    Entity testEntity = null;
+                    String errorMessage = null;
+                    String entityName = "Entity" + entityType.getEntityClass().getSimpleName();
+                    // A few hacky special cases :(
+                    // Still better than actually adding all of these entities to the world!
+                    if (entityName.equals("EntityGiant")) {
+                        entityName = "EntityGiantZombie";
+                    } else if (entityName.equals("EntityLeashHitch")) {
+                        entityName = "EntityLeash";
+                    } else if (entityName.equals("EntityStorageMinecart")) {
+                        entityName = "EntityMinecartChest";
+                    } else if (entityName.equals("EntitySpawnerMinecart")) {
+                        entityName = "EntityMinecartMobSpawner";
+                    } else if (entityName.equals("EntityCommandMinecart")) {
+                        entityName = "EntityMinecartCommandBlock";
+                    } else if (entityName.equals("EntityPoweredMinecart")) {
+                        entityName = "EntityMinecartFurnace";
+                    } else if (entityName.equals("EntityExplosiveMinecart")) {
+                        entityName = "EntityMinecartTNT";
+                    } else if (entityName.contains("Minecart")) {
+                        entityName = entityType.getEntityClass().getSimpleName();
+                        entityName = entityName.replace("Minecart", "");
+                        entityName = "EntityMinecart" + entityName;
+                    }
+                    try {
+                        Class<?> entityClass = NMSUtils.getBukkitClass("net.minecraft.server." + entityName);
+                        if (entityClass != null) {
+                            Constructor<? extends Object> constructor = entityClass.getConstructor(worldClass);
+                            Object nmsWorld = NMSUtils.getHandle(world);
+                            Object nmsEntity = constructor.newInstance(nmsWorld);
+                            testEntity = NMSUtils.getBukkitEntity(nmsEntity);
+                            if (testEntity == null) {
+                                errorMessage = "Failed to get Bukkit entity for class " + entityName;
+                            }
+                        } else {
+                            errorMessage = "Could not load class " + entityName;
+                        }
+                    } catch (Exception ex) {
+                        testEntity = null;
+                        errorMessage = ex.getClass().getSimpleName() + " [" + entityName + "]";
+                        String message = ex.getMessage();
+                        if (message != null && !message.isEmpty()) {
+                            errorMessage += ": " + message;
+                        }
+                    }
+                    if (testEntity == null) {
+                        sender.sendMessage(ChatColor.BLACK + entityType.name() + ": " + ChatColor.RED + "Spawning error " + ChatColor.DARK_RED + "(" + errorMessage + ")");
+                        continue;
+                    }
+                    String label = entityType.name();
 
-					Ageable ageable = (testEntity instanceof Ageable) ? (Ageable)testEntity : null;
-					Zombie zombie = (testEntity instanceof Zombie) ? (Zombie)testEntity : null;
-					Skeleton skeleton = (testEntity instanceof Skeleton) ? (Skeleton)testEntity : null;
-					Slime slime = (testEntity instanceof Slime) ? (Slime)testEntity : null;
-					if (ageable != null)
-					{
-						label = label + ChatColor.GRAY + " (Adult)";
-						ageable.setAdult();
-					}
-					else if (zombie != null)
-					{
-						label = label + ChatColor.GRAY + " (Adult)";
-						zombie.setBaby(false);
-					}
-					else if (skeleton != null)
-					{
-						label = label + ChatColor.GRAY + " (NORMAL)";
-						skeleton.setSkeletonType(Skeleton.SkeletonType.NORMAL);
-					}
-					else if (slime != null)
-					{
-						label = label + ChatColor.GRAY + " (Size 1)";
-						slime.setSize(1);
-					}
+                    Ageable ageable = (testEntity instanceof Ageable) ? (Ageable)testEntity : null;
+                    Zombie zombie = (testEntity instanceof Zombie) ? (Zombie)testEntity : null;
+                    Skeleton skeleton = (testEntity instanceof Skeleton) ? (Skeleton)testEntity : null;
+                    Slime slime = (testEntity instanceof Slime) ? (Slime)testEntity : null;
+                    if (ageable != null)
+                    {
+                        label = label + ChatColor.GRAY + " (Adult)";
+                        ageable.setAdult();
+                    }
+                    else if (zombie != null)
+                    {
+                        label = label + ChatColor.GRAY + " (Adult)";
+                        zombie.setBaby(false);
+                    }
+                    else if (skeleton != null)
+                    {
+                        label = label + ChatColor.GRAY + " (NORMAL)";
+                        skeleton.setSkeletonType(Skeleton.SkeletonType.NORMAL);
+                    }
+                    else if (slime != null)
+                    {
+                        label = label + ChatColor.GRAY + " (Size 1)";
+                        slime.setSize(1);
+                    }
 
-					showEntityInfo(sender, testEntity, label, formatter);
-					if (ageable != null)
-					{
-						label = entityType.name() + ChatColor.GRAY + " (Baby)";
-						ageable.setBaby();
-						showEntityInfo(sender, testEntity, label, formatter);
-					}
-					else if (zombie != null)
-					{
-						label = entityType.name() + ChatColor.GRAY + " (Baby)";
-						zombie.setBaby(true);
-						showEntityInfo(sender, testEntity, label, formatter);
-					}
-					else if (skeleton != null)
-					{
-						label = entityType.name() + ChatColor.GRAY + " (WITHER)";
-						skeleton.setSkeletonType(Skeleton.SkeletonType.WITHER);
-						showEntityInfo(sender, testEntity, label, formatter);
-					}
-					else if (slime != null)
-					{
-						label = entityType.name() + ChatColor.GRAY + " (Size 2)";
-						slime.setSize(2);
-						showEntityInfo(sender, testEntity, label, formatter);
-						label = entityType.name() + ChatColor.GRAY + " (Size 4)";
-						slime.setSize(4);
-						showEntityInfo(sender, testEntity, label, formatter);
-						label = entityType.name() + ChatColor.GRAY + " (Size 8)";
-						slime.setSize(8);
-						showEntityInfo(sender, testEntity, label, formatter);
-						label = entityType.name() + ChatColor.GRAY + " (Size 16)";
-						slime.setSize(16);
-						showEntityInfo(sender, testEntity, label, formatter);
-					}
-				}
-			}
-			return true;
-		}
+                    showEntityInfo(sender, testEntity, label, formatter);
+                    if (ageable != null)
+                    {
+                        label = entityType.name() + ChatColor.GRAY + " (Baby)";
+                        ageable.setBaby();
+                        showEntityInfo(sender, testEntity, label, formatter);
+                    }
+                    else if (zombie != null)
+                    {
+                        label = entityType.name() + ChatColor.GRAY + " (Baby)";
+                        zombie.setBaby(true);
+                        showEntityInfo(sender, testEntity, label, formatter);
+                    }
+                    else if (skeleton != null)
+                    {
+                        label = entityType.name() + ChatColor.GRAY + " (WITHER)";
+                        skeleton.setSkeletonType(Skeleton.SkeletonType.WITHER);
+                        showEntityInfo(sender, testEntity, label, formatter);
+                    }
+                    else if (slime != null)
+                    {
+                        label = entityType.name() + ChatColor.GRAY + " (Size 2)";
+                        slime.setSize(2);
+                        showEntityInfo(sender, testEntity, label, formatter);
+                        label = entityType.name() + ChatColor.GRAY + " (Size 4)";
+                        slime.setSize(4);
+                        showEntityInfo(sender, testEntity, label, formatter);
+                        label = entityType.name() + ChatColor.GRAY + " (Size 8)";
+                        slime.setSize(8);
+                        showEntityInfo(sender, testEntity, label, formatter);
+                        label = entityType.name() + ChatColor.GRAY + " (Size 16)";
+                        slime.setSize(16);
+                        showEntityInfo(sender, testEntity, label, formatter);
+                    }
+                }
+            }
+            return true;
+        }
 
-		sender.sendMessage(usage);
-		return true;
-	}
+        sender.sendMessage(usage);
+        return true;
+    }
 
-	private void showEntityInfo(CommandSender sender, Entity entity, String label, NumberFormat formatter)
-	{
-		BoundingBox hitbox = HitboxUtils.getHitbox(entity);
-		Vector size = hitbox.size();
-		String message = ChatColor.BLACK + label + ": "
-				+ ChatColor.AQUA + formatter.format(size.getX()) + ChatColor.DARK_GRAY + "x"
-				+ ChatColor.AQUA + formatter.format(size.getY()) + ChatColor.DARK_GRAY + "x"
-				+ ChatColor.AQUA + formatter.format(size.getZ());
+    private void showEntityInfo(CommandSender sender, Entity entity, String label, NumberFormat formatter)
+    {
+        BoundingBox hitbox = HitboxUtils.getHitbox(entity);
+        Vector size = hitbox.size();
+        String message = ChatColor.BLACK + label + ": "
+                + ChatColor.AQUA + formatter.format(size.getX()) + ChatColor.DARK_GRAY + "x"
+                + ChatColor.AQUA + formatter.format(size.getY()) + ChatColor.DARK_GRAY + "x"
+                + ChatColor.AQUA + formatter.format(size.getZ());
 
-		if (entity instanceof LivingEntity)
-		{
-			LivingEntity li = (LivingEntity)entity;
-			message += ChatColor.DARK_GRAY + ", " + ChatColor.GREEN + ((int)li.getMaxHealth()) + "hp";
-		}
-		sender.sendMessage(message);
-	}
+        if (entity instanceof LivingEntity)
+        {
+            LivingEntity li = (LivingEntity)entity;
+            message += ChatColor.DARK_GRAY + ", " + ChatColor.GREEN + ((int)li.getMaxHealth()) + "hp";
+        }
+        sender.sendMessage(message);
+    }
 
-	protected boolean onMagicGive(CommandSender sender, Player player, String command, String[] args)
-	{
-		String playerCommand = (sender instanceof Player) ? "" : "<player> ";
-		String usageString = "Usage: /magic give " + playerCommand + "<spellname|'material'|'upgrade'|'wand'> [materialname|wandname]";
-		if (args.length == 0) {
-			sender.sendMessage(usageString);
-			return true;
-		}
+    protected boolean onMagicGive(CommandSender sender, Player player, String command, String[] args)
+    {
+        String playerCommand = (sender instanceof Player) ? "" : "<player> ";
+        String usageString = "Usage: /magic give " + playerCommand + "<spellname|'material'|'upgrade'|'wand'> [materialname|wandname]";
+        if (args.length == 0) {
+            sender.sendMessage(usageString);
+            return true;
+        }
 
-		String key = "";
-		boolean isMaterial = false;
-		boolean isWand = false;
-		boolean isUpgrade = false;
+        String key = "";
+        boolean isMaterial = false;
+        boolean isWand = false;
+        boolean isUpgrade = false;
 
-		if (args.length > 1 && !args[0].equals("material") && !args[0].equals("wand") && !args[0].equals("upgrade")) {
-			sender.sendMessage(usageString);
-			return true;
-		}
+        if (args.length > 1 && !args[0].equals("material") && !args[0].equals("wand") && !args[0].equals("upgrade")) {
+            sender.sendMessage(usageString);
+            return true;
+        }
 
-		if (args[0].equals("wand")) {
-			isWand = true;
-			key = args.length > 1 ? args[1] : "";
-		} else if (args[0].equals("upgrade")) {
-			isUpgrade = true;
-			key =  args.length > 1 ? args[1] : "";
-		} else if (args[0].equals("material")) {
-			if (args.length < 2) {
-				sender.sendMessage(usageString);
-				return true;
-			}
-			isMaterial = true;
-			key = args[1];
-		} else {
-			key = args[0];
-		}
+        if (args[0].equals("wand")) {
+            isWand = true;
+            key = args.length > 1 ? args[1] : "";
+        } else if (args[0].equals("upgrade")) {
+            isUpgrade = true;
+            key =  args.length > 1 ? args[1] : "";
+        } else if (args[0].equals("material")) {
+            if (args.length < 2) {
+                sender.sendMessage(usageString);
+                return true;
+            }
+            isMaterial = true;
+            key = args[1];
+        } else {
+            key = args[0];
+        }
 
         boolean giveItem = command.equals("give") || command.equals("sell");
         boolean showWorth = command.equals("worth") || command.equals("sell");
         boolean giveValue = command.equals("sell");
 
-		if (isWand) {
-			giveWand(sender, player, key, false, giveItem, giveValue, showWorth);
-		} else if (isMaterial) {
-			onGiveBrush(sender, player, key, false, giveItem, giveValue, showWorth);
-		} else if (isUpgrade) {
-			onGiveUpgrade(sender, player, key, false, giveItem, giveValue, showWorth);
-		} else {
-			onGive(sender, player, key, giveItem, giveValue, showWorth);
-		}
+        if (isWand) {
+            giveWand(sender, player, key, false, giveItem, giveValue, showWorth);
+        } else if (isMaterial) {
+            onGiveBrush(sender, player, key, false, giveItem, giveValue, showWorth);
+        } else if (isUpgrade) {
+            onGiveUpgrade(sender, player, key, false, giveItem, giveValue, showWorth);
+        } else {
+            onGive(sender, player, key, giveItem, giveValue, showWorth);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	protected void onGive(CommandSender sender, Player player, String key, boolean giveItem, boolean giveValue, boolean showWorth)
-	{
-		if (!onGiveSpell(sender, player, key, true, giveItem, giveValue, showWorth)) {
-			if (!onGiveBrush(sender, player, key, true, giveItem, giveValue, showWorth))
-			{
-				if (!giveWand(sender, player, key, true, giveItem, giveValue, showWorth))
-				{
-					sender.sendMessage("Failed to create a spell, brush or wand item for " + key);
-				}
-			}
-		}
-	}
+    protected void onGive(CommandSender sender, Player player, String key, boolean giveItem, boolean giveValue, boolean showWorth)
+    {
+        if (!onGiveSpell(sender, player, key, true, giveItem, giveValue, showWorth)) {
+            if (!onGiveBrush(sender, player, key, true, giveItem, giveValue, showWorth))
+            {
+                if (!giveWand(sender, player, key, true, giveItem, giveValue, showWorth))
+                {
+                    sender.sendMessage("Failed to create a spell, brush or wand item for " + key);
+                }
+            }
+        }
+    }
 
-	protected boolean onGiveSpell(CommandSender sender, Player player, String spellKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
-	{
-		ItemStack itemStack = api.createSpellItem(spellKey);
-		if (itemStack == null) {
-			if (!quiet) sender.sendMessage("Failed to create spell item for " + spellKey);
-			return false;
-		}
+    protected boolean onGiveSpell(CommandSender sender, Player player, String spellKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
+    {
+        ItemStack itemStack = api.createSpellItem(spellKey);
+        if (itemStack == null) {
+            if (!quiet) sender.sendMessage("Failed to create spell item for " + spellKey);
+            return false;
+        }
 
         if (giveItem) {
             api.giveItemToPlayer(player, itemStack);
@@ -766,16 +766,16 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         if (showWorth) {
             showWorth(sender, itemStack);
         }
-		return true;
-	}
+        return true;
+    }
 
-	protected boolean onGiveBrush(CommandSender sender, Player player, String materialKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
-	{
-		ItemStack itemStack = api.createBrushItem(materialKey);
-		if (itemStack == null) {
-			if (!quiet) sender.sendMessage("Failed to create material item for " + materialKey);
-			return false;
-		}
+    protected boolean onGiveBrush(CommandSender sender, Player player, String materialKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
+    {
+        ItemStack itemStack = api.createBrushItem(materialKey);
+        if (itemStack == null) {
+            if (!quiet) sender.sendMessage("Failed to create material item for " + materialKey);
+            return false;
+        }
 
         if (giveItem) {
             api.giveItemToPlayer(player, itemStack);
@@ -786,20 +786,20 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         if (showWorth) {
             showWorth(sender, itemStack);
         }
-		return true;
-	}
+        return true;
+    }
 
-	protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
-	{
-		Mage mage = controller.getMage(player);
-		Wand currentWand =  mage.getActiveWand();
-		if (currentWand != null) {
-			currentWand.closeInventory();
-		}
+    protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
+    {
+        Mage mage = controller.getMage(player);
+        Wand currentWand =  mage.getActiveWand();
+        if (currentWand != null) {
+            currentWand.closeInventory();
+        }
 
-		Wand wand = api.createWand(wandKey);
-		if (wand != null) {
-			wand.makeUpgrade();
+        Wand wand = api.createWand(wandKey);
+        if (wand != null) {
+            wand.makeUpgrade();
             if (giveItem) {
                 api.giveItemToPlayer(player, wand.getItem());
                 if (sender != player && !quiet) {
@@ -809,71 +809,71 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             if (showWorth) {
                 showWorth(sender, wand.getItem());
             }
-		} else  {
-			if (!quiet) sender.sendMessage(api.getMessages().getParameterized("wand.unknown_template", "$name", wandKey));
-			return false;
-		}
-		return true;
-	}
+        } else  {
+            if (!quiet) sender.sendMessage(api.getMessages().getParameterized("wand.unknown_template", "$name", wandKey));
+            return false;
+        }
+        return true;
+    }
 
-	protected void checkRunningTask()
-	{
-		if (runningTask != null && runningTask.isFinished()) {
-			runningTask = null;
-		}
-	}
+    protected void checkRunningTask()
+    {
+        if (runningTask != null && runningTask.isFinished()) {
+            runningTask = null;
+        }
+    }
 
-	@Override
-	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<>();
-		if (args.length == 1) {
-			addIfPermissible(sender, options, "Magic.commands.magic.", "clean");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "clearcache");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "cancel");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "load");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "save");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "commit");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "give");
+    @Override
+    public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+        List<String> options = new ArrayList<>();
+        if (args.length == 1) {
+            addIfPermissible(sender, options, "Magic.commands.magic.", "clean");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "clearcache");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "cancel");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "load");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "save");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "commit");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "give");
             addIfPermissible(sender, options, "Magic.commands.magic.", "worth");
             addIfPermissible(sender, options, "Magic.commands.magic.", "sell");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "list");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "rpcheck");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "rpsend");
-		} else if (args.length == 2) {
-			if (args[0].equalsIgnoreCase("list")) {
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "schematics");
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "entities");
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "tasks");
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "blocks");
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "mages");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "list");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "rpcheck");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "rpsend");
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("list")) {
+                addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
+                addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
+                addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
+                addIfPermissible(sender, options, "Magic.commands.magic.list", "schematics");
+                addIfPermissible(sender, options, "Magic.commands.magic.list", "entities");
+                addIfPermissible(sender, options, "Magic.commands.magic.list", "tasks");
+                addIfPermissible(sender, options, "Magic.commands.magic.list", "blocks");
+                addIfPermissible(sender, options, "Magic.commands.magic.list", "mages");
             } else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
-				options.add("wand");
-				options.add("material");
-				options.add("upgrade");
-				Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
-				for (SpellTemplate spell : spellList) {
-					options.add(spell.getKey());
-				}
-				Collection<String> allWands = api.getWandKeys();
-				for (String wandKey : allWands) {
-					options.add(wandKey);
-				}
-				options.addAll(api.getBrushes());
-			}
-		} else if (args.length == 3) {
-			if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("sell")) {
-				if (args[1].equalsIgnoreCase("upgrade") || args[1].equalsIgnoreCase("wand")) {
-					Collection<String> allWands = api.getWandKeys();
-					for (String wandKey : allWands) {
-						options.add(wandKey);
-					}
-				} else if (args[1].equalsIgnoreCase("material")) {
-					options.addAll(api.getBrushes());
-				}
-			} else if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
+                options.add("wand");
+                options.add("material");
+                options.add("upgrade");
+                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                for (SpellTemplate spell : spellList) {
+                    options.add(spell.getKey());
+                }
+                Collection<String> allWands = api.getWandKeys();
+                for (String wandKey : allWands) {
+                    options.add(wandKey);
+                }
+                options.addAll(api.getBrushes());
+            }
+        } else if (args.length == 3) {
+            if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("sell")) {
+                if (args[1].equalsIgnoreCase("upgrade") || args[1].equalsIgnoreCase("wand")) {
+                    Collection<String> allWands = api.getWandKeys();
+                    for (String wandKey : allWands) {
+                        options.add(wandKey);
+                    }
+                } else if (args[1].equalsIgnoreCase("material")) {
+                    options.addAll(api.getBrushes());
+                }
+            } else if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
                 Player player = DeprecatedUtils.getPlayer(args[1]);
                 if (player != null) {
                     Mage mage = controller.getMage(player);
@@ -881,7 +881,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                     options.addAll(data.getKeys(false));
                 }
             }
-		}
-		return options;
-	}
+        }
+        return options;
+    }
 }

@@ -24,14 +24,14 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 
 public class WorldGuardAPI {
     private final Plugin owningPlugin;
-	private WorldGuardPlugin worldGuard = null;
+    private WorldGuardPlugin worldGuard = null;
     private WorldGuardFlags customFlags = null;
 
-	public boolean isEnabled() {
-		return worldGuard != null;
-	}
+    public boolean isEnabled() {
+        return worldGuard != null;
+    }
 
-	public WorldGuardAPI(Plugin plugin, Plugin owningPlugin) {
+    public WorldGuardAPI(Plugin plugin, Plugin owningPlugin) {
         this.owningPlugin = owningPlugin;
         if (plugin instanceof WorldGuardPlugin) {
             worldGuard = (WorldGuardPlugin)plugin;
@@ -44,9 +44,9 @@ public class WorldGuardAPI {
                 owningPlugin.getLogger().log(Level.WARNING, "Unexpected error setting up custom flags, please make sure you are on WorldGuard 6.2 or above", ex);
             }
         }
-	}
+    }
 
-	public void checkFlagSupport() {
+    public void checkFlagSupport() {
         if (customFlags == null) {
             try {
                 Plugin customFlagsPlugin = owningPlugin.getServer().getPluginManager().getPlugin("WGCustomFlags");
@@ -76,17 +76,17 @@ public class WorldGuardAPI {
         return associable;
     }
 
-	public boolean isPVPAllowed(Player player, Location location) {
-		if (worldGuard == null || location == null) return true;
+    public boolean isPVPAllowed(Player player, Location location) {
+        if (worldGuard == null || location == null) return true;
 
-		RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
+        RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
         if (regionManager == null) return true;
 
-		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
-		if (checkSet == null) return true;
+        ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
+        if (checkSet == null) return true;
 
-		return checkSet.queryState(getAssociable(player), DefaultFlag.PVP) != StateFlag.State.DENY;
-	}
+        return checkSet.queryState(getAssociable(player), DefaultFlag.PVP) != StateFlag.State.DENY;
+    }
 
     public boolean isExitAllowed(Player player, Location location) {
         if (worldGuard == null || location == null) return true;
@@ -100,14 +100,14 @@ public class WorldGuardAPI {
         return checkSet.queryState(getAssociable(player), DefaultFlag.EXIT) != StateFlag.State.DENY;
     }
 
-	public boolean hasBuildPermission(Player player, Block block) {
-		if (block != null && worldGuard != null) {
+    public boolean hasBuildPermission(Player player, Block block) {
+        if (block != null && worldGuard != null) {
             RegionContainer container = worldGuard.getRegionContainer();
-			return container.createQuery().testState(block.getLocation(), getAssociable(player), DefaultFlag.BUILD);
-		}
+            return container.createQuery().testState(block.getLocation(), getAssociable(player), DefaultFlag.BUILD);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
     @Nullable
     public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {

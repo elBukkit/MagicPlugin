@@ -30,16 +30,16 @@ import com.elmakers.mine.bukkit.magic.MagicRecipe;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class CraftingController implements Listener {
-	private final MagicController controller;
-	private boolean craftingEnabled = false;
+    private final MagicController controller;
+    private boolean craftingEnabled = false;
     private Map<Material, List<MagicRecipe>> recipes = new HashMap<>();
     private int recipeCount = 0;
 
-	public CraftingController(MagicController controller) {
-		this.controller = controller;
-	}
+    public CraftingController(MagicController controller) {
+        this.controller = controller;
+    }
 
-	public void load(ConfigurationSection configuration) {
+    public void load(ConfigurationSection configuration) {
         recipes.clear();
         recipeCount = 0;
         if (!craftingEnabled) {
@@ -65,7 +65,7 @@ public class CraftingController implements Listener {
             similar.add(recipe);
             recipeCount++;
         }
-	}
+    }
 
     public boolean hasCraftPermission(Player player, MagicRecipe recipe)
     {
@@ -80,7 +80,7 @@ public class CraftingController implements Listener {
         return controller.hasPermission(player, "Magic.craft." + recipe.getKey(), true);
     }
 
-	public void register(Plugin plugin) {
+    public void register(Plugin plugin) {
         if (!craftingEnabled) {
             return;
         }
@@ -89,11 +89,11 @@ public class CraftingController implements Listener {
                 recipe.register(plugin);
             }
         }
-	}
+    }
 
-	@EventHandler
-	public void onPrepareCraftItem(PrepareItemCraftEvent event)
-	{
+    @EventHandler
+    public void onPrepareCraftItem(PrepareItemCraftEvent event)
+    {
         CraftingInventory inventory = event.getInventory();
         ItemStack[] contents = inventory.getMatrix();
 
@@ -136,24 +136,24 @@ public class CraftingController implements Listener {
                 inventory.setResult(new ItemStack(substitute, 1));
             }
         }
-	}
+    }
 
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		if (!(event.getWhoClicked() instanceof Player)) return;
-		if (event.isCancelled()) return;
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) return;
+        if (event.isCancelled()) return;
 
-		InventoryType inventoryType = event.getInventory().getType();
-		SlotType slotType = event.getSlotType();
-		// Check for wand clicks to prevent grinding them to dust, or whatever.
-		if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
-			ItemStack cursor = event.getCursor();
-			if (Wand.isSpecial(cursor)) {
-				event.setCancelled(true);
-				return;
-			}
-		}
-	}
+        InventoryType inventoryType = event.getInventory().getType();
+        SlotType slotType = event.getSlotType();
+        // Check for wand clicks to prevent grinding them to dust, or whatever.
+        if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
+            ItemStack cursor = event.getCursor();
+            if (Wand.isSpecial(cursor)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
 
     @EventHandler
     public void onCraftItem(CraftItemEvent event) {
@@ -176,10 +176,10 @@ public class CraftingController implements Listener {
         }
     }
 
-	public boolean isEnabled()
-	{
-		return craftingEnabled;
-	}
+    public boolean isEnabled()
+    {
+        return craftingEnabled;
+    }
 
     public void setEnabled(boolean enabled)
     {

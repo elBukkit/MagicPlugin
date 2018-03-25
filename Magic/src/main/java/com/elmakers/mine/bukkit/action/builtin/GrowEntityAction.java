@@ -85,8 +85,8 @@ public class GrowEntityAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public boolean isUndoable() {

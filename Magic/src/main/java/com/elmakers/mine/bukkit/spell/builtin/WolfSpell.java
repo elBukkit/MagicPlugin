@@ -20,84 +20,84 @@ import com.elmakers.mine.bukkit.utility.Target;
 
 public class WolfSpell extends TargetingSpell
 {
-	private static int DEFAULT_MAX_WOLVES = 5;
-	protected List<Wolf> wolves = new ArrayList<>();
+    private static int DEFAULT_MAX_WOLVES = 5;
+    protected List<Wolf> wolves = new ArrayList<>();
 
-	@Nullable
-	public Wolf newWolf(Target target) {
-		Block targetBlock = target.getBlock();
-		if (targetBlock == null) {
-			return null;
-		}
-		targetBlock = targetBlock.getRelative(BlockFace.UP);
-		if (target.hasEntity())
-		{
-			targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
-		}
+    @Nullable
+    public Wolf newWolf(Target target) {
+        Block targetBlock = target.getBlock();
+        if (targetBlock == null) {
+            return null;
+        }
+        targetBlock = targetBlock.getRelative(BlockFace.UP);
+        if (target.hasEntity())
+        {
+            targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
+        }
 
-		Wolf entity = (Wolf)getWorld().spawnEntity(targetBlock.getLocation(), EntityType.WOLF);
-		if (entity == null)
-		{
-			return null;
-		}
-		tameWolf(entity);
-		return entity;
-	}
+        Wolf entity = (Wolf)getWorld().spawnEntity(targetBlock.getLocation(), EntityType.WOLF);
+        if (entity == null)
+        {
+            return null;
+        }
+        tameWolf(entity);
+        return entity;
+    }
 
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
-		ArrayList<Wolf> newWolves = new ArrayList<>();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
+        ArrayList<Wolf> newWolves = new ArrayList<>();
 
-		for (Wolf wolf : wolves)
-		{
-			if (!wolf.isDead())
-			{
-				newWolves.add(wolf);
-			}
-		}
+        for (Wolf wolf : wolves)
+        {
+            if (!wolf.isDead())
+            {
+                newWolves.add(wolf);
+            }
+        }
 
-		wolves = newWolves;
+        wolves = newWolves;
 
-		int maxWolves = parameters.getInt("max_wolves", DEFAULT_MAX_WOLVES);
-		int scaledMaxWolves = (int)(mage.getRadiusMultiplier() * maxWolves);
-		if (wolves.size() >= scaledMaxWolves)
-		{
-			Wolf killWolf = wolves.remove(0);
-			killWolf.setHealth(0);
-		}
+        int maxWolves = parameters.getInt("max_wolves", DEFAULT_MAX_WOLVES);
+        int scaledMaxWolves = (int)(mage.getRadiusMultiplier() * maxWolves);
+        if (wolves.size() >= scaledMaxWolves)
+        {
+            Wolf killWolf = wolves.remove(0);
+            killWolf.setHealth(0);
+        }
 
-		Wolf wolf = newWolf(target);
-		if (wolf == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
+        Wolf wolf = newWolf(target);
+        if (wolf == null)
+        {
+            return SpellResult.NO_TARGET;
+        }
 
-		wolves.add(wolf);
+        wolves.add(wolf);
 
-		Entity e = target.getEntity();
-		if (e != null && e instanceof LivingEntity)
-		{
-			LivingEntity targetEntity = (LivingEntity)e;
-			for (Wolf w : wolves)
-			{
-				w.setTarget(targetEntity);
-				w.setAngry(true);
-			}
-		}
+        Entity e = target.getEntity();
+        if (e != null && e instanceof LivingEntity)
+        {
+            LivingEntity targetEntity = (LivingEntity)e;
+            for (Wolf w : wolves)
+            {
+                w.setTarget(targetEntity);
+                w.setAngry(true);
+            }
+        }
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
-	protected void tameWolf(Wolf wolfie)
-	{
-		wolfie.setAngry(false);
-		wolfie.setHealth(8);
-		wolfie.setTamed(true);
+    protected void tameWolf(Wolf wolfie)
+    {
+        wolfie.setAngry(false);
+        wolfie.setHealth(8);
+        wolfie.setTamed(true);
         Player owner = mage.getPlayer();
         if (owner != null) {
             wolfie.setOwner(owner);
         }
-	}
+    }
 }

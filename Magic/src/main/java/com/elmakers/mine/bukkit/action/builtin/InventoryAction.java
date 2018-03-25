@@ -24,104 +24,104 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 public class InventoryAction extends BaseSpellAction
 {
     private InventoryType inventoryType;
-	private String title;
-	private boolean disposal = false;
+    private String title;
+    private boolean disposal = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-		String inventoryTypeString = parameters.getString("type", "ender_chest").toUpperCase();
-		if (inventoryTypeString.equals("ENDER")) {
-			inventoryTypeString = "ENDER_CHEST";
-		} else if (inventoryTypeString.equals("INVENTORY")) {
-			inventoryTypeString = "CRAFTING";
-		} else if (inventoryTypeString.equals("DISPOSAL")) {
-			disposal = true;
-			inventoryTypeString = "CHEST";
-		}
+        String inventoryTypeString = parameters.getString("type", "ender_chest").toUpperCase();
+        if (inventoryTypeString.equals("ENDER")) {
+            inventoryTypeString = "ENDER_CHEST";
+        } else if (inventoryTypeString.equals("INVENTORY")) {
+            inventoryTypeString = "CRAFTING";
+        } else if (inventoryTypeString.equals("DISPOSAL")) {
+            disposal = true;
+            inventoryTypeString = "CHEST";
+        }
 
-		// For backwards-compatibility with disposal spell
-		if (inventoryTypeString.equals("CHEST") && parameters.getString("target", "").equals("self")) {
-			disposal = true;
-		}
+        // For backwards-compatibility with disposal spell
+        if (inventoryTypeString.equals("CHEST") && parameters.getString("target", "").equals("self")) {
+            disposal = true;
+        }
 
-		title = parameters.getString("title");
+        title = parameters.getString("title");
         try {
-			inventoryType = InventoryType.valueOf(inventoryTypeString);
-		} catch (Exception ex) {
-			context.getLogger().warning("Invalid inventory type in " + context.getSpell().getKey() + ": " + inventoryTypeString);
-		}
+            inventoryType = InventoryType.valueOf(inventoryTypeString);
+        } catch (Exception ex) {
+            context.getLogger().warning("Invalid inventory type in " + context.getSpell().getKey() + ": " + inventoryTypeString);
+        }
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
-		MageController controller = context.getController();
-		Entity targetEntity = context.getTargetEntity();
-		Mage showMage = context.getMage();
-		Player showPlayer = showMage.getPlayer();
-		if (showPlayer == null) return SpellResult.PLAYER_REQUIRED;
+    @Override
+    public SpellResult perform(CastContext context)
+    {
+        MageController controller = context.getController();
+        Entity targetEntity = context.getTargetEntity();
+        Mage showMage = context.getMage();
+        Player showPlayer = showMage.getPlayer();
+        if (showPlayer == null) return SpellResult.PLAYER_REQUIRED;
 
-		// Make sure to close the player's wand
-		Wand activeWand = showMage.getActiveWand();
-		if (activeWand != null) {
-			activeWand.closeInventory();
-		}
+        // Make sure to close the player's wand
+        Wand activeWand = showMage.getActiveWand();
+        if (activeWand != null) {
+            activeWand.closeInventory();
+        }
 
-		switch (inventoryType) {
-			case CRAFTING:
-				if (targetEntity == null || !(targetEntity instanceof Player)) {
-					return SpellResult.NO_TARGET;
-				}
-				Mage mage = controller.getMage(targetEntity);
-				Inventory craftingInventory = mage.getInventory();
-				showPlayer.openInventory(craftingInventory);
-				break;
-			case ENDER_CHEST:
-				if (targetEntity == null || !(targetEntity instanceof HumanEntity)) {
-					return SpellResult.NO_TARGET;
-				}
-				HumanEntity humanTarget = (HumanEntity)targetEntity;
-				Inventory enderInventory = humanTarget.getEnderChest();
-				showPlayer.openInventory(enderInventory);
-				break;
-			case WORKBENCH:
-				showPlayer.openWorkbench(null, true);
-				break;
-			case CHEST:
-				if (disposal) {
-					showGenericInventory(showPlayer);
-					break;
-				}
-				Block targetBlock = context.getTargetBlock();
-				if (targetBlock == null) return SpellResult.NO_TARGET;
-				BlockState state = targetBlock.getState();
-				if (!(state instanceof InventoryHolder)) return SpellResult.NO_TARGET;
-				InventoryHolder holder = (InventoryHolder)state;
-				showPlayer.openInventory(holder.getInventory());
-				break;
-			default:
-				// Probably wont' work very well, but sure why not.
-				showGenericInventory(showPlayer);
-				break;
-		}
+        switch (inventoryType) {
+            case CRAFTING:
+                if (targetEntity == null || !(targetEntity instanceof Player)) {
+                    return SpellResult.NO_TARGET;
+                }
+                Mage mage = controller.getMage(targetEntity);
+                Inventory craftingInventory = mage.getInventory();
+                showPlayer.openInventory(craftingInventory);
+                break;
+            case ENDER_CHEST:
+                if (targetEntity == null || !(targetEntity instanceof HumanEntity)) {
+                    return SpellResult.NO_TARGET;
+                }
+                HumanEntity humanTarget = (HumanEntity)targetEntity;
+                Inventory enderInventory = humanTarget.getEnderChest();
+                showPlayer.openInventory(enderInventory);
+                break;
+            case WORKBENCH:
+                showPlayer.openWorkbench(null, true);
+                break;
+            case CHEST:
+                if (disposal) {
+                    showGenericInventory(showPlayer);
+                    break;
+                }
+                Block targetBlock = context.getTargetBlock();
+                if (targetBlock == null) return SpellResult.NO_TARGET;
+                BlockState state = targetBlock.getState();
+                if (!(state instanceof InventoryHolder)) return SpellResult.NO_TARGET;
+                InventoryHolder holder = (InventoryHolder)state;
+                showPlayer.openInventory(holder.getInventory());
+                break;
+            default:
+                // Probably wont' work very well, but sure why not.
+                showGenericInventory(showPlayer);
+                break;
+        }
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
-	private void showGenericInventory(Player showPlayer) {
+    private void showGenericInventory(Player showPlayer) {
         Inventory inventory = title != null && !title.isEmpty()
                 ? Bukkit.createInventory(showPlayer, inventoryType, title)
                 : Bukkit.createInventory(showPlayer, inventoryType);
-		showPlayer.openInventory(inventory);
-	}
+        showPlayer.openInventory(inventory);
+    }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return false;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return false;
+    }
 
     @Override
     public boolean requiresTargetEntity()
@@ -129,20 +129,20 @@ public class InventoryAction extends BaseSpellAction
         return inventoryType == InventoryType.ENDER_CHEST || inventoryType == InventoryType.CRAFTING;
     }
 
-	@Override
-	public void getParameterNames(Spell spell, Collection<String> parameters) {
-		super.getParameterNames(spell, parameters);
-		parameters.add("type");
-	}
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
+        parameters.add("type");
+    }
 
-	@Override
-	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-		if (parameterKey.equals("type")) {
-			for (InventoryType invType : InventoryType.values()) {
-				examples.add(invType.name().toLowerCase());
-			}
-		} else {
-			super.getParameterOptions(spell, parameterKey, examples);
-		}
-	}
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("type")) {
+            for (InventoryType invType : InventoryType.values()) {
+                examples.add(invType.name().toLowerCase());
+            }
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
+    }
 }

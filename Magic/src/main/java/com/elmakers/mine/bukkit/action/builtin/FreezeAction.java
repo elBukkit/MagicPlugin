@@ -34,55 +34,55 @@ public class FreezeAction extends BaseSpellAction
         iceMaterial = ConfigurationUtils.getMaterial(parameters, "ice", Material.ICE);
     }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @SuppressWarnings("deprecation")
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Block block = context.getTargetBlock();
-		Material material = Material.SNOW;
-		if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
-		{
-			if (!freezeWater)
-			{
-				return SpellResult.NO_TARGET;
-			}
-			material = iceMaterial;
-		}
-		else if (block.getType() == Material.LAVA)
-		{
-			if (!freezeLava)
-			{
-				return SpellResult.NO_TARGET;
-			}
-			material = Material.COBBLESTONE;
-		}
-		else if (block.getType() == Material.STATIONARY_LAVA)
-		{
-			if (!freezeLava)
-			{
-				return SpellResult.NO_TARGET;
-			}
-			material = Material.OBSIDIAN;
-		}
-		else if (block.getType() == Material.FIRE)
-		{
-			if (!freezeFire)
-			{
-				return SpellResult.NO_TARGET;
-			}
-			material = Material.AIR;
-		}
-		else if (block.getType() == Material.SNOW)
-		{
-			material = Material.SNOW;
-		}
-		else if (context.isTransparent(block.getType()))
+        Material material = Material.SNOW;
+        if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+        {
+            if (!freezeWater)
+            {
+                return SpellResult.NO_TARGET;
+            }
+            material = iceMaterial;
+        }
+        else if (block.getType() == Material.LAVA)
+        {
+            if (!freezeLava)
+            {
+                return SpellResult.NO_TARGET;
+            }
+            material = Material.COBBLESTONE;
+        }
+        else if (block.getType() == Material.STATIONARY_LAVA)
+        {
+            if (!freezeLava)
+            {
+                return SpellResult.NO_TARGET;
+            }
+            material = Material.OBSIDIAN;
+        }
+        else if (block.getType() == Material.FIRE)
+        {
+            if (!freezeFire)
+            {
+                return SpellResult.NO_TARGET;
+            }
+            material = Material.AIR;
+        }
+        else if (block.getType() == Material.SNOW)
+        {
+            material = Material.SNOW;
+        }
+        else if (context.isTransparent(block.getType()))
         {
             return SpellResult.NO_TARGET;
         }
         else
-		{
-			block = block.getRelative(BlockFace.UP);
+        {
+            block = block.getRelative(BlockFace.UP);
 
             // This is kind of ugly, maybe clean it up somehow?
             if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
@@ -117,48 +117,48 @@ public class FreezeAction extends BaseSpellAction
                 }
                 material = Material.AIR;
             }
-		}
+        }
         if (!context.isDestructible(block))
         {
             return SpellResult.NO_TARGET;
         }
 
         context.registerForUndo(block);
-		MaterialAndData applyMaterial = new MaterialAndData(material);
-		if (block.getType() == Material.SNOW && material == Material.SNOW)
-		{
+        MaterialAndData applyMaterial = new MaterialAndData(material);
+        if (block.getType() == Material.SNOW && material == Material.SNOW)
+        {
             short data = block.getData();
-			if (data < 7)
-			{
-				data++;
-			}
+            if (data < 7)
+            {
+                data++;
+            }
             applyMaterial.setData(data);
-		}
-		applyMaterial.modify(block);
-		return SpellResult.CAST;
-	}
+        }
+        applyMaterial.modify(block);
+        return SpellResult.CAST;
+    }
 
-	@Override
-	public void getParameterNames(Spell spell, Collection<String> parameters)
-	{
-		super.getParameterNames(spell, parameters);
-		parameters.add("freeze_water");
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters)
+    {
+        super.getParameterNames(spell, parameters);
+        parameters.add("freeze_water");
         parameters.add("ice");
         parameters.add("freeze_lava");
-	}
+    }
 
-	@Override
-	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
-	{
-		if (parameterKey.equals("ice")) {
-			examples.add("ice");
-			examples.add("packed_ice");
-		} else if (parameterKey.equals("freeze_water") || parameterKey.equals("freeze_lava") || parameterKey.equals("freeze_fire")) {
-			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
-		} else {
-			super.getParameterOptions(spell, parameterKey, examples);
-		}
-	}
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
+    {
+        if (parameterKey.equals("ice")) {
+            examples.add("ice");
+            examples.add("packed_ice");
+        } else if (parameterKey.equals("freeze_water") || parameterKey.equals("freeze_lava") || parameterKey.equals("freeze_fire")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
+    }
 
     @Override
     public boolean isUndoable()

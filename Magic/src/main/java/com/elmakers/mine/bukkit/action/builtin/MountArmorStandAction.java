@@ -158,9 +158,9 @@ public class MountArmorStandAction extends RideEntityAction
             result = SpellResult.FAIL;
         }
         return result;
-	}
+    }
 
-	protected boolean mountNewArmorStand(CastContext context) {
+    protected boolean mountNewArmorStand(CastContext context) {
         Mage mage = context.getMage();
         Entity entity = context.getEntity();
         ArmorStand armorStand = CompatibilityUtils.createArmorStand(mage.getLocation());
@@ -202,7 +202,7 @@ public class MountArmorStandAction extends RideEntityAction
         return true;
     }
 
-	@Override
+    @Override
     public void finish(CastContext context) {
         if (!mountTarget && mount != null) {
             mount.remove();

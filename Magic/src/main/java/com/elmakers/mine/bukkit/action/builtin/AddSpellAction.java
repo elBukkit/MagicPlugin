@@ -45,8 +45,8 @@ public class AddSpellAction extends BaseSpellAction
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
         Wand wand = context.getWand();
-		Player player = mage.getPlayer();
-		if (player == null) {
+        Player player = mage.getPlayer();
+        if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
         if (permissionNode != null && !player.hasPermission(permissionNode)) {
@@ -111,7 +111,7 @@ public class AddSpellAction extends BaseSpellAction
         }
 
         return SpellResult.CAST;
-	}
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)

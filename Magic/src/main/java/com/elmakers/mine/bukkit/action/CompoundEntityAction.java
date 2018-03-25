@@ -39,9 +39,9 @@ public abstract class CompoundEntityAction extends CompoundAction
         return currentEntity < entities.size();
     }
 
-	@Override
+    @Override
     public SpellResult step(CastContext context)
-	{
+    {
         while (currentEntity < entities.size())
         {
             Entity entity = entities.get(currentEntity).get();

@@ -19,27 +19,27 @@ public class ModifyGameModeAction extends BaseSpellAction
     private GameMode originalMode;
     private WeakReference<Player> targetPlayer;
 
-	private class GameModeUndoAction implements Runnable
-	{
-		public GameModeUndoAction() {
-		}
+    private class GameModeUndoAction implements Runnable
+    {
+        public GameModeUndoAction() {
+        }
 
-		@Override
-		public void run() {
-		    resetMode();
-		}
-	}
+        @Override
+        public void run() {
+            resetMode();
+        }
+    }
 
-	private void resetMode() {
+    private void resetMode() {
         if (targetPlayer == null) return;
         Player player = targetPlayer.get();
         if (player == null) return;
         player.setGameMode(originalMode);
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Entity entity = context.getTargetEntity();
         if (entity == null) {
             return SpellResult.NO_TARGET;
@@ -58,8 +58,8 @@ public class ModifyGameModeAction extends BaseSpellAction
         player.setGameMode(gameMode);
         targetPlayer = new WeakReference<>(player);
         context.registerForUndo(new GameModeUndoAction());
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -91,9 +91,9 @@ public class ModifyGameModeAction extends BaseSpellAction
         }
     }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return true;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 }

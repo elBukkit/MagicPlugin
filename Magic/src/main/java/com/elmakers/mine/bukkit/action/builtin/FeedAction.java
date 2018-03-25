@@ -25,14 +25,14 @@ public class FeedAction extends BaseSpellAction
         clearExhaustion = parameters.getBoolean("exhaustion", true);
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Entity targetEntity = context.getTargetEntity();
-		if (!(targetEntity instanceof Player))
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (!(targetEntity instanceof Player))
+        {
+            return SpellResult.NO_TARGET;
+        }
 
         Player player = (Player)targetEntity;
         if (feedAmount > 0 && player.getFoodLevel() >= MAX_FOOD_LEVEL)
@@ -56,8 +56,8 @@ public class FeedAction extends BaseSpellAction
             player.setFoodLevel(Math.min(MAX_FOOD_LEVEL, Math.max(0, player.getFoodLevel() + feedAmount)));
         }
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public boolean requiresTargetEntity()

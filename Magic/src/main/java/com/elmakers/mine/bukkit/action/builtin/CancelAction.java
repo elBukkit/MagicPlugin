@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class CancelAction extends BaseSpellAction
 {
-	private String undoListName;
+    private String undoListName;
     private Collection<String> spellKeys;
     private boolean force;
 
@@ -37,11 +37,11 @@ public class CancelAction extends BaseSpellAction
     }
 
     @Override
-	public SpellResult perform(CastContext context)
-	{
-		Entity targetEntity = context.getTargetEntity();
+    public SpellResult perform(CastContext context)
+    {
+        Entity targetEntity = context.getTargetEntity();
         MageController controller = context.getController();
-		if (targetEntity == null || !controller.isMage(targetEntity)) {
+        if (targetEntity == null || !controller.isMage(targetEntity)) {
             return SpellResult.NO_TARGET;
         }
 
@@ -63,7 +63,7 @@ public class CancelAction extends BaseSpellAction
             }
         }
         return result;
-	}
+    }
 
     @Override
     public boolean requiresTargetEntity() {
@@ -72,6 +72,6 @@ public class CancelAction extends BaseSpellAction
 
     @Override
     public String transformMessage(String message) {
-		return message.replace("$undo", undoListName == null ? "Unknown" : undoListName);
-	}
+        return message.replace("$undo", undoListName == null ? "Unknown" : undoListName);
+    }
 }

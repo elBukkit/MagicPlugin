@@ -13,30 +13,30 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 public class MapSpell extends TargetingSpell
 {
-	@SuppressWarnings("deprecation")
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		World world = getWorld();
-		MapView newMap = Bukkit.createMap(world);
-		Location location = getLocation();
-		newMap.setCenterX(location.getBlockX());
-		newMap.setCenterZ(location.getBlockZ());
+    @SuppressWarnings("deprecation")
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        World world = getWorld();
+        MapView newMap = Bukkit.createMap(world);
+        Location location = getLocation();
+        newMap.setCenterX(location.getBlockX());
+        newMap.setCenterZ(location.getBlockZ());
 
-		MapView.Scale scale = newMap.getScale();
-		String scaleType = parameters.getString("scale");
-		if (scaleType != null) {
-			try {
-				scale = MapView.Scale.valueOf(scaleType.toUpperCase());
-			} catch (Exception ignored) {
+        MapView.Scale scale = newMap.getScale();
+        String scaleType = parameters.getString("scale");
+        if (scaleType != null) {
+            try {
+                scale = MapView.Scale.valueOf(scaleType.toUpperCase());
+            } catch (Exception ignored) {
 
-			}
-		}
+            }
+        }
 
-		newMap.setScale(scale);
+        newMap.setScale(scale);
 
-		ItemStack newMapItem = new ItemStack(Material.MAP, 1, newMap.getId());
-		world.dropItemNaturally(getLocation(), newMapItem);
-		return SpellResult.CAST;
-	}
+        ItemStack newMapItem = new ItemStack(Material.MAP, 1, newMap.getId());
+        world.dropItemNaturally(getLocation(), newMapItem);
+        return SpellResult.CAST;
+    }
 }

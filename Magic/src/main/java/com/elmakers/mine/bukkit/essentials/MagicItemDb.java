@@ -13,37 +13,37 @@ import net.ess3.api.IEssentials;
 
 public class MagicItemDb extends ItemDb {
 
-	private final MagicController controller;
+    private final MagicController controller;
 
-	public MagicItemDb(final MagicController controller, final Object ess) {
-		super((IEssentials)ess);
-		this.controller = controller;
-		this.reloadConfig();
-	}
+    public MagicItemDb(final MagicController controller, final Object ess) {
+        super((IEssentials)ess);
+        this.controller = controller;
+        this.reloadConfig();
+    }
 
-	@Nullable
-	@Override
-	public ItemStack get(final String id) throws Exception
-	{
-		if (id.startsWith("m:")) {
-			String itemId = id.replace("m:", "");
-			return controller.createItem(itemId);
-		} if (id.startsWith("magic:")) {
-			String itemId = id.replace("magic:", "");
-			return controller.createItem(itemId);
-		} else if (id.equals("wand")) {
-			Wand wand = Wand.createWand(controller, "");
-			if (wand != null) {
-				return wand.getItem();
-			}
-		} else if (id.startsWith("wand:")) {
-			String wandId = id.replace("wand:", "");
-			Wand wand = Wand.createWand(controller, wandId.trim());
-			if (wand != null) {
-				return wand.getItem();
-			}
+    @Nullable
+    @Override
+    public ItemStack get(final String id) throws Exception
+    {
+        if (id.startsWith("m:")) {
+            String itemId = id.replace("m:", "");
+            return controller.createItem(itemId);
+        } if (id.startsWith("magic:")) {
+            String itemId = id.replace("magic:", "");
+            return controller.createItem(itemId);
+        } else if (id.equals("wand")) {
+            Wand wand = Wand.createWand(controller, "");
+            if (wand != null) {
+                return wand.getItem();
+            }
+        } else if (id.startsWith("wand:")) {
+            String wandId = id.replace("wand:", "");
+            Wand wand = Wand.createWand(controller, wandId.trim());
+            if (wand != null) {
+                return wand.getItem();
+            }
 
-		} else if (id.startsWith("w:")) {
+        } else if (id.startsWith("w:")) {
             String wandId = id.replace("w:", "");
             Wand wand = Wand.createWand(controller, wandId.trim());
             if (wand != null) {
@@ -61,24 +61,24 @@ public class MagicItemDb extends ItemDb {
                 return bookItem;
             }
         } else if (id.startsWith("spell:")) {
-			String spellKey = id.replace("spell:", "");
-			ItemStack itemStack = Wand.createSpellItem(spellKey, controller, null, true);
-			if (itemStack != null) {
-				return itemStack;
-			}
-		} else if (id.startsWith("s:")) {
+            String spellKey = id.replace("spell:", "");
+            ItemStack itemStack = Wand.createSpellItem(spellKey, controller, null, true);
+            if (itemStack != null) {
+                return itemStack;
+            }
+        } else if (id.startsWith("s:")) {
             String spellKey = id.replace("s:", "");
             ItemStack itemStack = Wand.createSpellItem(spellKey, controller, null, true);
             if (itemStack != null) {
                 return itemStack;
             }
         } else if (id.startsWith("brush:")) {
-			String brushKey = id.replace("brush:", "");
-			ItemStack itemStack = Wand.createBrushItem(brushKey, controller, null, true);
-			if (itemStack != null) {
-				return itemStack;
-			}
-		} else if (id.startsWith("upgrade:")) {
+            String brushKey = id.replace("brush:", "");
+            ItemStack itemStack = Wand.createBrushItem(brushKey, controller, null, true);
+            if (itemStack != null) {
+                return itemStack;
+            }
+        } else if (id.startsWith("upgrade:")) {
             String wandId = id.replace("upgrade:", "");
             Wand wand = Wand.createWand(controller, wandId.trim());
             if (wand != null) {
@@ -90,6 +90,6 @@ public class MagicItemDb extends ItemDb {
             return controller.createItem(wandId);
         }
 
-		return super.get(id);
-	}
+        return super.get(id);
+    }
 }

@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class UndoAction extends BaseSpellAction
 {
-	private String undoListName;
+    private String undoListName;
     private int timeout;
     private int blockTimeout;
     private String targetSpellKey;
@@ -88,8 +88,8 @@ public class UndoAction extends BaseSpellAction
     }
 
     @Override
-	public SpellResult perform(CastContext context)
-	{
+    public SpellResult perform(CastContext context)
+    {
         // Start of new functionality
         if (undoOldest > 0 || undoToSize > 0)
         {
@@ -108,8 +108,8 @@ public class UndoAction extends BaseSpellAction
             result = SpellResult.ALTERNATE_UP;
         }
         MageController controller = context.getController();
-		if (targetEntity != null && controller.isMage(targetEntity))
-		{
+        if (targetEntity != null && controller.isMage(targetEntity))
+        {
             Mage targetMage = controller.getMage(targetEntity);
             mage.sendDebugMessage(ChatColor.AQUA + "Undo checking last spell of "
                     + ChatColor.GOLD + targetMage + ChatColor.AQUA + " with timeout of "
@@ -126,12 +126,12 @@ public class UndoAction extends BaseSpellAction
             }
 
             UndoQueue queue = targetMage.getUndoQueue();
-			UndoList undoList = queue.undoRecent(timeout, targetSpellKey);
-			if (undoList != null) {
-				undoListName = undoList.getName();
-			}
-			return undoList != null ? result : SpellResult.NO_TARGET;
-		}
+            UndoList undoList = queue.undoRecent(timeout, targetSpellKey);
+            if (undoList != null) {
+                undoListName = undoList.getName();
+            }
+            return undoList != null ? result : SpellResult.NO_TARGET;
+        }
 
         if (!targetBlocks) {
             return SpellResult.NO_TARGET;
@@ -141,47 +141,47 @@ public class UndoAction extends BaseSpellAction
         if (targetDown) {
             targetBlock = context.getLocation().getBlock();
         }
-		if (targetBlock != null)
-		{
+        if (targetBlock != null)
+        {
             boolean undoAny = targetOtherBlocks;
             undoAny = undoAny || (adminPermission != null && context.getController().hasPermission(context.getMage().getCommandSender(), adminPermission));
             undoAny = undoAny || mage.isSuperPowered();
             if (undoAny)
-			{
+            {
                 mage.sendDebugMessage(ChatColor.AQUA + "Looking for recent cast at "
                         + ChatColor.GOLD + targetBlock + ChatColor.AQUA + " with timeout of "
                         + ChatColor.YELLOW + blockTimeout, 2);
 
-				UndoList undid = controller.undoRecent(targetBlock, blockTimeout);
-				if (undid != null)
-				{
-					Mage targetMage = undid.getOwner();
-					undoListName = undid.getName();
+                UndoList undid = controller.undoRecent(targetBlock, blockTimeout);
+                if (undid != null)
+                {
+                    Mage targetMage = undid.getOwner();
+                    undoListName = undid.getName();
                     if (targetMage != null) {
                         context.setTargetName(targetMage.getName());
                     }
-					return result;
-				}
-			}
-			else
-			{
+                    return result;
+                }
+            }
+            else
+            {
                 mage.sendDebugMessage(ChatColor.AQUA + "Looking for recent self-cast at "
                         + ChatColor.GOLD + targetBlock, 2);
 
                 context.setTargetName(mage.getName());
-				UndoList undoList = mage.undo(targetBlock);
+                UndoList undoList = mage.undo(targetBlock);
                 if (undoList != null) {
                     undoListName = undoList.getName();
                     return result;
                 }
-			}
-		}
+            }
+        }
 
-		return SpellResult.NO_TARGET;
-	}
+        return SpellResult.NO_TARGET;
+    }
 
     @Override
     public String transformMessage(String message) {
-		return message.replace("$spell", undoListName == null ? "Unknown" : undoListName);
-	}
+        return message.replace("$spell", undoListName == null ? "Unknown" : undoListName);
+    }
 }

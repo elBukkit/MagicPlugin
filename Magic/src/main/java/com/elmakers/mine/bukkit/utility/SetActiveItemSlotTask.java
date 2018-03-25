@@ -4,16 +4,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SetActiveItemSlotTask extends BukkitRunnable {
-	private final Player player;
-	private final int itemSlot;
+    private final Player player;
+    private final int itemSlot;
 
-	public SetActiveItemSlotTask(Player player, int slot) {
-		this.player = player;
-		this.itemSlot = slot;
-	}
+    public SetActiveItemSlotTask(Player player, int slot) {
+        this.player = player;
+        this.itemSlot = slot;
+    }
 
-	@Override
+    @Override
     public void run() {
-		player.getInventory().setHeldItemSlot(itemSlot);
-	}
+        player.getInventory().setHeldItemSlot(itemSlot);
+    }
 }

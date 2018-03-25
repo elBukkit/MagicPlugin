@@ -39,8 +39,8 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 {
     private final LinkedList<WeightedPair<String>> entityTypeProbability = new LinkedList<>();
 
-	private final Random rand = new Random();
-	private int spawnCount = 0;
+    private final Random rand = new Random();
+    private int spawnCount = 0;
     private CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
 
     private List<LivingEntity> familiars = null;
@@ -95,20 +95,20 @@ public class FamiliarSpell extends UndoableSpell implements Listener
         return false;
     }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		spawnCount = 0;
+    @SuppressWarnings("deprecation")
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        spawnCount = 0;
 
-		Target target = getTarget();
-		if (!target.hasTarget())
-		{
-			return SpellResult.NO_TARGET;
-		}
-		Block originalTarget = target.getBlock();
-		Block targetBlock = originalTarget;
-		LivingEntity targetEntity = null;
+        Target target = getTarget();
+        if (!target.hasTarget())
+        {
+            return SpellResult.NO_TARGET;
+        }
+        Block originalTarget = target.getBlock();
+        Block targetBlock = originalTarget;
+        LivingEntity targetEntity = null;
 
         boolean track = parameters.getBoolean("track", true);
         boolean loot = parameters.getBoolean("loot", false);
@@ -116,30 +116,30 @@ public class FamiliarSpell extends UndoableSpell implements Listener
         double spawnRange = parameters.getInt("spawn_range", 0);
         String entityName = parameters.getString("name", "");
 
-		if (hasFamiliar() && track)
-		{   // Dispel familiars if you target them and cast
-			boolean isFamiliar = target.hasEntity() && isFamiliar(target.getEntity());
-			if (isFamiliar)
-			{
-				checkListener();
-				releaseFamiliar(target.getEntity());
-				return SpellResult.DEACTIVATE;
-			}
+        if (hasFamiliar() && track)
+        {   // Dispel familiars if you target them and cast
+            boolean isFamiliar = target.hasEntity() && isFamiliar(target.getEntity());
+            if (isFamiliar)
+            {
+                checkListener();
+                releaseFamiliar(target.getEntity());
+                return SpellResult.DEACTIVATE;
+            }
 
-			releaseFamiliars();
-		}
+            releaseFamiliars();
+        }
 
-		if (target.hasEntity())
-		{
-			targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
-			Entity e = target.getEntity();
-			if (e instanceof LivingEntity)
-			{
-				targetEntity = (LivingEntity)e;
-			}
-		}
+        if (target.hasEntity())
+        {
+            targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
+            Entity e = target.getEntity();
+            if (e instanceof LivingEntity)
+            {
+                targetEntity = (LivingEntity)e;
+            }
+        }
 
-		targetBlock = targetBlock.getRelative(BlockFace.UP);
+        targetBlock = targetBlock.getRelative(BlockFace.UP);
         Location centerLoc = targetBlock.getLocation();
 
         Location caster = getLocation();
@@ -160,9 +160,9 @@ public class FamiliarSpell extends UndoableSpell implements Listener
         }
 
         EntityType famType = null;
-		int famCount = parameters.getInt("count", 1);
+        int famCount = parameters.getInt("count", 1);
 
-		String famTypeName = parameters.getString("type", null);
+        String famTypeName = parameters.getString("type", null);
         if (famTypeName != null && !famTypeName.isEmpty()) {
             try {
                 famType = EntityType.valueOf(famTypeName.toUpperCase());
@@ -172,27 +172,27 @@ public class FamiliarSpell extends UndoableSpell implements Listener
             }
         }
 
-		if (originalTarget.getType() == Material.WATER || originalTarget.getType() == Material.STATIONARY_WATER)
-		{
-			famType = EntityType.SQUID;
-		}
+        if (originalTarget.getType() == Material.WATER || originalTarget.getType() == Material.STATIONARY_WATER)
+        {
+            famType = EntityType.SQUID;
+        }
 
         boolean spawnBaby = parameters.getBoolean("baby", false);
 
-		List<LivingEntity> newFamiliars = new ArrayList<>();
-		for (int i = 0; i < famCount; i++)
-		{
+        List<LivingEntity> newFamiliars = new ArrayList<>();
+        for (int i = 0; i < famCount; i++)
+        {
             EntityType entityType = famType;
-			if (entityType == null)
-			{
-				String randomType = RandomUtils.weightedRandom(entityTypeProbability);
+            if (entityType == null)
+            {
+                String randomType = RandomUtils.weightedRandom(entityTypeProbability);
                 try {
                     entityType = EntityType.fromName(randomType);
                 } catch (Throwable ex) {
                     sendMessage("Unknown entity type: " + randomType);
                     return SpellResult.FAIL;
                 }
-			}
+            }
 
             if (parameters.contains("reason")) {
                 String reasonText = parameters.getString("reason").toUpperCase();
@@ -204,19 +204,19 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                 }
             }
 
-			final Location targetLoc = centerLoc.clone();
-			if (famCount > 1)
-			{
-				targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * famCount) - famCount);
-				targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * famCount) - famCount);
-			}
+            final Location targetLoc = centerLoc.clone();
+            if (famCount > 1)
+            {
+                targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * famCount) - famCount);
+                targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * famCount) - famCount);
+            }
 
             targetLoc.setPitch(caster.getPitch());
             targetLoc.setYaw(caster.getYaw());
-			if (entityType != null) {
+            if (entityType != null) {
                 final LivingEntity entity = spawnFamiliar(targetLoc, entityType, targetBlock.getLocation(), targetEntity, setTarget);
-				if (entity != null)
-				{
+                if (entity != null)
+                {
                     if (entityName != null && !entityName.isEmpty())
                     {
                         entity.setCustomName(entityName);
@@ -230,12 +230,12 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                         ageable.setBaby();
                     }
                     entity.teleport(targetLoc);
-					newFamiliars.add(entity);
-					spawnCount++;
-					registerForUndo(entity);
-				}
-			}
-		}
+                    newFamiliars.add(entity);
+                    spawnCount++;
+                    registerForUndo(entity);
+                }
+            }
+        }
 
         registerForUndo();
 
@@ -243,14 +243,14 @@ public class FamiliarSpell extends UndoableSpell implements Listener
             setFamiliars(newFamiliars);
             checkListener();
         }
-		return SpellResult.CAST;
+        return SpellResult.CAST;
 
-	}
+    }
 
     @Nullable
     protected LivingEntity spawnFamiliar(Location target, EntityType famType, Location targetLocation, LivingEntity targetEntity, boolean setTarget) {
         LivingEntity familiar = null;
-		try {
+        try {
             World world = getWorld();
             Entity famEntity;
             try {
@@ -260,50 +260,50 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                 famEntity = getWorld().spawnEntity(target, famType);
             }
 
-			if (famEntity == null || !(famEntity instanceof LivingEntity)) return null;
+            if (famEntity == null || !(famEntity instanceof LivingEntity)) return null;
 
-			familiar = (LivingEntity)famEntity;
-			if (familiar instanceof Skeleton) {
-				Skeleton skellie = (Skeleton)familiar;
-				skellie.getEquipment().setItemInMainHand(new ItemStack(Material.BOW));
-			}
-			if (targetLocation != null && setTarget)
-			{
+            familiar = (LivingEntity)famEntity;
+            if (familiar instanceof Skeleton) {
+                Skeleton skellie = (Skeleton)familiar;
+                skellie.getEquipment().setItemInMainHand(new ItemStack(Material.BOW));
+            }
+            if (targetLocation != null && setTarget)
+            {
                 //CompatibilityUtils.setTarget(familiar, targetLocation);
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return familiar;
-	}
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return familiar;
+    }
 
-	protected void checkListener()
-	{
-		if (hasFamiliar())
-		{
-			mage.registerEvent(SpellEventType.PLAYER_QUIT, this);
-		}
-		else
-		{
-			mage.unregisterEvent(SpellEventType.PLAYER_QUIT, this);
-		}
-	}
+    protected void checkListener()
+    {
+        if (hasFamiliar())
+        {
+            mage.registerEvent(SpellEventType.PLAYER_QUIT, this);
+        }
+        else
+        {
+            mage.unregisterEvent(SpellEventType.PLAYER_QUIT, this);
+        }
+    }
 
-	@EventHandler
-	public void onPlayerQuit(PlayerEvent event)
-	{
-		if (hasFamiliar())
-		{
-			releaseFamiliars();
-			checkListener();
-		}
-	}
+    @EventHandler
+    public void onPlayerQuit(PlayerEvent event)
+    {
+        if (hasFamiliar())
+        {
+            releaseFamiliars();
+            checkListener();
+        }
+    }
 
-	@Override
-	public String getMessage(String messageKey, String def) {
-		String message = super.getMessage(messageKey, def);
-		return message.replace("$count", Integer.toString(spawnCount));
-	}
+    @Override
+    public String getMessage(String messageKey, String def) {
+        String message = super.getMessage(messageKey, def);
+        return message.replace("$count", Integer.toString(spawnCount));
+    }
 
     @Override
     protected void loadTemplate(ConfigurationSection template)

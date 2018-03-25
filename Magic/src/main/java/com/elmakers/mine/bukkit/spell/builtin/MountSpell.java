@@ -9,12 +9,12 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 public class MountSpell extends TargetingSpell {
 
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters) {
-		LivingEntity player = mage.getLivingEntity();
-		if (player == null) {
-			return SpellResult.LIVING_ENTITY_REQUIRED;
-		}
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters) {
+        LivingEntity player = mage.getLivingEntity();
+        if (player == null) {
+            return SpellResult.LIVING_ENTITY_REQUIRED;
+        }
 
         // Make it so this spell can be used to get someone off of you
         if (isLookingUp()) {
@@ -25,14 +25,14 @@ public class MountSpell extends TargetingSpell {
         if (current != null) {
             current.eject();
         }
-		Entity targetEntity = getTarget().getEntity();
-		if (targetEntity == null) {
-			return SpellResult.NO_TARGET;
-		}
+        Entity targetEntity = getTarget().getEntity();
+        if (targetEntity == null) {
+            return SpellResult.NO_TARGET;
+        }
 
-		targetEntity.setPassenger(player);
+        targetEntity.setPassenger(player);
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
 }

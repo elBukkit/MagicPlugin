@@ -11,22 +11,22 @@ import com.elmakers.mine.bukkit.utility.Target;
 
 public class CommitSpell extends TargetingSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		// You should really use /magic commit for this at this point.
-		String typeString = parameters.getString("type", "");
-		if (typeString.equalsIgnoreCase("all")) {
-			return controller.commitAll() ? SpellResult.CAST : SpellResult.FAIL;
-		}
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        // You should really use /magic commit for this at this point.
+        String typeString = parameters.getString("type", "");
+        if (typeString.equalsIgnoreCase("all")) {
+            return controller.commitAll() ? SpellResult.CAST : SpellResult.FAIL;
+        }
 
         Target target = getTarget();
         Entity targetEntity = target.getEntity();
         if (targetEntity instanceof Player) {
             Mage mage = controller.getMage((Player) targetEntity);
-			return mage.commit() ? SpellResult.CAST : SpellResult.FAIL;
-		}
+            return mage.commit() ? SpellResult.CAST : SpellResult.FAIL;
+        }
 
-		return mage.commit() ? SpellResult.CAST : SpellResult.FAIL;
-	}
+        return mage.commit() ? SpellResult.CAST : SpellResult.FAIL;
+    }
 }

@@ -64,18 +64,18 @@ public class WearAction extends BaseSpellAction
         }
     }
 
-	private class WearUndoAction implements Runnable
-	{
-		public WearUndoAction() {
-		}
+    private class WearUndoAction implements Runnable
+    {
+        public WearUndoAction() {
+        }
 
-		@Override
-		public void run() {
-		    returnItem();
-		}
-	}
+        @Override
+        public void run() {
+            returnItem();
+        }
+    }
 
-	private void returnItem() {
+    private void returnItem() {
         if (targetMage == null) return;
         Player player = targetMage.getPlayer();
         if (player == null) return;
@@ -105,9 +105,9 @@ public class WearAction extends BaseSpellAction
         returnOnFinish = parameters.getBoolean("return_on_finish", false);
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Entity entity = context.getTargetEntity();
         if (entity == null) {
             if (!context.getTargetsCaster()) return SpellResult.NO_TARGET;
@@ -119,7 +119,7 @@ public class WearAction extends BaseSpellAction
         }
 
         Player player = (Player)entity;
-		MaterialAndData material = this.material;
+        MaterialAndData material = this.material;
         MageController controller = context.getController();
         Mage mage = controller.getMage(player);
         if (useItem)
@@ -192,7 +192,7 @@ public class WearAction extends BaseSpellAction
             materialName = context.getController().describeItem(wearItem);
         }
 
-		ItemMeta meta = wearItem.getItemMeta();
+        ItemMeta meta = wearItem.getItemMeta();
 
         // Legacy support
         String displayName = context.getMessage("hat_name", "");
@@ -205,14 +205,14 @@ public class WearAction extends BaseSpellAction
         {
             meta.setDisplayName(displayName.replace("$hat", materialName).replace("$item", materialName));
         }
-		List<String> lore = new ArrayList<>();
+        List<String> lore = new ArrayList<>();
         String loreLine = context.getMessage("hat_lore");
         loreLine = context.getMessage("wear_lore", loreLine);
-		lore.add(loreLine);
-		meta.setLore(lore);
-		wearItem.setItemMeta(meta);
-		wearItem = InventoryUtils.makeReal(wearItem);
-		NMSUtils.makeTemporary(wearItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
+        lore.add(loreLine);
+        meta.setLore(lore);
+        wearItem.setItemMeta(meta);
+        wearItem = InventoryUtils.makeReal(wearItem);
+        NMSUtils.makeTemporary(wearItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
         if (enchantments != null) {
             wearItem.addUnsafeEnchantments(enchantments);
         }
@@ -221,21 +221,21 @@ public class WearAction extends BaseSpellAction
         }
 
         ItemStack[] armor = player.getInventory().getArmorContents();
-		ItemStack itemStack = armor[slotNumber];
-		if (itemStack != null && itemStack.getType() != Material.AIR)
-		{
-			if (NMSUtils.isTemporary(itemStack))
-			{
-				ItemStack replacement = NMSUtils.getReplacement(itemStack);
+        ItemStack itemStack = armor[slotNumber];
+        if (itemStack != null && itemStack.getType() != Material.AIR)
+        {
+            if (NMSUtils.isTemporary(itemStack))
+            {
+                ItemStack replacement = NMSUtils.getReplacement(itemStack);
                 if (replacement != null) {
                     itemStack = replacement;
                 }
-			}
-			NMSUtils.setReplacement(wearItem, itemStack);
-		}
+            }
+            NMSUtils.setReplacement(wearItem, itemStack);
+        }
 
         armor[slotNumber] = wearItem;
-		player.getInventory().setArmorContents(armor);
+        player.getInventory().setArmorContents(armor);
 
         // Sanity check to make sure the block was allowed to be created
         armor = player.getInventory().getArmorContents();
@@ -252,8 +252,8 @@ public class WearAction extends BaseSpellAction
         if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
         }
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public void finish(CastContext context) {
@@ -298,9 +298,9 @@ public class WearAction extends BaseSpellAction
         }
     }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return true;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 }

@@ -19,69 +19,69 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public abstract class MagicTabExecutor implements TabExecutor {
-	protected final MagicAPI api;
-	protected final MageController controller;
+    protected final MagicAPI api;
+    protected final MageController controller;
 
-	public MagicTabExecutor(MagicAPI api) {
-		this.api = api;
-		this.controller = api.getController();
-	}
+    public MagicTabExecutor(MagicAPI api) {
+        this.api = api;
+        this.controller = api.getController();
+    }
 
-	public abstract Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args);
+    public abstract Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args);
 
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		String completeCommand = args.length > 0 ? args[args.length - 1] : "";
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        String completeCommand = args.length > 0 ? args[args.length - 1] : "";
 
-		completeCommand = completeCommand.toLowerCase();
-		Collection<String> allOptions = onTabComplete(sender, command.getName(), args);
-		List<String> options = new ArrayList<>();
-		for (String option : allOptions) {
-			String lowercase = option.toLowerCase();
-			if (lowercase.startsWith(completeCommand)) {
-				options.add(option);
-			}
-		}
+        completeCommand = completeCommand.toLowerCase();
+        Collection<String> allOptions = onTabComplete(sender, command.getName(), args);
+        List<String> options = new ArrayList<>();
+        for (String option : allOptions) {
+            String lowercase = option.toLowerCase();
+            if (lowercase.startsWith(completeCommand)) {
+                options.add(option);
+            }
+        }
         Collections.sort(options);
 
-		return options;
-	}
+        return options;
+    }
 
-	public String getMagicVersion() {
+    public String getMagicVersion() {
         return api.getPlugin().getDescription().getVersion();
     }
 
-	protected void sendNoPermission(CommandSender sender)
-	{
+    protected void sendNoPermission(CommandSender sender)
+    {
         if (sender != null) sender.sendMessage(ChatColor.RED + "You are not allowed to use that command.");
-	}
+    }
 
-	protected void addIfPermissible(CommandSender sender, Collection<String> options, String permissionPrefix, String option)
-	{
-		if (api.hasPermission(sender, permissionPrefix + option) || api.hasPermission(sender, permissionPrefix + "*"))
-		{
-			options.add(option);
-		}
-	}
+    protected void addIfPermissible(CommandSender sender, Collection<String> options, String permissionPrefix, String option)
+    {
+        if (api.hasPermission(sender, permissionPrefix + option) || api.hasPermission(sender, permissionPrefix + "*"))
+        {
+            options.add(option);
+        }
+    }
 
-	protected void addIfPermissible(CommandSender sender, Collection<String> options, String permissionPrefix, String option, boolean defaultPermission)
-	{
-		if (api.hasPermission(sender, permissionPrefix + option, defaultPermission))
-		{
-			options.add(option);
-		}
-	}
+    protected void addIfPermissible(CommandSender sender, Collection<String> options, String permissionPrefix, String option, boolean defaultPermission)
+    {
+        if (api.hasPermission(sender, permissionPrefix + option, defaultPermission))
+        {
+            options.add(option);
+        }
+    }
 
-	public boolean giveWand(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
-	{
-		Mage mage = controller.getMage(player);
-		Wand currentWand =  mage.getActiveWand();
-		if (currentWand != null) {
-			currentWand.closeInventory();
-		}
+    public boolean giveWand(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
+    {
+        Mage mage = controller.getMage(player);
+        Wand currentWand =  mage.getActiveWand();
+        if (currentWand != null) {
+            currentWand.closeInventory();
+        }
 
-		Wand wand = api.createWand(wandKey);
-		if (wand != null) {
+        Wand wand = api.createWand(wandKey);
+        if (wand != null) {
             if (giveItem) {
                 ItemStack item = wand.getItem();
                 if (item == null) {
@@ -105,17 +105,17 @@ public abstract class MagicTabExecutor implements TabExecutor {
             if (showWorth) {
                 showWorth(sender, wand.getItem());
             }
-		} else {
-			if (!quiet) {
+        } else {
+            if (!quiet) {
                 if (wandKey == null) {
                     wandKey = "(default)";
                 }
                 sender.sendMessage(api.getMessages().getParameterized("wand.unknown_template", "$name", wandKey));
             }
-			return false;
-		}
-		return true;
-	}
+            return false;
+        }
+        return true;
+    }
 
     protected void showWorth(CommandSender sender, ItemStack item)
     {

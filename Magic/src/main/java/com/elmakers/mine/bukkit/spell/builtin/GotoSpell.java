@@ -22,72 +22,72 @@ import com.elmakers.mine.bukkit.utility.Target;
 
 public class GotoSpell extends UndoableSpell
 {
-	LivingEntity targetEntity = null;
-	int playerIndex = 0;
-	private Color effectColor = null;
+    LivingEntity targetEntity = null;
+    int playerIndex = 0;
+    private Color effectColor = null;
 
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Player player = mage.getPlayer();
-		if (player == null)
-		{
-			return SpellResult.PLAYER_REQUIRED;
-		}
-		effectColor = mage.getEffectColor();
-		if (effectColor == null)
-		{
-			effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
-		}
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Player player = mage.getPlayer();
+        if (player == null)
+        {
+            return SpellResult.PLAYER_REQUIRED;
+        }
+        effectColor = mage.getEffectColor();
+        if (effectColor == null)
+        {
+            effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
+        }
 
         boolean allowSelection = parameters.getBoolean("allow_selection", false) || mage.isSuperPowered();
 
-		if (targetEntity != null)
-		{
-			if (!allowSelection || !targetEntity.isValid() || targetEntity.isDead())
-			{
-				releaseTarget();
-			}
+        if (targetEntity != null)
+        {
+            if (!allowSelection || !targetEntity.isValid() || targetEntity.isDead())
+            {
+                releaseTarget();
+            }
 
-			// Check for protected Mages
-			if (targetEntity != null && controller.isMage(targetEntity)) {
-				Mage targetMage = controller.getMage(targetEntity);
-				// Check for protected players (admins, generally...)
-				if (isSuperProtected(targetMage)) {
-					releaseTarget();
-				}
-			}
-		}
+            // Check for protected Mages
+            if (targetEntity != null && controller.isMage(targetEntity)) {
+                Mage targetMage = controller.getMage(targetEntity);
+                // Check for protected players (admins, generally...)
+                if (isSuperProtected(targetMage)) {
+                    releaseTarget();
+                }
+            }
+        }
 
-		// Totally different behavior for selection
-		if (!allowSelection)
-		{
-			Location location = getLocation();
-			List<Target> allTargets = new LinkedList<>();
-			List<Player> players = player.getWorld().getPlayers();
-			for (Player targetPlayer : players) {
-				if (targetPlayer == player) continue;
-				if (targetPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
+        // Totally different behavior for selection
+        if (!allowSelection)
+        {
+            Location location = getLocation();
+            List<Target> allTargets = new LinkedList<>();
+            List<Player> players = player.getWorld().getPlayers();
+            for (Player targetPlayer : players) {
+                if (targetPlayer == player) continue;
+                if (targetPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
                 if (!canTarget(targetPlayer)) continue;
-				allTargets.add(new Target(location, targetPlayer, 512, Math.PI));
-			}
-			if (allTargets.size() == 0) return SpellResult.NO_TARGET;
+                allTargets.add(new Target(location, targetPlayer, 512, Math.PI));
+            }
+            if (allTargets.size() == 0) return SpellResult.NO_TARGET;
 
-			registerMoved(player);
-			registerForUndo();
+            registerMoved(player);
+            registerForUndo();
 
-			Collections.sort(allTargets);
-			Entity targetEntity = allTargets.get(0).getEntity();
-			getCurrentTarget().setEntity(targetEntity);
-			registerModified(player);
-			teleportTo(player, targetEntity);
-			castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityDisplayName(targetEntity)));
+            Collections.sort(allTargets);
+            Entity targetEntity = allTargets.get(0).getEntity();
+            getCurrentTarget().setEntity(targetEntity);
+            registerModified(player);
+            teleportTo(player, targetEntity);
+            castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityDisplayName(targetEntity)));
 
-			return SpellResult.CAST;
-		}
+            return SpellResult.CAST;
+        }
 
-		if (!isLookingUp() && !isLookingDown()) {
-			Target target = getTarget();
+        if (!isLookingUp() && !isLookingDown()) {
+            Target target = getTarget();
 
         if (targetEntity != null) {
             // Check for protected Mages
@@ -102,97 +102,97 @@ public class GotoSpell extends UndoableSpell
             return teleportTarget(target.getLocation()) ? SpellResult.CAST : SpellResult.NO_TARGET;
         }
 
-			if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
-			{
-				return SpellResult.NO_TARGET;
-			}
+            if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
+            {
+                return SpellResult.NO_TARGET;
+            }
 
-			selectTarget((LivingEntity)target.getEntity());
-			activate();
-			return SpellResult.TARGET_SELECTED;
-		}
+            selectTarget((LivingEntity)target.getEntity());
+            activate();
+            return SpellResult.TARGET_SELECTED;
+        }
 
-		if (isLookingUp() && targetEntity != null)
-		{
-			getCurrentTarget().setEntity(targetEntity);
-			registerModified(player);
-			teleportTo(player, targetEntity);
-			castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityDisplayName(targetEntity)));
-			releaseTarget();
-			registerForUndo();
-			return SpellResult.CAST;
-		}
+        if (isLookingUp() && targetEntity != null)
+        {
+            getCurrentTarget().setEntity(targetEntity);
+            registerModified(player);
+            teleportTo(player, targetEntity);
+            castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityDisplayName(targetEntity)));
+            releaseTarget();
+            registerForUndo();
+            return SpellResult.CAST;
+        }
 
-		List<String> playerNames = new ArrayList<>(controller.getPlayerNames());
-		if (playerNames.size() == 1) return SpellResult.NO_TARGET;
+        List<String> playerNames = new ArrayList<>(controller.getPlayerNames());
+        if (playerNames.size() == 1) return SpellResult.NO_TARGET;
 
-		if (playerIndex < 0) playerIndex = playerNames.size() - 1;
-		if (playerIndex >= playerNames.size()) {
-			playerIndex = 0;
-		}
+        if (playerIndex < 0) playerIndex = playerNames.size() - 1;
+        if (playerIndex >= playerNames.size()) {
+            playerIndex = 0;
+        }
 
-		String playerName = playerNames.get(playerIndex);
-		if (playerName.equals(player.getName())) {
-			playerIndex = (playerIndex + 1) % playerNames.size();
-			playerName = playerNames.get(playerIndex);
-		}
-		playerIndex++;
+        String playerName = playerNames.get(playerIndex);
+        if (playerName.equals(player.getName())) {
+            playerIndex = (playerIndex + 1) % playerNames.size();
+            playerName = playerNames.get(playerIndex);
+        }
+        playerIndex++;
 
-		Player targetPlayer = DeprecatedUtils.getPlayer(playerName);
-		if (targetPlayer == null) return SpellResult.NO_TARGET;
+        Player targetPlayer = DeprecatedUtils.getPlayer(playerName);
+        if (targetPlayer == null) return SpellResult.NO_TARGET;
 
-		selectTarget(targetPlayer);
-		activate();
-		return SpellResult.TARGET_SELECTED;
-	}
+        selectTarget(targetPlayer);
+        activate();
+        return SpellResult.TARGET_SELECTED;
+    }
 
-	protected boolean teleportTarget(Location location) {
-		if (targetEntity == null || location == null) return false;
-		registerMoved(targetEntity);
-		location.setY(location.getY() + 1);
-		targetEntity.teleport(location);
-		this.getCurrentTarget().setEntity(targetEntity);
-		registerForUndo();
+    protected boolean teleportTarget(Location location) {
+        if (targetEntity == null || location == null) return false;
+        registerMoved(targetEntity);
+        location.setY(location.getY() + 1);
+        targetEntity.teleport(location);
+        this.getCurrentTarget().setEntity(targetEntity);
+        registerForUndo();
 
-		return true;
-	}
+        return true;
+    }
 
-	protected void teleportTo(Entity sourceEntity, Entity targetEntity) {
-		Location targetLocation = targetEntity.getLocation();
+    protected void teleportTo(Entity sourceEntity, Entity targetEntity) {
+        Location targetLocation = targetEntity.getLocation();
 
-		// Try to place you in front of the other player, and facing them
-		BlockFace targetFacing = getFacing(targetEntity.getLocation());
-		Location candidate = findPlaceToStand(targetLocation.getBlock().getRelative(targetFacing).getRelative(targetFacing).getLocation(), 4, 4);
-		if (candidate != null) {
-			candidate.setPitch(0);
-			candidate.setYaw(360 - targetLocation.getYaw());
-			targetLocation = candidate;
-		}
+        // Try to place you in front of the other player, and facing them
+        BlockFace targetFacing = getFacing(targetEntity.getLocation());
+        Location candidate = findPlaceToStand(targetLocation.getBlock().getRelative(targetFacing).getRelative(targetFacing).getLocation(), 4, 4);
+        if (candidate != null) {
+            candidate.setPitch(0);
+            candidate.setYaw(360 - targetLocation.getYaw());
+            targetLocation = candidate;
+        }
 
         sourceEntity.teleport(targetLocation);
-	}
+    }
 
-	protected void selectTarget(LivingEntity entity) {
-		releaseTarget();
+    protected void selectTarget(LivingEntity entity) {
+        releaseTarget();
 
-		targetEntity = entity;
-		getCurrentTarget().setEntity(entity);
-	}
+        targetEntity = entity;
+        getCurrentTarget().setEntity(entity);
+    }
 
-	protected void releaseTarget() {
-		targetEntity = null;
-	}
+    protected void releaseTarget() {
+        targetEntity = null;
+    }
 
-	@Override
-	public boolean onCancelSelection()
-	{
-		if (targetEntity != null)
-		{
+    @Override
+    public boolean onCancelSelection()
+    {
+        if (targetEntity != null)
+        {
             releaseTarget();
             deactivate();
-			return true;
-		}
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

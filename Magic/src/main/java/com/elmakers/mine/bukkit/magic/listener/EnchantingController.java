@@ -16,16 +16,16 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 
 public class EnchantingController implements Listener {
-	private final MagicController controller;
-	private boolean enchantingEnabled = false;
+    private final MagicController controller;
+    private boolean enchantingEnabled = false;
 
-	public EnchantingController(MagicController controller) {
-		this.controller = controller;
-	}
+    public EnchantingController(MagicController controller) {
+        this.controller = controller;
+    }
 
-	@EventHandler
-	public void onEnchantItem(EnchantItemEvent event) {
-		if (enchantingEnabled && Wand.isWand(event.getItem())) {
+    @EventHandler
+    public void onEnchantItem(EnchantItemEvent event) {
+        if (enchantingEnabled && Wand.isWand(event.getItem())) {
             Player player = event.getEnchanter();
             if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
                 event.setCancelled(true);
@@ -33,11 +33,11 @@ public class EnchantingController implements Listener {
             }
 
             event.getEnchantsToAdd().clear();
-			int level = event.getExpLevelCost();
-			Wand wand = controller.getWand(event.getItem());
-			if (wand.enchant(level, controller.getMage(event.getEnchanter())) <= 0) {
+            int level = event.getExpLevelCost();
+            Wand wand = controller.getWand(event.getItem());
+            if (wand.enchant(level, controller.getMage(event.getEnchanter())) <= 0) {
                 event.setCancelled(true);
-			} else {
+            } else {
                 event.setCancelled(false);
 
                 // This is necessary due to a special-case check Bukkit added in
@@ -50,38 +50,38 @@ public class EnchantingController implements Listener {
                 // :P
                 event.getEnchantsToAdd().put(null, 0);
             }
-			wand.makeEnchantable(true);
-		}
-	}
+            wand.makeEnchantable(true);
+        }
+    }
 
-	@EventHandler
-	public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
-		if (Wand.isWand(event.getItem())) {
-			if (!enchantingEnabled) {
-				event.setCancelled(true);
-				return;
-			}
+    @EventHandler
+    public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
+        if (Wand.isWand(event.getItem())) {
+            if (!enchantingEnabled) {
+                event.setCancelled(true);
+                return;
+            }
             Player player = event.getEnchanter();
             if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
                 event.setCancelled(true);
                 return;
             }
-			Wand wandItem = controller.getWand(event.getItem());
-			if (!wandItem.isModifiable() && wandItem.getPath() == null) {
-				event.setCancelled(true);
-				return;
-			}
+            Wand wandItem = controller.getWand(event.getItem());
+            if (!wandItem.isModifiable() && wandItem.getPath() == null) {
+                event.setCancelled(true);
+                return;
+            }
 
-			if (controller.isSPEnabled() && wandItem.hasSpellProgression()) {
-				event.setCancelled(true);
-				return;
-			}
+            if (controller.isSPEnabled() && wandItem.hasSpellProgression()) {
+                event.setCancelled(true);
+                return;
+            }
 
-			if (!wandItem.canUse(player)) {
-				event.setCancelled(true);
-				return;
-			}
-			wandItem.makeEnchantable(true);
+            if (!wandItem.canUse(player)) {
+                event.setCancelled(true);
+                return;
+            }
+            wandItem.makeEnchantable(true);
             WandUpgradePath path = wandItem.getPath();
             if (path == null) {
                 event.setCancelled(true);
@@ -90,65 +90,65 @@ public class EnchantingController implements Listener {
             int minLevel = path.getMinLevel();
             int maxLevel = path.getMaxLevel();
             int levelRange = maxLevel - minLevel;
-			int[] offered = event.getExpLevelCostsOffered();
+            int[] offered = event.getExpLevelCostsOffered();
 
             float bonusLevelMultiplier = path.getBonusLevelMultiplier();
-			int bonusLevels = event.getEnchantmentBonus();
+            int bonusLevels = event.getEnchantmentBonus();
 
-			for (int i = 0; i < offered.length; i++)
+            for (int i = 0; i < offered.length; i++)
             {
-				int level = minLevel + (int)((float)i * levelRange / offered.length);
+                int level = minLevel + (int)((float)i * levelRange / offered.length);
                 if (bonusLevels > 0 && bonusLevelMultiplier > 0)
                 {
                     level += bonusLevels * bonusLevelMultiplier;
                 }
-				offered[i] = level;
-			}
-			event.setCancelled(false);
-		}
-	}
+                offered[i] = level;
+            }
+            event.setCancelled(false);
+        }
+    }
 
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		if (event.isCancelled()) return;
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.isCancelled()) return;
 
-		InventoryType inventoryType = event.getInventory().getType();
-		SlotType slotType = event.getSlotType();
+        InventoryType inventoryType = event.getInventory().getType();
+        SlotType slotType = event.getSlotType();
 
-		if (enchantingEnabled && inventoryType == InventoryType.ENCHANTING)
-		{
-			if (slotType == SlotType.CRAFTING) {
+        if (enchantingEnabled && inventoryType == InventoryType.ENCHANTING)
+        {
+            if (slotType == SlotType.CRAFTING) {
                 HumanEntity clicker = event.getWhoClicked();
                 Player player = clicker instanceof Player ? (Player)clicker : null;
                 if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
                     return;
                 }
 
-				ItemStack cursor = event.getCursor();
-				ItemStack current = event.getCurrentItem();
+                ItemStack cursor = event.getCursor();
+                ItemStack current = event.getCurrentItem();
 
-				// Make wands into an enchantable item when placing
-				if (Wand.isWand(cursor)) {
-					Wand wand = controller.getWand(cursor);
-					if (wand.isModifiable()) {
-						wand.makeEnchantable(true);
-					}
-				}
-				// And turn them back when taking out
-				if (Wand.isWand(current)) {
-					Wand wand = controller.getWand(current);
-					if (wand.isModifiable()) {
-						wand.makeEnchantable(false);
-					}
-				}
-			}
-		}
-	}
+                // Make wands into an enchantable item when placing
+                if (Wand.isWand(cursor)) {
+                    Wand wand = controller.getWand(cursor);
+                    if (wand.isModifiable()) {
+                        wand.makeEnchantable(true);
+                    }
+                }
+                // And turn them back when taking out
+                if (Wand.isWand(current)) {
+                    Wand wand = controller.getWand(current);
+                    if (wand.isModifiable()) {
+                        wand.makeEnchantable(false);
+                    }
+                }
+            }
+        }
+    }
 
-	public boolean isEnabled()
-	{
-		return enchantingEnabled;
-	}
+    public boolean isEnabled()
+    {
+        return enchantingEnabled;
+    }
 
     public void setEnabled(boolean enabled)
     {

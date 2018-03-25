@@ -27,7 +27,7 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class ProjectileAction  extends BaseProjectileAction
 {
-	private int defaultSize = 1;
+    private int defaultSize = 1;
 
     private int count;
     private int size;
@@ -39,8 +39,8 @@ public class ProjectileAction  extends BaseProjectileAction
     private int tickIncrease;
     private String projectileTypeName;
     private int startDistance;
-	private SourceLocation sourceLocation;
-	private String pickupStatus;
+    private SourceLocation sourceLocation;
+    private String pickupStatus;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -63,7 +63,7 @@ public class ProjectileAction  extends BaseProjectileAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
-		track = true;
+        track = true;
         super.prepare(context, parameters);
         count = parameters.getInt("count", 1);
         size = parameters.getInt("size", defaultSize);
@@ -76,38 +76,38 @@ public class ProjectileAction  extends BaseProjectileAction
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
         pickupStatus = parameters.getString("pickup");
-		sourceLocation = new SourceLocation(parameters);
+        sourceLocation = new SourceLocation(parameters);
     }
 
-	@Override
-	public SpellResult start(CastContext context)
-	{
+    @Override
+    public SpellResult start(CastContext context)
+    {
         MageController controller = context.getController();
-		Mage mage = context.getMage();
+        Mage mage = context.getMage();
 
         // Modify with wand power
         // Turned some of this off for now
         // int count = this.count * mage.getRadiusMultiplier();
         // int speed = this.speed * damageMultiplier;
         int size = (int)(mage.getRadiusMultiplier() * this.size);
-		double damageMultiplier = mage.getDamageMultiplier("projectile");
+        double damageMultiplier = mage.getDamageMultiplier("projectile");
         double damage = damageMultiplier * this.damage;
         float radiusMultiplier = mage.getRadiusMultiplier();
-		float spread = this.spread;
-		if (radiusMultiplier > 1) {
-			 spread = spread / radiusMultiplier;
-		}
+        float spread = this.spread;
+        if (radiusMultiplier > 1) {
+             spread = spread / radiusMultiplier;
+        }
         Random random = context.getRandom();
 
-		Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);
-		if (!CompatibilityUtils.isValidProjectileClass(projectileType)) {
-			controller.getLogger().warning("Bad projectile class: " + projectileTypeName);
-			return SpellResult.FAIL;
-		}
+        Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);
+        if (!CompatibilityUtils.isValidProjectileClass(projectileType)) {
+            controller.getLogger().warning("Bad projectile class: " + projectileTypeName);
+            return SpellResult.FAIL;
+        }
 
-		// Prepare parameters
-		Location location = sourceLocation.getLocation(context);
-		Vector direction = location.getDirection();
+        // Prepare parameters
+        Location location = sourceLocation.getLocation(context);
+        Vector direction = location.getDirection();
 
         if (startDistance > 0) {
             location = location.clone().add(direction.clone().multiply(startDistance));
@@ -121,87 +121,87 @@ public class ProjectileAction  extends BaseProjectileAction
             source = shootingEntity;
         }
         for (int i = 0; i < count; i++) {
-			try {
-				// Spawn a new projectile
-				Projectile projectile = CompatibilityUtils.spawnProjectile(projectileType, location, direction, source, speed, spread, i > 0 ? spread : 0, random);
-				if (projectile == null) {
-					return SpellResult.FAIL;
-				}
-				if (shootingEntity != null) {
-					projectile.setShooter(shootingEntity);
-				}
+            try {
+                // Spawn a new projectile
+                Projectile projectile = CompatibilityUtils.spawnProjectile(projectileType, location, direction, source, speed, spread, i > 0 ? spread : 0, random);
+                if (projectile == null) {
+                    return SpellResult.FAIL;
+                }
+                if (shootingEntity != null) {
+                    projectile.setShooter(shootingEntity);
+                }
 
-				if (projectile instanceof Fireball) {
-					Fireball fireball = (Fireball)projectile;
-					fireball.setIsIncendiary(useFire);
-					fireball.setYield(size);
-				}
-				if (projectile instanceof Arrow) {
-					Arrow arrow = (Arrow)projectile;
-					if (useFire) {
-						arrow.setFireTicks(300);
-					}
+                if (projectile instanceof Fireball) {
+                    Fireball fireball = (Fireball)projectile;
+                    fireball.setIsIncendiary(useFire);
+                    fireball.setYield(size);
+                }
+                if (projectile instanceof Arrow) {
+                    Arrow arrow = (Arrow)projectile;
+                    if (useFire) {
+                        arrow.setFireTicks(300);
+                    }
 
-					if (damage > 0) {
-						CompatibilityUtils.setDamage(projectile, damage);
-					}
-					if (tickIncrease > 0) {
-						CompatibilityUtils.decreaseLifespan(projectile, tickIncrease);
-					}
-					if (pickupStatus != null && !pickupStatus.isEmpty()) {
-						CompatibilityUtils.setPickupStatus(arrow, pickupStatus);
-					}
-				}
+                    if (damage > 0) {
+                        CompatibilityUtils.setDamage(projectile, damage);
+                    }
+                    if (tickIncrease > 0) {
+                        CompatibilityUtils.decreaseLifespan(projectile, tickIncrease);
+                    }
+                    if (pickupStatus != null && !pickupStatus.isEmpty()) {
+                        CompatibilityUtils.setPickupStatus(arrow, pickupStatus);
+                    }
+                }
                 if (!breakBlocks) {
                     projectile.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
                 }
-				track(context, projectile);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}
+                track(context, projectile);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
 
-		return checkTracking(context);
-	}
+        return checkTracking(context);
+    }
 
-	@Override
-	public boolean isUndoable() {
-		return true;
-	}
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
 
-	@Override
+    @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
-		super.getParameterNames(spell, parameters);
-		parameters.add("count");
-		parameters.add("size");
-		parameters.add("damage");
-		parameters.add("speed");
-		parameters.add("spread");
+        super.getParameterNames(spell, parameters);
+        parameters.add("count");
+        parameters.add("size");
+        parameters.add("damage");
+        parameters.add("speed");
+        parameters.add("spread");
         parameters.add("start");
-		parameters.add("projectile");
-		parameters.add("fire");
-		parameters.add("tick_increase");
-	}
+        parameters.add("projectile");
+        parameters.add("fire");
+        parameters.add("tick_increase");
+    }
 
-	@Override
-	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-		if (parameterKey.equals("undo_interval")) {
-			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
-		} else if (parameterKey.equals("count") || parameterKey.equals("size") || parameterKey.equals("speed")
-				|| parameterKey.equals("spread") || parameterKey.equals("tick_increase")
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("undo_interval")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
+        } else if (parameterKey.equals("count") || parameterKey.equals("size") || parameterKey.equals("speed")
+                || parameterKey.equals("spread") || parameterKey.equals("tick_increase")
                 || parameterKey.equals("damage") || parameterKey.equals("start")) {
-			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
-		} else if (parameterKey.equals("fire")) {
-			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
-		} else if (parameterKey.equals("projectile")) {
-			examples.add("LargeFireball");
-			examples.add("SmallFireball");
-			examples.add("WitherSkull");
-			examples.add("TippedArrow");
-			examples.add("SpectralArrow");
-			examples.add("Snowball");
-		} else {
-			super.getParameterOptions(spell, parameterKey, examples);
-		}
-	}
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else if (parameterKey.equals("fire")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else if (parameterKey.equals("projectile")) {
+            examples.add("LargeFireball");
+            examples.add("SmallFireball");
+            examples.add("WitherSkull");
+            examples.add("TippedArrow");
+            examples.add("SpectralArrow");
+            examples.add("Snowball");
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
+    }
 }

@@ -50,17 +50,17 @@ public class ThrowBlockAction extends BaseProjectileAction
         sourceLocation = new SourceLocation(parameters);
     }
 
-	@Override
-	public SpellResult start(CastContext context)
-	{
-		Location location = context.getLocation();
-		if (!context.hasBuildPermission(location.getBlock())) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
+    @Override
+    public SpellResult start(CastContext context)
+    {
+        Location location = context.getLocation();
+        if (!context.hasBuildPermission(location.getBlock())) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
 
-		location.setY(location.getY() - 1);
-		MaterialBrush buildWith = context.getBrush();
-		buildWith.setTarget(location);
+        location.setY(location.getY() - 1);
+        MaterialBrush buildWith = context.getBrush();
+        buildWith.setTarget(location);
 
         if (buildWith.isErase() || buildWith.getMaterial() == Material.AIR) {
             return SpellResult.NO_TARGET;
@@ -81,17 +81,17 @@ public class ThrowBlockAction extends BaseProjectileAction
             mage.removeItem(requires, consumeVariants);
         }
 
-		Material material = buildWith.getMaterial();
-		byte data = buildWith.getBlockData();
+        Material material = buildWith.getMaterial();
+        byte data = buildWith.getBlockData();
 
         location = sourceLocation.getLocation(context);
-		Vector direction = location.getDirection();
+        Vector direction = location.getDirection();
         double speed = context.getRandom().nextDouble() * (speedMax - speedMin) + speedMin;
         direction.normalize().multiply(speed);
-		Vector up = new Vector(0, 1, 0);
-		Vector perp = new Vector();
-		perp.copy(direction);
-		perp.crossProduct(up);
+        Vector up = new Vector(0, 1, 0);
+        Vector perp = new Vector();
+        perp.copy(direction);
+        perp.crossProduct(up);
 
         FallingBlock falling = DeprecatedUtils.spawnFallingBlock(location, material, data);
         if (falling == null)
@@ -110,7 +110,7 @@ public class ThrowBlockAction extends BaseProjectileAction
         }
 
         return checkTracking(context);
-	}
+    }
 
     @Override
     public boolean requiresBuildPermission() {

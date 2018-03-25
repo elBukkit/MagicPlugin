@@ -18,8 +18,8 @@ public class CoverAction extends CompoundAction
         targetAbove = parameters.getBoolean("target_above", false);
     }
 
-	@Override
-	public SpellResult step(CastContext context) {
+    @Override
+    public SpellResult step(CastContext context) {
         Block targetBlock = context.getTargetBlock();
         targetBlock = context.findSpaceAbove(targetBlock);
         targetBlock = context.findBlockUnder(targetBlock);
@@ -34,7 +34,7 @@ public class CoverAction extends CompoundAction
             actionContext.setTargetLocation(targetBlock.getLocation());
         }
         return startActions();
-	}
+    }
 
     @Override
     public boolean requiresTarget() {

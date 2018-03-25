@@ -36,7 +36,7 @@ import com.elmakers.mine.bukkit.wand.WandMode;
 
 public class InventoryController implements Listener {
     private final MagicController controller;
-    private boolean	enableItemHacks	= true;
+    private boolean    enableItemHacks    = true;
     private boolean dropChangesPages = false;
     private long openCooldown = 0;
 

@@ -28,7 +28,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class TreeAction extends BaseSpellAction
 {
-	private TreeType treeType = null;
+    private TreeType treeType = null;
 
     private boolean requireSapling;
     private Map<Biome, List<TreeType>> biomeMap = null;
@@ -81,25 +81,25 @@ public class TreeAction extends BaseSpellAction
     @Override
     public SpellResult perform(CastContext context)
     {
-		Block target = context.getTargetBlock();
-		if (requireSapling && target.getType() != Material.SAPLING)
-		{
-			return SpellResult.NO_TARGET;
-		}
-		if (!context.hasBuildPermission(target))
+        Block target = context.getTargetBlock();
+        if (requireSapling && target.getType() != Material.SAPLING)
         {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
+            return SpellResult.NO_TARGET;
+        }
+        if (!context.hasBuildPermission(target))
+        {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
 
         World world = context.getWorld();
-		Location treeLoc = new Location(world, target.getX(), target.getY() + 1, target.getZ(), 0, 0);
+        Location treeLoc = new Location(world, target.getX(), target.getY() + 1, target.getZ(), 0, 0);
 
         Random random = context.getRandom();
         TreeType useType = null;
         if (treeType != null)
-		{
+        {
             useType = treeType;
-		}
+        }
         else
         if (biomeMap != null)
         {
@@ -122,7 +122,7 @@ public class TreeAction extends BaseSpellAction
         }
         restoreOnFail.add(treeBlock);
         treeLoc.getBlock().setType(Material.AIR);
-		boolean result = world.generateTree(treeLoc, useType);
+        boolean result = world.generateTree(treeLoc, useType);
         if (!result) {
             UndoList undoList = new UndoList(context.getMage(), context.getSpell().getName());
             for (int z = -2; z <= 2; z++) {
@@ -150,30 +150,30 @@ public class TreeAction extends BaseSpellAction
             context.addWork(100);
             restoreOnFail.undo(true);
         }
-		return result ? SpellResult.CAST : SpellResult.FAIL;
-	}
+        return result ? SpellResult.CAST : SpellResult.FAIL;
+    }
 
-	public String getTreeName(TreeType treeType)
-	{
-		if (treeType == null || treeType.name() == null) return "Tree";
-		return treeType.name().toLowerCase();
-	}
+    public String getTreeName(TreeType treeType)
+    {
+        if (treeType == null || treeType.name() == null) return "Tree";
+        return treeType.name().toLowerCase();
+    }
 
-	public static TreeType parseTreeString(String s, TreeType defaultTreeType)
-	{
-		if (s.equalsIgnoreCase("big")) return TreeType.BIG_TREE;
-		if (s.equalsIgnoreCase("tall")) return TreeType.TALL_REDWOOD;
+    public static TreeType parseTreeString(String s, TreeType defaultTreeType)
+    {
+        if (s.equalsIgnoreCase("big")) return TreeType.BIG_TREE;
+        if (s.equalsIgnoreCase("tall")) return TreeType.TALL_REDWOOD;
 
-		TreeType tree = defaultTreeType;
-		for (TreeType t : TreeType.values())
-		{
-			if (t.name().equalsIgnoreCase(s))
-			{
-				tree = t;
-			}
-		}
-		return tree;
-	}
+        TreeType tree = defaultTreeType;
+        for (TreeType t : TreeType.values())
+        {
+            if (t.name().equalsIgnoreCase(s))
+            {
+                tree = t;
+            }
+        }
+        return tree;
+    }
 
     @Override
     public String transformMessage(String message) {

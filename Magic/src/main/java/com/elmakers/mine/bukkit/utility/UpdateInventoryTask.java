@@ -4,14 +4,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class UpdateInventoryTask extends BukkitRunnable {
-	private final Player player;
+    private final Player player;
 
-	public UpdateInventoryTask(Player player) {
-		this.player = player;
-	}
+    public UpdateInventoryTask(Player player) {
+        this.player = player;
+    }
 
-	@Override
-	public void run() {
-		DeprecatedUtils.updateInventory(player);
-	}
+    @Override
+    public void run() {
+        DeprecatedUtils.updateInventory(player);
+    }
 }

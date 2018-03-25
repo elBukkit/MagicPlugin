@@ -12,9 +12,9 @@ import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 
 public class EvtCast extends SkriptEvent {
-	private Literal<String> spells;
+    private Literal<String> spells;
 
-	public static void register() {
+    public static void register() {
         Skript.registerEvent("Cast Spell", EvtCast.class, CastEvent.class, "cast [[of] [spell] %-string%]")
             .description("Called when a player or magic mob casts a spell")
             .examples("on cast", "on cast of missile", "on cast of spell blink");

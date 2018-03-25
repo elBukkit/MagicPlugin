@@ -20,9 +20,9 @@ import ch.njol.util.Kleenean;
 @Description("Spawn a magic mob.")
 @Examples({"spawn 3 \"warlock\" at the targeted block", "spawn a \"mutant\" 5 meters above the player"})
 public class EffSpawn extends Effect {
-	private Expression<Location> locations;
-	private Expression<String> mobKeys;
-	private Expression<Number> amount;
+    private Expression<Location> locations;
+    private Expression<String> mobKeys;
+    private Expression<Number> amount;
 
     public static void register() {
         Skript.registerEffect(EffSpawn.class,
@@ -32,22 +32,22 @@ public class EffSpawn extends Effect {
 
     @Override
     protected void execute(Event event) {
-		Number count = null;
-		if (amount != null) {
-			count = amount.getSingle(event);
-		};
-		if (count == null) {
-			count = 1;
-		}
-		MageController controller = MagicPlugin.getAPI().getController();
-		final String[] keys = mobKeys.getArray(event);
-		for (final Location location : locations.getArray(event)) {
-			for (final String mobKey : keys) {
-				for (int i = 0; i < count.doubleValue(); i++) {
-					controller.spawnMob(mobKey, location);
-				}
-			}
-		}
+        Number count = null;
+        if (amount != null) {
+            count = amount.getSingle(event);
+        };
+        if (count == null) {
+            count = 1;
+        }
+        MageController controller = MagicPlugin.getAPI().getController();
+        final String[] keys = mobKeys.getArray(event);
+        for (final Location location : locations.getArray(event)) {
+            for (final String mobKey : keys) {
+                for (int i = 0; i < count.doubleValue(); i++) {
+                    controller.spawnMob(mobKey, location);
+                }
+            }
+        }
     }
 
     @Override
@@ -59,8 +59,8 @@ public class EffSpawn extends Effect {
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         amount = matchedPattern == 0 ? null : (Expression<Number>) (exprs[0]);
-		mobKeys = (Expression<String>) exprs[matchedPattern];
-		locations = Direction.combine((Expression<? extends Direction>) exprs[1 + matchedPattern], (Expression<? extends Location>) exprs[2 + matchedPattern]);
-		return true;
+        mobKeys = (Expression<String>) exprs[matchedPattern];
+        locations = Direction.combine((Expression<? extends Direction>) exprs[1 + matchedPattern], (Expression<? extends Location>) exprs[2 + matchedPattern]);
+        return true;
     }
 }

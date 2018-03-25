@@ -286,14 +286,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     @Override
     public SpellResult perform(CastContext context) {
         this.context = context;
-		enabledTypes.clear();
+        enabledTypes.clear();
         warps.clear();
         commands.clear();
 
         Mage mage = context.getMage();
         MageController controller = context.getController();
-		Player player = mage.getPlayer();
-		if (player == null) {
+        Player player = mage.getPlayer();
+        if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
 
@@ -441,12 +441,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
 
         Location playerLocation = mage.getLocation();
-		for (RecallType testType : RecallType.values())
+        for (RecallType testType : RecallType.values())
         {
             // Special-case for warps
             if (testType == RecallType.WARP)
             {
-				if (warpConfig != null)
+                if (warpConfig != null)
                 {
                     Collection<String> warpKeys = warpConfig.getKeys(false);
                     for (String warpKey : warpKeys)
@@ -458,8 +458,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                             warps.put(warpKey, config);
                         }
                     }
-				}
-			}
+                }
+            }
             // Special-case for commands
             else if (testType == RecallType.COMMAND)
             {
@@ -479,12 +479,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
             else
             {
-				if (parameters.getBoolean("allow_" + testType.name().toLowerCase(), true))
+                if (parameters.getBoolean("allow_" + testType.name().toLowerCase(), true))
                 {
-					enabledTypes.add(testType);
-				}
-			}
-		}
+                    enabledTypes.add(testType);
+                }
+            }
+        }
 
         if (warps.size() > 0)
         {
@@ -517,7 +517,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
         else if (parameters.contains("type"))
         {
-			String typeString = parameters.getString("type", "");
+            String typeString = parameters.getString("type", "");
             if (parameters.getBoolean("allow_marker", true))
             {
                 if (typeString.equalsIgnoreCase("remove"))
@@ -551,14 +551,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 }
             }
 
-			RecallType recallType = RecallType.valueOf(typeString.toUpperCase());
+            RecallType recallType = RecallType.valueOf(typeString.toUpperCase());
 
-			Waypoint location = getWaypoint(player, recallType, 0, parameters, context);
-			if (tryTeleport(player, location)) {
-				return SpellResult.CAST;
-			}
-			return SpellResult.FAIL;
-		}
+            Waypoint location = getWaypoint(player, recallType, 0, parameters, context);
+            if (tryTeleport(player, location)) {
+                return SpellResult.CAST;
+            }
+            return SpellResult.FAIL;
+        }
 
         List<Waypoint> allWaypoints = new LinkedList<>();
         for (RecallType selectedType : enabledTypes) {
@@ -763,18 +763,18 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
     @Nullable
     protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters, CastContext context) {
-		Mage mage = context.getMage();
+        Mage mage = context.getMage();
         MageController controller = context.getController();
-		switch (type) {
-		case MARKER:
+        switch (type) {
+        case MARKER:
             Location location = ConfigurationUtils.getLocation(mage.getData(), markerKey);
-			return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), getIcon(context, parameters, "icon_marker"), true);
-		case DEATH:
+            return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), getIcon(context, parameters, "icon_marker"), true);
+        case DEATH:
             Waypoint death = new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), getIcon(context, parameters, "icon_death"), true);
-		    death.safe = false;
+            death.safe = false;
             return death;
         case SPAWN:
-			return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), getIcon(context, parameters, "icon_spawn"), false);
+            return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), getIcon(context, parameters, "icon_spawn"), false);
         case TOWN:
             return new Waypoint(type, controller.getTownLocation(player), context.getMessage("title_town"), context.getMessage("cast_town"), context.getMessage("no_target_town"), context.getMessage("description_town", ""), getIcon(context, parameters, "icon_town"), false);
         case HOME:
@@ -784,14 +784,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 bedLocation.setZ(bedLocation.getZ() + 0.5);
             }
             return new Waypoint(type, bedLocation, context.getMessage("title_home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), getIcon(context, parameters, "icon_home"), false);
-		case WAND:
+        case WAND:
             List<LostWand> lostWands = mage.getLostWands();
-			if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
-			return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), getIcon(context, parameters, "icon_wand"), true);
-		default:
-		    return null;
-		}
-	}
+            if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
+            return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), getIcon(context, parameters, "icon_wand"), true);
+        default:
+            return null;
+        }
+    }
 
     @Nullable
     protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key) {
@@ -807,15 +807,15 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return material;
     }
 
-	protected boolean removeMarker()
-	{
+    protected boolean removeMarker()
+    {
         Mage mage = context.getMage();
         ConfigurationSection mageData = mage.getData();
         Location location = ConfigurationUtils.getLocation(mageData, markerKey);
-		if (location == null) return false;
+        if (location == null) return false;
         mageData.set(markerKey, null);
-		return true;
-	}
+        return true;
+    }
 
     protected boolean hasMarker()
     {
@@ -825,7 +825,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return location != null;
     }
 
-	protected boolean tryTeleport(final Player player, final Waypoint waypoint) {
+    protected boolean tryTeleport(final Player player, final Waypoint waypoint) {
         Mage mage = context.getMage();
         if (waypoint == null) return false;
         if (waypoint.isCommand()) {
@@ -855,7 +855,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
 
         Location targetLocation = waypoint.location;
-		if (targetLocation == null) {
+        if (targetLocation == null) {
                 String serverName = waypoint.serverName;
                 String warpName = waypoint.warpName;
                 if (warpName != null && serverName != null) {
@@ -863,12 +863,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 } else {
                     context.sendMessage(waypoint.failMessage);
                 }
-			return false;
-		}
-		if (!allowCrossWorld && !mage.getLocation().getWorld().equals(targetLocation.getWorld())) {
+            return false;
+        }
+        if (!allowCrossWorld && !mage.getLocation().getWorld().equals(targetLocation.getWorld())) {
             context.sendMessageKey("cross_world_disallowed");
-			return false;
-		}
+            return false;
+        }
 
         if (waypoint.maintainDirection)
         {
@@ -882,36 +882,36 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         } else {
             context.castMessage(waypoint.failMessage);
         }
-		return true;
-	}
+        return true;
+    }
 
-	protected boolean placeMarker(Block target)
-	{
-		if (target == null)
-		{
-			return false;
-		}
+    protected boolean placeMarker(Block target)
+    {
+        if (target == null)
+        {
+            return false;
+        }
 
         Mage mage = context.getMage();
         ConfigurationSection mageData = mage.getData();
         Location location = ConfigurationUtils.getLocation(mageData, markerKey);
 
         context.registerForUndo(new UndoMarkerMove(mage, location));
-		if (location != null)
-		{
+        if (location != null)
+        {
             context.sendMessageKey("cast_marker_move");
-		}
-		else
-		{
+        }
+        else
+        {
             context.sendMessageKey("cast_marker_place");
-		}
+        }
 
-		location = context.getLocation();
-		location.setX(target.getX() + 0.5);
-		location.setY(target.getY());
-		location.setZ(target.getZ() + 0.5);
+        location = context.getLocation();
+        location.setX(target.getX() + 0.5);
+        location.setY(target.getY());
+        location.setZ(target.getZ() + 0.5);
 
         mageData.set(markerKey, ConfigurationUtils.fromLocation(location));
         return true;
-	}
+    }
 }

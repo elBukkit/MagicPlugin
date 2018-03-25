@@ -25,33 +25,33 @@ public class IgniteAction extends BaseSpellAction
         duration = parameters.getInt("duration", 5000);
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         int ticks = duration * 20 / 1000;
         Entity entity = context.getTargetEntity();
-		MageController controller = context.getController();
-		boolean isElemental = controller.isElemental(entity);
-		if (!isElemental && entity.getFireTicks() == ticks)
-		{
-			return SpellResult.NO_TARGET;
-		}
+        MageController controller = context.getController();
+        boolean isElemental = controller.isElemental(entity);
+        if (!isElemental && entity.getFireTicks() == ticks)
+        {
+            return SpellResult.NO_TARGET;
+        }
         context.registerDamaged(entity);
 
-		if (isElemental) {
+        if (isElemental) {
             Mage mage = context.getMage();
-			controller.damageElemental(entity, 0, ticks, mage.getCommandSender());
-		} else {
-			entity.setFireTicks(ticks);
-		}
-		return SpellResult.CAST;
-	}
+            controller.damageElemental(entity, 0, ticks, mage.getCommandSender());
+        } else {
+            entity.setFireTicks(ticks);
+        }
+        return SpellResult.CAST;
+    }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return true;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 
     @Override
     public boolean requiresTargetEntity()
@@ -59,18 +59,18 @@ public class IgniteAction extends BaseSpellAction
         return true;
     }
 
-	@Override
-	public void getParameterNames(Spell spell, Collection<String> parameters) {
-		super.getParameterNames(spell, parameters);
-		parameters.add("duration");
-	}
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
+        parameters.add("duration");
+    }
 
-	@Override
-	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-		if (parameterKey.equals("duration")) {
-			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
-		} else {
-			super.getParameterOptions(spell, parameterKey, examples);
-		}
-	}
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("duration")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
+    }
 }

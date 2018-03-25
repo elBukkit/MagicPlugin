@@ -27,18 +27,18 @@ public class StashWandAction extends BaseSpellAction
     private boolean isOffhand = false;
     private boolean returnOnFinish = true;
 
-	private class StashWandUndoAction implements Runnable
-	{
-		public StashWandUndoAction() {
-		}
+    private class StashWandUndoAction implements Runnable
+    {
+        public StashWandUndoAction() {
+        }
 
-		@Override
-		public void run() {
-		    returnItem();
-		}
-	}
+        @Override
+        public void run() {
+            returnItem();
+        }
+    }
 
-	private void returnItem() {
+    private void returnItem() {
         if (targetMage == null || stashedItem == null) return;
         Player player = targetMage.getPlayer();
         if (player == null) return;
@@ -70,9 +70,9 @@ public class StashWandAction extends BaseSpellAction
         targetMage = null;
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public SpellResult perform(CastContext context)
+    {
         Entity entity = context.getTargetEntity();
         if (entity == null) {
             if (!context.getTargetsCaster()) return SpellResult.NO_TARGET;
@@ -124,8 +124,8 @@ public class StashWandAction extends BaseSpellAction
 
         targetMage = mage;
         context.registerForUndo(new StashWandUndoAction());
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -150,17 +150,17 @@ public class StashWandAction extends BaseSpellAction
         }
     }
 
-	@Override
+    @Override
     public void finish(CastContext context) {
-	    super.finish(context);
-	    if (returnOnFinish) {
+        super.finish(context);
+        if (returnOnFinish) {
             returnItem();
         }
     }
 
-	@Override
-	public boolean isUndoable()
-	{
-		return true;
-	}
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 }

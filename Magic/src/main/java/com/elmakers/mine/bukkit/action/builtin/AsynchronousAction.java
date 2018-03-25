@@ -16,7 +16,7 @@ public class AsynchronousAction extends CompoundAction
     }
 
     @Override
-	public SpellResult perform(CastContext context) {
+    public SpellResult perform(CastContext context) {
         if (queued) {
             return SpellResult.NO_ACTION;
         }
@@ -30,6 +30,6 @@ public class AsynchronousAction extends CompoundAction
         handler.reset(actionContext);
         actionContext.addHandler(handler);
         queued = true;
-		return SpellResult.PENDING;
-	}
+        return SpellResult.PENDING;
+    }
 }

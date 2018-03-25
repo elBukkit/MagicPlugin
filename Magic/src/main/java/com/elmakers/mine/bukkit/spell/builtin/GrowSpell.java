@@ -19,12 +19,12 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class GrowSpell extends BlockSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
 
-		if (!target.hasEntity()) {
+        if (!target.hasEntity()) {
             return SpellResult.NO_TARGET;
         }
 
@@ -72,6 +72,6 @@ public class GrowSpell extends BlockSpell
         }
 
         registerForUndo();
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 }

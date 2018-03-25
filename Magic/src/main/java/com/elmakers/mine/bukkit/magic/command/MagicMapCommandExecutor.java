@@ -31,12 +31,12 @@ import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicMapCommandExecutor extends MagicMapExecutor {
-	public MagicMapCommandExecutor(MagicAPI api) {
-		super(api);
-	}
+    public MagicMapCommandExecutor(MagicAPI api) {
+        super(api);
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!api.hasPermission(sender, "Magic.commands.mmap"))
         {
             sendNoPermission(sender);
@@ -44,10 +44,10 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         }
 
         if (args.length == 0)
-		{
+        {
             sender.sendMessage("Usage: mmap [list|give|load|import|player|fix|restore|unnamed|name]");
-			return true;
-		}
+            return true;
+        }
 
         String subCommand = args[0];
         if (!api.hasPermission(sender, "Magic.commands.mmap." + subCommand))
@@ -280,7 +280,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             sender.sendMessage("Usage: mmap [list|remove|give|load|import]");
         }
         return true;
-	}
+    }
 
     protected void onMapLoad(CommandSender sender, World world, String url, String mapName, int width, int height, int x, int y, Integer priority)
     {
@@ -562,12 +562,12 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         api.giveItemToPlayer(recipient, mapItem);
     }
 
-	@Override
-	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<>();
+    @Override
+    public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+        List<String> options = new ArrayList<>();
         if (!sender.hasPermission("Magic.commands.mmap")) return options;
 
-		if (args.length == 1) {
+        if (args.length == 1) {
             options.add("give");
             options.add("import");
             options.add("list");
@@ -578,9 +578,9 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             options.add("restore");
             options.add("name");
             options.add("unnamed");
-		} else if (args.length == 2 && args[0].equals("give")) {
+        } else if (args.length == 2 && args[0].equals("give")) {
             options.addAll(api.getPlayerNames());
         }
-		return options;
-	}
+        return options;
+    }
 }

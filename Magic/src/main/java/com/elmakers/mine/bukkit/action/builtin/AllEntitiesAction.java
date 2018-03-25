@@ -24,8 +24,8 @@ public class AllEntitiesAction extends CompoundEntityAction
 {
     private boolean targetAllWorlds;
 
-	@Override
-	public void prepare(CastContext context, ConfigurationSection parameters) {
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         targetAllWorlds = parameters.getBoolean("target_all_worlds", false);
     }
@@ -46,53 +46,53 @@ public class AllEntitiesAction extends CompoundEntityAction
     public void addEntities(CastContext context, List<WeakReference<Entity>> entities)
     {
         Spell spell = context.getSpell();
-		Entity sourceEntity = context.getMage().getEntity();
-		Location sourceLocation = context.getLocation();
+        Entity sourceEntity = context.getMage().getEntity();
+        Location sourceLocation = context.getLocation();
 
-		if (sourceLocation == null && !targetAllWorlds)
-		{
-			return;
-		}
+        if (sourceLocation == null && !targetAllWorlds)
+        {
+            return;
+        }
 
-		Class<?> targetType = Player.class;
-		if (spell instanceof TargetingSpell)
-		{
-			targetType = ((TargetingSpell)spell).getTargetEntityType();
-		}
+        Class<?> targetType = Player.class;
+        if (spell instanceof TargetingSpell)
+        {
+            targetType = ((TargetingSpell)spell).getTargetEntityType();
+        }
 
-		if (targetType == Player.class)
-		{
-			Collection<? extends Player> players = context.getPlugin().getServer().getOnlinePlayers();
-			for (Player player : players)
-			{
-				if ((context.getTargetsCaster() || player != sourceEntity) && (targetAllWorlds || (sourceLocation != null && sourceLocation.getWorld().equals(player.getWorld()))) && spell.canTarget(player))
-				{
+        if (targetType == Player.class)
+        {
+            Collection<? extends Player> players = context.getPlugin().getServer().getOnlinePlayers();
+            for (Player player : players)
+            {
+                if ((context.getTargetsCaster() || player != sourceEntity) && (targetAllWorlds || (sourceLocation != null && sourceLocation.getWorld().equals(player.getWorld()))) && spell.canTarget(player))
+                {
                     entities.add(new WeakReference<Entity>(player));
-				}
-			}
-		}
-		else
-		{
-			List<World> worlds;
-			if (targetAllWorlds) {
-				worlds = Bukkit.getWorlds();
-			} else {
-				worlds = new ArrayList<>();
-				worlds.add(sourceLocation.getWorld());
-			}
-			for (World world : worlds)
-			{
-				List<Entity> candidates = world.getEntities();
-				for (Entity entity : candidates)
-				{
-					if (spell.canTarget(entity) && (context.getTargetsCaster() || entity != sourceEntity))
-					{
+                }
+            }
+        }
+        else
+        {
+            List<World> worlds;
+            if (targetAllWorlds) {
+                worlds = Bukkit.getWorlds();
+            } else {
+                worlds = new ArrayList<>();
+                worlds.add(sourceLocation.getWorld());
+            }
+            for (World world : worlds)
+            {
+                List<Entity> candidates = world.getEntities();
+                for (Entity entity : candidates)
+                {
+                    if (spell.canTarget(entity) && (context.getTargetsCaster() || entity != sourceEntity))
+                    {
                         entities.add(new WeakReference<>(entity));
-					}
-				}
-			}
-		}
-	}
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {

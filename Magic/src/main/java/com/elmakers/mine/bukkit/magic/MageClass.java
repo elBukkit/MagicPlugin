@@ -258,57 +258,57 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     @Override
     public float getCostReduction() {
         float costReduction = getFloat("cost_reduction");
-    	if (mage != null) {
-    		float reduction = mage.getCostReduction();
-    		return stackPassiveProperty(reduction, costReduction);
-		}
+        if (mage != null) {
+            float reduction = mage.getCostReduction();
+            return stackPassiveProperty(reduction, costReduction);
+        }
         return costReduction;
     }
 
     @Override
     public float getCooldownReduction() {
         float cooldownReduction = getFloat("cooldown_reduction");
-    	if (mage != null) {
-    		float reduction = mage.getCooldownReduction();
-    		return stackPassiveProperty(reduction, cooldownReduction);
-		}
-		return cooldownReduction;
-	}
+        if (mage != null) {
+            float reduction = mage.getCooldownReduction();
+            return stackPassiveProperty(reduction, cooldownReduction);
+        }
+        return cooldownReduction;
+    }
 
-	@Override
+    @Override
     public boolean isCooldownFree() {
-		return getFloat("cooldown_reduction") > 1;
-	}
+        return getFloat("cooldown_reduction") > 1;
+    }
 
-	@Override
-	public float getConsumeReduction() {
+    @Override
+    public float getConsumeReduction() {
         float consumeReduction = getFloat("consume_reduction");
-    	if (mage != null) {
-    		float reduction = mage.getConsumeReduction();
-    		return stackPassiveProperty(reduction, consumeReduction);
-		}
-		return consumeReduction;
-	}
+        if (mage != null) {
+            float reduction = mage.getConsumeReduction();
+            return stackPassiveProperty(reduction, consumeReduction);
+        }
+        return consumeReduction;
+    }
 
     @Override
     public float getCostScale() {
         return 1.0f;
     }
 
-	@Override
+    @Override
     protected String getMessageKey(String key) {
-    	String mageKey = "classes." + template + "." + key;
-		if (controller.getMessages().containsKey(mageKey)) {
-			return mageKey;
-		}
-		return "mage." + key;
-	}
+        String mageKey = "classes." + template + "." + key;
+        if (controller.getMessages().containsKey(mageKey)) {
+            return mageKey;
+        }
+        return "mage." + key;
+    }
 
-	public void onRemoved() {
+    public void onRemoved() {
         onLocked();
     }
 
-	public void onLocked() {
+    public void onLocked() {
         if (getBoolean("clean_on_lock", false)) {
             Player player = mage.getPlayer();
             if (player != null) {
@@ -327,7 +327,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         }
     }
 
-	public void onUnlocked() {
+    public void onUnlocked() {
     }
 
     public void setTemplate(@Nonnull MageClassTemplate template) {

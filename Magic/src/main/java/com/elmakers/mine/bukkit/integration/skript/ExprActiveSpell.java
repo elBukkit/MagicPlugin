@@ -23,85 +23,85 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 @Examples({"active spell of player"})
 public class ExprActiveSpell extends SimplePropertyExpression<Player, String> {
     public static void register() {
-    	register(ExprActiveSpell.class, String.class, "active spell", "players");
+        register(ExprActiveSpell.class, String.class, "active spell", "players");
     }
 
-	@Override
-	protected String[] get(final Event e, final Player[] source) {
-		return super.get(source, new Converter<Player, String>() {
-			@Override
-			public String convert(final Player p) {
-				Mage mage = MagicPlugin.getAPI().getController().getRegisteredMage(p);
-				if (mage == null) return "";
-				Wand wand = mage.getActiveWand();
-				if (wand != null) {
-					return wand.getActiveSpellKey();
-				}
-				MageClass mageClass = mage.getActiveClass();
-				if (mageClass != null) {
-					return mageClass.getProperty("active_spell", "");
-				}
-				return mage.getProperties().getProperty("active_spell", "");
-			}
-		});
-	}
+    @Override
+    protected String[] get(final Event e, final Player[] source) {
+        return super.get(source, new Converter<Player, String>() {
+            @Override
+            public String convert(final Player p) {
+                Mage mage = MagicPlugin.getAPI().getController().getRegisteredMage(p);
+                if (mage == null) return "";
+                Wand wand = mage.getActiveWand();
+                if (wand != null) {
+                    return wand.getActiveSpellKey();
+                }
+                MageClass mageClass = mage.getActiveClass();
+                if (mageClass != null) {
+                    return mageClass.getProperty("active_spell", "");
+                }
+                return mage.getProperties().getProperty("active_spell", "");
+            }
+        });
+    }
 
-	// Eclipse detects the parent return type of this function as @NonNull
-	// which is not correct.
-	@SuppressWarnings("null")
-	@Nullable
-	@Override
-	public String convert(final Player p) {
-		assert false;
-		return null;
-	}
+    // Eclipse detects the parent return type of this function as @NonNull
+    // which is not correct.
+    @SuppressWarnings("null")
+    @Nullable
+    @Override
+    public String convert(final Player p) {
+        assert false;
+        return null;
+    }
 
-	@Override
-	public Class<String> getReturnType() {
-		return String.class;
-	}
+    @Override
+    public Class<String> getReturnType() {
+        return String.class;
+    }
 
-	// Eclipse detects the parent return type of this function as @NonNull
-	// which is not correct.
-	@SuppressWarnings("null")
-	@Nullable
-	@Override
-	public Class<?>[] acceptChange(@Nonnull Changer.ChangeMode mode) {
-		if (mode != Changer.ChangeMode.SET && mode != Changer.ChangeMode.REMOVE_ALL)
-			return null;
-		return new Class<?>[] {String.class};
-	}
+    // Eclipse detects the parent return type of this function as @NonNull
+    // which is not correct.
+    @SuppressWarnings("null")
+    @Nullable
+    @Override
+    public Class<?>[] acceptChange(@Nonnull Changer.ChangeMode mode) {
+        if (mode != Changer.ChangeMode.SET && mode != Changer.ChangeMode.REMOVE_ALL)
+            return null;
+        return new Class<?>[] {String.class};
+    }
 
-	@Override
-	public void change(final Event e, final @Nullable Object[] delta, final Changer.ChangeMode mode) {
-		assert mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.REMOVE_ALL;
-		for (final Player p : getExpr().getArray(e)) {
-			Mage mage = MagicPlugin.getAPI().getController().getRegisteredMage(p);
-			if (mage == null) continue;
+    @Override
+    public void change(final Event e, final @Nullable Object[] delta, final Changer.ChangeMode mode) {
+        assert mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.REMOVE_ALL;
+        for (final Player p : getExpr().getArray(e)) {
+            Mage mage = MagicPlugin.getAPI().getController().getRegisteredMage(p);
+            if (mage == null) continue;
 
-			Wand wand = mage.getActiveWand();
-			if (wand == null) {
-				continue;
-			}
+            Wand wand = mage.getActiveWand();
+            if (wand == null) {
+                continue;
+            }
 
-			final String newSpell = delta == null ? null : ((String) delta[0]);
+            final String newSpell = delta == null ? null : ((String) delta[0]);
 
-			switch (mode) {
-				case SET:
-					wand.setActiveSpell(newSpell);
-					break;
-				case REMOVE_ALL:
-					wand.setActiveSpell(null);
-					break;
-				default:
-					assert false;
-					continue;
-			}
-		}
-	}
+            switch (mode) {
+                case SET:
+                    wand.setActiveSpell(newSpell);
+                    break;
+                case REMOVE_ALL:
+                    wand.setActiveSpell(null);
+                    break;
+                default:
+                    assert false;
+                    continue;
+            }
+        }
+    }
 
-	@Override
-	protected String getPropertyName() {
-		return "active spell";
-	}
+    @Override
+    protected String getPropertyName() {
+        return "active spell";
+    }
 }

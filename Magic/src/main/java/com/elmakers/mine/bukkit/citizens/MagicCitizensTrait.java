@@ -22,11 +22,11 @@ public class MagicCitizensTrait extends CitizensTrait {
     private boolean messagePlayer = false;
     private YamlConfiguration parameters = null;
 
-	public MagicCitizensTrait() {
-		super("magic");
-	}
+    public MagicCitizensTrait() {
+        super("magic");
+    }
 
-	@Override
+    @Override
     public void load(DataKey data) {
         super.load(data);
         spellKey = data.getString("spell", null);
@@ -49,9 +49,9 @@ public class MagicCitizensTrait extends CitizensTrait {
                 }
             }
         }
-	}
+    }
 
-	@Override
+    @Override
     public void save(DataKey data) {
         super.save(data);
         data.setString("spell", spellKey);
@@ -60,7 +60,7 @@ public class MagicCitizensTrait extends CitizensTrait {
         data.setBoolean("message_player", messagePlayer);
         String parameterString = parameters == null ? null : parameters.saveToString();
         data.setString("parameters", parameterString);
-	}
+    }
 
     @Override
     public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event) {

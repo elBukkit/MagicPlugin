@@ -16,12 +16,12 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class UndoSpell extends TargetingSpell
 {
-	private String undoListName;
+    private String undoListName;
 
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
         int timeout = parameters.getInt("target_timeout", 0);
         boolean targetSelf = parameters.getBoolean("target_up_self", false);
         boolean targetDown = parameters.getBoolean("target_down_block", false);
@@ -32,9 +32,9 @@ public class UndoSpell extends TargetingSpell
             getCurrentCast().setTargetName(mage.getName());
             result = SpellResult.ALTERNATE_UP;
         }
-		if (targetEntity != null && controller.isMage(targetEntity))
-		{
-			Mage targetMage = controller.getMage(targetEntity);
+        if (targetEntity != null && controller.isMage(targetEntity))
+        {
+            Mage targetMage = controller.getMage(targetEntity);
 
             Batch batch = targetMage.cancelPending();
             if (batch != null) {
@@ -43,52 +43,52 @@ public class UndoSpell extends TargetingSpell
             }
 
             UndoQueue queue = targetMage.getUndoQueue();
-			UndoList undoList = queue.undoRecent(timeout);
-			if (undoList != null) {
-				undoListName = undoList.getName();
-			}
-			return undoList != null ? result : SpellResult.NO_TARGET;
-		}
+            UndoList undoList = queue.undoRecent(timeout);
+            if (undoList != null) {
+                undoListName = undoList.getName();
+            }
+            return undoList != null ? result : SpellResult.NO_TARGET;
+        }
 
         if (!parameters.getBoolean("target_blocks", true)) {
             return SpellResult.NO_TARGET;
         }
 
-		Block targetBlock = target.getBlock();
+        Block targetBlock = target.getBlock();
         if (targetDown && isLookingDown()) {
             targetBlock = getLocation().getBlock();
         }
-		if (targetBlock != null)
-		{
-			boolean targetAll = mage.isSuperPowered();
-			if (targetAll)
-			{
-				UndoList undid = controller.undoRecent(targetBlock, timeout);
-				if (undid != null)
-				{
-					Mage targetMage = undid.getOwner();
-					undoListName = undid.getName();
+        if (targetBlock != null)
+        {
+            boolean targetAll = mage.isSuperPowered();
+            if (targetAll)
+            {
+                UndoList undid = controller.undoRecent(targetBlock, timeout);
+                if (undid != null)
+                {
+                    Mage targetMage = undid.getOwner();
+                    undoListName = undid.getName();
                     getCurrentCast().setTargetName(targetMage.getName());
-					return result;
-				}
-			}
-			else
-			{
+                    return result;
+                }
+            }
+            else
+            {
                 getCurrentCast().setTargetName(mage.getName());
-				UndoList undoList = mage.undo(targetBlock);
+                UndoList undoList = mage.undo(targetBlock);
                 if (undoList != null) {
                     undoListName = undoList.getName();
                     return result;
                 }
-			}
-		}
+            }
+        }
 
-		return SpellResult.NO_TARGET;
-	}
+        return SpellResult.NO_TARGET;
+    }
 
-	@Override
-	public String getMessage(String messageKey, String def) {
-		String message = super.getMessage(messageKey, def);
-		return message.replace("$spell", undoListName == null ? "Unknown" : undoListName);
-	}
+    @Override
+    public String getMessage(String messageKey, String def) {
+        String message = super.getMessage(messageKey, def);
+        return message.replace("$spell", undoListName == null ? "Unknown" : undoListName);
+    }
 }

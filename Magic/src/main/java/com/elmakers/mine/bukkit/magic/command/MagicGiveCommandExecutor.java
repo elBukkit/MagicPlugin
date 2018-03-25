@@ -17,12 +17,12 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicGiveCommandExecutor extends MagicTabExecutor {
-	public MagicGiveCommandExecutor(MagicAPI api) {
-		super(api);
-	}
+    public MagicGiveCommandExecutor(MagicAPI api) {
+        super(api);
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!api.hasPermission(sender, "Magic.commands.mgive"))
         {
             sendNoPermission(sender);
@@ -30,13 +30,13 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0 || args.length > 3)
-		{
+        {
             sender.sendMessage("Usage: mgive [player] <item> [count]");
-			return true;
-		}
+            return true;
+        }
 
         String playerName = null;
-		String itemName = null;
+        String itemName = null;
         String countString = null;
 
         if (args.length == 1) {
@@ -107,16 +107,16 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
         }
 
         return true;
-	}
+    }
 
-	@Override
-	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		Set<String> options = new HashSet<>();
+    @Override
+    public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+        Set<String> options = new HashSet<>();
         if (!sender.hasPermission("Magic.commands.mgive")) return options;
 
-		if (args.length == 1 && sender.hasPermission("Magic.commands.mgive.others")) {
+        if (args.length == 1 && sender.hasPermission("Magic.commands.mgive.others")) {
             options.addAll(api.getPlayerNames());
-		}
+        }
 
         if (args.length == 1 || args.length == 2) {
             Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
@@ -136,7 +136,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             }
             addIfPermissible(sender, options, "Magic.create.", "xp");
             addIfPermissible(sender, options, "Magic.create.", "sp");
-		}
-		return options;
-	}
+        }
+        return options;
+    }
 }

@@ -83,22 +83,22 @@ import com.elmakers.mine.bukkit.wand.Wand;
 * <pre>
 * &lt;dependencies&gt;
 * &lt;dependency&gt;
-* 	&lt;groupId&gt;org.bukkit&lt;/groupId&gt;
-* 	&lt;artifactId&gt;bukkit&lt;/artifactId&gt;
-* 	&lt;version&gt;1.6.4-R2.0&lt;/version&gt;
-* 	&lt;scope&gt;provided&lt;/scope&gt;
+*     &lt;groupId&gt;org.bukkit&lt;/groupId&gt;
+*     &lt;artifactId&gt;bukkit&lt;/artifactId&gt;
+*     &lt;version&gt;1.6.4-R2.0&lt;/version&gt;
+*     &lt;scope&gt;provided&lt;/scope&gt;
 * &lt;/dependency&gt;
 * &lt;dependency&gt;
-* 	&lt;groupId&gt;com.elmakers.mine.bukkit&lt;/groupId&gt;
-* 	&lt;artifactId&gt;MagicAPI&lt;/artifactId&gt;
-* 	&lt;version&gt;1.0&lt;/version&gt;
-* 	&lt;scope&gt;provided&lt;/scope&gt;
+*     &lt;groupId&gt;com.elmakers.mine.bukkit&lt;/groupId&gt;
+*     &lt;artifactId&gt;MagicAPI&lt;/artifactId&gt;
+*     &lt;version&gt;1.0&lt;/version&gt;
+*     &lt;scope&gt;provided&lt;/scope&gt;
 * &lt;/dependency&gt;
 * &lt;dependency&gt;
-* 	&lt;groupId&gt;com.elmakers.mine.bukkit.plugins&lt;/groupId&gt;
-* 	&lt;artifactId&gt;Magic&lt;/artifactId&gt;
-* 	&lt;version&gt;3.0-RC1&lt;/version&gt;
-* 	&lt;scope&gt;provided&lt;/scope&gt;
+*     &lt;groupId&gt;com.elmakers.mine.bukkit.plugins&lt;/groupId&gt;
+*     &lt;artifactId&gt;Magic&lt;/artifactId&gt;
+*     &lt;version&gt;3.0-RC1&lt;/version&gt;
+*     &lt;scope&gt;provided&lt;/scope&gt;
 * &lt;/dependency&gt;
 * &lt;/dependencies&gt;
 * &lt;repositories&gt;
@@ -153,51 +153,51 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     }
 
     @Override
-	public void onLoad()
-	{
-		if (controller == null) {
-			controller = new MagicController(this);
-		}
-		controller.initializeWorldGuardFlags();
-	}
+    public void onLoad()
+    {
+        if (controller == null) {
+            controller = new MagicController(this);
+        }
+        controller.initializeWorldGuardFlags();
+    }
 
-	@Override
+    @Override
     public void onEnable() {
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-		if (controller == null) {
-			controller = new MagicController(this);
-		}
+        if (controller == null) {
+            controller = new MagicController(this);
+        }
 
         if (NMSUtils.getFailed()) {
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Magic] Something went wrong with some Deep Magic, plugin will not load.");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Magic] Please make sure you are running a compatible version of " + ChatColor. RED + "Spigot (1.9 or Higher)!");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Magic] Something went wrong with some Deep Magic, plugin will not load.");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Magic] Please make sure you are running a compatible version of " + ChatColor. RED + "Spigot (1.9 or Higher)!");
         } else {
-			if (NMSUtils.isLegacy()) {
-				Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Magic] Using backwards-compatibility layer. It is highly recommended that you update to the latest Spigot version and/or the latest Magic version.");
-			}
+            if (NMSUtils.isLegacy()) {
+                Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Magic] Using backwards-compatibility layer. It is highly recommended that you update to the latest Spigot version and/or the latest Magic version.");
+            }
             initialize();
         }
-	}
+    }
 
-	protected void initialize()
-	{
-		controller.initialize();
+    protected void initialize()
+    {
+        controller.initialize();
 
-		TabExecutor magicCommand = new MagicCommandExecutor(this);
-		getCommand("magic").setExecutor(magicCommand);
-		getCommand("magic").setTabCompleter(magicCommand);
-		TabExecutor mageCommand = new MageCommandExecutor(this);
-		getCommand("mage").setExecutor(mageCommand);
-		getCommand("mage").setTabCompleter(mageCommand);
+        TabExecutor magicCommand = new MagicCommandExecutor(this);
+        getCommand("magic").setExecutor(magicCommand);
+        getCommand("magic").setTabCompleter(magicCommand);
+        TabExecutor mageCommand = new MageCommandExecutor(this);
+        getCommand("mage").setExecutor(mageCommand);
+        getCommand("mage").setTabCompleter(mageCommand);
         TabExecutor magicGiveCommand = new MagicGiveCommandExecutor(this);
         getCommand("mgive").setExecutor(magicGiveCommand);
         getCommand("mgive").setTabCompleter(magicGiveCommand);
-		TabExecutor magicItemCommand = new MagicItemCommandExecutor(this);
-		getCommand("mitem").setExecutor(magicItemCommand);
-		getCommand("mitem").setTabCompleter(magicItemCommand);
-		TabExecutor magicMobCommand = new MagicMobCommandExecutor(this);
-		getCommand("mmob").setExecutor(magicMobCommand);
-		getCommand("mmob").setTabCompleter(magicMobCommand);
+        TabExecutor magicItemCommand = new MagicItemCommandExecutor(this);
+        getCommand("mitem").setExecutor(magicItemCommand);
+        getCommand("mitem").setTabCompleter(magicItemCommand);
+        TabExecutor magicMobCommand = new MagicMobCommandExecutor(this);
+        getCommand("mmob").setExecutor(magicMobCommand);
+        getCommand("mmob").setTabCompleter(magicMobCommand);
         TabExecutor magicMapCommand = new MagicMapCommandExecutor(this);
         getCommand("mmap").setExecutor(magicMapCommand);
         getCommand("mmap").setTabCompleter(magicMapCommand);
@@ -210,20 +210,20 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         TabExecutor magicSkillsCommand = new MagicSkillsCommandExecutor(this);
         getCommand("mskills").setExecutor(magicSkillsCommand);
         getCommand("mskills").setTabCompleter(magicSkillsCommand);
-		TabExecutor castCommand = new CastCommandExecutor(this);
-		getCommand("cast").setExecutor(castCommand);
-		getCommand("cast").setTabCompleter(castCommand);
-		getCommand("castp").setExecutor(castCommand);
-		getCommand("castp").setTabCompleter(castCommand);
-		TabExecutor wandCommand = new WandCommandExecutor(this);
-		getCommand("wand").setExecutor(wandCommand);
-		getCommand("wand").setTabCompleter(wandCommand);
-		getCommand("wandp").setExecutor(wandCommand);
-		getCommand("wandp").setTabCompleter(wandCommand);
-		TabExecutor spellsCommand = new SpellsCommandExecutor(this);
-		getCommand("spells").setExecutor(spellsCommand);
-		TabExecutor rpCommand = new RPCommandExecutor(this);
-		getCommand("getrp").setExecutor(rpCommand);
+        TabExecutor castCommand = new CastCommandExecutor(this);
+        getCommand("cast").setExecutor(castCommand);
+        getCommand("cast").setTabCompleter(castCommand);
+        getCommand("castp").setExecutor(castCommand);
+        getCommand("castp").setTabCompleter(castCommand);
+        TabExecutor wandCommand = new WandCommandExecutor(this);
+        getCommand("wand").setExecutor(wandCommand);
+        getCommand("wand").setTabCompleter(wandCommand);
+        getCommand("wandp").setExecutor(wandCommand);
+        getCommand("wandp").setTabCompleter(wandCommand);
+        TabExecutor spellsCommand = new SpellsCommandExecutor(this);
+        getCommand("spells").setExecutor(spellsCommand);
+        TabExecutor rpCommand = new RPCommandExecutor(this);
+        getCommand("getrp").setExecutor(rpCommand);
         CitizensController citizens = controller.getCitizens();
         if (citizens != null)
         {
@@ -231,10 +231,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             getCommand("mtrait").setExecutor(magicTraitCommand);
             getCommand("mtrait").setTabCompleter(magicTraitCommand);
         }
-		TabExecutor magicConfigCommand = new MagicConfigCommandExecutor(this, controller);
-		getCommand("mconfig").setExecutor(magicConfigCommand);
-		getCommand("mconfig").setTabCompleter(magicConfigCommand);
-	}
+        TabExecutor magicConfigCommand = new MagicConfigCommandExecutor(this, controller);
+        getCommand("mconfig").setExecutor(magicConfigCommand);
+        getCommand("mconfig").setTabCompleter(magicConfigCommand);
+    }
 
     /*
      * Help commands
@@ -245,69 +245,69 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         if (controller != null) {
             // Safety fallback in case we've missed some pending batches from logged out mages
             controller.onShutdown();
-        	controller.undoScheduled();
+            controller.undoScheduled();
             controller.clear();
             controller.save();
         }
-	}
+    }
 
-	/*
-	 * API Implementation
-	 */
+    /*
+     * API Implementation
+     */
 
-	@Override
-	public Plugin getPlugin() {
-		return this;
-	}
+    @Override
+    public Plugin getPlugin() {
+        return this;
+    }
 
-	@Override
-	public boolean hasPermission(CommandSender sender, String pNode) {
-		return controller.hasPermission(sender, pNode);
-	}
+    @Override
+    public boolean hasPermission(CommandSender sender, String pNode) {
+        return controller.hasPermission(sender, pNode);
+    }
 
-	@Override
-	public boolean hasPermission(CommandSender sender, String pNode, boolean defaultPermission) {
-		return controller.hasPermission(sender, pNode, defaultPermission);
-	}
+    @Override
+    public boolean hasPermission(CommandSender sender, String pNode, boolean defaultPermission) {
+        return controller.hasPermission(sender, pNode, defaultPermission);
+    }
 
-	@Override
-	public void save() {
-		controller.save();
-	}
+    @Override
+    public void save() {
+        controller.save();
+    }
 
-	@Override
-	public void reload() {
-		controller.loadConfiguration();
-	}
+    @Override
+    public void reload() {
+        controller.loadConfiguration();
+    }
 
-	@Override
-	public void reload(CommandSender sender) {
-		controller.loadConfiguration(sender);
-	}
+    @Override
+    public void reload(CommandSender sender) {
+        controller.loadConfiguration(sender);
+    }
 
-	@Override
-	public void clearCache() {
-		controller.clearCache();
-	}
+    @Override
+    public void clearCache() {
+        controller.clearCache();
+    }
 
-	@Override
-	public boolean commit() {
-		return controller.commitAll();
-	}
+    @Override
+    public boolean commit() {
+        return controller.commitAll();
+    }
 
-	@Deprecated
-	@Override
-	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMages() {
-		return controller.getMages();
-	}
+    @Deprecated
+    @Override
+    public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMages() {
+        return controller.getMages();
+    }
 
-	@Override
-	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMagesWithPendingBatches() {
-		Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = new ArrayList<>();
-		Collection<com.elmakers.mine.bukkit.api.magic.Mage> internal = controller.getPending();
-		mages.addAll(internal);
-		return mages;
-	}
+    @Override
+    public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMagesWithPendingBatches() {
+        Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = new ArrayList<>();
+        Collection<com.elmakers.mine.bukkit.api.magic.Mage> internal = controller.getPending();
+        mages.addAll(internal);
+        return mages;
+    }
 
     @Override
     public Collection<UndoList> getPendingUndo() {
@@ -316,24 +316,24 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return undo;
     }
 
-	@Override
-	public Collection<LostWand> getLostWands() {
-		Collection<LostWand> lostWands = new ArrayList<>();
-		lostWands.addAll(controller.getLostWands());
-		return lostWands;
-	}
+    @Override
+    public Collection<LostWand> getLostWands() {
+        Collection<LostWand> lostWands = new ArrayList<>();
+        lostWands.addAll(controller.getLostWands());
+        return lostWands;
+    }
 
-	@Override
-	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getAutomata() {
-		Collection<com.elmakers.mine.bukkit.api.magic.Mage> automata = new ArrayList<>();
-		automata.addAll(controller.getAutomata());
-		return automata;
-	}
+    @Override
+    public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getAutomata() {
+        Collection<com.elmakers.mine.bukkit.api.magic.Mage> automata = new ArrayList<>();
+        automata.addAll(controller.getAutomata());
+        return automata;
+    }
 
-	@Override
-	public void removeLostWand(String id) {
-		controller.removeLostWand(id);
-	}
+    @Override
+    public void removeLostWand(String id) {
+        controller.removeLostWand(id);
+    }
 
     @Override
     public com.elmakers.mine.bukkit.api.wand.Wand getWand(ItemStack itemStack) {
@@ -341,9 +341,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     }
 
     @Override
-	public boolean isWand(ItemStack item) {
-		return Wand.isWand(item);
-	}
+    public boolean isWand(ItemStack item) {
+        return Wand.isWand(item);
+    }
 
     @Nullable
     @Override
@@ -372,10 +372,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return Wand.isUpgrade(item);
     }
 
-	@Override
-	public void giveItemToPlayer(Player player, ItemStack itemStack) {
-		controller.giveItemToPlayer(player, itemStack);
-	}
+    @Override
+    public void giveItemToPlayer(Player player, ItemStack itemStack) {
+        controller.giveItemToPlayer(player, itemStack);
+    }
 
     @Override
     public void giveExperienceToPlayer(Player player, int xp) {
@@ -393,11 +393,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return controller.getMage(sender);
     }
 
-	@Deprecated
-	@Override
-	public com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity, CommandSender sender) {
-		return controller.getMage(entity);
-	}
+    @Deprecated
+    @Override
+    public com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity, CommandSender sender) {
+        return controller.getMage(entity);
+    }
 
     @Override
     public String describeItem(ItemStack item) {
@@ -488,10 +488,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return Wand.createBrushItem(brushKey, controller, null, true);
     }
 
-	@Override
-	public boolean cast(String spellName, String[] parameters) {
-		return cast(spellName, parameters, Bukkit.getConsoleSender(), null);
-	}
+    @Override
+    public boolean cast(String spellName, String[] parameters) {
+        return cast(spellName, parameters, Bukkit.getConsoleSender(), null);
+    }
 
     @Override
     public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity) {
@@ -508,25 +508,25 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return controller.cast(null, spellName, parameters, sender, entity);
     }
 
-	@Override
-	public Collection<SpellTemplate> getSpellTemplates() {
-		return controller.getSpellTemplates();
-	}
-
-	@Override
-	public Collection<SpellTemplate> getSpellTemplates(boolean showHidden) {
-		return controller.getSpellTemplates(showHidden);
-	}
-
-	@Override
-	public Collection<String> getWandKeys() {
-		return controller.getWandTemplateKeys();
-	}
+    @Override
+    public Collection<SpellTemplate> getSpellTemplates() {
+        return controller.getSpellTemplates();
+    }
 
     @Override
-	public Collection<String> getPlayerNames() {
-		return controller.getPlayerNames();
-	}
+    public Collection<SpellTemplate> getSpellTemplates(boolean showHidden) {
+        return controller.getSpellTemplates(showHidden);
+    }
+
+    @Override
+    public Collection<String> getWandKeys() {
+        return controller.getWandTemplateKeys();
+    }
+
+    @Override
+    public Collection<String> getPlayerNames() {
+        return controller.getPlayerNames();
+    }
 
     @Nullable
     @Override
@@ -534,20 +534,20 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return controller.getSpellTemplate(key);
     }
 
-	@Override
-	public Collection<String> getSchematicNames() {
-		return controller.getSchematicNames();
-	}
+    @Override
+    public Collection<String> getSchematicNames() {
+        return controller.getSchematicNames();
+    }
 
-	@Override
-	public Collection<String> getBrushes() {
-		return controller.getBrushKeys();
-	}
+    @Override
+    public Collection<String> getBrushes() {
+        return controller.getBrushKeys();
+    }
 
-	@Override
-	public MageController getController() {
-		return controller;
-	}
+    @Override
+    public MageController getController() {
+        return controller;
+    }
 
     @Override
     public ItemStack getSpellBook(SpellCategory category, int count) {

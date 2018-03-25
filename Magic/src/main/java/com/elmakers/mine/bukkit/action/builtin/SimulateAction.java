@@ -5,10 +5,10 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class SimulateAction extends BaseSpellAction {
-	public static boolean DEBUG = false;
+    public static boolean DEBUG = false;
 
     @Override
-	public void reset(CastContext context) {
+    public void reset(CastContext context) {
         super.reset(context);
     }
 

@@ -15,9 +15,9 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class FrostSpell extends BlockSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
         Target target = getTarget();
         if (target == null || !target.isValid())
         {
@@ -39,5 +39,5 @@ public class FrostSpell extends BlockSpell
         handler.initialize(this, parameters);
         registerForUndo();
         return handler.start(getCurrentCast(), parameters);
-	}
+    }
 }

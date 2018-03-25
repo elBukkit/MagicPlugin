@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class BlockSearchAction extends CompoundAction
 {
-	private static final int MAX_SEARCH_DISTANCE = 255;
+    private static final int MAX_SEARCH_DISTANCE = 255;
     private BlockFace direction;
 
     @Override
@@ -36,25 +36,25 @@ public class BlockSearchAction extends CompoundAction
     @Override
     public SpellResult step(CastContext context)
     {
-		Block attachBlock = context.getTargetBlock();
-		Block targetBlock = attachBlock.getRelative(direction);
-		int distance = 0;
+        Block attachBlock = context.getTargetBlock();
+        Block targetBlock = attachBlock.getRelative(direction);
+        int distance = 0;
 
-		while (context.isTargetable(targetBlock) && distance <= MAX_SEARCH_DISTANCE)
-		{
-			distance++;
-			attachBlock = targetBlock;
-			targetBlock = attachBlock.getRelative(direction);
-		}
-		if (context.isTargetable(targetBlock))
-		{
-			return SpellResult.NO_TARGET;
-		}
+        while (context.isTargetable(targetBlock) && distance <= MAX_SEARCH_DISTANCE)
+        {
+            distance++;
+            attachBlock = targetBlock;
+            targetBlock = attachBlock.getRelative(direction);
+        }
+        if (context.isTargetable(targetBlock))
+        {
+            return SpellResult.NO_TARGET;
+        }
 
         actionContext.setTargetLocation(targetBlock.getLocation());
         context.getBrush().setTarget(attachBlock.getLocation(), targetBlock.getLocation());
         return startActions();
-	}
+    }
 
     @Override
     public boolean requiresTarget() {

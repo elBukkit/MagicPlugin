@@ -21,9 +21,9 @@ import ch.njol.util.Kleenean;
 @Description("Cast a spell, from a player or the console")
 @Examples({"make player cast the spell \"fling\"", "cast \"day\""})
 public class EffCast extends Effect {
-	private Expression<CommandSender> senders;
-	private Expression<String> spell;
-	private Expression<String> arguments;
+    private Expression<CommandSender> senders;
+    private Expression<String> spell;
+    private Expression<String> arguments;
 
     public static void register() {
         Skript.registerEffect(EffCast.class,
@@ -59,20 +59,20 @@ public class EffCast extends Effect {
         if (arguments != null) {
             parameters = " with parameters " + arguments.toString(event, debug);
         }
-		return "make " + (senders != null ? senders.toString(event, debug) : "the console") + " cast the spell " + spell.toString(event, debug) + parameters;
+        return "make " + (senders != null ? senders.toString(event, debug) : "the console") + " cast the spell " + spell.toString(event, debug) + parameters;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] vars, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         if (matchedPattern == 0) {
-			spell = (Expression<String>) vars[0];
-			senders = (Expression<CommandSender>) vars[1];
-		} else {
-			senders = (Expression<CommandSender>) vars[0];
-			spell = (Expression<String>) vars[1];
-		}
-		arguments = (Expression<String>) vars[2];
-		return true;
+            spell = (Expression<String>) vars[0];
+            senders = (Expression<CommandSender>) vars[1];
+        } else {
+            senders = (Expression<CommandSender>) vars[0];
+            spell = (Expression<String>) vars[1];
+        }
+        arguments = (Expression<String>) vars[2];
+        return true;
     }
 }

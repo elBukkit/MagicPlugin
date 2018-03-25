@@ -27,37 +27,37 @@ public class DisarmSpell extends TargetingSpell
 {
     private Random random = new Random();
 
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
-		if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity)) {
-			return SpellResult.NO_TARGET;
-		}
-		LivingEntity entity = (LivingEntity)target.getEntity();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
+        if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity)) {
+            return SpellResult.NO_TARGET;
+        }
+        LivingEntity entity = (LivingEntity)target.getEntity();
 
-		EntityEquipment equipment = entity.getEquipment();
-		ItemStack stack = equipment.getItemInHand();
+        EntityEquipment equipment = entity.getEquipment();
+        ItemStack stack = equipment.getItemInHand();
 
-		if (stack == null || stack.getType() == Material.AIR)
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (stack == null || stack.getType() == Material.AIR)
+        {
+            return SpellResult.NO_TARGET;
+        }
 
-		// Special case for wands
-		if (Wand.isWand(stack) && controller.isMage(entity)) {
+        // Special case for wands
+        if (Wand.isWand(stack) && controller.isMage(entity)) {
             Mage targetMage = controller.getMage(entity);
 
-			// Check for protected players (admins, generally...)
-			// This gets overridden by superpower...
-			if (!mage.isSuperPowered() && isSuperProtected(targetMage)) {
-				return SpellResult.NO_TARGET;
-			}
+            // Check for protected players (admins, generally...)
+            // This gets overridden by superpower...
+            if (!mage.isSuperPowered() && isSuperProtected(targetMage)) {
+                return SpellResult.NO_TARGET;
+            }
 
-			if (targetMage.getActiveWand() != null) {
-				targetMage.getActiveWand().deactivate();
-			}
-		}
+            if (targetMage.getActiveWand() != null) {
+                targetMage.getActiveWand().deactivate();
+            }
+        }
 
         Integer targetSlot = null;
         PlayerInventory targetInventory = null;
@@ -99,7 +99,7 @@ public class DisarmSpell extends TargetingSpell
             SafetyUtils.setVelocity(item, velocity);
         }
 
-		return SpellResult.CAST;
+        return SpellResult.CAST;
 
-	}
+    }
 }

@@ -22,21 +22,21 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 
 public class WandOrganizer {
-	private final Wand wand;
-	private final Mage mage;
+    private final Wand wand;
+    private final Mage mage;
 
-	protected static final int inventoryOrganizeNewGroupBuffer = 8;
-	protected static final int favoriteCastCountThreshold = 20;
+    protected static final int inventoryOrganizeNewGroupBuffer = 8;
+    protected static final int favoriteCastCountThreshold = 20;
     protected static final int favoriteCountBuffer = 9;
     protected static final int favoritePageBuffer = 4;
 
-	private int currentInventoryIndex = 0;
-	private int currentInventoryCount = 0;
+    private int currentInventoryIndex = 0;
+    private int currentInventoryCount = 0;
 
-	public WandOrganizer(Wand wand, Mage mage) {
-		this.wand = wand;
-		this.mage = mage;
-	}
+    public WandOrganizer(Wand wand, Mage mage) {
+        this.wand = wand;
+        this.mage = mage;
+    }
 
     public WandOrganizer(Wand wand) {
         this.wand = wand;
@@ -77,15 +77,15 @@ public class WandOrganizer {
 
         // Collect favorite spells
         MageController controller = wand.getController();
-		TreeMap<Long, List<String>> favoriteSpells = new TreeMap<>();
-		Map<String, Collection<String>> groupedSpells = new TreeMap<>();
-		for (String spellName : spells.keySet()) {
-			Spell mageSpell = mage == null ? null : mage.getSpell(spellName);
-			SpellTemplate spell = mageSpell == null ? controller.getSpellTemplate(spellName) : mageSpell;
-			if (spell != null) {
-				// Sum up all levels of this spell:
-				long castCount = 0;
-				int spellLevel = 1;
+        TreeMap<Long, List<String>> favoriteSpells = new TreeMap<>();
+        Map<String, Collection<String>> groupedSpells = new TreeMap<>();
+        for (String spellName : spells.keySet()) {
+            Spell mageSpell = mage == null ? null : mage.getSpell(spellName);
+            SpellTemplate spell = mageSpell == null ? controller.getSpellTemplate(spellName) : mageSpell;
+            if (spell != null) {
+                // Sum up all levels of this spell:
+                long castCount = 0;
+                int spellLevel = 1;
                 while (mageSpell != null) {
                     castCount += mageSpell.getCastCount();
                     spellLevel++;
@@ -94,16 +94,16 @@ public class WandOrganizer {
                     mageSpell = mage.hasSpell(key) ? mage.getSpell(key) : null;
                 }
                 spellName = spell.getSpellKey().getBaseKey();
-				if (castCount > favoriteCastCountThreshold) {
-					List<String> favorites = null;
-					if (!favoriteSpells.containsKey(castCount)) {
-						favorites = new ArrayList<>();
-						favoriteSpells.put(castCount, favorites);
-					} else {
-						favorites = favoriteSpells.get(castCount);
-					}
-					favorites.add(spellName);
-				}
+                if (castCount > favoriteCastCountThreshold) {
+                    List<String> favorites = null;
+                    if (!favoriteSpells.containsKey(castCount)) {
+                        favorites = new ArrayList<>();
+                        favoriteSpells.put(castCount, favorites);
+                    } else {
+                        favorites = favoriteSpells.get(castCount);
+                    }
+                    favorites.add(spellName);
+                }
                 SpellCategory spellCategory = spell.getCategory();
                 String category = spellCategory == null ? null : spellCategory.getKey();
                 if (category == null || category.length() == 0) {
@@ -115,8 +115,8 @@ public class WandOrganizer {
                     groupedSpells.put(category, spellList);
                 }
                 spellList.add(spellName);
-			}
-		}
+            }
+        }
 
         Map<String, String> materials = new TreeMap<>();
         if (wand.getBrushMode() == WandMode.INVENTORY)
@@ -130,22 +130,22 @@ public class WandOrganizer {
             }
         }
 
-		currentInventoryIndex = 0;
-		currentInventoryCount = 0;
+        currentInventoryIndex = 0;
+        currentInventoryCount = 0;
 
         // Organize favorites
         WandMode mode = wand.getMode();
         Set<String> addedFavorites = new HashSet<>();
         List<String> favoriteList = new ArrayList<>();
         int favoritePageSize = wand.getInventorySize() - favoritePageBuffer;
-		for (List<String> favorites : favoriteSpells.descendingMap().values()) {
+        for (List<String> favorites : favoriteSpells.descendingMap().values()) {
             if (addedFavorites.size() >= favoritePageSize) break;
-			for (String spellName : favorites) {
+            for (String spellName : favorites) {
                 addedFavorites.add(spellName);
                 favoriteList.add(spellName);
                 if (addedFavorites.size() >= favoritePageSize) break;
-			}
-		}
+            }
+        }
 
         if (addedFavorites.size() > 0) {
             for (String favorite : favoriteList) {
@@ -161,34 +161,34 @@ public class WandOrganizer {
 
         // Add unused spells by category
         int inventoryOrganizeNewGroupSize = wand.getInventorySize() - inventoryOrganizeNewGroupBuffer;
-		for (Collection<String> spellGroup : groupedSpells.values()) {
+        for (Collection<String> spellGroup : groupedSpells.values()) {
 
-			// Start a new inventory for a new group if the previous inventory is over 2/3 full
-			if (mode != WandMode.CHEST && currentInventoryCount > inventoryOrganizeNewGroupSize) {
+            // Start a new inventory for a new group if the previous inventory is over 2/3 full
+            if (mode != WandMode.CHEST && currentInventoryCount > inventoryOrganizeNewGroupSize) {
                 nextPage();
-			}
+            }
 
-			for (String spellName : spellGroup) {
+            for (String spellName : spellGroup) {
                 if (!addedFavorites.contains(spellName)) {
                     int slot = getNextSlot();
                     spells.put(spellName, slot);
                 }
-			}
-		}
+            }
+        }
 
-		if (materials.size() > 0) {
-			nextPage();
+        if (materials.size() > 0) {
+            nextPage();
 
-			for (String materialName : materials.values()) {
-				brushes.put(materialName, getNextSlot());
-			}
-		}
+            for (String materialName : materials.values()) {
+                brushes.put(materialName, getNextSlot());
+            }
+        }
 
         wand.updateSpellInventory(spells);
         if (materials.size() > 0) {
             wand.updateBrushInventory(brushes);
         }
-	}
+    }
 
     public void alphabetize() {
         Map<String, Integer> spells = wand.getSpellInventory();

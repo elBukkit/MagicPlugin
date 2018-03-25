@@ -12,40 +12,40 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class TransmuteSpell extends BrushSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		BlockList transmuteAction = null;
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        BlockList transmuteAction = null;
 
-		/*
-		 * Use target if targeting
-		 */
-		Block target = getTargetBlock();
+        /*
+         * Use target if targeting
+         */
+        Block target = getTargetBlock();
 
-		if (target != null)
-		{
-			UndoQueue undoQueue = mage.getUndoQueue();
-			transmuteAction = undoQueue.getLast(target);
-		}
+        if (target != null)
+        {
+            UndoQueue undoQueue = mage.getUndoQueue();
+            transmuteAction = undoQueue.getLast(target);
+        }
 
-		if (transmuteAction == null)
-		{
-			UndoQueue undoQueue = mage.getUndoQueue();
-			transmuteAction = undoQueue.getLast();
-		}
+        if (transmuteAction == null)
+        {
+            UndoQueue undoQueue = mage.getUndoQueue();
+            transmuteAction = undoQueue.getLast();
+        }
 
-		if (transmuteAction == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (transmuteAction == null)
+        {
+            return SpellResult.NO_TARGET;
+        }
 
-		MaterialBrush buildWith = getBrush();
-		for (BlockData undoBlock : transmuteAction)
-		{
-			Block block = undoBlock.getBlock();
-			buildWith.modify(block);
-		}
+        MaterialBrush buildWith = getBrush();
+        for (BlockData undoBlock : transmuteAction)
+        {
+            Block block = undoBlock.getBlock();
+            buildWith.modify(block);
+        }
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 }

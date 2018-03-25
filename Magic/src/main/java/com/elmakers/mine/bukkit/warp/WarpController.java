@@ -18,13 +18,13 @@ public class WarpController {
         if (warp == null && essentials != null) {
             warp = essentials.getWarp(warpName);
         }
-		return warp;
-	}
+        return warp;
+    }
 
-	public boolean setCommandBook(Plugin plugin) {
+    public boolean setCommandBook(Plugin plugin) {
         commandBook = CommandBookWarps.create(plugin);
         return (commandBook != null);
-	}
+    }
 
     public boolean setEssentials(Plugin plugin) {
         essentials = EssentialsWarps.create(plugin);

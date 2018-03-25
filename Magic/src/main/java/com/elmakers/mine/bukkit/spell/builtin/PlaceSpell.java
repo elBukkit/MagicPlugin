@@ -11,29 +11,29 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class PlaceSpell extends BrushSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target attachToBlock = getTarget();
-		if (!attachToBlock.isValid()) return SpellResult.NO_TARGET;
-		Block placeBlock = getPreviousBlock();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target attachToBlock = getTarget();
+        if (!attachToBlock.isValid()) return SpellResult.NO_TARGET;
+        Block placeBlock = getPreviousBlock();
 
         if (placeBlock == null) return SpellResult.NO_TARGET;
 
-		if (!hasBuildPermission(placeBlock)) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
+        if (!hasBuildPermission(placeBlock)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
 
 
         MaterialBrush buildWith = getBrush();
         buildWith.setTarget(attachToBlock.getLocation(), placeBlock.getLocation());
         buildWith.update(mage, placeBlock.getLocation());
 
-		registerForUndo(placeBlock);
-		buildWith.modify(placeBlock);
+        registerForUndo(placeBlock);
+        buildWith.modify(placeBlock);
 
-		registerForUndo();
+        registerForUndo();
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 }

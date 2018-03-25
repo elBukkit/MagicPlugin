@@ -22,7 +22,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class ExplosionController implements Listener {
     private final MagicController controller;
-    private int	maxTNTPerChunk = 0;
+    private int    maxTNTPerChunk = 0;
     private int autoRollbackDuration = 10000;
     private double autoRollbackSpeed = 2;
     private Set<EntityType> rollbackExplosions = new HashSet<>();

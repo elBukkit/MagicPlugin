@@ -20,83 +20,83 @@ import com.elmakers.mine.bukkit.utility.Target;
 
 public class OcelotSpell extends TargetingSpell
 {
-	private static int DEFAULT_MAX_OCELOTS = 30;
+    private static int DEFAULT_MAX_OCELOTS = 30;
 
-	protected List<Ocelot> ocelots = new ArrayList<>();
+    protected List<Ocelot> ocelots = new ArrayList<>();
 
-	@Nullable
-	public Ocelot newOcelot(Target target) {
-		Block targetBlock = target.getBlock();
-		if (targetBlock == null)
-		{
-			return null;
-		}
-		targetBlock = targetBlock.getRelative(BlockFace.UP);
-		if (target.hasEntity())
-		{
-			targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
-		}
+    @Nullable
+    public Ocelot newOcelot(Target target) {
+        Block targetBlock = target.getBlock();
+        if (targetBlock == null)
+        {
+            return null;
+        }
+        targetBlock = targetBlock.getRelative(BlockFace.UP);
+        if (target.hasEntity())
+        {
+            targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
+        }
 
-		Ocelot entity = (Ocelot)getWorld().spawnEntity(targetBlock.getLocation(), EntityType.OCELOT);
-		if (entity == null)
-		{
-			return null;
-		}
-		tameOcelot(entity);
-		return entity;
-	}
+        Ocelot entity = (Ocelot)getWorld().spawnEntity(targetBlock.getLocation(), EntityType.OCELOT);
+        if (entity == null)
+        {
+            return null;
+        }
+        tameOcelot(entity);
+        return entity;
+    }
 
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
-		ArrayList<Ocelot> newocelots = new ArrayList<>();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
+        ArrayList<Ocelot> newocelots = new ArrayList<>();
 
-		for (Ocelot ocelot : ocelots)
-		{
-			if (!ocelot.isDead())
-			{
-				newocelots.add(ocelot);
-			}
-		}
+        for (Ocelot ocelot : ocelots)
+        {
+            if (!ocelot.isDead())
+            {
+                newocelots.add(ocelot);
+            }
+        }
 
-		ocelots = newocelots;
+        ocelots = newocelots;
 
-		int maxOcelots = parameters.getInt("max_ocelots", DEFAULT_MAX_OCELOTS);
-		int scaledMaxOcelots = (int)(mage.getRadiusMultiplier() * maxOcelots);
-		if (ocelots.size() >= scaledMaxOcelots)
-		{
-			Ocelot killOcelot = ocelots.remove(0);
-			killOcelot.setHealth(0);
-		}
+        int maxOcelots = parameters.getInt("max_ocelots", DEFAULT_MAX_OCELOTS);
+        int scaledMaxOcelots = (int)(mage.getRadiusMultiplier() * maxOcelots);
+        if (ocelots.size() >= scaledMaxOcelots)
+        {
+            Ocelot killOcelot = ocelots.remove(0);
+            killOcelot.setHealth(0);
+        }
 
-		Ocelot ocelot = newOcelot(target);
-		if (ocelot == null)
-		{
-			return SpellResult.FAIL;
-		}
+        Ocelot ocelot = newOcelot(target);
+        if (ocelot == null)
+        {
+            return SpellResult.FAIL;
+        }
 
-		ocelots.add(ocelot);
+        ocelots.add(ocelot);
 
-		Entity e = target.getEntity();
-		if (e != null && e instanceof LivingEntity)
-		{
-			LivingEntity targetEntity = (LivingEntity)e;
-			for (Ocelot w : ocelots)
-			{
-				w.setTarget(targetEntity);
-			}
-		}
+        Entity e = target.getEntity();
+        if (e != null && e instanceof LivingEntity)
+        {
+            LivingEntity targetEntity = (LivingEntity)e;
+            for (Ocelot w : ocelots)
+            {
+                w.setTarget(targetEntity);
+            }
+        }
 
-		return SpellResult.CAST;
-	}
+        return SpellResult.CAST;
+    }
 
     protected void tameOcelot(Ocelot ocelot) {
-		ocelot.setHealth(8);
-		ocelot.setTamed(true);
+        ocelot.setHealth(8);
+        ocelot.setTamed(true);
         Player player = mage.getPlayer();
         if (player != null) {
             ocelot.setOwner(player);
         }
-	}
+    }
 }

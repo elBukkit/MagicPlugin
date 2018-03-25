@@ -25,13 +25,13 @@ import net.citizensnpcs.api.npc.NPC;
 public class MagicTraitCommandExecutor extends MagicTabExecutor {
     protected final CitizensController controller;
 
-	public MagicTraitCommandExecutor(MagicAPI api, CitizensController controller) {
-		super(api);
+    public MagicTraitCommandExecutor(MagicAPI api, CitizensController controller) {
+        super(api);
         this.controller = controller;
-	}
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!api.hasPermission(sender, "Magic.commands.mtrait"))
         {
             sendNoPermission(sender);
@@ -59,10 +59,10 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         }
 
         if (npc == null)
-		{
+        {
             sender.sendMessage(ChatColor.RED + "Usage: mtrait <id#> <property> <value>");
-			return true;
-		}
+            return true;
+        }
 
         CitizensTrait trait = null;
         if (npc.hasTrait(MagicCitizensTrait.class))
@@ -94,11 +94,11 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         }
 
         return true;
-	}
+    }
 
-	@Override
-	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<>();
+    @Override
+    public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+        List<String> options = new ArrayList<>();
         if (!sender.hasPermission("Magic.commands.mtrait")) return options;
 
         String lastParameter = "";
@@ -164,6 +164,6 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
             }
         }
 
-		return options;
-	}
+        return options;
+    }
 }

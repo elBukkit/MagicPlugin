@@ -32,83 +32,83 @@ public class CondHasItem extends Condition {
     private boolean armor;
 
     public static void register() {
-		Skript.registerCondition(CondHasItem.class,
+        Skript.registerCondition(CondHasItem.class,
                 "[%entities%] ha(s|ve) [wand] [%-strings%] in [main] hand",
-			"[%entities%] [(is|are)] holding [wand] [%-strings%] [in main hand]",
-			"[%entities%] ha(s|ve) [wand] [%-strings%] in off[(-| )]hand",
-			"[%entities%] [(is|are)] holding [wand] [%-strings%] in off[(-| )]hand",
-			"[%entities%] (ha(s|ve) not|do[es]n't have) [wand] [%-strings%] in [main] hand",
-			"[%entities%] [(is|are)] wearing [wand] [%-strings%]",
-			"[%entities%] (is not|isn't) holding [wand] [%-strings%] [in main hand]",
-			"[%entities%] (ha(s|ve) not|do[es]n't have) [wand] [%-strings%] in off[(-| )]hand",
-			"[%entities%] (is not|isn't) holding [wand] [%-strings%] in off[(-| )]hand",
-			"[%entities%] (is not|isn't) wearing [wand] [%-strings%]"
-		);
+            "[%entities%] [(is|are)] holding [wand] [%-strings%] [in main hand]",
+            "[%entities%] ha(s|ve) [wand] [%-strings%] in off[(-| )]hand",
+            "[%entities%] [(is|are)] holding [wand] [%-strings%] in off[(-| )]hand",
+            "[%entities%] (ha(s|ve) not|do[es]n't have) [wand] [%-strings%] in [main] hand",
+            "[%entities%] [(is|are)] wearing [wand] [%-strings%]",
+            "[%entities%] (is not|isn't) holding [wand] [%-strings%] [in main hand]",
+            "[%entities%] (ha(s|ve) not|do[es]n't have) [wand] [%-strings%] in off[(-| )]hand",
+            "[%entities%] (is not|isn't) holding [wand] [%-strings%] in off[(-| )]hand",
+            "[%entities%] (is not|isn't) wearing [wand] [%-strings%]"
+        );
     }
 
     @SuppressWarnings({"unchecked"})
     @Override
     public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
-		entities = (Expression<Entity>) vars[0];
-		itemKeys = (Expression<String>) vars[1];
-		offhand = (matchedPattern == 2 || matchedPattern == 3 || matchedPattern == 7 || matchedPattern == 8);
-		armor = (matchedPattern == 5 || matchedPattern == 9);
-		setNegated(matchedPattern >= 6);
-		return true;
-	}
+        entities = (Expression<Entity>) vars[0];
+        itemKeys = (Expression<String>) vars[1];
+        offhand = (matchedPattern == 2 || matchedPattern == 3 || matchedPattern == 7 || matchedPattern == 8);
+        armor = (matchedPattern == 5 || matchedPattern == 9);
+        setNegated(matchedPattern >= 6);
+        return true;
+    }
 
-	@Override
-	public boolean check(final Event e) {
-		return entities.check(e, new Checker<Entity>() {
-			@Override
-			public boolean check(final Entity entity) {
-			    final MageController controller = MagicPlugin.getAPI().getController();
-			    final Mage mage = controller.getRegisteredMage(entity);
-			    if (mage == null) {
-			        return false;
+    @Override
+    public boolean check(final Event e) {
+        return entities.check(e, new Checker<Entity>() {
+            @Override
+            public boolean check(final Entity entity) {
+                final MageController controller = MagicPlugin.getAPI().getController();
+                final Mage mage = controller.getRegisteredMage(entity);
+                if (mage == null) {
+                    return false;
                 }
                 final Wand wand = offhand ? mage.getOffhandWand() : mage.getActiveWand();
-			    if (itemKeys == null) {
-			    	return (wand != null) != isNegated();
-				}
-				final LivingEntity living = mage.getLivingEntity();
+                if (itemKeys == null) {
+                    return (wand != null) != isNegated();
+                }
+                final LivingEntity living = mage.getLivingEntity();
                 final ItemStack item = wand == null && living != null
                     ? (offhand ? living.getEquipment().getItemInOffHand() : living.getEquipment().getItemInMainHand())
                     : null;
-				return itemKeys.check(e, new Checker<String>() {
-					@Override
-					public boolean check(final String targetKey) {
-						if (armor) {
-							if (living == null) return false;
-							for (ItemStack armorItem : living.getEquipment().getArmorContents()) {
-								if (armorItem == null) continue;
-								String key = controller.getWandKey(armorItem);
-								if (key != null && key.equalsIgnoreCase(targetKey)) return true;
-								key = controller.getItemKey(armorItem);
-								if (key != null && key.equalsIgnoreCase(targetKey)) return true;
-							}
-							return false;
-						}
+                return itemKeys.check(e, new Checker<String>() {
+                    @Override
+                    public boolean check(final String targetKey) {
+                        if (armor) {
+                            if (living == null) return false;
+                            for (ItemStack armorItem : living.getEquipment().getArmorContents()) {
+                                if (armorItem == null) continue;
+                                String key = controller.getWandKey(armorItem);
+                                if (key != null && key.equalsIgnoreCase(targetKey)) return true;
+                                key = controller.getItemKey(armorItem);
+                                if (key != null && key.equalsIgnoreCase(targetKey)) return true;
+                            }
+                            return false;
+                        }
 
-						if (wand != null && wand.getTemplateKey().equalsIgnoreCase(targetKey)) {
-							return true;
-						}
-						if (item != null) {
-							String itemKey = controller.getItemKey(item);
-							if (itemKey != null && itemKey.equalsIgnoreCase(targetKey)) {
-								return true;
-							}
-						}
-						return false;
-					}
-				}, isNegated());
-			}
-		});
-	}
+                        if (wand != null && wand.getTemplateKey().equalsIgnoreCase(targetKey)) {
+                            return true;
+                        }
+                        if (item != null) {
+                            String itemKey = controller.getItemKey(item);
+                            if (itemKey != null && itemKey.equalsIgnoreCase(targetKey)) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                }, isNegated());
+            }
+        });
+    }
 
-	@Override
-	public String toString(final @Nullable Event e, final boolean debug) {
+    @Override
+    public String toString(final @Nullable Event e, final boolean debug) {
         String itemTypes = itemKeys == null ? "" : itemKeys.toString();
-		return entities.toString(e, debug) + (entities.isSingle() ? " has" : " have") + (isNegated() ? " not" : "") + (armor ? " wearing " : " ") + itemTypes;
-	}
+        return entities.toString(e, debug) + (entities.isSingle() ? " has" : " have") + (isNegated() ? " not" : "") + (armor ? " wearing " : " ") + itemTypes;
+    }
 }

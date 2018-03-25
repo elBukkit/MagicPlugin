@@ -11,17 +11,17 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class DoorSpell extends BlockSpell
 {
-	@Override
-	public SpellResult onCast(ConfigurationSection parameters)
-	{
-		Target target = getTarget();
+    @Override
+    public SpellResult onCast(ConfigurationSection parameters)
+    {
+        Target target = getTarget();
 
-		if (!target.hasTarget())
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (!target.hasTarget())
+        {
+            return SpellResult.NO_TARGET;
+        }
 
-		Block targetBlock = target.getBlock();
+        Block targetBlock = target.getBlock();
         byte data = targetBlock.getData();
         if ((data & 0x8) != 0) {
             targetBlock = targetBlock.getRelative(BlockFace.DOWN);
@@ -49,7 +49,7 @@ public class DoorSpell extends BlockSpell
             return SpellResult.FAIL;
         }
 
-		registerForUndo();
-		return SpellResult.CAST;
-	}
+        registerForUndo();
+        return SpellResult.CAST;
+    }
 }

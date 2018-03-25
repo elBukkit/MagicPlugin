@@ -22,15 +22,15 @@ public class ProbabilityAction extends CompoundAction
         probability = parameters.getDouble("probability", 0.5);
     }
 
-	@Override
+    @Override
     public SpellResult step(CastContext context)
-	{
+    {
         if (context.getRandom().nextDouble() > probability) {
             return SpellResult.NO_ACTION;
         }
 
-		return startActions();
-	}
+        return startActions();
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
