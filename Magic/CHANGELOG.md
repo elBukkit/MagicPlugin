@@ -1,6 +1,10 @@
 # CHANGELOG
 
-# 7.4
+# 7.3.4
+
+ - Fix broken selector icons.
+ - Fix donatorshop.
+ - Expanded support for message formatting in wand property lore (stacking, non-stacking, positive/negative)
 
 ## 7.3.3
 

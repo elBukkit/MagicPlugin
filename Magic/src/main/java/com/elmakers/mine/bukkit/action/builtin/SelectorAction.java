@@ -466,13 +466,18 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             if (icon == null && defaults.icon != null) {
                 this.icon = InventoryUtils.getCopy(defaults.icon);
             }
-            if (icon == null || !icon.hasItemMeta()) {
+            ItemMeta meta = icon == null ? null : icon.getItemMeta();
+            if (icon == null || meta == null) {
                 // Show a question mark if nothing else worked
                 this.icon = InventoryUtils.getURLSkull("http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d");
+                meta = icon.getItemMeta();
+                if (meta == null) {
+                    this.icon = new ItemStack(com.elmakers.mine.bukkit.wand.Wand.DefaultUpgradeMaterial);
+                    meta = this.icon.getItemMeta();
+                }
             }
 
             // Prepare icon
-            ItemMeta meta = icon.getItemMeta();
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
             if (!lore.isEmpty()) {
                 List<String> itemLore = meta.getLore();
