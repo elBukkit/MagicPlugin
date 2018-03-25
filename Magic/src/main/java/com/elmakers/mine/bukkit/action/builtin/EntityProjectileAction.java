@@ -152,7 +152,10 @@ public class EntityProjectileAction extends CustomProjectileAction {
     public SpellResult start(CastContext context) {
         if (entity == null) {
             Location location = adjustLocation(sourceLocation.getLocation(context));
-            setEntity(context.getController(), entityData.spawn(context.getController(), location, spawnReason));
+            Entity spawned = entityData.spawn(context.getController(), location, spawnReason);
+            if (spawned != null) {
+                setEntity(context.getController(), spawned);
+            }
         }
         if (entity == null) {
             return SpellResult.FAIL;

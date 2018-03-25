@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.action;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -358,9 +360,15 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return mage.getActiveProperties();
     }
 
-    @Nullable
     @Override
     public MageController getController() {
+        Mage mage = getMage();
+        checkState(mage != null, "Controller is not available");
+        return mage.getController();
+    }
+
+    @Nullable
+    private MageController getControllerNullable() {
         Mage mage = getMage();
         return mage == null ? null : mage.getController();
     }
@@ -427,11 +435,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void updateBlock(Block block)
-    {
-        MageController controller = getController();
-        if (controller != null)
-        {
+    public void updateBlock(Block block) {
+        MageController controller = getControllerNullable();
+        if (controller != null) {
             controller.updateBlock(block);
         }
     }
@@ -1121,7 +1127,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Nullable
     @Override
     public Plugin getPlugin() {
-        MageController controller = getController();
+        MageController controller = getControllerNullable();
         return controller == null ? null : controller.getPlugin();
     }
     @Override

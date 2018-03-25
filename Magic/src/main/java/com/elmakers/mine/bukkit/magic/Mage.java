@@ -1441,7 +1441,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     castResult = offhandWand.cast();
 
                     // Don't swing arm is cast is from right-click
-                    if (offhandWand != null && offhandWand.getRightClickAction() != WandAction.CAST) {
+                    if (offhandWand.getRightClickAction() != WandAction.CAST) {
                         CompatibilityUtils.swingOffhand(player, OFFHAND_CAST_RANGE);
                     }
                 } catch (Exception ex) {

@@ -157,9 +157,10 @@ public class CraftingController implements Listener {
 
     @EventHandler
     public void onCraftItem(CraftItemEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) return;
+        HumanEntity human = event.getWhoClicked();
+        if (!(human instanceof Player)) return;
 
-        Player player = (Player)event.getWhoClicked();
+        Player player = (Player)human;
         Mage mage = controller.getMage(player);
 
         // Don't allow crafting in the wand inventory.
@@ -170,10 +171,8 @@ public class CraftingController implements Listener {
 
         ItemStack currentItem = event.getCurrentItem();
         if (Wand.isWand(currentItem)) {
-            if (player != null) {
-                CraftWandEvent castEvent = new CraftWandEvent(mage, controller.getWand(currentItem));
-                Bukkit.getPluginManager().callEvent(castEvent);
-            }
+            CraftWandEvent castEvent = new CraftWandEvent(mage, controller.getWand(currentItem));
+            Bukkit.getPluginManager().callEvent(castEvent);
         }
     }
 

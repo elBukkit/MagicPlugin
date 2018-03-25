@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -85,7 +86,7 @@ public interface CastContext {
     MageClass getMageClass();
     Collection<EffectPlayer> getEffects(String key);
     boolean hasEffects(String key);
-    @Nullable
+    @Nonnull
     MageController getController();
     void registerForUndo(Runnable runnable);
     void registerForUndo(Entity entity);
