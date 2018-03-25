@@ -179,8 +179,10 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
                     options.add(key);
                 }
 
-                for (String protection : api.getController().getDamageTypes()) {
-                    options.add("protection." + protection);
+                for (String damageType : api.getController().getDamageTypes()) {
+                    options.add("protection." + damageType);
+                    options.add("strength." + damageType);
+                    options.add("weakness." + damageType);
                 }
             }
 
