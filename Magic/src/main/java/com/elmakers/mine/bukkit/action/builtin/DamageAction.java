@@ -99,7 +99,11 @@ public class DamageAction extends BaseSpellAction
 				} else {
 					damage = entityDamage;
 				}
-				double mageMultiplier = mage.getDamageMultiplier(damageType);
+				String multiplierType = damageType;
+				if (multiplierType == null) {
+					multiplierType = magicDamage ? "magic" : "physical";
+				}
+				double mageMultiplier = mage.getDamageMultiplier(multiplierType);
 				damage *= mageMultiplier;
 				if (maxDistanceSquared > 0) {
 					double distanceSquared = context.getLocation().distanceSquared(entity.getLocation());
