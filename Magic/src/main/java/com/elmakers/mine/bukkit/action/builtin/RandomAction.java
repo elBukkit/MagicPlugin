@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,7 +17,7 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class RandomAction extends CompoundAction
 {
-    private LinkedList<WeightedPair<ActionContext>> actionProbability;
+    private Deque<WeightedPair<ActionContext>> actionProbability;
     private ActionContext currentAction = null;
 
     @Override
@@ -52,7 +53,7 @@ public class RandomAction extends CompoundAction
     }
 
     protected void mapActions() {
-        actionProbability = new LinkedList<>();
+        actionProbability = new ArrayDeque<>();
         ActionHandler actions = getHandler("actions");
         if (actions != null)
         {

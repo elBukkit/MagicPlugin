@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 
 /**
- * Contains some general Randomization utitilies, including
+ * Contains some general Randomization utilities, including
  * computing WeightedPair - based probability decisions.
  */
 public class RandomUtils {
@@ -34,8 +36,17 @@ public class RandomUtils {
         return (T)(Number)((Float)previousValue + distance * ((Float)nextValue - (Float)previousValue));
     }
 
+    /**
+     * This method is for backwards-compatibility of plugins that relied on the LinkedList variant, notably MagicWorlds.
+     */
     @Nullable
-    public static <T extends Object> T weightedRandom(LinkedList<WeightedPair<T>> weightList) {
+    @Deprecated
+    public static <T> T weightedRandom(LinkedList<WeightedPair<T>> weightList) {
+        return weightedRandom((Deque<WeightedPair<T>>) weightList);
+    }
+
+    @Nullable
+    public static <T extends Object> T weightedRandom(Deque<WeightedPair<T>> weightList) {
         if (weightList == null || weightList.size() == 0) return null;
 
         Float maxWeight = weightList.getLast().getThreshold();
@@ -49,15 +60,15 @@ public class RandomUtils {
         return weightList.getFirst().getValue();
     }
 
-    public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+    public static void populateIntegerProbabilityMap(Deque<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
         RandomUtils.populateProbabilityMap(Integer.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
     }
 
-    public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap) {
+    public static void populateIntegerProbabilityMap(Deque<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap) {
         RandomUtils.populateProbabilityMap(Integer.class, probabilityMap, nodeMap, 0, 0, 0);
     }
 
-    public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection parent, String key, int levelIndex, int nextLevelIndex, float distance) {
+    public static void populateIntegerProbabilityMap(Deque<WeightedPair<Integer>> probabilityMap, ConfigurationSection parent, String key, int levelIndex, int nextLevelIndex, float distance) {
         if (parent.isConfigurationSection(key)) {
             populateProbabilityMap(Integer.class, probabilityMap, parent.getConfigurationSection(key), levelIndex, nextLevelIndex, distance);
         } else if (parent.isInt(key)) {
@@ -67,11 +78,11 @@ public class RandomUtils {
         }
     }
 
-    public static void populateStringProbabilityMap(LinkedList<WeightedPair<String>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+    public static void populateStringProbabilityMap(Deque<WeightedPair<String>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
         RandomUtils.populateProbabilityMap(String.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
     }
 
-    public static void populateStringProbabilityMap(LinkedList<WeightedPair<String>> probabilityMap, ConfigurationSection parent, String key, int levelIndex, int nextLevelIndex, float distance) {
+    public static void populateStringProbabilityMap(Deque<WeightedPair<String>> probabilityMap, ConfigurationSection parent, String key, int levelIndex, int nextLevelIndex, float distance) {
         if (parent.isConfigurationSection(key)) {
             populateProbabilityMap(String.class, probabilityMap, parent.getConfigurationSection(key), levelIndex, nextLevelIndex, distance);
         } else {
@@ -79,15 +90,15 @@ public class RandomUtils {
         }
     }
 
-    public static void populateStringProbabilityMap(LinkedList<WeightedPair<String>> probabilityMap, ConfigurationSection nodeMap) {
+    public static void populateStringProbabilityMap(Deque<WeightedPair<String>> probabilityMap, ConfigurationSection nodeMap) {
         RandomUtils.populateProbabilityMap(String.class, probabilityMap, nodeMap, 0, 0, 0);
     }
 
-    public static void populateFloatProbabilityMap(LinkedList<WeightedPair<Float>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+    public static void populateFloatProbabilityMap(Deque<WeightedPair<Float>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
         RandomUtils.populateProbabilityMap(Float.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
     }
 
-    public static void populateFloatProbabilityMap(LinkedList<WeightedPair<Float>> probabilityMap, ConfigurationSection parent, String key, int levelIndex, int nextLevelIndex, float distance) {
+    public static void populateFloatProbabilityMap(Deque<WeightedPair<Float>> probabilityMap, ConfigurationSection parent, String key, int levelIndex, int nextLevelIndex, float distance) {
         if (parent.isConfigurationSection(key)) {
             populateProbabilityMap(Float.class, probabilityMap, parent.getConfigurationSection(key), levelIndex, nextLevelIndex, distance);
         } else if (parent.isDouble(key) || parent.isInt(key)) {
@@ -97,15 +108,15 @@ public class RandomUtils {
         }
     }
 
-    public static void populateFloatProbabilityMap(LinkedList<WeightedPair<Float>> probabilityMap, ConfigurationSection nodeMap) {
+    public static void populateFloatProbabilityMap(Deque<WeightedPair<Float>> probabilityMap, ConfigurationSection nodeMap) {
         RandomUtils.populateProbabilityMap(Float.class, probabilityMap, nodeMap, 0, 0, 0);
     }
 
-    public static <T extends Object> void populateProbabilityConstant(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, String value) {
+    public static <T extends Object> void populateProbabilityConstant(Class<T> valueClass, Deque<WeightedPair<T>> probabilityMap, String value) {
         probabilityMap.add(new WeightedPair<>(1.0f, 1.0f, value, valueClass));
     }
 
-    public static <T extends Object> void populateProbabilityList(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, List<String> keys) {
+    public static <T extends Object> void populateProbabilityList(Class<T> valueClass, Deque<WeightedPair<T>> probabilityMap, List<String> keys) {
         if (keys != null) {
             for (String key : keys) {
                 probabilityMap.add(new WeightedPair<>(1.0f, 1.0f, key, valueClass));
@@ -113,7 +124,7 @@ public class RandomUtils {
         }
     }
 
-    public static <T extends Object> void populateProbabilityMap(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+    public static <T extends Object> void populateProbabilityMap(Class<T> valueClass, Deque<WeightedPair<T>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
         Float currentThreshold = 0.0f;
 
         if (nodeMap != null) {
@@ -136,12 +147,12 @@ public class RandomUtils {
         }
     }
 
-    public static <T extends Object> LinkedList<WeightedPair<T>> merge(LinkedList<WeightedPair<T>> base, LinkedList<WeightedPair<T>> inherit) {
+    public static <T extends Object> Deque<WeightedPair<T>> merge(Deque<WeightedPair<T>> base, Deque<WeightedPair<T>> inherit) {
         if (inherit == null || inherit.size() == 0) {
             return base;
         }
         if (base == null) {
-            base = new LinkedList<>();
+            base = new ArrayDeque<>();
         }
         if (base.size() == 0) {
             base.addAll(inherit);

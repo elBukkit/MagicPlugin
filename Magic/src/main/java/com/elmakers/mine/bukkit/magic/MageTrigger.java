@@ -1,8 +1,9 @@
 package com.elmakers.mine.bukkit.magic;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Deque;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -27,7 +28,7 @@ public class MageTrigger {
     }
 
     protected MageTriggerType type;
-    protected LinkedList<WeightedPair<String>> spells;
+    protected Deque<WeightedPair<String>> spells;
     protected List<String> commands;
 
     protected double maxHealth;
@@ -47,7 +48,7 @@ public class MageTrigger {
         }
 
         if (configuration.contains("cast")) {
-            spells = new LinkedList<>();
+            spells = new ArrayDeque<>();
             RandomUtils.populateStringProbabilityMap(spells, configuration.getConfigurationSection("cast"));
         }
         commands = ConfigurationUtils.getStringList(configuration, "commands");

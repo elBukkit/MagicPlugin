@@ -1,11 +1,7 @@
 # TODO
 
 ## 7.4
-
- - Fix all the new warnings ...
  
- - Disallow players to take bound wands out of containers.
-
  - Optional lore on wands to say which classes they work with
  - Option for Selector for switch class rather than unlock class
 

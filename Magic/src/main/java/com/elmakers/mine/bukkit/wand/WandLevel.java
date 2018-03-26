@@ -1,9 +1,10 @@
 package com.elmakers.mine.bukkit.wand;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,24 +24,24 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 public class WandLevel {
     private final WandUpgradePath path;
 
-    private LinkedList<WeightedPair<Integer>> spellCountProbability = new LinkedList<>();
-    private LinkedList<WeightedPair<Integer>> materialCountProbability = new LinkedList<>();
-    private LinkedList<WeightedPair<String>> spellProbability = new LinkedList<>();
-    private LinkedList<WeightedPair<String>> materialProbability = new LinkedList<>();
-    private LinkedList<WeightedPair<Integer>> useProbability = new LinkedList<>();
-    private LinkedList<WeightedPair<Integer>> addUseProbability = new LinkedList<>();
+    private Deque<WeightedPair<Integer>> spellCountProbability = new ArrayDeque<>();
+    private Deque<WeightedPair<Integer>> materialCountProbability = new ArrayDeque<>();
+    private Deque<WeightedPair<String>> spellProbability = new ArrayDeque<>();
+    private Deque<WeightedPair<String>> materialProbability = new ArrayDeque<>();
+    private Deque<WeightedPair<Integer>> useProbability = new ArrayDeque<>();
+    private Deque<WeightedPair<Integer>> addUseProbability = new ArrayDeque<>();
 
-    private LinkedList<WeightedPair<Integer>> propertyCountProbability = new LinkedList<>();
-    private Map<String, LinkedList<WeightedPair<Float>>> propertiesProbability = new HashMap<>();
+    private Deque<WeightedPair<Integer>> propertyCountProbability = new ArrayDeque<>();
+    private Map<String, Deque<WeightedPair<Float>>> propertiesProbability = new HashMap<>();
 
-    private LinkedList<WeightedPair<Integer>> manaRegenerationProbability = new LinkedList<>();
-    private LinkedList<WeightedPair<Integer>> manaMaxProbability = new LinkedList<>();
+    private Deque<WeightedPair<Integer>> manaRegenerationProbability = new ArrayDeque<>();
+    private Deque<WeightedPair<Integer>> manaMaxProbability = new ArrayDeque<>();
 
     protected WandLevel(WandUpgradePath path, MageController controller, ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
         this.path = path;
 
         // Fetch spell probabilities, and filter out invalid/unknown spells
-        LinkedList<WeightedPair<String>> spells = new LinkedList<>();
+        Deque<WeightedPair<String>> spells = new ArrayDeque<>();
         RandomUtils.populateStringProbabilityMap(spells, template, "spells", levelIndex, nextLevelIndex, distance);
 
         for (WeightedPair<String> spellValue : spells) {
@@ -69,7 +70,7 @@ public class WandLevel {
         ConfigurationSection propertiesConfig = template.getConfigurationSection("properties");
         if (propertiesConfig != null) {
             for (String propertyKey : propertiesConfig.getKeys(false)) {
-                LinkedList<WeightedPair<Float>> propertyProbability = new LinkedList<>();
+                Deque<WeightedPair<Float>> propertyProbability = new ArrayDeque<>();
                 RandomUtils.populateFloatProbabilityMap(propertyProbability, propertiesConfig, propertyKey, levelIndex, nextLevelIndex, distance);
                 propertyKey = propertyKey.replace("|", ".");
                 propertiesProbability.put(propertyKey, propertyProbability);
@@ -90,8 +91,8 @@ public class WandLevel {
         this.useProbability = useProbability.isEmpty() ? other.useProbability : useProbability;
         this.addUseProbability = addUseProbability.isEmpty() ? other.addUseProbability : addUseProbability;
         this.propertyCountProbability = propertyCountProbability.isEmpty() ? other.propertyCountProbability : propertyCountProbability;
-        for (Map.Entry<String, LinkedList<WeightedPair<Float>>> entry : other.propertiesProbability.entrySet()) {
-            LinkedList<WeightedPair<Float>> thisOne = propertiesProbability.get(entry.getKey());
+        for (Map.Entry<String, Deque<WeightedPair<Float>>> entry : other.propertiesProbability.entrySet()) {
+            Deque<WeightedPair<Float>> thisOne = propertiesProbability.get(entry.getKey());
             if (thisOne == null || thisOne.isEmpty()) {
                 propertiesProbability.put(entry.getKey(), entry.getValue());
             }
@@ -122,8 +123,8 @@ public class WandLevel {
         return count;
     }
 
-    public LinkedList<WeightedPair<String>> getRemainingSpells(CasterProperties properties) {
-        LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<>();
+    public Deque<WeightedPair<String>> getRemainingSpells(CasterProperties properties) {
+        Deque<WeightedPair<String>> remainingSpells = new ArrayDeque<>();
         for (WeightedPair<String> spell : spellProbability) {
             if (spell.getRawThreshold() >= 1 && !properties.hasSpell(spell.getValue())) {
                 remainingSpells.add(spell);
@@ -133,8 +134,8 @@ public class WandLevel {
         return remainingSpells;
     }
 
-    public LinkedList<WeightedPair<String>> getRemainingMaterials(Wand wand) {
-        LinkedList<WeightedPair<String>> remainingMaterials = new LinkedList<>();
+    public Deque<WeightedPair<String>> getRemainingMaterials(Wand wand) {
+        Deque<WeightedPair<String>> remainingMaterials = new ArrayDeque<>();
         for (WeightedPair<String> material : materialProbability) {
             String materialKey = material.getValue();
             // Fixup |'s to :'s .... kinda hacky, but I didn't think this through unfortunately. :\
@@ -156,7 +157,7 @@ public class WandLevel {
         }
         wand.setActiveMage(mage);
         boolean addedSpells = false;
-        LinkedList<WeightedPair<String>> remainingSpells = getRemainingSpells(wand);
+        Deque<WeightedPair<String>> remainingSpells = getRemainingSpells(wand);
 
         if (addSpells) {
             if (remainingSpells.size() > 0) {
@@ -192,7 +193,7 @@ public class WandLevel {
 
         // Add random materials
         boolean addedMaterials = false;
-        LinkedList<WeightedPair<String>> remainingMaterials = getRemainingMaterials(wand);
+        Deque<WeightedPair<String>> remainingMaterials = getRemainingMaterials(wand);
         if (needsMaterials && remainingMaterials.size() > 0) {
             int currentMaterialCount = wand.getBrushes().size();
             Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
@@ -256,7 +257,7 @@ public class WandLevel {
         {
             int randomPropertyIndex = (int)(Math.random() * propertiesAvailable.size());
             String randomProperty = propertiesAvailable.get(randomPropertyIndex);
-            LinkedList<WeightedPair<Float>> probabilities = propertiesProbability.get(randomProperty);
+            Deque<WeightedPair<Float>> probabilities = propertiesProbability.get(randomProperty);
             double current = wand.getDouble(randomProperty);
             double maxValue = path.getMaxProperty(randomProperty);
             if (probabilities.size() > 0 && current < maxValue) {

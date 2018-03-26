@@ -1,8 +1,9 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.lang.reflect.Method;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -37,7 +38,7 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class FamiliarSpell extends UndoableSpell implements Listener
 {
-    private final LinkedList<WeightedPair<String>> entityTypeProbability = new LinkedList<>();
+    private final Deque<WeightedPair<String>> entityTypeProbability = new ArrayDeque<>();
 
     private final Random rand = new Random();
     private int spawnCount = 0;
