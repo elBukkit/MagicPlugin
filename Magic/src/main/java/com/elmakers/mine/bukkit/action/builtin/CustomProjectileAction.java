@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
@@ -311,7 +311,7 @@ public class CustomProjectileAction extends CompoundAction
 
         // This has to be done here, so that the plan is not shared across parallel instances
         if (planConfiguration != null && !planConfiguration.isEmpty()) {
-            plan = new LinkedList<>();
+            plan = new ArrayDeque<>();
             for (ConfigurationSection planStepConfig : planConfiguration) {
                 plan.add(new PlanStep(planStepConfig));
             }

@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -560,7 +559,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return SpellResult.FAIL;
         }
 
-        List<Waypoint> allWaypoints = new LinkedList<>();
+        List<Waypoint> allWaypoints = new ArrayList<>();
         for (RecallType selectedType : enabledTypes) {
             if (selectedType == RecallType.FRIENDS) {
                 for (String friendId : friends) {

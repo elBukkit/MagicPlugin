@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -67,7 +68,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     private boolean                         loading = false;
 
     protected Set<Entity>                     entities;
-    protected LinkedList<Runnable>            runnables;
+    protected Deque<Runnable>                 runnables;
     protected HashMap<UUID, EntityData>     modifiedEntities;
 
     protected WeakReference<CastContext>    context;
@@ -253,7 +254,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void add(Runnable runnable)
     {
         if (runnable == null) return;
-        if (runnables == null) runnables = new LinkedList<>();
+        if (runnables == null) runnables = new ArrayDeque<>();
         runnables.add(runnable);
         modifiedTime = System.currentTimeMillis();
     }

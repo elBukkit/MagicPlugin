@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -158,7 +157,7 @@ public class RecallSpell extends UndoableSpell
         else
         {
             Location location = getLocation();
-            List<Target> allWaypoints = new LinkedList<>();
+            List<Target> allWaypoints = new ArrayList<>();
             for (RecallType selectedType : enabledTypes) {
                 if (selectedType == RecallType.WARP) {
                     for (int i = 0; i < warps.size(); i++) {

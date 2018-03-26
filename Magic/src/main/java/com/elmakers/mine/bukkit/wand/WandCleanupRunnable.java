@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.wand;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -14,7 +15,7 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 
 public class WandCleanupRunnable extends RunnableJob {
-    private final LinkedList<LostWand> lostWands = new LinkedList<>();
+    private final Deque<LostWand> lostWands = new ArrayDeque<>();
     private final World world;
     private final MagicAPI api;
     private final String owner;

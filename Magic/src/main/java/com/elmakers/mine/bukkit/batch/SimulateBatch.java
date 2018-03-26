@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -107,7 +106,7 @@ public class SimulateBatch extends SpellBatch {
 
     private List<Block> deadBlocks = new ArrayList<>();
     private List<Block> bornBlocks = new ArrayList<>();
-    private List<Target> potentialHeartBlocks = new LinkedList<>();
+    private List<Target> potentialHeartBlocks = new ArrayList<>();
 
     public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts, String automataName) {
         super(spell);
@@ -469,10 +468,11 @@ public class SimulateBatch extends SpellBatch {
                 // Find a valid block for the command
                 heartTargetBlock = null;
                 Block backupBlock = null;
-                while (heartTargetBlock == null && potentialHeartBlocks.size() > 0) {
-                    Block block = potentialHeartBlocks.remove(0).getBlock();
+                for (Target target : potentialHeartBlocks) {
+                    Block block = target.getBlock();
                     if (block != null && birthMaterial.is(block)) {
                         heartTargetBlock = block;
+                        break;
                     }
                 }
 

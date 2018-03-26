@@ -1,11 +1,12 @@
 package com.elmakers.mine.bukkit.block;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -19,11 +20,11 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 
 public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
-    protected BoundingBox                  area;
+    protected BoundingBox               area;
     protected @Nullable String          worldName;
 
-    protected LinkedList<BlockData>     blockList;
-    protected HashSet<Long>                blockIdMap;
+    protected Deque<BlockData>          blockList;
+    protected HashSet<Long>             blockIdMap;
 
     public BlockList()
     {
@@ -66,7 +67,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
         if (blockList == null)
         {
-            blockList = new LinkedList<>();
+            blockList = new ArrayDeque<>();
         }
 
         blockIdMap.add(blockData.getId());
@@ -262,23 +263,13 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         this.blockList = null;
         if (blockList != null)
         {
-            this.blockList = new LinkedList<>(blockList);
+            this.blockList = new ArrayDeque<>(blockList);
             blockIdMap = new HashSet<>();
             for (BlockData block : blockList)
             {
                 blockIdMap.add(block.getId());
             }
         }
-    }
-
-    @Nullable
-    public BlockData get(int index)
-    {
-        if (blockList == null || index >= blockList.size())
-        {
-            return null;
-        }
-        return blockList.get(index);
     }
 
     @Override

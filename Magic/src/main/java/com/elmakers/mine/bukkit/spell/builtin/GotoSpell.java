@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Color;
@@ -63,7 +62,7 @@ public class GotoSpell extends UndoableSpell
         if (!allowSelection)
         {
             Location location = getLocation();
-            List<Target> allTargets = new LinkedList<>();
+            List<Target> allTargets = new ArrayList<>();
             List<Player> players = player.getWorld().getPlayers();
             for (Player targetPlayer : players) {
                 if (targetPlayer == player) continue;

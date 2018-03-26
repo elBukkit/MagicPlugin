@@ -2,13 +2,14 @@ package com.elmakers.mine.bukkit.magic;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -143,7 +144,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Collection<Listener> damageListeners = new HashSet<>();
     private final Set<MageSpell> activeSpells = new HashSet<>();
     private UndoQueue undoQueue = null;
-    private LinkedList<Batch> pendingBatches = new LinkedList<>();
+    private Deque<Batch> pendingBatches = new ArrayDeque<>();
     private boolean loading = false;
     private boolean unloading = false;
     private int debugLevel = 0;
