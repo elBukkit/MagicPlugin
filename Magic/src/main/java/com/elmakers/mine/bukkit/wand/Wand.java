@@ -44,6 +44,7 @@ import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -934,6 +935,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
+    protected @Nonnull Map<String, Integer> getSpellLevels() {
+        return spellLevels;
+    }
+
+    @Override
     public Set<String> getSpells() {
         Set<String> spellSet = new HashSet<>();
         for (String key : spells) {
@@ -1156,13 +1162,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             {
                 spellKey = spell.getSpellKey();
                 Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
-                if (currentLevel == null || currentLevel < spellKey.getLevel()) {
+                if (spellKey.getLevel() > 1 && (currentLevel == null || currentLevel < spellKey.getLevel())) {
                     setSpellLevel(spellKey.getBaseKey(), spellKey.getLevel());
-                    if (slot != null) {
-                        spellInventory.put(spellKey.getBaseKey(), slot);
-                    }
-                    spells.add(spellKey.getBaseKey());
                 }
+                if (slot != null) {
+                    spellInventory.put(spellKey.getBaseKey(), slot);
+                }
+                spells.add(spellKey.getBaseKey());
                 if (activeSpell == null || activeSpell.length() == 0)
                 {
                     activeSpell = spellKey.getBaseKey();
@@ -4706,6 +4712,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         addToInventory(spellItem, inventorySlot);
+        checkSpellLevelsAndInventory();
         updateInventory();
         updateHasInventory();
         saveState();
@@ -4761,6 +4768,33 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         return true;
+    }
+
+    /**
+     * Covers the special case of a wand having spell levels and inventory slots that came from configs,
+     * but now we've modified the spells list and need to figure out if we also need to pesist the levels and
+     * slots separately.
+     *
+     * <p>This should all be moved to CasterProperties at some point to handle the same sort of issues with mage class
+     * configs.
+     */
+    private void checkSpellLevelsAndInventory() {
+        if (!spellLevels.isEmpty()) {
+            MagicProperties storage = getStorage("spell_levels");
+            if (storage == null || storage == this) {
+                if (!configuration.contains("spell_levels")) {
+                    configuration.set("spell_levels", spellLevels);
+                }
+            }
+        }
+        if (!spellInventory.isEmpty()) {
+            MagicProperties storage = getStorage("spell_inventory");
+            if (storage == null || storage == this) {
+                if (!configuration.contains("spell_inventory")) {
+                    configuration.set("spell_inventory", spellInventory);
+                }
+            }
+        }
     }
 
     private void clearSlot(Integer slot) {
@@ -4970,6 +5004,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setActiveSpell(spells.iterator().next());
         }
 
+        checkSpellLevelsAndInventory();
         updateInventory();
         updateHasInventory();
         updateSpellInventory();
