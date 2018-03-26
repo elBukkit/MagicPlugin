@@ -45,6 +45,11 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     }
 
     @Override
+    public boolean hasOwnProperty(String key) {
+        return super.hasOwnProperty(key) || template.hasOwnProperty(key);
+    }
+
+    @Override
     @Nullable
     public Object getProperty(String key) {
         Object value = null;

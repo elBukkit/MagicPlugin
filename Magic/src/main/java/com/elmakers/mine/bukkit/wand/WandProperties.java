@@ -43,6 +43,11 @@ public abstract class WandProperties extends TemplatedProperties {
     }
 
     @Override
+    public boolean hasOwnProperty(String key) {
+        return super.hasOwnProperty(key) || (wandTemplate != null && wandTemplate.hasOwnProperty(key));
+    }
+
+    @Override
     protected void migrateProperty(String key, MagicPropertyType propertyType) {
         super.migrateProperty(key, propertyType, wandTemplate);
     }
