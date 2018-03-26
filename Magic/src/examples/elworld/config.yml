@@ -34,3 +34,9 @@ add_examples:
 
 # resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-TESTING.zip"
 # add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-TESTING.zip"
+
+# Set this to false to prevent casting a spell from an inventory using the drop button
+allow_inventory_casting: false
+
+# Set this to false to prevent selecting a spell from an inventory using right-click
+allow_inventory_selection: false

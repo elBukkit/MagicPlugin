@@ -4,25 +4,9 @@
  
  - Optional lore on wands to say which classes they work with
  - Option for Selector for switch class rather than unlock class
-
- - Figure out positive/negative solution for reduction, protection, strength and weakness
- - Need to do something about template data mixing with class data ... use cases:
-   - Fix jedi/sith/bending progression
-   - Screwed up migration, left properties on a wand that now belong to class
-     - In this case we want to ignore them? Or merge them? Merge can't be a permanent override though.
-   - Spells/mana etc on a wand or child class that should go to the base class
-     - This is also like a merge .. but is it only while you hold that wand?
-     - Does a battle mage's spells not apply to the caster except when using a magic sword?
-     - Need to just merge everything in the passive effects block, maybe.. ?
      
  - Update skill icon lore when armor updates (to take buffs into account)
  
- - Cooldown and other reductions on mage (from wearables, etc) don't apply to spells cast via a wand.
-
- - Skill menu option to not show skills you already have
- - Undroppable option for skills
-
- - Auto show skull icons for players that haven't got the RP? (optionally)
  - Undoing a wolf house leaves diodes and redstone behind
  - Brushette requests damage reduction (as in subtract an amount)
  - Status effect system
@@ -46,7 +30,6 @@
    
 ## Suggestions
 
- - Changes to mage classes don't affect online players with a /magic load
  - Options to disable spell selection and casting from inventory
  - Cast location offset override per spell.
  - Flag to prevent putting SP in chests

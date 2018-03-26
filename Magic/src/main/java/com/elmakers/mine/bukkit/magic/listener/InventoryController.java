@@ -36,9 +36,11 @@ import com.elmakers.mine.bukkit.wand.WandMode;
 
 public class InventoryController implements Listener {
     private final MagicController controller;
-    private boolean    enableItemHacks    = true;
+    private boolean enableItemHacks = true;
     private boolean dropChangesPages = false;
     private long openCooldown = 0;
+    private boolean enableInventoryCasting = true;
+    private boolean enableInventorySelection = true;
 
     public InventoryController(MagicController controller) {
         this.controller = controller;
@@ -47,6 +49,8 @@ public class InventoryController implements Listener {
     public void loadProperties(ConfigurationSection properties) {
         enableItemHacks = properties.getBoolean("enable_custom_item_hacks", false);
         dropChangesPages = properties.getBoolean("drop_changes_pages", false);
+        enableInventoryCasting = properties.getBoolean("allow_inventory_casting", true);
+        enableInventorySelection = properties.getBoolean("allow_inventory_selection", true);
         openCooldown = properties.getInt("open_cooldown", 0);
     }
 
@@ -371,7 +375,7 @@ public class InventoryController implements Listener {
                 if (!controller.isSpellDroppingEnabled()) {
                     player.closeInventory();
                     String spellName = Wand.getSpell(droppedItem);
-                    if (spellName != null && !activeWand.isManualQuickCastDisabled()) {
+                    if (spellName != null && !activeWand.isManualQuickCastDisabled() && enableInventoryCasting) {
                         Spell spell = mage.getSpell(spellName);
                         if (spell != null) {
                             activeWand.cast(spell);
@@ -426,7 +430,7 @@ public class InventoryController implements Listener {
                     }
 
                     // Chest mode falls back to selection from here.
-                    boolean isInventoryQuickSelect = isRightClick && wandMode == WandMode.INVENTORY;
+                    boolean isInventoryQuickSelect = isRightClick && wandMode == WandMode.INVENTORY && enableInventorySelection;
                     if (isInventoryQuickSelect || wandMode == WandMode.CHEST) {
                         player.closeInventory();
                         mage.activateIcon(activeWand, clickedItem);
