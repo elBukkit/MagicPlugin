@@ -1005,12 +1005,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void sort(MaterialSet attachables) {
         if (blockList == null) return;
 
-        Collections.reverse(blockList);
-        if (attachables == null) {
-            return;
+        List<BlockData> sortedList = new ArrayList<>(blockList);
+        blockList.clear();
+        Collections.reverse(sortedList);
+        if (attachables != null) {
+            blockComparator.setAttachables(attachables);
+            Collections.sort(sortedList, blockComparator);
         }
-        blockComparator.setAttachables(attachables);
-        Collections.sort(blockList, blockComparator);
+        blockList.addAll(sortedList);
     }
 
     public double getUndoSpeed() {
