@@ -343,6 +343,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Nullable
+    @Override
     public SpellTemplate getSpellTemplate(String spellKey) {
         SpellKey key = new SpellKey(spellKey);
         Collection<String> spells = getBaseSpells();
