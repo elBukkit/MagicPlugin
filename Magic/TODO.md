@@ -7,7 +7,6 @@
      
  - Update skill icon lore when armor updates (to take buffs into account)
  
- - Undoing a wolf house leaves diodes and redstone behind
  - Brushette requests damage reduction (as in subtract an amount)
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo

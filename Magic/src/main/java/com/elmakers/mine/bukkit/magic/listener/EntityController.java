@@ -340,7 +340,7 @@ public class EntityController implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onItemSpawn(ItemSpawnEvent event)
     {
-        if (disableItemSpawn)
+        if (disableItemSpawn || com.elmakers.mine.bukkit.block.BlockData.undoing)
         {
             event.setCancelled(true);
             return;

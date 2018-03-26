@@ -35,6 +35,8 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     public static final BlockFace[] FACES = new BlockFace[]{BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.UP, BlockFace.DOWN};
     public static final BlockFace[] SIDES = new BlockFace[]{BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST};
 
+    public static boolean undoing = false;
+
     // Transient
     protected com.elmakers.mine.bukkit.api.block.BlockData nextState;
     protected com.elmakers.mine.bukkit.api.block.BlockData priorState;
@@ -199,7 +201,12 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         // Otherwise, state will be pushed up in unlink
         if (nextState == null && isDifferent(block))
         {
-            modify(block, modifyType);
+            undoing = true;
+            try {
+                modify(block, modifyType);
+            } finally {
+                undoing = false;
+            }
         }
         unlink();
 

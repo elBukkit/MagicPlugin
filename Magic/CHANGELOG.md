@@ -9,6 +9,7 @@
  - Better handling for color codes in wand names
  - Players can no longer take bound wands out of chests if the wand doesn't belong to them
  - Add some config.yml options to disable casting and selection of spells directly from an inventory
+ - Fix a few undo issues revolving around blocks breaking during the undo process
 
 # 7.3.4
 
