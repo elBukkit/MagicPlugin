@@ -716,14 +716,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
                 if (sender != player) {
                     sender.sendMessage(api.getMessages().get("mage.player_spell_upgraded").replace("$player", player.getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
-                } else {
-                    sender.sendMessage(api.getMessages().get("mage.spell_upgraded").replace("$player", player.getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                 }
             } else {
                 if (sender != player) {
                     sender.sendMessage("Added '" + spell.getName() + "' to " + player.getName());
-                } else {
-                    sender.sendMessage(api.getMessages().get("mage.spell_added").replace("$name", spell.getName()));
                 }
             }
         } else if (sender != player) {
