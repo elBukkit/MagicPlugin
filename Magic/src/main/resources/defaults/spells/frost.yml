@@ -61,7 +61,6 @@ frost:
         damage: 1
         duration: 1000
         effect_slow: 1
-        ice: ice
         undo: 4000
         cooldown: 10000
         entity_undo: false

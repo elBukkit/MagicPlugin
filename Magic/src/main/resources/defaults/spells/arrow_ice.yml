@@ -1,0 +1,73 @@
+arrow_ice:
+    icon: diamond_axe:244
+    icon_disabled: diamond_hoe:244
+    icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
+    category: combat
+    worth: 700
+    earns_sp: 8
+    actions:
+        cast:
+        - class: Projectile
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: PotionEffect
+            - class: Damage
+              damage: 1
+            - class: Ignite
+              duration: 0
+          - class: Sphere
+            ignore_result: true
+            actions:
+            - class: Freeze
+            - class: ModifyBreakable
+    effects:
+        cast:
+        - sound: entity_arrow_shoot
+          sound_pitch: 0.8
+          sound_volume: 0.8
+        - class: EffectSingle
+          sound: magic.zap_crack
+          sound_pitch: 1.5
+          location: origin
+        projectile:
+        - location: origin
+          effectlib:
+             class: Sphere
+             iterations: 10
+             period: 2
+             particles: 5
+             particleCount: 10
+             particleOffsetX: 0.2
+             particleOffsetY: 0.2
+             particleOffsetZ: 0.2
+             particle: snowball
+             disappearWithOriginEntity: true
+        hit:
+        - class: EffectSingle
+          location: target
+          target_offset: 0,0.2,0
+          effectlib:
+             class: Shield
+             duration: $undo
+             period: 4
+             particle: snowball
+             radius: $radius
+    parameters:
+      target: none
+      projectile: TippedArrow
+      tick_increase: 500
+      entity_undo: false
+      undo: 10000
+      speed: "bowpull * 3"
+      spread: "1 - bowpull"
+      damage: "bowpull * 4"
+      radius: "1 + 3 * bowpull"
+      transparent: freeze_transparent
+      destructible: freezeable
+      duration: 2000
+      effect_slow: 1
+      breakable: 4
+      ice: frosted_ice
+    costs:
+      arrow: 1

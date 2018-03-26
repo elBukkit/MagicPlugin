@@ -23,7 +23,7 @@ fire:
         -  class: EffectSingle
            sound: magic.burn
            sound_volume: 1
-           location: both
+           location: origin
         tick:
         -  class: EffectSingle
            location: target

@@ -157,6 +157,15 @@ spells:
     arrow_blink:
         name: Blink Arrow
         description: Teleport to the location where your arrow lands
+    arrow_fire:
+        name: Fire Arrow
+        description: Lights a fire where it lands
+    arrow_ice:
+        name: Ice Arrow
+        description: Freeze the area where it lands
+    arrow_shock:
+        name: Shock Arrow
+        description: Electrify the target
     toss:
         name: Toss
         description: Toss a block

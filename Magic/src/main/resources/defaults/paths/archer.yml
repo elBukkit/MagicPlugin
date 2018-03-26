@@ -6,3 +6,6 @@ archer:
       - arrow_poison
       - arrow_blink
       - arrow_light
+      - arrow_fire
+      - arrow_ice
+      - arrow_shock

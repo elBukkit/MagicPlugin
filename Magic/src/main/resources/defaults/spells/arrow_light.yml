@@ -15,15 +15,18 @@ arrow_light:
           - class: ModifyBlock
             ignore_result: true
           - class: PotionEffect
-            duration: 3000
+            duration: 4000
+          - class: Delay
+            delay: 200
           - class: Asynchronous
+            requires_entity_target: true
             actions:
             - class: Repeat
-              repeat: 3
+              repeat: 10
               actions:
               - class: Damage
               - class: Delay
-                delay: 1000
+                delay: 300
     effects:
         cast:
         -  class: EffectSingle
@@ -123,8 +126,8 @@ arrow_light:
         block_hit_count: 4
         entity_hit_count: 5
         target_type: Damageable
-        player_damage: 3
-        entity_damage: 10
+        player_damage: 1
+        entity_damage: 4
         target_breakables: 1
         reorient: false
         potion_effects:

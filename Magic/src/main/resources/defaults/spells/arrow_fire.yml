@@ -1,0 +1,61 @@
+arrow_fire:
+    icon: diamond_axe:246
+    icon_disabled: diamond_hoe:246
+    icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
+    category: combat
+    worth: 800
+    earns_sp: 8
+    actions:
+        cast:
+        - class: Projectile
+          actions:
+          - class: Ignite
+          - class: Disc
+            actions:
+            - class: Cover
+              actions:
+              - class: Burn
+    effects:
+        cast:
+        - sound: entity_arrow_shoot
+          sound_pitch: 0.8
+          sound_volume: 0.8
+        - sound: magic.burn
+          sound_volume: 0.9
+          sound_pitch: 1.1
+        projectile:
+        - location: origin
+          effectlib:
+             class: Sphere
+             iterations: 10
+             period: 2
+             particles: 5
+             particleCount: 4
+             particleOffsetX: 0.2
+             particleOffsetY: 0.2
+             particleOffsetZ: 0.2
+             particle: smoke_large
+             disappearWithOriginEntity: true
+        hit:
+        - location: target
+          particle: lava
+          particle_count: 20
+          particle_offset_x: 2
+          particle_offset_y: 0.2
+          particle_offset_z: 2
+          sound: magic.zap
+          sound_pitch: 1.2
+          sound_volume: 0.5
+    parameters:
+      target: none
+      projectile: TippedArrow
+      fire: true
+      tick_increase: 500
+      entity_undo: false
+      undo: 10000
+      speed: "bowpull * 3"
+      spread: "1 - bowpull"
+      damage: "bowpull * 4"
+      radius: "1 + 2 * bowpull"
+    costs:
+      arrow: 1

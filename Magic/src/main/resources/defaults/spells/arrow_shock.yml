@@ -1,0 +1,94 @@
+arrow_shock:
+    icon: diamond_axe:250
+    icon_disabled: diamond_hoe:250
+    icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
+    category: combat
+    worth: 1200
+    earns_sp: 8
+    actions:
+        cast:
+        - class: Projectile
+          actions:
+          - class: Disarm
+          - class: Electrify
+          - class: PotionEffect
+            duration: 4000
+          - class: Repeat
+            requires_entity_target: true
+            actions:
+            - class: Damage
+            - class: Delay
+              delay: 300
+    effects:
+        cast:
+        - sound: entity_arrow_shoot
+          sound_pitch: 0.9
+          sound_volume: 0.8
+        - class: EffectSingle
+          sound: magic.zap_crack
+          sound_pitch: 1.5
+          location: origin
+        projectile:
+        - location: origin
+          effectlib:
+             class: Sphere
+             iterations: 10
+             period: 2
+             particles: 40
+             particle: redstone
+             color: "FFF000"
+             disappearWithOriginEntity: true
+        - location: origin
+          effectlib:
+             class: Sphere
+             iterations: 10
+             period: 2
+             particles: 5
+             particleCount: 10
+             particleOffsetX: 0.2
+             particleOffsetY: 0.2
+             particleOffsetZ: 0.2
+             particle: fireworks_spark
+             disappearWithOriginEntity: true
+        hit_entity:
+        - class: EffectSingle
+          location: target
+          target_location: body
+          particle: fireworks_spark
+          particle_count: 40
+          particle_offset_x: 0.4
+          particle_offset_y: 1
+          particle_offset_z: 0.4
+          effectlib:
+            class: AnimatedBall
+            particle: redstone
+            color: "FFF000"
+            duration: 3000
+            yFactor: 1.5
+            offset: 0,-0.2,0
+            size: 0.6
+            disappearWithOriginEntity: true
+        hit:
+        - class: EffectSingle
+          location: target
+          particle: fireworks_spark
+          particle_count: 10
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+          particle_data: 0.4
+          sound: magic.zap
+          sound_pitch: 1.2
+          sound_volume: 0.5
+    parameters:
+      target: none
+      projectile: TippedArrow
+      tick_increase: 500
+      speed: "bowpull * 3"
+      spread: "1 - bowpull"
+      damage: "bowpull * 2"
+      repeat: "bowpull * 5 + 10"
+      effect_slow: 10
+      keep_in_inventory: true
+    costs:
+      arrow: 1

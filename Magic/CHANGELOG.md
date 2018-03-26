@@ -2,8 +2,8 @@
 
 # 7.4
 
+ - Add Light, Fire, Ice and Shock arrows to Magic Bow progression
  - Fix automata spawning via MagicWorlds
- - Add Light Arrow to Magic Bow progression
  - Fix magic armor not always updating due to inventory drag event
  - Fix stars configs, bending configs and Magic Sword not starting off with a bunch of spells
  - Better handling for color codes in wand names
