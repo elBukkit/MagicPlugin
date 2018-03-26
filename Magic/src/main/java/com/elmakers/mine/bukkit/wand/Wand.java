@@ -5122,8 +5122,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Object wandSection = InventoryUtils.getNode(item, WAND_KEY);
         if (wandSection == null) return false;
 
-        String boundValue = InventoryUtils.getMetaString(wandSection, "bound");
-        return boundValue != null && boundValue.equalsIgnoreCase("true");
+        String boundValue = InventoryUtils.getMetaString(wandSection, "owner_id");
+        return boundValue != null;
     }
 
     @Override
