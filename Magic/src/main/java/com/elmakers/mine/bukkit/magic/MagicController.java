@@ -2311,7 +2311,7 @@ public class MagicController implements MageController {
         Object newObject;
         try
         {
-            newObject = spellClass.newInstance();
+            newObject = spellClass.getDeclaredConstructor().newInstance();
         }
         catch (Throwable ex)
         {
@@ -2742,7 +2742,7 @@ public class MagicController implements MageController {
             String dataStoreClassName = mageDataStore.getString("class");
             try {
                 Class<?> dataStoreClass = Class.forName(dataStoreClassName);
-                Object dataStore = dataStoreClass.newInstance();
+                Object dataStore = dataStoreClass.getDeclaredConstructor().newInstance();
                 if (dataStore == null || !(dataStore instanceof MageDataStore))
                 {
                     getLogger().log(Level.WARNING, "Invalid player_data_store class " + dataStoreClassName + ", does it implement MageDataStore? Player data saving is disabled!");
@@ -5319,7 +5319,8 @@ public class MagicController implements MageController {
         mobMages.put(mage.getId(), mage);
     }
 
-    public Collection<String> getLoadedExamples() {
+    @Override
+    public @Nonnull Collection<String> getLoadedExamples() {
         List<String> examples = new ArrayList<>();
         if (exampleDefaults != null) examples.add(exampleDefaults);
         if (addExamples != null) examples.addAll(addExamples);

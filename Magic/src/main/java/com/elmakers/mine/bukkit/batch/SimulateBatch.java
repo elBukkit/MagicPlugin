@@ -58,7 +58,6 @@ public class SimulateBatch extends SpellBatch {
 
     public static boolean DEBUG = false;
 
-    private Mage mage;
     private Block heartBlock;
     private Block heartTargetBlock;
     private TargetMode targetMode = TargetMode.STABILIZE;
@@ -113,7 +112,6 @@ public class SimulateBatch extends SpellBatch {
     public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts, String automataName) {
         super(spell);
 
-        this.mage = spell.getMage();
         this.yRadius = yRadius;
         this.radius = radius;
         this.center = center.clone();

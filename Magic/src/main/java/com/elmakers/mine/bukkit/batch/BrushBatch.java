@@ -10,11 +10,9 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public abstract class BrushBatch extends SpellBatch {
-    protected final BrushSpell spell;
 
     public BrushBatch(BrushSpell spell) {
         super(spell);
-        this.spell = spell;
     }
 
     protected abstract boolean contains(Location location);

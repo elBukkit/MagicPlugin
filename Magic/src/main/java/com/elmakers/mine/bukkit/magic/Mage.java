@@ -2374,7 +2374,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             double attackMultiplier = controller.getMaxAttackMultiplier("overall");
             if (attackMultiplier > 1) {
                 attackMultiplier = 1 + (attackMultiplier - 1) * overallMultiplier;
-                multiplier *= attackMultiplier;
+                multiplier = (float)(multiplier * attackMultiplier);
             }
         }
         return multiplier;
@@ -3205,7 +3205,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     protected void addPassiveEffects(CasterProperties properties, boolean activeReduction) {
-        spMultiplier *= properties.getDouble("sp_multiplier", 1.0);
+        spMultiplier = (float)(spMultiplier * properties.getDouble("sp_multiplier", 1.0));
 
        boolean stack = properties.getBoolean("stack", false);
        addPassiveEffectsGroup(protection, properties, "protection", stack, 1.0);
@@ -3249,7 +3249,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (activeClass != null)
         {
             addPassiveEffects(activeClass, true);
-            spMultiplier *= activeClass.getDouble("sp_multiplier", 1.0);
+            spMultiplier = (float)(spMultiplier * activeClass.getDouble("sp_multiplier", 1.0));
         }
         if (activeWand != null && !activeWand.isPassive())
         {

@@ -75,7 +75,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private double castBoost = 0;
     private int boostTicks = 0;
     private double yBoost = 2;
-    private float thrustSpeed = 0;
+    private double thrustSpeed = 0;
     private int thrustFrequency = 1;
     private int deactivateFrequency = 10;
     private ThrustAction thrust;
@@ -510,13 +510,13 @@ public class LevitateSpell extends TargetingSpell implements Listener
         mountSilent = parameters.getBoolean("mount_silent", true);
         stashItem = parameters.getBoolean("stash_item", false);
 
-        mountBoostTicks += mage.getPower() * parameters.getInt("power_mount_boost_ticks", 0);
-        mountHealth += mage.getPower() * parameters.getDouble("power_mount_health", 0);
+        mountBoostTicks = (int)(mountBoostTicks + mage.getPower() * parameters.getInt("power_mount_boost_ticks", 0));
+        mountHealth = (int)(mountHealth + mage.getPower() * parameters.getDouble("power_mount_health", 0));
         if (moveDistance != 0) {
             moveDistance += mage.getPower() * parameters.getDouble("power_steer_speed", 0);
         }
         mountBoostPerJump += mage.getPower() * parameters.getDouble("power_mount_boost_per_jump", 0);
-        slowReduceBoostTicks +=  mage.getPower() * parameters.getDouble("power_slow_ticks", 0);
+        slowReduceBoostTicks = (int)(slowReduceBoostTicks + mage.getPower() * parameters.getDouble("power_slow_ticks", 0));
 
         if (moveDistance < 0) {
             moveDistance = 0;
@@ -594,7 +594,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         double speedBonus = parameters.getDouble("power_speed", 0);
         double boostBonus = parameters.getDouble("power_boost", 0);
         double maxSpeedBonus = parameters.getDouble("power_mount_boost", 0);
-        thrustSpeed += mage.getPower() * speedBonus;
+        thrustSpeed += thrustSpeed + mage.getPower() * speedBonus;
         castBoost += mage.getPower() * boostBonus;
         maxMountBoost += mage.getPower() * maxSpeedBonus;
 

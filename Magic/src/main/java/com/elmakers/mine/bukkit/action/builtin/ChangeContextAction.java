@@ -202,7 +202,7 @@ public class ChangeContextAction extends CompoundAction {
         {
             targetLocation = targetLocation.add(targetOffset);
         }
-        if (relativeTargetOffset != null & targetLocation != null)
+        if (relativeTargetOffset != null && targetLocation != null)
         {
             Location relativeTarget;
 

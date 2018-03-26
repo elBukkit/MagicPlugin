@@ -780,7 +780,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         for (String spellKey : spells) {
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
             if (spell != null) {
-                worth += spell.getWorth();
+                worth = (long)(worth + spell.getWorth());
             }
         }
         return worth;

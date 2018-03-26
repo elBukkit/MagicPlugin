@@ -20,7 +20,7 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
 
 public class VolumeAction extends CompoundAction
 {
-    public static final float DEGTORAD = 0.017453293F;
+    public static final float DEGTORAD = 0.017453292f;
     private static final int DEFAULT_RADIUS    = 2;
     protected boolean autoOrient;
     protected boolean autoPitch;

@@ -26,11 +26,9 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.io.Files;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
-    private final MagicController controller;
 
     public MagicConfigCommandExecutor(MagicAPI api, MagicController controller) {
         super(api);
-        this.controller = controller;
     }
 
     @Override

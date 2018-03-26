@@ -272,7 +272,7 @@ public class SpellShopAction extends BaseShopAction
                 InventoryUtils.wrapText(unpurchasableMessage, lore);
             }
 
-            if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
+            if ((requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
                     || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)
                     || (requiredPathTags != null && !currentPath.hasAllTags(requiredPathTags))
                     || !missingSpells.isEmpty()) {

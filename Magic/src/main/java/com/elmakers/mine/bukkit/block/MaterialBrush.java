@@ -671,7 +671,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public void activate(final Location location, final String material) {
         String materialKey = splitMaterialKey(material)[0];
-        if (materialKey.equals(CLONE_MATERIAL_KEY) || materialKey.equals(REPLICATE_MATERIAL_KEY) && location != null) {
+        if ((materialKey.equals(CLONE_MATERIAL_KEY) || materialKey.equals(REPLICATE_MATERIAL_KEY)) && location != null) {
             Location cloneFrom = location.clone();
             cloneFrom.setY(cloneFrom.getY() - 1);
             setCloneLocation(cloneFrom);

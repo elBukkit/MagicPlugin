@@ -6,7 +6,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
@@ -16,8 +15,6 @@ public class RegenerateBatch extends SpellBatch {
 
     private final UndoList restoredBlocks;
     private final World world;
-    private final Mage mage;
-    private final UndoableSpell spell;
 
     // These are chunk coords!
     private final int absx;
@@ -47,8 +44,6 @@ public class RegenerateBatch extends SpellBatch {
 
     public RegenerateBatch(UndoableSpell spell, Location p1, Location p2) {
         super(spell);
-        this.spell = spell;
-        this.mage = spell.getMage();
         this.restoredBlocks = new UndoList(mage, spell.getName());
         this.restoredBlocks.setSpell(spell);
         this.restoredBlocks.setBatch(this);

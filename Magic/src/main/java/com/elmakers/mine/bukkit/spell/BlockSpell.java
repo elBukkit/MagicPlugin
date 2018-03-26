@@ -29,6 +29,7 @@ public abstract class BlockSpell extends UndoableSpell {
         "indestructible", "destructible", "check_destructible", "bypass_undo", "undo", "destructible_durability"
     };
 
+    @Override
     public boolean isIndestructible(Block block)
     {
         if (mage.isSuperPowered()) return false;
@@ -38,6 +39,7 @@ public abstract class BlockSpell extends UndoableSpell {
         return indestructible.testBlock(block) || mage.isIndestructible(block);
     }
 
+    @Override
     public boolean isDestructible(Block block)
     {
         if (isIndestructible(block)) return false;

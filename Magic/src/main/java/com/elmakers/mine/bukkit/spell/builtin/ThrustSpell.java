@@ -26,7 +26,7 @@ public class ThrustSpell extends TargetingSpell
     protected int targetHeight = 0;
     protected int checkCounter = 0;
     protected int groundHeight = 0;
-    protected float hoverHeight = 0;
+    protected double hoverHeight = 0;
     protected long lastTick = 0;
 
     protected int checkFrequency = 10; // We'll check the ground every X steps

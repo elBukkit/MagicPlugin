@@ -23,11 +23,11 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 
 public class MagicTraitCommandExecutor extends MagicTabExecutor {
-    protected final CitizensController controller;
+    protected final CitizensController citizensController;
 
-    public MagicTraitCommandExecutor(MagicAPI api, CitizensController controller) {
+    public MagicTraitCommandExecutor(MagicAPI api, CitizensController citizensController) {
         super(api);
-        this.controller = controller;
+        this.citizensController = citizensController;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         }
 
         NPC npc = null;
-        Citizens citizens = controller.getCitizensPlugin();
+        Citizens citizens = citizensController.getCitizensPlugin();
         // Did player specify a id?
         if (args.length > 0) {
 

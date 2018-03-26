@@ -828,7 +828,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     @Override
     public int compareTo(com.elmakers.mine.bukkit.api.block.UndoList o) {
-        return (int)(scheduledTime - o.getScheduledTime());
+        return Long.compare(scheduledTime, o.getScheduledTime());
     }
 
     @Override

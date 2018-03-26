@@ -671,7 +671,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
                     @SuppressWarnings("unchecked")
                     Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
-                    EffectPlayer player = playerClass.newInstance();
+                    EffectPlayer player = playerClass.getDeclaredConstructor().newInstance();
                     player.load(plugin, effectValues);
                     players.add(player);
                 } catch (Exception ex) {

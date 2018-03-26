@@ -378,8 +378,8 @@ public class Target implements Comparable<Target>
         score = 1;
 
         // Apply scoring weights
-        if (maxDistanceSquared > 0) score += (maxDistanceSquared - distanceSquared) * distanceWeight;
-        if (!useHitbox && angle > 0 && maxAngle > 0) score += (3 - angle) * fovWeight;
+        if (maxDistanceSquared > 0) score = (int)(score + (maxDistanceSquared - distanceSquared) * distanceWeight);
+        if (!useHitbox && angle > 0 && maxAngle > 0) score = (int)(score + (3 - angle) * fovWeight);
 
         if (entity != null && mage != null && mage.getController().isNPC(entity))
         {

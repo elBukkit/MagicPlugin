@@ -1908,7 +1908,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         BaseSpell spell = null;
         try {
-            spell = this.getClass().newInstance();
+            spell = this.getClass().getDeclaredConstructor().newInstance();
             spell.initialize(controller);
             spell.loadTemplate(spellKey.getKey(), configuration);
             spell.loadPrerequisites(configuration);
@@ -2913,5 +2913,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean disableManaRegenerationWhenActive() {
         return disableManaRegeneration;
+    }
+
+    public boolean isIndestructible(Block block) {
+        return false;
+    }
+
+    public boolean isDestructible(Block block) {
+        return false;
     }
 }

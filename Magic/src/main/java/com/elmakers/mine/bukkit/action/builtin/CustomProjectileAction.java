@@ -262,7 +262,7 @@ public class CustomProjectileAction extends CompoundAction
         returnOffset = ConfigurationUtils.getVector(parameters, "return_offset");
         returnRelativeOffset = ConfigurationUtils.getVector(parameters, "return_relative_offset");
 
-        range *= context.getMage().getRangeMultiplier();
+        range = (int)(range * context.getMage().getRangeMultiplier());
 
         // Some parameter tweaks to make sure things are sane
         TargetType targetType = targeting.getTargetType();
