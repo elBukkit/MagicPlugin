@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.4
+
 # 7.3.5
 
  - Add Light, Fire, Ice and Shock arrows to Magic Bow progression
