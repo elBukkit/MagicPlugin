@@ -7,6 +7,7 @@
  - Fix magic armor not always updating due to inventory drag event
  - Fix stars configs, bending configs and Magic Sword not starting off with a bunch of spells
  - Better handling for color codes in wand names
+ - Players can no longer take bound wands out of chests if the wand doesn't belong to them
 
 # 7.3.4
 

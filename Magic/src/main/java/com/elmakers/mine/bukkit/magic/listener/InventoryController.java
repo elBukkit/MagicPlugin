@@ -296,8 +296,18 @@ public class InventoryController implements Listener {
             }
         }
 
+        // Check for unstashable wands
         if (isChest && !isContainerSlot && !player.hasPermission("Magic.wand.override_stash")) {
             if (InventoryUtils.getMetaBoolean(clickedItem, "unstashable", false)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
+        // Check for taking bound wands out of chests
+        if (isChest && isContainerSlot && Wand.isBound(clickedItem)) {
+            Wand testWand = controller.getWand(clickedItem);
+            if (!testWand.canUse(player)) {
                 event.setCancelled(true);
                 return;
             }
