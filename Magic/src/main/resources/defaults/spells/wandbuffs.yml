@@ -1,6 +1,7 @@
 wandbuffshop:
   icon: diamond_axe:234
   icon_disabled: diamond_hoe:234
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   category: npc
   hidden: true
   actions:
@@ -71,6 +72,7 @@ wandbuffshop:
 add_protection:
   icon: diamond_axe:234
   icon_disabled: diamond_hoe:234
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
     cast:
@@ -87,6 +89,7 @@ add_protection:
 add_explosion_protection:
   icon: diamond_axe:235
   icon_disabled: diamond_hoe:235
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
     cast:
@@ -103,6 +106,7 @@ add_explosion_protection:
 add_fall_protection:
   icon: diamond_axe:236
   icon_disabled: diamond_hoe:236
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
     cast:
@@ -119,6 +123,7 @@ add_fall_protection:
 add_fire_protection:
   icon: diamond_axe:237
   icon_disabled: diamond_hoe:237
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
     cast:
@@ -135,6 +140,7 @@ add_fire_protection:
 add_physical_protection:
   icon: diamond_axe:238
   icon_disabled: diamond_hoe:238
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
     cast:
@@ -151,6 +157,7 @@ add_physical_protection:
 add_projectile_protection:
   icon: diamond_axe:239
   icon_disabled: diamond_hoe:239
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
     cast:
@@ -167,6 +174,7 @@ add_projectile_protection:
 add_damage:
   icon: diamond_axe:178
   icon_disabled: diamond_hoe:178
+  icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
   hidden: true
   actions:
     cast:
@@ -183,6 +191,7 @@ add_damage:
 add_sharpness:
   icon: diamond_axe:240
   icon_disabled: diamond_hoe:240
+  icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
   hidden: true
   actions:
     cast:
