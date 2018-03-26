@@ -929,6 +929,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
+    public Set<String> getBaseSpells() {
+        return spells;
+    }
+
+    @Override
     public Set<String> getSpells() {
         Set<String> spellSet = new HashSet<>();
         for (String key : spells) {
@@ -5144,8 +5149,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         return controller.getSpellTemplate(spellKey);
     }
-
-
 
     private void setSpellLevel(String spellKey, int level) {
         if (level <= 1) {
