@@ -68,6 +68,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     @Nullable
     Spell getSpell(String key, Mage mage);
     @Nullable
+    @Override
     SpellTemplate getSpellTemplate(String key);
     @Override
     boolean hasSpell(String key);

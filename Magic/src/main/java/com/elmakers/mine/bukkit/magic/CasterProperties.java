@@ -231,7 +231,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
         Collection<String> spells = getBaseSpells();
         SpellKey key = new SpellKey(spellKey);
-        SpellTemplate currentSpell = getBaseSpell(spellKey);
+        SpellTemplate currentSpell = getSpellTemplate(spellKey);
         boolean modified = spells.add(key.getBaseKey());
         if (modified) {
             setProperty("spells", new ArrayList<>(spells));
@@ -343,9 +343,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Nullable
-    public SpellTemplate getBaseSpell(String spellKey) {
+    public SpellTemplate getSpellTemplate(String spellKey) {
         SpellKey key = new SpellKey(spellKey);
-        Collection<String> spells = getSpells();
+        Collection<String> spells = getBaseSpells();
         if (!spells.contains(key.getBaseKey())) return null;
         SpellKey baseKey = new SpellKey(key.getBaseKey(), getSpellLevel(key.getBaseKey()));
         return controller.getSpellTemplate(baseKey.getKey());

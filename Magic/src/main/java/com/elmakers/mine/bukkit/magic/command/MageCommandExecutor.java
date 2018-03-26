@@ -707,7 +707,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             return true;
         }
 
-        SpellTemplate currentSpell = activeClass.getBaseSpell(spellName);
+        SpellTemplate currentSpell = activeClass.getSpellTemplate(spellName);
         if (activeClass.addSpell(spellName)) {
             if (currentSpell != null) {
                 String levelDescription = spell.getLevelDescription();

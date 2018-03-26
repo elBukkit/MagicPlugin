@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
 public interface CasterProperties extends MagicConfigurable {
     boolean hasSpell(String spellKey);
@@ -31,11 +32,20 @@ public interface CasterProperties extends MagicConfigurable {
     /**
      * Returns a Spell for a given spell key, if this caster has the spell.
      *
-     * <p>Will return the correct spell level for the given spell, regarless of the level requested.
+     * <p>Will return the correct spell level for the given spell, regardless of the level requested.
      *
      * @param spellKey The spell key to request
      * @return the Spell, or null if not present here.
      */
     @Nullable
     Spell getSpell(String spellKey);
+
+    /**
+     * Returns the SpellTemplate representing the requested spell key at the correct level.
+     *
+     * @param spellKey The key of the spell being requested
+     * @return The SpellTemplate requested, or null if this class doesn't have the requested spell
+     */
+    @Nullable
+    SpellTemplate getSpellTemplate(String spellKey);
 }

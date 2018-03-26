@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -341,5 +342,12 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         // TODO: This won't update the "type" field of the base base base class here if the
         // template hierarchy has drastically changed.
         this.template = template;
+    }
+
+    @Override
+    @Deprecated
+    @Nullable
+    public SpellTemplate getBaseSpell(String spellKey) {
+        return getSpellTemplate(spellKey);
     }
 }
