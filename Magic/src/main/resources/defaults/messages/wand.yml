@@ -118,17 +118,17 @@ wand:
     player_no_wand: $name is not holding a wand
     no_item: You must be holding an item
     player_no_item: $name is not holding an item
-    reorganized: $wand reorganized
+    reorganized: "$wand &breorganized"
     player_reorganized: $name's wand reorganized
-    alphabetized: $wand alphabetized
+    alphabetized: "$wand &balphabetized"
     player_alphabetized: $name's wand alphabetized
     already_enchanted: That $item is already a wand
     enchanted: Your $item has been turned into a wand
     player_enchanted: $name's $item has been turned into a wand
     unenchanted: Your wand has been turned into a normal item
     player_unenchanted: $name's wand has been turned into a normal item
-    no_path: "&r&4Your $wand can not be enchanted"
-    max_enchanted: "&r&4Your $wand can not be enchanted any further"
+    no_path: "&r&4Your $wand &4can not be enchanted"
+    max_enchanted: "&r&4Your $wand &4can not be enchanted any further"
     level_up: "&r&bYou have progressed to to &r&5$path"
     duplicated: Your wand has been duplicated
     player_duplicated: $name's wand has been duplicated
@@ -153,7 +153,7 @@ wand:
     no_property: Wand has no property $name
     player_reconfigured: $name's wand reconfigured
     player_not_reconfigured: $name's wand not reconfigured
-    filled: Your $wand now contains all of your spells
+    filled: "&bYour $wand &bnow contains all of your spells"
     player_filled: $name's wand filled
     renamed: Your wand has been renamed
     player_renamed: $name's wand renamed
@@ -170,16 +170,16 @@ wand:
     description_lore: "&o&a$description"
     path_lore: ""
     #path_lore: "&o$path"
-    hotbar_count_usage: "&ePress $cycle_hotbar while your $wand is active to cycle hotbars"
-    inventory_instructions: "&r&eYour $wand now has more than one spell. Press $toggle to open/close the spell inventory. Use the hotbar buttons to select a spell."
-    chest_instructions: "&r&eYour $wand now has more than one spell. Press $toggle to open/close the spell inventory, click a spell to cast."
-    skills_instructions: "&r&eYour $wand now has more than one spell. Press $toggle to open/close the spell inventory, drag a spell to the hotbar to cast."
-    cycle_instructions: "&r&eYour $wand now has more than one spell. Press $cycle to cycle between spells."
-    page_instructions: "&r&eYour $wand now has more than one page of spells. Click outside the spell inventory to change pages."
-    bound_instructions: "&r&3Your $wand is bound to you, and is undroppable."
-    spell_instructions: "&r&bSwing your $wand to cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."
-    enchant_instructions: "&r&bUpgrade your $wand at an enchanting table to add spells and abilities."
-    brush_instructions: "&r&eMaterial brushes have been added to your $wand. Shift+$toggle to select a brush."
+    hotbar_count_usage: "&ePress $cycle_hotbar while your $wand &eis active to cycle hotbars"
+    inventory_instructions: "&r&eYour $wand &enow has more than one spell. Press $toggle to open/close the spell inventory. Use the hotbar buttons to select a spell."
+    chest_instructions: "&r&eYour $wand &enow has more than one spell. Press $toggle to open/close the spell inventory, click a spell to cast."
+    skills_instructions: "&r&eYour $wand &enow has more than one spell. Press $toggle to open/close the spell inventory, drag a spell to the hotbar to cast."
+    cycle_instructions: "&r&eYour $wand &enow has more than one spell. Press $cycle to cycle between spells."
+    page_instructions: "&r&eYour $wand &enow has more than one page of spells. Click outside the spell inventory to change pages."
+    bound_instructions: "&r&3Your $wand &3is bound to you, and is undroppable."
+    spell_instructions: "&r&bSwing your $wand &bto cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."
+    enchant_instructions: "&r&bUpgrade your $wand &bat an enchanting table to add spells and abilities."
+    brush_instructions: "&r&eMaterial brushes have been added to your $wand&e. Shift+$toggle to select a brush."
     sp_instructions: "&r&6You have earned some Spell Points! SP's are displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn fewer SP's, try mixing it up once you have more spells!"
     hotbar_changed: ""
     spell_activated: "$spell"

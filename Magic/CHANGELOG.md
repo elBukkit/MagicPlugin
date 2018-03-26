@@ -6,6 +6,7 @@
  - Add Light Arrow to Magic Bow progression
  - Fix magic armor not always updating due to inventory drag event
  - Fix stars configs, bending configs and Magic Sword not starting off with a bunch of spells
+ - Better handling for color codes in wand names
 
 # 7.3.4
 

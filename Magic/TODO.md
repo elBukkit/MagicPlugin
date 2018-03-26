@@ -2,7 +2,6 @@
 
 ## 7.4
 
- - Color codes in wand names need translating in messaging
  - Fix all the new warnings ...
  
  - Disallow players to take bound wands out of containers.

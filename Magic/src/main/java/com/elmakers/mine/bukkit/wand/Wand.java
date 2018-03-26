@@ -756,7 +756,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public String getName() {
-        return wandName;
+        return ChatColor.translateAlternateColorCodes('&', wandName);
     }
 
     public String getDescription() {
@@ -2001,7 +2001,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
         ChatColor wandColor = isModifiable() ? ChatColor.AQUA : ChatColor.RED;
-        sender.sendMessage(wandColor + wandName);
+        sender.sendMessage(wandColor + getName());
         if (isUpgrade) {
             sender.sendMessage(ChatColor.YELLOW + "(Upgrade)");
         }
