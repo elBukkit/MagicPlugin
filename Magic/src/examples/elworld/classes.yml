@@ -13,6 +13,17 @@ testing:
   mana_max: 1000
   mana_regeneration: 100
 
+testbad:
+  inherit: base
+  mana_max: 200
+  mana_regeneration: 20
+  path: beginner
+  hotbar_count: 2
+  spells:
+  - missile
+  - blink
+  - fling
+
 akr:
   mana_max: 1000
   mana_regeneration: 100

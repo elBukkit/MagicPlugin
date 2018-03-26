@@ -172,4 +172,14 @@ testclasses:
   icon: blaze_rod
   classes: akr,test2
 
-
+testbad:
+  name: Bad Config
+  description: $path Bad Wand
+  inherit: base_wand
+  class: testbad
+  mana_max: 20
+  mana_regeneration: 2
+  path: student
+  hotbar_count: 1
+  spells:
+  - fury

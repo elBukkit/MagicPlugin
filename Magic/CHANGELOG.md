@@ -5,7 +5,7 @@
  - Fix automata spawning via MagicWorlds
  - Add Light Arrow to Magic Bow progression
  - Fix magic armor not always updating due to inventory drag event
- - Fix stars configs, bending configs still temporarily semi-broken (you don't start with any bending moves)
+ - Fix stars configs, bending configs and Magic Sword not starting off with a bunch of spells
 
 # 7.3.4
 
