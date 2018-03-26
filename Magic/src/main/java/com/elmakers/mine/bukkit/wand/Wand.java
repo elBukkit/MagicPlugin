@@ -302,6 +302,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             load(wandConfig);
         } else {
             updateIcon();
+            needsSave = true;
         }
         loadProperties();
 
@@ -312,9 +313,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         if (needsSave) {
             saveState();
+            updateName();
+            updateLore();
         }
-        updateName();
-        updateLore();
     }
 
     public Wand(MagicController controller, ConfigurationSection config) {
