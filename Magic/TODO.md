@@ -2,13 +2,17 @@
 
 ## 7.4
 
+ - Color codes in wand names need translating in messaging
  - Fix all the new warnings ...
+ 
+ - Disallow players to take bound wands out of containers.
 
  - Optional lore on wands to say which classes they work with
  - Option for Selector for switch class rather than unlock class
 
  - Figure out positive/negative solution for reduction, protection, strength and weakness
  - Need to do something about template data mixing with class data ... use cases:
+   - Fix jedi/sith/bending progression
    - Screwed up migration, left properties on a wand that now belong to class
      - In this case we want to ignore them? Or merge them? Merge can't be a permanent override though.
    - Spells/mana etc on a wand or child class that should go to the base class

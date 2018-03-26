@@ -65,19 +65,19 @@ wands:
     detonator:
         name: Thermal Detonator
     lightsaber_red:
-        name: Lighsaber
+        name: Lightsaber
         description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
     lightsaber_green:
-        name: Lighsaber
+        name: Lightsaber
         description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
     lightsaber_blue:
-        name: Lighsaber
+        name: Lightsaber
         description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
     lightsaber_orange:
-        name: Lighsaber
+        name: Lightsaber
         description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
     lightsaber_purple:
-        name: Lighsaber
+        name: Lightsaber
         description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
 
 spells:

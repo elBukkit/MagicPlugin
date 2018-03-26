@@ -4,22 +4,24 @@ force_user:
   mana_max: 50
   mana: 50
   mana_regeneration: 5
+  spells:
+  - forcepush
 
 jedi:
   parent: force_user
   locked: true
   path: youngling
-  spells:
-    - forcepush
-    - forcepull
+  #spells:
+  #  - forcepush
+  #  - forcepull
 
 sith:
   parent: force_user
   locked: true
   path: acolyte
-  spells:
-    - forcepush
-    - forceignite
+  #spells:
+  #  - forcepush
+  #  - forceignite
 
 stars_soldier:
   storage:
