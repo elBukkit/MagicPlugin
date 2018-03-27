@@ -73,7 +73,7 @@ wolf:
     - iterate@95
     - kill@36
     - laser|3@80
-    - levitate|5@0
+    - superfly@0
     - life@82
     - lightning|3@87
     - damage@4

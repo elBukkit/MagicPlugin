@@ -16,5 +16,5 @@ superfly:
            sound: entity_enderdragon_flap
            sound_pitch: 0.2
     parameters:
-        speed: 1
+        speed: 2.5
 

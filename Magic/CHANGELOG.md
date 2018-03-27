@@ -5,6 +5,7 @@
  - Added warnings for use of deprecated spell classes. 
    Please check your startup logs!
    Better to fix these spells now, the classes will be removed in 8.0
+ - Fix Shock Arrows spewing an error to logs
 
 # 7.3.5
 
