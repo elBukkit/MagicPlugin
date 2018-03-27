@@ -2,6 +2,8 @@
 
 ## 7.4
  
+ - Weird auto-targeting on gatling gun?
+ 
  - Optional lore on wands to say which classes they work with
  - Option for Selector for switch class rather than unlock class
      
