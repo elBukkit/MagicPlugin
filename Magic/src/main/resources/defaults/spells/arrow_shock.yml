@@ -116,5 +116,6 @@ arrow_shock:
       repeat: "bowpull * 5 + 10"
       effect_slow: 10
       keep_in_inventory: true
+      undo: 4000
     costs:
       arrow: 1
