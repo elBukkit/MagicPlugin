@@ -1334,7 +1334,7 @@ spells:
         fail: ""
     spellshop:
         name: Learn Spells
-        title: "$path Spells ($balance)"
+        title: "$path Spells ($balance&0)"
         description: "Spend Spell Points to learn new spells.\nWhen you have learned all the required spells on your current path, you will rank up to the next path!"
         cost_lore: "Costs: $cost"
         no_items: There are no spells for you to buy here
@@ -1349,19 +1349,19 @@ spells:
         fail: ""
     engineershop:
         name: Engineer Shop
-        title: "Rollback ($balance)"
+        title: "Rollback ($balance&0)"
         description: Unlock the Engineering level
         confirm_title: "Upgrade to Engineer"
         fail: ""
     architectshop:
         name: Architect Shop
-        title: "Absorb ($balance)"
+        title: "Absorb ($balance&0)"
         description: Unlock the Architect level
         confirm_title: "Upgrade to Architect"
         fail: ""
     conduitshop:
         name: Conduit Shop
-        title: "Backup ($balance)"
+        title: "Backup ($balance&0)"
         description: Unlock the Conduit level
         confirm_title: "Upgrade to Conduit"
         fail: ""
@@ -1389,7 +1389,7 @@ spells:
     appearanceshop:
         name: Wand Appearances
         description: Change the look of your wand
-        title: "Wand Appearance ($balance)"
+        title: "Wand Appearance ($balance&0)"
         selected: "You changed to $item"
         not_applicable: "Your wand already looks like $item"
         no_template: "&cYou may not modify the appearance of $wand&c."
@@ -1403,22 +1403,22 @@ spells:
     colorshop:
         name: Effect Colors
         description: Colorize your spell effects
-        title: "Effect Color ($balance)"
+        title: "Effect Color ($balance&0)"
         selected: "You changed to $item"
     effectshop:
         name: Wand Effects
         description: Add particle effects to your wand
-        title: "Wand Effects ($balance)"
+        title: "Wand Effects ($balance&0)"
         selected: "You changed to $item"
         confirm_title: "$item"
     upgradeshop:
         name: Wand Upgrade Shop
-        title: "Wand Upgrades ($balance)"
+        title: "Wand Upgrades ($balance&0)"
         description: Upgrade your wand
         not_applicable: Your wand already has $item
     emeraldshop:
         name: Emerald Exchange
-        title: "Emeralds ($balance)"
+        title: "Emeralds ($balance&0)"
         description: Trade XP for Emeralds
     withdrawals:
       name: Withdrawals
@@ -1436,38 +1436,38 @@ spells:
     lootshop:
       name: Loot Shop
       description: Earn money for mob drops
-      title: "Sell Drops ($balance)"
+      title: "Sell Drops ($balance&0)"
     wandshop:
         name: Wand Shop
-        title: "Wands ($balance)"
+        title: "Wands ($balance&0)"
         description: Buy Wands
     mobshop:
         name: Mob Shop
-        title: "Mobs ($balance)"
+        title: "Mobs ($balance&0)"
         description: Buy Mob Eggs
     spawnershop:
         name: Spawner Shop
-        title: "Spawners ($balance)"
+        title: "Spawners ($balance&0)"
         description: Buy Mob Spawners
     broomshop:
         name: Broom Shop
-        title: "Brooms ($balance)"
+        title: "Brooms ($balance&0)"
         description: Buy Brooms
     magicitemshop:
         name: Magic Item Shop
-        title: "Magic Items ($balance)"
+        title: "Magic Items ($balance&0)"
         description: Buy Magic Items
     itemshop:
         name: Item Shop
-        title: "Shop ($balance)"
+        title: "Shop ($balance&0)"
         description: Buy Buy Buy!
     buyshop:
         name: Buy Shop
-        title: "Shop ($balance)"
+        title: "Shop ($balance&0)"
         description: Buy Buy Buy!
     sellshop:
         name: Sell Shop
-        title: "Sell ($balance)"
+        title: "Sell ($balance&0)"
         description: Sell Sell Sell!
         cost_lore: "Earn $cost"
         insufficient: "&cRequires &4$cost"
@@ -1537,7 +1537,7 @@ spells:
     note24:
       name: 24 Note B
     trinketshop:
-      title: "Trinkets ($balance)"
+      title: "Trinkets ($balance&0)"
     airscooter:
       name: Air Scooter
       description: Travel in style on a cushion of air
