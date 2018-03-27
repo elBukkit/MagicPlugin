@@ -6,6 +6,7 @@
    Please check your startup logs!
    Better to fix these spells now, the classes will be removed in 8.0
  - Fix Shock Arrows spewing an error to logs
+ - Fix Factions integration, add support for Factions safezone (treated as a no-pvp region)
 
 # 7.3.5
 

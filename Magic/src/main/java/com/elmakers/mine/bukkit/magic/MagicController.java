@@ -1213,6 +1213,7 @@ public class MagicController implements MageController {
         if (preciousStonesManager.isEnabled()) pvpManagers.add(preciousStonesManager);
         if (townyManager.isEnabled()) pvpManagers.add(townyManager);
         if (griefPreventionManager.isEnabled()) pvpManagers.add(griefPreventionManager);
+        if (factionsManager.isEnabled()) pvpManagers.add(factionsManager);
 
         // Build Managers
         if (worldGuardManager.isEnabled()) blockBuildManagers.add(worldGuardManager);

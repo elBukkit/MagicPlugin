@@ -1,21 +1,29 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
+
+import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class FactionsManager implements BlockBuildManager, BlockBreakManager {
+public class FactionsManager implements BlockBuildManager, BlockBreakManager, PVPManager {
     private boolean enabled = false;
     private Class<?> factionsManager = null;
     private Method factionsCanBuildMethod = null;
-    private Method psFactoryMethod = null;
+    private boolean methodIsBlock = false;
     private Object board = null;
     private Method getFactionAtMethod = null;
+    private Method isSafeZoneMethod = null;
     private Method isNoneMethod = null;
+
+    private Constructor flocationConstructor = null;
+    private Method psFactoryMethod = null;
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -48,18 +56,39 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
                         factionsCanBuildMethod = null;
                         psFactoryMethod = null;
                     }
+
+                    isSafeZoneMethod =  factionClass.getMethod("isSafeZone");
+
                 } catch (Throwable ex) {
                     // Try for Factions "Limited"
                     psFactoryMethod = null;
                     try {
                         factionsManager = Class.forName("com.massivecraft.factions.listeners.FactionsBlockListener");
-                        factionsCanBuildMethod = factionsManager.getMethod("playerCanBuildDestroyBlock", Player.class, Block.class, String.class, Boolean.TYPE);
+                        try {
+                            factionsCanBuildMethod = factionsManager.getMethod("playerCanBuildDestroyBlock", Player.class, Location.class, String.class, Boolean.TYPE);
+                        } catch (Exception notLoc) {
+                            methodIsBlock = true;
+                            factionsCanBuildMethod = factionsManager.getMethod("playerCanBuildDestroyBlock", Player.class, Block.class, String.class, Boolean.TYPE);
+                        }
                         if (factionsManager == null || factionsCanBuildMethod == null) {
                             factionsManager = null;
                             factionsCanBuildMethod = null;
                         } else {
                             plugin.getLogger().info("Factions 1.8.2+ build found");
                         }
+
+                        Class<?> factionClass = Class.forName("com.massivecraft.factions.Faction");
+                        isSafeZoneMethod =  factionClass.getMethod("isSafeZone");
+                        isNoneMethod = factionClass.getMethod("isNone");
+
+                        Class<?> flocationClass = Class.forName("com.massivecraft.factions.FLocation");
+                        flocationConstructor = flocationClass.getConstructor(Location.class);
+
+                        Class<?> boardClass = Class.forName("com.massivecraft.factions.Board");
+                        Method boardSingleton = boardClass.getMethod("getInstance");
+                        board = boardSingleton.invoke(null);
+
+                        getFactionAtMethod = boardClass.getMethod("getFactionAt", flocationClass);
                     } catch (Throwable ex2) {
                         plugin.getLogger().log(Level.WARNING, "Failed to find mcore", ex);
                         plugin.getLogger().log(Level.WARNING, "Failed to find FactionsBlockListener", ex2);
@@ -71,7 +100,7 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
                 if (factionsManager == null) {
                     plugin.getLogger().info("Factions integration failed.");
                 } else {
-                    plugin.getLogger().info("Factions found, will integrate for build checks.");
+                    plugin.getLogger().info("Factions found, will integrate for build and safe zone checks.");
                 }
             } else {
                 plugin.getLogger().info("Factions not found, will not integrate.");
@@ -81,19 +110,40 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
         }
     }
 
+    @Nullable
+    private Object getFLocation(Location location) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+        if (flocationConstructor != null) {
+            return flocationConstructor.newInstance(location);
+        } else if (psFactoryMethod != null) {
+            return psFactoryMethod.invoke(null, location);
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private Object getFactionAt(Location location) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        if (board == null || getFactionAtMethod == null) {
+            return null;
+        }
+
+        Object loc = getFLocation(location);
+        if (loc == null) {
+            return null;
+        }
+        Object faction = getFactionAtMethod.invoke(board, loc);
+        return faction;
+    }
+
     @Override
     public boolean hasBuildPermission(Player player, Block block) {
         if (enabled && block != null && factionsManager != null && factionsCanBuildMethod != null) {
 
-            // Check for wilderness
+            // Check for wilderness, mobs and command blocks can only build there
             if (player == null) {
-                if (board == null || getFactionAtMethod == null || isNoneMethod == null || psFactoryMethod == null) {
-                    return false;
-                }
-
+                if (isNoneMethod == null || board == null) return false;
                 try {
-                    Object loc = psFactoryMethod.invoke(null, block.getLocation());
-                    Object faction = getFactionAtMethod.invoke(board, loc);
+                    Object faction = getFactionAt(block.getLocation());
                     return (faction == null || (Boolean)isNoneMethod.invoke(faction));
                 } catch (Throwable ex) {
                     ex.printStackTrace();
@@ -106,7 +156,8 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
                     Object loc = psFactoryMethod.invoke(null, block.getLocation());
                     return loc != null && (Boolean)factionsCanBuildMethod.invoke(null, player, loc, false);
                 }
-                return (Boolean)factionsCanBuildMethod.invoke(null, player, block, "destroy", true);
+                Object checkObject = methodIsBlock ? block : block.getLocation();
+                return (Boolean)factionsCanBuildMethod.invoke(null, player, checkObject, "destroy", true);
             } catch (Throwable ex) {
                 ex.printStackTrace();
                 return false;
@@ -119,5 +170,21 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager {
     @Override
     public boolean hasBreakPermission(Player player, Block block) {
         return hasBuildPermission(player, block);
+    }
+
+    @Override
+    public boolean isPVPAllowed(Player player, Location location) {
+        if (enabled && location != null && factionsManager != null && isSafeZoneMethod != null && board != null) {
+
+            try {
+                Object faction = getFactionAt(location);
+                return faction == null || !(Boolean)isSafeZoneMethod.invoke(faction);
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        return true;
     }
 }
