@@ -2,6 +2,8 @@
 
 # 7.4
 
+ - Added warnings for use of deprecated spell classes. Please check your startup logs!
+
 # 7.3.5
 
  - Add Light, Fire, Ice and Shock arrows to Magic Bow progression

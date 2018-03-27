@@ -29,7 +29,6 @@
    
 ## Suggestions
 
- - Options to disable spell selection and casting from inventory
  - Cast location offset override per spell.
  - Flag to prevent putting SP in chests
  - Check knockback resistance in Velocity action, or add Mage knockback resistance.

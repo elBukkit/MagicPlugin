@@ -2307,6 +2307,9 @@ public class MagicController implements MageController {
             controller.getLogger().log(Level.WARNING, "Error loading spell: " + className, ex);
             return null;
         }
+        if (spellClass.getAnnotation(Deprecated.class) != null) {
+            controller.getLogger().warning("Spell " + name + " is using a deprecated spell class " + className + ". This will be removed in the future, please see the default configs for alternatives.");
+        }
 
         Object newObject;
         try
