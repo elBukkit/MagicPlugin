@@ -10,7 +10,6 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class RepeatAction extends CompoundAction
 {
@@ -24,7 +23,7 @@ public class RepeatAction extends CompoundAction
         if (parameters.getString("repeat", "").equals("infinite")) {
             infinite = true;
         } else {
-            count = ConfigurationUtils.getInteger(parameters, "repeat", 2);
+            count = parameters.getInt("repeat", 2);
         }
     }
 
