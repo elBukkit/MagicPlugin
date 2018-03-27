@@ -2,7 +2,9 @@
 
 # 7.4
 
- - Added warnings for use of deprecated spell classes. Please check your startup logs!
+ - Added warnings for use of deprecated spell classes. 
+   Please check your startup logs!
+   Better to fix these spells now, the classes will be removed in 8.0
 
 # 7.3.5
 

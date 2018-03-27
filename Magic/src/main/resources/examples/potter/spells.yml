@@ -713,25 +713,11 @@ spongify:
     category: transfiguration
 
 spongifymaxima:
-    icon: diamond_axe:173
-    icon_disabled: diamond_hoe:173
-    icon_url: http://textures.minecraft.net/texture/fced4114232f1aff90c5fbb3535e89c546858b14bae3fea7ecc896b2bd51
+    inherit: rubberize
     category: transfiguration
-    class: RecurseSpell
-    worth: 150
-    cast_on_no_target: true
-    effects:
-        cast:
-        -  class: EffectTrail
-           effect: step_sound
-        -  class: EffectSingle
-           sound: fuse
     parameters:
-        allow_max_range: false
-        range: 16
         size: 8
         check_destructible: false
-        brush: slime_block
         transparent: transparent_to_construction
         undo: 60000
         cooldown: 5000
@@ -851,40 +837,8 @@ floo:
         cooldown: 7000
 
 fiendfyre:
-    icon_url: http://textures.minecraft.net/texture/a9e073da36aaf2c844da428cd4a19dfde32c8cdc2404eed4a135f6095b17c
-    icon: diamond_axe:139
-    icon_disabled: diamond_hoe:139
+    inherit: flamethrower
     category: dark
-    class: IterateSpell
-    pvp_restricted: true
-    worth: 90
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ghast_fireball
-           sound_volume: 1
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             lengthGrow: 0.4
-             particle: lava
-    parameters:
-        target_type: LivingEntity
-        transparent: transparent_to_construction
-        allow_max_range: true
-        range: 40
-        size: 30
-        radius: 1
-        reverse: false
-        increment_data: true
-        require_block: true
-        brush: lava
-        cooldown: 20000
-        undo: 1000
-        target_breakables: 5
-        bypass_backfire: true
-    costs:
-        mana: 180
 
 finiteincantatem:
     inherit: counterspell
@@ -1081,7 +1035,9 @@ fourpoint:
     icon: diamond_axe:189
     icon_disabled: diamond_hoe:189
     category: elective
-    class: OrientSpell
+    actions:
+      cast:
+      - class: Orient
     worth: 20
     effects:
         cast:
@@ -1361,7 +1317,6 @@ levicorpus:
     icon: diamond_axe:227
     icon_disabled: diamond_hoe:227
     category: charms
-    class: GenericSpell
     cast_on_no_target: true
     pvp_restricted: true
     worth: 20
@@ -1504,14 +1459,16 @@ lumossolem:
     icon: diamond_axe:228
     icon_disabled: diamond_hoe:228
     category: charms
-    class: TossSpell
+    actions:
+      cast:
+      - class: ThrowBlock
     worth: 20
     effects:
         cast:
         -  class: EffectSingle
            sound: fire_ignite
+           location: target
            effectlib:
-             location: target
              offset: 0,.5,0
              class: HelixEffect
              iterations: 1
@@ -2215,24 +2172,12 @@ vermillious|3:
         mana: 70
 
 colorvaria:
-    icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
-    icon: diamond_axe:125
-    icon_disabled: diamond_hoe:125
+    inherit: superalter
     category: transfiguration
-    class: AlterSpell
     worth: 8
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           particle: flame
     parameters:
-        target_type: LivingEntity
-        allow_max_range: false
         range: 16
         depth: 8
-        transparent: transparent_to_construction
         undo: 5000
         bypass_build: true
         bypass_backfire: true

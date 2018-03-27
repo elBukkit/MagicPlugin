@@ -3,22 +3,32 @@ anvil:
     icon_disabled: diamond_hoe:90
     icon_url: http://textures.minecraft.net/texture/505b8ba793c372d9fb45db20df80c1606b19b7421a9bbcc258ae2a65d65ea7
     category: utility
-    class: PlaceSpell
+    actions:
+      cast:
+      - class: ChangeContext
+        target_attachment: true
+        target_offset: 0,8,0
+        actions:
+        - class: ModifyBlock
     worth: 100
     effects:
         cast:
         -  class: EffectSingle
            particle: block_crack
            location: target
+           particle_count: 30
+           particle_offset_x: 2
+           particle_offset_y: 0.1
+           particle_offset_z: 2
     parameters:
         target: other
         target_type: LivingEntity
         allow_max_range: true
         range: 16
-        oty: 4
         undo: 30000
         cooldown: 20000
         brush: anvil
+        destructible: air
     costs:
         mana: 100
 

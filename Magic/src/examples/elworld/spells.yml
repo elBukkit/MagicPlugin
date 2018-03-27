@@ -2936,58 +2936,6 @@ equation:
     #equation: "rand(20*intelligence/7,30*intelligence/5)"
     equation: "((((intelligence * (1 + (10 / 150)) - 1) + 0 + 0) ^ 1.05) + 10) * 1"
 
-shrink2:
-    icon: diamond_axe:146
-    icon_disabled: diamond_hoe:146
-    icon_url: http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e
-    category: combat
-    worth: 750
-    earns_sp: 8
-    class: ShrinkSpell
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: entity_endermen_teleport
-           sound_pitch: 0.1
-           sound_volume: 0.5
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 11
-             particle: spell_instant
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: "81F7D8"
-           firework: star
-        no_target:
-        -  class: EffectSingle
-           sound: entity_endermen_teleport
-           sound_pitch: 0.1
-           sound_volume: 0.5
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 11
-             particle: spell_instant
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: "FFFFFF"
-           firework: burst
-    parameters:
-        hitbox: true
-        target_type: LivingEntity
-        target: other_entity
-        allow_max_range: false
-        range: 16
-        player_damage: 1
-        entity_damage: 4
-        target_breakables: 1
-        cooldown: 15000
-    costs:
-        mana: 75
-
 lumos:
     icon: diamond_axe:228
     icon_disabled: diamond_hoe:228
@@ -3383,3 +3331,7 @@ smartfling:
         target: self
         min_speed: "0.1 + intelligence / 20"
         max_speed: "0.2 + intelligence / 5"
+
+deprecated:
+  icon: feather
+  class: AbsorbSpell
