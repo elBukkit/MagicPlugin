@@ -19,7 +19,13 @@ arrow_shock:
             - class: Damage
             - class: Delay
               delay: 300
+            - class: PlayEffects
+              effects: zap
     effects:
+        zap:
+        - sound: magic.zap
+          sound_pitch: 1.5
+          sound_volume: 1.1
         cast:
         - sound: entity_arrow_shoot
           sound_pitch: 0.9
@@ -50,9 +56,20 @@ arrow_shock:
              particleOffsetZ: 0.2
              particle: fireworks_spark
              disappearWithOriginEntity: true
-        hit_entity:
+        hit:
         - class: EffectSingle
           location: target
+          particle: fireworks_spark
+          particle_count: 10
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+          particle_data: 0.4
+          sound: magic.zap
+          sound_pitch: 1.2
+          sound_volume: 0.5
+        - location: target
+          requires_entity_target: true
           target_location: body
           particle: fireworks_spark
           particle_count: 40
@@ -68,18 +85,27 @@ arrow_shock:
             offset: 0,-0.2,0
             size: 0.6
             disappearWithOriginEntity: true
-        hit:
-        - class: EffectSingle
-          location: target
+        - location: target
+          requires_entity_target: true
+          target_location: body
           particle: fireworks_spark
-          particle_count: 10
-          particle_offset_x: 0.2
-          particle_offset_y: 0.2
-          particle_offset_z: 0.2
-          particle_data: 0.4
-          sound: magic.zap
-          sound_pitch: 1.2
-          sound_volume: 0.5
+          particle_count: 40
+          particle_offset_x: 0.4
+          particle_offset_y: 1
+          particle_offset_z: 0.4
+          effectlib:
+            class: AnimatedBall
+            particle: fireworks_spark
+            particles: 20
+            particleCount: 4
+            particleOffsetX: 0.05
+            particleOffsetY: 0.05
+            particleOffsetZ: 0.05
+            duration: 3000
+            yFactor: 1.5
+            offset: 0,-0.2,0
+            size: 0.4
+            disappearWithOriginEntity: true
     parameters:
       target: none
       projectile: TippedArrow
