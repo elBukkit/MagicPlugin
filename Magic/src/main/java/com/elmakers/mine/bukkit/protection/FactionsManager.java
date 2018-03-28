@@ -22,7 +22,7 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
     private Method isSafeZoneMethod = null;
     private Method isNoneMethod = null;
 
-    private Constructor flocationConstructor = null;
+    private Constructor<?> flocationConstructor = null;
     private Method psFactoryMethod = null;
 
     public void setEnabled(boolean enabled) {
@@ -131,8 +131,7 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
         if (loc == null) {
             return null;
         }
-        Object faction = getFactionAtMethod.invoke(board, loc);
-        return faction;
+        return getFactionAtMethod.invoke(board, loc);
     }
 
     @Override
