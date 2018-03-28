@@ -263,7 +263,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         super(controller);
 
         hotbars = new ArrayList<>();
-        setHotbarCount(1);
         inventories = new ArrayList<>();
     }
 
@@ -505,13 +504,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         super.load(configuration);
     }
 
-    protected void setHotbarCount(int count) {
-        hotbars.clear();
-        while (hotbars.size() < count) {
-            hotbars.add(CompatibilityUtils.createInventory(null, HOTBAR_INVENTORY_SIZE, "Wand"));
-        }
-        while (hotbars.size() > count) {
-            hotbars.remove(0);
+    protected void updateHotbarCount() {
+        int hotbarCount = Math.max(1, getInt("hotbar_count", 1));
+        if (hotbarCount != hotbars.size()) {
+            if (isInventoryOpen()) {
+                closeInventory();
+            }
+            hotbars.clear();
+            while (hotbars.size() < hotbarCount) {
+                hotbars.add(CompatibilityUtils.createInventory(null, HOTBAR_INVENTORY_SIZE, "Wand"));
+            }
+            while (hotbars.size() > hotbarCount) {
+                hotbars.remove(0);
+            }
         }
     }
 
@@ -1078,6 +1083,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Force an update of the display inventory since chest mode is a different size
         displayInventory = null;
 
+        updateHotbarCount();
         for (Inventory hotbar : hotbars) {
             hotbar.clear();
         }
@@ -1744,16 +1750,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         alternateSpell = getString("alternate_spell");
         alternateSpell2 = getString("alternate_spell2");
         activeBrush = getString("active_brush", getString("active_material"));
-
-        if (hasProperty("hotbar_count")) {
-            int newCount = Math.max(1, getInt("hotbar_count"));
-            if (newCount != hotbars.size() || newCount > hotbars.size()) {
-                if (isInventoryOpen()) {
-                    closeInventory();
-                }
-                setHotbarCount(newCount);
-            }
-        }
 
         if (hasProperty("hotbar")) {
             currentHotbar = getInt("hotbar");
