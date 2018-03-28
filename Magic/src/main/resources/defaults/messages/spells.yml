@@ -1294,6 +1294,7 @@ spells:
         cast_requirement: "&r&cCasts: &6$current&f/&e$required"
         tags_requirement: "&r&cRequires: &6$tags"
         confirm_title: "Change to $item"
+        title: "Spell Progress"
     brushselect:
         name: Brush Selector
         descriptions: Chooses your active brush
