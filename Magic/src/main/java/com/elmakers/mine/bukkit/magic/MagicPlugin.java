@@ -168,7 +168,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             controller = new MagicController(this);
         }
 
-        if (NMSUtils.getFailed()) {
+        if (!NMSUtils.initialize()) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Magic] Something went wrong with some Deep Magic, plugin will not load.");
             Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Magic] Please make sure you are running a compatible version of " + ChatColor. RED + "Spigot (1.9 or Higher)!");
         } else {

@@ -302,8 +302,7 @@ public class NMSUtils {
     protected static Object object_magicSource;
     protected static Map<String, Object> damageSources;
 
-    static
-    {
+    public static boolean initialize() {
         // Find classes Bukkit hides from us. :-D
         // Much thanks to @DPOHVAR for sharing the PowerNBT code that powers the reflection approach.
         String className = Bukkit.getServer().getClass().getName();
@@ -945,6 +944,8 @@ public class NMSUtils {
             failed = true;
             Bukkit.getLogger().log(Level.SEVERE, "An unexpected error occurred initializing Magic", ex);
         }
+
+        return !failed;
     }
 
     public static boolean getFailed() {
@@ -1847,7 +1848,7 @@ public class NMSUtils {
     public static <T> Map<String, T> getTypedMap(ConfigurationSection section)
     {
         if (section == null) return null;
-        if (section instanceof MemorySection)
+        if (section instanceof MemorySection && class_MemorySection_mapField != null)
         {
             try {
                 Object mapObject = class_MemorySection_mapField.get(section);
