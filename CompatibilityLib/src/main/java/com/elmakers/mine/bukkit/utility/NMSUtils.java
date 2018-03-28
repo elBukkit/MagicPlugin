@@ -1164,6 +1164,7 @@ public class NMSUtils {
 
     public static ItemStack getCopy(ItemStack stack) {
         if (stack == null) return null;
+        if (class_CraftItemStack_mirrorMethod == null) return stack;
 
         try {
             Object craft = getNMSCopy(stack);
@@ -1515,18 +1516,26 @@ public class NMSUtils {
     public static void addGlow(ItemStack stack) {
         if (NMSUtils.isEmpty(stack)) return;
 
-        ItemMeta meta = stack.getItemMeta();
-        meta.addEnchant(Enchantment.LUCK, 1, true);
-        stack.setItemMeta(meta);
+        try {
+            ItemMeta meta = stack.getItemMeta();
+            meta.addEnchant(Enchantment.LUCK, 1, true);
+            stack.setItemMeta(meta);
+       } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void removeGlow(ItemStack stack) {
         if (NMSUtils.isEmpty(stack)) return;
 
-        ItemMeta meta = stack.getItemMeta();
-        if (meta.hasEnchant(Enchantment.LUCK)) {
-            meta.removeEnchant(Enchantment.LUCK);
-            stack.setItemMeta(meta);
+        try {
+            ItemMeta meta = stack.getItemMeta();
+            if (meta.hasEnchant(Enchantment.LUCK)) {
+                meta.removeEnchant(Enchantment.LUCK);
+                stack.setItemMeta(meta);
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -1540,7 +1549,7 @@ public class NMSUtils {
             if (tagObject == null) return false;
             unbreakableFlag = getMetaBoolean(tagObject, "Unbreakable");
         } catch (Throwable ex) {
-
+            ex.printStackTrace();
         }
         
         return unbreakableFlag != null && unbreakableFlag;
@@ -1559,7 +1568,7 @@ public class NMSUtils {
             unbreakableFlag = class_NBTTagByte_constructor.newInstance((byte) 1);
             class_NBTTagCompound_setMethod.invoke(tagObject, "Unbreakable", unbreakableFlag);
         } catch (Throwable ex) {
-
+            ex.printStackTrace();
         }
     }
 
@@ -1580,7 +1589,7 @@ public class NMSUtils {
             hideFlag = class_NBTTagByte_constructor.newInstance(flags);
             class_NBTTagCompound_setMethod.invoke(tagObject, "HideFlags", hideFlag);
         } catch (Throwable ex) {
-
+            ex.printStackTrace();
         }
     }
 
