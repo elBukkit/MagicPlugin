@@ -41,7 +41,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 
-public abstract class TargetingSpell extends BaseSpell {
+public class TargetingSpell extends BaseSpell {
     // This differs from CompatibilityUtils.MAX_ENTITY_RANGE,
     // block targeting can theoretically go farther
     private static final int  MAX_RANGE  = 511;

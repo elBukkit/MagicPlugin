@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
-public abstract class BrushSpell extends BlockSpell {
+public class BrushSpell extends BlockSpell {
 
     protected MaterialBrush brush;
     protected String brushKey;

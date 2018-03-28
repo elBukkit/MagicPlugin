@@ -83,7 +83,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
 
-public abstract class BaseSpell implements MageSpell, Cloneable {
+public class BaseSpell implements MageSpell, Cloneable {
     public static String DEFAULT_DISABLED_ICON_URL = "";
 
     protected enum ToggleType { NONE, CANCEL, UNDO }
@@ -2433,10 +2433,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return hidden;
     }
 
-    //
-    // Spell abstract interface
-    //
-
     /**
      * Called when this spell is cast.
      *
@@ -2446,9 +2442,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      * they will be passed in here.
      *
      * @param parameters Any parameters that were passed to this spell
-     * @return true if the spell worked, false if it failed
+     * @return The SpellResult of this cast.
      */
-    public abstract SpellResult onCast(ConfigurationSection parameters);
+    public SpellResult onCast(ConfigurationSection parameters) {
+        throw new UnsupportedOperationException("The onCast method has not been implemented");
+    }
 
     @Override
     public MageController getController() {

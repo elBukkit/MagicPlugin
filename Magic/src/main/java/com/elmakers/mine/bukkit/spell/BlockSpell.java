@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.magic.MaterialSets;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
-public abstract class BlockSpell extends UndoableSpell {
+public class BlockSpell extends UndoableSpell {
 
     private @Nonnull MaterialSet     indestructible = MaterialSets.empty();
     private MaterialSet     destructible;
