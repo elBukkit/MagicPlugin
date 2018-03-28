@@ -171,8 +171,18 @@ import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
 
 public class MagicController implements MageController {
+
+    // Special constructor used for interrogation
+    public MagicController() {
+        configFolder = null;
+        dataFolder = null;
+        defaultsFolder = null;
+        this.logger = Logger.getLogger("Magic");
+    }
+
     public MagicController(final MagicPlugin plugin) {
         this.plugin = plugin;
+        this.logger = plugin.getLogger();
 
         configFolder = plugin.getDataFolder();
         configFolder.mkdirs();
@@ -586,7 +596,7 @@ public class MagicController implements MageController {
      */
     @Override
     public Logger getLogger() {
-        return plugin.getLogger();
+        return logger;
     }
 
     public boolean isIndestructible(Location location) {
@@ -835,7 +845,6 @@ public class MagicController implements MageController {
         inventoryController = new InventoryController(this);
         explosionController = new ExplosionController(this);
         requirementsController = new RequirementsController(this);
-        messages = new Messages();
 
         File urlMapFile = getDataFile(URL_MAPS_FILE);
         File imageCache = new File(dataFolder, "imagemapcache");
@@ -4765,11 +4774,14 @@ public class MagicController implements MageController {
     }
 
     @Override
+    @Nullable
     public EntityData getMob(String key) {
-        return mobs.get(key);
+        // This null check is hopefully temporary, but deals with actions that look up a mob during interrogation.
+        return mobs == null ? null : mobs.get(key);
     }
 
     @Override
+    @Nullable
     public EntityData getMobByName(String key) {
         return mobs.getByName(key);
     }
@@ -5456,6 +5468,7 @@ public class MagicController implements MageController {
 
     private MageDataStore                       mageDataStore               = null;
 
+    private Logger                              logger                      = null;
     private MagicPlugin                         plugin                      = null;
     private final File                            configFolder;
     private final File                            dataFolder;
@@ -5530,7 +5543,7 @@ public class MagicController implements MageController {
     private ItemController                      items                        = null;
     private EnchantingController                enchanting                    = null;
     private AnvilController                        anvil                        = null;
-    private Messages                            messages                    = null;
+    private Messages                            messages                    = new Messages();
     private MapController                       maps                        = null;
     private DynmapController                    dynmap                        = null;
     private ElementalsController                elementals                    = null;
