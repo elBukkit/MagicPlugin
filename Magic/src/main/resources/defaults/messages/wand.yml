@@ -189,6 +189,8 @@ wand:
     unbound_prefix: "&b"
     has_path_prefix: "&d"
     unmodifiable_prefix: "&6"
+    spell_prefix: "&6"
+    brush_prefix: "&7"
     # You can use this to show an action bar message whenever the player cycles their hotbar
     #hotbar_changed: "a:Switched hotbars"
     # Messages can also be sent as simple titles with default fade in/out

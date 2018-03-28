@@ -2044,16 +2044,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (materialName == null) {
             materialName = "none";
         }
-        return ChatColor.GRAY + materialName;
+        String brushPrefix = ChatColor.translateAlternateColorCodes('&', messages.get("wand.brush_prefix"));
+        return brushPrefix + materialName;
     }
 
     private static String getSpellDisplayName(Messages messages, SpellTemplate spell, com.elmakers.mine.bukkit.api.block.MaterialBrush brush) {
         String name = "";
         if (spell != null) {
+            String spellPrefix = ChatColor.translateAlternateColorCodes('&', messages.get("wand.spell_prefix"));
             if (brush != null && spell.usesBrush()) {
-                name = ChatColor.GOLD + spell.getName() + " " + getBrushDisplayName(messages, brush) + ChatColor.WHITE;
+                name = spellPrefix + spell.getName() + " " + getBrushDisplayName(messages, brush) + ChatColor.WHITE;
             } else {
-                name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE;
+                name = spellPrefix + spell.getName() + ChatColor.WHITE;
             }
         }
 
