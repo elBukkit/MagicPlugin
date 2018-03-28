@@ -55,7 +55,7 @@ public class BaseMagicProperties implements MagicProperties {
             "keep", "locked", "quiet", "force", "rename",
             "rename_description",
             "power", "overrides",
-            "protection", "potion_effects",
+            "protection", "potion_effects", "item_attributes",
             "brushes", "brush_inventory", "spells", "spell_inventory", "spell_levels",
             "powered", "protected", "heroes",
             "enchant_count", "max_enchant_count",
