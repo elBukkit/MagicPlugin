@@ -43,19 +43,19 @@ arrow_shock:
              particles: 40
              particle: redstone
              color: "FFF000"
-             disappearWithOriginEntity: true
+             disappear_with_origin_entity: true
         - location: origin
           effectlib:
              class: Sphere
              iterations: 10
              period: 2
              particles: 5
-             particleCount: 10
-             particleOffsetX: 0.2
-             particleOffsetY: 0.2
-             particleOffsetZ: 0.2
+             particle_count: 10
+             particle_offset_x: 0.2
+             particle_offset_y: 0.2
+             particle_offset_z: 0.2
              particle: fireworks_spark
-             disappearWithOriginEntity: true
+             disappear_with_origin_entity: true
         hit:
         - class: EffectSingle
           location: target
@@ -81,10 +81,10 @@ arrow_shock:
             particle: redstone
             color: "FFF000"
             duration: 3000
-            yFactor: 1.5
+            y_factor: 1.5
             offset: 0,-0.2,0
             size: 0.6
-            disappearWithOriginEntity: true
+            disappear_with_origin_entity: true
         - location: target
           requires_entity_target: true
           target_location: body
@@ -97,15 +97,15 @@ arrow_shock:
             class: AnimatedBall
             particle: fireworks_spark
             particles: 20
-            particleCount: 4
-            particleOffsetX: 0.05
-            particleOffsetY: 0.05
-            particleOffsetZ: 0.05
+            particle_count: 4
+            particle_offset_x: 0.05
+            particle_offset_y: 0.05
+            particle_offset_z: 0.05
             duration: 3000
-            yFactor: 1.5
+            y_factor: 1.5
             offset: 0,-0.2,0
             size: 0.4
-            disappearWithOriginEntity: true
+            disappear_with_origin_entity: true
     parameters:
       target: none
       projectile: TippedArrow

@@ -30,9 +30,9 @@ recall:
             duration: $warmup
             period: 1
             particle: redstone
-            particleOffsetX: 0.9
-            particleOffsetY: 0.1
-            particleOffsetZ: 0.9
+            particle_offset_x: 0.9
+            particle_offset_y: 0.1
+            particle_offset_z: 0.9
             radius: 1
             offset: 0,-1,0
         -  class: EffectSingle
@@ -42,10 +42,10 @@ recall:
             duration: $warmup
             period: 2
             particle: portal
-            particleCount: 10
-            particleOffsetX: 0.9
-            particleOffsetY: 0.1
-            particleOffsetZ: 0.9
+            particle_count: 10
+            particle_offset_x: 0.9
+            particle_offset_y: 0.1
+            particle_offset_z: 0.9
             radius: 1
             offset: 0,-1,0
         teleport:
@@ -56,9 +56,9 @@ recall:
            effectlib:
              class: WarpEffect
              particle: redstone
-             particleOffsetX: 0.9
-             particleOffsetY: 0.1
-             particleOffsetZ: 0.9
+             particle_offset_x: 0.9
+             particle_offset_y: 0.1
+             particle_offset_z: 0.9
              offset: 0,-1,0
              period: 2
         -  class: EffectSingle
@@ -70,10 +70,10 @@ recall:
              class: WarpEffect
              period: 1
              particle: portal
-             particleCount: 10
-             particleOffsetX: 0.9
-             particleOffsetY: 0.1
-             particleOffsetZ: 0.9
+             particle_count: 10
+             particle_offset_x: 0.9
+             particle_offset_y: 0.1
+             particle_offset_z: 0.9
              offset: 0,-1,0
     parameters:
         warmup: 5000

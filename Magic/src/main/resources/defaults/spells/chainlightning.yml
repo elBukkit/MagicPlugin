@@ -58,10 +58,10 @@ chainlightning:
              length: 10
              particles: 20
              particle: fireworks_spark
-             particleCount: 4
-             particleOffsetX: 0.1
-             particleOffsetY: 0.1
-             particleOffsetZ: 0.1
+             particle_count: 4
+             particle_offset_x: 0.1
+             particle_offset_y: 0.1
+             particle_offset_z: 0.1
              duration: 2000
         tick:
         - particle: fireworks_spark

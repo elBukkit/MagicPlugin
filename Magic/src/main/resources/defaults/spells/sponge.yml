@@ -25,14 +25,14 @@ sponge:
       - location: target
         effectlib:
           class: Cube
-          edgeLength: 0.5
-          particleCount: 2
+          edge_length: 0.5
+          particle_count: 2
           particles: 4
-          particleOffsetX: 0.5
-          particleOffsetY: 0.5
-          particleOffsetZ: 0.5
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
           particle: drip_water
-          enableRotation: false
+          enable_rotation: false
           iterations: 4
       cast:
       - sound: magic.shimmer
@@ -54,10 +54,10 @@ sponge:
           duration: 4000
           particles: 5
           period: 1
-          particleCount: 10
-          particleOffsetX: 0.01
-          particleOffsetY: 0.01
-          particleOffsetZ: 0.01
+          particle_count: 10
+          particle_offset_x: 0.01
+          particle_offset_y: 0.01
+          particle_offset_z: 0.01
           delay: 10
     parameters:
       allow_max_range: false

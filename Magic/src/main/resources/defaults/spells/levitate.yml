@@ -24,11 +24,11 @@ levitate:
                  particle: redstone
                  radius: 1.2
                  height: 0
-                 enableRotation: false
+                 enable_rotation: false
                  particles: 20
                  offset: 0,-0.1,0
                  duration: 1200000
-                 disappearWithOriginEntity: true
+                 disappear_with_origin_entity: true
            - class: EffectSingle
              location: origin
              source_location: feet
@@ -37,15 +37,15 @@ levitate:
                  particle: cloud
                  radius: 0.6
                  height: 0
-                 enableRotation: false
+                 enable_rotation: false
                  particles: 20
-                 particleCount: 4
-                 particleOffsetX: 0.2
-                 particleOffsetY: 0
-                 particleOffsetZ: 0.2
+                 particle_count: 4
+                 particle_offset_x: 0.2
+                 particle_offset_y: 0
+                 particle_offset_z: 0.2
                  offset: 0,-0.1,0
                  duration: 1200000
-                 disappearWithOriginEntity: true
+                 disappear_with_origin_entity: true
         deactivate:
         -  class: EffectSingle
            sound: entity_enderdragon_flap

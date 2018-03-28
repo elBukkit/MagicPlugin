@@ -62,10 +62,10 @@ wave:
              zEquation: "t/16*4-4"
              iterations: 2
              particles: 16
-             particleCount: 4
-             particleOffsetX: 1
-             particleOffsetY: 0.2
-             particleOffsetZ: 1
+             particle_count: 4
+             particle_offset_x: 1
+             particle_offset_y: 0.2
+             particle_offset_z: 1
              particle: smoke_large
              orient: true
              orientPitch: false

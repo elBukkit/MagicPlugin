@@ -35,10 +35,10 @@ superlaser:
            effectlib:
              class: DnaEffect
              particlesBase: 0
-             particlesHelix: 7
-             particleHelix: redstone
-             particleBase1: drip_lava
-             particleBase2: smoke_normal
+             particles_helix: 7
+             particle_helix: redstone
+             particle_base1: drip_lava
+             particle_base2: smoke_normal
              iterations: 10
              radius: 1.5
              grow: 0.2

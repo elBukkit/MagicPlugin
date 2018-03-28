@@ -24,11 +24,11 @@ counterspell:
             yEquation: "sin(t)"
             zEquation: "cos(t)"
             particle: enchantment_table
-            particleCount: 20
+            particle_count: 20
             speed: 1
-            particleOffsetX: 0.2
-            particleOffsetY: 0.2
-            particleOffsetZ: 0.2
+            particle_offset_x: 0.2
+            particle_offset_y: 0.2
+            particle_offset_z: 0.2
             updateDirections: false
         - location: source
           use_target_location: false
@@ -39,10 +39,10 @@ counterspell:
             yEquation: "sin(t) * (t/50)"
             zEquation: "cos(t) * (t/50) + 1"
             particle: crit
-            particleCount: 10
-            particleOffsetX: 0.1
-            particleOffsetY: 0.1
-            particleOffsetZ: 0.1
+            particle_count: 10
+            particle_offset_x: 0.1
+            particle_offset_y: 0.1
+            particle_offset_z: 0.1
             updateDirections: false
             particles: 20
         - location: target
@@ -60,10 +60,10 @@ counterspell:
             yEquation: "sin(t) * (t/50)"
             zEquation: "cos(t) * (t/50) + 1"
             particle: crit
-            particleCount: 10
-            particleOffsetX: 0.1
-            particleOffsetY: 0.1
-            particleOffsetZ: 0.1
+            particle_count: 10
+            particle_offset_x: 0.1
+            particle_offset_y: 0.1
+            particle_offset_z: 0.1
             updateDirections: false
             particles: 20
     parameters:

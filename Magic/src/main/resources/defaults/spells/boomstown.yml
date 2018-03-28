@@ -41,11 +41,11 @@ boomstown:
           firework: star
        - class: EffectSingle
          location: target
-         particle_override: particleOrbital
+         particle_override: particle_orbital
          effectlib:
             class: AtomEffect
-            particleNucleus: spell_instant
-            particleOrbital: spell_instant
+            particle_nucleus: spell_instant
+            particle_orbital: spell_instant
             iterations: 16
        no_target:
        -  class: EffectSingle

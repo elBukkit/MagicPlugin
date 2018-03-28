@@ -32,10 +32,10 @@ blessing:
              particle: end_rod
              iterations: 1
              particles: 40
-             particleCount: 4
-             particleOffsetX: 0.2
-             particleOffsetY: 0.01
-             particleOffsetZ: 0.2
+             particle_count: 4
+             particle_offset_x: 0.2
+             particle_offset_y: 0.01
+             particle_offset_z: 0.2
              offset: 0,0.1,0
              radius: $radius
         cast_finish:

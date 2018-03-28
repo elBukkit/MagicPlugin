@@ -14,9 +14,9 @@ ghast:
            sound: entity_villager_yes
            effectlib:
              class: DnaEffect
-             particleHelix: drip_lava
+             particle_helix: drip_lava
              iterations: 24
-             particleBase1: redstone
+             particle_base1: redstone
              radius: 0.2
         -  location: origin
            use_target_location: false

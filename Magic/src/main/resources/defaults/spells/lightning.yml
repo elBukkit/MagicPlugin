@@ -30,10 +30,10 @@ lightning:
              class: HelixEffect
              particle: smoke_large
              iterations: 1
-             particleCount: 10
-             particleOffsetX: 1
-             particleOffsetY: 0.1
-             particleOffsetZ: 1
+             particle_count: 10
+             particle_offset_x: 1
+             particle_offset_y: 0.1
+             particle_offset_z: 1
     parameters:
         target_type: LivingEntity
         allow_max_range: true

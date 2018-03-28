@@ -20,10 +20,10 @@ recurse:
              class: ConeEffect
              iterations: 10
              particle: block_crack
-             particleCount: 8
-             particleOffsetX: 0.8
-             particleOffsetY: 0.8
-             particleOffsetZ: 0.8
+             particle_count: 8
+             particle_offset_x: 0.8
+             particle_offset_y: 0.8
+             particle_offset_z: 0.8
              lengthGrow: 0.2
              radiusGrow: 0.004
              updateLocations: false

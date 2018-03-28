@@ -43,10 +43,10 @@ pull:
             particle: spell
             particles: 20
             iterations: 20
-            particleCount: 5
-            particleOffsetX: 0.5
-            particleOffsetY: 0.5
-            particleOffsetZ: 0.5
+            particle_count: 5
+            particle_offset_x: 0.5
+            particle_offset_y: 0.5
+            particle_offset_z: 0.5
             radius: 1.5
         alternate_down:
         - class: EffectSingle

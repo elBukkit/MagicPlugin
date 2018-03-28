@@ -11,10 +11,10 @@ note:
           effectlib:
              class: SmokeEffect
              particle: note
-             particleCount: 4
-             particleOffsetX: 2
-             particleOffsetY: 0.1
-             particleOffsetZ: 2
+             particle_count: 4
+             particle_offset_x: 2
+             particle_offset_y: 0.1
+             particle_offset_z: 2
              iterations: 3
                      
 note01:

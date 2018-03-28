@@ -33,11 +33,11 @@ mob:
              effect:
                class: DnaEffect
                grow: 0.1
-               particlesHelix: 5
+               particles_helix: 5
                length: 50
-               particleHelix: drip_lava
-               particleBase1: drip_lava
-               particleBase2: drip_lava
+               particle_helix: drip_lava
+               particle_base1: drip_lava
+               particle_base2: drip_lava
         spawned:
         -  class: EffectSingle
            location: target
@@ -48,8 +48,8 @@ mob:
                 radius: "(t / i) * 5 + 1"
               effect:
                class: AtomEffect
-               particleNucleus: drip_lava
-               particleOrbital: drip_lava
+               particle_nucleus: drip_lava
+               particle_orbital: drip_lava
     parameters:
         entity_types:
             zombie: 100

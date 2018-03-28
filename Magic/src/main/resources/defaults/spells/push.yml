@@ -35,20 +35,20 @@ push:
                effect:
                  class: DnaEffect
                  particlesBase: 0
-                 particlesHelix: 7
-                 particleHelix: spell
-                 particleBase1: spell
-                 particleBase2: spell
+                 particles_helix: 7
+                 particle_helix: spell
+                 particle_base1: spell
+                 particle_base2: spell
         - location: target
           effectlib:
             class: Sphere
             particle: spell
             particles: 5
             iterations: 20
-            particleCount: 10
-            particleOffsetX: 0.5
-            particleOffsetY: 0.5
-            particleOffsetZ: 0.5
+            particle_count: 10
+            particle_offset_x: 0.5
+            particle_offset_y: 0.5
+            particle_offset_z: 0.5
             radius: 1.5
         iterate:
         - class: EffectSingle
@@ -61,20 +61,20 @@ push:
                effect:
                  class: DnaEffect
                  particlesBase: 0
-                 particlesHelix: 7
-                 particleHelix: spell
-                 particleBase1: spell
-                 particleBase2: spell
+                 particles_helix: 7
+                 particle_helix: spell
+                 particle_base1: spell
+                 particle_base2: spell
         - location: target
           effectlib:
             class: Sphere
             particle: spell
             particles: 5
             iterations: 20
-            particleCount: 10
-            particleOffsetX: 0.5
-            particleOffsetY: 0.5
-            particleOffsetZ: 0.5
+            particle_count: 10
+            particle_offset_x: 0.5
+            particle_offset_y: 0.5
+            particle_offset_z: 0.5
             radius: 1.5
     parameters:
         target_type: Entity

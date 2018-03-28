@@ -30,12 +30,12 @@ arrow_fire:
              iterations: 10
              period: 2
              particles: 5
-             particleCount: 4
-             particleOffsetX: 0.2
-             particleOffsetY: 0.2
-             particleOffsetZ: 0.2
+             particle_count: 4
+             particle_offset_x: 0.2
+             particle_offset_y: 0.2
+             particle_offset_z: 0.2
              particle: smoke_large
-             disappearWithOriginEntity: true
+             disappear_with_origin_entity: true
         hit:
         - location: target
           particle: lava

@@ -18,10 +18,10 @@ workbench:
             particle: block_crack
             material: workbench
             duration: 1000
-            particleCount: 10
-            particleOffsetX: 1
-            particleOffsetZ: 1
-            particleOffsetY: 1
+            particle_count: 10
+            particle_offset_x: 1
+            particle_offset_z: 1
+            particle_offset_y: 1
     parameters:
         target: none
         cooldown: 5000

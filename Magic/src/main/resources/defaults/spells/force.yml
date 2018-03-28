@@ -14,10 +14,10 @@ force:
         effectlib:
            class: DnaEffect
            particlesBase: 0
-           particlesHelix: 7
-           particleHelix: spell_mob
-           particleBase1: spell_mob
-           particleBase2: spell_mob
+           particles_helix: 7
+           particle_helix: spell_mob
+           particle_base1: spell_mob
+           particle_base2: spell_mob
            iterations: 10
       target_selected:
       - class: EffectSingle
@@ -45,7 +45,7 @@ force:
           particle: redstone
           color: "222222"
           period: 1
-          yOffset: 0
+          y_offset: 0
           offset: 0,0.7,0
       - class: EffectTrail
         particle: spell_mob

@@ -62,7 +62,7 @@ curse:
                  particle: spell_mob
                  color: 210B61
                  particles: 20
-                 disappearWithOriginEntity: true
+                 disappear_with_origin_entity: true
         -  location: target
            source_location: body
            effectlib:
@@ -71,11 +71,11 @@ curse:
              particle: villager_happy
              radius: 0.8
              particles: 2
-             particleCount: 10
-             particleOffsetX: 0.2
-             particleOffsetY: 0.2
-             particleOffsetZ: 0.2
-             disappearWithOriginEntity: true
+             particle_count: 10
+             particle_offset_x: 0.2
+             particle_offset_y: 0.2
+             particle_offset_z: 0.2
+             disappear_with_origin_entity: true
     costs:
         mana: 50
     parameters:

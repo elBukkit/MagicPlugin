@@ -21,8 +21,8 @@ default:
            iterations: 15
            particle: redstone
            color: "00FFAA"
-           edgeLength: 1.2
-           enableRotation: false
+           edge_length: 1.2
+           enable_rotation: false
            offset: 0.5,0.5,0.5
        - class: EffectTrail
          particle: spell_mob

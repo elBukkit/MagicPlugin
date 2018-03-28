@@ -79,10 +79,10 @@ flashbang:
                class: SphereEffect
                particle: smoke_large
                particles: 20
-               particleCount: 10
-               particleOffsetX: 0.5
-               particleOffsetY: 0.5
-               particleOffsetZ: 0.5
+               particle_count: 10
+               particle_offset_x: 0.5
+               particle_offset_y: 0.5
+               particle_offset_z: 0.5
         reflect:
         - class: EffectSingle
           location: target

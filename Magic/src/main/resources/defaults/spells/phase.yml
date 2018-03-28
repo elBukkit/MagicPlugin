@@ -25,11 +25,11 @@ phase:
              class: AnimatedBall
              particle: portal
              duration: 5000
-             yOffset: -0.5
-             particleCount: 8
-             particleOffsetX: 0.9
-             particleOffsetY: 2
-             particleOffsetZ: 0.9
+             y_offset: -0.5
+             particle_count: 8
+             particle_offset_x: 0.9
+             particle_offset_y: 2
+             particle_offset_z: 0.9
         -  location: source
            source_location: eyes
            effectlib:
@@ -37,7 +37,7 @@ phase:
              particle: redstone
              color: "F000F0"
              duration: 5000
-             yOffset: -0.5
+             y_offset: -0.5
         phase:
         - class: EffectSingle
           source_location: eyes
@@ -60,11 +60,11 @@ phase:
              class: AnimatedBall
              particle: portal
              duration: 2500
-             yOffset: -0.5
-             particleCount: 8
-             particleOffsetX: 0.9
-             particleOffsetY: 2
-             particleOffsetZ: 0.9
+             y_offset: -0.5
+             particle_count: 8
+             particle_offset_x: 0.9
+             particle_offset_y: 2
+             particle_offset_z: 0.9
         -  location: target
            source_location: eyes
            effectlib:
@@ -72,7 +72,7 @@ phase:
              particle: redstone
              color: "F000F0"
              duration: 5000
-             yOffset: -0.5
+             y_offset: -0.5
     parameters:
         warmup: 5000
         cancel_on_damage: 1

@@ -38,11 +38,11 @@ poison:
                period: 0.1
                particle: slime
                particles: 10
-               particleCount: 10
-               particleOffsetX: 0.1
-               particleOffsetY: 0.1
-               particleOffsetZ: 0.1
-               disappearWithOriginEntity: true
+               particle_count: 10
+               particle_offset_x: 0.1
+               particle_offset_y: 0.1
+               particle_offset_z: 0.1
+               disappear_with_origin_entity: true
     costs:
         mana: 50
     parameters:

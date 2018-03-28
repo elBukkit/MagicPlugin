@@ -48,9 +48,9 @@ disintegrate:
               radius: "(t/i)*2 + 0.2"
             effect:
                 class: AtomEffect
-                particleNucleus: smoke_large
-                particlesNucleus: 5
-                particlesOrbital: 5
+                particle_nucleus: smoke_large
+                particles_nucleus: 5
+                particles_orbital: 5
                 orbitals: 2
         removed:
         - location: target

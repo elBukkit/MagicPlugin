@@ -31,9 +31,9 @@ kill:
           location: origin
           effectlib:
              class: AtomEffect
-             particleNucleus: spell_mob
+             particle_nucleus: spell_mob
              colorNucleus: "00FF00"
-             particleOrbital: redstone
+             particle_orbital: redstone
              colorOrbital: "00FF00"
              iterations: 16
              radius: 5
@@ -73,7 +73,7 @@ kill:
              parameters:
               size: "max(0, (t / i) * 5 - 3) + 0.2"
              effect:
-               enableRotation: false
+               enable_rotation: false
                class: ColoredImageEffect
                fileName: https://i.imgur.com/47aVrwT.gif
                stepX: 1

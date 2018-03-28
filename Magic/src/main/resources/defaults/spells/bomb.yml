@@ -36,10 +36,10 @@ bomb:
              effect:
                class: Helix
                particle: spell_witch
-               particleCount: 2
-               particleOffsetX: 0.2
-               particleOffsetY: 0.01
-               particleOffsetZ: 0.2
+               particle_count: 2
+               particle_offset_x: 0.2
+               particle_offset_y: 0.01
+               particle_offset_z: 0.2
                updateLocations: false
                particles: 20
         projectile:

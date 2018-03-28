@@ -256,10 +256,10 @@ sniper:
             particlesPerIteration: 8
             iterations: 15
             particle: block_crack
-            particleCount: 20
+            particle_count: 20
             material: redstone_block
             size: 0.4
-            yOffset: 0
+            y_offset: 0
     headshot_parameters:
       damage_multiplier: 4
     parameters:
@@ -435,7 +435,7 @@ ak47:
             particle: block_crack
             material: redstone_block
             size: 0.3
-            yOffset: 0
+            y_offset: 0
     headshot_parameters:
       damage_multiplier: 1.5
     parameters:
@@ -654,7 +654,7 @@ pistol:
             particle: block_crack
             material: redstone_block
             size: 0.3
-            yOffset: 0
+            y_offset: 0
     headshot_parameters:
       damage_multiplier: 3
     parameters:
@@ -807,7 +807,7 @@ shotgun:
             particle: block_crack
             material: redstone_block
             size: 0.3
-            yOffset: 0
+            y_offset: 0
     headshot_parameters:
       damage_multiplier: 2
     parameters:
@@ -921,10 +921,10 @@ rocketlauncher:
             particlesPerIteration: 8
             iterations: 15
             particle: block_crack
-            particleCount: 30
+            particle_count: 30
             material: redstone_block
             size: 1
-            yOffset: 0
+            y_offset: 0
         hit:
         -  class: EffectSingle
            location: target
@@ -1039,10 +1039,10 @@ c4:
             particlesPerIteration: 8
             iterations: 15
             particle: block_crack
-            particleCount: 30
+            particle_count: 30
             material: redstone_block
             size: 1
-            yOffset: 0
+            y_offset: 0
         hit:
         -  class: EffectSingle
            location: target
@@ -1299,10 +1299,10 @@ drive:
             particlesPerIteration: 8
             iterations: 15
             particle: block_crack
-            particleCount: 20
+            particle_count: 20
             material: iron_block
             size: 0.4
-            yOffset: 0
+            y_offset: 0
         crash_entity:
         -  class: EffectSingle
            location: target
@@ -1323,10 +1323,10 @@ drive:
             particlesPerIteration: 8
             iterations: 15
             particle: block_crack
-            particleCount: 20
+            particle_count: 20
             material: redstone_block
             size: 0.4
-            yOffset: 0
+            y_offset: 0
         crash:
         - sound: entity_generic_explode
           sound_volume: 1

@@ -19,11 +19,11 @@ familiar:
              effect:
                class: DnaEffect
                grow: 0.1
-               particlesHelix: 5
+               particles_helix: 5
                length: 50
-               particleHelix: drip_water
-               particleBase1: drip_water
-               particleBase2: drip_water
+               particle_helix: drip_water
+               particle_base1: drip_water
+               particle_base2: drip_water
         -  class: EffectSingle
            location: target
            effectlib:
@@ -33,8 +33,8 @@ familiar:
                 radius: "(t / i) * 4 + 1"
               effect:
                class: AtomEffect
-               particleNucleus: drip_water
-               particleOrbital: drip_water
+               particle_nucleus: drip_water
+               particle_orbital: drip_water
     parameters:
         entity_types:
             chicken: 30

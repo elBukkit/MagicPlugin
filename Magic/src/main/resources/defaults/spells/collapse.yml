@@ -43,10 +43,10 @@ collapse:
              iterations: 1
              radius: 4
              particle: falling_dust
-             particleCount: 2
-             particleOffsetX: 0.1
-             particleOffsetY: 0
-             particleOffsetZ: 0.1
+             particle_count: 2
+             particle_offset_x: 0.1
+             particle_offset_y: 0
+             particle_offset_z: 0.1
         undo:
         -  class: EffectSingle
            sound: magic.shimmer
@@ -64,12 +64,12 @@ collapse:
             effect:
               class: Sphere
               particle: block_crack
-              yOffset: 0
+              y_offset: 0
               offset: 0,0.7,0
-              particleCount: 4
-              particleOffsetX: 0.1
-              particleOffsetY: 0.1
-              particleOffsetZ: 0.1
+              particle_count: 4
+              particle_offset_x: 0.1
+              particle_offset_y: 0.1
+              particle_offset_z: 0.1
     parameters:
         velocity: 1500
         allow_max_range: false

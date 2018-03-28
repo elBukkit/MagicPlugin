@@ -22,10 +22,10 @@ blind:
              particle: smoke_normal
              lengthGrow: 0.05
              radiusGrow: 0.002
-             particleCount: 4
-             particleOffsetX: 0.2
-             particleOffsetY: 0.2
-             particleOffsetZ: 0.2
+             particle_count: 4
+             particle_offset_x: 0.2
+             particle_offset_y: 0.2
+             particle_offset_z: 0.2
         tick:
         - location: target
           particle: smoke_normal
@@ -44,7 +44,7 @@ blind:
              effect:
                class: SphereEffect
                particle: smoke_normal
-               particleCount: 5
+               particle_count: 5
              duration: $duration
              parameters:
                particles: "select(t - 10, t * 5, 50, select(t - i + 10, 50, 50, abs(t - i) * 5))"

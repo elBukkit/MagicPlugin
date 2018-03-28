@@ -25,10 +25,10 @@ flamethrower:
              length: $size
              stepsPerIteration: 1
              particles: 10
-             particleCount: 20
-             particleOffsetX: 0.3
-             particleOffsetY: 0.3
-             particleOffsetZ: 0.3
+             particle_count: 20
+             particle_offset_x: 0.3
+             particle_offset_y: 0.3
+             particle_offset_z: 0.3
              relativeOffset: 2,0,0
         iterate:
         - location: target

@@ -25,10 +25,10 @@ cure:
                  radiusNucleus: "(t/i) * 0.5 + 0.4"
              effect:
                  class: AtomEffect
-                 particleNucleus: heart
-                 particleOrbital: crit
-                 particlesNucleus: 1
-                 particlesOrbital: 30
+                 particle_nucleus: heart
+                 particle_orbital: crit
+                 particles_nucleus: 1
+                 particles_orbital: 30
     parameters:
         bypass_mage_cooldown: true
         target_type: LivingEntity

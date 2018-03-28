@@ -23,11 +23,11 @@ glide:
              class: IconEffect
              duration: 30000
              particle: end_rod
-             particleOffsetX: 1
-             particleOffsetY: 1
-             particleOffsetZ: 1
-             particleCount: 40
-             yOffset: 0
+             particle_offset_x: 1
+             particle_offset_y: 1
+             particle_offset_z: 1
+             particle_count: 40
+             y_offset: 0
     parameters:
         target: self
         duration: 50000

@@ -20,10 +20,10 @@ tracking:
            effectlib:
              class: LineEffect
              particle: redstone
-             particleCount: 5
-             particleOffsetX: 0.1
-             particleOffsetY: 0.1
-             particleOffsetZ: 0.1
+             particle_count: 5
+             particle_offset_x: 0.1
+             particle_offset_y: 0.1
+             particle_offset_z: 0.1
     parameters:
         range: 32
         fov: 3

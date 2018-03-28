@@ -24,8 +24,8 @@ invincible:
                particle: redstone
                color: "FFD700"
                particles: 60
-               yOffset: -0.5
-               yFactor: 1
+               y_offset: -0.5
+               y_factor: 1
         - location: target
           effectlib:
              class: Modified
@@ -38,8 +38,8 @@ invincible:
                particle: redstone
                color: "C0C0C0"
                particles: 60
-               yOffset: -0.5
-               yFactor: 1
+               y_offset: -0.5
+               y_factor: 1
     parameters:
         target: self
         duration: 5000

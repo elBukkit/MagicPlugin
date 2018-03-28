@@ -16,9 +16,9 @@ superkill:
           location: origin
           effectlib:
              class: AtomEffect
-             particleNucleus: spell_mob
+             particle_nucleus: spell_mob
              colorNucleus: "00FF00"
-             particleOrbital: redstone
+             particle_orbital: redstone
              colorOrbital: "00FF00"
              iterations: 16
              radius: 5

@@ -28,7 +28,7 @@ bridge:
            effectlib:
              class: LineEffect
              particle: block_crack
-             particleCount: 8
+             particle_count: 8
              particles: 40
              offset: 0,-1,0
     parameters:

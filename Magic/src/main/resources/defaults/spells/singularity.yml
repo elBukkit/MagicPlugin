@@ -105,10 +105,10 @@ singularity:
                particle: block_crack
                color: 010101
                particles: 100
-               particleCount: 20
-               particleOffsetX: 1
-               particleOffsetY: 1
-               particleOffsetZ: 1
+               particle_count: 20
+               particle_offset_x: 1
+               particle_offset_y: 1
+               particle_offset_z: 1
     parameters:
       target_type: Entity
       velocity: 10

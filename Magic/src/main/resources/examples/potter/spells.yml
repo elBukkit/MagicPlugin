@@ -295,11 +295,11 @@ avadamaxima:
            firework: ball_large
         - class: EffectSingle
           location: target
-          particle_override: particleOrbital
+          particle_override: particle_orbital
           effectlib:
              class: AtomEffect
-             particleNucleus: villager_happy
-             particleOrbital: villager_happy
+             particle_nucleus: villager_happy
+             particle_orbital: villager_happy
              iterations: 16
     parameters:
         commands:
@@ -330,14 +330,14 @@ avis:
            sound: chicken_egg_pop
            effectlib:
              class: DnaEffect
-             particleHelix: drip_lava
+             particle_helix: drip_lava
              iterations: 24
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleOrbital: spell
+             particle_orbital: spell
     parameters:
         allow_max_range: true
         range: 2
@@ -1504,7 +1504,7 @@ morsmordre:
            target_offset: 0,3,0
            orient: true
            effectlib:
-             enableRotation: false
+             enable_rotation: false
              class: ColoredImageEffect
              fileName: https://i.imgur.com/47aVrwT.gif
              stepX: 1
@@ -2025,8 +2025,8 @@ amplify:
            location: origin
            effectlib:
              class: AtomEffect
-             particleNucleus: spell_witch
-             particleOrbital: crit_magicical
+             particle_nucleus: spell_witch
+             particle_orbital: crit_magicical
              iterations: 20
     parameters:
         commands:
@@ -2242,11 +2242,11 @@ vulnera:
         - class: EffectSingle
           sound: level_up
           location: target
-          particle_override: particleOrbital
+          particle_override: particle_orbital
           effectlib:
              class: AtomEffect
-             particleNucleus: heart
-             particleOrbital: crit
+             particle_nucleus: heart
+             particle_orbital: crit
              iterations: 16
         -  class: EffectSingle
            location: target
@@ -2288,11 +2288,11 @@ ferula:
         - class: EffectSingle
           sound: creeper_death
           location: target
-          particle_override: particleOrbital
+          particle_override: particle_orbital
           effectlib:
              class: AtomEffect
-             particleNucleus: enchantment_table
-             particleOrbital: villager_angry
+             particle_nucleus: enchantment_table
+             particle_orbital: villager_angry
              iterations: 60
     parameters:
         target_type: LivingEntity
@@ -2615,11 +2615,11 @@ fiantoduri:
         - class: EffectSingle
           sound: orb_pickup
           location: target
-          particle_override: particleOrbital
+          particle_override: particle_orbital
           effectlib:
              class: AtomEffect
-             particleNucleus: spell_witch
-             particleOrbital: spell_witch
+             particle_nucleus: spell_witch
+             particle_orbital: spell_witch
              iterations: 70
     costs:
         mana: 100

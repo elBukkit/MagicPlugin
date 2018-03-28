@@ -24,10 +24,10 @@ rubberize:
            effectlib:
              class: Helix
              particle: block_crack
-             particleCount: 8
-             particleOffsetX: 0.2
-             particleOffsetY: 0.5
-             particleOffsetZ: 0.2
+             particle_count: 8
+             particle_offset_x: 0.2
+             particle_offset_y: 0.5
+             particle_offset_z: 0.2
              iterations: 1
              radius: $size
     parameters:

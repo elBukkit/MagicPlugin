@@ -23,13 +23,13 @@ blink:
         - class: EffectSingle
           sound: magic.teleport
           location: target
-          particle_override: particleNucleus
+          particle_override: particle_nucleus
           color_override: colorOrbital
           source_location: eyes
           effectlib:
              class: AtomEffect
-             particleNucleus: fireworks_spark
-             particleOrbital: redstone
+             particle_nucleus: fireworks_spark
+             particle_orbital: redstone
              iterations: 16
              offset: 0,-1,0
         - class: EffectSingle
@@ -38,21 +38,21 @@ blink:
           color_override: colorNucleus
           effectlib:
              class: AtomEffect
-             particleNucleus: redstone
-             particleOrbital: fireworks_spark
+             particle_nucleus: redstone
+             particle_orbital: fireworks_spark
              iterations: 8
         precast:
          - class: EffectSingle
            sound: magic.teleport
            location: origin
-           particle_override: particleNucleus
+           particle_override: particle_nucleus
            color_override: colorOrbital
            source_location: body
            effectlib:
                class: AtomEffect
                updateLocations: false
-               particleNucleus: fireworks_spark
-               particleOrbital: redstone
+               particle_nucleus: fireworks_spark
+               particle_orbital: redstone
                iterations: 16
          - class: EffectSingle
            location: origin
@@ -61,8 +61,8 @@ blink:
            effectlib:
                class: AtomEffect
                updateLocations: false
-               particleNucleus: redstone
-               particleOrbital: fireworks_spark
+               particle_nucleus: redstone
+               particle_orbital: fireworks_spark
                iterations: 8
          - class: EffectSingle
            color_override: color
@@ -76,10 +76,10 @@ blink:
                class: LineEffect
                particle: fireworks_spark
                particles: 50
-               particleCount: 5
-               particleOffsetX: 0.5
-               particleOffsetY: 0.5
-               particleOffsetZ: 0.5
+               particle_count: 5
+               particle_offset_x: 0.5
+               particle_offset_y: 0.5
+               particle_offset_z: 0.5
                updateLocations: false
     parameters:
         target: block

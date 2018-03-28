@@ -19,7 +19,7 @@ convert:
              class: ConeEffect
              iterations: 10
              particle: block_crack
-             particleCount: 3
+             particle_count: 3
              lengthGrow: 0.1
              radiusGrow: 0.003
              updateLocations: false

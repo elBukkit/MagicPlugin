@@ -30,11 +30,11 @@ blob:
            effectlib:
              class: SphereEffect
              particle: block_crack
-             particleCount: 20
+             particle_count: 20
              particles: 20
-             particleOffsetX: 0.3
-             particleOffsetY: 0.3
-             particleOffsetZ: 0.3
+             particle_offset_x: 0.3
+             particle_offset_y: 0.3
+             particle_offset_z: 0.3
              radius: $radius
              duration: 2000
     parameters:

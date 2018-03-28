@@ -37,10 +37,10 @@ wound:
              iterations: 50
              particles: 20
              particle: drip_lava
-             particleCount: 20
-             particleOffsetX: 0
-             particleOffsetY: 0.1
-             particleOffsetZ: 0
+             particle_count: 20
+             particle_offset_x: 0
+             particle_offset_y: 0.1
+             particle_offset_z: 0
              xEquation: "1.5"
              yEquation: "-t/20 + 0.5"
              zEquation: "-t/20 + 0.5"

@@ -52,10 +52,10 @@ sticky:
                class: SphereEffect
                particle: redstone
                particles: 10
-               particleCount: 4
-               particleOffsetX: 0.01
-               particleOffsetY: 0.01
-               particleOffsetZ: 0.01
+               particle_count: 4
+               particle_offset_x: 0.01
+               particle_offset_y: 0.01
+               particle_offset_z: 0.01
         explode:
         - location: target
           particle: explosion_huge

@@ -33,11 +33,11 @@ polymorph:
           sound: entity_experience_orb_pickup
           location: target
           requires_entity_target: true
-          particle_override: particleOrbital
+          particle_override: particle_orbital
           effectlib:
              class: AtomEffect
-             particleNucleus: fireworks_spark
-             particleOrbital: fireworks_spark
+             particle_nucleus: fireworks_spark
+             particle_orbital: fireworks_spark
              iterations: 40
     costs:
         mana: 150

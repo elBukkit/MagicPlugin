@@ -270,11 +270,11 @@ airglider:
              class: IconEffect
              duration: 30000
              particle: end_rod
-             particleOffsetX: 1
-             particleOffsetY: 1
-             particleOffsetZ: 1
-             particleCount: 10
-             yOffset: 0
+             particle_offset_x: 1
+             particle_offset_y: 1
+             particle_offset_z: 1
+             particle_count: 10
+             y_offset: 0
     parameters:
         target: self
         duration: 10000
@@ -320,11 +320,11 @@ airglider2:
              class: IconEffect
              duration: 30000
              particle: end_rod
-             particleOffsetX: 1
-             particleOffsetY: 1
-             particleOffsetZ: 1
-             particleCount: 10
-             yOffset: 0
+             particle_offset_x: 1
+             particle_offset_y: 1
+             particle_offset_z: 1
+             particle_count: 10
+             y_offset: 0
     parameters:
         target: self
         cooldown: 6000

@@ -35,12 +35,12 @@ secure:
            class: Modified
            iterations: 30
            parameters:
-            edgeLength: "max(1, (1 - (t / i)) * 5 - 2)"
+            edge_length: "max(1, (1 - (t / i)) * 5 - 2)"
            effect:
              class: CubeEffect
              particle: redstone
              color: "C0C0C0"
-             enableRotation: false
+             enable_rotation: false
              offset: 0.5,0.5,0.5
         no_target:
         - class: EffectSingle
@@ -61,8 +61,8 @@ secure:
            iterations: 2
            particle: redstone
            color: "660000"
-           edgeLength: 1
-           enableRotation: false
+           edge_length: 1
+           enable_rotation: false
            offset: 0.5,0.5,0.5
         alternate_up:
         - class: EffectSingle
@@ -99,12 +99,12 @@ secure:
            class: Modified
            iterations: 30
            parameters:
-            edgeLength: "max(1, (t / i) * 5 - 2)"
+            edge_length: "max(1, (t / i) * 5 - 2)"
            effect:
              class: CubeEffect
              particle: redstone
              color: "C0C0C0"
-             enableRotation: false
+             enable_rotation: false
              offset: 0.5,0.5,0.5
     alternate_up_parameters:
       type: key

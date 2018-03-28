@@ -31,13 +31,13 @@ arrowrain:
             iterations: 10
             parameters:
                 radius: "(t / i) * 3"
-                particleOffsetY: "(t / i) * 2"
+                particle_offset_y: "(t / i) * 2"
             effect:
                 class: Shield
                 particles: 20
-                particleCount: 10
-                particleOffsetX: 0.5
-                particleOffsetZ: 0.5
+                particle_count: 10
+                particle_offset_x: 0.5
+                particle_offset_z: 0.5
                 particle: water_drop
         projectile:
         - location: origin
@@ -46,10 +46,10 @@ arrowrain:
              iterations: 10
              period: 2
              particles: 5
-             particleCount: 5
-             particleOffsetX: 0.2
-             particleOffsetY: 0.2
-             particleOffsetZ: 0.2
+             particle_count: 5
+             particle_offset_x: 0.2
+             particle_offset_y: 0.2
+             particle_offset_z: 0.2
              particle: water_drop
     parameters:
         target: none

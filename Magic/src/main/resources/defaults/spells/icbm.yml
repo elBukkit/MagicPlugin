@@ -26,26 +26,26 @@ icbm:
             class: Sphere
             particle: smoke_large
             particles: 4
-            particleCount: 8
-            particleOffsetX: 0.1
-            particleOffsetY: 0.1
-            particleOffsetZ: 0.1
+            particle_count: 8
+            particle_offset_x: 0.1
+            particle_offset_y: 0.1
+            particle_offset_z: 0.1
             radius: 0.3
             duration: 2000
             delay: 6
-            disappearWithOriginEntity: true
+            disappear_with_origin_entity: true
         - location: origin
           effectlib:
             class: Sphere
             particle: lava
             particles: 2
-            particleCount: 2
-            particleOffsetX: 0.2
-            particleOffsetY: 0.2
-            particleOffsetZ: 0.2
+            particle_count: 2
+            particle_offset_x: 0.2
+            particle_offset_y: 0.2
+            particle_offset_z: 0.2
             radius: 0.2
             duration: 2000
-            disappearWithOriginEntity: true
+            disappear_with_origin_entity: true
         hit:
         - class: EffectSingle
           particle: explosion_huge
@@ -54,10 +54,10 @@ icbm:
             class: Helix
             particles: 10
             particle: lava
-            particleCount: 4
-            particleOffsetX: 0.2
-            particleOffsetY: 0.2
-            particleOffsetZ: 0.2
+            particle_count: 4
+            particle_offset_x: 0.2
+            particle_offset_y: 0.2
+            particle_offset_z: 0.2
             radius: $radius
             iterations: 1
         - class: EffectSingle
@@ -66,10 +66,10 @@ icbm:
             class: Helix
             particles: 10
             particle: smoke_large
-            particleCount: 4
-            particleOffsetX: 0.2
-            particleOffsetY: 0.2
-            particleOffsetZ: 0.2
+            particle_count: 4
+            particle_offset_x: 0.2
+            particle_offset_y: 0.2
+            particle_offset_z: 0.2
             radius: $radius
             iterations: 1
     parameters:

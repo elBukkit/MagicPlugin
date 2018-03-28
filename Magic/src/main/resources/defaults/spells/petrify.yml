@@ -40,12 +40,12 @@ petrify:
           sound: block_stone_hit
           location: target
           requires_entity_target: true
-          particle_override: particleOrbital
+          particle_override: particle_orbital
           target_location: body
           effectlib:
              class: AtomEffect
-             particleNucleus: fireworks_spark
-             particleOrbital: fireworks_spark
+             particle_nucleus: fireworks_spark
+             particle_orbital: fireworks_spark
              duration: $duration
              radius: 2
         - class: EffectSingle
@@ -55,8 +55,8 @@ petrify:
           material: stone
           effectlib:
              class: AtomEffect
-             particleNucleus: block_crack
-             particleOrbital: block_dust
+             particle_nucleus: block_crack
+             particle_orbital: block_dust
              duration: $duration
              radius: 1
     costs:

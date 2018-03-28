@@ -29,10 +29,10 @@ rollback:
             yEquation: "sin(t) * (t/50)"
             zEquation: "cos(t) * (t/50) + 1"
             particle: crit
-            particleCount: 10
-            particleOffsetX: 0.1
-            particleOffsetY: 0.1
-            particleOffsetZ: 0.1
+            particle_count: 10
+            particle_offset_x: 0.1
+            particle_offset_y: 0.1
+            particle_offset_z: 0.1
             updateDirections: false
             particles: 20
         alternate_up:
@@ -40,12 +40,12 @@ rollback:
           sound: magic.shimmer
           sound_volume: 1
           location: both
-          particle_override: particleNucleus
+          particle_override: particle_nucleus
           color_override: colorOrbital
           effectlib:
                class: AtomEffect
-               particleNucleus: enchantment_table
-               particleOrbital: redstone
+               particle_nucleus: enchantment_table
+               particle_orbital: redstone
                iterations: 8
         cast:
         - sound: magic.shimmer
@@ -60,11 +60,11 @@ rollback:
             yEquation: "sin(t)"
             zEquation: "cos(t)"
             particle: enchantment_table
-            particleCount: 20
+            particle_count: 20
             speed: 1
-            particleOffsetX: 0.2
-            particleOffsetY: 0.2
-            particleOffsetZ: 0.2
+            particle_offset_x: 0.2
+            particle_offset_y: 0.2
+            particle_offset_z: 0.2
             updateDirections: false
         - location: source
           use_target_location: false
@@ -75,10 +75,10 @@ rollback:
             yEquation: "sin(t) * (t/50)"
             zEquation: "cos(t) * (t/50) + 1"
             particle: crit
-            particleCount: 10
-            particleOffsetX: 0.1
-            particleOffsetY: 0.1
-            particleOffsetZ: 0.1
+            particle_count: 10
+            particle_offset_x: 0.1
+            particle_offset_y: 0.1
+            particle_offset_z: 0.1
             updateDirections: false
             particles: 20
         - location: target

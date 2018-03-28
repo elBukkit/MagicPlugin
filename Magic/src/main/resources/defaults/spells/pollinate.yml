@@ -39,8 +39,8 @@ pollinate:
            location: source
            effectlib:
               class: AtomEffect
-              particleNucleus: redstone
-              particleOrbital: drip_water
+              particle_nucleus: redstone
+              particle_orbital: drip_water
               colorNucleus: "0000FF"
               iterations: 16
               radius: 4

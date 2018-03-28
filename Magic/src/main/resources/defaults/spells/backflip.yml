@@ -27,27 +27,27 @@ backflip:
         - class: EffectSingle
           sound: magic.teleport
           location: target
-          particle_override: particleNucleus
+          particle_override: particle_nucleus
           color_override: colorOrbital
           source_location: eyes
           effectlib:
              class: AtomEffect
-             particleNucleus: dragon_breath
-             particleOrbital: redstone
+             particle_nucleus: dragon_breath
+             particle_orbital: redstone
              iterations: 8
              offset: 0,-1,0
         precast:
          - class: EffectSingle
            sound: magic.teleport
            location: origin
-           particle_override: particleNucleus
+           particle_override: particle_nucleus
            color_override: colorOrbital
            source_location: eyes
            effectlib:
                class: AtomEffect
                updateLocations: false
-               particleNucleus: dragon_breath
-               particleOrbital: redstone
+               particle_nucleus: dragon_breath
+               particle_orbital: redstone
                iterations: 8
                offset: 0,-1,0
          - class: EffectSingle

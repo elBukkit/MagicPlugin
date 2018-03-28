@@ -24,12 +24,12 @@ arrow_blink:
              iterations: 10
              period: 2
              particles: 5
-             particleCount: 20
-             particleOffsetX: 0.2
-             particleOffsetY: 0.2
-             particleOffsetZ: 0.2
+             particle_count: 20
+             particle_offset_x: 0.2
+             particle_offset_y: 0.2
+             particle_offset_z: 0.2
              particle: portal
-             disappearWithOriginEntity: true
+             disappear_with_origin_entity: true
         - location: origin
           effectlib:
              class: Sphere
@@ -38,7 +38,7 @@ arrow_blink:
              particles: 10
              particle: redstone
              color: "FF00FF"
-             disappearWithOriginEntity: true
+             disappear_with_origin_entity: true
         hit:
         -  class: EffectSingle
            target_offset: 0,0.5,0
@@ -49,13 +49,13 @@ arrow_blink:
         - class: EffectSingle
           sound: magic.teleport
           location: target
-          particle_override: particleNucleus
+          particle_override: particle_nucleus
           color_override: colorOrbital
           source_location: eyes
           effectlib:
              class: AtomEffect
-             particleNucleus: fireworks_spark
-             particleOrbital: redstone
+             particle_nucleus: fireworks_spark
+             particle_orbital: redstone
              iterations: 16
              offset: 0,-1,0
         - class: EffectSingle
@@ -64,8 +64,8 @@ arrow_blink:
           color_override: colorNucleus
           effectlib:
              class: AtomEffect
-             particleNucleus: redstone
-             particleOrbital: fireworks_spark
+             particle_nucleus: redstone
+             particle_orbital: fireworks_spark
              iterations: 8
     parameters:
       target: none

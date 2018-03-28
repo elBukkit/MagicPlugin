@@ -22,10 +22,10 @@ grow:
              iterations: 11
              particle: spell_instant
              lengthGrow: 0.32
-             particleCount: 10
-             particleOffsetX: 0.2
-             particleOffsetY: 0.2
-             particleOffsetZ: 0.2
+             particle_count: 10
+             particle_offset_x: 0.2
+             particle_offset_y: 0.2
+             particle_offset_z: 0.2
         hit:
         - class: EffectSingle
           location: target

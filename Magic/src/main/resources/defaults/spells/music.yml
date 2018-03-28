@@ -26,7 +26,7 @@ music:
              duration: 8000
              period: 2
              parameters:
-               yFactor: "(t/i)*0.5"
+               y_factor: "(t/i)*0.5"
                size: "(t/i)*2 + 0.5"
              effect:
                class: AnimatedBall

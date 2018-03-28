@@ -39,10 +39,10 @@ cluster:
             class: AnimatedBall
             duration: 2500
             particle: spell_witch
-            particleCount: 3
+            particle_count: 3
             offset: 0,0.5,0
-            yFactor: 1
-            yOffset: 0
+            y_factor: 1
+            y_offset: 0
         little:
         - location: origin
           sound: entity_creeper_primed
