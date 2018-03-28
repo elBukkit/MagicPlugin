@@ -11,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -35,8 +36,8 @@ public class TorchAction extends BaseSpellAction
     public void initialize(Spell spell, ConfigurationSection parameters)
     {
         super.initialize(spell, parameters);
-        slippery = spell.getController().getMaterialSetManager()
-                .fromConfig(parameters.getString("not_attachable", "not_attachable"));
+        MaterialSetManager materialSetManager = spell.getController().getMaterialSetManager();
+        slippery = materialSetManager.fromConfig(parameters.getString("not_attachable", "not_attachable"));
     }
 
     @Override

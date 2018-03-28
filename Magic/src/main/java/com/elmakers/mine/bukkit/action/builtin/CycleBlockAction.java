@@ -24,16 +24,20 @@ public class CycleBlockAction extends BaseSpellAction {
         @SuppressWarnings("unchecked")
         List<List<String>> allMaterials = (List<List<String>>)parameters.getList("materials");
         this.materials.clear();
-        for (List<String> list : allMaterials) {
-            List<MaterialAndData> materialList = new ArrayList<>();
-            for (String material : list) {
-                MaterialAndData entry = new MaterialAndData(material);
-                if (entry.isValid()) {
-                    materialList.add(entry);
+        if (allMaterials == null) {
+            spell.getController().getLogger().warning("CycleBlock action missing materials list");
+        } else {
+            for (List<String> list : allMaterials) {
+                List<MaterialAndData> materialList = new ArrayList<>();
+                for (String material : list) {
+                    MaterialAndData entry = new MaterialAndData(material);
+                    if (entry.isValid()) {
+                        materialList.add(entry);
+                    }
                 }
-            }
-            for (int i = 0; i < materialList.size(); i++) {
-                materials.put(materialList.get(i), materialList.get((i + 1) % materialList.size()));
+                for (int i = 0; i < materialList.size(); i++) {
+                    materials.put(materialList.get(i), materialList.get((i + 1) % materialList.size()));
+                }
             }
         }
     }

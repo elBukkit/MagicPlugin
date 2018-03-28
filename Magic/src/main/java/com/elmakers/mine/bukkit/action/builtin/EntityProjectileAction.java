@@ -73,9 +73,13 @@ public class EntityProjectileAction extends CustomProjectileAction {
         }
 
         String mobType = parameters.getString("type");
-        entityData = context.getController().getMob(mobType);
-        if (entityData == null) {
-            entityData = new com.elmakers.mine.bukkit.entity.EntityData(context.getController(), parameters);
+        if (mobType == null || mobType.isEmpty()) {
+            context.getLogger().warning("EntityProjectileAction missing type parameter");
+        } else {
+            entityData = context.getController().getMob(mobType);
+            if (entityData == null) {
+                entityData = new com.elmakers.mine.bukkit.entity.EntityData(context.getController(), parameters);
+            }
         }
 
         variantName = parameters.getString("variant");
