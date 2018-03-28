@@ -18,7 +18,7 @@ public class SourceLocation {
     private boolean orientToTarget;
     private boolean isSource;
 
-    private enum LocationType {
+    public enum LocationType {
         CAST,
         EYES,
         FEET,
