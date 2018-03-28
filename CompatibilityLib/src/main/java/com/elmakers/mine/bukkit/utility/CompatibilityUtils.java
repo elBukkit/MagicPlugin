@@ -135,13 +135,19 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
+        String shorterName = name;
+        if (shorterName.length() > 32) {
+            shorterName = shorterName.substring(0, 31);
+        }
+        shorterName = ChatColor.translateAlternateColorCodes('&', shorterName);
+
+        // TODO: Is this even still necessary?
+        if (class_CraftInventoryCustom_constructor == null) {
+            return Bukkit.createInventory(holder, size, shorterName);
+        }
         Inventory inventory = null;
         try {
-            String shorterName = name;
-            if (shorterName.length() > 32) {
-                shorterName = shorterName.substring(0, 31);
-            }
-            inventory = (Inventory)class_CraftInventoryCustom_constructor.newInstance(holder, size, ChatColor.translateAlternateColorCodes('&', shorterName));
+            inventory = (Inventory)class_CraftInventoryCustom_constructor.newInstance(holder, size, shorterName);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
