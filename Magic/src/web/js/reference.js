@@ -69,7 +69,7 @@ function addParameterDetails(container, key) {
     var title = $('<div class="titleBanner"/>').text(property.name);
     container.append(title);
 
-    var propertyKey = $('<div class="propertyKeys"/>').text(key);
+    var propertyKey = $('<div class="propertyKeys"/>').text(property.field);
     if (property.hasOwnProperty("aliases")) {
         var aliases = $('<span class="propertyAlias">').text(', ' + property.aliases.join(', '));
         propertyKey.append(aliases);
