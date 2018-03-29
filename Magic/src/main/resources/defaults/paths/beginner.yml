@@ -14,7 +14,6 @@ beginner:
     extra_spells:
       - flare
       - stun
-      - gather
       - workbench
     # These spells appear in the spell shop and are required to progress to the next path.
     spells:
