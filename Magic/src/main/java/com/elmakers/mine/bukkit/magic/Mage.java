@@ -3766,5 +3766,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         return false;
     }
+
+    @Override
+    @Nullable
+    public Wand findWand(@Nonnull String template) {
+        Player player = getPlayer();
+        if (player == null) return null;
+        Inventory inventory = player.getInventory();
+        for (ItemStack itemStack : inventory.getContents()) {
+            String itemTemplate = Wand.getWandTemplate(itemStack);
+            if (itemTemplate != null && itemTemplate.equals(template)) {
+                return new Wand(controller, itemStack);
+            }
+        }
+        return null;
+    }
 }
 

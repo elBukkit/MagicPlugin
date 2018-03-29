@@ -124,7 +124,6 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     Location getOffhandWandLocation();
 
-
     /**
      * Get the direction this Mage is facing.
      *
@@ -280,6 +279,14 @@ public interface Mage extends CostReducer, CooldownReducer {
     Wand getActiveWand();
     Wand getOffhandWand();
     GUIAction getActiveGUI();
+
+    /**
+     * Find a wand with a particular template in the Mage's inventory.
+     * If the Mage has more than one of this type of wand, only the first will be returned.
+     *
+     * @return A wand found in the player's inventory that matches template, or null if none found.
+     */
+    @Nullable Wand findWand(@Nonnull String template);
 
     /**
      * Get a bound wand. Bound wands are stored based on their template,
