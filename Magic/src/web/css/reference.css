@@ -1,20 +1,39 @@
 
 #tabs {
-	position: absolute;
-	overflow: hidden;
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#tablist {
+    flex: 0 0 auto;
+}
+
+.ui-tabs-panel.flextab {
+    display: flex;
+}
+
+.flexContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.details {
+    flex-grow: 1;
+    margin-left: 2em;
+    display: flex;
+    flex-direction: column;
 }
 
 .scrollingTab {
-	position:absolute;
-	top: 54px;
-	bottom: 24px;
-	left: 24px;
-	right: 24px;
-	overflow: auto;
+    overflow-y: auto;
+    flex: 0 0 auto;
 }
 
 .propertyKeys {
@@ -29,19 +48,20 @@
 
 .propertyType {
     background: #DDDDFF;
-    margin: 6px;
+    padding: 6px;
     cursor: pointer;
 }
 
 .propertyTypeDetails {
-	display: none;
     background: #EEEEFF;
-    margin: 6px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
 }
 
 .propertyTypeDescription {
-    background: #EEFFFF;
-    margin: 6px;
+    background: #EEEEEE;
+    padding: 6px;
 }
 
 .descriptionLine {
@@ -51,6 +71,14 @@
 .propertyTypeOptions {
     padding: 0.5em;
     background: #DDDDDD;
-    max-height: 6em;
-	overflow: auto;
+    overflow-y: auto;
+}
+
+.parameterList {
+    overflow-y: auto;
+}
+
+.parameterContainer {
+    display: flex;
+    flex-direction: row;
 }

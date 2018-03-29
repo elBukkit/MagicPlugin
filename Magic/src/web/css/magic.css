@@ -4,51 +4,51 @@
 
 #heading
 {
-	margin: 4px 8px;
-	padding: 10px;
-	background-color: #EEEEEE;
-	border: 1px solid #444444;
-	font-family: Verdana,Arial,sans-serif;
-	background: url(../image/logo.png);
-	background-repeat: no-repeat;
-	font-size: 0.9em;
-	height: 150px;
+    margin: 4px 8px;
+    padding: 10px;
+    background-color: #EEEEEE;
+    border: 1px solid #444444;
+    font-family: Verdana,Arial,sans-serif;
+    background: url(../image/logo.png);
+    background-repeat: no-repeat;
+    font-size: 0.9em;
+    height: 150px;
 }
 
 #tabs
 {
-	position: absolute;
-	overflow: hidden;
-	top: 150px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
+    position: absolute;
+    overflow: hidden;
+    top: 150px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
 }
 
 #feedback { font-size: 1.4em; }
 
 .minecraftServer
 {
-	color: gray;
+    color: gray;
 }
 
 .material
 {
-	color: #440000;
+    color: #440000;
 }
 
 .materal_icon
 {
-	width: 32px;
-	height: 32px;
-	background-repeat: no-repeat;
-	display: inline-block;
-	margin-right: 4px;
+    width: 32px;
+    height: 32px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    margin-right: 4px;
 }
 
 .disabled
 {
-	color: #888;	
+    color: #888;
 }
 
 .url_icon
@@ -59,49 +59,49 @@
 
 .thumbnailContainer
 {
-	position:absolute;
-	left: 500px;
-	top: 50px;
+    position:absolute;
+    left: 500px;
+    top: 50px;
 }
 
 .spellTitleBanner
 {
-	width: 600px;
-	padding: 5px;
-	font-size: 1.2em;
-	color: white;
-	background-color: #222288;
+    width: 600px;
+    padding: 5px;
+    font-size: 1.2em;
+    color: white;
+    background-color: #222288;
 }
 
 .wandTitleBanner
 {
-	width: 600px;
-	padding: 5px;
-	font-size: 1.2em;
-	color: white;
-	background-color: #228888;
+    width: 600px;
+    padding: 5px;
+    font-size: 1.2em;
+    color: white;
+    background-color: #228888;
 }
 
 .randomWandTitle
 {
-	font-weight: bold;
-	font-size: 1.2em;
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
 .bookTitleBanner
 {
-	width: 600px;
-	padding: 5px;
-	font-size: 1.2em;
-	color: white;
-	background-color: #888822;
+    width: 600px;
+    padding: 5px;
+    font-size: 1.2em;
+    color: white;
+    background-color: #888822;
 }
 
 .spellDescription
 {
-	color: #222222;
-	font-style: italic;
-	margin-bottom: 2px;
+    color: #222222;
+    font-style: italic;
+    margin-bottom: 2px;
 }
 
 .spellCategory
@@ -127,58 +127,58 @@
 
 .spellProbability
 {
-	font-style: italic;
-	margin-bottom: 2px;
+    font-style: italic;
+    margin-bottom: 2px;
 }
 
 .spellVeryRare
 {
-	color: orchid;
+    color: orchid;
 }
 
 .spellRare
 {
-	color: red;
+    color: red;
 }
 
 .spellUncommon
 {
-	color: orange;
+    color: orange;
 }
 
 .spellCommon
 {
-	color: green;
+    color: green;
 }
 
 .wandDescription
 {
-	color: #222222;
-	font-style: italic;
-	margin-bottom: 2px;
+    color: #222222;
+    font-style: italic;
+    margin-bottom: 2px;
 }
 
 .bookDescription
 {
-	color: #222222;
-	font-style: italic;
-	margin-bottom: 2px;
+    color: #222222;
+    font-style: italic;
+    margin-bottom: 2px;
 }
 
 .spellIcon
 {
-	color: #888888;
-	height: 38px;
-	margin-top: 3px;
-	margin-bottom: 3px;
+    color: #888888;
+    height: 38px;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 .adminuse
 {
-	color: #777777;
-	position: absolute;
-	bottom: 0px;
-	font-size: 0.75em;
+    color: #777777;
+    position: absolute;
+    bottom: 0px;
+    font-size: 0.75em;
 }
 
 .adminuseLevel
@@ -190,30 +190,30 @@
 
 .wandHeading
 {
-	margin-top: 8px;
-	font-weight: bold;
+    margin-top: 8px;
+    font-weight: bold;
 }
 
 .spellHeading
 {
-	margin-top: 8px;
-	font-weight: bold;
+    margin-top: 8px;
+    font-weight: bold;
 }
 
 .worthHeading
 {
-	margin-top: 4px;
-	font-weight: bold;
+    margin-top: 4px;
+    font-weight: bold;
 }
 
 .wandContainer
 {
-	position:absolute;
-	top: 40px;
-	bottom: 20px;
-	left: 0px;
-	right: 0px;
-	overflow: auto;
+    position:absolute;
+    top: 40px;
+    bottom: 20px;
+    left: 0px;
+    right: 0px;
+    overflow: auto;
 }
 
 #spellDetails .spellContainer
@@ -228,22 +228,22 @@
 
 .bookContainer
 {
-	position:absolute;
-	top: 40px;
-	bottom: 20px;
-	left: 0px;
-	right: 0px;
-	overflow: auto;
+    position:absolute;
+    top: 40px;
+    bottom: 20px;
+    left: 0px;
+    right: 0px;
+    overflow: auto;
 }
 
 .mana
 {
-	color: orchid;
+    color: orchid;
 }
 
 .uses
 {
-	color: red;
+    color: red;
 }
 
 .craftingTable
@@ -272,6 +272,30 @@
 
 .iconName
 {
-	color: #444444;
-	font-style: italic;
+    color: #444444;
+    font-style: italic;
+}
+
+.navigation {
+    position: absolute;
+    left: 0px;
+    width: 330px;
+}
+
+.details {
+    position: absolute;
+    left: 370px;
+    bottom: 30px;
+    top: 60px;
+    width: 500px;
+}
+
+.scrollingTab
+{
+    position:absolute;
+    top: 54px;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    overflow: auto;
 }

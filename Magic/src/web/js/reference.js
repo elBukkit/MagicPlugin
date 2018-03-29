@@ -39,15 +39,15 @@ function makeSelectable(tab, details, populate) {
             var selected = jQuery(".ui-selected", this);
             var key = selected.data('key');
             details.empty();
-            details.append(populate(key));
+            populate(details, key)
         }
     });
 }
 
-function populateList(list, sectionKey) {
+function populatePropertyList(list, sectionKey) {
     var properties = metadata.properties;
     var section = metadata[sectionKey];
-    for (var i = 0;i < section.length; i++) {
+    for (var i = 0; i < section.length; i++) {
         var key = section[i];
         if (!properties.hasOwnProperty(key)) continue;
         var parameter = properties[key];
@@ -59,14 +59,13 @@ function populateList(list, sectionKey) {
 }
 
 function makePropertySelector(selector, section, details) {
-     populateList(selector, section);
-     makeSelectable(selector, details, getParameterDetails);
+     populatePropertyList(selector, section);
+     makeSelectable(selector, details, addParameterDetails);
 }
 
-function getParameterDetails(key, details) {
+function addParameterDetails(container, key) {
     var property = metadata.properties[key];
 
-    var container = $('<div>');
     var title = $('<div class="titleBanner"/>').text(property.name);
     container.append(title);
 
@@ -98,8 +97,62 @@ function getParameterDetails(key, details) {
     typeDescription.click(function() {
         propertyTypeDetails.toggle();
     });
+}
 
-    return container;
+function populatePropertyHolderList(list, sectionKey) {
+    var section = metadata[sectionKey];
+    for (var key in section) {
+        if (!section.hasOwnProperty(key)) continue;
+        var holder = section[key];
+        var item = $('<li>').text(holder.name);
+        item.addClass('ui-widget-content');
+        item.data('key', key);
+        list.append(item);
+    }
+}
+
+function makePropertyHolderSelector(selector, section, details) {
+     populatePropertyHolderList(selector, section);
+     makeSelectable(selector, details, function(details, key) {
+         addPropertyHolderDetails(details, key, section);
+     });
+}
+
+function addPropertyHolderDetails(container, key, section) {
+    var propertyHolder = metadata[section][key];
+
+    var title = $('<div class="titleBanner"/>').text(propertyHolder.name);
+    container.append(title);
+
+    var propertyKey = $('<div class="propertyKeys"/>').text(propertyHolder.short_class);
+    container.append(propertyKey);
+
+    var description = $('<div class="propertyTypeDescription"/>');
+    for (var i = 0; i < propertyHolder.description.length; i++) {
+        description.append($('<div class="descriptionLine"/>').html(propertyHolder.description[i]));
+    }
+    container.append(description);
+
+    var parameterContainer = $('<div class="parameterContainer">');
+    var parameterListContainer = $('<div class="parameterList">');
+    var parameterList = $('<ul>');
+    var properties = metadata.properties;
+    for (var i = 0; i < propertyHolder.parameters.length; i++) {
+        var propertyKey = propertyHolder.parameters[i];
+        if (!properties.hasOwnProperty(propertyKey)) continue;
+        var property = properties[propertyKey];
+
+        var parameterItem = $('<li>').text(property.name);
+        parameterItem.addClass('ui-widget-content');
+        parameterItem.data('key', propertyKey);
+        parameterList.append(parameterItem);
+    }
+    var parameterDetails = jQuery('<div class="details">').text("Select a parameter for details");
+    makeSelectable(parameterList, parameterDetails, addParameterDetails);
+    parameterListContainer.append(parameterList);
+    parameterContainer.append(parameterListContainer);
+    parameterContainer.append(parameterDetails);
+    container.append(parameterContainer);
 }
 
 function initialize() {
@@ -117,6 +170,9 @@ function initialize() {
         makePropertySelector($("#wandParameterList"), "wand_properties", $('#wandParameterDetails'));
         makePropertySelector($("#mobParameterList"), "mob_properties", $('#mobParameterDetails'));
         makePropertySelector($("#effectParameterList"), "effect_parameters", $('#effectParameterDetails'));
+
+        makePropertyHolderSelector($("#effectList"), "effectlib_effects", $('#effectDetails'));
+        makePropertyHolderSelector($("#actionList"), "actions", $('#actionDetails'));
 
         // Create tab list
         $("#tabs").tabs().show();

@@ -25,30 +25,6 @@
     background: #DDDDFF;
 }
 
-.navigation {
-    position: absolute;
-    left: 0px;
-    width: 330px;
-}
-
-.details {
-    position: absolute;
-    left: 370px;
-    bottom: 30px;
-    top: 60px;
-    width: 500px;
-}
-
-.scrollingTab
-{
-	position:absolute;
-	top: 54px;
-	bottom: 24px;
-	left: 24px;
-	right: 24px;
-	overflow: auto;
-}
-
 .code {
     background: #DDDDDD;
     font-family: monospace;
