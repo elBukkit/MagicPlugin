@@ -32,6 +32,7 @@ require_once('../config.inc.php');
                 </ol>
             </div>
             <div class="details" id="spellPropertyDetails">
+                <div>
                 These are the top-level configuration options for spells.
                 <br/><br/>
                 They cannot be overridded by wands or /cast parameters, and are generally considered immutable properties
@@ -40,6 +41,7 @@ require_once('../config.inc.php');
                 Some of these properties, such as "icon", are required for a spell to work properly in a wand.
                 <br/><br/>
                 Select a property for details.
+                </div>
             </div>
         </div>
     </div>
@@ -50,6 +52,7 @@ require_once('../config.inc.php');
                 </ol>
             </div>
             <div class="details" id="spellParameterDetails">
+                <div>
                 Spell parameters go in the "parameters" section of a spell's configuration.
                 <br/><br/>
                 These are general parameters that affect the basic workings of any spells.
@@ -67,6 +70,7 @@ require_once('../config.inc.php');
                 <span class="code">/wand override undo 0</span>
                 <br/><br>
                 Select a parameter for details.
+                </div>
             </div>
         </div>
     </div>
@@ -77,6 +81,7 @@ require_once('../config.inc.php');
                 </ol>
             </div>
             <div class="details" id="actionDetails">
+                <div>
                 Actions are the building blocks of a spell's logic. Without actions, a spell does nothing except create
                 particle effects or sounds.
                 <br/></br/>
@@ -91,6 +96,7 @@ require_once('../config.inc.php');
                 <br/><br/>
                 They can also go directly underneath the corresponding action in the "actions" list.<br/><br/>
                 Select an actions for details.
+                </div>
             </div>
         </div>
     </div>
@@ -101,6 +107,7 @@ require_once('../config.inc.php');
                 </ol>
             </div>
             <div class="details" id="effectParameterDetails">
+                <div>
                 Effects are what make spells look and feel awesome. These are generally a combination of particle effects
                 and sounds, though fireworks and base Minecraft effects (e.g. HURT) can also be used.
                 <br/><br/>
@@ -110,6 +117,7 @@ require_once('../config.inc.php');
                 For more complex effects, add an "effectlib" section and see the EffectLib tab for options.
                 <br/><br/>
                 Select a parameter for details.
+                </div>
             </div>
         </div>
     </div>
@@ -120,6 +128,7 @@ require_once('../config.inc.php');
                 </ol>
             </div>
             <div class="details" id="effectDetails">
+                <div>
                 EffectLib is integrated into Magic for complex special effects.
                 <br/><br/>
                 Simply add an "effectlib" section to any effect to create an EffectLib effect.
@@ -131,6 +140,7 @@ require_once('../config.inc.php');
                 Use <span class="code">/cast fxdemo</span> in-game for a demo of all the builtin EffectLib effects.
                 <br/><br/>
                 Select an effect for details.
+                </div>
             </div>
         </div>
     </div>
@@ -141,6 +151,7 @@ require_once('../config.inc.php');
                 </ol>
             </div>
             <div class="details" id="wandParameterDetails">
+                <div>
                 Wands in Magic are special items that can be used for casting spells, and may also grant the holder
                 special effects or buffs.
                 <br/><br/>
@@ -152,6 +163,7 @@ require_once('../config.inc.php');
                 be spawned in-game using the <span class="code">/mgive</span> command.
                 <br/><br/>
                 Select a wand property for details.
+                </div>
             </div>
         </div>
     </div>
@@ -162,11 +174,13 @@ require_once('../config.inc.php');
                 </ol>
             </div>
             <div class="details" id="mobParameterDetails">
+                <div>
                 Magic has a basic custom mob system for creating mobs that can cast spells or have other magical properties.
                 <br/><br/>
                 Mobs can be added to mobs.yml, and spawned in game using <span class="code">/mmob spawn</span>.
                 <br/><br/>
                 Select a mob property for details.
+                </div>
             </div>
         </div>
     </div>
