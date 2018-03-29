@@ -128,6 +128,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.plugin = plugin;
     }
 
+    private void warn(String warning) {
+        if (plugin != null) {
+            warn(warning);
+        }
+    }
+
     public void load(Plugin plugin, ConfigurationSection configuration) {
         this.plugin = plugin;
 
@@ -135,7 +141,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             effectLibConfig = ConfigurationUtils.getConfigurationSection(configuration, "effectlib");
             if (effectLibConfig == null) {
                 Object rawConfig = configuration.get("effectlib");
-                plugin.getLogger().warning("Could not load effectlib node of type " + rawConfig.getClass());
+                warn("Could not load effectlib node of type " + rawConfig.getClass());
             }
         } else {
             effectLibConfig = null;
@@ -164,7 +170,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             } catch (Exception ignored) {
             }
             if (effect == null) {
-                plugin.getLogger().warning("Unknown effect type " + effectName);
+                warn("Unknown effect type " + effectName);
             } else {
                 effectData = ConfigurationUtils.getInteger(configuration, "effect_data", effectData);
             }
@@ -177,7 +183,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             } catch (Exception ignored) {
             }
             if (entityEffect == null) {
-                plugin.getLogger().warning("Unknown entity effect type " + effectName);
+                warn("Unknown entity effect type " + effectName);
             }
         }
 
@@ -202,7 +208,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 } catch (Exception ignored) {
                 }
                 if (fireworkType == null) {
-                    plugin.getLogger().warning("Unknown firework type " + typeName);
+                    warn("Unknown firework type " + typeName);
                 }
             }
 
@@ -217,7 +223,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             } catch (Exception ignored) {
             }
             if (particleType == null) {
-                plugin.getLogger().warning("Unknown particle type " + typeName);
+                warn("Unknown particle type " + typeName);
             } else {
                 particleData = (float)configuration.getDouble("particle_data", particleData);
                 particleData = (float)configuration.getDouble("particle_speed", particleData);
@@ -303,7 +309,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         try {
             this.particleOverride = ParticleEffect.valueOf(particleType.toUpperCase());
         } catch (Exception ex) {
-            plugin.getLogger().warning("Error setting particle override: " + ex.getMessage());
+            warn("Error setting particle override: " + ex.getMessage());
             this.particleOverride = null;
         }
     }
@@ -676,7 +682,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                     players.add(player);
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    plugin.getLogger().info("Error creating effect class: " + effectClass + " " + ex.getMessage());
+                    if (plugin != null) {
+                        plugin.getLogger().warning("Error creating effect class: " + effectClass + " " + ex.getMessage());
+                    }
                 }
             }
         }

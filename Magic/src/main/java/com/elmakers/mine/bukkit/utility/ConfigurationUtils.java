@@ -447,6 +447,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     protected static double parseDouble(String s)
     {
+        if (s == null || s.isEmpty()) return 0;
         char firstChar = s.charAt(0);
         if (firstChar == 'r' || firstChar == 'R')
         {
@@ -473,6 +474,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     protected static int parseInt(String s)
     {
+        if (s == null || s.isEmpty()) return 0;
         char firstChar = s.charAt(0);
         if (firstChar == 'r' || firstChar == 'R')
         {
@@ -667,7 +669,12 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     @Nullable
+    @SuppressWarnings("unchecked")
     public static List<Object> getList(ConfigurationSection section, String path) {
+        List<Object> list = (List<Object>)section.getList(path);
+        if (list != null) {
+            return list;
+        }
         Object o = section.get(path);
         return getList(o);
     }

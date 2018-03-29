@@ -35,7 +35,7 @@ public class ColorHD implements Cloneable {
     }
 
     public ColorHD(String hexColor) {
-        if (hexColor.charAt(0) == '#') {
+        if (hexColor != null && !hexColor.isEmpty() && hexColor.charAt(0) == '#') {
             hexColor = hexColor.substring(1, hexColor.length());
         }
         if (hexColor == null || hexColor.length() == 0) {

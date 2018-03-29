@@ -602,10 +602,13 @@ public class TargetingSpell extends BaseSpell {
         targetLocation2 = ConfigurationUtils.overrideLocation(parameters, "t2", defaultLocation, controller.canCreateWorlds());
 
         if (parameters.contains("entity") && mage != null) {
-            Entity entity = CompatibilityUtils.getEntity(mage.getEntity().getWorld(), UUID.fromString(parameters.getString("entity")));
-            if (entity != null) {
-                targetLocation = entity.getLocation();
-                targetEntity = entity;
+            Entity mageEntity = mage.getEntity();
+            if (mageEntity != null) {
+                Entity entity = CompatibilityUtils.getEntity(mageEntity.getWorld(), UUID.fromString(parameters.getString("entity")));
+                if (entity != null) {
+                    targetLocation = entity.getLocation();
+                    targetEntity = entity;
+                }
             }
         } else if (parameters.contains("player")) {
             Player player = DeprecatedUtils.getPlayer(parameters.getString("player"));

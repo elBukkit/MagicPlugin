@@ -4332,7 +4332,7 @@ public class MagicController implements MageController {
             } else if (magicItemKey.contains("item:")) {
                 String itemKey = magicItemKey.substring(5);
                 itemStack = createGenericItem(itemKey);
-            } else {
+            } else if (items != null) {
                 ItemData itemData = items.get(magicItemKey);
                 if (itemData != null) {
                     return itemData.getItemStack(amount);

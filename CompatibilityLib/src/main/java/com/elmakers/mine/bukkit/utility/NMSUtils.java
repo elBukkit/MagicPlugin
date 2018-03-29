@@ -1881,7 +1881,7 @@ public class NMSUtils {
 
     public static boolean setMap(ConfigurationSection section, Map<String, Object> map)
     {
-        if (section == null) return false;
+        if (section == null || class_MemorySection_mapField == null) return false;
         if (section instanceof MemorySection)
         {
             try {
