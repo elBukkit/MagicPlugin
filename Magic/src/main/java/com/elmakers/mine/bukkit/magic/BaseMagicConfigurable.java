@@ -95,7 +95,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
                 if (ownValue != null) {
                     configuration.set(key, null);
                 }
-                storage.upgrade(key, value);
+                storage.upgradeInternal(key, value);
             } else {
                 controller.getLogger().warning("Attempt to migrate property " + key + " on " + type + " which routes to unavailable storage " + propertyType);
             }
@@ -401,21 +401,43 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         return modified;
     }
 
+    protected void configureInternal(@Nonnull String key, @Nonnull Object value) {
+        // Only configure leaf nodes
+        if (value instanceof ConfigurationSection) return;
+
+        value = convertProperty(value);
+        setProperty(key, value);
+    }
+
+    @Override
+    public void configure(@Nonnull String key, @Nonnull Object value) {
+        configureInternal(key, value);
+        updated();
+    }
+
     @Override
     public void configure(@Nonnull ConfigurationSection configuration) {
         Set<String> keys = configuration.getKeys(true);
         for (String key : keys) {
             Object value = configuration.get(key);
-            // Only configure leaf nodes
-            if (value instanceof ConfigurationSection) continue;
-
-            value = convertProperty(value);
-            setProperty(key, value);
+            configureInternal(key, value);
         }
         updated();
     }
 
-    public boolean upgrade(String key, Object value) {
+    @Override
+    public boolean upgrade(@Nonnull String key, @Nonnull Object value) {
+        // Only configure leaf nodes
+        if (value instanceof ConfigurationSection) return false;
+
+        boolean modified = upgradeInternal(key, value);
+        if (modified) {
+            updated();
+        }
+        return modified;
+    }
+
+    protected boolean upgradeInternal(String key, Object value) {
         boolean modified = false;
         switch (key) {
             // Special-case properties first
@@ -490,7 +512,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             // Only configure leaf nodes
             if (value instanceof ConfigurationSection) continue;
 
-            modified = upgrade(key, value) || modified;
+            modified = upgradeInternal(key, value) || modified;
         }
 
         if (modified) {

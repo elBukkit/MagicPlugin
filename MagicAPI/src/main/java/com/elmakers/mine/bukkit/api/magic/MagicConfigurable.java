@@ -11,7 +11,20 @@ public interface MagicConfigurable extends MagicProperties {
      *
      * @param configuration The configuration to copy.
      */
-    void configure(@Nonnull  ConfigurationSection configuration);
+    void configure(@Nonnull ConfigurationSection configuration);
+
+    /**
+     * Configure a single property.
+     *
+     * Do not use this to remove properties, use removeProperty instead.
+     *
+     * Do not use this for setting a Map or ConfigurationSection, nested properties
+     * should use the above configure method.
+     *
+     * @param key The property to configure.
+     * @param value The new property value.
+     */
+    void configure(@Nonnull String key, @Nonnull Object value);
 
     /**
      * Transfer properties from a configuration to this store, following a set of
@@ -30,6 +43,17 @@ public interface MagicConfigurable extends MagicProperties {
      * @return true if any property was changed, false means the upgrade was rejected.
      */
     boolean upgrade(@Nonnull ConfigurationSection configuration);
+
+    /**
+     * Upgrade a single property.
+     *
+     * Do not use this to remove properties, use removeProperty instead.
+     *
+     * @param key The property to upgrade.
+     * @param value The new value to set, if it is an improvement over the current value.
+     * @return true if the property was changed, false means the upgrade was rejected.
+     */
+    boolean upgrade(@Nonnull String key, @Nonnull Object value);
 
     /**
      * Remove a property from this store.

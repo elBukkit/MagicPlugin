@@ -459,7 +459,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
-    public boolean upgrade(String key, Object value) {
+    protected boolean upgradeInternal(String key, Object value) {
         if (key.equals("path")) {
             ProgressionPath path = getPath();
             if (path != null && path.hasPath(value.toString())) {
@@ -469,7 +469,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             return true;
         }
 
-        return super.upgrade(key, value);
+        return super.upgradeInternal(key, value);
     }
 
     @Nullable
