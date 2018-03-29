@@ -76,6 +76,12 @@ function addParameterDetails(container, key) {
     }
     container.append(propertyKey);
 
+    var propertyDescription = $('<div class="propertyDescription"/>');
+    for (var i = 0; i < property.description.length; i++) {
+        propertyDescription.append($('<div class="descriptionLine"/>').html(property.description[i]));
+    }
+    container.append(propertyDescription);
+
     var propertyType = metadata.types[property.type];
     var typeDescription = $('<div class="propertyType"/>').text(propertyType.name);
     container.append(typeDescription);
@@ -111,14 +117,14 @@ function populatePropertyHolderList(list, sectionKey) {
     }
 }
 
-function makePropertyHolderSelector(selector, section, details) {
+function makePropertyHolderSelector(selector, section, details, baseProperties) {
      populatePropertyHolderList(selector, section);
      makeSelectable(selector, details, function(details, key) {
-         addPropertyHolderDetails(details, key, section);
+         addPropertyHolderDetails(details, key, section, baseProperties);
      });
 }
 
-function addPropertyHolderDetails(container, key, section) {
+function addPropertyHolderDetails(container, key, section, baseProperties) {
     var propertyHolder = metadata[section][key];
 
     var title = $('<div class="titleBanner"/>').text(propertyHolder.name);
@@ -147,6 +153,17 @@ function addPropertyHolderDetails(container, key, section) {
         parameterItem.data('key', propertyKey);
         parameterList.append(parameterItem);
     }
+    baseProperties = metadata[baseProperties];
+    for (var i = 0; i < baseProperties.length; i++) {
+        var propertyKey = baseProperties[i];
+        if (!properties.hasOwnProperty(propertyKey)) continue;
+        var property = properties[propertyKey];
+
+        var parameterItem = $('<li class="baseProperty">').text(property.name);
+        parameterItem.addClass('ui-widget-content');
+        parameterItem.data('key', propertyKey);
+        parameterList.append(parameterItem);
+    }
     var parameterDetails = jQuery('<div class="details">').text("Select a parameter for details");
     makeSelectable(parameterList, parameterDetails, addParameterDetails);
     parameterListContainer.append(parameterList);
@@ -171,8 +188,8 @@ function initialize() {
         makePropertySelector($("#mobParameterList"), "mob_properties", $('#mobParameterDetails'));
         makePropertySelector($("#effectParameterList"), "effect_parameters", $('#effectParameterDetails'));
 
-        makePropertyHolderSelector($("#effectList"), "effectlib_effects", $('#effectDetails'));
-        makePropertyHolderSelector($("#actionList"), "actions", $('#actionDetails'));
+        makePropertyHolderSelector($("#effectList"), "effectlib_effects", $('#effectDetails'), 'effectlib_parameters');
+        makePropertyHolderSelector($("#actionList"), "actions", $('#actionDetails'), 'action_parameters');
 
         // Create tab list
         $("#tabs").tabs().show();

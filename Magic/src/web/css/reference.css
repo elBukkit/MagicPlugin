@@ -46,6 +46,11 @@
     color: #888888;
 }
 
+.propertyDescription {
+    background: #EEEEEE;
+    padding: 6px;
+}
+
 .propertyType {
     background: #DDDDFF;
     padding: 6px;
@@ -81,4 +86,9 @@
 .parameterContainer {
     display: flex;
     flex-direction: row;
+}
+
+.baseProperty {
+    color: #888888;
+    font-style: italic;
 }
