@@ -14,7 +14,7 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
-    protected enum Type {
+    public enum Type {
         ITEM,
         XP,
         SP,
