@@ -49,7 +49,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
     public void initialize(Spell spell, ConfigurationSection parameters) {
         super.initialize(spell, parameters);
 
-        projectileEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("projectile_effects"));
+        projectileEffects = ConfigurationUtils.getPotionEffects(parameters.getConfigurationSection("projectile_potion_effects"));
     }
 
     @Override
