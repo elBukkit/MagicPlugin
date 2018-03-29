@@ -17,6 +17,16 @@
 	overflow: auto;
 }
 
+.propertyKeys {
+    padding: 1em;
+    border: 1px solid #010101;
+    margin: 6px;
+}
+
+.propertyAlias {
+    color: #888888;
+}
+
 .propertyType {
     background: #DDDDFF;
     margin: 6px;

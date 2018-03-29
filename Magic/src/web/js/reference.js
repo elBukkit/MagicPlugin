@@ -21,9 +21,9 @@ function processMetadata(meta) {
         if (property.hasOwnProperty('alias')) {
             var aliased = properties[property.alias];
             if (aliased.hasOwnProperty('aliases')) {
-                aliased.aliases.push(property)
+                aliased.aliases.push(key)
             } else {
-                aliased.aliases = [property];
+                aliased.aliases = [key];
             }
         } else {
             filtered[key] = property;
@@ -69,6 +69,13 @@ function getParameterDetails(key, details) {
     var container = $('<div>');
     var title = $('<div class="titleBanner"/>').text(property.name);
     container.append(title);
+
+    var propertyKey = $('<div class="propertyKeys"/>').text(key);
+    if (property.hasOwnProperty("aliases")) {
+        var aliases = $('<span class="propertyAlias">').text(', ' + property.aliases.join(', '));
+        propertyKey.append(aliases);
+    }
+    container.append(propertyKey);
 
     var propertyType = metadata.types[property.type];
     var typeDescription = $('<div class="propertyType"/>').text(propertyType.name);
