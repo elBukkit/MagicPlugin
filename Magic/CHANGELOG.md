@@ -7,6 +7,8 @@
    Better to fix these spells now, the classes will be removed in 8.0
  - Fix Shock Arrows spewing an error to logs
  - Fix Factions integration, add support for Factions safezone (treated as a no-pvp region)
+ - EffectLib effect parameters can now follow the Magic underscore_format
+ - Fix wand_undroppable config option not working (though you may want to switch to wand_unstashable)
 
 # 7.3.5
 

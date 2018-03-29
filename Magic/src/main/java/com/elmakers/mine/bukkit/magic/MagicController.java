@@ -2685,7 +2685,7 @@ public class MagicController implements MageController {
         }
         Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", Wand.HIDE_FLAGS);
         Wand.Unbreakable = properties.getBoolean("wand_unbreakable", Wand.Unbreakable);
-        Wand.Unstashable = properties.getBoolean("wand_unstashable", properties.getBoolean("wand_undroppable", Wand.Unstashable));
+        Wand.Unstashable = properties.getBoolean("wand_undroppable", properties.getBoolean("wand_unstashable", Wand.Unstashable));
 
         MaterialBrush.CopyMaterial = ConfigurationUtils.getMaterialAndData(properties, "copy_item", MaterialBrush.CopyMaterial);
         MaterialBrush.EraseMaterial = ConfigurationUtils.getMaterialAndData(properties, "erase_item", MaterialBrush.EraseMaterial);
