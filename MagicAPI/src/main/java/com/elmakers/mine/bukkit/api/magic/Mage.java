@@ -286,7 +286,8 @@ public interface Mage extends CostReducer, CooldownReducer {
      *
      * @return A wand found in the player's inventory that matches template, or null if none found.
      */
-    @Nullable Wand findWand(@Nonnull String template);
+    @Nullable
+    Wand findWand(@Nonnull String template);
 
     /**
      * Get a bound wand. Bound wands are stored based on their template,

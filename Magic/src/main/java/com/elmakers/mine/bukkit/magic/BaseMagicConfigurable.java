@@ -425,18 +425,6 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         updated();
     }
 
-    @Override
-    public boolean upgrade(@Nonnull String key, @Nonnull Object value) {
-        // Only configure leaf nodes
-        if (value instanceof ConfigurationSection) return false;
-
-        boolean modified = upgradeInternal(key, value);
-        if (modified) {
-            updated();
-        }
-        return modified;
-    }
-
     protected boolean upgradeInternal(String key, Object value) {
         boolean modified = false;
         switch (key) {
@@ -504,7 +492,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     @Override
-    public boolean upgrade(ConfigurationSection configuration) {
+    public boolean upgrade(@Nonnull ConfigurationSection configuration) {
         boolean modified = false;
         Set<String> keys = configuration.getKeys(true);
         for (String key : keys) {
@@ -515,6 +503,18 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             modified = upgradeInternal(key, value) || modified;
         }
 
+        if (modified) {
+            updated();
+        }
+        return modified;
+    }
+
+    @Override
+    public boolean upgrade(@Nonnull String key, @Nonnull Object value) {
+        // Only configure leaf nodes
+        if (value instanceof ConfigurationSection) return false;
+
+        boolean modified = upgradeInternal(key, value);
         if (modified) {
             updated();
         }
