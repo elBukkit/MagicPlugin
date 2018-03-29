@@ -2,6 +2,8 @@
 
 ## 7.4
  
+ - Unstashable wands aren't unstashable until held
+ 
  - Weird auto-targeting on gatling gun?
  
  - Optional lore on wands to say which classes they work with

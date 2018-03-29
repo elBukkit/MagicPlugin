@@ -1,6 +1,6 @@
 # CHANGELOG
 
-# 7.4
+# 7.3.6
 
  - Added warnings for use of deprecated spell classes. 
    Please check your startup logs!
