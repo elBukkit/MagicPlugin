@@ -26,28 +26,6 @@
 }
 
 #feedback { font-size: 1.4em; }
-.ui-selectable .ui-selecting { background: #FECA40; }
-.ui-selectable .ui-selected { background: #F39814; color: white; }
-.ui-selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-.ui-selectable li 
-{ 
-	margin: 3px; 
-	padding: 0.4em; 
-	height: 32px; 
-	white-space: nowrap; 
-}
-
-.ui-selectable li:hover { background: #DDDDFF; }
-
-.scrollingTab
-{
-	position:absolute;
-	top: 54px;
-	bottom: 24px;
-	left: 24px;
-	right: 24px;
-	overflow: auto;
-}
 
 .minecraftServer
 {
@@ -79,36 +57,11 @@
     background-position: -32px -32px;
 }
 
-.navigation
-{
-	position:absolute;
-	left: 0px;
-	width: 460px;
-}
-
-.details
-{
-	position:absolute;
-	left: 320px;
-	bottom: 30px;
-	top: 60px;
-    width: 500px;
-}
-
 .thumbnailContainer
 {
 	position:absolute;
 	left: 500px;
 	top: 50px;
-}
-
-.titleBanner
-{
-    width: 600px;
-    padding: 5px;
-    font-size: 1.2em;
-    color: white;
-    background-color: #222288;
 }
 
 .spellTitleBanner
@@ -321,30 +274,4 @@
 {
 	color: #444444;
 	font-style: italic;
-}
-
-.modal {
-	display: 	none;
-    position:   fixed;
-    z-index:    1000;
-    top:        0;
-    left:       0;
-    height:     100%;
-    width:      100%;
-    background: rgba( 255, 255, 255, .8 )
-                url('http://i.stack.imgur.com/FhHRx.gif')
-                50% 50%
-                no-repeat;
-}
-
-/* When the body has the loading class, we turn
-   the scrollbar off with overflow:hidden */
-body.loading .modal {
-    overflow: hidden;
-}
-
-/* Anytime the body has the loading class, our
-   modal element will be visible */
-body.loading .modal {
-    display: block;
 }

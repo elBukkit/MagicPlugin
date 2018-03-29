@@ -1,5 +1,46 @@
 
-#tabs
-{
+#tabs {
+	position: absolute;
+	overflow: hidden;
 	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+.scrollingTab {
+	position:absolute;
+	top: 54px;
+	bottom: 24px;
+	left: 24px;
+	right: 24px;
+	overflow: auto;
+}
+
+.propertyType {
+    background: #DDDDFF;
+    margin: 6px;
+    cursor: pointer;
+}
+
+.propertyTypeDetails {
+	display: none;
+    background: #EEEEFF;
+    margin: 6px;
+}
+
+.propertyTypeDescription {
+    background: #EEFFFF;
+    margin: 6px;
+}
+
+.descriptionLine {
+    margin-bottom: 1em;
+}
+
+.propertyTypeOptions {
+    padding: 0.5em;
+    background: #DDDDDD;
+    max-height: 6em;
+	overflow: auto;
 }

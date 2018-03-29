@@ -63,8 +63,36 @@ function makePropertySelector(selector, section, details) {
      makeSelectable(selector, details, getParameterDetails);
 }
 
-function getParameterDetails(key) {
+function getParameterDetails(key, details) {
+    var property = metadata.properties[key];
 
+    var container = $('<div>');
+    var title = $('<div class="titleBanner"/>').text(property.name);
+    container.append(title);
+
+    var propertyType = metadata.types[property.type];
+    var typeDescription = $('<div class="propertyType"/>').text(propertyType.name);
+    container.append(typeDescription);
+
+    var propertyTypeDetails = $('<div class="propertyTypeDetails"/>');
+    var propertyTypeDescription = $('<div class="propertyTypeDescription"/>');
+    for (var i = 0; i < propertyType.description.length; i++) {
+        propertyTypeDescription.append($('<div class="descriptionLine"/>').html(propertyType.description[i]));
+    }
+    propertyTypeDetails.append(propertyTypeDescription);
+    var propertyTypeOptions = $('<div class="propertyTypeOptions"/>');
+    for (var i = 0; i < propertyType.options.length; i++) {
+        propertyTypeOptions.append($('<div class="propertyTypeOption"/>').text(propertyType.options[i]));
+    }
+    propertyTypeDetails.append(propertyTypeOptions);
+
+    container.append(propertyTypeDetails);
+
+    typeDescription.click(function() {
+        propertyTypeDetails.toggle();
+    });
+
+    return container;
 }
 
 function initialize() {
