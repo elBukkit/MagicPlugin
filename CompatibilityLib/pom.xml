@@ -1,55 +1,55 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.elmakers.mine.bukkit</groupId>
-	<artifactId>CompatibilityLib</artifactId>
-	<version>1.9-1.12.2-2-SNAPSHOT</version>
+    <groupId>com.elmakers.mine.bukkit</groupId>
+    <artifactId>CompatibilityLib</artifactId>
+    <version>1.9-1.12.2-2-SNAPSHOT</version>
 
-	<name>Magic Compatibility Library</name>
-	<url>http://mine.elmakers.com</url>
+    <name>Magic Compatibility Library</name>
+    <url>http://mine.elmakers.com</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.java>1.7</version.java>
-		<bukkit.version>1.9.2-R0.1-SNAPSHOT</bukkit.version>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.java>1.7</version.java>
+        <bukkit.version>1.9.2-R0.1-SNAPSHOT</bukkit.version>
+    </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>${bukkit.version}</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>${bukkit.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
-	<repositories>
-		<repository>
-			<id>elMakers</id>
-			<url>http://maven.elmakers.com/repository/</url>
-		</repository>
+    <repositories>
+        <repository>
+            <id>elMakers</id>
+            <url>http://maven.elmakers.com/repository/</url>
+        </repository>
 
-		<repository>
-			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-		</repository>
-	</repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>${version.java}</source>
-					<target>${version.java}</target>
-					<compilerArgument>-Xlint:all,-serial,-fallthrough</compilerArgument>
-					<showWarnings>true</showWarnings>
-					<showDeprecation>true</showDeprecation>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>${version.java}</source>
+                    <target>${version.java}</target>
+                    <compilerArgument>-Xlint:all,-serial,-fallthrough</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

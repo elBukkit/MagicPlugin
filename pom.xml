@@ -1,164 +1,164 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.elmakers.mine.bukkit</groupId>
-	<artifactId>Magic-parent</artifactId>
-	<version>7.4-SNAPSHOT</version>
+    <groupId>com.elmakers.mine.bukkit</groupId>
+    <artifactId>Magic-parent</artifactId>
+    <version>7.4-SNAPSHOT</version>
 
-	<name>Magic-parent</name>
-	<description>Magic maven parent</description>
+    <name>Magic-parent</name>
+    <description>Magic maven parent</description>
 
-	<packaging>pom</packaging>
+    <packaging>pom</packaging>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.java>1.7</version.java>
-		<findbugs.version>1.3.9</findbugs.version>
-		<bukkit.version>1.9.2-R0.1-SNAPSHOT</bukkit.version>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.java>1.7</version.java>
+        <findbugs.version>1.3.9</findbugs.version>
+        <bukkit.version>1.9.2-R0.1-SNAPSHOT</bukkit.version>
+    </properties>
 
-	<modules>
-		<module>MagicAPI</module>
-		<module>CompatibilityLib</module>
-		<module>Magic</module>
-	</modules>
+    <modules>
+        <module>MagicAPI</module>
+        <module>CompatibilityLib</module>
+        <module>Magic</module>
+    </modules>
 
-	<licenses>
-		<license>
-		<name>MIT License</name>
-		<url>LICENSE</url>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+        <name>MIT License</name>
+        <url>LICENSE</url>
+        </license>
+    </licenses>
 
-	<organization>
-		<name>elMakers</name>
-		<url>http://www.elmakers.com/</url>
-	</organization>
+    <organization>
+        <name>elMakers</name>
+        <url>http://www.elmakers.com/</url>
+    </organization>
 
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.elmakers.com</url>
-	</ciManagement>
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>http://jenkins.elmakers.com</url>
+    </ciManagement>
 
-	<scm>
-		<connection>scm:git:git://github.com/elBukkit/MagicPlugin.git</connection>
-		<developerConnection>scm:git:git@github.com:elBukkit/MagicPlugin.git</developerConnection>
-		<url>https://github.com/elBukkit/MagicPlugin</url>
-		<tag>master</tag>
-	</scm>
+    <scm>
+        <connection>scm:git:git://github.com/elBukkit/MagicPlugin.git</connection>
+        <developerConnection>scm:git:git@github.com:elBukkit/MagicPlugin.git</developerConnection>
+        <url>https://github.com/elBukkit/MagicPlugin</url>
+        <tag>master</tag>
+    </scm>
 
-	<mailingLists>
-		<mailingList>
-			<name>Developer Discussion</name>
-			<archive>https://groups.google.com/forum/#!forum/magic-plugin</archive>
-		</mailingList>
-	</mailingLists>
+    <mailingLists>
+        <mailingList>
+            <name>Developer Discussion</name>
+            <archive>https://groups.google.com/forum/#!forum/magic-plugin</archive>
+        </mailingList>
+    </mailingLists>
 
-	<distributionManagement>
-		<repository>
-			<id>maven.elmakers.com</id>
-			<url>http://maven.elmakers.com/repository/</url>
-		</repository>
-		<snapshotRepository>
-			<id>maven.elmakers.com</id>
-			<url>http://maven.elmakers.com/repository/</url>
-			</snapshotRepository>
-	</distributionManagement>
+    <distributionManagement>
+        <repository>
+            <id>maven.elmakers.com</id>
+            <url>http://maven.elmakers.com/repository/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven.elmakers.com</id>
+            <url>http://maven.elmakers.com/repository/</url>
+            </snapshotRepository>
+    </distributionManagement>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
-				<configuration>
-					<compilerId>javac-with-errorprone</compilerId>
-					<forceJavacCompilerUse>true</forceJavacCompilerUse>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <compilerId>javac-with-errorprone</compilerId>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
 
-					<source>${version.java}</source>
-					<target>${version.java}</target>
+                    <source>${version.java}</source>
+                    <target>${version.java}</target>
 
-					<compilerArgs>
-						<arg>-Xlint:all,-serial,-fallthrough</arg>
-						<!-- <arg>-Xep:FieldMissingNullable:ERROR</arg>  -->
-						<arg>-Xep:ReturnMissingNullable:ERROR</arg>
-						<arg>-Xep:RemoveUnusedImports:ERROR</arg>
-					</compilerArgs>
-					<showWarnings>true</showWarnings>
-					<showDeprecation>true</showDeprecation>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.codehaus.plexus</groupId>
-						<artifactId>plexus-compiler-javac-errorprone</artifactId>
-						<version>2.8.3</version>
-					</dependency>
-					<!-- Get a more recent checkstyle version -->
-					<dependency>
-						<groupId>com.google.errorprone</groupId>
-						<artifactId>error_prone_core</artifactId>
-						<version>2.2.0</version>
-					</dependency>
-				</dependencies>
-			</plugin>
+                    <compilerArgs>
+                        <arg>-Xlint:all,-serial,-fallthrough</arg>
+                        <!-- <arg>-Xep:FieldMissingNullable:ERROR</arg>  -->
+                        <arg>-Xep:ReturnMissingNullable:ERROR</arg>
+                        <arg>-Xep:RemoveUnusedImports:ERROR</arg>
+                    </compilerArgs>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-compiler-javac-errorprone</artifactId>
+                        <version>2.8.3</version>
+                    </dependency>
+                    <!-- Get a more recent checkstyle version -->
+                    <dependency>
+                        <groupId>com.google.errorprone</groupId>
+                        <artifactId>error_prone_core</artifactId>
+                        <version>2.2.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
 
-			<!-- Checkstyle -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.0.0</version>
-				<configuration>
-					<configLocation>checkstyle.xml</configLocation>
-					<encoding>UTF-8</encoding>
-					<consoleOutput>true</consoleOutput>
-					<failsOnError>true</failsOnError>
-					<linkXRef>false</linkXRef>
-				</configuration>
-				<executions>
-					<execution>
-						<id>validate</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
+            <!-- Checkstyle -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
 
-				<!-- Use a more up to date version of checkstyle -->
-				<dependencies>
-					<dependency>
-						<groupId>com.puppycrawl.tools</groupId>
-						<artifactId>checkstyle</artifactId>
-						<version>8.8</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-		</plugins>
-	</build>
+                <!-- Use a more up to date version of checkstyle -->
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.8</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 
-	<dependencies>
-		<!-- For Nullability annotations, provided by guava. -->
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>${findbugs.version}</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <!-- For Nullability annotations, provided by guava. -->
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>${findbugs.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
-	<!-- Blacklisting dead repos so the build doesn't hang forever -->
-	<repositories>
-		<repository>
-			<id>Zach's Dead Things</id>
-			<url>http://files.zachsthings.com/repo</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+    <!-- Blacklisting dead repos so the build doesn't hang forever -->
+    <repositories>
+        <repository>
+            <id>Zach's Dead Things</id>
+            <url>http://files.zachsthings.com/repo</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
