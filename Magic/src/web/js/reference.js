@@ -106,6 +106,17 @@ function addParameterDetails(container, listItem) {
     for (var i = 0; i < propertyType.options.length; i++) {
         propertyTypeOptions.append($('<div class="propertyTypeOption"/>').text(propertyType.options[i]));
     }
+    if (propertyType.options.length == 0 && propertyType.hasOwnProperty('key_type')) {
+        var keyPropertyType = metadata.types[propertyType.key_type];
+        for (var i = 0; i < keyPropertyType.options.length; i++) {
+            propertyTypeOptions.append($('<div class="propertyTypeOption"/>').text(keyPropertyType.options[i]));
+        }
+    } else if (propertyType.options.length == 0 && propertyType.hasOwnProperty('value_type')) {
+        var valuePropertyType = metadata.types[propertyType.value_type];
+        for (var i = 0; i < valuePropertyType.options.length; i++) {
+            propertyTypeOptions.append($('<div class="propertyTypeOption"/>').text(valuePropertyType.options[i]));
+        }
+    }
     propertyTypeDetails.append(propertyTypeOptions);
 
     container.append(propertyTypeDetails);
