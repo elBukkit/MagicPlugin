@@ -3,6 +3,7 @@
 # 7.4
 
  - Night spell changed to "A Dark And Stormy Night", makes it rain
+ - Added Citadel integration, spells will not break reinforced blocks
 
 # 7.3.6
 

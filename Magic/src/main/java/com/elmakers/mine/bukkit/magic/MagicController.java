@@ -140,6 +140,7 @@ import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.protection.CitadelManager;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
@@ -1181,11 +1182,25 @@ public class MagicController implements MageController {
                 try {
                     new SkriptManager(this);
                 } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with LighSkripttAPI", ex);
+                    getLogger().log(Level.WARNING, "Error integrating with Skript", ex);
                 }
             }
         } else {
             getLogger().info("Skript integration disabled.");
+        }
+
+        // Citadel
+        if (citadelEnabled) {
+            if (Bukkit.getPluginManager().isPluginEnabled("Citadel")) {
+                try {
+                    citadelManager = new CitadelManager();
+                    getLogger().info("Citadel found, reinforced blocks will be indestructible to spells");
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with Citadel", ex);
+                }
+            }
+        } else {
+            getLogger().info("Citadel integration disabled.");
         }
 
         // Activate Metrics
@@ -1241,6 +1256,7 @@ public class MagicController implements MageController {
         if (townyManager.isEnabled()) blockBreakManagers.add(townyManager);
         if (griefPreventionManager.isEnabled()) blockBreakManagers.add(griefPreventionManager);
         if (mobArenaManager != null && mobArenaManager.isProtected()) blockBreakManagers.add(mobArenaManager);
+        if (citadelManager != null) blockBreakManagers.add(citadelManager);
 
         initialized = true;
     }
@@ -2594,6 +2610,7 @@ public class MagicController implements MageController {
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
         lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
         skriptEnabled = properties.getBoolean("skript_enabled", skriptEnabled);
+        citadelEnabled = properties.getBoolean("citadel_enabled", citadelEnabled);
         mobArenaConfiguration = properties.getConfigurationSection("mobarena");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);
@@ -5563,6 +5580,7 @@ public class MagicController implements MageController {
     private boolean                             placeholdersEnabled         = true;
     private boolean                             lightAPIEnabled                = true;
     private boolean                             skriptEnabled                = true;
+    private boolean                             citadelEnabled              = true;
     private ConfigurationSection                mobArenaConfiguration       = null;
     private boolean                             enableResourcePackCheck     = true;
     private boolean                             resourcePackPrompt          = false;
@@ -5585,6 +5603,7 @@ public class MagicController implements MageController {
     private TownyManager                        townyManager                = new TownyManager();
     private GriefPreventionManager              griefPreventionManager        = new GriefPreventionManager();
     private NCPManager                          ncpManager                   = new NCPManager();
+    private CitadelManager                      citadelManager              = null;
     private RequirementsController              requirementsController      = null;
     private HeroesManager                       heroesManager               = null;
     private BlockPhysicsManager                 blockPhysicsManager         = null;

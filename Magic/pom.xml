@@ -292,6 +292,18 @@
             <version>2.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>vg.civcraft.mc.civmodcore</groupId>
+            <artifactId>CivModCore</artifactId>
+            <version>1.5.11</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>vg.civcraft.mc.citadel</groupId>
+            <artifactId>Citadel</artifactId>
+            <version>3.8.00</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -335,7 +347,10 @@
             <id>njol-repo</id>
             <url>http://maven.njol.ch/repo/</url>
         </repository>
-
+        <repository>
+          <id>devoted-repo</id>
+          <url>http://build.devotedmc.com/plugin/repository/everything/</url>
+        </repository>
         <!--
             All of the following repositories seem to be offline.
             If the elmakers repo ever goes down, you could try re-enabling these, but you may be out of luck.

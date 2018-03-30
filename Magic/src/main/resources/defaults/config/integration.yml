@@ -151,7 +151,10 @@ mobarena:
   # - arena2
 
 # Skript integration will add cast events and effect
-skript_enabled: true;
+skript_enabled: true
+
+# Citadel integration, spells will not break reinforced blocks
+citadel_enabled: true
 
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.
