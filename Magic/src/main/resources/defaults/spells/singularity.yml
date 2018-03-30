@@ -70,14 +70,14 @@ singularity:
         tick:
         - location: target
           particle: smoke_normal
-          particle_count: 20
+          particle_count: 15
           particle_offset_x: 0.4
           particle_offset_y: 0.4
           particle_offset_z: 0.4
         - location: target
           particle: block_crack
           material: obsidian
-          particle_count: 50
+          particle_count: 30
           particle_offset_x: 0.6
           particle_offset_y: 0.6
           particle_offset_z: 0.6

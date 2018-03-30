@@ -15,8 +15,7 @@ night:
         - class: Weather
     effects:
         cast:
-        -  class: EffectSingle
-           sound: magic.shimmer
+        -  sound: magic.shimmer
            location: source
            effectlib:
              class: Modified
@@ -32,6 +31,28 @@ night:
               radius: 3
               particle: smoke_large
               particle_count: 10
+              particles: 40
+              particle_offset_x: 0.2
+              particle_offset_y: 0.2
+              particle_offset_z: 0.2
+              updateLocations: false
+              updateDirections: false
+        -  location: source
+           effectlib:
+             class: Modified
+             duration: $delay
+             updateLocations: false
+             yEquation: "select(t-50,0,0,((t-50)/i) * 40)"
+             relativeOffset: "5,1,0"
+             orient: false
+             parameters:
+              radius: "select((t/i)-0.9, min(3, t/60), 0, ((t/i)-0.9) * 300 + 3)"
+             effect:
+              class: Sphere
+              radius: 3
+              particle: water_drop
+              particle_count: 10
+              particles: 20
               particle_offset_x: 0.2
               particle_offset_y: 0.2
               particle_offset_z: 0.2
