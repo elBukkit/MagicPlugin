@@ -144,7 +144,7 @@ require_once('../config.inc.php');
             </div>
         </div>
     </div>
-    <div id="wands">
+    <div id="wands" class="flextab">
         <div class="flexContainer">
             <div class="scrollingTab">
                 <ol id="wandParameterList">
@@ -167,7 +167,7 @@ require_once('../config.inc.php');
             </div>
         </div>
     </div>
-    <div id="mobs">
+    <div id="mobs" class="flextab">
         <div class="flexContainer">
             <div class="scrollingTab">
                 <ol id="mobParameterList">
