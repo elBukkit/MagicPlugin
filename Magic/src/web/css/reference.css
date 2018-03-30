@@ -92,3 +92,14 @@
     color: #888888;
     font-style: italic;
 }
+
+.exampleContainer {
+    background: #EEFFEE;
+    padding-left: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.exampleContainer > a {
+    margin-right: 1em;
+}

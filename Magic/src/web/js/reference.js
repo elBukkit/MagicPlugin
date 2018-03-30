@@ -139,12 +139,17 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
     }
     container.append(description);
 
-    if (propertyHolder.example != '') {
-        var exampleLink = $('<a target="_blank">');
-        exampleLink.prop('href', 'https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/defaults/spells/' + propertyHolder.example + '.yml');
-        exampleLink.text("View Example Configuration");
+    if (propertyHolder.examples.length > 0) {
         var exampleDiv = $('<div/>');
-        exampleDiv.append(exampleLink);
+        exampleDiv.addClass('exampleContainer');
+        exampleDiv.append("Examples: ");
+        for (var i = 0; i < propertyHolder.examples.length; i++) {
+            var example = propertyHolder.examples[i];
+            var exampleLink = $('<a target="_blank">');
+            exampleLink.prop('href', 'https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/defaults/spells/' + example + '.yml');
+            exampleLink.text(example);
+            exampleDiv.append(exampleLink);
+        }
         container.append(exampleDiv);
     }
 
