@@ -37,16 +37,16 @@ function makeSelectable(tab, details, populate) {
     tab.selectable({
         selected: function(event, ui) {
             var selected = jQuery(".ui-selected", this);
-            var key = selected.data('key');
             details.empty();
-            populate(details, key)
+            populate(details, selected)
         }
     });
 }
 
 function populatePropertyList(list, sectionKey) {
     var properties = metadata.properties;
-    var section = metadata[sectionKey];
+    var defaultValues = metadata[sectionKey];
+    var section = Object.keys(defaultValues).sort();
     for (var i = 0; i < section.length; i++) {
         var key = section[i];
         if (!properties.hasOwnProperty(key)) continue;
@@ -54,6 +54,7 @@ function populatePropertyList(list, sectionKey) {
         var item = $('<li>').text(parameter.name);
         item.addClass('ui-widget-content');
         item.data('key', key);
+        item.data('default', defaultValues[key]);
         list.append(item);
     }
     sortList(list);
@@ -64,7 +65,9 @@ function makePropertySelector(selector, section, details) {
      makeSelectable(selector, details, addParameterDetails);
 }
 
-function addParameterDetails(container, key) {
+function addParameterDetails(container, listItem) {
+    var key = listItem.data('key');
+    var defaultValue = listItem.data('default');
     var property = metadata.properties[key];
 
     var title = $('<div class="titleBanner"/>').text(property.name);
@@ -82,6 +85,12 @@ function addParameterDetails(container, key) {
         propertyDescription.append($('<div class="descriptionLine"/>').html(property.description[i]));
     }
     container.append(propertyDescription);
+
+    if (defaultValue != null && defaultValue != '') {
+        var defaultValueContainer = $('<div class="defaultValue"/>');
+        defaultValueContainer.text("Default: " + defaultValue);
+        container.append(defaultValueContainer);
+    }
 
     var propertyType = metadata.types[property.type];
     var typeDescription = $('<div class="propertyType"/>').text(propertyType.name);
@@ -121,8 +130,8 @@ function populatePropertyHolderList(list, sectionKey) {
 
 function makePropertyHolderSelector(selector, section, details, baseProperties) {
      populatePropertyHolderList(selector, section);
-     makeSelectable(selector, details, function(details, key) {
-         addPropertyHolderDetails(details, key, section, baseProperties);
+     makeSelectable(selector, details, function(details, listItem) {
+         addPropertyHolderDetails(details, listItem.data('key'), section, baseProperties);
      });
 }
 
@@ -175,27 +184,33 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
     var parameterListContainer = $('<div class="parameterList">');
     var parameterList = $('<ul>');
     var properties = metadata.properties;
-    sortProperties(propertyHolder.parameters);
-    for (var i = 0; i < propertyHolder.parameters.length; i++) {
-        var propertyKey = propertyHolder.parameters[i];
+
+    var defaultValues = propertyHolder.parameters;
+    var parameters = Object.keys(defaultValues);
+    sortProperties(parameters);
+    for (var i = 0; i < parameters.length; i++) {
+        var propertyKey = parameters[i];
         if (!properties.hasOwnProperty(propertyKey)) continue;
         var property = properties[propertyKey];
 
         var parameterItem = $('<li>').text(property.name);
         parameterItem.addClass('ui-widget-content');
         parameterItem.data('key', propertyKey);
+        parameterItem.data('default', defaultValues[propertyKey]);
         parameterList.append(parameterItem);
     }
     baseProperties = metadata[baseProperties];
-    sortProperties(baseProperties);
-    for (var i = 0; i < baseProperties.length; i++) {
-        var propertyKey = baseProperties[i];
+    var baseParameters = Object.keys(baseProperties);
+    sortProperties(baseParameters);
+    for (var i = 0; i < baseParameters.length; i++) {
+        var propertyKey = baseParameters[i];
         if (!properties.hasOwnProperty(propertyKey)) continue;
         var property = properties[propertyKey];
 
         var parameterItem = $('<li class="baseProperty">').text(property.name);
         parameterItem.addClass('ui-widget-content');
         parameterItem.data('key', propertyKey);
+        parameterItem.data('default', defaultValues.hasOwnProperty(propertyKey) ? defaultValues[propertyKey] : baseProperties[propertyKey]);
         parameterList.append(parameterItem);
     }
     var parameterDetails = jQuery('<div class="details">').text("Select a parameter for details");

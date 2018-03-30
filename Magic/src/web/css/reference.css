@@ -106,3 +106,10 @@
 .exampleContainer > a {
     margin-right: 1em;
 }
+
+.defaultValue {
+    background: #EEFFEE;
+    padding-left: 6px;
+    padding-top: 2px;
+    padding-bottom: 6px;
+}
