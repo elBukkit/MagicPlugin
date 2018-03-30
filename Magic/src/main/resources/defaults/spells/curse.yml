@@ -12,6 +12,7 @@ curse:
         - class: CustomProjectile
           actions:
           - class: PotionEffect
+          - class: Aggro
           - class: Deactivate
     effects:
         cast:
