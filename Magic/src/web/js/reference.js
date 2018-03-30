@@ -139,6 +139,15 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
     }
     container.append(description);
 
+    if (propertyHolder.example != '') {
+        var exampleLink = $('<a target="_blank">');
+        exampleLink.prop('href', 'https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/defaults/spells/' + propertyHolder.example + '.yml');
+        exampleLink.text("View Example Configuration");
+        var exampleDiv = $('<div/>');
+        exampleDiv.append(exampleLink);
+        container.append(exampleDiv);
+    }
+
     var parameterContainer = $('<div class="parameterContainer">');
     var parameterListContainer = $('<div class="parameterList">');
     var parameterList = $('<ul>');
