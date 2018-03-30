@@ -12,6 +12,7 @@ night:
         cast:
         - class: Delay
         - class: Time
+        - class: Weather
     effects:
         cast:
         -  class: EffectSingle
@@ -42,5 +43,6 @@ night:
         delay: 10000
         time: night
         cycle_moon_phase: true
+        weather: storm
     costs:
         mana: 150

@@ -2,6 +2,8 @@
 
 # 7.4
 
+ - Night spell changed to "A Dark And Stormy Night", makes it rain
+
 # 7.3.6
 
  - Added warnings for use of deprecated spell classes. 

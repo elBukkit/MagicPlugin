@@ -494,8 +494,8 @@ spells:
         description: Make it a lovely day
         cast: What a pretty day!
     night:
-        name: Night
-        description: Make it dark
+        name: A Dark and Stormy Night
+        description: Make it dark and stormy
         cast: Spoooooky
     time:
         name: Time
