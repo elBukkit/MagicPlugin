@@ -16,6 +16,7 @@
 
 .ui-tabs-panel.flextab {
     display: flex;
+    min-height: 0;
 }
 
 .flexContainer {
@@ -62,6 +63,7 @@
     padding: 6px;
     display: flex;
     flex-direction: column;
+    min-height:0
 }
 
 .propertyTypeDescription {
@@ -86,6 +88,7 @@
 .parameterContainer {
     display: flex;
     flex-direction: row;
+    min-height:0
 }
 
 .baseProperty {
