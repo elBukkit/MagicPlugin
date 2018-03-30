@@ -439,6 +439,10 @@ spells:
         cast: You put on your diving helmet
         hat_name: Diving Helmet
         hat_lore: Click to Remove
+    gasp:
+        name: Gasp
+        description: Take a deep breath while underwater
+        cast: GASP!
     glide:
         name: Glide
         description: An Elytra in your pocket!

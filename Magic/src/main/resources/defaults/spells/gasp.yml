@@ -1,0 +1,33 @@
+gasp:
+    icon: diamond_axe:186
+    icon_disabled: diamond_hoe:186
+    icon_url: http://textures.minecraft.net/texture/c28bdd34810f866527daaf283da71826a8378286b2a43a626615fa1b3639e
+    category: utility
+    worth: 20
+    earns_sp: 2
+    actions:
+      cast:
+      - class: AirSupply
+    effects:
+      cast:
+      - sound: magic.shimmer
+      - sound: entity_generic_drink
+        sound_pitch: 0.8
+      - location: origin
+        effectlib:
+          class: Sphere
+          particle_count: 2
+          particles: 10
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
+          particle: cloud
+          radius: 1
+          duration: 1000
+    parameters:
+      target: self
+      air: 10
+      cooldown: 30000
+    costs:
+      mana: 10
+
