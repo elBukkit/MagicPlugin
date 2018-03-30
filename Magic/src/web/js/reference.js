@@ -56,6 +56,7 @@ function populatePropertyList(list, sectionKey) {
         item.data('key', key);
         list.append(item);
     }
+    sortList(list);
 }
 
 function makePropertySelector(selector, section, details) {
@@ -115,6 +116,7 @@ function populatePropertyHolderList(list, sectionKey) {
         item.data('key', key);
         list.append(item);
     }
+    sortList(list);
 }
 
 function makePropertyHolderSelector(selector, section, details, baseProperties) {
@@ -124,13 +126,29 @@ function makePropertyHolderSelector(selector, section, details, baseProperties) 
      });
 }
 
+function sortProperties(list) {
+    list.sort(function(a, b) {
+        var aName = metadata.properties.hasOwnProperty(a) ? metadata.properties[a].name : a;
+        var bName = metadata.properties.hasOwnProperty(b) ? metadata.properties[b].name : b;
+        return a.localeCompare(b);
+    });
+}
+
+function sortList(ul) {
+    var listitems = ul.children('li').get();
+    listitems.sort(function(a, b) {
+       return $(a).text().toUpperCase().localeCompare($(b).text().toUpperCase());
+    });
+    $.each(listitems, function(idx, itm) { ul.append(itm); });
+}
+
 function addPropertyHolderDetails(container, key, section, baseProperties) {
     var propertyHolder = metadata[section][key];
 
     var title = $('<div class="titleBanner"/>').text(propertyHolder.name);
     container.append(title);
 
-    var propertyKey = $('<div class="propertyKeys"/>').text(propertyHolder.short_class);
+    var propertyKey = $('<div class="propertyKeys"/>').text('class: ' + propertyHolder.short_class);
     container.append(propertyKey);
 
     var description = $('<div class="propertyTypeDescription"/>');
@@ -157,6 +175,7 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
     var parameterListContainer = $('<div class="parameterList">');
     var parameterList = $('<ul>');
     var properties = metadata.properties;
+    sortProperties(propertyHolder.parameters);
     for (var i = 0; i < propertyHolder.parameters.length; i++) {
         var propertyKey = propertyHolder.parameters[i];
         if (!properties.hasOwnProperty(propertyKey)) continue;
@@ -168,6 +187,7 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
         parameterList.append(parameterItem);
     }
     baseProperties = metadata[baseProperties];
+    sortProperties(baseProperties);
     for (var i = 0; i < baseProperties.length; i++) {
         var propertyKey = baseProperties[i];
         if (!properties.hasOwnProperty(propertyKey)) continue;
