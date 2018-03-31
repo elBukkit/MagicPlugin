@@ -102,28 +102,50 @@ function addParameterDetails(container, listItem) {
         propertyTypeDescription.append($('<div class="descriptionLine"/>').html(propertyType.description[i]));
     }
     propertyTypeDetails.append(propertyTypeDescription);
-    var propertyTypeOptions = $('<div class="propertyTypeOptions"/>');
-    for (var i = 0; i < propertyType.options.length; i++) {
-        propertyTypeOptions.append($('<div class="propertyTypeOption"/>').text(propertyType.options[i]));
-    }
-    if (propertyType.options.length == 0 && propertyType.hasOwnProperty('key_type')) {
-        var keyPropertyType = metadata.types[propertyType.key_type];
-        for (var i = 0; i < keyPropertyType.options.length; i++) {
-            propertyTypeOptions.append($('<div class="propertyTypeOption"/>').text(keyPropertyType.options[i]));
-        }
-    } else if (propertyType.options.length == 0 && propertyType.hasOwnProperty('value_type')) {
-        var valuePropertyType = metadata.types[propertyType.value_type];
-        for (var i = 0; i < valuePropertyType.options.length; i++) {
-            propertyTypeOptions.append($('<div class="propertyTypeOption"/>').text(valuePropertyType.options[i]));
-        }
-    }
-    propertyTypeDetails.append(propertyTypeOptions);
 
+    populateOptions(propertyType.options, propertyTypeDetails);
+    if (propertyType.hasOwnProperty('key_type')) {
+        populateOptions(metadata.types[propertyType.key_type].options, propertyTypeDetails, 'Map of:');
+        populateOptions(metadata.types[propertyType.value_type].options, propertyTypeDetails, 'to:');
+    } else if (propertyType.hasOwnProperty('value_type')) {
+        populateOptions(metadata.types[propertyType.value_type].options, propertyTypeDetails, 'List of:');
+    }
     container.append(propertyTypeDetails);
 
     typeDescription.click(function() {
         propertyTypeDetails.toggle();
     });
+}
+
+function populateOptions(options, container, title) {
+    var propertyTypeOptions = $('<div class="propertyTypeOptions"/>');
+    var table = $('<table>');
+    var tbody = $('<tbody>');
+    table.append(tbody);
+    var optionsCount = 0;
+    for (var key in options) {
+        if (!options.hasOwnProperty(key)) continue;
+
+        var row = $('<tr>');
+        var keyCell = $('<td>').text(key);
+        var descriptionCell = $('<td>');
+        if (options[key] != null) {
+            descriptionCell.text(options[key]);
+        }
+        row.append(keyCell);
+        row.append(descriptionCell);
+        tbody.append(row);
+        optionsCount++;
+    }
+
+    if (optionsCount == 0) return;
+
+    if (title) {
+        container.append($('<div>').addClass('optionsTitle').text(title));
+    }
+
+    propertyTypeOptions.append(table);
+    container.append(propertyTypeOptions);
 }
 
 function populatePropertyHolderList(list, sectionKey) {

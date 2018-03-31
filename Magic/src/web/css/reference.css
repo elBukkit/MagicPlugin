@@ -113,3 +113,12 @@
     padding-top: 2px;
     padding-bottom: 6px;
 }
+
+.optionsTitle {
+    font-weight: bold;
+}
+
+.propertyTypeOptions table tbody tr td:first-child {
+    font-weight: bold;
+    padding-right: 2em;
+}
