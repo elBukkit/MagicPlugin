@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
@@ -69,6 +70,17 @@ public class DeprecatedUtils {
     public static String getName(EntityType entityType) {
         // @deprecated Magic value
         return entityType.getName();
+    }
+
+    public static String getDisplayName(Entity entity) {
+        if (entity instanceof Player) {
+            return ((Player)entity).getDisplayName();
+        }
+        String customName = entity.getCustomName();
+        if (customName != null && !customName.isEmpty()) {
+            return customName;
+        }
+        return getName(entity.getType());
     }
 
     public static Player getPlayer(String name) {

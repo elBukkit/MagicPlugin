@@ -63,11 +63,13 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -5201,6 +5203,42 @@ public class MagicController implements MageController {
         }
 
         return mobSkin;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getSkull(Entity entity, String itemName) {
+        byte data = 3;
+        String ownerName = null;
+        switch (entity.getType()) {
+            case CREEPER:
+                data = 4;
+            break;
+            case ZOMBIE:
+                data = 2;
+            break;
+            case SKELETON:
+                Skeleton skeleton = (Skeleton)entity;
+                data = (byte)(skeleton.getSkeletonType() == Skeleton.SkeletonType.NORMAL ? 0 : 1);
+            break;
+            case PLAYER:
+                ownerName = entity.getName();
+                break;
+            default:
+                ownerName = getMobSkin(entity.getType());
+        }
+
+        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);
+        ItemMeta meta = skull.getItemMeta();
+        if (itemName != null) {
+            meta.setDisplayName(itemName);
+        }
+        if (meta instanceof SkullMeta && ownerName != null) {
+            SkullMeta skullData = (SkullMeta)meta;
+            skullData.setOwner(ownerName);
+        }
+        skull.setItemMeta(meta);
+        return skull;
     }
 
     @Override

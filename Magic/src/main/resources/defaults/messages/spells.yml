@@ -253,6 +253,10 @@ spells:
         description: Play some tunes
         cast_player: You play some music for $name
         cast_self: You play some music
+    airstrike:
+        name: Air Strike
+        description: Take out a nearby entity
+        cast_player_message: "a:&d&o$player &r&5called in an air strike on you"
     gather:
         name: Gather
         description: Teleport you to other players

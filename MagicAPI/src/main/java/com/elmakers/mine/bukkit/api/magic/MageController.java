@@ -406,6 +406,8 @@ public interface MageController {
     String getBlockSkin(Material blockType);
     @Nullable
     String getMobSkin(EntityType mobType);
+    @Nonnull
+    ItemStack getSkull(Entity entity, String itemName);
     void checkResourcePack(CommandSender sender);
     boolean sendResourcePackToAllPlayers(CommandSender sender);
     boolean sendResourcePack(Player player);

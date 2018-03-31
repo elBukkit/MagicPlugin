@@ -1,0 +1,34 @@
+airstrike:
+    icon: diamond_axe:48
+    icon_disabled: diamond_hoe:48
+    icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
+    category: master
+    tags: noduel,nojail
+    worth: 1000
+    actions:
+        cast:
+        -  class: EntitySelect
+           actions:
+           -  class: Kill
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_player_levelup
+        entity_selected:
+        -  class: EffectSingle
+           sound: entity_endermen_ambient
+        -  class: EffectTrail
+           particle: portal
+           particle_count: 4
+        -  class: EffectSingle
+           location: both
+           effectlib:
+             class: WarpEffect
+             particle: portal
+    parameters:
+        target: none
+        target_self: false
+        target_type: LivingEntity
+        cooldown: 30000
+    costs:
+        mana: 200
