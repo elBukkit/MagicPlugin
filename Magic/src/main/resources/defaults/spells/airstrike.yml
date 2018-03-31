@@ -30,5 +30,7 @@ airstrike:
         target_self: false
         target_type: LivingEntity
         cooldown: 30000
+        radius: 48
+        limit: 64
     costs:
         mana: 200
