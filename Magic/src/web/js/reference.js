@@ -38,9 +38,26 @@ function makeSelectable(tab, details, populate) {
         selected: function(event, ui) {
             var selected = jQuery(".ui-selected", this);
             details.empty();
-            populate(details, selected)
+            populate(details, selected);
+            window.location.hash = _selectedTab + "." + selected.data('key');
         }
     });
+
+    var currentHash = window.location.hash;
+    if (currentHash != '') {
+        var pieces = currentHash.split('.');
+        if (pieces.length > 1) {
+            var key = pieces[1];
+            jQuery(tab).find('.ui-selectee').each(function() {
+                var selected = $(this);
+                if (selected.data('key') == key) {
+                    selected.addClass('ui-selected');
+                    details.empty();
+                    populate(details, selected);
+                }
+            });
+        }
+    }
 }
 
 function populatePropertyList(list, sectionKey) {
@@ -254,6 +271,7 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
     container.append(parameterContainer);
 }
 
+var _selectedTab = "spell_properties";
 function initialize() {
     $.ajax( {
         type: "GET",
@@ -273,7 +291,18 @@ function initialize() {
         makePropertyHolderSelector($("#effectList"), "effectlib_effects", $('#effectDetails'), 'effectlib_parameters');
         makePropertyHolderSelector($("#actionList"), "actions", $('#actionDetails'), 'action_parameters');
 
+        // Kinda hacky but not sure how to work around this
+        var currentHash = window.location.hash;
+        if (currentHash != '') {
+            window.location.hash = currentHash.split('.')[0];
+        }
         // Create tab list
-        $("#tabs").tabs().show();
+        $("#tabs").tabs({
+            beforeActivate: function (event, ui) {
+                _selectedTab = ui.newPanel.selector;
+                window.location.hash = _selectedTab;
+            }
+        }).show();
+        window.location.hash = currentHash;
     });
 }
