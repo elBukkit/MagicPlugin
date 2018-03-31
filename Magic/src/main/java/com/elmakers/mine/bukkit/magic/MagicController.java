@@ -1190,11 +1190,10 @@ public class MagicController implements MageController {
         }
 
         // Citadel
-        if (citadelEnabled) {
+        if (citadelConfiguration.getBoolean("enabled")) {
             if (Bukkit.getPluginManager().isPluginEnabled("Citadel")) {
                 try {
-                    citadelManager = new CitadelManager();
-                    getLogger().info("Citadel found, reinforced blocks will be indestructible to spells");
+                    citadelManager = new CitadelManager(this, citadelConfiguration);
                 } catch (Throwable ex) {
                     getLogger().log(Level.WARNING, "Error integrating with Citadel", ex);
                 }
@@ -2610,7 +2609,7 @@ public class MagicController implements MageController {
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
         lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
         skriptEnabled = properties.getBoolean("skript_enabled", skriptEnabled);
-        citadelEnabled = properties.getBoolean("citadel_enabled", citadelEnabled);
+        citadelConfiguration = properties.getConfigurationSection("citadel");
         mobArenaConfiguration = properties.getConfigurationSection("mobarena");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);
@@ -5580,7 +5579,7 @@ public class MagicController implements MageController {
     private boolean                             placeholdersEnabled         = true;
     private boolean                             lightAPIEnabled                = true;
     private boolean                             skriptEnabled                = true;
-    private boolean                             citadelEnabled              = true;
+    private ConfigurationSection                citadelConfiguration        = null;
     private ConfigurationSection                mobArenaConfiguration       = null;
     private boolean                             enableResourcePackCheck     = true;
     private boolean                             resourcePackPrompt          = false;

@@ -153,8 +153,16 @@ mobarena:
 # Skript integration will add cast events and effect
 skript_enabled: true
 
-# Citadel integration, spells will not break reinforced blocks
-citadel_enabled: true
+# Citadel integration
+citadel:
+  # Disable integration
+  emabled: true
+
+  # Non-player reinforcements will be indestructible to spells
+  reinforcements_indestructible: true
+
+  # Player reinforcements will be indestructible to spells
+  player_reinforcements_indestructible: true
 
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.
