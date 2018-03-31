@@ -952,3 +952,126 @@ sorting:
     overrides: warp sortinghat
     spells:
         - recall
+
+# Upgrades taken from default configs
+
+#
+# COLOR UPGRADE ITEMS
+#
+
+whiteeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:0
+    effect_color: 'FFFFFF'
+orangeeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:1
+    effect_color: 'FFAA00'
+magentaeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:2
+    effect_color: 'FF00FF'
+lightblueeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:3
+    effect_color: 'ADD8E6'
+yelloweffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:4
+    effect_color: 'FFFF00'
+greeneffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:5
+    effect_color: '00FF00'
+pinkeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:6
+    effect_color: 'FAAFBE'
+grayeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:7
+    effect_color: '808080'
+lightgrayeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:8
+    effect_color: 'D0D0D0'
+aquaeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:9
+    effect_color: '00FFFF'
+purpleeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:10
+    effect_color: '800080'
+blueeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:11
+    effect_color: '0000FF'
+browneffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:12
+    effect_color: '806517'
+darkgreeneffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:13
+    effect_color: '254117'
+redeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:14
+    effect_color: 'FF0000'
+blackeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:15
+    effect_color: '010101'
+randomeffects:
+    upgrade: true
+    indestructible: false
+    icon: skull_item:http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
+    effect_color: 'random'
+bubbleeffects:
+    upgrade: true
+    indestructible: false
+    icon: glass_bottle
+    effect_bubbles: true
+cleareffects:
+    force: true
+    upgrade: true
+    effect_bubbles: false
+    effect_particle: ""
+    icon: barrier
+rainboweffects:
+    upgrade: true
+    indestructible: false
+    icon: magma_cream
+    effect_particle: spell_mob
+    effect_particle_data: 2
+    effect_particle_count: 10
+    effect_particle_radius: 2
+    effect_particle_interval: 500
+    effect_particle_offset: 0.5
+haloeffects:
+    upgrade: true
+    indestructible: false
+    icon: magma_cream
+    effect_particle: redstone
+    effect_particle_count: 6
+    effect_particle_interval: 100
+    effect_particle_data: 0
+    effect_particle_radius: 0.4
+    effect_particle_offset: 0.5

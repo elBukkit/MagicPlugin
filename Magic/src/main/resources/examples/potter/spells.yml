@@ -2847,19 +2847,32 @@ broomshop:
 
 potterappearanceshop:
     icon: wood_hoe
-    inherit: buyshop
+    hidden: true
+    actions:
+        cast:
+        -  class: Selector
     parameters:
         auto_close: true
-        confirm: true
         confirm_filler: stained_glass:3
-        require_wand: true
-        items:
-        - item: wand|skinny_upgrade
-          cost: 1000
-        - item: wand|brown_upgrade
-          cost: 1000
-        - item: wand|black_upgrade
-          cost: 1000
+        show_unavailable: true
+        requirements:
+        - wand: wand
+        unlock_section: potter_wand_appearances
+        apply_to_wand: true
+        cost_type: sp
+        options:
+        - item: skinny_upgrade
+          unlock: skinny
+          confirm: true
+          cost: 2000
+        - item: brown_upgrade
+          unlock: brown
+          confirm: true
+          cost: 2000
+        - item: black_upgrade
+          unlock: black
+          confirm: true
+          cost: 2000
 
 bookshop:
     icon: book
@@ -2878,4 +2891,3 @@ bookshop:
         - item: book|transfiguration
         - item: book|elective
         - item: book|unforgiveable
-
