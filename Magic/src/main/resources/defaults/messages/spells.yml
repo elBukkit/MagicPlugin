@@ -1620,3 +1620,9 @@ spells:
       cast_fail: "&cYou are maxed out on that buff!"
       selected: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
       no_template: "&cYou may not add this buff to your $wand&c."
+    mute:
+      name: Mute
+      description: Mute the target player
+    nobabies:
+      name: No Babies
+      description: Make all baby mobs grow up into adults

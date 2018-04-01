@@ -1,0 +1,14 @@
+nobabies:
+  icon: egg
+  actions:
+    cast:
+      - class: AllEntities
+        actions:
+          - class: GrowEntity
+  parameters:
+    target: self
+    target_type: Ageable
+    target_all_worlds: true
+    cooldown: 8000
+  costs:
+    mana: 20

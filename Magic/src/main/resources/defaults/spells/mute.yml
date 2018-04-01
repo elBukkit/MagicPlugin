@@ -1,0 +1,15 @@
+mute:
+    icon: paper
+    category: staff
+    hidden: true
+    actions:
+        cast:
+        - class: Command
+    parameters:
+        commands:
+        - mute @t
+        - msg @t You've been muted!
+        - msg @p You've muted @t
+        target_type: Player
+        target: other
+        range: 16
