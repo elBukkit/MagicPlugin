@@ -38,7 +38,7 @@ public class SpellParameters extends ParameterizedConfiguration {
     @Override
     protected double getParameter(String parameter) {
         Double value = spell.getAttribute(parameter);
-        return value == null ? 0 : value;
+        return value == null || Double.isNaN(value) || Double.isInfinite(value) ? 0 : value;
     }
 
     @Override

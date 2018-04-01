@@ -68,7 +68,12 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
             transform.setVariable(parameter, value);
         }
 
-        return transform.get();
+        double value = transform.get();
+        Exception ex = transform.getException();
+        if (ex != null) {
+            warn("Error evaluating transform: " + ex.getMessage());
+        }
+        return Double.isNaN(value) || Double.isInfinite(value) ? 0 : value;
     }
 
     protected abstract Set<String> getParameters();

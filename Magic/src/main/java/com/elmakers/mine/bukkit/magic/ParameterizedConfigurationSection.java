@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import static org.bukkit.util.NumberConversions.toLong;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.Configuration;
@@ -13,6 +14,17 @@ import org.bukkit.util.NumberConversions;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class ParameterizedConfigurationSection extends MemorySection {
+    private static Logger logger;
+
+    public static void setLogger(Logger log) {
+        logger = log;
+    }
+
+    protected static void warn(String message) {
+        if (logger != null) {
+            logger.warning(message);
+        }
+    }
 
     protected ParameterizedConfigurationSection() {
         super();

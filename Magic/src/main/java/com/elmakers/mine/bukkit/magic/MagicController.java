@@ -1838,6 +1838,7 @@ public class MagicController implements MageController {
         }
 
         SpellParameters.initializeAttributes(attributes);
+        SpellParameters.setLogger(getLogger());
     }
 
     private int getPathCount() {
