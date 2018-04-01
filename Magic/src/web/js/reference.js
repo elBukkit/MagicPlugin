@@ -33,21 +33,27 @@ function processMetadata(meta) {
     return meta;
 }
 
-function makeSelectable(tab, details, populate) {
+function makeSelectable(tab, details, populate, depth) {
     tab.selectable({
         selected: function(event, ui) {
             var selected = jQuery(".ui-selected", this);
             details.empty();
             populate(details, selected);
-            window.location.hash = _selectedTab + "." + selected.data('key');
+            _selectedDetails.length = depth;
+            _selectedDetails[depth - 1] = selected.data('key');
+            var hash = _selectedTab;
+            for (var i = 0; i < _selectedDetails.length; i++) {
+                hash += "." + _selectedDetails[i];
+            }
+            window.location.hash = hash;
         }
     });
 
     var currentHash = window.location.hash;
     if (currentHash != '') {
         var pieces = currentHash.split('.');
-        if (pieces.length > 1) {
-            var key = pieces[1];
+        if (pieces.length >= depth) {
+            var key = pieces[depth];
             jQuery(tab).find('.ui-selectee').each(function() {
                 var selected = $(this);
                 if (selected.data('key') == key) {
@@ -79,7 +85,7 @@ function populatePropertyList(list, sectionKey) {
 
 function makePropertySelector(selector, section, details) {
      populatePropertyList(selector, section);
-     makeSelectable(selector, details, addParameterDetails);
+     makeSelectable(selector, details, addParameterDetails, 1);
 }
 
 function addParameterDetails(container, listItem) {
@@ -192,7 +198,7 @@ function makePropertyHolderSelector(selector, section, details, baseProperties) 
      populatePropertyHolderList(selector, section);
      makeSelectable(selector, details, function(details, listItem) {
          addPropertyHolderDetails(details, listItem.data('key'), section, baseProperties);
-     });
+     }, 1);
 }
 
 function sortProperties(list) {
@@ -282,13 +288,14 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
         parameterList.append(parameterItem);
     }
     var parameterDetails = jQuery('<div class="details">').text("Select a parameter for details");
-    makeSelectable(parameterList, parameterDetails, addParameterDetails);
+    makeSelectable(parameterList, parameterDetails, addParameterDetails, 2);
     parameterListContainer.append(parameterList);
     parameterContainer.append(parameterListContainer);
     parameterContainer.append(parameterDetails);
     container.append(parameterContainer);
 }
 
+var _selectedDetails = [];
 var _selectedTab = "spell_properties";
 function initialize() {
     $.ajax( {
@@ -312,7 +319,8 @@ function initialize() {
         // Kinda hacky but not sure how to work around this
         var currentHash = window.location.hash;
         if (currentHash != '') {
-            window.location.hash = currentHash.split('.')[0];
+            _selectedTab = currentHash.split('.')[0];
+            window.location.hash = _selectedTab;
         }
         // Create tab list
         $("#tabs").tabs({
