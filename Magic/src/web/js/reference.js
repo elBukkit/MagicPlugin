@@ -226,6 +226,14 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
     }
     container.append(description);
 
+    if (propertyHolder.category != '') {
+        var category = metadata.categories[propertyHolder.category];
+        var categoryName = $('<div class="category"/>')
+            .append($('<span class="prefix">').text('Category: '))
+            .append($('<span>').text(category.name));
+        container.append(categoryName);
+    }
+
     if (propertyHolder.examples.length > 0) {
         var exampleDiv = $('<div/>');
         exampleDiv.addClass('exampleContainer');
