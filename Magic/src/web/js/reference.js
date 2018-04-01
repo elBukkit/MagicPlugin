@@ -109,8 +109,18 @@ function addParameterDetails(container, listItem) {
         container.append(defaultValueContainer);
     }
 
+    if (property.category != '') {
+        var category = metadata.categories[property.category];
+        var categoryName = $('<div class="category"/>')
+            .append($('<span class="prefix">').text('Category: '))
+            .append($('<span>').text(category.name));
+        container.append(categoryName);
+    }
+
     var propertyType = metadata.types[property.type];
-    var typeDescription = $('<div class="propertyType"/>').text(propertyType.name);
+    var typeDescription = $('<div class="propertyType"/>')
+        .append($('<span class="prefix">').text('Type: '))
+        .append($('<span>').text(propertyType.name));
     container.append(typeDescription);
 
     var propertyTypeDetails = $('<div class="propertyTypeDetails"/>');

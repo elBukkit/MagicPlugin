@@ -122,3 +122,12 @@
     font-weight: bold;
     padding-right: 2em;
 }
+
+.prefix {
+    color: #666666;
+}
+
+.category {
+    background: #DDDDFF;
+    padding: 6px;
+}
