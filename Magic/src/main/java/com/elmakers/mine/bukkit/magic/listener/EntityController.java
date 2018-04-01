@@ -287,7 +287,7 @@ public class EntityController implements Listener {
         {
             ItemStack itemStack = contents[index];
             if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-            if (NMSUtils.isTemporary(itemStack) || Wand.isSkill(itemStack)) {
+            if (NMSUtils.isTemporary(itemStack)) {
                 removeDrops.add(itemStack);
                 continue;
             }
@@ -296,6 +296,8 @@ public class EntityController implements Listener {
             if (keepItem)
             {
                 mage.addToRespawnInventory(index, itemStack);
+                removeDrops.add(itemStack);
+            } else if (Wand.isSkill(itemStack)) {
                 removeDrops.add(itemStack);
             }
         }
