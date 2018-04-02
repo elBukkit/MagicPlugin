@@ -159,10 +159,15 @@ citadel:
   enabled: true
 
   # Non-player reinforcements will be indestructible to spells
-  reinforcements_indestructible: true
+  reinforcements_indestructible: false
 
   # Player reinforcements will be indestructible to spells
-  player_reinforcements_indestructible: true
+  player_reinforcements_indestructible: false
+
+  # Reinforcements will be taken into account in the BreakBlock action
+  # Spells that use ModifyBlock to directly erase blocks will still be able to destroy
+  # reinforced blocks, unless the above flags are set.
+  reinforcement_durability: true
 
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.

@@ -1,5 +1,9 @@
 package com.elmakers.mine.bukkit.protection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -13,11 +17,13 @@ import vg.civcraft.mc.citadel.reinforcement.Reinforcement;
 public class CitadelManager implements BlockBreakManager {
     private boolean indestructiblePlayer;
     private boolean indestructibleOther;
+    private boolean durabilityCheck;
 
     public CitadelManager(MageController controller, ConfigurationSection configuration) {
         controller.getLogger().info("Citadel found, integrating");
         indestructibleOther = configuration.getBoolean("reinforcements_indestructible");
         indestructiblePlayer = configuration.getBoolean("player_reinforcements_indestructible");
+        durabilityCheck = configuration.getBoolean("reinforcement_durability");
     }
 
     @Override
@@ -28,5 +34,13 @@ public class CitadelManager implements BlockBreakManager {
             return indestructiblePlayer;
         }
         return indestructibleOther;
+    }
+
+    @Nullable
+    public Integer getDurability(@Nonnull Location location) {
+        if (!durabilityCheck) return null;
+        Reinforcement reinforcement = Citadel.getReinforcementManager().getReinforcement(location);
+        if (reinforcement == null) return null;
+        return reinforcement.getDurability();
     }
 }

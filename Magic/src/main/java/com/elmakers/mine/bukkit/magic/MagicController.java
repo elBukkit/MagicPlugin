@@ -5397,6 +5397,18 @@ public class MagicController implements MageController {
         return examples;
     }
 
+    @Override
+    public double getBlockDurability(@Nonnull Block block) {
+        double durability = CompatibilityUtils.getDurability(block.getType());
+        if (citadelManager != null) {
+            Integer reinforcement = citadelManager.getDurability(block.getLocation());
+            if (reinforcement != null) {
+                durability += reinforcement;
+            }
+        }
+        return durability;
+    }
+
     /*
      * Private data
      */

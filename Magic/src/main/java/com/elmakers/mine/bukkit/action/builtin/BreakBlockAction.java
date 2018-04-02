@@ -11,6 +11,7 @@ import org.bukkit.inventory.InventoryHolder;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -48,7 +49,8 @@ public class BreakBlockAction extends ModifyBlockAction {
         }
 
         double breakAmount = 1;
-        double durability = CompatibilityUtils.getDurability(block.getType());
+        MageController controller = context.getController();
+        double durability = controller.getBlockDurability(block);
         if (durability > 0) {
             double breakPercentage = scaledAmount / durability;
             breakAmount = context.registerBreaking(block, breakPercentage);
