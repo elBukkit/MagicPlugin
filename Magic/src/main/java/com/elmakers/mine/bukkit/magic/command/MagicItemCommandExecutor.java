@@ -274,28 +274,29 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             player.sendMessage(ChatColor.RED + "Usage: /mitem configure <key> [value]");
             return true;
         }
+
+        String tag = args[0];
+        String[] path = StringUtils.split(tag, '.');
+        Object node = InventoryUtils.getTag(item);
         if (args.length == 1) {
-            String tag = args[0];
-            String[] path = StringUtils.split(tag, '.');
-            Object node = CompatibilityUtils.getNode(item, path[0]);
-            int i = 1;
+            int i = 0;
             while (node != null && i < path.length - 1) {
                 node = CompatibilityUtils.getNode(node, path[i]);
+                i++;
             }
             if (node == null) {
                 player.sendMessage(ChatColor.RED + "Item does not have path: " + ChatColor.DARK_RED + tag);
                 return true;
             }
-            if (CompatibilityUtils.containsNode(node, path[path.length - 1])) {
+            if (!CompatibilityUtils.containsNode(node, path[path.length - 1])) {
                 player.sendMessage(ChatColor.RED + "Item does not have tag: " + ChatColor.DARK_RED + tag);
                 return true;
             }
             CompatibilityUtils.removeMeta(node, path[path.length - 1]);
+            player.sendMessage(ChatColor.GREEN + "Removed: " + ChatColor.DARK_GREEN + tag);
             return true;
         }
-        String tag = args[0];
-        String[] path = StringUtils.split(tag, '.');
-        Object node = InventoryUtils.getTag(item);
+        String value = ChatColor.translateAlternateColorCodes('&', args[1]);
         for (int i = 0; i < path.length; i++) {
             String key = path[i];
             if (node == null) {
@@ -305,9 +306,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             if (i < path.length - 1) {
                 node = InventoryUtils.getNode(node, key);
             } else {
-                InventoryUtils.setMeta(node, key, args[1]);
+                InventoryUtils.setMeta(node, key, value);
             }
         }
+        player.sendMessage(ChatColor.GREEN + "Set: " + ChatColor.DARK_GREEN + tag + " to " + ChatColor.AQUA + " " + value);
         return true;
     }
 

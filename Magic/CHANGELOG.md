@@ -2,8 +2,11 @@
 
 # 7.4
 
+ - Added reference guide! http://magic.elmakers.com/reference/
  - Night spell changed to "A Dark And Stormy Night", makes it rain
  - Added Citadel integration, spells will not break reinforced blocks
+ - Fixed /mitem configure command when removing tags
+ - Add EntitySelector action
 
 # 7.3.6
 
