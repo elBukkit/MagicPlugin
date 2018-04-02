@@ -64,6 +64,7 @@ public class EntityArmorStandData extends EntityExtraData {
         hasBasePlate = !parameters.getBoolean("baseplate", true);
         hasGravity = parameters.getBoolean("gravity", true);
         isMarker = parameters.getBoolean("marker", false);
+        hasArms = parameters.getBoolean("arms", false);
         disabledSlots = parameters.getInt("disabled_slots", 0);
     }
 

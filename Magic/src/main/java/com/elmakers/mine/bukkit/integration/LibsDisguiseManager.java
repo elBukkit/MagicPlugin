@@ -13,9 +13,11 @@ import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.LibsDisguises;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
+import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
 import me.libraryaddict.disguise.disguisetypes.MiscDisguise;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+import me.libraryaddict.disguise.disguisetypes.watchers.ArmorStandWatcher;
 
 public class LibsDisguiseManager {
     private final Plugin disguisePlugin;
@@ -43,6 +45,7 @@ public class LibsDisguiseManager {
         if (disguiseName == null || disguiseName.isEmpty()) {
             return false;
         }
+
         try {
             DisguiseType disguiseType = DisguiseType.valueOf(disguiseName.toUpperCase());
             Disguise disguise = null;
@@ -54,6 +57,14 @@ public class LibsDisguiseManager {
                         playerDisguise.setSkin(skin);
                     }
                     disguise = playerDisguise;
+                    break;
+                case ARMOR_STAND:
+                    disguise = new MobDisguise(DisguiseType.ARMOR_STAND);
+                    ArmorStandWatcher watcher = (ArmorStandWatcher)disguise.getWatcher();
+                    watcher.setMarker(configuration.getBoolean("marker", false));
+                    watcher.setNoBasePlate(!configuration.getBoolean("baseplate", true));
+                    watcher.setSmall(configuration.getBoolean("small", false));
+                    watcher.setShowArms(configuration.getBoolean("arms", false));
                     break;
                 case FALLING_BLOCK:
                 case DROPPED_ITEM:
@@ -82,6 +93,15 @@ public class LibsDisguiseManager {
                     boolean isBaby = configuration.getBoolean("baby", false);
                     disguise = new MobDisguise(disguiseType, !isBaby);
             }
+
+            FlagWatcher watcher = disguise.getWatcher();
+            watcher.setInvisible(configuration.getBoolean("invisible", false));
+            watcher.setBurning(configuration.getBoolean("burning", false));
+            watcher.setGlowing(configuration.getBoolean("glowing", false));
+            watcher.setFlyingWithElytra(configuration.getBoolean("flying", false));
+            watcher.setSneaking(configuration.getBoolean("sneaking", false));
+            watcher.setAddEntityAnimations(configuration.getBoolean("animations", false));
+            watcher.setSprinting(configuration.getBoolean("sprinting", false));
             DisguiseAPI.disguiseEntity(entity, disguise);
         } catch (Exception ex) {
             owningPlugin.getLogger().log(Level.WARNING, "Error creating disguise", ex);
