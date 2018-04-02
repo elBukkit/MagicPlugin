@@ -3,6 +3,7 @@
 # 7.4
 
  - Added reference guide! http://magic.elmakers.com/reference/
+ - Fix Factions integration for the *other* version of Factions. Yeesh.
  - Night spell changed to "A Dark And Stormy Night", makes it rain
  - Added Citadel integration, spells will not break reinforced blocks
  - Fixed /mitem configure command when removing tags

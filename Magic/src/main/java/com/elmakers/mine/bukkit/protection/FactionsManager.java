@@ -22,6 +22,8 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
     private Method isSafeZoneMethod = null;
     private Method isNoneMethod = null;
 
+    private Method getFlagMethod = null;
+
     private Constructor<?> flocationConstructor = null;
     private Method psFactoryMethod = null;
 
@@ -57,7 +59,11 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
                         psFactoryMethod = null;
                     }
 
-                    isSafeZoneMethod =  factionClass.getMethod("isSafeZone");
+                    try {
+                        getFlagMethod = factionClass.getMethod("getFlag", String.class);
+                    } catch (Exception ex) {
+                        isSafeZoneMethod =  factionClass.getMethod("isSafeZone");
+                    }
 
                 } catch (Throwable ex) {
                     // Try for Factions "Limited"
@@ -173,8 +179,17 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
 
     @Override
     public boolean isPVPAllowed(Player player, Location location) {
-        if (enabled && location != null && factionsManager != null && isSafeZoneMethod != null && board != null) {
+        if (!enabled || location == null || factionsManager == null || board == null) return true;
 
+        if (getFlagMethod != null) {
+            try {
+                Object faction = getFactionAt(location);
+                return faction == null || (Boolean)getFlagMethod.invoke(faction, "pvp");
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        } else if (isSafeZoneMethod != null) {
             try {
                 Object faction = getFactionAt(location);
                 return faction == null || !(Boolean)isSafeZoneMethod.invoke(faction);
