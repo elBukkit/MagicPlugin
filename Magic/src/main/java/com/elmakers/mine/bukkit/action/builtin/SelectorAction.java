@@ -432,6 +432,11 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
             // Don't show costs if unavailable
             if (costs != null && !unavailable) {
+                String costHeading = getMessage("cost_heading");
+                if (!costHeading.isEmpty()) {
+                    InventoryUtils.wrapText(costHeading, lore);
+                }
+
                 String costKey = unlockKey != null && !unlockKey.isEmpty() ? "unlock_cost_lore" : "cost_lore";
                 String requiredKey = unlockKey != null && !unlockKey.isEmpty() ? "required_unlock_cost_lore" : "required_cost_lore";
                 String costString = getMessage(costKey);

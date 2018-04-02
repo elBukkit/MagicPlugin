@@ -614,7 +614,8 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         // Load items
         itemStacks = new ArrayList<>();
-        String costString = context.getMessage("cost_lore", "Costs: $cost");
+        String costString = context.getMessage("cost_lore", getDefaultMessage(context,"cost_lore"));
+        String costHeading = context.getMessage("cost_heading", getDefaultMessage(context, "cost_heading"));
         for (ShopItem shopItem : items) {
             int currentSlot = itemStacks.size();
             if (filterBound && shopItem != null) {
@@ -645,8 +646,14 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             if (lore == null) {
                 lore = new ArrayList<>();
             }
+
+            if (!costHeading.isEmpty()) {
+                InventoryUtils.wrapText(costHeading, lore);
+            }
             String costs = costString.replace("$cost", getItemCost(context, shopItem));
-            lore.add(ChatColor.GOLD + costs);
+            if (!costs.isEmpty()) {
+                lore.add(costs);
+            }
             meta.setLore(lore);
             item.setItemMeta(meta);
             item = InventoryUtils.makeReal(item);
