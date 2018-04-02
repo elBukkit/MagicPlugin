@@ -1,0 +1,146 @@
+barracks:
+  icon: wood_door
+  icon_url: http://textures.minecraft.net/texture/443e10a710998d47d238e291a8ba8f6abf42bc7e419d1d8dcc8c55707ebb19
+  hidden: true
+  actions:
+    cast:
+    - class: ChangeContext
+      target_offset: -150,0,-150
+      actions:
+      - class: Repeat
+        repeat: 5
+        actions:
+        - class: Repeat
+          repeat: 5
+          actions:
+          - class: ChangeContext
+            target_offset: 7,0,7
+            actions:
+            - class: Cover
+              actions:
+              - class: ChangeContext
+                target_offset: 0,-4,0
+                actions:
+                - class: Volume
+                  actions:
+                  - class: CreateField
+          - class: ChangeContext
+            target_offset: 0,0,15
+            persist_target: true
+        - class: ChangeContext
+          target_offset: 15,0,0
+          persist_target: true
+  parameters:
+    check_destructible: false
+    use_brush_size: false
+    radius: 9
+    field_type: glowstone
+    field_rent: 1 Gold
+    field_rent_period: 7d
+    field_rent_sign_direction: 12
+    brush: schematic:barracksplot
+    target: block
+    range: 64
+
+plot:
+  icon: wood_door
+  icon_url: http://textures.minecraft.net/texture/443e10a710998d47d238e291a8ba8f6abf42bc7e419d1d8dcc8c55707ebb19
+  hidden: true
+  actions:
+    cast:
+    - class: CreateField
+  parameters:
+    check_destructible: false
+    brush: quartz_ore
+    field_type: quartz_ore
+    field_rent: 1 Gold
+    field_rent_period: 7d
+    target: block
+    range: 64
+
+squidnado:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    icon_url: http://textures.minecraft.net/texture/2362826553aaf78fd8b511fdedba941738ddd21c0f889e6bf2697d5a4f74f27
+    icon: feather
+    category: elemental
+    pvp_restricted: true
+    worth_sp: 900
+    earns_sp: 11
+    actions:
+        cast:
+        -  class: Repeat
+           actions:
+           - class: ChangeContext
+             target_direction: 0,1,0
+             persist_target: true
+             actions:
+             - class: SpawnEntity
+               type: squid
+               track: false
+             - class: PlayEffects
+               effect: whirl
+               ignore_result: true
+             - class: Sphere
+               ignore_result: true
+               actions:
+               - class: Volume
+                 actions:
+                 - class: ModifyBlock
+                   direction: 0,1,0
+                   speed: 0.2
+             - class: AreaOfEffect
+               radius: 6
+               actions:
+                - class: Velocity
+                  ignore_result: true
+                - class: Damage
+           - class: Delay
+    effects:
+        whirl:
+        -  class: EffectSingle
+           sound: fizz
+           sound_volume: 0.2
+           sound_pitch: 0.3
+           location: target
+           effectlib:
+             class: TornadoEffect
+             iterations: 3
+             tornadoHeight: 8
+             distance: 0.8
+             cloudSize: 1
+             tornadoParticle: spell
+             offset: 0,-4,0
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           sound_volume: 1
+           sound_pitch: 0.2
+           location: origin
+    parameters:
+        target: block
+        target_type: Entity
+        range: 8
+        radius: 2
+        target_count: 16
+        allow_max_range: true
+        item_speed: 0.1
+        living_entity_speed: 1
+        y_offset: 0.9
+        cooldown: 10000
+        repeat: 8
+        damage: 1
+        delay: 800
+        brush: erase
+        falling: true
+        falling_probability: 0.8
+        random_target_offset: 0.2,0,0.2
+        target_direction_speed: 3
+        source_direction_offset: 0,0.5,0
+        undo: 15000
+        x_size: 0
+        z_size: 0
+        y_size: 2
+        destructible_override: true
+    costs:
+        mana: 150
