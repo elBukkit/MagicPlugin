@@ -1,0 +1,36 @@
+fx:
+  icon: diamond_axe:199
+  icon_disabled: diamond_hoe:199
+  icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
+  category: staff
+  hidden: true
+  actions:
+    cast:
+    - class: PlayEffects
+      effects: particle
+  effects:
+    particle:
+    - location: target
+      effectlib:
+        class: Modified
+        period: 1
+        duration: 10000
+        parameters:
+          particle_count: "max(0, (t/i)*100 - 50)"
+          particle_offset_x: "max(0, (t/i)*3 - 1)"
+          particle_offset_y: "max(0, (t/i)*3 - 1)"
+          particle_offset_z: "max(0, (t/i)*3 - 1)"
+        effect:
+          class: Icon
+          y_offset: 0
+          particle: $particle
+          color: $color
+  parameters:
+    particle: redstone
+    color: FFFFFF
+    range: 3
+    allow_max_range: true
+    target: block
+    oty: 2
+    loud: true
+    cooldown: 1000

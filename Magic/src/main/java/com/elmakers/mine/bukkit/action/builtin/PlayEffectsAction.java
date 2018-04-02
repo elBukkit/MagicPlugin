@@ -1,10 +1,15 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Collection;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+
+import de.slikey.effectlib.util.ParticleEffect;
 
 public class PlayEffectsAction extends BaseSpellAction
 {
@@ -25,5 +30,22 @@ public class PlayEffectsAction extends BaseSpellAction
         super.prepare(context, parameters);
         effectKey = parameters.getString("effect");
         effectKey = parameters.getString("effects", effectKey);
+    }
+
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
+        parameters.add("particle");
+    }
+
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("particle")) {
+            for (ParticleEffect particle : ParticleEffect.values()) {
+                examples.add(particle.name().toLowerCase());
+            }
+        }  else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
     }
 }

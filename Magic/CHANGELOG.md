@@ -13,6 +13,7 @@
  - Add EntitySelector action
  - Mine and Chop can't be cast in no-break regions
  - Add "cost_heading" message option for shops
+ - Add "fx" spell for quickly testing particle types
 
 # 7.3.6
 

@@ -1494,6 +1494,9 @@ spells:
     fxdemo:
         name: FX Demo
         description: Show off various EffectLib effects
+    fx:
+        name: FX Particle
+        description: Show off a specific particle, use with /cast fx particle redstone
     randomtp:
       name: Random Teleport
       description: Teleports you to a random location    
