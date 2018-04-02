@@ -465,4 +465,6 @@ public interface MageController {
      */
     @Nonnull
     Collection<String> getLoadedExamples();
+
+    double getBlockDurability(@Nonnull Block block);
 }
