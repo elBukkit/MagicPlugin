@@ -109,6 +109,9 @@ jedi:
     inherit: base_arena_lightsaber
     icon: shield:3
     effect_color: '0000FF'
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     spells:
         - forcepush
         - forcepull
@@ -118,6 +121,9 @@ sith:
     inherit: base_arena_lightsaber
     icon: shield:4
     effect_color: 'FF0000'
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     spells:
         - forcepush
         - forceignite

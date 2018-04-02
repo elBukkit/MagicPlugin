@@ -2,8 +2,7 @@ package com.elmakers.mine.bukkit.integration.mobarena;
 
 import java.util.List;
 import java.util.Set;
-
-import javax.annotation.Nullable;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -11,7 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -42,6 +40,11 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
 
         if (plugin instanceof MobArena) {
             mobArena = (MobArena)plugin;
+            try {
+                mobArena.getThingManager().register(new MagicThingParser(controller));
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Error integrating with MobArena ThingManager. You may need to update MobArena for Magic wands and items to work in MobArena configs!", ex);
+            }
         }
         configure(configuration);
 
@@ -76,14 +79,6 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
         if (mage != null) {
             mage.deactivate();
         }
-    }
-
-    // Hopefully can use this again one day for custom item provider
-    @Nullable
-    public ItemStack getItem(String s) {
-        if (!s.startsWith("magic:")) return null;
-        s = s.substring(6);
-        return controller.createItem(s);
     }
 
     public boolean isProtected() {

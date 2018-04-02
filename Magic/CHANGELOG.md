@@ -2,6 +2,9 @@
 
 # 7.4
 
+ - Update MobArena integration to work with latest version, magic items now available as rewards
+   - Will need further support from MobArena for giving Things to classes for items to work in classes.
+   - For now, my fork will still work for that.
  - Added reference guide! http://magic.elmakers.com/reference/
  - Fix Factions integration for the *other* version of Factions. Yeesh.
  - Night spell changed to "A Dark And Stormy Night", makes it rain
@@ -9,6 +12,7 @@
  - Fixed /mitem configure command when removing tags
  - Add EntitySelector action
  - Mine and Chop can't be cast in no-break regions
+ - Add "cost_heading" message option for shops
 
 # 7.3.6
 

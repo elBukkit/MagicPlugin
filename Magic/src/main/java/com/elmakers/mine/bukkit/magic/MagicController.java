@@ -120,11 +120,11 @@ import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LightAPIManager;
-import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
 import com.elmakers.mine.bukkit.integration.SkillAPIManager;
 import com.elmakers.mine.bukkit.integration.SkriptManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
 import com.elmakers.mine.bukkit.magic.listener.BlockController;
@@ -955,8 +955,7 @@ public class MagicController implements MageController {
         } else if (mobArenaConfiguration.getBoolean("enabled", true)) {
             try {
                 mobArenaManager = new MobArenaManager(this, mobArenaPlugin, mobArenaConfiguration);
-                // getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items, magic mobs can be used in monster configurations");
-                getLogger().info("MobArena found, magic mobs can be used in monster configurations");
+                getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items, magic mobs can be used in monster configurations");
             } catch (Throwable ex) {
                 getLogger().warning("MobArena integration failed, you may need to update the MobArena plugin to use Magic items");
             }
