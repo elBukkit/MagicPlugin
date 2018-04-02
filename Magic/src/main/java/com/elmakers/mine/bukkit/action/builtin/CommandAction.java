@@ -4,7 +4,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.logging.Level;
 
@@ -24,6 +26,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 /**
  * Can run any Bukkit command as a Spell.
@@ -62,6 +65,7 @@ public class CommandAction extends BaseSpellAction {
     private boolean modal;
     private int timeout;
     private String escapeSequence;
+    private Map<String, String> variables;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -72,6 +76,13 @@ public class CommandAction extends BaseSpellAction {
         modal = parameters.getBoolean("modal", false);
         timeout = parameters.getInt("timeout", 0);
         escapeSequence = parameters.getString("escape_sequence", "");
+        List<String> variableNames = ConfigurationUtils.getStringList(parameters, "variables");
+        if (variableNames != null && !variableNames.isEmpty()) {
+            variables = new HashMap<>();
+            for (String variable : variableNames) {
+                variables.put(variable, parameters.getString(variable));
+            }
+        }
     }
 
     @Override
@@ -109,6 +120,11 @@ public class CommandAction extends BaseSpellAction {
         for (String command : commands) {
             try {
                 String converted = context.parameterize(command);
+                if (variables != null) {
+                    for (Map.Entry<String, String> variable : variables.entrySet()) {
+                        converted = converted.replace("$" + variable.getKey(), variable.getValue());
+                    }
+                }
                 if (converted.contains("@arg")) {
                     conversationCommands.add(converted);
                 } else {
