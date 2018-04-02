@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.integration;
+package com.elmakers.mine.bukkit.integration.mobarena;
 
 import java.util.List;
 import java.util.Set;
@@ -37,7 +37,7 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
         for (String mob : magicMobKeys) {
             // Have to obey special MobArena naming restrictions
             String mobKey = mob.toLowerCase().replaceAll("[-_\\.]", "");
-            new MagicMACreature(controller, mobKey, controller.getMob(mob));
+            new MagicCreature(controller, mobKey, controller.getMob(mob));
         }
 
         if (plugin instanceof MobArena) {

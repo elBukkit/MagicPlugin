@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.integration;
+package com.elmakers.mine.bukkit.integration.mobarena;
 
 import javax.annotation.Nullable;
 
@@ -14,11 +14,11 @@ import com.garbagemule.MobArena.framework.Arena;
 import com.garbagemule.MobArena.waves.MACreature;
 import com.garbagemule.MobArena.waves.WaveUtils;
 
-public class MagicMACreature extends MACreature {
+public class MagicCreature extends MACreature {
     private final EntityData entityData;
     private final MageController controller;
 
-    public MagicMACreature(MageController controller, String name, EntityData magicMob) {
+    public MagicCreature(MageController controller, String name, EntityData magicMob) {
         super(name, magicMob.getType());
         this.entityData = magicMob;
         this.controller = controller;
