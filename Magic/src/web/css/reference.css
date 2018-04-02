@@ -92,7 +92,6 @@
 }
 
 .baseProperty {
-    color: #888888;
     font-style: italic;
 }
 
@@ -130,4 +129,28 @@
 .category {
     background: #DDDDFF;
     padding: 6px;
+}
+
+.importance-100 {
+    background: #FFFFFF;
+}
+
+.importance-75 {
+    background: #EEEEEE;
+}
+
+.importance-50 {
+    background: #DDDDDD;
+}
+
+.importance-25 {
+    background: #CCCCCC;
+}
+
+.importance-0 {
+    background: #BBBBBB;
+}
+
+.importance-- {
+    background: #888888;
 }

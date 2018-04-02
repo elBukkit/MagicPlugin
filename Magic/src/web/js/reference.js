@@ -11,6 +11,9 @@ $(document).on({
 $(document).ready(initialize);
 
 var metadata = null;
+var _selectedDetails = [];
+var _selectedTab = "spell_properties";
+var _firstLoad = true;
 
 function processMetadata(meta) {
     var properties = meta.properties;
@@ -50,7 +53,7 @@ function makeSelectable(tab, details, populate, depth) {
     });
 
     var currentHash = window.location.hash;
-    if (currentHash != '') {
+    if (currentHash != '' && _firstLoad) {
         var pieces = currentHash.split('.');
         if (pieces.length >= depth) {
             var key = pieces[depth];
@@ -74,9 +77,7 @@ function populatePropertyList(list, sectionKey) {
         var key = section[i];
         if (!properties.hasOwnProperty(key)) continue;
         var parameter = properties[key];
-        var item = $('<li>').text(parameter.name);
-        item.addClass('ui-widget-content');
-        item.data('key', key);
+        var item = getSelectable(parameter, key);
         item.data('default', defaultValues[key]);
         list.append(item);
     }
@@ -186,9 +187,7 @@ function populatePropertyHolderList(list, sectionKey) {
     for (var key in section) {
         if (!section.hasOwnProperty(key)) continue;
         var holder = section[key];
-        var item = $('<li>').text(holder.name);
-        item.addClass('ui-widget-content');
-        item.data('key', key);
+        var item = getSelectable(holder, key);
         list.append(item);
     }
     sortList(list);
@@ -267,9 +266,7 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
         if (!properties.hasOwnProperty(propertyKey)) continue;
         var property = properties[propertyKey];
 
-        var parameterItem = $('<li>').text(property.name);
-        parameterItem.addClass('ui-widget-content');
-        parameterItem.data('key', propertyKey);
+        var parameterItem = getSelectable(property, propertyKey);
         parameterItem.data('default', defaultValues[propertyKey]);
         parameterList.append(parameterItem);
     }
@@ -281,9 +278,8 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
         if (!properties.hasOwnProperty(propertyKey)) continue;
         var property = properties[propertyKey];
 
-        var parameterItem = $('<li class="baseProperty">').text(property.name);
-        parameterItem.addClass('ui-widget-content');
-        parameterItem.data('key', propertyKey);
+        var parameterItem = getSelectable(property, propertyKey);
+        parameterItem.addClass('baseProperty');
         parameterItem.data('default', defaultValues.hasOwnProperty(propertyKey) ? defaultValues[propertyKey] : baseProperties[propertyKey]);
         parameterList.append(parameterItem);
     }
@@ -295,8 +291,26 @@ function addPropertyHolderDetails(container, key, section, baseProperties) {
     container.append(parameterContainer);
 }
 
-var _selectedDetails = [];
-var _selectedTab = "spell_properties";
+function getSelectable(selectable, key) {
+    var parameterItem = $('<li>').text(selectable.name);
+    if (selectable.importance >= 100) {
+        parameterItem.addClass('importance-100');
+    } else if (selectable.importance >= 75) {
+        parameterItem.addClass('importance-75');
+    } else if (selectable.importance >= 50) {
+        parameterItem.addClass('importance-50');
+    } else if (selectable.importance >= 25) {
+        parameterItem.addClass('importance-25');
+    } else if (selectable.importance < 0) {
+        parameterItem.addClass('importance--');
+    } else {
+        parameterItem.addClass('importance-0');
+    }
+    parameterItem.addClass('ui-widget-content');
+    parameterItem.data('key', key);
+    return parameterItem;
+}
+
 function initialize() {
     $.ajax( {
         type: "GET",
@@ -319,7 +333,11 @@ function initialize() {
         // Kinda hacky but not sure how to work around this
         var currentHash = window.location.hash;
         if (currentHash != '') {
-            _selectedTab = currentHash.split('.')[0];
+            var pieces = currentHash.split('.');
+            _selectedTab = pieces[0];
+            for (var i = 1; i < pieces.length; i++) {
+                _selectedDetails[i - 1] = pieces[i];
+            }
             window.location.hash = _selectedTab;
         }
         // Create tab list
@@ -330,5 +348,6 @@ function initialize() {
             }
         }).show();
         window.location.hash = currentHash;
+        _firstLoad = false;
     });
 }
