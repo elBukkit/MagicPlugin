@@ -8,6 +8,7 @@
  - Added Citadel integration, spells will not break reinforced blocks
  - Fixed /mitem configure command when removing tags
  - Add EntitySelector action
+ - Mine and Chop can't be cast in no-break regions
 
 # 7.3.6
 

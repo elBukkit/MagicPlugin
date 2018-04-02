@@ -72,4 +72,9 @@ public class DropAction extends BaseSpellAction {
     public boolean requiresTarget() {
         return true;
     }
+
+    @Override
+    public boolean requiresBreakPermission() {
+        return true;
+    }
 }
