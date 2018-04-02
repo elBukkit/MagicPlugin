@@ -55,3 +55,55 @@ aj2:
            particleOffsetZ: 0.2
            updateLocations: false
            particles: 20
+
+disco:
+  name: Disco Ball
+  icon: feather
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: DiscoBall
+        sphere_particle: end_rod
+        sphere_color: FFD700
+        sphere_radius: 1
+        sphere_particles: 200
+        line_particle: end_rod
+  parameters:
+    range: 10
+    allow_max_range: true
+
+cubes:
+  name: Cubes
+  icon: feather
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: Cube
+        particle: end_rod
+  parameters:
+    range: 10
+    allow_max_range: true
+
+ball:
+  name: Ball
+  icon: eye_of_ender
+  actions:
+    cast:
+    - class: Sphere
+      actions:
+      - class: ModifyBlock
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: Sphere
+        particle: end_rod
+        radius: 3
+  parameters:
+    range: 10
+    allow_max_range: true
+    brush: redstone_ore
+    radius: 3
+    destructible: "*"
