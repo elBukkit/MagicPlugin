@@ -196,6 +196,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (sound != null) {
             sound.setVolume((float)configuration.getDouble("sound_volume", sound.getVolume()));
             sound.setPitch((float)configuration.getDouble("sound_pitch", sound.getPitch()));
+            sound.setRange(configuration.getInt("sound_range", sound.getRange()));
         }
 
         if (configuration.contains("firework") || configuration.contains("firework_power")) {
