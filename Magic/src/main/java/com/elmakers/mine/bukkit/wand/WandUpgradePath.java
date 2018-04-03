@@ -468,7 +468,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public String getName() {
-        return name == null ? key : name;
+        return name == null || name.isEmpty() ? key : name;
     }
 
     @Override

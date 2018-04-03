@@ -15,6 +15,7 @@
  - Add "cost_heading" message option for shops
  - Add "fx" spell for quickly testing particle types
  - Add more options for disguised entities
+ - Fix spellshop messaging with non-class wands
 
 # 7.3.6
 
