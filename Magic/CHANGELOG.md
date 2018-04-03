@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.4
+
 # 7.3.7
 
  - Update MobArena integration to work with latest version, magic items now available as rewards
