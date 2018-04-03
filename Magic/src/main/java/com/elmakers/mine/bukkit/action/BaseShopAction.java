@@ -558,7 +558,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (requiredPath != null || exactPath != null || requiredTemplate != null) {
             requireWand = true;
         }
-        applyToWand = parameters.getBoolean("apply_to_wand", requireWand);
+        applyToCaster = parameters.getBoolean("apply_to_caster", false);
+        applyToWand = parameters.getBoolean("apply_to_wand", requireWand && !applyToCaster);
+        if (applyToWand) {
+            applyToCaster = false;
+            requireWand = true;
+        }
 
         MageController controller = context.getController();
         isXP = parameters.getBoolean("use_xp", false);

@@ -84,7 +84,11 @@ public class SpellShopAction extends BaseShopAction
         allowLocked = parameters.getBoolean("allow_locked", false);
         requiresCastCounts = parameters.getBoolean("upgrade_requires_casts", false);
         if (!castsSpells) {
-            applyToCaster = true;
+            if (requireWand && !applyToCaster) {
+                applyToWand = false;
+            } else {
+                applyToCaster = true;
+            }
         }
     }
 
