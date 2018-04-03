@@ -1,6 +1,6 @@
 # CHANGELOG
 
-# 7.4
+# 7.3.7
 
  - Update MobArena integration to work with latest version, magic items now available as rewards
    - Will need further support from MobArena for giving Things to classes for items to work in classes.
