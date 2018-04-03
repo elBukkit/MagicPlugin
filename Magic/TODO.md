@@ -6,6 +6,8 @@
  
  - Weird auto-targeting on gatling gun?
  
+ - Add path 2nd parameter to enchant command to stop when reaching end of a path
+ 
  - Optional lore on wands to say which classes they work with
  - Option for Selector for switch class rather than unlock class
      

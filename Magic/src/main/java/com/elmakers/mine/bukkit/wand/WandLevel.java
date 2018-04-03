@@ -109,6 +109,9 @@ public class WandLevel {
             }
         }
 
+        if (count == 0 && !spellProbability.isEmpty()) {
+            count = 1;
+        }
         return count;
     }
 
@@ -162,6 +165,9 @@ public class WandLevel {
         if (addSpells) {
             if (remainingSpells.size() > 0) {
                 Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
+                if (spellCount == null || spellCount == 0) {
+                    spellCount = 1;
+                }
                 for (int i = 0; spellCount != null && i < spellCount; i++) {
                     String spellKey = RandomUtils.weightedRandom(remainingSpells);
                     boolean added = wand.addSpell(spellKey);
