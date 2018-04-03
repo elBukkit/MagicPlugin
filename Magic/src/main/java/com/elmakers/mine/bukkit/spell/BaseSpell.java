@@ -1124,8 +1124,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         if (this.currentCast == null)
         {
-            this.currentCast = new CastContext();
-            this.currentCast.setSpell(this);
+            this.currentCast = new CastContext(this);
         }
 
         this.location = defaultLocation;
@@ -2513,8 +2512,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public com.elmakers.mine.bukkit.api.action.CastContext getCurrentCast() {
         if (currentCast == null) {
-            currentCast = new CastContext();
-            this.currentCast.setSpell(this);
+            currentCast = new CastContext(this);
         }
         return currentCast;
     }

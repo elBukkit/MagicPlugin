@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.batch;
 
+import javax.annotation.Nullable;
+
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.UndoList;
@@ -73,6 +75,7 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
     }
 
     @Override
+    @Nullable
     public Spell getSpell() {
         return context.getSpell();
     }

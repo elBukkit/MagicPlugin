@@ -79,8 +79,11 @@ public interface CastContext {
     void setTargetEntity(Entity targetEntity);
     void setTargetLocation(Location targetLocation);
     void setTargetSourceLocation(Location targetLocation);
+    @Nullable
     Spell getSpell();
+    @Nonnull
     Mage getMage();
+    @Nullable
     Wand getWand();
     @Nullable
     MageClass getMageClass();

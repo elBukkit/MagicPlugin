@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;
@@ -79,7 +80,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private UndoableSpell undoSpell;
     private MaterialBrush brush;
     private CastContext base;
-    private Mage mage;
+    private @Nonnull Mage mage;
     private MageClass mageClass;
     private Wand wand;
 
@@ -92,7 +93,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private int actionsPerformed;
     private boolean finished = false;
 
-    public CastContext() {
+    public CastContext(@Nonnull MageSpell spell) {
+        setSpell(spell);
         this.location = null;
         this.entity = null;
         this.base = this;
@@ -102,7 +104,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         messageParameters = new HashMap<>();
     }
 
-    public CastContext(Mage mage) {
+    public CastContext(@Nonnull Mage mage) {
         this.mage = mage;
         this.entity = mage.getEntity();
         this.location = null;
@@ -113,7 +115,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         messageParameters = new HashMap<>();
     }
 
-    public CastContext(Mage mage, Wand wand) {
+    public CastContext(@Nonnull Mage mage, Wand wand) {
         this(mage);
         this.wand = wand;
     }
@@ -133,7 +135,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Entity sourceEntity, Location sourceLocation) {
         this.location = sourceLocation;
         this.entity = sourceEntity;
-        this.setSpell(copy.getSpell());
+        this.setSpell((MageSpell)copy.getSpell());
         this.targetEntity = copy.getTargetEntity();
         this.targetLocation = copy.getTargetLocation();
         this.undoList = copy.getUndoList();
@@ -165,19 +167,15 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
     }
 
-    public void setSpell(Spell spell)
+    private void setSpell(MageSpell spell)
     {
         this.spell = spell;
+        this.mage = spell.getMage();
+        this.wand = mage.getActiveWand();
+        this.mageClass = (this.wand == null ? this.mage.getActiveClass() : this.wand.getMageClass());
         if (spell instanceof BaseSpell)
         {
             this.baseSpell = (BaseSpell)spell;
-        }
-        if (spell instanceof MageSpell)
-        {
-            MageSpell mageSpell = (MageSpell)spell;
-            this.mage = mageSpell.getMage();
-            this.wand = mage.getActiveWand();
-            this.mageClass = (this.wand == null ? this.mage.getActiveClass() : this.wand.getMageClass());
         }
         if (spell instanceof UndoableSpell)
         {
@@ -331,11 +329,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    @Nullable
     public Spell getSpell() {
         return spell;
     }
 
-    @Nullable
+    @Nonnull
     @Override
     public Mage getMage() {
         return this.mage;
@@ -348,6 +347,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    @Nullable
     public Wand getWand() {
         return wand;
     }
