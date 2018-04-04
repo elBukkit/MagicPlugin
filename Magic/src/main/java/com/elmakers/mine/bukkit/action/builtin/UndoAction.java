@@ -75,6 +75,7 @@ public class UndoAction extends BaseSpellAction
                 if (undoList.undoNext(false) == null) break;
             }
             undid = true;
+            totalSize--;
             undone++;
 
             context.addWork(10);

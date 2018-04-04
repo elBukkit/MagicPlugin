@@ -2,6 +2,8 @@
 
 # 7.4
 
+ - Fix an unintentional behavioral change in undo animations that was introduced in 7.2
+
 # 7.3.7
 
  - Update MobArena integration to work with latest version, magic items now available as rewards
