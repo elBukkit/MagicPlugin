@@ -3,6 +3,7 @@
 # 7.4
 
  - Fix an unintentional behavioral change in undo animations that was introduced in 7.2
+ - Add support for falling block projectiles
 
 # 7.3.7
 

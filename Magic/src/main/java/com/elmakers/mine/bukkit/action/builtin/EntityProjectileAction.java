@@ -20,6 +20,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -43,7 +44,6 @@ public class EntityProjectileAction extends CustomProjectileAction {
 
     protected Entity entity = null;
     protected Plugin plugin = null;
-
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -78,6 +78,13 @@ public class EntityProjectileAction extends CustomProjectileAction {
         } else {
             entityData = context.getController().getMob(mobType);
             if (entityData == null) {
+
+                // Specific for falling blocks
+                MaterialAndData brush = context.getBrush();
+                if (!parameters.contains("material") && brush != null) {
+                    parameters.set("material", brush.getKey());
+                }
+
                 entityData = new com.elmakers.mine.bukkit.entity.EntityData(context.getController(), parameters);
             }
         }
@@ -158,6 +165,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             Location location = adjustLocation(sourceLocation.getLocation(context));
             Entity spawned = entityData.spawn(context.getController(), location, spawnReason);
             if (spawned != null) {
+                context.registerForUndo(spawned);
                 setEntity(context.getController(), spawned);
             }
         }

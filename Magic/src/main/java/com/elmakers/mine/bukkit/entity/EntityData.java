@@ -17,6 +17,7 @@ import org.bukkit.Art;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -29,6 +30,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Item;
@@ -223,6 +225,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityAreaEffectCloudData((AreaEffectCloud)entity);
         } else if (entity instanceof Slime) {
             extraData = new EntitySlimeData((Slime)entity);
+        } else if (entity instanceof FallingBlock) {
+            extraData = new EntityFallingBlockData((FallingBlock)entity);
         }
     }
 
@@ -317,11 +321,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
             else if (type == EntityType.ARMOR_STAND) {
                 extraData = new EntityArmorStandData(parameters);
-            }
-            else if (type == EntityType.SLIME || type == EntityType.MAGMA_CUBE) {
+            } else if (type == EntityType.SLIME || type == EntityType.MAGMA_CUBE) {
                 EntitySlimeData slimeData = new EntitySlimeData();
                 slimeData.size = parameters.getInt("size", 16);
                 extraData = slimeData;
+            } else if (type == EntityType.FALLING_BLOCK) {
+                extraData = new EntityFallingBlockData(parameters);
             }
 
         } catch (Exception ex) {
@@ -454,6 +459,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Nullable
+    @SuppressWarnings("deprecation")
     protected Entity trySpawn(MageController controller, CreatureSpawnEvent.SpawnReason reason) {
         Entity spawned = null;
         boolean addedToWorld = false;
@@ -468,6 +474,19 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                         break;
                     case DROPPED_ITEM:
                         spawned = location.getWorld().dropItem(location, item);
+                        addedToWorld = true;
+                        break;
+                    case FALLING_BLOCK:
+                        Material material = null;
+                        byte data = 0;
+                        if (extraData != null && extraData instanceof EntityFallingBlockData) {
+                            EntityFallingBlockData falling = (EntityFallingBlockData)extraData;
+                            material = falling.getMaterial();
+                        }
+                        if (material == null) {
+                            material = Material.DIRT;
+                        }
+                        spawned = location.getWorld().spawnFallingBlock(location, material, data);
                         addedToWorld = true;
                         break;
                     default:
