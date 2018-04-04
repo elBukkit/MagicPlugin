@@ -581,7 +581,7 @@ earthblock:
     costs:
         mana: 40
 
-earthcompression:
+earthbullet:
     icon: diamond_axe:30
     icon_disabled: diamond_hoe:30
     upgrade_required_casts: 30
