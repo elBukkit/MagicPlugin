@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -28,7 +27,6 @@ import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
@@ -162,21 +160,6 @@ public class WearAction extends BaseSpellAction
         {
             if (material == null && (context.getSpell().usesBrush() || context.getSpell().hasBrushOverride())) {
                 material = context.getBrush();
-            }
-            if (material == null)
-            {
-                Block targetBlock = context.getTargetBlock();
-                if (targetBlock != null)
-                {
-                    material = new com.elmakers.mine.bukkit.block.MaterialAndData(targetBlock);
-                    // Check for Banners with 1.7 support
-                    // TODO: this is outdated?
-                    Material baseMaterial = material.getMaterial();
-                    if (DeprecatedUtils.getId(baseMaterial) == 176 || DeprecatedUtils.getId(baseMaterial) == 177)
-                    {
-                        ((com.elmakers.mine.bukkit.block.MaterialAndData)material).setMaterialId(425);
-                    }
-                }
             }
 
             if (material == null || material.getMaterial() == Material.AIR) {
