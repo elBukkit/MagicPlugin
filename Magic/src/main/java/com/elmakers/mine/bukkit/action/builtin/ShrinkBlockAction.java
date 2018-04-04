@@ -4,9 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -36,24 +33,19 @@ public class ShrinkBlockAction extends BaseSpellAction
 
         context.registerForUndo(targetBlock);
 
-        dropHead(targetBlock.getLocation(), blockSkin, targetBlock.getType().name(), (byte)3);
+        dropHead(controller, targetBlock.getLocation(), blockSkin, targetBlock.getType().name());
         targetBlock.setType(Material.AIR);
         return SpellResult.CAST;
     }
 
-    @SuppressWarnings("deprecation")
-    protected void dropHead(Location location, String ownerName, String itemName, byte data) {
-        ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);
-        ItemMeta meta = shrunkenHead.getItemMeta();
-        if (itemName != null) {
-            meta.setDisplayName(itemName);
+    protected void dropHead(MageController controller, Location location, String ownerName, String itemName) {
+        ItemStack shrunkenHead = controller.getSkull(ownerName, itemName);
+        if (shrunkenHead != null) {
+            location.setX(location.getX() + 0.5);
+            location.setY(location.getY() + 0.5);
+            location.setZ(location.getZ() + 0.5);
+            location.getWorld().dropItemNaturally(location, shrunkenHead);
         }
-        if (meta instanceof SkullMeta && ownerName != null) {
-            SkullMeta skullData = (SkullMeta)meta;
-            skullData.setOwner(ownerName);
-        }
-        shrunkenHead.setItemMeta(meta);
-        location.getWorld().dropItemNaturally(location, shrunkenHead);
     }
 
     @Override

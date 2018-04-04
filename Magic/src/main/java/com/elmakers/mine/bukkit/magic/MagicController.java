@@ -5207,6 +5207,24 @@ public class MagicController implements MageController {
 
     @Override
     @Nonnull
+    @SuppressWarnings("deprecation")
+    public ItemStack getSkull(String ownerName, String itemName) {
+        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+        ItemMeta meta = skull.getItemMeta();
+        if (itemName != null) {
+            meta.setDisplayName(itemName);
+        }
+        if (meta instanceof SkullMeta && ownerName != null) {
+            SkullMeta skullData = (SkullMeta)meta;
+            skullData.setOwner(ownerName);
+        }
+        skull.setItemMeta(meta);
+        return skull;
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
     public ItemStack getSkull(Entity entity, String itemName) {
         byte data = 3;
         String ownerName = null;

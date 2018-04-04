@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
@@ -17,8 +16,6 @@ import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.UndoList;
@@ -59,42 +56,13 @@ public class ShrinkEntityAction extends DamageAction
 
         LivingEntity li = (LivingEntity)targetEntity;
         boolean alreadyDead = li.isDead() || li.getHealth() <= 0;
-        String ownerName = null;
-        String itemName = null;
-        byte data = 3;
-
-        if (li instanceof Player)
-        {
-            ownerName = ((Player)li).getName();
-        }
-        else
-        {
-            itemName = DeprecatedUtils.getName(li.getType()) + " Head";
-            switch (li.getType()) {
-                case CREEPER:
-                    data = 4;
-                break;
-                case ZOMBIE:
-                    data = 2;
-                break;
-                case SKELETON:
-                    Skeleton skeleton = (Skeleton)li;
-                    data = (byte)(skeleton.getSkeletonType() == SkeletonType.NORMAL ? 0 : 1);
-                break;
-                default:
-                    ownerName = controller.getMobSkin(li.getType());
-            }
-        }
-
-        if (itemName == null && ownerName != null) {
-            itemName = ownerName + "'s Head";
-        }
+        String itemName = DeprecatedUtils.getDisplayName(li) + " Head";
 
         Location targetLocation = targetEntity.getLocation();
         if (li instanceof Player) {
             super.perform(context);
             if (li.isDead() && !alreadyDead) {
-                dropPlayerHead(targetEntity.getLocation(), (Player)li, itemName);
+                dropHead(context, targetEntity, itemName);
             }
         }
         else if (li.getType() == EntityType.GIANT) {
@@ -129,31 +97,20 @@ public class ShrinkEntityAction extends DamageAction
             skeleton.setSkeletonType(SkeletonType.NORMAL);
         } else {
             super.perform(context);
-            if ((ownerName != null || data != 3) && (li.isDead() || li.getHealth() == 0) && !alreadyDead) {
-                dropHead(targetEntity.getLocation(), ownerName, itemName, data);
+            if ((li.isDead() || li.getHealth() == 0) && !alreadyDead) {
+                dropHead(context, targetEntity, itemName);
             }
         }
 
         return SpellResult.CAST;
     }
 
-    protected void dropPlayerHead(Location location, Player player, String itemName) {
-        dropHead(location, player.getName(), itemName, (byte)3);
-    }
-
-    @SuppressWarnings("deprecation")
-    protected void dropHead(Location location, String ownerName, String itemName, byte data) {
-        ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);
-        ItemMeta meta = shrunkenHead.getItemMeta();
-        if (itemName != null) {
-            meta.setDisplayName(itemName);
+    protected void dropHead(CastContext context, Entity entity, String itemName) {
+        ItemStack shrunkenHead = context.getController().getSkull(entity, itemName);
+        if (shrunkenHead != null) {
+            Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
+            location.getWorld().dropItemNaturally(location, shrunkenHead);
         }
-        if (meta instanceof SkullMeta && ownerName != null) {
-            SkullMeta skullData = (SkullMeta)meta;
-            skullData.setOwner(ownerName);
-        }
-        shrunkenHead.setItemMeta(meta);
-        location.getWorld().dropItemNaturally(location, shrunkenHead);
     }
 
     @Override

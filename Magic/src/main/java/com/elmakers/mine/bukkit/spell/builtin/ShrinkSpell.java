@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,18 +10,15 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
@@ -37,12 +33,7 @@ public class ShrinkSpell extends BlockSpell
         String giveName = parameters.getString("name");
         if (giveName != null) {
             String itemName = giveName + "'s Head";
-            Player player = Bukkit.getPlayer(giveName);
-            if (player != null) {
-                dropPlayerHead(getLocation(), player, itemName);
-            } else {
-                dropPlayerHead(getLocation(), giveName, itemName);
-            }
+            dropHead(controller, getLocation(), giveName, itemName);
             return SpellResult.CAST;
         }
 
@@ -73,43 +64,18 @@ public class ShrinkSpell extends BlockSpell
 
             LivingEntity li = (LivingEntity)targetEntity;
             boolean alreadyDead = li.isDead() || li.getHealth() <= 0;
-            String ownerName = null;
-            String itemName = null;
-            byte data = 3;
+            String itemName = DeprecatedUtils.getDisplayName(li) + " Head";;
 
             if (li instanceof Player)
             {
                 damage = parameters.getInt("player_damage", DEFAULT_PLAYER_DAMAGE);
-                ownerName = ((Player)li).getName();
-            }
-            else
-            {
-                itemName = li.getType().getName() + " Head";
-                switch (li.getType()) {
-                    case CREEPER:
-                        data = 4;
-                    break;
-                    case ZOMBIE:
-                        data = 2;
-                    break;
-                    case SKELETON:
-                        Skeleton skeleton = (Skeleton)li;
-                        data = (byte)(skeleton.getSkeletonType() == SkeletonType.NORMAL ? 0 : 1);
-                    break;
-                    default:
-                        ownerName = getMobSkin(li.getType());
-                }
-            }
-
-            if (itemName == null && ownerName != null) {
-                itemName = ownerName + "'s Head";
             }
 
             Location targetLocation = targetEntity.getLocation();
             if (li instanceof Player) {
                 CompatibilityUtils.magicDamage(li, damage, mage.getEntity());
                 if (li.isDead() && !alreadyDead) {
-                    dropPlayerHead(targetEntity.getLocation(), (Player)li, itemName);
+                    dropHead(controller, targetEntity, itemName);
                 }
             }
             else if (li.getType() == EntityType.GIANT) {
@@ -140,8 +106,8 @@ public class ShrinkSpell extends BlockSpell
                 slime.setSize(slime.getSize() - 1);
             } else {
                 CompatibilityUtils.magicDamage(li, damage, mage.getEntity());
-                if ((ownerName != null || data != 3) && (li.isDead() || li.getHealth() == 0) && !alreadyDead) {
-                    dropHead(targetEntity.getLocation(), ownerName, itemName, data);
+                if ((li.isDead() || li.getHealth() == 0) && !alreadyDead) {
+                    dropHead(controller, targetEntity, itemName);
                 }
             }
         } else {
@@ -164,32 +130,29 @@ public class ShrinkSpell extends BlockSpell
             registerForUndo(targetBlock);
             registerForUndo();
 
-            dropHead(targetBlock.getLocation(), blockSkin, targetBlock.getType().name(), (byte)3);
+            dropHead(controller, targetBlock.getLocation(), blockSkin, targetBlock.getType().name());
             targetBlock.setType(Material.AIR);
         }
 
         return SpellResult.CAST;
     }
 
-    protected void dropPlayerHead(Location location, Player player, String itemName) {
-        dropPlayerHead(location, player.getName(), itemName);
+
+    protected void dropHead(MageController controller, Entity entity, String itemName) {
+        ItemStack shrunkenHead = controller.getSkull(entity, itemName);
+        if (shrunkenHead != null) {
+            Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
+            location.getWorld().dropItemNaturally(location, shrunkenHead);
+        }
     }
 
-    protected void dropPlayerHead(Location location, String playerName, String itemName) {
-        dropHead(location, playerName, itemName, (byte)3);
-    }
-
-    protected void dropHead(Location location, String ownerName, String itemName, byte data) {
-        ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);
-        ItemMeta meta = shrunkenHead.getItemMeta();
-        if (itemName != null) {
-            meta.setDisplayName(itemName);
+    protected void dropHead(MageController controller, Location location, String ownerName, String itemName) {
+        ItemStack shrunkenHead = controller.getSkull(ownerName, itemName);
+        if (shrunkenHead != null) {
+            location.setX(location.getX() + 0.5);
+            location.setY(location.getY() + 0.5);
+            location.setZ(location.getZ() + 0.5);
+            location.getWorld().dropItemNaturally(location, shrunkenHead);
         }
-        if (meta instanceof SkullMeta && ownerName != null) {
-            SkullMeta skullData = (SkullMeta)meta;
-            skullData.setOwner(ownerName);
-        }
-        shrunkenHead.setItemMeta(meta);
-        location.getWorld().dropItemNaturally(location, shrunkenHead);
     }
 }

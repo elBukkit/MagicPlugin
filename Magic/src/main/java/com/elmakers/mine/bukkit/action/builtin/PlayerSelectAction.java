@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -19,7 +18,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
@@ -144,14 +142,8 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
             String name = targetPlayer.getName();
             String displayName = targetPlayer.getDisplayName();
 
-            @SuppressWarnings("deprecation")
-            ItemStack playerItem = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+            ItemStack playerItem = controller.getSkull(targetPlayer, displayName);
             ItemMeta meta = playerItem.getItemMeta();
-            meta.setDisplayName(displayName);
-            if (meta instanceof SkullMeta) {
-                SkullMeta skullData = (SkullMeta)meta;
-                skullData.setOwner(name);
-            }
             if (!name.equals(displayName))
             {
                 List<String> lore = new ArrayList<>();

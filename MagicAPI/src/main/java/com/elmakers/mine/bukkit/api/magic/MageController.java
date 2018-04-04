@@ -408,6 +408,8 @@ public interface MageController {
     String getMobSkin(EntityType mobType);
     @Nonnull
     ItemStack getSkull(Entity entity, String itemName);
+    @Nonnull
+    ItemStack getSkull(String ownerName, String itemName);
     void checkResourcePack(CommandSender sender);
     boolean sendResourcePackToAllPlayers(CommandSender sender);
     boolean sendResourcePack(Player player);
