@@ -47,7 +47,7 @@ public interface MagicConfigurable extends MagicProperties {
     /**
      * Upgrade a single property.
      *
-     * <p></p>Do not use this to remove properties, use removeProperty instead.
+     * <p>Do not use this to remove properties, use removeProperty instead.
      *
      * @param key The property to upgrade.
      * @param value The new value to set, if it is an improvement over the current value.
