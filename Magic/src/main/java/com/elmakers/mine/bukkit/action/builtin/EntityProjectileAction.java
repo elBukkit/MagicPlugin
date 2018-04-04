@@ -78,13 +78,6 @@ public class EntityProjectileAction extends CustomProjectileAction {
         } else {
             entityData = context.getController().getMob(mobType);
             if (entityData == null) {
-
-                // Specific for falling blocks
-                MaterialAndData brush = context.getBrush();
-                if (!parameters.contains("material") && brush != null) {
-                    parameters.set("material", brush.getKey());
-                }
-
                 entityData = new com.elmakers.mine.bukkit.entity.EntityData(context.getController(), parameters);
             }
         }
@@ -162,6 +155,12 @@ public class EntityProjectileAction extends CustomProjectileAction {
     @Override
     public SpellResult start(CastContext context) {
         if (entity == null) {
+            // Specific for falling blocks
+            MaterialAndData brush = context.getBrush();
+            if (brush != null && entityData.getMaterial() == null) {
+                entityData.setMaterial(brush);
+            }
+
             Location location = adjustLocation(sourceLocation.getLocation(context));
             Entity spawned = entityData.spawn(context.getController(), location, spawnReason);
             if (spawned != null) {
