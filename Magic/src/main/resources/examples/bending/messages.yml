@@ -109,6 +109,9 @@ spells:
   earthsmash:
     name: Earth Smash
     description: Smash your target in a violent explosion
+  earthcompression:
+    name: Earth Compression
+    description: Compress the ground beneath your feet and launch it as a projectile
   sandspout:
     name: Sand Spout
     description: Bury your target in a whirlwind of sand
