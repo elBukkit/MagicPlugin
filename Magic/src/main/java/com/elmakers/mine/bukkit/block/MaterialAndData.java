@@ -819,13 +819,4 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public String toString() {
         return (isValid() ? material + (data != 0 ? "@" + data : "") : "invalid");
     }
-
-    @SuppressWarnings("deprecation")
-    @Nullable
-    @Override
-    public MaterialData getMaterialData() {
-        if (material == null) return null;
-        byte dataByte = data == null ? 0 : (byte)(short)data;
-        return new MaterialData(material, dataByte);
-    }
 }

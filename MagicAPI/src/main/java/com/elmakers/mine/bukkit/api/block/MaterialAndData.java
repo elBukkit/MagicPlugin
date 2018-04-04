@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 import com.elmakers.mine.bukkit.api.magic.Messages;
 
@@ -19,7 +18,7 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
  * necessarily meant to be a friendly or printable name, though the class is capable of generating a semi-friendly
  * name, which will be the key lowercased and with underscores replaced with spaces. It will also attempt to create
  * a nice name for the variant, such as "blue wool". There is no DB for this, it is all based on the internal Bukkit
- * Material and MaterialData enumerations.
+ * Material enumerations.
  *
  * <p>Some examples of keys:
  * wool
@@ -73,6 +72,4 @@ public interface MaterialAndData {
     void setCustomName(String customName);
     void setRawData(Object data);
     ItemStack applyToItem(ItemStack stack);
-    @Nullable
-    MaterialData getMaterialData();
 }
