@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 
 import de.slikey.effectlib.math.VectorTransform;
 import de.slikey.effectlib.util.DynamicLocation;
@@ -422,8 +423,7 @@ public class CustomProjectileAction extends CompoundAction
             startProjectileEffects(context, projectileEffectKey);
 
             context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile launched from "
-                    + ChatColor.GRAY + projectileLocation.toVector() + ChatColor.BLUE, 7);
-
+                + TextUtils.printLocation(projectileLocation) + ChatColor.BLUE, 7);
         }
         else
         {
@@ -650,7 +650,7 @@ public class CustomProjectileAction extends CompoundAction
 
             targetLocation = projectileLocation.clone().add(velocity.clone().multiply(distanceTravelledThisTick));
             context.getMage().sendDebugMessage(ChatColor.DARK_BLUE + "Projectile miss: " + ChatColor.DARK_PURPLE
-                    + " at " + targetLocation.getBlock().getType() + " : " + targetLocation.toVector() + " from range of " + distanceTravelledThisTick + " over time " + delta, 14);
+                    + " at " + TextUtils.printBlock(targetLocation.getBlock()) + " from range of " + distanceTravelledThisTick + " over time " + delta, 14);
         } else {
             if (hasPreHitEffects) {
                 actionContext.playEffects("prehit");
@@ -663,9 +663,9 @@ public class CustomProjectileAction extends CompoundAction
             }
 
             context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile hit: " + ChatColor.LIGHT_PURPLE + targetingResult.name().toLowerCase()
-                + ChatColor.BLUE + " at " + ChatColor.GOLD + targetLocation.getBlock().getType()
-                + ChatColor.BLUE + " from " + ChatColor.GRAY + projectileLocation.getBlock() + ChatColor.BLUE + " to "
-                + ChatColor.GRAY + targetLocation.toVector() + ChatColor.BLUE
+                + ChatColor.BLUE + " at " + TextUtils.printBlock(targetLocation.getBlock())
+                + ChatColor.BLUE + " from " + TextUtils.printBlock(projectileLocation.getBlock()) + ChatColor.BLUE + " to "
+                + TextUtils.printVector(targetLocation.toVector()) + ChatColor.BLUE
                 + " from range of " + ChatColor.GOLD + distanceTravelledThisTick + ChatColor.BLUE + " over time " + ChatColor.DARK_PURPLE + delta, 8);
             distanceTravelledThisTick = targetLocation.distance(projectileLocation);
         }
@@ -761,7 +761,7 @@ public class CustomProjectileAction extends CompoundAction
         // actionContext.setTargetLocation(targetLocation.add(normal.normalize().multiply(2)));
 
         actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected: " + ChatColor.LIGHT_PURPLE
-                + " with normal vector of " + ChatColor.LIGHT_PURPLE + normal, 4);
+                + " with normal vector of " + TextUtils.printVector(normal), 4);
 
         actionContext.playEffects("reflect");
         reflectCount++;
