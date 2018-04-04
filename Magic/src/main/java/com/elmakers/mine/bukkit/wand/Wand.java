@@ -2684,7 +2684,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         SpellKey key = new SpellKey(spellKey);
         spellKey = key.getBaseKey();
-        if (!spells.contains(spellKey)) return null;
+        if (!hasSpell(spellKey)) return null;
         Integer level = spellLevels.get(spellKey);
         if (level != null) {
             spellKey = new SpellKey(spellKey, level).getKey();
@@ -4681,18 +4681,25 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public boolean forceAddSpell(String spellName) {
+        SpellTemplate template = controller.getSpellTemplate(spellName);
+        if (template == null) {
+            return false;
+        }
+        SpellKey spellKey = template.getSpellKey();
+        if (limitSpellsToPath) {
+            WandUpgradePath path = getPath();
+            if (path != null && !path.containsSpell(spellKey.getBaseKey())) return false;
+        }
         if (!super.addSpell(spellName)) {
             return false;
         }
 
         saveInventory();
-        SpellTemplate template = controller.getSpellTemplate(spellName);
 
         ItemStack spellItem = createSpellIcon(template);
         if (spellItem == null) {
             return false;
         }
-        SpellKey spellKey = template.getSpellKey();
         int level = spellKey.getLevel();
         int inventoryCount = inventories.size();
         int spellCount = spells.size();
@@ -4836,6 +4843,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public boolean hasBrush(String materialKey) {
+        if (limitBrushesToPath) {
+            WandUpgradePath path = getPath();
+            if (path != null && !path.containsBrush(materialKey)) return false;
+        }
         return getBrushes().contains(materialKey);
     }
 
@@ -4847,6 +4858,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean hasSpell(SpellKey spellKey) {
         if (!spells.contains(spellKey.getBaseKey())) return false;
+        if (limitSpellsToPath) {
+            WandUpgradePath path = getPath();
+            if (path != null && !path.containsSpell(spellKey.getBaseKey())) return false;
+        }
         int level = getSpellLevel(spellKey.getBaseKey());
         return (level >= spellKey.getLevel());
     }
@@ -4854,6 +4869,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean addBrush(String materialKey) {
         if (!isModifiable()) return false;
+
+        if (limitBrushesToPath) {
+            WandUpgradePath path = getPath();
+            if (path != null && !path.containsBrush(materialKey)) return false;
+        }
+
         if (!super.addBrush(materialKey)) return false;
 
         saveInventory();
@@ -4960,6 +4981,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean removeBrush(String materialKey) {
         if (!isModifiable() || materialKey == null) return false;
+        if (limitBrushesToPath) {
+            WandUpgradePath path = getPath();
+            if (path != null && !path.containsBrush(materialKey)) return false;
+        }
         if (!removeBrush(materialKey)) return false;
 
         saveInventory();
@@ -4984,8 +5009,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean removeSpell(String spellName) {
         if (!isModifiable()) return false;
-        if (!super.removeSpell(spellName)) return false;
+
         SpellKey spellKey = new SpellKey(spellName);
+        if (limitSpellsToPath) {
+            WandUpgradePath path = getPath();
+            if (path != null && !path.containsSpell(spellKey.getBaseKey())) return false;
+        }
+        if (!super.removeSpell(spellName)) return false;
 
         saveInventory();
         if (activeSpell != null) {
