@@ -4,7 +4,7 @@
 
     <groupId>com.elmakers.mine.bukkit</groupId>
     <artifactId>CompatibilityLib</artifactId>
-    <version>1.9-1.12.2-2-SNAPSHOT</version>
+    <version>1.13-1-SNAPSHOT</version>
 
     <name>Magic Compatibility Library</name>
     <url>http://mine.elmakers.com</url>
