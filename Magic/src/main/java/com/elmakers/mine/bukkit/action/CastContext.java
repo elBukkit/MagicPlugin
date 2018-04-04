@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.action;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Verify.verifyNotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +45,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.effect.EffectContext;
 import com.elmakers.mine.bukkit.magic.MaterialSets;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
@@ -52,7 +53,7 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 
-public class CastContext implements com.elmakers.mine.bukkit.api.action.CastContext {
+public class CastContext extends EffectContext implements com.elmakers.mine.bukkit.api.action.CastContext {
     protected static Random random;
 
     private final Location location;
@@ -72,7 +73,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private Set<UUID> targetMessagesSent = null;
     private Collection<EffectPlay> currentEffects = null;
 
-    private Spell spell;
+    private @Nonnull Spell spell;
     private BaseSpell baseSpell;
     private BlockSpell blockSpell;
     private BrushSpell brushSpell;
@@ -80,9 +81,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private UndoableSpell undoSpell;
     private MaterialBrush brush;
     private CastContext base;
-    private @Nonnull Mage mage;
     private MageClass mageClass;
-    private Wand wand;
 
     private List<ActionHandlerContext> handlers = null;
     private List<ActionHandlerContext> finishedHandlers = null;
@@ -94,6 +93,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private boolean finished = false;
 
     public CastContext(@Nonnull MageSpell spell) {
+        super(spell.getMage(), spell.getMage().getActiveWand());
         setSpell(spell);
         this.location = null;
         this.entity = null;
@@ -105,7 +105,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     public CastContext(@Nonnull Mage mage) {
-        this.mage = mage;
+        this(mage, mage.getActiveWand());
+    }
+
+    public CastContext(@Nonnull Mage mage, Wand wand) {
+        super(mage, wand);
         this.entity = mage.getEntity();
         this.location = null;
         this.base = this;
@@ -113,11 +117,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         targetMessagesSent = new HashSet<>();
         currentEffects = new ArrayList<>();
         messageParameters = new HashMap<>();
-    }
-
-    public CastContext(@Nonnull Mage mage, Wand wand) {
-        this(mage);
-        this.wand = wand;
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
@@ -133,6 +132,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Entity sourceEntity, Location sourceLocation) {
+        super(copy.getMage(), copy.getWand());
         this.location = sourceLocation;
         this.entity = sourceEntity;
         this.setSpell((MageSpell)copy.getSpell());
@@ -143,7 +143,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.targetMessagesSent = copy.getTargetMessagesSent();
         this.currentEffects = copy.getCurrentEffects();
         this.result = copy.getResult();
-        this.wand = copy.getWand();
         this.mageClass = copy.getMageClass();
 
         Location centerLocation = copy.getTargetCenterLocation();
@@ -170,8 +169,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private void setSpell(MageSpell spell)
     {
         this.spell = spell;
-        this.mage = spell.getMage();
-        this.wand = mage.getActiveWand();
         this.mageClass = (this.wand == null ? this.mage.getActiveClass() : this.wand.getMageClass());
         if (spell instanceof BaseSpell)
         {
@@ -210,12 +207,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             castLocation.setDirection(direction);
         }
         return castLocation;
-    }
-
-    @Nullable
-    @Override
-    public Location getWandLocation() {
-        return getCastLocation();
     }
 
     @Override
@@ -334,12 +325,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return spell;
     }
 
-    @Nonnull
-    @Override
-    public Mage getMage() {
-        return this.mage;
-    }
-
     @Nullable
     @Override
     public MageClass getMageClass() {
@@ -347,30 +332,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    @Nullable
-    public Wand getWand() {
-        return wand;
-    }
-
-    @Override
+    @Nonnull
     public CasterProperties getActiveProperties() {
         if (wand != null) {
-            return wand;
+            return verifyNotNull(wand);
         }
         return mage.getActiveProperties();
-    }
-
-    @Override
-    public MageController getController() {
-        Mage mage = getMage();
-        checkState(mage != null, "Controller is not available");
-        return mage.getController();
-    }
-
-    @Nullable
-    private MageController getControllerNullable() {
-        Mage mage = getMage();
-        return mage == null ? null : mage.getController();
     }
 
     @Override
@@ -436,10 +403,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public void updateBlock(Block block) {
-        MageController controller = getControllerNullable();
-        if (controller != null) {
-            controller.updateBlock(block);
-        }
+        MageController controller = getController();
+        controller.updateBlock(block);
     }
 
     @Override
@@ -1127,8 +1092,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Nullable
     @Override
     public Plugin getPlugin() {
-        MageController controller = getControllerNullable();
-        return controller == null ? null : controller.getPlugin();
+        MageController controller = getController();
+        return controller.getPlugin();
     }
     @Override
     public boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall)

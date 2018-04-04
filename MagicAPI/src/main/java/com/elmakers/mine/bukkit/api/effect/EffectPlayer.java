@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.effect;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;
@@ -12,7 +13,6 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
 public interface EffectPlayer {
@@ -32,9 +32,9 @@ public interface EffectPlayer {
     void setMaterial(Block block);
     void setColor(Color color);
     @Nullable
-    Location getSourceLocation(CastContext context);
+    Location getSourceLocation(@Nonnull EffectContext context);
     @Nullable
-    Location getTargetLocation(CastContext context);
+    Location getTargetLocation(@Nonnull EffectContext context);
 
     boolean playsAtOrigin();
     boolean playsAtTarget();

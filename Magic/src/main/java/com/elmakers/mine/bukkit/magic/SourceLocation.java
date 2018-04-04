@@ -8,7 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
 import de.slikey.effectlib.util.MathUtils;
@@ -87,7 +87,7 @@ public class SourceLocation {
     }
 
     @Nullable
-    public Location getLocation(CastContext context) {
+    public Location getLocation(EffectContext context) {
         Mage mage;
         Location eyeLocation;
         Location feetLocation;

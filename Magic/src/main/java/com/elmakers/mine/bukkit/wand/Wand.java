@@ -39,7 +39,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
@@ -54,6 +53,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.effect.EffectContext;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
@@ -101,7 +101,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
      * used for off-hand casting.
      */
     protected @Nullable Mage mage;
-    protected @Nullable CastContext effectsContext;
+    protected @Nullable EffectContext effectContext;
 
     // Cached state
     private String id = "";
@@ -5498,13 +5498,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
-    public @Nonnull CastContext getEffectsContext() {
-        if (effectsContext == null || (effectsContext.getMage() != mage)) {
+    public @Nonnull EffectContext getEffectContext() {
+        if (effectContext == null || (effectContext.getMage() != mage)) {
             // Lazy load or mage has changed
-            effectsContext = new com.elmakers.mine.bukkit.action.CastContext(mage, this);
+            effectContext = new EffectContext(mage, this);
         }
 
-        return verifyNotNull(effectsContext);
+        return verifyNotNull(effectContext);
     }
 
     @Override

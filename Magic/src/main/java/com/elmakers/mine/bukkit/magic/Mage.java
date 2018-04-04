@@ -2422,6 +2422,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    @Nonnull
     public CasterProperties getActiveProperties() {
         if (offhandCast && offhandWand != null) {
             return offhandWand;

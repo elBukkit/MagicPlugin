@@ -568,6 +568,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      *
      * @return
      */
+    @Nonnull
     CasterProperties getActiveProperties();
 
     // Vault integration

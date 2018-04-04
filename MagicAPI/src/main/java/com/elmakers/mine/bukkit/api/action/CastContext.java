@@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -33,12 +34,14 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
-public interface CastContext {
+public interface CastContext extends EffectContext {
     @Nullable
     Entity getEntity();
     LivingEntity getLivingEntity();
+    @Override
     @Nullable
     Location getLocation();
+    @Override
     @Nullable
     Location getTargetLocation();
     @Nullable
@@ -53,6 +56,8 @@ public interface CastContext {
     World getWorld();
     @Nullable
     Plugin getPlugin();
+    @Override
+    @Nullable
     Location getEyeLocation();
 
     /**
@@ -61,6 +66,7 @@ public interface CastContext {
      * a wand.
      * @return
      */
+    @Override
     @Nullable
     Location getWandLocation();
 
@@ -68,27 +74,32 @@ public interface CastContext {
      * Get the source location of this cast.
      * @return
      */
+    @Override
     @Nullable
     Location getCastLocation();
     @Nullable
     Block getTargetBlock();
     @Nullable
     Block getInteractBlock();
+    @Override
     @Nullable
     Entity getTargetEntity();
     void setTargetEntity(Entity targetEntity);
     void setTargetLocation(Location targetLocation);
     void setTargetSourceLocation(Location targetLocation);
-    @Nullable
+    @Nonnull
     Spell getSpell();
     @Nonnull
+    @Override
     Mage getMage();
     @Nullable
+    @Override
     Wand getWand();
     @Nullable
     MageClass getMageClass();
     Collection<EffectPlayer> getEffects(String key);
     boolean hasEffects(String key);
+    @Override
     @Nonnull
     MageController getController();
     void registerForUndo(Runnable runnable);
@@ -201,6 +212,7 @@ public interface CastContext {
     void addHandler(ActionHandler handler);
     SpellResult processHandlers();
     boolean hasHandlers();
+    @Nonnull
     CasterProperties getActiveProperties();
     void addMessageParameter(String key, String value);
 }

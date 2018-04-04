@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
@@ -23,7 +24,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
@@ -705,13 +706,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     @Nullable
     @Override
-    public Location getSourceLocation(CastContext context)  {
+    public Location getSourceLocation(@Nonnull EffectContext context)  {
         return sourceLocation.getLocation(context);
     }
 
     @Nullable
     @Override
-    public Location getTargetLocation(CastContext context)  {
+    public Location getTargetLocation(@Nonnull EffectContext context)  {
         return targetLocation.getLocation(context);
     }
 
