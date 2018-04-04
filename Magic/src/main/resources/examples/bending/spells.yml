@@ -595,24 +595,24 @@ earthbullet:
         target_offset: 0,-2,0
         actions:
         - class: CheckBlock
-        - class: Sphere
-          radius: 1
-          actions:
-          - class: BreakBlock
-            break_durability: 10
         - class: Brush
           sample: true
           actions:
-          -   class: ChangeContext
-              relative_source_offset: 1,2,0
-              actions:
-              - class: EntityProjectile
-                tick:
-                - class: AreaOfEffect
-                  actions:
-                  - class: Damage
-                  - class: Velocity
-                  - class: FallProtection
+          - class: Sphere
+            radius: 1
+            actions:
+            - class: BreakBlock
+              break_durability: 5
+          - class: ChangeContext
+            relative_source_offset: 1,4,0
+            actions:
+            - class: EntityProjectile
+              tick:
+              - class: AreaOfEffect
+                actions:
+                - class: Damage
+                - class: Velocity
+                - class: FallProtection
     effects:
       cast:
       - class: EffectSingle
