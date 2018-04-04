@@ -12,7 +12,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class EntityFallingBlockData extends EntityExtraData {
-    public final @Nonnull MaterialAndData material;
+    public @Nonnull MaterialAndData material;
 
     private EntityFallingBlockData(MaterialAndData material) {
         this.material = material;
@@ -40,6 +40,16 @@ public class EntityFallingBlockData extends EntityExtraData {
 
     @Override
     public void removed(Entity entity) {
+    }
+
+    @Nullable
+    public void setMaterialAndData(@Nonnull MaterialAndData material) {
+        this.material = material;
+    }
+
+    @Nullable
+    public MaterialAndData getMaterialAndData() {
+        return material;
     }
 
     @Nullable

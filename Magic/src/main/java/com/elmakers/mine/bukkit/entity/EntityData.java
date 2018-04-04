@@ -482,6 +482,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                         if (extraData != null && extraData instanceof EntityFallingBlockData) {
                             EntityFallingBlockData falling = (EntityFallingBlockData)extraData;
                             material = falling.getMaterial();
+                            data = falling.getData();
                         }
                         if (material == null) {
                             material = Material.DIRT;
@@ -897,5 +898,28 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public double getTrackRadiusSquared() {
         return mageData == null ? 0 : mageData.getTrackRadiusSquared();
+    }
+
+    @Override
+    public void setMaterial(@Nonnull com.elmakers.mine.bukkit.api.block.MaterialAndData material) {
+        if (extraData != null && extraData instanceof EntityFallingBlockData) {
+            ((EntityFallingBlockData)extraData).setMaterialAndData(material);
+        }
+
+        // Not sure if I should mess with "item" here
+    }
+
+    @Override
+    @Nullable
+    public com.elmakers.mine.bukkit.api.block.MaterialAndData getMaterial() {
+        if (extraData != null && extraData instanceof EntityFallingBlockData) {
+            return ((EntityFallingBlockData)extraData).getMaterialAndData();
+        }
+
+        if (item != null) {
+            return new MaterialAndData(item);
+        }
+
+        return null;
     }
 }
