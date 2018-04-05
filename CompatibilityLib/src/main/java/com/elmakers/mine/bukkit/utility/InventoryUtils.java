@@ -284,12 +284,12 @@ public class InventoryUtils extends NMSUtils
         } catch (MalformedURLException e) {
             Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
-        return new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+        return new ItemStack(Material.PLAYER_HEAD);
     }
 
     @SuppressWarnings("deprecation")
     public static ItemStack getURLSkull(URL url, String ownerName, UUID id, String itemName) {
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         if (itemName != null) {
             ItemMeta meta = skull.getItemMeta();
             meta.setDisplayName(itemName);
