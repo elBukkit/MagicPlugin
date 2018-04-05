@@ -82,7 +82,6 @@ collapse:
         undo: 10000
         cooldown: 8000
         select_self: false
-        physics_blocks: true
         undo_speed: 1
     costs:
         mana: 50

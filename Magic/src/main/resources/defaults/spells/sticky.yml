@@ -79,7 +79,6 @@ sticky:
         falling: true
         direction: 0,0.5,0
         undo: 15000
-        physics_blocks: true
         destructible_durability: 200
         break_durability: 50
         radius: 2

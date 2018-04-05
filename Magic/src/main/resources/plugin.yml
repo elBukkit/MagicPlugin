@@ -18,7 +18,6 @@ softdepend:
   - Vault
   - GriefPrevention
   - NoCheatPlus
-  - BlockPhysics
   - LibsDisguises
   - Minigames
   - SkillAPI

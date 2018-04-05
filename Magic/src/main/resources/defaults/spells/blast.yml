@@ -80,7 +80,6 @@ blast:
         destructible_durability: 50
         break_durability: 10
         select_self: false
-        physics_blocks: true
         undo_speed: 0.5
         damage: 6
     costs:
