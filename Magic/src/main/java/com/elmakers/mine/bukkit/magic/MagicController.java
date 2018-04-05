@@ -121,7 +121,6 @@ import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
-import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LightAPIManager;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
@@ -915,19 +914,6 @@ public class MagicController implements MageController {
 
     protected void finalizeIntegration() {
         final PluginManager pluginManager = plugin.getServer().getPluginManager();
-
-        // Check for BlockPhysics
-        if (useBlockPhysics) {
-            Plugin blockPhysicsPlugin = pluginManager.getPlugin("BlockPhysics");
-            if (blockPhysicsPlugin != null) {
-                blockPhysicsManager = new BlockPhysicsManager(plugin, blockPhysicsPlugin);
-                if (blockPhysicsManager.isEnabled()) {
-                    getLogger().info("BlockPhysics found, some spells will now use physics-based block effects");
-                } else {
-                    getLogger().warning("Error integrating with BlockPhysics, you may want to set 'enable_block_physics: false' in config.yml");
-                }
-            }
-        }
 
         // Check for Minigames
         Plugin minigamesPlugin = pluginManager.getPlugin("Minigames");
@@ -3003,10 +2989,6 @@ public class MagicController implements MageController {
         Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
         Wand.noActionSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_no_action_sound"));
 
-        if (blockPhysicsManager != null) {
-            blockPhysicsManager.setVelocityScale(properties.getDouble("block_physics_velocity_scale", 1));
-        }
-
         // Configure sub-controllers
         explosionController.loadProperties(properties);
         inventoryController.loadProperties(properties);
@@ -3059,8 +3041,6 @@ public class MagicController implements MageController {
             getLogger().log(Level.WARNING, "Missing player_data_store configuration, player data saving disabled!");
             this.mageDataStore = null;
         }
-
-        useBlockPhysics = properties.getBoolean("enable_block_physics", true);
 
         // Semi-deprecated Wand defaults
         Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
@@ -4934,14 +4914,6 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public boolean spawnPhysicsBlock(Location location, Material material, short data, Vector velocity) {
-        if (blockPhysicsManager == null) return false;
-
-        blockPhysicsManager.spawnPhysicsBlock(location, material, data, velocity);
-        return true;
-    }
-
-    @Override
     public boolean isDisguised(Entity entity) {
         return !libsDisguiseEnabled || libsDisguiseManager == null || entity == null ? false : libsDisguiseManager.isDisguised(entity);
     }
@@ -6026,8 +5998,6 @@ public class MagicController implements MageController {
     private CitadelManager                      citadelManager              = null;
     private RequirementsController              requirementsController      = null;
     private HeroesManager                       heroesManager               = null;
-    private BlockPhysicsManager                 blockPhysicsManager         = null;
-    private boolean                             useBlockPhysics             = true;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
     private SkillAPIManager                     skillAPIManager             = null;
     private PlaceholderAPIManager               placeholderAPIManager       = null;

@@ -35,7 +35,6 @@ public class ModifyBlockAction extends BaseSpellAction {
     private double backfireChance = 0;
     private boolean applyPhysics = false;
     private boolean commit = false;
-    private boolean usePhysicsBlocks = false;
     private boolean consumeBlocks = false;
     private boolean consumeVariants = true;
 
@@ -45,7 +44,6 @@ public class ModifyBlockAction extends BaseSpellAction {
         spawnFallingBlocks = parameters.getBoolean("falling", false);
         applyPhysics = parameters.getBoolean("physics", false);
         commit = parameters.getBoolean("commit", false);
-        usePhysicsBlocks = parameters.getBoolean("physics_blocks", false);
         breakable = parameters.getDouble("breakable", 0);
         backfireChance = parameters.getDouble("reflect_chance", 0);
         fallingBlockSpeed = parameters.getDouble("speed", 0);
@@ -169,9 +167,6 @@ public class ModifyBlockAction extends BaseSpellAction {
                 fallingBlockVelocity = null;
             }
             boolean spawned = false;
-            if (usePhysicsBlocks) {
-                spawned = context.getController().spawnPhysicsBlock(blockCenter, previousMaterial, previousData, fallingBlockVelocity);
-            }
             if (!spawned) {
                 FallingBlock falling = block.getWorld().spawnFallingBlock(blockCenter, previousMaterial, previousData);
                 falling.setDropItem(false);
