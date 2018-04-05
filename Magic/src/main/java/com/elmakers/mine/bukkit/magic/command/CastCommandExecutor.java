@@ -62,7 +62,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                         sender = null;
 
                     } catch (Throwable ex) {
-                        if (sender != null) sender.sendMessage("Your spell failed (badly... check server logs)");
+                        if (sender != null) sender.sendMessage("Failed to find entity by id, check server logs for errors");
                         ex.printStackTrace();
                         return false;
                     }
@@ -76,6 +76,23 @@ public class CastCommandExecutor extends MagicTabExecutor {
 
                 MageController controller = api.getController();
                 mage = controller.getMage(mageId, mageName);
+            }
+
+            Player player = DeprecatedUtils.getPlayer(playerName);
+            if (mage == null && player == null && playerName.contains("-")) {
+                try {
+                    Entity entity = controller.getPlugin().getServer().getEntity(UUID.fromString(playerName));
+                    if (entity != null) {
+                        mage = api.getController().getMage(entity);
+
+                        // If we have the mage, we no longer want to send anything to the console.
+                        sender = null;
+                    }
+                } catch (Throwable ex) {
+                    if (sender != null) sender.sendMessage("Failed to find entity " + playerName + ", check server logs for errors");
+                    ex.printStackTrace();
+                    return false;
+                }
             }
 
             if (mage != null && !mage.isLoading()) {
@@ -106,7 +123,6 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 return true;
             }
 
-            Player player = DeprecatedUtils.getPlayer(playerName);
             if (player == null) {
                 if (sender != null) sender.sendMessage("Can't find player " + playerName);
                 return true;
