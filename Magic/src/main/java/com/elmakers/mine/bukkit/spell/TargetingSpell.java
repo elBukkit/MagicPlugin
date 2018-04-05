@@ -604,7 +604,7 @@ public class TargetingSpell extends BaseSpell {
         if (parameters.contains("entity") && mage != null) {
             Entity mageEntity = mage.getEntity();
             if (mageEntity != null) {
-                Entity entity = CompatibilityUtils.getEntity(mageEntity.getWorld(), UUID.fromString(parameters.getString("entity")));
+                Entity entity = controller.getPlugin().getServer().getEntity(UUID.fromString(parameters.getString("entity")));
                 if (entity != null) {
                     targetLocation = entity.getLocation();
                     targetEntity = entity;

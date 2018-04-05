@@ -48,17 +48,10 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 String[] idPieces = StringUtils.split(playerName, ',');
                 if (idPieces.length == 4 || idPieces.length == 2) {
                     try {
-                        String worldName = idPieces[0];
                         String entityId = idPieces[idPieces.length - 1];
-
-                        World world = Bukkit.getWorld(worldName);
-                        if (world == null) {
-                            if (sender != null) sender.sendMessage("Unknown world: " + worldName);
-                            return false;
-                        }
-                        Entity entity = NMSUtils.getEntity(world, UUID.fromString(entityId));
+                        Entity entity = controller.getPlugin().getServer().getEntity(UUID.fromString(entityId));
                         if (entity == null) {
-                            if (sender != null) sender.sendMessage("Entity not found with id " + entityId + " in " + world.getName());
+                            if (sender != null) sender.sendMessage("Entity not found with id " + entityId);
                             return false;
                         }
 

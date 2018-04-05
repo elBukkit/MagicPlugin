@@ -17,6 +17,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -518,7 +519,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                             if (!entity.getLocation().getChunk().isLoaded()) {
                                 entity.getLocation().getChunk().load();
                             }
-                            entity = NMSUtils.getEntity(entity.getWorld(), entity.getUniqueId());
+                            entity = Bukkit.getServer().getEntity(entity.getUniqueId());
                         }
                         if (entity != null && entity.isValid()) {
                             entity.remove();

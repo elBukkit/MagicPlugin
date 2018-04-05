@@ -248,7 +248,6 @@ public class NMSUtils {
     protected static Field class_Entity_motXField;
     protected static Field class_Entity_motYField;
     protected static Field class_Entity_motZField;
-    protected static Field class_WorldServer_entitiesByUUIDField;
     protected static Field class_ItemStack_tagField;
     protected static Field class_Firework_ticksFlownField;
     protected static Field class_Firework_expectedLifespanField;
@@ -526,10 +525,6 @@ public class NMSUtils {
             class_BlockPosition_Constructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
             class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
-
-            // TODO: Server.getEntity(UUID) in 1.11+
-            class_WorldServer_entitiesByUUIDField = class_WorldServer.getDeclaredField("entitiesByUUID");
-            class_WorldServer_entitiesByUUIDField.setAccessible(true);
 
             // TODO: World.getNearbyEntities in 1.11+
             class_AxisAlignedBB_Constructor = class_AxisAlignedBB.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
@@ -1753,22 +1748,6 @@ public class NMSUtils {
             Double z = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 2);
             if (x != null && y != null && z != null) {
                 return new Vector(x, y, z);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public static Entity getEntity(World world, UUID uuid) {
-        try {
-            Object worldHandle = getHandle(world);
-            final Map<UUID, Entity> entityMap = (Map<UUID, Entity>)class_WorldServer_entitiesByUUIDField.get(worldHandle);
-            if (entityMap != null) {
-                Object nmsEntity = entityMap.get(uuid);
-                if (nmsEntity != null) {
-                    return getBukkitEntity(nmsEntity);
-                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
