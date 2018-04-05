@@ -2,6 +2,8 @@
 
 ## 7.4
  
+ - Add /mage clear <skills> command for taking magic items away from a player
+ 
  - Unstashable wands aren't unstashable until held
  
  - Weird auto-targeting on gatling gun?
