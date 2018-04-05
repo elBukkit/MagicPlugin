@@ -20,7 +20,6 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class EffectUtils extends NMSUtils {
@@ -50,7 +49,6 @@ public class EffectUtils extends NMSUtils {
 
             Object item = getHandle(makeReal(itemStack));
             final Object fireworkHandle = class_EntityFireworkConstructor.newInstance(world, location.getX(), location.getY(), location.getZ(), item);
-            CompatibilityUtils.setSilent(fireworkHandle, silent);
 
             if (direction != null) {
                 class_Entity_motXField.set(fireworkHandle, direction.getX());
@@ -86,6 +84,7 @@ public class EffectUtils extends NMSUtils {
 
             class_World_addEntityMethod.invoke(world, fireworkHandle, CreatureSpawnEvent.SpawnReason.CUSTOM);
             entity = (Entity)class_Entity_getBukkitEntityMethod.invoke(fireworkHandle);
+            entity.setSilent(true);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

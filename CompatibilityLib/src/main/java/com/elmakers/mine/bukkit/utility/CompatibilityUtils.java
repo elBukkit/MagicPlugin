@@ -158,42 +158,15 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void setInvulnerable(Entity entity, boolean flag) {
-        try {
-            Object handle = getHandle(entity);
-            class_Entity_invulnerableField.set(handle, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        entity.setInvulnerable(flag);
     }
 
     public static void setSilent(Entity entity, boolean flag) {
-        if (class_Entity_setSilentMethod == null) return;
-        try {
-            Object handle = getHandle(entity);
-            class_Entity_setSilentMethod.invoke(handle, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        entity.setSilent(flag);
     }
 
     public static boolean isSilent(Entity entity) {
-        if (class_Entity_isSilentMethod == null) return false;
-        try {
-            Object handle = getHandle(entity);
-            return (boolean)class_Entity_isSilentMethod.invoke(handle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    public static void setSilent(Object nmsEntity, boolean flag) {
-        if (class_Entity_setSilentMethod == null) return;
-        try {
-            class_Entity_setSilentMethod.invoke(nmsEntity, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        return entity.isSilent();
     }
 
     /**
@@ -666,10 +639,10 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static void setFallingBlockDamage(FallingBlock entity, float fallHurtAmount, int fallHurtMax)
     {
+        entity.setHurtEntities(true);
         Object entityHandle = getHandle(entity);
         if (entityHandle == null) return;
         try {
-            class_EntityFallingBlock_hurtEntitiesField.set(entityHandle, true);
             class_EntityFallingBlock_fallHurtAmountField.set(entityHandle, fallHurtAmount);
             class_EntityFallingBlock_fallHurtMaxField.set(entityHandle, fallHurtMax);
         } catch (Exception ex) {
@@ -699,26 +672,11 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void setInvisible(ArmorStand armorStand, boolean invisible) {
-        try {
-            Object handle = getHandle(armorStand);
-            class_ArmorStand_setInvisible.invoke(handle, invisible);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        armorStand.setVisible(!invisible);
     }
 
     public static void setGravity(ArmorStand armorStand, boolean gravity) {
-        if (class_Entity_setNoGravity == null && class_ArmorStand_setGravity == null) return;
-        try {
-            Object handle = getHandle(armorStand);
-            if (class_Entity_setNoGravity != null) {
-                class_Entity_setNoGravity.invoke(handle, !gravity);
-            } else {
-                class_ArmorStand_setGravity.invoke(handle, gravity);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        armorStand.setGravity(gravity);
     }
 
     public static void setDisabledSlots(ArmorStand armorStand, int disabledSlots) {

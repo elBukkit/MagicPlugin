@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -29,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -92,11 +90,8 @@ public class NMSUtils {
     protected static Class<?> class_EntityMinecartRideable;
     protected static Class<?> class_EntityTNTPrimed;
     protected static Class<?> class_AxisAlignedBB;
-    protected static Class<?> class_PathPoint;
-    protected static Class<?> class_PathEntity;
     protected static Class<?> class_EntityFirework;
     protected static Class<?> class_CraftSkull;
-    protected static Class<?> class_CraftBanner;
     protected static Class<?> class_CraftMetaSkull;
     protected static Class<?> class_GameProfile;
     protected static Class<?> class_GameProfileProperty;
@@ -148,8 +143,6 @@ public class NMSUtils {
     protected static Method class_NBTTagList_removeMethod;
     protected static Method class_NBTTagCompound_getKeysMethod;
     protected static Method class_NBTTagCompound_setMethod;
-    protected static Method class_Entity_setSilentMethod;
-    protected static Method class_Entity_isSilentMethod;
     protected static Method class_Entity_setYawPitchMethod;
     protected static Method class_Entity_getBukkitEntityMethod;
     protected static Method class_EntityLiving_damageEntityMethod;
@@ -190,9 +183,6 @@ public class NMSUtils {
     protected static Method class_Entity_getIdMethod;
     protected static Method class_Entity_getDataWatcherMethod;
     protected static Method class_Entity_getBoundingBox;
-    protected static Method class_ArmorStand_setInvisible;
-    protected static Method class_ArmorStand_setGravity;
-    protected static Method class_Entity_setNoGravity;
     protected static Method class_CraftPlayer_getHandleMethod;
     protected static Method class_CraftPlayer_getProfileMethod;
     protected static Method class_CraftChunk_getHandleMethod;
@@ -233,7 +223,6 @@ public class NMSUtils {
     protected static Constructor class_PacketPlayOutChat_constructor;
     protected static Constructor class_ChatComponentText_constructor;
 
-    protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
     protected static Field class_Entity_motYField;
     protected static Field class_Entity_motZField;
@@ -252,7 +241,6 @@ public class NMSUtils {
     protected static Field class_AxisAlignedBB_maxXField;
     protected static Field class_AxisAlignedBB_maxYField;
     protected static Field class_AxisAlignedBB_maxZField;
-    protected static Field class_EntityFallingBlock_hurtEntitiesField;
     protected static Field class_EntityFallingBlock_fallHurtMaxField;
     protected static Field class_EntityFallingBlock_fallHurtAmountField;
     protected static Field class_EntityArmorStand_disabledSlotsField;
@@ -326,8 +314,6 @@ public class NMSUtils {
             class_AxisAlignedBB = fixBukkitClass("net.minecraft.server.AxisAlignedBB");
             class_DamageSource = fixBukkitClass("net.minecraft.server.DamageSource");
             class_EntityDamageSource = fixBukkitClass("net.minecraft.server.EntityDamageSource");
-            class_PathEntity = fixBukkitClass("net.minecraft.server.PathEntity");
-            class_PathPoint = fixBukkitClass("net.minecraft.server.PathPoint");
             class_EntityFirework = fixBukkitClass("net.minecraft.server.EntityFireworks");
             class_CraftSkull = fixBukkitClass("org.bukkit.craftbukkit.block.CraftSkull");
             class_CraftMetaSkull = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaSkull");
@@ -387,7 +373,6 @@ public class NMSUtils {
             class_Entity_setLocationMethod = class_Entity.getMethod("setLocation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
-            class_ArmorStand_setInvisible = class_EntityArmorStand.getDeclaredMethod("setInvisible", Boolean.TYPE);
             class_CraftPlayer_getHandleMethod = class_CraftPlayer.getMethod("getHandle");
             class_CraftChunk_getHandleMethod = class_CraftChunk.getMethod("getHandle");
             class_CraftEntity_getHandleMethod = class_CraftEntity.getMethod("getHandle");
@@ -412,8 +397,6 @@ public class NMSUtils {
 
             class_CraftWorld_environmentField = class_CraftWorld.getDeclaredField("environment");
             class_CraftWorld_environmentField.setAccessible(true);
-            class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
-            class_Entity_invulnerableField.setAccessible(true);
             class_Entity_motXField = class_Entity.getDeclaredField("motX");
             class_Entity_motXField.setAccessible(true);
             class_Entity_motYField = class_Entity.getDeclaredField("motY");
@@ -470,8 +453,6 @@ public class NMSUtils {
             class_NBTTagCompound_getMethod = class_NBTTagCompound.getMethod("get", String.class);
             class_NBTTagCompound_getCompoundMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
 
-            class_EntityFallingBlock_hurtEntitiesField = class_EntityFallingBlock.getDeclaredField("hurtEntities");
-            class_EntityFallingBlock_hurtEntitiesField.setAccessible(true);
             class_EntityFallingBlock_fallHurtAmountField = class_EntityFallingBlock.getDeclaredField("fallHurtAmount");
             class_EntityFallingBlock_fallHurtAmountField.setAccessible(true);
             class_EntityFallingBlock_fallHurtMaxField = class_EntityFallingBlock.getDeclaredField("fallHurtMax");
@@ -808,42 +789,7 @@ public class NMSUtils {
                 class_EntityArrow_damageField = null;
             }
 
-            // TODO: setSilent API in 1.11+
-            try {
-                try {
-                    // 1.10 and 1.11
-                    class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("setSilent", Boolean.TYPE);
-                    class_Entity_isSilentMethod = class_Entity.getDeclaredMethod("isSilent");
-                } catch (Throwable ignore) {
-                    // 1.9 and earlier
-                    legacy = true;
-                    class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
-                    class_Entity_isSilentMethod = class_Entity.getDeclaredMethod("ad");
-                }
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred, silent entities will not work", ex);
-                class_Entity_setSilentMethod = null;
-                class_Entity_isSilentMethod = null;
-            }
-
-            // TODO: ArmorStand.setGravity in 1.11+
-            // Different behavior, but less hacky.
-            try {
-                try {
-                    // 1.10 and 1.11
-                    class_Entity_setNoGravity = class_Entity.getDeclaredMethod("setNoGravity", Boolean.TYPE);
-                } catch (Throwable ignore) {
-                    // 1.9 and earlier
-                    legacy = true;
-                    class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
-                }
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred, hacky no-gravity armor stands won't work", ex);
-                class_Entity_setNoGravity = null;
-                class_ArmorStand_setGravity = null;
-            }
-
-            // TODO ItemStack.isEmpty in 1.11+
+            // TODO: Is this needed? There is no ItemStack.isEmpty, seems like this should not be necessary.
             try {
                 // 1.11
                 class_ItemStack_isEmptyMethod = class_ItemStack.getMethod("isEmpty");
