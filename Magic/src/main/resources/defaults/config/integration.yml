@@ -45,14 +45,6 @@ precious_stones_enabled: true
 # regardless of other region perms
 precious_stones_override: true
 
-# Use this if you need to turn off the BlockPhysics integration.
-# Particularly important if you're using the OTHER BlockPhysics pugin
-enable_block_physics: true
-
-# Scaling for velocities applied to physics blocks when using the BlockPhysics plugin
-# This applies to the Blast spell, mainly.
-block_physics_velocity_scale: 10
-
 # Enable NCP integration- set to false to disable Magic adding
 # exemptions to players when casting spells. (e.g. survival_fly on brooms)
 ncp_enabled: true

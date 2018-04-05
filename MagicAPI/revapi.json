@@ -238,7 +238,16 @@
                     "classSimpleName": "Automaton",
                     "elementKind": "interface",
                     "justification": "Removing Automata API due to changes in how automata function"
-                }
+                },
+                {
+                     "code": "java.method.removed",
+                     "old": "method boolean com.elmakers.mine.bukkit.api.magic.MageController::spawnPhysicsBlock(org.bukkit.Location, org.bukkit.Material, short, org.bukkit.util.Vector)",
+                     "package": "com.elmakers.mine.bukkit.api.magic",
+                     "classSimpleName": "MageController",
+                     "methodName": "spawnPhysicsBlock",
+                     "elementKind": "method",
+                     "justification": "Integration with a dead plugin"
+                 }
             ]
         }
     }

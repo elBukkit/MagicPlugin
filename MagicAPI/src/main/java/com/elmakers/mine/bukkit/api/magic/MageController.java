@@ -20,7 +20,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.BlockList;
@@ -380,7 +379,6 @@ public interface MageController {
     boolean isLocked(Block block);
     void sendPlayerToServer(final Player player, final String server);
     void warpPlayerToServer(final Player player, final String server, final String warp);
-    boolean spawnPhysicsBlock(Location location, Material material, short data, Vector velocity);
     boolean isDisguised(Entity entity);
     boolean isPathUpgradingEnabled();
     boolean isSpellUpgradingEnabled();

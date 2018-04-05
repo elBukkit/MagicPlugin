@@ -87,7 +87,6 @@ arrow_bomb:
       destructible: solid
       destructible_override: true
       break_durability: 10
-      physics_blocks: true
       undo_speed: 0.5
       speed: "bowpull * 3"
       spread: "1 - bowpull"
