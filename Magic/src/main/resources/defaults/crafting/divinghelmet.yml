@@ -3,7 +3,7 @@ divinghelmet:
   output_type: wand
   materials:
     o: nether_star
-    i: stained_glass
+    i: white_stained_glass
   row_1: iii
   row_2: ioi
   row_3: iii

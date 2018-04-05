@@ -105,7 +105,7 @@ railgun:
         reorient: false
         undo: 5000
         brush: air
-        transparent: air,water,stationary_water
+        transparent: air,water
     costs:
         mana: 150
                 

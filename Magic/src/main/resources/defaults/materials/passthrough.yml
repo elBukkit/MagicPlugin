@@ -1,6 +1,5 @@
 passthrough:
 - water
-- stationary_water
 - air
 - snow
 - torch

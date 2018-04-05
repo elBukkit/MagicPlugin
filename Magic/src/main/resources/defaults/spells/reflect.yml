@@ -30,7 +30,7 @@ reflect:
         range: 3
         radius: 0
         axis: z
-        brush: stained_glass
+        brush: white_stained_glass
         orient: true
         orient_snap: 45
         transparent: transparent_to_construction

@@ -14,6 +14,7 @@
 
 ### Things still needing fixing
 
+ - Colorized brushes (blob, reflect) need fixing- use map functionality?
  - Config migration, a script to convert materials might be nice.
  - Towny integration is broken
  - Add path 2nd parameter to enchant command to stop when reaching end of a path

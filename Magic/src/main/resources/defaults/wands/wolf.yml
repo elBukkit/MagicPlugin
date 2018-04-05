@@ -172,11 +172,9 @@ wolf:
     - schematic:small_house
     - schematic:stash_chest
     - soul_sand
-    - stained_clay
-    - stained_glass
-    - stained_glass_pane
-    - stationary_lava
-    - stationary_water
+    - white_terracotta
+    - white_stained_glass
+    - white_stained_glass_pane
     - vine
     - water
     - wood

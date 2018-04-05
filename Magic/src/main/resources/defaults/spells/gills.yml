@@ -31,7 +31,7 @@ gills:
           oxygen: 3
           water_worker: 1
           depth_strider: 3
-        brush: stained_glass
+        brush: white_stained_glass
         brushcolor: true
     costs:
         mana: 15

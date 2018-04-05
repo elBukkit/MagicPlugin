@@ -1,64 +1,68 @@
 glass:
   worth: 0.4
-stained_glass:1:
+black_stained_glass:
   worth: 0.5
-stained_glass:2:
+blue_stained_glass:
   worth: 0.5
-stained_glass:3:
+brown_stained_glass:
   worth: 0.5
-stained_glass:4:
+cyan_stained_glass:
   worth: 0.5
-stained_glass:5:
+gray_stained_glass:
   worth: 0.5
-stained_glass:6:
+green_stained_glass:
   worth: 0.5
-stained_glass:7:
+light_blue_stained_glass:
   worth: 0.5
-stained_glass:8:
+light_gray_stained_glass:
   worth: 0.5
-stained_glass:9:
+lime_stained_glass:
   worth: 0.5
-stained_glass:10:
+magenta_stained_glass:
   worth: 0.5
-stained_glass:11:
+orange_stained_glass:
   worth: 0.5
-stained_glass:12:
+pink_stained_glass:
   worth: 0.5
-stained_glass:13:
+purple_stained_glass:
   worth: 0.5
-stained_glass:14:
+red_stained_glass:
   worth: 0.5
-stained_glass:15:
+white_stained_glass:
+  worth: 0.5
+yellow_stained_glass:
   worth: 0.5
 thin_glass:
   worth: 0.1
-stained_glass_pane:1:
-  worth: 0.2
-stained_glass_pane:2:
-  worth: 0.2
-stained_glass_pane:3:
-  worth: 0.2
-stained_glass_pane:4:
-  worth: 0.2
-stained_glass_pane:5:
-  worth: 0.2
-stained_glass_pane:6:
-  worth: 0.2
-stained_glass_pane:7:
-  worth: 0.2
-stained_glass_pane:8:
-  worth: 0.2
-stained_glass_pane:9:
-  worth: 0.2
-stained_glass_pane:10:
-  worth: 0.2
-stained_glass_pane:11:
-  worth: 0.2
-stained_glass_pane:12:
-  worth: 0.2
-stained_glass_pane:13:
-  worth: 0.2
-stained_glass_pane:14:
-  worth: 0.2
-stained_glass_pane:15:
-  worth: 0.2
+black_stained_glass_pane:
+  worth: 0.5
+blue_stained_glass_pane:
+  worth: 0.5
+brown_stained_glass_pane:
+  worth: 0.5
+cyan_stained_glass_pane:
+  worth: 0.5
+gray_stained_glass_pane:
+  worth: 0.5
+green_stained_glass_pane:
+  worth: 0.5
+light_blue_stained_glass_pane:
+  worth: 0.5
+light_gray_stained_glass_pane:
+  worth: 0.5
+lime_stained_glass_pane:
+  worth: 0.5
+magenta_stained_glass_pane:
+  worth: 0.5
+orange_stained_glass_pane:
+  worth: 0.5
+pink_stained_glass_pane:
+  worth: 0.5
+purple_stained_glass_pane:
+  worth: 0.5
+red_stained_glass_pane:
+  worth: 0.5
+white_stained_glass_pane:
+  worth: 0.5
+yellow_stained_glass_pane:
+  worth: 0.5

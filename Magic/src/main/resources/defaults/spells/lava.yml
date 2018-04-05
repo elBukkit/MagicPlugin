@@ -32,7 +32,7 @@ lava:
         allow_max_range: true
         range: 6
         size: 6
-        brush: stationary_lava
+        brush: lava
         increment_data: true
         undo: 200
         cooldown: 5000

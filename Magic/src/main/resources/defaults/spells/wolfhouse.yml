@@ -32,8 +32,8 @@ wolfhouse:
         destructible: destructible_replace
         commands:
           wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt
-          wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water
-          wolf_dome: castp @p[r=7] supershell target none undo 0 type sphere brush stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35 free true
+          wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water
+          wolf_dome: castp @p[r=7] supershell target none undo 0 type sphere brush black_stained_glass cd true md 100 tx ~-5 ty ~16 tz ~12 r 35 free true
           wolf_shields: castp @p[r=7] supershell target none undo 0 brush obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37 free true
           wolf_undo: castp @p[r=6] rollback
           wolf_commit: castp @p[r=6] commit

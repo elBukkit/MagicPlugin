@@ -17,7 +17,7 @@ evade:
     vertical_range: 5
     stop_on_success: true
     repeat: 10
-    unsafe: water,stationary_water,lava,stationary_lava
+    unsafe: water,lava
     passthrough: transparent_no_water
     prevent_passthrough: "!transparent_no_water"
     require_build: true

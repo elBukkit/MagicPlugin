@@ -422,9 +422,7 @@ default_brush_icon_url: http://textures.minecraft.net/texture/5163dafac1d91a8c91
 # or for blocks that have been replaced in the resource pack (monster eggs)
 brush_replacements:
   lava: lava_bucket
-  stationary_lava: lava_bucket
   water: water_bucket
-  stationary_water: water_bucket
   monster_eggs|0: stone
   monster_eggs|1: cobblestone
   monster_eggs|2: smooth_brick

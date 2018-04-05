@@ -42,7 +42,7 @@ stream:
       lifetime: 5000
       range: 32
       duration: 10000
-      brush: stationary_water
+      brush: water
       increment_data: true
       player_damage: 0.25
       entity_damage: 0.5

@@ -4,7 +4,7 @@ donatorshop:
     parameters:
         auto_close: true
         confirm: true
-        confirm_filler: stained_glass:3
+        confirm_filler: light_gray_stained_glass_pane
         require_wand: true
         items:
         - item: appearance_beginner

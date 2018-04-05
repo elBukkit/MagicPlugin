@@ -49,7 +49,7 @@ permamelt:
         freeze_lava: true
         biome: desert
         weather: normal
-        brush: stationary_water
+        brush: water
     costs:
         mana: 200
 

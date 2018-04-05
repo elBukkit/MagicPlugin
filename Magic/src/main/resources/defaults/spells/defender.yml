@@ -16,7 +16,7 @@ defender:
         - sound: entity_endermen_scream
         hurt:
         - sound: entity_endermen_hurt,0.3,2
-    spell_parameters: "loud true transparent air,$birth,stained_glass"
+    spell_parameters: "loud true transparent air,$birth,cyan_stained_glass"
     cast:
         "defender_attack indestructible $birth": 200
         "none": 500
@@ -143,7 +143,7 @@ defender_attack:
         transparent: transparent_to_construction
         destructible: destructible,destructible2,destructible3
         undo: 5000
-        brush: stained_glass|9
+        brush: cyan_stained_glass
         bypass_backfire: true
 
 birth_defender:

@@ -8,7 +8,7 @@ itemshop:
     parameters:
         quiet: true
         confirm: true
-        confirm_filler: stained_glass:3
+        confirm_filler: light_gray_stained_glass_pane
         items:
         - item: carrot_item@64
           cost: 100

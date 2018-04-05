@@ -40,7 +40,7 @@ platform:
         destructible: destructible_replace
         undo: 20000
         breakable: 2
-        brush: stained_glass
+        brush: white_stained_glass
         brushcolor: true
         cooldown: 5000
     costs:

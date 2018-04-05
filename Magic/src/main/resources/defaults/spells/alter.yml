@@ -42,12 +42,12 @@ alter:
           - wood:3
           - wood:4
           - wood:5
-        - - sapling
-          - sapling:1
-          - sapling:2
-          - sapling:3
-          - sapling:4
-          - sapling:5
+        - - spurce_sapling
+          - acacia_sapling
+          - birch_sapling
+          - dark_oak_sapling
+          - jungle_sapling
+          - oak_sapling
         - - water
           - water:1
           - water:2
@@ -64,22 +64,6 @@ alter:
           - water:13
           - water:14
           - water:15
-        - - stationary_water
-          - stationary_water:1
-          - stationary_water:2
-          - stationary_water:3
-          - stationary_water:4
-          - stationary_water:5
-          - stationary_water:6
-          - stationary_water:7
-          - stationary_water:8
-          - stationary_water:9
-          - stationary_water:10
-          - stationary_water:11
-          - stationary_water:12
-          - stationary_water:13
-          - stationary_water:14
-          - stationary_water:15
         - - lava
           - lava:1
           - lava:2
@@ -96,22 +80,6 @@ alter:
           - lava:13
           - lava:14
           - lava:15
-        - - stationary_lava
-          - stationary_lava:1
-          - stationary_lava:2
-          - stationary_lava:3
-          - stationary_lava:4
-          - stationary_lava:5
-          - stationary_lava:6
-          - stationary_lava:7
-          - stationary_lava:8
-          - stationary_lava:9
-          - stationary_lava:10
-          - stationary_lava:11
-          - stationary_lava:12
-          - stationary_lava:13
-          - stationary_lava:14
-          - stationary_lava:15
         - - sand
           - sand:1
         - - log
@@ -198,22 +166,22 @@ alter:
           - piston_base:3
           - piston_base:4
           - piston_base:5
-        - - wool
-          - wool:1
-          - wool:2
-          - wool:3
-          - wool:4
-          - wool:5
-          - wool:6
-          - wool:7
-          - wool:8
-          - wool:9
-          - wool:10
-          - wool:11
-          - wool:12
-          - wool:13
-          - wool:14
-          - wool:15
+        - - black_wool
+          - blue_wool
+          - brown_wool
+          - cyan_wool
+          - gray_wool
+          - green_wool
+          - light_blue_wool
+          - light_gray_wool
+          - lime_wool
+          - magenta_wool
+          - orange_wool
+          - pink_wool
+          - purple_wool
+          - red_wool
+          - white_wool
+          - yellow_wool
         - - yellow_flower
           - yellow_flower:1
           - yellow_flower:2
@@ -422,30 +390,26 @@ alter:
           - fence:3
           - fence:4
           - fence:5
-        - - diode_block_off:2
-          - diode_block_off:3
-          - diode_block_off:4
-          - diode_block_off:5
-        - - diode_block_on:2
-          - diode_block_on:3
-          - diode_block_on:4
-          - diode_block_on:5
-        - - stained_glass
-          - stained_glass:1
-          - stained_glass:2
-          - stained_glass:3
-          - stained_glass:4
-          - stained_glass:5
-          - stained_glass:6
-          - stained_glass:7
-          - stained_glass:8
-          - stained_glass:9
-          - stained_glass:10
-          - stained_glass:11
-          - stained_glass:12
-          - stained_glass:13
-          - stained_glass:14
-          - stained_glass:15
+        - - repeater:2
+          - repeater:3
+          - repeater:4
+          - repeater:5
+        - - black_stained_glass
+          - blue_stained_glass
+          - brown_stained_glass
+          - cyan_stained_glass
+          - gray_stained_glass
+          - green_stained_glass
+          - light_blue_stained_glass
+          - light_gray_stained_glass
+          - lime_stained_glass
+          - magenta_stained_glass
+          - orange_stained_glass
+          - pink_stained_glass
+          - purple_stained_glass
+          - red_stained_glass_pane
+          - white_stained_glass
+          - yellow_stained_glass
         - - monster_eggs
           - monster_eggs:1
           - monster_eggs:2
@@ -602,70 +566,54 @@ alter:
           - quartz_stairs:1
           - quartz_stairs:2
           - quartz_stairs:3
-        - - stained_clay
-          - stained_clay:1
-          - stained_clay:2
-          - stained_clay:3
-          - stained_clay:4
-          - stained_clay:5
-          - stained_clay:6
-          - stained_clay:7
-          - stained_clay:8
-          - stained_clay:9
-          - stained_clay:10
-          - stained_clay:11
-          - stained_clay:12
-          - stained_clay:13
-          - stained_clay:14
-          - stained_clay:15
-        - - stained_glass_pane
-          - stained_glass_pane:1
-          - stained_glass_pane:2
-          - stained_glass_pane:3
-          - stained_glass_pane:4
-          - stained_glass_pane:5
-          - stained_glass_pane:6
-          - stained_glass_pane:7
-          - stained_glass_pane:8
-          - stained_glass_pane:9
-          - stained_glass_pane:10
-          - stained_glass_pane:11
-          - stained_glass_pane:12
-          - stained_glass_pane:13
-          - stained_glass_pane:14
-          - stained_glass_pane:15
-        - - carpet
-          - carpet:1
-          - carpet:2
-          - carpet:3
-          - carpet:4
-          - carpet:5
-          - carpet:6
-          - carpet:7
-          - carpet:8
-          - carpet:9
-          - carpet:10
-          - carpet:11
-          - carpet:12
-          - carpet:13
-          - carpet:14
-          - carpet:15
-        - - hard_clay
-          - hard_clay:1
-          - hard_clay:2
-          - hard_clay:3
-          - hard_clay:4
-          - hard_clay:5
-          - hard_clay:6
-          - hard_clay:7
-          - hard_clay:8
-          - hard_clay:9
-          - hard_clay:10
-          - hard_clay:11
-          - hard_clay:12
-          - hard_clay:13
-          - hard_clay:14
-          - hard_clay:15
+        - - black_terracotta
+          - blue_terracotta
+          - brown_terracotta
+          - cyan_terracotta
+          - gray_terracotta
+          - green_terracotta
+          - light_blue_terracotta
+          - light_gray_terracotta
+          - lime_terracotta
+          - magenta_terracotta
+          - orange_terracotta
+          - pink_terracotta
+          - purple_terracotta
+          - red_terracotta
+          - white_terracotta
+          - yellow_terracotta
+        - - black_stained_glass_pane
+          - blue_stained_glass_pane
+          - brown_stained_glass_pane
+          - cyan_stained_glass_pane
+          - gray_stained_glass_pane
+          - green_stained_glass_pane
+          - light_blue_stained_glass_pane
+          - light_gray_stained_glass_pane
+          - lime_stained_glass_pane
+          - magenta_stained_glass_pane
+          - orange_stained_glass_pane
+          - pink_stained_glass_pane
+          - purple_stained_glass_pane
+          - red_stained_glass_pane
+          - white_stained_glass_pane
+          - yellow_stained_glass_pane
+        - - black_carpet
+          - blue_carpet
+          - brown_carpet
+          - cyan_carpet
+          - gray_carpet
+          - green_carpet
+          - light_blue_carpet
+          - light_gray_carpet
+          - lime_carpet
+          - magenta_carpet
+          - orange_carpet
+          - pink_carpet
+          - purple_carpet
+          - red_carpet
+          - white_carpet
+          - yellow_carpet
         - - double_plant
           - double_plant:1
           - double_plant:2
@@ -737,38 +685,38 @@ alter:
           - black_glazed_terracotta:1
           - black_glazed_terracotta:2
           - black_glazed_terracotta:3
-        - - concrete
-          - concrete:1
-          - concrete:2
-          - concrete:3
-          - concrete:4
-          - concrete:5
-          - concrete:6
-          - concrete:7
-          - concrete:8
-          - concrete:9
-          - concrete:10
-          - concrete:11
-          - concrete:12
-          - concrete:13
-          - concrete:14
-          - concrete:15
-        - - concrete_powder
-          - concrete_powder:1
-          - concrete_powder:2
-          - concrete_powder:3
-          - concrete_powder:4
-          - concrete_powder:5
-          - concrete_powder:6
-          - concrete_powder:7
-          - concrete_powder:8
-          - concrete_powder:9
-          - concrete_powder:10
-          - concrete_powder:11
-          - concrete_powder:12
-          - concrete_powder:13
-          - concrete_powder:14
-          - concrete_powder:15
+        - - black_concrete
+          - blue_concrete
+          - brown_concrete
+          - cyan_concrete
+          - gray_concrete
+          - green_concrete
+          - light_blue_concrete
+          - light_gray_concrete
+          - lime_concrete
+          - magenta_concrete
+          - orange_concrete
+          - pink_concrete
+          - purple_concrete
+          - red_concrete
+          - white_concrete
+          - yellow_concrete
+        - - black_concrete_powder
+          - blue_concrete_powder
+          - brown_concrete_powder
+          - cyan_concrete_powder
+          - gray_concrete_powder
+          - green_concrete_powder
+          - light_blue_concrete_powder
+          - light_gray_concrete_powder
+          - lime_concrete_powder
+          - magenta_concrete_powder
+          - orange_concrete_powder
+          - pink_concrete_powder
+          - purple_concrete_powder
+          - red_concrete_powder
+          - white_concrete_powder
+          - yellow_concrete_powder
         - - stone
           - stone:1
           - stone:2

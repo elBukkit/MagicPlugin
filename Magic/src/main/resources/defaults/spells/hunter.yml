@@ -41,8 +41,8 @@ hunter:
         "curse": 20,50,70
         "blind": 60,40,10
         "poison": 40,50,30
-        "blob brush stained_glass:15 radius 2 undo 5000 indestructible $birth": 20,40,50
-        "shell brush stained_glass:15 radius 3 undo 7000 indestructible $birth": 30,20,10
+        "blob brush black_stained_glass radius 2 undo 5000 indestructible $birth": 20,40,50
+        "shell brush black_stained_glass radius 3 undo 7000 indestructible $birth": 30,20,10
         "homing|2": 20,50,150
         "missile|2": 100,150,200
         "petrify": 50,100,150

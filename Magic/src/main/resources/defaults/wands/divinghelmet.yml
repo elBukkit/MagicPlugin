@@ -1,7 +1,7 @@
 divinghelmet:
     mode: cast
     active_spell: wear
-    icon: stained_glass:3
+    icon: white_stained_glass
     indestructible: true
     locked: true
     keep: true

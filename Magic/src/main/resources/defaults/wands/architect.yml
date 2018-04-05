@@ -51,10 +51,10 @@ architect:
         - glowstone
         - sand
         - cobblestone
-        - stained_glass
+        - white_stained_glass
         - thin_glass
-        - stained_glass_pane
-        - stained_clay
+        - white_stained_glass_pane
+        - white_terracotta
         - quartz_block
         - quartz_block:1
         - quartz_block:2

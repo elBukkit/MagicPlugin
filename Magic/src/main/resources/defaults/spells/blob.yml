@@ -49,7 +49,7 @@ blob:
         transparent: transparent_to_construction
         undo: 2000
         cooldown: 4000
-        brush: stained_glass
+        brush: white_stained_glass
         brushcolor: true
         breakable: 3
         destructible: destructible_replace
@@ -63,7 +63,7 @@ blob|2:
         radius: 3
         undo: 3000
         cooldown: 5000
-        brush: stained_clay
+        brush: white_stained_clay
 
 blob|3:
     upgrade_required_path: architect

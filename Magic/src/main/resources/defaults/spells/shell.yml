@@ -51,7 +51,7 @@ shell:
         destructible: destructible_replace
         check_destructible: true
         undo: 4000
-        brush: stained_glass
+        brush: white_stained_glass
         brushcolor: true
         cooldown: 5000
         breakable: 4
