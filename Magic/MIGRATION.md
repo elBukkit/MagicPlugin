@@ -1,5 +1,13 @@
 # Migration Notes
 
+## 8.0
+
+ - Run the `/mconfig update materials` command to migrate your custom materials to 1.13
+   This will only run on materials.yml and files in materials/*
+   This command removes comments from config files and may re-format them, so it is not
+   recommended to use on wand and spell configs. You may need to fix those up by hand,
+   or use the update command and then take just the updated portions.
+
 ## 7.4
 
  - The Retarget action now uses hitbox targeting by default. Use "hitbox: false" to turn this off.

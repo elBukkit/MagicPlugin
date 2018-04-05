@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -22,6 +23,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.io.Files;
 
@@ -52,7 +54,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 0)
         {
-            sender.sendMessage("Usage: mconfig [clean]");
+            sender.sendMessage("Usage: mconfig [clean | update]");
             return true;
         }
 
@@ -64,10 +66,85 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
         if (subCommand.equals("clean")) {
             onMagicClean(sender, args.length > 1 ? args[1] : "");
+        } else if (subCommand.equals("clean")) {
+            onMagicUpdate(sender, args.length > 1 ? args[1] : "");
         } else {
-            sender.sendMessage("Usage: mconfig [clean]");
+            sender.sendMessage("Usage: mconfig [clean | update]");
         }
         return true;
+    }
+
+    protected void onMagicUpdate(CommandSender sender, String configName) {
+        // Not allowing this to run on all
+        if (configName.isEmpty()) {
+            sender.sendMessage("Usage: mconfig update [materials]");
+            return;
+        }
+
+        File pluginFolder = api.getPlugin().getDataFolder();
+        Collection<File> filesToCheck = new ArrayList<>();
+        filesToCheck.add(new File(pluginFolder, configName + ".yml"));
+
+        File subfolder = new File(pluginFolder, configName);
+        File[] subconfigs = subfolder.listFiles();
+        for (File file : subconfigs) {
+            if (file.getName().endsWith(".yml")) {
+                filesToCheck.add(file);
+            }
+        }
+
+        for (File configFile : filesToCheck) {
+            sender.sendMessage(ChatColor.AQUA + "Checking " + ChatColor.DARK_AQUA + configFile.getName());
+            try {
+                File backupFile = new File(configFile.getParentFile(), configFile.getName() + ".bak");
+                if (backupFile.exists()) {
+                    sender.sendMessage(ChatColor.RED + "Backup file already exists, please delete: " + ChatColor.WHITE + backupFile.getName());
+                    continue;
+                }
+
+                YamlConfiguration configuration = new YamlConfiguration();
+                configuration.load(configFile);
+
+                int modified = 0;
+                Set<String> keys = configuration.getKeys(false);
+                for (String key : keys) {
+                    List<String> stringList = ConfigurationUtils.getStringList(configuration, key);
+                    if (stringList != null) {
+                        List<String> newList = new ArrayList<>();
+                        boolean updateList = false;
+                        for (String materialKey : stringList) {
+                            String migrated = DeprecatedUtils.migrateMaterial(materialKey);
+                            if (migrated == null || migrated.equalsIgnoreCase(materialKey)) {
+                                newList.add(materialKey);
+                            } else {
+                                newList.add(migrated);
+                                updateList = true;
+                                modified++;
+                            }
+                        }
+
+                        if (updateList) {
+                            configuration.set(key, newList);
+                        }
+                    }
+                }
+
+
+                if (modified > 0) {
+                    sender.sendMessage(ChatColor.AQUA + "Updated " + ChatColor.WHITE + modified + ChatColor.AQUA + " materials and " + ChatColor.DARK_PURPLE
+                        + "  Saved backup file to " + ChatColor.LIGHT_PURPLE + backupFile.getName() + ChatColor.DARK_PURPLE + ", delete this file if all looks good.");
+
+                    Files.copy(configFile, backupFile);
+                    configuration.save(configFile);
+                }
+
+
+            } catch (Exception ex) {
+                sender.sendMessage(ChatColor.RED + "An error occurred updating " + ChatColor.WHITE + configFile.getName());
+                controller.getLogger().log(Level.WARNING, "An error occurred updating " + configFile.getName(), ex);
+            }
+        }
+
     }
 
     protected void onMagicClean(CommandSender sender, String configName) {

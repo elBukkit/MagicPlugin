@@ -307,12 +307,18 @@ commands:
     usage: |
         Use /help mconfig [subcommand] for more information
         /mconfig clean     Clean your custom configs, removing default values
+        /mconfig materials Migrate materials to 1.13
   "mconfig clean":
-    description: This will override your configs in plugins/Magic with collapsed versions.
+    description: This will overwrite your configs in plugins/Magic with collapsed versions.
     permission: Magic.commands.mconfig.clean
     usage: |
         /mconfig clean
         /mconfig clean spells
+  "mconfig materials":
+    description: This will update your materials with 1.13 values
+    permission: Magic.commands.mconfig.update
+    usage: |
+        /mconfig update materials
   magic:
     description: Administer the Magic plugin
     permission: Magic.commands.magic
@@ -1106,8 +1112,13 @@ permissions:
     children:
     - Magic.commands.mconfig
     - Magic.commands.mconfig.clean
+    - Magic.commands.mconfig.update
   Magic.commands.mconfig.clean:
     description: Player may auto-clean configs
+    type: boolean
+    default: op
+  Magic.commands.mconfig.update:
+    description: Player may migrate configuratinos to a new version
     type: boolean
     default: op
   Magic.commands.magic:
