@@ -20,7 +20,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.ComplexEntityPart;
-import org.bukkit.entity.ComplexLivingEntity;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -353,37 +352,11 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
-    public static List<Entity> getNearbyEntities(Location location, double x, double y, double z) {
+    public static Collection<Entity> getNearbyEntities(Location location, double x, double y, double z) {
         if (location == null) return null;
-        Object worldHandle = getHandle(location.getWorld());
-        try {
-            x = Math.min(x, CompatibilityUtils.MAX_ENTITY_RANGE);
-            z = Math.min(z, CompatibilityUtils.MAX_ENTITY_RANGE);
-            Object bb = class_AxisAlignedBB_Constructor.newInstance(location.getX() - x, location.getY() - y, location.getZ() - z,
-                    location.getX() + x, location.getY() + y, location.getZ() + z);
-
-            // The input entity is only used for equivalency testing, so this "null" should be ok.
-            @SuppressWarnings("unchecked")
-            List<? extends Object> entityList = (List<? extends Object>)class_World_getEntitiesMethod.invoke(worldHandle, null, bb);
-            List<Entity> bukkitEntityList = new java.util.ArrayList<>(entityList.size());
-
-            for (Object entity : entityList) {
-                Entity bukkitEntity = (Entity)class_Entity_getBukkitEntityMethod.invoke(entity);
-                if (bukkitEntity instanceof ComplexLivingEntity) {
-                    ComplexLivingEntity complex = (ComplexLivingEntity)bukkitEntity;
-                    Set<ComplexEntityPart> parts = complex.getParts();
-                    for (ComplexEntityPart part : parts) {
-                        bukkitEntityList.add(part);
-                    }
-                } else {
-                    bukkitEntityList.add(bukkitEntity);
-                }
-            }
-            return bukkitEntityList;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        x = Math.min(x, CompatibilityUtils.MAX_ENTITY_RANGE);
+        z = Math.min(z, CompatibilityUtils.MAX_ENTITY_RANGE);
+        return location.getWorld().getNearbyEntities(location, x, y, z);
     }
 
     public static Minecart spawnCustomMinecart(Location location, Material material, short data, int offset)

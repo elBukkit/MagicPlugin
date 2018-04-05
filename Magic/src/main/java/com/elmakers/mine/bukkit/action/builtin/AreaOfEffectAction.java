@@ -62,7 +62,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
                     + ChatColor.GRAY + " self? " + ChatColor.DARK_GRAY + context.getTargetsCaster(), 14
             );
         }
-        List<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, yRadius, radius);
+        Collection<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, yRadius, radius);
         if (targetCount > 0)
         {
             List<Target> targets = new ArrayList<>();

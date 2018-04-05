@@ -149,7 +149,6 @@ public class NMSUtils {
     protected static Method class_NBTTagList_removeMethod;
     protected static Method class_NBTTagCompound_getKeysMethod;
     protected static Method class_NBTTagCompound_setMethod;
-    protected static Method class_World_getEntitiesMethod;
     protected static Method class_Entity_setSilentMethod;
     protected static Method class_Entity_isSilentMethod;
     protected static Method class_Entity_setYawPitchMethod;
@@ -233,7 +232,6 @@ public class NMSUtils {
     protected static Constructor class_PacketPlayOutExperience_Constructor;
     protected static Constructor class_PacketPlayOutAnimation_Constructor;
     protected static Constructor class_PacketPlayOutBlockBreakAnimation_Constructor;
-    protected static Constructor class_AxisAlignedBB_Constructor;
     protected static Constructor class_ItemStack_consructor;
     protected static Constructor class_NBTTagString_consructor;
     protected static Constructor class_NBTTagByte_constructor;
@@ -525,10 +523,6 @@ public class NMSUtils {
             class_BlockPosition_Constructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
             class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
-
-            // TODO: World.getNearbyEntities in 1.11+
-            class_AxisAlignedBB_Constructor = class_AxisAlignedBB.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
-            class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
 
             // We don't want to consider new-ish builds as "legacy" and print a warning, so keep a separate flag
             boolean current = true;

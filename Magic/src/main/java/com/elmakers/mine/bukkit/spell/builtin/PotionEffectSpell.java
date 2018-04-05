@@ -49,7 +49,7 @@ public class PotionEffectSpell extends UndoableSpell
         radius = (int)(mage.getRadiusMultiplier() * radius);
 
         if (radius > 0) {
-            List<Entity> entities = CompatibilityUtils.getNearbyEntities(target.getLocation(), radius, radius, radius);
+            Collection<Entity> entities = CompatibilityUtils.getNearbyEntities(target.getLocation(), radius, radius, radius);
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity && entity != targetedEntity && entity != mage.getEntity()) {
                     targetEntities.add((LivingEntity)entity);

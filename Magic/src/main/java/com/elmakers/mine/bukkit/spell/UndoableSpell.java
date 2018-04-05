@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.spell;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -178,7 +177,7 @@ public class UndoableSpell extends TargetingSpell {
         if (potionEffects == null || radius <= 0 || potionEffects.size() == 0) return;
 
         int radiusSquared = radius * 2;
-        List<Entity> entities = CompatibilityUtils.getNearbyEntities(location, radius, radius, radius);
+        Collection<Entity> entities = CompatibilityUtils.getNearbyEntities(location, radius, radius, radius);
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity) {
                 Mage targetMage = null;
