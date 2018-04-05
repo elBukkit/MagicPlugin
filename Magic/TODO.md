@@ -11,11 +11,10 @@
  - Tag sign facing probably broken?
  - Check capture spell
  - Check map brush ... can work with concrete and glazed terracotta now though!
+ - Check custom colored blob/reflect/platform/shell
 
 ### Things still needing fixing
 
- - Colorized brushes (blob, reflect) need fixing- use map functionality?
- - Config migration, a script to convert materials might be nice.
  - Towny integration is broken
  - Add path 2nd parameter to enchant command to stop when reaching end of a path
  

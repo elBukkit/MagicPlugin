@@ -91,9 +91,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
     // For the MAP brush
     private static final Material DEFAULT_MAP_MATERIAL_BASE = Material.WHITE_CONCRETE;
+    private static Map<Material, Map<DyeColor, Material>> mapMaterials = null;
+    private static Map<Material, Material> baseMaterialMap = null;
     private Material mapMaterialBase = DEFAULT_MAP_MATERIAL_BASE;
-    private Map<Material, Map<DyeColor, Material>> mapMaterials = null;
-    private Map<Material, Material> baseMaterialMap = null;
     private double scale = 1;
 
     public MaterialBrush(final Mage mage, final Material material, final  byte data) {
@@ -873,7 +873,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
     }
 
-    protected void initializeMapMaterials() {
+    protected static void initializeMapMaterials() {
         // TODO: Maybe config-drive this?
         // ... Yeah, probably should've config-driven it.
         baseMaterialMap = new HashMap<>();
@@ -1121,18 +1121,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
     @Nullable
     protected Material getMapMaterial(@Nonnull DyeColor color) {
-        if (baseMaterialMap == null) {
-            initializeMapMaterials();
-        }
-        Map<DyeColor, Material> materialMap = mapMaterials.get(mapMaterialBase);
-        if (materialMap == null) {
-            mapMaterialBase = DEFAULT_MAP_MATERIAL_BASE;
-            materialMap = mapMaterials.get(mapMaterialBase);
-        }
-        if (materialMap == null) {
-            return null;
-        }
-        return materialMap.get(color);
+        return getColoredMaterial(mapMaterialBase, color);
     }
 
     @Nonnull
@@ -1142,6 +1131,27 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
         Material baseMaterial = baseMaterialMap.get(material);
         return baseMaterial == null ? DEFAULT_MAP_MATERIAL_BASE : baseMaterial;
+    }
+
+    @Nonnull
+    protected static Material getColoredMaterial(@Nonnull Material baseMaterial, @Nonnull DyeColor color) {
+        if (baseMaterialMap == null) {
+            initializeMapMaterials();
+        }
+        Material material = baseMaterialMap.get(baseMaterial);
+        if (material == null) {
+            return baseMaterial;
+        }
+        Map<DyeColor, Material> materialMap = mapMaterials.get(baseMaterial);
+        if (materialMap == null) {
+            return baseMaterial;
+        }
+        material = materialMap.get(color);
+        return material == null ? baseMaterial : material;
+    }
+
+    public void colorize(DyeColor color) {
+        material = getColoredMaterial(material, color);
     }
 
     @Override
