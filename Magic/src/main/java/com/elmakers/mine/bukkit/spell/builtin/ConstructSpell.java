@@ -28,7 +28,7 @@ public class ConstructSpell extends BrushSpell
     public static final String[] CONSTRUCT_PARAMETERS = {
         "radius", "falling", "speed", "max_dimension", "replace", "consume",
         "type", "thickness", "orient_dimension_max", "orient_dimension_min",
-        "power", "breakable", "backfire", "select_self", "use_brush_size", "falling_direction"
+        "breakable", "backfire", "select_self", "use_brush_size", "falling_direction"
     };
 
     private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
@@ -271,6 +271,9 @@ public class ConstructSpell extends BrushSpell
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
         if (parameters != null) {
             powered = parameters.getBoolean("power", false);
+            if (powered) {
+                controller.getLogger().warning("Using the 'power' flag with ConstructSpell is deprecated and will be removed in the future. Please use a Sphere + PowerBlock combination instead.");
+            }
         }
     }
 
