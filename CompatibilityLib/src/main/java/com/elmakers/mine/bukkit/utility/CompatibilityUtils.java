@@ -13,11 +13,12 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Lockable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.ComplexLivingEntity;
 import org.bukkit.entity.Damageable;
@@ -37,7 +38,6 @@ import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -665,67 +665,30 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean setLock(Block block, String lockName)
     {
-        if (class_TileEntityContainer_setLock == null || class_ChestLock_Constructor == null) return false;
-        Object tileEntity = getTileEntity(block.getLocation());
-        if (tileEntity == null) return false;
-        if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
-        try {
-            Object lock = class_ChestLock_Constructor.newInstance(lockName);
-            class_TileEntityContainer_setLock.invoke(tileEntity, lock);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
+        BlockState state = block.getState();
+        if (!(state instanceof Lockable)) return false;
+        Lockable lockable = (Lockable) state;
+        lockable.setLock(lockName);
         return true;
     }
 
     public static boolean clearLock(Block block)
     {
-        if (class_TileEntityContainer_setLock == null) return false;
-        Object tileEntity = getTileEntity(block.getLocation());
-        if (tileEntity == null) return false;
-        if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
-        try {
-            class_TileEntityContainer_setLock.invoke(tileEntity, new Object[] {null});
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
-        return true;
+        return setLock(block, null);
     }
 
     public static boolean isLocked(Block block)
     {
-        if (class_TileEntityContainer_getLock == null || class_ChestLock_isEmpty == null) return false;
-        Object tileEntity = getTileEntity(block.getLocation());
-        if (tileEntity == null) return false;
-        if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
-        try {
-            Object lock = class_TileEntityContainer_getLock.invoke(tileEntity);
-            if (lock == null) return false;
-            return !(Boolean)class_ChestLock_isEmpty.invoke(lock);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        String lock = getLock(block);
+        return lock != null && !lock.isEmpty();
     }
 
     public static String getLock(Block block)
     {
-        if (class_TileEntityContainer_getLock == null || class_ChestLock_getString == null) return null;
-        Object tileEntity = getTileEntity(block.getLocation());
-        if (tileEntity == null) return null;
-        if (!class_TileEntityContainer.isInstance(tileEntity)) return null;
-        try {
-            Object lock = class_TileEntityContainer_getLock.invoke(tileEntity);
-            if (lock == null) return null;
-            return (String)class_ChestLock_getString.invoke(lock);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        BlockState state = block.getState();
+        if (!(state instanceof Lockable)) return null;
+        Lockable lockable = (Lockable) state;
+        return lockable.getLock();
     }
 
     public static void setFallingBlockDamage(FallingBlock entity, float fallHurtAmount, int fallHurtMax)
@@ -1337,30 +1300,6 @@ public class CompatibilityUtils extends NMSUtils {
             return false;
         }
         return true;
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static boolean setPickupStatus(Arrow arrow, String pickupStatus) {
-        if (arrow == null || pickupStatus == null || class_Arrow_setPickupStatusMethod == null || class_PickupStatus == null) return false;
-
-        try {
-            Enum enumValue = Enum.valueOf(class_PickupStatus, pickupStatus.toUpperCase());
-            class_Arrow_setPickupStatusMethod.invoke(arrow, enumValue);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public static Block getHitBlock(ProjectileHitEvent event) {
-        if (class_ProjectileHitEvent_getHitBlockMethod == null) return null;
-        try {
-            return (Block) class_ProjectileHitEvent_getHitBlockMethod.invoke(event);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return null;
     }
 
     public static boolean isPassenger(Entity vehicle, Entity maybePassenger) {

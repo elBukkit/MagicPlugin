@@ -114,9 +114,7 @@ public class EntityController implements Listener {
         // This happens before EntityDamageEvent, so the hit target will
         // be assigned before the tracked projectile is checked.
         // This is here to register misses, mainly.
-
-        // TODO: use event.getBlock in newer API.
-        Targeting.checkTracking(controller.getPlugin(), projectile, null, CompatibilityUtils.getHitBlock(event));
+        Targeting.checkTracking(controller.getPlugin(), projectile, null, event.getHitBlock());
     }
 
     @EventHandler

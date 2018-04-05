@@ -12,6 +12,7 @@
  - Check capture spell
  - Check map brush ... can work with concrete and glazed terracotta now though!
  - Check custom colored blob/reflect/platform/shell
+ - Check secure/lockpick
 
 ### Things still needing fixing
 

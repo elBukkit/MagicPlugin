@@ -12,11 +12,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -89,7 +87,6 @@ public class NMSUtils {
     protected static Class<?> class_WorldServer;
     protected static Class<?> class_Packet;
     protected static Class<Enum> class_EnumSkyBlock;
-    protected static Class<Enum> class_PickupStatus;
     protected static Class<?> class_EntityPainting;
     protected static Class<?> class_EntityItemFrame;
     protected static Class<?> class_EntityMinecartRideable;
@@ -109,7 +106,6 @@ public class NMSUtils {
     protected static Class<?> class_TileEntity;
     protected static Class<?> class_TileEntitySign;
     protected static Class<?> class_TileEntityContainer;
-    protected static Class<?> class_ChestLock;
     protected static Class<Enum> class_EnumDirection;
     protected static Class<?> class_EntityHorse;
     protected static Class<?> class_EntityWitherSkull;
@@ -204,10 +200,6 @@ public class NMSUtils {
     protected static Method class_Entity_getIdMethod;
     protected static Method class_Entity_getDataWatcherMethod;
     protected static Method class_Entity_getBoundingBox;
-    protected static Method class_TileEntityContainer_setLock;
-    protected static Method class_TileEntityContainer_getLock;
-    protected static Method class_ChestLock_isEmpty;
-    protected static Method class_ChestLock_getString;
     protected static Method class_ArmorStand_setInvisible;
     protected static Method class_ArmorStand_setGravity;
     protected static Method class_Entity_setNoGravity;
@@ -226,8 +218,6 @@ public class NMSUtils {
     protected static Method class_CraftMagicNumbers_getBlockMethod;
     protected static Method class_Block_fromLegacyData;
     protected static Method class_Chunk_setBlockMethod;
-    protected static Method class_Arrow_setPickupStatusMethod;
-    protected static Method class_ProjectileHitEvent_getHitBlockMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -243,7 +233,6 @@ public class NMSUtils {
     protected static Constructor class_PacketPlayOutExperience_Constructor;
     protected static Constructor class_PacketPlayOutAnimation_Constructor;
     protected static Constructor class_PacketPlayOutBlockBreakAnimation_Constructor;
-    protected static Constructor class_ChestLock_Constructor;
     protected static Constructor class_AxisAlignedBB_Constructor;
     protected static Constructor class_ItemStack_consructor;
     protected static Constructor class_NBTTagString_consructor;
@@ -509,7 +498,6 @@ public class NMSUtils {
             class_MemorySection_mapField.setAccessible(true);
             
             class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
-            class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
             class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
             class_GameProfile = getClass("com.mojang.authlib.GameProfile");
             class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
@@ -550,21 +538,6 @@ public class NMSUtils {
             // We don't want to consider new-ish builds as "legacy" and print a warning, so keep a separate flag
             boolean current = true;
 
-            // Particularly volatile methods that we can live without
-            try {
-                class_ProjectileHitEvent_getHitBlockMethod = ProjectileHitEvent.class.getMethod("getHitBlock");
-            } catch (Throwable ex) {
-                class_ProjectileHitEvent_getHitBlockMethod = null;
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering ProjectileHitEvent.getHitBlock, arrow hit locations will be fuzzy", ex);
-            }
-            try {
-                class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.Arrow$PickupStatus");
-                class_Arrow_setPickupStatusMethod = Arrow.class.getMethod("setPickupStatus", class_PickupStatus);
-            } catch (Throwable ex) {
-                class_PickupStatus = null;
-                class_Arrow_setPickupStatusMethod = null;
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Arrow.PickupStatus, arrows can not be made to be picked up", ex);
-            }
             try {
                 class_CraftPlayer_getProfileMethod = class_CraftPlayer.getMethod("getProfile");
             } catch (Throwable ex) {
@@ -770,35 +743,6 @@ public class NMSUtils {
             }
             if (class_EntityArmorStand_disabledSlotsField != null) {
                 class_EntityArmorStand_disabledSlotsField.setAccessible(true);
-            }
-
-            // TODO: Lockable API in 1.11+
-            try {
-                try {
-                    // Common
-                    class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
-                    class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
-                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("getLock");
-
-                    // 1.12 only
-                    class_ChestLock_getString = class_ChestLock.getMethod("getKey");
-                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("setLock", class_ChestLock);
-                } catch (Throwable not12) {
-                    try {
-                        // 1.11
-                        class_ChestLock_getString = class_ChestLock.getMethod("b");
-                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                    } catch (Throwable ignore) {
-                        // 1.10 and earlier
-                        legacy = true;
-                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                        class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
-                    }
-                }
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred, chest locking and unlocking will not work", ex);
-                class_TileEntityContainer_setLock = null;
-                class_TileEntityContainer_getLock = null;
             }
 
             try {

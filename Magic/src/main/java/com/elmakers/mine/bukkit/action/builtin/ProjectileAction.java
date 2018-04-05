@@ -40,7 +40,7 @@ public class ProjectileAction  extends BaseProjectileAction
     private String projectileTypeName;
     private int startDistance;
     private SourceLocation sourceLocation;
-    private String pickupStatus;
+    private Arrow.PickupStatus pickupStatus;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -75,8 +75,16 @@ public class ProjectileAction  extends BaseProjectileAction
         projectileTypeName = parameters.getString("projectile", "TippedArrow");
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
-        pickupStatus = parameters.getString("pickup");
         sourceLocation = new SourceLocation(parameters);
+
+        String pickupStatusString = parameters.getString("pickup");
+        if (pickupStatusString != null && !pickupStatusString.isEmpty()) {
+            try {
+                pickupStatus = Arrow.PickupStatus.valueOf(pickupStatusString.toUpperCase());
+            } catch (Exception ex) {
+                context.getLogger().warning("Invalid pickup status: " + pickupStatusString);
+            }
+        }
     }
 
     @Override
@@ -148,8 +156,8 @@ public class ProjectileAction  extends BaseProjectileAction
                     if (tickIncrease > 0) {
                         CompatibilityUtils.decreaseLifespan(projectile, tickIncrease);
                     }
-                    if (pickupStatus != null && !pickupStatus.isEmpty()) {
-                        CompatibilityUtils.setPickupStatus(arrow, pickupStatus);
+                    if (pickupStatus != null) {
+                        arrow.setPickupStatus(pickupStatus);
                     }
                 }
                 if (!breakBlocks) {
