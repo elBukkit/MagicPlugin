@@ -543,7 +543,7 @@ public class NMSUtils {
 
             // Particularly volatile methods that we can live without
             try {
-                @SuppressWarnings("deprecated")
+                @SuppressWarnings("deprecation")
                 Class<?> unsafe = org.bukkit.UnsafeValues.class;
                 class_UnsafeValues_fromLegacyDataMethod = unsafe.getMethod("fromLegacy", MaterialData.class);
                 class_UnsafeValues_fromLegacyMethod = unsafe.getMethod("fromLegacy", Material.class);

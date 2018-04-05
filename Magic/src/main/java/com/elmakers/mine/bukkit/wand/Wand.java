@@ -84,7 +84,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static boolean FILL_CREATOR = false;
     public static Vector DEFAULT_CAST_OFFSET = new Vector(0, 0, 0.5);
     public static String DEFAULT_WAND_TEMPLATE = "default";
-    private static int WAND_VERSION = 6;
 
     private static final String[] EMPTY_PARAMETERS = new String[0];
 
@@ -295,8 +294,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
             // Check for wand data migration
             int version = wandConfig.getInt("version", 0);
-            if (version < WAND_VERSION) {
-                migrate(version, wandConfig);
+            if (version < CURRENT_VERSION) {
+                // Migration will be handled by CasterProperties, this is just here
+                // So that we save the data after to avoid re-migrating.
                 needsSave = true;
             }
             randomizeOnActivate = !wandConfig.contains("icon");
@@ -360,7 +360,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         setTemplate(templateName);
-        setProperty("version", WAND_VERSION);
+        setProperty("version", CURRENT_VERSION);
         ConfigurationSection templateConfig = template.getConfiguration();
 
         if (templateConfig == null) {
@@ -397,6 +397,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateName();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void migrate(int version, ConfigurationSection wandConfig) {
         // First migration, clean out wand data that matches template
@@ -494,7 +495,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             wandConfig.set("item_attributes", attributes);
         }
 
-        wandConfig.set("version", WAND_VERSION);
+        super.migrate(version, wandConfig);
     }
 
     @Override
