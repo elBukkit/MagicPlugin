@@ -19,6 +19,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
@@ -99,9 +100,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
                     int index = x + (y * length + z) * width;
                     Material material = null;
                     try {
-                        // TODO: How to map these?? :(
-                        // Material.getMaterial(blockTypes[index])
-                        material = Material.getMaterial("dirt");
+                        DeprecatedUtils.getMaterial(blockTypes[index], data[index]);
                     } catch (Exception ex) {
                         material = null;
                         ex.printStackTrace();
@@ -109,7 +108,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
 
                     if (material != null)
                     {
-                        MaterialAndData block = new com.elmakers.mine.bukkit.block.MaterialAndData(material, data[index]);
+                        MaterialAndData block = new com.elmakers.mine.bukkit.block.MaterialAndData(material);
 
                         // Check for tile entity data
                         BlockVector blockLocation = new BlockVector(x, y, z);

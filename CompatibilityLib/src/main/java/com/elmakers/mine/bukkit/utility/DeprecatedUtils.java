@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.UnsafeValues;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Damageable;
@@ -25,6 +26,13 @@ public class DeprecatedUtils {
         // @deprecated This method should not be relied upon as it is a
         // temporary work-around for a larger, more complicated issue.
         player.updateInventory();
+    }
+
+    public static Material getMaterial(int id, byte data) {
+        UnsafeValues unsafe = Bukkit.getUnsafe();
+        Material legacyMaterial = Material.values()[id];
+        org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(legacyMaterial, data);
+        return unsafe.fromLegacy(materialData);
     }
 
     public static byte getData(Block block) {

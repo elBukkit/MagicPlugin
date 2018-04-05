@@ -7,7 +7,7 @@
    - Sets will have to get matched to colors
  - Wand brush migration? Fix up old brushes?
  - Config migration, a script to convert materials might be nice.
- - Oh, boy, how broken are schematics?  That ... might be problematic.
+ - Schematics may be broken or not?
  - Torch action is probably broken? Setting direction of torches, choosing between wall and ground torch... 
  - Check book -> skull feature
  - Tag sign facing probably broken?
