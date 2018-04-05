@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -83,12 +84,16 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     private final MageController controller;
     private int mapId = -1;
     private BufferedMapCanvas mapCanvas = null;
-    // TODO: Well crap this is going to be a lot harder... but more possibilites. To fix later.
-    private Material mapMaterialBase = Material.WHITE_CONCRETE;
     private Schematic schematic;
     private String schematicName = "";
     private boolean fillWithAir = true;
     private Vector orientVector = null;
+
+    // For the MAP brush
+    private static final Material DEFAULT_MAP_MATERIAL_BASE = Material.WHITE_CONCRETE;
+    private Material mapMaterialBase = DEFAULT_MAP_MATERIAL_BASE;
+    private Map<Material, Map<DyeColor, Material>> mapMaterials = null;
+    private Map<Material, Material> baseMaterialMap = null;
     private double scale = 1;
 
     public MaterialBrush(final Mage mage, final Material material, final  byte data) {
@@ -296,15 +301,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
         this.scale = (float)128 / size;
         this.mode = BrushMode.MAP;
-        // TODO: Fix this. Will need sets of materials to use I think.
-        /*
-        if (this.material == Material.WOOL || this.material == Material.STAINED_CLAY
-            || this.material == Material.STAINED_GLASS || this.material == Material.STAINED_GLASS_PANE
-            || this.material == Material.CARPET) {
-            this.mapMaterialBase = this.material;
-        }
-        */
-
+        this.mapMaterialBase = getMapMaterialBase(this.material);
         if (this.mapId == -1 && mage != null) {
             this.mapId = mage.getLastHeldMapId();
         }
@@ -543,9 +540,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                         Math.abs((int)(diff.getBlockZ() * scale + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT));
                 }
                 if (mapColor != null) {
-                    this.material = mapMaterialBase;
-                    this.data = (short)mapColor.getWoolData();
-                    isValid = true;
+                    this.material = getMapMaterial(mapColor);
+                    isValid = this.material != null;
                 }
             }
         }
@@ -875,6 +871,277 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             MaterialAndData fromMaterial = ConfigurationUtils.toMaterialAndData(key);
             replacements.put(fromMaterial, toMaterial);
         }
+    }
+
+    protected void initializeMapMaterials() {
+        // TODO: Maybe config-drive this?
+        // ... Yeah, probably should've config-driven it.
+        baseMaterialMap = new HashMap<>();
+        mapMaterials = new HashMap<>();
+        Map<DyeColor, Material> dyeMaterials;
+
+        // Concrete
+        baseMaterialMap.put(Material.BLACK_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.BLUE_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.BROWN_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.CYAN_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.GRAY_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.GREEN_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.LIGHT_BLUE_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.LIGHT_GRAY_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.LIME_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.MAGENTA_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.ORANGE_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.PINK_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.PURPLE_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.WHITE_CONCRETE, Material.WHITE_CONCRETE);
+        baseMaterialMap.put(Material.YELLOW_CONCRETE, Material.WHITE_CONCRETE);
+        dyeMaterials = new HashMap<>();
+        dyeMaterials.put(DyeColor.BLACK, Material.BLACK_CONCRETE);
+        dyeMaterials.put(DyeColor.BLUE, Material.BLUE_CONCRETE);
+        dyeMaterials.put(DyeColor.BROWN, Material.BROWN_CONCRETE);
+        dyeMaterials.put(DyeColor.CYAN, Material.CYAN_CONCRETE);
+        dyeMaterials.put(DyeColor.GRAY, Material.GRAY_CONCRETE);
+        dyeMaterials.put(DyeColor.GREEN, Material.GREEN_CONCRETE);
+        dyeMaterials.put(DyeColor.LIGHT_BLUE, Material.LIGHT_BLUE_CONCRETE);
+        dyeMaterials.put(DyeColor.SILVER, Material.LIGHT_GRAY_CONCRETE);
+        dyeMaterials.put(DyeColor.LIME, Material.LIME_CONCRETE);
+        dyeMaterials.put(DyeColor.MAGENTA, Material.MAGENTA_CONCRETE);
+        dyeMaterials.put(DyeColor.ORANGE, Material.ORANGE_CONCRETE);
+        dyeMaterials.put(DyeColor.PINK, Material.PINK_CONCRETE);
+        dyeMaterials.put(DyeColor.PURPLE, Material.PURPLE_CONCRETE);
+        dyeMaterials.put(DyeColor.WHITE, Material.WHITE_CONCRETE);
+        dyeMaterials.put(DyeColor.YELLOW, Material.YELLOW_CONCRETE);
+        mapMaterials.put(Material.WHITE_CONCRETE, dyeMaterials);
+
+        // Concrete powder
+        baseMaterialMap.put(Material.BLACK_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.BLUE_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.BROWN_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.CYAN_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.GRAY_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.GREEN_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.LIGHT_BLUE_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.LIGHT_GRAY_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.LIME_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.MAGENTA_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.ORANGE_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.PINK_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.PURPLE_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.WHITE_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        baseMaterialMap.put(Material.YELLOW_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER);
+        dyeMaterials = new HashMap<>();
+        dyeMaterials.put(DyeColor.BLACK, Material.BLACK_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.BLUE, Material.BLUE_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.BROWN, Material.BROWN_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.CYAN, Material.CYAN_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.GRAY, Material.GRAY_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.GREEN, Material.GREEN_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.LIGHT_BLUE, Material.LIGHT_BLUE_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.SILVER, Material.LIGHT_GRAY_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.LIME, Material.LIME_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.MAGENTA, Material.MAGENTA_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.ORANGE, Material.ORANGE_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.PINK, Material.PINK_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.PURPLE, Material.PURPLE_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.WHITE, Material.WHITE_CONCRETE_POWDER);
+        dyeMaterials.put(DyeColor.YELLOW, Material.YELLOW_CONCRETE_POWDER);
+        mapMaterials.put(Material.WHITE_CONCRETE_POWDER, dyeMaterials);
+
+        // Stained clay
+        baseMaterialMap.put(Material.BLACK_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.BLUE_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.BROWN_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.CYAN_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.GRAY_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.GREEN_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.LIGHT_BLUE_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.LIGHT_GRAY_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.LIME_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.MAGENTA_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.ORANGE_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.PINK_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.PURPLE_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.WHITE_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        baseMaterialMap.put(Material.YELLOW_TERRACOTTA, Material.WHITE_TERRACOTTA);
+        dyeMaterials = new HashMap<>();
+        dyeMaterials.put(DyeColor.BLACK, Material.BLACK_TERRACOTTA);
+        dyeMaterials.put(DyeColor.BLUE, Material.BLUE_TERRACOTTA);
+        dyeMaterials.put(DyeColor.BROWN, Material.BROWN_TERRACOTTA);
+        dyeMaterials.put(DyeColor.CYAN, Material.CYAN_TERRACOTTA);
+        dyeMaterials.put(DyeColor.GRAY, Material.GRAY_TERRACOTTA);
+        dyeMaterials.put(DyeColor.GREEN, Material.GREEN_TERRACOTTA);
+        dyeMaterials.put(DyeColor.LIGHT_BLUE, Material.LIGHT_BLUE_TERRACOTTA);
+        dyeMaterials.put(DyeColor.SILVER, Material.LIGHT_GRAY_TERRACOTTA);
+        dyeMaterials.put(DyeColor.LIME, Material.LIME_TERRACOTTA);
+        dyeMaterials.put(DyeColor.MAGENTA, Material.MAGENTA_TERRACOTTA);
+        dyeMaterials.put(DyeColor.ORANGE, Material.ORANGE_TERRACOTTA);
+        dyeMaterials.put(DyeColor.PINK, Material.PINK_TERRACOTTA);
+        dyeMaterials.put(DyeColor.PURPLE, Material.PURPLE_TERRACOTTA);
+        dyeMaterials.put(DyeColor.WHITE, Material.WHITE_TERRACOTTA);
+        dyeMaterials.put(DyeColor.YELLOW, Material.YELLOW_TERRACOTTA);
+        mapMaterials.put(Material.WHITE_TERRACOTTA, dyeMaterials);
+
+        // Glazed terracotta
+        baseMaterialMap.put(Material.BLACK_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.BLUE_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.BROWN_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.CYAN_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.GRAY_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.GREEN_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.LIGHT_BLUE_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.LIGHT_GRAY_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.LIME_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.MAGENTA_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.ORANGE_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.PINK_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.PURPLE_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.WHITE_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        baseMaterialMap.put(Material.YELLOW_GLAZED_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        dyeMaterials = new HashMap<>();
+        dyeMaterials.put(DyeColor.BLACK, Material.BLACK_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.BLUE, Material.BLUE_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.BROWN, Material.BROWN_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.CYAN, Material.CYAN_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.GRAY, Material.GRAY_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.GREEN, Material.GREEN_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.LIGHT_BLUE, Material.LIGHT_BLUE_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.SILVER, Material.LIGHT_GRAY_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.LIME, Material.LIME_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.MAGENTA, Material.MAGENTA_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.ORANGE, Material.ORANGE_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.PINK, Material.PINK_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.PURPLE, Material.PURPLE_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.WHITE, Material.WHITE_GLAZED_TERRACOTTA);
+        dyeMaterials.put(DyeColor.YELLOW, Material.YELLOW_GLAZED_TERRACOTTA);
+        mapMaterials.put(Material.WHITE_GLAZED_TERRACOTTA, dyeMaterials);
+
+        // Wool
+        baseMaterialMap.put(Material.BLACK_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.BLUE_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.BROWN_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.CYAN_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.GRAY_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.GREEN_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.LIGHT_BLUE_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.LIGHT_GRAY_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.LIME_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.MAGENTA_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.ORANGE_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.PINK_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.PURPLE_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.WHITE_WOOL, Material.WHITE_WOOL);
+        baseMaterialMap.put(Material.YELLOW_WOOL, Material.WHITE_WOOL);
+        dyeMaterials = new HashMap<>();
+        dyeMaterials.put(DyeColor.BLACK, Material.BLACK_WOOL);
+        dyeMaterials.put(DyeColor.BLUE, Material.BLUE_WOOL);
+        dyeMaterials.put(DyeColor.BROWN, Material.BROWN_WOOL);
+        dyeMaterials.put(DyeColor.CYAN, Material.CYAN_WOOL);
+        dyeMaterials.put(DyeColor.GRAY, Material.GRAY_WOOL);
+        dyeMaterials.put(DyeColor.GREEN, Material.GREEN_WOOL);
+        dyeMaterials.put(DyeColor.LIGHT_BLUE, Material.LIGHT_BLUE_WOOL);
+        dyeMaterials.put(DyeColor.SILVER, Material.LIGHT_GRAY_WOOL);
+        dyeMaterials.put(DyeColor.LIME, Material.LIME_WOOL);
+        dyeMaterials.put(DyeColor.MAGENTA, Material.MAGENTA_WOOL);
+        dyeMaterials.put(DyeColor.ORANGE, Material.ORANGE_WOOL);
+        dyeMaterials.put(DyeColor.PINK, Material.PINK_WOOL);
+        dyeMaterials.put(DyeColor.PURPLE, Material.PURPLE_WOOL);
+        dyeMaterials.put(DyeColor.WHITE, Material.WHITE_WOOL);
+        dyeMaterials.put(DyeColor.YELLOW, Material.YELLOW_WOOL);
+        mapMaterials.put(Material.WHITE_WOOL, dyeMaterials);
+
+        // Stained glass
+        baseMaterialMap.put(Material.BLACK_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.BLUE_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.BROWN_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.CYAN_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.GRAY_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.GREEN_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.LIGHT_BLUE_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.LIGHT_GRAY_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.LIME_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.MAGENTA_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.ORANGE_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.PINK_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.PURPLE_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.WHITE_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        baseMaterialMap.put(Material.YELLOW_STAINED_GLASS, Material.WHITE_STAINED_GLASS);
+        dyeMaterials = new HashMap<>();
+        dyeMaterials.put(DyeColor.BLACK, Material.BLACK_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.BLUE, Material.BLUE_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.BROWN, Material.BROWN_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.CYAN, Material.CYAN_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.GRAY, Material.GRAY_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.GREEN, Material.GREEN_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.LIGHT_BLUE, Material.LIGHT_BLUE_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.SILVER, Material.LIGHT_GRAY_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.LIME, Material.LIME_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.MAGENTA, Material.MAGENTA_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.ORANGE, Material.ORANGE_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.PINK, Material.PINK_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.PURPLE, Material.PURPLE_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.WHITE, Material.WHITE_STAINED_GLASS);
+        dyeMaterials.put(DyeColor.YELLOW, Material.YELLOW_STAINED_GLASS);
+        mapMaterials.put(Material.WHITE_STAINED_GLASS, dyeMaterials);
+
+        // Stained glass pane
+        baseMaterialMap.put(Material.BLACK_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.BLUE_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.BROWN_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.CYAN_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.GRAY_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.GREEN_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.LIGHT_BLUE_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.LIGHT_GRAY_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.LIME_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.MAGENTA_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.ORANGE_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.PINK_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.PURPLE_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.WHITE_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        baseMaterialMap.put(Material.YELLOW_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE);
+        dyeMaterials = new HashMap<>();
+        dyeMaterials.put(DyeColor.BLACK, Material.BLACK_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.BLUE, Material.BLUE_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.BROWN, Material.BROWN_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.CYAN, Material.CYAN_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.GRAY, Material.GRAY_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.GREEN, Material.GREEN_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.LIGHT_BLUE, Material.LIGHT_BLUE_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.SILVER, Material.LIGHT_GRAY_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.LIME, Material.LIME_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.MAGENTA, Material.MAGENTA_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.ORANGE, Material.ORANGE_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.PINK, Material.PINK_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.PURPLE, Material.PURPLE_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.WHITE, Material.WHITE_STAINED_GLASS_PANE);
+        dyeMaterials.put(DyeColor.YELLOW, Material.YELLOW_STAINED_GLASS_PANE);
+        mapMaterials.put(Material.WHITE_STAINED_GLASS_PANE, dyeMaterials);
+    }
+
+    @Nullable
+    protected Material getMapMaterial(@Nonnull DyeColor color) {
+        if (baseMaterialMap == null) {
+            initializeMapMaterials();
+        }
+        Map<DyeColor, Material> materialMap = mapMaterials.get(mapMaterialBase);
+        if (materialMap == null) {
+            mapMaterialBase = DEFAULT_MAP_MATERIAL_BASE;
+            materialMap = mapMaterials.get(mapMaterialBase);
+        }
+        if (materialMap == null) {
+            return null;
+        }
+        return materialMap.get(color);
+    }
+
+    @Nonnull
+    protected Material getMapMaterialBase(Material material) {
+        if (baseMaterialMap == null) {
+            initializeMapMaterials();
+        }
+        Material baseMaterial = baseMaterialMap.get(material);
+        return baseMaterial == null ? DEFAULT_MAP_MATERIAL_BASE : baseMaterial;
     }
 
     @Override

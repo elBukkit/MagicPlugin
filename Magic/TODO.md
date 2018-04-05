@@ -10,12 +10,10 @@
  - Torch action is probably broken? Setting direction of torches, choosing between wall and ground torch... 
  - Tag sign facing probably broken?
  - Check capture spell
+ - Check map brush ... can work with concrete and glazed terracotta now though!
 
 ### Things still needing fixing
 
- - Map brush needs fixing. Probably best to have a list of material sets for it to use?
-   - Will need to be able to match the current material to the correct set
-   - Sets will have to get matched to colors
  - Config migration, a script to convert materials might be nice.
  - Towny integration is broken
  - Add path 2nd parameter to enchant command to stop when reaching end of a path
