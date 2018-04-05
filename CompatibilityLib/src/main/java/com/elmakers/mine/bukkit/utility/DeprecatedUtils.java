@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.UnsafeValues;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Damageable;
@@ -29,7 +28,7 @@ public class DeprecatedUtils {
     }
 
     public static Material getMaterial(int id, byte data) {
-        UnsafeValues unsafe = Bukkit.getUnsafe();
+        org.bukkit.UnsafeValues unsafe = Bukkit.getUnsafe();
         Material legacyMaterial = Material.values()[id];
         org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(legacyMaterial, data);
         return unsafe.fromLegacy(materialData);
