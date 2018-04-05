@@ -7,9 +7,7 @@ building:
 - cobblestone
 - wood
 - water
-- stationary_water
 - lava
-- stationary_lava
 - sand
 - gravel
 - gold_ore
@@ -31,14 +29,7 @@ building:
 - piston_sticky_base
 - piston_base
 - piston_extension
-- long_grass
-- dead_bush
 - piston_moving_piece
-- yellow_flower
-- red_rose
-- wheat
-- brown_mushroom
-- red_mushroom
 - wool
 - gold_block
 - iron_block
@@ -65,7 +56,6 @@ building:
 - snow_block
 - cactus
 - clay
-- sugar_cane_block
 - jukebox
 - fence
 - pumpkin
@@ -75,10 +65,8 @@ building:
 - portal
 - jack_o_lantern
 - cake_block
-- diode_block_off
-- diode_block_on
-- redstone_comparator_off
-- redstone_comparator_on
+- repeater
+- redstone_comparator
 - locked_chest
 - trap_door
 - smooth_brick
@@ -153,4 +141,5 @@ building:
 - double_stone_slab2
 - stone_slab2
 - web
+- plants
 

@@ -11,16 +11,11 @@ destructible_mining:
 - netherrack
 - soul_sand
 - snow
-- long_grass
-- dead_bush
-- yellow_flower
-- red_rose
-- brown_mushroom
-- red_mushroom
 - leaves
 - sandstone
 - stained_clay
 - mycel
 - ender_stone
 - hard_clay
+- plants
 

@@ -1,10 +1,5 @@
 # All doors, for the DoorSpell generally
 doors:
-- iron_door_block
-- wooden_door
-- spruce_door
-- birch_door
-- jungle_door
-- acacia_door
-- dark_oak_door
+- iron_door
+- unlocked_doors
 

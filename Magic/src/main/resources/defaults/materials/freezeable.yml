@@ -2,16 +2,8 @@ freezeable:
 - air
 - fire
 - water
-- stationary_water
-- stationary_lava
 - lava
-- long_grass
-- dead_bush
-- yellow_flower
-- red_rose
-- brown_mushroom
-- red_mushroom
-- double_plant
+- plants
 - snow
 - ice
 

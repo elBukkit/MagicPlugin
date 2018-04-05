@@ -1,7 +1,5 @@
 interactible:
 - chest
-- wooden_door
-- iron_door_block
 - ender_chest
 - anvil
 - brewing_stand
@@ -14,23 +12,23 @@ interactible:
 - stone_button
 - wood_button
 - lever
-- bed_block
-- sign_post
-- command
+- sign
 - wall_sign
 - spruce_door
 - birch_door
 - jungle_door
 - acacia_door
 - dark_oak_door
-- fence_gate
+- oak_fence_gate
 - spruce_fence_gate
 - birch_fence_gate
 - jungle_fence_gate
 - dark_oak_fence_gate
 - acacia_fence_gate
 - daylight_detector
-- daylight_detector_inverted
 - trap_door
 - iron_trap_door
+- doors
+- commands
+- beds
 

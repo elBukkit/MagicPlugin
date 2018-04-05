@@ -8,8 +8,8 @@
 restricted:
 - bedrock
 - barrier
-- command
 - ender_portal
 - mob_spawner
 - ender_portal_frame
+- commands
 

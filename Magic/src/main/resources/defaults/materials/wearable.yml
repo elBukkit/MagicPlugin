@@ -1,5 +1,4 @@
 wearable:
-- skull_item
 - gold_helmet
 - chainmail_helmet
 - iron_helmet
@@ -21,4 +20,5 @@ wearable:
 - leather_leggings
 - diamond_leggings
 - elytra
+- skulls
 
