@@ -9,11 +9,9 @@ import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Slime;
+import org.bukkit.entity.WitherSkeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 
@@ -57,6 +55,7 @@ public class ShrinkEntityAction extends DamageAction
         LivingEntity li = (LivingEntity)targetEntity;
         boolean alreadyDead = li.isDead() || li.getHealth() <= 0;
         String itemName = DeprecatedUtils.getDisplayName(li) + " Head";
+        EntityType replaceType = null;
 
         Location targetLocation = targetEntity.getLocation();
         if (li instanceof Player) {
@@ -64,41 +63,38 @@ public class ShrinkEntityAction extends DamageAction
             if (li.isDead() && !alreadyDead) {
                 dropHead(context, targetEntity, itemName);
             }
-        }
-        else if (li.getType() == EntityType.GIANT) {
-            UndoList spawnedList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(li);
-            context.registerModified(li);
-            li.remove();
-            Entity zombie = targetLocation.getWorld().spawnEntity(targetLocation, EntityType.ZOMBIE);
-            if (zombie instanceof Zombie) {
-                ((Zombie)zombie).setBaby(false);
-            }
-            context.registerForUndo(zombie);
-            if (spawnedList != null) {
-                spawnedList.add(zombie);
-            }
-        }
-        else if (li instanceof Ageable && ((Ageable)li).isAdult() && !(li instanceof Player)) {
+        } else if (li.getType() == EntityType.GIANT) {
+            replaceType = EntityType.ZOMBIE;
+        } else if (li instanceof Ageable && ((Ageable)li).isAdult()) {
             context.registerModified(li);
             ((Ageable)li).setBaby();
         } else  if (li instanceof Zombie && !((Zombie)li).isBaby()) {
             context.registerModified(li);
             ((Zombie)li).setBaby(true);
-        } else  if (li instanceof PigZombie && !((PigZombie)li).isBaby()) {
-            context.registerModified(li);
-            ((PigZombie)li).setBaby(true);
         } else  if (li instanceof Slime && ((Slime)li).getSize() > 1) {
             context.registerModified(li);
             Slime slime = (Slime)li;
             slime.setSize(slime.getSize() - 1);
-        } else  if (li instanceof Skeleton && skeletons && ((Skeleton)li).getSkeletonType() == SkeletonType.WITHER) {
-            context.registerModified(li);
-            Skeleton skeleton = (Skeleton)li;
-            skeleton.setSkeletonType(SkeletonType.NORMAL);
+        } else if (li instanceof WitherSkeleton && skeletons) {
+            replaceType = EntityType.SKELETON;
         } else {
             super.perform(context);
             if ((li.isDead() || li.getHealth() == 0) && !alreadyDead) {
                 dropHead(context, targetEntity, itemName);
+            }
+        }
+
+        if (replaceType != null) {
+            UndoList spawnedList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(li);
+            context.registerModified(li);
+            li.remove();
+            Entity replacement = targetLocation.getWorld().spawnEntity(targetLocation, replaceType);
+            if (replacement instanceof Zombie) {
+                ((Zombie)replacement).setBaby(false);
+            }
+            context.registerForUndo(replacement);
+            if (spawnedList != null) {
+                spawnedList.add(replacement);
             }
         }
 

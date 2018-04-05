@@ -10,21 +10,12 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Button;
-import org.bukkit.material.Lever;
-import org.bukkit.material.MaterialData;
-import org.bukkit.material.PistonBaseMaterial;
-import org.bukkit.material.PoweredRail;
-import org.bukkit.material.RedstoneWire;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -416,57 +407,7 @@ public class ConstructBatch extends BrushBatch {
         // Check for power mode.
         if (power)
         {
-            Material material = block.getType();
-            BlockState blockState = block.getState();
-            MaterialData data = blockState.getData();
-            boolean powerBlock = false;
-            if (data instanceof Button) {
-                Button powerData = (Button)data;
-                registerForUndo(block);
-                powerData.setPowered(!powerData.isPowered());
-                powerBlock = true;
-            } else if (data instanceof Lever) {
-                Lever powerData = (Lever)data;
-                registerForUndo(block);
-                powerData.setPowered(!powerData.isPowered());
-                powerBlock = true;
-            } else if (data instanceof PistonBaseMaterial) {
-                PistonBaseMaterial powerData = (PistonBaseMaterial)data;
-                registerForUndo(block);
-                powerData.setPowered(!powerData.isPowered());
-                powerBlock = true;
-            } else if (data instanceof PoweredRail) {
-                PoweredRail powerData = (PoweredRail)data;
-                registerForUndo(block);
-                powerData.setPowered(!powerData.isPowered());
-                powerBlock = true;
-            } else if (data instanceof RedstoneWire) {
-                RedstoneWire wireData = (RedstoneWire)data;
-                registerForUndo(block);
-                wireData.setData((byte)(15 - wireData.getData()));
-                powerBlock = true;
-            } else if (material == Material.REDSTONE_BLOCK) {
-                registerForUndo(block);
-                block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
-                controller.getRedstoneReplacement().modify(block, applyPhysics);
-            } else if (material == Material.REDSTONE_TORCH_OFF) {
-                registerForUndo(block);
-                block.setType(Material.REDSTONE_TORCH_ON);
-            } else if (material == Material.REDSTONE_TORCH_ON) {
-                registerForUndo(block);
-                block.setType(Material.REDSTONE_TORCH_OFF);
-            } else if (material == Material.TNT) {
-                registerForUndo(block);
-                block.setType(Material.AIR);
-
-                // Kaboomy time!
-                registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT));
-            }
-
-            if (powerBlock) {
-                blockState.update();
-            }
-
+            controller.getLogger().warning("The power flag in ConstructBatch is no longer supported.");
             return true;
         }
 
@@ -517,7 +458,7 @@ public class ConstructBatch extends BrushBatch {
             }
 
             // Check for command overrides
-            if (commandMap != null && brush.getMaterial() == Material.COMMAND) {
+            if (commandMap != null && com.elmakers.mine.bukkit.block.MaterialAndData.isCommand(brush.getMaterial())) {
                 String commandKey = brush.getCommandLine();
                 if (commandKey != null && commandKey.length() > 0 && commandMap.containsKey(commandKey)) {
                     brush.setCommandLine(commandMap.get(commandKey));

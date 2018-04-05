@@ -27,6 +27,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 public class EntityProjectileAction extends CustomProjectileAction {
@@ -95,7 +96,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
         }
 
         if (entity instanceof LivingEntity) {
-            ((LivingEntity) entity).setMaxHealth(1000.0);
+            DeprecatedUtils.setMaxHealth(((LivingEntity) entity), 1000.0);
             ((LivingEntity) entity).setHealth(1000.0);
         }
         if (entity instanceof Slime) {

@@ -58,7 +58,7 @@ public class LocketteManager implements BlockBuildManager, BlockBreakManager {
 
                 // Lockette doesn't check the sign itself on an isOwner check ..
                 // So we just wont' allow breaking the signs, ever.
-                if (block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
+                if (block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN)
                 {
                     return !(Boolean)isProtectedMethod.invoke(null, block);
                 }

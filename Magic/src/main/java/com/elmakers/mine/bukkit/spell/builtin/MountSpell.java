@@ -30,7 +30,7 @@ public class MountSpell extends TargetingSpell {
             return SpellResult.NO_TARGET;
         }
 
-        targetEntity.setPassenger(player);
+        targetEntity.addPassenger(player);
 
         return SpellResult.CAST;
     }

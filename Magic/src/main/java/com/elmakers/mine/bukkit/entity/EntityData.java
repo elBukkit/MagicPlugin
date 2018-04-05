@@ -65,6 +65,7 @@ import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
@@ -174,7 +175,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             this.health = li.getHealth();
             this.potionEffects = li.getActivePotionEffects();
             this.airLevel = li.getRemainingAir();
-            this.maxHealth = li.getMaxHealth();
+            this.maxHealth = DeprecatedUtils.getMaxHealth(li);
             this.hasAI = li.hasAI();
 
             itemInHand = getItem(li.getEquipment().getItemInMainHand());
@@ -710,11 +711,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     applyAttributes(li);
                     copyEquipmentTo(li);
                     if (maxHealth != null) {
-                        li.setMaxHealth(maxHealth);
+                        DeprecatedUtils.setMaxHealth(li, maxHealth);
                     }
                 }
                 if (health != null && hasChangedHealth) {
-                    li.setHealth(Math.min(health, li.getMaxHealth()));
+                    li.setHealth(Math.min(health, DeprecatedUtils.getMaxHealth(li)));
                 }
                 if (airLevel != null) {
                     li.setRemainingAir(Math.min(airLevel, li.getRemainingAir()));

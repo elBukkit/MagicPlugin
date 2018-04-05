@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class CaptureAction extends BaseSpellAction {
@@ -50,10 +51,10 @@ public class CaptureAction extends BaseSpellAction {
         }
         if (targetEntity instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)targetEntity;
-            li.setHealth(li.getMaxHealth());
+            li.setHealth(DeprecatedUtils.getMaxHealth(li));
         }
         targetEntity.remove();
-        ItemStack spawnEgg = new ItemStack(Material.MONSTER_EGG);
+        ItemStack spawnEgg = new ItemStack(Material.VILLAGER_SPAWN_EGG);
 
         String entityName = targetEntity.getCustomName();
         if (entityName != null && !entityName.isEmpty()) {

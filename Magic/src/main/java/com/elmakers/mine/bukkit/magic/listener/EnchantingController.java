@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import org.bukkit.enchantments.EnchantmentOffer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -90,7 +91,7 @@ public class EnchantingController implements Listener {
             int minLevel = path.getMinLevel();
             int maxLevel = path.getMaxLevel();
             int levelRange = maxLevel - minLevel;
-            int[] offered = event.getExpLevelCostsOffered();
+            EnchantmentOffer[] offered = event.getOffers();
 
             float bonusLevelMultiplier = path.getBonusLevelMultiplier();
             int bonusLevels = event.getEnchantmentBonus();
@@ -102,7 +103,7 @@ public class EnchantingController implements Listener {
                 {
                     level = (int)(level + bonusLevels * bonusLevelMultiplier);
                 }
-                offered[i] = level;
+                offered[i].setEnchantmentLevel(level);
             }
             event.setCancelled(false);
         }

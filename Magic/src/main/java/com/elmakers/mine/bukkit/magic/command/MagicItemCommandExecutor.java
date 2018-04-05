@@ -448,7 +448,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     public boolean onItemSkull(Player player, ItemStack item)
     {
-        if (item.getType() != Material.BOOK_AND_QUILL) {
+        if (item.getType() != Material.WRITTEN_BOOK) {
             player.sendMessage(api.getMessages().get("item.skull_no_book"));
             return true;
         }

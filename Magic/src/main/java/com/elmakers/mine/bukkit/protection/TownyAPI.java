@@ -13,7 +13,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.db.TownyDataSource;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
@@ -23,12 +22,10 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
-import com.palmergames.bukkit.towny.object.TownyPermission;
 import com.palmergames.bukkit.towny.object.TownyUniverse;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.CombatUtil;
-import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
 
 public class TownyAPI
 {
@@ -94,7 +91,7 @@ public class TownyAPI
             if (controller.wildernessBypass && TownyUniverse.isWilderness(block)) {
                 return true;
             }
-            return PlayerCacheUtil.getCachePermission(player, block.getLocation(), DeprecatedUtils.getTypeId(block), DeprecatedUtils.getData(block), TownyPermission.ActionType.BUILD);
+            //return PlayerCacheUtil.getCachePermission(player, block.getLocation(), DeprecatedUtils.getTypeId(block), DeprecatedUtils.getData(block), TownyPermission.ActionType.BUILD);
         }
         return true;
     }
@@ -104,7 +101,7 @@ public class TownyAPI
             if (controller.wildernessBypass && TownyUniverse.isWilderness(block)) {
                 return true;
             }
-            return PlayerCacheUtil.getCachePermission(player, block.getLocation(), DeprecatedUtils.getTypeId(block), DeprecatedUtils.getData(block), TownyPermission.ActionType.DESTROY);
+            //return PlayerCacheUtil.getCachePermission(player, block.getLocation(), DeprecatedUtils.getTypeId(block), DeprecatedUtils.getData(block), TownyPermission.ActionType.DESTROY);
         }
         return true;
     }

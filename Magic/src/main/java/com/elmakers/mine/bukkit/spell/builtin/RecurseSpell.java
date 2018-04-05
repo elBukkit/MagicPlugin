@@ -45,17 +45,15 @@ public class RecurseSpell extends BrushSpell
         Material targetMaterial = targetBlock.getType();
 
         // A bit hacky, but is very handy!
-        if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
+        if (targetMaterial == Material.WATER)
         {
             for (byte i = 0; i < 9; i++) {
-                blockRecurse.addReplaceable(Material.STATIONARY_WATER, i);
                 blockRecurse.addReplaceable(Material.WATER, i);
             }
         }
-        else if (targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
+        else if (targetMaterial == Material.LAVA)
         {
             for (byte i = 0; i < 9; i++) {
-                blockRecurse.addReplaceable(Material.STATIONARY_LAVA, i);
                 blockRecurse.addReplaceable(Material.LAVA, i);
             }
         }

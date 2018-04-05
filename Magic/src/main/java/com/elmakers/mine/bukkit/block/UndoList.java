@@ -200,7 +200,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         add(testBlock);
         MaterialAndData.clearItems(testBlock.getState());
-        DeprecatedUtils.setTypeIdAndData(testBlock, DeprecatedUtils.getId(Material.AIR), (byte)0, false);
+        testBlock.setType(Material.AIR, false);
 
         return true;
     }

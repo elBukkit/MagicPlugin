@@ -15,7 +15,7 @@ public class BurnAction extends BaseSpellAction
     public SpellResult perform(CastContext context)
     {
         Block block = context.getTargetBlock();
-        if (block == null || block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+        if (block == null || block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER)
         {
             return SpellResult.NO_TARGET;
         }
@@ -28,7 +28,7 @@ public class BurnAction extends BaseSpellAction
         {
             block = block.getRelative(BlockFace.UP);
         }
-        if (block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+        if (block.getType() == Material.FIRE || block.getType() == Material.WATER)
         {
             return SpellResult.NO_TARGET;
         }

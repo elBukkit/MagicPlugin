@@ -526,7 +526,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     double scale = 1;
                     LivingEntity li = getLivingEntity();
                     if (li != null) {
-                        scale = event.getDamage() / li.getMaxHealth();
+                        scale = event.getDamage() / DeprecatedUtils.getMaxHealth(li);
                     }
                     fallingSpell.playEffects("land", (float)scale, getLocation().getBlock().getRelative(BlockFace.DOWN));
                 }
@@ -3556,7 +3556,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                     spellIcon.applyToItem(spellItem);
                                 }
                             }
-                        } else if (usingURLIcon && disabledUrlIcon != null && !disabledUrlIcon.isEmpty() && spellItem.getType() == Material.SKULL_ITEM) {
+                        } else if (usingURLIcon && disabledUrlIcon != null && !disabledUrlIcon.isEmpty() && spellItem.getType() == Material.PLAYER_HEAD) {
                             String currentURL = InventoryUtils.getSkullURL(spellItem);
                             if (!canCast) {
                                 if (!disabledUrlIcon.equals(currentURL)) {
@@ -3653,9 +3653,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (thisPlayer != null && isVanished != vanished) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (vanished) {
-                    player.hidePlayer(thisPlayer);
+                    player.hidePlayer(controller.getPlugin(), thisPlayer);
                 } else {
-                    player.showPlayer(thisPlayer);
+                    player.showPlayer(controller.getPlugin(), thisPlayer);
                 }
             }
         }

@@ -42,7 +42,7 @@ public class EffectUtils extends NMSUtils {
         Entity entity = null;
         try {
             Object world = getHandle(location.getWorld());
-            ItemStack itemStack = new ItemStack(Material.FIREWORK);
+            ItemStack itemStack = new ItemStack(Material.FIREWORK_ROCKET);
             FireworkMeta meta = (FireworkMeta) itemStack.getItemMeta();
             meta.addEffect(effect);
             meta.setPower(power);

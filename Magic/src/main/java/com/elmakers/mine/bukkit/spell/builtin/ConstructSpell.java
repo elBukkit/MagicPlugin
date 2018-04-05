@@ -182,8 +182,7 @@ public class ConstructSpell extends BrushSpell
             }
             // Hacky, but generally desired - maybe abstract to a parameterized list?
             Material targetMaterial = target.getType();
-            if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER
-                || targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
+            if (targetMaterial == Material.WATER || targetMaterial == Material.LAVA)
             {
                 wildReplace.setData(null);
             }

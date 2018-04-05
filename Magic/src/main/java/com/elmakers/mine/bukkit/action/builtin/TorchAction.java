@@ -27,7 +27,7 @@ public class TorchAction extends BaseSpellAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        torchType = parameters.getBoolean("redstone_torch", false) ? Material.REDSTONE_TORCH_ON : Material.TORCH;
+        torchType = parameters.getBoolean("redstone_torch", false) ? Material.REDSTONE_TORCH : Material.TORCH;
         allowLightstone = parameters.getBoolean("allow_glowstone", false);
         useLightstone = parameters.getBoolean("glowstone_torch", false);
     }
@@ -61,7 +61,7 @@ public class TorchAction extends BaseSpellAction
 
         boolean isAir = face.getType() == Material.AIR;
         boolean replaceAttachment = target.getType() == Material.SNOW || target.getType() == Material.SNOW_BLOCK;
-        boolean isWater = face.getType() == Material.STATIONARY_WATER || face.getType() == Material.WATER;
+        boolean isWater = face.getType() == Material.WATER;
         boolean isNether = target.getType() == Material.NETHERRACK || target.getType() == Material.SOUL_SAND;
         MaterialAndData targetMaterial = new MaterialAndData(torchType);
 

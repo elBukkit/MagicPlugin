@@ -1,5 +1,20 @@
 # TODO
 
+## 8.0
+
+ - Map brush needs fixing. Probably best to have a list of material sets for it to use?
+   - Will need to be able to match the current material to the correct set
+   - Sets will have to get matched to colors
+ - Wand brush migration? Fix up old brushes?
+ - Config migration, a script to convert materials might be nice.
+ - Oh, boy, how broken are schematics?  That ... might be problematic.
+ - Torch action is probably broken? Setting direction of torches, choosing between wall and ground torch... 
+ - Check book -> skull feature
+ - Tag sign facing probably broken?
+ - Check capture spell
+ - Towny integration is broken
+ - Add path 2nd parameter to enchant command to stop when reaching end of a path
+ 
 ## 7.5
    
  - Goldwalker blocks didn't undo? (Can not reproduce)

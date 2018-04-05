@@ -151,7 +151,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                 centerLoc = caster.clone().add(direction);
                 for (int i = 0; i < spawnRange; i++) {
                     Material blockType = centerLoc.getBlock().getType();
-                    if (blockType == Material.AIR || blockType == Material.WATER || blockType != Material.STATIONARY_WATER)
+                    if (blockType == Material.AIR || blockType == Material.WATER)
                     {
                         break;
                     }
@@ -173,7 +173,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
             }
         }
 
-        if (originalTarget.getType() == Material.WATER || originalTarget.getType() == Material.STATIONARY_WATER)
+        if (originalTarget.getType() == Material.WATER)
         {
             famType = EntityType.SQUID;
         }

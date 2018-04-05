@@ -439,10 +439,12 @@ public class EntityController implements Listener {
         }
         else
         {
-            Entity passenger = entity.getPassenger();
-            com.elmakers.mine.bukkit.magic.Mage mountMage = passenger == null ? null : controller.getRegisteredMage(passenger);
-            if (mountMage != null) {
-                mountMage.onDamage(event);
+            List<Entity> passengers = entity.getPassengers();
+            for (Entity passenger : passengers) {
+                com.elmakers.mine.bukkit.magic.Mage mountMage = passenger == null ? null : controller.getRegisteredMage(passenger);
+                if (mountMage != null) {
+                    mountMage.onDamage(event);
+                }
             }
         }
         if (entity instanceof Item)

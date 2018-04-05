@@ -19,4 +19,5 @@ public interface ItemData {
     Material getType();
     @Nullable
     ItemMeta getItemMeta();
+    short getDurability();
 }

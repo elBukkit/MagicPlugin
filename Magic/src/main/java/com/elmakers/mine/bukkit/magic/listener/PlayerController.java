@@ -476,7 +476,7 @@ public class PlayerController implements Listener {
             isRightClick = !controller.isInteractable(event.getClickedBlock());
 
             // This is to prevent Essentials signs from giving you an item in your wand inventory.
-            if (wand != null && (material == Material.SIGN_POST || material == Material.WALL_SIGN)) {
+            if (wand != null && (material == Material.SIGN || material == Material.WALL_SIGN)) {
                 wand.closeInventory();
             }
         }
@@ -515,7 +515,7 @@ public class PlayerController implements Listener {
 
         // Check for wearing via right-click
         // Special-case here for skulls, which actually are not wearable via right-click.
-        if (itemInHand != null && isRightClick && controller.isWearable(itemInHand) && itemInHand.getType() != Material.SKULL_ITEM)
+        if (itemInHand != null && isRightClick && controller.isWearable(itemInHand) && !MaterialAndData.isSkull(itemInHand.getType()))
         {
             if (wand != null)
             {
@@ -652,7 +652,7 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerPickupItem(EntityPickupItemEvent event)
     {
         Entity entity = event.getEntity();
@@ -667,7 +667,7 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerPrePickupItem(EntityPickupItemEvent event)
     {
         Item item = event.getItem();
@@ -697,7 +697,7 @@ public class PlayerController implements Listener {
         if (undoList != null) {
             undoList.remove(item);
         }
-        
+
         Mage mage = controller.getMage(player);
         // Remove lost wands from records
         Messages messages = controller.getMessages();

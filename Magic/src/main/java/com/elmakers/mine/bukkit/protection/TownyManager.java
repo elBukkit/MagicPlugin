@@ -39,8 +39,8 @@ public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildMa
                 plugin.getLogger()
                         .info("Towny not found, region protection and pvp checks will not be used.");
             } else {
-                plugin.getLogger()
-                        .info("Towny found, will respect build permissions for construction spells");
+                plugin.getLogger().info("Towny found, but integration is not currently working due to 1.13 updates. If Towny has fixed their reliance on block ids, please let me know!");
+                //plugin.getLogger().info("Towny found, will respect build permissions for construction spells");
             }
         } else {
             plugin.getLogger()

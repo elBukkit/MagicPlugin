@@ -82,9 +82,31 @@ public class TreeAction extends BaseSpellAction
     public SpellResult perform(CastContext context)
     {
         Block target = context.getTargetBlock();
-        if (requireSapling && target.getType() != Material.SAPLING)
+        TreeType useType = null;
+        if (requireSapling)
         {
-            return SpellResult.NO_TARGET;
+            switch (target.getType()) {
+                case SPRUCE_SAPLING:
+                    useType = TreeType.REDWOOD;
+                    break;
+                case ACACIA_SAPLING:
+                    useType = TreeType.ACACIA;
+                    break;
+                case BIRCH_SAPLING:
+                    useType = TreeType.BIRCH;
+                    break;
+                case DARK_OAK_SAPLING:
+                    useType = TreeType.DARK_OAK;
+                    break;
+                case JUNGLE_SAPLING:
+                    useType = TreeType.JUNGLE;
+                    break;
+                case OAK_SAPLING:
+                    useType = TreeType.TREE;
+                    break;
+                default:
+                    return SpellResult.NO_TARGET;
+            }
         }
         if (!context.hasBuildPermission(target))
         {
@@ -95,7 +117,6 @@ public class TreeAction extends BaseSpellAction
         Location treeLoc = new Location(world, target.getX(), target.getY() + 1, target.getZ(), 0, 0);
 
         Random random = context.getRandom();
-        TreeType useType = null;
         if (treeType != null)
         {
             useType = treeType;

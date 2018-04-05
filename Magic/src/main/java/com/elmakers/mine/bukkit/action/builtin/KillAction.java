@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
@@ -39,9 +40,9 @@ public class KillAction extends BaseSpellAction
         // Overkill to bypass protection
         context.registerModified(targetEntity);
         if (magicDamage) {
-            CompatibilityUtils.magicDamage(targetEntity, targetEntity.getMaxHealth() * 100, context.getEntity());
+            CompatibilityUtils.magicDamage(targetEntity, DeprecatedUtils.getMaxHealth(targetEntity) * 100, context.getEntity());
         } else {
-            targetEntity.damage(targetEntity.getMaxHealth() * 100);
+            targetEntity.damage(DeprecatedUtils.getMaxHealth(targetEntity) * 100);
         }
         return SpellResult.CAST;
     }

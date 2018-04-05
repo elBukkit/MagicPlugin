@@ -35,7 +35,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -197,18 +196,18 @@ public class BlockController implements Listener {
                 Block upBlock = targetBlock.getRelative(BlockFace.UP);
                 while (doubles.testBlock(upBlock)) {
                     undoList.add(upBlock);
-                    DeprecatedUtils.setTypeIdAndData(upBlock, Material.AIR.ordinal(), (byte) 0, false);
+                    upBlock.setType(Material.AIR, false);
                     upBlock = upBlock.getRelative(BlockFace.UP);
                 }
 
                 Block downBlock = targetBlock.getRelative(BlockFace.DOWN);
                 while (doubles.testBlock(downBlock)) {
                     undoList.add(downBlock);
-                    DeprecatedUtils.setTypeIdAndData(downBlock, Material.AIR.ordinal(), (byte) 0, false);
+                    downBlock.setType(Material.AIR, false);
                     downBlock = downBlock.getRelative(BlockFace.DOWN);
                 }
             }
-            DeprecatedUtils.setTypeIdAndData(targetBlock, Material.AIR.ordinal(), (byte) 0, false);
+            targetBlock.setType(Material.AIR, false);
             event.setCancelled(true);
         }
     }
@@ -317,7 +316,7 @@ public class BlockController implements Listener {
                         blockList.convert(entity, block);
                         if (!blockList.getApplyPhysics()) {
                             FallingBlock falling = (FallingBlock)entity;
-                            DeprecatedUtils.setTypeIdAndData(block, DeprecatedUtils.getId(falling.getMaterial()), DeprecatedUtils.getBlockData(falling), false);
+                            block.setType(falling.getMaterial(), false);
                             event.setCancelled(true);
                         }
                     }

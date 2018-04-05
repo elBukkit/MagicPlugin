@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -207,14 +208,16 @@ public class LevitateSpell extends TargetingSpell implements Listener
             Entity horse = ((EntityEvent)event).getEntity();
             if (horse.hasMetadata("broom"))
             {
-                Entity passenger = horse.getPassenger();
-                Mage mage = controller.getMage(passenger);
-                Set<Spell> active = mage.getActiveSpells();
-                for (Spell spell : active) {
-                    if (spell instanceof LevitateSpell) {
-                        LevitateSpell levitate = (LevitateSpell)spell;
-                        double amount = Math.max(0, (event.getPower() - mountBoostMinimum) / (1 - mountBoostMinimum));
-                        levitate.boost(amount);
+                List<Entity> passengers = horse.getPassengers();
+                for (Entity passenger : passengers) {
+                    Mage mage = controller.getMage(passenger);
+                    Set<Spell> active = mage.getActiveSpells();
+                    for (Spell spell : active) {
+                        if (spell instanceof LevitateSpell) {
+                            LevitateSpell levitate = (LevitateSpell)spell;
+                            double amount = Math.max(0, (event.getPower() - mountBoostMinimum) / (1 - mountBoostMinimum));
+                            levitate.boost(amount);
+                        }
                     }
                 }
             }
@@ -237,13 +240,15 @@ public class LevitateSpell extends TargetingSpell implements Listener
             if (vehicle.hasMetadata("broom"))
             {
                 event.setCancelled(true);
-                Entity passenger = vehicle.getPassenger();
-                Mage mage = controller.getMage(passenger);
-                Set<Spell> active = mage.getActiveSpells();
-                for (Spell spell : active) {
-                    if (spell instanceof LevitateSpell) {
-                        LevitateSpell levitate = (LevitateSpell)spell;
-                        levitate.forceSneak(10);
+                List<Entity> passengers = vehicle.getPassengers();
+                for (Entity passenger : passengers) {
+                    Mage mage = controller.getMage(passenger);
+                    Set<Spell> active = mage.getActiveSpells();
+                    for (Spell spell : active) {
+                        if (spell instanceof LevitateSpell) {
+                            LevitateSpell levitate = (LevitateSpell)spell;
+                            levitate.forceSneak(10);
+                        }
                     }
                 }
             }
@@ -267,8 +272,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 return;
             }
             if (armorStand != null) {
-                Entity currentPassenger = armorStand.getPassenger();
-                if (currentPassenger != mountEntity) {
+                boolean isPassenger = CompatibilityUtils.isPassenger(armorStand, mountEntity);
+                if (!isPassenger) {
                     land();
                     return;
                 }
@@ -683,7 +688,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     protected void updateMountHealth() {
         if (mountEntity != null && mountBoostTicks > 0 && mountEntity instanceof LivingEntity) {
             LivingEntity living = (LivingEntity)mountEntity;
-            double maxHealth = living.getMaxHealth();
+            double maxHealth = DeprecatedUtils.getMaxHealth(living);
             double health = Math.min(0.5 + maxHealth * mountBoostTicksRemaining / mountBoostTicks, maxHealth);
             living.setHealth(health);
         }
@@ -722,7 +727,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 pig.setSaddle(false);
             }
             mountEntity.eject();
-            mountEntity.setPassenger(null);
             mountEntity.removeMetadata("notarget", plugin);
             mountEntity.removeMetadata("broom", plugin);
             CompatibilityUtils.setInvulnerable(mountEntity, false);
@@ -886,7 +890,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 if (entity instanceof LivingEntity) {
                     LivingEntity living = (LivingEntity)mountEntity;
                     living.setHealth(0.5);
-                    living.setMaxHealth(mountHealth);
+                    DeprecatedUtils.setMaxHealth(living, mountHealth);
                 }
                 if (entity instanceof ArmorStand) {
                     ArmorStand armorStand = (ArmorStand)entity;
@@ -895,7 +899,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 else if (useArmorStand) {
                     armorStand = CompatibilityUtils.createArmorStand(mage.getLocation());
                     configureArmorStand(armorStand);
-                    armorStand.setPassenger(mountEntity);
+                    armorStand.addPassenger(mountEntity);
                     armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
                     armorStand.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
                     controller.setForceSpawn(true);
@@ -909,7 +913,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     armorStand = null;
                 }
 
-                mountEntity.setPassenger(mage.getEntity());
+                mountEntity.addPassenger(mage.getEntity());
                 mountEntity.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
                 mountEntity.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
 

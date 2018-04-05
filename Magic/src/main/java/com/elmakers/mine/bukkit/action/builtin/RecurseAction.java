@@ -186,20 +186,18 @@ public class RecurseAction extends CompoundAction {
             Material targetMaterial = targetBlock.getType();
             if (parameters.getBoolean("auto_water", true))
             {
-                if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
+                if (targetMaterial == Material.WATER)
                 {
                     for (byte i = 0; i < 15; i++) {
-                        replaceable.add(new MaterialAndData(Material.STATIONARY_WATER, i));
                         replaceable.add(new MaterialAndData(Material.WATER, i));
                     }
                 }
             }
             if (parameters.getBoolean("auto_lava", true))
             {
-                if (targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
+                if (targetMaterial == Material.LAVA)
                 {
                     for (byte i = 0; i < 15; i++) {
-                        replaceable.add(new MaterialAndData(Material.STATIONARY_LAVA, i));
                         replaceable.add(new MaterialAndData(Material.LAVA, i));
                     }
                 }

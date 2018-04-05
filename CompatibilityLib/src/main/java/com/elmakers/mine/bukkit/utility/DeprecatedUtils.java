@@ -6,12 +6,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.map.MapView;
-import org.bukkit.material.MaterialData;
 
 /**
  * Makes deprecation warnings useful again by suppressing all bukkit 'magic
@@ -24,17 +25,6 @@ public class DeprecatedUtils {
         // @deprecated This method should not be relied upon as it is a
         // temporary work-around for a larger, more complicated issue.
         player.updateInventory();
-    }
-
-    public static void setTypeIdAndData(Block block, int id, byte data,
-            boolean applyPhysics) {
-        // @deprecated Magic value
-        block.setTypeIdAndData(id, data, applyPhysics);
-    }
-
-    public static MaterialData newMaterialData(Material material, byte data) {
-        // @deprecated Magic value
-        return new MaterialData(material, data);
     }
 
     public static byte getData(Block block) {
@@ -55,11 +45,6 @@ public class DeprecatedUtils {
     public static byte getBlockData(FallingBlock falling) {
         // @deprecated Magic value
         return falling.getBlockData();
-    }
-
-    public static int getTypeId(Block block) {
-        // @deprecated Magic value
-        return block.getTypeId();
     }
 
     public static MapView getMap(short id) {
@@ -105,8 +90,17 @@ public class DeprecatedUtils {
         return state.getRawData();
     }
 
-    public static Material getMaterial(int id) {
-        // @deprecated Magic value
-        return Material.getMaterial(id);
+    public static void setSkullOwner(SkullMeta skull, String ownerName) {
+        skull.setOwner(ownerName);
+    }
+
+    public static double getMaxHealth(Damageable li) {
+        // return li.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        return li.getMaxHealth();
+    }
+
+    public static void setMaxHealth(Damageable li, double maxHealth) {
+        // li.getAttribute(Attribute.GENERIC_MAX_HEALTH).setValue(maxHealth);
+        li.setMaxHealth(maxHealth);
     }
 }

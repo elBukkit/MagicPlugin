@@ -40,7 +40,7 @@ public class FreezeAction extends BaseSpellAction
     {
         Block block = context.getTargetBlock();
         Material material = Material.SNOW;
-        if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+        if (block.getType() == Material.WATER)
         {
             if (!freezeWater)
             {
@@ -55,14 +55,6 @@ public class FreezeAction extends BaseSpellAction
                 return SpellResult.NO_TARGET;
             }
             material = Material.COBBLESTONE;
-        }
-        else if (block.getType() == Material.STATIONARY_LAVA)
-        {
-            if (!freezeLava)
-            {
-                return SpellResult.NO_TARGET;
-            }
-            material = Material.OBSIDIAN;
         }
         else if (block.getType() == Material.FIRE)
         {
@@ -85,7 +77,7 @@ public class FreezeAction extends BaseSpellAction
             block = block.getRelative(BlockFace.UP);
 
             // This is kind of ugly, maybe clean it up somehow?
-            if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+            if (block.getType() == Material.WATER)
             {
                 if (!freezeWater)
                 {
@@ -100,14 +92,6 @@ public class FreezeAction extends BaseSpellAction
                     return SpellResult.NO_TARGET;
                 }
                 material = Material.COBBLESTONE;
-            }
-            else if (block.getType() == Material.STATIONARY_LAVA)
-            {
-                if (!freezeLava)
-                {
-                    return SpellResult.NO_TARGET;
-                }
-                material = Material.OBSIDIAN;
             }
             else if (block.getType() == Material.FIRE)
             {

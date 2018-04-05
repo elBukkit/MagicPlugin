@@ -54,13 +54,13 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public static final String[] SPECIAL_MATERIAL_KEYS = {ERASE_MATERIAL_KEY, COPY_MATERIAL_KEY,
         CLONE_MATERIAL_KEY, REPLICATE_MATERIAL_KEY, MAP_MATERIAL_KEY};
 
-    public static MaterialAndData EraseMaterial = new MaterialAndData(Material.SULPHUR);
+    public static MaterialAndData EraseMaterial = new MaterialAndData(Material.GUNPOWDER);
     public static MaterialAndData CopyMaterial = new MaterialAndData(Material.SUGAR);
-    public static MaterialAndData CloneMaterial = new MaterialAndData(Material.NETHER_STALK);
+    public static MaterialAndData CloneMaterial = new MaterialAndData(Material.NETHER_WART);
     public static MaterialAndData ReplicateMaterial = new MaterialAndData(Material.PUMPKIN_SEEDS);
     public static MaterialAndData MapMaterial = new MaterialAndData(Material.MAP);
     public static MaterialAndData SchematicMaterial = new MaterialAndData(Material.PAPER);
-    public static MaterialAndData DefaultBrushMaterial = new MaterialAndData(Material.SULPHUR);
+    public static MaterialAndData DefaultBrushMaterial = new MaterialAndData(Material.GUNPOWDER);
 
     public static String EraseCustomIcon;
     public static String CopyCustomIcon;
@@ -83,7 +83,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     private final MageController controller;
     private int mapId = -1;
     private BufferedMapCanvas mapCanvas = null;
-    private Material mapMaterialBase = Material.STAINED_CLAY;
+    // TODO: Well crap this is going to be a lot harder... but more possibilites. To fix later.
+    private Material mapMaterialBase = Material.WHITE_CONCRETE;
     private Schematic schematic;
     private String schematicName = "";
     private boolean fillWithAir = true;
@@ -295,11 +296,14 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
         this.scale = (float)128 / size;
         this.mode = BrushMode.MAP;
+        // TODO: Fix this. Will need sets of materials to use I think.
+        /*
         if (this.material == Material.WOOL || this.material == Material.STAINED_CLAY
             || this.material == Material.STAINED_GLASS || this.material == Material.STAINED_GLASS_PANE
             || this.material == Material.CARPET) {
             this.mapMaterialBase = this.material;
         }
+        */
 
         if (this.mapId == -1 && mage != null) {
             this.mapId = mage.getLastHeldMapId();

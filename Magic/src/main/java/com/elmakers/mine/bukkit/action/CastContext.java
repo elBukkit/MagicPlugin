@@ -631,7 +631,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public boolean isWater(Material mat)
     {
-        return (mat == Material.WATER || mat == Material.STATIONARY_WATER);
+        return mat == Material.WATER;
     }
 
     // This is primarily deprecated for API consistency
@@ -648,9 +648,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     }
 
     private boolean isOkToStandOn0(Material material) {
-        return material != Material.AIR
-                && material != Material.LAVA
-                && material != Material.STATIONARY_LAVA;
+        return material != Material.AIR && material != Material.LAVA;
     }
 
     @Override

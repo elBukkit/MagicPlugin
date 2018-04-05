@@ -11,12 +11,12 @@ import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
@@ -37,12 +37,12 @@ public class MagicRecipe {
     private ShapedRecipe recipe;
     private Map<Character, ItemData> ingredients = new HashMap<>();
     private final MagicController controller;
-    private final String key;
+    private final NamespacedKey key;
 
     public static boolean FIRST_REGISTER = true;
 
     public MagicRecipe(String key, MagicController controller) {
-        this.key = key;
+        this.key = new NamespacedKey(controller.getPlugin(), key);
         this.controller = controller;
     }
 
@@ -92,7 +92,7 @@ public class MagicRecipe {
 
         if (item != null) {
             outputType = item.getType();
-            ShapedRecipe shaped = new ShapedRecipe(item);
+            ShapedRecipe shaped = new ShapedRecipe(key, item);
             List<String> rows = new ArrayList<>();
             for (int i = 1; i <= 3; i++) {
                 String recipeRow = configuration.getString("row_" + i, "");
@@ -111,7 +111,7 @@ public class MagicRecipe {
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
                     ItemData ingredient = controller.getOrCreateItem(materialKey);
-                    MaterialData material = ingredient == null ? null : ingredient.getMaterialData();
+                    Material material = ingredient == null ? null : ingredient.getType();
                     if (material == null) {
                         outputType = null;
                         controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);
@@ -263,7 +263,7 @@ public class MagicRecipe {
                 if (ingredient.getType() != item.getType()) {
                     return MatchType.NONE;
                 }
-                if (ingredient.getDurability() != item.getMaterialData().getData()) {
+                if (ingredient.getDurability() != item.getDurability()) {
                     return MatchType.NONE;
                 }
                 ItemMeta meta = item.getItemMeta();
@@ -289,6 +289,6 @@ public class MagicRecipe {
     }
 
     public String getKey() {
-        return key;
+        return key.getKey();
     }
 }

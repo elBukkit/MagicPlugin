@@ -230,7 +230,7 @@ public class CompatibilityUtils extends NMSUtils {
             case SUNSET:    // Use same as 4x3
 
             // 4x3
-            case DONKEYKONG:
+            case DONKEY_KONG:
             case SKELETON:
                 if(facing == BlockFace.WEST)
                     return loc.getBlock().getLocation().add(0, 0, -1);
@@ -251,7 +251,7 @@ public class CompatibilityUtils extends NMSUtils {
             case FIGHTERS:  // Use same as 4x4
 
             // 4x4
-            case BURNINGSKULL:
+            case BURNING_SKULL:
             case PIGSCENE:
             case POINTER:
                 if(facing == BlockFace.WEST)
@@ -1323,7 +1323,7 @@ public class CompatibilityUtils extends NMSUtils {
     @SuppressWarnings("deprecation")
     public static boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data) {
         if (class_Block_fromLegacyData == null || class_CraftMagicNumbers_getBlockMethod == null || class_Chunk_setBlockMethod == null || class_BlockPosition_Constructor == null) {
-            chunk.getWorld().getBlockAt(x, y, z).setTypeIdAndData(material.getId(), (byte)data, false);
+            chunk.getWorld().getBlockAt(x, y, z).setType(material, false);
             return true;
         }
         try {
@@ -1361,5 +1361,17 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean isPassenger(Entity vehicle, Entity maybePassenger) {
+        boolean isPassenger = false;
+        List<Entity> currentPassengers = vehicle.getPassengers();
+        for (Entity passenger : currentPassengers) {
+            if (passenger == maybePassenger) {
+                isPassenger = true;
+                break;
+            }
+        }
+        return isPassenger;
     }
 }

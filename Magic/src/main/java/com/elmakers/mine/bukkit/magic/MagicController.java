@@ -63,7 +63,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
@@ -4549,7 +4548,7 @@ public class MagicController implements MageController {
         if (mappedItem != null) {
             return mappedItem.getKey();
         }
-        if (item.getType() == Material.SKULL_ITEM) {
+        if (item.getType() == Material.PLAYER_HEAD) {
             String url = InventoryUtils.getSkullURL(item);
             if (url != null && url.length() > 0) {
                 return "skull_item:" + url;
@@ -5179,7 +5178,7 @@ public class MagicController implements MageController {
                     skinName = "MHF_TNT2";
                 }
                 break;
-            case LOG:
+            case OAK_LOG:
                 skinName = "MHF_OakLog";
                 break;
             case PUMPKIN:
@@ -5505,7 +5504,7 @@ public class MagicController implements MageController {
     @Nonnull
     @SuppressWarnings("deprecation")
     public ItemStack getSkull(String ownerName, String itemName) {
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         ItemMeta meta = skull.getItemMeta();
         if (itemName != null) {
             meta.setDisplayName(itemName);
@@ -5522,18 +5521,23 @@ public class MagicController implements MageController {
     @Nonnull
     @SuppressWarnings("deprecation")
     public ItemStack getSkull(Entity entity, String itemName) {
-        byte data = 3;
         String ownerName = null;
+        Material material = Material.PLAYER_HEAD;
         switch (entity.getType()) {
             case CREEPER:
-                data = 4;
+                material = Material.CREEPER_HEAD;
+            break;
+            case ENDER_DRAGON:
+                material = Material.DRAGON_HEAD;
             break;
             case ZOMBIE:
-                data = 2;
+                material = Material.ZOMBIE_HEAD;
             break;
             case SKELETON:
-                Skeleton skeleton = (Skeleton)entity;
-                data = (byte)(skeleton.getSkeletonType() == Skeleton.SkeletonType.NORMAL ? 0 : 1);
+                material = Material.WITHER_SKELETON_SKULL;
+            break;
+            case WITHER_SKELETON:
+                material = Material.SKELETON_SKULL;
             break;
             case PLAYER:
                 ownerName = entity.getName();
@@ -5542,7 +5546,7 @@ public class MagicController implements MageController {
                 ownerName = getMobSkin(entity.getType());
         }
 
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);
+        ItemStack skull = new ItemStack(material);
         ItemMeta meta = skull.getItemMeta();
         if (itemName != null) {
             meta.setDisplayName(itemName);

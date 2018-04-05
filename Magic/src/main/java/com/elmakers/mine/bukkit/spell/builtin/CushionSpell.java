@@ -46,7 +46,7 @@ public class CushionSpell extends BlockSpell
                     if (block.getType() == Material.AIR || block.getType() == Material.FIRE)
                     {
                         registerForUndo(block);
-                        block.setType(Material.STATIONARY_WATER);
+                        block.setType(Material.WATER);
                     }
                 }
             }

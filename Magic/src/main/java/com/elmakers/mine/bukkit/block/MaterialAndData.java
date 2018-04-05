@@ -120,7 +120,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return isBanner(material);
     }
 
-    private boolean isBanner(Material material) {
+    public static boolean isBanner(Material material) {
         return material == Material.BLACK_BANNER || material == Material.BLACK_WALL_BANNER
             || material == Material.BLUE_BANNER || material == Material.BLUE_WALL_BANNER
             || material == Material.BROWN_BANNER || material == Material.BROWN_WALL_BANNER
@@ -137,6 +137,19 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             || material == Material.RED_BANNER || material == Material.RED_WALL_BANNER
             || material == Material.WHITE_BANNER || material == Material.WHITE_WALL_BANNER
             || material == Material.YELLOW_BANNER || material == Material.YELLOW_WALL_BANNER;
+    }
+
+    public static boolean isSkull(Material material) {
+        return material == Material.PLAYER_HEAD || material == Material.PLAYER_WALL_HEAD
+            || material == Material.WITHER_SKELETON_SKULL || material == Material.WITHER_SKELETON_WALL_SKULL
+            || material == Material.DRAGON_HEAD || material == Material.DRAGON_WALL_HEAD
+            || material == Material.ZOMBIE_HEAD || material == Material.ZOMBIE_WALL_HEAD
+            || material == Material.SKELETON_SKULL || material == Material.SKELETON_WALL_SKULL
+            || material == Material.CREEPER_HEAD || material == Material.CREEPER_WALL_HEAD;
+    }
+
+    public static boolean isCommand(Material material) {
+        return material == Material.COMMAND_BLOCK || material == Material.CHAIN_COMMAND_BLOCK || material == Material.REPEATING_COMMAND_BLOCK;
     }
 
     public MaterialAndData(Block block) {
@@ -165,13 +178,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         try {
             if (pieces.length > 0) {
                 if (!pieces[0].equals("*")) {
-                    // Legacy material id loading
-                    try {
-                        Integer id = Integer.parseInt(pieces[0]);
-                        material = DeprecatedUtils.getMaterial(id);
-                    } catch (Exception ex) {
-                        material = Material.getMaterial(pieces[0].toUpperCase());
-                    }
+                    material = Material.getMaterial(pieces[0].toUpperCase());
                 }
             }
         } catch (Exception ex) {
@@ -578,6 +585,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             case CREEPER_WALL_HEAD: return material = Material.CREEPER_HEAD;
             case SKELETON_WALL_SKULL: return material = Material.SKELETON_SKULL;
             case WITHER_SKELETON_WALL_SKULL: return material = Material.WITHER_SKELETON_SKULL;
+            case DRAGON_WALL_HEAD: return material = Material.DRAGON_HEAD;
             case ZOMBIE_WALL_HEAD: return material = Material.ZOMBIE_HEAD;
             case BLACK_WALL_BANNER: return material = Material.BLACK_BANNER;
             case BLUE_WALL_BANNER: return material = Material.BLUE_BANNER;
@@ -619,7 +627,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     stack.setItemMeta(meta);
                 } else if (skullData.skullType == SkullType.PLAYER && skullData.playerName != null) {
                     SkullMeta skullMeta = (SkullMeta)meta;
-                    skullMeta.setOwner(skullData.playerName);
+                    DeprecatedUtils.setSkullOwner(skullMeta, skullData.playerName);
                     stack.setItemMeta(meta);
                 }
             }

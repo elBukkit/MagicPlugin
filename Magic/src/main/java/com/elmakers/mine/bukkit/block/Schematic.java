@@ -99,7 +99,9 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
                     int index = x + (y * length + z) * width;
                     Material material = null;
                     try {
-                        material = Material.getMaterial(blockTypes[index]);
+                        // TODO: How to map these?? :(
+                        // Material.getMaterial(blockTypes[index])
+                        material = Material.getMaterial("dirt");
                     } catch (Exception ex) {
                         material = null;
                         ex.printStackTrace();
@@ -114,7 +116,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
                         Object tileEntity = tileEntityMap.get(blockLocation);
                         if (tileEntity != null) {
                             try {
-                                if (material == Material.COMMAND) {
+                                if (com.elmakers.mine.bukkit.block.MaterialAndData.isCommand(material)) {
                                     String customName = NMSUtils.getMetaString(tileEntity, "CustomName");
                                     if (!customName.isEmpty()) {
                                         block.setCustomName(customName);

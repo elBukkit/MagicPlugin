@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class DamageAction extends BaseSpellAction
 {
@@ -93,7 +94,7 @@ public class DamageAction extends BaseSpellAction
                 controller.damageElemental(entity, damage * mage.getDamageMultiplier(), 0, mage.getCommandSender());
             } else {
                 if (percentage != null) {
-                    damage = percentage * targetEntity.getMaxHealth();
+                    damage = percentage * DeprecatedUtils.getMaxHealth(targetEntity);
                 } else if (targetEntity instanceof Player) {
                     damage = playerDamage;
                 } else {

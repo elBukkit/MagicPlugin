@@ -196,8 +196,8 @@ public class RideEntityAction extends BaseSpellAction
         {
             return SpellResult.ENTITY_REQUIRED;
         }
-        Entity currentMount = isPassenger ? mounted.getPassenger() : mounted.getVehicle();
-        if (currentMount == null) {
+        boolean hasMount = isPassenger ? !mounted.getPassengers().isEmpty() : mounted.getVehicle() != null;
+        if (!hasMount) {
             return SpellResult.CAST;
         }
         if (!mount.isValid()) {
@@ -206,9 +206,9 @@ public class RideEntityAction extends BaseSpellAction
                 return SpellResult.CAST;
             }
             if (isPassenger) {
-                mounted.setPassenger(mount);
+                mounted.addPassenger(mount);
             } else {
-                mount.setPassenger(mounted);
+                mount.addPassenger(mounted);
             }
         }
 
@@ -426,9 +426,9 @@ public class RideEntityAction extends BaseSpellAction
             mount.setMetadata("notarget", new FixedMetadataValue(context.getController().getPlugin(), true));
         }
         if (isPassenger) {
-            entity.setPassenger(mount);
+            entity.addPassenger(mount);
         } else {
-            mount.setPassenger(entity);
+            mount.addPassenger(entity);
         }
         direction = mount.getLocation().getDirection();
         adjustHeading(context);
