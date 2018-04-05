@@ -1,5 +1,9 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -21,6 +25,8 @@ import org.bukkit.map.MapView;
  */
 @SuppressWarnings("deprecation")
 public class DeprecatedUtils {
+    public static Map<Integer, Material> materialIdMap;
+
     public static void updateInventory(Player player) {
         // @deprecated This method should not be relied upon as it is a
         // temporary work-around for a larger, more complicated issue.
@@ -28,10 +34,63 @@ public class DeprecatedUtils {
     }
 
     public static Material getMaterial(int id, byte data) {
+        if (materialIdMap == null) {
+            materialIdMap = new HashMap<>();
+            for (Material material : Material.values()) {
+                materialIdMap.put(material.getId(), material);
+            }
+        }
         org.bukkit.UnsafeValues unsafe = Bukkit.getUnsafe();
-        Material legacyMaterial = Material.values()[id];
+        Material legacyMaterial = materialIdMap.get(id);
+        if (legacyMaterial == null) {
+            return null;
+        }
         org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(legacyMaterial, data);
         return unsafe.fromLegacy(materialData);
+    }
+
+    public static Material migrateMaterial(Material material) {
+        if (material.isLegacy()) {
+            material = Bukkit.getUnsafe().fromLegacy(material);
+        }
+        return material;
+    }
+
+    public static String migrateMaterial(String materialKey) {
+        byte data = 0;
+        String[] pieces = StringUtils.split(materialKey, ',');
+        String textData = pieces[1];
+        if (pieces.length > 0) {
+            try {
+                data = Byte.parseByte(pieces[1]);
+                textData = "";
+            } catch (Exception ex) {
+            }
+        }
+
+        String materialName = pieces[0].toUpperCase();
+        Material material = Material.getMaterial(materialName);
+        if (material != null && data == 0) {
+            return material.name().toLowerCase();
+        }
+
+        Material legacyMaterial = Material.getMaterial(materialName, true);
+        if (legacyMaterial != null) {
+            org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(legacyMaterial, data);
+            legacyMaterial = Bukkit.getUnsafe().fromLegacy(materialData);
+            if (legacyMaterial != null) {
+                material = legacyMaterial;
+            }
+        }
+
+        if (material != null) {
+            materialKey = material.name().toLowerCase();;
+            // This mainly covers player skulls, but .. maybe other things? Maps?
+            if (!textData.isEmpty()) {
+                materialKey += ":" + textData;
+            }
+        }
+        return materialKey;
     }
 
     public static byte getData(Block block) {

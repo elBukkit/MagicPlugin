@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.magic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -24,9 +27,15 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public abstract class CasterProperties extends BaseMagicConfigurable implements com.elmakers.mine.bukkit.api.magic.CasterProperties {
+    // This is used for property migration, if the stored data's version property is too low
+    // then we migrate.
+    protected static int CURRENT_VERSION = 7;
+
     protected int effectiveManaMax = 0;
     protected int effectiveManaRegeneration = 0;
 
@@ -563,4 +572,65 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Nullable
     @Override
     public abstract Mage getMage();
+
+    @SuppressWarnings("unchecked")
+    protected void migrateBrushes(ConfigurationSection configuration) {
+        Object brushInventoryRaw = configuration.get("brush_inventory");
+        if (brushInventoryRaw != null) {
+            Map<String, ? extends Object> brushInventory = null;
+            Map<String, Integer> newBrushInventory = new HashMap<>();
+            if (brushInventoryRaw instanceof Map) {
+                brushInventory = (Map<String, ? extends Object>)brushInventoryRaw;
+            } else if (brushInventoryRaw instanceof ConfigurationSection) {
+                brushInventory = NMSUtils.getMap((ConfigurationSection)brushInventoryRaw);
+            }
+            if (brushInventory != null) {
+                for (Map.Entry<String, ? extends Object> brushEntry : brushInventory.entrySet()) {
+                    Object slot = brushEntry.getValue();
+                    if (slot != null && slot instanceof Integer) {
+                        String materialKey = brushEntry.getKey();
+                        materialKey = DeprecatedUtils.migrateMaterial(materialKey);
+                        newBrushInventory.put(materialKey, (Integer)slot);
+                    }
+                }
+                configuration.set("brush_inventory", newBrushInventory);
+            }
+        }
+
+        Object brushesRaw = getObject("brushes", getObject("materials"));
+        if (brushesRaw != null) {
+            Collection<String> brushes = null;
+            if (brushesRaw instanceof String) {
+                String[] brushNames = StringUtils.split((String)brushesRaw, ',');
+                brushes = Arrays.asList(brushNames);
+            } else if (brushesRaw instanceof Collection) {
+                brushes = (Collection<String>)brushesRaw;
+            }
+
+            if (brushes != null) {
+
+                configuration.set("brushes", new ArrayList<>(brushes));
+            }
+        }
+    }
+
+    protected void migrate(int version, ConfigurationSection configuratoin) {
+        // Migration: Update brushes to 1.13
+        if (version <= 6) {
+            migrateBrushes(configuratoin);
+        }
+
+        configuratoin.set("version", CURRENT_VERSION);
+    }
+
+    @Override
+    public void load(@Nullable ConfigurationSection configuration) {
+        int version = configuration.getInt("version", 0);
+        if (version < CURRENT_VERSION) {
+            // Migration will be handled by CasterProperties, this is just here
+            // So that we save the data after to avoid re-migrating.
+            migrate(version, configuration);
+        }
+        super.load(configuration);
+    }
 }
