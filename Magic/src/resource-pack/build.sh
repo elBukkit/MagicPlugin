@@ -12,7 +12,7 @@ mkdir default
 cd default
 cp -R ../../default/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-RP-7.zip *
+zip -r -X ../Magic-RP-8.zip *
 cd ..
 
 echo "** BUILDING DEFAULT-Skulls **"
@@ -32,7 +32,7 @@ rm -R assets/minecraft/models/item/brushes
 rm assets/minecraft/models/item/diamond_axe.json
 rm assets/minecraft/models/item/diamond_hoe.json
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-skulls-RP-7.zip *
+zip -r -X ../Magic-skulls-RP-8.zip *
 cd ..
 
 echo "** BUILDING SKULLS **"
@@ -52,7 +52,7 @@ cd painterly
 cp -R ../../default/* .
 cp -R ../../painterly/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-painterly-RP-7.zip *
+zip -r -X ../Magic-painterly-RP-8.zip *
 cd ..
 
 echo "** BUILDING POTTER **"
@@ -62,7 +62,7 @@ cd potter
 cp -R ../../default/* .
 cp -R ../../potter/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-potter-RP-7.zip *
+zip -r -X ../Magic-potter-RP-8.zip *
 cd ..
 
 echo "** BUILDING WAR **"
@@ -76,7 +76,7 @@ echo , >> assets/minecraft/sounds.json
 tail -n +2 ../../war/assets/minecraft/sound-overrides.json >> assets/minecraft/sounds.json
 rm assets/minecraft/sound-overrides.json
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-war-RP-7.zip *
+zip -r -X ../Magic-war-RP-8.zip *
 cd ..
 
 echo "** BUILDING STARS **"
@@ -86,7 +86,7 @@ cd stars
 cp -R ../../default/* .
 cp -R ../../stars/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-stars-RP-7.zip *
+zip -r -X ../Magic-stars-RP-8.zip *
 cd ..
 
 echo "** BUILDING ALL **"
@@ -102,7 +102,7 @@ sed -e '$ d' ../../default/assets/minecraft/sounds.json > assets/minecraft/sound
 echo , >> assets/minecraft/sounds.json
 tail -n +2 ../../war/assets/minecraft/sounds.json >> assets/minecraft/sounds.json
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-all-RP-7.zip *
+zip -r -X ../Magic-all-RP-8.zip *
 cd ..
 
 echo "** BUILDING AJ **"
