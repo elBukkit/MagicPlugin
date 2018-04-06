@@ -86,23 +86,23 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
 
         if (itemName.equalsIgnoreCase("xp")) {
             api.giveExperienceToPlayer(player, count);
-            sender.sendMessage("Gave " + count + " experience to " + player.getName());
+            sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " experience to " + ChatColor.GOLD + player.getName());
             return true;
         } else if (itemName.equalsIgnoreCase("sp")) {
             Mage mage = controller.getMage(player);
             mage.addSkillPoints(count);
-            sender.sendMessage("Gave " + count + " skill points to " + player.getName());
+            sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " skill points to " + ChatColor.GOLD + player.getName());
             return true;
         } else {
             Mage mage = controller.getMage(player);
             ItemStack item = api.createItem(itemName, mage);
             if (item == null) {
-                sender.sendMessage(ChatColor.RED + "Unknown item type " + itemName);
+                sender.sendMessage(ChatColor.RED + "Unknown item type " + ChatColor.DARK_RED + itemName);
                 return true;
             }
             item.setAmount(count);
             String displayName = api.describeItem(item);
-            sender.sendMessage("Gave " + count + " " + displayName + " to " + player.getName());
+            sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + " " + ChatColor.LIGHT_PURPLE + displayName + ChatColor.AQUA + " to " + ChatColor.GOLD + player.getName());
             api.giveItemToPlayer(player, item);
         }
 
