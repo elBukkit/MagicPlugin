@@ -459,6 +459,7 @@ public interface MageController {
 
     boolean isWand(ItemStack item);
     boolean isSkill(ItemStack item);
+    boolean isMagic(ItemStack item);
 
     /**
      * Return all example configs that have been loaded via example: or add_examples: in config.yml

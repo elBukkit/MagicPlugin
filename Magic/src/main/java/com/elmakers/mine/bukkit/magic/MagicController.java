@@ -4230,6 +4230,11 @@ public class MagicController implements MageController {
         return Wand.isSkill(item);
     }
 
+    @Override
+    public boolean isMagic(ItemStack item) {
+        return Wand.isSpecial(item);
+    }
+
     @Nullable
     @Override
     public String getWandKey(ItemStack item) {

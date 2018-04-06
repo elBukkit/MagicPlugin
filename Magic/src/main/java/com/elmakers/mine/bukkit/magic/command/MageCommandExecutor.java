@@ -12,6 +12,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -22,6 +24,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
@@ -156,6 +159,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageLevelSpells(sender, player, args2);
         }
+        if (subCommand.equalsIgnoreCase("clear"))
+        {
+            return onMageClear(sender, player, args2);
+        }
 
         sender.sendMessage("Unknown mage command: " + subCommand);
         return true;
@@ -175,6 +182,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "check");
             addIfPermissible(sender, options, "Magic.commands.mage.", "debug");
             addIfPermissible(sender, options, "Magic.commands.mage.", "reset");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "clear");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unbind");
             addIfPermissible(sender, options, "Magic.commands.mage.", "activate");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unlock");
@@ -214,6 +222,13 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     }
                 }
                 options.add("brush");
+            }
+
+            if (subCommand.equalsIgnoreCase("clear")) {
+                options.add("all");
+                options.add("magic");
+                options.add("skills");
+                options.add("wands");
             }
 
             if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
@@ -264,6 +279,44 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         Mage mage = controller.getMage(player);
         MageClass activeClass = mage.getActiveClass();
         return onLevelSpells("mage", sender, player, activeClass == null ? mage.getProperties() : activeClass, maxLevel);
+    }
+
+    public boolean onMageClear(CommandSender sender, Player player, String[] parameters)
+    {
+        String type = "magic";
+        if (parameters.length > 0) {
+            type = parameters[0];
+        }
+        if (!type.equalsIgnoreCase("magic") && !type.equalsIgnoreCase("all")
+                && !type.equalsIgnoreCase("wands") && !type.equalsIgnoreCase("skills")) {
+            sender.sendMessage(ChatColor.RED + "Unknown clear type: " + ChatColor.WHITE + type + ChatColor.RED + ", expected one of: "
+                + ChatColor.AQUA + "all,magic,wands,skills");
+        }
+
+        int cleared = 0;
+        Mage mage = controller.getMage(player);
+        mage.deactivate();;
+        Inventory inventory = player.getInventory();
+        for (int i = 0; i < inventory.getSize(); i++) {
+            if (type.equalsIgnoreCase("all")) {
+                inventory.setItem(i, null);
+                continue;
+            }
+            ItemStack item = inventory.getItem(i);
+            if (CompatibilityUtils.isEmpty(item)) continue;
+
+            if ((type.equalsIgnoreCase("wands") && controller.isWand(item))
+            || (type.equalsIgnoreCase("skills") && controller.isSkill(item))
+            || (type.equalsIgnoreCase("magic") && controller.isMagic(item))) {
+                inventory.setItem(i, null);
+                cleared++;
+                continue;
+            }
+        }
+        mage.checkWand();
+        sender.sendMessage(ChatColor.AQUA + "Cleared " + ChatColor.WHITE + cleared + " " + ChatColor.DARK_AQUA + type
+            + ChatColor.AQUA + " items from inventory of " + ChatColor.GOLD + player.getName());
+        return true;
     }
 
     public boolean onMageCheck(CommandSender sender, Player player, String[] args)

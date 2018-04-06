@@ -403,6 +403,7 @@ commands:
         /mage check       Check player permissions
         /mage debug       Enable/disable debug for a player
         /mage reset       Reset all data for a Mage, or for a specific class
+        /mage clear       Clear magic items from a player's inventory
         /mage unbind      Delete specific bound wands for a mage
         /mage levelspells Level up all spells for a mage
   "mage configure":
@@ -510,6 +511,15 @@ commands:
         /mage reset <Player> [Class]
         /mage reset NathanWolf
         /mage reset NathanWolf mage
+  "mage clear":
+    description: Remove magic items from a player's inventory
+    permission: Magic.commands.mage.clear
+    usage: |
+
+        /mage clear <Player> [all|wands|skills|magic]
+        /mage clear NathanWolf
+        /mage clear NathanWolf all
+        /mage clear NathanWolf all
   "mage check":
     description: Do a permission check on player, show debug info
     permission: Magic.commands.mage.check
@@ -1224,6 +1234,7 @@ permissions:
     - Magic.commands.mage.check
     - Magic.commands.mage.debug
     - Magic.commands.mage.reset
+    - Magic.commands.mage.clear
     - Magic.commands.mage.unbind
     - Magic.commands.mage.levelspells
     - Magic.commands.mage.others
@@ -1285,6 +1296,10 @@ permissions:
     default: op
   Magic.commands.mage.reset:
     description: Player may delete player data
+    type: boolean
+    default: op
+  Magic.commands.mage.clear:
+    description: Player may clear player inventories
     type: boolean
     default: op
   Magic.commands.mage.unbind:
