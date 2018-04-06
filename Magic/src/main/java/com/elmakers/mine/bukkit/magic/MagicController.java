@@ -1219,12 +1219,6 @@ public class MagicController implements MageController {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
         registerListeners();
 
-        // Activate/load any active player Mages
-        Collection<? extends Player> allPlayers = plugin.getServer().getOnlinePlayers();
-        for (Player player : allPlayers) {
-            getMage(player);
-        }
-
         // Set up Break/Build/PVP Managers
         blockBreakManagers.clear();
         blockBuildManagers.clear();
@@ -1786,6 +1780,13 @@ public class MagicController implements MageController {
         }
 
         loaded = true;
+
+        // Activate/load any active player Mages
+        Collection<? extends Player> allPlayers = plugin.getServer().getOnlinePlayers();
+        for (Player player : allPlayers) {
+            getMage(player);
+        }
+
         if (sender != null) {
             sender.sendMessage(ChatColor.AQUA + "Configuration reloaded.");
         }

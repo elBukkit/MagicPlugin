@@ -4,6 +4,7 @@
 
  - Fix an unintentional behavioral change in undo animations that was introduced in 7.2
  - Add support for falling block projectiles
+ - Fix issues using /reload command (still don't use it, though...)
 
 # 7.3.7
 
