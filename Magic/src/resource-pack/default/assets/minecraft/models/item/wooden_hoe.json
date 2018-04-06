@@ -2,7 +2,7 @@
   "__comment": "Max wood durability is 60",
   "parent": "item/handheld",
   "textures": {
-    "layer0": "items/wood_hoe"
+    "layer0": "items/wooden_hoe"
   },
   "overrides": [
     {"predicate": {"damaged": 0, "damage": 0.01666666666667}, "model": "item/custom/old_survival_wand1"},

@@ -2,7 +2,7 @@
   "__comment": "Max bow durability is 385",
   "parent": "item/handheld",
   "textures": {
-    "layer0": "items/bow_standby"
+    "layer0": "items/bow"
   },
   "overrides": [
     {

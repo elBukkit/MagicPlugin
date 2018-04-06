@@ -2,7 +2,7 @@
   "__comment": "Max gold durability is 33",
     "parent": "item/handheld",
     "textures": {
-        "layer0": "items/gold_sword"
+        "layer0": "items/golden_sword"
     },
     "overrides": [
         {"predicate": {"damaged": 0, "damage": 0.03030303030303}, "model": "item/custom/sword_master"},
