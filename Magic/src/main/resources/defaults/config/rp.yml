@@ -1,6 +1,6 @@
 # This resource pack will automatically be used if none is defined in your server.properties
 # Set this to "" if you have some other plugin or Bungee managing resource packs.
-resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-7.zip"
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-8.zip"
 
 # Use this to turn off all resource pack functionality
 enable_resource_pack: true
