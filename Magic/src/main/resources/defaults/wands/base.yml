@@ -24,7 +24,7 @@ base_wand:
     effect_bubbles: false
     item_attributes:
       GENERIC_ATTACK_SPEED: 10
-    attribute_slot: mainhand
+    item_attribute_slot: mainhand
   
 base_sword:
     hidden: true

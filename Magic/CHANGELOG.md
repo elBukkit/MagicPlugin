@@ -6,6 +6,7 @@
  - Add support for falling block projectiles
  - Fix issues using /reload command (still don't use it, though...)
  - Add /mage clear command for clearing player inventories of magic items
+ - Add default_mage_class config option
 
 # 7.3.7
 
