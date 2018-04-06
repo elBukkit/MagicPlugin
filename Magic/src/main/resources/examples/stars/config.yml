@@ -14,6 +14,8 @@ enable_crafting: true
 # Disable the enchantment table showing the spell shop or upgrades
 enchant_block: ""
 
-
 # Force power FX come from the hands
 wand_location_offset_vertical: -0.5
+
+# Default class
+default_mage_class: force_user

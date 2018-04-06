@@ -113,6 +113,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int OFFHAND_CAST_COOLDOWN = 500;
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
     public static int DEFAULT_SP = 0;
+    public static String DEFAULT_CLASS = "";
     private static String defaultMageName = "Mage";
     private static String SKILL_POINT_KEY = "sp";
 
@@ -1156,6 +1157,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public @Nullable MageClass getActiveClass() {
+        if (activeClass == null && !DEFAULT_CLASS.isEmpty()) {
+            setActiveClass(DEFAULT_CLASS);
+        }
         return activeClass;
     }
 

@@ -39,6 +39,9 @@ load_default_mobs: true
 # Set to false to skip loading defaults/items.defaults.yml entirely.
 load_default_items: true
 
+# A class to use with the /mage command when a player doesn't yet have a class assigned
+default_mage_class: mage
+
 # Give new players a wand when they join.
 # e.g. welcome_wand: wand
 welcome_wand: ""

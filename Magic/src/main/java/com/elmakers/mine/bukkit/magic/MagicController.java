@@ -2643,6 +2643,7 @@ public class MagicController implements MageController {
         locketteManager.setEnabled(properties.getBoolean("lockette_enabled", locketteManager.isEnabled()));
         griefPreventionManager.setEnabled(properties.getBoolean("grief_prevention_enabled", griefPreventionManager.isEnabled()));
         ncpManager.setEnabled(properties.getBoolean("ncp_enabled", false));
+        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CLASS = properties.getString("default_mage_class", "");
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
 

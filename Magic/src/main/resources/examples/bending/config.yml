@@ -41,3 +41,6 @@ damage_types:
     max_reduction: 0.5
     max_strength: 5
     max_weakness: 10
+
+# Default class
+default_mage_class: bender

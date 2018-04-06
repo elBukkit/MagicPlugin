@@ -46,3 +46,6 @@ currency:
     
 # Use the potter RP
 resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-potter-RP-7.zip"
+
+# Default class
+default_mage_class: wizard

@@ -726,7 +726,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         Mage mage = controller.getMage(player);
         MageClass activeClass = mage.getActiveClass();
         if (activeClass == null) {
-            sender.sendMessage("Can't modify player " + player.getName());
+            sender.sendMessage("Player " + player.getName() + " has no active class");
             return true;
         }
 
