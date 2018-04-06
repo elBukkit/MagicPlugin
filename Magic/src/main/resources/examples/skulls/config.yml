@@ -1,6 +1,6 @@
 # This resource pack is identical to survival except is also includes the flat skull model
-resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-7.zip"
-add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-7.zip"
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-8.zip"
+add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-8.zip"
 
 # Turn back on skull-based icons
 url_icons_enabled: true

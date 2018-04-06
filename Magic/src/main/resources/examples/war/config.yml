@@ -18,8 +18,8 @@ sp_enabled: false
 enchant_block: ""
 
 # Use a special RP
-resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-war-RP-7.zip"
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-war-RP-8.zip"
 
 # Use a different RP when combined with other configs
-add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-7.zip"
+add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-8.zip"
 
