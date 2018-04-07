@@ -181,7 +181,7 @@ public class SpawnEntityAction extends BaseSpellAction
                 ((Projectile)spawnedEntity).setShooter(shooter);
             } else if (spawnedEntity instanceof AreaEffectCloud) {
                 ((AreaEffectCloud)spawnedEntity).setSource(shooter);
-            }  
+            }
         }
         return SpellResult.CAST;
 
