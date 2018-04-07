@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,8 +38,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.WandMode;
-
-import de.slikey.effectlib.util.ParticleEffect;
 
 public class WandCommandExecutor extends MagicConfigurableExecutor {
 
@@ -279,8 +278,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
                         options.add(sound.name().toLowerCase());
                     }
                 } else if (subCommand2.equals("effect_particle")) {
-                    ParticleEffect[] particleTypes = ParticleEffect.values();
-                    for (ParticleEffect particleType : particleTypes) {
+                    for (Particle particleType : Particle.values()) {
                         options.add(particleType.name().toLowerCase());
                     }
                 } else if (subCommand2.equals("mode")) {

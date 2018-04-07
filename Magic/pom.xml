@@ -48,9 +48,9 @@
 
         <!-- Effect library (shaded) -->
         <dependency>
-            <groupId>de.slikey</groupId>
+            <groupId>com.elmakers.mine.bukkit.effects</groupId>
             <artifactId>EffectLib</artifactId>
-            <version>5.10-SNAPSHOT</version>
+            <version>10.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
@@ -549,8 +549,8 @@
                                     <shadedPattern>com.elmakers.mine.bukkit.bstats</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>de.slikey</pattern>
-                                    <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
+                                    <pattern>com.elmakers.mine.bukkit.effects</pattern>
+                                    <shadedPattern>com.elmakers.mine.bukkit.magic.effects</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

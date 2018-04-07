@@ -20,6 +20,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.BlockFace;
@@ -38,7 +39,6 @@ import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.magic.SpellParameters;
 
 import de.slikey.effectlib.util.ConfigUtils;
-import de.slikey.effectlib.util.ParticleEffect;
 
 public class ConfigurationUtils extends ConfigUtils {
 
@@ -807,12 +807,12 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     @Nullable
-    public static ParticleEffect toParticleEffect(String effectParticleName) {
-        ParticleEffect effectParticle = null;
+    public static Particle toParticleEffect(String effectParticleName) {
+        Particle effectParticle = null;
         if (effectParticleName.length() > 0) {
             String particleName = effectParticleName.toUpperCase();
             try {
-                effectParticle = ParticleEffect.valueOf(particleName);
+                effectParticle = Particle.valueOf(particleName);
             } catch (Exception ignored) {
             }
         }

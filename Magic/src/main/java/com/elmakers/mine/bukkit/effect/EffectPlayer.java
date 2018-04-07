@@ -17,6 +17,7 @@ import org.bukkit.EntityEffect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -31,7 +32,7 @@ import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 import de.slikey.effectlib.util.DynamicLocation;
-import de.slikey.effectlib.util.ParticleEffect;
+import de.slikey.effectlib.util.ParticleUtils;
 
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
@@ -102,8 +103,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected FireworkEffect fireworkEffect;
 
-    protected ParticleEffect particleType = null;
-    protected ParticleEffect particleOverride = null;
+    protected Particle particleType = null;
+    protected Particle particleOverride = null;
     protected String useParticleOverride = null;
     protected String useColorOverride = null;
     protected float particleData = 0f;
@@ -221,7 +222,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (configuration.contains("particle")) {
             String typeName = configuration.getString("particle");
             try {
-                particleType = ParticleEffect.valueOf(typeName.toUpperCase());
+                particleType = Particle.valueOf(typeName.toUpperCase());
             } catch (Exception ignored) {
             }
             if (particleType == null) {
@@ -298,7 +299,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.entityEffect = entityEffect;
     }
 
-    public void setParticleType(ParticleEffect particleType) {
+    public void setParticleType(Particle particleType) {
         this.particleType = particleType;
     }
 
@@ -309,7 +310,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             return;
         }
         try {
-            this.particleOverride = ParticleEffect.valueOf(particleType.toUpperCase());
+            this.particleOverride = Particle.valueOf(particleType.toUpperCase());
         } catch (Exception ex) {
             warn("Error setting particle override: " + ex.getMessage());
             this.particleOverride = null;
@@ -398,33 +399,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         if (particleType != null) {
-            ParticleEffect useEffect = overrideParticle(particleType);
+            Particle useEffect = overrideParticle(particleType);
             Material material = getWorkingMaterial().getMaterial();
-            Byte blockData = getWorkingMaterial().getBlockData();
-            ParticleEffect.ParticleData data = useEffect.getData(material, blockData);
-            if (data != null) {
-                try {
-                    useEffect.display(data, sourceLocation, getColor1(), PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
-                } catch (Exception ex) {
-                    if (effectLib.isDebugEnabled()) {
-                        ex.printStackTrace();
-                    }
-                }
-            } else {
-                if (!useEffect.requiresData()) {
-                    try {
-                        useEffect.display(data, sourceLocation, getColor1(), PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
-                    } catch (Exception ex) {
-                        if (effectLib.isDebugEnabled()) {
-                            ex.printStackTrace();
-                        }
-                    }
-                }
-            }
+            ParticleUtils.display(useEffect, sourceLocation, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount, getColor1(), material, PARTICLE_RANGE);
         }
     }
 
-    public ParticleEffect overrideParticle(ParticleEffect particle) {
+    public Particle overrideParticle(Particle particle) {
         return useParticleOverride != null && !useParticleOverride.isEmpty() && particleOverride != null ? particleOverride : particle;
     }
 
