@@ -14,6 +14,7 @@ import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Rabbit;
@@ -173,6 +174,14 @@ public class SpawnEntityAction extends BaseSpellAction
         if (setTarget)
         {
             context.setTargetEntity(spawnedEntity);
+        }
+        LivingEntity shooter = context.getLivingEntity();
+        if (shooter != null) {
+            if (spawnedEntity instanceof Projectile) {
+                ((Projectile)spawnedEntity).setShooter(shooter);
+            } else if (spawnedEntity instanceof AreaEffectCloud) {
+                ((AreaEffectCloud)spawnedEntity).setSource(shooter);
+            }  
         }
         return SpellResult.CAST;
 
