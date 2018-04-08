@@ -27,6 +27,7 @@ public class ChangeContextAction extends CompoundAction {
     private boolean targetEntityLocation;
     private boolean sourceAtTarget;
     private boolean sourceIsTarget;
+    private boolean sourceDirectionIsTarget;
     private Double sourcePitch;
     private Vector randomSourceOffset;
     private Vector randomTargetOffset;
@@ -62,6 +63,7 @@ public class ChangeContextAction extends CompoundAction {
         targetSelf = parameters.contains("target_self") ? parameters.getBoolean("target_self") : null;
         sourceAtTarget = parameters.getBoolean("source_at_target", false);
         sourceIsTarget = parameters.getBoolean("source_is_target", false);
+        sourceDirectionIsTarget = parameters.getBoolean("source_direction_is_target", false);
         sourcePitch = ConfigurationUtils.getDouble(parameters, "source_pitch", null);
         sourceOffset = ConfigurationUtils.getVector(parameters, "source_offset");
         relativeSourceOffset = ConfigurationUtils.getVector(parameters, "relative_source_offset");
@@ -306,6 +308,10 @@ public class ChangeContextAction extends CompoundAction {
         if (sourceIsTarget)
         {
             sourceEntity = targetEntity;
+        }
+        if (sourceDirectionIsTarget && targetEntity != null)
+        {
+            sourceLocation.setDirection(targetEntity.getLocation().getDirection());
         }
         createActionContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
         if (targetSelf != null)
