@@ -23,9 +23,9 @@ public class ConfigCheckTask implements Runnable {
         public String userId;
     }
 
-    public ConfigCheckTask(MagicController controller, String configCheckFile) {
+    public ConfigCheckTask(MagicController controller) {
         this.controller = controller;
-        this.configCheckFile = new File(controller.getPlugin().getDataFolder(), configCheckFile);
+        this.configCheckFile = new File(controller.getPlugin().getDataFolder(), "data/updated.json");
     }
 
     @Override

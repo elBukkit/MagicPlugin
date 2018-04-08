@@ -2839,10 +2839,9 @@ public class MagicController implements MageController {
         } else {
             getLogger().info("Skin-based spell icons disabled");
         }
-        String configUpdateFile = properties.getString("config_update_file");
         int configUpdateInterval = properties.getInt("config_update_interval");
-        if (configUpdateInterval > 0 && !configUpdateFile.isEmpty()) {
-            final ConfigCheckTask configCheck = new ConfigCheckTask(this, configUpdateFile);
+        if (configUpdateInterval > 0) {
+            final ConfigCheckTask configCheck = new ConfigCheckTask(this);
             configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
                 configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
         }
