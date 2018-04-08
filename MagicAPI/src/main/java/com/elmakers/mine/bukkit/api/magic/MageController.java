@@ -305,10 +305,10 @@ public interface MageController {
     /**
      * Check to see if the given Entity is an NPC of any kind.
      *
-     * <p>This currently integrates with Citizens and Shopkeepers, and
-     * relies on Entity metadata.
+     * <p>This currently integrates with Citizens.
      */
     boolean isNPC(Entity entity);
+    boolean isStaticNPC(Entity entity);
     boolean isVanished(Entity entity);
 
     /**

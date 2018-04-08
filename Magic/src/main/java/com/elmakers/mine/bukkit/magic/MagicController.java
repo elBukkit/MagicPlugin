@@ -3380,7 +3380,13 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isNPC(Entity entity) {
-        return (entity != null && (entity.hasMetadata("NPC") || entity.hasMetadata("shopkeeper")));
+        // Does this still need to look specifically for Shopkeepers... ?
+        return citizens == null ? false : citizens.isNPC(entity);
+    }
+
+    @Override
+    public boolean isStaticNPC(Entity entity) {
+        return citizens == null ? false : citizens.isStaticNPC(entity);
     }
 
     @Override

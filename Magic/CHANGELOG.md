@@ -7,6 +7,7 @@
  - Fix issues using /reload command (still don't use it, though...)
  - Add /mage clear command for clearing player inventories of magic items
  - Add default_mage_class config option
+ - Improve and optimize Citizens integration, target Sentinel NPCs by default
 
 # 7.3.7
 
