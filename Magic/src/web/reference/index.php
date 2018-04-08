@@ -4,14 +4,14 @@ require_once('../config.inc.php');
 <html>
 <head>
     <title><?= $title ?> Reference</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../css/smoothness/jquery-ui-1.10.3.custom.min.css"/>
-    <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/loading.css" />
-    <link rel="stylesheet" href="../css/reference.css"/>
-    <script src="../js/jquery-1.10.2.min.js"></script>
-    <script src="../js/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src="../js/reference.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="common/css/smoothness/jquery-ui-1.10.3.custom.min.css"/>
+    <link rel="stylesheet" href="common/css/common.css" />
+    <link rel="stylesheet" href="common/css/loading.css" />
+    <link rel="stylesheet" href="css/reference.css"/>
+    <script src="common/js/jquery-1.10.2.min.js"></script>
+    <script src="common/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/reference.js"></script>
     <?php if ($analytics) echo $analytics; ?>
 </head>
 <body>
