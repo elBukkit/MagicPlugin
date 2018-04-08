@@ -76,6 +76,10 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
         Messages messages = context.getController().getMessages();
         for (String spellKey : spells) {
             MageSpell spell = mage.getSpell(spellKey);
+            if (spell == null) {
+                context.getLogger().info("Player " + mage.getName() + " has spell " + spellKey + " but returned null");
+                continue;
+            }
             SpellTemplate upgradeSpell = spell.getUpgrade();
             if (upgradeSpell != null) {
                 ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(upgradeSpell.getKey());
