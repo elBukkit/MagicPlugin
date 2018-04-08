@@ -1,22 +1,9 @@
 <?php
 require_once('../config.inc.php');
+require_once('user.inc.php');
 if (!$sandboxServer) die('No sandbox server defined');
 
-$userId = isset($_COOKIE['user_id']) ? $_COOKIE['user_id'] : '';
-$userCode = isset($_COOKIE['user_code']) ? $_COOKIE['user_code'] : '';
-
-$registeredFile = "$sandboxServer/plugins/Magic/data/registered.yml";
-if (!$userId || !$userCode || !file_exists($registeredFile)) {
-    include 'register.php';
-    die();
-}
-
-require_once('common/spyc.php');
-$registered = $config = spyc_load_file($registeredFile);
-if (!isset($registered[$userId]) || $registered[$userId]['code'] !== $userCode) {
-    include 'register.php';
-    die();
-}
+$user = getUser();
 
 ?>
 
@@ -28,19 +15,53 @@ if (!isset($registered[$userId]) || $registered[$userId]['code'] !== $userCode) 
     <link rel="stylesheet" href="common/css/common.css" />
     <link rel="stylesheet" href="common/css/loading.css" />
     <link rel="stylesheet" href="css/editor.css"/>
+    <link rel="stylesheet" href="css/user.css"/>
     <script src="common/js/jquery-1.10.2.min.js"></script>
     <script src="common/js/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="js/editor.js"></script>
+    <script src="js/user.js"></script>
+    <script type="text/javascript">
+        var user = <?= json_encode($user) ?>;
+    </script>
     <?php if ($analytics) echo $analytics; ?>
 </head>
 <body>
 <div id="container">
 <div id="header">
-    <button type="button" id="saveButton">Save</button>
+    <span>
+        <button type="button" id="saveButton">Save</button>
+    </span>
+    <span id="userInfo">
+        <span id="userName"></span><br/>
+        <span id="loginButton" style="display: none">
+            Log in to Save
+        </span>
+        <span id="logoutButton" style="display: none">
+            Log out
+        </span>
+    </span>
 </div>
 <textarea id="editor">
 <?php echo file_get_contents("$sandboxServer/plugins/Magic/spells.yml") ?>
 </textarea>
+</div>
+
+<div id="registrationDialog" style="display:none">
+    <div id="registrationTitle">Please log into the <span class="server"><?= $sandboxServerURL ?></span>s server and register</div>
+    <div>
+        <label for="userId">In-Game Name:</label><input type="text" id="userId">
+    </div>
+</div>
+
+
+<div id="codeDialog" title="Enter Code" style="display:none">
+  <div style="margin-bottom: 0.5em">
+    <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+    <span>Please enter the following code in-game using</span>
+  </div>
+  <div class="code">
+    /magic register <span id="codeDiv"></span>
+  </div>
 </div>
 </body>
 </html>

@@ -17,6 +17,23 @@ function save() {
     });
 }
 
+function checkUser() {
+    if (user.id == '') {
+        $('#userName').text('Anonymous');
+        $("#saveButton").button('disable');
+        $('#loginButton').show();
+        $('#logoutButton').hide();
+    }  else {
+        $('#userName').text(user.name);
+        $("#saveButton").button('enable');
+        $('#loginButton').hide();
+        $('#logoutButton').show();
+    }
+}
+
 function initialize() {
     $("#saveButton").button().click(save);
+    $('#logoutButton').click(logout);
+    $('#loginButton').click(login);
+    checkUser();
 }

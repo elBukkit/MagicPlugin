@@ -2,6 +2,21 @@ $(document).ready(initialize);
 
 var checkCodeTimer = null;
 
+function login() {
+    $("#registrationDialog").dialog({
+      modal: true,
+      buttons: {
+        "Get Code": function() {
+            $(this).dialog("close");
+            register();
+        },
+        Cancel: function() {
+            $(this).dialog("close");
+        }
+      }
+    }).show();
+}
+
 function register() {
     var userName = jQuery('#userId').val();
     if (userName.length == 0) {
@@ -25,6 +40,17 @@ function register() {
 
         displayCode(userName, response.id, response.code);
     });
+}
+
+function logout() {
+    $.ajax( {
+        type: "POST",
+        url: "logout.php",
+        dataType: 'json'
+    });
+
+    user = {id: '', name: '', skin: ''};
+    checkUser();
 }
 
 function displayCode(userName, userId, code) {
@@ -62,14 +88,11 @@ function checkCode(userName, userId, code, timeout) {
     }).done(function(response) {
         $("#getCodeButton").button('enable');
         if (response.success) {
+            user = response.user;
+            checkUser();
             $("#codeDialog").dialog('close');
-            document.location = "index.php";
         } else {
             scheduleCheck(userName, userId, code, timeout + 1000);
         }
     });
-}
-
-function initialize() {
-    $("#getCodeButton").button().click(register);
 }

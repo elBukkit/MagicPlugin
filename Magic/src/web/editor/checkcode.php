@@ -16,12 +16,20 @@ if (!file_exists($registeredFile)) {
 }
 
 require_once('common/spyc.php');
-$registered = $config = spyc_load_file($registeredFile);
-if (!isset($registered[$userId]) || $registered[$userId]['code'] !== $userCode) {
+$registered = spyc_load_file($registeredFile);
+$registered = isset($registered[$userId]) ? $registered[$userId] : null;
+if (is_null($registered) || $registered['code'] !== $userCode) {
     die(json_encode(array('success' => false, 'message' => 'Incorrect code')));
 }
 
 setcookie('user_id', $userId);
 setcookie('user_code', $userCode);
 
-echo json_encode(array('success' => true));
+$user = array(
+    'id' => $userId,
+    'code' => $userCode,
+    'name' => $registered['name'],
+    'skin' => $registered['skin'],
+);
+
+echo json_encode(array('success' => true, 'user' => json_encode($user)));
