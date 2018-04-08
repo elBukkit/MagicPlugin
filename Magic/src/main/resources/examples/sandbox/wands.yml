@@ -1,0 +1,8 @@
+sandbox:
+  inherit: base_wand
+  name: Sandbox Wand
+  icon: wood_hoe:6
+  description: Contains all of the spells you have created
+  mana: 1000
+  mana_regeneration: 10
+  fill: true

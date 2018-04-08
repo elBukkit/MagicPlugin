@@ -272,6 +272,10 @@ fill_wands: false
 # 1 would be only the level 1 versions
 fill_wand_level: 0
 
+# Set this to true to only fill wands with spells created by the player
+# Useful in sandbox configs
+fill_wand_creator: false
+
 # Players can remove spells from their wands
 allow_spell_dropping: false
 
