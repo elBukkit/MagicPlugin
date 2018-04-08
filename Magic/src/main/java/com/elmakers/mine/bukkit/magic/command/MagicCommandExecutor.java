@@ -204,6 +204,18 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         {
             return onMagicList(sender, subCommand, args);
         }
+        if (subCommand.equalsIgnoreCase("register"))
+        {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("This command may only be used in-game");
+                return true;
+            }
+            if (args.length != 2 || args[1].isEmpty()) {
+                sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/magic register <code>");
+                return true;
+            }
+            return onMagicRegister((Player)sender, args[1]);
+        }
         if (subCommand.equalsIgnoreCase("cancel"))
         {
             checkRunningTask();
@@ -264,6 +276,15 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         }
 
         sender.sendMessage("Unknown magic command: " + subCommand);
+        return true;
+    }
+
+    protected boolean onMagicRegister(Player player, final String code) {
+        String playerId = player.getUniqueId().toString();
+        String playerName = player.getName();
+        Plugin plugin = controller.getPlugin();
+        Bukkit.getScheduler().runTaskAsynchronously(controller.getPlugin(), new RegisterTask(plugin, playerId, playerName, code));
+        player.sendMessage(ChatColor.AQUA + "Sending registration code...");
         return true;
     }
 
@@ -839,6 +860,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             addIfPermissible(sender, options, "Magic.commands.magic.", "list");
             addIfPermissible(sender, options, "Magic.commands.magic.", "rpcheck");
             addIfPermissible(sender, options, "Magic.commands.magic.", "rpsend");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "register");
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("list")) {
                 addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");

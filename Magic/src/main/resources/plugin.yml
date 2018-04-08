@@ -328,11 +328,16 @@ commands:
         /magic clear       Remove dropped wands from the world
         /magic rpcheck     Check your resource pack for updates
         /magic rpsend      Send the current RP to all connected players
+        /magic register    Register to use a web editor
         /magic help        Print some basic help usage
   "magic help":
     description: Prints basic help usage, which relies on the Bukkit /help command
     permission: Magic.commands.magic.help
     usage: /magic help
+  "magic register":
+    description: Register via a web editor using a provided code
+    permission: Magic.commands.magic.register
+    usage: /magic register <code>
   "magic load":
       description: Reload configuration files. Useful for testing spell or wand changes.
       permission: Magic.commands.magic.load
@@ -1095,6 +1100,7 @@ permissions:
     default: op
     children:
     - Magic.commands.magic
+    - Magic.commands.magic.register
     - Magic.commands.magic.help
     - Magic.commands.magic.load
     - Magic.commands.magic.reload
@@ -1111,6 +1117,10 @@ permissions:
     - Magic.commands.magic.worth
   Magic.commands.magic.help:
     description: Player may show command help
+    type: boolean
+    default: op
+  Magic.commands.magic.register:
+    description: Player may register to use a web editor
     type: boolean
     default: op
   Magic.commands.magic.load:
