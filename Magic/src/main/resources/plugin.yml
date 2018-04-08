@@ -1511,4 +1511,7 @@ permissions:
     description: A player may place custom mob spawners without being op'd
     default: op
     type: boolean
-    
+  Magic.notify:
+    description: A player will be notified of various events, such as sandbox config reload
+    default: false
+    type: boolean

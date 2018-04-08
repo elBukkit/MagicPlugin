@@ -1700,11 +1700,20 @@ public class MagicController implements MageController {
         return spellConfigs;
     }
 
+    protected void notify(CommandSender sender, String message) {
+        if (sender != null) {
+            sender.sendMessage(message);
+        }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player != sender && player.hasPermission("Magic.notify")) {
+                player.sendMessage(message);
+            }
+        }
+    }
+
     protected void finalizeLoad(ConfigurationLoadTask loader, CommandSender sender) {
         if (!loader.success) {
-            if (sender != null) {
-                sender.sendMessage(ChatColor.RED + "An error occurred reloading configurations, please check server logs!");
-            }
+            notify(sender, ChatColor.RED + "An error occurred reloading configurations, please check server logs!");
 
             // Check for initial load failure on startup
             if (!loaded) {
@@ -1787,9 +1796,7 @@ public class MagicController implements MageController {
             getMage(player);
         }
 
-        if (sender != null) {
-            sender.sendMessage(ChatColor.AQUA + "Configuration reloaded.");
-        }
+        notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
     }
 
     private void initializeAttributes() {
