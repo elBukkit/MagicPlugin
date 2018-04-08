@@ -40,7 +40,7 @@ public class ConfigurationLoadTask implements Runnable {
         run(false);
     }
 
-    public void run(boolean synchronous) {
+    public synchronized void run(boolean synchronous) {
         success = true;
         Logger logger = controller.getLogger();
 

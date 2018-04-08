@@ -611,3 +611,9 @@ max_velocity: 10
 
 # Commands like /mgive and /wand will bind wands to players
 bind_on_give: false
+
+# This can be used for a server that is hooked up with a live editor
+# The editor will touch this file, and the server will automatically
+# reload configurations when the configs have changed.
+config_update_file: updated.json
+config_update_interval: 0

@@ -2433,6 +2433,10 @@ public class MagicController implements MageController {
             Bukkit.getScheduler().cancelTask(autoSaveTaskId);
             autoSaveTaskId = 0;
         }
+        if (configCheckTaskId > 0) {
+            Bukkit.getScheduler().cancelTask(configCheckTaskId);
+            configCheckTaskId = 0;
+        }
 
         EffectPlayer.debugEffects(properties.getBoolean("debug_effects", false));
         CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
@@ -2754,9 +2758,9 @@ public class MagicController implements MageController {
         EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
 
         // Set up auto-save timer
-        final AutoSaveTask autoSave = new AutoSaveTask(this);
         int autoSaveIntervalTicks = properties.getInt("auto_save", 0) * 20 / 1000;;
         if (autoSaveIntervalTicks > 1) {
+            final AutoSaveTask autoSave = new AutoSaveTask(this);
             autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoSave,
                     autoSaveIntervalTicks, autoSaveIntervalTicks);
         }
@@ -2821,6 +2825,13 @@ public class MagicController implements MageController {
             getLogger().info("Skin-based spell icons enabled");
         } else {
             getLogger().info("Skin-based spell icons disabled");
+        }
+        String configUpdateFile = properties.getString("config_update_file");
+        int configUpdateInterval = properties.getInt("config_update_interval");
+        if (configUpdateInterval > 0 && !configUpdateFile.isEmpty()) {
+            final ConfigCheckTask configCheck = new ConfigCheckTask(this, configUpdateFile);
+            configCheckTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, configCheck,
+                configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
         }
     }
 
@@ -5537,6 +5548,7 @@ public class MagicController implements MageController {
     private float                                 cooldownReduction                = 0.0f;
     private int                                    autoUndo                        = 0;
     private int                                    autoSaveTaskId                    = 0;
+    private int                                    configCheckTaskId            = 0;
     private boolean                             savePlayerData                  = true;
     private boolean                             externalPlayerData              = false;
     private boolean                             asynchronousSaving              = true;
