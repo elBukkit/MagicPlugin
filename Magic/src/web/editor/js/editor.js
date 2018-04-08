@@ -28,6 +28,7 @@ function checkUser() {
         $('#userSkin').css('background-image', '');
         $('#userOverlay').css('background-image', '');
         $("#saveButton").button('disable');
+        $("#saveButton").prop('title', 'Log in to save your work');
         $('#loginButton').show();
         $('#logoutButton').hide();
     }  else {
@@ -35,6 +36,7 @@ function checkUser() {
         $('#userSkin').css('background-image', 'url("' + user.skin + '")');
         $('#userOverlay').css('background-image', 'url("' + user.skin + '")');
         $("#saveButton").button('enable');
+        $("#saveButton").prop('title', 'Save changes and reload the sandbox server');
         $('#loginButton').hide();
         $('#logoutButton').show();
     }

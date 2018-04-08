@@ -6,19 +6,24 @@ function login() {
     $("#registrationDialog").dialog({
       modal: true,
       buttons: {
+        Cancel: function() {
+            $(this).dialog("close");
+        },
         "Get Code": function() {
             $(this).dialog("close");
             register();
-        },
-        Cancel: function() {
-            $(this).dialog("close");
         }
       }
-    }).show();
+    }).show().keydown(function (event) {
+        if (event.keyCode == $.ui.keyCode.ENTER) {
+            $(this).parent().find("button:eq(2)").trigger("click");
+            return false;
+        }
+    });
 }
 
 function register() {
-    var userName = jQuery('#userId').val();
+    var userName = jQuery('#userId').val().trim();
     if (userName.length == 0) {
         jQuery('#userId').addClass('invalid');
         return;

@@ -37,6 +37,7 @@
 
 #userName {
     padding-left: 0.5em;
+    font-style: italic;
 }
 
 #userSkin {
@@ -63,13 +64,13 @@
 #loginButton {
     text-decoration: underline;
     color: blue;
-    font-size: 0.9em;
+    font-size: 0.75em;
     cursor: pointer;
 }
 
 #logoutButton {
     text-decoration: underline;
     color: blue;
-    font-size: 0.9em;
+    font-size: 0.75em;
     cursor: pointer;
 }
