@@ -10,6 +10,6 @@ if (!isset($_REQUEST['spells'])) {
 
 $spells = $_REQUEST['spells'];
 file_put_contents("$sandboxServer/plugins/Magic/spells.yml", $spells);
-touch("$sandboxServer/plugins/Magic/updated.json");
+touch("$sandboxServer/plugins/Magic/data/updated.yml");
 
 echo json_encode(array('success' => true, 'message' => 'Saved'));
