@@ -4,6 +4,11 @@
 // You can set up a symlink for this, or handle it however you like
 $magicRootFolder = dirname(__FILE__) . '/../main/resources';
 
+// This is for the live editor, if you have a sandbox server set up the file path here.
+$sandboxServer = '';
+// And set the URL to your standbox server here to direct players to log in
+$sandboxServerURL = '';
+
 // This is mainly used in testing, normally doesn't need to be changed
 $magicDefaultsFolder = $magicRootFolder . '/defaults';
 

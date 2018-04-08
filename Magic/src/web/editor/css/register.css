@@ -1,0 +1,28 @@
+#registration {
+    margin: 2em;
+    font-size: 2em;
+}
+
+#registrationTitle {
+    font-weight: bold;
+}
+
+.server {
+    font-style: italic;
+}
+
+#userId {
+    font-size: 1em;
+}
+
+#registration div {
+    margin-bottom: 1em;
+}
+
+label {
+    margin-right: 0.5em;
+}
+
+.invalid {
+    background-color: red;
+}

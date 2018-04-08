@@ -11,6 +11,7 @@ require_once('../config.inc.php');
     <link rel="stylesheet" href="css/reference.css"/>
     <script src="common/js/jquery-1.10.2.min.js"></script>
     <script src="common/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="common/js/loading.js"></script>
     <script src="js/reference.js"></script>
     <?php if ($analytics) echo $analytics; ?>
 </head>
