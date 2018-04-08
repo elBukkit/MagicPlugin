@@ -1126,6 +1126,10 @@ public class MagicController implements MageController {
             getLogger().info("Elementals found, integrating.");
         }
 
+        // Check for Shopkeepers, this is an optimization to avoid scanning for metadata if the plugin is not
+        // present
+        hasShopkeepers = plugin.getServer().getPluginManager().isPluginEnabled("Shopkeepers");
+
         // Try to link to Citizens
         if (citizensEnabled) {
             try {
@@ -3380,12 +3384,17 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isNPC(Entity entity) {
-        // Does this still need to look specifically for Shopkeepers... ?
+        if (hasShopkeepers && entity.hasMetadata("shopkeeper")) {
+            return true;
+        }
         return citizens == null ? false : citizens.isNPC(entity);
     }
 
     @Override
     public boolean isStaticNPC(Entity entity) {
+        if (hasShopkeepers && entity.hasMetadata("shopkeeper")) {
+            return true;
+        }
         return citizens == null ? false : citizens.isStaticNPC(entity);
     }
 
@@ -5698,6 +5707,7 @@ public class MagicController implements MageController {
     private long                                resourcePackDelay           = 0;
     private Set<String>                         resolvingKeys               = new LinkedHashSet<>();
 
+    private boolean                             hasShopkeepers              = false;
     private FactionsManager                        factionsManager                = new FactionsManager();
     private LocketteManager                     locketteManager                = new LocketteManager();
     private WorldGuardManager                    worldGuardManager            = new WorldGuardManager();
