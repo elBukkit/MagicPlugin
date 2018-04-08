@@ -1,6 +1,5 @@
-#registrationDialog {
-    margin: 2em;
-    font-size: 2em;
+#registrationDialog div {
+    margin-bottom: 1em;
 }
 
 #registrationTitle {

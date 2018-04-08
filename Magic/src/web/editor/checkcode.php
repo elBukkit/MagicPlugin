@@ -29,7 +29,7 @@ $user = array(
     'id' => $userId,
     'code' => $userCode,
     'name' => $registered['name'],
-    'skin' => $registered['skin'],
+    'skin' => $registered['skin_url'],
 );
 
-echo json_encode(array('success' => true, 'user' => json_encode($user)));
+echo json_encode(array('success' => true, 'user' => $user));

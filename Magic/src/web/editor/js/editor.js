@@ -1,6 +1,10 @@
 $(document).ready(initialize);
 
+var saving = false;
 function save() {
+    if (saving) return;
+
+    saving = true;
     $("#saveButton").button('disable');
     $.ajax( {
         type: "POST",
@@ -11,6 +15,7 @@ function save() {
         dataType: 'json'
     }).done(function(response) {
         $("#saveButton").button('enable');
+        saving = false;
         if (!response.success) {
             alert("Save failed: " + response.message);
         }
@@ -20,14 +25,24 @@ function save() {
 function checkUser() {
     if (user.id == '') {
         $('#userName').text('Anonymous');
+        $('#userSkin').css('background-image', '');
+        $('#userOverlay').css('background-image', '');
         $("#saveButton").button('disable');
         $('#loginButton').show();
         $('#logoutButton').hide();
     }  else {
         $('#userName').text(user.name);
+        $('#userSkin').css('background-image', 'url("' + user.skin + '")');
+        $('#userOverlay').css('background-image', 'url("' + user.skin + '")');
         $("#saveButton").button('enable');
         $('#loginButton').hide();
         $('#logoutButton').show();
+    }
+}
+
+function checkKey(event) {
+    if (event.key == 's' && event.ctrlKey) {
+        save();
     }
 }
 
@@ -35,5 +50,6 @@ function initialize() {
     $("#saveButton").button().click(save);
     $('#logoutButton').click(logout);
     $('#loginButton').click(login);
+    $('#editor').keyup(checkKey);
     checkUser();
 }

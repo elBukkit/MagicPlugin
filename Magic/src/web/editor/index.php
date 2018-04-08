@@ -32,13 +32,19 @@ $user = getUser();
         <button type="button" id="saveButton">Save</button>
     </span>
     <span id="userInfo">
-        <span id="userName"></span><br/>
-        <span id="loginButton" style="display: none">
-            Log in to Save
-        </span>
-        <span id="logoutButton" style="display: none">
-            Log out
-        </span>
+        <div>
+            <span id="userSkin">&nbsp;</span>
+            <span id="userOverlay">&nbsp;</span>
+        </div>
+        <div>
+            <span id="userName"></span><br/>
+            <span id="loginButton" style="display: none">
+                Log in to Save
+            </span>
+            <span id="logoutButton" style="display: none">
+                Log out
+            </span>
+        </div>
     </span>
 </div>
 <textarea id="editor">
@@ -46,7 +52,7 @@ $user = getUser();
 </textarea>
 </div>
 
-<div id="registrationDialog" style="display:none">
+<div id="registrationDialog" title="Log In" style="display: none">
     <div id="registrationTitle">Please log into the <span class="server"><?= $sandboxServerURL ?></span>s server and register</div>
     <div>
         <label for="userId">In-Game Name:</label><input type="text" id="userId">

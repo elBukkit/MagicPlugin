@@ -30,7 +30,34 @@
     flex-basis: 100%;
     text-align: right;
     margin-right: 1em;
-    margin-right: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end
+}
+
+#userName {
+    padding-left: 0.5em;
+}
+
+#userSkin {
+    height: 32px;
+    width: 32px;
+    background-size: 256px 256px;
+    background-position: -32px -32px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    position: relative;
+    left: 36px;
+    z-index: -10;
+}
+
+#userOverlay {
+    height: 32px;
+    width: 32px;
+    background-size: 256px 256px;
+    background-position: -160px -32px;
+    background-repeat: no-repeat;
+    display: inline-block;
 }
 
 #loginButton {

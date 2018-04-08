@@ -24,7 +24,7 @@ function getUser() {
         $registered = isset($registered[$userId]) ? $registered[$userId] : null;
         if ($registered && $registered['code'] === $userCode) {
             $user['name'] = $registered['name'];
-            $user['skin'] = $registered['skin'];
+            $user['skin'] = $registered['skin_url'];
         }
     }
 
