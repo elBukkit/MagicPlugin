@@ -280,10 +280,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
     }
 
     protected boolean onMagicRegister(Player player, final String code) {
-        String playerId = player.getUniqueId().toString();
-        String playerName = player.getName();
         Plugin plugin = controller.getPlugin();
-        Bukkit.getScheduler().runTaskAsynchronously(controller.getPlugin(), new RegisterTask(plugin, playerId, playerName, code));
+        Bukkit.getScheduler().runTaskAsynchronously(controller.getPlugin(), new RegisterTask(plugin, player, code));
         player.sendMessage(ChatColor.AQUA + "Sending registration code...");
         return true;
     }
