@@ -42,7 +42,6 @@ public class EntityFallingBlockData extends EntityExtraData {
     public void removed(Entity entity) {
     }
 
-    @Nullable
     public void setMaterialAndData(@Nonnull MaterialAndData material) {
         this.material = material;
     }
