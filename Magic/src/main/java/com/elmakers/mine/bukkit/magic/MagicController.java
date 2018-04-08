@@ -74,6 +74,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -1870,8 +1871,12 @@ public class MagicController implements MageController {
     }
 
     public void loadConfiguration(CommandSender sender) {
+        loadConfiguration(sender, false);
+    }
+
+    public void loadConfiguration(CommandSender sender, boolean forceSynchronous) {
         ConfigurationLoadTask loadTask = new ConfigurationLoadTask(this, sender);
-        if (initialized) {
+        if (initialized && !forceSynchronous) {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, loadTask);
         } else {
             loadTask.runNow();
@@ -2440,9 +2445,9 @@ public class MagicController implements MageController {
             Bukkit.getScheduler().cancelTask(autoSaveTaskId);
             autoSaveTaskId = 0;
         }
-        if (configCheckTaskId > 0) {
-            Bukkit.getScheduler().cancelTask(configCheckTaskId);
-            configCheckTaskId = 0;
+        if (configCheckTask != null) {
+            configCheckTask.cancel();
+            configCheckTask = null;
         }
 
         EffectPlayer.debugEffects(properties.getBoolean("debug_effects", false));
@@ -2500,6 +2505,7 @@ public class MagicController implements MageController {
         messageThrottle = properties.getInt("message_throttle", 0);
         soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
         fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
+        Wand.FILL_CREATOR = properties.getBoolean("fill_wand_creator", Wand.FILL_CREATOR);
         maxFillLevel = properties.getInt("fill_wand_level", maxFillLevel);
         welcomeWand = properties.getString("welcome_wand", "");
         maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
@@ -2837,7 +2843,7 @@ public class MagicController implements MageController {
         int configUpdateInterval = properties.getInt("config_update_interval");
         if (configUpdateInterval > 0 && !configUpdateFile.isEmpty()) {
             final ConfigCheckTask configCheck = new ConfigCheckTask(this, configUpdateFile);
-            configCheckTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, configCheck,
+            configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
                 configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
         }
     }
@@ -5555,7 +5561,7 @@ public class MagicController implements MageController {
     private float                                 cooldownReduction                = 0.0f;
     private int                                    autoUndo                        = 0;
     private int                                    autoSaveTaskId                    = 0;
-    private int                                    configCheckTaskId            = 0;
+    private BukkitTask                          configCheckTask                 = null;
     private boolean                             savePlayerData                  = true;
     private boolean                             externalPlayerData              = false;
     private boolean                             asynchronousSaving              = true;

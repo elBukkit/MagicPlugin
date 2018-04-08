@@ -118,4 +118,15 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     void getParameterOptions(Collection<String> examples, String parameterKey);
 
     Collection<Requirement> getRequirements();
+
+    /**
+     * This can hold the UUID of the owner of this spell, when using an editor
+     * that supports saving owned spells.
+     *
+     * @return
+     */
+    @Nullable
+    String getCreatorId();
+    @Nullable
+    String getCreator();
 }

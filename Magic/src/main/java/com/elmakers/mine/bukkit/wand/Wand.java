@@ -81,6 +81,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static final int HOTBAR_SIZE = 9;
     public static final int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
     public static final float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
+    public static boolean FILL_CREATOR = false;
     public static Vector DEFAULT_CAST_OFFSET = new Vector(0, 0, 0.5);
     public static String DEFAULT_WAND_TEMPLATE = "default";
     private static int WAND_VERSION = 6;
@@ -3534,11 +3535,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public boolean fill(Player player, int maxLevel) {
+        String mageId = mage.getId();
         closeInventory();
         Collection<String> currentSpells = new ArrayList<>(getSpells());
         for (String spellKey : currentSpells) {
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
-            if (!spell.hasCastPermission(player))
+            boolean removeSpell = !spell.hasCastPermission(player);
+            String creatorId = spell.getCreatorId();
+            removeSpell = removeSpell || (FILL_CREATOR && (creatorId == null || !mageId.equals(creatorId)));
+            if (removeSpell)
             {
                 removeSpell(spellKey);
             }
@@ -3560,6 +3565,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             {
                 continue;
             }
+            String creatorId = spell.getCreatorId();
+            if (FILL_CREATOR && (creatorId == null || !mageId.equals(creatorId)))
+            {
+                continue;
+            }
             if (spell.hasCastPermission(player) && spell.hasIcon() && !spell.isHidden())
             {
                 addSpell(key);
@@ -3567,8 +3577,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         this.mage = mage;
 
-        if (autoFill) setProperty("fill", false);
-        autoFill = false;
+        if (!FILL_CREATOR) {
+            if (autoFill) setProperty("fill", false);
+            autoFill = false;
+        }
         saveState();
 
         return true;
@@ -3631,7 +3643,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             potionEffectLocation.setX(potionEffectLocation.getX() + random.nextDouble() - 0.5);
             potionEffectLocation.setY(potionEffectLocation.getY() + random.nextDouble() * player.getEyeHeight());
             potionEffectLocation.setZ(potionEffectLocation.getZ() + random.nextDouble() - 0.5);
-            ParticleEffect.SPELL_MOB.display(potionEffectLocation, effectColor.getColor(), 24);
+            ParticleEffect.ENTITY_EFFECT.display(potionEffectLocation, effectColor.getColor(), 24);
         }
 
         Location location = mage.getLocation();

@@ -173,6 +173,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     private String progressDescription;
     private String upgradeDescription;
     private String usage;
+    private String creatorId;
+    private String creatorName;
     private double worth;
     private int earns;
     private Color color;
@@ -841,6 +843,10 @@ public class BaseSpell implements MageSpell, Cloneable {
         description = controller.getMessages().get("spells." + baseKey + ".description", "");
         extendedDescription = controller.getMessages().get("spells." + baseKey + ".extended_description", "");
         usage = controller.getMessages().get("spells." + baseKey + ".usage", "");
+
+        // Owner information for editor use and fill_wand_creator
+        creatorName = node.getString("creator");
+        creatorId = node.getString("creator_id");
 
         // Upgrade path information
         // The actual upgrade spell will be set externally.
@@ -2921,5 +2927,17 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public boolean isDestructible(Block block) {
         return false;
+    }
+
+    @Override
+    @Nullable
+    public String getCreator() {
+        return creatorName;
+    }
+
+    @Override
+    @Nullable
+    public String getCreatorId() {
+        return creatorId;
     }
 }
