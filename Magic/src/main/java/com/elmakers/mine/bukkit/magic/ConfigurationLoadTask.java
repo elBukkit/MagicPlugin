@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 public class ConfigurationLoadTask implements Runnable {
     private final MagicController controller;
     private final CommandSender sender;
+    private static final Object loadLock = new Object();
 
     protected ConfigurationSection configuration;
     protected ConfigurationSection messages;
@@ -32,15 +33,19 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     public void runNow() {
-        run(true);
+        synchronized (loadLock) {
+            run(true);
+        }
     }
 
     @Override
     public void run() {
-        run(false);
+        synchronized (loadLock) {
+            run(false);
+        }
     }
 
-    public synchronized void run(boolean synchronous) {
+    private void run(boolean synchronous) {
         success = true;
         Logger logger = controller.getLogger();
 
