@@ -2,7 +2,7 @@
 
 require_once('config.inc.php');
 
-require_once('spyc.php');
+require_once('common/spyc.php');
 
 function parseConfigFile($name, $loadDefaults, $disableDefaults = false) {
 	global $magicDefaultsFolder;
