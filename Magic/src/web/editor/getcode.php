@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 if (!isset($_REQUEST['user'])) {
     die(json_encode(array('success' => false, 'message' => 'Missing user parameter')));
 }
