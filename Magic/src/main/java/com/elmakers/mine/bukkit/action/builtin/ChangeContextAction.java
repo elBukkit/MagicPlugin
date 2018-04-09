@@ -155,6 +155,10 @@ public class ChangeContextAction extends CompoundAction {
                 context.getBrush().setTarget(current, targetLocation);
             }
         }
+        if (sourceDirectionIsTarget && targetEntity != null)
+        {
+            sourceLocation.setDirection(targetEntity.getLocation().getDirection());
+        }
         if (sourcePitch != null)
         {
             sourceLocation.setPitch((float)(double)sourcePitch);
@@ -308,10 +312,6 @@ public class ChangeContextAction extends CompoundAction {
         if (sourceIsTarget)
         {
             sourceEntity = targetEntity;
-        }
-        if (sourceDirectionIsTarget && targetEntity != null)
-        {
-            sourceLocation.setDirection(targetEntity.getLocation().getDirection());
         }
         createActionContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
         if (targetSelf != null)
