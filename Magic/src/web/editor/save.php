@@ -17,16 +17,16 @@ if (!isset($_REQUEST['spell'])) {
 }
 
 $spell = $_REQUEST['spell'];
-$spell = yaml_parse($spell);
-if (!$spell) {
+$spells = yaml_parse($spell);
+if (!$spells) {
     die(json_encode(array('success' => false, 'message' => 'Invalid spell')));
 }
 
-if (count($spell) != 1) {
+if (count($spells) != 1) {
     die(json_encode(array('success' => false, 'message' => 'Currently only one spell per file is supported')));
 }
 
-$key = array_keys($spell)[0];
+$key = array_keys($spells)[0];
 $spellFile = "$sandboxServer/plugins/Magic/spells/$key.yml";
 if (file_exists($spellFile)) {
     $existing = file_get_contents($spellFile);
@@ -38,12 +38,17 @@ if (file_exists($spellFile)) {
     }
 }
 
-$spell['owner_id'] = $user['id'];
-$spell['owner_name'] = $user['name'];
+foreach ($spells as $key => $spell) {
+    $spell['creator_id'] = $user['id'];
+    $spell['creator_name'] = $user['name'];
+    $spells[$key] = $spell;
+}
 
-$spell = yaml_emit_clean($spell);
+$spells = yaml_emit_clean($spells);
 
-file_put_contents($spellFile, $spell);
+if (file_put_contents($spellFile, $spells) === FALSE) {
+    die(json_encode(array('success' => false, 'message' => 'Could not write to file ' . $spellFile)));
+}
 
 $updated = 'user_id: ' . $user['id'];
 file_put_contents("$sandboxServer/plugins/Magic/data/updated.yml", $updated);
