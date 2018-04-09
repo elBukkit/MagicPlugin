@@ -1,5 +1,6 @@
 trinketshop:
     inherit: buyshop
+    hidden: true
     parameters:
         items:
         - skull_ale

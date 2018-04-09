@@ -1,4 +1,5 @@
 spsellshop:
+    hidden: true
     inherit: sellshop
     parameters:
         items:

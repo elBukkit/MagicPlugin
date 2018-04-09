@@ -1,4 +1,5 @@
 woolshop:
+    hidden: true
     inherit: buyshop
     parameters:
         items:
