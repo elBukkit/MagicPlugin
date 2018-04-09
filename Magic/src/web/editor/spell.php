@@ -9,8 +9,16 @@ if (!$sandboxServer) {
 if (!isset($_REQUEST['key'])) {
     die(json_encode(array('success' => false, 'message' => 'Missing key parameter')));
 }
-$spellFolder = "$sandboxServer/plugins/Magic/spells";
-$spellFile = file_get_contents($spellFolder . '/' . $_REQUEST['key'] . '.yml');
+
+$key = $_REQUEST['key'];
+if (strpos($key, 'default.') === 0) {
+    $key = substr($key, 8);
+    $defaultsFolder = "$magicRootFolder/defaults/spells";
+    $spellFile = file_get_contents($defaultsFolder . '/' . $key . '.yml');
+} else {
+    $spellFolder = "$sandboxServer/plugins/Magic/spells";
+    $spellFile = file_get_contents($spellFolder . '/' . $key . '.yml');
+}
 
 $spellFile = yaml_parse($spellFile);
 

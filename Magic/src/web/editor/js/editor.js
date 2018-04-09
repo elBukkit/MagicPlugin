@@ -7,6 +7,7 @@ function save() {
     if (saving) return;
 
     saving = true;
+    spellFiles = null;
     $("#saveButton").button('disable');
     $.ajax( {
         type: "POST",
@@ -82,6 +83,7 @@ function load() {
 
     $("#loadSpellDialog").dialog({
       modal: true,
+      width: 'auto',
       buttons: {
         Cancel: function() {
             $(this).dialog("close");
@@ -120,7 +122,7 @@ function loadFile(fileName) {
 
 function populateSpellFiles() {
     var select = $('#loadSpellSelect');
-    select.empty;
+    select.empty();
 
     spellFiles.sort(function(a, b) {
         var aIsDefault = (a.creator_id == '');
@@ -141,15 +143,25 @@ function populateSpellFiles() {
     });
     var owned = false;
     var unowned = false;
+    var defaults = false;
     for (var i = 0; i < spellFiles.length; i++) {
         var spell = spellFiles[i];
-        var spellName = spell.key + " : " + spell.name + " : " + spell.creator_name + " : " + spell.description;
+        var key = spell.key;
+        var isDefault = false;
+        if (key.startsWith("default.")) {
+            isDefault = true;
+            key = key.substr(8);
+        }
+        var spellName = key + " : " + spell.name + " : " + spell.creator_name + " : " + spell.description;
         if (!owned && spell.creator_id != '' && spell.creator_id == user.id) {
             owned = true;
             select.append($('<optgroup>').prop("label", "Your Spells"));
         } else if (!unowned && owned && (spell.creator_id == ''|| spell.creator_id !== user.id)) {
             unowned = true;
             select.append($('<optgroup>').prop("label", "Other Sandbox Spells"));
+        } else if (!defaults && isDefault) {
+            defaults = true;
+            select.append($('<optgroup>').prop("label", "Default Spells"));
         }
         var option = $('<option>').val(spell.key).text(spellName);
         select.append(option);

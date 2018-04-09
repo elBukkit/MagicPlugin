@@ -91,7 +91,7 @@ $user = getUser();
 </div>
 
 <div id="loadSpellDialog" title="Load Spell" style="display:none">
-    <select id="loadSpellSelect" size="10">
+    <select id="loadSpellSelect" size="10" style="max-width: 50em;">
 
     </select>
 </div>
