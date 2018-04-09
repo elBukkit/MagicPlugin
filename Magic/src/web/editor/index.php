@@ -27,29 +27,44 @@ $user = getUser();
 </head>
 <body>
 <div id="container">
-<div id="header">
-    <span>
-        <button type="button" id="saveButton">Save</button>
-    </span>
-    <span id="userInfo">
-        <div>
-            <span id="userSkin">&nbsp;</span>
-            <span id="userOverlay">&nbsp;</span>
-        </div>
-        <div>
-            <span id="userName"></span><br/>
-            <span id="loginButton" style="display: none">
-                Login
-            </span>
-            <span id="logoutButton" style="display: none">
-                Logout
-            </span>
-        </div>
-    </span>
-</div>
-<textarea id="editor">
-<?php echo file_get_contents("$sandboxServer/plugins/Magic/spells.yml") ?>
-</textarea>
+    <div id="header">
+        <span>
+            <button type="button" id="saveButton">Save</button>
+        </span>
+        <span>
+            <button type="button" id="loadButton">Load</button>
+        </span>
+        <span>
+            <button type="button" id="newButton">New</button>
+        </span>
+        <span id="modeSelector">
+            <input type="radio" name="editorMode" id="editorModeButton"><label for="editorModeButton">Editor</label>
+            <input type="radio" name="editorMode" id="codeModeButton" checked="checked"><label for="codeModeButton">Code</label>
+        </span>
+        <span id="userInfo">
+            <div>
+                <span id="userSkin">&nbsp;</span>
+                <span id="userOverlay">&nbsp;</span>
+            </div>
+            <div>
+                <span id="userName"></span><br/>
+                <span id="loginButton" style="display: none">
+                    Login
+                </span>
+                <span id="logoutButton" style="display: none">
+                    Logout
+                </span>
+            </div>
+        </span>
+    </div>
+    <div id="guiEditor" style="display: none">
+        Coming Soon (ish)!
+    </div>
+    <div id="codeEditor">
+        <textarea id="editor">
+        <?php echo file_get_contents("$sandboxServer/plugins/Magic/spells.yml") ?>
+        </textarea>
+    </div>
 </div>
 
 <div id="registrationDialog" title="Log In" style="display: none">
@@ -73,6 +88,12 @@ $user = getUser();
   <div class="code">
     /magic register <span id="codeDiv"></span>
   </div>
+</div>
+
+<div id="loadSpellDialog" title="Load Spell" style="display:none">
+    <select id="loadSpellSelect" size="10">
+
+    </select>
 </div>
 </body>
 </html>

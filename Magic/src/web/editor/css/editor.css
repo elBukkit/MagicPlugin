@@ -14,16 +14,23 @@
     flex-basis: 100%;
 }
 
+#codeEditor {
+    width: 100%;
+    flex-basis: 100%;
+    display: flex;
+}
+
+#guiEditor {
+    width: 100%;
+    flex-basis: 100%;
+    display: flex;
+}
+
 #header {
     width: 100%;
     display: flex;
     flex-direction: row;
     margin-bottom: 4px;
-}
-
-#saveButton {
-    width: 8em;
-    height: 2em;
 }
 
 #userInfo {
@@ -73,4 +80,9 @@
     color: blue;
     font-size: 0.75em;
     cursor: pointer;
+}
+
+#modeSelector {
+    margin-left: 2em;
+    white-space: nowrap;
 }
