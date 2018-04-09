@@ -18,8 +18,7 @@ function getUser() {
 
     $registeredFile = "$sandboxServer/plugins/Magic/data/registered.yml";
     if (file_exists($registeredFile) && $userId && $userCode) {
-        require_once('common/spyc.php');
-        $registered = $config = spyc_load_file($registeredFile);
+        $registered = $config = yaml_parse_file($registeredFile);
 
         $registered = isset($registered[$userId]) ? $registered[$userId] : null;
         if ($registered && $registered['code'] === $userCode) {

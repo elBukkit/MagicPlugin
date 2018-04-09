@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 if (!isset($_REQUEST['user'])) {
     die(json_encode(array('success' => false, 'message' => 'Missing user parameter')));
 }
@@ -15,8 +16,7 @@ if (!file_exists($registeredFile)) {
     die(json_encode(array('success' => false, 'message' => 'Missing registration file')));
 }
 
-require_once('common/spyc.php');
-$registered = spyc_load_file($registeredFile);
+$registered = yaml_parse_file($registeredFile);
 $registered = isset($registered[$userId]) ? $registered[$userId] : null;
 if (is_null($registered) || $registered['code'] !== $userCode) {
     die(json_encode(array('success' => false, 'message' => 'Incorrect code')));
