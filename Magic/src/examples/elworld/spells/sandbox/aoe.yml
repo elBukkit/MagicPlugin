@@ -1,0 +1,29 @@
+aoe:
+    actions:
+        cast:
+          - class: AreaOfEffect
+            radius: 5
+            actions:
+            - class: ChangeContext
+              source_is_target: true
+              source_direction_is_target: true
+              source_pitch_min: -45
+              source_pitch_max: -45
+              actions:
+              - class: Repeat
+                actions:
+                - class: Velocity
+                  speed: 5
+                  push: 0
+                - class: Delay
+                  delay: 100
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer_crack
+           sound_volume: 1
+           particle: sweep_attack
+           location: target
+    parameters:
+        target: self
+        repeat: 4

@@ -1,0 +1,24 @@
+aj2:
+  creator_id: "4cb358ae-719c-4423-93c7-8769ce46e9c3"
+  icon: diamond_axe:5
+  parameters:
+    target: block
+    range: 20
+  effects:
+    cast:
+    -  location: target
+       effectlib:
+         class: Modified
+         duration: 3000
+         period: 3
+         parameters:
+           radius: "(t/i)*10"
+         effect:
+           class: Helix
+           particle: spell_witch
+           particleCount: 2
+           particleOffsetX: 0.2
+           particleOffsetY: 0.01
+           particleOffsetZ: 0.2
+           updateLocations: false
+           particles: 20

@@ -1,0 +1,40 @@
+
+aj3:
+  creator_id: 892bba3e-76c1-4cd4-97cb-bfa8221e2332
+  name: flinger
+  icon: diamond_axe:32
+  icon_url: http://textures.minecraft.net/texture/5d6c6eda942f7f5f71c3161c7306f4aed307d82895f9d2b07ab4525718edc5
+  actions:
+    cast:
+    - class: Velocity
+    - class: ModifyBlock
+  effects:
+    cast:
+    - sound: ENTITY_COW_HURT
+    - location: target
+      effectlib:
+        class: Modified
+        effect:
+          class: Sphere
+          particle: spell_witch
+          particles: 5
+          particleCount: 10
+          particleOffsetX: 1
+          particleOffsetY: 1
+          particleOffsetZ: 1
+          color: "0000FF"
+        parameters:
+          # for 100 iterations, go from radius 10 to 0
+          # 10 / 100 = 0.1
+          radius: "sin(t/20)*5"
+  parameters:
+    target: other
+    range: 30
+    allow_max_range: true
+    type: cow
+    set_target: true
+    speed: 4
+    direction: 0,1,0
+    brush: erase
+    falling: true
+    falling_velocity: 0,1,0

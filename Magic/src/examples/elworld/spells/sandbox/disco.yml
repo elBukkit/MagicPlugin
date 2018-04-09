@@ -1,0 +1,17 @@
+disco:
+  creator_id: "4cb358ae-719c-4423-93c7-8769ce46e9c3"
+  name: Disco Ball
+  icon: feather
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: DiscoBall
+        sphere_particle: end_rod
+        sphere_color: FFD700
+        sphere_radius: 1
+        sphere_particles: 200
+        line_particle: end_rod
+  parameters:
+    range: 10
+    allow_max_range: true

@@ -1,0 +1,21 @@
+ball:
+  name: Ball
+  icon: eye_of_ender
+  actions:
+    cast:
+    - class: Sphere
+      actions:
+      - class: ModifyBlock
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: Sphere
+        particle: end_rod
+        radius: 3
+  parameters:
+    range: 10
+    allow_max_range: true
+    brush: redstone_ore
+    radius: 3
+    destructible: "*"

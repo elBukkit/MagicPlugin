@@ -1,0 +1,12 @@
+cubes:
+  name: Cubes
+  icon: feather
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: Cube
+        particle: end_rod
+  parameters:
+    range: 10
+    allow_max_range: true
