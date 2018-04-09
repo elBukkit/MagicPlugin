@@ -1,3 +1,6 @@
+# No default anything
+load_default_configs: false
+
 # Set this to true to only fill wands with spells created by the player
 # Useful in sandbox configs
 fill_wand_creator: true
@@ -8,5 +11,4 @@ welcome_wand: sandbox
 # This can be used for a server that is hooked up with a live editor
 # The editor will touch this file, and the server will automatically
 # reload configurations when the configs have changed.
-config_update_file: updated.json
 config_update_interval: 2000
