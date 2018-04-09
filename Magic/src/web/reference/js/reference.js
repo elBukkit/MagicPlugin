@@ -305,7 +305,7 @@ function getSelectable(selectable, key) {
 function initialize() {
     $.ajax( {
         type: "GET",
-        url: "../meta.json",
+        url: "common/meta.json",
         dataType: 'json'
     }).done(function(meta) {
         // Populate tabs
