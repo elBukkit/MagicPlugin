@@ -8,55 +8,33 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Copyright Tyler Grissom 2018
- */
 public class ChatAction extends BaseSpellAction {
 
     private String message;
 
-    private List<String> randomizedMessages;
-
-    private boolean translateAltColorCodes;
-
-    private char altColorCode;
+    private String translate(String str) {
+        return ChatColor.translateAlternateColorCodes('&', str);
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
 
-        this.message = parameters.getString("message");
-        this.randomizedMessages = parameters.getStringList("randomized_messages");
-        this.translateAltColorCodes = parameters.getBoolean("translate_alt_color_codes", true);
+        this.message = context.getMessage(parameters.getString("message"), translate(parameters.getString("message")));
 
-        // Uhh, this is kind of terrible, but there doesn't appear to be a FileConfiguration#getChar or similar
+        List<String> l = parameters.getStringList("randomized_messages");
 
-        this.altColorCode = parameters.getString("alt_color_code", "&").charAt(0);
+        if (!l.isEmpty()) this.message = translate(l.get(context.getRandom().nextInt(l.size())));
     }
 
     @Override
     public SpellResult perform(CastContext context) {
-        if (!(context.getTargetEntity() instanceof Player)) return null;
+        if (!(context.getTargetEntity() instanceof Player)) return SpellResult.PLAYER_REQUIRED;
 
         Player p = ((Player) context.getTargetEntity());
 
-        if (randomizedMessages == null || randomizedMessages.isEmpty()) {
-            if (message == null) return SpellResult.FAIL;
-
-            if (translateAltColorCodes) message = ChatColor.translateAlternateColorCodes(altColorCode, message);
-
-            p.chat(message);
-        } else {
-            if (translateAltColorCodes) {
-                for (int i = 0; i < randomizedMessages.size(); i++) {
-                    randomizedMessages.set(i, ChatColor.translateAlternateColorCodes(altColorCode, randomizedMessages.get(i)));
-                }
-            }
-
-            p.chat(randomizedMessages.get(ThreadLocalRandom.current().nextInt(randomizedMessages.size())));
-        }
+        p.chat(message);
 
         return SpellResult.CAST;
     }
