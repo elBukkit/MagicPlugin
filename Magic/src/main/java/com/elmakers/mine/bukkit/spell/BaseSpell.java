@@ -85,6 +85,7 @@ import de.slikey.effectlib.math.EquationTransform;
 
 public class BaseSpell implements MageSpell, Cloneable {
     public static String DEFAULT_DISABLED_ICON_URL = "";
+    public static Material DEFAULT_SPELL_ICON = Material.STICK;
 
     public enum ToggleType { NONE, CANCEL, UNDO }
 
@@ -187,7 +188,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private Set<String> requiredUpgradeTags;
     private Collection<PrerequisiteSpell> requiredSpells;
     private List<SpellKey> removesSpells;
-    private MaterialAndData icon = new MaterialAndData(Material.AIR);
+    private MaterialAndData icon = new MaterialAndData(DEFAULT_SPELL_ICON);
     private MaterialAndData disabledIcon = null;
     private String iconURL = null;
     private String iconDisabledURL = null;

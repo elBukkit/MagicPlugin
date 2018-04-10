@@ -2639,6 +2639,13 @@ public class MagicController implements MageController {
             mobArenaManager.configure(mobArenaConfiguration);
         }
 
+        String defaultSpellIcon = properties.getString("default_spell_icon");
+        try {
+            BaseSpell.DEFAULT_SPELL_ICON = Material.valueOf(defaultSpellIcon.toUpperCase());
+        } catch (Exception ex) {
+            getLogger().warning("Invalid default_spell_icon: " + defaultSpellIcon);
+        }
+
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
         useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
