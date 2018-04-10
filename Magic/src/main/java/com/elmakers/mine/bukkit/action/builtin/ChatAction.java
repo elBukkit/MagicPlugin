@@ -7,11 +7,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ChatAction extends BaseSpellAction {
 
-    private String message;
+    @Nonnull
+    private String message =  "";
 
     private String translate(String str) {
         return ChatColor.translateAlternateColorCodes('&', str);
