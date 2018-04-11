@@ -2,14 +2,12 @@
 
 ## 7.4
  
- - Add /mage clear <skills> command for taking magic items away from a player
- 
+ - Death via boon = undo = resurrection but losing inventory?
+  
  - Unstashable wands aren't unstashable until held
  
  - Weird auto-targeting on gatling gun?
- 
- - Add path 2nd parameter to enchant command to stop when reaching end of a path
- 
+  
  - Optional lore on wands to say which classes they work with
  - Option for Selector for switch class rather than unlock class
      
