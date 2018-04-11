@@ -49,5 +49,6 @@ sandbox:
   icon: wood_hoe:6
   description: Contains all of the spells you have created
   mana: 1000
+  mana_max: 1000
   mana_regeneration: 10
   fill: true
