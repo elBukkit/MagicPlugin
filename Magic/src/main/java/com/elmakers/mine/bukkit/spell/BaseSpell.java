@@ -2905,7 +2905,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Nullable
     @Override
     public Double getAttribute(String attributeKey) {
-        Double data = mage.getAttribute(attributeKey);
+        Double data = mage == null ? null : mage.getAttribute(attributeKey);
         if (data == null && workingParameters != null && workingParameters.contains(attributeKey)) {
             data = workingParameters.getDouble(attributeKey);
         }
