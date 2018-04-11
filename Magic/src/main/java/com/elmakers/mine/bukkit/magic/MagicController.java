@@ -1131,23 +1131,18 @@ public class MagicController implements MageController {
         hasShopkeepers = plugin.getServer().getPluginManager().isPluginEnabled("Shopkeepers");
 
         // Try to link to Citizens
-        if (citizensEnabled) {
-            try {
-                Plugin citizensPlugin = plugin.getServer().getPluginManager().getPlugin("Citizens");
-                if (citizensPlugin != null) {
-                    citizens = new CitizensController(citizensPlugin);
-                } else {
-                    citizens = null;
-                    getLogger().info("Citizens not found, Magic trait unavailable.");
-                }
-            } catch (Throwable ex) {
+        try {
+            Plugin citizensPlugin = plugin.getServer().getPluginManager().getPlugin("Citizens");
+            if (citizensPlugin != null) {
+                citizens = new CitizensController(citizensPlugin, this, citizensEnabled);
+            } else {
                 citizens = null;
-                getLogger().warning("Error integrating with Citizens");
-                plugin.getLogger().warning(ex.getMessage());
+                getLogger().info("Citizens not found, Magic trait unavailable.");
             }
-        } else {
+        } catch (Throwable ex) {
             citizens = null;
-            getLogger().info("Citizens integration disabled.");
+            getLogger().warning("Error integrating with Citizens");
+            plugin.getLogger().warning(ex.getMessage());
         }
 
         // Placeholder API
