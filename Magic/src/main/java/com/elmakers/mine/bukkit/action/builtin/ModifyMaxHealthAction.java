@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
@@ -19,11 +20,13 @@ public class ModifyMaxHealthAction extends BaseSpellAction implements Listener {
      * The max health to be applied with this action.
      */
     private double health = 0.0;
+    private double healthScale = 0.0;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         health = parameters.getDouble("max_health", 0.0);
+        healthScale = parameters.getDouble("health_scale", 0.0);
     }
 
     @Override
@@ -42,6 +45,10 @@ public class ModifyMaxHealthAction extends BaseSpellAction implements Listener {
             li.setHealth(health);
         }
         li.setMaxHealth(health);
+        if (li instanceof Player && healthScale > 0) {
+            Player player = (Player)li;
+            player.setHealthScale(healthScale);
+        }
 
         return SpellResult.CAST;
     }
