@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
-public class ModifyMaxHealth extends BaseSpellAction implements Listener {
+public class ModifyMaxHealthAction extends BaseSpellAction implements Listener {
     /**
      * The max health to be applied with this action.
      */
