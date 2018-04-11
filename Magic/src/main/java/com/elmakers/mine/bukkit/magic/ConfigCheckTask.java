@@ -26,7 +26,6 @@ public class ConfigCheckTask implements Runnable {
             long modified = configCheckFile.lastModified();
             UUID modifiedUserId = null;
             if (lastModified != null && modified > lastModified) {
-                controller.getLogger().info("Config check file modified, reloading configuration");
                 try {
                     YamlConfiguration updated = new YamlConfiguration();
                     updated.load(configCheckFile);
@@ -37,22 +36,28 @@ public class ConfigCheckTask implements Runnable {
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.WARNING, "Error reading update file", ex);
                 }
-                controller.loadConfiguration(Bukkit.getConsoleSender(), true);
 
-                // The updating player should get their new spells
                 final Player player = modifiedUserId == null ? null : Bukkit.getPlayer(modifiedUserId);
-                final Mage mage = player == null ? null : controller.getRegisteredMage(player);
-                if (mage != null) {
-                    Bukkit.getScheduler().runTask(controller.getPlugin(), new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!player.hasPermission("Magic.notify")) {
-                                player.sendMessage(ChatColor.AQUA + "Spells reloaded.");
+
+                // Don't reload if the modifying player is not online
+                if (player != null || modifiedUserId == null) {
+                    controller.getLogger().info("Config check file modified, reloading configuration");
+                    controller.loadConfiguration(Bukkit.getConsoleSender(), true);
+
+                    // The updating player should get their new spells
+                    final Mage mage = player == null ? null : controller.getRegisteredMage(player);
+                    if (mage != null) {
+                        Bukkit.getScheduler().runTask(controller.getPlugin(), new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!player.hasPermission("Magic.notify")) {
+                                    player.sendMessage(ChatColor.AQUA + "Spells reloaded.");
+                                }
+                                mage.deactivate();
+                                mage.checkWand();
                             }
-                            mage.deactivate();
-                            mage.checkWand();
-                        }
-                    });
+                        });
+                    }
                 }
             }
             lastModified = modified;
