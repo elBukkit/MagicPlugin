@@ -1,6 +1,6 @@
 # CHANGELOG
 
-# 7.4
+# 7.3.8
 
  - Fix an unintentional behavioral change in undo animations that was introduced in 7.2
  - Add support for falling block projectiles
@@ -9,6 +9,9 @@
  - Add default_mage_class config option
  - Improve and optimize Citizens integration, target Sentinel NPCs by default
  - Add ModifyMaxHealth action
+ - Add ModifyMage action
+ - Add Chat action (thanks, MineStein!)
+ - Add bypass_cooldown parameter
 
 # 7.3.7
 

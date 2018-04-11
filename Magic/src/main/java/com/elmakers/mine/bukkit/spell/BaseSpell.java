@@ -258,6 +258,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private float                               consumeReduction        = 0;
 
     private boolean                             bypassMageCooldown      = false;
+    private boolean                             bypassCooldown          = false;
     private int                                 mageCooldown            = 0;
     private int                                 cooldown                = 0;
     private int                                 displayCooldown         = -1;
@@ -997,6 +998,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         // Preload some parameters
         parameters.wrap(node.getConfigurationSection("parameters"));
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
+        bypassCooldown = parameters.getBoolean("bypass_cooldown", false);
         warmup = parameters.getInt("warmup", 0);
         cooldown = parameters.getInt("cooldown", 0);
         cooldown = parameters.getInt("cool", cooldown);
@@ -1473,17 +1475,13 @@ public class BaseSpell implements MageSpell, Cloneable {
         double cooldownReduction = wand != null ? wand.getCooldownReduction() : mage.getCooldownReduction();
         cooldownReduction += this.cooldownReduction;
         spellData.setLastCast(System.currentTimeMillis());
-        if (!isCooldownFree && cooldown > 0) {
-            if (cooldownReduction < 1) {
-                int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
-                spellData.setCooldownExpiration(Math.max(spellData.getCooldownExpiration(), System.currentTimeMillis() + reducedCooldown));
-            }
+        if (!isCooldownFree && !bypassCooldown && cooldown > 0 && cooldownReduction < 1) {
+            int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
+            spellData.setCooldownExpiration(Math.max(spellData.getCooldownExpiration(), System.currentTimeMillis() + reducedCooldown));
         }
-        if (!isCooldownFree && mageCooldown > 0) {
-            if (cooldownReduction < 1) {
-                int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * mageCooldown);
-                mage.setRemainingCooldown(reducedCooldown);
-            }
+        if (!isCooldownFree && mageCooldown > 0 && cooldownReduction < 1 && !bypassMageCooldown) {
+            int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * mageCooldown);
+            mage.setRemainingCooldown(reducedCooldown);
         }
     }
 
@@ -2146,7 +2144,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected String getCooldownDescription(Messages messages, int cooldown, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
         CooldownReducer reducer = mageClass != null ? mageClass : (wand != null ? wand : mage);
         if (reducer != null) {
-            if (reducer.isCooldownFree()) {
+            if (reducer.isCooldownFree() || bypassCooldown) {
                 cooldown = 0;
             }
             double cooldownReduction = reducer.getCooldownReduction();
@@ -2249,7 +2247,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             Wand wand = mage.getActiveWand();
             if (wand != null && wand.isCooldownFree()) return 0;
         }
-        if (spellData.getCooldownExpiration() > 0)
+        if (spellData.getCooldownExpiration() > 0 && !bypassCooldown)
         {
             long now = System.currentTimeMillis();
             if (spellData.getCooldownExpiration() > now) {
