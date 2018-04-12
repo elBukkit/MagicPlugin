@@ -2,6 +2,8 @@
 
 # 7.4
 
+ - Wands will now cancel their passive particle effects when deactivated, allowing for long-running effects while held
+
 # 7.3.8
 
  - Fix an unintentional behavioral change in undo animations that was introduced in 7.2
