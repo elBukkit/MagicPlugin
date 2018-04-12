@@ -3,7 +3,7 @@
 	"textures": {
 		"particle": "items/custom/e_particle",
 		"texture1": "blocks/hardened_clay_stained_black",
-		"texture2": "items/spells/sharpensword",
+		"texture2": "items/spells/sharpen_sword",
 		"texture": "items/custom/e_texture",
 		"texture3": "items/custom/elfaura"
 	},
