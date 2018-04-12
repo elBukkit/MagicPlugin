@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -33,6 +34,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -46,6 +48,12 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     private int extraSlots = 0;
     private String inventoryTitle;
     private CastContext context;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        this.page = parameters.getInt("page", 1);
+    }
 
     @Override
     public SpellResult perform(CastContext context) {
@@ -185,10 +193,6 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     public SkillSelectorAction() {
     }
 
-    public void setPage(int page) {
-        this.page = page;
-    }
-
     protected void openInventory() {
         MageController apiController = context.getController();
         if (!(apiController instanceof MagicController)) return;
@@ -320,5 +324,22 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
     @Override
     public void dragged(InventoryDragEvent event) {
 
+    }
+
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters)
+    {
+        super.getParameterNames(spell, parameters);
+        parameters.add("page");
+    }
+
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
+    {
+        super.getParameterOptions(spell, parameterKey, examples);
+
+        if (parameterKey.equals("page")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
+        }
     }
 }

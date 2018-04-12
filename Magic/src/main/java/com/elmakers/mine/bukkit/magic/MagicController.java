@@ -2621,6 +2621,7 @@ public class MagicController implements MageController {
         createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
         defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
         skillInventoryRows = properties.getInt("skill_inventory_max_rows", skillInventoryRows);
+        skillsSpell = properties.getString("mskills_spell", skillsSpell);
         InventoryUtils.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", InventoryUtils.MAX_LORE_LENGTH);
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
@@ -5474,6 +5475,12 @@ public class MagicController implements MageController {
         return durability;
     }
 
+    @Override
+    @Nonnull
+    public String getSkillsSpell() {
+        return skillsSpell;
+    }
+
     /*
      * Private data
      */
@@ -5663,6 +5670,7 @@ public class MagicController implements MageController {
     private boolean                             useHeroesParties            = true;
     private boolean                             skillsUsePermissions        = false;
     private String                              heroesSkillPrefix           = "";
+    private String                              skillsSpell                 = "";
 
     // Synchronization
     private final Object                        saveLock                    = new Object();

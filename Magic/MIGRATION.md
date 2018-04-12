@@ -13,6 +13,7 @@
    - mana_regeneration_boost: "&eMana Regeneration Boost: $percent%"
    - sp_multiplier: "&6SP Earn Boost: $percent%"
  - EntityProjectile projectile_effects changed to projectile_potion_effects to avoid overlap
+ - The /mskills command now requires the skills spell to be enabled in your spell configs
 
 ## 7.3
 

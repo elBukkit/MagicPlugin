@@ -8,10 +8,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.action.CastContext;
-import com.elmakers.mine.bukkit.action.builtin.SkillSelectorAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public class MagicSkillsCommandExecutor extends MagicTabExecutor {
 
@@ -31,19 +30,27 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "This command may only be used in-game");
             return true;
         }
-        Mage mage = controller.getMage(sender);
-        SkillSelectorAction selector = new SkillSelectorAction();
-        int page = 1;
-        if (args.length > 0) {
-            try {
-                page = Integer.parseInt(args[0]);
-            } catch (Exception ex) {
-                sender.sendMessage(ChatColor.RED + "Expect page number, got " + args[0]);
-                return true;
-            }
+        String skillsSpell = api.getController().getSkillsSpell();
+        if (skillsSpell.isEmpty()) {
+            sender.sendMessage(ChatColor.RED + "This command has been disabled");
+            return true;
         }
-        selector.setPage(page);
-        selector.perform(new CastContext(mage));
+        Mage mage = controller.getMage(sender);
+        Spell spell = mage.getSpell(skillsSpell);
+        if (spell == null) {
+            sender.sendMessage(ChatColor.RED + "The skills selector is missing from spell configs");
+            return true;
+        }
+        boolean result;
+        if (args.length > 0) {
+            String[] parameters = {"page", args[0]};
+            result = spell.cast(parameters);
+        } else {
+            result = spell.cast();
+        }
+        if (!result) {
+            sender.sendMessage(ChatColor.RED + "Something went wrong showing the skill selector");
+        }
         return true;
     }
 

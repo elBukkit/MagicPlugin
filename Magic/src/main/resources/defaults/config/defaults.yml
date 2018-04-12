@@ -176,6 +176,7 @@ wand_unstashable: false
 default_skill_icon: stick
 default_spell_icon: eye_of_ender
 skill_inventory_max_rows: 6
+mskills_spell: skills
 
 # Control word-wrapping in various lore texts
 lore_wrap_limit: 32

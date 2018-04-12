@@ -470,4 +470,12 @@ public interface MageController {
     Collection<String> getLoadedExamples();
 
     double getBlockDurability(@Nonnull Block block);
+
+    /**
+     * Get the spell that should be cast when a player uses the /mskills command.
+     *
+     * @return The key of the skill selector spell, "skills" by default.
+     */
+    @Nonnull
+    String getSkillsSpell();
 }
