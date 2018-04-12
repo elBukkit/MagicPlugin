@@ -220,6 +220,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             return;
         }
         int invSize = (int)Math.ceil(numSlots / 9.0f) * 9;
+        invSize = Math.min(inventorySize, invSize);
         String title = inventoryTitle;
         title = title
                 .replace("$pages", Integer.toString(numPages))
