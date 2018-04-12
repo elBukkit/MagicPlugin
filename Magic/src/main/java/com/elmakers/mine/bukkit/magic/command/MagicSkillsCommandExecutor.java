@@ -41,15 +41,11 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "The skills selector is missing from spell configs");
             return true;
         }
-        boolean result;
         if (args.length > 0) {
             String[] parameters = {"page", args[0]};
-            result = spell.cast(parameters);
+            spell.cast(parameters);
         } else {
-            result = spell.cast();
-        }
-        if (!result) {
-            sender.sendMessage(ChatColor.RED + "Something went wrong showing the skill selector");
+            spell.cast();
         }
         return true;
     }

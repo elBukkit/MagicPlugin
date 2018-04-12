@@ -126,7 +126,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             }
         }
 
-        if (allSkills.size() == 0) {
+        if (allSkills.size() == 0 && extraSlots == 0) {
             player.sendMessage(messages.get("skills.none"));
             return SpellResult.NO_ACTION;
         }
@@ -213,7 +213,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         for (int i = startIndex; i <= maxIndex && i < allSkills.size(); i++) {
             skills.add(allSkills.get(i));
         }
-        if (skills.size() == 0)
+        if (skills.size() == 0 && extraSlots == 0)
         {
             String messageTemplate = controller.getMessages().get("skills.none_on_page", "$page");
             player.sendMessage(messageTemplate.replace("$page", Integer.toString(page)));
