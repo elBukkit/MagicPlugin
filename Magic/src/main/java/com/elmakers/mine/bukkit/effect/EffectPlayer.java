@@ -364,8 +364,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (requireEntity && sourceEntity == null) return;
 
         if (effectLib != null && effectLibConfig != null) {
-            EffectLibPlay play = new EffectLibPlay(effectLib.play(effectLibConfig, this, source, target, parameterMap));
-            if (currentEffects != null)
+            EffectLibPlay play = effectLib.play(effectLibConfig, this, source, target, parameterMap);
+            if (currentEffects != null && play != null)
             {
                 currentEffects.add(play);
             }

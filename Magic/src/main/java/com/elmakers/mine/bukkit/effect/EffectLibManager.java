@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -61,7 +60,7 @@ public class EffectLibManager {
     }
 
     @Nullable
-    public Effect play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, Map<String, String> parameterMap) {
+    public EffectLibPlay play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, Map<String, String> parameterMap) {
         if (parameterMap == null) {
             parameterMap = new HashMap<>();
         }
@@ -84,6 +83,10 @@ public class EffectLibManager {
 
         Effect effect = null;
         String effectClass = configuration.getString("class");
+        if (effectClass == null) {
+            plugin.getLogger().warning("An effectlib effect is defined without a class property");
+            return null;
+        }
         ParticleEffect particleEffect = player.overrideParticle(null);
         String effectOverride = player.getParticleOverrideName();
         if (effectOverride != null && effectOverride.isEmpty()) effectOverride = null;
@@ -123,7 +126,7 @@ public class EffectLibManager {
             plugin.getLogger().warning("Error playing effects of class: " + effectClass);
             ex.printStackTrace();
         }
-        return effect;
+        return effect == null ? null : new EffectLibPlay(effect);
     }
 
     public void cancel(Collection<Effect> effects) {
