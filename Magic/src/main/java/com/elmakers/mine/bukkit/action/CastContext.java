@@ -104,18 +104,6 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
         messageParameters = new HashMap<>();
     }
 
-    // FIXME: This constructor breaks the @Nonnull constraint on spell
-    public CastContext(@Nonnull Mage mage) {
-        super(mage, mage.getActiveWand());
-        this.entity = mage.getEntity();
-        this.location = null;
-        this.base = this;
-        this.result = SpellResult.NO_ACTION;
-        targetMessagesSent = new HashSet<>();
-        currentEffects = new ArrayList<>();
-        messageParameters = new HashMap<>();
-    }
-
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
         this(copy, copy.getEntity(), copy instanceof CastContext ? ((CastContext) copy).location : null);
     }
