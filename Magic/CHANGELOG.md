@@ -10,7 +10,7 @@
  - Improve and optimize Citizens integration, target Sentinel NPCs by default
  - Add ModifyMaxHealth action
  - Add ModifyMage action
- - Add Chat action (thanks, MineStein!)
+ - Add Chat and ClearChat actions (thanks, MineStein!)
  - Add bypass_cooldown parameter
 
 # 7.3.7
