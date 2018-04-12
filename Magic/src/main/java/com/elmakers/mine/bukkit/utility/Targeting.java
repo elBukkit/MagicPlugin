@@ -252,8 +252,7 @@ public class Targeting {
         target = overrideTarget(context, target);
 
         Mage mage = context.getMage();
-        if (mage != null && mage.getDebugLevel() > 15)
-        {
+        if (mage.getDebugLevel() > 15) {
             Location targetLocation = target.getLocation();
             String message = ChatColor.GREEN + "Targeted from " + ChatColor.GRAY + source.getBlockX()
                     + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY()
@@ -475,8 +474,7 @@ public class Targeting {
             }
 
             entities = CompatibilityUtils.getNearbyEntities(sourceLocation, queryRange.getX() / 2, queryRange.getY() / 2, queryRange.getZ() / 2);
-            if (mage != null && mage.getDebugLevel() > 16)
-            {
+            if (mage.getDebugLevel() > 16) {
                 mage.sendDebugMessage(ChatColor.GREEN + "Targeting " + ChatColor.GOLD + entities.size() + ChatColor.GREEN + " entities from "
                         + ChatColor.GRAY + source.getBlockX()
                         + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY()
@@ -490,8 +488,7 @@ public class Targeting {
             }
         }
 
-        if (debugMessage && mage != null && mage.getDebugLevel() > 17)
-        {
+        if (debugMessage && mage.getDebugLevel() > 17) {
             mage.sendDebugMessage(ChatColor.GREEN + "Targeting entities from "
                     + ChatColor.GRAY + source.getBlockX()
                     + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY()
@@ -523,8 +520,7 @@ public class Targeting {
                 targets.add(newScore);
                 requiredDebug = 11;
             }
-            if (mage != null && mage.getDebugLevel() > requiredDebug)
-            {
+            if (mage.getDebugLevel() > requiredDebug) {
                 String message = ChatColor.DARK_GREEN + "Target "
                         + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN
                         + ": " + ChatColor.YELLOW + newScore.getScore()

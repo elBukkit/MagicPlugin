@@ -42,10 +42,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
         targetSource = parameters.getBoolean("target_source", true);
 
         Mage mage = context.getMage();
-        if (mage != null)
-        {
-            radius = (int)(mage.getRadiusMultiplier() * radius);
-        }
+        radius = (int)(mage.getRadiusMultiplier() * radius);
 
         super.prepare(context, parameters);
     }

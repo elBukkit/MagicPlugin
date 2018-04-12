@@ -52,6 +52,7 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.google.common.base.Preconditions;
 
 public class CastContext extends EffectContext implements com.elmakers.mine.bukkit.api.action.CastContext {
     protected static Random random;
@@ -94,7 +95,7 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
 
     public CastContext(@Nonnull MageSpell spell) {
         super(spell.getMage(), spell.getMage().getActiveWand());
-        setSpell(spell);
+        this.spell = setSpell(spell);
         this.location = null;
         this.entity = null;
         this.base = this;
@@ -104,11 +105,14 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
         messageParameters = new HashMap<>();
     }
 
+    // FIXME: This constructor breaks the @Nonnull constraint on spell
+    @SuppressWarnings("deprecated")
     public CastContext(@Nonnull Mage mage) {
         this(mage, mage.getActiveWand());
     }
 
-    public CastContext(@Nonnull Mage mage, Wand wand) {
+    @Deprecated
+    private CastContext(@Nonnull Mage mage, Wand wand) {
         super(mage, wand);
         this.entity = mage.getEntity();
         this.location = null;
@@ -135,7 +139,7 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
         super(copy.getMage(), copy.getWand());
         this.location = sourceLocation;
         this.entity = sourceEntity;
-        this.setSpell((MageSpell)copy.getSpell());
+        this.spell = setSpell((MageSpell)copy.getSpell());
         this.targetEntity = copy.getTargetEntity();
         this.targetLocation = copy.getTargetLocation();
         this.undoList = copy.getUndoList();
@@ -166,8 +170,9 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
         }
     }
 
-    private void setSpell(MageSpell spell)
-    {
+    @Nonnull
+    private MageSpell setSpell(MageSpell spell) {
+        Preconditions.checkNotNull(spell);
         this.spell = spell;
         this.mageClass = (this.wand == null ? this.mage.getActiveClass() : this.wand.getMageClass());
         if (spell instanceof BaseSpell)
@@ -191,6 +196,7 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
         {
             this.brushSpell = (BrushSpell)spell;
         }
+        return spell;
     }
 
     @Nullable
@@ -320,7 +326,6 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
     }
 
     @Override
-    @Nullable
     public Spell getSpell() {
         return spell;
     }
@@ -707,23 +712,15 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
     }
 
     @Override
-    public void showMessage(String key, String def)
-    {
+    public void showMessage(String key, String def) {
         Mage mage = getMage();
-        if (mage != null)
-        {
-            mage.sendMessage(getMessage(key, def));
-        }
+        mage.sendMessage(getMessage(key, def));
     }
 
     @Override
-    public void showMessage(String message)
-    {
+    public void showMessage(String message) {
         Mage mage = getMage();
-        if (mage != null)
-        {
-            mage.sendMessage(message);
-        }
+        mage.sendMessage(message);
     }
 
     @Override
@@ -1033,7 +1030,7 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
             mage.registerForUndo(undoList);
         }
         result = result.max(initialResult);
-        if (spell != null) {
+        if (spell != null) { // TODO: Remove conditional when precondition is fixed
             mage.sendDebugMessage(ChatColor.WHITE + "Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result.name().toLowerCase(), 2);
             spell.finish(this);
         }

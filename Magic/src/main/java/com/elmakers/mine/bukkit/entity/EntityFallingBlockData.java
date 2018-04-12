@@ -10,16 +10,19 @@ import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.google.common.base.Verify;
 
 public class EntityFallingBlockData extends EntityExtraData {
-    public @Nonnull MaterialAndData material;
+    private @Nonnull MaterialAndData material;
 
     private EntityFallingBlockData(MaterialAndData material) {
         this.material = material;
     }
 
     public EntityFallingBlockData(ConfigurationSection configuration) {
-        material = ConfigurationUtils.getMaterialAndData(configuration, "material");
+        material = Verify.verifyNotNull(
+                ConfigurationUtils.getMaterialAndData(configuration, "material"),
+                "Missing material in configuration");
     }
 
     @SuppressWarnings("deprecation")

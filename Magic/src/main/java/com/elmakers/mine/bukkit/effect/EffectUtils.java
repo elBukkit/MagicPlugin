@@ -96,7 +96,7 @@ public class EffectUtils extends NMSUtils {
     public static FireworkEffect getFireworkEffect(CastContext context, Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType, Boolean flicker, Boolean trail) {
         Mage mage = context.getMage();
         Random random = context.getRandom();
-        Color wandColor = mage == null ? null : mage.getEffectColor();
+        Color wandColor = mage.getEffectColor();
         if (wandColor != null) {
             color1 = wandColor;
             color2 = wandColor.mixColors(color1, Color.WHITE);
