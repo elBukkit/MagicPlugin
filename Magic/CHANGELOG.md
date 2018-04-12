@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.4
+
 # 7.3.8
 
  - Fix an unintentional behavioral change in undo animations that was introduced in 7.2
