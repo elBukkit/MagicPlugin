@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.api.effect;
 
+import java.util.Collection;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -29,4 +31,8 @@ public interface EffectContext {
     Location getCastLocation();
     @Nullable
     Location getWandLocation();
+
+    void cancelEffects();
+    void trackEffects(EffectPlayer player);
+    Collection<EffectPlay> getCurrentEffects();
 }

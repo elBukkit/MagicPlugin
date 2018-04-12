@@ -134,7 +134,12 @@ public interface CastContext extends EffectContext {
     void playEffects(String key, float scale, Block sourceBlock);
     void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location target, Entity targetEntity);
     void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location target, Entity targetEntity, Block sourceBlock);
+
+    @Override
     void cancelEffects();
+    @Override
+    Collection<EffectPlay> getCurrentEffects();
+
     String getMessage(String key);
     String getMessage(String key, String def);
     @Nullable
@@ -181,7 +186,6 @@ public interface CastContext extends EffectContext {
     void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset);
     CastContext getBaseContext();
     Set<UUID> getTargetMessagesSent();
-    Collection<EffectPlay> getCurrentEffects();
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance);
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall);
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe);

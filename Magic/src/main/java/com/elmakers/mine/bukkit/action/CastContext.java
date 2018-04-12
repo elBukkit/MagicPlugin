@@ -34,7 +34,6 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -71,7 +70,6 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
     private Boolean targetCaster = null;
 
     private Set<UUID> targetMessagesSent = null;
-    private Collection<EffectPlay> currentEffects = null;
 
     private @Nonnull Spell spell;
     private BaseSpell baseSpell;
@@ -100,7 +98,6 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
         this.base = this;
         this.result = SpellResult.NO_ACTION;
         targetMessagesSent = new HashSet<>();
-        currentEffects = new ArrayList<>();
         messageParameters = new HashMap<>();
     }
 
@@ -495,7 +492,7 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
         for (EffectPlayer player : effects)
         {
             // Track effect plays for cancelling
-            player.setEffectPlayList(currentEffects);
+            trackEffects(player);
 
             // Set material and color
             player.setMaterial(brush != null ? brush : spell.getEffectMaterial());
@@ -590,14 +587,6 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
                 player.start(source, sourceEntity, target, targetEntity, targeted);
             }
         }
-    }
-
-    @Override
-    public void cancelEffects() {
-        for (EffectPlay player : currentEffects) {
-            player.cancel();
-        }
-        currentEffects.clear();
     }
 
     @Override
@@ -1060,11 +1049,6 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
     @Override
     public Set<UUID> getTargetMessagesSent() {
         return targetMessagesSent;
-    }
-
-    @Override
-    public Collection<EffectPlay> getCurrentEffects() {
-        return currentEffects;
     }
 
     @Nullable
