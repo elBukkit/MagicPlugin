@@ -79,6 +79,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Location location;
     protected Vector relativeLocation;
     protected boolean hasMoved = false;
+    protected boolean hasChangedHealth = false;
     protected boolean isTemporary = false;
     private boolean respawn = false;
     protected String name = null;
@@ -254,6 +255,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     protected void load(@Nonnull MageController controller, ConfigurationSection parameters) {
+        // This is required to allow changes to health
+        hasChangedHealth = true;
         name = parameters.getString("name");
         if (name != null) {
             name = ChatColor.translateAlternateColorCodes('&', name);
@@ -455,7 +458,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Override
     public double getHealth() {
-        return health;
+        return health == null ? 0 : health;
     }
 
     @Nullable
@@ -680,7 +683,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                         li.setMaxHealth(maxHealth);
                     }
                 }
-                if (health != null) {
+                if (health != null && hasChangedHealth) {
                     li.setHealth(Math.min(health, li.getMaxHealth()));
                 }
                 if (airLevel != null) {
@@ -764,6 +767,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public void setHasMoved(boolean moved) {
         this.hasMoved = moved;
+    }
+
+    @Override
+    public void setDamaged(boolean damaged) {
+        this.hasChangedHealth = damaged;
     }
 
     public void setHasPotionEffects(boolean changed) {

@@ -1,9 +1,7 @@
 # TODO
 
 ## 7.4
- 
- - Death via boon = undo = resurrection but losing inventory?
-  
+   
  - Unstashable wands aren't unstashable until held
  
  - Weird auto-targeting on gatling gun?

@@ -661,6 +661,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (data != null)
         {
             data.setRespawn(true);
+            data.setDamaged(true);
         }
         return data;
     }

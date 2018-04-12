@@ -24,6 +24,7 @@ public interface EntityData {
     ItemStack getItem();
     double getHealth();
     void setHasMoved(boolean hasMoved);
+    void setDamaged(boolean damaged);
     @Nullable
     Entity spawn();
     @Nullable
