@@ -15,6 +15,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
+import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
@@ -181,6 +182,10 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         Entity sourceEntity = mage.getEntity();
         for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects)
         {
+            EffectContext context = wand.getEffectContext();
+            // Track effect plays for cancelling
+            context.trackEffects(player);
+
             // Set scale
             player.setScale(scale);
 
@@ -189,7 +194,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             String overrideParticle = wand == null ? mage.getEffectParticleName() : wand.getEffectParticleName();
             player.setParticleOverride(overrideParticle);
 
-            Location source = wand == null ? null : player.getSourceLocation(wand.getEffectContext());
+            Location source = wand == null ? null : player.getSourceLocation(context);
             if (source == null) {
                 source = mage.getLocation();
             }

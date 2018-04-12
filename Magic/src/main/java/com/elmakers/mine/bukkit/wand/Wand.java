@@ -3870,6 +3870,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Play deactivate FX
         playPassiveEffects("deactivate");
 
+        // Cancel effects
+        if (effectContext != null) {
+            int cancelDelay = getInt("cancel_effects_delay", 0);
+            if (cancelDelay == 0) {
+                effectContext.cancelEffects();
+            } else {
+                Plugin plugin = controller.getPlugin();
+                final EffectContext context = effectContext;
+                plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        context.cancelEffects();
+                    }
+                }, cancelDelay * 20 / 1000);
+            }
+        }
+
         Mage mage = this.mage;
 
         if (isInventoryOpen()) {

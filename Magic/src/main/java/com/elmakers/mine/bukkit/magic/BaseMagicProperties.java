@@ -50,7 +50,7 @@ public class BaseMagicProperties implements MagicProperties {
             "cast_min_velocity", "cast_velocity_direction", "cast_min_bowpull",
             "hotbar_count", "hotbar",
             "icon", "icon_inactive", "icon_inactive_delay", "mode",
-            "active_effects",
+            "active_effects", "cancel_effects_delay",
             "brush_mode",
             "keep", "locked", "quiet", "force", "rename",
             "rename_description",
