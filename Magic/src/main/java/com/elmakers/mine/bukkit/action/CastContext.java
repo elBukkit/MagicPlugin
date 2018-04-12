@@ -106,14 +106,8 @@ public class CastContext extends EffectContext implements com.elmakers.mine.bukk
     }
 
     // FIXME: This constructor breaks the @Nonnull constraint on spell
-    @SuppressWarnings("deprecated")
     public CastContext(@Nonnull Mage mage) {
-        this(mage, mage.getActiveWand());
-    }
-
-    @Deprecated
-    private CastContext(@Nonnull Mage mage, Wand wand) {
-        super(mage, wand);
+        super(mage, mage.getActiveWand());
         this.entity = mage.getEntity();
         this.location = null;
         this.base = this;
