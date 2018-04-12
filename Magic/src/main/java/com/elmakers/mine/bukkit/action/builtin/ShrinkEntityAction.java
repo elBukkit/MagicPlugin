@@ -107,10 +107,8 @@ public class ShrinkEntityAction extends DamageAction
 
     protected void dropHead(CastContext context, Entity entity, String itemName) {
         ItemStack shrunkenHead = context.getController().getSkull(entity, itemName);
-        if (shrunkenHead != null) {
-            Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
-            location.getWorld().dropItemNaturally(location, shrunkenHead);
-        }
+        Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
+        location.getWorld().dropItemNaturally(location, shrunkenHead);
     }
 
     @Override

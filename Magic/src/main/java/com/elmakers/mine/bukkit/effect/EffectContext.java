@@ -9,13 +9,14 @@ import org.bukkit.entity.Entity;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.google.common.base.Preconditions;
 
 public class EffectContext implements com.elmakers.mine.bukkit.api.effect.EffectContext {
-    protected @Nonnull final Mage mage;
-    protected @Nullable final Wand wand;
+    protected final @Nonnull Mage mage;
+    protected final @Nullable Wand wand;
 
     public EffectContext(@Nonnull Mage mage, @Nullable Wand wand) {
-        this.mage = mage;
+        this.mage = Preconditions.checkNotNull(mage);
         this.wand = wand;
     }
 
