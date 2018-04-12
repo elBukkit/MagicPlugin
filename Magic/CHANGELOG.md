@@ -13,6 +13,7 @@
  - Add Chat and ClearChat actions (thanks, MineStein!)
  - Add bypass_cooldown parameter
  - Fix some issues with toggleable spells restoring health when toggled off
+ - Fix unstashable wands being stashable until held
 
 # 7.3.7
 

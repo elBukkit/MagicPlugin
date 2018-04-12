@@ -1787,44 +1787,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         WandTemplate wandTemplate = getTemplate();
 
-        // Add vanilla attributes
-        InventoryUtils.applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
-
-        // Add unstashable and unmoveable tags
-        if (getBoolean("unstashable") || (undroppable && Unstashable)) {
-            InventoryUtils.setMetaBoolean(item, "unstashable", true);
-        } else {
-            InventoryUtils.removeMeta(item, "unstashable");
-        }
-        if (getBoolean("unmoveable")) {
-            InventoryUtils.setMetaBoolean(item, "unmoveable", true);
-        } else {
-            InventoryUtils.removeMeta(item, "unmoveable");
-        }
-        if (undroppable) {
-            InventoryUtils.setMetaBoolean(item, "undroppable", true);
-        } else {
-            InventoryUtils.removeMeta(item, "undroppable");
-        }
-        if (keep) {
-            InventoryUtils.setMetaBoolean(item, "keep", true);
-        } else {
-            InventoryUtils.removeMeta(item, "keep");
-        }
-
-        // Add vanilla enchantments
-        ConfigurationSection enchantments = getConfigurationSection("enchantments");
-        InventoryUtils.applyEnchantments(item, enchantments);
-
-        // Add enchantment glow
-        if (enchantments == null || enchantments.getKeys(false).isEmpty()) {
-            if (glow) {
-                CompatibilityUtils.addGlow(item);
-            } else {
-                CompatibilityUtils.removeGlow(item);
-            }
-        }
-
         if (hasProperty("icon_inactive")) {
             String iconKey = getString("icon_inactive");
             if (wandTemplate != null) {
@@ -1875,6 +1837,44 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         if (hasProperty("upgrade_icon")) {
             upgradeIcon = new MaterialAndData(getString("upgrade_icon"));
+        }
+
+        // Add vanilla attributes
+        InventoryUtils.applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
+
+        // Add unstashable and unmoveable tags
+        if (getBoolean("unstashable") || (undroppable && Unstashable)) {
+            InventoryUtils.setMetaBoolean(item, "unstashable", true);
+        } else {
+            InventoryUtils.removeMeta(item, "unstashable");
+        }
+        if (getBoolean("unmoveable")) {
+            InventoryUtils.setMetaBoolean(item, "unmoveable", true);
+        } else {
+            InventoryUtils.removeMeta(item, "unmoveable");
+        }
+        if (undroppable) {
+            InventoryUtils.setMetaBoolean(item, "undroppable", true);
+        } else {
+            InventoryUtils.removeMeta(item, "undroppable");
+        }
+        if (keep) {
+            InventoryUtils.setMetaBoolean(item, "keep", true);
+        } else {
+            InventoryUtils.removeMeta(item, "keep");
+        }
+
+        // Add vanilla enchantments
+        ConfigurationSection enchantments = getConfigurationSection("enchantments");
+        InventoryUtils.applyEnchantments(item, enchantments);
+
+        // Add enchantment glow
+        if (enchantments == null || enchantments.getKeys(false).isEmpty()) {
+            if (glow) {
+                CompatibilityUtils.addGlow(item);
+            } else {
+                CompatibilityUtils.removeGlow(item);
+            }
         }
 
         // Check for path-based migration, may update icons
