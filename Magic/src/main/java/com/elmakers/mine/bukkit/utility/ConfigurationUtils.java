@@ -803,7 +803,7 @@ public class ConfigurationUtils extends ConfigUtils {
             for (int i = 0; i < extraParameters.length - 1; i += 2)
             {
                 if (extraParameters[i] == null || extraParameters[i].isEmpty()) continue;
-                parameters.set(extraParameters[i], extraParameters[i + 1]);
+                set(parameters, extraParameters[i], extraParameters[i + 1]);
             }
         }
     }
