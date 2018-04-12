@@ -29,7 +29,10 @@ import de.slikey.effectlib.util.ParticleEffect;
 public class EffectLibManager {
     private static EffectManager effectManager;
 
-    public EffectLibManager() {
+    private final Plugin plugin;
+
+    public EffectLibManager(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     public static EffectLibManager initialize(Plugin plugin) {
@@ -38,7 +41,7 @@ public class EffectLibManager {
             effectManager.setImageCacheFolder(new File(plugin.getDataFolder(), "data/imagemapcache"));
         }
 
-        return new EffectLibManager();
+        return new EffectLibManager(plugin);
     }
 
     public void enableDebug(boolean debug) {
@@ -117,7 +120,7 @@ public class EffectLibManager {
                 }
             }
         } catch (Throwable ex) {
-            Bukkit.getLogger().warning("Error playing effects of class: " + effectClass);
+            plugin.getLogger().warning("Error playing effects of class: " + effectClass);
             ex.printStackTrace();
         }
         return effect;
@@ -128,7 +131,7 @@ public class EffectLibManager {
             try {
                 effect.cancel();
             } catch (Throwable ex) {
-                Bukkit.getLogger().warning("Error cancelling effects");
+                plugin.getLogger().warning("Error cancelling effects");
                 ex.printStackTrace();
             }
         }
