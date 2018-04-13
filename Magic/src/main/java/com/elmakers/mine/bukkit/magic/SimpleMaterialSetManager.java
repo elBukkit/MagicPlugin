@@ -88,7 +88,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
                 materialSets.put(key, set);
             }
         }
-
     }
 
     private MaterialSet createMaterialSetFromString(String materialSet) {

@@ -137,7 +137,7 @@ public class MaterialSets {
 
         @Override
         public Collection<Material> getMaterials() {
-            return delegate.getMaterials();
+            return ImmutableList.of();
         }
 
         @Override
@@ -418,17 +418,9 @@ public class MaterialSets {
 
         public MaterialSet build() {
             boolean needMaterialList = !materials.isEmpty();
-            List<MaterialSet> simpleSets = new ArrayList<>();
-            List<MaterialSet> parentSets = new ArrayList<>();
             for (MaterialSet set : sets) {
-                if (set instanceof SimpleMaterialSet && !set.getMaterials().isEmpty()) {
-                    simpleSets.add(set);
-                } else {
-                    parentSets.add(set);
-                }
+                needMaterialList |= !set.getMaterials().isEmpty();
             }
-            needMaterialList |= !simpleSets.isEmpty();
-
 
             // No materials and a wildcard available
             // TODO: Not really sure what the expected behavior is with a union containing
@@ -448,7 +440,7 @@ public class MaterialSets {
                 materialsBuilder = ImmutableSet.builder();
                 materialsBuilder.addAll(this.materials);
 
-                for (MaterialSet set : simpleSets) {
+                for (MaterialSet set : sets) {
                     materialsBuilder.addAll(set.getMaterials());
                 }
 
@@ -479,7 +471,7 @@ public class MaterialSets {
             }
 
             return new SimpleMaterialSet(
-                    ImmutableList.copyOf(parentSets),
+                    ImmutableList.copyOf(sets),
                     newMaterials, newMaterialAndDatas);
         }
     }
