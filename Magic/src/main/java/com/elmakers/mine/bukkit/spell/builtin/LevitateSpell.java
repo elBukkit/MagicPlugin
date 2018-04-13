@@ -56,6 +56,7 @@ import com.elmakers.mine.bukkit.wand.Wand;
 
 import de.slikey.effectlib.util.ParticleEffect;
 
+@Deprecated
 public class LevitateSpell extends TargetingSpell implements Listener
 {
     private static final BlockFace[] CHECK_FACES = {BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH};
