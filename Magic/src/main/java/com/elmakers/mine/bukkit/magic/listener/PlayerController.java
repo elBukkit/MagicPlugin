@@ -674,6 +674,7 @@ public class PlayerController implements Listener {
         ItemStack pickup = item.getItemStack();
         if (NMSUtils.isTemporary(pickup) || item.hasMetadata("temporary"))
         {
+            item.removeMetadata("temporary", controller.getPlugin());
             item.remove();
             event.setCancelled(true);
             return;
