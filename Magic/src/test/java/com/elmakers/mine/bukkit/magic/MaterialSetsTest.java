@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -37,6 +39,25 @@ public class MaterialSetsTest {
         Block correct = stone();
         Mockito.when(correct.getData()).thenReturn((byte) 2);
         assertTrue(set.testBlock(correct));
+    }
+
+    @Test
+    public void testComplexSet() {
+        SimpleMaterialSetManager manager = new SimpleMaterialSetManager();
+        ConfigurationSection materialConfigs = new MemoryConfiguration();
+        materialConfigs.set("transparent", "air,water,lava,glass");
+        materialConfigs.set("liquid", "water,lava");
+        manager.loadMaterials(materialConfigs);
+
+        // Should contain liquid but not air or glass
+        MaterialSet set = manager.fromConfig("liquid,!transparent");
+        assertFalse(set.testMaterial(Material.AIR));
+        assertTrue(set.testMaterial(Material.WATER));
+
+        // Should contain none of the materials in either set
+        set = manager.fromConfig("!transparent,liquid");
+        assertFalse(set.testMaterial(Material.AIR));
+        assertFalse(set.testMaterial(Material.WATER));
     }
 
     private Block dirt() {
