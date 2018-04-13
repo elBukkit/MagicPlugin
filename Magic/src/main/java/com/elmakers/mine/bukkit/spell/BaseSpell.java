@@ -2352,7 +2352,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 toggleUndo = null;
             }
             if (toggle != ToggleType.NONE) {
-                 mage.cancelPending(getKey(), true);
+                mage.cancelPending(getSpellKey().getBaseKey(), true);
             }
         }
 
