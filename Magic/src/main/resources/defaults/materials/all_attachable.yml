@@ -1,0 +1,5 @@
+all_attachable:
+- attachable
+- attachable_wall
+- attachable_double
+- delayed
