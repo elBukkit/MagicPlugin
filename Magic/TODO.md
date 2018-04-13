@@ -2,8 +2,8 @@
 
 ## 7.4
    
- - Unstashable wands aren't unstashable until held
- 
+ - Why does breaking sand cause two sand blocks to break?
+ - Breaking cactus looks weird
  - Weird auto-targeting on gatling gun?
   
  - Optional lore on wands to say which classes they work with
@@ -15,6 +15,14 @@
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
+   
+## The great un-defaulting
+
+ - Move all survival-specific configs to a "survival" example
+ - Default configs will use example: survival
+ - Default configs retain spell defaults, path defaults, maybe base wand templates
+ - Using any of the "load_default_X: false" options will also skip loading example configs (?.. right?)
+ - Example configs can inherit from other examples, such as potter->survival
    
 ## Attributes
 
