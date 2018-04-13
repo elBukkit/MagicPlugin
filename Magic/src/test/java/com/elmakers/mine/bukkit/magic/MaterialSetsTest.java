@@ -42,6 +42,19 @@ public class MaterialSetsTest {
     }
 
     @Test
+    public void testNegatedSet() {
+        SimpleMaterialSetManager manager = new SimpleMaterialSetManager();
+        ConfigurationSection materialConfigs = new MemoryConfiguration();
+        materialConfigs.set("solid", "!air,water,lava,glass");
+        manager.loadMaterials(materialConfigs);
+
+        // Should contain none of the materials in the negated solid list
+        MaterialSet set = manager.getMaterialSet("solid");
+        assertFalse(set.testMaterial(Material.AIR));
+        assertFalse(set.testMaterial(Material.WATER));
+    }
+
+    @Test
     public void testComplexSet() {
         SimpleMaterialSetManager manager = new SimpleMaterialSetManager();
         ConfigurationSection materialConfigs = new MemoryConfiguration();
