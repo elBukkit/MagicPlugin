@@ -61,8 +61,6 @@ public class FlyAction extends BaseSpellAction {
             player.setAllowFlight(flying);
         }
 
-        if (flying != player.isFlying()) org.bukkit.Bukkit.getLogger().info("Toggle: " + flying);
-
         // Stop falling!
         if (flying) {
             Vector velocity = player.getVelocity();
