@@ -102,7 +102,7 @@ public class BlockSpell extends UndoableSpell {
                 parameters.getString("indestructible"),
                 indestructible);
 
-        destructible = materials.fromConfig(parameters.getString("destructible"));
+        destructible = materials.fromConfig(parameters.getString("destructible", parameters.getString("modifiable")));
 
         if (parameters.getBoolean("destructible_override", false)) {
             String destructibleKey = controller.getDestructibleMaterials(mage, mage.getLocation());
