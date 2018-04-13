@@ -1708,7 +1708,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             costReduction = 2;
             consumeReduction = 2;
         }
-        bypassCooldown = workingParameters.getBoolean("bypass_cooldown", false);
+        bypassCooldown = parameters.getBoolean("bypass_cooldown", false);
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
         cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
