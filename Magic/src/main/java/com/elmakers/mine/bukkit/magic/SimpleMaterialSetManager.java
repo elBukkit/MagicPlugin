@@ -34,12 +34,13 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
     @Override
     public MaterialSet getMaterialSet(String name) {
-        checkNotNull(name, "fallback");
+        checkNotNull(name, "name");
         return materialSets.get(name);
     }
 
     @Override
     public MaterialSet getMaterialSet(String name, MaterialSet fallback) {
+        checkNotNull(name, "name");
         checkNotNull(fallback, "fallback");
         MaterialSet set = getMaterialSet(name);
         return set != null ? set : fallback;
@@ -94,7 +95,12 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
         if (materialSet.equals("*")) {
             return MaterialSets.wildcard();
         }
+        String[] names = StringUtils.split(materialSet, ',');
+        return createMaterialSetFromStringList(Arrays.asList(names));
+    }
 
+    @Nullable
+    private MaterialSet parseMaterialSet(String materialSet) {
         boolean negate;
         String materialString;
         if (materialSet.startsWith("!")) {
@@ -105,18 +111,16 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
             negate = false;
         }
 
-        String[] names = StringUtils.split(materialString, ',');
-        MaterialSet created = createMaterialSetFromStringList(
-                Arrays.asList(names), true);
-        return negate ? created.not() : created;
+        MaterialSet existing = getMaterialSet(materialString);
+        if (existing == null) {
+            return null;
+        }
+
+        return negate ? existing.not() : existing;
     }
 
     @Nullable
-    private MaterialSet createMaterialSet(ConfigurationSection node,
-            String key) {
-        // TODO: Material sets can refer to other material sets.
-        // Those may not yet be available at this point.
-        // We should either fix this or throw a warning in the future.
+    private MaterialSet createMaterialSet(ConfigurationSection node, String key) {
         if (node.isString(key)) {
             return createMaterialSetFromString(node.getString(key));
         }
@@ -128,20 +132,16 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
             return null;
         }
 
-        return createMaterialSetFromStringList(materialData, false);
+        return createMaterialSetFromStringList(materialData);
     }
 
-    private MaterialSet createMaterialSetFromStringList(
-            List<String> names,
-            boolean resolveNames) {
-
+    private MaterialSet createMaterialSetFromStringList(List<String> names) {
         MaterialSets.Union union = MaterialSets.unionBuilder();
         for (String matName : names) {
-            MaterialSet resolved;
-            if (resolveNames
-                    && (resolved = materialSets.get(matName)) != null) {
+            MaterialSet resolved = parseMaterialSet(matName);
+            if (resolved != null) {
                 union.add(resolved);
-            } else if (matName.contains("|")) {
+            } else if (matName.contains("|") || matName.contains(":")) {
                 // TODO: Warn on invalid data
                 MaterialAndData material = ConfigurationUtils
                         .toMaterialAndData(matName);
