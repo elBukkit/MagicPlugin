@@ -95,8 +95,20 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
         if (materialSet.equals("*")) {
             return MaterialSets.wildcard();
         }
-        String[] names = StringUtils.split(materialSet, ',');
-        return createMaterialSetFromStringList(Arrays.asList(names));
+
+        boolean negate;
+        String materialString;
+        if (materialSet.startsWith("!")) {
+            materialString = materialSet.substring(1);
+            negate = true;
+        } else {
+            materialString = materialSet;
+            negate = false;
+        }
+
+        String[] names = StringUtils.split(materialString, ',');
+        MaterialSet created = createMaterialSetFromStringList(Arrays.asList(names));
+        return negate ? created.not() : created;
     }
 
     @Nullable
