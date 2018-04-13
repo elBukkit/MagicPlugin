@@ -27,6 +27,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
+import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -93,6 +94,16 @@ public class EntityController implements Listener {
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         if (forceSpawn) {
             event.setCancelled(false);
+        }
+    }
+
+    @EventHandler
+    public void onItemMerge(ItemMergeEvent event) {
+        Item itemOne = event.getEntity();
+        Item itemTwo = event.getTarget();
+
+        if (itemOne.hasMetadata("temporary") || itemTwo.hasMetadata("temporary")) {
+            event.setCancelled(true);
         }
     }
 
