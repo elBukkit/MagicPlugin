@@ -1,0 +1,51 @@
+marklocation:
+  name: Mark
+  icon: diamond_axe:149
+  icon_disabled: diamond_hoe:149
+  actions:
+      cast:
+      - class: Recall
+      - class: PlayEffects
+        effects: mark
+  effects:
+    mark:
+     - location: target
+       sound: magic.hit
+       sound_volume: 0.5
+       use_block_location: true
+       color_override: color
+       effectlib:
+         class: CubeEffect
+         iterations: 15
+         particle: redstone
+         color: "00FFAA"
+         edge_length: 1.2
+         enable_rotation: false
+         offset: 0.5,1.5,0.5
+         update_locations: false
+  parameters:
+    target: self
+    type: place
+    allow_marker: true
+    confirm_marker: false
+    loud: true
+    cooldown: 2000
+
+recallmark:
+  inherit: recall
+  name: Recall to Mark
+  icon: diamond_axe:149
+  icon_disabled: diamond_hoe:149
+  actions:
+      cast:
+      - class: Recall
+  parameters:
+    target: self
+    allow_marker: true
+    allow_cross_world: true
+    allow_spawn: false
+    allow_death: false
+    allow_wand: false
+    allow_home: false
+    allow_town: false
+    allow_fields: false

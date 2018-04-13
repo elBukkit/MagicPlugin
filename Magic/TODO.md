@@ -2,6 +2,9 @@
 
 ## 7.4
    
+ - MountArmorStand spells can go through regions. (brooms) 
+ - Dying while on armour stand respawns you on armour stand
+     
  - Why does breaking sand cause two sand blocks to break?
  - Breaking cactus looks weird
  - Weird auto-targeting on gatling gun?
@@ -23,6 +26,10 @@
  - Default configs retain spell defaults, path defaults, maybe base wand templates
  - Using any of the "load_default_X: false" options will also skip loading example configs (?.. right?)
  - Example configs can inherit from other examples, such as potter->survival
+ 
+ - As part of config re-work, it'd be really cool to support configs from remote repos....
+   Github has an API for fetching a list of files, maybe can use that?
+   https://api.github.com/repos/grisstyl/BetterPotter/contents/spells/spells
    
 ## Attributes
 

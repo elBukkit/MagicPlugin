@@ -3,6 +3,7 @@
 # 7.4
 
  - Wands will now cancel their passive particle effects when deactivated, allowing for long-running effects while held
+ - Fix wand effect bubbles having lost their color
 
 # 7.3.8
 

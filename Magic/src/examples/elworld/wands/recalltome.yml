@@ -1,0 +1,14 @@
+
+recalltome:
+  icon: book
+  name: Recall Tome
+  mode: cast
+  active_spell: recallmark
+  uses: 1
+
+marktome:
+  icon: book
+  name: Mark Tome
+  mode: cast
+  active_spell: marklocation
+  uses: 1
