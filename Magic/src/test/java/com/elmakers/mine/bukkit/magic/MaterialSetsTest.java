@@ -55,6 +55,32 @@ public class MaterialSetsTest {
     }
 
     @Test
+    public void testWildcardSets() {
+        SimpleMaterialSetManager manager = new SimpleMaterialSetManager();
+        ConfigurationSection materialConfigs = new MemoryConfiguration();
+        materialConfigs.set("all", "*");
+        materialConfigs.set("alsoall", "*,stone");
+        materialConfigs.set("alwaysall", "stone,*,!all");
+        materialConfigs.set("nothing", "!*");
+        materialConfigs.set("alsonothing", "!all");
+        manager.loadMaterials(materialConfigs);
+
+        // Should contain everything, just testing for air.
+        MaterialSet set = manager.getMaterialSet("all");
+        assertTrue(set.testMaterial(Material.AIR));
+        set = manager.getMaterialSet("alsoall");
+        assertTrue(set.testMaterial(Material.AIR));
+        set = manager.getMaterialSet("alwaysall");
+        assertTrue(set.testMaterial(Material.AIR));
+
+        // Should contain nothing
+        set = manager.getMaterialSet("nothing");
+        assertFalse(set.testMaterial(Material.AIR));
+        set = manager.getMaterialSet("alsonothing");
+        assertFalse(set.testMaterial(Material.AIR));
+    }
+
+    @Test
     public void testComplexSet() {
         SimpleMaterialSetManager manager = new SimpleMaterialSetManager();
         ConfigurationSection materialConfigs = new MemoryConfiguration();
