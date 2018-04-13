@@ -417,20 +417,19 @@ public class MaterialSets {
         }
 
         public MaterialSet build() {
+            // If there is a wildcard in this union, the union is a wildcard.
+            if (wildcard) {
+                return wildcard();
+            }
+
             boolean needMaterialList = !materials.isEmpty();
             for (MaterialSet set : sets) {
                 needMaterialList |= !set.getMaterials().isEmpty();
             }
 
-            // No materials and a wildcard available
-            // TODO: Not really sure what the expected behavior is with a union containing
-            // a wildcard, shouldn't the result just always be a wildcard?
-            if (!needMaterialList) {
-                if (wildcard) {
-                    return wildcard();
-                } else if (sets.isEmpty() && materialAndDatas.isEmpty()) {
-                    return empty();
-                }
+            // Check for completely empty set
+            if (!needMaterialList && sets.isEmpty() && materialAndDatas.isEmpty()) {
+                return empty();
             }
 
             // Build the new set of materials
@@ -448,8 +447,6 @@ public class MaterialSets {
             } else {
                 newMaterials = ImmutableSet.of();
             }
-
-            // TODO: Don't bother with the rest when a wildcard is specified
 
             // Build the new set of material datas
             ImmutableList<MaterialAndData> newMaterialAndDatas;
