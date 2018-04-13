@@ -122,7 +122,13 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
             negate = false;
         }
 
-        MaterialSet existing = getMaterialSet(materialString);
+        MaterialSet existing = null;
+        if (materialSet.equals("*")) {
+            return MaterialSets.wildcard();
+        } else {
+            existing = getMaterialSet(materialString);
+        }
+
         if (existing == null) {
             return null;
         }
