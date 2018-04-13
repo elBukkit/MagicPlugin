@@ -5,8 +5,17 @@ superfly:
     icon_url: http://textures.minecraft.net/texture/d02585f4a2b47524541d67ae253cf21fde8eea1c21494f61df5f4929a76e0
     quick_cast: true
     category: staff
-    class: LevitateSpell
     worth: 1500
+    toggle: cancel
+    actions:
+       cast:
+       - class: Velocity
+         direction: 0,1,0
+         additive: true
+         speed: 2
+       - class: Delay
+         delay: 100
+       - class: Fly
     effects:
         cast:
         -  class: EffectSingle
@@ -16,5 +25,6 @@ superfly:
            sound: entity_enderdragon_flap
            sound_pitch: 0.2
     parameters:
+        target: self
         speed: 2.5
 

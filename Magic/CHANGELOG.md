@@ -4,6 +4,10 @@
 
  - Wands will now cancel their passive particle effects when deactivated, allowing for long-running effects while held
  - Fix wand effect bubbles having lost their color
+ - Improve support for complex combined material lists
+ - Levitate now has a height limit, increases with level up
+ - LevitateSpell is deprecated, please use the new Fly action instead
+ - Fix issues toggling off spells that have levelled up
 
 # 7.3.8
 

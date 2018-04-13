@@ -7,11 +7,20 @@ levitate:
     alias: fly
     category: master
     tags: noduel
-    class: LevitateSpell
     worth: 5000
     show_undoable: false
     quick_cast: true
     disable_mana_regeneration: true
+    toggle: cancel
+    actions:
+       cast:
+       - class: Velocity
+         direction: 0,1,0
+         additive: true
+         speed: 2
+       - class: Delay
+         delay: 100
+       - class: Fly
     effects:
         cast:
            - class: EffectSingle
@@ -63,12 +72,15 @@ levitate:
            particle_offset_y: 0.1
            radius: 4
     parameters:
+        target: self
+        max_height_above_ground: 8
+        max_height: 260
         speed: 0.2
         cooldown: 30000
     costs:
-        mana: 50
+        mana: 20
     active_costs:
-        mana: 100
+        mana: 10
 
 levitate|2:
     upgrade_required_path: master
@@ -76,6 +88,7 @@ levitate|2:
     parameters:
         speed: 0.5
         cooldown: 20000
+        max_height_above_ground: 12
 
 levitate|3:
     upgrade_required_path: engineer
@@ -83,6 +96,7 @@ levitate|3:
     parameters:
         speed: 0.75
         cooldown: 10000
+        max_height_above_ground: 16
 
 levitate|4:
     upgrade_required_path: engineer
@@ -90,13 +104,11 @@ levitate|4:
     parameters:
         speed: 1
         cooldown: 5000
-    active_costs:
-        mana: 150
+        max_height_above_ground: 24
 
 levitate|5:
     parameters:
         speed: 2
         cooldown: 1000
-    active_costs:
-        mana: 150
+        max_height_above_ground: 32
 

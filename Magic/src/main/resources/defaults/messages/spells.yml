@@ -1072,7 +1072,7 @@ spells:
         description: Levitate yourself up into the air
         cast: You feel lighter
         cancel: You feel heavier
-        upgrade_description: "Fly faster, reduced cooldown"
+        upgrade_description: "Fly faster and higher, reduced cooldown"
     boom:
         name: Boom
         description: Create an explosion
