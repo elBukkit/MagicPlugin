@@ -184,7 +184,7 @@ public class CustomProjectileAction extends CompoundAction
         // Mainly for legacy purposes, gravity is in terms of original speed.
         gravity *= speed;
 
-        tickSize = parameters.getDouble("tick_size",tickSize);
+        tickSize = parameters.getDouble("tick_size", tickSize);
         ignoreTargeting = parameters.getBoolean("ignore_targeting", ignoreTargeting);
         returnToCaster = parameters.getBoolean("return_to_caster", returnToCaster);
         resetTimeOnPathChange = parameters.getBoolean("reset_time_on_path_change", resetTimeOnPathChange);
