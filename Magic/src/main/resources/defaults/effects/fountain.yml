@@ -1,0 +1,4 @@
+fountain:
+ - effectlib:
+     class: Fountain
+     duration: 86400000

@@ -40,6 +40,7 @@ public interface EffectPlayer {
     boolean playsAtTarget();
     boolean playsAtAllTargets();
 
+    void start(EffectContext context);
     void start(Location origin, Location target);
     void start(Entity origin, Entity target);
     void start(Location origin, Entity originEntity, Location target, Entity targetEntity);

@@ -22,6 +22,11 @@ public class EffectContext implements com.elmakers.mine.bukkit.api.effect.Effect
         currentEffects = new ArrayList<>();
     }
 
+    public EffectContext(@Nonnull MageController controller, Location location) {
+        this(controller);
+        this.location = location;
+    }
+
     @Override
     @Nonnull
     public MageController getController() {

@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.item.ItemData;
@@ -499,4 +500,5 @@ public interface MageController {
     Collection<EffectPlayer> getEffects(@Nonnull String effectKey);
 
     void playEffects(@Nonnull String effectKey, @Nonnull Location sourceLocation, @Nonnull Location targetLocation);
+    void playEffects(@Nonnull String effectKey, @Nonnull EffectContext context);
 }

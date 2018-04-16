@@ -87,6 +87,7 @@ import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
+import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.event.LoadEvent;
@@ -1761,6 +1762,9 @@ public class MagicController implements MageController {
         messages.load(loader.messages);
         loadMaterials(loader.materials);
 
+        loadEffects(loader.effects);
+        getLogger().info("Loaded " + effects.size() + " effect lists");
+
         items.load(loader.items);
         getLogger().info("Loaded " + items.getCount() + " items");
 
@@ -1778,9 +1782,6 @@ public class MagicController implements MageController {
 
         loadAutomatonTemplates(loader.automata);
         getLogger().info("Loaded " + automatonTemplates.size() + " automata templates");
-
-        loadEffects(loader.effects);
-        getLogger().info("Loaded " + effects.size() + " effect lists");
 
         loadPaths(loader.paths);
         getLogger().info("Loaded " + getPathCount() + " progression paths");
@@ -1899,10 +1900,16 @@ public class MagicController implements MageController {
         }
 
         // Update existing automata
+        for (Automaton active : activeAutomata.values()) {
+            active.pause();
+        }
         for (Map<Long, Automaton> chunk : automata.values()) {
             for (Automaton automaton : chunk.values()) {
                 automaton.reload();
             }
+        }
+        for (Automaton active : activeAutomata.values()) {
+            active.resume();
         }
     }
 
@@ -5717,6 +5724,16 @@ public class MagicController implements MageController {
 
         for (EffectPlayer player : effectPlayers) {
             player.start(sourceLocation, targetLocation);
+        }
+    }
+
+    @Override
+    public void playEffects(@Nonnull String effectKey, @Nonnull EffectContext context) {
+        Collection<EffectPlayer> effectPlayers = effects.get(effectKey);
+        if (effectPlayers == null) return;
+
+        for (EffectPlayer player : effectPlayers) {
+            player.start(context);
         }
     }
 

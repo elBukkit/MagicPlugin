@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.automata;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -9,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -23,6 +25,8 @@ public class AutomatonTemplate {
     private int interval;
     @Nullable
     private Spawner spawner;
+    @Nullable
+    private Collection<EffectPlayer> effects;
 
     public AutomatonTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         this.key = key;
@@ -30,6 +34,17 @@ public class AutomatonTemplate {
         this.configuration = configuration;
         name = configuration.getString("name");
         interval = configuration.getInt("interval", 0);
+        if (configuration.isList("effects")) {
+            com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(controller.getPlugin(), configuration, "effects");
+        } else {
+            String effectKey = configuration.getString("effects");
+            if (effectKey != null) {
+                effects = controller.getEffects(effectKey);
+                if (effects.isEmpty()) {
+                    effects = null;
+                }
+            }
+        }
 
         if (configuration.contains("spawn")) {
             spawner = new Spawner(controller, this, configuration.getConfigurationSection("spawn"));
@@ -59,5 +74,10 @@ public class AutomatonTemplate {
         ConfigurationSection mergedConfiguration = ConfigurationUtils.cloneConfiguration(configuration);
         mergedConfiguration = ConfigurationUtils.addConfigurations(mergedConfiguration, parameters);
         return new AutomatonTemplate(controller, key, mergedConfiguration);
+    }
+
+    @Nullable
+    public Collection<EffectPlayer> getEffects() {
+        return effects;
     }
 }

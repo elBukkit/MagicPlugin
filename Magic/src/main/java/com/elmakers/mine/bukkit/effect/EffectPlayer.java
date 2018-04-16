@@ -510,6 +510,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         startEffects(new DynamicLocation(origin), new DynamicLocation(target));
     }
 
+    public void start(EffectContext context) {
+        context.trackEffects(this);
+        Location source = getSourceLocation(context);
+        Location target = getSourceLocation(context);
+        start(source, target);
+    }
+
     public void startEffects(DynamicLocation origin, DynamicLocation target) {
         // Kinda hacky, but makes cross-world trails (e.g. Repair, Backup) work
         Location targetLocation = target == null ? null : target.getLocation();

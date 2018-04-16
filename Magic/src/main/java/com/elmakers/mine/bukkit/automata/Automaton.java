@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.automata;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,7 +16,9 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.block.BlockData;
+import com.elmakers.mine.bukkit.effect.EffectContext;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -34,6 +37,7 @@ public class Automaton {
 
     private long nextTick;
     private List<WeakReference<Entity>> spawned;
+    private EffectContext effectContext;
 
     public Automaton(@Nonnull MagicController controller, @Nonnull ConfigurationSection node) {
         this.controller = controller;
@@ -113,10 +117,22 @@ public class Automaton {
                 }
             }
         }
+
+        if (effectContext != null) {
+            effectContext.cancelEffects();
+            effectContext = null;
+        }
     }
 
     public void resume() {
+        if (template == null) return;
 
+        Collection<EffectPlayer> effects = template.getEffects();
+        if (effects != null) {
+            for (EffectPlayer player : effects) {
+                player.start(getEffectContext());
+            }
+        }
     }
 
     public Location getLocation() {
@@ -162,5 +178,12 @@ public class Automaton {
 
     public String getTemplateKey() {
         return templateKey;
+    }
+
+    private EffectContext getEffectContext() {
+        if (effectContext == null) {
+            effectContext = new EffectContext(controller, location);
+        }
+        return effectContext;
     }
 }
