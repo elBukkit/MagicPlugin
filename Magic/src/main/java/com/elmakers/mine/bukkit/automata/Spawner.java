@@ -175,9 +175,9 @@ public class Spawner {
                 for (int i = 0; i < locationRetry + 1; i++) {
                     target = location.clone();
                     double vertical = verticalRadius >= 0 ? verticalRadius : radius;
-                    double xOffset = radius * random.nextDouble() - radius;
-                    double yOffset = vertical > 0 ? vertical * random.nextDouble() - vertical : 0;
-                    double zOffset = radius * random.nextDouble() - radius;
+                    double xOffset = 2 * radius * random.nextDouble() - radius;
+                    double yOffset = vertical > 0 ? 2 * vertical * random.nextDouble() - vertical : 0;
+                    double zOffset = 2 * radius * random.nextDouble() - radius;
 
                     target.setX(target.getX() + xOffset);
                     target.setY(target.getY() + yOffset);

@@ -1,5 +1,15 @@
 # CHANGELOG
 
+# 7.4
+
+ - Add /mauto command for creating "automatic blocks", or automata
+   - yes, I know, I already have a thing called automata...
+   - Create mobs spawners:
+     `/mauto add spawner`
+     `/mauto add spawner creeper`
+   - Create persistent effects:
+     `/mauto add fountain`
+
 # 7.3.9
 
  - Wands will now cancel their passive particle effects when deactivated, allowing for long-running effects while held
