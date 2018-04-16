@@ -22,12 +22,12 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
-import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class Spawner {
+    @Nonnull
+    private final MageController controller;
     @Nonnull
     private final Deque<WeightedPair<String>> entityTypeProbability;
     private final Set<String> entityNames = new HashSet<>();
@@ -44,10 +44,11 @@ public class Spawner {
     private final MaterialSet passthrough;
 
     public Spawner(@Nonnull MageController controller, @Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
+        this.controller = controller;
         entityTypeProbability = new ArrayDeque<>();
-        RandomUtils.populateStringProbabilityMap(entityTypeProbability, ConfigurationUtils.getConfigurationSection(configuration, "mobs"), 0, 0, 0);
+        RandomUtils.populateStringProbabilityMap(entityTypeProbability, configuration, "mobs", 0, 0, 0);
         if (entityTypeProbability.isEmpty()) {
-            controller.getLogger().warning("Automata template " + automaton.getKey() + " has a spawner with no mobs defined");
+            controller.getLogger().warning("Automaton template " + automaton.getKey() + " has a spawner with no mobs defined");
         }
 
         probability = configuration.getDouble("probability", 0);
@@ -69,9 +70,9 @@ public class Spawner {
         Block inBlock2 = location.getBlock().getRelative(BlockFace.UP);
         Block onBlock = location.getBlock().getRelative(BlockFace.DOWN);
 
-        if (passthrough.testBlock(onBlock)) return false;
-        if (!passthrough.testBlock(inBlock)) return false;
-        if (!passthrough.testBlock(inBlock2)) return false;
+        if (passthrough.testBlock(onBlock) || !passthrough.testBlock(inBlock) || !passthrough.testBlock(inBlock2)) {
+            return false;
+        }
         return true;
     }
 
@@ -99,7 +100,7 @@ public class Spawner {
     }
 
     @Nullable
-    public Entity spawn(MagicController controller, Location location) {
+    public Entity spawn(Location location) {
         if (entityTypeProbability.isEmpty()) {
             return null;
         }
@@ -190,7 +191,7 @@ public class Spawner {
             }
             entity = entityData.spawn(controller, target);
         } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "Error spawning mob from automata at " + location, ex);
+            controller.getLogger().log(Level.WARNING, "Error spawning mob from automaton at " + location, ex);
             entity = null;
         }
 

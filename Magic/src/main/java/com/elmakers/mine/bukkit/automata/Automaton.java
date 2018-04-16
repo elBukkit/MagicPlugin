@@ -17,12 +17,15 @@ import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class Automaton {
     @Nonnull
     private final MagicController controller;
     @Nullable
     private AutomatonTemplate template;
+    @Nullable
+    private ConfigurationSection parameters;
     private String templateKey;
     @Nonnull
     private final Location location;
@@ -34,6 +37,7 @@ public class Automaton {
     public Automaton(@Nonnull MagicController controller, @Nonnull ConfigurationSection node) {
         this.controller = controller;
         templateKey = node.getString("template");
+        parameters = ConfigurationUtils.getConfigurationSection(node, "parameters");
         if (templateKey != null) {
             setTemplate(controller.getAutomatonTemplate(templateKey));
         }
@@ -68,6 +72,9 @@ public class Automaton {
     private void setTemplate(AutomatonTemplate template) {
         this.template = template;
         if (template != null) {
+            if (parameters != null) {
+                this.template = template.getVariant(parameters);
+            }
             nextTick = System.currentTimeMillis() + template.getInterval();
         }
     }
@@ -117,7 +124,7 @@ public class Automaton {
         long now = System.currentTimeMillis();
         if (now < nextTick) return;
 
-        Entity entity = template.spawn(controller, getLocation());
+        Entity entity = template.spawn(getLocation());
         if (entity != null) {
             if (spawned == null) {
                 spawned = new ArrayList<>();
