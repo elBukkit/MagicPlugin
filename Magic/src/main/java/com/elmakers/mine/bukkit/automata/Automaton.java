@@ -124,12 +124,14 @@ public class Automaton {
         long now = System.currentTimeMillis();
         if (now < nextTick) return;
 
-        Entity entity = template.spawn(getLocation());
-        if (entity != null) {
+        List<Entity> entities = template.spawn(getLocation());
+        if (entities != null) {
             if (spawned == null) {
                 spawned = new ArrayList<>();
             }
-            spawned.add(new WeakReference<>(entity));
+            for (Entity entity : entities) {
+                spawned.add(new WeakReference<>(entity));
+            }
         }
         if (spawned != null) {
             Iterator<WeakReference<Entity>> iterator = spawned.iterator();

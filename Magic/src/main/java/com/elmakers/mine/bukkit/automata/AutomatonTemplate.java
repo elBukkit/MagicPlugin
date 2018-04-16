@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.automata;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -49,7 +51,7 @@ public class AutomatonTemplate {
     }
 
     @Nullable
-    public Entity spawn(Location location) {
+    public List<Entity> spawn(Location location) {
         return spawner == null ? null : spawner.spawn(location);
     }
 

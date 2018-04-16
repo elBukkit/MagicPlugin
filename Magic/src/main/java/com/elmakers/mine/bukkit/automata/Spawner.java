@@ -1,9 +1,11 @@
 package com.elmakers.mine.bukkit.automata;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
@@ -30,6 +32,8 @@ public class Spawner {
     private final MageController controller;
     @Nonnull
     private final Deque<WeightedPair<String>> entityTypeProbability;
+    @Nonnull
+    private final Deque<WeightedPair<Integer>> countProbability;
     private final Set<String> entityNames = new HashSet<>();
     private final Set<EntityType> entityTypes = new HashSet<>();
     private final int playerRange;
@@ -49,6 +53,11 @@ public class Spawner {
         RandomUtils.populateStringProbabilityMap(entityTypeProbability, configuration, "mobs", 0, 0, 0);
         if (entityTypeProbability.isEmpty()) {
             controller.getLogger().warning("Automaton template " + automaton.getKey() + " has a spawner with no mobs defined");
+        }
+        countProbability = new ArrayDeque<>();
+        RandomUtils.populateIntegerProbabilityMap(countProbability, configuration, "count", 0, 0, 0);
+        if (countProbability.isEmpty()) {
+            countProbability.add(new WeightedPair<Integer>(1.0f, 1));
         }
 
         probability = configuration.getDouble("probability", 0);
@@ -100,7 +109,7 @@ public class Spawner {
     }
 
     @Nullable
-    public Entity spawn(Location location) {
+    public List<Entity> spawn(Location location) {
         if (entityTypeProbability.isEmpty()) {
             return null;
         }
@@ -111,6 +120,8 @@ public class Spawner {
                 return null;
             }
         }
+
+        int mobCount = 0;
         boolean hasLimit = limit > 0 && limitRange > 0;
         boolean requiresPlayers = playerRange > 0 && minPlayers > 0;
         if (hasLimit || requiresPlayers) {
@@ -124,7 +135,6 @@ public class Spawner {
                 range = Math.max(playerRange, range);
             }
             int playerCount = 0;
-            int mobCount = 0;
             int vertical = verticalRange > 0 ? verticalRange : range;
             Collection<Entity> entities = location.getWorld().getNearbyEntities(location, range, vertical, range);
             for (Entity entity : entities) {
@@ -153,49 +163,59 @@ public class Spawner {
             }
         }
 
-        Location target = location;
-        if (radius > 0) {
-            for (int i = 0; i < locationRetry + 1; i++) {
-                target = location.clone();
-                double vertical = verticalRadius >= 0 ? verticalRadius : radius;
-                double xOffset = radius * random.nextDouble() - radius;
-                double yOffset = vertical > 0 ? vertical * random.nextDouble() - vertical : 0;
-                double zOffset = radius * random.nextDouble() - radius;
+        int count = RandomUtils.weightedRandom(countProbability);
+        if (hasLimit) {
+            count = Math.min(count, limit - mobCount);
+        }
 
-                target.setX(target.getX() + xOffset);
-                target.setY(target.getY() + yOffset);
-                target.setZ(target.getZ() + zOffset);
+        List<Entity> spawned = new ArrayList<>();
+        for (int num = 0; num < count; num++) {
+            Location target = location;
+            if (radius > 0) {
+                for (int i = 0; i < locationRetry + 1; i++) {
+                    target = location.clone();
+                    double vertical = verticalRadius >= 0 ? verticalRadius : radius;
+                    double xOffset = radius * random.nextDouble() - radius;
+                    double yOffset = vertical > 0 ? vertical * random.nextDouble() - vertical : 0;
+                    double zOffset = radius * random.nextDouble() - radius;
 
-                target = getSafeLocation(target);
-                if (target != null) break;
+                    target.setX(target.getX() + xOffset);
+                    target.setY(target.getY() + yOffset);
+                    target.setZ(target.getZ() + zOffset);
+
+                    target = getSafeLocation(target);
+                    if (target != null) break;
+                }
+            }
+
+            if (target == null) {
+               target = location;
+            }
+
+            Entity entity;
+            String randomType = RandomUtils.weightedRandom(entityTypeProbability);
+            try {
+                EntityData entityData = controller.getMob(randomType);
+                if (entityData == null) {
+                    EntityType entityType = EntityType.valueOf(randomType.toUpperCase());
+                    entityData = new com.elmakers.mine.bukkit.entity.EntityData(entityType);
+                }
+                String customMob = entityData.getName();
+                if (customMob == null || customMob.isEmpty()) {
+                    entityTypes.add(entityData.getType());
+                } else {
+                    entityNames.add(entityData.getName());
+                }
+                entity = entityData.spawn(controller, target);
+            } catch (Throwable ex) {
+                controller.getLogger().log(Level.WARNING, "Error spawning mob from automaton at " + location, ex);
+                entity = null;
+            }
+            if (entity != null) {
+                spawned.add(entity);
             }
         }
 
-        if (target == null) {
-           target = location;
-        }
-
-        Entity entity;
-        String randomType = RandomUtils.weightedRandom(entityTypeProbability);
-        try {
-            EntityData entityData = controller.getMob(randomType);
-            if (entityData == null) {
-                EntityType entityType = EntityType.valueOf(randomType.toUpperCase());
-                entityData = new com.elmakers.mine.bukkit.entity.EntityData(entityType);
-            }
-            String customMob = entityData.getName();
-            if (customMob == null || customMob.isEmpty()) {
-                entityTypes.add(entityData.getType());
-            } else {
-                entityNames.add(entityData.getName());
-            }
-            entity = entityData.spawn(controller, target);
-        } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "Error spawning mob from automaton at " + location, ex);
-            entity = null;
-        }
-
-        return entity;
+        return spawned;
     }
-
 }
