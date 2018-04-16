@@ -1,0 +1,15 @@
+testspawner:
+  name: Magic Mob Spawner
+  description: A simple mob spawner, can be customized via the "mobs" parameter, among others.
+  interval: 5000
+  spawn:
+    player_range: 64
+    min_players: 1
+    limit_range: 64
+    limit: 3
+    probability: 0.99
+    mobs:
+      warlock: 100
+      dark_wizard: 5
+      dark_spider: 20
+      mega_spider: 30
