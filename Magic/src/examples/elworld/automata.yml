@@ -13,3 +13,11 @@ testspawner:
       dark_wizard: 5
       dark_spider: 20
       mega_spider: 30
+
+earth:
+  name: Earth
+  effects:
+   - offset: 0,2,0
+     effectlib:
+       class: Earth
+       duration: 86400000
