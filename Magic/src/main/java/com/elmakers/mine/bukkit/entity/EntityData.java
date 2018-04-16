@@ -586,7 +586,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Override
     public boolean modify(MageController controller, Entity entity) {
-        if (!entity.isValid() || entity.isDead()) return false;
+        // Don't check isValid here since it will be false on the spawn event!
+        if (entity.isDead()) return false;
         boolean modifiedPre = modifyPreSpawn(controller, entity);
         boolean modifiedPost = modifyPostSpawn(controller, entity);
         return modifiedPre || modifiedPost;

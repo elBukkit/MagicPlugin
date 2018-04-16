@@ -44,7 +44,6 @@ public class MobController implements Listener {
             EntityData mob = new EntityData(controller, mobKey, mobConfiguration);
             mobs.put(mobKey, mob);
 
-            // TODO Remove the name map
             String mobName = mob.getName();
             if (mobName != null && !mobName.isEmpty()) {
                 mobsByName.put(mobName, mob);
@@ -96,7 +95,7 @@ public class MobController implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-        // TODO: fix all of this, don't reference by names.
+
         Entity entity = event.getEntity();
         if (!(entity instanceof LivingEntity))
         {
@@ -110,7 +109,6 @@ public class MobController implements Listener {
             return;
         }
 
-        // TODO Fix this
         EntityData mob = mobsByName.get(name);
         if (mob == null) return;
 
