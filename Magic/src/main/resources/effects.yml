@@ -1,0 +1,17 @@
+#
+# Modify this file to add or remove effects.
+#
+# This effects can be used in spells or automata.
+#
+# You can add new effects in this file or modify the builtin ones. Use load_default_effects: false
+# in config.yml to remove the default effects completely.
+#
+# You can also add individual files to the effects/ folder
+#
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/effects
+#
+# For customization help see:
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+#

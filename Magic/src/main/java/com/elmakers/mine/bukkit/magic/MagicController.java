@@ -1620,6 +1620,7 @@ public class MagicController implements MageController {
         loadDefaultItems = properties.getBoolean("load_default_items", loadDefaultItems);
         loadDefaultAttributes = properties.getBoolean("load_default_attributes", loadDefaultAttributes);
         loadDefaultAutomata = properties.getBoolean("load_default_automata", loadDefaultAutomata);
+        loadDefaultEffects = properties.getBoolean("load_default_effects", loadDefaultEffects);
 
         if (!properties.getBoolean("load_default_configs")) {
             loadDefaultWands = false;
@@ -1631,6 +1632,7 @@ public class MagicController implements MageController {
             loadDefaultSpells = false;
             loadDefaultAttributes = false;
             loadDefaultAutomata = false;
+            loadDefaultEffects = false;
         }
 
         return properties;
@@ -1679,7 +1681,11 @@ public class MagicController implements MageController {
     }
 
     protected ConfigurationSection loadAutomataConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(AUTOMOTA_FILE, loadDefaultAutomata, mainConfiguration.getConfigurationSection("automata"));
+        return loadConfigFile(AUTOMATA_FILE, loadDefaultAutomata, mainConfiguration.getConfigurationSection("automata"));
+    }
+
+    protected ConfigurationSection loadEffectConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(EFFECTS_FILE, loadDefaultEffects, mainConfiguration.getConfigurationSection("effects"));
     }
 
     protected Map<String, ConfigurationSection> loadAndMapSpells(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
@@ -1772,6 +1778,9 @@ public class MagicController implements MageController {
 
         loadAutomatonTemplates(loader.automata);
         getLogger().info("Loaded " + automatonTemplates.size() + " automata templates");
+
+        loadEffects(loader.effects);
+        getLogger().info("Loaded " + effects.size() + " effect lists");
 
         loadPaths(loader.paths);
         getLogger().info("Loaded " + getPathCount() + " progression paths");
@@ -1930,6 +1939,13 @@ public class MagicController implements MageController {
     @Nullable
     public AutomatonTemplate getAutomatonTemplate(String key) {
         return automatonTemplates.get(key);
+    }
+
+    private void loadEffects(ConfigurationSection effectsNode) {
+        Collection<String> effectKeys = effectsNode.getKeys(false);
+        for (String effectKey : effectKeys) {
+            effects.put(effectKey, EffectPlayer.loadEffects(getPlugin(), effectsNode, effectKey));
+        }
     }
 
     public void loadConfiguration() {
@@ -5682,6 +5698,29 @@ public class MagicController implements MageController {
         return skillsSpell;
     }
 
+    @Override
+    @Nonnull
+    public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(@Nonnull String effectKey) {
+        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effectList = new ArrayList<>();
+        Collection<EffectPlayer> registered = effects.get(effectKey);
+        if (registered != null) {
+            effectList.addAll(registered);
+        }
+        return effectList;
+    }
+
+    @Override
+    public void playEffects(@Nonnull String effectKey, @Nonnull Location sourceLocation, @Nonnull Location targetLocation) {
+        Collection<EffectPlayer> effectPlayers = effects.get(effectKey);
+        if (effectPlayers == null) return;
+
+        for (EffectPlayer player : effectPlayers) {
+            player.setOrigin(sourceLocation);
+            player.setTarget(targetLocation);
+            player.play();
+        }
+    }
+
     /*
      * Private data
      */
@@ -5699,7 +5738,8 @@ public class MagicController implements MageController {
     private static final String MOBS_FILE           = "mobs";
     private static final String ITEMS_FILE          = "items";
     private static final String ATTRIBUTES_FILE     = "attributes";
-    private static final String AUTOMOTA_FILE     = "automata";
+    private static final String AUTOMATA_FILE       = "automata";
+    private static final String EFFECTS_FILE        = "effects";
 
     private static final String RP_FILE             = "resourcepack";
     private static final String LOST_WANDS_FILE     = "lostwands";
@@ -5718,6 +5758,7 @@ public class MagicController implements MageController {
     private boolean                             loadDefaultItems             = true;
     private boolean                             loadDefaultAttributes       = true;
     private boolean                             loadDefaultAutomata         = true;
+    private boolean                             loadDefaultEffects          = true;
 
     private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
     private @Nonnull MaterialSet                buildingMaterials               = MaterialSets.empty();
@@ -5806,9 +5847,10 @@ public class MagicController implements MageController {
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<>();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mobMages = new HashMap<>();
-    private final Set<Mage>                         pendingConstruction            = new HashSet<>();
+    private final Set<Mage> pendingConstruction                             = new HashSet<>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<>();
-    private final Map<String, WeakReference<Schematic>> schematics    = new HashMap<>();
+    private final Map<String, WeakReference<Schematic>> schematics          = new HashMap<>();
+    private final Map<String, Collection<EffectPlayer>> effects             = new HashMap<>();
 
     private MageDataStore                       mageDataStore               = null;
 

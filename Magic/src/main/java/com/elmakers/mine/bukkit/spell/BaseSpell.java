@@ -2043,7 +2043,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(String key) {
         Collection<EffectPlayer> effectList = effects.get(key);
         if (effectList == null) {
-            return new ArrayList<>();
+            return controller.getEffects(key);
         }
         return new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effectList);
     }

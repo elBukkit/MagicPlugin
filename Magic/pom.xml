@@ -408,6 +408,7 @@
                     <exclude>**/defaults/wands/*.yml</exclude>
                     <exclude>**/defaults/attributes/*.yml</exclude>
                     <exclude>**/defaults/automata/*.yml</exclude>
+                    <exclude>**/defaults/effects/*.yml</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -426,6 +427,7 @@
                     <exclude>**/defaults/wands/*.yml</exclude>
                     <exclude>**/defaults/attributes/*.yml</exclude>
                     <exclude>**/defaults/automata/*.yml</exclude>
+                    <exclude>**/defaults/effects/*.yml</exclude>
                 </excludes>
             </resource>
         </resources>
@@ -499,6 +501,11 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/defaults/wands.defaults.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/defaults/wands">
+                                        <include name="**/*.yml"></include>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/defaults/effects.defaults.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/defaults/effects">
                                         <include name="**/*.yml"></include>
                                     </fileset>
                                 </concat>

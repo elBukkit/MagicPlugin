@@ -24,6 +24,7 @@ public class ConfigurationLoadTask implements Runnable {
     protected ConfigurationSection classes;
     protected ConfigurationSection attributes;
     protected ConfigurationSection automata;
+    protected ConfigurationSection effects;
     protected Map<String, ConfigurationSection> spells;
 
     protected boolean success;
@@ -145,6 +146,14 @@ public class ConfigurationLoadTask implements Runnable {
             automata = controller.loadAutomataConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading automata.yml", ex);
+            success = false;
+        }
+
+        // Load effects
+        try {
+            effects = controller.loadEffectConfiguration(configuration);
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Error loading effects.yml", ex);
             success = false;
         }
 
