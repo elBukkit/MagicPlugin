@@ -53,8 +53,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.effect.EffectContext;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
+import com.elmakers.mine.bukkit.effect.WandEffectContext;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
@@ -102,7 +102,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
      * used for off-hand casting.
      */
     protected @Nullable Mage mage;
-    protected @Nullable EffectContext effectContext;
+    protected @Nullable WandEffectContext effectContext;
 
     // Cached state
     private String id = "";
@@ -3877,7 +3877,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 effectContext.cancelEffects();
             } else {
                 Plugin plugin = controller.getPlugin();
-                final EffectContext context = effectContext;
+                final WandEffectContext context = effectContext;
                 plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                     @Override
                     public void run() {
@@ -5557,10 +5557,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
-    public @Nonnull EffectContext getEffectContext() {
+    @Nonnull
+    public WandEffectContext getEffectContext() {
         if (effectContext == null || (effectContext.getMage() != mage)) {
             // Lazy load or mage has changed
-            effectContext = new EffectContext(mage, this);
+            effectContext = new WandEffectContext(mage, this);
         }
 
         return verifyNotNull(effectContext);

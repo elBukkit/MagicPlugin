@@ -8,15 +8,9 @@ import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public interface EffectContext {
-    @Nonnull
-    Mage getMage();
-    @Nullable
-    Wand getWand();
     @Nullable
     Location getEyeLocation();
     @Nullable

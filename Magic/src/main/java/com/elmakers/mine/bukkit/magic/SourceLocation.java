@@ -10,6 +10,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.effect.MageEffectContext;
 
 import de.slikey.effectlib.util.MathUtils;
 
@@ -92,7 +93,7 @@ public class SourceLocation {
         Location eyeLocation;
         Location feetLocation;
         if (isSource) {
-            mage = context.getMage();
+            mage = context instanceof MageEffectContext ? ((MageEffectContext)context).getMage() : null;
             eyeLocation = context.getEyeLocation();
             feetLocation = context.getLocation();
         } else {

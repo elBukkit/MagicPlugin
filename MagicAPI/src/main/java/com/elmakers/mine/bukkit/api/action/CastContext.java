@@ -22,9 +22,9 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.effect.WandEffectContext;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -34,7 +34,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
-public interface CastContext extends EffectContext {
+public interface CastContext extends WandEffectContext {
     @Nullable
     Entity getEntity();
     LivingEntity getLivingEntity();
