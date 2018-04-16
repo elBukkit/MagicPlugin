@@ -63,9 +63,10 @@ public class Automaton {
         location = new Location(world, x, y, z);
     }
 
-    public Automaton(@Nonnull MagicController controller, @Nonnull Block block, @Nonnull String templateKey, String creatorId) {
+    public Automaton(@Nonnull MagicController controller, @Nonnull Block block, @Nonnull String templateKey, String creatorId, @Nullable ConfigurationSection parameters) {
         this.controller = controller;
         this.templateKey = templateKey;
+        this.parameters = parameters;
         setTemplate(controller.getAutomatonTemplate(templateKey));
         createdAt = System.currentTimeMillis();
         createdBy = creatorId;
@@ -92,11 +93,11 @@ public class Automaton {
         node.set("created", createdAt);
         node.set("creator", createdBy);
         node.set("template", templateKey);
-        World world = location.getWorld();
         node.set("world", location.getWorld().getName());
         node.set("x", location.getBlockX());
         node.set("y", location.getBlockY());
         node.set("z", location.getBlockZ());
+        node.set("parameters", parameters);
     }
 
     public long getCreatedTime() {

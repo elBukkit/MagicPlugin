@@ -11,11 +11,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class MagicAutomataCommandExecutor extends MagicTabExecutor {
@@ -154,7 +157,13 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             return;
         }
 
-        Automaton automaton = new Automaton(magicController, location.getBlock(), key, player.getUniqueId().toString());
+        ConfigurationSection parameters = null;
+        if (args.length > 1) {
+            String[] parameterArgs = Arrays.copyOfRange(args, 1, args.length);
+            parameters = new MemoryConfiguration();
+            ConfigurationUtils.addParameters(parameterArgs, parameters);
+        }
+        Automaton automaton = new Automaton(magicController, location.getBlock(), key, player.getUniqueId().toString(), parameters);
         magicController.registerAutomaton(automaton);
 
         player.sendMessage(ChatColor.AQUA + "Created automaton: " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
