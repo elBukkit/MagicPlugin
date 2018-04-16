@@ -25,5 +25,10 @@ warlock:
         shell: 20
         none: 300
   drops:
-  - gold_nugget@16
+  - diamond: 10
+    emerald: 15
+    gold_nugget@18: 50
+    gold_nugget@16: 100
+    gold_nugget@12: 50
+    gold_nugget@8: 20
   - sp:16

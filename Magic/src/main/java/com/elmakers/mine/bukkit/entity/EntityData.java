@@ -1,7 +1,10 @@
 package com.elmakers.mine.bukkit.entity;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -61,7 +64,9 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 /**
  * This class stores information about an Entity.
@@ -122,7 +127,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Integer dropXp;
 
     protected boolean defaultDrops;
-    protected List<String> drops;
+    protected List<Deque<WeightedPair<String>>> drops;
     protected Set<String> tags;
     protected String interactSpell;
     protected ConfigurationSection disguise;
@@ -295,7 +300,30 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             dropXp = parameters.getInt("drop_xp");
         }
         interactSpell = parameters.getString("interact_spell");
-        drops = ConfigurationUtils.getStringList(parameters, "drops");
+        if (parameters.isList("drops")) {
+            List<Object> list = (List<Object>)parameters.getList("drops");
+            drops = new ArrayList<>();
+            for (Object item : list) {
+                if (item instanceof Map || item instanceof ConfigurationSection) {
+                    ConfigurationSection table = null;
+                    if (item instanceof Map) {
+                        table = ConfigurationUtils.toConfigurationSection((Map)item);
+                    } else {
+                        table = (ConfigurationSection)item;
+                    }
+                    Deque<WeightedPair<String>> dropProbability = new ArrayDeque<>();
+                    RandomUtils.populateStringProbabilityMap(dropProbability, table, 0, 0, 0);
+                    drops.add(dropProbability);
+                } else {
+                    List<String> dropList = ConfigurationUtils.getStringList(item);
+                    if (dropList != null) {
+                        Deque<WeightedPair<String>> dropProbability = new ArrayDeque<>();
+                        RandomUtils.populateProbabilityList(String.class, dropProbability, dropList);
+                        drops.add(dropProbability);
+                    }
+                }
+            }
+        }
         List<String> tagList = ConfigurationUtils.getStringList(parameters, "tags");
         if (tagList != null) {
             tags = new HashSet<>(tagList);
@@ -841,10 +869,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             dropList.clear();
         }
         if (drops != null) {
-            for (String key : drops) {
-                ItemStack item = controller.createItem(key);
-                if (item != null) {
-                    dropList.add(item);
+            for (Deque<WeightedPair<String>> dropTable : drops) {
+                String key = RandomUtils.weightedRandom(dropTable);
+                if (key != null) {
+                    ItemStack item = controller.createItem(key);
+                    if (item != null) {
+                        dropList.add(item);
+                    }
                 }
             }
         }

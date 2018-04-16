@@ -9,6 +9,7 @@
      `/mauto add spawner creeper`
    - Create persistent effects:
      `/mauto add fountain`
+ - Add support for randomized drop tables to magic mobs
 
 # 7.3.9
 
