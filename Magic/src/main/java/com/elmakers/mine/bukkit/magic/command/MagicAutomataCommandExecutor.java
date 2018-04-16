@@ -86,23 +86,31 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             }
 
             Player player = (Player) sender;
-            location = player.getLocation();
+            location = player.getEyeLocation();
         } else if (sender instanceof Player) {
-            location = ((Player) sender).getLocation();
+            location = ((Player) sender).getEyeLocation();
         }
         Collection<Automaton> automata = magicController.getActiveAutomata();
         if (location != null) {
             automata = getSorted(automata, location, range);
         }
         sender.sendMessage(ChatColor.AQUA + "Total active automata: " + ChatColor.DARK_AQUA + automata.size());
+        boolean first = true;
         for (Automaton automaton : automata) {
+            Location automatonLocation = automaton.getLocation();
             String message = ChatColor.LIGHT_PURPLE + automaton.getTemplateKey() + ChatColor.DARK_PURPLE
-                + " at " + TextUtils.printLocation(automaton.getLocation(), 0);
+                + " at " + TextUtils.printLocation(automatonLocation, 0);
 
-            if (location != null && location.getWorld().equals(automaton.getLocation().getWorld())) {
-                double distance = location.distance(automaton.getLocation());
+            if (location != null && location.getWorld().equals(automatonLocation.getWorld())) {
+                double distance = location.distance(automatonLocation);
                 message = message + ChatColor.GRAY + " (" + ChatColor.WHITE + TextUtils.printNumber(distance, 1)
                     + ChatColor.BLUE + " blocks away" + ChatColor.GRAY + ")";
+
+                if (distance < 64) {
+                    String effectsKey = first ? "blockfindfirst" : "blockfind";
+                    controller.playEffects(effectsKey, location, automatonLocation);
+                    first = false;
+                }
             }
 
             sender.sendMessage(message);
@@ -111,7 +119,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
     private List<Automaton> getSorted(Collection<Automaton> automata, Location location, int range) {
         int rangeSquared = range * range;
-        List<Automaton> sorted = new ArrayList();
+        List<Automaton> sorted = new ArrayList<>();
         for (Automaton automaton : automata) {
             if (rangeSquared > 0) {
                 if (!location.getWorld().equals(automaton.getLocation().getWorld())) continue;
@@ -166,6 +174,8 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         Automaton automaton = new Automaton(magicController, location.getBlock(), key, player.getUniqueId().toString(), parameters);
         magicController.registerAutomaton(automaton);
 
+        controller.playEffects("blockselect", location, location);
+
         player.sendMessage(ChatColor.AQUA + "Created automaton: " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
             + ChatColor.AQUA + " at " + TextUtils.printLocation(automaton.getLocation(), 0));
     }
@@ -192,8 +202,11 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             player.sendMessage(ChatColor.RED + "Could not find automata at given position (something went wrong)");
             return;
         }
+
+        Location location = automaton.getLocation();
+        controller.playEffects("blockremove", location, location);
         player.sendMessage(ChatColor.YELLOW + "Removed " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
-            + ChatColor.YELLOW + " at " + TextUtils.printLocation(automaton.getLocation(), 0));
+            + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0));
     }
 
     @Override

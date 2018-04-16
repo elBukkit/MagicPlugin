@@ -1942,6 +1942,7 @@ public class MagicController implements MageController {
     }
 
     private void loadEffects(ConfigurationSection effectsNode) {
+        effects.clear();
         Collection<String> effectKeys = effectsNode.getKeys(false);
         for (String effectKey : effectKeys) {
             effects.put(effectKey, EffectPlayer.loadEffects(getPlugin(), effectsNode, effectKey));
@@ -5715,9 +5716,7 @@ public class MagicController implements MageController {
         if (effectPlayers == null) return;
 
         for (EffectPlayer player : effectPlayers) {
-            player.setOrigin(sourceLocation);
-            player.setTarget(targetLocation);
-            player.play();
+            player.start(sourceLocation, targetLocation);
         }
     }
 
