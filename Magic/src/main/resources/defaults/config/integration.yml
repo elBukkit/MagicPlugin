@@ -155,7 +155,7 @@ skript_enabled: true
 
 # Citadel integration
 citadel:
-  # Disable integration
+  # Set to false to disable Citadel integration
   enabled: true
 
   # Non-player reinforcements will be indestructible to spells

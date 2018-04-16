@@ -2,8 +2,7 @@
 
 ## 7.4
    
- - MountArmorStand spells can go through regions. (brooms) 
- - Dying while on armour stand respawns you on armour stand
+ - Goldwalker blocks didn't undo?
      
  - Why does breaking sand cause two sand blocks to break?
  - Breaking cactus looks weird
@@ -18,6 +17,10 @@
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
+   
+ - Selector that can run action handlers instead of needing separate spells
+ - ChangeWorld parameters don't show up in editor
+ - Editor working with selector options
    
 ## The great un-defaulting
 
