@@ -1997,21 +1997,29 @@ public class MagicController implements MageController {
         try {
             ConfigurationSection toggleBlockData = loadDataFile(AUTOMATA_DATA_FILE);
             if (toggleBlockData != null) {
-                Set<String> chunkIds = toggleBlockData.getKeys(false);
-                for (String chunkId : chunkIds) {
-                    ConfigurationSection chunkNode = toggleBlockData.getConfigurationSection(chunkId);
-                    Map<Long, Automaton> restoreChunk = new HashMap<>();
-                    Set<String> blockIds = chunkNode.getKeys(false);
-                    for (String blockId : blockIds) {
-                        ConfigurationSection toggleConfig = chunkNode.getConfigurationSection(blockId);
-                        Automaton toggle = new Automaton(this, toggleConfig);
-                        if (!toggle.isValid()) continue;
-                        restoreChunk.put(toggle.getId(), toggle);
-                        automataCount++;
-                    }
-                    if (!restoreChunk.isEmpty()) {
+                Collection<ConfigurationSection> list = ConfigurationUtils.getNodeList(toggleBlockData, "automata");
+                for (ConfigurationSection node : list) {
+                    Automaton automaton = new Automaton(this, node);
+                    if (!automaton.isValid()) continue;
+
+                    String chunkId = getChunkKey(automaton.getLocation());
+                    if (chunkId == null) continue;
+
+                    Map<Long, Automaton> restoreChunk = automata.get(chunkId);
+                    if (restoreChunk == null) {
+                        restoreChunk = new HashMap<>();
                         automata.put(chunkId, restoreChunk);
                     }
+
+                    long id = automaton.getId();
+                    Automaton existing = restoreChunk.get(id);
+                    if (existing != null) {
+                        getLogger().warning("Duplicate automata exist at " + automaton.getLocation() + ", one will be removed!");
+                        continue;
+                    }
+
+                    automataCount++;
+                    restoreChunk.put(id, automaton);
                 }
             }
         } catch (Exception ex) {
@@ -2024,20 +2032,48 @@ public class MagicController implements MageController {
     protected void saveAutomata(Collection<YamlDataFile> stores) {
         try {
             YamlDataFile automataData = createDataFile(AUTOMATA_DATA_FILE);
+            List<ConfigurationSection> nodes = new ArrayList<>();
             for (Entry<String, Map<Long, Automaton>> toggleEntry : automata.entrySet()) {
                 Collection<Automaton> blocks = toggleEntry.getValue().values();
                 if (blocks.size() > 0) {
-                    ConfigurationSection chunkNode = automataData.createSection(toggleEntry.getKey());
                     for (Automaton block : blocks) {
-                        ConfigurationSection node = chunkNode.createSection(Long.toString(block.getId()));
+                        ConfigurationSection node = new MemoryConfiguration();
                         block.save(node);
+                        nodes.add(node);
                     }
                 }
             }
+            automataData.set("automata", nodes);
             stores.add(automataData);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void registerAutomaton(Automaton automaton) {
+        String chunkId = getChunkKey(automaton.getLocation());
+        if (chunkId == null) return;
+
+        Map<Long, Automaton> chunkAutomata = automata.get(chunkId);
+        if (chunkAutomata == null) {
+            chunkAutomata = new HashMap<>();
+            automata.put(chunkId, chunkAutomata);
+        }
+        chunkAutomata.put(automaton.getId(), automaton);
+    }
+
+    public boolean unregisterAutomaton(Automaton automaton) {
+        boolean removed = false;
+        String chunkId = getChunkKey(automaton.getLocation());
+        Map<Long, Automaton> chunkAutomata = automata.get(chunkId);
+        if (chunkAutomata != null) {
+            removed = chunkAutomata.remove(automaton.getId()) != null;
+            if (chunkAutomata.size() == 0) {
+                automata.remove(chunkId);
+            }
+        }
+
+        return removed;
     }
 
     public void resumeAutomata(final Chunk chunk) {

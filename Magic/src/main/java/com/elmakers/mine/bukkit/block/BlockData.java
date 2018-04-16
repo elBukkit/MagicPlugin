@@ -52,6 +52,10 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         return getBlockId(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
     }
 
+    public static long getBlockId(Location location) {
+        return getBlockId(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+    }
+
     public static long getBlockId(String world, int x, int y, int z) {
         // Long is 63 bits
         // 15 sets of F's (4-bits)

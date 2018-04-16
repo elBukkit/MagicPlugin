@@ -8,6 +8,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -15,34 +18,51 @@ import org.bukkit.entity.Entity;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
-public class Automaton extends BlockData {
-    private boolean valid = false;
+public class Automaton {
     @Nonnull
-    private MagicController controller;
+    private final MagicController controller;
     @Nullable
     private AutomatonTemplate template;
+    private String templateKey;
+    @Nonnull
+    private final Location location;
     private long createdAt;
 
     private long nextTick;
     private List<WeakReference<Entity>> spawned;
 
     public Automaton(@Nonnull MagicController controller, @Nonnull ConfigurationSection node) {
-        super(node);
         this.controller = controller;
-        String templateKey = node.getString("template");
+        templateKey = node.getString("template");
         if (templateKey != null) {
             setTemplate(controller.getAutomatonTemplate(templateKey));
-            valid = true;
+        }
+        if (template == null) {
+            controller.getLogger().warning("Automaton missing template: " + templateKey);
         }
         createdAt = node.getLong("created", 0);
+
+        int x = node.getInt("x");
+        int y = node.getInt("y");
+        int z = node.getInt("z");
+        String worldName = node.getString("world");
+        if (worldName == null || worldName.isEmpty()) {
+            worldName = "world";
+            controller.getLogger().warning("Automaton missing world name, defaulting to 'world'");
+        }
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            controller.getLogger().warning("Automaton has unknown world: " + worldName + ", will be removed!");
+        }
+        location = new Location(world, x, y, z);
     }
 
-    public Automaton(@Nonnull Block block, @Nonnull String templateKey) {
-        super(block);
-
+    public Automaton(@Nonnull MagicController controller, @Nonnull Block block, @Nonnull String templateKey) {
+        this.controller = controller;
+        this.templateKey = templateKey;
         setTemplate(controller.getAutomatonTemplate(templateKey));
-        valid = true;
         createdAt = System.currentTimeMillis();
+        location = block.getLocation();
     }
 
     private void setTemplate(AutomatonTemplate template) {
@@ -58,10 +78,14 @@ public class Automaton extends BlockData {
         }
     }
 
-    @Override
     public void save(ConfigurationSection node) {
-        super.save(node);
         node.set("created", createdAt);
+        node.set("template", templateKey);
+        World world = location.getWorld();
+        node.set("world", location.getWorld().getName());
+        node.set("x", location.getBlockX());
+        node.set("y", location.getBlockY());
+        node.set("z", location.getBlockZ());
     }
 
     public long getCreatedTime() {
@@ -83,13 +107,17 @@ public class Automaton extends BlockData {
 
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
     public void tick() {
         if (template == null) return;
 
         long now = System.currentTimeMillis();
         if (now < nextTick) return;
 
-        Entity entity = template.spawn(controller, getBlock().getLocation());
+        Entity entity = template.spawn(controller, getLocation());
         if (entity != null) {
             if (spawned == null) {
                 spawned = new ArrayList<>();
@@ -110,7 +138,11 @@ public class Automaton extends BlockData {
         nextTick = now + template.getInterval();
     }
 
+    public long getId() {
+        return BlockData.getBlockId(getLocation());
+    }
+
     public boolean isValid() {
-        return valid;
+        return location.getWorld() != null;
     }
 }
