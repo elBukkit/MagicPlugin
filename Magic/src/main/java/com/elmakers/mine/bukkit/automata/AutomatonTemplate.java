@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block;
+package com.elmakers.mine.bukkit.automata;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

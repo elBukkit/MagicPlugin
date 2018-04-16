@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block;
+package com.elmakers.mine.bukkit.automata;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
+import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class Automaton extends BlockData {
