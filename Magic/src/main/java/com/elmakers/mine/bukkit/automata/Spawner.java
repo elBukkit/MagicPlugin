@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -11,6 +12,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -18,6 +21,7 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
@@ -34,6 +38,10 @@ public class Spawner {
     private final int limit;
     private final int limitRange;
     private final int verticalRange;
+    private final double radius;
+    private final double verticalRadius;
+    private final int locationRetry;
+    private final MaterialSet passthrough;
 
     public Spawner(@Nonnull MageController controller, @Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
         entityTypeProbability = new ArrayDeque<>();
@@ -50,6 +58,44 @@ public class Spawner {
         limit = configuration.getInt("limit", 0);
         limitRange = configuration.getInt("limit_range", 16);
         verticalRange = configuration.getInt("vertical_range", 0);
+        radius = configuration.getDouble("radius");
+        verticalRadius = configuration.getDouble("vertical_radius");
+        locationRetry = configuration.getInt("retries", 4);
+        passthrough = controller.getMaterialSetManager().getMaterialSet("passthrough");
+    }
+
+    private boolean isSafe(Location location) {
+        Block inBlock = location.getBlock();
+        Block inBlock2 = location.getBlock().getRelative(BlockFace.UP);
+        Block onBlock = location.getBlock().getRelative(BlockFace.DOWN);
+
+        if (passthrough.testBlock(onBlock)) return false;
+        if (!passthrough.testBlock(inBlock)) return false;
+        if (!passthrough.testBlock(inBlock2)) return false;
+        return true;
+    }
+
+    @Nullable
+    private Location getSafeLocation(Location location) {
+        int retry = 0;
+        Block onBlock = location.getBlock().getRelative(BlockFace.DOWN);
+        boolean goDown = passthrough.testBlock(onBlock);
+        while (retry <= locationRetry) {
+            if (isSafe(location)) {
+                return location;
+            }
+
+            if (goDown) {
+                location.setY(location.getY() - 1);
+                if (location.getY() <= 0) return null;
+            } else {
+                location.setY(location.getY() + 1);
+            }
+
+            retry++;
+        }
+
+        return null;
     }
 
     @Nullable
@@ -58,8 +104,9 @@ public class Spawner {
             return null;
         }
 
+        Random random = controller.getRandom();
         if (probability > 0) {
-            if (controller.getRandom().nextDouble() > probability) {
+            if (random.nextDouble() > probability) {
                 return null;
             }
         }
@@ -104,6 +151,29 @@ public class Spawner {
                 return null;
             }
         }
+
+        Location target = location;
+        if (radius > 0) {
+            for (int i = 0; i < locationRetry + 1; i++) {
+                target = location.clone();
+                double vertical = verticalRadius >= 0 ? verticalRadius : radius;
+                double xOffset = radius * random.nextDouble() - radius;
+                double yOffset = vertical > 0 ? vertical * random.nextDouble() - vertical : 0;
+                double zOffset = radius * random.nextDouble() - radius;
+
+                target.setX(target.getX() + xOffset);
+                target.setY(target.getY() + yOffset);
+                target.setZ(target.getZ() + zOffset);
+
+                target = getSafeLocation(target);
+                if (target != null) break;
+            }
+        }
+
+        if (target == null) {
+           target = location;
+        }
+
         Entity entity;
         String randomType = RandomUtils.weightedRandom(entityTypeProbability);
         try {
@@ -118,7 +188,7 @@ public class Spawner {
             } else {
                 entityNames.add(entityData.getName());
             }
-            entity = entityData.spawn(controller, location);
+            entity = entityData.spawn(controller, target);
         } catch (Throwable ex) {
             controller.getLogger().log(Level.WARNING, "Error spawning mob from automata at " + location, ex);
             entity = null;

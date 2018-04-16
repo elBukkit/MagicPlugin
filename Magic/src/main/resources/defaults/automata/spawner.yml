@@ -9,6 +9,8 @@ spawner:
     vertical_range: 8
     limit: 3
     probability: 0.99
+    radius: 16
+    vertical_radius: 0
     mobs:
       warlock: 100
       dark_wizard: 5
