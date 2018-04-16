@@ -52,6 +52,12 @@ public class Automaton extends BlockData {
         }
     }
 
+    public void reload() {
+        if (template != null) {
+            setTemplate(controller.getAutomatonTemplate(template.getKey()));
+        }
+    }
+
     @Override
     public void save(ConfigurationSection node) {
         super.save(node);

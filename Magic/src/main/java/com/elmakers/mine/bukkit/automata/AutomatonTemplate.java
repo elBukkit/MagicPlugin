@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class AutomatonTemplate {
@@ -17,17 +18,13 @@ public class AutomatonTemplate {
     @Nullable
     private Spawner spawner;
 
-    public AutomatonTemplate(@Nonnull String key) {
+    public AutomatonTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         this.key = key;
-    }
-
-    public AutomatonTemplate(@Nonnull String key, @Nonnull ConfigurationSection configuration) {
-        this(key);
         name = configuration.getString("name");
         interval = configuration.getInt("interval", 0);
 
         if (configuration.contains("spawn")) {
-            spawner = new Spawner(configuration.getConfigurationSection("spawn"));
+            spawner = new Spawner(controller, this, configuration.getConfigurationSection("spawn"));
         }
     }
 
