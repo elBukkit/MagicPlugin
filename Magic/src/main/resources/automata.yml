@@ -1,0 +1,19 @@
+#
+# Modify this file to add or remove automata.
+#
+# An automaton is a virtual block that can cast spells, spawn mobs or show effects.
+# Each automaton in-game inherits from one of the configured automata in this file,
+# but can be customized in-game.
+#
+# You can add new automata in this file or modify the builtin ones. Use load_default_automata: false
+# in config.yml to remove the default attributes completely.
+#
+# You can also add individual files to the automata/ folder
+#
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/automata
+#
+# For customization help see:
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+#

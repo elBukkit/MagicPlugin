@@ -23,6 +23,7 @@ public class ConfigurationLoadTask implements Runnable {
     protected ConfigurationSection items;
     protected ConfigurationSection classes;
     protected ConfigurationSection attributes;
+    protected ConfigurationSection automata;
     protected Map<String, ConfigurationSection> spells;
 
     protected boolean success;
@@ -136,6 +137,14 @@ public class ConfigurationLoadTask implements Runnable {
             attributes = controller.loadAttributesConfiguration(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading attributes.yml", ex);
+            success = false;
+        }
+
+        // Load automata
+        try {
+            automata = controller.loadAutomataConfiguration(configuration);
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Error loading automata.yml", ex);
             success = false;
         }
 

@@ -406,6 +406,8 @@
                     <exclude>**/defaults/mobs/*.yml</exclude>
                     <exclude>**/defaults/spells/*.yml</exclude>
                     <exclude>**/defaults/wands/*.yml</exclude>
+                    <exclude>**/defaults/attributes/*.yml</exclude>
+                    <exclude>**/defaults/automata/*.yml</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -422,6 +424,8 @@
                     <exclude>**/defaults/mobs/*.yml</exclude>
                     <exclude>**/defaults/spells/*.yml</exclude>
                     <exclude>**/defaults/wands/*.yml</exclude>
+                    <exclude>**/defaults/attributes/*.yml</exclude>
+                    <exclude>**/defaults/automata/*.yml</exclude>
                 </excludes>
             </resource>
         </resources>
@@ -450,6 +454,11 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/defaults/attributes.defaults.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/defaults/attributes">
+                                        <include name="**/*.yml"></include>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/defaults/automata.defaults.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/defaults/automata">
                                         <include name="**/*.yml"></include>
                                     </fileset>
                                 </concat>

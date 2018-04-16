@@ -1,0 +1,10 @@
+spawner:
+  interval: 5000
+  player_range: 64
+  spawn_probability: 0.2
+  spawn_limit: 3
+  mobs:
+   warlock: 100
+   dark_wizard: 5
+   dark_spider: 20
+   mega_spider: 30

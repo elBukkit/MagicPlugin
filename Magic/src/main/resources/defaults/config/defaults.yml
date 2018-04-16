@@ -493,6 +493,11 @@ work_per_update: 5000
 # This value is in ticks
 mage_update_frequency: 5
 
+# How often to "tick" an Automaton, which is a virtual block that
+# can cast spells, spawn mobs or produce effects.
+# Decreasing this value may introduce some lag (though probably not)
+automata_update_frequency: 10
+
 # How long to exempt players from flight checks for each tick that
 # they have a jump potion effect
 # Set to 0 to disable exemption

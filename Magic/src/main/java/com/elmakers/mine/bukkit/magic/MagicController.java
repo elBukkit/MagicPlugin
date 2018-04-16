@@ -107,6 +107,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.block.Automaton;
+import com.elmakers.mine.bukkit.block.AutomatonTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
@@ -1206,13 +1208,17 @@ public class MagicController implements MageController {
         // Activate Metrics
         activateMetrics();
 
-        // Set up the PlayerSpells timer
+        // Set up the Mage update timer
         final MageUpdateTask mageTask = new MageUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mageTask, 0, mageUpdateFrequency);
 
         // Set up the Block update timer
         final BatchUpdateTask blockTask = new BatchUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, blockTask, 0, workFrequency);
+
+        // Set up the Automata timer
+        final AutomataUpdateTask automataTaks = new AutomataUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, automataTaks, 0, automataUpdateFrequency);
 
         // Set up the Update check timer
         final UndoUpdateTask undoTask = new UndoUpdateTask(this);
@@ -1612,6 +1618,7 @@ public class MagicController implements MageController {
         loadDefaultMobs = properties.getBoolean("load_default_mobs", loadDefaultMobs);
         loadDefaultItems = properties.getBoolean("load_default_items", loadDefaultItems);
         loadDefaultAttributes = properties.getBoolean("load_default_attributes", loadDefaultAttributes);
+        loadDefaultAutomata = properties.getBoolean("load_default_automata", loadDefaultAutomata);
 
         if (!properties.getBoolean("load_default_configs")) {
             loadDefaultWands = false;
@@ -1622,6 +1629,7 @@ public class MagicController implements MageController {
             loadDefaultItems = false;
             loadDefaultSpells = false;
             loadDefaultAttributes = false;
+            loadDefaultAutomata = false;
         }
 
         return properties;
@@ -1667,6 +1675,10 @@ public class MagicController implements MageController {
 
     protected ConfigurationSection loadAttributesConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
         return loadConfigFile(ATTRIBUTES_FILE, loadDefaultAttributes, mainConfiguration.getConfigurationSection("attributes"));
+    }
+
+    protected ConfigurationSection loadAutomataConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        return loadConfigFile(AUTOMOTA_FILE, loadDefaultAutomata, mainConfiguration.getConfigurationSection("automata"));
     }
 
     protected Map<String, ConfigurationSection> loadAndMapSpells(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
@@ -1756,6 +1768,9 @@ public class MagicController implements MageController {
 
         loadAttributes(loader.attributes);
         getLogger().info("Loaded " + attributes.size() + " attributes");
+
+        loadAutomatonTemplates(loader.automata);
+        getLogger().info("Loaded " + automatonTemplates.size() + " automata templates");
 
         loadPaths(loader.paths);
         getLogger().info("Loaded " + getPathCount() + " progression paths");
@@ -1865,6 +1880,20 @@ public class MagicController implements MageController {
         }
     }
 
+    private void loadAutomatonTemplates(ConfigurationSection automataConfiguration) {
+        Set<String> keys = automataConfiguration.getKeys(false);
+        automatonTemplates.clear();;
+        for (String key : keys) {
+            AutomatonTemplate template = new AutomatonTemplate(key, automataConfiguration.getConfigurationSection(key));
+            automatonTemplates.put(key, template);
+        }
+    }
+
+    @Nullable
+    public AutomatonTemplate getAutomatonTemplate(String key) {
+        return automatonTemplates.get(key);
+    }
+
     public void loadConfiguration() {
         loadConfiguration(null);
     }
@@ -1917,6 +1946,10 @@ public class MagicController implements MageController {
                 getLogger().info("Loading lost wand data");
                 loadLostWands();
 
+                // Load toggle-on-load blocks
+                getLogger().info("Loading automata data");
+                loadAutomata();
+
                 // Load URL Map Data
                 try {
                     maps.resetAll();
@@ -1950,6 +1983,82 @@ public class MagicController implements MageController {
         }
 
         getLogger().info("Loaded " + lostWands.size() + " lost wands");
+    }
+
+    protected void loadAutomata() {
+        int automataCount = 0;
+        try {
+            ConfigurationSection toggleBlockData = loadDataFile(AUTOMATA_DATA_FILE);
+            if (toggleBlockData != null) {
+                Set<String> chunkIds = toggleBlockData.getKeys(false);
+                for (String chunkId : chunkIds) {
+                    ConfigurationSection chunkNode = toggleBlockData.getConfigurationSection(chunkId);
+                    Map<Long, Automaton> restoreChunk = new HashMap<>();
+                    Set<String> blockIds = chunkNode.getKeys(false);
+                    for (String blockId : blockIds) {
+                        ConfigurationSection toggleConfig = chunkNode.getConfigurationSection(blockId);
+                        Automaton toggle = new Automaton(this, toggleConfig);
+                        if (!toggle.isValid()) continue;
+                        restoreChunk.put(toggle.getId(), toggle);
+                        automataCount++;
+                    }
+                    if (!restoreChunk.isEmpty()) {
+                        automata.put(chunkId, restoreChunk);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        getLogger().info("Loaded " + automataCount + " automata");
+    }
+
+    protected void saveAutomata(Collection<YamlDataFile> stores) {
+        try {
+            YamlDataFile automataData = createDataFile(AUTOMATA_DATA_FILE);
+            for (Entry<String, Map<Long, Automaton>> toggleEntry : automata.entrySet()) {
+                Collection<Automaton> blocks = toggleEntry.getValue().values();
+                if (blocks.size() > 0) {
+                    ConfigurationSection chunkNode = automataData.createSection(toggleEntry.getKey());
+                    for (Automaton block : blocks) {
+                        ConfigurationSection node = chunkNode.createSection(Long.toString(block.getId()));
+                        block.save(node);
+                    }
+                }
+            }
+            stores.add(automataData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void resumeAutomata(final Chunk chunk) {
+        String chunkKey = getChunkKey(chunk);
+        Map<Long, Automaton> chunkData = automata.get(chunkKey);
+        if (chunkData != null) {
+            activeAutomata.putAll(chunkData);
+            for (Automaton automata : chunkData.values()) {
+                automata.resume();
+            }
+        }
+    }
+
+    public void pauseAutomata(final Chunk chunk) {
+        String chunkKey = getChunkKey(chunk);
+        Map<Long, Automaton> chunkData = automata.get(chunkKey);
+        if (chunkData != null) {
+            for (Automaton automata : chunkData.values()) {
+                automata.pause();
+            }
+            activeAutomata.keySet().removeAll(chunkData.keySet());
+        }
+    }
+
+    public void tickAutomata() {
+        for (Automaton automaton : activeAutomata.values()) {
+            automaton.tick();
+        }
     }
 
     protected void saveSpellData(Collection<YamlDataFile> stores) {
@@ -2120,6 +2229,7 @@ public class MagicController implements MageController {
         info("Saving " + saveMages.size() + " players");
         saveSpellData(saveData);
         saveLostWands(saveData);
+        saveAutomata(saveData);
 
         if (mageDataStore != null) {
             if (asynchronous) {
@@ -2487,6 +2597,7 @@ public class MagicController implements MageController {
         undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);
+        automataUpdateFrequency = properties.getInt("automata_update_frequency", automataUpdateFrequency);
         mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
         undoFrequency = properties.getInt("undo_frequency", undoFrequency);
         pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
@@ -5498,10 +5609,12 @@ public class MagicController implements MageController {
     private static final String MOBS_FILE           = "mobs";
     private static final String ITEMS_FILE          = "items";
     private static final String ATTRIBUTES_FILE     = "attributes";
-    private static final String RP_FILE             = "resourcepack";
+    private static final String AUTOMOTA_FILE     = "automata";
 
+    private static final String RP_FILE             = "resourcepack";
     private static final String LOST_WANDS_FILE     = "lostwands";
     private static final String SPELLS_DATA_FILE    = "spells";
+    private static final String AUTOMATA_DATA_FILE  = "automata";
     private static final String URL_MAPS_FILE       = "imagemaps";
 
     private boolean                             disableDefaultSpells        = false;
@@ -5514,6 +5627,7 @@ public class MagicController implements MageController {
     private boolean                             loadDefaultMobs             = true;
     private boolean                             loadDefaultItems             = true;
     private boolean                             loadDefaultAttributes       = true;
+    private boolean                             loadDefaultAutomata         = true;
 
     private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
     private @Nonnull MaterialSet                buildingMaterials               = MaterialSets.empty();
@@ -5590,6 +5704,7 @@ public class MagicController implements MageController {
     private boolean                             asynchronousSaving              = true;
     private WarpController                        warpController                    = null;
 
+    private final Map<String, AutomatonTemplate> automatonTemplates         = new HashMap<>();
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();
     private final Map<String, MageClassTemplate> mageClasses                = new HashMap<>();
     private final Map<String, SpellTemplate>    spells                      = new HashMap<>();
@@ -5613,8 +5728,9 @@ public class MagicController implements MageController {
     private final File                            dataFolder;
     private final File                            defaultsFolder;
 
-    private int                                    toggleMessageRange            = 1024;
+    private int                                 toggleMessageRange          = 1024;
 
+    private int                                 automataUpdateFrequency     = 1;
     private int                                 mageUpdateFrequency         = 5;
     private int                                 workFrequency               = 1;
     private int                                 undoFrequency               = 10;
@@ -5650,8 +5766,10 @@ public class MagicController implements MageController {
 
     private PhysicsHandler                        physicsHandler                = null;
 
-    private Map<String, LostWand>                lostWands                    = new HashMap<>();
-    private Map<String, Set<String>>             lostWandChunks                = new HashMap<>();
+    private Map<String, Map<Long, Automaton>>    automata                   = new HashMap<>();
+    private Map<Long, Automaton>                 activeAutomata             = new HashMap<>();
+    private Map<String, LostWand>                lostWands                  = new HashMap<>();
+    private Map<String, Set<String>>             lostWandChunks             = new HashMap<>();
 
     private int                                    metricsLevel                = 5;
     private Metrics                                metrics                        = null;
