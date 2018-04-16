@@ -1884,8 +1884,15 @@ public class MagicController implements MageController {
         Set<String> keys = automataConfiguration.getKeys(false);
         automatonTemplates.clear();;
         for (String key : keys) {
-            AutomatonTemplate template = new AutomatonTemplate(key, automataConfiguration.getConfigurationSection(key));
+            AutomatonTemplate template = new AutomatonTemplate(this, key, automataConfiguration.getConfigurationSection(key));
             automatonTemplates.put(key, template);
+        }
+
+        // Update existing automata
+        for (Map<Long, Automaton> chunk : automata.values()) {
+            for (Automaton automaton : chunk.values()) {
+                automaton.reload();
+            }
         }
     }
 
@@ -5069,6 +5076,10 @@ public class MagicController implements MageController {
         }
 
         return skinName;
+    }
+
+    public Random getRandom() {
+        return random;
     }
 
     @Override
