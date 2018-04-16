@@ -566,6 +566,17 @@ commands:
         /mgive brush:sea_lantern
         /mgive sea_lantern 32
         /mgive NathanWolf wolf
+  mauto:
+    description: Manage Automatic Blocks, such as spawners or effects
+    permission: Magic.commands.mauto
+    usage: |
+        /mauto add <template> <params>    Add a new automatic block at your feet
+        /mauto add spawner                Add a spawner from automata.yml
+        /mauto add fountain               Add a particle fountain from automata.yml
+        /mauto add spawner spawn.mobs creeper Add a custom creeper spawner
+        /mauto remove                     Remove the automata closest to you
+        /mauto list <radius>              List nearby automata
+        /mauto list                       List all automata
   mmob:
     description: Manage Magic Mobs
     permission: Magic.commands.mmob
@@ -683,6 +694,7 @@ permissions:
     - Magic.commands.mgive.others
     - Magic.commands.mtrait
     - Magic.commands.mmob
+    - Magic.commands.mauto
     - Magic.commands.cast
     - Magic.commands.castp
     - Magic.commands.cast.parameters
@@ -726,6 +738,10 @@ permissions:
     default: op
   Magic.commands.mmob:
     description: Player may spawn vanilla and magic mobs
+    type: boolean
+    default: op
+  Magic.commands.mauto:
+    description: Player may create and manage automatic blocks
     type: boolean
     default: op
   Magic.commands.cast:

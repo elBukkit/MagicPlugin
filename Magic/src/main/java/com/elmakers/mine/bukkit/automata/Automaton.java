@@ -30,6 +30,7 @@ public class Automaton {
     @Nonnull
     private final Location location;
     private long createdAt;
+    private String createdBy;
 
     private long nextTick;
     private List<WeakReference<Entity>> spawned;
@@ -45,6 +46,7 @@ public class Automaton {
             controller.getLogger().warning("Automaton missing template: " + templateKey);
         }
         createdAt = node.getLong("created", 0);
+        createdBy = node.getString("creator");
 
         int x = node.getInt("x");
         int y = node.getInt("y");
@@ -61,11 +63,12 @@ public class Automaton {
         location = new Location(world, x, y, z);
     }
 
-    public Automaton(@Nonnull MagicController controller, @Nonnull Block block, @Nonnull String templateKey) {
+    public Automaton(@Nonnull MagicController controller, @Nonnull Block block, @Nonnull String templateKey, String creatorId) {
         this.controller = controller;
         this.templateKey = templateKey;
         setTemplate(controller.getAutomatonTemplate(templateKey));
         createdAt = System.currentTimeMillis();
+        createdBy = creatorId;
         location = block.getLocation();
     }
 
@@ -87,6 +90,7 @@ public class Automaton {
 
     public void save(ConfigurationSection node) {
         node.set("created", createdAt);
+        node.set("creator", createdBy);
         node.set("template", templateKey);
         World world = location.getWorld();
         node.set("world", location.getWorld().getName());
@@ -153,5 +157,9 @@ public class Automaton {
 
     public boolean isValid() {
         return location.getWorld() != null;
+    }
+
+    public String getTemplateKey() {
+        return templateKey;
     }
 }

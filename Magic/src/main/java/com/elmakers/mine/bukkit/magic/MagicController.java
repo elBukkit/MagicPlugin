@@ -109,6 +109,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.automata.AutomatonTemplate;
+import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
@@ -1896,6 +1897,36 @@ public class MagicController implements MageController {
         }
     }
 
+    public boolean isAutomataTemplate(@Nonnull String key) {
+        return automatonTemplates.containsKey(key);
+    }
+
+    @Nonnull
+    public Collection<String> getAutomatonTemplateKeys() {
+        return automatonTemplates.keySet();
+    }
+
+    @Nonnull
+    public Collection<Automaton> getActiveAutomata() {
+        return activeAutomata.values();
+    }
+
+    @Nullable
+    public Automaton getAutomatonAt(@Nonnull Location location) {
+        String chunkId = getChunkKey(location);
+        if (chunkId == null) {
+            return null;
+        }
+
+        Map<Long, Automaton> restoreChunk = automata.get(chunkId);
+        if (restoreChunk == null) {
+            return null;
+        }
+
+        long blockId = BlockData.getBlockId(location);
+        return restoreChunk.get(blockId);
+    }
+
     @Nullable
     public AutomatonTemplate getAutomatonTemplate(String key) {
         return automatonTemplates.get(key);
@@ -2059,18 +2090,28 @@ public class MagicController implements MageController {
             chunkAutomata = new HashMap<>();
             automata.put(chunkId, chunkAutomata);
         }
-        chunkAutomata.put(automaton.getId(), automaton);
+        long id = automaton.getId();
+        chunkAutomata.put(id, automaton);
+
+        if (automaton.getLocation().getChunk().isLoaded()) {
+            activeAutomata.put(id, automaton);
+            automaton.resume();
+        }
     }
 
     public boolean unregisterAutomaton(Automaton automaton) {
         boolean removed = false;
         String chunkId = getChunkKey(automaton.getLocation());
+        long id = automaton.getId();
         Map<Long, Automaton> chunkAutomata = automata.get(chunkId);
         if (chunkAutomata != null) {
-            removed = chunkAutomata.remove(automaton.getId()) != null;
+            removed = chunkAutomata.remove(id) != null;
             if (chunkAutomata.size() == 0) {
                 automata.remove(chunkId);
             }
+        }
+        if (activeAutomata.remove(id) != null) {
+            automaton.pause();
         }
 
         return removed;

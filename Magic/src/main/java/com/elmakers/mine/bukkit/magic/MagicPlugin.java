@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.magic.command.CastCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MageCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicAutomataCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicConfigCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicGiveCommandExecutor;
@@ -198,6 +199,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         TabExecutor magicMobCommand = new MagicMobCommandExecutor(this);
         getCommand("mmob").setExecutor(magicMobCommand);
         getCommand("mmob").setTabCompleter(magicMobCommand);
+        TabExecutor magicAutoCommand = new MagicAutomataCommandExecutor(controller);
+        getCommand("mauto").setExecutor(magicAutoCommand);
+        getCommand("mauto").setTabCompleter(magicAutoCommand);
         TabExecutor magicMapCommand = new MagicMapCommandExecutor(this);
         getCommand("mmap").setExecutor(magicMapCommand);
         getCommand("mmap").setTabCompleter(magicMapCommand);

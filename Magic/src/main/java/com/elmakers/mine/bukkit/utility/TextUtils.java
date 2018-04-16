@@ -48,6 +48,11 @@ public class TextUtils
         return buf.toString();
     }
 
+    public static String printNumber(double number, int digits) {
+        NumberFormat formatter = formatters[Math.min(Math.max(0, digits), formatters.length - 1)];
+        return formatter.format(number);
+    }
+
     public static String printLocation(Location location) {
         return printLocation(location, 2);
     }
