@@ -5114,6 +5114,8 @@ public class MagicController implements MageController {
         return skinName;
     }
 
+    @Override
+    @Nonnull
     public Random getRandom() {
         return random;
     }

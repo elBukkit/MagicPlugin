@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.magic;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -478,4 +479,12 @@ public interface MageController {
      */
     @Nonnull
     String getSkillsSpell();
+
+    /**
+     * Retrieve a static Random instance to use for randomization.
+     *
+     * @return An instance of Random
+     */
+    @Nonnull
+    Random getRandom();
 }
