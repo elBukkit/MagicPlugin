@@ -50,7 +50,6 @@ public class FlyAction extends BaseSpellAction {
         super.finish(context);
         Entity entity = context.getTargetEntity();
         if (entity != null && entity instanceof Player) {
-            org.bukkit.Bukkit.getLogger().info("Disabling on finish");
             Player player = (Player)entity;
             toggleFlight(player, false);
         }
