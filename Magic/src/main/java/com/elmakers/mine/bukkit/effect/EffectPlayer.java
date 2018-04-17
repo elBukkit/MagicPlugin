@@ -131,7 +131,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     private void warn(String warning) {
         if (plugin != null) {
-            warn(warning);
+            plugin.getLogger().warning(warning);
         }
     }
 
