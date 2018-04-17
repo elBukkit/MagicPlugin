@@ -197,6 +197,7 @@ commands:
         Use /help mitem [subcommand] for more information
         /mitem add        Add enchantments, attributes or lore
         /mitem remove     Remove enchantments, attributes or lore
+        /mitem name       Rename an item
         /mitem describe   Show information about an item
         /mitem configure  Modify NBT tags on an item (may be dangerous!)
         /mitem duplicate  Create a copy of an item
