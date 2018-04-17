@@ -45,13 +45,13 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 0)
         {
-            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list] <type> [count]");
+            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list|clear] <type> [count]");
             return true;
         }
 
         if (args[0].equalsIgnoreCase("list"))
         {
-            onListMobs(sender);
+            onListMobs(sender, args.length > 1);
             return true;
         }
 
@@ -168,9 +168,8 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         return true;
     }
 
-    protected void onListMobs(CommandSender sender) {
+    protected void onListMobs(CommandSender sender, boolean all) {
         Map<String, Integer> mobCounts = new HashMap<>();
-
         Collection<Mage> mages = new ArrayList<>(api.getController().getMobMages());
         for (Mage mage : mages) {
             EntityData entityData = mage.getEntityData();
@@ -184,6 +183,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             }
         }
 
+        boolean messaged = false;
         Set<String> keys = api.getController().getMobKeys();
         for (String key : keys) {
             EntityData mobType = api.getController().getMob(key);
@@ -192,7 +192,13 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             if (mobCount != null) {
                 message = message + ChatColor.GRAY + " (" + ChatColor.GREEN + mobCount + ChatColor.DARK_GREEN + " Active" + ChatColor.GRAY + ")";
             }
-            sender.sendMessage(message);
+            if (all || mobCount != null) {
+                sender.sendMessage(message);
+                messaged = true;
+            }
+        }
+        if (!messaged) {
+            sender.sendMessage(ChatColor.YELLOW + "No magic mobs active. Use '/mmob list all' to see all mob types.");
         }
     }
 
