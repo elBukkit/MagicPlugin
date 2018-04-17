@@ -1,13 +1,12 @@
 # TODO
 
-## 7.4
+## 7.5
    
- - Goldwalker blocks didn't undo?
-     
- - Why does breaking sand cause two sand blocks to break?
+ - Goldwalker blocks didn't undo? (Can not reproduce)
   
  - Optional lore on wands to say which classes they work with
  - Option for Selector for switch class rather than unlock class
+ - Selector that can run action handlers instead of needing separate spells
      
  - Update skill icon lore when armor updates (to take buffs into account)
  
@@ -16,9 +15,7 @@
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
    
- - Selector that can run action handlers instead of needing separate spells
- - ChangeWorld parameters don't show up in editor
- - Editor working with selector options
+ - Make editor work with selector options
    
 ## The great un-defaulting
 

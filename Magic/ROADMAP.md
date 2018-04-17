@@ -2,17 +2,11 @@
 
 This is a *very rough* approximation of where Magic is headed in future versions.
 
-## 7.4
-
- - Persistent effect support
-   - Replacing old automata tracking
-   - Support for mob spawners and effectlib effects
- - Better magic mob loot tables (Probability tables for drops)
-
 ## 7.5
 
  - Ability to have spells cast on chunk load and cancel on unload
  - Maybe optimize effectlib chunk effects with player range
+ - Break survival configs into a separate example
 
 ## 7.6
 
