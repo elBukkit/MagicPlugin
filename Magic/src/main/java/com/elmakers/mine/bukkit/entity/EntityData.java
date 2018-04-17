@@ -301,6 +301,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         interactSpell = parameters.getString("interact_spell");
         if (parameters.isList("drops")) {
+            @SuppressWarnings("unchecked")
             List<Object> list = (List<Object>)parameters.getList("drops");
             drops = new ArrayList<>();
             for (Object item : list) {
