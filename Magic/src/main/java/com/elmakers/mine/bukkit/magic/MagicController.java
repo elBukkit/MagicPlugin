@@ -2090,6 +2090,14 @@ public class MagicController implements MageController {
             ex.printStackTrace();
         }
 
+        if (automataCount > 0) {
+            for (World world : Bukkit.getWorlds()) {
+                for (Chunk chunk : world.getLoadedChunks()) {
+                    resumeAutomata(chunk);
+                }
+            }
+        }
+
         getLogger().info("Loaded " + automataCount + " automata");
     }
 

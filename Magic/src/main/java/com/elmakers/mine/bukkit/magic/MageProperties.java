@@ -36,7 +36,6 @@ public class MageProperties extends CasterProperties {
             return;
         }
         effectColor = new ColorHD(hexColor);
-        org.bukkit.Bukkit.getLogger().info("Set color: " + effectColor.getColor());
         if (hexColor.equals("random")) {
             setProperty("effect_color", effectColor.toString());
         }
