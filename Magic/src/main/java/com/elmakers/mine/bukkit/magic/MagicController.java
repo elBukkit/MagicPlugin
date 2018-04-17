@@ -1802,16 +1802,17 @@ public class MagicController implements MageController {
         MagicRecipe.FIRST_REGISTER = false;
 
         // Set up attributes
-        // Delay this by 1 tick on first load to give other plugins a chance to load and prepare for the LoadEvent
+        // Delay this by 3 ticks on first load to give other plugins a chance to load and prepare for the LoadEvent
+        // The 3 here is important, because Heroes integration is delayed by 2 ticks.
         if (loaded) {
-            initializeAttributes();;
+            initializeAttributes();
         } else {
             plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    initializeAttributes();
+                initializeAttributes();
                 }
-            }, 1);
+            }, 3);
         }
 
         loaded = true;
@@ -1870,6 +1871,7 @@ public class MagicController implements MageController {
             }
         }
 
+                org.bukkit.Bukkit.getLogger().info("Registered: " + attributes);
         SpellParameters.initializeAttributes(attributes);
         SpellParameters.setLogger(getLogger());
     }
