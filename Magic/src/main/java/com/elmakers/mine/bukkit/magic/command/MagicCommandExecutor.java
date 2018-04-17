@@ -631,11 +631,6 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                         label = label + ChatColor.GRAY + " (Adult)";
                         zombie.setBaby(false);
                     }
-                    else if (skeleton != null)
-                    {
-                        label = label + ChatColor.GRAY + " (NORMAL)";
-                        skeleton.setSkeletonType(Skeleton.SkeletonType.NORMAL);
-                    }
                     else if (slime != null)
                     {
                         label = label + ChatColor.GRAY + " (Size 1)";
@@ -653,12 +648,6 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                     {
                         label = entityType.name() + ChatColor.GRAY + " (Baby)";
                         zombie.setBaby(true);
-                        showEntityInfo(sender, testEntity, label, formatter);
-                    }
-                    else if (skeleton != null)
-                    {
-                        label = entityType.name() + ChatColor.GRAY + " (WITHER)";
-                        skeleton.setSkeletonType(Skeleton.SkeletonType.WITHER);
                         showEntityInfo(sender, testEntity, label, formatter);
                     }
                     else if (slime != null)
