@@ -510,6 +510,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         startEffects(new DynamicLocation(origin), new DynamicLocation(target));
     }
 
+    @Override
     public void start(EffectContext context) {
         context.trackEffects(this);
         Location source = getSourceLocation(context);
