@@ -16,10 +16,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
@@ -110,11 +110,16 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
                     String referenceKey = effectsNode.getString(effectKey);
                     if (effects.containsKey(referenceKey)) {
                         effects.put(effectKey, new ArrayList<>(effects.get(referenceKey)));
+                    } else {
+                        Collection<EffectPlayer> baseEffects = controller.getEffects(referenceKey);
+                        if (baseEffects != null) {
+                            effects.put(effectKey, baseEffects);
+                        }
                     }
                 }
                 else
                 {
-                    effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
+                    effects.put(effectKey, controller.loadEffects(effectsNode, effectKey));
                 }
             }
             clearProperty("effects");

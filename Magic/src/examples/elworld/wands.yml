@@ -187,13 +187,4 @@ testbad:
 butterfly:
   name: Butterfly Wand
   effects:
-    activate:
-    - source_location: body
-      effectlib:
-        class: EquationEffect
-        xEquation: 0
-        yEquation: "(cos(t/57.2958)  * (2.71828^(cos(t/57.2958)) - 2 * cos(4t/57.2958) - (sin(t/(12 * 57.2958)))^5))"
-        zEquation: "(sin(t/57.2958)  * (2.71828^(cos(t/57.2958)) - 2 * cos(4t/57.2958) - (sin(t/(12 * 57.2958)))^5))"
-        particles: 100
-        duration: 10000000
-        relativeOffset: -0.5,0,0
+    activate: butterfly
