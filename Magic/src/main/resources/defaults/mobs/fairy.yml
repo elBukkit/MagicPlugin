@@ -1,0 +1,30 @@
+fairy:
+  type: villager
+  name: Fairy
+  health: 100
+  lifetime: 10000
+  mage:
+    effect_color: "random"
+  potion_effects:
+  - type: levitation
+    amplifier: 1
+  triggers:
+    spawn:
+      effects: butterfly
+    death:
+      effects:
+      - particle: smoke_large
+        particle_count: 50
+        particle_data: 1
+        particle_offset_x: 1.2
+        particle_offset_y: 2.5
+        particle_offset_z: 1.2
+      - particle: smoke_large
+        particle_count: 50
+        particle_offset_x: 1.2
+        particle_offset_y: 2.5
+        particle_offset_z: 1.2
+  drops:
+  - glowstone_dust
+    redstone
+    sulphur

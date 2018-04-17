@@ -1,18 +1,14 @@
-testspawner:
-  name: Magic Mob Spawner
-  description: A simple mob spawner, can be customized via the "mobs" parameter, among others.
-  interval: 5000
+fairyspawner:
+  name: Fairy Spawner
+  interval: 8000
   spawn:
-    player_range: 64
+    player_range: 32
     min_players: 1
-    limit_range: 64
-    limit: 3
-    probability: 0.99
-    mobs:
-      warlock: 100
-      dark_wizard: 5
-      dark_spider: 20
-      mega_spider: 30
+    limit_range: 32
+    limit: 1
+    probability: 1
+    radius : 1
+    mobs: fairy
 
 earth:
   name: Earth
