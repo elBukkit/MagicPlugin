@@ -32,11 +32,19 @@ missile:
         tick:
         - particle: redstone
           location: target
+        break:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           particle_count: 100
+           particle_offset_x: 0.6
+           particle_offset_y: 0.6
+           particle_offset_z: 0.6
         hit_block:
         -  class: EffectSingle
            location: target
            particle: block_crack
-           particle_count: 50
+           particle_count: 30
            particle_offset_x: 0.2
            particle_offset_y: 1
            particle_offset_z: 0.2
