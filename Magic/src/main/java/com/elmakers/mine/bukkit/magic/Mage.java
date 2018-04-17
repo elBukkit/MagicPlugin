@@ -3465,10 +3465,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         controller.registerMagicMob(this);
 
         ConfigurationSection mageProperties = entityData.getMageProperties();
-        org.bukkit.Bukkit.getLogger().info("Properties: " + mageProperties);
         if (mageProperties != null) {
-
-        org.bukkit.Bukkit.getLogger().info("   : " + mageProperties.getKeys(false));
             ConfigurationUtils.addConfigurations(properties.getConfiguration(), mageProperties);
             properties.loadProperties();
             updatePassiveEffects();

@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -29,6 +30,7 @@ public class MageTrigger {
 
     protected MageTriggerType type;
     protected Deque<WeightedPair<String>> spells;
+    protected Collection<EffectPlayer> effects;
     protected List<String> commands;
 
     protected double maxHealth;
@@ -59,6 +61,10 @@ public class MageTrigger {
         minHealthPercentage = configuration.getDouble("min_health_percentage");
         maxDamage = configuration.getDouble("max_damage");
         minDamage = configuration.getDouble("min_damage");
+
+        if (configuration.contains("effects")) {
+            effects = controller.loadEffects(configuration, "effects");
+        }
     }
 
     public boolean isValid() {
@@ -102,6 +108,11 @@ public class MageTrigger {
         if (minHealthPercentage > 0 && (li == null || li.getHealth() * 100 / li.getMaxHealth() < minHealthPercentage)) return;
         if (maxHealthPercentage > 0 && (li == null || li.getHealth() * 100 / li.getMaxHealth() > maxHealthPercentage)) return;
 
+        if (effects != null) {
+            for (EffectPlayer player : effects) {
+                player.start(mage.getEffectContext());
+            }
+        }
         if (spells != null && !spells.isEmpty()) {
             String deathSpell = RandomUtils.weightedRandom(spells);
             cast(mage, deathSpell);

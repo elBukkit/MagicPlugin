@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.entity;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -36,7 +34,6 @@ public class EntityMageData {
     protected ItemData requiresWand;
     protected boolean aggro;
     protected double trackRadiusSquared;
-    protected Collection<EffectPlayer> effects;
 
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
         requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
@@ -94,19 +91,14 @@ public class EntityMageData {
             tickInterval = lifetime / 2;
         }
 
-        if (parameters.contains("effects")) {
-            effects = controller.loadEffects(parameters, "effects");
-        }
-
         aggro = parameters.getBoolean("aggro", !isEmpty());
     }
 
     public boolean isEmpty() {
         boolean hasTriggers = triggers != null;
         boolean hasProperties = mageProperties != null;
-        boolean hasEffects = effects != null && !effects.isEmpty();
         boolean hasLifetime = lifetime > 0;
-        return !hasProperties && !hasTriggers && !aggro && !hasEffects && !hasLifetime;
+        return !hasProperties && !hasTriggers && !aggro && !hasLifetime;
     }
 
     @Nullable
@@ -135,12 +127,6 @@ public class EntityMageData {
         if (spawnTriggers != null) {
             for (MageTrigger trigger : spawnTriggers) {
                 trigger.execute(mage);
-            }
-        }
-
-        if (effects != null) {
-            for (EffectPlayer player : effects) {
-                player.start(mage.getEffectContext());
             }
         }
     }
