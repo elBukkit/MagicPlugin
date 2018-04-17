@@ -1871,7 +1871,7 @@ public class MagicController implements MageController {
             }
         }
 
-                org.bukkit.Bukkit.getLogger().info("Registered: " + attributes);
+        getLogger().info("Registering attriburets: " + attributes);
         SpellParameters.initializeAttributes(attributes);
         SpellParameters.setLogger(getLogger());
     }
