@@ -30,7 +30,6 @@ public class BaseMagicProperties implements MagicProperties {
     protected final @Nonnull MagicController controller;
     protected ConfigurationSection configuration = new MemoryConfiguration();
 
-    private static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
     public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of(
             "active_spell", "active_brush", "alternate_spell", "alternate_spell2",
             "path", "template", "passive",
@@ -287,7 +286,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     public static String describeProperty(Object property) {
-        return InventoryUtils.describeProperty(property, MAX_PROPERTY_DISPLAY_LENGTH);
+        return InventoryUtils.describeProperty(property, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH);
     }
 
     public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {

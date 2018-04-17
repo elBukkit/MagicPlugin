@@ -31,6 +31,7 @@ import java.util.logging.Level;
 public class InventoryUtils extends NMSUtils
 {
     public static int MAX_LORE_LENGTH = 24;
+    public static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
 
     public static boolean saveTagsToItem(ConfigurationSection tags, ItemStack item)
     {
