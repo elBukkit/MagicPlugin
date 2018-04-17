@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -55,6 +56,18 @@ public class EffectContext implements com.elmakers.mine.bukkit.api.effect.Effect
     @Override
     public Location getWandLocation() {
         return location;
+    }
+
+    @Nullable
+    @Override
+    public Entity getEntity() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getLivingEntity() {
+        return null;
     }
 
     @Override

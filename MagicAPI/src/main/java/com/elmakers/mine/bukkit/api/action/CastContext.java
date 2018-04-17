@@ -36,7 +36,10 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public interface CastContext extends WandEffectContext {
     @Nullable
+    @Override
     Entity getEntity();
+    @Nullable
+    @Override
     LivingEntity getLivingEntity();
     @Override
     @Nullable

@@ -7,10 +7,15 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface EffectContext {
+    @Nullable
+    Entity getEntity();
+    @Nullable
+    LivingEntity getLivingEntity();
     @Nullable
     Location getEyeLocation();
     @Nullable

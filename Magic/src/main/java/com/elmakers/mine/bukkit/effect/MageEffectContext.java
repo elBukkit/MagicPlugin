@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.google.common.base.Preconditions;
@@ -49,5 +51,16 @@ public class MageEffectContext extends EffectContext implements com.elmakers.min
             return location;
         }
         return mage.getEyeLocation();
+    }
+
+    @Override
+    public Entity getEntity() {
+        return mage.getEntity();
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getLivingEntity() {
+        return mage.getLivingEntity();
     }
 }
