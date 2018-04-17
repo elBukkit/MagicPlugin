@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -34,4 +35,7 @@ public interface EffectContext {
     void cancelEffects();
     void trackEffects(EffectPlayer player);
     Collection<EffectPlay> getCurrentEffects();
+
+    Color getEffectColor();
+    String getEffectParticle();
 }

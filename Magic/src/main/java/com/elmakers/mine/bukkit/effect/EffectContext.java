@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -97,5 +98,17 @@ public class EffectContext implements com.elmakers.mine.bukkit.api.effect.Effect
     @Override
     public void trackEffects(com.elmakers.mine.bukkit.api.effect.EffectPlayer player) {
         player.setEffectPlayList(currentEffects);
+    }
+
+    @Override
+    @Nullable
+    public Color getEffectColor() {
+        return null;
+    }
+
+    @Override
+    @Nullable
+    public String getEffectParticle() {
+        return null;
     }
 }

@@ -505,6 +505,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         return effects;
     }
 
+    @Override
     @Nullable
     public Color getEffectColor() {
         Color color = wand == null ? null : wand.getEffectColor();
@@ -514,6 +515,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         return color;
     }
 
+    @Override
     @Nullable
     public String getEffectParticle() {
         String particle = wand == null ? null : wand.getEffectParticleName();

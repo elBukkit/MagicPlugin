@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.effect;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -62,5 +63,17 @@ public class MageEffectContext extends EffectContext implements com.elmakers.min
     @Override
     public LivingEntity getLivingEntity() {
         return mage.getLivingEntity();
+    }
+
+    @Override
+    @Nullable
+    public Color getEffectColor() {
+        return mage.getEffectColor();
+    }
+
+    @Override
+    @Nullable
+    public String getEffectParticle() {
+        return mage.getEffectParticleName();
     }
 }

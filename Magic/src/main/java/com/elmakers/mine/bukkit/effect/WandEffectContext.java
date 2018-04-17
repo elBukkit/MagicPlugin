@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.effect;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -30,5 +31,31 @@ public class WandEffectContext extends MageEffectContext implements com.elmakers
         }
         Location wandLocation = wand == null ? null : wand.getLocation();
         return wandLocation == null ? getEyeLocation() : wandLocation;
+    }
+
+    @Override
+    @Nullable
+    public Color getEffectColor() {
+        Color color = null;
+        if (wand != null) {
+            color = wand.getEffectColor();
+        }
+        if (color == null) {
+            color = mage.getEffectColor();
+        }
+        return color;
+    }
+
+    @Override
+    @Nullable
+    public String getEffectParticle() {
+        String particleName = null;
+        if (wand != null) {
+            particleName = wand.getEffectParticleName();
+        }
+        if (particleName == null) {
+            particleName = mage.getEffectParticleName();
+        }
+        return particleName;
     }
 }
