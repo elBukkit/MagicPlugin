@@ -124,6 +124,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static Vector DEFAULT_CAST_OFFSET = new Vector(0.5, -0.5, 0);
     public static double SNEAKING_CAST_OFFSET = -0.2;
 
+    private static class DamagedBy {
+        private WeakReference<Player> player;
+        public double damage;
+
+        public DamagedBy(Player player, double damage) {
+            this.player = new WeakReference<>(player);
+            this.damage = damage;
+        }
+
+        public Entity getEntity() {
+            return player.get();
+        }
+    }
+
     protected final String id;
     private final @Nonnull MageProperties properties;
     private final Map<String, MageClass> classes = new HashMap<>();
@@ -163,20 +177,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long disableWandOpenUntil = 0;
     private long created;
     private MageEffectContext effectContext = null;
-
-    private static class DamagedBy {
-        private WeakReference<Player> player;
-        public double damage;
-
-        public DamagedBy(Player player, double damage) {
-            this.player = new WeakReference<>(player);
-            this.damage = damage;
-        }
-
-        public Entity getEntity() {
-            return player.get();
-        }
-    }
 
     private DamagedBy topDamager;
     private DamagedBy lastDamager;
@@ -2127,7 +2127,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (offhandCast && offhandWand != null) {
             return offhandWand.getEffectColor();
         }
-        if (activeWand == null) return null;
+        if (activeWand == null) {
+            return properties.getEffectColor();
+        }
         return activeWand.getEffectColor();
     }
 
@@ -3463,8 +3465,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         controller.registerMagicMob(this);
 
         ConfigurationSection mageProperties = entityData.getMageProperties();
+        org.bukkit.Bukkit.getLogger().info("Properties: " + mageProperties);
         if (mageProperties != null) {
+
+        org.bukkit.Bukkit.getLogger().info("   : " + mageProperties.getKeys(false));
             ConfigurationUtils.addConfigurations(properties.getConfiguration(), mageProperties);
+            properties.loadProperties();
             updatePassiveEffects();
         }
 
