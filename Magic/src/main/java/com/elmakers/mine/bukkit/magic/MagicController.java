@@ -1927,6 +1927,10 @@ public class MagicController implements MageController {
         return activeAutomata.values();
     }
 
+    public boolean isActive(@Nonnull Automaton automaton) {
+        return activeAutomata.containsKey(automaton.getId());
+    }
+
     @Nullable
     public Automaton getAutomatonAt(@Nonnull Location location) {
         String chunkId = getChunkKey(location);
@@ -5751,6 +5755,10 @@ public class MagicController implements MageController {
         for (EffectPlayer player : effectPlayers) {
             player.start(context);
         }
+    }
+
+    public Collection<String> getEffectKeys() {
+        return effects.keySet();
     }
 
     /*

@@ -9,6 +9,7 @@
      `/mauto add spawner creeper`
    - Create persistent effects:
      `/mauto add fountain`
+   - More info: https://github.com/elBukkit/MagicPlugin/wiki/AutomaticBlocks
  - Add support for randomized drop tables to magic mobs
  - Add "spawn" trigger 
 

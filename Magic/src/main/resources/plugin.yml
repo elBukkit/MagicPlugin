@@ -574,9 +574,12 @@ commands:
         /mauto add spawner                Add a spawner from automata.yml
         /mauto add fountain               Add a particle fountain from automata.yml
         /mauto add spawner spawn.mobs creeper Add a custom creeper spawner
-        /mauto remove                     Remove the automata closest to you
+        /mauto select                     Select the automaton closest to you
+        /mauto remove                     Remove the selected automaton
         /mauto list <radius>              List nearby automata
         /mauto list                       List all automata
+        /mauto describe                   Show details of selected automaton
+        /mauto configure                  Configure properties of selected automaton
   mmob:
     description: Manage Magic Mobs
     permission: Magic.commands.mmob

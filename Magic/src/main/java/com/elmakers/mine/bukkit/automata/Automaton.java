@@ -32,7 +32,8 @@ public class Automaton {
     @Nonnull
     private final Location location;
     private long createdAt;
-    private String createdBy;
+    private String creatorId;
+    private String creatorName;
 
     private long nextTick;
     private List<WeakReference<Entity>> spawned;
@@ -49,7 +50,8 @@ public class Automaton {
             controller.getLogger().warning("Automaton missing template: " + templateKey);
         }
         createdAt = node.getLong("created", 0);
-        createdBy = node.getString("creator");
+        creatorId = node.getString("creator");
+        creatorName = node.getString("creator_name");
 
         int x = node.getInt("x");
         int y = node.getInt("y");
@@ -68,14 +70,15 @@ public class Automaton {
         location = new Location(world, x, y, z, yaw, pitch);
     }
 
-    public Automaton(@Nonnull MagicController controller, @Nonnull Location location, @Nonnull String templateKey, String creatorId, @Nullable ConfigurationSection parameters) {
+    public Automaton(@Nonnull MagicController controller, @Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters) {
         this.controller = controller;
         this.templateKey = templateKey;
         this.parameters = parameters;
         this.location = location;
         setTemplate(controller.getAutomatonTemplate(templateKey));
         createdAt = System.currentTimeMillis();
-        createdBy = creatorId;
+        this.creatorId = creatorId;
+        this.creatorName = creatorName;
     }
 
     private void setTemplate(AutomatonTemplate template) {
@@ -96,7 +99,8 @@ public class Automaton {
 
     public void save(ConfigurationSection node) {
         node.set("created", createdAt);
-        node.set("creator", createdBy);
+        node.set("creator", creatorId);
+        node.set("creatorName", creatorName);
         node.set("template", templateKey);
         node.set("world", location.getWorld().getName());
         node.set("x", location.getBlockX());
@@ -179,14 +183,30 @@ public class Automaton {
         return location.getWorld() != null;
     }
 
+    @Nonnull
     public String getTemplateKey() {
         return templateKey;
     }
 
+    @Nonnull
     private EffectContext getEffectContext() {
         if (effectContext == null) {
             effectContext = new EffectContext(controller, location);
         }
         return effectContext;
+    }
+
+    @Nullable
+    public ConfigurationSection getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(@Nullable ConfigurationSection parameters) {
+        this.parameters = parameters;
+    }
+
+    @Nullable
+    public String getCreatorName() {
+        return creatorName;
     }
 }

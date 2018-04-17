@@ -5,7 +5,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -18,11 +25,28 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.google.common.collect.ImmutableSet;
 
 public class MagicAutomataCommandExecutor extends MagicTabExecutor {
     private final MagicController magicController;
+    private final SelectedAutomata consoleSelection = new SelectedAutomata();
+    private final Map<UUID, SelectedAutomata> selections = new HashMap<>();
+
+    private static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of(
+        "name", "interval", "effects",
+        "spawn.mobs", "spawn.probability", "spawn.player_range", "spawn.min_players",
+        "spawn.limit", "spawn.limit_range", "spawn.vertical_range", "spawn.radius",
+        "spawn.vertical_radius", "spawn.retries"
+    );
+
+    private static class SelectedAutomata {
+        public Automaton selected;
+        public List<Automaton> list;
+    }
 
     public MagicAutomataCommandExecutor(MagicController controller) {
         super(controller.getAPI());
@@ -37,40 +61,74 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: mauto [add|remove|list]");
+            sender.sendMessage(ChatColor.RED + "Usage: mauto [add|select|remove|list|configure|describe]");
             return true;
         }
 
         String subCommand = args[0];
         args = Arrays.copyOfRange(args, 1, args.length);
 
+        SelectedAutomata selection = consoleSelection;
+        Player player = sender instanceof Player ? (Player)sender : null;
+        if (player != null) {
+            selection = selections.get(player.getUniqueId());
+        }
+
         if (subCommand.equalsIgnoreCase("list")) {
             onListAutomata(sender, args);
             return true;
         }
 
-        if (!(sender instanceof Player)) {
+        if (subCommand.equalsIgnoreCase("select")) {
+            onSelectAutomata(sender, selection, args);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("remove")) {
+            onRemoveAutomata(sender, selection);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("describe")) {
+            onDescribeAutomata(sender, selection);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("configure")) {
+            onConfigureAutomata(sender, selection, args);
+            return true;
+        }
+
+        if (player == null) {
 
             sender.sendMessage(ChatColor.RED + "This command can only be used in-game");
             return true;
         }
 
-        Player player = (Player)sender;
         if (subCommand.equalsIgnoreCase("add")) {
             onAddAutomata(player, args);
             return true;
         }
 
-        if (subCommand.equalsIgnoreCase("remove")) {
-            onRemoveAutomata(player, args);
-            return true;
-        }
-
-        sender.sendMessage(ChatColor.RED + "Usage: mauto [add|remove|list]");
+        sender.sendMessage(ChatColor.RED + "Usage: mauto [add|select|remove|list|configure|describe]");
         return true;
     }
 
-    protected void onListAutomata(CommandSender sender, String[] args) {
+    @Nonnull
+    private SelectedAutomata getSelection(CommandSender sender) {
+        SelectedAutomata selection = consoleSelection;
+        Player player = sender instanceof Player ? (Player)sender : null;
+        if (player != null) {
+            selection = selections.get(player.getUniqueId());
+            if (selection == null) {
+                selection = new SelectedAutomata();
+                selections.put(player.getUniqueId(), selection);
+            }
+        }
+        return selection;
+    }
+
+    private void onListAutomata(CommandSender sender, String[] args) {
         int range = 0;
         Location location = null;
         if (args.length > 0) {
@@ -90,27 +148,28 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         } else if (sender instanceof Player) {
             location = ((Player) sender).getEyeLocation();
         }
-        Collection<Automaton> automata = magicController.getActiveAutomata();
+        Collection<Automaton> allAutomata = magicController.getActiveAutomata();
+        List<Automaton> automata;
         if (location != null) {
-            automata = getSorted(automata, location, range);
+            automata = getSorted(allAutomata, location, range);
+        } else {
+            automata = new ArrayList<>(allAutomata);
         }
+        getSelection(sender).list = automata;
         sender.sendMessage(ChatColor.AQUA + "Total active automata: " + ChatColor.DARK_AQUA + automata.size());
         boolean first = true;
-        for (Automaton automaton : automata) {
+        for (int i = 0; i < automata.size(); i++) {
+            Automaton automaton = automata.get(i);
             Location automatonLocation = automaton.getLocation();
-            String message = ChatColor.LIGHT_PURPLE + automaton.getTemplateKey() + ChatColor.DARK_PURPLE
+            String message = ChatColor.WHITE + Integer.toString(i + 1) + ChatColor.GRAY + ": "
+                + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey() + ChatColor.DARK_PURPLE
                 + " at " + TextUtils.printLocation(automatonLocation, 0);
 
-            if (location != null && location.getWorld().equals(automatonLocation.getWorld())) {
-                double distance = location.distance(automatonLocation);
-                message = message + ChatColor.GRAY + " (" + ChatColor.WHITE + TextUtils.printNumber(distance, 1)
-                    + ChatColor.BLUE + " blocks away" + ChatColor.GRAY + ")";
-
-                if (distance < 64) {
-                    String effectsKey = first ? "blockfindfirst" : "blockfind";
-                    controller.playEffects(effectsKey, location, automatonLocation);
-                    first = false;
-                }
+            String effectsKey = first ? "blockfindfirst" : "blockfind";
+            String rangeMessage = playEffects(sender, automaton, effectsKey);
+            if (rangeMessage != null) {
+                first = false;
+                message = message + rangeMessage;
             }
 
             sender.sendMessage(message);
@@ -136,7 +195,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                 boolean bInWorld = sortLocation.getWorld().equals(b.getLocation().getWorld());
                 if (aInWorld && !bInWorld) return -1;
                 if (!aInWorld && bInWorld) return 1;
-                if (!aInWorld && !bInWorld) return 0;
+                if (!aInWorld) return 0;
                 double aDistance = sortLocation.distanceSquared(a.getLocation());
                 double bDistance = sortLocation.distanceSquared(b.getLocation());
                 return (int) Math.round(aDistance - bDistance);
@@ -145,7 +204,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         return sorted;
     }
 
-    protected void onAddAutomata(Player player, String[] args) {
+    private void onAddAutomata(Player player, String[] args) {
         if (args.length == 0) {
             player.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mauto add <template>");
             return;
@@ -171,64 +230,257 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             parameters = new MemoryConfiguration();
             ConfigurationUtils.addParameters(parameterArgs, parameters);
         }
-        Automaton automaton = new Automaton(magicController, location, key, player.getUniqueId().toString(), parameters);
+        Automaton automaton = new Automaton(magicController, location, key, player.getUniqueId().toString(), player.getName(), parameters);
         magicController.registerAutomaton(automaton);
 
-        controller.playEffects("blockselect", location, location);
+        playEffects(player, automaton, "blockselect");
+        getSelection(player).selected = automaton;
 
         player.sendMessage(ChatColor.AQUA + "Created automaton: " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
             + ChatColor.AQUA + " at " + TextUtils.printLocation(automaton.getLocation(), 0));
     }
 
-    protected void onRemoveAutomata(Player player, String[] args) {
-        int range = 16;
-        if (args.length > 0) {
-            try {
-                range = Integer.parseInt(args[0]);
-            } catch (Exception ex) {
-                player.sendMessage(ChatColor.RED + "Invalid radius: " + ChatColor.WHITE + args[0]);
-                return;
+    @Nullable
+    private String playEffects(CommandSender sender, Automaton automaton, String effectsKey) {
+        String rangeMessage = null;
+        if (sender instanceof Player) {
+            Location location = ((Player)sender).getLocation();
+            Location automatonLocation = automaton.getLocation();
+            if (location.getWorld().equals(automatonLocation.getWorld())) {
+                double distance = location.distance(automatonLocation);
+                rangeMessage = ChatColor.GRAY + " (" + ChatColor.WHITE + TextUtils.printNumber(distance, 1)
+                    + ChatColor.BLUE + " blocks away" + ChatColor.GRAY + ")";
+
+                if (distance < 64) {
+                    controller.playEffects(effectsKey, location, automatonLocation);
+                }
             }
         }
 
-        List<Automaton> automata = getSorted(magicController.getActiveAutomata(), player.getLocation(), range);
-        if (automata.size() == 0) {
-            player.sendMessage(ChatColor.RED + "No automata within range, try adding a radius parameter, or check /mauto list");
+        return rangeMessage;
+    }
+
+    private void onRemoveAutomata(CommandSender sender, SelectedAutomata selection) {
+        if (selection == null || selection.selected == null) {
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
             return;
         }
 
-        Automaton automaton = automata.get(0);
+        Automaton automaton = selection.selected;
         if (!magicController.unregisterAutomaton(automaton)) {
-            player.sendMessage(ChatColor.RED + "Could not find automata at given position (something went wrong)");
+            sender.sendMessage(ChatColor.RED + "Could not find automata at given position (something went wrong)");
             return;
         }
 
         Location location = automaton.getLocation();
-        controller.playEffects("blockremove", location, location);
-        player.sendMessage(ChatColor.YELLOW + "Removed " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
-            + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0));
+        selection.selected = null;
+
+        String rangeMessage = playEffects(sender, automaton, "blockremove");
+        String message = ChatColor.YELLOW + "Removed " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+            + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
+        if (rangeMessage != null) {
+            message += rangeMessage;
+        }
+        sender.sendMessage(message);
+    }
+
+    private void onDescribeAutomata(CommandSender sender, SelectedAutomata selection) {
+        if (selection == null || selection.selected == null) {
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            return;
+        }
+
+        Automaton automaton = selection.selected;
+        Location location = automaton.getLocation();
+
+        String rangeMessage = playEffects(sender, automaton, "blockselect");
+        String message = ChatColor.GREEN + "Selection: " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+            + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0);
+        if (rangeMessage != null) {
+            message += rangeMessage;
+        }
+        sender.sendMessage(message);
+
+        String creatorName = automaton.getCreatorName();
+        creatorName = (creatorName == null || creatorName.isEmpty()) ? ChatColor.YELLOW + "(Unknown)" : ChatColor.GREEN + creatorName;
+        sender.sendMessage(ChatColor.DARK_GREEN + "  Created by: " + creatorName);
+        ConfigurationSection parameters = automaton.getParameters();
+        if (parameters == null) {
+            sender.sendMessage(ChatColor.YELLOW + "(No Parameters)");
+        } else {
+            Set<String> keys = parameters.getKeys(true);
+            sender.sendMessage(ChatColor.DARK_AQUA + "Has " + ChatColor.AQUA + Integer.toString(keys.size())
+                + ChatColor.DARK_AQUA + " Parameters");
+            for (String key : keys) {
+                Object property = parameters.get(key);
+                sender.sendMessage(ChatColor.AQUA + key + ChatColor.GRAY + ": "
+                    + ChatColor.DARK_AQUA + InventoryUtils.describeProperty(property));
+            }
+        }
+    }
+
+    private void onConfigureAutomata(CommandSender sender, SelectedAutomata selection, String[] args) {
+        if (args.length == 0) {
+            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mauto configure <property> [value]");
+            return;
+        }
+
+        if (selection == null || selection.selected == null) {
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            return;
+        }
+
+        String key = args[0];
+        Automaton automaton = selection.selected;
+        ConfigurationSection parameters = automaton.getParameters();
+        if (args.length == 1 && (parameters == null || !parameters.contains(key))) {
+            sender.sendMessage(ChatColor.RED + "Automata does not have a " + ChatColor.WHITE + key + ChatColor.RED + "parameter");
+            return;
+        }
+
+        Location location = automaton.getLocation();
+
+        String rangeMessage = playEffects(sender, automaton, "blockselect");
+        String message = ChatColor.GREEN + "Configured " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+            + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0);
+        if (rangeMessage != null) {
+            message += rangeMessage;
+        }
+        sender.sendMessage(message);
+
+        boolean isActive = magicController.isActive(automaton);
+        if (isActive) {
+            automaton.pause();
+        }
+        if (args.length == 1) {
+            parameters.set(key, null);
+            sender.sendMessage(ChatColor.YELLOW + "Removed property: " + ChatColor.AQUA + key);
+        } else {
+            if (parameters == null) {
+                parameters = new MemoryConfiguration();
+            }
+            ConfigurationUtils.set(parameters, key, args[1]);
+            Object value = parameters.get(key);
+            automaton.setParameters(parameters);
+            sender.sendMessage(ChatColor.DARK_AQUA + "Set property: " + ChatColor.AQUA + key
+                + ChatColor.DARK_AQUA + " to " + ChatColor.WHITE + InventoryUtils.describeProperty(value));
+        }
+
+        automaton.reload();
+        if (isActive) {
+            automaton.resume();
+        }
+    }
+
+    private void onSelectAutomata(CommandSender sender, SelectedAutomata selection, String[] args) {
+        if (selection == null || selection.list == null || selection.list.isEmpty()) {
+            if (sender instanceof Player) {
+                Location location = ((Player)sender).getLocation();
+                List<Automaton> nearby = getSorted(magicController.getActiveAutomata(), location, 24);
+                if (nearby != null && !nearby.isEmpty()) {
+                    selection = getSelection(sender);
+                    Automaton automaton = nearby.get(0);
+                    selection.selected = automaton;
+
+                    String rangeMessage = playEffects(sender, automaton, "blockselect");
+                    String message = ChatColor.GREEN + "Selected nearby " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+                        + ChatColor.GREEN + " at " + TextUtils.printLocation(automaton.getLocation(), 0);
+                    if (rangeMessage != null) {
+                        message += rangeMessage;
+                    }
+                    sender.sendMessage(message);
+                    return;
+                }
+            }
+
+            sender.sendMessage(ChatColor.RED + "Nothing to select, Use " + ChatColor.WHITE + "/mauto list");
+            return;
+        }
+
+        int index = 1;
+        if (args.length > 0) {
+            try {
+                index = Integer.parseInt(args[0]);
+            } catch (Exception ex) {
+                sender.sendMessage(ChatColor.RED + "Invalid index: " + ChatColor.WHITE + args[0]);
+                return;
+            }
+        }
+
+        if (index <= 0 || index > selection.list.size()) {
+            sender.sendMessage(ChatColor.RED + "Index out of range: " + ChatColor.WHITE + args[0]
+                + ChatColor.GRAY + "/" + ChatColor.WHITE + selection.list.size());
+            return;
+        }
+
+        Automaton automaton = selection.list.get(index - 1);
+        selection.selected = automaton;
+        Location location = automaton.getLocation();
+
+        String rangeMessage = playEffects(sender, automaton, "blockselect");
+        String message = ChatColor.GREEN + "Selected " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+            + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0);
+        if (rangeMessage != null) {
+            message += rangeMessage;
+        }
+        sender.sendMessage(message);
     }
 
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         List<String> options = new ArrayList<>();
+        String subCommand = args[0];
+        String property = "";
+        boolean isConfigure = args.length >= 3 && (subCommand.equalsIgnoreCase("add"));
+        if (subCommand.equalsIgnoreCase("configure") && args.length >= 2) {
+            isConfigure = true;
+        }
+        if (isConfigure) {
+            property = args[args.length - 2];
+        }
+
         if (!sender.hasPermission("Magic.commands.mauto")) return options;
         if (args.length == 1) {
             options.add("add");
             options.add("list");
             options.add("remove");
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("add")) {
+            options.add("select");
+            options.add("configure");
+            options.add("describe");
+        } else if (args.length == 2 && subCommand.equalsIgnoreCase("add")) {
             options.addAll(magicController.getAutomatonTemplateKeys());
-        } else if (args.length >= 3 && args[0].equalsIgnoreCase("add") && args[args.length - 2].equals("spawn.mobs")) {
-            options.addAll(api.getController().getMobKeys());
-            for (EntityType entityType : EntityType.values()) {
-                if (entityType.isAlive() && entityType.isSpawnable()) {
-                    options.add(entityType.name().toLowerCase());
-                }
+        } else if (isConfigure) {
+            switch (property) {
+                case "spawn.mobs":
+                    options.addAll(api.getController().getMobKeys());
+                    for (EntityType entityType : EntityType.values()) {
+                        if (entityType.isAlive() && entityType.isSpawnable()) {
+                            options.add(entityType.name().toLowerCase());
+                        }
+                    }
+                    break;
+                case "interval":
+                    options.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
+                    break;
+                case "effects":
+                    options.addAll(magicController.getEffectKeys());
+                    break;
+                case "spawn.radius":
+                case "spawn.vertical_radius":
+                case "spawn.vertical_range":
+                case "spawn.limit_range":
+                case "spawn.player_range":
+                case "spawn.retries":
+                    options.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
+                    break;
+                case "spawn.probability":
+                    options.addAll(Arrays.asList(BaseSpell.EXAMPLE_PERCENTAGES));
+                    break;
+                default:
+                    if (!PROPERTY_KEYS.contains(property)) {
+                        options.addAll(PROPERTY_KEYS);
+                    }
             }
-        } else if (args.length == 3 && args[0].equalsIgnoreCase("add")) {
-            options.add("interval");
-            options.add("spawn.mobs");
         }
         return options;
     }
