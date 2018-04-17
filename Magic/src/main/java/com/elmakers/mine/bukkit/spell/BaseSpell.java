@@ -49,6 +49,7 @@ import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.SpellData;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -72,7 +73,6 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.SpellParameters;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -1029,7 +1029,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
                 else
                 {
-                    effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
+                    effects.put(effectKey, controller.loadEffects(effectsNode, effectKey));
                 }
             }
         }
@@ -2035,17 +2035,17 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(SpellResult result) {
+    public Collection<EffectPlayer> getEffects(SpellResult result) {
         return getEffects(result.name().toLowerCase());
     }
 
     @Override
-    public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(String key) {
+    public Collection<EffectPlayer> getEffects(String key) {
         Collection<EffectPlayer> effectList = effects.get(key);
         if (effectList == null) {
             return controller.getEffects(key);
         }
-        return new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effectList);
+        return new ArrayList<EffectPlayer>(effectList);
     }
 
     @Nullable

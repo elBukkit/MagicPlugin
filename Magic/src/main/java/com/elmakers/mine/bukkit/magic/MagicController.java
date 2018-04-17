@@ -88,6 +88,7 @@ import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.event.LoadEvent;
@@ -116,7 +117,6 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
-import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.elementals.ElementalsController;
 import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -860,7 +860,7 @@ public class MagicController implements MageController {
         maps = new MapController(plugin, urlMapFile, imageCache);
 
         // Initialize EffectLib.
-        if (EffectPlayer.initialize(plugin)) {
+        if (com.elmakers.mine.bukkit.effect.EffectPlayer.initialize(plugin)) {
             getLogger().info("EffectLib initialized");
         } else {
             getLogger().warning("Failed to initialize EffectLib");
@@ -1952,8 +1952,14 @@ public class MagicController implements MageController {
         effects.clear();
         Collection<String> effectKeys = effectsNode.getKeys(false);
         for (String effectKey : effectKeys) {
-            effects.put(effectKey, EffectPlayer.loadEffects(getPlugin(), effectsNode, effectKey));
+            effects.put(effectKey, loadEffects(effectsNode, effectKey));
         }
+    }
+
+    @Override
+    @Nullable
+    public Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey) {
+        return com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(getPlugin(), configuration, effectKey);
     }
 
     public void loadConfiguration() {
@@ -2667,9 +2673,9 @@ public class MagicController implements MageController {
             configCheckTask = null;
         }
 
-        EffectPlayer.debugEffects(properties.getBoolean("debug_effects", false));
+        com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(properties.getBoolean("debug_effects", false));
         CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
-        EffectPlayer.setParticleRange(properties.getInt("particle_range", EffectPlayer.PARTICLE_RANGE));
+        com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
 
         resourcePackPrompt = properties.getBoolean("resource_pack_prompt", false);
         enableResourcePackCheck = properties.getBoolean("enable_resource_pack_check", true);
@@ -2994,7 +3000,7 @@ public class MagicController implements MageController {
         playerController.loadProperties(properties);
 
         // Set up other systems
-        EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
+        com.elmakers.mine.bukkit.effect.EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
 
         // Set up auto-save timer
         int autoSaveIntervalTicks = properties.getInt("auto_save", 0) * 20 / 1000;;
@@ -5708,11 +5714,10 @@ public class MagicController implements MageController {
 
     @Override
     @Nonnull
-    public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(@Nonnull String effectKey) {
-        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effectList = new ArrayList<>();
-        Collection<EffectPlayer> registered = effects.get(effectKey);
-        if (registered != null) {
-            effectList.addAll(registered);
+    public Collection<EffectPlayer> getEffects(@Nonnull String effectKey) {
+        Collection<EffectPlayer> effectList = effects.get(effectKey);
+        if (effectList == null) {
+            effectList = new ArrayList<>();
         }
         return effectList;
     }

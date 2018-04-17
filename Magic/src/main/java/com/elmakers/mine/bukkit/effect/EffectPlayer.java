@@ -654,6 +654,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return target == null ? null : target.getEntity();
     }
 
+    @Override
     public void cancel() {
         if (currentEffects != null) {
             for (EffectPlay effect : currentEffects) {
@@ -663,8 +664,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
-    public static Collection<EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key) {
-        List<EffectPlayer> players = new ArrayList<>();
+    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key) {
+        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> players = new ArrayList<>();
         Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(root, key);
         if (effectNodes != null)
         {

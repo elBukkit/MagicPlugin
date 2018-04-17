@@ -501,4 +501,7 @@ public interface MageController {
 
     void playEffects(@Nonnull String effectKey, @Nonnull Location sourceLocation, @Nonnull Location targetLocation);
     void playEffects(@Nonnull String effectKey, @Nonnull EffectContext context);
+
+    @Nullable
+    Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey);
 }

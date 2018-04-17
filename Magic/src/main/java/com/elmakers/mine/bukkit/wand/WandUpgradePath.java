@@ -23,6 +23,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.event.PathUpgradeEvent;
 import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -33,7 +34,6 @@ import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
@@ -203,7 +203,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                         effects.put(effectKey, new ArrayList<>(effects.get(referenceKey)));
                     }
                 } else {
-                    effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
+                    effects.put(effectKey, controller.loadEffects(effectsNode, effectKey));
                 }
             }
         }

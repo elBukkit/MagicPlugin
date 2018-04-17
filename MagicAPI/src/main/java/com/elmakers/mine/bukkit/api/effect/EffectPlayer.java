@@ -20,6 +20,7 @@ public interface EffectPlayer {
     void setEffect(Effect effect);
     void setEffectData(int data);
     void setScale(float scale);
+    void cancel();
 
     void setSound(Sound sound);
     void setSound(Sound sound, float volume, float pitch);

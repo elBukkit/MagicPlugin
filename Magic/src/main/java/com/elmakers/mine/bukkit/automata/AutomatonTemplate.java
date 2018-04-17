@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.automata;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,8 +35,7 @@ public class AutomatonTemplate {
         name = configuration.getString("name");
         interval = configuration.getInt("interval", 0);
         if (configuration.isList("effects")) {
-            effects = new ArrayList<>();
-            effects.addAll(com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(controller.getPlugin(), configuration, "effects"));
+            effects = controller.loadEffects(configuration, "effects");
         } else {
             String effectKey = configuration.getString("effects");
             if (effectKey != null) {

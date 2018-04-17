@@ -9,10 +9,10 @@ import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class EffectVariable extends EffectPlayer {
+public class EffectVariable extends com.elmakers.mine.bukkit.effect.EffectPlayer {
 
     private Map<Double, Collection<EffectPlayer>> brightnessMap = new TreeMap<>();
     private Collection<EffectPlayer> playing = new ArrayList<>();
@@ -41,7 +41,7 @@ public class EffectVariable extends EffectPlayer {
         for (String key : keys) {
             try {
                 double level = Double.parseDouble(key);
-                Collection<EffectPlayer> childPlayers = EffectPlayer.loadEffects(plugin, brightness, key);
+                Collection<EffectPlayer> childPlayers = com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(plugin, brightness, key);
                 brightnessMap.put(level, childPlayers);
                 for (EffectPlayer childPlayer : childPlayers) {
                     playAtOrigin |= childPlayer.playsAtOrigin();
