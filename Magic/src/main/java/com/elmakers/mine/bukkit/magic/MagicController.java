@@ -1871,7 +1871,7 @@ public class MagicController implements MageController {
             }
         }
 
-        getLogger().info("Registering attriburets: " + attributes);
+        getLogger().info("Registering attributes: " + attributes);
         SpellParameters.initializeAttributes(attributes);
         SpellParameters.setLogger(getLogger());
     }
