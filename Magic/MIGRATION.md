@@ -2,6 +2,7 @@
 
 ## 7.4
 
+ - The Retarget action now uses hitbox targeting by default. Use "hitbox: false" to turn this off.
  - API change: getProperty(String, Class) no longer returns an Optional
  - The wands named "beginner", "student", "apprentice" and "master" no longer have any progression.
    They should really not be used except for demonstration purposes, and are now labelled as such.

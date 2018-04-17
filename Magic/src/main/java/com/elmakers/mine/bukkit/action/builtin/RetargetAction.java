@@ -21,7 +21,7 @@ public class RetargetAction extends CompoundAction {
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        useHitbox = parameters.getBoolean("hitbox", false);
+        useHitbox = parameters.getBoolean("hitbox", true);
         range = parameters.getDouble("range", 32);
         fov = parameters.getDouble("fov", 0.3);
         closeRange = parameters.getDouble("close_range", 1);
