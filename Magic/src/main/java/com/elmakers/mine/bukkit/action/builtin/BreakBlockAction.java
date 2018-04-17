@@ -58,6 +58,7 @@ public class BreakBlockAction extends ModifyBlockAction {
 
         if (breakAmount >= 1) {
             if (context.hasBreakPermission(block)) {
+                context.playEffects("break");
                 CompatibilityUtils.clearBreaking(block);
                 BlockState blockState = block.getState();
                 if (blockState != null && (blockState instanceof InventoryHolder || blockState.getType() == Material.FLOWER_POT)) {
@@ -72,7 +73,6 @@ public class BreakBlockAction extends ModifyBlockAction {
                 }
                 super.perform(context);
                 context.unregisterBreaking(block);
-                context.playEffects("break");
             }
         } else {
             CompatibilityUtils.setBreaking(block, breakAmount);
