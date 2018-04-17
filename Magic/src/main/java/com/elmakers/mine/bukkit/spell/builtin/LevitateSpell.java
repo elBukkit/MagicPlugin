@@ -8,6 +8,7 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -53,8 +54,6 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
-
-import de.slikey.effectlib.util.ParticleEffect;
 
 @Deprecated
 public class LevitateSpell extends TargetingSpell implements Listener
@@ -139,7 +138,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private float effectSoundVolume = 1;
     private float effectSoundPitch = 1;
 
-    private ParticleEffect effectParticle = null;
+    private Particle effectParticle = null;
     private float effectParticleData = 0;
     private int effectParticleCount = 0;
     private int effectParticleInterval = 20;
@@ -654,7 +653,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (effectParticleName.length() > 0) {
             String particleName = effectParticleName.toUpperCase();
             try {
-                effectParticle = ParticleEffect.valueOf(particleName);
+                effectParticle = Particle.valueOf(particleName);
             } catch (Exception ex) {
                 effectParticle = null;
             }
