@@ -179,7 +179,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         clearAttachables(block, BlockFace.EAST, attachablesWall);
         clearAttachables(block, BlockFace.WEST, attachablesWall);
         clearAttachables(block, BlockFace.UP, attachables);
-        clearAttachables(block, BlockFace.DOWN, attachables);
+        clearAttachables(block, BlockFace.DOWN, attachablesDouble);
     }
 
     protected boolean clearAttachables(Block block, BlockFace direction, @Nonnull MaterialSet materials)
@@ -229,7 +229,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         addAttachable(blockData, BlockFace.EAST, attachablesWall);
         addAttachable(blockData, BlockFace.WEST, attachablesWall);
         addAttachable(blockData, BlockFace.UP, attachables);
-        addAttachable(blockData, BlockFace.DOWN, attachables);
+        addAttachable(blockData, BlockFace.DOWN, attachablesDouble);
 
         return true;
     }
