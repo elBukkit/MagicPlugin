@@ -10,6 +10,7 @@
    - Create persistent effects:
      `/mauto add fountain`
  - Add support for randomized drop tables to magic mobs
+ - Add "spawn" trigger 
 
 # 7.3.9
 

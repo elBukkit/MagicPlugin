@@ -24,7 +24,7 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class MageTrigger {
     public enum MageTriggerType {
-        INTERVAL, DEATH, DAMAGE
+        INTERVAL, DEATH, DAMAGE, SPAWN
     }
 
     protected MageTriggerType type;
@@ -49,7 +49,7 @@ public class MageTrigger {
 
         if (configuration.contains("cast")) {
             spells = new ArrayDeque<>();
-            RandomUtils.populateStringProbabilityMap(spells, configuration.getConfigurationSection("cast"));
+            RandomUtils.populateStringProbabilityMap(spells, configuration, "cast");
         }
         commands = ConfigurationUtils.getStringList(configuration, "commands");
 

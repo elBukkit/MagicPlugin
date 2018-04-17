@@ -116,6 +116,14 @@ public class EntityMageData {
         }
     }
 
+    public void onSpawn(Mage mage) {
+        List<MageTrigger> spawnTriggers = getTriggers(MageTriggerType.SPAWN);
+        if (spawnTriggers == null) return;
+        for (MageTrigger trigger : spawnTriggers) {
+            trigger.execute(mage);
+        }
+    }
+
     public void tick(Mage mage) {
         List<MageTrigger> intervalTriggers = getTriggers(MageTriggerType.INTERVAL);
         if (intervalTriggers == null) return;

@@ -8,7 +8,7 @@ spawner:
     limit_range: 32
     vertical_range: 8
     limit: 3
-    probability: 0.2
+    probability: 1
     radius: 16
     vertical_radius: 0
     mobs:

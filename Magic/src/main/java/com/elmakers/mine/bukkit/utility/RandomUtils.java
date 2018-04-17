@@ -90,6 +90,10 @@ public class RandomUtils {
         }
     }
 
+    public static void populateStringProbabilityMap(Deque<WeightedPair<String>> probabilityMap, ConfigurationSection parent, String key) {
+        populateStringProbabilityMap(probabilityMap, parent, key, 0, 0,0);
+    }
+
     public static void populateStringProbabilityMap(Deque<WeightedPair<String>> probabilityMap, ConfigurationSection nodeMap) {
         RandomUtils.populateProbabilityMap(String.class, probabilityMap, nodeMap, 0, 0, 0);
     }

@@ -50,7 +50,7 @@ public class Spawner {
     public Spawner(@Nonnull MageController controller, @Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
         this.controller = controller;
         entityTypeProbability = new ArrayDeque<>();
-        RandomUtils.populateStringProbabilityMap(entityTypeProbability, configuration, "mobs", 0, 0, 0);
+        RandomUtils.populateStringProbabilityMap(entityTypeProbability, configuration, "mobs");
         if (entityTypeProbability.isEmpty()) {
             controller.getLogger().warning("Automaton template " + automaton.getKey() + " has a spawner with no mobs defined");
         }
