@@ -56,7 +56,9 @@ public class MobController implements Listener {
         Entity entity = event.getEntity();
         String customName = entity.getCustomName();
 
-        if (customName != null) {
+        // TODO: A better way to know if we've already called modify()
+        // This at least prevents double-casting and double-effects on magic mobs.
+        if (customName != null && controller.getRegisteredMage(entity) == null) {
             EntityData customMob = mobsByName.get(customName);
             if (customMob != null) {
                 customMob.modify(controller, entity);
