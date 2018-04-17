@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
+import static com.google.common.base.Verify.verifyNotNull;
+
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.ArrayDeque;
@@ -88,6 +90,7 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
+import com.elmakers.mine.bukkit.effect.MageEffectContext;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
@@ -158,6 +161,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long ignoreItemActivationUntil = 0;
     private boolean forget = false;
     private long disableWandOpenUntil = 0;
+    private MageEffectContext effectContext = null;
 
     private static class DamagedBy {
         private WeakReference<Player> player;
@@ -361,6 +365,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if (entityData != null && getEntity() == event.getEntity()) {
             entityData.onDeath(this);
+        }
+
+        // TODO: This is mainly here for mobs, but if this is ever used for players we need a better place to reset.
+        if (effectContext != null) {
+            effectContext.cancelEffects();
+            effectContext = null;
         }
     }
 
@@ -3785,6 +3795,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         return null;
+    }
+
+    @Override
+    @Nonnull
+    public MageEffectContext getEffectContext() {
+        if (effectContext == null) {
+            // Lazy load or mage has changed
+            effectContext = new MageEffectContext(this);
+        }
+
+        return verifyNotNull(effectContext);
     }
 }
 

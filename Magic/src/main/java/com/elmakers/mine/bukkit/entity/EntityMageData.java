@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -33,6 +35,7 @@ public class EntityMageData {
     protected ItemData requiresWand;
     protected boolean aggro;
     protected double trackRadiusSquared;
+    protected Collection<EffectPlayer> effects;
 
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
         requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
@@ -86,13 +89,18 @@ public class EntityMageData {
             tickInterval = 1000;
         }
 
+        if (parameters.contains("effects")) {
+            effects = controller.loadEffects(parameters, "effects");
+        }
+
         aggro = parameters.getBoolean("aggro", !isEmpty());
     }
 
     public boolean isEmpty() {
         boolean hasTriggers = triggers != null;
         boolean hasProperties = mageProperties != null;
-        return !hasProperties && !hasTriggers && !aggro;
+        boolean hasEffects = effects != null && !effects.isEmpty();
+        return !hasProperties && !hasTriggers && !aggro && !hasEffects;
     }
 
     @Nullable
@@ -118,9 +126,16 @@ public class EntityMageData {
 
     public void onSpawn(Mage mage) {
         List<MageTrigger> spawnTriggers = getTriggers(MageTriggerType.SPAWN);
-        if (spawnTriggers == null) return;
-        for (MageTrigger trigger : spawnTriggers) {
-            trigger.execute(mage);
+        if (spawnTriggers != null) {
+            for (MageTrigger trigger : spawnTriggers) {
+                trigger.execute(mage);
+            }
+        }
+
+        if (effects != null) {
+            for (EffectPlayer player : effects) {
+                player.start(mage.getEffectContext());
+            }
         }
     }
 

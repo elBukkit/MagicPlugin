@@ -1959,6 +1959,9 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey) {
+        if (configuration.isString(effectKey)) {
+            return getEffects(configuration.getString(effectKey));
+        }
         return com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(getPlugin(), configuration, effectKey);
     }
 
