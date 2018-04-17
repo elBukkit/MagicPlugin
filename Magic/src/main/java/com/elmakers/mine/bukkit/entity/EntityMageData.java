@@ -29,6 +29,7 @@ public class EntityMageData {
     private static final String[] MAGE_PROPERTIES = {"protection", "weakness", "strength"};
 
     protected long tickInterval;
+    protected long lifetime;
     protected Map<MageTriggerType, List<MageTrigger>> triggers;
     protected ConfigurationSection mageProperties;
     protected boolean requiresTarget;
@@ -52,6 +53,7 @@ public class EntityMageData {
             }
         }
 
+        lifetime = parameters.getInt("lifetime", 0);
         tickInterval = parameters.getLong("interval", parameters.getLong("cast_interval", 0));
         requiresTarget = parameters.getBoolean("cast_requires_target", true);
         trackRadiusSquared = parameters.getDouble("track_radius", 128);
@@ -88,6 +90,9 @@ public class EntityMageData {
         if (triggers != null && tickInterval <= 0 && triggers.containsKey(MageTriggerType.INTERVAL)) {
             tickInterval = 1000;
         }
+        if (tickInterval < lifetime / 2) {
+            tickInterval = lifetime / 2;
+        }
 
         if (parameters.contains("effects")) {
             effects = controller.loadEffects(parameters, "effects");
@@ -100,7 +105,8 @@ public class EntityMageData {
         boolean hasTriggers = triggers != null;
         boolean hasProperties = mageProperties != null;
         boolean hasEffects = effects != null && !effects.isEmpty();
-        return !hasProperties && !hasTriggers && !aggro && !hasEffects;
+        boolean hasLifetime = lifetime > 0;
+        return !hasProperties && !hasTriggers && !aggro && !hasEffects && !hasLifetime;
     }
 
     @Nullable
@@ -140,6 +146,12 @@ public class EntityMageData {
     }
 
     public void tick(Mage mage) {
+        if (lifetime > 0 && System.currentTimeMillis() > mage.getCreatedTime() + lifetime) {
+            onDeath(mage);
+            mage.getEntity().remove();
+            return;
+        }
+
         List<MageTrigger> intervalTriggers = getTriggers(MageTriggerType.INTERVAL);
         if (intervalTriggers == null) return;
 
