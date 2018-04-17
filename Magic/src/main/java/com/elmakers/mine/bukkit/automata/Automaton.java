@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -55,6 +54,8 @@ public class Automaton {
         int x = node.getInt("x");
         int y = node.getInt("y");
         int z = node.getInt("z");
+        float yaw = (float)node.getDouble("yaw");
+        float pitch = (float)node.getDouble("pitch");
         String worldName = node.getString("world");
         if (worldName == null || worldName.isEmpty()) {
             worldName = "world";
@@ -64,17 +65,17 @@ public class Automaton {
         if (world == null) {
             controller.getLogger().warning("Automaton has unknown world: " + worldName + ", will be removed!");
         }
-        location = new Location(world, x, y, z);
+        location = new Location(world, x, y, z, yaw, pitch);
     }
 
-    public Automaton(@Nonnull MagicController controller, @Nonnull Block block, @Nonnull String templateKey, String creatorId, @Nullable ConfigurationSection parameters) {
+    public Automaton(@Nonnull MagicController controller, @Nonnull Location location, @Nonnull String templateKey, String creatorId, @Nullable ConfigurationSection parameters) {
         this.controller = controller;
         this.templateKey = templateKey;
         this.parameters = parameters;
+        this.location = location;
         setTemplate(controller.getAutomatonTemplate(templateKey));
         createdAt = System.currentTimeMillis();
         createdBy = creatorId;
-        location = block.getLocation();
     }
 
     private void setTemplate(AutomatonTemplate template) {
@@ -101,6 +102,8 @@ public class Automaton {
         node.set("x", location.getBlockX());
         node.set("y", location.getBlockY());
         node.set("z", location.getBlockZ());
+        node.set("yaw", location.getYaw());
+        node.set("pitch", location.getPitch());
         node.set("parameters", parameters);
     }
 

@@ -171,7 +171,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             parameters = new MemoryConfiguration();
             ConfigurationUtils.addParameters(parameterArgs, parameters);
         }
-        Automaton automaton = new Automaton(magicController, location.getBlock(), key, player.getUniqueId().toString(), parameters);
+        Automaton automaton = new Automaton(magicController, location, key, player.getUniqueId().toString(), parameters);
         magicController.registerAutomaton(automaton);
 
         controller.playEffects("blockselect", location, location);
