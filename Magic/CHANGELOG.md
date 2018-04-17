@@ -11,7 +11,9 @@
      `/mauto add fountain`
    - More info: https://github.com/elBukkit/MagicPlugin/wiki/AutomaticBlocks
  - Add support for randomized drop tables to magic mobs
- - Add "spawn" trigger 
+ - Add "spawn" trigger to magic mobs
+ - Fix auto-targeting on Gatling Gun and Laser
+ - Fix sand blocks breaking in doubles 
 
 # 7.3.9
 
