@@ -56,7 +56,7 @@ public class BreakBlockAction extends ModifyBlockAction {
             breakAmount = context.registerBreaking(block, breakPercentage);
         }
 
-        if (breakAmount > 1) {
+        if (breakAmount >= 1) {
             if (context.hasBreakPermission(block)) {
                 CompatibilityUtils.clearBreaking(block);
                 BlockState blockState = block.getState();
