@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 7.4.1
+
+ - Fix Heroes attribute integration
+
 # 7.4
 
  - Add /mauto command for creating "automatic blocks", or automata
