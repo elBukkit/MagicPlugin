@@ -161,6 +161,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long ignoreItemActivationUntil = 0;
     private boolean forget = false;
     private long disableWandOpenUntil = 0;
+    private long created;
     private MageEffectContext effectContext = null;
 
     private static class DamagedBy {
@@ -247,6 +248,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         entityRef = new WeakReference<>(null);
         commandSenderRef = new WeakReference<>(null);
         hasEntity = false;
+        this.created = System.currentTimeMillis();
     }
 
     @Override
@@ -1124,6 +1126,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             playerName = data.getName();
             lastDeathLocation = data.getLastDeathLocation();
             lastCast = data.getLastCast();
+            created = data.getCreatedTime();
             destinationWarp = data.getDestinationWarp();
             if (destinationWarp != null) {
                 if (!destinationWarp.isEmpty()) {
@@ -1311,6 +1314,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         try {
             data.setName(getName());
             data.setId(getId());
+            data.setCreatedTime(created);
             data.setLastCast(lastCast);
             data.setLastDeathLocation(lastDeathLocation);
             data.setLocation(location);
@@ -3806,6 +3810,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         return verifyNotNull(effectContext);
+    }
+
+    @Override
+    public long getCreatedTime() {
+        return created;
     }
 }
 

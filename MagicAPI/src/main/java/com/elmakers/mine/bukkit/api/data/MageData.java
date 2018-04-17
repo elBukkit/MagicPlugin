@@ -38,6 +38,7 @@ public class MageData {
     private Integer storedLevel;
     private boolean openWand;
     private boolean gaveWelcomeWand;
+    private long created;
 
     public MageData(String id) {
         this.id = id;
@@ -237,6 +238,14 @@ public class MageData {
 
     public void setActiveClass(String activeClass) {
         this.activeClass = activeClass;
+    }
+
+    public long getCreatedTime() {
+        return created;
+    }
+
+    public void setCreatedTime(long created) {
+        this.created = created;
     }
 
     @Deprecated

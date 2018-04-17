@@ -39,6 +39,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
     public static void save(MageController controller, MageData mage, ConfigurationSection saveFile) {
         saveFile.set("id", mage.getId());
         saveFile.set("name", mage.getName());
+        saveFile.set("created", mage.getCreatedTime());
         saveFile.set("last_cast", mage.getLastCast());
         saveFile.set("cooldown_expiration", mage.getCooldownExpiration());
         saveFile.set("last_death_location", ConfigurationUtils.fromLocation(mage.getLastDeathLocation()));
@@ -242,6 +243,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         data.setLastDeathLocation(ConfigurationUtils.getLocation(saveFile, "last_death_location"));
         data.setLocation(ConfigurationUtils.getLocation(saveFile, "location"));
         data.setLastCast(saveFile.getLong("last_cast", 0));
+        data.setCreatedTime(saveFile.getLong("created", 0));
         data.setCooldownExpiration(saveFile.getLong("cooldown_expiration", 0));
         data.setDestinationWarp(saveFile.getString("destination_warp"));
 
