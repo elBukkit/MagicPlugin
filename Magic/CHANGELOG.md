@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.5
+
 # 7.4
 
  - Add /mauto command for creating "automatic blocks", or automata
