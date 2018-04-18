@@ -32,7 +32,6 @@ import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 import de.slikey.effectlib.util.DynamicLocation;
-import de.slikey.effectlib.util.ParticleUtils;
 
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
@@ -402,8 +401,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             Particle useEffect = overrideParticle(particleType);
             Material material = getWorkingMaterial().getMaterial();
             Short data = getWorkingMaterial().getData();
-            ParticleUtils.display(useEffect, sourceLocation, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount, getColor1(), material, data == null ? 0 : (byte)(short)data, PARTICLE_RANGE);
+            displayParticle(useEffect, sourceLocation, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount, 1, getColor1(), material, data == null ? 0 : (byte)(short)data, PARTICLE_RANGE);
         }
+    }
+
+    public static void displayParticle(Particle particle, Location center, float offsetX, float offsetY, float offsetZ, float speed, int amount, float size, Color color, Material material, byte materialData, double range) {
+        effectLib.displayParticle(particle, center, offsetX, offsetY, offsetZ, speed, amount, size, color, material, materialData, range);
     }
 
     public Particle overrideParticle(Particle particle) {

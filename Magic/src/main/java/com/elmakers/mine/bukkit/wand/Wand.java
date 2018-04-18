@@ -54,6 +54,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.effect.WandEffectContext;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
@@ -71,8 +72,6 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.base.Preconditions;
-
-import de.slikey.effectlib.util.ParticleUtils;
 
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
     public static final int OFFHAND_SLOT = 40;
@@ -3644,7 +3643,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             potionEffectLocation.setX(potionEffectLocation.getX() + random.nextDouble() - 0.5);
             potionEffectLocation.setY(potionEffectLocation.getY() + random.nextDouble() * player.getEyeHeight());
             potionEffectLocation.setZ(potionEffectLocation.getZ() + random.nextDouble() - 0.5);
-            ParticleUtils.display(Particle.SPELL_MOB, potionEffectLocation, effectColor.getColor(), 24);
+            EffectPlayer.displayParticle(Particle.SPELL_MOB, potionEffectLocation, 0, 0, 0,
+            0, 0, 1, effectColor.getColor(), null, (byte)0, 24);
         }
 
         Location location = mage.getLocation();
