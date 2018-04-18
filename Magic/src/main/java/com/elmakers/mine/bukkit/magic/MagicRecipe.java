@@ -21,6 +21,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 /**
@@ -92,7 +93,7 @@ public class MagicRecipe {
 
         if (item != null) {
             outputType = item.getType();
-            ShapedRecipe shaped = new ShapedRecipe(item);
+            ShapedRecipe shaped = CompatibilityUtils.createShapedRecipe(controller.getPlugin(), key, item);
             List<String> rows = new ArrayList<>();
             for (int i = 1; i <= 3; i++) {
                 String recipeRow = configuration.getString("row_" + i, "");

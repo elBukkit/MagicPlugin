@@ -19,7 +19,9 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.io.InputStream;
@@ -145,6 +147,7 @@ public class NMSUtils {
     protected static Enum<?> enum_ChatMessageType_GAME_INFO;
     protected static Class<?> class_ChatComponentText;
     protected static Class<?> class_IChatBaseComponent;
+    protected static Class<?> class_NamespacedKey;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -254,6 +257,9 @@ public class NMSUtils {
     protected static Constructor class_NBTTagLong_constructor;
     protected static Constructor class_PacketPlayOutChat_constructor;
     protected static Constructor class_ChatComponentText_constructor;
+    protected static Constructor class_NamespacedKey_constructor;
+    protected static Constructor class_ShapedRecipe_constructor;
+
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -551,6 +557,16 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+            try {
+                class_NamespacedKey = Class.forName("org.bukkit.NamespacedKey");
+                class_NamespacedKey_constructor = class_NamespacedKey.getConstructor(Plugin.class, String.class);
+                class_ShapedRecipe_constructor = ShapedRecipe.class.getConstructor(class_NamespacedKey, ItemStack.class);
+            } catch (Throwable ex) {
+                class_NamespacedKey = null;
+                class_NamespacedKey_constructor = null;
+                class_ShapedRecipe_constructor = null;
+                Bukkit.getLogger().log(Level.WARNING, "Couldn't find NamespacedKey for registering recipes. This doesn't actually matter at all, but PaperSpigot is a whiny little you-know so here we are.", ex);
+            }
             try {
                 class_ProjectileHitEvent_getHitBlockMethod = ProjectileHitEvent.class.getMethod("getHitBlock");
             } catch (Throwable ex) {
