@@ -93,7 +93,7 @@ public class DamageAction extends BaseSpellAction
                 controller.damageElemental(entity, damage * mage.getDamageMultiplier(), 0, mage.getCommandSender());
             } else {
                 if (percentage != null) {
-                    damage = percentage * targetEntity.getMaxHealth();
+                    damage = percentage * CompatibilityUtils.getMaxHealth(targetEntity);
                 } else if (targetEntity instanceof Player) {
                     damage = playerDamage;
                 } else {

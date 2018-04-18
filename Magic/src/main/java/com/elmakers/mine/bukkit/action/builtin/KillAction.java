@@ -39,9 +39,9 @@ public class KillAction extends BaseSpellAction
         // Overkill to bypass protection
         context.registerModified(targetEntity);
         if (magicDamage) {
-            CompatibilityUtils.magicDamage(targetEntity, targetEntity.getMaxHealth() * 100, context.getEntity());
+            CompatibilityUtils.magicDamage(targetEntity, CompatibilityUtils.getMaxHealth(targetEntity) * 100, context.getEntity());
         } else {
-            targetEntity.damage(targetEntity.getMaxHealth() * 100);
+            targetEntity.damage(CompatibilityUtils.getMaxHealth(targetEntity) * 100);
         }
         return SpellResult.CAST;
     }

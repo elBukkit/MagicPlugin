@@ -682,7 +682,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     protected void updateMountHealth() {
         if (mountEntity != null && mountBoostTicks > 0 && mountEntity instanceof LivingEntity) {
             LivingEntity living = (LivingEntity)mountEntity;
-            double maxHealth = living.getMaxHealth();
+            double maxHealth = CompatibilityUtils.getMaxHealth(living);
             double health = Math.min(0.5 + maxHealth * mountBoostTicksRemaining / mountBoostTicks, maxHealth);
             living.setHealth(health);
         }
@@ -885,7 +885,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 if (entity instanceof LivingEntity) {
                     LivingEntity living = (LivingEntity)mountEntity;
                     living.setHealth(0.5);
-                    living.setMaxHealth(mountHealth);
+                    CompatibilityUtils.setMaxHealth(living, mountHealth);
                 }
                 if (entity instanceof ArmorStand) {
                     ArmorStand armorStand = (ArmorStand)entity;

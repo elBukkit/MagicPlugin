@@ -105,11 +105,11 @@ public class PotionEffectSpell extends UndoableSpell
             if (parameters.contains("heal")) {
                 registerModified(targetEntity);
                 double health = targetEntity.getHealth() + parameters.getDouble("heal");
-                targetEntity.setHealth(Math.min(health, targetEntity.getMaxHealth()));
+                targetEntity.setHealth(Math.min(health, CompatibilityUtils.getMaxHealth(targetEntity)));
             } else if (parameters.contains("heal_percentage")) {
                 registerModified(targetEntity);
-                double health = targetEntity.getHealth() + targetEntity.getMaxHealth() * parameters.getDouble("heal_percentage");
-                targetEntity.setHealth(Math.min(health, targetEntity.getMaxHealth()));
+                double health = targetEntity.getHealth() + CompatibilityUtils.getMaxHealth(targetEntity) * parameters.getDouble("heal_percentage");
+                targetEntity.setHealth(Math.min(health, CompatibilityUtils.getMaxHealth(targetEntity)));
             } else if (parameters.contains("damage")) {
                 registerModified(targetEntity);
                 CompatibilityUtils.magicDamage(targetEntity, parameters.getDouble("damage") * mage.getDamageMultiplier(), mage.getEntity());

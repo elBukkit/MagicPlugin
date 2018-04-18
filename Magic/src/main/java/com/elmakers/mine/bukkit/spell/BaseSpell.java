@@ -1271,7 +1271,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         if (requiredHealth > 0) {
             LivingEntity li = mage.getLivingEntity();
-            double healthPercentage = li == null ? 0 : 100 * li.getHealth() / li.getMaxHealth();
+            double healthPercentage = li == null ? 0 : 100 * li.getHealth() / CompatibilityUtils.getMaxHealth(li);
             if (healthPercentage < requiredHealth) {
                 processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
                 sendCastMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");

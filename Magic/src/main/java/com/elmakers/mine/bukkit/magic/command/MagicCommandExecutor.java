@@ -686,7 +686,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         if (entity instanceof LivingEntity)
         {
             LivingEntity li = (LivingEntity)entity;
-            message += ChatColor.DARK_GRAY + ", " + ChatColor.GREEN + ((int)li.getMaxHealth()) + "hp";
+            message += ChatColor.DARK_GRAY + ", " + ChatColor.GREEN + ((int)CompatibilityUtils.getMaxHealth(li)) + "hp";
         }
         sender.sendMessage(message);
     }

@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class ModifyMaxHealthAction extends BaseSpellAction implements Listener {
     /**
@@ -44,7 +45,7 @@ public class ModifyMaxHealthAction extends BaseSpellAction implements Listener {
         if (li.getHealth() > health) {
             li.setHealth(health);
         }
-        li.setMaxHealth(health);
+        CompatibilityUtils.setMaxHealth(li, health);
         if (li instanceof Player && healthScale > 0) {
             Player player = (Player)li;
             player.setHealthScale(healthScale);

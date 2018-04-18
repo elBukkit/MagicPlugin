@@ -19,6 +19,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
@@ -105,8 +106,8 @@ public class MageTrigger {
         LivingEntity li = mage.getLivingEntity();
         if (minHealth > 0 && (li == null || li.getHealth() < minHealth)) return;
         if (maxHealth > 0 && (li == null || li.getHealth() > maxHealth)) return;
-        if (minHealthPercentage > 0 && (li == null || li.getHealth() * 100 / li.getMaxHealth() < minHealthPercentage)) return;
-        if (maxHealthPercentage > 0 && (li == null || li.getHealth() * 100 / li.getMaxHealth() > maxHealthPercentage)) return;
+        if (minHealthPercentage > 0 && (li == null || li.getHealth() * 100 / CompatibilityUtils.getMaxHealth(li) < minHealthPercentage)) return;
+        if (maxHealthPercentage > 0 && (li == null || li.getHealth() * 100 / CompatibilityUtils.getMaxHealth(li) > maxHealthPercentage)) return;
 
         if (effects != null) {
             for (EffectPlayer player : effects) {

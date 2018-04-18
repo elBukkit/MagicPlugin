@@ -95,7 +95,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
         }
 
         if (entity instanceof LivingEntity) {
-            ((LivingEntity) entity).setMaxHealth(1000.0);
+            CompatibilityUtils.setMaxHealth(((LivingEntity) entity), 1000.0);
             ((LivingEntity) entity).setHealth(1000.0);
         }
         if (entity instanceof Slime) {

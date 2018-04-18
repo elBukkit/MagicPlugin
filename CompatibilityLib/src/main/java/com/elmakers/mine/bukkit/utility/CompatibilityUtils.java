@@ -1416,4 +1416,14 @@ public class CompatibilityUtils extends NMSUtils {
             return new ShapedRecipe(item);
         }
     }
+
+    public static double getMaxHealth(Damageable li) {
+        // return li.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        return li.getMaxHealth();
+    }
+
+    public static void setMaxHealth(Damageable li, double maxHealth) {
+        // li.getAttribute(Attribute.GENERIC_MAX_HEALTH).setValue(maxHealth);
+        li.setMaxHealth(maxHealth);
+    }
 }

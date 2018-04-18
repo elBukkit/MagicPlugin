@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class HealAction extends BaseSpellAction
 {
@@ -42,7 +43,7 @@ public class HealAction extends BaseSpellAction
         }
 
         LivingEntity targetEntity = (LivingEntity)entity;
-        if (targetEntity.getHealth() == targetEntity.getMaxHealth() || targetEntity.isDead())
+        if (targetEntity.getHealth() == CompatibilityUtils.getMaxHealth(targetEntity) || targetEntity.isDead())
         {
             return SpellResult.NO_TARGET;
         }
@@ -50,7 +51,7 @@ public class HealAction extends BaseSpellAction
         double healAmount = amount;
         if (percentage > 0)
         {
-            healAmount = targetEntity.getMaxHealth() * percentage;
+            healAmount = CompatibilityUtils.getMaxHealth(targetEntity) * percentage;
         }
 
         if (maxDistanceSquared > 0) {
@@ -75,7 +76,7 @@ public class HealAction extends BaseSpellAction
         }
 
         context.registerModified(targetEntity);
-        targetEntity.setHealth(Math.min(targetEntity.getHealth() + healAmount, targetEntity.getMaxHealth()));
+        targetEntity.setHealth(Math.min(targetEntity.getHealth() + healAmount, CompatibilityUtils.getMaxHealth(targetEntity)));
 
         return SpellResult.CAST;
     }

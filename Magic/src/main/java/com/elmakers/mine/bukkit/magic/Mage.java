@@ -526,7 +526,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     double scale = 1;
                     LivingEntity li = getLivingEntity();
                     if (li != null) {
-                        scale = event.getDamage() / li.getMaxHealth();
+                        scale = event.getDamage() / CompatibilityUtils.getMaxHealth(li);
                     }
                     fallingSpell.playEffects("land", (float)scale, getLocation().getBlock().getRelative(BlockFace.DOWN));
                 }

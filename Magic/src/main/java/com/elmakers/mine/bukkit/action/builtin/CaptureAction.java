@@ -50,7 +50,7 @@ public class CaptureAction extends BaseSpellAction {
         }
         if (targetEntity instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)targetEntity;
-            li.setHealth(li.getMaxHealth());
+            li.setHealth(CompatibilityUtils.getMaxHealth(li));
         }
         targetEntity.remove();
         ItemStack spawnEgg = new ItemStack(Material.MONSTER_EGG);

@@ -174,7 +174,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             this.health = li.getHealth();
             this.potionEffects = li.getActivePotionEffects();
             this.airLevel = li.getRemainingAir();
-            this.maxHealth = li.getMaxHealth();
+            this.maxHealth = CompatibilityUtils.getMaxHealth(li);
             this.hasAI = li.hasAI();
 
             itemInHand = getItem(li.getEquipment().getItemInMainHand());
@@ -710,11 +710,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     applyAttributes(li);
                     copyEquipmentTo(li);
                     if (maxHealth != null) {
-                        li.setMaxHealth(maxHealth);
+                        CompatibilityUtils.setMaxHealth(li, maxHealth);
                     }
                 }
                 if (health != null && hasChangedHealth) {
-                    li.setHealth(Math.min(health, li.getMaxHealth()));
+                    li.setHealth(Math.min(health, CompatibilityUtils.getMaxHealth(li)));
                 }
                 if (airLevel != null) {
                     li.setRemainingAir(Math.min(airLevel, li.getRemainingAir()));

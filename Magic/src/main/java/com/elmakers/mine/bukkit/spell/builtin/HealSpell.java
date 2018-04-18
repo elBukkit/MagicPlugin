@@ -14,6 +14,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
@@ -39,12 +40,12 @@ public class HealSpell extends TargetingSpell
         if (parameters.contains("amount")) {
             health = health + parameters.getDouble("amount");
         } else if (parameters.contains("percentage")) {
-            health = health + li.getMaxHealth() * parameters.getDouble("percentage");
+            health = health + CompatibilityUtils.getMaxHealth(li) * parameters.getDouble("percentage");
         } else {
-            health = li.getMaxHealth();
+            health = CompatibilityUtils.getMaxHealth(li);
         }
 
-        li.setHealth(Math.min(health, li.getMaxHealth()));
+        li.setHealth(Math.min(health, CompatibilityUtils.getMaxHealth(li)));
         if (targetEntity instanceof Player && parameters.getBoolean("feed", false)) {
             Player p = (Player)targetEntity;
             p.setExhaustion(0);
