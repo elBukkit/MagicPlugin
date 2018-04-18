@@ -10,19 +10,17 @@ import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.google.common.base.Verify;
 
 public class EntityFallingBlockData extends EntityExtraData {
-    private @Nonnull MaterialAndData material;
+    @Nullable
+    private MaterialAndData material;
 
     private EntityFallingBlockData(MaterialAndData material) {
         this.material = material;
     }
 
     public EntityFallingBlockData(ConfigurationSection configuration) {
-        material = Verify.verifyNotNull(
-                ConfigurationUtils.getMaterialAndData(configuration, "material"),
-                "Missing material in configuration");
+        material = ConfigurationUtils.getMaterialAndData(configuration, "material");
     }
 
     @SuppressWarnings("deprecation")
@@ -56,11 +54,11 @@ public class EntityFallingBlockData extends EntityExtraData {
 
     @Nullable
     public Material getMaterial() {
-        return material.getMaterial();
+        return material == null ? null : material.getMaterial();
     }
 
     public byte getData() {
-        Byte data = material.getBlockData();
+        Byte data = material == null ? 0 : material.getBlockData();
         return data == null ? 0 : data;
     }
 }
