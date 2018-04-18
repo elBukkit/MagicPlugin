@@ -14,11 +14,13 @@ import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
@@ -97,17 +99,11 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
             for (int z = 0; z < length; z++) {
                 for (int x = 0; x < width; x++) {
                     int index = x + (y * length + z) * width;
-                    Material material = null;
-                    try {
-                        material = Material.getMaterial(blockTypes[index]);
-                    } catch (Exception ex) {
-                        material = null;
-                        ex.printStackTrace();
-                    }
-
-                    if (material != null)
+                    MaterialData materialData = CompatibilityUtils.getMaterial(blockTypes[index], data[index]);
+                    if (materialData != null)
                     {
-                        MaterialAndData block = new com.elmakers.mine.bukkit.block.MaterialAndData(material, data[index]);
+                        Material material = materialData.getItemType();
+                        MaterialAndData block = new com.elmakers.mine.bukkit.block.MaterialAndData(material, materialData.getData());
 
                         // Check for tile entity data
                         BlockVector blockLocation = new BlockVector(x, y, z);

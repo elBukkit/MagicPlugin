@@ -21,6 +21,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -49,6 +50,7 @@ import java.util.logging.Level;
 public class NMSUtils {
     protected static boolean failed = false;
     protected static boolean legacy = false;
+    protected static boolean migration = false;
 
     protected static String versionPrefix = "";
 
@@ -222,6 +224,10 @@ public class NMSUtils {
     protected static Method class_Arrow_setPickupStatusMethod;
     protected static Method class_ProjectileHitEvent_getHitBlockMethod;
     protected static Method class_Server_getEntityMethod;
+    protected static Method class_UnsafeValues_fromLegacyDataMethod;
+    protected static Method class_UnsafeValues_fromLegacyMethod;
+    protected static Method class_Material_isLegacyMethod;
+    protected static Method class_Material_getLegacyMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -536,6 +542,20 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+            try {
+                @SuppressWarnings("deprecated")
+                Class<?> unsafe = org.bukkit.UnsafeValues.class;
+                class_UnsafeValues_fromLegacyDataMethod = unsafe.getMethod("fromLegacy", MaterialData.class);
+                class_UnsafeValues_fromLegacyMethod = unsafe.getMethod("fromLegacy", Material.class);
+                class_Material_isLegacyMethod = Material.class.getMethod("isLegacy");
+                class_Material_getLegacyMethod = Material.class.getMethod("getMaterial", String.class, Boolean.TYPE);
+                Bukkit.getLogger().info("1.13 detected, compatibility layer enabled");
+                migration = true;
+            } catch (Throwable ex) {
+                class_UnsafeValues_fromLegacyMethod = null;
+                class_UnsafeValues_fromLegacyDataMethod = null;
+                class_Material_isLegacyMethod = null;
+            }
             try {
                 class_NamespacedKey = Class.forName("org.bukkit.NamespacedKey");
                 class_NamespacedKey_constructor = class_NamespacedKey.getConstructor(Plugin.class, String.class);
@@ -955,6 +975,10 @@ public class NMSUtils {
     
     public static boolean isLegacy() {
         return legacy;
+    }
+
+    public static boolean needsMigration() {
+        return migration;
     }
 
     public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {

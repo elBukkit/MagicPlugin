@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.utility;
 
 import com.google.common.io.BaseEncoding;
+
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -42,6 +44,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
@@ -85,6 +88,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static boolean isDamaging = false;
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<World.Environment, Integer> maxHeights = new HashMap<>();
+    public static Map<Integer, Material> materialIdMap;
 
     public static void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
         for (PotionEffect effect: effects) {
@@ -1425,5 +1429,120 @@ public class CompatibilityUtils extends NMSUtils {
     public static void setMaxHealth(Damageable li, double maxHealth) {
         // li.getAttribute(Attribute.GENERIC_MAX_HEALTH).setValue(maxHealth);
         li.setMaxHealth(maxHealth);
+    }
+
+    @SuppressWarnings({"deprecation", "unchecked"})
+    public static Material fromLegacy(MaterialData materialData) {
+        if (class_UnsafeValues_fromLegacyDataMethod != null) {
+            try {
+                return (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(Bukkit.getUnsafe(), materialData);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return materialData.getItemType();
+    }
+
+    @SuppressWarnings("deprecation")
+    public static MaterialData getMaterial(int id, byte data) {
+        Material material = null;
+        if (class_UnsafeValues_fromLegacyDataMethod != null) {
+            material = getMaterial(id);
+            if (material != null) {
+                material = fromLegacy(new MaterialData(material, data));
+            }
+            data = 0;
+        } else {
+            material = Material.getMaterial(id);
+        }
+        if (material == null) {
+            material = Material.AIR;
+        }
+        return new MaterialData(material, data);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Material getMaterial(int id) {
+        if (materialIdMap == null) {
+            materialIdMap = new HashMap<>();
+            for (Material material : Material.values()) {
+                materialIdMap.put(material.getId(), material);
+            }
+        }
+        return materialIdMap.get(id);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static boolean isLegacy(Material material) {
+        if (class_Material_isLegacyMethod == null) {
+            return false;
+        }
+        try {
+            return (boolean)class_Material_isLegacyMethod.invoke(material);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Material migrateMaterial(Material material) {
+        if (class_UnsafeValues_fromLegacyMethod != null && isLegacy(material)) {
+            try {
+                material = (Material)class_UnsafeValues_fromLegacyMethod.invoke(material);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return material;
+    }
+
+    public static Material getLegacyMaterial(String materialName) {
+        if (class_Material_getLegacyMethod != null) {
+            try {
+                return (Material)class_Material_getLegacyMethod.invoke(materialName, true);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return Material.getMaterial(materialName);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static String migrateMaterial(String materialKey) {
+        byte data = 0;
+        String[] pieces = StringUtils.split(materialKey, ',');
+        String textData = pieces[1];
+        if (pieces.length > 0) {
+            try {
+                data = Byte.parseByte(pieces[1]);
+                textData = "";
+            } catch (Exception ex) {
+            }
+        }
+
+        String materialName = pieces[0].toUpperCase();
+        Material material = Material.getMaterial(materialName);
+        if (material != null && data == 0) {
+            return material.name().toLowerCase();
+        }
+
+        Material legacyMaterial = getLegacyMaterial(materialName);
+        if (legacyMaterial != null) {
+            org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(legacyMaterial, data);
+            legacyMaterial = fromLegacy(materialData);
+            if (legacyMaterial != null) {
+                material = legacyMaterial;
+            }
+        }
+
+        if (material != null) {
+            materialKey = material.name().toLowerCase();;
+            // This mainly covers player skulls, but .. maybe other things? Maps?
+            if (!textData.isEmpty()) {
+                materialKey += ":" + textData;
+            }
+        }
+        return materialKey;
     }
 }
