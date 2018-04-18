@@ -633,3 +633,7 @@ bind_on_give: false
 # The editor will update Magic/data/updated.yml, and the server will automatically
 # reload configurations when the configs have changed.
 config_update_interval: 0
+
+# This can be used to restrict the use of certain actions.
+# Mainly intended for the sandbox configs.
+restricted_spell_actions: []

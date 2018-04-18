@@ -2,7 +2,10 @@ package com.elmakers.mine.bukkit.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
 
 import javax.annotation.Nullable;
 
@@ -22,6 +25,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ActionHandler implements com.elmakers.mine.bukkit.api.action.ActionHandler, Cloneable
 {
+    private static Set<String> restrictedActions = new HashSet<>();
     private List<ActionContext> actions = new ArrayList<>();
 
     private boolean undoable = false;
@@ -31,6 +35,11 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
     private @Nullable Integer currentAction = null;
     private boolean started = false;
     private static String debugIndent = "";
+
+    public static void setRestrictedActions(Collection<String> actions) {
+        restrictedActions.clear();
+        restrictedActions.addAll(actions);
+    }
 
     public ActionHandler()
     {
@@ -76,6 +85,10 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
             try
             {
                 BaseSpellAction action = ActionFactory.construct(actionClassName);
+                actionClassName = action.getClass().getSimpleName();
+                if (restrictedActions.contains(actionClassName)) {
+                    action = new RestrictedAction(ChatColor.RED + "The " + actionClassName + " action is not allowed here.");
+                }
                 actionConfiguration.set("class", null);
                 if (handlerConfiguration != null) {
                     ConfigurationUtils.addConfigurations(actionConfiguration, handlerConfiguration, false);
@@ -85,7 +98,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
                 }
                 loadAction(action, actionConfiguration);
             } catch (Exception ex) {
-                Bukkit.getLogger().warning("Error loading class " + actionClassName + " for spell " + spell.getName() + ": " + ex.getMessage());
+                Bukkit.getLogger().log(Level.WARNING, "Error loading class " + actionClassName + " for spell " + spell.getName(), ex);
             }
         }
     }

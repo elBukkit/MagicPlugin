@@ -77,6 +77,7 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
@@ -2942,6 +2943,8 @@ public class MagicController implements MageController {
 
         populateEntityTypes(undoEntityTypes, properties, "entity_undo_types");
         populateEntityTypes(friendlyEntityTypes, properties, "friendly_entity_types");
+
+        ActionHandler.setRestrictedActions(properties.getStringList("restricted_spell_actions"));
 
         String defaultLocationString = properties.getString("default_cast_location");
         try {

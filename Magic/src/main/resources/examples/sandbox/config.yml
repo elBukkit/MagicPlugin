@@ -12,3 +12,7 @@ welcome_wand: sandbox
 # The editor will touch this file, and the server will automatically
 # reload configurations when the configs have changed.
 config_update_interval: 2000
+
+# Don't allow use of the Command action, too much potential for griefing
+restricted_spell_actions:
+  - CommandAction
