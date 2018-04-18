@@ -19,6 +19,7 @@ public class OrientAction extends BaseSpellAction {
     private Float yaw;
     private Float pitchOffset;
     private Float yawOffset;
+    private boolean orientTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -43,19 +44,20 @@ public class OrientAction extends BaseSpellAction {
         } else {
             yawOffset = null;
         }
+        orientTarget = parameters.getBoolean("orient_target", false);
     }
 
     @Override
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
-        Entity entity = mage.getEntity();
+        Entity entity = orientTarget ? context.getTargetEntity() : mage.getEntity();
         if (entity == null)
         {
-            return SpellResult.ENTITY_REQUIRED;
+            return orientTarget ? SpellResult.NO_TARGET : SpellResult.ENTITY_REQUIRED;
         }
 
-        context.registerMoved(entity);
         Location location = entity.getLocation();
+        context.registerMoved(entity);
         if (pitch != null || yaw != null)
         {
             if (pitch != null) {
@@ -76,10 +78,10 @@ public class OrientAction extends BaseSpellAction {
         }
         if (pitchOffset == null && yawOffset == null && yaw == null && pitch == null)
         {
-            Entity targetEntity = context.getTargetEntity();
+            Entity targetEntity = orientTarget ? mage.getEntity() : context.getTargetEntity();
             if (targetEntity == null)
             {
-                return SpellResult.NO_TARGET;
+                return orientTarget ? SpellResult.ENTITY_REQUIRED : SpellResult.NO_TARGET;
             }
             Location direction = targetEntity.getLocation().subtract(location);
             location.setDirection(direction.toVector());
