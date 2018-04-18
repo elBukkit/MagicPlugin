@@ -41,6 +41,8 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
@@ -1398,5 +1400,20 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ShapedRecipe createShapedRecipe(Plugin plugin, String key, ItemStack item) {
+        if (class_NamespacedKey == null) {
+            return new ShapedRecipe(item);
+        }
+
+        try {
+            Object namespacedKey = class_NamespacedKey_constructor.newInstance(plugin, key);
+            return (ShapedRecipe)class_ShapedRecipe_constructor.newInstance(namespacedKey, item);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ShapedRecipe(item);
+        }
     }
 }

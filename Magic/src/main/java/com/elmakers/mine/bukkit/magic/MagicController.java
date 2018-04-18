@@ -75,7 +75,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
