@@ -111,6 +111,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected float particleYOffset = 0.3f;
     protected float particleZOffset = 0.3f;
     protected int particleCount = 1;
+    protected float particleSize = 1;
 
     protected boolean requireEntity = false;
     protected boolean requireTargetEntity = false;
@@ -233,6 +234,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 particleYOffset = (float)configuration.getDouble("particle_offset_y", particleYOffset);
                 particleZOffset = (float)configuration.getDouble("particle_offset_z", particleZOffset);
                 particleCount = configuration.getInt("particle_count", particleCount);
+                particleSize = (float)configuration.getDouble("particle_size", particleSize);
             }
         }
 
@@ -401,7 +403,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             Particle useEffect = overrideParticle(particleType);
             Material material = getWorkingMaterial().getMaterial();
             Short data = getWorkingMaterial().getData();
-            displayParticle(useEffect, sourceLocation, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount, 1, getColor1(), material, data == null ? 0 : (byte)(short)data, PARTICLE_RANGE);
+            displayParticle(useEffect, sourceLocation, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount, particleSize, getColor1(), material, data == null ? 0 : (byte)(short)data, PARTICLE_RANGE);
         }
     }
 
