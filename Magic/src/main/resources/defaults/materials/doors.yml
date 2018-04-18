@@ -1,5 +1,7 @@
 # All doors, for the DoorSpell generally
 doors:
-- iron_doors
+- iron_door_block
 - unlocked_doors
 
+# 1.13
+- iron_door

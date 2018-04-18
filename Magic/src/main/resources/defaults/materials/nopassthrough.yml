@@ -7,3 +7,6 @@ nopassthrough:
 - iron_door_block
 - obsidian
 
+# 1.13
+- iron_door
+

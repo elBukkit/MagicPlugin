@@ -37,3 +37,9 @@ passthrough:
 - plants
 - signs
 
+# 1.13
+- wall_torch
+- redstone_torch
+- redstone_wall_torch
+- repeater
+- restone_comparator

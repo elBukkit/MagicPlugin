@@ -1,2 +1,10 @@
 saplings:
 - sapling
+
+# 1.13
+- spurce_sapling
+- acacia_sapling
+- birch_sapling
+- dark_oak_sapling
+- jungle_sapling
+- oak_sapling

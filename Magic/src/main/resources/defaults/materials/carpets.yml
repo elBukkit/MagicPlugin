@@ -1,2 +1,20 @@
 carpets:
 - carpet
+
+# 1.13
+- black_carpet
+- blue_carpet
+- brown_carpet
+- cyan_carpet
+- gray_carpet
+- green_carpet
+- light_blue_carpet
+- light_gray_carpet
+- lime_carpet
+- magenta_carpet
+- orange_carpet
+- pink_carpet
+- purple_carpet
+- red_carpet
+- white_carpet
+- yellow_carpet

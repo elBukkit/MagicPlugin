@@ -75,3 +75,11 @@ restricted_animate:
 - stained_glass_panes
 - plants
 - skulls
+
+# 1.13
+
+- wall_torch
+- redstone_torch
+- redstone_wall_torch
+- repeater
+- restone_comparator

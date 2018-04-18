@@ -2,3 +2,8 @@ commands:
 - command
 - command_chain
 - command_repeating
+
+# 1.13
+- command_block
+- chain_command_block
+- repeating_command_block

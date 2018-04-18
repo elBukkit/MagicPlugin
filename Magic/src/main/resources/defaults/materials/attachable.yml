@@ -42,3 +42,11 @@ attachable:
 - plants
 - signs
 
+# 1.13
+
+- redstone_torch
+- redstone_wall_torch
+- repeater
+- comparator
+- wall_torch
+
