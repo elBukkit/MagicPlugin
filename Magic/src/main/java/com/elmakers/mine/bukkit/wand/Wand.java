@@ -24,6 +24,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -71,7 +72,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.base.Preconditions;
 
-import de.slikey.effectlib.util.ParticleEffect;
+import de.slikey.effectlib.util.ParticleUtils;
 
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
     public static final int OFFHAND_SLOT = 40;
@@ -190,7 +191,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     private ColorHD effectColor = null;
     private float effectColorSpellMixWeight = DEFAULT_SPELL_COLOR_MIX_WEIGHT;
-    private ParticleEffect effectParticle = null;
+    private Particle effectParticle = null;
     private float effectParticleData = 0;
     private int effectParticleCount = 0;
     private int effectParticleInterval = 0;
@@ -3643,7 +3644,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             potionEffectLocation.setX(potionEffectLocation.getX() + random.nextDouble() - 0.5);
             potionEffectLocation.setY(potionEffectLocation.getY() + random.nextDouble() * player.getEyeHeight());
             potionEffectLocation.setZ(potionEffectLocation.getZ() + random.nextDouble() - 0.5);
-            ParticleEffect.SPELL_MOB.display(potionEffectLocation, effectColor.getColor(), 24);
+            ParticleUtils.display(Particle.SPELL_MOB, potionEffectLocation, effectColor.getColor(), 24);
         }
 
         Location location = mage.getLocation();
@@ -4216,7 +4217,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return effectColor == null ? null : effectColor.getColor();
     }
 
-    public ParticleEffect getEffectParticle() {
+    public Particle getEffectParticle() {
         return effectParticle;
     }
 
