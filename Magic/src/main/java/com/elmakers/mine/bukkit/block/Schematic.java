@@ -18,7 +18,6 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -103,7 +102,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
                     if (materialData != null)
                     {
                         Material material = materialData.getItemType();
-                        MaterialAndData block = new com.elmakers.mine.bukkit.block.MaterialAndData(material, materialData.getData());
+                        MaterialAndData block = new MaterialAndData(material, materialData.getData());
 
                         // Check for tile entity data
                         BlockVector blockLocation = new BlockVector(x, y, z);
