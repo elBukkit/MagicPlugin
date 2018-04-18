@@ -1,5 +1,9 @@
 # Migration Notes
 
+## 7.5
+ 
+ - Make sure you do not have any material sets defined in materials.yml that contain a material of the same name as the set.
+
 ## 7.4
 
  - The Retarget action now uses hitbox targeting by default. Use "hitbox: false" to turn this off.

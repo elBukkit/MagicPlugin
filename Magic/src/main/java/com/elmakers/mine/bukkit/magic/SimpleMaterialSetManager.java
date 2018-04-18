@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,15 +28,36 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
     private Set<String> unmodifiableMaterialSetKeys = Collections
             .unmodifiableSet(materialSets.keySet());
 
+    // This is here to support forward-references in configurations,
+    // and to prevent infinite recursion
+    private ConfigurationSection loading;
+    private Set<String> loadingStack = new LinkedHashSet<>();
+
     @Override
     public Collection<String> getMaterialSets() {
         return unmodifiableMaterialSetKeys;
     }
 
     @Override
+    @Nullable
     public MaterialSet getMaterialSet(String name) {
         checkNotNull(name, "name");
-        return materialSets.get(name);
+        MaterialSet existing = materialSets.get(name);
+        if (existing == null && loading != null && loading.getKeys(false).contains(name)) {
+            if (loadingStack.contains(name)) {
+                org.bukkit.Bukkit.getLogger().info("Keys: " + loading.getKeys(false));
+                throw new IllegalStateException("Circular dependency detected in material configs: "
+                    + StringUtils.join(loadingStack, " -> ") + " -> " + name);
+            }
+            loadingStack.add(name);
+            MaterialSet set = createMaterialSet(loading, name);
+            if (set != null) {
+                materialSets.put(name, set);
+            }
+            loadingStack.remove(name);
+            return set;
+        }
+        return existing;
     }
 
     @Override
@@ -80,14 +102,19 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
     }
 
     /* package */ void loadMaterials(ConfigurationSection materialNode) {
+        loading = materialNode;
         // Create Material sets
         Set<String> keys = materialNode.getKeys(false);
         for (String key : keys) {
+            loadingStack.clear();
+            loadingStack.add(key);
             MaterialSet set = createMaterialSet(materialNode, key);
             if (set != null) {
                 materialSets.put(key, set);
             }
         }
+        loadingStack.clear();
+        loading = null;
     }
 
     private MaterialSet createMaterialSetFromString(String materialSet) {
