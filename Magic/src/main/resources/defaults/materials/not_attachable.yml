@@ -2,10 +2,11 @@
 # Used by the Torch action.
 not_attachable:
 - glass
-- stained_glass
 - sea_lantern
 - ice
 - glowstone
 - leaves
 - leaves_2
+- stained_glasses
+- stained_glass_panes
 

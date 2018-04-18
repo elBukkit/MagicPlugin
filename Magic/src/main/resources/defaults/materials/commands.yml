@@ -1,0 +1,4 @@
+commands:
+- command
+- command_chain
+- command_repeating

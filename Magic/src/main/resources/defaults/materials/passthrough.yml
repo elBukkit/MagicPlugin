@@ -1,17 +1,7 @@
 passthrough:
-- water
-- stationary_water
+- all_water
 - air
 - snow
-- long_grass
-- dead_bush
-- yellow_flower
-- red_rose
-- wheat
-- brown_mushroom
-- red_mushroom
-- double_plant
-- sapling
 - torch
 - fire
 - redstone_wire
@@ -26,8 +16,6 @@ passthrough:
 - portal
 - diode_block_off
 - diode_block_on
-- pumpkin_stem
-- melon_stem
 - vine
 - water_lily
 - nether_warts
@@ -36,19 +24,16 @@ passthrough:
 - tripwire_hook
 - tripwire
 - flower_pot
-- carrot
-- potato
 - wood_button
-- skull
 - restone_comparator_off
 - restone_comparator_on
 - activator_rail
-- double_plant
-- carpet
-- sign_post
-- wall_sign
 - step
 - wood_step
 - web
 - ladder
+- skulls
+- carpets
+- plants
+- signs
 

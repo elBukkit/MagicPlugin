@@ -1,24 +1,9 @@
 # Things that double-stack like doors and tall plants
 attachable_double:
 - cactus
-- iron_door_block
-- iron_door
-- wooden_door
-- wood_door
 - sugar_cane_block
 - sugar_cane
 - double_plant
-- spruce_door
-- birch_door
-- jungle_door
-- acacia_door
-- dark_oak_door
-- spruce_door_item
-- birch_door_item
-- jungle_door_item
-- acacia_door_item
-- dark_oak_door_item
-- standing_banner
-- banner
-- wall_banner
+- banners
+- doors
 

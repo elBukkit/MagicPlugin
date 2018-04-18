@@ -3,23 +3,10 @@
 # attached to has copied over.
 # This also prevents server issues when trying to clone items that will not "stick",
 # which results in spawning thousands (or more) of item entities when they break and drop.
-# This should generally include all the things in attachables_double
 attachable:
+- attachable_double
 - snow
-- long_grass
-- dead_bush
-- yellow_flower
-- red_rose
-- wheat
 - flower_pot
-- brown_mushroom
-- red_mushroom
-- carrot
-- potato
-- crops
-- melon_stem
-- pumpkin_stem
-- sign_post
 - lever
 - bed_block
 - torch
@@ -43,25 +30,15 @@ attachable:
 - activator_rail
 - powered_rail
 - detector_rail
-- carpet
 - portal
 - ender_portal
-- standing_banner
 - trap_door
 - iron_trap_door
 - fire
-- cactus
-- iron_door_block
-- wooden_door
-- sugar_cane_block
-- double_plant
-- spruce_door
-- birch_door
-- jungle_door
-- acacia_door
-- dark_oak_door
-- standing_banner
-- cocoa
-- bed_block
 - grass_path
+- carpets
+- beds
+- flowers
+- plants
+- signs
 
