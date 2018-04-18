@@ -278,6 +278,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     private MaterialSet                         preventPassThroughMaterials = null;
     private MaterialSet                         passthroughMaterials = null;
     private MaterialSet                         unsafeMaterials = null;
+    private MaterialSet                         halfBlockMaterials = null;
+    private MaterialSet                         waterMaterials = null;
 
     @Deprecated // Material
     public boolean allowPassThrough(Material mat)
@@ -336,7 +338,10 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public boolean isWater(Material mat)
     {
-        return (mat == Material.WATER || mat == Material.STATIONARY_WATER);
+        if (waterMaterials == null) {
+            waterMaterials = controller.getMaterialSetManager().getMaterialSet("all_water");
+        }
+        return waterMaterials.testMaterial(mat);
     }
 
     public boolean isOkToStandOn(Block block)
@@ -354,10 +359,10 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected boolean isHalfBlock(Material mat) {
-
-        // TODO: Data-driven half-block list
-        // Don't put carpet and snow in here, acts weird. Not sure why though.
-        return (mat == Material.STEP || mat == Material.WOOD_STEP);
+        if (halfBlockMaterials == null) {
+            halfBlockMaterials = controller.getMaterialSetManager().getMaterialSet("half");
+        }
+        return halfBlockMaterials.testMaterial(mat);
     }
 
     public boolean isSafeLocation(Block block)
@@ -375,7 +380,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         Block blockOneDown = block.getRelative(BlockFace.DOWN);
 
         // Ascend to top of water
-        if (isUnderwater() && (blockOneDown.getType() == Material.STATIONARY_WATER || blockOneDown.getType() == Material.WATER)
+        if (isUnderwater() && isWater(blockOneDown.getType())
             && blockOneUp.getType() == Material.AIR && block.getType() == Material.AIR) {
             return true;
         }
@@ -494,7 +499,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         boolean isHalfBlock = false;
         Block downBlock = location.getBlock().getRelative(BlockFace.DOWN);
         Material material = downBlock.getType();
-        if (material == Material.STEP || material == Material.WOOD_STEP) {
+        if (isHalfBlock(material)) {
             // Drop down to half-steps
             isHalfBlock = (DeprecatedUtils.getData(downBlock) < 8);
         } else {
@@ -681,7 +686,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         Block playerBlock = getPlayerBlock();
         if (playerBlock == null) return false;
         playerBlock = playerBlock.getRelative(BlockFace.UP);
-        return (playerBlock.getType() == Material.WATER || playerBlock.getType() == Material.STATIONARY_WATER);
+        return isWater(playerBlock.getType());
     }
 
     @Nullable
