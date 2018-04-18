@@ -22,6 +22,7 @@ public class ChangeContextAction extends CompoundAction {
     private Vector relativeSourceOffset;
     private Vector targetOffset;
     private Vector relativeTargetOffset;
+    private boolean sourceIsCaster;
     private boolean targetCaster;
     private Boolean targetSelf;
     private boolean targetEntityLocation;
@@ -60,6 +61,7 @@ public class ChangeContextAction extends CompoundAction {
         super.prepare(context, parameters);
         targetEntityLocation = parameters.getBoolean("target_entity", false);
         targetCaster = parameters.getBoolean("target_caster", false);
+        sourceIsCaster = parameters.getBoolean("source_is_caster", false);
         targetSelf = parameters.contains("target_self") ? parameters.getBoolean("target_self") : null;
         sourceAtTarget = parameters.getBoolean("source_at_target", false);
         sourceIsTarget = parameters.getBoolean("source_is_target", false);
@@ -312,6 +314,10 @@ public class ChangeContextAction extends CompoundAction {
         if (sourceIsTarget)
         {
             sourceEntity = targetEntity;
+        }
+        if (sourceIsCaster) {
+            sourceEntity = context.getMage().getEntity();
+            sourceLocation = null;
         }
         createActionContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
         if (targetSelf != null)
