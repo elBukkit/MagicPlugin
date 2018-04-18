@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -18,8 +16,8 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class CastCommandExecutor extends MagicTabExecutor {
 
@@ -48,17 +46,10 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 String[] idPieces = StringUtils.split(playerName, ',');
                 if (idPieces.length == 4 || idPieces.length == 2) {
                     try {
-                        String worldName = idPieces[0];
                         String entityId = idPieces[idPieces.length - 1];
-
-                        World world = Bukkit.getWorld(worldName);
-                        if (world == null) {
-                            if (sender != null) sender.sendMessage("Unknown world: " + worldName);
-                            return false;
-                        }
-                        Entity entity = NMSUtils.getEntity(world, UUID.fromString(entityId));
+                        Entity entity = CompatibilityUtils.getEntity(UUID.fromString(entityId));
                         if (entity == null) {
-                            if (sender != null) sender.sendMessage("Entity not found with id " + entityId + " in " + world.getName());
+                            if (sender != null) sender.sendMessage("Entity not found with id " + entityId);
                             return false;
                         }
 
@@ -69,7 +60,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                         sender = null;
 
                     } catch (Throwable ex) {
-                        if (sender != null) sender.sendMessage("Your spell failed (badly... check server logs)");
+                        if (sender != null) sender.sendMessage("Failed to find entity by id, check server logs for errors");
                         ex.printStackTrace();
                         return false;
                     }
@@ -83,6 +74,23 @@ public class CastCommandExecutor extends MagicTabExecutor {
 
                 MageController controller = api.getController();
                 mage = controller.getMage(mageId, mageName);
+            }
+
+            Player player = DeprecatedUtils.getPlayer(playerName);
+            if (mage == null && player == null && playerName.contains("-")) {
+                try {
+                    Entity entity = CompatibilityUtils.getEntity(UUID.fromString(playerName));
+                    if (entity != null) {
+                        mage = api.getController().getMage(entity);
+
+                        // If we have the mage, we no longer want to send anything to the console.
+                        sender = null;
+                    }
+                } catch (Throwable ex) {
+                    if (sender != null) sender.sendMessage("Failed to find entity " + playerName + ", check server logs for errors");
+                    ex.printStackTrace();
+                    return false;
+                }
             }
 
             if (mage != null && !mage.isLoading()) {
@@ -113,7 +121,6 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 return true;
             }
 
-            Player player = DeprecatedUtils.getPlayer(playerName);
             if (player == null) {
                 if (sender != null) sender.sendMessage("Can't find player " + playerName);
                 return true;
