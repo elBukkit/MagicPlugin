@@ -120,8 +120,9 @@ public class EffectLibManager {
             {
                 MaterialAndData mat = player.getWorkingMaterial();
                 if (mat != null) {
+                    Byte data = mat.getBlockData();
                     effect.material = mat.getMaterial();
-                    effect.materialData = mat.getBlockData();
+                    effect.materialData = data == null ? 0 : data;
                 }
             }
         } catch (Throwable ex) {
