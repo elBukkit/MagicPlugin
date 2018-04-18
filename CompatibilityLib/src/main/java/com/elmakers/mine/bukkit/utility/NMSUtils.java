@@ -99,7 +99,6 @@ public class NMSUtils {
     protected static Class<?> class_PathEntity;
     protected static Class<?> class_EntityFirework;
     protected static Class<?> class_CraftSkull;
-    protected static Class<?> class_CraftBanner;
     protected static Class<?> class_CraftMetaSkull;
     protected static Class<?> class_GameProfile;
     protected static Class<?> class_GameProfileProperty;
@@ -219,6 +218,7 @@ public class NMSUtils {
     protected static Method class_Chunk_setBlockMethod;
     protected static Method class_Arrow_setPickupStatusMethod;
     protected static Method class_ProjectileHitEvent_getHitBlockMethod;
+    protected static Method class_Server_getEntityMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -530,6 +530,12 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+            try {
+                class_Server_getEntityMethod = Server.class.getMethod("getEntity", UUID.class);
+            } catch (Throwable ex) {
+                class_Server_getEntityMethod = null;
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Server.getEntity, entity lookups will be slightly less optimal", ex);
+            }
             try {
                 class_ProjectileHitEvent_getHitBlockMethod = ProjectileHitEvent.class.getMethod("getHitBlock");
             } catch (Throwable ex) {
@@ -1788,22 +1794,6 @@ public class NMSUtils {
             Double z = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 2);
             if (x != null && y != null && z != null) {
                 return new Vector(x, y, z);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public static Entity getEntity(World world, UUID uuid) {
-        try {
-            Object worldHandle = getHandle(world);
-            final Map<UUID, Entity> entityMap = (Map<UUID, Entity>)class_WorldServer_entitiesByUUIDField.get(worldHandle);
-            if (entityMap != null) {
-                Object nmsEntity = entityMap.get(uuid);
-                if (nmsEntity != null) {
-                    return getBukkitEntity(nmsEntity);
-                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -1362,4 +1362,41 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return null;
     }
+
+    @SuppressWarnings("unchecked")
+    public static Entity getEntity(World world, UUID uuid) {
+        try {
+            Object worldHandle = getHandle(world);
+            final Map<UUID, Entity> entityMap = (Map<UUID, Entity>)class_WorldServer_entitiesByUUIDField.get(worldHandle);
+            if (entityMap != null) {
+                Object nmsEntity = entityMap.get(uuid);
+                if (nmsEntity != null) {
+                    return getBukkitEntity(nmsEntity);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Entity getEntity(UUID uuid) {
+        if (class_Server_getEntityMethod != null) {
+            try {
+                return (Entity)class_Server_getEntityMethod.invoke(Bukkit.getServer(), uuid);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        for (World world : Bukkit.getWorlds()) {
+            Entity found = getEntity(world, uuid);
+            if (found != null) {
+                return found;
+            }
+        }
+
+        return null;
+    }
 }
