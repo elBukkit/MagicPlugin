@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
@@ -267,54 +266,34 @@ public class InventoryUtils extends NMSUtils
         return false;
     }
 
-    public static ItemStack getURLSkull(String url) {
-        // The "MHF_Question" is here so serialization doesn't cause an NPE
-        return getURLSkull(url, "MHF_Question", UUID.randomUUID(), null);
-    }
-
-    public static ItemStack getURLSkull(URL url) {
-        // The "MHF_Question" is here so serialization doesn't cause an NPE
-        return getURLSkull(url, "MHF_Question", UUID.randomUUID(), null);
-    }
-
-    @SuppressWarnings("deprecation")
-    public static ItemStack getURLSkull(String url, String ownerName, UUID id, String itemName) {
-        try {
-            return getURLSkull(new URL(url), ownerName, id, itemName);
-        } catch (MalformedURLException e) {
-            Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
-        }
-        return new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
-    }
-
-    @SuppressWarnings("deprecation")
-    public static ItemStack getURLSkull(URL url, String ownerName, UUID id, String itemName) {
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
-        if (itemName != null) {
-            ItemMeta meta = skull.getItemMeta();
-            meta.setDisplayName(itemName);
-            skull.setItemMeta(meta);
-        }
-
-        try {
-            skull = makeReal(skull);
-            Object skullOwner = createNode(skull, "SkullOwner");
-            setMeta(skullOwner, "Name", ownerName);
-
-            setSkullURL(skull, url, id);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return skull;
-    }
-
     public static void setNewSkullURL(ItemStack itemStack, String url) {
         try {
             setSkullURL(itemStack, new URL(url), UUID.randomUUID());
         } catch (MalformedURLException e) {
             Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
+    }
+
+    public static void setSkullURL(ItemStack itemStack, String url) {
+        try {
+            setSkullURLAndName(itemStack, new URL(url), "MHF_Question", UUID.randomUUID());
+        } catch (MalformedURLException e) {
+            Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
+        }
+    }
+
+    public static ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
+        try {
+            itemStack = makeReal(itemStack);
+            Object skullOwner = createNode(itemStack, "SkullOwner");
+            setMeta(skullOwner, "Name", ownerName);
+
+            setSkullURL(itemStack, url, id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return itemStack;
     }
 
     public static void setSkullURL(ItemStack itemStack, URL url, UUID id) {
@@ -341,48 +320,11 @@ public class InventoryUtils extends NMSUtils
     public static String getSkullURL(ItemStack skull) {
         return SkinUtils.getProfileURL(getSkullProfile(skull.getItemMeta()));
     }
-
-    @Deprecated
-    public static ItemStack getPlayerSkull(String playerName)
-    {
-        return getPlayerSkull(playerName, UUID.randomUUID(), null);
-    }
-
-    @Deprecated
-    public static ItemStack getPlayerSkull(String playerName, String itemName)
-    {
-        return getPlayerSkull(playerName, UUID.randomUUID(), itemName);
-    }
-
-    @Deprecated
-    public static ItemStack getPlayerSkull(String playerName, UUID uuid)
-    {
-        return getPlayerSkull(playerName, uuid, null);
-    }
-
-    @Deprecated
-    public static ItemStack getPlayerSkull(String playerName, UUID uuid, String itemName)
-    {
-        String playerURL = getPlayerSkullURL(playerName);
-        return playerURL == null ? null : getURLSkull(playerURL, playerName, uuid, itemName);
-    }
     
     @Deprecated
     public static String getPlayerSkullURL(String playerName)
     {
         return SkinUtils.getOnlineSkinURL(playerName);
-    }
-
-    @Deprecated
-    public static ItemStack getPlayerSkull(Player player)
-    {
-        return getPlayerSkull(player, null);
-    }
-
-    @Deprecated
-    public static ItemStack getPlayerSkull(Player player, String itemName)
-    {
-        return getPlayerSkull(player.getName(), player.getUniqueId(), itemName);
     }
 
     public static Object getSkullProfile(ItemMeta itemMeta)
@@ -432,25 +374,6 @@ public class InventoryUtils extends NMSUtils
         }
 
         return false;
-    }
-
-    @Deprecated
-    public static boolean setSkullOwner(Skull state, String playerName, UUID playerId)
-    {
-        // TODO: This could be done directly, but is kind of tricky.
-        ItemStack skullItem = InventoryUtils.getPlayerSkull(playerName, playerId);
-        if (skullItem == null) {
-            return false;
-        }
-
-        return setSkullProfile(state, InventoryUtils.getSkullProfile(skullItem.getItemMeta()));
-
-    }
-
-    @Deprecated
-    public static boolean setSkullOwner(Skull state, Player owner)
-    {
-        return setSkullOwner(state, owner.getName(), owner.getUniqueId());
     }
 
     public static void wrapText(String text, Collection<String> list)
