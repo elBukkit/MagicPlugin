@@ -1545,4 +1545,39 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return materialKey;
     }
+
+    @SuppressWarnings("unchecked")
+    public static Enum<?> getParrotVariant(Entity entity) {
+        if (class_Parrot == null) return null;
+        Enum<?> variant = null;
+        try {
+            variant = (Enum<?>)class_Parrot_getVariantMethod.invoke(entity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return variant;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Enum<?> getParrotVariant(String variantName) {
+        if (class_ParrotVariant == null) return null;
+        Enum<?> variant = null;
+        try {
+            variant = Enum.valueOf(class_ParrotVariant, variantName.toUpperCase());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return variant;
+    }
+
+    public static boolean setParrotVariant(Entity entity, Enum<?> variant) {
+        if (class_Parrot == null || variant == null) return false;
+        try {
+            class_Parrot_setVariantMethod.invoke(entity, variant);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }

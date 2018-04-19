@@ -4,6 +4,7 @@
 
  - Fix Heroes attribute integration
  - The map brush can now work with concrete, glazed terracotta and several other block types
+ - Add support for parrot variants in mob configs
 
 # 7.4
 

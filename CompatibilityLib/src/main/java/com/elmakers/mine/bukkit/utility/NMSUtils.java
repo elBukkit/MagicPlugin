@@ -148,6 +148,8 @@ public class NMSUtils {
     protected static Class<?> class_ChatComponentText;
     protected static Class<?> class_IChatBaseComponent;
     protected static Class<?> class_NamespacedKey;
+    protected static Class<?> class_Parrot;
+    protected static Class<Enum> class_ParrotVariant;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -228,6 +230,8 @@ public class NMSUtils {
     protected static Method class_UnsafeValues_fromLegacyMethod;
     protected static Method class_Material_isLegacyMethod;
     protected static Method class_Material_getLegacyMethod;
+    protected static Method class_Parrot_getVariantMethod;
+    protected static Method class_Parrot_setVariantMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -542,6 +546,8 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+
+            // 1.13 Support
             try {
                 @SuppressWarnings("deprecation")
                 Class<?> unsafe = org.bukkit.UnsafeValues.class;
@@ -556,6 +562,21 @@ public class NMSUtils {
                 class_UnsafeValues_fromLegacyDataMethod = null;
                 class_Material_isLegacyMethod = null;
             }
+
+            // 1.12 and lower
+            try {
+                class_Parrot = Class.forName("org.bukkit.entity.Parrot");
+                class_ParrotVariant = (Class<Enum>)Class.forName("org.bukkit.entity.Parrot$Variant");
+                class_Parrot_getVariantMethod = class_Parrot.getMethod("getVariant");
+                class_Parrot_setVariantMethod = class_Parrot.getMethod("setVariant", class_ParrotVariant);
+            } catch (Throwable ex) {
+                class_Parrot = null;
+                class_ParrotVariant = null;
+                class_Parrot_getVariantMethod = null;
+                class_Parrot_setVariantMethod = null;
+                Bukkit.getLogger().log(Level.INFO, "No parrots available on your server.", ex);
+            }
+
             try {
                 class_NamespacedKey = Class.forName("org.bukkit.NamespacedKey");
                 class_NamespacedKey_constructor = class_NamespacedKey.getConstructor(Plugin.class, String.class);
@@ -564,7 +585,7 @@ public class NMSUtils {
                 class_NamespacedKey = null;
                 class_NamespacedKey_constructor = null;
                 class_ShapedRecipe_constructor = null;
-                Bukkit.getLogger().log(Level.WARNING, "Couldn't find NamespacedKey for registering recipes. This doesn't actually matter at all, but PaperSpigot is a whiny little you-know so here we are.", ex);
+                Bukkit.getLogger().log(Level.INFO, "Couldn't find NamespacedKey for registering recipes. This doesn't actually matter at all, but PaperSpigot is a whiny little you-know so here we are.", ex);
             }
             try {
                 class_Server_getEntityMethod = Server.class.getMethod("getEntity", UUID.class);
