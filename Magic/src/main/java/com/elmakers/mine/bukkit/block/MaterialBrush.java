@@ -785,37 +785,37 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         if (mode == BrushMode.ERASE) {
             icon = MaterialBrush.EraseMaterial;
             if (EraseCustomIcon != null && !EraseCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
-                itemStack = InventoryUtils.getURLSkull(EraseCustomIcon);
+                itemStack = controller.getURLSkull(EraseCustomIcon);
             }
             extraLore = messages.get("wand.erase_material_description");
         } else if (mode == BrushMode.COPY) {
             icon = MaterialBrush.CopyMaterial;
             if (CopyCustomIcon != null && !CopyCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
-                itemStack = InventoryUtils.getURLSkull(CopyCustomIcon);
+                itemStack = controller.getURLSkull(CopyCustomIcon);
             }
             extraLore = messages.get("wand.copy_material_description");
         } else if (mode == BrushMode.CLONE) {
             icon = MaterialBrush.CloneMaterial;
             if (CloneCustomIcon != null && !CloneCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
-                itemStack = InventoryUtils.getURLSkull(CloneCustomIcon);
+                itemStack = controller.getURLSkull(CloneCustomIcon);
             }
             extraLore = messages.get("wand.clone_material_description");
         } else if (mode == BrushMode.REPLICATE) {
             icon = MaterialBrush.ReplicateMaterial;
             if (ReplicateCustomIcon != null && !ReplicateCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
-                itemStack = InventoryUtils.getURLSkull(ReplicateCustomIcon);
+                itemStack = controller.getURLSkull(ReplicateCustomIcon);
             }
             extraLore = messages.get("wand.replicate_material_description");
         } else if (mode == BrushMode.MAP) {
             icon = MaterialBrush.MapMaterial;
             if (MapCustomIcon != null && !MapCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
-                itemStack = InventoryUtils.getURLSkull(MapCustomIcon);
+                itemStack = controller.getURLSkull(MapCustomIcon);
             }
             extraLore = messages.get("wand.map_material_description");
         } else if (mode == BrushMode.SCHEMATIC) {
             icon = MaterialBrush.SchematicMaterial;
             if (SchematicCustomIcon != null && !SchematicCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
-                itemStack = InventoryUtils.getURLSkull(SchematicCustomIcon);
+                itemStack = controller.getURLSkull(SchematicCustomIcon);
             }
             extraLore = messages.get("wand.schematic_material_description").replace("$schematic", schematicName);
         } else {
@@ -831,7 +831,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             itemStack = InventoryUtils.makeReal(itemStack);
             if (itemStack == null) {
                 if (DefaultBrushCustomIcon != null && !DefaultBrushCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
-                    itemStack = InventoryUtils.getURLSkull(DefaultBrushCustomIcon);
+                    itemStack = controller.getURLSkull(DefaultBrushCustomIcon);
                 }
                 if (itemStack == null) {
                     itemStack = DefaultBrushMaterial.getItemStack(1);

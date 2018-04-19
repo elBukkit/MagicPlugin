@@ -4,10 +4,7 @@
 
 ## Things needing to abstract from 8 branch
 
- - Skull creation
  - Art enum
- - Map brush
- - Colorizing blocks
 
 ### Things to verify 
 

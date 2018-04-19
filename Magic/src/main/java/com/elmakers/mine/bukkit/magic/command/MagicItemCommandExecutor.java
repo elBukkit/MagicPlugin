@@ -448,14 +448,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     public boolean onItemSkull(Player player, ItemStack item)
     {
-        if (item.getType() != Material.BOOK_AND_QUILL) {
-            player.sendMessage(api.getMessages().get("item.skull_no_book"));
-            return true;
-        }
-
         ItemMeta meta = item.getItemMeta();
         if (meta == null || !(meta instanceof BookMeta)) {
-            player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
+            player.sendMessage(api.getMessages().get("item.skull_no_book"));
             return true;
         }
 
@@ -475,7 +470,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             String url = decoded.replace("\"", "").replace("{textures:{SKIN:{url:", "").replace("}}}", "").trim();
-            skullItem = InventoryUtils.getURLSkull(url);
+            skullItem = controller.getURLSkull(url);
             if (skullItem == null) {
                 player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
                 return true;

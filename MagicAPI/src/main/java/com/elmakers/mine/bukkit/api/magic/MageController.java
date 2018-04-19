@@ -411,6 +411,8 @@ public interface MageController {
     ItemStack getSkull(Entity entity, String itemName);
     @Nonnull
     ItemStack getSkull(String ownerName, String itemName);
+    @Nonnull
+    ItemStack getURLSkull(String url);
     void checkResourcePack(CommandSender sender);
     boolean sendResourcePackToAllPlayers(CommandSender sender);
     boolean sendResourcePack(Player player);

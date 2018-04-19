@@ -628,7 +628,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         {
             ItemStack waypointItem;
             if (waypoint.iconURL != null && !waypoint.iconURL.isEmpty()) {
-                waypointItem = InventoryUtils.getURLSkull(waypoint.iconURL);
+                waypointItem = controller.getURLSkull(waypoint.iconURL);
             } else {
                 waypointItem = waypoint.icon.getItemStack(1);
             }

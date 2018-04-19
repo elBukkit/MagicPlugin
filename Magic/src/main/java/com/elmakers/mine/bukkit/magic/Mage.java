@@ -86,6 +86,7 @@ import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.batch.UndoBatch;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
@@ -3556,7 +3557,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                     spellIcon.applyToItem(spellItem);
                                 }
                             }
-                        } else if (usingURLIcon && disabledUrlIcon != null && !disabledUrlIcon.isEmpty() && spellItem.getType() == Material.SKULL_ITEM) {
+                        } else if (usingURLIcon && disabledUrlIcon != null && !disabledUrlIcon.isEmpty() && DefaultMaterials.isSkull(spellItem.getType())) {
                             String currentURL = InventoryUtils.getSkullURL(spellItem);
                             if (!canCast) {
                                 if (!disabledUrlIcon.equals(currentURL)) {

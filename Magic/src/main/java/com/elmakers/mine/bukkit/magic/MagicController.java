@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.MessageDigest;
@@ -32,6 +33,7 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -4637,7 +4639,7 @@ public class MagicController implements MageController {
                 itemStack = getSpellBook(category, amount);
             } else if (skillPointItemsEnabled && magicItemKey.contains("sp:")) {
                 String spAmount = magicItemKey.substring(3);
-                itemStack = InventoryUtils.getURLSkull(skillPointIcon);
+                itemStack = getURLSkull(skillPointIcon);
                 ItemMeta meta = itemStack.getItemMeta();
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', messages.get("sp.name")).replace("$amount", spAmount));
                 String spDescription = messages.get("sp.description");
@@ -5484,6 +5486,29 @@ public class MagicController implements MageController {
         }
 
         return mobSkin;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getURLSkull(String url) {
+        try {
+            // The "MHF_Question" is here so serialization doesn't cause an NPE
+            return getURLSkull(new URL(url), "MHF_Question", UUID.randomUUID());
+        } catch (MalformedURLException e) {
+            Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
+        }
+
+        return new ItemStack(Material.AIR);
+    }
+
+    private ItemStack getURLSkull(URL url, String ownerName, UUID id) {
+        MaterialAndData skullType = skullItems.get(EntityType.PLAYER);
+        if (skullType == null) {
+            return new ItemStack(Material.AIR);
+        }
+        ItemStack skull = skullType.getItemStack(1);
+        skull = InventoryUtils.setSkullURLAndName(skull, url, ownerName, id);
+        return skull;
     }
 
     @Override

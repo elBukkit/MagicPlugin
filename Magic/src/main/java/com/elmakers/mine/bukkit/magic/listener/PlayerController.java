@@ -51,6 +51,7 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
@@ -476,7 +477,7 @@ public class PlayerController implements Listener {
             isRightClick = !controller.isInteractable(event.getClickedBlock());
 
             // This is to prevent Essentials signs from giving you an item in your wand inventory.
-            if (wand != null && (material == Material.SIGN_POST || material == Material.WALL_SIGN)) {
+            if (wand != null && DefaultMaterials.isSign(material)) {
                 wand.closeInventory();
             }
         }
@@ -515,7 +516,7 @@ public class PlayerController implements Listener {
 
         // Check for wearing via right-click
         // Special-case here for skulls, which actually are not wearable via right-click.
-        if (itemInHand != null && isRightClick && controller.isWearable(itemInHand) && itemInHand.getType() != Material.SKULL_ITEM)
+        if (itemInHand != null && isRightClick && controller.isWearable(itemInHand) && DefaultMaterials.isSkull(itemInHand.getType()))
         {
             if (wand != null)
             {
