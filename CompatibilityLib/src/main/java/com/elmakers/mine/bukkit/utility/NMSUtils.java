@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -22,7 +21,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -552,7 +550,9 @@ public class NMSUtils {
             try {
                 @SuppressWarnings("deprecation")
                 Class<?> unsafe = org.bukkit.UnsafeValues.class;
-                class_UnsafeValues_fromLegacyDataMethod = unsafe.getMethod("fromLegacy", MaterialData.class);
+                @SuppressWarnings("deprecation")
+                Class<?> materialData = org.bukkit.material.MaterialData.class;
+                class_UnsafeValues_fromLegacyDataMethod = unsafe.getMethod("fromLegacy", materialData);
                 class_UnsafeValues_fromLegacyMethod = unsafe.getMethod("fromLegacy", Material.class);
                 class_Material_isLegacyMethod = Material.class.getMethod("isLegacy");
                 class_Material_getLegacyMethod = Material.class.getMethod("getMaterial", String.class, Boolean.TYPE);

@@ -44,7 +44,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
@@ -1424,7 +1423,7 @@ public class CompatibilityUtils extends NMSUtils {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "deprecation"})
     public static ShapedRecipe createShapedRecipe(Plugin plugin, String key, ItemStack item) {
         if (class_NamespacedKey == null) {
             return new ShapedRecipe(item);
@@ -1439,18 +1438,20 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public static double getMaxHealth(Damageable li) {
         // return li.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         return li.getMaxHealth();
     }
 
+    @SuppressWarnings("deprecation")
     public static void setMaxHealth(Damageable li, double maxHealth) {
         // li.getAttribute(Attribute.GENERIC_MAX_HEALTH).setValue(maxHealth);
         li.setMaxHealth(maxHealth);
     }
 
     @SuppressWarnings({"deprecation", "unchecked"})
-    public static Material fromLegacy(MaterialData materialData) {
+    public static Material fromLegacy(org.bukkit.material.MaterialData materialData) {
         if (class_UnsafeValues_fromLegacyDataMethod != null) {
             try {
                 return (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(Bukkit.getUnsafe(), materialData);
@@ -1462,18 +1463,18 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     @SuppressWarnings("deprecation")
-    public static MaterialData getMaterial(int id, byte data) {
+    public static org.bukkit.material.MaterialData getMaterial(int id, byte data) {
         Material material = getMaterial(id);
         if (class_UnsafeValues_fromLegacyDataMethod != null) {
             if (material != null) {
-                material = fromLegacy(new MaterialData(material, data));
+                material = fromLegacy(new org.bukkit.material.MaterialData(material, data));
             }
             data = 0;
         }
         if (material == null) {
             material = Material.AIR;
         }
-        return new MaterialData(material, data);
+        return new org.bukkit.material.MaterialData(material, data);
     }
 
     @SuppressWarnings("deprecation")

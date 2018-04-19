@@ -11,7 +11,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapView;
-import org.bukkit.material.MaterialData;
 
 /**
  * Makes deprecation warnings useful again by suppressing all bukkit 'magic
@@ -38,11 +37,6 @@ public class DeprecatedUtils {
         } else {
             block.setType(material, applyPhysics);
         }
-    }
-
-    public static MaterialData newMaterialData(Material material, byte data) {
-        // @deprecated Magic value
-        return new MaterialData(material, data);
     }
 
     public static byte getData(Block block) {
