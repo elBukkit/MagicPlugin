@@ -27,7 +27,6 @@ public class TowerSpell extends BlockSpell {
         }
         int height = 16;
         int maxHeight = 255;
-        int material = 20;
         int midX = target.getX();
         int midY = target.getY();
         int midZ = target.getZ();
@@ -67,7 +66,7 @@ public class TowerSpell extends BlockSpell {
                         if (isDestructible(block) && hasBuildPermission(block)) {
                             blocksCreated++;
                             registerForUndo(block);
-                            block.setTypeId(material);
+                            block.setType(Material.GLASS);
                         }
                     }
                 }
