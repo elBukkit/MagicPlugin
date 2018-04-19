@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 
 public interface ItemData {
     String getKey();
@@ -19,7 +18,10 @@ public interface ItemData {
     Set<String> getCategories();
     Material getType();
     @Nullable
-    MaterialData getMaterialData();
-    @Nullable
     ItemMeta getItemMeta();
+
+    @Nullable
+    @Deprecated
+    @SuppressWarnings("deprecation")
+    org.bukkit.material.MaterialData getMaterialData();
 }

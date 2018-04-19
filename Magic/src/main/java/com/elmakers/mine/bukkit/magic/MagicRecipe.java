@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
@@ -112,7 +111,8 @@ public class MagicRecipe {
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
                     ItemData ingredient = controller.getOrCreateItem(materialKey);
-                    MaterialData material = ingredient == null ? null : ingredient.getMaterialData();
+                    @SuppressWarnings("deprecation")
+                    org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getMaterialData();
                     if (material == null) {
                         outputType = null;
                         controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);

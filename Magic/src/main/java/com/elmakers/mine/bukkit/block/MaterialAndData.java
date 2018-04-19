@@ -21,7 +21,6 @@ import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.material.MaterialData;
 
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
@@ -44,7 +43,7 @@ import com.google.common.base.Objects;
  * necessarily meant to be a friendly or printable name, though the class is capable of generating a semi-friendly
  * name, which will be the key lowercased and with underscores replaced with spaces. It will also attempt to create
  * a nice name for the variant, such as "blue wool". There is no DB for this, it is all based on the internal Bukkit
- * Material and MaterialData enumerations.
+ * Material enumerations.
  *
  * <p>Some examples of keys:
  * wool
@@ -703,27 +702,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         String materialName = material.name();
 
-        // This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
-        /*
-        MaterialData materialData = material.getNewData((byte)(short)data);
-        if (materialData instanceof Colorable) {
-            materialName += " " + ((Colorable)materialData).getColor().name();
-        }
-        if (materialData instanceof Tree) {
-            Tree tree = (Tree)materialData;
-            materialName += " " + tree.getSpecies().name() + " " + tree.getDirection().name();
-        }
-        if (materialData instanceof Stairs) {
-            Stairs stairs = (Stairs)materialData;
-            materialName += " " + stairs.getFacing().name();
-            // TODO: Ascending/descending directions?
-        }
-        if (materialData instanceof WoodenStep) {
-            WoodenStep step = (WoodenStep)materialData;
-            materialName += " " + step.getSpecies().name();
-        }
-        */
-
         if (data == null && messages != null) {
             materialName = materialName + messages.get("material.wildcard");
         }
@@ -779,14 +757,5 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public String toString() {
         return (isValid() ? material + (data != 0 ? "@" + data : "") : "invalid");
-    }
-
-    @SuppressWarnings("deprecation")
-    @Nullable
-    @Override
-    public MaterialData getMaterialData() {
-        if (material == null) return null;
-        byte dataByte = data == null ? 0 : (byte)(short)data;
-        return new MaterialData(material, dataByte);
     }
 }
