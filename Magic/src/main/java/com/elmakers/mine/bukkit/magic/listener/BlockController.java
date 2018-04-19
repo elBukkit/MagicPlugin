@@ -197,18 +197,18 @@ public class BlockController implements Listener {
                 Block upBlock = targetBlock.getRelative(BlockFace.UP);
                 while (doubles.testBlock(upBlock)) {
                     undoList.add(upBlock);
-                    DeprecatedUtils.setTypeIdAndData(upBlock, Material.AIR.ordinal(), (byte) 0, false);
+                    DeprecatedUtils.setTypeAndData(upBlock, Material.AIR, (byte) 0, false);
                     upBlock = upBlock.getRelative(BlockFace.UP);
                 }
 
                 Block downBlock = targetBlock.getRelative(BlockFace.DOWN);
                 while (doubles.testBlock(downBlock)) {
                     undoList.add(downBlock);
-                    DeprecatedUtils.setTypeIdAndData(downBlock, Material.AIR.ordinal(), (byte) 0, false);
+                    DeprecatedUtils.setTypeAndData(downBlock, Material.AIR, (byte) 0, false);
                     downBlock = downBlock.getRelative(BlockFace.DOWN);
                 }
             }
-            DeprecatedUtils.setTypeIdAndData(targetBlock, Material.AIR.ordinal(), (byte) 0, false);
+            DeprecatedUtils.setTypeAndData(targetBlock, Material.AIR, (byte) 0, false);
             event.setCancelled(true);
         }
     }
@@ -317,7 +317,7 @@ public class BlockController implements Listener {
                         blockList.convert(entity, block);
                         if (!blockList.getApplyPhysics()) {
                             FallingBlock falling = (FallingBlock)entity;
-                            DeprecatedUtils.setTypeIdAndData(block, DeprecatedUtils.getId(falling.getMaterial()), DeprecatedUtils.getBlockData(falling), false);
+                            DeprecatedUtils.setTypeAndData(block, falling.getMaterial(), DeprecatedUtils.getBlockData(falling), false);
                             event.setCancelled(true);
                         }
                     }

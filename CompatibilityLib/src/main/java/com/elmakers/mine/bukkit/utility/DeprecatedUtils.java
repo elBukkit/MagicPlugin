@@ -26,10 +26,9 @@ public class DeprecatedUtils {
         player.updateInventory();
     }
 
-    public static void setTypeIdAndData(Block block, int id, byte data,
-            boolean applyPhysics) {
+    public static void setTypeAndData(Block block, Material material, byte data, boolean applyPhysics) {
         // @deprecated Magic value
-        block.setTypeIdAndData(id, data, applyPhysics);
+        block.setTypeIdAndData(material.getId(), data, applyPhysics);
     }
 
     public static MaterialData newMaterialData(Material material, byte data) {
