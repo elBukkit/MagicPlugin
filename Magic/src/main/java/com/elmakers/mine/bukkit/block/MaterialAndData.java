@@ -8,7 +8,6 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
-import org.bukkit.TreeSpecies;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -94,18 +93,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public MaterialAndData(ItemStack item) {
         this.material = item.getType();
         this.data = item.getDurability();
-        if (this.material == Material.SKULL_ITEM)
+        if (DefaultMaterials.isPlayerSkull(this))
         {
             ItemMeta meta = item.getItemMeta();
             Object profile = InventoryUtils.getSkullProfile(meta);
-            SkullType skullType = SkullType.PLAYER;
-            try {
-                skullType = SkullType.values()[this.data];
-            } catch (Exception ignored) {
-
-            }
-            extraData = new BlockSkull(profile, skullType);
-        } else if (this.material == Material.STANDING_BANNER || this.material == Material.WALL_BANNER || this.material == Material.BANNER) {
+            extraData = new BlockSkull(profile);
+        } else if (DefaultMaterials.isBanner(this.material)) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null && meta instanceof BannerMeta)
             {
@@ -164,11 +157,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 // Some special-cases
                 if (pieces[1].equals("*")) {
                     data = null;
-                }
-                else if (material == Material.MOB_SPAWNER) {
+                } else if (material == Material.MOB_SPAWNER) {
                     extraData = new BlockMobSpawner(pieces[1]);
-                }
-                else if (material == Material.SKULL_ITEM) {
+                } else if (DefaultMaterials.isSkull(material)) {
                     if (pieces.length > 2) {
                         data = 3;
                         String dataString = pieces[1];
@@ -176,7 +167,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             dataString += ":" + pieces[i];
                         }
                         ItemStack item = InventoryUtils.getURLSkull(dataString);
-                        extraData = new BlockSkull(InventoryUtils.getSkullProfile(item.getItemMeta()), SkullType.PLAYER);
+                        extraData = new BlockSkull(InventoryUtils.getSkullProfile(item.getItemMeta()));
                     } else {
                         try {
                             data = Short.parseShort(pieces[1]);
@@ -185,8 +176,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             extraData = new BlockSkull(pieces[1]);
                         }
                     }
-                }
-                else if (material == Material.STANDING_BANNER || material == Material.WALL_BANNER || material == Material.BANNER) {
+                } else if (DefaultMaterials.isBanner(material)) {
                     DyeColor color = null;
                     try {
                         short colorIndex = Short.parseShort(pieces[1]);
@@ -199,7 +189,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     if (color != null) {
                         extraData = new BlockBanner(color);
                     }
-                }  else if (material == Material.LEATHER_BOOTS || material == Material.LEATHER_CHESTPLATE
+                } else if (material == Material.LEATHER_BOOTS || material == Material.LEATHER_CHESTPLATE
                         || material == Material.LEATHER_HELMET || material == Material.LEATHER_LEGGINGS) {
                     StringUtils.split(pieces[1], ',');
                     for (String piece : pieces) {
@@ -296,9 +286,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         setMaterial(material, (byte)0);
     }
 
-    @SuppressWarnings("deprecation")
     public void setMaterialId(int id) {
-        this.material = Material.getMaterial(id);
+        this.material = DeprecatedUtils.getMaterial(id);
     }
 
     @SuppressWarnings("deprecation")
@@ -334,11 +323,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
                 data = (short)skull.getSkullType().ordinal();
-                extraData = new BlockSkull(InventoryUtils.getSkullProfile(skull), skull.getSkullType(), skull.getRotation());
+                extraData = new BlockSkull(InventoryUtils.getSkullProfile(skull), skull.getRotation());
             } else if (blockState instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
                 extraData = new BlockMobSpawner(spawner.getCreatureTypeName());
-            } else if (blockMaterial == Material.STANDING_BANNER || blockMaterial == Material.WALL_BANNER) {
+            } else if (DefaultMaterials.isBanner(blockMaterial)) {
                 if (blockState != null && blockState instanceof Banner) {
                     Banner banner = (Banner)blockState;
                     DyeColor color = banner.getBaseColor();
@@ -402,7 +391,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     clearItems(blockState);
                 }
 
-                block.setTypeIdAndData(material.getId(), blockData, applyPhysics);
+                DeprecatedUtils.setTypeAndData(block, material, blockData, applyPhysics);
                 blockState = block.getState();
             }
 
@@ -419,7 +408,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (extraData != null && extraData instanceof BlockTileEntity) {
                 // Tile entity data overrides everything else, and may replace all of this in the future.
                 NMSUtils.setTileEntityData(block.getLocation(), ((BlockTileEntity) extraData).data);
-            } else if (blockState != null && (material == Material.STANDING_BANNER || material == Material.WALL_BANNER) && extraData != null && extraData instanceof BlockBanner) {
+            } else if (blockState != null && DefaultMaterials.isBanner(material) && extraData != null && extraData instanceof BlockBanner) {
                 if (blockState instanceof Banner) {
                     BlockBanner bannerData = (BlockBanner)extraData;
                     Banner banner = (Banner)blockState;
@@ -436,8 +425,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (blockState != null && blockState instanceof Skull && extraData != null && extraData instanceof BlockSkull) {
                 Skull skull = (Skull)blockState;
                 BlockSkull skullData = (BlockSkull)extraData;
-                if (skullData.skullType != null) {
-                    skull.setSkullType(skullData.skullType);
+                if (data != null && data != 0) {
+                    skull.setSkullType(SkullType.values()[data]);
                 }
                 if (skullData.rotation != null) {
                     skull.setRotation(skullData.rotation);
@@ -497,7 +486,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             materialKey += ":*";
         } else {
             // Some special keys
-            if (material == Material.SKULL_ITEM && extraData != null && extraData instanceof BlockSkull) {
+            if (DefaultMaterials.isPlayerSkull(this) && extraData != null && extraData instanceof BlockSkull) {
                 BlockSkull skullData = (BlockSkull)extraData;
                 if (skullData.playerName != null) {
                     materialKey += ":" + skullData.playerName;
@@ -511,7 +500,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     materialKey += ":" + spawnerData.mobName;
                 }
             }
-            else if ((material == Material.STANDING_BANNER || material == Material.WALL_BANNER || material == Material.BANNER) && extraData != null && extraData instanceof BlockBanner && ((BlockBanner)extraData).baseColor != null) {
+            else if (DefaultMaterials.isBanner(material) && extraData != null && extraData instanceof BlockBanner && ((BlockBanner)extraData).baseColor != null) {
                 materialKey += ":" + ((BlockBanner)extraData).baseColor.ordinal();
             } else if (this.material == Material.LEATHER_BOOTS || this.material == Material.LEATHER_CHESTPLATE
                     || this.material == Material.LEATHER_HELMET || this.material == Material.LEATHER_LEGGINGS) {
@@ -555,7 +544,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         // Special cases
-        if (material == Material.WALL_BANNER || material == Material.STANDING_BANNER) {
+        if (DefaultMaterials.isBanner(material)) {
             // Can't compare patterns for now
             return true;
         }
@@ -588,24 +577,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return stack;
     }
 
-    // TODO: Need to config-drive this?
-    // TODO: Should this mutate the material?
     private Material convertToItemStackMaterial() {
-        switch (material) {
-            case SKULL: return material = Material.SKULL_ITEM;
-            case WALL_BANNER: return material = Material.BANNER;
-            case STANDING_BANNER: return material = Material.BANNER;
-            case WOODEN_DOOR: return material = Material.WOOD_DOOR;
-            case IRON_DOOR_BLOCK: return material = Material.IRON_DOOR;
-            case WALL_SIGN: return material = Material.SIGN;
-            case SIGN_POST: return material = Material.SIGN;
-            case ACACIA_DOOR: return material = Material.ACACIA_DOOR_ITEM;
-            case JUNGLE_DOOR: return material = Material.JUNGLE_DOOR_ITEM;
-            case DARK_OAK_DOOR: return material = Material.DARK_OAK_DOOR_ITEM;
-            case BIRCH_DOOR: return material = Material.BIRCH_DOOR_ITEM;
-            case SPRUCE_DOOR: return material = Material.SPRUCE_DOOR_ITEM;
-            default: return material;
-        }
+        return DefaultMaterials.blockToItem(material);
     }
 
     @Override
@@ -615,23 +588,23 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (data != null) {
             stack.setDurability(data);
         }
-        if (material == Material.SKULL_ITEM)
+        if (DefaultMaterials.isPlayerSkull(this))
         {
             ItemMeta meta = stack.getItemMeta();
             if (meta != null && meta instanceof SkullMeta && extraData != null && extraData instanceof BlockSkull)
             {
                 BlockSkull skullData = (BlockSkull)extraData;
-                if (skullData.skullType == SkullType.PLAYER && skullData.profile != null) {
+                if (skullData.profile != null) {
                     SkullMeta skullMeta = (SkullMeta)meta;
                     InventoryUtils.setSkullProfile(skullMeta, ((BlockSkull)extraData).profile);
                     stack.setItemMeta(meta);
-                } else if (skullData.skullType == SkullType.PLAYER && skullData.playerName != null) {
+                } else if (skullData.playerName != null) {
                     SkullMeta skullMeta = (SkullMeta)meta;
                     skullMeta.setOwner(skullData.playerName);
                     stack.setItemMeta(meta);
                 }
             }
-        } else if (material == Material.STANDING_BANNER || material == Material.WALL_BANNER || material == Material.BANNER) {
+        } else if (DefaultMaterials.isBanner(material)) {
             ItemMeta meta = stack.getItemMeta();
             if (meta != null && meta instanceof BannerMeta && extraData != null && extraData instanceof BlockBanner)
             {
@@ -738,32 +711,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
         */
 
-        if (data != null) {
-             if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
-                // Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
-                DyeColor color = DyeColor.getByWoolData((byte)(short)data);
-                if (color != null) {
-                    materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
-                }
-            } else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES
-                     || material == Material.LOG_2 || material == Material.LEAVES_2) {
-                TreeSpecies treeSpecies = TreeSpecies.getByData((byte)(short)data);
-                if (treeSpecies != null) {
-                    materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
-                }
-            } else if (material == Material.MOB_SPAWNER && extraData != null && extraData instanceof BlockMobSpawner) {
-                 BlockMobSpawner spawnerData = (BlockMobSpawner)extraData;
-                 if (spawnerData.mobName != null && !spawnerData.mobName.isEmpty())
-                 {
-                     materialName = materialName + " (" + spawnerData.mobName + ")";
-                 }
-            } else if ((material == Material.STANDING_BANNER || material == Material.WALL_BANNER || material == Material.BANNER) && extraData != null && extraData instanceof BlockBanner) {
-                 DyeColor color = ((BlockBanner)extraData).baseColor;
-                 if (color != null) {
-                     materialName = color.name().toLowerCase() + " " + materialName;
-                 }
-            }
-        } else if (messages != null) {
+        if (data == null && messages != null) {
             materialName = materialName + messages.get("material.wildcard");
         }
 
@@ -805,7 +753,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     @Override
     public void setRawData(Object data) {
-        if (material == Material.SIGN_POST || material == Material.WALL_SIGN)
+        if (DefaultMaterials.isSign(material))
         {
             this.extraData = new BlockSign(data);
         }

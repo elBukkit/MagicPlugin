@@ -1,0 +1,6 @@
+player_skulls:
+- skull:3
+- skull_item:3
+
+# 1.13
+- player_head

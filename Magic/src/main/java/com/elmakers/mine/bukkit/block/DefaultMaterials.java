@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.block;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,18 +14,23 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
+import com.elmakers.mine.bukkit.magic.MaterialSets;
 
 public class DefaultMaterials {
     private static DefaultMaterials instance;
 
-    private MaterialSetManager manager;
-    private MaterialSet commandBlocks;
-    private MaterialSet halfBlocks;
-    private MaterialSet water;
-    private MaterialSet lava;
+    private MaterialSet commandBlocks = MaterialSets.empty();
+    private MaterialSet halfBlocks = MaterialSets.empty();
+    private MaterialSet water = MaterialSets.empty();
+    private MaterialSet lava = MaterialSets.empty();
+    private MaterialSet skulls = MaterialSets.empty();
+    private MaterialSet playerSkulls = MaterialSets.empty();
+    private MaterialSet banners = MaterialSets.empty();
+    private MaterialSet signs = MaterialSets.empty();
 
-    private static Map<Material, Map<DyeColor, MaterialAndData>> materialColors = new HashMap<>();
-    private static Map<Material, Material> colorMap = new HashMap<>();
+    private Map<Material, Map<DyeColor, MaterialAndData>> materialColors = new HashMap<>();
+    private Map<Material, Material> colorMap = new HashMap<>();
+    private Map<Material, Material> blockItems = new HashMap<>();
 
     private DefaultMaterials() {
     }
@@ -36,12 +42,15 @@ public class DefaultMaterials {
         return instance;
     }
 
-    public void initialize(MaterialSetManager manager, Collection<ConfigurationSection> colors) {
-        this.manager = manager;
+    public void initialize(MaterialSetManager manager, Collection<ConfigurationSection> colors, ConfigurationSection blocks) {
         commandBlocks = manager.getMaterialSet("commands");
         water = manager.getMaterialSet("all_water");
         lava = manager.getMaterialSet("all_lava");
         halfBlocks = manager.getMaterialSet("half");
+        skulls = manager.getMaterialSet("skulls");
+        playerSkulls = manager.getMaterialSet("player_skulls");
+        banners = manager.getMaterialSet("banners");
+        signs = manager.getMaterialSet("signs");
 
         for (ConfigurationSection colorSection : colors) {
             Material keyColor = null;
@@ -65,6 +74,18 @@ public class DefaultMaterials {
             materialColors.put(keyColor, newColors);
             for (MaterialAndData mat : newColors.values()) {
                 colorMap.put(mat.getMaterial(), keyColor);
+            }
+        }
+
+        Set<String> blockKeys = blocks.getKeys(false);
+        for (String blockKey : blockKeys) {
+            try {
+                Material blockMaterial = Material.getMaterial(blockKey.toUpperCase());
+                String itemKey = blocks.getString(blockKey);
+                Material itemMaterial = Material.getMaterial(itemKey.toUpperCase());
+                blockItems.put(blockMaterial, itemMaterial);
+            } catch (Exception ignore) {
+
             }
         }
     }
@@ -113,6 +134,22 @@ public class DefaultMaterials {
         return getInstance().lava.testMaterial(material);
     }
 
+    public static boolean isPlayerSkull(MaterialAndData materialAndData) {
+        return getInstance().playerSkulls.testMaterialAndData(materialAndData);
+    }
+
+    public static boolean isSkull(Material material) {
+        return getInstance().skulls.testMaterial(material);
+    }
+
+    public static boolean isBanner(Material material) {
+        return getInstance().banners.testMaterial(material);
+    }
+
+    public static boolean isSign(Material material) {
+        return getInstance().signs.testMaterial(material);
+    }
+
     public static Collection<Material> getWater() {
         return getInstance().water.getMaterials();
     }
@@ -123,5 +160,10 @@ public class DefaultMaterials {
 
     public static Collection<Material> getLava() {
         return getInstance().lava.getMaterials();
+    }
+
+    public static Material blockToItem(Material block) {
+        Material item = getInstance().blockItems.get(block);;
+        return item == null ? block : item;
     }
 }
