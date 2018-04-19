@@ -282,6 +282,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             type = parseEntityType(entityName);
             if (type == null) {
                 controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName);
+                return;
             }
         }
 
