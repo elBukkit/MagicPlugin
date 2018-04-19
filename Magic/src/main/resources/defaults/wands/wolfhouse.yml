@@ -1,7 +1,7 @@
 wolfhouse:
     mode: cast
     active_spell: wolfhouse
-    icon: skull_item:http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b
+    icon: skull:http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b
     indestructible: false
     cost_reduction: 2
     locked: true

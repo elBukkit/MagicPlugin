@@ -118,7 +118,7 @@ secure:
         check_destructible: true
         destructible: chest,trapped_chest
         cooldown: 5000
-        key_icon: "skull_item:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992"
+        key_icon: "skull:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992"
     costs:
         mana: 100
 
