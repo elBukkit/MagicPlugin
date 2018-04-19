@@ -28,6 +28,8 @@ public class DefaultMaterials {
     private MaterialSet banners = MaterialSets.empty();
     private MaterialSet signs = MaterialSets.empty();
 
+    private MaterialAndData playerSkullItem = null;
+
     private Map<Material, Map<DyeColor, MaterialAndData>> materialColors = new HashMap<>();
     private Map<Material, Material> colorMap = new HashMap<>();
     private Map<Material, Material> blockItems = new HashMap<>();
@@ -42,7 +44,7 @@ public class DefaultMaterials {
         return instance;
     }
 
-    public void initialize(MaterialSetManager manager, Collection<ConfigurationSection> colors, ConfigurationSection blocks) {
+    public void initialize(MaterialSetManager manager) {
         commandBlocks = manager.getMaterialSet("commands");
         water = manager.getMaterialSet("all_water");
         lava = manager.getMaterialSet("all_lava");
@@ -51,7 +53,9 @@ public class DefaultMaterials {
         playerSkulls = manager.getMaterialSet("player_skulls");
         banners = manager.getMaterialSet("banners");
         signs = manager.getMaterialSet("signs");
+    }
 
+    public void loadColors(Collection<ConfigurationSection> colors) {
         for (ConfigurationSection colorSection : colors) {
             Material keyColor = null;
             Map<DyeColor, MaterialAndData> newColors = new HashMap<>();
@@ -76,7 +80,17 @@ public class DefaultMaterials {
                 colorMap.put(mat.getMaterial(), keyColor);
             }
         }
+    }
 
+    public void setPlayerSkullItem(MaterialAndData item) {
+        playerSkullItem = item;
+    }
+
+    public static MaterialAndData getPlayerSkullItem() {
+        return getInstance().playerSkullItem;
+    }
+
+    public void loadBlockItems(ConfigurationSection blocks) {
         Set<String> blockKeys = blocks.getKeys(false);
         for (String blockKey : blockKeys) {
             try {
@@ -163,7 +177,7 @@ public class DefaultMaterials {
     }
 
     public static Material blockToItem(Material block) {
-        Material item = getInstance().blockItems.get(block);;
+        Material item = getInstance().blockItems.get(block);
         return item == null ? block : item;
     }
 }

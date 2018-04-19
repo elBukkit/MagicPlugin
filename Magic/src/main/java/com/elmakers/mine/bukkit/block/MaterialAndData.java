@@ -136,21 +136,31 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         Short data = 0;
         Material material = null;
         BlockExtraData extraData = null;
+        materialKey = pieces[0];
+        if (materialKey.equalsIgnoreCase("skull") || materialKey.equalsIgnoreCase("skull_item")) {
+            MaterialAndData skullData = DefaultMaterials.getPlayerSkullItem();
+            if (skullData != null) {
+                material = skullData.material;
+                data = skullData.data;
+            }
+        }
 
-        try {
-            if (pieces.length > 0) {
-                if (!pieces[0].equals("*")) {
-                    // Legacy material id loading
-                    try {
-                        Integer id = Integer.parseInt(pieces[0]);
-                        material = CompatibilityUtils.getMaterial(id);
-                    } catch (Exception ex) {
-                        material = Material.getMaterial(pieces[0].toUpperCase());
+        if (material == null) {
+            try {
+                if (pieces.length > 0) {
+                    if (!materialKey.equals("*")) {
+                        // Legacy material id loading
+                        try {
+                            Integer id = Integer.parseInt(materialKey);
+                            material = CompatibilityUtils.getMaterial(id);
+                        } catch (Exception ex) {
+                            material = Material.getMaterial(materialKey.toUpperCase());
+                        }
                     }
                 }
+            } catch (Exception ex) {
+                material = null;
             }
-        } catch (Exception ex) {
-            material = null;
         }
         try {
             if (pieces.length > 1) {
