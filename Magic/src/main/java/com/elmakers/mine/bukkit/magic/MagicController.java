@@ -2635,7 +2635,7 @@ public class MagicController implements MageController {
             return;
 
         materialSetManager.loadMaterials(materialNode);
-        DefaultMaterials.getInstance().initialize(materialSetManager, materialColors);
+        DefaultMaterials.getInstance().initialize(materialSetManager, materialColors, blockItems);
 
         buildingMaterials = materialSetManager.getMaterialSetEmpty("building");
         indestructibleMaterials = materialSetManager
@@ -2744,6 +2744,8 @@ public class MagicController implements MageController {
         maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
         maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
         materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
+        blockItems = properties.getConfigurationSection("block_items");
+        loadBlockSkins(properties.getConfigurationSection("block_skins"));
 
         maxPower = (float)properties.getDouble("max_power", maxPower);
         ConfigurationSection damageTypes = properties.getConfigurationSection("damage_types");
@@ -3078,6 +3080,18 @@ public class MagicController implements MageController {
             final ConfigCheckTask configCheck = new ConfigCheckTask(this);
             configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
                 configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
+        }
+    }
+
+    protected void loadBlockSkins(ConfigurationSection skins) {
+        blockSkins.clear();
+        Set<String> keys = skins.getKeys(false);
+        for (String key : keys) {
+            try {
+                Material material = Material.getMaterial(key.toUpperCase());
+                blockSkins.put(material, skins.getString(key));
+            } catch (Exception ignore) {
+            }
         }
     }
 
@@ -4534,12 +4548,6 @@ public class MagicController implements MageController {
         if (mappedItem != null) {
             return mappedItem.getKey();
         }
-        if (item.getType() == Material.SKULL_ITEM) {
-            String url = InventoryUtils.getSkullURL(item);
-            if (url != null && url.length() > 0) {
-                return "skull_item:" + url;
-            }
-        }
 
         MaterialAndData material = new MaterialAndData(item);
         return material.getKey();
@@ -5138,45 +5146,7 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public String getBlockSkin(Material blockType) {
-        String skinName = null;
-        switch (blockType) {
-            case CACTUS:
-                skinName = "MHF_Cactus";
-                break;
-            case CHEST:
-                skinName = "MHF_Chest";
-                break;
-            case MELON_BLOCK:
-                skinName = "MHF_Melon";
-                break;
-            case TNT:
-                if (random.nextDouble() > 0.5) {
-                    skinName = "MHF_TNT";
-                } else {
-                    skinName = "MHF_TNT2";
-                }
-                break;
-            case LOG:
-                skinName = "MHF_OakLog";
-                break;
-            case PUMPKIN:
-                skinName = "MHF_Pumpkin";
-                break;
-            default:
-                // TODO .. ?
-            /*
-             * Blocks:
-                Bonus:
-                MHF_ArrowUp
-                MHF_ArrowDown
-                MHF_ArrowLeft
-                MHF_ArrowRight
-                MHF_Exclamation
-                MHF_Question
-             */
-        }
-
-        return skinName;
+        return blockSkins.get(blockType);
     }
 
     @Override
@@ -5854,6 +5824,8 @@ public class MagicController implements MageController {
     private boolean                             asynchronousSaving              = true;
     private WarpController                        warpController                    = null;
     private Collection<ConfigurationSection>    materialColors                  = null;
+    private ConfigurationSection                blockItems                  = null;
+    private Map<Material, String>               blockSkins                  = new HashMap<>();
 
     private final Map<String, AutomatonTemplate> automatonTemplates         = new HashMap<>();
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();

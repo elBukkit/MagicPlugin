@@ -1,0 +1,15 @@
+# This is used to convert a block to an item, for cases where
+# the materials for each differ. (Example: skulls, doors)
+block_items:
+  skull: skull_item
+  wall_banner: banner
+  standing_banner: banner
+  wooden-door: wood_door
+  iron_door_block: iron_door
+  wall_sign: sign
+  sign_post: sign
+  acacia_door: acacia_door_item
+  jungle_door: jungle_door_item
+  dark_oak_door: dark_oak_door_item
+  birch_door: birch_door_item
+  spruce_door: spruce_door_item

@@ -1,0 +1,20 @@
+# These are player skins that represent blocks. Some are provided here
+# as official Mojang skins, but more can be added.
+block_skins:
+  cactus: MHF_Cactus;
+  chest: MHF_Chest;
+  melon_block: MHF_Melon
+  tnt: MHF_TNT # There is also MHF_TNT2 but we aren't using it now.
+  log: MHF_OakLog
+  pumpkin: MHF_Pumpkin
+
+  # 1.13
+  oak_log: MHF_OakLog
+
+  # Other MHF blocks we don't use:
+  # MHF_ArrowUp
+  # MHF_ArrowDown
+  # MHF_ArrowLeft
+  # MHF_ArrowRight
+  # MHF_Exclamation
+  # MHF_Question
