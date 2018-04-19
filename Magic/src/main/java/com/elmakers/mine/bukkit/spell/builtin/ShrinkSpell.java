@@ -141,12 +141,14 @@ public class ShrinkSpell extends BlockSpell
 
     protected void dropHead(MageController controller, Entity entity, String itemName) {
         ItemStack shrunkenHead = controller.getSkull(entity, itemName);
+        if (CompatibilityUtils.isEmpty(shrunkenHead)) return;
         Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
         location.getWorld().dropItemNaturally(location, shrunkenHead);
     }
 
     protected void dropHead(MageController controller, Location location, String ownerName, String itemName) {
         ItemStack shrunkenHead = controller.getSkull(ownerName, itemName);
+        if (CompatibilityUtils.isEmpty(shrunkenHead)) return;
         location.setX(location.getX() + 0.5);
         location.setY(location.getY() + 0.5);
         location.setZ(location.getZ() + 0.5);

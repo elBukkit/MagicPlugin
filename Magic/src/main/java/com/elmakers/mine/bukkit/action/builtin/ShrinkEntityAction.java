@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class ShrinkEntityAction extends DamageAction
@@ -107,6 +108,7 @@ public class ShrinkEntityAction extends DamageAction
 
     protected void dropHead(CastContext context, Entity entity, String itemName) {
         ItemStack shrunkenHead = context.getController().getSkull(entity, itemName);
+        if (CompatibilityUtils.isEmpty(shrunkenHead)) return;
         Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
         location.getWorld().dropItemNaturally(location, shrunkenHead);
     }
