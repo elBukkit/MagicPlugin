@@ -29,6 +29,7 @@ public class DefaultMaterials {
     private MaterialSet signs = MaterialSets.empty();
 
     private MaterialAndData playerSkullItem = null;
+    private Material groundSignBlock = null;
 
     private Map<Material, Map<DyeColor, MaterialAndData>> materialColors = new HashMap<>();
     private Map<Material, Material> colorMap = new HashMap<>();
@@ -80,6 +81,14 @@ public class DefaultMaterials {
                 colorMap.put(mat.getMaterial(), keyColor);
             }
         }
+    }
+
+    public void setGroundSignBlock(Material material) {
+        this.groundSignBlock = material;
+    }
+
+    public static Material getGroundSignBlock() {
+        return getInstance().groundSignBlock;
     }
 
     public void setPlayerSkullItem(MaterialAndData item) {

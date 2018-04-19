@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -80,7 +81,11 @@ public class SignSpell extends BlockSpell
             }
             else
             {
-                targetBlock.setType(Material.SIGN_POST);
+                Material signMaterial = DefaultMaterials.getGroundSignBlock();
+                if (signMaterial == null) {
+                    return SpellResult.FAIL;
+                }
+                targetBlock.setType(signMaterial);
                 // This is -180 + 22.5, the number of degrees between
                 // increments, effectively rounding up.
                 float yaw = getLocation().getYaw() - 157.5f;

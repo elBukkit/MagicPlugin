@@ -2,10 +2,11 @@ package com.elmakers.mine.bukkit.protection;
 
 import java.lang.reflect.Method;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 
 public class LocketteManager implements BlockBuildManager, BlockBreakManager {
     private boolean enabled = false;
@@ -58,7 +59,7 @@ public class LocketteManager implements BlockBuildManager, BlockBreakManager {
 
                 // Lockette doesn't check the sign itself on an isOwner check ..
                 // So we just wont' allow breaking the signs, ever.
-                if (block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
+                if (DefaultMaterials.isSign(block.getType()))
                 {
                     return !(Boolean)isProtectedMethod.invoke(null, block);
                 }

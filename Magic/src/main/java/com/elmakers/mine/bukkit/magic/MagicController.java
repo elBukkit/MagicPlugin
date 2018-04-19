@@ -2641,6 +2641,7 @@ public class MagicController implements MageController {
         defaultMaterials.loadColors(materialColors);
         defaultMaterials.loadBlockItems(blockItems);
         defaultMaterials.setPlayerSkullItem(skullItems.get(EntityType.PLAYER));
+        defaultMaterials.setGroundSignBlock(signGroundBlock);
 
         buildingMaterials = materialSetManager.getMaterialSetEmpty("building");
         indestructibleMaterials = materialSetManager
@@ -2752,6 +2753,7 @@ public class MagicController implements MageController {
         blockItems = properties.getConfigurationSection("block_items");
         loadBlockSkins(properties.getConfigurationSection("block_skins"));
         loadSkulls(properties.getConfigurationSection("skulls"));
+        loadOtherMaterials(properties);
 
         maxPower = (float)properties.getDouble("max_power", maxPower);
         ConfigurationSection damageTypes = properties.getConfigurationSection("damage_types");
@@ -3096,6 +3098,16 @@ public class MagicController implements MageController {
             try {
                 Material material = Material.getMaterial(key.toUpperCase());
                 blockSkins.put(material, skins.getString(key));
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
+    protected void loadOtherMaterials(ConfigurationSection configuration) {
+        Collection<String> candidates = ConfigurationUtils.getStringList(configuration, "ground_sign_block");
+        for (String candidate : candidates) {
+            try {
+                signGroundBlock = Material.valueOf(candidate.toUpperCase());
             } catch (Exception ignore) {
             }
         }
@@ -5887,6 +5899,7 @@ public class MagicController implements MageController {
     private Map<EntityType, MaterialAndData>    skullItems                  = new HashMap<>();
     private Map<EntityType, MaterialAndData>    skullWallBlocks             = new HashMap<>();
     private Map<EntityType, MaterialAndData>    skullGroundBlocks           = new HashMap<>();
+    private Material                            signGroundBlock             = null;
 
     private final Map<String, AutomatonTemplate> automatonTemplates         = new HashMap<>();
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();

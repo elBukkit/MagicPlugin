@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
@@ -222,7 +223,11 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 
     public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, byte signDirection) {
         Block signBlock = signLocation.getBlock();
-        signBlock.setType(Material.SIGN_POST);
+        Material signMaterial = DefaultMaterials.getGroundSignBlock();
+        if (signMaterial == null) {
+            return false;
+        }
+        signBlock.setType(signMaterial);
         DeprecatedUtils.setData(signBlock, signDirection);
         Sign sign = (Sign)signBlock.getState();
         sign.setLine(0, ChatColor.BLACK + "" + ChatColor.BOLD + "[Rent]");
