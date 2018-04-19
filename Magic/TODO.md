@@ -2,10 +2,6 @@
 
 ## 8.0
 
-## Things needing to abstract from 8 branch
-
- - Art enum
-
 ### Things to verify 
 
  - Wand brush migration

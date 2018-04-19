@@ -236,7 +236,6 @@ public class CompatibilityUtils extends NMSUtils {
             case SUNSET:    // Use same as 4x3
 
             // 4x3
-            case DONKEYKONG:
             case SKELETON:
                 if(facing == BlockFace.WEST)
                     return loc.getBlock().getLocation().add(0, 0, -1);
@@ -257,7 +256,6 @@ public class CompatibilityUtils extends NMSUtils {
             case FIGHTERS:  // Use same as 4x4
 
             // 4x4
-            case BURNINGSKULL:
             case PIGSCENE:
             case POINTER:
                 if(facing == BlockFace.WEST)
@@ -267,8 +265,28 @@ public class CompatibilityUtils extends NMSUtils {
                 else
                     return loc.add(0, -1, 0);
 
-            // Unsupported artwork
             default:
+                // Special cases for name changes...
+                switch (art.name()) {
+                    case "BURNINGSKULL":
+                    case "BURNING_SKULL":
+                        if(facing == BlockFace.WEST)
+                            return loc.getBlock().getLocation().add(0, -1, -1);
+                        else if(facing == BlockFace.SOUTH)
+                            return loc.getBlock().getLocation().add(-1, -1, 0);
+                        else
+                            return loc.add(0, -1, 0);
+                    case "DONKEYKONG":
+                    case "DONKEY_KONG":
+                        if(facing == BlockFace.WEST)
+                            return loc.getBlock().getLocation().add(0, 0, -1);
+                        else if(facing == BlockFace.SOUTH)
+                            return loc.getBlock().getLocation().add(-1, 0, 0);
+                        else
+                            return loc;
+                }
+
+                // Unsupported artwork
                 return loc;
         }
     }
