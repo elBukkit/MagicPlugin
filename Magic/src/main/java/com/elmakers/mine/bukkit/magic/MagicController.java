@@ -63,7 +63,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
@@ -2746,6 +2745,7 @@ public class MagicController implements MageController {
         materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
         blockItems = properties.getConfigurationSection("block_items");
         loadBlockSkins(properties.getConfigurationSection("block_skins"));
+        loadSkulls(properties.getConfigurationSection("skulls"));
 
         maxPower = (float)properties.getDouble("max_power", maxPower);
         ConfigurationSection damageTypes = properties.getConfigurationSection("damage_types");
@@ -3093,6 +3093,44 @@ public class MagicController implements MageController {
             } catch (Exception ignore) {
             }
         }
+    }
+
+    protected void loadSkulls(ConfigurationSection skulls) {
+        skullItems.clear();
+        skullGroundBlocks.clear();
+        skullWallBlocks.clear();
+        Set<String> keys = skulls.getKeys(false);
+        for (String key : keys) {
+            try {
+                ConfigurationSection types = skulls.getConfigurationSection(key);
+                EntityType entityType = EntityType.valueOf(key.toUpperCase());
+                MaterialAndData item = parseSkullCandidate(types, "item");
+                if (item != null) {
+                    skullItems.put(entityType, item);
+                }
+                MaterialAndData floor = parseSkullCandidate(types, "ground");
+                if (item != null) {
+                    skullGroundBlocks.put(entityType, floor);
+                }
+                MaterialAndData wall = parseSkullCandidate(types, "wall");
+                if (item != null) {
+                    skullWallBlocks.put(entityType, wall);
+                }
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
+    @Nullable
+    protected MaterialAndData parseSkullCandidate(ConfigurationSection section, String key) {
+        Collection<String> candidates = ConfigurationUtils.getStringList(section, key);
+        for (String candidate : candidates) {
+            MaterialAndData test = new MaterialAndData(candidate.trim());
+            if (test.isValid()) {
+                return test;
+            }
+        }
+        return null;
     }
 
     protected void populateEntityTypes(Set<EntityType> entityTypes, ConfigurationSection configuration, String key) {
@@ -5450,9 +5488,12 @@ public class MagicController implements MageController {
 
     @Override
     @Nonnull
-    @SuppressWarnings("deprecation")
     public ItemStack getSkull(String ownerName, String itemName) {
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+        MaterialAndData skullType = skullItems.get(EntityType.PLAYER);
+        if (skullType == null) {
+            return new ItemStack(Material.AIR);
+        }
+        ItemStack skull = skullType.getItemStack(1);
         ItemMeta meta = skull.getItemMeta();
         if (itemName != null) {
             meta.setDisplayName(itemName);
@@ -5467,29 +5508,21 @@ public class MagicController implements MageController {
 
     @Override
     @Nonnull
-    @SuppressWarnings("deprecation")
     public ItemStack getSkull(Entity entity, String itemName) {
-        byte data = 3;
         String ownerName = null;
-        switch (entity.getType()) {
-            case CREEPER:
-                data = 4;
-            break;
-            case ZOMBIE:
-                data = 2;
-            break;
-            case SKELETON:
-                Skeleton skeleton = (Skeleton)entity;
-                data = (byte)(skeleton.getSkeletonType() == Skeleton.SkeletonType.NORMAL ? 0 : 1);
-            break;
-            case PLAYER:
-                ownerName = entity.getName();
-                break;
-            default:
-                ownerName = getMobSkin(entity.getType());
+        MaterialAndData skullType = skullItems.get(entity.getType());
+        if (skullType == null) {
+            ownerName = getMobSkin(entity.getType());
+            skullType = skullItems.get(EntityType.PLAYER);
+            if (skullType == null || ownerName == null) {
+                return new ItemStack(Material.AIR);
+            }
+        }
+        if (entity instanceof Player) {
+            ownerName = entity.getName();
         }
 
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, data);
+        ItemStack skull = skullType.getItemStack(1);
         ItemMeta meta = skull.getItemMeta();
         if (itemName != null) {
             meta.setDisplayName(itemName);
@@ -5826,6 +5859,9 @@ public class MagicController implements MageController {
     private Collection<ConfigurationSection>    materialColors                  = null;
     private ConfigurationSection                blockItems                  = null;
     private Map<Material, String>               blockSkins                  = new HashMap<>();
+    private Map<EntityType, MaterialAndData>    skullItems                  = new HashMap<>();
+    private Map<EntityType, MaterialAndData>    skullWallBlocks             = new HashMap<>();
+    private Map<EntityType, MaterialAndData>    skullGroundBlocks           = new HashMap<>();
 
     private final Map<String, AutomatonTemplate> automatonTemplates         = new HashMap<>();
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();

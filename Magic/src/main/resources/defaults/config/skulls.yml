@@ -1,0 +1,26 @@
+# This defines which Materials make up skulls, used for backwards-compatibility
+skulls:
+  skeleton:
+    wall: skeleton_wall_skull, skull:0
+    ground: skeleton_skull, skull:0
+    item: skeleton_skull, skull_item:0
+  wither_skeleton:
+    wall: wither_skeleton_wall_skull, skull:1
+    ground: wither_skeleton_skull, skull:1
+    item: wither_skeleton_skull, skull_item:1
+  zombie:
+    wall: zombie_wall_head, skull:2
+    ground: zombie_head, skull:2
+    item: zombie_head, skull_item:2
+  player:
+    wall: player_wall_head, skull:3
+    ground: player_head, skull:3
+    item: player_head, skull_item:3
+  creeper:
+    wall: creeper_wall_head, skull:4
+    ground: creeper_head, skull:4
+    item: creeper_head, skull_item:4
+  ender_dragon:
+    wall: dragon_wall_head, skull:5
+    ground: dragon_head, skull:5
+    item: dragon_head, skull_item:5
