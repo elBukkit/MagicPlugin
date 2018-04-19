@@ -54,13 +54,13 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public static final String[] SPECIAL_MATERIAL_KEYS = {ERASE_MATERIAL_KEY, COPY_MATERIAL_KEY,
         CLONE_MATERIAL_KEY, REPLICATE_MATERIAL_KEY, MAP_MATERIAL_KEY};
 
-    public static MaterialAndData EraseMaterial = new MaterialAndData(Material.SULPHUR);
-    public static MaterialAndData CopyMaterial = new MaterialAndData(Material.SUGAR);
-    public static MaterialAndData CloneMaterial = new MaterialAndData(Material.NETHER_STALK);
-    public static MaterialAndData ReplicateMaterial = new MaterialAndData(Material.PUMPKIN_SEEDS);
+    public static MaterialAndData EraseMaterial = new MaterialAndData(Material.PAPER);
+    public static MaterialAndData CopyMaterial = new MaterialAndData(Material.PAPER);
+    public static MaterialAndData CloneMaterial = new MaterialAndData(Material.PAPER);
+    public static MaterialAndData ReplicateMaterial = new MaterialAndData(Material.PAPER);
     public static MaterialAndData MapMaterial = new MaterialAndData(Material.MAP);
     public static MaterialAndData SchematicMaterial = new MaterialAndData(Material.PAPER);
-    public static MaterialAndData DefaultBrushMaterial = new MaterialAndData(Material.SULPHUR);
+    public static MaterialAndData DefaultBrushMaterial = new MaterialAndData(Material.PAPER);
 
     public static String EraseCustomIcon;
     public static String CopyCustomIcon;
