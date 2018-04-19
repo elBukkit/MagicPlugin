@@ -1,7 +1,33 @@
 # TODO
 
+## 8.0
+
+## Things needing to abstract from 8 branch
+
+ - Skull creation
+ - Art enum
+ - Map brush
+ - Colorizing blocks
+
+### Things to verify 
+
+ - Wand brush migration
+ - Schematics may be broken or not?
+ - Check book -> skull feature
+ - Torch action is probably broken? Setting direction of torches, choosing between wall and ground torch... 
+ - Tag sign facing probably broken?
+ - Check capture spell
+ - Check map brush ... can work with concrete and glazed terracotta now though!
+ - Check custom colored blob/reflect/platform/shell
+ - Check secure/lockpick
+
+### Things still needing fixing
+
+ - Towny integration is broken
+
 ## 7.5
    
+ - Add path 2nd parameter to enchant command to stop when reaching end of a path
  - Goldwalker blocks didn't undo? (Can not reproduce)
   
  - Optional lore on wands to say which classes they work with
