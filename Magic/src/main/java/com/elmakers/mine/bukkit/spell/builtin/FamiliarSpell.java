@@ -31,6 +31,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -151,7 +152,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                 centerLoc = caster.clone().add(direction);
                 for (int i = 0; i < spawnRange; i++) {
                     Material blockType = centerLoc.getBlock().getType();
-                    if (blockType == Material.AIR || blockType == Material.WATER || blockType != Material.STATIONARY_WATER)
+                    if (blockType == Material.AIR || DefaultMaterials.isWater(blockType))
                     {
                         break;
                     }
@@ -173,7 +174,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
             }
         }
 
-        if (originalTarget.getType() == Material.WATER || originalTarget.getType() == Material.STATIONARY_WATER)
+        if (DefaultMaterials.isWater(originalTarget.getType()))
         {
             famType = EntityType.SQUID;
         }

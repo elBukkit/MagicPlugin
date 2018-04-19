@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -40,7 +41,7 @@ public class FreezeAction extends BaseSpellAction
     {
         Block block = context.getTargetBlock();
         Material material = Material.SNOW;
-        if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+        if (DefaultMaterials.isWater(block.getType()))
         {
             if (!freezeWater)
             {
@@ -48,21 +49,13 @@ public class FreezeAction extends BaseSpellAction
             }
             material = iceMaterial;
         }
-        else if (block.getType() == Material.LAVA)
+        else if (DefaultMaterials.isLava(block.getType()))
         {
             if (!freezeLava)
             {
                 return SpellResult.NO_TARGET;
             }
             material = Material.COBBLESTONE;
-        }
-        else if (block.getType() == Material.STATIONARY_LAVA)
-        {
-            if (!freezeLava)
-            {
-                return SpellResult.NO_TARGET;
-            }
-            material = Material.OBSIDIAN;
         }
         else if (block.getType() == Material.FIRE)
         {
@@ -85,7 +78,7 @@ public class FreezeAction extends BaseSpellAction
             block = block.getRelative(BlockFace.UP);
 
             // This is kind of ugly, maybe clean it up somehow?
-            if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+            if (DefaultMaterials.isWater(block.getType()))
             {
                 if (!freezeWater)
                 {
@@ -93,21 +86,13 @@ public class FreezeAction extends BaseSpellAction
                 }
                 material = iceMaterial;
             }
-            else if (block.getType() == Material.LAVA)
+            else if (DefaultMaterials.isLava(block.getType()))
             {
                 if (!freezeLava)
                 {
                     return SpellResult.NO_TARGET;
                 }
                 material = Material.COBBLESTONE;
-            }
-            else if (block.getType() == Material.STATIONARY_LAVA)
-            {
-                if (!freezeLava)
-                {
-                    return SpellResult.NO_TARGET;
-                }
-                material = Material.OBSIDIAN;
             }
             else if (block.getType() == Material.FIRE)
             {

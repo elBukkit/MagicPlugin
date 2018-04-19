@@ -7,6 +7,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 @Deprecated
@@ -106,7 +107,7 @@ public class TorchSpell extends BlockSpell
         boolean isAir = face.getType() == Material.AIR;
         boolean isAttachmentSlippery = target.getType() == Material.GLASS || target.getType() == Material.ICE;
         boolean replaceAttachment = target.getType() == Material.SNOW || target.getType() == Material.NETHERRACK || target.getType() == Material.SOUL_SAND;
-        boolean isWater = face.getType() == Material.STATIONARY_WATER || face.getType() == Material.WATER;
+        boolean isWater = DefaultMaterials.isWater(face.getType());
         boolean isNether = target.getType() == Material.NETHERRACK || target.getType() == Material.SOUL_SAND;
         Material targetMaterial = Material.TORCH;
 

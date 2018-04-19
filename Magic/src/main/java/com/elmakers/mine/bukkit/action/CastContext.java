@@ -43,6 +43,7 @@ import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.effect.WandEffectContext;
 import com.elmakers.mine.bukkit.magic.MaterialSets;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -631,7 +632,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public boolean isWater(Material mat)
     {
-        return (mat == Material.WATER || mat == Material.STATIONARY_WATER);
+        return DefaultMaterials.isWater(mat);
     }
 
     // This is primarily deprecated for API consistency
@@ -648,9 +649,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     }
 
     private boolean isOkToStandOn0(Material material) {
-        return material != Material.AIR
-                && material != Material.LAVA
-                && material != Material.STATIONARY_LAVA;
+        return material != Material.AIR && !DefaultMaterials.isLava(material);
     }
 
     @Override

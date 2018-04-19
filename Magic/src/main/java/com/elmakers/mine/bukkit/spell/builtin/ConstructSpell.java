@@ -17,6 +17,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.batch.ConstructBatch;
 import com.elmakers.mine.bukkit.block.ConstructionType;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
@@ -182,8 +183,7 @@ public class ConstructSpell extends BrushSpell
             }
             // Hacky, but generally desired - maybe abstract to a parameterized list?
             Material targetMaterial = target.getType();
-            if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER
-                || targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
+            if (DefaultMaterials.isWater(targetMaterial) || DefaultMaterials.isLava(targetMaterial))
             {
                 wildReplace.setData(null);
             }

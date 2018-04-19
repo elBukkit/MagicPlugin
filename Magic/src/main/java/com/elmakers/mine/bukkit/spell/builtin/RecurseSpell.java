@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.action.builtin.ModifyBlockAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.batch.BlockRecurse;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
@@ -45,18 +46,21 @@ public class RecurseSpell extends BrushSpell
         Material targetMaterial = targetBlock.getType();
 
         // A bit hacky, but is very handy!
-        if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
+        if (DefaultMaterials.isWater(targetMaterial))
         {
-            for (byte i = 0; i < 9; i++) {
-                blockRecurse.addReplaceable(Material.STATIONARY_WATER, i);
-                blockRecurse.addReplaceable(Material.WATER, i);
+            for (Material material : DefaultMaterials.getWater()) {
+                for (byte i = 0; i < 9; i++) {
+                    blockRecurse.addReplaceable(material, i);
+                }
             }
         }
-        else if (targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
+        else
+        if (DefaultMaterials.isLava(targetMaterial))
         {
-            for (byte i = 0; i < 9; i++) {
-                blockRecurse.addReplaceable(Material.STATIONARY_LAVA, i);
-                blockRecurse.addReplaceable(Material.LAVA, i);
+            for (Material material : DefaultMaterials.getLava()) {
+                for (byte i = 0; i < 9; i++) {
+                    blockRecurse.addReplaceable(material, i);
+                }
             }
         }
         else if (targetMaterial == Material.SNOW) {

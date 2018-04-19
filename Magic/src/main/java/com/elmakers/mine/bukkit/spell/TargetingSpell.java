@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.MaterialSets;
@@ -623,8 +624,7 @@ public class TargetingSpell extends BaseSpell {
         // Special hack that should work well in most casts.
         boolean targetUnderwater = parameters.getBoolean("target_underwater", true);
         if (targetUnderwater && isUnderwater()) {
-            targetThroughMaterials = MaterialSets.union(
-                    targetThroughMaterials, Material.WATER, Material.STATIONARY_WATER);
+            targetThroughMaterials = MaterialSets.union(targetThroughMaterials, DefaultMaterials.getWaterSet());
         }
     }
 

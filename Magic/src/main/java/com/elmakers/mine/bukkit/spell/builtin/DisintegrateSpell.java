@@ -82,7 +82,7 @@ public class DisintegrateSpell extends BlockSpell
 
         if (isUnderwater())
         {
-            targetBlock.setType(Material.STATIONARY_WATER);
+            targetBlock.setType(Material.WATER);
         }
         else
         {

@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
@@ -61,7 +62,7 @@ public class TorchAction extends BaseSpellAction
 
         boolean isAir = face.getType() == Material.AIR;
         boolean replaceAttachment = target.getType() == Material.SNOW || target.getType() == Material.SNOW_BLOCK;
-        boolean isWater = face.getType() == Material.STATIONARY_WATER || face.getType() == Material.WATER;
+        boolean isWater = DefaultMaterials.isWater(face.getType());
         boolean isNether = target.getType() == Material.NETHERRACK || target.getType() == Material.SOUL_SAND;
         MaterialAndData targetMaterial = new MaterialAndData(torchType);
 

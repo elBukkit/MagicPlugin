@@ -7,6 +7,7 @@ import org.bukkit.block.BlockFace;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class BurnAction extends BaseSpellAction
@@ -15,7 +16,7 @@ public class BurnAction extends BaseSpellAction
     public SpellResult perform(CastContext context)
     {
         Block block = context.getTargetBlock();
-        if (block == null || block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+        if (block == null || block.getType() == Material.AIR || block.getType() == Material.FIRE || DefaultMaterials.isWater(block.getType()))
         {
             return SpellResult.NO_TARGET;
         }
@@ -28,7 +29,7 @@ public class BurnAction extends BaseSpellAction
         {
             block = block.getRelative(BlockFace.UP);
         }
-        if (block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+        if (block.getType() == Material.FIRE || DefaultMaterials.isWater(block.getType()))
         {
             return SpellResult.NO_TARGET;
         }

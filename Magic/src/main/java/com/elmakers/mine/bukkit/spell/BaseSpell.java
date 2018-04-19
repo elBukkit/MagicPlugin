@@ -279,8 +279,6 @@ public class BaseSpell implements MageSpell, Cloneable {
     private MaterialSet                         preventPassThroughMaterials = null;
     private MaterialSet                         passthroughMaterials = null;
     private MaterialSet                         unsafeMaterials = null;
-    private MaterialSet                         halfBlockMaterials = null;
-    private MaterialSet                         waterMaterials = null;
 
     @Deprecated // Material
     public boolean allowPassThrough(Material mat)
@@ -339,10 +337,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public boolean isWater(Material mat)
     {
-        if (waterMaterials == null) {
-            waterMaterials = controller.getMaterialSetManager().getMaterialSet("all_water");
-        }
-        return waterMaterials.testMaterial(mat);
+        return DefaultMaterials.isWater(mat);
     }
 
     public boolean isOkToStandOn(Block block)
@@ -360,10 +355,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected boolean isHalfBlock(Material mat) {
-        if (halfBlockMaterials == null) {
-            halfBlockMaterials = controller.getMaterialSetManager().getMaterialSet("half");
-        }
-        return halfBlockMaterials.testMaterial(mat);
+        return DefaultMaterials.isHalfBlock(mat);
     }
 
     public boolean isSafeLocation(Block block)

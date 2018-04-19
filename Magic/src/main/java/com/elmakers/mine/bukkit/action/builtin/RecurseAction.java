@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.BlockFace;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -186,21 +187,23 @@ public class RecurseAction extends CompoundAction {
             Material targetMaterial = targetBlock.getType();
             if (parameters.getBoolean("auto_water", true))
             {
-                if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
+                if (DefaultMaterials.isWater(targetMaterial))
                 {
-                    for (byte i = 0; i < 15; i++) {
-                        replaceable.add(new MaterialAndData(Material.STATIONARY_WATER, i));
-                        replaceable.add(new MaterialAndData(Material.WATER, i));
+                    for (Material material : DefaultMaterials.getWater()) {
+                        for (byte i = 0; i < 15; i++) {
+                            replaceable.add(new MaterialAndData(material, i));
+                        }
                     }
                 }
             }
             if (parameters.getBoolean("auto_lava", true))
             {
-                if (targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
+                if (DefaultMaterials.isLava(targetMaterial))
                 {
-                    for (byte i = 0; i < 15; i++) {
-                        replaceable.add(new MaterialAndData(Material.STATIONARY_LAVA, i));
-                        replaceable.add(new MaterialAndData(Material.LAVA, i));
+                    for (Material material : DefaultMaterials.getLava()) {
+                        for (byte i = 0; i < 15; i++) {
+                            replaceable.add(new MaterialAndData(material, i));
+                        }
                     }
                 }
             }
