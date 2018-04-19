@@ -72,6 +72,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.SpellParameters;
@@ -1153,7 +1154,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             CommandSender sender = mage.getCommandSender();
             if (sender != null && sender instanceof BlockCommandSender) {
                 Block block = mage.getLocation().getBlock();
-                if (block.getType() == Material.COMMAND) {
+                if (DefaultMaterials.isCommand(block.getType())) {
                     block.setType(Material.AIR);
                 }
                 return false;

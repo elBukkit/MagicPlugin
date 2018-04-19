@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,6 +14,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class DebuggerAction extends BaseSpellAction
@@ -40,7 +40,7 @@ public class DebuggerAction extends BaseSpellAction
                 mage = controller.getMage(entity);
         } else {
             Block block = context.getTargetBlock();
-            if (block.getType() == Material.COMMAND) {
+            if (DefaultMaterials.isCommand(block.getType())) {
                 CommandBlock commandBlock = (CommandBlock)block.getState();
                 // This is a bit of hacky ..
                 String commandName = commandBlock.getName();

@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.ConstructionType;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -517,7 +518,7 @@ public class ConstructBatch extends BrushBatch {
             }
 
             // Check for command overrides
-            if (commandMap != null && brush.getMaterial() == Material.COMMAND) {
+            if (commandMap != null && DefaultMaterials.isCommand(brush.getMaterial())) {
                 String commandKey = brush.getCommandLine();
                 if (commandKey != null && commandKey.length() > 0 && commandMap.containsKey(commandKey)) {
                     brush.setCommandLine(commandMap.get(commandKey));

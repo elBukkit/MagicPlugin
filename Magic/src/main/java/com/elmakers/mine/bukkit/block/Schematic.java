@@ -109,7 +109,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
                         Object tileEntity = tileEntityMap.get(blockLocation);
                         if (tileEntity != null) {
                             try {
-                                if (material == Material.COMMAND) {
+                                if (DefaultMaterials.isCommand(material)) {
                                     String customName = NMSUtils.getMetaString(tileEntity, "CustomName");
                                     if (!customName.isEmpty()) {
                                         block.setCustomName(customName);

@@ -112,6 +112,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.automata.AutomatonTemplate;
 import com.elmakers.mine.bukkit.block.BlockData;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
@@ -2634,6 +2635,7 @@ public class MagicController implements MageController {
             return;
 
         materialSetManager.loadMaterials(materialNode);
+        DefaultMaterials.getInstance().initialize(materialSetManager);
 
         buildingMaterials = materialSetManager.getMaterialSetEmpty("building");
         indestructibleMaterials = materialSetManager
