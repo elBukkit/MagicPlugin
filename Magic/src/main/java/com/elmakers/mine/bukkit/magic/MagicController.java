@@ -2642,6 +2642,7 @@ public class MagicController implements MageController {
         defaultMaterials.loadBlockItems(blockItems);
         defaultMaterials.setPlayerSkullItem(skullItems.get(EntityType.PLAYER));
         defaultMaterials.setGroundSignBlock(signGroundBlock);
+        defaultMaterials.setFirework(fireworkItem);
 
         buildingMaterials = materialSetManager.getMaterialSetEmpty("building");
         indestructibleMaterials = materialSetManager
@@ -3103,14 +3104,22 @@ public class MagicController implements MageController {
         }
     }
 
-    protected void loadOtherMaterials(ConfigurationSection configuration) {
-        Collection<String> candidates = ConfigurationUtils.getStringList(configuration, "ground_sign_block");
+    @Nullable
+    protected Material getVersionedMaterial(ConfigurationSection configuration, String key) {
+        Material material = null;
+        Collection<String> candidates = ConfigurationUtils.getStringList(configuration, key);
         for (String candidate : candidates) {
             try {
-                signGroundBlock = Material.valueOf(candidate.toUpperCase());
+                material = Material.valueOf(candidate.toUpperCase());
             } catch (Exception ignore) {
             }
         }
+        return material;
+    }
+
+    protected void loadOtherMaterials(ConfigurationSection configuration) {
+        signGroundBlock = getVersionedMaterial(configuration, "ground_sign_block");
+        fireworkItem = getVersionedMaterial(configuration, "firework");
     }
 
     protected void loadSkulls(ConfigurationSection skulls) {
@@ -5900,6 +5909,7 @@ public class MagicController implements MageController {
     private Map<EntityType, MaterialAndData>    skullWallBlocks             = new HashMap<>();
     private Map<EntityType, MaterialAndData>    skullGroundBlocks           = new HashMap<>();
     private Material                            signGroundBlock             = null;
+    private Material                            fireworkItem                = null;
 
     private final Map<String, AutomatonTemplate> automatonTemplates         = new HashMap<>();
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();

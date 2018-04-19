@@ -27,9 +27,11 @@ public class DefaultMaterials {
     private MaterialSet playerSkulls = MaterialSets.empty();
     private MaterialSet banners = MaterialSets.empty();
     private MaterialSet signs = MaterialSets.empty();
+    private MaterialSet saplings = MaterialSets.empty();
 
     private MaterialAndData playerSkullItem = null;
     private Material groundSignBlock = null;
+    private Material firework = null;
 
     private Map<Material, Map<DyeColor, MaterialAndData>> materialColors = new HashMap<>();
     private Map<Material, Material> colorMap = new HashMap<>();
@@ -54,6 +56,7 @@ public class DefaultMaterials {
         playerSkulls = manager.getMaterialSet("player_skulls");
         banners = manager.getMaterialSet("banners");
         signs = manager.getMaterialSet("signs");
+        saplings = manager.getMaterialSet("saplings");
     }
 
     public void loadColors(Collection<ConfigurationSection> colors) {
@@ -87,14 +90,25 @@ public class DefaultMaterials {
         this.groundSignBlock = material;
     }
 
+    @Nullable
     public static Material getGroundSignBlock() {
         return getInstance().groundSignBlock;
+    }
+
+    public void setFirework(Material material) {
+        this.firework = material;
+    }
+
+    @Nullable
+    public static Material getFirework() {
+        return getInstance().firework;
     }
 
     public void setPlayerSkullItem(MaterialAndData item) {
         playerSkullItem = item;
     }
 
+    @Nullable
     public static MaterialAndData getPlayerSkullItem() {
         return getInstance().playerSkullItem;
     }
@@ -171,6 +185,10 @@ public class DefaultMaterials {
 
     public static boolean isSign(Material material) {
         return getInstance().signs.testMaterial(material);
+    }
+
+    public static boolean isSapling(Material material) {
+        return getInstance().saplings.testMaterial(material);
     }
 
     public static Collection<Material> getWater() {

@@ -1,12 +1,12 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 @Deprecated
@@ -25,7 +25,7 @@ public class TreeSpell extends TargetingSpell
         }
 
         boolean requireSapling = parameters.getBoolean("require_sapling", false);
-        if (requireSapling && target.getType() != Material.SAPLING)
+        if (requireSapling && DefaultMaterials.isSapling(target.getType()))
         {
             return SpellResult.NO_TARGET;
         }

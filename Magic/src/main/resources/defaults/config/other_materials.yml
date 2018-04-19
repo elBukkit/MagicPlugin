@@ -1,2 +1,3 @@
 # These define mappings of materials for backwards compatibility
 ground_sign_block: sign_post,sign
+firework: firework,firework_rocket

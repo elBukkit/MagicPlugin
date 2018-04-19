@@ -20,6 +20,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
@@ -41,8 +42,12 @@ public class EffectUtils extends NMSUtils {
     public static Entity spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown, boolean silent) {
         Entity entity = null;
         try {
+            Material fireworkMaterial = DefaultMaterials.getFirework();
+            if (fireworkMaterial == null) {
+                return null;
+            }
             Object world = getHandle(location.getWorld());
-            ItemStack itemStack = new ItemStack(Material.FIREWORK);
+            ItemStack itemStack = new ItemStack(fireworkMaterial);
             FireworkMeta meta = (FireworkMeta) itemStack.getItemMeta();
             meta.addEffect(effect);
             meta.setPower(power);

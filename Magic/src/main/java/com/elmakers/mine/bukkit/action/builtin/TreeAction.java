@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -82,7 +83,7 @@ public class TreeAction extends BaseSpellAction
     public SpellResult perform(CastContext context)
     {
         Block target = context.getTargetBlock();
-        if (requireSapling && target.getType() != Material.SAPLING)
+        if (requireSapling && !DefaultMaterials.isSapling(target.getType()))
         {
             return SpellResult.NO_TARGET;
         }
