@@ -28,7 +28,16 @@ public class DeprecatedUtils {
 
     public static void setTypeAndData(Block block, Material material, byte data, boolean applyPhysics) {
         // @deprecated Magic value
-        block.setTypeIdAndData(material.getId(), data, applyPhysics);
+        if (NMSUtils.class_Block_setTypeIdAndDataMethod != null) {
+            try {
+                NMSUtils.class_Block_setTypeIdAndDataMethod.invoke(block, material.getId(), data, applyPhysics);
+            } catch (Exception ex) {
+                block.setType(material, applyPhysics);
+                ex.printStackTrace();
+            }
+        } else {
+            block.setType(material, applyPhysics);
+        }
     }
 
     public static MaterialData newMaterialData(Material material, byte data) {
@@ -58,7 +67,7 @@ public class DeprecatedUtils {
 
     public static int getTypeId(Block block) {
         // @deprecated Magic value
-        return block.getTypeId();
+        return block.getType().getId();
     }
 
     public static MapView getMap(short id) {
@@ -102,10 +111,5 @@ public class DeprecatedUtils {
     public static byte getRawData(BlockState state) {
         // @deprecated Magic value
         return state.getRawData();
-    }
-
-    public static Material getMaterial(int id) {
-        // @deprecated Magic value
-        return Material.getMaterial(id);
     }
 }

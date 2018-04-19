@@ -143,7 +143,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     // Legacy material id loading
                     try {
                         Integer id = Integer.parseInt(pieces[0]);
-                        material = DeprecatedUtils.getMaterial(id);
+                        material = CompatibilityUtils.getMaterial(id);
                     } catch (Exception ex) {
                         material = Material.getMaterial(pieces[0].toUpperCase());
                     }
@@ -288,7 +288,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     public void setMaterialId(int id) {
-        this.material = DeprecatedUtils.getMaterial(id);
+        this.material = CompatibilityUtils.getMaterial(id);
     }
 
     @SuppressWarnings("deprecation")

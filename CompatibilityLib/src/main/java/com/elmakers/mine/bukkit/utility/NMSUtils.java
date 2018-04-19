@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
@@ -232,6 +233,7 @@ public class NMSUtils {
     protected static Method class_Material_getLegacyMethod;
     protected static Method class_Parrot_getVariantMethod;
     protected static Method class_Parrot_setVariantMethod;
+    protected static Method class_Block_setTypeIdAndDataMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -260,7 +262,6 @@ public class NMSUtils {
     protected static Constructor class_ChatComponentText_constructor;
     protected static Constructor class_NamespacedKey_constructor;
     protected static Constructor class_ShapedRecipe_constructor;
-
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -565,6 +566,11 @@ public class NMSUtils {
 
             // 1.12 and lower
             try {
+                class_Block_setTypeIdAndDataMethod = Block.class.getMethod("setTypeIdAndData", Integer.TYPE, Byte.TYPE, Boolean.TYPE);
+            } catch (Throwable ex) {
+                 Bukkit.getLogger().info("Could not bind to setTypeIdAndData, this is OK so long as you are on 1.13 or up.");
+            }
+            try {
                 class_Parrot = Class.forName("org.bukkit.entity.Parrot");
                 class_ParrotVariant = (Class<Enum>)Class.forName("org.bukkit.entity.Parrot$Variant");
                 class_Parrot_getVariantMethod = class_Parrot.getMethod("getVariant");
@@ -574,7 +580,7 @@ public class NMSUtils {
                 class_ParrotVariant = null;
                 class_Parrot_getVariantMethod = null;
                 class_Parrot_setVariantMethod = null;
-                Bukkit.getLogger().log(Level.INFO, "No parrots available on your server.", ex);
+                Bukkit.getLogger().info("No parrots available on your server.");
             }
 
             try {
@@ -585,7 +591,7 @@ public class NMSUtils {
                 class_NamespacedKey = null;
                 class_NamespacedKey_constructor = null;
                 class_ShapedRecipe_constructor = null;
-                Bukkit.getLogger().log(Level.INFO, "Couldn't find NamespacedKey for registering recipes. This doesn't actually matter at all, but PaperSpigot is a whiny little you-know so here we are.", ex);
+                Bukkit.getLogger().info("Couldn't find NamespacedKey for registering recipes. This doesn't actually matter at all, but PaperSpigot is a whiny little you-know so here we are.");
             }
             try {
                 class_Server_getEntityMethod = Server.class.getMethod("getEntity", UUID.class);

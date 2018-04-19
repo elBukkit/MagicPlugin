@@ -1347,7 +1347,7 @@ public class CompatibilityUtils extends NMSUtils {
     @SuppressWarnings("deprecation")
     public static boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data) {
         if (class_Block_fromLegacyData == null || class_CraftMagicNumbers_getBlockMethod == null || class_Chunk_setBlockMethod == null || class_BlockPosition_Constructor == null) {
-            chunk.getWorld().getBlockAt(x, y, z).setTypeIdAndData(material.getId(), (byte)data, false);
+            DeprecatedUtils.setTypeAndData(chunk.getWorld().getBlockAt(x, y, z), material, (byte)data, false);
             return true;
         }
         try {
@@ -1463,15 +1463,12 @@ public class CompatibilityUtils extends NMSUtils {
 
     @SuppressWarnings("deprecation")
     public static MaterialData getMaterial(int id, byte data) {
-        Material material = null;
+        Material material = getMaterial(id);
         if (class_UnsafeValues_fromLegacyDataMethod != null) {
-            material = getMaterial(id);
             if (material != null) {
                 material = fromLegacy(new MaterialData(material, data));
             }
             data = 0;
-        } else {
-            material = Material.getMaterial(id);
         }
         if (material == null) {
             material = Material.AIR;
