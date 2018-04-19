@@ -4623,7 +4623,13 @@ public class MagicController implements MageController {
         magicItemKey = magicItemKey.replace("|", ":");
         try {
             if (magicItemKey.contains("skull:") || magicItemKey.contains("skull_item:")) {
-                magicItemKey = magicItemKey.replace("skull:", "skull_item:");
+                String playerSkullType = "skull_item";
+                MaterialAndData skullMaterial = skullItems.get(EntityType.PLAYER);
+                if (skullMaterial != null) {
+                    playerSkullType = skullMaterial.getMaterial().name().toLowerCase();
+                }
+                magicItemKey = magicItemKey.replace("skull:", playerSkullType + ":");
+                magicItemKey = magicItemKey.replace("skull_item:", playerSkullType + ":");
                 MaterialAndData skullData = new MaterialAndData(magicItemKey);
                 itemStack = skullData.getItemStack(amount);
             } else if (magicItemKey.contains("book:")) {
