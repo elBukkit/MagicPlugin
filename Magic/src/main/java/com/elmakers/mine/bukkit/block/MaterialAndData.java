@@ -584,7 +584,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public ItemStack getItemStack(int amount) {
         if (material == null) return null;
 
-        convertToItemStackMaterial();
+        Material material = convertToItemStackMaterial();
         ItemStack stack = new ItemStack(material, amount, data == null ? 0 : data);
         applyToItem(stack);
         return stack;

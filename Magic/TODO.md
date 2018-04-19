@@ -2,6 +2,12 @@
 
 ## 8.0
 
+### Things still needing fixing
+
+ - Alter spell needs updating
+ - Brush menu organization, can we group materials together still- maybe share some kind of map with Alter
+ - Fix engineer paths (maybe validate brushes on path load)
+ 
 ### Things to verify 
 
  - Wand brush migration
@@ -13,10 +19,6 @@
  - Check map brush ... can work with concrete and glazed terracotta now though!
  - Check custom colored blob/reflect/platform/shell
  - Check secure/lockpick
-
-### Things still needing fixing
-
- - Towny integration is broken
 
 ## 7.5
    
