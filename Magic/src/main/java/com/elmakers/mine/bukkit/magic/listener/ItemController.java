@@ -37,7 +37,7 @@ public class ItemController {
             ItemData magicItem = new ItemData(itemKey, configuration);
             items.put(itemKey, magicItem);
             itemsByStack.put(magicItem.getItemStack(1), magicItem);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
         }
     }

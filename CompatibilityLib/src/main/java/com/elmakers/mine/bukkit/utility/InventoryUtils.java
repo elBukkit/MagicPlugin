@@ -274,12 +274,13 @@ public class InventoryUtils extends NMSUtils
         }
     }
 
-    public static void setSkullURL(ItemStack itemStack, String url) {
+    public static ItemStack setSkullURL(ItemStack itemStack, String url) {
         try {
-            setSkullURLAndName(itemStack, new URL(url), "MHF_Question", UUID.randomUUID());
+            return setSkullURLAndName(itemStack, new URL(url), "MHF_Question", UUID.randomUUID());
         } catch (MalformedURLException e) {
             Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
+        return itemStack;
     }
 
     public static ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
@@ -287,7 +288,6 @@ public class InventoryUtils extends NMSUtils
             itemStack = makeReal(itemStack);
             Object skullOwner = createNode(itemStack, "SkullOwner");
             setMeta(skullOwner, "Name", ownerName);
-
             setSkullURL(itemStack, url, id);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -176,8 +176,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         for (int i = 2; i < pieces.length; i++) {
                             dataString += ":" + pieces[i];
                         }
+                        this.material = material;
+                        this.data = data;
                         ItemStack item = getItemStack(1);
-                        InventoryUtils.setSkullURL(item, dataString);
+                        item = InventoryUtils.setSkullURL(item, dataString);
                         extraData = new BlockSkull(InventoryUtils.getSkullProfile(item.getItemMeta()));
                     } else {
                         try {
