@@ -16,7 +16,6 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class BrushSpell extends BlockSpell {
 
@@ -86,7 +85,7 @@ public class BrushSpell extends BlockSpell {
                     }
 
                     if (bestDyeColor != null) {
-                        brush.setData((short) DeprecatedUtils.getWoolData(bestDyeColor));
+                        brush.colorize(bestDyeColor);
                     }
                 }
             }

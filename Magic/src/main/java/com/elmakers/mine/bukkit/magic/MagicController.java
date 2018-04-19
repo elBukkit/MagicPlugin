@@ -2635,7 +2635,7 @@ public class MagicController implements MageController {
             return;
 
         materialSetManager.loadMaterials(materialNode);
-        DefaultMaterials.getInstance().initialize(materialSetManager);
+        DefaultMaterials.getInstance().initialize(materialSetManager, materialColors);
 
         buildingMaterials = materialSetManager.getMaterialSetEmpty("building");
         indestructibleMaterials = materialSetManager
@@ -2743,6 +2743,7 @@ public class MagicController implements MageController {
         maxRangePowerMultiplierMax = (float)properties.getDouble("max_power_range_multiplier_max", maxRangePowerMultiplierMax);
         maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
         maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
+        materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
 
         maxPower = (float)properties.getDouble("max_power", maxPower);
         ConfigurationSection damageTypes = properties.getConfigurationSection("damage_types");
@@ -5852,6 +5853,7 @@ public class MagicController implements MageController {
     private boolean                             externalPlayerData              = false;
     private boolean                             asynchronousSaving              = true;
     private WarpController                        warpController                    = null;
+    private Collection<ConfigurationSection>    materialColors                  = null;
 
     private final Map<String, AutomatonTemplate> automatonTemplates         = new HashMap<>();
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();

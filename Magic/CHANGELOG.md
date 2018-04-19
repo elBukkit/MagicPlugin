@@ -3,6 +3,7 @@
 # 7.5
 
  - Fix Heroes attribute integration
+ - The map brush can now work with concrete, glazed terracotta and several other block types
 
 # 7.4
 

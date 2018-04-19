@@ -83,11 +83,13 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     private final MageController controller;
     private int mapId = -1;
     private BufferedMapCanvas mapCanvas = null;
-    private Material mapMaterialBase = Material.STAINED_CLAY;
     private Schematic schematic;
     private String schematicName = "";
     private boolean fillWithAir = true;
     private Vector orientVector = null;
+
+    // For the MAP brush
+    private Material mapMaterialBase = null;
     private double scale = 1;
 
     public MaterialBrush(final Mage mage, final Material material, final  byte data) {
@@ -295,12 +297,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
         this.scale = (float)128 / size;
         this.mode = BrushMode.MAP;
-        if (this.material == Material.WOOL || this.material == Material.STAINED_CLAY
-            || this.material == Material.STAINED_GLASS || this.material == Material.STAINED_GLASS_PANE
-            || this.material == Material.CARPET) {
-            this.mapMaterialBase = this.material;
-        }
-
+        this.mapMaterialBase = DefaultMaterials.getInstance().getBaseMaterial(material);
         if (this.mapId == -1 && mage != null) {
             this.mapId = mage.getLastHeldMapId();
         }
@@ -540,8 +537,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 }
                 if (mapColor != null) {
                     this.material = mapMaterialBase;
-                    this.data = (short)mapColor.getWoolData();
-                    isValid = true;
+                    DefaultMaterials.getInstance().colorize(this, mapColor);
+                    isValid = this.material != null;
                 }
             }
         }
@@ -871,6 +868,10 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             MaterialAndData fromMaterial = ConfigurationUtils.toMaterialAndData(key);
             replacements.put(fromMaterial, toMaterial);
         }
+    }
+
+    public void colorize(DyeColor color) {
+         DefaultMaterials.getInstance().colorize(this, color);
     }
 
     @Override
