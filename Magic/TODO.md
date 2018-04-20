@@ -7,16 +7,18 @@
  - Alter spell needs updating
  - Brush menu organization, can we group materials together still- maybe share some kind of map with Alter
  - Fix engineer paths (maybe validate brushes on path load)
+ - TreeAction should grow the right type of tree for the given sapling
+ - Undo queue migration from legacy materials
  
 ### Things to verify 
 
  - Wand brush migration
- - Schematics may be broken or not?
+ - Check schematics
  - Check book -> skull feature
- - Torch action is probably broken? Setting direction of torches, choosing between wall and ground torch... 
- - Tag sign facing probably broken?
+ - Check torch action
+ - Tag sign facing
  - Check capture spell
- - Check map brush ... can work with concrete and glazed terracotta now though!
+ - Check map brush
  - Check custom colored blob/reflect/platform/shell
  - Check secure/lockpick
 

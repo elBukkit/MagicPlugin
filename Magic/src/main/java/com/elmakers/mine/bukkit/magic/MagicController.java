@@ -3109,6 +3109,7 @@ public class MagicController implements MageController {
         for (String candidate : candidates) {
             try {
                 material = Material.valueOf(candidate.toUpperCase());
+                break;
             } catch (Exception ignore) {
             }
         }
