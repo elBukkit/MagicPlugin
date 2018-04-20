@@ -35,7 +35,6 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -653,8 +652,9 @@ public class PlayerController implements Listener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event)
+    public void onPlayerPickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
     {
         Player player = event.getPlayer();
         Mage mage = controller.getMage(player);
@@ -668,8 +668,9 @@ public class PlayerController implements Listener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerPrePickupItem(PlayerPickupItemEvent event)
+    public void onPlayerPrePickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
     {
         Item item = event.getItem();
         ItemStack pickup = item.getItemStack();
