@@ -32,6 +32,11 @@ public class DefaultMaterials {
     private MaterialAndData playerSkullItem = null;
     private Material groundSignBlock = null;
     private Material firework = null;
+    private MaterialAndData wallTorch = null;
+    private MaterialAndData redstoneTorchOn = null;
+    private MaterialAndData redstoneTorchOff = null;
+    private MaterialAndData redstoneWallTorchOn = null;
+    private MaterialAndData redstoneWallTorchOff = null;
 
     private Map<Material, Map<DyeColor, MaterialAndData>> materialColors = new HashMap<>();
     private Map<Material, Material> colorMap = new HashMap<>();
@@ -206,5 +211,45 @@ public class DefaultMaterials {
     public static Material blockToItem(Material block) {
         Material item = getInstance().blockItems.get(block);
         return item == null ? block : item;
+    }
+
+    public static MaterialAndData getWallTorch() {
+        return getInstance().wallTorch;
+    }
+
+    public void setWallTorch(MaterialAndData wallTorch) {
+        this.wallTorch = wallTorch;
+    }
+
+    public static MaterialAndData getRedstoneTorchOn() {
+        return getInstance().redstoneTorchOn;
+    }
+
+    public void setRedstoneTorchOn(MaterialAndData redstoneTorchOn) {
+        this.redstoneTorchOn = redstoneTorchOn;
+    }
+
+    public static MaterialAndData getRedstoneTorchOff() {
+        return getInstance().redstoneTorchOff;
+    }
+
+    public void setRedstoneTorchOff(MaterialAndData redstoneTorchOff) {
+        this.redstoneTorchOff = redstoneTorchOff;
+    }
+
+    public static MaterialAndData getRedstoneWallTorchOn() {
+        return getInstance().redstoneWallTorchOn;
+    }
+
+    public void setRedstoneWallTorchOn(MaterialAndData redstoneWallTorchOn) {
+        this.redstoneWallTorchOn = redstoneWallTorchOn;
+    }
+
+    public static MaterialAndData getRedstoneWallTorchOff() {
+        return getInstance().redstoneWallTorchOff;
+    }
+
+    public void setRedstoneWallTorchOff(MaterialAndData redstoneWallTorchOff) {
+        this.redstoneWallTorchOff = redstoneWallTorchOff;
     }
 }

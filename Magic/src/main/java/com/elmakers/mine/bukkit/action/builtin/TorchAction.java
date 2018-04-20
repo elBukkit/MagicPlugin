@@ -20,16 +20,18 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class TorchAction extends BaseSpellAction
 {
-    private Material torchType;
     private boolean allowLightstone;
+    private boolean allowSeaLantern;
     private boolean useLightstone;
+    private boolean useRedstone;
     private MaterialSet slippery;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        torchType = parameters.getBoolean("redstone_torch", false) ? Material.REDSTONE_TORCH_ON : Material.TORCH;
+        useRedstone = parameters.getBoolean("redstone_torch", false);
         allowLightstone = parameters.getBoolean("allow_glowstone", false);
+        allowSeaLantern = parameters.getBoolean("allow_sea_lantern", false);
         useLightstone = parameters.getBoolean("glowstone_torch", false);
     }
 
@@ -64,12 +66,12 @@ public class TorchAction extends BaseSpellAction
         boolean replaceAttachment = target.getType() == Material.SNOW || target.getType() == Material.SNOW_BLOCK;
         boolean isWater = DefaultMaterials.isWater(face.getType());
         boolean isNether = target.getType() == Material.NETHERRACK || target.getType() == Material.SOUL_SAND;
-        MaterialAndData targetMaterial = new MaterialAndData(torchType);
+        MaterialAndData targetMaterial = null;
 
         // Don't replace blocks unless allow_glowstone is explicitly set
         if (isNether && allowLightstone)
         {
-            targetMaterial.setMaterial(Material.GLOWSTONE);
+            targetMaterial = new MaterialAndData(Material.GLOWSTONE);
             replaceAttachment = true;
         }
 
@@ -77,12 +79,16 @@ public class TorchAction extends BaseSpellAction
         boolean allowLightstone = this.allowLightstone;
         if (useLightstone)
         {
-            targetMaterial.setMaterial(Material.GLOWSTONE);
+            targetMaterial = new MaterialAndData(Material.GLOWSTONE);
             allowLightstone = true;
         }
         if (isWater)
         {
-            targetMaterial.setMaterial(Material.GLOWSTONE);
+            if (allowSeaLantern) {
+                targetMaterial = new MaterialAndData(Material.SEA_LANTERN);
+            } else {
+                targetMaterial = new MaterialAndData(Material.GLOWSTONE);
+            }
         }
 
         if (!isAir && !isWater)
@@ -90,7 +96,7 @@ public class TorchAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-        if (targetMaterial.getMaterial() == torchType)
+        if (targetMaterial.getMaterial() == null)
         {
             BlockFace direction = face.getFace(target);
             if (direction == null) {
@@ -99,23 +105,43 @@ public class TorchAction extends BaseSpellAction
             switch (direction)
             {
                 case WEST:
-                    targetMaterial.setData((short)1);
+                    targetMaterial = useRedstone
+                        ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
+                        : new MaterialAndData(DefaultMaterials.getWallTorch());
+                    targetMaterial.setData((short)(targetMaterial.getData() | 1));
                     break;
                 case EAST:
-                    targetMaterial.setData((short)2);
+                    targetMaterial = useRedstone
+                        ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
+                        : new MaterialAndData(DefaultMaterials.getWallTorch());
+                    targetMaterial.setData((short)(targetMaterial.getData() | 2));
                     break;
                 case NORTH:
-                    targetMaterial.setData((short)3);
+                    targetMaterial = useRedstone
+                        ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
+                        : new MaterialAndData(DefaultMaterials.getWallTorch());
+                    targetMaterial.setData((short)(targetMaterial.getData() | 3));
                     break;
                 case SOUTH:
-                    targetMaterial.setData((short)4);
+                    targetMaterial = useRedstone
+                        ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
+                        : new MaterialAndData(DefaultMaterials.getWallTorch());
+                    targetMaterial.setData((short)(targetMaterial.getData() | 4));
                     break;
                 case DOWN:
-                    targetMaterial.setData((short)5);
+                    targetMaterial = useRedstone
+                        ? new MaterialAndData(DefaultMaterials.getRedstoneTorchOn())
+                        : new MaterialAndData(Material.TORCH);
+                    targetMaterial.setData((short)(targetMaterial.getData() | 5));
                     break;
                 default:
                     targetMaterial.setMaterial(Material.GLOWSTONE);
             }
+        }
+
+        if (!allowSeaLantern && targetMaterial.getMaterial() == Material.SEA_LANTERN)
+        {
+            return SpellResult.NO_TARGET;
         }
 
         if (!allowLightstone && targetMaterial.getMaterial() == Material.GLOWSTONE)

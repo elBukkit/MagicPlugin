@@ -450,12 +450,6 @@ public class ConstructBatch extends BrushBatch {
                 registerForUndo(block);
                 block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
                 controller.getRedstoneReplacement().modify(block, applyPhysics);
-            } else if (material == Material.REDSTONE_TORCH_OFF) {
-                registerForUndo(block);
-                block.setType(Material.REDSTONE_TORCH_ON);
-            } else if (material == Material.REDSTONE_TORCH_ON) {
-                registerForUndo(block);
-                block.setType(Material.REDSTONE_TORCH_OFF);
             } else if (material == Material.TNT) {
                 registerForUndo(block);
                 block.setType(Material.AIR);

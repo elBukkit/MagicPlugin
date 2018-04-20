@@ -27,6 +27,7 @@ torch:
         allow_max_range: false
         range: 32
         allow_glowstone: true
+        allow_sea_lantern: true
         undo: 30000
         cooldown: 10000
         destructible: destructible_replace

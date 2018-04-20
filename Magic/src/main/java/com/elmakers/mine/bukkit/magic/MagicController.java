@@ -2641,8 +2641,6 @@ public class MagicController implements MageController {
         defaultMaterials.loadColors(materialColors);
         defaultMaterials.loadBlockItems(blockItems);
         defaultMaterials.setPlayerSkullItem(skullItems.get(EntityType.PLAYER));
-        defaultMaterials.setGroundSignBlock(signGroundBlock);
-        defaultMaterials.setFirework(fireworkItem);
 
         buildingMaterials = materialSetManager.getMaterialSetEmpty("building");
         indestructibleMaterials = materialSetManager
@@ -3117,9 +3115,27 @@ public class MagicController implements MageController {
         return material;
     }
 
+    @Nullable
+    protected MaterialAndData getVersionedMaterialAndData(ConfigurationSection configuration, String key) {
+        Collection<String> candidates = ConfigurationUtils.getStringList(configuration, key);
+        for (String candidate : candidates) {
+            MaterialAndData test = new MaterialAndData(candidate);
+            if (test.isValid()) {
+                return test;
+            }
+        }
+        return null;
+    }
+
     protected void loadOtherMaterials(ConfigurationSection configuration) {
-        signGroundBlock = getVersionedMaterial(configuration, "ground_sign_block");
-        fireworkItem = getVersionedMaterial(configuration, "firework");
+        DefaultMaterials defaultMaterials = DefaultMaterials.getInstance();
+        defaultMaterials.setGroundSignBlock(getVersionedMaterial(configuration, "ground_sign_block"));
+        defaultMaterials.setFirework(getVersionedMaterial(configuration, "firework"));
+        defaultMaterials.setWallTorch(getVersionedMaterialAndData(configuration, "wall_torch"));
+        defaultMaterials.setRedstoneTorchOn(getVersionedMaterialAndData(configuration, "redstone_torch_on"));
+        defaultMaterials.setRedstoneTorchOff(getVersionedMaterialAndData(configuration, "redstone_torch_off"));
+        defaultMaterials.setRedstoneWallTorchOn(getVersionedMaterialAndData(configuration, "redstone_wall_torch_on"));
+        defaultMaterials.setRedstoneWallTorchOff(getVersionedMaterialAndData(configuration, "redstone_wall_torch_off"));
     }
 
     protected void loadSkulls(ConfigurationSection skulls) {
@@ -5908,8 +5924,6 @@ public class MagicController implements MageController {
     private Map<EntityType, MaterialAndData>    skullItems                  = new HashMap<>();
     private Map<EntityType, MaterialAndData>    skullWallBlocks             = new HashMap<>();
     private Map<EntityType, MaterialAndData>    skullGroundBlocks           = new HashMap<>();
-    private Material                            signGroundBlock             = null;
-    private Material                            fireworkItem                = null;
 
     private final Map<String, AutomatonTemplate> automatonTemplates         = new HashMap<>();
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();

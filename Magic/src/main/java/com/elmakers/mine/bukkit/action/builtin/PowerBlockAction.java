@@ -11,7 +11,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.Button;
 import org.bukkit.material.Lever;
-import org.bukkit.material.MaterialData;
 import org.bukkit.material.PistonBaseMaterial;
 import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
@@ -21,7 +20,10 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class PowerBlockAction extends BaseSpellAction {
     private boolean applyPhysics = false;
@@ -46,7 +48,7 @@ public class PowerBlockAction extends BaseSpellAction {
 
         Material material = block.getType();
         BlockState blockState = block.getState();
-        MaterialData data = blockState.getData();
+        org.bukkit.material.MaterialData data = blockState.getData();
         MageController controller = context.getController();
         boolean powerBlock = false;
         if (data instanceof Button) {
@@ -78,20 +80,41 @@ public class PowerBlockAction extends BaseSpellAction {
             context.registerForUndo(block);
             block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
             controller.getRedstoneReplacement().modify(block, applyPhysics);
-        } else if (material == Material.REDSTONE_TORCH_OFF) {
-            context.registerForUndo(block);
-            block.setType(Material.REDSTONE_TORCH_ON);
-        } else if (material == Material.REDSTONE_TORCH_ON) {
-            context.registerForUndo(block);
-            block.setType(Material.REDSTONE_TORCH_OFF);
         } else if (material == Material.TNT) {
             context.registerForUndo(block);
             block.setType(Material.AIR);
 
             // Kaboomy time!
             context.registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT));
-        }
+        } else {
+            byte dataValue = (byte)(data.getData() & 0x4);
+            MaterialAndData redstoneTorchOff = DefaultMaterials.getRedstoneTorchOff();
+            MaterialAndData redstoneTorchOn = DefaultMaterials.getRedstoneTorchOn();
+            MaterialAndData redstoneWallTorchOff = DefaultMaterials.getRedstoneWallTorchOff();
+            MaterialAndData redstoneWallTorchOn = DefaultMaterials.getRedstoneWallTorchOn();
+            MaterialAndData modifyWith = null;
 
+            if (redstoneTorchOff != null && redstoneTorchOn != null && redstoneWallTorchOff != null && redstoneWallTorchOn != null) {
+                if (redstoneTorchOff.matches(material, dataValue)) {
+                    modifyWith = redstoneTorchOn;
+                } else if (redstoneTorchOn.matches(material, dataValue)) {
+                    modifyWith = redstoneTorchOff;
+                } else if (redstoneWallTorchOff.matches(material, dataValue)) {
+                    modifyWith = redstoneWallTorchOn;
+                } else if (redstoneWallTorchOn.matches(material, dataValue)) {
+                    modifyWith = redstoneWallTorchOff;
+                }
+            }
+
+            if (modifyWith != null) {
+                context.registerForUndo(block);
+                Short modifyData = modifyWith.getData();
+                if (modifyData != 0) {
+                    dataValue = (byte)((data.getData() & 0x3) | modifyWith.getData());
+                }
+                DeprecatedUtils.setTypeAndData(block, modifyWith.getMaterial(), dataValue, true);
+            }
+        }
         if (powerBlock) {
             blockState.update();
         }

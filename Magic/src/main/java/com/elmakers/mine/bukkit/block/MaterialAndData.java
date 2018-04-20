@@ -754,6 +754,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
     }
 
+    public boolean matches(Material material, short data) {
+        return (this.material == null || this.material == material)
+                && (this.data == null || this.data == data);
+    }
+
     @Override
     public String toString() {
         return (isValid() ? material + (data != 0 ? "@" + data : "") : "invalid");
