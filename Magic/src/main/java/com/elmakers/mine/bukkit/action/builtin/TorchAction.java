@@ -96,7 +96,7 @@ public class TorchAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-        if (targetMaterial.getMaterial() == null)
+        if (targetMaterial == null)
         {
             BlockFace direction = face.getFace(target);
             if (direction == null) {
