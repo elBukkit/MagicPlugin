@@ -10,7 +10,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
+import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.map.MapView;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Makes deprecation warnings useful again by suppressing all bukkit 'magic
@@ -105,5 +109,42 @@ public class DeprecatedUtils {
     public static byte getRawData(BlockState state) {
         // @deprecated Magic value
         return state.getRawData();
+    }
+
+    public static DyeColor getBaseColor(BannerMeta banner) {
+        return banner.getBaseColor();
+    }
+
+    public static void setBaseColor(BannerMeta banner, DyeColor color) {
+        banner.setBaseColor(color);
+    }
+
+    public static void setOwner(SkullMeta skull, String ownerName) {
+        skull.setOwner(ownerName);
+    }
+
+    public static void showPlayer(Plugin plugin, Player toPlayer, Player showPlayer) {
+        // TODO: Use Plugin
+        toPlayer.showPlayer(showPlayer);
+    }
+
+    public static void hidePlayer(Plugin plugin, Player fromPlayer, Player hidePlayer) {
+        // TODO: Use Plugin
+        fromPlayer.hidePlayer(hidePlayer);
+    }
+
+    public static int[] getExpLevelCostsOffered(PrepareItemEnchantEvent event) {
+        // TODO: Use getOffers
+        return event.getExpLevelCostsOffered();
+    }
+
+    public static Entity getPassenger(Entity mount) {
+        // TODO: Use getPassengers, refactor to search through list
+        return mount.getPassenger();
+    }
+
+    public static void setPassenger(Entity mount, Entity passenger) {
+        // TODO: Use addPassenger
+        mount.setPassenger(passenger);
     }
 }

@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
@@ -204,7 +205,7 @@ public class SimulateBatch extends SpellBatch {
         if (modifyType == ModifyType.FAST) {
             CompatibilityUtils.setBlockFast(block, deathMaterial, 0);
         } else {
-            block.setTypeIdAndData(deathMaterial.getId(), (byte)0, false);
+            DeprecatedUtils.setTypeAndData(block, deathMaterial, (byte)0, false);
         }
         if (reflectChance > 0) {
             com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(block);

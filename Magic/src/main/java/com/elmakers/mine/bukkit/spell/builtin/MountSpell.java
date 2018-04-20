@@ -6,6 +6,7 @@ import org.bukkit.entity.LivingEntity;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MountSpell extends TargetingSpell {
 
@@ -30,7 +31,7 @@ public class MountSpell extends TargetingSpell {
             return SpellResult.NO_TARGET;
         }
 
-        targetEntity.setPassenger(player);
+        DeprecatedUtils.setPassenger(targetEntity, player);
 
         return SpellResult.CAST;
     }

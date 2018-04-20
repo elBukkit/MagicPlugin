@@ -21,7 +21,6 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.material.Lever;
-import org.bukkit.material.MaterialData;
 import org.bukkit.material.PistonBaseMaterial;
 import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
@@ -419,7 +418,7 @@ public class ConstructBatch extends BrushBatch {
         {
             Material material = block.getType();
             BlockState blockState = block.getState();
-            MaterialData data = blockState.getData();
+            org.bukkit.material.MaterialData data = blockState.getData();
             boolean powerBlock = false;
             if (data instanceof Button) {
                 Button powerData = (Button)data;

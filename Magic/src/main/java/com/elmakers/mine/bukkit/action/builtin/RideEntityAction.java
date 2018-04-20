@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 import de.slikey.effectlib.util.VectorUtils;
@@ -196,7 +197,7 @@ public class RideEntityAction extends BaseSpellAction
         {
             return SpellResult.ENTITY_REQUIRED;
         }
-        Entity currentMount = isPassenger ? mounted.getPassenger() : mounted.getVehicle();
+        Entity currentMount = isPassenger ? DeprecatedUtils.getPassenger(mounted) : mounted.getVehicle();
         if (currentMount == null) {
             return SpellResult.CAST;
         }
@@ -206,9 +207,9 @@ public class RideEntityAction extends BaseSpellAction
                 return SpellResult.CAST;
             }
             if (isPassenger) {
-                mounted.setPassenger(mount);
+                DeprecatedUtils.setPassenger(mounted, mount);
             } else {
-                mount.setPassenger(mounted);
+                DeprecatedUtils.setPassenger(mount, mounted);
             }
         }
 
@@ -426,9 +427,9 @@ public class RideEntityAction extends BaseSpellAction
             mount.setMetadata("notarget", new FixedMetadataValue(context.getController().getPlugin(), true));
         }
         if (isPassenger) {
-            entity.setPassenger(mount);
+            DeprecatedUtils.setPassenger(entity, mount);
         } else {
-            mount.setPassenger(entity);
+            DeprecatedUtils.setPassenger(mount, entity);
         }
         direction = mount.getLocation().getDirection();
         adjustHeading(context);

@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.Targeting;
@@ -439,7 +440,7 @@ public class EntityController implements Listener {
         }
         else
         {
-            Entity passenger = entity.getPassenger();
+            Entity passenger = DeprecatedUtils.getPassenger(entity);
             com.elmakers.mine.bukkit.magic.Mage mountMage = passenger == null ? null : controller.getRegisteredMage(passenger);
             if (mountMage != null) {
                 mountMage.onDamage(event);

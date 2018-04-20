@@ -8,6 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MountAction extends BaseSpellAction {
     private boolean eject = false;
@@ -39,14 +40,15 @@ public class MountAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
-        if (targetEntity == source.getPassenger() || source == targetEntity.getPassenger()) {
+        if (targetEntity == DeprecatedUtils.getPassenger(source)
+            || source == DeprecatedUtils.getPassenger(targetEntity)) {
             return SpellResult.NO_TARGET;
         }
 
         while (targetEntity instanceof ComplexEntityPart) {
             targetEntity = ((ComplexEntityPart)targetEntity).getParent();
         }
-        targetEntity.setPassenger(source);
+        DeprecatedUtils.setPassenger(targetEntity, source);
 
         return SpellResult.CAST;
     }

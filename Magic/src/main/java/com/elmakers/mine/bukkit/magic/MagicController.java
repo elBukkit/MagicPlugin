@@ -164,6 +164,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
@@ -5523,7 +5524,7 @@ public class MagicController implements MageController {
         }
         if (meta instanceof SkullMeta && ownerName != null) {
             SkullMeta skullData = (SkullMeta)meta;
-            skullData.setOwner(ownerName);
+            DeprecatedUtils.setOwner(skullData, ownerName);
         }
         skull.setItemMeta(meta);
         return skull;
@@ -5552,7 +5553,7 @@ public class MagicController implements MageController {
         }
         if (meta instanceof SkullMeta && ownerName != null) {
             SkullMeta skullData = (SkullMeta)meta;
-            skullData.setOwner(ownerName);
+            DeprecatedUtils.setOwner(skullData, ownerName);
         }
         skull.setItemMeta(meta);
         return skull;

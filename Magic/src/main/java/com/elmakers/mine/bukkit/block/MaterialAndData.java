@@ -102,7 +102,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             if (meta != null && meta instanceof BannerMeta)
             {
                 BannerMeta banner = (BannerMeta)meta;
-                extraData = new BlockBanner(banner.getPatterns(), banner.getBaseColor());
+                extraData = new BlockBanner(banner.getPatterns(), DeprecatedUtils.getBaseColor(banner));
             }
         } else if (this.material == Material.LEATHER_BOOTS || this.material == Material.LEATHER_CHESTPLATE
                 || this.material == Material.LEATHER_HELMET || this.material == Material.LEATHER_LEGGINGS) {
@@ -612,7 +612,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     stack.setItemMeta(meta);
                 } else if (skullData.playerName != null) {
                     SkullMeta skullMeta = (SkullMeta)meta;
-                    skullMeta.setOwner(skullData.playerName);
+                    DeprecatedUtils.setOwner(skullMeta, skullData.playerName);
                     stack.setItemMeta(meta);
                 }
             }
@@ -628,7 +628,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
                 if (bannerData.baseColor != null)
                 {
-                    banner.setBaseColor(bannerData.baseColor);
+                    DeprecatedUtils.setBaseColor(banner, bannerData.baseColor);
                 }
                 stack.setItemMeta(meta);
             }
