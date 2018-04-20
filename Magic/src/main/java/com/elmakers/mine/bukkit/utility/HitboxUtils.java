@@ -111,7 +111,6 @@ public class HitboxUtils extends CompatibilityUtils {
                     headSizes.put(entityType, size);
                 }
             } catch (Exception ex) {
-                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type in head size definition: " + key, ex);
             }
         }
     }
@@ -133,7 +132,6 @@ public class HitboxUtils extends CompatibilityUtils {
                 EntityType entityType = EntityType.valueOf(upperKey);
                 hitboxes.put(entityType, bb);
             } catch (Exception ex) {
-                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type in hitbox definition: " + key, ex);
             }
         }
     }
