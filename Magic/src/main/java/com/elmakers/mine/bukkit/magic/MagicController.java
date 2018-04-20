@@ -2751,6 +2751,8 @@ public class MagicController implements MageController {
         materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
         blockItems = properties.getConfigurationSection("block_items");
         loadBlockSkins(properties.getConfigurationSection("block_skins"));
+        loadMobSkins(properties.getConfigurationSection("mob_skins"));
+        loadMobEggs(properties.getConfigurationSection("mob_eggs"));
         loadSkulls(properties.getConfigurationSection("skulls"));
         loadOtherMaterials(properties);
 
@@ -3087,6 +3089,33 @@ public class MagicController implements MageController {
             final ConfigCheckTask configCheck = new ConfigCheckTask(this);
             configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
                 configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
+        }
+    }
+
+    protected void loadMobEggs(ConfigurationSection skins) {
+        mobEggs.clear();
+        Set<String> keys = skins.getKeys(false);
+        for (String key : keys) {
+            try {
+                EntityType entityType = EntityType.valueOf(key.toUpperCase());
+                Material material = getVersionedMaterial(skins, key);
+                if (material != null) {
+                    mobEggs.put(entityType, material);
+                }
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
+    protected void loadMobSkins(ConfigurationSection skins) {
+        mobSkins.clear();
+        Set<String> keys = skins.getKeys(false);
+        for (String key : keys) {
+            try {
+                EntityType entityType = EntityType.valueOf(key.toUpperCase());
+                mobSkins.put(entityType, skins.getString(key));
+            } catch (Exception ignore) {
+            }
         }
     }
 
@@ -5447,83 +5476,14 @@ public class MagicController implements MageController {
 
     @Nullable
     @Override
-    public String getMobSkin(EntityType mobType)
-    {
-        String mobSkin = null;
-        switch (mobType) {
-            case BLAZE:
-                mobSkin = "MHF_Blaze";
-                break;
-            case CAVE_SPIDER:
-                mobSkin = "MHF_CaveSpider";
-                break;
-            case CHICKEN:
-                mobSkin = "MHF_Chicken";
-                break;
-            case COW:
-                mobSkin = "MHF_Cow";
-                break;
-            case ENDERMAN:
-                mobSkin = "MHF_Enderman";
-                break;
-            case GHAST:
-                mobSkin = "MHF_Ghast";
-                break;
-            case IRON_GOLEM:
-                mobSkin = "MHF_Golem";
-                break;
-            case MAGMA_CUBE:
-                mobSkin = "MHF_LavaSlime";
-                break;
-            case MUSHROOM_COW:
-                mobSkin = "MHF_MushroomCow";
-                break;
-            case OCELOT:
-                mobSkin = "MHF_Ocelot";
-                break;
-            case PIG:
-                mobSkin = "MHF_Pig";
-                break;
-            case PIG_ZOMBIE:
-                mobSkin = "MHF_PigZombie";
-                break;
-            case SHEEP:
-                mobSkin = "MHF_Sheep";
-                break;
-            case SLIME:
-                mobSkin = "MHF_Slime";
-                break;
-            case SPIDER:
-                mobSkin = "MHF_Spider";
-                break;
-            case SQUID:
-                mobSkin = "MHF_Squid";
-                break;
-            case VILLAGER:
-                mobSkin = "MHF_Villager";
-                break;
-            case WOLF:
-                mobSkin = "MHF_Wolf";
-                break;
-            case CREEPER:
-                mobSkin = "MHF_Creeper";
-                break;
-            case ZOMBIE:
-                mobSkin = "MHF_Zombie";
-                break;
-            case SKELETON:
-                mobSkin = "MHF_Skeleton";
-                break;
-            case GUARDIAN:
-                mobSkin = "MHF_Guardian";
-                break;
-            case WITCH:
-                mobSkin = "MHF_Witch";
-                break;
-            default:
-        }
+    public Material getMobEgg(EntityType mobType) {
+        return mobEggs.get(mobType);
+    }
 
-        return mobSkin;
+    @Nullable
+    @Override
+    public String getMobSkin(EntityType mobType) {
+        return mobSkins.get(mobType);
     }
 
     @Override
@@ -5922,9 +5882,11 @@ public class MagicController implements MageController {
     private Collection<ConfigurationSection>    materialColors                  = null;
     private ConfigurationSection                blockItems                  = null;
     private Map<Material, String>               blockSkins                  = new HashMap<>();
+    private Map<EntityType, String>             mobSkins                    = new HashMap<>();
     private Map<EntityType, MaterialAndData>    skullItems                  = new HashMap<>();
     private Map<EntityType, MaterialAndData>    skullWallBlocks             = new HashMap<>();
     private Map<EntityType, MaterialAndData>    skullGroundBlocks           = new HashMap<>();
+    private Map<EntityType, Material>           mobEggs                     = new HashMap<>();
 
     private final Map<String, AutomatonTemplate> automatonTemplates         = new HashMap<>();
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();

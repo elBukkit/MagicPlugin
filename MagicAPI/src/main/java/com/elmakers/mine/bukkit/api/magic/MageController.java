@@ -407,6 +407,8 @@ public interface MageController {
     String getBlockSkin(Material blockType);
     @Nullable
     String getMobSkin(EntityType mobType);
+    @Nullable
+    Material getMobEgg(EntityType mobType);
     @Nonnull
     ItemStack getSkull(Entity entity, String itemName);
     @Nonnull

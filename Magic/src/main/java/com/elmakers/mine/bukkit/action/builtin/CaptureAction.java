@@ -40,6 +40,10 @@ public class CaptureAction extends BaseSpellAction {
                 return SpellResult.NO_TARGET;
             }
         }
+        Material eggMaterial = context.getController().getMobEgg(targetEntity.getType());
+        if (eggMaterial == null) {
+            return SpellResult.FAIL;
+        }
         String entityTypeString = CompatibilityUtils.getEntityType(targetEntity);
         if (entityTypeString == null) {
             return SpellResult.FAIL;
@@ -53,7 +57,7 @@ public class CaptureAction extends BaseSpellAction {
             li.setHealth(CompatibilityUtils.getMaxHealth(li));
         }
         targetEntity.remove();
-        ItemStack spawnEgg = new ItemStack(Material.MONSTER_EGG);
+        ItemStack spawnEgg = new ItemStack(eggMaterial);
 
         String entityName = targetEntity.getCustomName();
         if (entityName != null && !entityName.isEmpty()) {
