@@ -14,7 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
@@ -98,7 +97,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
             for (int z = 0; z < length; z++) {
                 for (int x = 0; x < width; x++) {
                     int index = x + (y * length + z) * width;
-                    MaterialData materialData = CompatibilityUtils.getMaterial(blockTypes[index], data[index]);
+                    org.bukkit.material.MaterialData materialData = CompatibilityUtils.getMaterial(blockTypes[index], data[index]);
                     if (materialData != null)
                     {
                         Material material = materialData.getItemType();

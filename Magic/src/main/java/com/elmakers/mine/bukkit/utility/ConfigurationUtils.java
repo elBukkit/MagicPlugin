@@ -23,7 +23,6 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -132,12 +131,6 @@ public class ConfigurationUtils extends ConfigUtils {
         return material.name().toLowerCase();
     }
 
-    @SuppressWarnings("deprecation")
-    public static String fromBlock(Block block)
-    {
-        return fromLocation(block.getLocation()) + "|" + block.getTypeId() + ":" + block.getData();
-    }
-
     @Nullable
     public static Location toLocation(Object o) {
         if (o instanceof Location) {
@@ -206,8 +199,8 @@ public class ConfigurationUtils extends ConfigUtils {
         if (o instanceof String) {
             String matName = (String)o;
             try {
-                Integer value = Integer.parseInt(matName);
-                return Material.getMaterial(value);
+                int value = Integer.parseInt(matName);
+                return CompatibilityUtils.getMaterial(value);
             } catch (NumberFormatException ignored) {
             }
 

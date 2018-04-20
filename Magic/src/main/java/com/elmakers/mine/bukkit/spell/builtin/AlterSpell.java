@@ -21,8 +21,6 @@ import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Ocelot.Type;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
 import org.bukkit.entity.Wolf;
@@ -63,6 +61,7 @@ public class AlterSpell extends BlockSpell
 
 
     @Override
+    @SuppressWarnings("deprecation")
     public SpellResult onCast(ConfigurationSection parameters)
     {
         Target target = getTarget();
@@ -90,7 +89,7 @@ public class AlterSpell extends BlockSpell
             controller.getLogger().warning("Spells:Alter: Mis-match in adjustable material lists!");
         }
 
-        if (!adjustableMaterials.contains(targetBlock.getTypeId()))
+        if (!adjustableMaterials.contains(targetBlock.getType().getId()))
         {
             return SpellResult.FAIL;
         }
@@ -106,7 +105,7 @@ public class AlterSpell extends BlockSpell
 
         int originalData = targetBlock.getData();
 
-        int materialIndex = adjustableMaterials.indexOf(targetBlock.getTypeId());
+        int materialIndex = adjustableMaterials.indexOf(targetBlock.getType().getId());
         int minValue = minData.get(materialIndex);
         int maxValue = maxData.get(materialIndex);
         int dataSize = maxValue - minValue + 1;
@@ -229,14 +228,6 @@ public class AlterSpell extends BlockSpell
                 DyeColor[] dyeColorValues = DyeColor.values();
                 dyeColor = dyeColorValues[(dyeColor.ordinal() + 1) % dyeColorValues.length];
                 sheep.setColor(dyeColor);
-                break;
-            case SKELETON:
-                registerModified(entity);
-                Skeleton skeleton = (Skeleton)entity;
-                SkeletonType skeletonType = skeleton.getSkeletonType();
-                SkeletonType[] skeletonTypeValues = SkeletonType.values();
-                skeletonType = skeletonTypeValues[(skeletonType.ordinal() + 1) % skeletonTypeValues.length];
-                skeleton.setSkeletonType(skeletonType);
                 break;
             default:
                 return SpellResult.NO_TARGET;
