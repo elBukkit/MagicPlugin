@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.utility;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 import javax.annotation.Nullable;
 
@@ -110,7 +109,7 @@ public class HitboxUtils extends CompatibilityUtils {
                 {
                     headSizes.put(entityType, size);
                 }
-            } catch (Exception ex) {
+            } catch (Exception ignore) {
             }
         }
     }
@@ -131,7 +130,7 @@ public class HitboxUtils extends CompatibilityUtils {
                 }
                 EntityType entityType = EntityType.valueOf(upperKey);
                 hitboxes.put(entityType, bb);
-            } catch (Exception ex) {
+            } catch (Exception ignore) {
             }
         }
     }
