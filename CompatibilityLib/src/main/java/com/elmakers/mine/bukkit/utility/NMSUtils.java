@@ -98,8 +98,6 @@ public class NMSUtils {
     protected static Class<?> class_EntityMinecartRideable;
     protected static Class<?> class_EntityTNTPrimed;
     protected static Class<?> class_AxisAlignedBB;
-    protected static Class<?> class_PathPoint;
-    protected static Class<?> class_PathEntity;
     protected static Class<?> class_EntityFirework;
     protected static Class<?> class_CraftSkull;
     protected static Class<?> class_CraftMetaSkull;
@@ -355,8 +353,6 @@ public class NMSUtils {
             class_AxisAlignedBB = fixBukkitClass("net.minecraft.server.AxisAlignedBB");
             class_DamageSource = fixBukkitClass("net.minecraft.server.DamageSource");
             class_EntityDamageSource = fixBukkitClass("net.minecraft.server.EntityDamageSource");
-            class_PathEntity = fixBukkitClass("net.minecraft.server.PathEntity");
-            class_PathPoint = fixBukkitClass("net.minecraft.server.PathPoint");
             class_EntityFirework = fixBukkitClass("net.minecraft.server.EntityFireworks");
             class_CraftSkull = fixBukkitClass("org.bukkit.craftbukkit.block.CraftSkull");
             class_CraftMetaSkull = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaSkull");
