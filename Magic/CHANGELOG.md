@@ -3,6 +3,7 @@
 # 7.4.1
 
  - Fix Heroes attribute integration
+ - Add support for generic_knockback_resistance attribute on items
 
 # 7.4
 
