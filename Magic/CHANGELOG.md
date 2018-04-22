@@ -4,6 +4,7 @@
 
  - Maybe 1.13 support (not tested yet)
  - Fix Heroes attribute integration
+ - Add support for generic_knockback_resistance attribute on items
  - The map brush can now work with concrete, glazed terracotta and several other block types
  - Add support for parrot variants in mob configs
 

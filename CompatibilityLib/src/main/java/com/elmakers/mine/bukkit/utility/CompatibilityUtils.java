@@ -1112,6 +1112,10 @@ public class CompatibilityUtils extends NMSUtils {
                     attributeName = "generic.armor";
                     attributeUUID = UUID.fromString("556E1665-8B10-40C8-8F9D-CF9B1667F295");
                     break;
+                case GENERIC_KNOCKBACK_RESISTANCE:
+                    attributeName = "generic.knockbackResistance";
+                    attributeUUID = UUID.fromString("00000000-0001-481f-0000-000000040fe5");
+                    break;
                 default:
                     break;
             }
