@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Copyright Tyler Grissom 2018
@@ -53,6 +54,10 @@ public class ModifyAttributeAction extends BaseSpellAction {
             if (key.startsWith("attribute_")) {
                 String str = key.replace("attribute_", "");
 
+                if (attributes.containsKey(str)) {
+                    continue;
+                }
+
                 attributes.put(str, parameters.getDouble(key));
             }
         }
@@ -67,7 +72,7 @@ public class ModifyAttributeAction extends BaseSpellAction {
         this.targetMage = context.getController().getMage(context.getTargetEntity());
 
         for (Map.Entry<String, Double> entry : attributes.entrySet()) {
-            double value = targetMage.getProperties().getAttribute(entry.getKey()) + entry.getValue();
+            double value = targetMage.getAttribute(entry.getKey()) + entry.getValue();
 
             targetMage.getProperties().setAttribute(entry.getKey(), value);
         }
