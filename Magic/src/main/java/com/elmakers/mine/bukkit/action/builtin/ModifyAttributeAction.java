@@ -25,6 +25,7 @@ public class ModifyAttributeAction extends BaseSpellAction {
 
     private void undoModifyAttributes() {
         for (Map.Entry<String, Double> entry : attributes.entrySet()) {
+            @SuppressWarnings("ConstantConditions")
             double value = targetMage.getAttribute(entry.getKey()) - entry.getValue();
 
             targetMage.getProperties().setAttribute(entry.getKey(), value);
@@ -57,6 +58,7 @@ public class ModifyAttributeAction extends BaseSpellAction {
         this.targetMage = context.getController().getMage(context.getTargetEntity());
 
         for (Map.Entry<String, Double> entry : attributes.entrySet()) {
+            @SuppressWarnings("ConstantConditions") 
             double value = targetMage.getProperties().getAttribute(entry.getKey()) + entry.getValue();
 
             targetMage.getProperties().setAttribute(entry.getKey(), value);
