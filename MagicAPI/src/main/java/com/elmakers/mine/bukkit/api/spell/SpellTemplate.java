@@ -14,13 +14,14 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.Taggable;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
 /**
  * A Spell template, as defined in the spells configuration files.
  */
-public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
+public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer, Taggable {
     String getName();
     String getAlias();
     String getDescription();

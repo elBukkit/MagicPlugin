@@ -818,7 +818,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean hasTag(String tag) {
         WandTemplate template = getTemplate();
-        return template != null && template.hasTag(tag);
+        return template != null && template.getTagContainer().hasTag(tag);
     }
 
     @Override

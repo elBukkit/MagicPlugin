@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.magic.TagContainer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -115,8 +116,9 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                         if (upgradePath == null) continue;
                         lore.add(context.getMessage("level_requirement").replace("$path", upgradePath.getName()));
                     }
-                    if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
-                        Set<String> tags = currentPath.getMissingTags(requiredPathTags);
+                    TagContainer pathTagContainer = currentPath.getTagContainer();
+                    if (requiredPathTags != null && !requiredPathTags.isEmpty() && !pathTagContainer.hasAllTags(requiredPathTags)) {
+                        Set<String> tags = pathTagContainer.getMissingTags(requiredPathTags);
                         lore.add(context.getMessage("tags_requirement").replace("$tags", messages.formatList("tags", tags, "name")));
                     }
                     long castCount = Math.min(spell.getCastCount(), requiredCastCount);

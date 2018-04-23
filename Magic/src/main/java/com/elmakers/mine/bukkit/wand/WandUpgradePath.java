@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.wand;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,10 +30,12 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.TagContainer;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.magic.SimpleTagContainer;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
@@ -66,7 +68,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private String name;
     private String description;
     private String followsPath;
-    private Set<String> tags;
+    private @Nonnull TagContainer tags = SimpleTagContainer.empty();
     private boolean hidden = false;
     private boolean earnsSP = true;
     private MaterialAndData icon;
@@ -110,10 +112,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         allExtraSpells.addAll(inherit.allExtraSpells);
         allBrushes.addAll(inherit.allBrushes);
 
-        if (inherit.tags != null && !inherit.tags.isEmpty())
-        {
-            this.tags = new HashSet<>(inherit.tags);
-        }
+        this.tags = inherit.tags;
 
         load(controller, key, template);
 
@@ -127,7 +126,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     public WandUpgradePath(MageController controller, String key, ConfigurationSection template) {
         this.key = key;
         this.parent = null;
-        this.tags = null;
         load(controller, key, template);
     }
 
@@ -227,13 +225,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
 
         Collection<String> tagList = ConfigurationUtils.getStringList(template, "tags");
-        if (tagList != null && !tagList.isEmpty()) {
-            if (tags == null) {
-                tags = new HashSet<>(tagList);
-            } else {
-                tags.addAll(tagList);
-            }
-        }
+        tags = SimpleTagContainer.appendFromConfig(tags, tagList);
 
         // Parse defined levels
         if (levelMap == null) {
@@ -389,36 +381,38 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     }
 
     @Override
+    public TagContainer getTagContainer() {
+        return tags;
+    }
+
+    @Override
+    @Deprecated
     public Set<String> getTags() {
-        return tags;
+        return tags.getTags();
     }
 
     @Override
+    @Deprecated
     public boolean hasTag(String tag) {
-        return tags != null && tags.contains(tag);
+        return tags.hasTag(tag);
     }
 
     @Override
+    @Deprecated
     public boolean hasAnyTag(Collection<String> tagSet) {
-        return tags != null && !Collections.disjoint(tagSet, tags);
+        return tags.hasAnyTag(tagSet);
     }
 
     @Override
+    @Deprecated
     public boolean hasAllTags(Collection<String> tagSet) {
-        return tags != null && tags.containsAll(tagSet);
+        return tags.hasAllTags(tagSet);
     }
 
     @Override
+    @Deprecated
     public Set<String> getMissingTags(Collection<String> tagSet) {
-        Set<String> tags = getTags();
-        if (tags != null) {
-            Set<String> s = new HashSet<>(tagSet);
-            s.removeAll(tags);
-            tags = s;
-        } else {
-            tags = new HashSet<>(tagSet);
-        }
-        return tags;
+        return tags.getMissingTags(tagSet);
     }
 
     @Override

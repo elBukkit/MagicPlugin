@@ -278,7 +278,7 @@ public class SpellShopAction extends BaseShopAction
 
             if ((requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
                     || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)
-                    || (requiredPathTags != null && !currentPath.hasAllTags(requiredPathTags))
+                    || (requiredPathTags != null && !currentPath.getTagContainer().hasAllTags(requiredPathTags))
                     || !missingSpells.isEmpty()) {
 
                 if (mageSpell != null && !spell.getName().equals(mageSpell.getName())) {
@@ -292,8 +292,8 @@ public class SpellShopAction extends BaseShopAction
                         unpurchasableMessage = context.getMessage("level_requirement", getDefaultMessage(context, "level_requirement")).replace("$path", upgradePath.getName());
                         InventoryUtils.wrapText(unpurchasableMessage, lore);
                     }
-                } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
-                    Set<String> tags = currentPath.getMissingTags(requiredPathTags);
+                } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.getTagContainer().hasAllTags(requiredPathTags)) {
+                    Set<String> tags = currentPath.getTagContainer().getMissingTags(requiredPathTags);
                     unpurchasableMessage = context.getMessage("tags_requirement", getDefaultMessage(context, "tags_requirement")).replace("$tags", controller.getMessages().formatList("tags", tags, "name"));
                     InventoryUtils.wrapText(unpurchasableMessage, lore);
                 }

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
-public interface ProgressionPath {
+public interface ProgressionPath extends Taggable {
     String getKey();
     String getName();
     MaterialAndData getIcon();
@@ -14,11 +14,18 @@ public interface ProgressionPath {
     String getDescription();
     boolean hasPath(String pathName);
     boolean hasUpgrade();
+
+    @Deprecated
     Set<String> getTags();
+    @Deprecated
     boolean hasTag(String tag);
+    @Deprecated
     boolean hasAnyTag(Collection<String> tagSet);
+    @Deprecated
     boolean hasAllTags(Collection<String> tagSet);
+    @Deprecated
     Set<String> getMissingTags(Collection<String> tagSet);
+
     String translatePath(String path);
     Collection<String> getSpells();
     Collection<String> getExtraSpells();

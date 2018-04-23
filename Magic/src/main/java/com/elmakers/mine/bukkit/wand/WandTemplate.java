@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.wand;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,8 +18,10 @@ import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.TagContainer;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
+import com.elmakers.mine.bukkit.magic.SimpleTagContainer;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
@@ -28,7 +29,7 @@ import com.google.common.collect.ImmutableSet;
 public class WandTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
     private final String key;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
-    private Set<String> tags;
+    private @Nonnull TagContainer tags = SimpleTagContainer.empty();
     private @Nonnull Set<String> categories = ImmutableSet.of();
     private String creator;
     private String creatorId;
@@ -122,11 +123,9 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         }
 
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
+        tags = SimpleTagContainer.fromConfig(tagList);
         if (tagList != null) {
-            tags = new HashSet<>(tagList);
             clearProperty("tags");
-        } else {
-            tags = null;
         }
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(node, "categories");
@@ -207,8 +206,14 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     }
 
     @Override
+    public TagContainer getTagContainer() {
+        return tags;
+    }
+
+    @Override
+    @Deprecated
     public boolean hasTag(String tag) {
-        return tags != null && tags.contains(tag);
+        return tags.hasTag(tag);
     }
 
     @Override

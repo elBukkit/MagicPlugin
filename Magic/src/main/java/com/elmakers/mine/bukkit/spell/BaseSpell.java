@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,6 +14,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -58,6 +58,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.TagContainer;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
@@ -75,6 +76,7 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MageClass;
+import com.elmakers.mine.bukkit.magic.SimpleTagContainer;
 import com.elmakers.mine.bukkit.magic.SpellParameters;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -182,7 +184,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private Color color;
     private String particle;
     private SpellCategory category;
-    private Set<String> tags;
+    private @Nonnull TagContainer tags = SimpleTagContainer.empty();
     private BaseSpell template;
     private long requiredUpgradeCasts;
     private String requiredUpgradePath;
@@ -930,11 +932,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         earnCooldown = node.getInt("earns_cooldown", 0);
         category = controller.getCategory(node.getString("category"));
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
-        if (tagList != null) {
-            tags = new HashSet<>(tagList);
-        } else {
-            tags = null;
-        }
+        tags = SimpleTagContainer.fromConfig(tagList);
 
         requiredHealth = node.getDouble("require_health_percentage", 0);
         costs = parseCosts(node.getConfigurationSection("costs"));
@@ -2018,15 +2016,24 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public boolean hasTag(String tag) {
-        if (category != null && category.getKey().equals(tag)) return true;
-        return tags != null && tags.contains(tag);
+    public TagContainer getTagContainer() {
+        return tags;
     }
 
     @Override
+    @Deprecated
+    public boolean hasTag(String tag) {
+        // TODO: This is inconsistent with other taggable classes
+        // We should probably fix that.
+        if (category != null && category.getKey().equals(tag)) return true;
+        return tags.hasTag(tag);
+    }
+
+    @Override
+    @Deprecated
     public boolean hasAnyTag(Collection<String> tagSet) {
         if (category != null && tagSet.contains(category.getKey())) return true;
-        return tags != null && !Collections.disjoint(tagSet, tags);
+        return !tags.hasAnyTag(tagSet);
     }
 
     public boolean hasEffects(String key) {
@@ -2765,7 +2772,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                     Set<String> upgradeTags = getRequiredUpgradeTags();
                     if ((upgrade != null && requiredCasts > 0 && getCastCount() >= requiredCasts)
                             && (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
-                            && (upgradeTags == null || upgradeTags.isEmpty() || (currentPath != null && currentPath.hasAllTags(upgradeTags))))
+                            && (upgradeTags == null || upgradeTags.isEmpty() || (currentPath != null && currentPath.getTagContainer().hasAllTags(upgradeTags))))
                     {
                         if (PrerequisiteSpell.hasPrerequisites(wand, upgrade)) {
                             MageSpell newSpell = mage.getSpell(upgrade.getKey());
