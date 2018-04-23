@@ -75,6 +75,8 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData, Cloneable {
     protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<>();
 
+    public static boolean isSpawning = false;
+
     protected String key;
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
@@ -537,8 +539,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (spawned != null) {
             modifyPreSpawn(controller, spawned);
             if (!addedToWorld) {
+                isSpawning = true;
                 reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
                 CompatibilityUtils.addToWorld(location.getWorld(), spawned, reason);
+                isSpawning = false;
             }
             modifyPostSpawn(controller, spawned);
         }

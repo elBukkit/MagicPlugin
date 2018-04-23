@@ -55,6 +55,9 @@ public class MobController implements Listener {
 
     @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
+        // Special check for mobs spawned internally
+        if (EntityData.isSpawning) return;
+
         final Entity entity = event.getEntity();
         SpawnReason reason = event.getSpawnReason();
         if (reason != SpawnReason.SPAWNER
@@ -71,8 +74,7 @@ public class MobController implements Listener {
                 String customName = entity.getCustomName();
                 if (customName != null) {
                     EntityData customMob = mobsByName.get(customName);
-                    // Prevent double-modify for magic mobs that were already spawned
-                    if (customMob != null && controller.getRegisteredMage(entity) == null) {
+                    if (customMob != null) {
                         customMob.modify(controller, entity);
                     }
                 }
