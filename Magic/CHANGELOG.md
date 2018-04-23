@@ -3,10 +3,18 @@
 # 7.5
 
  - Maybe 1.13 support (not tested yet)
- - Fix Heroes attribute integration
- - Add support for generic_knockback_resistance attribute on items
  - The map brush can now work with concrete, glazed terracotta and several other block types
  - Add support for parrot variants in mob configs
+
+# 7.4.1
+
+ - Fix Heroes attribute integration
+ - Add support for generic_knockback_resistance attribute on items
+ - Fix spawned mobs having no AI by default
+ - Fix annoying warning from PaperSpigot about crafting recipes
+ - Better handling for wearing pumpkins
+ - Add a couple of new parameters to Orient and ChangeContext actions
+
 
 # 7.4
 
