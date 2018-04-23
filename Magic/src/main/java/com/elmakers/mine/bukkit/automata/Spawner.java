@@ -57,7 +57,7 @@ public class Spawner {
         countProbability = new ArrayDeque<>();
         RandomUtils.populateIntegerProbabilityMap(countProbability, configuration, "count", 0, 0, 0);
         if (countProbability.isEmpty()) {
-            countProbability.add(new WeightedPair<Integer>(1.0f, 1));
+            countProbability.add(new WeightedPair<>(1.0f, 1));
         }
 
         probability = configuration.getDouble("probability", 0);

@@ -4737,7 +4737,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // Look for existing spells for spell upgrades
         Integer inventorySlot = spellInventory.get(spellKey.getBaseKey());
-        SpellTemplate currentSpell = getBaseSpell(spellKey);
         clearSlot(inventorySlot);
 
         setSpellLevel(spellKey.getBaseKey(), level);

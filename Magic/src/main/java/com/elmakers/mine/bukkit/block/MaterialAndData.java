@@ -684,7 +684,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public String getName(Messages messages) {
         if (!isValid()) return "";
         VaultController controller = VaultController.getInstance();

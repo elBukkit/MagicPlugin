@@ -471,7 +471,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             }
             String url = decoded.replace("\"", "").replace("{textures:{SKIN:{url:", "").replace("}}}", "").trim();
             skullItem = controller.getURLSkull(url);
-            if (skullItem == null) {
+            if (InventoryUtils.isEmpty(skullItem)) {
                 player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
                 return true;
             }

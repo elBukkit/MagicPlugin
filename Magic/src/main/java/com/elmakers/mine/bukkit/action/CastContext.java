@@ -1000,10 +1000,10 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
             mage.registerForUndo(undoList);
         }
         result = result.max(initialResult);
-        if (spell != null) { // TODO: Remove conditional when precondition is fixed
-            mage.sendDebugMessage(ChatColor.WHITE + "Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result.name().toLowerCase(), 2);
-            spell.finish(this);
-        }
+
+        mage.sendDebugMessage(ChatColor.WHITE + "Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result.name().toLowerCase(), 2);
+        spell.finish(this);
+
         String resultName = result.name().toLowerCase();
         castMessageKey(resultName + "_finish");
         playEffects(resultName + "_finish");

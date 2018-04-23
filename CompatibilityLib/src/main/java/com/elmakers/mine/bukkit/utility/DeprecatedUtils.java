@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.UnsafeValues;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
@@ -146,5 +147,9 @@ public class DeprecatedUtils {
     public static void setPassenger(Entity mount, Entity passenger) {
         // TODO: Use addPassenger
         mount.setPassenger(passenger);
+    }
+
+    public static UnsafeValues getUnsafe() {
+        return Bukkit.getUnsafe();
     }
 }

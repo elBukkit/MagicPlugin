@@ -193,7 +193,6 @@ public class SimulateBatch extends SpellBatch {
         finish();
     }
 
-    @SuppressWarnings("deprecation")
     protected void removeBlock(Block block) {
         Double breaking = UndoList.getRegistry().getBreaking(block);
         if (breaking != null) {

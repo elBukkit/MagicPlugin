@@ -61,7 +61,6 @@ public class AlterSpell extends BlockSpell
 
 
     @Override
-    @SuppressWarnings("deprecation")
     public SpellResult onCast(ConfigurationSection parameters)
     {
         Target target = getTarget();
