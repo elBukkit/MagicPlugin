@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import javax.annotation.Nonnull;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -116,7 +114,7 @@ public class ChangeContextAction extends CompoundAction {
     @Override
     public SpellResult step(CastContext context) {
         Entity sourceEntity = context.getEntity();
-        @Nonnull Location sourceLocation = context.getEyeLocation().clone();
+        Location sourceLocation = context.getEyeLocation().clone();
         if (this.sourceLocation != null) {
             Vector newSource = ConfigurationUtils.toVector(this.sourceLocation);
             if (newSource != null) {

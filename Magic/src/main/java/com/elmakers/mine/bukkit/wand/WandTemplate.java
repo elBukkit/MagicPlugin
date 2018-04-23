@@ -112,13 +112,9 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
                         effects.put(effectKey, new ArrayList<>(effects.get(referenceKey)));
                     } else {
                         Collection<EffectPlayer> baseEffects = controller.getEffects(referenceKey);
-                        if (baseEffects != null) {
-                            effects.put(effectKey, baseEffects);
-                        }
+                        effects.put(effectKey, baseEffects);
                     }
-                }
-                else
-                {
+                } else {
                     effects.put(effectKey, controller.loadEffects(effectsNode, effectKey));
                 }
             }
@@ -195,11 +191,11 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             player.setScale(scale);
 
             // Set material and color
-            player.setColor(wand == null ? mage.getEffectColor() : wand.getEffectColor());
-            String overrideParticle = wand == null ? mage.getEffectParticleName() : wand.getEffectParticleName();
+            player.setColor(wand.getEffectColor());
+            String overrideParticle = wand.getEffectParticleName();
             player.setParticleOverride(overrideParticle);
 
-            Location source = wand == null ? null : player.getSourceLocation(context);
+            Location source = player.getSourceLocation(context);
             if (source == null) {
                 source = mage.getLocation();
             }

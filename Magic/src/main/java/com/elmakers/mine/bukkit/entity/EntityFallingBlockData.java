@@ -58,7 +58,11 @@ public class EntityFallingBlockData extends EntityExtraData {
     }
 
     public byte getData() {
-        Byte data = material == null ? 0 : material.getBlockData();
+        if (material == null) {
+            return 0;
+        }
+
+        Byte data = material.getBlockData();
         return data == null ? 0 : data;
     }
 }
