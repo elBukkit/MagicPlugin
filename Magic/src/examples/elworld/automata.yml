@@ -17,3 +17,9 @@ earth:
      effectlib:
        class: Earth
        duration: 86400000
+
+wolfanimation:
+  name: Wolf Animation
+  interval: 33000
+  cast:
+    spells: wolfanimation
