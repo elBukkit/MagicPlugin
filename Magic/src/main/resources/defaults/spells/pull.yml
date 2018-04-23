@@ -41,9 +41,10 @@ pull:
           effectlib:
             class: Sphere
             particle: spell
-            particles: 20
-            iterations: 20
-            particle_count: 5
+            particles: 4
+            period: 2
+            duration: 500
+            particle_count: 10
             particle_offset_x: 0.5
             particle_offset_y: 0.5
             particle_offset_z: 0.5

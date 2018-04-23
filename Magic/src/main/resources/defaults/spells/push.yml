@@ -43,8 +43,9 @@ push:
           effectlib:
             class: Sphere
             particle: spell
-            particles: 5
-            iterations: 20
+            particles: 2
+            period: 4
+            duration: 500
             particle_count: 10
             particle_offset_x: 0.5
             particle_offset_y: 0.5
@@ -69,8 +70,9 @@ push:
           effectlib:
             class: Sphere
             particle: spell
-            particles: 5
-            iterations: 20
+            particles: 2
+            period: 4
+            duration: 500
             particle_count: 10
             particle_offset_x: 0.5
             particle_offset_y: 0.5
