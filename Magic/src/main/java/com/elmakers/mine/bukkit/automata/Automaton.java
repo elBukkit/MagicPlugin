@@ -170,6 +170,7 @@ public class Automaton {
     }
 
     public void checkEntities() {
+        if (spawned == null) return;
         Iterator<WeakReference<Entity>> iterator = spawned.iterator();
         while (iterator.hasNext()) {
             WeakReference<Entity> mobReference = iterator.next();
