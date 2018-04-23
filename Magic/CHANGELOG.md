@@ -4,6 +4,10 @@
 
  - Fix Heroes attribute integration
  - Add support for generic_knockback_resistance attribute on items
+ - Fix spawned mobs having no AI by default
+ - Fix annoying warning from PaperSpigot about crafting recipes
+ - Better handling for wearing pumpkins
+ - Add a couple of new parameters to Orient and ChangeContext actions
 
 # 7.4
 
