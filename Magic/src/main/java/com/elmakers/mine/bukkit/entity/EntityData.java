@@ -749,6 +749,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             mageData.onSpawn(apiMage);
         }
 
+        if (controller != null && disguise != null) {
+            if (!controller.disguise(entity, disguise)) {
+                controller.getLogger().warning("Invalid disguise type: " + disguise.getString("type"));
+            }
+        }
+
         return true;
     }
 
@@ -766,12 +772,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         if (hasVelocity && velocity != null) {
             SafetyUtils.setVelocity(entity, velocity);
-        }
-
-        if (controller != null && disguise != null) {
-            if (!controller.disguise(entity, disguise)) {
-                controller.getLogger().warning("Invalid disguise type: " + disguise.getString("type"));
-            }
         }
         return true;
     }
