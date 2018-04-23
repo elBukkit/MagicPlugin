@@ -10,9 +10,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Copyright Tyler Grissom 2018
- */
 public class ModifyAttributeAction extends BaseSpellAction {
 
     private Map<String, Double> attributes;
