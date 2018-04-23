@@ -2,6 +2,7 @@
 
 ## 7.5
  
+ - Now requires Java 8
  - Make sure you do not have any material sets defined in materials.yml that contain a material of the same name as the set.
  - MusicSpell deleted, use MusicAction instead
  - BlockPhysics integration removed
