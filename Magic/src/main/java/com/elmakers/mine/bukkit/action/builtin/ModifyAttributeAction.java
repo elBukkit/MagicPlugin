@@ -37,20 +37,14 @@ public class ModifyAttributeAction extends BaseSpellAction {
 
         ConfigurationSection section = parameters.getConfigurationSection("attributes");
 
-        if (section == null) return;
+        if (section == null) {
+            return;
+        }
 
         this.attributes = new HashMap<>();
 
         for (String key : section.getKeys(false)) {
             attributes.put(key, section.getDouble(key, 0));
-        }
-
-        for (String key : parameters.getKeys(false)) {
-            if (key.startsWith("attribute_")) {
-                String str = key.replace("attribute_", "");
-
-                attributes.put(str, parameters.getDouble(key));
-            }
         }
     }
 
