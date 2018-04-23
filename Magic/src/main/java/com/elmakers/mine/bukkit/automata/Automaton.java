@@ -91,7 +91,7 @@ public class Automaton {
             if (parameters != null) {
                 this.template = template.getVariant(parameters);
             }
-            nextTick = System.currentTimeMillis() + template.getInterval();
+            nextTick = 0;
         }
     }
 
