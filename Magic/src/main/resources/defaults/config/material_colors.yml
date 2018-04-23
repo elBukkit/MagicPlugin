@@ -83,6 +83,22 @@ material_colors:
   green: wool:13
   red: wool:14
   black: wool:15
+- white: carpet:0
+  orange: carpet:1
+  magenta: carpet:2
+  light_blue: carpet:3
+  yellow: carpet:4
+  lime: carpet:5
+  pink: carpet:6
+  gray: carpet:7
+  silver: carpet:8
+  cyan: carpet:9
+  purple: carpet:10
+  blue: carpet:11
+  brown: carpet:12
+  green: carpet:13
+  red: carpet:14
+  black: carpet:15
 - white: stained_glass:0
   orange: stained_glass:1
   magenta: stained_glass:2
@@ -214,6 +230,22 @@ material_colors:
   green: green_wool
   red: red_wool
   black: black_wool
+- white: white_carpet
+  orange: orange_carpet
+  magenta: magenta_carpet
+  light_blue: light_blue_carpet
+  yellow: yellow_carpet
+  lime: lime_carpet
+  pink: pink_carpet
+  gray: gray_carpet
+  silver: light_gray_carpet
+  cyan: cyan_carpet
+  purple: purple_carpet
+  blue: blue_carpet
+  brown: brown_carpet
+  green: green_carpet
+  red: red_carpet
+  black: black_carpet
 - white: white_stained_glass
   orange: orange_stained_glass
   magenta: magenta_stained_glass
