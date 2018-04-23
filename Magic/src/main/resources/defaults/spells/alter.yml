@@ -32,6 +32,7 @@ alter:
         allow_max_range: false
         range: 32
         transparent: transparent_to_construction
+        cycle_colors: true
         materials:
         - - dirt
           - dirt:1
@@ -198,22 +199,6 @@ alter:
           - piston_base:3
           - piston_base:4
           - piston_base:5
-        - - wool
-          - wool:1
-          - wool:2
-          - wool:3
-          - wool:4
-          - wool:5
-          - wool:6
-          - wool:7
-          - wool:8
-          - wool:9
-          - wool:10
-          - wool:11
-          - wool:12
-          - wool:13
-          - wool:14
-          - wool:15
         - - yellow_flower
           - yellow_flower:1
           - yellow_flower:2
@@ -430,22 +415,6 @@ alter:
           - diode_block_on:3
           - diode_block_on:4
           - diode_block_on:5
-        - - stained_glass
-          - stained_glass:1
-          - stained_glass:2
-          - stained_glass:3
-          - stained_glass:4
-          - stained_glass:5
-          - stained_glass:6
-          - stained_glass:7
-          - stained_glass:8
-          - stained_glass:9
-          - stained_glass:10
-          - stained_glass:11
-          - stained_glass:12
-          - stained_glass:13
-          - stained_glass:14
-          - stained_glass:15
         - - monster_eggs
           - monster_eggs:1
           - monster_eggs:2
@@ -602,70 +571,6 @@ alter:
           - quartz_stairs:1
           - quartz_stairs:2
           - quartz_stairs:3
-        - - stained_clay
-          - stained_clay:1
-          - stained_clay:2
-          - stained_clay:3
-          - stained_clay:4
-          - stained_clay:5
-          - stained_clay:6
-          - stained_clay:7
-          - stained_clay:8
-          - stained_clay:9
-          - stained_clay:10
-          - stained_clay:11
-          - stained_clay:12
-          - stained_clay:13
-          - stained_clay:14
-          - stained_clay:15
-        - - stained_glass_pane
-          - stained_glass_pane:1
-          - stained_glass_pane:2
-          - stained_glass_pane:3
-          - stained_glass_pane:4
-          - stained_glass_pane:5
-          - stained_glass_pane:6
-          - stained_glass_pane:7
-          - stained_glass_pane:8
-          - stained_glass_pane:9
-          - stained_glass_pane:10
-          - stained_glass_pane:11
-          - stained_glass_pane:12
-          - stained_glass_pane:13
-          - stained_glass_pane:14
-          - stained_glass_pane:15
-        - - carpet
-          - carpet:1
-          - carpet:2
-          - carpet:3
-          - carpet:4
-          - carpet:5
-          - carpet:6
-          - carpet:7
-          - carpet:8
-          - carpet:9
-          - carpet:10
-          - carpet:11
-          - carpet:12
-          - carpet:13
-          - carpet:14
-          - carpet:15
-        - - hard_clay
-          - hard_clay:1
-          - hard_clay:2
-          - hard_clay:3
-          - hard_clay:4
-          - hard_clay:5
-          - hard_clay:6
-          - hard_clay:7
-          - hard_clay:8
-          - hard_clay:9
-          - hard_clay:10
-          - hard_clay:11
-          - hard_clay:12
-          - hard_clay:13
-          - hard_clay:14
-          - hard_clay:15
         - - double_plant
           - double_plant:1
           - double_plant:2
@@ -673,102 +578,6 @@ alter:
           - double_plant:4
           - double_plant:5
           - double_plant:6
-        - - white_glazed_terracotta
-          - white_glazed_terracotta:1
-          - white_glazed_terracotta:2
-          - white_glazed_terracotta:3
-        - - orange_glazed_terracotta
-          - orange_glazed_terracotta:1
-          - orange_glazed_terracotta:2
-          - orange_glazed_terracotta:3
-        - - magenta_glazed_terracotta
-          - magenta_glazed_terracotta:1
-          - magenta_glazed_terracotta:2
-          - magenta_glazed_terracotta:3
-        - - light_blue_glazed_terracotta
-          - light_blue_glazed_terracotta:1
-          - light_blue_glazed_terracotta:2
-          - light_blue_glazed_terracotta:3
-        - - yellow_glazed_terracotta
-          - yellow_glazed_terracotta:1
-          - yellow_glazed_terracotta:2
-          - yellow_glazed_terracotta:3
-        - - lime_glazed_terracotta
-          - lime_glazed_terracotta:1
-          - lime_glazed_terracotta:2
-          - lime_glazed_terracotta:3
-        - - pink_glazed_terracotta
-          - pink_glazed_terracotta:1
-          - pink_glazed_terracotta:2
-          - pink_glazed_terracotta:3
-        - - gray_glazed_terracotta
-          - gray_glazed_terracotta:1
-          - gray_glazed_terracotta:2
-          - gray_glazed_terracotta:3
-        - - silver_glazed_terracotta
-          - silver_glazed_terracotta:1
-          - silver_glazed_terracotta:2
-          - silver_glazed_terracotta:3
-        - - cyan_glazed_terracotta
-          - cyan_glazed_terracotta:1
-          - cyan_glazed_terracotta:2
-          - cyan_glazed_terracotta:3
-        - - purple_glazed_terracotta
-          - purple_glazed_terracotta:1
-          - purple_glazed_terracotta:2
-          - purple_glazed_terracotta:3
-        - - blue_glazed_terracotta
-          - blue_glazed_terracotta:1
-          - blue_glazed_terracotta:2
-          - blue_glazed_terracotta:3
-        - - brown_glazed_terracotta
-          - brown_glazed_terracotta:1
-          - brown_glazed_terracotta:2
-          - brown_glazed_terracotta:3
-        - - green_glazed_terracotta
-          - green_glazed_terracotta:1
-          - green_glazed_terracotta:2
-          - green_glazed_terracotta:3
-        - - red_glazed_terracotta
-          - red_glazed_terracotta:1
-          - red_glazed_terracotta:2
-          - red_glazed_terracotta:3
-        - - black_glazed_terracotta
-          - black_glazed_terracotta:1
-          - black_glazed_terracotta:2
-          - black_glazed_terracotta:3
-        - - concrete
-          - concrete:1
-          - concrete:2
-          - concrete:3
-          - concrete:4
-          - concrete:5
-          - concrete:6
-          - concrete:7
-          - concrete:8
-          - concrete:9
-          - concrete:10
-          - concrete:11
-          - concrete:12
-          - concrete:13
-          - concrete:14
-          - concrete:15
-        - - concrete_powder
-          - concrete_powder:1
-          - concrete_powder:2
-          - concrete_powder:3
-          - concrete_powder:4
-          - concrete_powder:5
-          - concrete_powder:6
-          - concrete_powder:7
-          - concrete_powder:8
-          - concrete_powder:9
-          - concrete_powder:10
-          - concrete_powder:11
-          - concrete_powder:12
-          - concrete_powder:13
-          - concrete_powder:14
-          - concrete_powder:15
         - - stone
           - stone:1
           - stone:2
@@ -776,6 +585,87 @@ alter:
           - stone:4
           - stone:5
           - stone:6
+
+        # 1.13
+
+        - - dark_oak_log
+          - oak_log
+          - birch_log
+          - acacia_log
+          - jungle_log
+          - spruce_log
+        - - dark_oak_planks
+          - oak_planks
+          - birch_planks
+          - acacia_planks
+          - jungle_planks
+          - spruce_planks
+        - - dark_oak_slab
+          - oak_slab
+          - birch_slab
+          - acacia_slab
+          - jungle_slab
+          - spruce_slab
+        - - dark_oak_sapling
+          - oak_sapling
+          - birch_sapling
+          - acacia_sapling
+          - jungle_sapling
+          - spruce_sapling
+        - - dark_oak_stairs
+          - oak_stairs
+          - birch_stairs
+          - acacia_stairs
+          - jungle_stairs
+          - spruce_stairs
+        - - dark_oak_trapdoor
+          - oak_trapdoor
+          - birch_trapdoor
+          - acacia_trapdoor
+          - jungle_trapdoor
+          - spruce_trapdoor
+        - - dark_oak_fence
+          - oak_fence
+          - birch_fence
+          - acacia_fence
+          - jungle_fence
+          - spruce_fence
+        - - dark_oak_pressure_plate
+          - oak_pressure_plate
+          - birch_pressure_plate
+          - acacia_pressure_plate
+          - jungle_pressure_plate
+          - spruce_pressure_plate
+        - - dark_oak_bark
+          - oak_bark
+          - birch_bark
+          - acacia_bark
+          - jungle_bark
+          - spruce_bark
+        - - dark_oak_button
+          - oak_button
+          - birch_button
+          - acacia_button
+          - jungle_button
+          - spruce_button
+        - - dark_oak_fence_gate
+          - oak_fence_gate
+          - birch_fence_gate
+          - acacia_fence_gate
+          - jungle_fence_gate
+          - spruce_fence_gate
+        - - dark_oak_leaves
+          - oak_leaves
+          - birch_leaves
+          - acacia_leaves
+          - jungle_leaves
+          - spruce_leaves
+        - - stripped_dark_oak_log
+          - stripped_oak_log
+          - stripped_birch_log
+          - stripped_acacia_log
+          - stripped_jungle_log
+          - stripped_spruce_log
     costs:
         mana: 10
 
