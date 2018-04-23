@@ -99,7 +99,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isBaby;
     protected boolean isSilent;
     protected boolean isTamed;
-    protected boolean hasAI;
+    protected boolean hasAI = true;
     protected int fireTicks;
 
     protected DyeColor dyeColor;
