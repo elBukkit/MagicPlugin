@@ -26,6 +26,7 @@ public class UndoableSpell extends TargetingSpell {
     private boolean         bypassUndo                = false;
     private int                 autoUndo                = 0;
     private double          undoSpeed               = 0;
+    private boolean         undoSorted              = true;
 
     @Override
     public void processParameters(ConfigurationSection parameters)
@@ -38,6 +39,7 @@ public class UndoableSpell extends TargetingSpell {
         autoUndo = parameters.getInt("u", autoUndo);
         bypassUndo = parameters.getBoolean("bypass_undo", false);
         undoSpeed = parameters.getDouble("undo_speed", 0);
+        undoSorted = parameters.getBoolean("undo_sorted", true);
         if (parameters.contains("entity_undo_types"))
         {
             undoEntityTypes = new HashSet<>();
@@ -155,6 +157,7 @@ public class UndoableSpell extends TargetingSpell {
             modifiedBlocks.setBypass(bypassUndo);
             modifiedBlocks.setScheduleUndo(autoUndo);
             modifiedBlocks.setUndoSpeed(undoSpeed);
+            modifiedBlocks.setSorted(undoSorted);
         }
     }
 
