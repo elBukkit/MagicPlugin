@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.DyeColor;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -12,6 +14,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class CycleBlockAction extends BaseSpellAction {
@@ -24,9 +27,17 @@ public class CycleBlockAction extends BaseSpellAction {
         @SuppressWarnings("unchecked")
         List<List<String>> allMaterials = (List<List<String>>)parameters.getList("materials");
         this.materials.clear();
-        if (allMaterials == null) {
-            spell.getController().getLogger().warning("CycleBlock action missing materials list");
-        } else {
+        if (parameters.getBoolean("cycle_colors", false)) {
+            Collection<Map<DyeColor, MaterialAndData>> colorBlocks = DefaultMaterials.getInstance().getAllColorBlocks();
+            for (Map<DyeColor, MaterialAndData> colorMap : colorBlocks) {
+                List<MaterialAndData> colorList = new ArrayList<>();
+                colorList.addAll(colorMap.values());
+                for (int i = 0; i < colorList.size(); i++) {
+                    materials.put(colorList.get(i), colorList.get((i + 1) % colorList.size()));
+                }
+            }
+        }
+        if (allMaterials != null) {
             for (List<String> list : allMaterials) {
                 List<MaterialAndData> materialList = new ArrayList<>();
                 for (String material : list) {
@@ -35,10 +46,16 @@ public class CycleBlockAction extends BaseSpellAction {
                         materialList.add(entry);
                     }
                 }
-                for (int i = 0; i < materialList.size(); i++) {
-                    materials.put(materialList.get(i), materialList.get((i + 1) % materialList.size()));
+                if (materialList.size() > 1) {
+                    for (int i = 0; i < materialList.size(); i++) {
+                        materials.put(materialList.get(i), materialList.get((i + 1) % materialList.size()));
+                    }
                 }
             }
+        }
+
+        if (this.materials.isEmpty()) {
+            spell.getController().getLogger().warning("CycleBlock action missing materials list");
         }
     }
 

@@ -160,6 +160,10 @@ public class DefaultMaterials {
         }
     }
 
+    public Collection<Map<DyeColor, MaterialAndData>> getAllColorBlocks() {
+        return materialColors.values();
+    }
+
     public static boolean isCommand(Material material) {
         return getInstance().commandBlocks.testMaterial(material);
     }
