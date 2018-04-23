@@ -17,10 +17,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -53,18 +55,31 @@ public class MobController implements Listener {
 
     @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        Entity entity = event.getEntity();
-        String customName = entity.getCustomName();
+        // Special check for mobs spawned internally
+        if (EntityData.isSpawning) return;
 
-        // TODO: A better way to know if we've already called modify()
-        // This at least prevents double-casting and double-effects on magic mobs.
-        if (customName != null && controller.getRegisteredMage(entity) == null) {
-            EntityData customMob = mobsByName.get(customName);
-            if (customMob != null) {
-                customMob.modify(controller, entity);
-                event.setCancelled(false);
-            }
+        final Entity entity = event.getEntity();
+        SpawnReason reason = event.getSpawnReason();
+        if (reason != SpawnReason.SPAWNER
+            && reason != SpawnReason.SPAWNER_EGG
+            && reason != SpawnReason.DISPENSE_EGG
+            && reason != SpawnReason.CUSTOM) {
+            return;
         }
+
+        Plugin plugin = controller.getPlugin();
+        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
+            public void run() {
+                String customName = entity.getCustomName();
+                if (customName != null) {
+                    EntityData customMob = mobsByName.get(customName);
+                    if (customMob != null) {
+                        customMob.modify(controller, entity);
+                    }
+                }
+            }
+        }, 1);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
