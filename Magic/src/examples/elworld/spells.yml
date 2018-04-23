@@ -1568,9 +1568,9 @@ terracotta:
     target: self
     destructible: "*"
     axis: x
-    repeat: 10
+    repeat: 5
     delay: 100
-    target_offset: -2,4,0
+    target_offset: 4,1,0
 
 launchmob:
     name: Launch Mob
@@ -3364,4 +3364,5 @@ wolfanimation:
         quiet: true
         undo_sorted: false
         oty: -1
+        bypass: true
 
