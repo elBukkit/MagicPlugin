@@ -22,6 +22,5 @@ public interface ItemData {
 
     @Nullable
     @Deprecated
-    @SuppressWarnings("deprecation")
     org.bukkit.material.MaterialData getMaterialData();
 }

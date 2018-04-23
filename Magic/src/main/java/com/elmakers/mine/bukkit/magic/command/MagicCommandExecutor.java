@@ -32,7 +32,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
@@ -619,7 +618,6 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
                     Ageable ageable = (testEntity instanceof Ageable) ? (Ageable)testEntity : null;
                     Zombie zombie = (testEntity instanceof Zombie) ? (Zombie)testEntity : null;
-                    Skeleton skeleton = (testEntity instanceof Skeleton) ? (Skeleton)testEntity : null;
                     Slime slime = (testEntity instanceof Slime) ? (Slime)testEntity : null;
                     if (ageable != null)
                     {

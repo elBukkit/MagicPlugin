@@ -12,7 +12,6 @@ public class TowerSpell extends BlockSpell {
 
     private int blocksCreated;
 
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult onCast(ConfigurationSection parameters)
     {

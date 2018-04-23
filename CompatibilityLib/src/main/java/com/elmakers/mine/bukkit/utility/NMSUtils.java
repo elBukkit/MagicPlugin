@@ -546,7 +546,6 @@ public class NMSUtils {
             try {
                 @SuppressWarnings("deprecation")
                 Class<?> unsafe = org.bukkit.UnsafeValues.class;
-                @SuppressWarnings("deprecation")
                 Class<?> materialData = org.bukkit.material.MaterialData.class;
                 class_UnsafeValues_fromLegacyDataMethod = unsafe.getMethod("fromLegacy", materialData);
                 class_UnsafeValues_fromLegacyMethod = unsafe.getMethod("fromLegacy", Material.class);

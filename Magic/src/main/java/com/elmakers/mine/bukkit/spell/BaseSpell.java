@@ -2045,7 +2045,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (effectList == null) {
             return controller.getEffects(key);
         }
-        return new ArrayList<EffectPlayer>(effectList);
+        return new ArrayList<>(effectList);
     }
 
     @Nullable

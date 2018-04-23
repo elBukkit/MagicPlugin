@@ -1347,7 +1347,6 @@ public class CompatibilityUtils extends NMSUtils {
         return setBlockFast(block.getChunk(), block.getX(), block.getY(), block.getZ(), material, data);
     }
 
-    @SuppressWarnings("deprecation")
     public static boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data) {
         if (class_Block_fromLegacyData == null || class_CraftMagicNumbers_getBlockMethod == null || class_Chunk_setBlockMethod == null || class_BlockPosition_Constructor == null) {
             DeprecatedUtils.setTypeAndData(chunk.getWorld().getBlockAt(x, y, z), material, (byte)data, false);
@@ -1407,7 +1406,6 @@ public class CompatibilityUtils extends NMSUtils {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     public static Entity getEntity(UUID uuid) {
         if (class_Server_getEntityMethod != null) {
             try {
@@ -1427,7 +1425,6 @@ public class CompatibilityUtils extends NMSUtils {
         return null;
     }
 
-    @SuppressWarnings({"unchecked", "deprecation"})
     public static ShapedRecipe createShapedRecipe(Plugin plugin, String key, ItemStack item) {
         if (class_NamespacedKey == null) {
             return new ShapedRecipe(item);
@@ -1442,23 +1439,20 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public static double getMaxHealth(Damageable li) {
         // return li.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         return li.getMaxHealth();
     }
 
-    @SuppressWarnings("deprecation")
     public static void setMaxHealth(Damageable li, double maxHealth) {
         // li.getAttribute(Attribute.GENERIC_MAX_HEALTH).setValue(maxHealth);
         li.setMaxHealth(maxHealth);
     }
 
-    @SuppressWarnings({"deprecation", "unchecked"})
     public static Material fromLegacy(org.bukkit.material.MaterialData materialData) {
         if (class_UnsafeValues_fromLegacyDataMethod != null) {
             try {
-                return (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(Bukkit.getUnsafe(), materialData);
+                return (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(DeprecatedUtils.getUnsafe(), materialData);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -1492,7 +1486,6 @@ public class CompatibilityUtils extends NMSUtils {
         return materialIdMap.get(id);
     }
 
-    @SuppressWarnings("unchecked")
     public static boolean isLegacy(Material material) {
         if (class_Material_isLegacyMethod == null) {
             return false;
@@ -1505,7 +1498,6 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
     public static Material migrateMaterial(Material material) {
         if (class_UnsafeValues_fromLegacyMethod != null && isLegacy(material)) {
             try {
@@ -1566,7 +1558,6 @@ public class CompatibilityUtils extends NMSUtils {
         return materialKey;
     }
 
-    @SuppressWarnings("unchecked")
     public static Enum<?> getParrotVariant(Entity entity) {
         if (class_Parrot == null) return null;
         Enum<?> variant = null;

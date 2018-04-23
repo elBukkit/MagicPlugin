@@ -652,7 +652,6 @@ public class PlayerController implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerPickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
     {
@@ -668,7 +667,6 @@ public class PlayerController implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerPrePickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
     {

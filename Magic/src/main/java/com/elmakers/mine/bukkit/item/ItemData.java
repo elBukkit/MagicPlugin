@@ -145,7 +145,6 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
 
     @Nullable
     @Deprecated
-    @SuppressWarnings("deprecation")
     @Override
     public org.bukkit.material.MaterialData getMaterialData() {
         if (item == null) return null;

@@ -151,7 +151,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
         if (effectList == null) {
             return new ArrayList<>();
         }
-        return new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effectList);
+        return new ArrayList<>(effectList);
     }
 
     @Override

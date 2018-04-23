@@ -187,7 +187,6 @@ public class ConfigurationUtils extends ConfigUtils {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     @Nullable
     public static Material toMaterial(Object o) {
         if (o instanceof Material) {
