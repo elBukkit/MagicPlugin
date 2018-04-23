@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.utility.ColorHD;
+import com.elmakers.mine.bukkit.wand.Wand;
 
 public class MageProperties extends CasterProperties {
     private final Mage mage;
@@ -27,6 +28,16 @@ public class MageProperties extends CasterProperties {
         if (hasProperty("effect_color")) {
             setEffectColor(getString("effect_color"));
         }
+    }
+
+    @Override
+    public void updated() {
+        updateMaxMana(mage);
+        Wand activeWand = mage.getActiveWand();
+        if (activeWand != null) {
+            activeWand.updated();
+        }
+        mage.updatePassiveEffects();
     }
 
     public void setEffectColor(String hexColor) {
