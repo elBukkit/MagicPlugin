@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Entity;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.effect.EffectContext;
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -38,6 +40,8 @@ public class Automaton {
     private long nextTick;
     private List<WeakReference<Entity>> spawned;
     private EffectContext effectContext;
+
+    private Mage mage;
 
     public Automaton(@Nonnull MagicController controller, @Nonnull ConfigurationSection node) {
         this.controller = controller;
@@ -129,6 +133,13 @@ public class Automaton {
             effectContext.cancelEffects();
             effectContext = null;
         }
+
+        if (mage != null) {
+            mage.deactivate();
+            mage.undoScheduled();
+            controller.forgetMage(mage);
+            mage = null;
+        }
     }
 
     public void resume() {
@@ -140,10 +151,33 @@ public class Automaton {
                 player.start(getEffectContext());
             }
         }
+
+        // Always tick at least once
+        tick();
     }
 
     public Location getLocation() {
         return location;
+    }
+
+    public void track(List<Entity> entities) {
+        if (spawned == null) {
+            spawned = new ArrayList<>();
+        }
+        for (Entity entity : entities) {
+            spawned.add(new WeakReference<>(entity));
+        }
+    }
+
+    public void checkEntities() {
+        Iterator<WeakReference<Entity>> iterator = spawned.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<Entity> mobReference = iterator.next();
+            Entity mob = mobReference.get();
+            if (mob == null || !mob.isValid()) {
+                iterator.remove();
+            }
+        }
     }
 
     public void tick() {
@@ -151,27 +185,7 @@ public class Automaton {
 
         long now = System.currentTimeMillis();
         if (now < nextTick) return;
-
-        List<Entity> entities = template.spawn(getLocation());
-        if (entities != null) {
-            if (spawned == null) {
-                spawned = new ArrayList<>();
-            }
-            for (Entity entity : entities) {
-                spawned.add(new WeakReference<>(entity));
-            }
-        }
-        if (spawned != null) {
-            Iterator<WeakReference<Entity>> iterator = spawned.iterator();
-            while (iterator.hasNext()) {
-                WeakReference<Entity> mobReference = iterator.next();
-                Entity mob = mobReference.get();
-                if (mob == null || !mob.isValid()) {
-                    iterator.remove();
-                }
-            }
-        }
-
+        template.tick(this);
         nextTick = now + template.getInterval();
     }
 
@@ -208,5 +222,16 @@ public class Automaton {
     @Nullable
     public String getCreatorName() {
         return creatorName;
+    }
+
+    @Nonnull
+    public Mage getMage() {
+        if (mage == null) {
+            String automatonId = UUID.randomUUID().toString();
+            mage = controller.getAutomaton(automatonId, template.getName());
+            mage.setLocation(location);
+        }
+
+        return mage;
     }
 }

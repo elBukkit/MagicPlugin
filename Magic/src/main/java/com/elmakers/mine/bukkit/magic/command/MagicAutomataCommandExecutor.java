@@ -23,6 +23,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -40,7 +41,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         "name", "interval", "effects",
         "spawn.mobs", "spawn.probability", "spawn.player_range", "spawn.min_players",
         "spawn.limit", "spawn.limit_range", "spawn.vertical_range", "spawn.radius",
-        "spawn.vertical_radius", "spawn.retries"
+        "spawn.vertical_radius", "spawn.retries", "cast.spells"
     );
 
     private static class SelectedAutomata {
@@ -457,6 +458,12 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                         if (entityType.isAlive() && entityType.isSpawnable()) {
                             options.add(entityType.name().toLowerCase());
                         }
+                    }
+                    break;
+                case "cast.spells":
+                    Collection<SpellTemplate> spells = api.getController().getSpellTemplates();
+                    for (SpellTemplate spell : spells) {
+                        options.add(spell.getKey());
                     }
                     break;
                 case "interval":

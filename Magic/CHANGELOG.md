@@ -6,6 +6,7 @@
  - The map brush can now work with concrete, glazed terracotta and several other block types
  - Add support for parrot variants in mob configs
  - Fix mobs spawned with a disguise looking glitchy for 1 tick
+ - Add "cast.spells" property to automata
 
 # 7.4.1
 

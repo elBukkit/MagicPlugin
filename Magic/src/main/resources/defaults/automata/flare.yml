@@ -1,0 +1,5 @@
+flare:
+  name: Flares
+  interval: 5000
+  cast:
+    spells: flare pdx 0 pdz 0 pdy 1 quiet true

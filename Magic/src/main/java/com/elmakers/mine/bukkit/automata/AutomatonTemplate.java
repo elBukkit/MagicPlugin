@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -25,6 +24,8 @@ public class AutomatonTemplate {
     private int interval;
     @Nullable
     private Spawner spawner;
+    @Nullable
+    private Caster caster;
     @Nullable
     private Collection<EffectPlayer> effects;
 
@@ -49,6 +50,10 @@ public class AutomatonTemplate {
         if (configuration.contains("spawn")) {
             spawner = new Spawner(controller, this, configuration.getConfigurationSection("spawn"));
         }
+
+        if (configuration.contains("cast")) {
+            caster = new Caster(this, configuration.getConfigurationSection("cast"));
+        }
     }
 
     @Nonnull
@@ -58,16 +63,25 @@ public class AutomatonTemplate {
 
     @Nullable
     public String getName() {
-        return name;
+        return name == null ? key : name;
     }
 
     public int getInterval() {
         return interval;
     }
 
-    @Nullable
-    public List<Entity> spawn(Location location) {
-        return spawner == null ? null : spawner.spawn(location);
+    public void tick(Automaton instance) {
+        if (spawner != null) {
+            List<Entity> entities = spawner.spawn(instance.getLocation());
+            if (entities != null && !entities.isEmpty()) {
+                instance.track(entities);
+            }
+            instance.checkEntities();
+        }
+
+        if (caster != null) {
+            caster.cast(instance.getMage());
+        }
     }
 
     public AutomatonTemplate getVariant(ConfigurationSection parameters) {
