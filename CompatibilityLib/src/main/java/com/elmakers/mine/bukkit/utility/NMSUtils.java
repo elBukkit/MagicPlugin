@@ -565,7 +565,7 @@ public class NMSUtils {
                 class_NamespacedKey = null;
                 class_NamespacedKey_constructor = null;
                 class_ShapedRecipe_constructor = null;
-                Bukkit.getLogger().log(Level.WARNING, "Couldn't find NamespacedKey for registering recipes. This doesn't actually matter at all, but PaperSpigot is a whiny little you-know so here we are.", ex);
+                Bukkit.getLogger().info("Couldn't find NamespacedKey for registering recipes. Magic recipes will not appear in the recipe book.");
             }
             try {
                 class_ProjectileHitEvent_getHitBlockMethod = ProjectileHitEvent.class.getMethod("getHitBlock");
