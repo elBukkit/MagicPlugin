@@ -1,8 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -85,6 +87,10 @@ public class ModifyAttributeAction extends BaseSpellAction {
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
+
+        for (String attr : spell.getController().getAttributes()) {
+            parameters.add("attribute_" + attr);
+        }
 
         parameters.add("attributes");
     }
