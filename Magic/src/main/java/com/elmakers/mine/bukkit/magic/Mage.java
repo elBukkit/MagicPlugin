@@ -1665,14 +1665,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    protected void loadSpells(Map<String, ConfigurationSection> spellConfiguration) {
+    protected void loadSpells(ConfigurationSection spellConfiguration) {
         if (spellConfiguration == null) return;
 
         Collection<MageSpell> currentSpells = new ArrayList<>(spells.values());
         for (MageSpell spell : currentSpells) {
             String key = spell.getKey();
-            if (spellConfiguration.containsKey(key)) {
-                ConfigurationSection template = spellConfiguration.get(key);
+            if (spellConfiguration.contains(key)) {
+                ConfigurationSection template = spellConfiguration.getConfigurationSection(key);
                 String className = template.getString("class");
                 if (className == null)
                 {
@@ -1681,7 +1681,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 // Check for spells that have changed class
                 // TODO: Still unsure if this is right.
                 if (!spell.getClass().getName().contains(className)) {
-                    //SpellData spellData = new SpellData(key);
                     spell.save(null);
                     spells.remove(key);
                     this.spellData.put(key, spell.getSpellData());
