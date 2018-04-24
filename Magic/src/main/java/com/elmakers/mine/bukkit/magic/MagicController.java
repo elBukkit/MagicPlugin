@@ -1678,8 +1678,8 @@ public class MagicController implements MageController {
         return loadConfigFile(EFFECTS_FILE, loadDefaultEffects, mainConfiguration.getConfigurationSection("effects"));
     }
 
-    protected Map<String, ConfigurationSection> loadAndMapSpells(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        Map<String, ConfigurationSection> spellConfigs = new HashMap<>();
+    protected ConfigurationSection loadAndMapSpells(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+        ConfigurationSection spellConfigs = new MemoryConfiguration();
         ConfigurationSection config = loadConfigFile(SPELLS_FILE, loadDefaultSpells, disableDefaultSpells, mainConfiguration.getConfigurationSection("spells"));
         if (config == null) return spellConfigs;
 
@@ -1703,7 +1703,7 @@ public class MagicController implements MageController {
                 spellNode.set("pvp_restricted", true);
             }
 
-            spellConfigs.put(key, spellNode);
+            spellConfigs.set(key, spellNode);
         }
 
         return spellConfigs;
@@ -2493,7 +2493,7 @@ public class MagicController implements MageController {
         return spellNode;
     }
 
-    protected void loadSpells(Map<String, ConfigurationSection> spellConfigs)
+    protected void loadSpells(ConfigurationSection spellConfigs)
     {
         if (spellConfigs == null) return;
 
@@ -2502,16 +2502,12 @@ public class MagicController implements MageController {
         spellAliases.clear();
         categories.clear();
 
-        for (Entry<String, ConfigurationSection> entry : spellConfigs.entrySet())
+        Set<String> keys = spellConfigs.getKeys(false);
+        for (String key : keys)
         {
-            String key = entry.getKey();
             if (key.equals("default") || key.equals("override")) continue;
 
-            ConfigurationSection spellNode = entry.getValue();
-            if (spellNode == null) {
-                continue;
-            }
-
+            ConfigurationSection spellNode = spellConfigs.getConfigurationSection(key);
             Spell newSpell = null;
             try {
                 newSpell = loadSpell(key, spellNode, this);
@@ -2539,10 +2535,10 @@ public class MagicController implements MageController {
         }
 
         // Second pass to fulfill requirements, which needs all spells loaded
-        for (Entry<String, ConfigurationSection> entry : spellConfigs.entrySet()) {
-            SpellTemplate template = getSpellTemplate(entry.getKey());
+        for (String key : keys) {
+            SpellTemplate template = getSpellTemplate(key);
             if (template != null) {
-                template.loadPrerequisites(entry.getValue());
+                template.loadPrerequisites(spellConfigs.getConfigurationSection(key));
             }
         }
 

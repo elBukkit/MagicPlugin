@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.magic;
 
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +24,7 @@ public class ConfigurationLoadTask implements Runnable {
     protected ConfigurationSection attributes;
     protected ConfigurationSection automata;
     protected ConfigurationSection effects;
-    protected Map<String, ConfigurationSection> spells;
+    protected ConfigurationSection spells;
 
     protected boolean success;
 
