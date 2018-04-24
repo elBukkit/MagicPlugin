@@ -249,7 +249,8 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public String getFullDescription(Messages messages, CostReducer reducer) {
-        if (getAmount(reducer) == 0) return "";
+        double amount = getAmount(reducer);
+        if (amount == 0) return "";
 
         switch (type) {
             case ITEM:
@@ -266,9 +267,9 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case MANA:
                 return messages.get("costs.mana_amount").replace("$amount", Integer.toString(getMana(reducer)));
             case HEALTH:
-                return messages.get("costs.health_amount").replace("$amount", Integer.toString(getMana(reducer)));
+                return messages.get("costs.health_amount").replace("$amount", Integer.toString((int)Math.ceil(amount)));
             case HUNGER:
-                return messages.get("costs.hunger_amount").replace("$amount", Integer.toString(getMana(reducer)));
+                return messages.get("costs.hunger_amount").replace("$amount", Integer.toString((int)Math.ceil(amount)));
             case CURRENCY:
                 return messages.get("costs.currency_amount").replace("$amount", Integer.toString((int)Math.ceil(getCurrency(reducer))));
         }
