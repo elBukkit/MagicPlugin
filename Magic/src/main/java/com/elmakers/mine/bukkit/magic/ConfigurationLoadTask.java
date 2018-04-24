@@ -108,31 +108,31 @@ public class ConfigurationLoadTask implements Runnable {
         if (loadDefaults) {
             getLogger().info(" Based on defaults " + defaultsFileName);
             if (disableDefaults) {
-                Set<String> keys = defaultConfig.getKeys(false);
-                for (String key : keys)
-                {
-                    defaultConfig.getConfigurationSection(key).set("enabled", false);
-                }
-                enableAll(overrides);
+                disableAll(defaultConfig);
             }
             ConfigurationUtils.addConfigurations(config, defaultConfig);
         }
 
-        if (mainConfiguration != null) {
-            ConfigurationUtils.addConfigurations(config, mainConfiguration);
-        }
-
-        if (usingExample) {
+        if (usingExample && loadDefaults) {
             InputStream input = plugin.getResource(examplesFileName);
             if (input != null)
             {
                 ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
                 if (disableDefaults) {
-                    enableAll(exampleConfig);
+                    disableAll(exampleConfig);
                 }
                 ConfigurationUtils.addConfigurations(config, exampleConfig);
                 getLogger().info(" Using " + examplesFileName);
             }
+        }
+
+        if (mainConfiguration != null) {
+            ConfigurationUtils.addConfigurations(overrides, mainConfiguration);
+        }
+
+        // Re-enable anything we are overriding
+        if (disableDefaults) {
+            enableAll(overrides);
         }
 
         if (addExamples != null && addExamples.size() > 0) {
@@ -184,15 +184,23 @@ public class ConfigurationLoadTask implements Runnable {
         return config;
     }
 
-    private void enableAll(ConfigurationSection rootSection) {
+    private void enableAll(ConfigurationSection rootSection, boolean enabled) {
         Set<String> keys = rootSection.getKeys(false);
         for (String key : keys)
         {
             ConfigurationSection section = rootSection.getConfigurationSection(key);
             if (!section.isSet("enabled")) {
-                section.set("enabled", true);
+                section.set("enabled", enabled);
             }
         }
+    }
+
+    private void enableAll(ConfigurationSection rootSection) {
+        enableAll(rootSection, true);
+    }
+
+    private void disableAll(ConfigurationSection rootSection) {
+        enableAll(rootSection, false);
     }
 
     private ConfigurationSection loadConfigFolder(ConfigurationSection config, File configSubFolder, boolean setEnabled)
