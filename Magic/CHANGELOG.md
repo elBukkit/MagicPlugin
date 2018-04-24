@@ -4,6 +4,7 @@
 
  - Fix filled wands re-organizing their spell inventory
  - Fix lore display of health and hunger costs
+ - Fix boon and levitate filling mana when the spell ends
 
 # 7.4.1
 

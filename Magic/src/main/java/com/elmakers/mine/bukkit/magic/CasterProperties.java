@@ -186,24 +186,25 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     public boolean tickMana() {
         boolean updated = false;
-        if (usesMana() && hasOwnMana() && !getMage().isManaRegenerationDisabled()) {
+        if (usesMana() && hasOwnMana()) {
             long now = System.currentTimeMillis();
-            long lastManaRegeneration = getLastManaRegeneration();
-            int effectiveManaRegeneration = getEffectiveManaRegeneration();
-            if (lastManaRegeneration > 0 && effectiveManaRegeneration > 0)
-            {
-                long delta = now - lastManaRegeneration;
-                int effectiveManaMax = getEffectiveManaMax();
-                int manaMax = getManaMax();
-                float mana = getMana();
-                if (effectiveManaMax == 0 && manaMax > 0) {
-                    effectiveManaMax = manaMax;
+            if (!getMage().isManaRegenerationDisabled()) {
+                int effectiveManaRegeneration = getEffectiveManaRegeneration();
+                long lastManaRegeneration = getLastManaRegeneration();
+                if (lastManaRegeneration > 0 && effectiveManaRegeneration > 0)
+                {
+                    long delta = now - lastManaRegeneration;
+                    int effectiveManaMax = getEffectiveManaMax();
+                    int manaMax = getManaMax();
+                    float mana = getMana();
+                    if (effectiveManaMax == 0 && manaMax > 0) {
+                        effectiveManaMax = manaMax;
+                    }
+                    setMana(Math.min(effectiveManaMax, mana + (float) effectiveManaRegeneration * (float)delta / 1000));
+                    updated = true;
                 }
-                setMana(Math.min(effectiveManaMax, mana + (float) effectiveManaRegeneration * (float)delta / 1000));
-                updated = true;
             }
-            lastManaRegeneration = now;
-            setProperty("mana_timestamp", lastManaRegeneration);
+            setProperty("mana_timestamp", now);
         }
 
         return updated;
