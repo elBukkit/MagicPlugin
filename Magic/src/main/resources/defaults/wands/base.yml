@@ -1,6 +1,10 @@
 #
 # Base templates
+#
 # These are used to specify defaults for wands and other magic items.
+#
+# Their use is optional, but using them is a quick way to make wands work in an intuitive way,
+# and also ensures your wands will update properly when the plugin updates.
 #
 base_bound:
   hidden: true
