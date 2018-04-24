@@ -1468,7 +1468,7 @@ public class MagicController implements MageController {
         // Process loaded data
 
         // Main configuration
-        loadProperties(loader.getConfiguration());
+        loadProperties(loader.getMainConfiguration());
 
         if (!initialized) {
             finalizeIntegrationPreSpells();

@@ -30,59 +30,25 @@ public class ConfigurationLoadTask implements Runnable {
     private final Plugin plugin;
     private final CommandSender sender;
 
-    private static final String SPELLS_FILE         = "spells";
-    private static final String CONFIG_FILE         = "config";
-    private static final String WANDS_FILE          = "wands";
-    private static final String PATHS_FILE          = "paths";
-    private static final String CRAFTING_FILE       = "crafting";
-    private static final String CLASSES_FILE        = "classes";
-    private static final String MESSAGES_FILE       = "messages";
-    private static final String MATERIALS_FILE      = "materials";
-    private static final String MOBS_FILE           = "mobs";
-    private static final String ITEMS_FILE          = "items";
-    private static final String ATTRIBUTES_FILE     = "attributes";
-    private static final String AUTOMATA_FILE       = "automata";
-    private static final String EFFECTS_FILE        = "effects";
+    private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "spells", "paths",
+            "classes", "wands", "items", "crafting", "mobs", "automata"};
+
+    private final Map<String, ConfigurationSection> loadedConfigurations = new HashMap<>();
 
     private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<>();
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<>();
-
-    private boolean disableDefaultSpells = false;
-    private boolean disableDefaultWands = false;
-    private boolean loadDefaultSpells = true;
-    private boolean loadDefaultWands = true;
-    private boolean loadDefaultPaths = true;
-    private boolean loadDefaultCrafting = true;
-    private boolean loadDefaultClasses = true;
-    private boolean loadDefaultMobs = true;
-    private boolean loadDefaultItems = true;
-    private boolean loadDefaultAttributes = true;
-    private boolean loadDefaultAutomata = true;
-    private boolean loadDefaultEffects = true;
-    private boolean spellUpgradesEnabled = true;
 
     private static final Object loadLock = new Object();
 
     private boolean allPvpRestricted = false;
     private boolean noPvpRestricted = false;
     private boolean saveDefaultConfigs = true;
+    private boolean spellUpgradesEnabled = true;
 
     private String exampleDefaults = null;
     private Collection<String> addExamples = null;
 
-    private ConfigurationSection configuration;
-    private ConfigurationSection messages;
-    private ConfigurationSection materials;
-    private ConfigurationSection wands;
-    private ConfigurationSection paths;
-    private ConfigurationSection crafting;
-    private ConfigurationSection mobs;
-    private ConfigurationSection items;
-    private ConfigurationSection classes;
-    private ConfigurationSection attributes;
-    private ConfigurationSection automata;
-    private ConfigurationSection effects;
-    private ConfigurationSection spells;
+    private ConfigurationSection mainConfiguration;
 
     private Set<String> resolvingKeys = new LinkedHashSet<>();
 
@@ -107,19 +73,9 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     private ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {
-        ConfigurationSection configuration = loadConfigFile(CONFIG_FILE, true);
+        ConfigurationSection configuration = loadConfigFile("config", true, false);
         loadInitialProperties(configuration);
         return configuration;
-    }
-
-    private ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, ConfigurationSection mainConfiguration)
-        throws IOException, InvalidConfigurationException {
-        return loadConfigFile(fileName, loadDefaults, false, mainConfiguration);
-    }
-
-    private ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults)
-        throws IOException, InvalidConfigurationException {
-        return loadConfigFile(fileName, loadDefaults, false);
     }
 
     private ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults)
@@ -128,11 +84,6 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     private ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults, ConfigurationSection mainConfiguration)
-        throws IOException, InvalidConfigurationException {
-        return loadConfigFile(fileName, loadDefaults, disableDefaults, false, mainConfiguration);
-    }
-
-    private ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults, boolean filesReplace, ConfigurationSection mainConfiguration)
         throws IOException, InvalidConfigurationException {
         String configFileName = fileName + ".yml";
         File configFile = new File(configFolder, configFileName);
@@ -210,7 +161,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
-        config = loadConfigFolder(config, configSubFolder, filesReplace, disableDefaults);
+        config = loadConfigFolder(config, configSubFolder, disableDefaults);
 
         return config;
     }
@@ -226,25 +177,21 @@ public class ConfigurationLoadTask implements Runnable {
         }
     }
 
-    private ConfigurationSection loadConfigFolder(ConfigurationSection config, File configSubFolder, boolean filesReplace, boolean setEnabled)
+    private ConfigurationSection loadConfigFolder(ConfigurationSection config, File configSubFolder, boolean setEnabled)
         throws IOException, InvalidConfigurationException {
         if (configSubFolder.exists()) {
             File[] files = configSubFolder.listFiles();
             for (File file : files) {
                 if (file.getName().startsWith(".")) continue;
                 if (file.isDirectory()) {
-                    config = loadConfigFolder(config, file, filesReplace, setEnabled);
+                    config = loadConfigFolder(config, file, setEnabled);
                 } else {
                     ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
                     getLogger().info("  Loading " + file.getName());
                     if (setEnabled) {
                         enableAll(fileOverrides);
                     }
-                    if (filesReplace) {
-                        config = ConfigurationUtils.replaceConfigurations(config, fileOverrides);
-                    } else {
-                        config = ConfigurationUtils.addConfigurations(config, fileOverrides);
-                    }
+                    config = ConfigurationUtils.addConfigurations(config, fileOverrides);
                 }
             }
         } else {
@@ -268,97 +215,25 @@ public class ConfigurationLoadTask implements Runnable {
             {
                 getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
             }
-            properties = loadConfigFile(CONFIG_FILE, true);
-        }
-
-        loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
-        disableDefaultSpells = properties.getBoolean("disable_default_spells", disableDefaultSpells);
-        loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
-        disableDefaultWands = properties.getBoolean("disable_default_wands", disableDefaultWands);
-        loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
-        loadDefaultClasses = properties.getBoolean("load_default_classes", loadDefaultClasses);
-        loadDefaultPaths = properties.getBoolean("load_default_enchanting", loadDefaultPaths);
-        loadDefaultPaths = properties.getBoolean("load_default_paths", loadDefaultPaths);
-        loadDefaultMobs = properties.getBoolean("load_default_mobs", loadDefaultMobs);
-        loadDefaultItems = properties.getBoolean("load_default_items", loadDefaultItems);
-        loadDefaultAttributes = properties.getBoolean("load_default_attributes", loadDefaultAttributes);
-        loadDefaultAutomata = properties.getBoolean("load_default_automata", loadDefaultAutomata);
-        loadDefaultEffects = properties.getBoolean("load_default_effects", loadDefaultEffects);
-
-        if (!properties.getBoolean("load_default_configs")) {
-            loadDefaultWands = false;
-            loadDefaultCrafting = false;
-            loadDefaultClasses = false;
-            loadDefaultPaths = false;
-            loadDefaultMobs = false;
-            loadDefaultItems = false;
-            loadDefaultSpells = false;
-            loadDefaultAttributes = false;
-            loadDefaultAutomata = false;
-            loadDefaultEffects = false;
+            properties = loadConfigFile("config", true, false);
         }
 
         return properties;
     }
 
-    private ConfigurationSection loadMessageConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(MESSAGES_FILE, true, mainConfiguration.getConfigurationSection("messages"));
-    }
-
-    private ConfigurationSection loadMaterialsConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(MATERIALS_FILE, true, mainConfiguration.getConfigurationSection("materials"));
-    }
-
-    private ConfigurationSection loadWandConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(WANDS_FILE, loadDefaultWands, disableDefaultWands, true, mainConfiguration.getConfigurationSection("wands"));
-    }
-
-    private ConfigurationSection loadPathConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(PATHS_FILE, loadDefaultPaths, mainConfiguration.getConfigurationSection("paths"));
-    }
-
-    private ConfigurationSection loadCraftingConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(CRAFTING_FILE, loadDefaultCrafting, mainConfiguration.getConfigurationSection("crafting"));
-    }
-
-    private ConfigurationSection loadClassConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(CLASSES_FILE, loadDefaultClasses, mainConfiguration.getConfigurationSection("classes"));
-    }
-
-    private ConfigurationSection loadMobsConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(MOBS_FILE, loadDefaultMobs, mainConfiguration.getConfigurationSection("mobs"));
-    }
-
-    private ConfigurationSection loadItemsConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(ITEMS_FILE, loadDefaultItems, mainConfiguration.getConfigurationSection("items"));
-    }
-
-    private ConfigurationSection loadAttributesConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(ATTRIBUTES_FILE, loadDefaultAttributes, mainConfiguration.getConfigurationSection("attributes"));
-    }
-
-    private ConfigurationSection loadAutomataConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(AUTOMATA_FILE, loadDefaultAutomata, mainConfiguration.getConfigurationSection("automata"));
-    }
-
-    private ConfigurationSection loadEffectConfiguration(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
-        return loadConfigFile(EFFECTS_FILE, loadDefaultEffects, mainConfiguration.getConfigurationSection("effects"));
-    }
-
-    private ConfigurationSection loadAndMapSpells(ConfigurationSection mainConfiguration) throws InvalidConfigurationException, IOException {
+    private ConfigurationSection mapSpells(ConfigurationSection spellConfiguration) throws InvalidConfigurationException, IOException {
         ConfigurationSection spellConfigs = new MemoryConfiguration();
-        ConfigurationSection config = loadConfigFile(SPELLS_FILE, loadDefaultSpells, disableDefaultSpells, mainConfiguration.getConfigurationSection("spells"));
-        if (config == null) return spellConfigs;
+        if (spellConfiguration == null) return spellConfigs;
 
         // Reset cached spell configs
         spellConfigurations.clear();
         baseSpellConfigurations.clear();
 
-        Set<String> spellKeys = config.getKeys(false);
+        Set<String> spellKeys = spellConfiguration.getKeys(false);
         for (String key : spellKeys) {
             if (key.equals("default") || key.equals("override")) continue;
 
-            ConfigurationSection spellNode = getSpellConfig(key, config);
+            ConfigurationSection spellNode = getSpellConfig(key, spellConfiguration);
             if (spellNode == null || !spellNode.getBoolean("enabled", true)) {
                 continue;
             }
@@ -491,108 +366,35 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load main configuration
         try {
-            configuration = loadMainConfiguration();
-            configuration = loadExamples(configuration);
+            mainConfiguration = loadMainConfiguration();
+            mainConfiguration = loadExamples(mainConfiguration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading config.yml", ex);
             success = false;
         }
 
-        // Load messages
-        try {
-            messages = loadMessageConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading messages.yml", ex);
-            success = false;
-        }
+        // Load other configurations
+        loadedConfigurations.clear();
+        for (String configurationFile : CONFIG_FILES) {
+            try {
+                boolean loadDefaults = mainConfiguration.getBoolean("load_default_" + configurationFile, true);
+                loadDefaults = loadDefaults && mainConfiguration.getBoolean("load_default_configs", true);
+                boolean disableDefaults = mainConfiguration.getBoolean("disable_default_" + configurationFile, false);
 
-        // Load materials configuration
-        try {
-            materials = loadMaterialsConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading material.yml", ex);
-            success = false;
-        }
+                ConfigurationSection configuration = loadConfigFile(configurationFile, loadDefaults, disableDefaults,
+                        mainConfiguration.getConfigurationSection(configurationFile));
 
-        // Load spells, and map their inherited configs
-        try {
-            spells = loadAndMapSpells(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading spells.yml", ex);
-            success = false;
-        }
+                // Spells require special processing
+                if (configurationFile.equals("spells")) {
+                    configuration = mapSpells(configuration);
+                }
 
-        // Load enchanting paths
-        try {
-            paths = loadPathConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading paths.yml", ex);
-            success = false;
-        }
-
-        // Load wand templates
-        try {
-            wands = loadWandConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading wands.yml", ex);
-            success = false;
-        }
-
-        // Load crafting recipes
-        try {
-            crafting = loadCraftingConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading crafting.yml", ex);
-            success = false;
-        }
-
-
-        // Load classes
-        try {
-            classes = loadClassConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading classes.yml", ex);
-            success = false;
-        }
-
-        // Load mobs
-        try {
-            mobs = loadMobsConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading mobs.yml", ex);
-            success = false;
-        }
-
-        // Load items
-        try {
-            items = loadItemsConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading items.yml", ex);
-            success = false;
-        }
-
-        // Load attributes
-        try {
-            attributes = loadAttributesConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading attributes.yml", ex);
-            success = false;
-        }
-
-        // Load automata
-        try {
-            automata = loadAutomataConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading automata.yml", ex);
-            success = false;
-        }
-
-        // Load effects
-        try {
-            effects = loadEffectConfiguration(configuration);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error loading effects.yml", ex);
-            success = false;
+                loadedConfigurations.put(configurationFile, configuration);
+            } catch (Exception ex) {
+                logger.log(Level.WARNING, "Error loading " + configurationFile, ex);
+                loadedConfigurations.put(configurationFile, new MemoryConfiguration());
+                success = false;
+            }
         }
 
         // Finalize configuration load
@@ -623,56 +425,56 @@ public class ConfigurationLoadTask implements Runnable {
         }
     }
 
-    public ConfigurationSection getConfiguration() {
-        return configuration;
+    public ConfigurationSection getMainConfiguration() {
+        return mainConfiguration;
     }
 
     public ConfigurationSection getMessages() {
-        return messages;
+        return loadedConfigurations.get("messages");
     }
 
     public ConfigurationSection getMaterials() {
-        return materials;
+        return loadedConfigurations.get("materials");
     }
 
     public ConfigurationSection getWands() {
-        return wands;
+        return loadedConfigurations.get("wands");
     }
 
     public ConfigurationSection getPaths() {
-        return paths;
+        return loadedConfigurations.get("paths");
     }
 
     public ConfigurationSection getCrafting() {
-        return crafting;
+        return loadedConfigurations.get("crafting");
     }
 
     public ConfigurationSection getMobs() {
-        return mobs;
+        return loadedConfigurations.get("mobs");
     }
 
     public ConfigurationSection getItems() {
-        return items;
+        return loadedConfigurations.get("items");
     }
 
     public ConfigurationSection getClasses() {
-        return classes;
+        return loadedConfigurations.get("classes");
     }
 
     public ConfigurationSection getAttributes() {
-        return attributes;
+        return loadedConfigurations.get("attributes");
     }
 
     public ConfigurationSection getAutomata() {
-        return automata;
+        return loadedConfigurations.get("automata");
     }
 
     public ConfigurationSection getEffects() {
-        return effects;
+        return loadedConfigurations.get("effects");
     }
 
     public ConfigurationSection getSpells() {
-        return spells;
+        return loadedConfigurations.get("spells");
     }
 
     public boolean isSuccessful() {
