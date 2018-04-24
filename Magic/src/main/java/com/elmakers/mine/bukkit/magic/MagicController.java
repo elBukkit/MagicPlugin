@@ -5325,7 +5325,6 @@ public class MagicController implements MageController {
                 String response;
                 String newResourcePackHash = currentHash;
                 try {
-                    HttpURLConnection.setFollowRedirects(false);
                     URL rpURL = new URL(finalResourcePack);
                     HttpURLConnection connection = (HttpURLConnection)rpURL.openConnection();
                     connection.setInstanceFollowRedirects(false);
