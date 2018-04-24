@@ -12,8 +12,8 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
 
 public abstract class MagicMapExecutor extends MagicTabExecutor {
-    public MagicMapExecutor(MagicAPI api) {
-        super(api);
+    public MagicMapExecutor(MagicAPI api, String command) {
+        super(api, command);
     }
 
     protected void onMapList(CommandSender sender, String keyword)

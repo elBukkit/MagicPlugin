@@ -32,12 +32,12 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicMapCommandExecutor extends MagicMapExecutor {
     public MagicMapCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "mmap");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.mmap"))
+        if (!api.hasPermission(sender, getPermissionNode()))
         {
             sendNoPermission(sender);
             return true;

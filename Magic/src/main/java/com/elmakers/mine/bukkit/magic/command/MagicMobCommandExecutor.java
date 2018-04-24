@@ -32,12 +32,12 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MagicMobCommandExecutor extends MagicTabExecutor {
     public MagicMobCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "mmob");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.mmob"))
+        if (!api.hasPermission(sender, getPermissionNode()))
         {
             sendNoPermission(sender);
             return true;

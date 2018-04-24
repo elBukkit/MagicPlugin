@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
@@ -187,60 +186,26 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     {
         controller.initialize();
 
-        TabExecutor magicCommand = new MagicCommandExecutor(this);
-        getCommand("magic").setExecutor(magicCommand);
-        getCommand("magic").setTabCompleter(magicCommand);
-        TabExecutor mageCommand = new MageCommandExecutor(this);
-        getCommand("mage").setExecutor(mageCommand);
-        getCommand("mage").setTabCompleter(mageCommand);
-        TabExecutor magicGiveCommand = new MagicGiveCommandExecutor(this);
-        getCommand("mgive").setExecutor(magicGiveCommand);
-        getCommand("mgive").setTabCompleter(magicGiveCommand);
-        TabExecutor magicItemCommand = new MagicItemCommandExecutor(this);
-        getCommand("mitem").setExecutor(magicItemCommand);
-        getCommand("mitem").setTabCompleter(magicItemCommand);
-        TabExecutor magicMobCommand = new MagicMobCommandExecutor(this);
-        getCommand("mmob").setExecutor(magicMobCommand);
-        getCommand("mmob").setTabCompleter(magicMobCommand);
-        TabExecutor magicAutoCommand = new MagicAutomataCommandExecutor(controller);
-        getCommand("mauto").setExecutor(magicAutoCommand);
-        getCommand("mauto").setTabCompleter(magicAutoCommand);
-        TabExecutor magicMapCommand = new MagicMapCommandExecutor(this);
-        getCommand("mmap").setExecutor(magicMapCommand);
-        getCommand("mmap").setTabCompleter(magicMapCommand);
-        TabExecutor magicServerCommand = new MagicServerCommandExecutor(this);
-        getCommand("mserver").setExecutor(magicServerCommand);
-        getCommand("mserver").setTabCompleter(magicServerCommand);
-        TabExecutor magicSaveCommand = new MagicSaveCommandExecutor(this);
-        getCommand("msave").setExecutor(magicSaveCommand);
-        getCommand("msave").setTabCompleter(magicSaveCommand);
-        TabExecutor magicSkillsCommand = new MagicSkillsCommandExecutor(this);
-        getCommand("mskills").setExecutor(magicSkillsCommand);
-        getCommand("mskills").setTabCompleter(magicSkillsCommand);
-        TabExecutor castCommand = new CastCommandExecutor(this);
-        getCommand("cast").setExecutor(castCommand);
-        getCommand("cast").setTabCompleter(castCommand);
-        getCommand("castp").setExecutor(castCommand);
-        getCommand("castp").setTabCompleter(castCommand);
-        TabExecutor wandCommand = new WandCommandExecutor(this);
-        getCommand("wand").setExecutor(wandCommand);
-        getCommand("wand").setTabCompleter(wandCommand);
-        getCommand("wandp").setExecutor(wandCommand);
-        getCommand("wandp").setTabCompleter(wandCommand);
-        TabExecutor spellsCommand = new SpellsCommandExecutor(this);
-        getCommand("spells").setExecutor(spellsCommand);
-        TabExecutor rpCommand = new RPCommandExecutor(this);
-        getCommand("getrp").setExecutor(rpCommand);
+        new MagicCommandExecutor(this).register(this);
+        new MageCommandExecutor(this).register(this);
+        new MagicGiveCommandExecutor(this).register(this);
+        new MagicItemCommandExecutor(this).register(this);
+        new MagicMobCommandExecutor(this).register(this);
+        new MagicAutomataCommandExecutor(controller).register(this);
+        new MagicMapCommandExecutor(this).register(this);
+        new MagicServerCommandExecutor(this).register(this);
+        new MagicSaveCommandExecutor(this).register(this);
+        new MagicSkillsCommandExecutor(this).register(this);
+        new CastCommandExecutor(this).register(this);
+        new WandCommandExecutor(this).register(this);
+        new SpellsCommandExecutor(this).register(this);
+        new RPCommandExecutor(this).register(this);
         CitizensController citizens = controller.getCitizens();
         if (citizens != null)
         {
-            TabExecutor magicTraitCommand = new MagicTraitCommandExecutor(this, citizens);
-            getCommand("mtrait").setExecutor(magicTraitCommand);
-            getCommand("mtrait").setTabCompleter(magicTraitCommand);
+            new MagicTraitCommandExecutor(this, citizens).register(this);
         }
-        TabExecutor magicConfigCommand = new MagicConfigCommandExecutor(this, controller);
-        getCommand("mconfig").setExecutor(magicConfigCommand);
-        getCommand("mconfig").setTabCompleter(magicConfigCommand);
+        new MagicConfigCommandExecutor(this, controller).register(this);
     }
 
     /*

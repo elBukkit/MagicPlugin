@@ -26,13 +26,13 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
     protected final CitizensController citizensController;
 
     public MagicTraitCommandExecutor(MagicAPI api, CitizensController citizensController) {
-        super(api);
+        super(api, "mtrait");
         this.citizensController = citizensController;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.mtrait"))
+        if (!api.hasPermission(sender, getPermissionNode()))
         {
             sendNoPermission(sender);
             return true;

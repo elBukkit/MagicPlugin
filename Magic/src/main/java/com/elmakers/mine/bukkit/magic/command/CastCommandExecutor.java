@@ -22,7 +22,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 public class CastCommandExecutor extends MagicTabExecutor {
 
     public CastCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, new String[] {"cast", "castp"});
     }
 
     @Override

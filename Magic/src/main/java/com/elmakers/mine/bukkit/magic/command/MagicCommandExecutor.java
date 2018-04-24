@@ -63,14 +63,14 @@ public class MagicCommandExecutor extends MagicMapExecutor {
     private RunnableJob runningTask = null;
 
     public MagicCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "magic");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0)
         {
-            if (!api.hasPermission(sender, "Magic.commands.magic")) {
+            if (!api.hasPermission(sender, getPermissionNode())) {
                 sendNoPermission(sender);
                 return true;
             }

@@ -15,12 +15,12 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 public class MagicSkillsCommandExecutor extends MagicTabExecutor {
 
     public MagicSkillsCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "mskills");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.mskills"))
+        if (!api.hasPermission(sender, getPermissionNode()))
         {
             sendNoPermission(sender);
             return true;

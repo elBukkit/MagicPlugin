@@ -18,12 +18,12 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicGiveCommandExecutor extends MagicTabExecutor {
     public MagicGiveCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "mgive");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.mgive"))
+        if (!api.hasPermission(sender, getPermissionNode()))
         {
             sendNoPermission(sender);
             return true;

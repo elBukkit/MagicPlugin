@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicServerCommandExecutor extends MagicTabExecutor {
     public MagicServerCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "mserver");
     }
 
     @Override
@@ -28,7 +28,7 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
             }
 
             player = (Player)sender;
-            if (!player.hasPermission("Magic.commands.mserver"))
+            if (!player.hasPermission(getPermissionNode()))
             {
                 return false;
             }

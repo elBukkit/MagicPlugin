@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 public class RPCommandExecutor extends MagicTabExecutor {
 
     public RPCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "getrp");
     }
 
     @Override
@@ -23,7 +23,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.getrp")) {
+        if (!api.hasPermission(sender, getPermissionNode())) {
             sendNoPermission(sender);
             return true;
         }

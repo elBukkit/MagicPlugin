@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicSaveCommandExecutor extends MagicTabExecutor {
     public MagicSaveCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "msave");
     }
 
     @Override
@@ -31,7 +31,7 @@ public class MagicSaveCommandExecutor extends MagicTabExecutor {
         if (sender instanceof Player)
         {
             player = (Player)sender;
-            if (!player.hasPermission("Magic.commands.msave"))
+            if (!player.hasPermission(getPermissionNode()))
             {
                 return false;
             }

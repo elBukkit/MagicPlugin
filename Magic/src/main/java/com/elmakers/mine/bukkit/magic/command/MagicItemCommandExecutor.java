@@ -42,7 +42,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     public MagicItemCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "mitem");
     }
 
     @Override

@@ -20,7 +20,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 public class SpellsCommandExecutor extends MagicTabExecutor {
 
     public SpellsCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "spells");
     }
 
     @Override
@@ -30,7 +30,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.spells")) {
+        if (!api.hasPermission(sender, getPermissionNode())) {
             sendNoPermission(sender);
             return true;
         }

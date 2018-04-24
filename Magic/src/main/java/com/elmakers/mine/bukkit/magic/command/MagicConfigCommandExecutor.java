@@ -28,7 +28,7 @@ import com.google.common.io.Files;
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
     public MagicConfigCommandExecutor(MagicAPI api, MagicController controller) {
-        super(api);
+        super(api, "mconfig");
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String alias, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.mconfig"))
+        if (!api.hasPermission(sender, getPermissionNode()))
         {
             sendNoPermission(sender);
             return true;

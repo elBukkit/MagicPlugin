@@ -50,13 +50,13 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
     }
 
     public MagicAutomataCommandExecutor(MagicController controller) {
-        super(controller.getAPI());
+        super(controller.getAPI(), "mauto");
         this.magicController = controller;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.mauto")) {
+        if (!api.hasPermission(sender, getPermissionNode())) {
             sendNoPermission(sender);
             return true;
         }

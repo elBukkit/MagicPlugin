@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -21,10 +22,29 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 public abstract class MagicTabExecutor implements TabExecutor {
     protected final MagicAPI api;
     protected final MageController controller;
+    private final String[] commands;
 
-    public MagicTabExecutor(MagicAPI api) {
+    public MagicTabExecutor(MagicAPI api, String command) {
         this.api = api;
         this.controller = api.getController();
+        this.commands = new String[] {command};
+    }
+
+    public MagicTabExecutor(MagicAPI api, String[] commands) {
+        this.api = api;
+        this.controller = api.getController();
+        this.commands = commands;
+    }
+
+    protected void register(JavaPlugin plugin, String command) {
+        plugin.getCommand(command).setExecutor(this);
+        plugin.getCommand(command).setTabCompleter(this);
+    }
+
+    public void register(JavaPlugin plugin) {
+        for (String command : commands) {
+            register(plugin, command);
+        }
     }
 
     public abstract Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args);
@@ -148,5 +168,9 @@ public abstract class MagicTabExecutor implements TabExecutor {
        } else {
            sender.sendMessage("I'm not sure what that's worth, sorry!");
        }
+    }
+
+    protected String getPermissionNode() {
+        return "Magic.commands." + commands[0];
     }
 }

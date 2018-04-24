@@ -33,14 +33,14 @@ import de.slikey.effectlib.math.EquationTransform;
 
 public class MageCommandExecutor extends MagicConfigurableExecutor {
     public MageCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, "mage");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0)
         {
-            if (!api.hasPermission(sender, "Magic.commands.mage")) {
+            if (!api.hasPermission(sender, getPermissionNode())) {
                 sendNoPermission(sender);
                 return true;
             }

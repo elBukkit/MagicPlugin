@@ -21,8 +21,12 @@ import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
 
 public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
-    public MagicConfigurableExecutor(MagicAPI api) {
-        super(api);
+    public MagicConfigurableExecutor(MagicAPI api, String command) {
+        super(api, command);
+    }
+
+    public MagicConfigurableExecutor(MagicAPI api, String[] commands) {
+        super(api, commands);
     }
 
     public boolean onConfigure(String command, MagicConfigurable target, CommandSender sender, Player player, String[] parameters, boolean safe)

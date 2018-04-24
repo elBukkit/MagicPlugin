@@ -42,7 +42,7 @@ import com.elmakers.mine.bukkit.wand.WandMode;
 public class WandCommandExecutor extends MagicConfigurableExecutor {
 
     public WandCommandExecutor(MagicAPI api) {
-        super(api);
+        super(api, new String[] {"wand", "wandp"});
     }
 
     @Override
