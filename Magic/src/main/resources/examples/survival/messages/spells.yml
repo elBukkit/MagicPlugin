@@ -1,21 +1,4 @@
 spells:
-    default:
-        fizzle: Your spell fizzled!
-        backfire: Your spell backfired!
-        fail: Something went wrong!
-        insufficient_permission: You don't have permission to use that here.
-        cast_player_message: "a:&d&o$player &r&5cast &3&o$spell &r&5on you!"
-        indirect_player_message: "a:&d&o$player &r&5cast &3&o$spell &r&5on you!"
-        insufficient_resources: Not enough $cost
-        cooldown: You must wait $time.
-        cancelled: Your spell was cancelled!
-        entity_required: An entity is required.
-        living_entity_required: A living entity is required.
-        player_required: A player is required.
-        location_required: A location is required.
-        world_required: A world is required.
-        invalid_world: The specified world is not valid.
-        cast_finish: ""
     admission:
         name: Admission
         description: Opens the target door
