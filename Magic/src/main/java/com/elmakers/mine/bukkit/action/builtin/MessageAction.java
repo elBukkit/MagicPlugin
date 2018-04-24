@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.bukkit.ChatColor;
@@ -12,6 +13,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class MessageAction extends BaseSpellAction
@@ -92,8 +94,10 @@ public class MessageAction extends BaseSpellAction
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
         parameters.add("message");
+        parameters.add("equation");
         parameters.add("sub_message");
         parameters.add("message_type");
+        parameters.add("message_target");
         parameters.add("stay");
         parameters.add("fade_in");
         parameters.add("fade_out");
@@ -103,6 +107,8 @@ public class MessageAction extends BaseSpellAction
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("message") || parameterKey.equals("sub_message")) {
             examples.add("You cast $spell on $target");
+        } else if (parameterKey.equals("equation")) {
+            examples.add("intelligence + strength / 20");
         } else if (parameterKey.equals("fade_in") || parameterKey.equals("fade_out") || parameterKey.equals("stay")) {
             examples.add("-1");
             examples.add("10");
@@ -112,6 +118,8 @@ public class MessageAction extends BaseSpellAction
             for (MessageType messageType : MessageType.values()) {
                 examples.add(messageType.name().toLowerCase());
             }
+        } else  if (parameterKey.equals("message_target")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }
