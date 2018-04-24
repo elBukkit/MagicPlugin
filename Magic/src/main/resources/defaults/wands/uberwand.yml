@@ -26,8 +26,8 @@ uberwand:
     - missile|4@3
     - day@4
     - superkill@5
-    - heal@6
-    - superbroom@7
+    - testdummy@6
+    - debugger@7
     - absorb@8
     - place@9
     - fill@10
