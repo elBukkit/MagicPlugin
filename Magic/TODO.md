@@ -15,11 +15,9 @@
 
 ### Things still needing fixing
 
- - Alter spell needs updating
  - Brush menu organization, can we group materials together still- maybe share some kind of map with Alter
  - Fix engineer paths (maybe validate brushes on path load)
  - TreeAction should grow the right type of tree for the given sapling
- - Undo queue migration from legacy materials
  
 ### Things to verify 
 

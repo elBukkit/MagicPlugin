@@ -1498,15 +1498,9 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
-    public static Material migrateMaterial(Material material) {
-        if (class_UnsafeValues_fromLegacyMethod != null && isLegacy(material)) {
-            try {
-                material = (Material)class_UnsafeValues_fromLegacyMethod.invoke(material);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        return material;
+    @SuppressWarnings("deprecation")
+    public static Material migrateMaterial(Material material, byte data) {
+        return fromLegacy(new org.bukkit.material.MaterialData(material, data));
     }
 
     public static Material getLegacyMaterial(String materialName) {

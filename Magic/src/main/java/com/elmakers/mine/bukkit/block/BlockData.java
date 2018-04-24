@@ -261,18 +261,29 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
             byte data = 0;
             String[] materialPieces = StringUtils.split(pieces[1], ':');
+
+            if (materialPieces.length > 1) {
+                try {
+                    data = Byte.parseByte(materialPieces[1]);
+                } catch (Exception ignore) {
+                    data = 0;
+                }
+            }
+
             try {
                 int materialId = Integer.parseInt(materialPieces[0]);
                 material = CompatibilityUtils.getMaterial(materialId);
             } catch (Exception nonid) {
                 material = Material.getMaterial(materialPieces[0]);
-            }
-
-            if (pieces.length > 1) {
-                try {
-                    data = Byte.parseByte(materialPieces[1]);
-                } catch (Exception ignore) {
-                    data = 0;
+                if (material == null) {
+                    Material legacyMaterial = CompatibilityUtils.getLegacyMaterial(materialPieces[0]);
+                    material = CompatibilityUtils.migrateMaterial(legacyMaterial, data);
+                    if (material != null) {
+                        data = 0;
+                    } else {
+                        // Here we keep data, it may be a rotation or some other still-valid piece of data (?)
+                        material = CompatibilityUtils.migrateMaterial(legacyMaterial, (byte)0);
+                    }
                 }
             }
 
