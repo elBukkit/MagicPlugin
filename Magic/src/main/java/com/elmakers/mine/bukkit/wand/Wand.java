@@ -3536,14 +3536,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public boolean fill(Player player, int maxLevel) {
-        String mageId = mage.getId();
+        // This is for the editor, it saves using player logins and is *not*
+        // directly related to mage ids. This has to use player id.
+        String playerId = player.getUniqueId().toString();
         closeInventory();
+
+        // Update the inventory to make sure we don't overwrite slots of current spells
+        if (this.mage != null) {
+            buildInventory();
+        }
+
         Collection<String> currentSpells = new ArrayList<>(getSpells());
         for (String spellKey : currentSpells) {
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
             boolean removeSpell = !spell.hasCastPermission(player);
             String creatorId = spell.getCreatorId();
-            removeSpell = removeSpell || (FILL_CREATOR && (creatorId == null || !mageId.equals(creatorId)));
+            removeSpell = removeSpell || (FILL_CREATOR && (creatorId == null || !playerId.equals(creatorId)));
             if (removeSpell)
             {
                 removeSpell(spellKey);
@@ -3567,7 +3575,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 continue;
             }
             String creatorId = spell.getCreatorId();
-            if (FILL_CREATOR && (creatorId == null || !mageId.equals(creatorId)))
+            if (FILL_CREATOR && (creatorId == null || !playerId.equals(creatorId)))
             {
                 continue;
             }
@@ -3577,6 +3585,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
         this.mage = mage;
+        updateSpellInventory();
+        updateBrushInventory();
+        if (this.mage != null) {
+            buildInventory();
+        }
 
         if (!FILL_CREATOR) {
             if (autoFill) setProperty("fill", false);
