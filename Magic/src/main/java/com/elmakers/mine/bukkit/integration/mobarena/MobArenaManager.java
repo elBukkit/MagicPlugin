@@ -41,9 +41,9 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
         if (plugin instanceof MobArena) {
             mobArena = (MobArena)plugin;
             try {
-                mobArena.getThingManager().register(new MagicThingParser(controller));
+                mobArena.getThingManager().register(new MagicItemStackParser(controller));
             } catch (Exception ex) {
-                controller.getLogger().log(Level.WARNING, "Error integrating with MobArena ThingManager. You may need to update MobArena for Magic wands and items to work in MobArena configs!", ex);
+                controller.getLogger().log(Level.WARNING, "Error integrating with MobArena. You may need to update MobArena for Magic wands and items to work in MobArena configs!", ex);
             }
         }
         configure(configuration);
