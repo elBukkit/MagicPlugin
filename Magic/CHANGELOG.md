@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# 7.4.2 
+
+ - Fix filled wands re-organizing their spell inventory
+ - Fix lore display of health and hunger costs
+
 # 7.4.1
 
  - Fix Heroes attribute integration
