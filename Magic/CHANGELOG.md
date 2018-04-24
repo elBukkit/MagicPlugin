@@ -7,6 +7,11 @@
  - Add support for parrot variants in mob configs
  - Fix mobs spawned with a disguise looking glitchy for 1 tick
  - Add "cast.spells" property to automata
+ 
+ # 7.4.2 
+
+ - Fix filled wands re-organizing their spell inventory
+ - Fix lore display of health and hunger costs
 
 # 7.4.1
 
