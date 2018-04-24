@@ -23,3 +23,9 @@ wolfanimation:
   interval: 33000
   cast:
     spells: wolfanimation
+
+glideranimation:
+  name: Glider Animation
+  interval: 1200
+  cast:
+    spells: glideranimation bypass_undo true
