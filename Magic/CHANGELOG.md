@@ -7,6 +7,7 @@
  - Add support for parrot variants in mob configs
  - Fix mobs spawned with a disguise looking glitchy for 1 tick
  - Add "cast.spells" property to automata
+ - The files in the defaults/ folder will now include anything loaded from example configs
  
  # 7.4.2 
 

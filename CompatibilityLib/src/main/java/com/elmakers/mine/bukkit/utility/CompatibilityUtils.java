@@ -625,7 +625,7 @@ public class CompatibilityUtils extends NMSUtils {
         return configuration;
     }
 
-    public static ConfigurationSection loadConfiguration(InputStream stream) throws IOException, InvalidConfigurationException
+    public static YamlConfiguration loadConfiguration(InputStream stream) throws IOException, InvalidConfigurationException
     {
         YamlConfiguration configuration = new YamlConfiguration();
         try {

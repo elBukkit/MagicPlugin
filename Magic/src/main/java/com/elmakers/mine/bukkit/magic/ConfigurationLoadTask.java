@@ -18,6 +18,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
@@ -97,21 +98,15 @@ public class ConfigurationLoadTask implements Runnable {
         String examplesFileName = usingExample ? "examples/" + exampleDefaults + "/" + fileName + ".yml" : null;
         String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
 
-        File savedDefaults = new File(configFolder, defaultsFileName);
-        if (saveDefaultConfigs) {
-            plugin.saveResource(defaultsFileName, true);
-        } else if (savedDefaults.exists()) {
-            getLogger().info("Deleting defaults file: " + defaultsFileName + ", these have been removed to avoid confusion");
-            savedDefaults.delete();
-        }
-
         getLogger().info("Loading " + configFile.getName());
         ConfigurationSection overrides = CompatibilityUtils.loadConfiguration(configFile);
-        ConfigurationSection config = new MemoryConfiguration();
+        YamlConfiguration config = new YamlConfiguration();
+
+        YamlConfiguration defaultConfig = CompatibilityUtils.loadConfiguration(plugin.getResource(defaultsFileName));
+        String header = defaultConfig.options().header();
 
         if (loadDefaults) {
             getLogger().info(" Based on defaults " + defaultsFileName);
-            ConfigurationSection defaultConfig = CompatibilityUtils.loadConfiguration(plugin.getResource(defaultsFileName));
             if (disableDefaults) {
                 Set<String> keys = defaultConfig.getKeys(false);
                 for (String key : keys)
@@ -120,11 +115,11 @@ public class ConfigurationLoadTask implements Runnable {
                 }
                 enableAll(overrides);
             }
-            config = ConfigurationUtils.addConfigurations(config, defaultConfig);
+            ConfigurationUtils.addConfigurations(config, defaultConfig);
         }
 
         if (mainConfiguration != null) {
-            config = ConfigurationUtils.addConfigurations(config, mainConfiguration);
+            ConfigurationUtils.addConfigurations(config, mainConfiguration);
         }
 
         if (usingExample) {
@@ -135,7 +130,7 @@ public class ConfigurationLoadTask implements Runnable {
                 if (disableDefaults) {
                     enableAll(exampleConfig);
                 }
-                config = ConfigurationUtils.addConfigurations(config, exampleConfig);
+                ConfigurationUtils.addConfigurations(config, exampleConfig);
                 getLogger().info(" Using " + examplesFileName);
             }
         }
@@ -150,18 +145,41 @@ public class ConfigurationLoadTask implements Runnable {
                     if (disableDefaults) {
                         enableAll(exampleConfig);
                     }
-                    config = ConfigurationUtils.addConfigurations(config, exampleConfig, false);
+                    ConfigurationUtils.addConfigurations(config, exampleConfig, false);
                     getLogger().info(" Added " + examplesFileName);
                 }
             }
         }
 
         // Apply overrides after loading defaults and examples
-        config = ConfigurationUtils.addConfigurations(config, overrides);
+        ConfigurationUtils.addConfigurations(config, overrides);
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
-        config = loadConfigFolder(config, configSubFolder, disableDefaults);
+        loadConfigFolder(config, configSubFolder, disableDefaults);
+
+        File savedDefaults = new File(configFolder, defaultsFileName);
+        if (saveDefaultConfigs) {
+            try {
+                // This is a bit of a hack, for the main config file we just save the defaults directly, it has a
+                // lot of comments that are useful to see.
+                if (fileName.equals("config")) {
+                    plugin.saveResource(defaultsFileName, true);
+                } else {
+                    config.options().header(header);
+                    config.save(savedDefaults);
+                }
+            } catch (Exception ex) {
+                getLogger().warning("Couldn't write defaults file: " + defaultsFileName);
+            }
+        } else if (savedDefaults.exists()) {
+            try {
+                savedDefaults.delete();
+                getLogger().info("Deleting defaults file: " + defaultsFileName + ", save_default_configs is false");
+            } catch (Exception ex) {
+                getLogger().warning("Couldn't delete defaults file: " + defaultsFileName + ", contents may be outdated");
+            }
+        }
 
         return config;
     }
