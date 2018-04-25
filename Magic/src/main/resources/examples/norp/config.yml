@@ -1,3 +1,6 @@
+# This is a modifier on the default survival configs
+inherit: survival
+
 # Disable the resource pack.
 resource_pack: ""
 add_resource_pack: ""

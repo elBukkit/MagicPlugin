@@ -4,10 +4,7 @@ This is a *very rough* approximation of where Magic is headed in future versions
 
 ## 7.5
 
- - 1.13 support
- - Ability to have spells cast on chunk load and cancel on unload
  - Maybe optimize effectlib chunk effects with player range
- - Break survival configs into a separate example
 
 ## 7.6
 

@@ -2,17 +2,21 @@
 # Set up for a Star Wars themed server
 #
 
-load_default_spells: true
-disable_default_spells: true
-load_default_wands: true
-disable_default_wands: true
-load_default_classes: true
-load_default_paths: false
-load_default_crafting: false
-enable_crafting: true
+# This is a modifier on the default survival configs
+inherit: survival
 
-# Disable the enchantment table showing the spell shop or upgrades
-enchant_block: ""
+# Turn off the survival spells, but allow them to be inherited from
+disable_inherited:
+ - spells
+
+skip_inherited:
+ - wands
+ - paths
+ - crafting
+ - classes
+
+# Disable crafting
+enable_crafting: true
 
 # Force power FX come from the hands
 wand_location_offset_vertical: -0.5

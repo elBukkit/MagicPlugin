@@ -3,19 +3,8 @@
 # other combat weapons.
 #
 
-load_default_spells: false
-load_default_wands: false
-load_default_classes: false
-load_default_paths: false
-load_default_crafting: false
-load_default_mobs: false
-load_default_items: false
-
 # No SP here, for now
 sp_enabled: false
-
-# Disable the enchantment table showing the spell shop or upgrades
-enchant_block: ""
 
 # Use a special RP
 resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-war-RP-7.zip"

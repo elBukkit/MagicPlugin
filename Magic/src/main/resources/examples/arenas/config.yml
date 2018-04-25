@@ -1,0 +1,16 @@
+# This is an add-on to the default survival and stars configs
+inherit:
+ - survival
+ - stars
+ - bending
+
+# We will assume if using this config directly that you don't want players to be able to get wands
+# outside of an arena.
+
+# We are leaving them all enabled though.
+
+enable_crafting: false
+
+# We will also assume you don't want any kind of progression
+sp_enabled: false
+enable_automatic_spell_upgrades: false

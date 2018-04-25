@@ -53,6 +53,7 @@ starclass:
       cast:
       - class: Selector
   parameters:
+    auto_close: true
     options:
     - switch_class: jedi
       selected: "You became $name"

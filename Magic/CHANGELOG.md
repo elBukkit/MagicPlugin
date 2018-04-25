@@ -3,6 +3,8 @@
 # 7.5
 
  - Maybe 1.13 support (not tested yet)
+ - The survival configs are now contained in an example, defaults are mostly empty but load survival example.
+   This shouldn't affect most of you, but if you notice something weird about your custom configs please let me know!
  - The map brush can now work with concrete, glazed terracotta and several other block types
  - Add support for parrot variants in mob configs
  - Fix mobs spawned with a disguise looking glitchy for 1 tick

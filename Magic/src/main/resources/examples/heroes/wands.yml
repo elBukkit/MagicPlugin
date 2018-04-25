@@ -1,3 +1,25 @@
-spellbook:
-  heroes: true
-  path: ""
+# Heroes skill book
+skillbook:
+    heroes: true
+    mode: skills
+    icon: wood_hoe:31
+    indestructible: true
+    right_click: toggle
+    undroppable: true
+    keep: true
+    bound: true
+    skills:
+      keep: true
+
+# Heroes wand
+heroes:
+    effect_color: random
+    quiet: 1
+    icon: stick
+    indestructible: true
+    heroes: true
+    undroppable: true
+    mode: inventory
+    right_click: toggle
+    drop: none
+    left_click: cast

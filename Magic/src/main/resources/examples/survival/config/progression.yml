@@ -6,3 +6,6 @@ enchant_sneak_click: spellshop
 # Set this to empty to prevent the enchantment table from showing players the spell shop defined above
 # enchant_block: ""
 enchant_block: enchantment_table
+
+# A class to use with the /mage command when a player doesn't yet have a class assigned
+default_mage_class: mage

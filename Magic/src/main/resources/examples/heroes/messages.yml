@@ -1,0 +1,7 @@
+wands:
+  skillbook:
+    name: Skill Book
+    spell_instructions: "&r&bUse the hotbar button to cast spells that you have put on your hotbar."
+    inventory_instructions: "&r&bRight-click to open the spell inventory and drag spells to your hotbar to cast them."
+  heroes:
+    name: Wand

@@ -2,12 +2,4 @@
 # Set up for an RPG-style server, with different classes for players to choose from.
 #
 
-load_default_spells: true
-load_default_wands: true
-disable_default_wands: true
-load_default_classes: true
-load_default_paths: false
-load_default_crafting: false
 
-# Don't allow crafting
-enable_crafting: false

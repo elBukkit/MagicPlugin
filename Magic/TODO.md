@@ -1,15 +1,4 @@
 # TODO
-
-## The great un-defaulting
-
- - Using any of the "load_default_X: false" options will also skip loading example configs (?.. right?)
- - Example configs can inherit from other examples, such as potter->survival
- - Should maybe save resolved configs to disk? Not sure .. defaults aren't going to be super useful anymore,
-   but if we replace defaults with resolved then we lose all comments. Hrm.
- 
- - As part of config re-work, it'd be really cool to support configs from remote repos....
-   Github has an API for fetching a list of files, maybe can use that?
-   https://api.github.com/repos/grisstyl/BetterPotter/contents/spells/spells
    
 ## 8.0
 
@@ -32,7 +21,11 @@
  - Check secure/lockpick
 
 ## 7.5
-   
+  
+ - It'd be really cool to support configs from remote repos....
+   Github has an API for fetching a list of files, maybe can use that?
+   https://api.github.com/repos/grisstyl/BetterPotter/contents/spells/spells
+ 
  - Add path 2nd parameter to enchant command to stop when reaching end of a path
  - Goldwalker blocks didn't undo? (Can not reproduce)
   

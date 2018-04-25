@@ -1,0 +1,10 @@
+# This is a modifier on the default survival configs
+inherit: survival
+
+# Don't load default wands or anything but spells
+skip_inherited:
+ - wands
+ - paths
+ - crafting
+ - classes
+ - mobs

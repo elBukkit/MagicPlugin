@@ -2,34 +2,6 @@
 # Add some Harry Potter themed wand templates
 #
 
-# These are copied from the default configs. We can't reference them or there will be a collision on the "wand"
-# item.
-# This may be fixed in the future by removing "wand" from these configs- please use "potterwand" instead!
-
-base_bound:
-  hidden: true
-  bound: true
-  keep: true
-  invulnerable: true
-  immortal: true
-  track: true
-  undroppable: true
-  indestructible: true
-
-base_wand:
-    hidden: true
-    inherit: base_bound
-    mode: inventory
-    drop: cycle_hotbar
-    left_click: cast
-    right_click: toggle
-    swap: cycle_hotbar
-    quiet: 1
-    effect_bubbles: false
-    item_attributes:
-      GENERIC_ATTACK_SPEED: 10
-    attribute_slot: mainhand
-
 # This was renamed from wand to support mixing configs with defaults
 potterwand:
     inherit: base_wand

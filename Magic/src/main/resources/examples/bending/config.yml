@@ -2,26 +2,22 @@
 # Set up for an Avatar (bending) server.
 #
 
-# This is a complete wand/spell overhaul
-load_default_spells: true
-disable_default_spells: true
-load_default_wands: true
-disable_default_wands: true
-load_default_classes: true
-load_default_paths: false
-load_default_crafting: false
+# This is a modifier on the default survival configs
+inherit: survival
+
+# Turn off the survival spells, but allow them to be inherited from
+disable_inherited:
+ - spells
+
+skip_inherited:
+ - wands
+ - paths
+ - crafting
+ - classes
+ - mobs
 
 # Don't allow crafting
 enable_crafting: false
-
-# Don't allow combining
-enable_combining: false
-
-# Disable the enchantment table showing the spell shop or upgrades
-enchant_block: ""
-
-# Wands don't glow because they don't in the movies
-wand_glow: false
 
 # Configure some custom damage types
 damage_types:

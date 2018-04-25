@@ -46,7 +46,8 @@ load_default_automata: true
 load_default_effects: true
 
 # A class to use with the /mage command when a player doesn't yet have a class assigned
-default_mage_class: mage
+# default_mage_class: mage
+default_mage_class: ""
 
 # Give new players a wand when they join.
 # e.g. welcome_wand: wand

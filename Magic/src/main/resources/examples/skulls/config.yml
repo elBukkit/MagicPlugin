@@ -1,3 +1,6 @@
+# This is a modifier on the default survival configs
+inherit: survival
+
 # This resource pack is identical to survival except is also includes the flat skull model
 resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-7.zip"
 add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-7.zip"

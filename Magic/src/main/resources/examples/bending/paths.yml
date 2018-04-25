@@ -2,34 +2,6 @@
 # Add Avatar (Bending) themed progression
 #
 
-default:
-  match_spell_mana: false
-  hidden: true
-  spell_count: 1
-  upgrade_commands:
-    - broadcast §6@pd §3has progressed to §b$path§3!
-  effects:
-      enchant:
-      -  class: EffectSingle
-         sound: level_up
-         effectlib:
-           class: SphereEffect
-           iterations: 10
-           period: 2
-           particle: enchantment_table
-           radius: 3
-      upgrade:
-      -  class: EffectSingle
-         sound: level_up
-      -  class: EffectRing
-         firework: star
-         radius: 4
-         size: 2
-      -  class: EffectRing
-         firework: ball_large
-         radius: 6
-         size: 3
-
 airbending:
     mana_regeneration: 4
     mana_max: 20

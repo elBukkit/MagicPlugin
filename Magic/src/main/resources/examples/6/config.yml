@@ -1,3 +1,6 @@
+# This is a modifier on the default survival configs
+inherit: survival
+
 # Show enchantments on wands
 # Note that if using the "glow" property on wands a "Luck of the Sea" enchantment will show if no other
 # enchantments are set.

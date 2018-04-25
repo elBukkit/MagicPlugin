@@ -12,8 +12,6 @@ base_arena:
   immortal: false
   track: false
 
-# Note that you need the stars config added for this to work
-
 base_arena_lightsaber:
   inherit: base_lightsaber
   bound: false
@@ -102,8 +100,6 @@ warrior:
      - throwsword
      - dash
      - sweep
-
-# These wands rely on the stars and bending configs being loaded
 
 jedi:
     inherit: base_arena_lightsaber
@@ -260,8 +256,6 @@ warrior2:
      - throwsword
      - dash
      - sweep
-
-# These wands rely on the stars and bending configs being loaded
 
 jedi2:
     inherit: base_arena_lightsaber
