@@ -121,7 +121,7 @@
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>commandbook</artifactId>
-            <version>2.3</version>
+            <version>2.4</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -347,10 +347,6 @@
             <id>njol-repo</id>
             <url>http://maven.njol.ch/repo/</url>
         </repository>
-        <repository>
-          <id>devoted-repo</id>
-          <url>http://build.devotedmc.com/plugin/repository/everything/</url>
-        </repository>
         <!--
             All of the following repositories seem to be offline.
             If the elmakers repo ever goes down, you could try re-enabling these, but you may be out of luck.
@@ -386,7 +382,12 @@
             <id>NoCheatPlus</id>
             <url>http://ncp-repo.yawk.at/</url>
         </repository>
+        <repository>
+          <id>devoted-repo</id>
+          <url>http://build.devotedmc.com/plugin/repository/everything/</url>
+        </repository>
 <!-#- -->
+
     </repositories>
     <build>
         <resources>
