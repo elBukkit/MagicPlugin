@@ -611,7 +611,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 }
             }
             setEntity(entity);
-        } else {
+        } else if (entity != null) {
             modify(entity);
         }
         return entity;
