@@ -1,0 +1,5 @@
+
+description = 'Magic API'
+dependencies {
+    compileOnly group: 'org.bukkit', name: 'bukkit', version:'1.9.2-R0.1-SNAPSHOT'
+}

@@ -1,0 +1,8 @@
+rootProject.name = 'Magic-parent'
+include ':MagicAPI'
+include ':Magic'
+include ':CompatibilityLib'
+
+project(':MagicAPI').projectDir = "$rootDir/MagicAPI" as File
+project(':Magic').projectDir = "$rootDir/Magic" as File
+project(':CompatibilityLib').projectDir = "$rootDir/CompatibilityLib" as File

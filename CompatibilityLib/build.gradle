@@ -1,0 +1,25 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.elmakers.mine.bukkit'
+version = '1.9-1.12.2-2-SNAPSHOT'
+
+description = """Magic Compatibility Library"""
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+
+
+repositories {
+        
+     maven { url "http://maven.elmakers.com/repository/" }
+     maven { url "https://hub.spigotmc.org/nexus/content/groups/public/" }
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compileOnly group: 'org.bukkit', name: 'bukkit', version:'1.9.2-R0.1-SNAPSHOT'
+}

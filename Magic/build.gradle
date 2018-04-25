@@ -1,0 +1,57 @@
+group = 'com.elmakers.mine.bukkit.plugins'
+description = 'Magic Bukkit Plugin'
+dependencies {
+  compile project(':MagicAPI')
+  compile project(':CompatibilityLib')
+    compile group: 'de.slikey', name: 'EffectLib', version:'6.0-SNAPSHOT'
+    compile group: 'org.bstats', name: 'bstats-bukkit', version:'1.1'
+    testCompile group: 'org.mockito', name: 'mockito-core', version:'2.15.0'
+    compileOnly group: 'org.bukkit', name: 'bukkit', version:'1.9.2-R0.1-SNAPSHOT'
+    compileOnly(group: 'net.milkbowl.vault', name: 'VaultAPI', version:'1.6') {
+exclude(module: '*')
+    }
+    compileOnly(group: 'org.dynmap', name: 'dynmap-api', version:'0.80') {
+exclude(module: '*')
+    }
+    compileOnly group: 'net.ess3', name: 'Essentials', version:'2.13.1'
+    compileOnly group: 'com.garbagemule', name: 'MobArena', version:'0.99.1-SNAPSHOT'
+    compileOnly(group: 'com.sk89q', name: 'commandbook', version:'2.3') {
+exclude(module: '*')
+    }
+    compileOnly(group: 'net.sacredlabyrinth.Phaed', name: 'PreciousStones', version:'10.0.5') {
+exclude(module: '*')
+    }
+    compileOnly group: 'com.palmergames', name: 'Towny', version:'0.89.2.0'
+    compileOnly(group: 'info.nothingspecial', name: 'Splateds_Elementals', version:'B.1.6') {
+exclude(module: '*')
+    }
+    compileOnly group: 'me.NoChance.PvPManager', name: 'PvPManager', version:'3.3.2.1'
+    compileOnly(group: 'com.onarandombox.multiversecore', name: 'Multiverse-Core', version:'2.5') {
+exclude(module: '*')
+    }
+    compileOnly(group: 'com.mewin', name: 'WGCustomFlags', version:'1.6.1') {
+exclude(module: '*')
+    }
+    compileOnly group: 'com.sk89q.worldguard', name: 'worldguard-legacy', version:'6.2'
+    compileOnly(group: 'com.sk89q', name: 'worldedit', version:'5.5.8') {
+exclude(module: '*')
+    }
+    compileOnly group: 'net.citizensnpcs', name: 'citizens', version:'2.0.16-SNAPSHOT'
+    compileOnly group: 'me.ryanhamshire', name: 'GriefPrevention', version:'11.2'
+    compileOnly(group: 'com.herocraftonline.heroes', name: 'Heroes', version:'1.5.5.5-SNAPSHOT') {
+exclude(module: '*')
+    }
+    compileOnly group: 'fr.neatmonster', name: 'nocheatplus', version:'3.12.1-SNAPSHOT'
+    compileOnly group: 'uk.thinkofdeath.minecraft', name: 'BlockPhysics', version:'0.4-SNAPSHOT'
+    compileOnly(group: 'au.com.mineauz', name: 'Minigames', version:'1.8.0-SNAPSHOT') {
+exclude(module: '*')
+    }
+    compileOnly group: 'LibsDisguises', name: 'LibsDisguises', version:'9.0.3'
+    compileOnly group: 'ProtocolLib', name: 'ProtocolLib', version:'3.7.0-BETA'
+    compileOnly group: 'com.sucy', name: 'SkillAPI', version:'3.103'
+    compileOnly group: 'me.clip', name: 'placeholderapi', version:'2.8.3'
+    compileOnly group: 'ru.beykerykt', name: 'lightapi', version:'3.0'
+    compileOnly group: 'ch.njol', name: 'skript', version:'2.2-SNAPSHOT'
+    compileOnly group: 'vg.civcraft.mc.civmodcore', name: 'CivModCore', version:'1.5.11'
+    compileOnly group: 'vg.civcraft.mc.citadel', name: 'Citadel', version:'3.8.00'
+}
