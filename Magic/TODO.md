@@ -6,8 +6,8 @@
 
  - Brush menu organization, can we group materials together still- maybe share some kind of map with Alter
  - Fix engineer paths (maybe validate brushes on path load)
- - TreeAction should grow the right type of tree for the given sapling
- 
+ - Brush selector on a sub-page for beds says "diamond axe sub-types"?
+
 ### Things to verify 
 
  - Wand brush migration
@@ -59,8 +59,6 @@
    
 ## Suggestions
 
- - Citadel integration: https://github.com/DevotedMC/Citadel
-
  - Cast location offset override per spell.
  - Flag to prevent putting SP in chests
  - Check knockback resistance in Velocity action, or add Mage knockback resistance.
@@ -72,14 +70,14 @@
  - Add an action to simulate the red screen you get while out of bounds. See:
    https://gist.github.com/leonardosnt/ffa8e72b60df197c762d1f2e903cc67f
 
- - MythicMob integration to add protection/strength/etc
-
  - Placeholder API integration: https://www.spigotmc.org/wiki/hooking-into-placeholderapi/
    - Allow placeholder-driven attributes
  
  - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
  
  - Paginate wand and spell lists
+ 
+ - TreeAction should grow the right type of tree for the given sapling
 
 ## On Hold
 
@@ -88,10 +86,9 @@
  - Spells can be worn .. ?  Skill icons maybe?
  - PerWorldInventory logout issues, can't reproduce
  - Broom issues when in creative mode
- - Cooldown reduction not working on wands, nor is the cooldown_reduction parameter working (could not reproduce.. ??)
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  - PW would like some custom lore for wand "quiet" and quick cast settings.
- - Recall warps don't show up with /mage describe?
+ - Recall warps don't show up with /mage getdata?
    
 ## Fast Blocks
 
@@ -108,8 +105,6 @@
  - Per-player language settings (See https://www.spigotmc.org/resources/api-languages.22305/)
  - Would be cool to have a configurable max # of maps, and start re-using map ids when limit is hit, LRU
  - Ability to alter flower pots and beds (need to tweak TileEntity data.. doable, but messy to track with Material keys)
- - Brush selector on a sub-page for beds says "diamond axe sub-types"?
- - An option on a wand to put all spells at max level (but don't fill)
  - Aliases don't work with levels 
  - Ability to specify map dimensions/offset in percentage
 
@@ -122,10 +117,9 @@
 ### Requests
 
  - Async config load on startup option
- - Add probability table to mob drops
  - Allow multiple welcome_wand entries
  - An attribute that lets spells level up more quickly
- - Add some sort of integration with Partec plugin
+ - Add some sort of integration with Partec plugin (Deprecated since 2015, so probably not)
    https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/
  - Wand Power based on Strength potion effect
  - Add ModifyPower action
@@ -172,31 +166,20 @@
      - Eventually a GUI would be nice.
  
  - Alter/grow/shrink/rollback should prevent mobs dropping loot
- 
- - Use Entity tags ("Tags" tag, NBTList, see nms.Entity.P()) for tracking magic mobs
- 
+  
  - See if snow that falls on something undoable can undo?
- - lingering potions
  
  - Undo bugs with pistons.. yuck. https://youtu.be/S-d-XT2r_vM
  
- - Casting while standing on a gold pressure plate doesn't work :|
  - Arenas preventing last death Recall isn't working?
- - Some kind of gliding-without-Elytra mechanic involving cancelling the glide event?
  - Spell count limit on wands or paths?
- 
- - Trying to place a block with a wand in the offhand is super glitchy
- 
+  
  - Show mana from offhand wand (if no wand in main hand)
- - Account for offhand items in "armor" checks
  - Add builtin "help" command, check messaging for missing commands- shows "no permission"?
  - Expand armor to include power, other modifiers?
  
  - "Triggered" spells.. ? Apparently MagicSpells does this or somesuch.
    Examples- Activated spells/ passive spells Upon taking damage- activate a heal spell effect Upon dealing damage- explosion in line of sight
-
- - I think action-specific parameters should not inherit down. Might be a tricky change.
- - Add wand appearance shop
 
  - Add option to only cast spells when damaging an entity
 
@@ -208,10 +191,6 @@
    
  - CoreProtect integration
    http://minerealm.com/community/viewtopic.php?f=32&t=16362
-
- - PS TODO:
-   - Fix formatting of allowed list, single-column
-   - Limit on repeat rentals of a plot
 
  - Add effects template, for wands to stay one template but act like another (? - for cane)
  - Prevent TNT breaking secured chests

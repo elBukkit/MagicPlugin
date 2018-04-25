@@ -53,9 +53,15 @@ public class WandLevel {
         // Fetch spell count probabilities
         RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template, "spell_count", levelIndex, nextLevelIndex, distance);
 
-        // Fetch material probabilities
-        RandomUtils.populateStringProbabilityMap(materialProbability, template, "materials", levelIndex, nextLevelIndex, distance);
-
+        // Fetch material probabilities, filter out invalid materials (important for backwards compatibility)
+        Deque<WeightedPair<String>> brushes = new ArrayDeque<>();
+        RandomUtils.populateStringProbabilityMap(brushes, template, "materials", levelIndex, nextLevelIndex, distance);
+        for (WeightedPair<String> brushValue : brushes) {
+            MaterialBrush brush = new MaterialBrush(brushValue.getValue());
+            if (brush.isValid(false)) {
+                materialProbability.add(brushValue);
+            }
+        }
         // Fetch material count probabilities
         RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getConfigurationSection("material_count"), levelIndex, nextLevelIndex, distance);
 
